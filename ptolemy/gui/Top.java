@@ -650,14 +650,20 @@ public abstract class Top extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-            if (actionCommand.equals("Open File")) _open();
-            else if (actionCommand.equals("Open URL")) _openURL();
-            else if (actionCommand.equals("Save")) _save();
-            else if (actionCommand.equals("SaveAs")) _saveAs();
-            else if (actionCommand.equals("Print")) _print();
-            else if (actionCommand.equals("Close")) _close();
-            else if (actionCommand.equals("Exit")) _exit();
-
+	    try {
+		if (actionCommand.equals("Open File")) _open();
+		else if (actionCommand.equals("Open URL")) _openURL();
+		else if (actionCommand.equals("Save")) _save();
+		else if (actionCommand.equals("SaveAs")) _saveAs();
+		else if (actionCommand.equals("Print")) _print();
+		else if (actionCommand.equals("Close")) _close();
+		else if (actionCommand.equals("Exit")) _exit();
+	    } catch (Exception exception) {
+		// If we do not catch exceptions here, then they
+		// disappear to stdout, which is bad if we launched
+		// where there is no stdout visible.
+		MessageHandler.error("File Menu Exception:", exception);
+	    }
             // NOTE: The following should not be needed, but jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -670,9 +676,15 @@ public abstract class Top extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-            if (actionCommand.equals("About")) _about();
-            else if (actionCommand.equals("Help")) _help();
-
+	    try {
+		if (actionCommand.equals("About")) _about();
+		else if (actionCommand.equals("Help")) _help();
+	    } catch (Exception exception) {
+		// If we do not catch exceptions here, then they
+		// disappear to stdout, which is bad if we launched
+		// where there is no stdout visible.
+		MessageHandler.error("Help Menu Exception:", exception);
+	    }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
