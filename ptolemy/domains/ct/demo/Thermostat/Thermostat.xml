@@ -53,15 +53,18 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Thermostat model where the refinements of the
-modes in the state machine are the same model.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Thermostat model showing heating a cooling cycles.
+In this model, the refinements of the modes in the
+state machine are the same model, and the parameters
+of the model are changed when state transitions are
+taken.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -77,14 +80,24 @@ modes in the state machine are the same model.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 20.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 559}}">
+    </property>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
+            </property>
+        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="170.5, 134.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 165.0">
         </property>
         <port name="output" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
@@ -174,6 +187,8 @@ modes in the state machine are the same model.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
@@ -192,6 +207,8 @@ modes in the state machine are the same model.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output &lt; 70.0">
@@ -209,6 +226,8 @@ modes in the state machine are the same model.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="cooling.incomingPort" relation="relation4"/>
@@ -376,7 +395,7 @@ modes in the state machine are the same model.</text></svg></configure>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="295.0, 115.0">
+                <vertex name="vertex1" value="295.0, 115.0">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -384,7 +403,7 @@ modes in the state machine are the same model.</text></svg></configure>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="115.0, 165.0">
+                <vertex name="vertex1" value="115.0, 165.0">
                 </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -418,9 +437,13 @@ modes in the state machine are the same model.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="343.5, 124.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="238.0, 155.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -431,8 +454,8 @@ modes in the state machine are the same model.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Temperature</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
+<xLabel>Time</xLabel>
+<yLabel>Degrees</yLabel>
 <xRange min="0.0" max="20.0"/>
 <yRange min="65.0" max="80.0000824876088"/>
 </plot>?>
