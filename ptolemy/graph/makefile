@@ -49,6 +49,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	analysis/analysis.jar \
+	mapping/mapping.jar \
+	sched/sched.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
