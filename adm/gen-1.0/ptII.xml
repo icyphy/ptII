@@ -875,7 +875,7 @@ Berkeley, CA 94706</property>
                     <property array="True" length="0" name="additionalClassPaths" type="string"/>
                     <property name="embedArchive">True</property>
                     <property name="externalArchivePath"/>
-                    <property name="launcherUIDisplayTime">20</property>
+                    <property name="launcherUIDisplayTime">30</property>
                     <property name="javaArguments"/>
                     <property name="wizardArguments"/>
                     <property array="True" length="0" name="systemProperties" type="string"/>
