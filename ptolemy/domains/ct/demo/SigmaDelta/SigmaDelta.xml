@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SigmaDelta" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -99,7 +99,7 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+            <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK45Solver&quot;">
             </property>
             <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
             </property>
@@ -116,7 +116,11 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 102, 899, 563}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 102, 899, 572}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 227.0}">
         </property>
         <port name="Pin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -155,11 +159,23 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
+            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 135.0">
             </property>
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 135.0">
             </property>
@@ -250,7 +266,7 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="15.0053755731"/>
+<xRange min="0.0" max="15.02"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
             </configure>

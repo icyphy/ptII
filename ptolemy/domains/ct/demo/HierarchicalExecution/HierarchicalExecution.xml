@@ -2,53 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchicalExecution" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
-    </property>
-    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
-        </property>
-        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-        </property>
-        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-        </property>
-        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                </property>
-            </property>
-        </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
-                </property>
-            </property>
-        </property>
-        <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 105.0]">
-        </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 1016, 659}, maximized=false}">
     </property>
@@ -70,6 +24,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 555.0]">
+        </property>
+    </property>
+    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK45Solver&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 105.0]">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -144,37 +108,21 @@
     <entity name="Embedded CT Model" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 320.0]">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 174, 741, 468}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[526, 350]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9994762539866">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{36.7265625, 196.5690834422534}">
+        </property>
         <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-            <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                    <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                    </property>
-                    <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                    </property>
-                    <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                    </property>
-                </property>
+            <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
             </property>
-            <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                    <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                    </property>
-                    <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                    </property>
-                    <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
-                    </property>
-                </property>
+            <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK45Solver&quot;">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-100.0, 115.0}">
             </property>
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 174, 741, 400}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[526, 282]">
-        </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2493453174833">
-        </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{36.7265625, 169.3548300855513}">
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -225,7 +173,7 @@
         </property>
     </entity>
     <entity name="signal 1" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 514, 348, 225}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 514, 354, 225}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[346, 170]">
         </property>
@@ -237,12 +185,12 @@
 <plot>
 <title>signal 1</title>
 <xRange min="0.0" max="5.0"/>
-<yRange min="0.0" max="73.19911522880366"/>
+<yRange min="0.0" max="73.20994820333806"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="signal 2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 513, 354, 225}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={351, 513, 354, 225}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[346, 170]">
         </property>
@@ -254,12 +202,12 @@
 <plot>
 <title>signal 2</title>
 <xRange min="0.0" max="5.0"/>
-<yRange min="0.0" max="73.19911522880366"/>
+<yRange min="0.0" max="73.20994820333806"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="difference" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={702, 512, 320, 225}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={702, 512, 354, 225}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[346, 170]">
         </property>
