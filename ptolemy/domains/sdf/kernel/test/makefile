@@ -57,7 +57,6 @@ JSIMPLE_TESTS = \
 	ArrayFIFOQueue.tcl \
 	DTDirector.tcl \
 	DataflowActor.tcl \
-	SDFAtomicActor.tcl \
 	SDFCompositeActor.tcl \
 	SDFDirector.tcl \
 	SDFIOPort.tcl \
