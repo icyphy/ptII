@@ -54,15 +54,15 @@ import javax.swing.BoxLayout;
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentConfigurer
 /**
- * This class is an editor to configure the arguments of an object.
- * It supports setting kind :input, output, in-output or return and a type
- * and adding and removing arguments. Only arguments that extend the Argument
- * class are listed, since more primitive Argument cannot be configured
- * in this way.
- *
- * @see Configurer
- * @author Steve Neuendorffer, Edward A. Lee, V. Arnould
- * @version $Id$
+   This class is an editor to configure the arguments of an object.
+   It supports setting kind :input, output, in-output or return and a type
+   and adding and removing arguments. Only arguments that extend the Argument
+   class are listed, since more primitive Argument cannot be configured
+   in this way.
+
+   @see Configurer
+   @author Steve Neuendorffer, Edward A. Lee, V. Arnould (Thales)
+   @version $Id$
  */
 public class ArgumentConfigurer extends Query implements QueryListener {
     /** Construct a argument configurer for the specified entity.
@@ -142,11 +142,8 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                 if (foundOne) {
                     arg.setExpression();
 
-                    _object =
-                        (
-                                GenericJNIActor) MoMLChangeRequest
-                        .getDeferredToParent(
-                                arg);
+                    _object = (GenericJNIActor) MoMLChangeRequest
+                        .getDeferredToParent(arg);
                     if (_object == null) {
                         _object = (GenericJNIActor) arg.getContainer();
                     }
@@ -157,11 +154,11 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                                 "TRT :No way to update MoML! : ",
                                 e);
                     }
-
-                } //end if found one
-            } //end if instanceOf
-        } // end while
+                }
+            }
+        }
     }
+
     /** Called to notify that one of the entries has changed.
      *  This simply sets a flag that enables application of the change
      *  when the apply() method is called.
@@ -170,15 +167,14 @@ public class ArgumentConfigurer extends Query implements QueryListener {
     public void changed(String name) {
         _changed.add(name);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /*The set of names of args that have changed.
-     */
+
+    // The set of names of args that have changed.
     private Set _changed = new HashSet();
-    /* The object that this configurer configures.
-     */
+    // The object that this configurer configures.
     private GenericJNIActor _object;
-    /* The possible configurations for a argument.
-     */
+    // The possible configurations for a argument.
     private String[] _optionsArray = { "input", "output", "return" };
 }

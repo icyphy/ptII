@@ -1,9 +1,34 @@
 /** An actor able to call a C function
- *
+ Copyright (c) 2003 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
  @ProposedRating Red (vincent.arnould@thalesgroup.com)
  @AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
+
 package jni;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -45,6 +70,7 @@ import java.net.URL;
  * ready to
  * warning : the existing dll, the h file and the lib file must be
  * in the $(PTII)/jni/dll/ directory.
+
  * @author Vincent Arnould (vincent.arnould@thalesgroup.com)
  * @version $Id$
  */
@@ -58,24 +84,28 @@ public class GenericJNIActor extends TypedAtomicActor {
         super();
         _argList = new NamedList(this);
     }
+
     /** Construct an entity in the given workspace with an empty string
      *  as a name.
      *  If the workspace argument is null, use the default workspace.
      *  The object is added to the workspace directory.
      *  Increment the version of the workspace.
-     *  @param workspace The workspace for synchronization and version tracking.
+     *  @param workspace The workspace for synchronization and version
+     *  tracking.
      */
     public GenericJNIActor(Workspace workspace) {
         super(workspace);
         _argList = new NamedList(this);
     }
+
     /** Construct an entity in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
      *  If the name argument
      *  is null, then the name is set to the empty string.
      *  The object is added to the workspace directory.
      *  Increment the version of the workspace.
-     *  @param workspace The workspace for synchronization and version tracking.
+     *  @param workspace The workspace for synchronization and version
+     *  tracking.
      *  @param name The name of this object.
      *  @exception IllegalActionException If the name has a period.
      */
@@ -83,22 +113,13 @@ public class GenericJNIActor extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _argList = new NamedList(this);
-        nativeFunc =
-            new Parameter(
-                    this,
-                    "Native Function Name",
-                    (Token) new StringToken("unknownFunc"));
-        lib =
-            new Parameter(
-                    this,
-                    "Native Library Name",
-                    (Token) new StringToken("unknownLib"));
+        nativeFunc = new Parameter(this, "Native Function Name",
+                (Token) new StringToken("unknownFunc"));
+        lib = new Parameter(this, "Native Library Name",
+                (Token) new StringToken("unknownLib"));
 
-        dllDir =
-            new Parameter(
-                    this,
-                    "DLLs Directory",
-                    (Token) new StringToken("jni\\\\dll"));
+        dllDir = new Parameter(this, "DLLs Directory",
+                (Token) new StringToken("jni\\\\dll"));
 
         _attachText(
                 "_iconDescription",
@@ -111,20 +132,23 @@ public class GenericJNIActor extends TypedAtomicActor {
                 + "</svg>\n");
 
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /** The lib parameter, which contains the name of the
+
+    /** The name of the native library.
      *  existing native library.
      */
     public Parameter lib;
-    /** The native function parameter, which contains the name of the
-     *  existing native function.
+
+    /** The name of the native function.
      */
     public Parameter nativeFunc;
-    /** The dllDir parameter, which contains the directory of the
-     *  existing dll, h file and lib file.
+
+    /** The directory that contains the dll, h file and lib files
      */
     public Parameter dllDir;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Clone the object into the specified workspace. The new object is
@@ -176,6 +200,7 @@ public class GenericJNIActor extends TypedAtomicActor {
         }
         return newEntity;
     }
+
     /**  If attributes change.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
@@ -189,6 +214,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             dir.invalidateResolvedTypes();
         }
     }
+
     /** Get the arguments belonging to this entity.
      *  The order is the order in which they became contained by this entity.
      *  This method is read-synchronized on the workspace.
@@ -227,15 +253,17 @@ public class GenericJNIActor extends TypedAtomicActor {
                     } finally {
                     } else if (arg.isInput() && arg.isOutput()) {
                         try {
-                            port = (TypedIOPort) this.newPort(arg.getName() + "in");
+                            port = (TypedIOPort) this.newPort(arg.getName()
+                                    + "in");
                             port.setInput(arg.isInput());
                             port.setTypeEquals(BaseType.GENERAL);
-                            port =
-                                (TypedIOPort) this.newPort(arg.getName() + "out");
+                            port = (TypedIOPort) this.newPort(arg.getName()
+                                    + "out");
                             port.setOutput(arg.isOutput());
                             port.setTypeEquals(BaseType.GENERAL);
                         } catch (Exception ex) {
-                            MessageHandler.error("Unable to construct port", ex);
+                            MessageHandler.error("Unable to construct port",
+                                    ex);
                         }
                     } else {
                         try {
@@ -244,7 +272,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                             port.setOutput(arg.isOutput());
                             port.setTypeEquals(BaseType.GENERAL);
                         } catch (Exception ex) {
-                            MessageHandler.error("Unable to construct port", ex);
+                            MessageHandler.error("Unable to construct port",
+                                    ex);
                         }
                     }
             }
@@ -264,9 +293,9 @@ public class GenericJNIActor extends TypedAtomicActor {
         }
     }
 
-    /** Return the argument contained by this entity that has the specified name.
-     *  If there is no such port, return null.
-     *  This method is read-synchronized on the workspace.
+    /** Return the argument contained by this entity that has the
+     *  specified name.  If there is no such port, return null.  This
+     *  method is read-synchronized on the workspace.
      *  @param name The name of the desired argument.
      *  @return A argument with the given name, or null if none exists.
      */
@@ -423,16 +452,17 @@ public class GenericJNIActor extends TypedAtomicActor {
                     !(port.isOutput()&&!port.isInput())) {
                 Token tok = (Token) port.get(0);
 
-                String typ =
-                    (String) meth[ind].getParameterTypes()[args.size()].toString();
-                if (typ.equals("boolean"))
+                String typ = (String) meth[ind]
+                    .getParameterTypes()[args.size()].toString();
+                if (typ.equals("boolean")) {
                     args.add(new Boolean((boolean)
                                      ((BooleanToken) tok).booleanValue()));
-                else if (typ.equals("int"))
+                } else if (typ.equals("int")) {
                     args.add(new Integer((int)((IntToken) tok).intValue()));
-                else if (typ.equals("double"))
-                    args.add(new Double((double)((DoubleToken) tok).doubleValue()));
-                else if (typ.equals("class [I")) {
+                } else if (typ.equals("double")) {
+                    args.add(new Double((double)((DoubleToken) tok)
+                            .doubleValue()));
+                } else if (typ.equals("class [I")) {
                     int siz = ((ArrayToken) tok).arrayValue().length;
                     int[] tab = new int[siz];
                     for (int j = 0; j < siz; j++)
@@ -441,9 +471,10 @@ public class GenericJNIActor extends TypedAtomicActor {
                             .intValue();
                     //(int[])((ArrayToken)tok).arrayValue();
                     args.add((Object)tab);
-                } else
-                    System.out.println(
-                            "The intype is not convertible with Ptolemy II types.");
+                } else {
+                    System.out.println("The intype is not convertible "
+                            + "with Ptolemy II types.");
+                }
 
             }
         }
@@ -516,31 +547,27 @@ public class GenericJNIActor extends TypedAtomicActor {
                         getDirector().stop();
                     }
                 }
-                if (typ.equals("boolean"))
-                    port.send(
-                            0,
-                            (Token) new BooleanToken(((Boolean) ret).booleanValue()));
-                else if (typ.equals("double"))
-                    port.send(
-                            0,
-                            (Token) new DoubleToken(((Double) ret).doubleValue()));
-                else if (typ.equals("int"))
-                    port.send(
-                            0,
-                            (Token) new IntToken(((Integer) ret).intValue()));
-                else if (typ.equals("char"))
-                    port.send(
-                            0,
-                            (Token) new UnsignedByteToken(((Byte) ret).byteValue()));
-                else
-                    System.out.println(
-                            "The return type is not convertible with Ptolemy II types.");
+                if (typ.equals("boolean")) {
+                    port.send(0, (Token) new BooleanToken(((Boolean) ret)
+                            .booleanValue()));
+                } else if (typ.equals("double")) {
+                    port.send(0, (Token) new DoubleToken(((Double) ret)
+                            .doubleValue()));
+                } else if (typ.equals("int")) {
+                    port.send(0, (Token) new IntToken(((Integer) ret)
+                            .intValue()));
+                } else if (typ.equals("char")) {
+                    port.send(0, (Token) new UnsignedByteToken(((Byte) ret)
+                            .byteValue()));
+                } else {
+                    System.out.println("The return type is not convertible "
+                            + "with Ptolemy II types.");
+                }
             }
             //if the argument is output
             else if (
                     port.isOutput()
-                    && !(port
-                            .getName()
+                    && !(port.getName()
                             .equals(this.getArgumentReturn().getName()))) {
 
                 String typ = "";
@@ -551,12 +578,9 @@ public class GenericJNIActor extends TypedAtomicActor {
                     typ = (String) field.getType().toString();
                 } catch (NoSuchFieldException ex) {
                     try {
-                        field =
-                            _clas.getDeclaredField(
-                                    "_"
-                                    + port.getName().substring(
-                                            0,
-                                            port.getName().length() - 3));
+                        field = _clas.getDeclaredField("_"
+                                + port.getName().substring(0,
+                                        port.getName().length() - 3));
                         typ = (String) field.getType().toString();
                     } catch (Exception e) {
                         try {
@@ -567,7 +591,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         }
                     }
                 }
-                if (typ.equals("boolean"))
+                if (typ.equals("boolean")) {
                     try {
                         port.send(
                                 0,
@@ -575,31 +599,28 @@ public class GenericJNIActor extends TypedAtomicActor {
                     } catch (IllegalAccessException ex) {
                         MessageHandler.error("Not castable!", ex);
                     }
-                else if (typ.equals("double"))
+                } else if (typ.equals("double")) {
                     try {
-                        port.send(
-                                0,
+                        port.send(0,
                                 (Token) new DoubleToken(field.getDouble(obj)));
                     } catch (IllegalAccessException ex) {
                         MessageHandler.error("Not castable!", ex);
                     }
-                else if (typ.equals("int"))
+                } else if (typ.equals("int")) {
                     try {
-                        port.send(
-                                0,
+                        port.send(0,
                                 (Token) new IntToken( field.getInt(obj)));
                     } catch (IllegalAccessException ex) {
                         MessageHandler.error("Not castable!", ex);
                     }
-                else if (typ.equals("char"))
+                } else if (typ.equals("char")) {
                     try {
-                        port.send(
-                                0,
+                        port.send(0,
                                 (Token) new UnsignedByteToken((char)field.getChar(obj)));
                     } catch (IllegalAccessException ex) {
                         MessageHandler.error("Not castable!", ex);
                     }
-                else if (typ.equals("class [I")) {
+                } else if (typ.equals("class [I")) {
                     try {
                         int[] tab = (int[])field.get(obj);
                         Token[] toks =  new Token[((int[])field.get(obj)).length];
@@ -608,12 +629,14 @@ public class GenericJNIActor extends TypedAtomicActor {
                         port.send(0, new ArrayToken(toks));
                     } catch (IllegalAccessException ex) {
                         MessageHandler.error("Not castable!", ex); }
-                } else
-                    System.out.println(
-                            "The outtype is not convertible with Ptolemy II types.");
+                } else {
+                    System.out.println("The outtype is not convertible "
+                            + "with Ptolemy II types.");
+                }
             }
         }
     }
+
     /** A list of Ports owned by this Entity.
      */
     private NamedList _argList;
