@@ -185,11 +185,17 @@ public class StateController extends AttributeController {
     /** Render the state as a circle.
      */
     public static class StateRenderer implements NodeRenderer {
+        /** Construct a state renderer. */
         public StateRenderer(GraphModel model) {
             super();
             _model = model;
         }
 
+        /** Render an object.
+         *  @param n The object to be rendered.  This object should 
+         *  of type Locatable.
+         *  @return A Figure.
+         */
         public Figure render(Object n) {
             Locatable location = (Locatable) n;
             final NamedObj object = (NamedObj) location.getContainer();

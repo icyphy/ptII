@@ -91,6 +91,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  event whose source is the given source.
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
+     *  @param edge The edge.
      *  @exception GraphException If the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
@@ -118,6 +119,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
     /** Return a MoML String that will delete the given edge from the
      *  Ptolemy model.
+     *  @param edge The edge.
      *  @return A valid MoML string.
      */
     public String getDeleteEdgeMoML(Object edge) {
@@ -133,6 +135,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
     /** Return a MoML String that will delete the given node from the
      *  Ptolemy model.
+     *  @param node The node.
      *  @return A valid MoML string.
      */
     public String getDeleteNodeMoML(Object node) {
@@ -199,6 +202,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  graph listeners with a NODE_REMOVED event.
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
+     *  @param node The node to be removed.
      *  @exception GraphException If the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
@@ -217,14 +221,24 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     // Big changes needed, however to make this work.
     // The huge inner classes below should be factored out as
     // separate classes.  EAL
+
+    /** Get the port model.
+     *  @return The port model.
+     */
     public PortModel getPortModel() {
         return _portModel;
     }
 
+    /** Get the state model.
+     *  @return The state model.
+     */
     public StateModel getStateModel() {
         return _stateModel;
     }
 
+    /** Get the arc model.
+     *  @return The acr model.
+     */
     public ArcModel getArcModel() {
         return _arcModel;
     }
@@ -416,6 +430,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         /** Return the head node of the given edge.
          *  @param edge The edge, which is assumed to be an instance of Arc.
          *  @return The node that is the head of the specified edge.
+         *  @see #getTail(Object)
          */
         public Object getHead(Object edge) {
             return ((Arc) edge).getHead();
@@ -423,6 +438,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
         /** Return a MoML String that will delete the given edge from the
          *  Ptolemy model.
+         *  @param The edge to be removed.
          *  @return A valid MoML string.
          */
         public String getDeleteEdgeMoML(Object edge) {
@@ -536,6 +552,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         /** Return the tail node of the specified edge.
          *  @param edge The edge, which is assumed to be an instance of Arc.
          *  @return The node that is the tail of the specified edge.
+         *  @see #getHead(Object)
          */
         public Object getTail(Object edge) {
             return ((Arc) edge).getTail();
@@ -599,6 +616,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be an arc.
          *  @param newArcHead The new head for the edge, which is assumed to
          *   be an icon.
+         *  @see #setTail(Object, Object)
          */
         public void setHead(final Object edge, final Object newArcHead) {
             final Arc link = (Arc) edge;
@@ -697,6 +715,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be an arc.
          *  @param newArcTail The new tail for the edge, which is assumed to
          *  be an icon.
+         *  @see #setHead(Object, Object)
          */
         public void setTail(final Object edge, final Object newArcTail) {
             final Arc link = (Arc) edge;
@@ -1051,6 +1070,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the port to be deleted.
+         *  @param node The node to be deleted.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
@@ -1149,6 +1169,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the state.
+         *  @param node The node to be deleted.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {

@@ -239,6 +239,8 @@ public class TransitionController extends BasicEdgeController {
         }
     }
 
+    /** Render a link.
+     */
     public class LinkRenderer implements EdgeRenderer {
         /** Render a visual representation of the given edge. */
         public Connector render(Object edge, Site tailSite, Site headSite) {
@@ -305,6 +307,8 @@ public class TransitionController extends BasicEdgeController {
         }
     }
 
+    /** A Link target.
+     */
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
