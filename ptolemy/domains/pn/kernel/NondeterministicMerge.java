@@ -42,6 +42,7 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -221,7 +222,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                     }
                     if (_debugging) {
                         NondeterministicMerge.this._debug(
-                                "Sent input from channel "
+                                "Sent " + result + " from channel "
                                 + _channelIndex
                                 + " to the output.");
                     }

@@ -342,6 +342,11 @@ public class PNDirector extends CompositeProcessDirector {
             }
             smallestCapacityQueue.setCapacity(capacity*2);
         }
+        if (_debugging) {
+            _debug("increasing the capacity of receiver " 
+                    + smallestCapacityQueue.getContainer() + " to "
+                    + smallestCapacityQueue.getCapacity());
+        }
         _actorUnBlocked(smallestCapacityQueue);
         smallestCapacityQueue.setWritePending(false);
         synchronized(smallestCapacityQueue) {
