@@ -107,7 +107,7 @@ public class Butterfly extends TypedCompositeActor {
 
 	XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");
 	xyPlotter.place(panel);
-	
+
         // Make the plot transparent so that the background shows through.
 	xyPlotter.plot.setOpaque(false);
         xyPlotter.plot.setGrid(false);

@@ -52,7 +52,7 @@ public class ButterflyApplet extends SDFApplet {
         super.init();
         try {
 	    // Pass in the panel so that we can pass it to the plotter.
-	    Butterfly butterfly = 
+	    Butterfly butterfly =
 		new Butterfly(_toplevel, "butterfly", getContentPane());
         } catch (Exception ex) {
             report("Error constructing model.", ex);
