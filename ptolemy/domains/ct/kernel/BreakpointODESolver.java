@@ -40,8 +40,8 @@ package ptolemy.domains.ct.kernel;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Red (liuj)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Yellow (hyzheng)
 */
 public interface BreakpointODESolver {
 }

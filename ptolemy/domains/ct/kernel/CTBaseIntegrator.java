@@ -76,13 +76,13 @@ import ptolemy.kernel.util.NameDuplicationException;
    which has not been confirmed. It is a starting point for other actors
    to estimate the accuracy of this integration step.
    <I>history</I>: The previous states and their derivatives. History may
-   be used by multistep methods.
+   be used by multistep integration methods.
    <P>
    For different ODE solving methods, the functionality
    of an integrator may be different. The delegation and strategy design
-   patterns are used in this class, ODESolver class, and the concrete
-   ODE solver classes. Some solver-dependent methods of integrators are
-   delegated to the concrete ODE solvers.
+   patterns are used in this class, basic abstract ODESolver class, and the 
+   concrete ODE solver classes. Some solver-dependent methods of integrators 
+   delegate to the concrete ODE solvers.
    <P>
    An integrator has one parameter: the <i>initialState</i>. At the
    initialization stage of the simulation, the state of the integrator is
@@ -101,8 +101,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Green (yuhong)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (yuhong)
    @see ODESolver
    @see CTDirector
 */
@@ -123,14 +123,15 @@ public class CTBaseIntegrator extends TypedAtomicActor
     public CTBaseIntegrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+//      impulseInput = new TypedIOPort(this, "impulseInput", true, false);
+//      impulseInput.setTypeEquals(BaseType.DOUBLE);
+//      StringAttribute cardinality
+//            = new StringAttribute(impulseInput, "_cardinal");
+//      cardinality.setExpression("NORTH");
+
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
-
-//        impulseInput = new TypedIOPort(this, "impulseInput", true, false);
-//        impulseInput.setTypeEquals(BaseType.DOUBLE);
-//        StringAttribute cardinality
-//              = new StringAttribute(impulseInput, "_cardinal");
-//        cardinality.setExpression("NORTH");
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -144,13 +145,13 @@ public class CTBaseIntegrator extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+//  /** The impulse input port. This is a single port of type double.
+//  */
+// public TypedIOPort impulseInput;
+
     /** The input port. This is a single port of type double.
      */
     public TypedIOPort input;
-
-//    /** The impulse input port. This is a single port of type double.
-//     */
-//    public TypedIOPort impulseInput;
 
     /** The output port. This is a single port of type double.
      */
@@ -181,7 +182,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** Delegate to the integratorFire() method of the current ODE solver.
      *  The existence of a director and an ODE solver is not checked because
-     *  it is checked in the initialize method.
+     *  it is checked in the prefire() method.
      *
      *  @exception IllegalActionException If thrown by integratorFire()
      *  of the solver.
@@ -207,8 +208,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return _auxVariables;
     }
 
-    /** Return the latest updated derivative of the state variable.
-     *  @return The derivative of the most recently resolved state.
+    /** Return the derivative of the latest updated resolved state.
+     *  @return The derivative of the latest updated resolved state.
      */
     public final double getDerivative() {
         return _derivative;
@@ -246,8 +247,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return the state of the integrator. The returned state is the
-     *  latest confirmed state. This is the same value as getHistory(0)[0],
-     *  but more efficient.
+     *  latest confirmed state. If the history capacity is bigger than 0, 
+     *  the same state can be retrieved from getHistory(0)[0]. However, 
+     *  this method is more efficient.
      *
      *  @return A double number as the state of the integrator.
      */
@@ -281,8 +283,11 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** Go to the marked state. After calling the markState() method,
      *  calling this method will bring the integrator back to the
-     *  marked state. This method is used
-     *  for rollbacking the execution to a previous time point.
+     *  marked state. This method is used for rollbacking the execution 
+     *  to a previous time point. Note that the derivative is not stored.
+     *  Therefore, when states are restored, they need to be propogated 
+     *  through state transition actors such that the derivatives are 
+     *  restored too.
      */
     public void goToMarkedState() {
         _state = _storedState;
@@ -296,7 +301,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *
      *  @exception IllegalActionException If there's no director,
      *  or, the director is not a CT director, or the director has
-     *  no ODE solver, or thrown by the integratorInitialize() of the solver.
+     *  no ODE solver, or thrown by the integratorInitialize() of the solver,
+     *  or the initialState parameter does not contain a valid token.
      */
     public void initialize() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
@@ -307,7 +313,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
             throw new IllegalActionException("Integrators can only be " +
                 "used in CT models.");
         }
-        // FIXME: this check may be unnecessary because prefire also checks it.
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
         if (solver == null) {
             throw new IllegalActionException( this, " no ODE solver available");
@@ -350,8 +355,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return true if this integration step is accurate from this
-     *  integrator's point of view. This method delegates to the
-     *  integratorIsAccurate() method of the current ODE solver.
+     *  integrator's point of view, where both the isStateAccurate() and 
+     *  isOutputAccurate() methods return true.
      *  @return True if the last integration step is accurate.
      */
     public boolean isThisStepAccurate() {
