@@ -98,6 +98,7 @@ ptolemy/domains/pdf
 ptolemy/domains/rtos
 ptolemy/domains/rtp
 ptolemy/domains/sc
+ptolemy/domains/sdf/codegen
 ptolemy/domains/sdf/demo/FixPointSystem
 ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
