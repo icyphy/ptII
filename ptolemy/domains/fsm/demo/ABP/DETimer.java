@@ -36,6 +36,7 @@ import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// DETimer
@@ -84,7 +85,8 @@ public class DETimer extends TypedAtomicActor {
             // reset timer
             double delay = ((DoubleToken)set.get(0)).doubleValue();
             if (delay > 0.0) {
-                _expireTime = now + delay;
+                _expireTime = Utilities.round(now + delay,
+                    getDirector().getTimeResolution());
                 dir.fireAt(this, now + delay);
             } else {
                 // disable timer
@@ -94,7 +96,7 @@ public class DETimer extends TypedAtomicActor {
             //System.out.println("Reset DETimer " + this.getFullName() +
             //        " to expire at " + _expireTime);
 
-        } else if (Math.abs(now - _expireTime) < 1e-14) {
+        } else if (now == _expireTime) {
             // timer expires
             expired.broadcast(_outToken);
 
