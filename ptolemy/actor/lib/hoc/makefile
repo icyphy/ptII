@@ -54,8 +54,7 @@ JSRCS = \
 	AbstractCase.java \
 	Case.java
 
-OTHER_FILES_TO_BE_JARED = \
-	hoc.xml
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
