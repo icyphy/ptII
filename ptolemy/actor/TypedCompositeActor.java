@@ -88,7 +88,7 @@ constrain the container by overriding _checkContainer().
 */
 public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
-    // all the constructors are wrappers of the super class constructors.
+    // All the constructors are wrappers of the super class constructors.
 
     /** Construct a TypedCompositeActor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
@@ -226,11 +226,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	try {
             List conflicts = new LinkedList();
 
-	    // check declared types across all connections.
+	    // Check declared types across all connections.
             List typeConflicts = topLevel._checkDeclaredTypes();
             conflicts.addAll(typeConflicts);
 
-	    // collect and solve type constraints.
+	    // Collect and solve type constraints.
             List constraintList = topLevel.typeConstraintList();
 	    if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(
@@ -241,7 +241,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     solver.addInequality(ineq);
 	        }
 
-                // find the least solution (most specific types)
+                // Find the least solution (most specific types)
                 boolean resolved = solver.solveLeast();
 
 	        // If some inequalities are not satisfied, or type variables
@@ -254,7 +254,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	            if ( !inequality.isSatisfied(TypeLattice.lattice())) {
 	                conflicts.add(inequality);
 		    } else {
-		        // check if type variables are resolved to unacceptable
+		        // Check if type variables are resolved to unacceptable
 		        //types
 		        InequalityTerm[] lesserVariables =
 			        inequality.getLesserTerm().getVariables();
@@ -288,8 +288,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         + " on the following inequalities:");
 	    }
         } catch (IllegalActionException illegalAction) {
-	    // this should not happen. The exception means that
-	    // _checkDeclaredType is called on an transparent actor.
+	    // This should not happen. The exception means that
+	    // _checkDeclaredType is called on a transparent actor.
 	    throw new InternalErrorException(illegalAction.getMessage());
 	}
     }
@@ -313,7 +313,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  of all the contained Typeables.
      *  <p>
      *  This method is read-synchronized on the workspace.
-     *  @return a list of Inequality.
+     *  @return a list of instances of Inequality.
      *  @exception IllegalActionException If this composite actor is not
      *   opaque.
      *  @see ptolemy.graph.Inequality
@@ -330,11 +330,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    List result = new LinkedList();
 	    Iterator entities = deepEntityList().iterator();
 	    while (entities.hasNext()) {
-	        // collect type constraints from contained actors
+	        // Collect type constraints from contained actors.
 	        TypedActor actor = (TypedActor)entities.next();
 	        result.addAll(actor.typeConstraintList());
 
-	        // collect constraints on all the ports in the contained
+	        // Collect constraints on all the ports in the contained
 		// actor to the ports that the actor can send data to.
 		Iterator ports = ((Entity)actor).portList().iterator();
 		while (ports.hasNext()) {
@@ -347,7 +347,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		}
             }
 
-	    // also need to check connection from the input ports on
+	    // Also need to check connection from the input ports on
             // this composite actor to input ports of contained actors.
 	    Iterator boundaryPorts = portList().iterator();
             while (boundaryPorts.hasNext()) {
@@ -358,7 +358,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         destinationPorts));
             }
 
-	    // collect constraints from contained Typeables
+	    // Collect constraints from contained Typeables
 	    Iterator ports = portList().iterator();
 	    while (ports.hasNext()) {
 		Typeable port = (Typeable)ports.next();
@@ -409,7 +409,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     /** Add a port to this actor. This overrides the base class to
      *  throw an exception if the proposed port is not an instance of
      *  TypedIOPort.  This method should not be used directly.  Call the
-     *  s() method of the port instead. This method does not set
+     *  setContainer() method of the port instead. This method does not set
      *  the container of the port to point to this actor.
      *  It assumes that the port is in the same workspace as this
      *  actor, but does not check.  The caller should check.
@@ -490,14 +490,14 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
 	Iterator entities = deepEntityList().iterator();
 	while (entities.hasNext()) {
-	    // check types on contained actors
+	    // Check types on contained actors.
 	    TypedActor actor = (TypedActor)entities.next();
 	    if (actor instanceof TypedCompositeActor) {
 	        result.addAll(
 		        ((TypedCompositeActor)actor)._checkDeclaredTypes());
 	    }
 
-	    // type check from all the ports on the contained actor
+	    // Type check from all the ports on the contained actor.
 	    // to the ports that the actor can send data to.
 	    Iterator ports = ((Entity)actor).portList().iterator();
 	    while (ports.hasNext()) {
@@ -509,7 +509,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    }
 	}
 
-	// also need to check connection from the input ports on
+	// Also need to check connection from the input ports on
 	// this composite actor to input ports of contained actors.
 	Iterator boundaryPorts = portList().iterator();
 	while (boundaryPorts.hasNext()) {
@@ -524,7 +524,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
     // Check types from a source port to a group of destination ports,
     // assuming the source port is connected to all the ports in the
-    // group of destination ports.  Return an list of
+    // group of destination ports.  Return a list of
     // TypedIOPorts that have type conflicts.
     private List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
@@ -584,7 +584,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    boolean destUndeclared = destinationPort.getTypeTerm().isSettable();
 
 	    if (srcUndeclared || destUndeclared) {
-	    	// at least one of the source/destination ports does not have
+	    	// At least one of the source/destination ports does not have
 		// declared type, form type constraint.
 		Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
                         destinationPort.getTypeTerm());
