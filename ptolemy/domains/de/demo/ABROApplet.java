@@ -23,6 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.demo;
@@ -91,7 +93,7 @@ public class ABROApplet extends Applet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2,1));
+        simulationParam.setLayout(new GridLayout(2, 1));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 
