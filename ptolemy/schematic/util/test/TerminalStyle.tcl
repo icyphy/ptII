@@ -102,13 +102,15 @@ test TerminalStyle-2.2 {setDocumenation, isDocumentation tests} {
 ####
 #
 test TerminalStyle-3.1 {addTerminal} {
-    set t1 [java::new ptolemy.schematic.util.Terminal Terminal1]
-    set t2 [java::new ptolemy.schematic.util.Terminal Terminal2]
+    set t1 [java::new ptolemy.schematic.util.SchematicTerminal Terminal1]
+    set t2 [java::new ptolemy.schematic.util.SchematicTerminal Terminal2]
     $e0 addTerminal $t1
     $e0 description
 } {ptolemy.schematic.util.TerminalStyle {TerminalStyle} parameters {
 } terminals {
-    {ptolemy.schematic.util.Terminal {Terminal1} parameters {
+    {ptolemy.schematic.util.SchematicTerminal {Terminal1} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}}
 }}
 
@@ -126,7 +128,11 @@ test TerminalStyle-3.4 {removeTerminal} {
     $e0 description
 } {ptolemy.schematic.util.TerminalStyle {TerminalStyle} parameters {
 } terminals {
-    {ptolemy.schematic.util.Terminal {Terminal2} parameters {
+    {ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}}
 }}
+
+
 

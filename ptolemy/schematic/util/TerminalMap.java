@@ -65,7 +65,7 @@ public class TerminalMap {
         while(tokens.hasMoreElements() && terminals.hasMoreElements()) {
             String port = (String)tokens.nextElement();
             String terminal = 
-                (String)((Terminal)terminals.nextElement()).getName();
+                (String)((SchematicTerminal)terminals.nextElement()).getName();
             addMap(terminal, port);
         }            
     }

@@ -72,7 +72,7 @@ public class PTMLObjectFactory {
                 // if it's an Entity, then create it, 
                 // and add it to the list of entitys.
                 ptmlobject.addEntity(
-                        _createEntityTemplate(child, iconroot));
+                        _createSchematicEntity(child, iconroot, null));
             } else if(etype.equals("sublibrary")) {
                 // if it's a sublibrary, then add it to the 
                 // list of sublibraries.
@@ -183,7 +183,7 @@ public class PTMLObjectFactory {
      * named objects with the same name.
      */
     public static Schematic createSchematic(XMLElement e,
-            EntityLibrary lib) 
+            IconLibrary iconLib, EntityLibrary entityLib) 
             throws IllegalActionException, NameDuplicationException {
 
         _checkElement(e, "schematic");
@@ -202,11 +202,12 @@ public class PTMLObjectFactory {
 	    } else if(etype.equals("terminal")) {
                 // if it's a terminal, then create it, 
                 // and add it to the list of terminals.
-                ptmlobject.addTerminal(_createSchematicTerminal(child, null));
+                ptmlobject.addTerminal(_createSchematicTerminal(child));
             } else if(etype.equals("entity")) {
                 // if it's a entity, then create it, 
                 // and add it to the list of entities.
-                ptmlobject.addEntity(_createSchematicEntity(child, lib));
+                ptmlobject.addEntity(_createSchematicEntity(child, 
+                        iconLib, entityLib));
             } else if(etype.equals("relation")) {
                 // if it's a relation, then create it, 
                 // and add it to the list of relations.
@@ -269,13 +270,13 @@ public class PTMLObjectFactory {
      * should be contained within the given EntityLibrary, which will be used
      * to resolve references.
      */
-    public static Schematic parseSchematic(URL url, 
+    public static Schematic parseSchematic(URL url, IconLibrary iconLib,
             EntityLibrary entityLib) 
             throws Exception {
 
         String urlstring = url.toString();        
         XMLElement root = _parser.parse(urlstring);
-        return PTMLObjectFactory.createSchematic(root, entityLib);
+        return PTMLObjectFactory.createSchematic(root, iconLib, entityLib);
     }
 
     /** 
@@ -309,6 +310,7 @@ public class PTMLObjectFactory {
         }
     }
 
+    /*
     private static EntityPort _createEntityPort(XMLElement e)
         throws IllegalActionException, NameDuplicationException {
 
@@ -339,6 +341,7 @@ public class PTMLObjectFactory {
         }
         return ptmlobject;
     }
+    
 
     private static EntityTemplate _createEntityTemplate(XMLElement e, 
             IconLibrary iconroot)
@@ -384,6 +387,7 @@ public class PTMLObjectFactory {
         }
         return ptmlobject;
     }
+    */
 
     private static GraphicElement _createGraphicElement(XMLElement e)
         throws IllegalActionException {
@@ -450,19 +454,16 @@ public class PTMLObjectFactory {
     }
 
     private static SchematicEntity _createSchematicEntity(XMLElement e,
-            EntityLibrary entityLib)
+            IconLibrary iconroot, EntityLibrary entityLib)
         throws IllegalActionException, NameDuplicationException {
 
         _verifyElement(e, "entity");
 
-        EntityTemplate template = null;
-        if(e.hasAttribute("template")) {
+        SchematicEntity template = null;
+        if(e.hasAttribute("template") && (entityLib != null)) {
             String templateString = _getString(e, "template");
-            template = entityLib.findEntityTemplate(templateString);
-        } else {
-            throw new IllegalActionException(
-                    "SchematicEntity has no template.");
-        }
+            template = entityLib.findEntity(templateString);
+        } 
 
         SchematicEntity ptmlobject = 
             new SchematicEntity(template.getName(), template);
@@ -472,6 +473,14 @@ public class PTMLObjectFactory {
 	    String etype = child.getElementType();
 	    if(etype.equals("parameter")) {
                 ptmlobject.addParameter(_createSchematicParameter(child));
+            } else if(etype.equals("description")) {
+                ptmlobject.setDocumentation(child.getPCData());
+            } else if(etype.equals("port")) {
+                //FIXME
+                //ptmlobject.addPort(_createSchematicPort(child));
+            } else if(etype.equals("terminalmap")) {
+                ptmlobject.setTerminalMap(_createTerminalMap(child, 
+                        ptmlobject.getTerminalStyle()));
             } else 
 		_unknownElementType(ptmlobject, child);
         }
@@ -484,11 +493,12 @@ public class PTMLObjectFactory {
             } else if (n.equals("name")) {
                 ptmlobject.setName(_getString(e, n));
             } else if (n.equals("icon")) {
-		//FIXME maybe this should be allowed.
-            } else if (n.equals("documentation")) {
-		//FIXME maybe this should be allowed.
+                Icon icon = iconroot.findIcon(_getString(e, n));
+                ptmlobject.setIcon(icon);
             } else if (n.equals("terminalstyle")) {
-		// FIXME this should be allowed.
+                TerminalStyle terminalstyle =
+                    iconroot.findTerminalStyle(_getString(e, n));
+                ptmlobject.setTerminalStyle(terminalstyle);
             } else if (n.equals("x")) {
                 ptmlobject.setX(_getDouble(e, n));
             } else if (n.equals("y")) {
@@ -578,7 +588,7 @@ public class PTMLObjectFactory {
 	    } else if(etype.equals("parameter")) {
                 ptmlobject.addParameter(_createSchematicParameter(child));
             } else if(etype.equals("terminal")) {
-                ptmlobject.addTerminal(_createSchematicTerminal(child, null));
+                ptmlobject.addTerminal(_createSchematicTerminal(child));
             } else 
                 _unknownElementType(ptmlobject, child);
         }
@@ -597,9 +607,7 @@ public class PTMLObjectFactory {
         return ptmlobject;
     }
 
-    //FIXME do we need this terminalstyle?
-    private static SchematicTerminal _createSchematicTerminal(XMLElement e,
-            TerminalStyle terminalStyle)
+    private static SchematicTerminal _createSchematicTerminal(XMLElement e)
         throws IllegalActionException, NameDuplicationException {
 
         _verifyElement(e, "terminal");
@@ -627,6 +635,7 @@ public class PTMLObjectFactory {
         return ptmlobject;
     }
 
+    /*
     private static Terminal _createTerminal(XMLElement e)
         throws IllegalActionException, NameDuplicationException {
 
@@ -654,6 +663,7 @@ public class PTMLObjectFactory {
         }
         return ptmlobject;
     }
+    */
 
     private static TerminalMap _createTerminalMap(XMLElement e, 
             TerminalStyle terminalStyle)
@@ -691,7 +701,7 @@ public class PTMLObjectFactory {
             XMLElement child = (XMLElement)children.nextElement();
             String etype = child.getElementType();
             if(etype.equals("terminal")) {
-                ptmlobject.addTerminal(_createTerminal(child));
+                ptmlobject.addTerminal(_createSchematicTerminal(child));
             } else {
                 _unknownElementType(ptmlobject, child);
             }    

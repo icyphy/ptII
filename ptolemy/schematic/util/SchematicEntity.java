@@ -63,15 +63,15 @@ public class SchematicEntity extends PTMLTemplateObject
      * Create a new SchematicEntity object with the given entity template and
      * the name of the template.
      */
-    //public SchematicEntity (EntityTemplate et) {
-    //    this(et.getName(), et);
-    //}
+    public SchematicEntity (String name) {
+        this(name, null);
+    }
 
     /**
      * Create a new SchematicEntity object with the given name and entity
      * template.
      */
-    public SchematicEntity (String name, EntityTemplate et) {
+    public SchematicEntity (String name, SchematicEntity et) {
         super(name, et);
         _x = 0;
         _y = 0;
@@ -123,7 +123,7 @@ public class SchematicEntity extends PTMLTemplateObject
        try {
            SchematicEntity newobj = 
                new SchematicEntity(_createUniqueName(), 
-                       (EntityTemplate)getTemplate());
+                       (SchematicEntity)getTemplate());
            //  (SchematicEntity) super.clone();
            newobj._ports = new NamedList();
            Enumeration objects = ports();
@@ -174,9 +174,9 @@ public class SchematicEntity extends PTMLTemplateObject
      */
     public Icon getIcon () {
         if(hasTemplate()) 
-            return ((EntityTemplate) getTemplate()).getIcon();
+            return ((SchematicEntity) getTemplate()).getIcon();
         else
-            return null;
+            return _icon;
     }
 
     /**
@@ -185,11 +185,17 @@ public class SchematicEntity extends PTMLTemplateObject
      */
     public String getImplementation () {
         if(hasTemplate()) 
-            return ((EntityTemplate) getTemplate()).getImplementation();
+            return ((SchematicEntity) getTemplate()).getImplementation();
         else
             return _implementation;
     }
 
+    /**
+     * Get the terminal map for this entity.
+     */
+    public TerminalMap getTerminalMap () {
+        return _terminalmap;
+    }
 
     /**
      * Get the terminal style of this entity.
@@ -275,14 +281,11 @@ public class SchematicEntity extends PTMLTemplateObject
         }
     }
 
-    /** 
-     * Reset the TerminalStyle to the TerminalStyle of the 
-     * template.
-     * FIXME make this public when figure out what it should do to the 
-     * contained terminals.
+    /**
+     * Set the Icon that describes this entity.
      */
-    private void resetTerminalStyle () {
-	_terminalstyle = ((EntityTemplate) getTemplate()).getTerminalStyle();
+    public void setIcon (Icon icon) {
+	_icon = icon;
     }
 
     /** 
@@ -298,6 +301,13 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     /**
+     * Set the TerminalMap that describes this entity.
+     */
+    public void setTerminalMap (TerminalMap tmap) {
+	_terminalmap = tmap;
+    }
+
+    /**
      * Set the TerminalStyle that describes this entity.  If the terminal
      * style is already set, then do nothing.  If the terminal style changes
      * and the new terminal style is not null, then create schematicTerminals
@@ -305,24 +315,24 @@ public class SchematicEntity extends PTMLTemplateObject
      * FIXME Figure out what it should do to the 
      * contained terminals.
      */
-    private void setTerminalStyle (TerminalStyle style) {
-	if(_terminalstyle == null) {
-            _terminalstyle = style;
-            if(_terminalstyle != null) {
-                Enumeration templateTerminals = _terminalstyle.terminals();
-                while(templateTerminals.hasMoreElements()) {
-                    Terminal terminal = 
-                        (Terminal)templateTerminals.nextElement();
-                    try {
-                        addTerminal(new SchematicTerminal(terminal.getName(), 
-                                terminal));
-                        
-                    } catch (Exception ex) {
-                        throw new InternalErrorException(ex.getMessage());
-                        // This should never happen, because the terminals in the
-                        // template must follow the same rules as the schematic 
-                        // terminals.
-                    }
+    public void setTerminalStyle (TerminalStyle style) {
+        //FIXME this is a bogus way to do this.
+        _terminalstyle = style;
+
+        if(_terminalstyle != null) {
+            Enumeration templateTerminals = _terminalstyle.terminals();
+            while(templateTerminals.hasMoreElements()) {
+                SchematicTerminal terminal = 
+                    (SchematicTerminal)templateTerminals.nextElement();
+                try {
+                    addTerminal(new SchematicTerminal(terminal.getName(), 
+                            terminal));
+                    
+                } catch (Exception ex) {
+                    throw new InternalErrorException(ex.getMessage());
+                    // This should never happen, because the terminals in the
+                    // template must follow the same rules as the schematic 
+                    // terminals.
                 }
             }
         }
@@ -472,11 +482,19 @@ public class SchematicEntity extends PTMLTemplateObject
             result += super._description(indent, 0);
         else 
             result += super._description(indent, 1);
+
         result += " terminalstyle {\n";
         if(_terminalstyle == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
             result += _terminalstyle._description(indent + 1, 0) + "\n";
+
+	result += _getIndentPrefix(indent) + "} terminalmap {\n";
+	if(_terminalmap == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _getIndentPrefix(indent + 1) + 
+                _terminalmap.toString() + "\n";
 
 	result += _getIndentPrefix(indent) + "} implementation {\n";
 	if(_terminalstyle == null) 
@@ -505,10 +523,12 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     public static final String DEFAULTICONNAME = "default";
-    private TerminalStyle _terminalstyle;
+    private Icon _icon;
+    private String _implementation;
     private NamedList _ports;
     private NamedList _terminals;
-    private String _implementation;
+    private TerminalStyle _terminalstyle;
+    private TerminalMap _terminalmap;
     private double _x;
     private double _y;
 

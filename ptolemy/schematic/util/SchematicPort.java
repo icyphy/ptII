@@ -48,7 +48,7 @@ public class SchematicPort extends PTMLTemplateObject {
     /**
      * Create a new SchematicPort object, with no attributes.
      */
-    public SchematicPort (EntityPort template) {
+    public SchematicPort (SchematicPort template) {
         this(template.getName(), template);
      }
 
@@ -57,7 +57,7 @@ public class SchematicPort extends PTMLTemplateObject {
      * @param attributes a HashedMap from a String specifying the name of
      * an attribute to a String specifying the attribute's value.
      */
-    public SchematicPort (String name, EntityPort template) {
+    public SchematicPort (String name, SchematicPort template) {
         super(name, template);
     } 
 

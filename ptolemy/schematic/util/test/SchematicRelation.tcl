@@ -109,8 +109,8 @@ test SchematicRelation-2.2 {setDocumentation, isDocumentation tests} {
 ####
 #
 test SchematicRelation-3.1 {addTerminal} {
-    set tt1 [java::new ptolemy.schematic.util.Terminal ToTemplate]
-    set tt2 [java::new ptolemy.schematic.util.Terminal FromTemplate]
+    set tt1 [java::new ptolemy.schematic.util.SchematicTerminal ToTemplate]
+    set tt2 [java::new ptolemy.schematic.util.SchematicTerminal FromTemplate]
     set t1 [java::new ptolemy.schematic.util.SchematicTerminal Terminal1 $tt1]
     set t2 [java::new ptolemy.schematic.util.SchematicTerminal Terminal2 $tt2]
     $e0 addTerminal $t1
@@ -119,7 +119,9 @@ test SchematicRelation-3.1 {addTerminal} {
 } terminals {
     {ptolemy.schematic.util.SchematicTerminal {relation.Terminal1} parameters {
     } template {
-        ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+        ptolemy.schematic.util.SchematicTerminal {ToTemplate} parameters {
+        } template {
+            null
         } X {0.0} Y {0.0}
     } X {0.0} Y {0.0}}
 } links {
@@ -141,7 +143,9 @@ test SchematicRelation-3.4 {removeTerminal} {
 } terminals {
     {ptolemy.schematic.util.SchematicTerminal {relation.Terminal2} parameters {
     } template {
-        ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+        ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+        } template {
+            null
         } X {0.0} Y {0.0}
     } X {0.0} Y {0.0}}
 } links {
@@ -156,7 +160,9 @@ test SchematicRelation-3.5 {addLink} {
 } terminals {
     {ptolemy.schematic.util.SchematicTerminal {relation.Terminal2} parameters {
     } template {
-        ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+        ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+        } template {
+            null
         } X {0.0} Y {0.0}
     } X {0.0} Y {0.0}}
 } links {
@@ -164,13 +170,17 @@ test SchematicRelation-3.5 {addLink} {
      to {
         ptolemy.schematic.util.SchematicTerminal {Terminal1} parameters {
         } template {
-            ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+            ptolemy.schematic.util.SchematicTerminal {ToTemplate} parameters {
+            } template {
+                null
             } X {0.0} Y {0.0}
         } X {0.0} Y {0.0}
     } from {
         ptolemy.schematic.util.SchematicTerminal {relation.Terminal2} parameters {
         } template {
-            ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+            ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+            } template {
+                null
             } X {0.0} Y {0.0}
         } X {0.0} Y {0.0}
     }}
@@ -193,7 +203,9 @@ test SchematicRelation-3.8 {removeLink} {
 } terminals {
     {ptolemy.schematic.util.SchematicTerminal {relation.Terminal2} parameters {
     } template {
-        ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+        ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+        } template {
+            null
         } X {0.0} Y {0.0}
     } X {0.0} Y {0.0}}
 } links {

@@ -49,8 +49,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	EntityLibrary.java \
-	EntityPort.java \
-	EntityTemplate.java \
 	EnumerationIterator.java \
 	GraphicElement.java \
 	Icon.java \
@@ -67,7 +65,6 @@ JSRCS = \
 	SchematicPort.java \
 	SchematicRelation.java \
 	SchematicTerminal.java \
-	Terminal.java \
 	TerminalMap.java \
 	TerminalStyle.java	
 

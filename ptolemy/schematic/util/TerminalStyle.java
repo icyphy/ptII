@@ -75,7 +75,7 @@ public class TerminalStyle extends PTMLObject {
      * @exception NameDuplicationException If an object with the same name as
      * terminal already exists in the terminal style.
      */
-    public void addTerminal (Terminal t) 
+    public void addTerminal (SchematicTerminal t) 
             throws NameDuplicationException, IllegalActionException {
         _terminals.append(t);
     }
@@ -83,14 +83,14 @@ public class TerminalStyle extends PTMLObject {
     /**
      * Test if this TerminalStyle contains the given Terminal.
      */
-    public boolean containsTerminal (Terminal t) {
+    public boolean containsTerminal (SchematicTerminal t) {
         return _terminals.includes(t);
     }
 
     /**
      * Return an enumeration over the terminals in this TerminalStyle.
      *
-     * @return Enumeration of Terminals.
+     * @return Enumeration of SchematicTerminals.
      */
     public Enumeration terminals() {
         return _terminals.elements();
@@ -100,7 +100,7 @@ public class TerminalStyle extends PTMLObject {
      * Remove a graphic element from the TerminalStyle. Throw an exception if
      * the Terminal is not contained in this TerminalStyle.
      */
-    public void removeTerminal (Terminal t)
+    public void removeTerminal (SchematicTerminal t)
             throws IllegalActionException {
         try {
             _terminals.remove(t);
@@ -118,7 +118,7 @@ public class TerminalStyle extends PTMLObject {
         Enumeration terms = terminals();
         String str = super.toString() + "(";
         while(terms.hasMoreElements()) {
-            Terminal term = (Terminal) terms.nextElement();
+            SchematicTerminal term = (SchematicTerminal) terms.nextElement();
             str += term.toString();
         }
         return str + ")";
@@ -145,7 +145,7 @@ public class TerminalStyle extends PTMLObject {
 	result += " terminals {\n";
 	Enumeration terminals = terminals();
         while (terminals.hasMoreElements()) {
-            Terminal p = (Terminal) terminals.nextElement();
+            SchematicTerminal p = (SchematicTerminal) terminals.nextElement();
             result += p._description(indent + 1, 2) + "\n";
         }
 	

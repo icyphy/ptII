@@ -72,7 +72,7 @@ public class EntityLibrary extends PTMLObject {
      *  @exception NameDuplicationException If the name of the entity
      *  coincides with the name of another entity contained in this library.
      */
-    public void addEntity(EntityTemplate e)
+    public void addEntity(SchematicEntity e)
         throws IllegalActionException, NameDuplicationException {
         _entities.append(e);
     }
@@ -92,7 +92,7 @@ public class EntityLibrary extends PTMLObject {
     /**
      * Test if the library contains an Entity with the given name
      */
-    public boolean containsEntity(EntityTemplate entity) {
+    public boolean containsEntity(SchematicEntity entity) {
         return _entities.includes(entity);
     }
 
@@ -110,7 +110,7 @@ public class EntityLibrary extends PTMLObject {
      * @exception IllegalActionException If no entity template with the given
      * name is found.
      */
-    public EntityTemplate findEntityTemplate(String dottedName)
+    public SchematicEntity findEntity(String dottedName)
             throws IllegalActionException {
         StringTokenizer tokens = new StringTokenizer(dottedName, ".");
         EntityLibrary temp = this;
@@ -127,11 +127,11 @@ public class EntityLibrary extends PTMLObject {
      * Get the Entity that is stored directly 
      * in this EntityLibrary with the given name.
      */
-    public EntityTemplate getEntity(String name)
+    public SchematicEntity getEntity(String name)
             throws IllegalActionException {
         Enumeration allEntities = entities();
         while(allEntities.hasMoreElements()) {
-            EntityTemplate entity = (EntityTemplate) allEntities.nextElement();
+            SchematicEntity entity = (SchematicEntity) allEntities.nextElement();
             if(name.equals(entity.getName()))
                 return entity;
         }
@@ -174,7 +174,7 @@ public class EntityLibrary extends PTMLObject {
    /**
      * Remove an Entity from this EntityLibrary
      */
-    public void removeEntity(EntityTemplate entity) {
+    public void removeEntity(SchematicEntity entity) {
         _sublibraries.remove(entity);
     }
 
@@ -214,7 +214,7 @@ public class EntityLibrary extends PTMLObject {
         str += "}{";
         els = entities();
          while(els.hasMoreElements()) {
-            EntityTemplate entity = (EntityTemplate) els.nextElement();
+            SchematicEntity entity = (SchematicEntity) els.nextElement();
 	    str += "\n" + entity.toString();
         }        
         return str + "})";
@@ -247,7 +247,7 @@ public class EntityLibrary extends PTMLObject {
 	result += _getIndentPrefix(indent) + "} entites {\n";
 	Enumeration entities = entities();
         while (entities.hasMoreElements()) {
-            EntityTemplate p = (EntityTemplate) entities.nextElement();
+            SchematicEntity p = (SchematicEntity) entities.nextElement();
             result += p._description(indent + 1, 2) + "\n";
         }
         result += _getIndentPrefix(indent) + "}";

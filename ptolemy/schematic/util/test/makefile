@@ -56,7 +56,7 @@ JSIMPLE_TESTS = \
 	SchematicEntity.tcl \
 	SchematicLink.tcl \
 	SchematicRelation.tcl \
-	Terminal.tcl \
+	SchematicTerminal.tcl \
 	TerminalStyle.tcl
 
 # Graphical Java tests that use Tcl.

@@ -210,12 +210,9 @@ public class PtolemyModelFactory {
 	    //Ignore.  This is graphical info only.
 	} else if(terminalContainer instanceof SchematicEntity) {
 	    SchematicEntity entity = (SchematicEntity) terminalContainer;
-	    Terminal templateTerminal = (Terminal) terminal.getTemplate();
-	    EntityTemplate templateEntity = (EntityTemplate)
-		entity.getTemplate();
-	    TerminalMap terminalMap = templateEntity.getTerminalMap();
+            TerminalMap terminalMap = entity.getTerminalMap();
 	    String portName =
-		terminalMap.getPort(templateTerminal.getName());
+		terminalMap.getPort(terminal.getName());
 	    // crap...  how do you get the port.
 	    Entity modelEntity = (Entity) entity.getSemanticObject();
 	    TypedIOPort modelPort = 

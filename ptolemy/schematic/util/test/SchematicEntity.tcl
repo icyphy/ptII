@@ -51,23 +51,26 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test SchematicEntity-2.1 {Constructor tests} {
-    set template [java::new ptolemy.schematic.util.EntityTemplate "TestEntityTemplate"]
+    set template [java::new ptolemy.schematic.util.SchematicEntity "TestEntityTemplate"]
     set e0 [java::new ptolemy.schematic.util.SchematicEntity "TestSchematicEntity" $template]
     $e0 description
 } {ptolemy.schematic.util.SchematicEntity {TestSchematicEntity} parameters {
 } template {
-    ptolemy.schematic.util.EntityTemplate {TestEntityTemplate} parameters {
-    } icon {
-        null
-    } implementation {
+    ptolemy.schematic.util.SchematicEntity {TestEntityTemplate} parameters {
+    } template {
         null
     } terminalstyle {
         null
     } terminalmap {
         null
+    } implementation {
+        null
     } ports {
+    } terminals {
     }
 } terminalstyle {
+    null
+} terminalmap {
     null
 } implementation {
     null

@@ -1,4 +1,4 @@
-# Tests for the Terminal class
+# Tests for the SchematicTerminal class
 #
 # @Author: Stephen Neuendorffer
 #
@@ -50,13 +50,22 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Terminal-2.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.util.Terminal]
-    set e1 [java::new ptolemy.schematic.util.Terminal "TestTerminal"]
-    list [$e0 toString] [$e1 toString]
-} {{Terminal((0.0, 0.0))} {TestTerminal((0.0, 0.0))}}
+test SchematicTerminal-2.1 {Constructor tests} {
+    set e0 [java::new ptolemy.schematic.util.SchematicTerminal "TestTerminal"]
+    set e1 [java::new ptolemy.schematic.util.SchematicTerminal "TestTerminal" $e0]
+    list [$e0 description] [$e1 description]
+} {{ptolemy.schematic.util.SchematicTerminal {TestTerminal} parameters {
+} template {
+    null
+} X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {TestTerminal} parameters {
+} template {
+    ptolemy.schematic.util.SchematicTerminal {TestTerminal} parameters {
+    } template {
+        null
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}}}
 
-test Terminal-2.2 {setDescription, isDocumentation tests} {
+test SchematicTerminal-2.2 {setDescription, isDocumentation tests} {
     # NOTE: Uses the setup above
     set r0 [$e0 getDocumentation]
     $e0 setDocumentation {Oh what a tangled web we weave,}
@@ -69,7 +78,7 @@ test Terminal-2.2 {setDescription, isDocumentation tests} {
 ######################################################################
 ####
 #
-test Terminal-3.1 {setX, getX tests} {
+test SchematicTerminal-3.1 {setX, getX tests} {
     # NOTE: Uses the setup above
     set r0 [$e0 getX]
     $e0 setX 1.0
@@ -79,7 +88,7 @@ test Terminal-3.1 {setX, getX tests} {
     list $r0 $r1 $r2
 } {0.0 1.0 0.2}
 
-test Terminal-3.2 {setY, getY tests} {
+test SchematicTerminal-3.2 {setY, getY tests} {
     # NOTE: Uses the setup above
     set r0 [$e0 getY]
     $e0 setY 1.0
@@ -89,8 +98,12 @@ test Terminal-3.2 {setY, getY tests} {
     list $r0 $r1 $r2
 } {0.0 1.0 0.2}
 
-test Terminal-3.7 {toString} {
-    $e1 setX 1.1
-    $e1 setY 2.4
-    $e1 toString
-} {TestTerminal((1.1, 2.4))}
+test SchematicTerminal-3.7 {description} {
+    $e0 setX 1.1
+    $e0 setY 2.4
+    $e0 description
+} {ptolemy.schematic.util.SchematicTerminal {TestTerminal} parameters {
+} template {
+    null
+} X {1.1} Y {2.4}}
+

@@ -50,8 +50,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test SchematicLink-2.1 {Constructor tests} {
-    set tt1 [java::new ptolemy.schematic.util.Terminal ToTemplate]
-    set tt2 [java::new ptolemy.schematic.util.Terminal FromTemplate]
+    set tt1 [java::new ptolemy.schematic.util.SchematicTerminal ToTemplate]
+    set tt2 [java::new ptolemy.schematic.util.SchematicTerminal FromTemplate]
     set t1 [java::new ptolemy.schematic.util.SchematicTerminal To $tt1]
     set t2 [java::new ptolemy.schematic.util.SchematicTerminal From $tt2]
     set e0 [java::new ptolemy.schematic.util.SchematicLink $t1 $t2]
@@ -59,27 +59,35 @@ test SchematicLink-2.1 {Constructor tests} {
 	    [[$e0 getFrom] description]
 } {{ptolemy.schematic.util.SchematicTerminal {From} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {To} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {ToTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {To} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {ToTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {From} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}}}
 
 ######################################################################
 ####
 #
-set tt1 [java::new ptolemy.schematic.util.Terminal ToTemplate]
-set tt2 [java::new ptolemy.schematic.util.Terminal FromTemplate]
+set tt1 [java::new ptolemy.schematic.util.SchematicTerminal ToTemplate]
+set tt2 [java::new ptolemy.schematic.util.SchematicTerminal FromTemplate]
 set t1 [java::new ptolemy.schematic.util.SchematicTerminal T1 $tt1]
 set t2 [java::new ptolemy.schematic.util.SchematicTerminal T2 $tt2]
 
@@ -93,15 +101,21 @@ test SchematicLink-3.1 {setTo, getTo tests} {
     list [$r0 description] [$r1 description] [$r2 description]
 } {{ptolemy.schematic.util.SchematicTerminal {To} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {ToTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {T1} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {ToTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {T2} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}}}
 
@@ -115,15 +129,21 @@ test SchematicLink-3.2 {setFrom, getFrom tests} {
     list [$r0 description] [$r1 description] [$r2 description]
 } {{ptolemy.schematic.util.SchematicTerminal {From} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {T1} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {ToTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {T2} parameters {
 } template {
-    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    ptolemy.schematic.util.SchematicTerminal {FromTemplate} parameters {
+    } template {
+        null
     } X {0.0} Y {0.0}
 } X {0.0} Y {0.0}}}
 

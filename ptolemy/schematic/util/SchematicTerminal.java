@@ -68,9 +68,9 @@ public class SchematicTerminal extends PTMLTemplateObject
     /** 
      * Create a new SchematicTerminal with the given name, and no template.
      */
-    //    public SchematicTerminal (String name) {
-    //    super(name, null);
-    //}
+    public SchematicTerminal (String name) {
+        super(name, null);
+    }
 
     /**
      * Create a new SchematicTerminal with the given template, and the
@@ -83,7 +83,7 @@ public class SchematicTerminal extends PTMLTemplateObject
     /** 
      * Create a new SchematicTerminal with the given name and template.
      */
-    public SchematicTerminal (String name, Terminal template) {
+    public SchematicTerminal (String name, SchematicTerminal template) {
         super(name, template);
         if(template != null) {
             _x = template.getX();
@@ -134,7 +134,7 @@ public class SchematicTerminal extends PTMLTemplateObject
     public void setX(double x) {
         if(!isMoveable())
             throw new InternalErrorException("Terminal " + getFullName() +
-                    "has a template, and so can't be moved.");
+                    " has a template, and so can't be moved.");
         _x = x;
     }
 
@@ -144,7 +144,7 @@ public class SchematicTerminal extends PTMLTemplateObject
     public void setY(double y) {
         if(!isMoveable())
             throw new InternalErrorException("Terminal " + getFullName() +
-                    "has a template, and so can't be moved.");
+                    " has a template, and so can't be moved.");
         _y = y;
     }
 
