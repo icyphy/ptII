@@ -47,7 +47,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// WirelessChannel
 /**
-This is the base class of the communication channels in the sensor domain.
+This is the base class for communication channels in the wireless domain.
+To use it, place it in a model that contains wireless actors (actors
+whose ports are instances of WirelessIOPort).  Then set the
+<i>outsideChannel</i> parameter of those ports to match the name of
+this channel.  The model can also itself contain ports that are
+instances of WirelessIOPort, in which case their <i>insideChannel</i>
+parameter should contain the name of this channel.
+<p>
+In this base class, tranmission on a channel reaches all ports at the
+same level of the hierarchy that are instances of WirelessIOPort and
+that specify that they use this channel. These ports include those
+contained by entities that have the container as this channel and
+that have their <i>outsideChannel</i> parameter set to the name
+of this channel.  They also include those ports whose containers
+are the same as the container of this channel and whose
+<i>insideChannel</i> parameter matches this channel name.
+<p>
+Derived classes will typically limit the range of the transmission,
+using for example location information from the ports. They
+may also introduce random losses or corruption of data.  To do this,
+derived classes can override the _isInRange() protected method,
+or the transmit() public method.
 
 @author Xiaojun Liu and Edward A. Lee
 @version $Id$
@@ -77,7 +98,11 @@ public class WirelessChannel extends TypedIORelation {
     ////                         public methods                    ////
     
     /** Transmit the specified token from the specified port at the specified
-     *  power.
+     *  power.  All ports that are in range will receive the token.
+     *  Note that in this base class, a port is in range if it refers to
+     *  this channel by name and is at the right place in the hierarchy.
+     *  This base class makes no use of the power argument.
+     *  But derived classes may limit the range using the power argument.
      *  @param token The token to transmit.
      *  @param port The port from which this is being transmitted.
      *  @param power The transmit power.
@@ -91,7 +116,7 @@ public class WirelessChannel extends TypedIORelation {
             Iterator receivers = _receiversInRange(port, power).iterator();
             while (receivers.hasNext()) {
                 Receiver receiver = (Receiver)receivers.next();
-                // FIXME: Do the delay here in a subclass.
+                // FIXME: Check types?
                 receiver.put(token);
             }
         } finally {
@@ -102,7 +127,9 @@ public class WirelessChannel extends TypedIORelation {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the distance between two ports.
+    /** Return the distance between two ports.  This is a convenience
+     *  method provided to make it easier to write subclasses that
+     *  limit transmision range using position information.
      *  @param port1 The first port.
      *  @param port2 The second port.
      *  @return The distance between the two ports.
@@ -121,9 +148,12 @@ public class WirelessChannel extends TypedIORelation {
     /** Return true if the specified port is in range of the
      *  specified source port, assuming the source port transmits at
      *  the specified power.  In this base class, this method returns
-     *  true always.  The method can assume that the two ports are
-     *  communicating on the same channel.  This should be checked by
-     *  the calling method.
+     *  true always.  The method assumes that the two ports are
+     *  communicating on the same channel, but it does not check
+     *  this.  This should be checked by the calling method.
+     *  Derived classes will typically use position information
+     *  in the source or destination to determine whether ports
+     *  are in range.
      *  @param source The source port.
      *  @param destination The destination port.
      *  @param power The transmit power.
@@ -143,6 +173,7 @@ public class WirelessChannel extends TypedIORelation {
      *  "_location" attribute of the port.  Otherwise, use the
      *  "_location" attribute of its container.
      *  The calling method is expected to have read access on the workspace.
+     *  This is a convenience method provided for subclasses.
      *  @param port A port with a location.
      *  @return The location of the port.
      *  @throws IllegalActionException If a valid location attribute cannot
@@ -177,15 +208,17 @@ public class WirelessChannel extends TypedIORelation {
      *  The calling method is expected to have read access on the workspace.
      *  @param sourcePort The sending port.
      *  @param power The transmit power.
-     *  @return A list of instances of DEReceiver.
+     *  @return A list of objects implementing the Receiver interface.
      *  @exception IllegalActionException If a location of a port cannot be
      *   evaluated.
      */
     protected List _receiversInRange(
             WirelessIOPort sourcePort, double power)
             throws IllegalActionException {
-        // FIXME: Cache result.
-        LinkedList result = new LinkedList();
+        if (workspace().getVersion() == _receiversInRangeListVersion) {
+            return _receiversInRangeList;
+        }
+        _receiversInRangeList = new LinkedList();
         Iterator ports = _listeningInputPorts().iterator();
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort)ports.next();
@@ -195,8 +228,11 @@ public class WirelessChannel extends TypedIORelation {
             
             if (_isInRange(sourcePort, port, power)) {
                 Receiver[][] receivers = port.getReceivers();
-                // FIXME: Suspicious... what if there are more receivers?
-                result.add(receivers[0][0]);
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        _receiversInRangeList.add(receivers[i][j]);
+                    }
+                }
             }
         }
         ports = _listeningOutputPorts().iterator();
@@ -205,11 +241,15 @@ public class WirelessChannel extends TypedIORelation {
                         
             if (_isInRange(sourcePort, port, power)) {
                 Receiver[][] receivers = port.getInsideReceivers();
-                // FIXME: Suspicious... what if there are more receivers?
-                result.add(receivers[0][0]);
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        _receiversInRangeList.add(receivers[i][j]);
+                    }
+                }
             }
         }
-        return result;
+        _receiversInRangeListVersion = workspace().getVersion();
+        return _receiversInRangeList;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -227,10 +267,7 @@ public class WirelessChannel extends TypedIORelation {
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
     private List _listeningInputPorts() throws IllegalActionException {
-        if (workspace().getVersion() == _listeningInputPortListVersion) {
-            return _listeningInputPortList;
-        }
-        _listeningInputPortList = new LinkedList();
+        List result = new LinkedList();
         CompositeEntity container = (CompositeEntity)getContainer();
         Iterator entities = container.entityList().iterator();
         while (entities.hasNext()) {
@@ -244,14 +281,13 @@ public class WirelessChannel extends TypedIORelation {
                         String channelName
                                 = castPort.outsideChannel.stringValue();
                         if (channelName.equals(getName())) {
-                            _listeningInputPortList.add(port);
+                            result.add(port);
                         }
                     }
                 }
             }
         }
-        _listeningInputPortListVersion = workspace().getVersion();
-        return _listeningInputPortList;
+        return result;
     }
     
     /** Return the list of output ports that can potentially receive data
@@ -266,10 +302,7 @@ public class WirelessChannel extends TypedIORelation {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     private List _listeningOutputPorts() throws IllegalActionException {
-        if (workspace().getVersion() == _listeningOutputPortListVersion) {
-            return _listeningOutputPortList;
-        }
-        _listeningOutputPortList = new LinkedList();
+        List result = new LinkedList();
         CompositeEntity container = (CompositeEntity)getContainer();
         Iterator ports = container.portList().iterator();
         while (ports.hasNext()) {
@@ -279,27 +312,21 @@ public class WirelessChannel extends TypedIORelation {
                 if (castPort.isOutput()) {
                     String channelName = castPort.insideChannel.stringValue();
                     if (channelName.equals(getName())) {
-                        _listeningOutputPortList.add(port);
+                        result.add(port);
                     }
                 }
             }
         }
-        _listeningOutputPortListVersion = workspace().getVersion();
-        return _listeningOutputPortList;
+        return result;
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Cached listening input port list.
-    private List _listeningInputPortList;
-    private long _listeningInputPortListVersion = -1;
+    // Cached port list.
+    private List _receiversInRangeList;
+    private long _receiversInRangeListVersion = -1;
 
-    // Cached listening output port list.
-    private List _listeningOutputPortList;
-    private long _listeningOutputPortListVersion = -1;
-
-    public static final Receiver[][] EMPTY_RECEIVERS = new Receiver[0][0];
-    public static final String LOCATION_ATTRIBUTE_NAME = "_location";
-
+    // Name of the location attribute.
+    private static final String LOCATION_ATTRIBUTE_NAME = "_location";
 }

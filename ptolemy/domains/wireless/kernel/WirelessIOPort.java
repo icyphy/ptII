@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (sanjeev@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (sanjeev@eecs.berkeley.edu)
 */
 
@@ -37,8 +37,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.NoRoomException;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedIORelation;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.de.kernel.DEIOPort;
@@ -46,12 +44,10 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// WirelessIOPort
@@ -136,6 +132,23 @@ public class WirelessIOPort extends DEIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to delegate to the channel if there is
+     *  one. If there is not outside channel, then send as in the base
+     *  class to connected ports.
+     *  @param token The token to send.
+     *  @exception IllegalActionException If the port is not an output,
+     *   or if the <i>outsideChannel</i> parameter cannot be evaluated.
+     */
+    public void broadcast(Token token) throws IllegalActionException {
+        WirelessChannel channel = getOutsideChannel();
+        if (channel != null) {
+            // FIXME: Need the transmit power to replace 0.0.
+            channel.transmit(token, this, 0.0);
+        } else {
+            super.broadcast(token);
+        }
+    }
     
     /** Get the channel specified by the <i>insideChannel</i> parameter.
      *  The channel is contained by the container of this  port.
@@ -208,99 +221,66 @@ public class WirelessIOPort extends DEIOPort {
         }
     }
 
+    /** Override the base class to delegate to the channel if there is
+     *  one. If there is not outside channel, then send as in the base
+     *  class to connected ports.  If there is an outside channel, then
+     *  the channelIndex argument is ignored.
+     *  @param channelIndex The index of the channel, from 0 to width-1.
+     *  @param token The token to send.
+     *  @exception IllegalActionException If the port is not an output,
+     *   or if the token to be sent cannot
+     *   be converted to the type of this port, or if the token is null.
+     *  @exception NoRoomException If there is no room in the receiver.
+     *   This should not occur in the DE domain.
+     */
+    public void send(int channelIndex, Token token)
+            throws IllegalActionException, NoRoomException {
+        WirelessChannel channel = getOutsideChannel();
+        if (channel != null) {
+            // FIXME: Need the transmit power to replace 0.0.
+            channel.transmit(token, this, 0.0);
+        } else {
+            super.send(channelIndex, token);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
     /** Return true if the inside of this port is wireless.
-     *  The inside is wireless if the container of this port is an
-     *  opaque composite actor with an instance of WirelessDirector.
+     *  The inside is wireless if getInsideChannel() returns non-null
+     *  and does not throw an exception.
      *  @return True if the inside is wireless.
      */
     protected boolean _insideIsWireless() {
-        Actor container = (Actor)getContainer();
-        Director insideDirector = null;
-        if (container instanceof CompositeActor) {
-            if (((CompositeActor)container).isOpaque()) {
-                insideDirector = container.getDirector();
-            }
+        try {
+            return (getInsideChannel() != null);
+        } catch (IllegalActionException e) {
+            return false;
         }
-        return (insideDirector instanceof WirelessDirector);
     }
 
     /** Return true if the outside of this port is wireless.
-     *  This is determined by checking the executive director
-     *  of the container and returning true if it is an instance of
-     *  WirelessDirector.
+     *  The outside is wireless if getOutsideChannel() returns non-null
+     *  and does not throw an exception.
      *  @return True if the outside is wireless.
      */
     protected boolean _outsideIsWireless() {
-        Actor container = (Actor)getContainer();
-        Director outsideDirector = container.getExecutiveDirector();
-        return (outsideDirector instanceof WirelessDirector);
+        try {
+            return (getOutsideChannel() != null);
+        } catch (IllegalActionException e) {
+            return false;
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    // Return true if this port is an input and the tokens read from
-    // this port enter the sensor domain.
-    // That is, the actor containing this port is a composite actor and
-    // its local director is the sensor director.
-    private boolean _isSendingIntoSensorDomain() {
-        Actor container = (Actor)getContainer();
-        Director insideDirector = null;
-        if (container instanceof CompositeActor) {
-            insideDirector = container.getDirector();
-        }
-        if (isInput() && insideDirector instanceof WirelessDirector) {
-            return true;
-        }
-        return false;
-    }
-
-    // Return true if this port is an output and the tokens sent from
-    // this port enter the sensor domain.
-    // That is, the executive director of the actor containing this
-    // port is the sensor director.
-    private boolean _isSendingOutToSensorDomain() {
-        Actor container = (Actor)getContainer();
-        Director outsideDirector = container.getExecutiveDirector();
-        if (isOutput() && outsideDirector instanceof WirelessDirector) {
-            return true;
-        }
-        return false;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     // FIXME: Move these up to public space.
     
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#broadcast(ptolemy.data.Token)
-     */
-    public void broadcast(Token token) throws IllegalActionException {
-        // TODO Auto-generated method stub
-        super.broadcast(token);
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.de.kernel.DEIOPort#send(int, ptolemy.data.Token, double)
-     */
-    public void send(int channelIndex, Token token, double delay)
-        throws IllegalActionException {
-        // TODO Auto-generated method stub
-        super.send(channelIndex, token, delay);
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#send(int, ptolemy.data.Token)
-     */
-    public void send(int channelIndex, Token token)
-        throws IllegalActionException, NoRoomException {
-        // TODO Auto-generated method stub
-        super.send(channelIndex, token);
-    }
 
     /* (non-Javadoc)
      * @see ptolemy.actor.IOPort#broadcast(ptolemy.data.Token[], int)
@@ -346,27 +326,11 @@ public class WirelessIOPort extends DEIOPort {
     }
 
     /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#deepConnectedInPorts()
-     */
-    public Enumeration deepConnectedInPorts() {
-        // TODO Auto-generated method stub
-        return super.deepConnectedInPorts();
-    }
-
-    /* (non-Javadoc)
      * @see ptolemy.actor.IOPort#deepConnectedOutPortList()
      */
     public List deepConnectedOutPortList() {
         // TODO Auto-generated method stub
         return super.deepConnectedOutPortList();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#deepConnectedOutPorts()
-     */
-    public Enumeration deepConnectedOutPorts() {
-        // TODO Auto-generated method stub
-        return super.deepConnectedOutPorts();
     }
 
     /* (non-Javadoc)

@@ -7,11 +7,12 @@
       <group>
   <doc>Wireless/Sensor network actors</doc>
 
-  <property name="SensorDirector" class="ptolemy.domains.sensor.kernel.SensorDirector">
+  <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
   </property>
 
-  <entity name="SimpleNode" class="ptolemy.apps.superb.sensor.lib.SimpleNode">
-  </entity>
+  <property name="WirelessIOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+  </property>
+  
   <entity name="SoundSensor" class="ptolemy.apps.superb.sensor.demo.WirelessSoundDetection.SoundSensor">
   </entity>
   <entity name="CompositeSensor" class="ptolemy.actor.TypedCompositeActor">
