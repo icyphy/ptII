@@ -80,9 +80,9 @@ public class StreamToMatrix extends Transformer {
 
         }
 
-    /** If the argument is the dimension parameter, update the 
+    /** If the argument is the dimension parameter, update the
      *  the row and column values.
-     *  @throws IllegalActionException if no an integer value can 
+     *  @throws IllegalActionException if no an integer value can
      *	be obtained from the dimension parameter.
      */
     public void attributeChanged(Attribute attribute)
