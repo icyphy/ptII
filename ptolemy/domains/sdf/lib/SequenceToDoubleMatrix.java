@@ -172,7 +172,7 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
     }
 
     /** Consume the inputs and produce the output DoubleMatrixToken.
-     *  @exception IllegalActionException Not thr
+     *  @exception IllegalActionException Not thrown in this base class
      */
     public void fire() throws IllegalActionException {
         double[][] matrix = new double[_iRows][_iColumns];
