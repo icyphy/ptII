@@ -109,12 +109,15 @@ public class EditorIcon extends Attribute {
 	Rectangle2D backBounds = background.getBounds();
         Figure figure = new CompositeFigure(background);
         Nameable container = getContainer();
-        LabelFigure label = new LabelFigure(container.getName());
-        label.setFont(new Font("SansSerif", Font.PLAIN, 12));
-	label.setPadding(1);
-	label.setAnchor(SwingConstants.SOUTH_WEST);
-	label.translateTo(backBounds.getX(), backBounds.getY());
-        ((CompositeFigure)figure).add(label);
+        // FIXME this is a bad way to do this.  
+        if(!(container instanceof Attribute) || container instanceof ptolemy.actor.Director) {
+            LabelFigure label = new LabelFigure(container.getName());
+            label.setFont(new Font("SansSerif", Font.PLAIN, 12));
+            label.setPadding(1);
+            label.setAnchor(SwingConstants.SOUTH_WEST);
+            label.translateTo(backBounds.getX(), backBounds.getY());
+            ((CompositeFigure)figure).add(label);
+        }
 	return figure;
     }
 
