@@ -42,7 +42,7 @@ detail message is adjusted accordingly.
 Derived classes can provide multiple constructors that take 0, 1 or 2
 Nameable references plus a detail String.
 
-@author John S. Davis, II, Christopher Hylands, Edward A. Lee
+@author John S. Davis, II, Edward A. Lee
 @version $Id$
 */
 public class KernelException extends Exception {
