@@ -1,12 +1,13 @@
 #!/bin/sh
 # Fix the copyright date
-#-[Thu Jan  9 12:35:23 2003 by cxh]-
+#-[Thu Jan  9 12:36:11 2003 by cxh]-
 #
 # The way to run this is to use $PTII/adm/bin/ptIItxtfiles to generate
 # a list of files and then run this script on that over and over
 # again until all the bogus copyrights have been found
 
 # 1. Check out a fresh tree in a separate directory 
+#    cd ~/tmp; cvs -d :ext:gigasource:/home/cvs co ptII
 # 2. Remove ptII/vendors
 # 3. Generate a list of text files
 #   cd ptII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
@@ -18,6 +19,8 @@
 # 7. Run it for real:
 #    cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
 # 8. Do a clean checkout somewhere and rebuild and test
+#    cd ~/tmp_2; cvs -d :ext:gigasource:/home/cvs co ptII
+#    make fast
 
 printonly=no
 
