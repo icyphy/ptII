@@ -128,12 +128,18 @@ public class NamedObj implements Nameable, Serializable {
      */
     public String description(int verbose){
         switch (verbose) {
+        case pt.kernel.Nameable.PRETTYPRINT:
         case pt.kernel.Nameable.VERBOSE:
+            return "{ "+toString() + " }";
         case pt.kernel.Nameable.NAMES:
-            return "{"+toString() + " {"+_workspace.toString()+"}}";
+            try {
+                return "{ " + getFullName() + " }";
+            } catch (InvalidStateException e) {
+                return "{ " + e + ": " + getName() + " }";
+            }
         case pt.kernel.Nameable.QUIET:
         default:
-            return "{"+toString()+"}";
+            return "{ " + toString() + " }";
         }
     }
 
@@ -220,6 +226,23 @@ public class NamedObj implements Nameable, Serializable {
      */	
     public Workspace workspace() {
         return _workspace; 
+    }
+
+    
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected method                         ////
+
+    /** Return the first part of the description string. */
+    protected String _descriptionStart(int verbose) {
+        if (verbose == NAMES) {
+            try {
+                return " { " + getFullName();
+            } catch (InvalidStateException e) {
+                return " { " + e + ": " + getName();
+            }
+        } else {
+            return " { { " + toString() + " } ";
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
