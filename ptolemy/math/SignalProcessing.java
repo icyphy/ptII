@@ -269,7 +269,7 @@ public final class SignalProcessing {
             break; 
 
             case DCT_TYPE_ORTHONORMAL:
-            factor = Math.sqrt(16.0 * oneOverTwoSize); // == 2 * sqrt(2/N)
+            factor = Math.sqrt((double) twoSize); // == 2 * sqrt(N/2)
             oneOverE0 = _ROOT2;
             break;
    
@@ -436,7 +436,7 @@ public final class SignalProcessing {
         realrealX = DoubleArrayMath.subtract(realrealX, imagimagX);
         imagrealX = DoubleArrayMath.add(imagrealX, realimagX);
 
-        return ComplexArrayMath.formArray(realrealX, imagrealX);
+        return ComplexArrayMath.formComplexArray(realrealX, imagrealX);
     }
 
     /** Return a new array of Complex's which is the forward FFT
@@ -465,7 +465,7 @@ public final class SignalProcessing {
         double[] realPart = FFTRealOut(x, order);
         double[] imagPart = FFTImagOut(x, order);
 
-        return ComplexArrayMath.formArray(realPart, imagPart);
+        return ComplexArrayMath.formComplexArray(realPart, imagPart);
     }
 
     /** Return a new array of doubles which is the imaginary part of the
@@ -981,7 +981,7 @@ public final class SignalProcessing {
      */
     public static final int DCT_TYPE_NORMALIZED   = 0;
 
-    /* To select the forward transform :
+    /** To select the forward transform :
      *        N - 1
      *  X(k) = sum  x[n] * cos ((2n + 1)k * PI / 2N)
      *        n = 0
@@ -993,17 +993,17 @@ public final class SignalProcessing {
      */
     public static final int DCT_TYPE_UNNORMALIZED = 1;
 
-    /* To select the forward transform :
-     *                        N - 1
-     *  X(k) = sqrt(2/N) e(k)  sum  x[n] * cos ((2n + 1)k * PI / 2N)
-     *                        n = 0
-     * and the inverse transform :
-     *                 N - 1
-     *  x(n) =sqrt(2/N) sum  e(k) X[k] * cos ((2n + 1)k * PI / 2N)
-     *                 k = 0
-     * with
-     *  e(0) = 1/sqrt(2); e(k) = 1 for k != 0
-     * use the following DCT type.
+    /** To select the forward transform :
+     *                         N - 1
+     *   X(k) = sqrt(2/N) e(k)  sum  x[n] * cos ((2n + 1)k * PI / 2N)
+     *                         n = 0
+     *  and the inverse transform :
+     *                   N - 1
+     *   x(n) = sqrt(2/N) sum  e(k) X[k] * cos ((2n + 1)k * PI / 2N)
+     *                   k = 0
+     *  with
+     *   e(0) = 1/sqrt(2); e(k) = 1 for k != 0
+     *  use the following DCT type.
      */
     public static final int DCT_TYPE_ORTHONORMAL  = 2;
     public static final int DCT_TYPES             = 3; 

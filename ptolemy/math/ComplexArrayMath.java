@@ -188,7 +188,7 @@ public final class ComplexArrayMath {
      *  @param imagPart An array of doubles, used for the imaginary parts.
      *  @retval A new array of Complex's.
      */
-    public static final Complex[] formArray(double[] realPart, 
+    public static final Complex[] formComplexArray(double[] realPart, 
      double[] imagPart) {
        int size = Math.min(realPart.length, imagPart.length);
 
