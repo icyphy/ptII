@@ -43,7 +43,7 @@ used as a standalone actor in a Ptolemy model. Subclasses of this actor
 include Geometry actors, Transform actors, Interaction actors, and the
 ViewScreen display actor.
 
-@see ptolemy.domains.gr.kernel.lib
+@see ptolemy.domains.gr.lib
 
 @author C. Fong
 @version $Id$
