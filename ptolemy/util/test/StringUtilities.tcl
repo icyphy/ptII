@@ -79,8 +79,13 @@ test StringUtilities-1.5 {substitution checks} {
 } {0}
 
 test StringUtilities-1.6 {substitution checks} {
-    java::call ptolemy.util.StringUtilities escapeForXML "\"My n&me is <&rf>\""
-} {&quot;My n&amp;me is &lt;&amp;rf&gt;&quot;}
+    set xml "\"My n&me is <&rf>\""
+    set escapedXML [java::call ptolemy.util.StringUtilities escapeForXML $xml]
+    set unescapedXML [java::call ptolemy.util.StringUtilities unescapeForXML \
+			   $escapedXML]
+    list $escapedXML \
+	[expr {$unescapedXML == $xml}]
+} {{&quot;My n&amp;me is &lt;&amp;rf&gt;&quot;} 1}
 
 test StringUtilities-1.7 {substitution checks} {
     java::call ptolemy.util.StringUtilities substitute "\"foo\"" "\"" "aaa"
@@ -219,3 +224,9 @@ Options that take values:
 
 Boolean flags:
  -help -test -version}
+
+
+test StringUtilities-6.1 {objectToSourceFileName} {
+    set messageHandler [java::new ptolemy.util.MessageHandler]
+    java::call ptolemy.util.StringUtilities objectToSourceFileName $messageHandler
+} {ptolemy/util/MessageHandler.java}
