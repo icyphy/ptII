@@ -147,6 +147,13 @@ public abstract class PlotLive extends Plot implements Runnable {
 //        _plotThread = null;
     }
 
+    /**
+     * If plotting is set to true, then we plot.
+     */  
+    public void setPlotting( boolean plotting) {
+        _plotting = plotting;
+    }
+
     /** 
      * Start the widget. It creates a thread to plot live data, if
      * this has not been already done.  However, we don't actually
@@ -162,11 +169,16 @@ public abstract class PlotLive extends Plot implements Runnable {
     }
 
     /**
-     * If plotting is set to true, then we plot.
-     */  
-    public void setPlotting( boolean plotting) {
-        _plotting = plotting;
+     * Stop the widget.
+     */
+    public void stop() {
+        if (_debug >8 ) System.out.println("PlotLive: stop");
+        if (_plotLiveThread != null) {
+            _plotLiveThread.stop();
+            _plotLiveThread = null;
+        }
     }
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
