@@ -41,9 +41,9 @@ public abstract class ScalarToken extends Token {
     ////                         public methods                           ////
 
     public abstract byte byteValue();
-    public abstract Object complexValue();
+    //public abstract Object complexValue();
     public abstract double doubleValue();
-    public abstract Object fixValue();
+    //public abstract Object fixValue();
     public abstract int intValue();
     public abstract long longValue();
 
