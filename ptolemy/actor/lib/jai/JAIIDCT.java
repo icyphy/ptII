@@ -74,6 +74,9 @@ public class JAIIDCT extends Transformer {
         output.setTypeEquals(BaseType.OBJECT);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Fire this actor.
      *  Output the inverse discrete cosine transform of the inputted 
      *  image.

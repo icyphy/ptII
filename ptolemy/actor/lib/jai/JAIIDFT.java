@@ -74,6 +74,9 @@ public class JAIIDFT extends Transformer {
         output.setTypeEquals(BaseType.OBJECT);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Fire this actor.
      *  Output the inverse discrete Fourier transform of the inputted 
      *  image.
