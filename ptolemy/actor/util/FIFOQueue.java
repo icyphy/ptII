@@ -33,7 +33,7 @@ package ptolemy.actor.util;
 
 import ptolemy.kernel.util.*;
 
-import collections.LinkedList;
+import collections.CircularList;
 import collections.CollectionEnumeration;
 import java.util.NoSuchElementException;
 
@@ -58,8 +58,8 @@ public class FIFOQueue implements Cloneable {
     /** Construct an empty queue with no container.
      */
     public FIFOQueue() {
-        _queuelist = new LinkedList();
-        _historylist = new LinkedList();
+        _queuelist = new CircularList();
+        _historylist = new CircularList();
     }
 
     /** Construct an empty queue with the specified container. The
@@ -98,7 +98,7 @@ public class FIFOQueue implements Cloneable {
 
     /** Enumerate the objects in the queue, beginning with the oldest.
      *  @return An enumeration of objects.
-     *  @see collections.LinkedList#elements()
+     *  @see collections.CircularList#elements()
      */
     public CollectionEnumeration elements() {
         return _queuelist.elements();
@@ -178,7 +178,7 @@ public class FIFOQueue implements Cloneable {
      *  previously taken from the queue. If the history capacity is zero,
      *  then return an empty enumeration.
      *  @return An enumeration of objects in the history.
-     *  @see collections.LinkedList#elements()
+     *  @see collections.CircularList#elements()
      */
     public CollectionEnumeration historyElements() {
         return _historylist.elements();
@@ -317,13 +317,13 @@ public class FIFOQueue implements Cloneable {
     private int _queuecapacity = INFINITE_CAPACITY;
 
     // The list of objects currently in the queue.
-    private LinkedList _queuelist;
+    private CircularList _queuelist;
 
     // The capacity of the history queue, defaulting to zero.
     private int _historycapacity = 0;
 
     // The list of objects recently removed from the queue.
-    private LinkedList _historylist = null;
+    private CircularList _historylist = null;
 
 }
 
