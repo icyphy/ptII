@@ -1335,8 +1335,8 @@ public class MoMLParser extends HandlerBase {
 
                 // NOTE: While debugging, we print a stack trace here.
                 // This is because XmlException loses it.
-                System.err.println("******** original error:");
-                ex.printStackTrace();
+                //System.err.println("******** original error:");
+                //ex.printStackTrace();
 
                 throw new XmlException(msg,
                         _currentExternalEntity(),
