@@ -135,7 +135,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
             setToken(token);
             
             // If we don't do this, then the bounds may not be written.
-            setModifiedHeritage(true);
+            setOverrideDepth(0);
 
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set bounds value!");

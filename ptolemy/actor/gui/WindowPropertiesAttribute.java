@@ -147,7 +147,7 @@ public class WindowPropertiesAttribute extends Parameter
             setToken(new RecordToken(names, values));
             
             // If we don't do this, then the bounds may not be written.
-            setModifiedHeritage(true);
+            setOverrideDepth(0);
             
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
