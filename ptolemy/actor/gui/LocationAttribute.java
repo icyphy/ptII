@@ -80,10 +80,10 @@ public class LocationAttribute extends Parameter {
     public void recordLocation(Window component) {
         try {
             Rectangle location = component.getBounds();
-            int[] locationMatrix = new int[2];
-            locationMatrix[0] = location.x;
-            locationMatrix[1] = location.y;
-            IntMatrixToken token = new IntMatrixToken(locationMatrix, 1, 2);
+            int[][] locationMatrix = new int[1][2];
+            locationMatrix[0][0] = location.x;
+            locationMatrix[0][1] = location.y;
+            IntMatrixToken token = new IntMatrixToken(locationMatrix);
             setToken(token);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set bounds value!");

@@ -80,10 +80,10 @@ public class SizeAttribute extends Parameter {
     public void recordSize(JComponent component) {
         try {
             Dimension size = component.getSize();
-            int[] sizeMatrix = new int[2];
-            sizeMatrix[0] = size.width;
-            sizeMatrix[1] = size.height;
-            IntMatrixToken token = new IntMatrixToken(sizeMatrix, 1, 2);
+            int[][] sizeMatrix = new int[1][2];
+            sizeMatrix[0][0] = size.width;
+            sizeMatrix[0][1] = size.height;
+            IntMatrixToken token = new IntMatrixToken(sizeMatrix);
             setToken(token);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set bounds value!");
