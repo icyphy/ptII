@@ -74,16 +74,15 @@ public class SetParameter extends ChangeRequest {
      *   rejects the expression.
      */
     public void execute() throws ChangeFailedException {
-        // FIXME: Put this back in when getToken() is fixed.
-        // try {
-        _parameter.setExpression(_expression);
-        // Force evaluation of the expression to ensure validity,
-        // and to ensure that the container is notified of the new
-        // value.
-        _parameter.getToken();
-        // } catch (IllegalActionException ex) {
-        //    throw new ChangeFailedException(this, ex);
-        //}
+        try {
+            _parameter.setExpression(_expression);
+            // Force evaluation of the expression to ensure validity,
+            // and to ensure that the container is notified of the new
+            // value.
+            _parameter.getToken();
+        } catch (IllegalActionException ex) {
+            throw new ChangeFailedException(this, ex);
+        }
     }
 
     /** Get the parameter that is to be changed.
