@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (mudit@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.demo.Interleave;
@@ -47,10 +50,9 @@ public class PNInterleave extends AtomicActor{
     /** Constructor Adds ports to the star
      *  @param container This is the compositeActor containing this actor
      *  @param name This is the name of this actor.
-     *  @exception NameDuplicationException This indicates that an actor
+     *  @exception NameDuplicationException If an actor
      *  with an identical name already exists in the container.
-     *  @exception IllegalActionException This can be thrown by one of the
-     *  called methods.
+     *  @exception IllegalActionException If thrown by a called method.
      */
     public PNInterleave(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
