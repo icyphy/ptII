@@ -364,7 +364,10 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/actor/lib/joystick \
 		ptolemy/actor/lib/python \
 		ptolemy/actor/lib/security \
+		ptolemy/actor/lib/test/OrderedMerge.tcl \
 		ptolemy/actor/lib/test/auto/MathFunction.xml \
+		ptolemy/actor/lib/test/auto/OrderedMerge.xml \
+	        ptolemy/actor/lib/test/auto/Switch.xml \
 		ptolemy/actor/lib/x10 \
 		ptolemy/actor/lib/xslt \
 		ptolemy/caltrop \
@@ -380,8 +383,11 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/ci \
 		ptolemy/domains/csp \
 		ptolemy/domains/dde \
+		ptolemy/domains/ddf \
 		ptolemy/domains/domains.xml \
 		ptolemy/domains/dt \
+		ptolemy/domains/ddf/test/auto/controlled_kahnnet.xml \
+		ptolemy/domains/fsm/kernel/test/auto/feedBackLoop.xml \
 		ptolemy/domains/giotto \
 		ptolemy/domains/gr \
 		ptolemy/domains/hde \
@@ -389,10 +395,10 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/psdf \
 		ptolemy/domains/pn \
 		ptolemy/domains/ptinyDomains.xml \
+		ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml \
 		ptolemy/domains/sr \
 		ptolemy/domains/tm \
 		ptolemy/domains/wireless \
-		ptolemy/domains \
 		thales; \
 	   touch configure; \
 	   chmod a+rx configure; \
