@@ -116,29 +116,20 @@ public class ExtendedMath {
         return Math.IEEEremainder(f1, f2);
     }
 
-    /** Round to the nearest integer.
+    /** Round to the nearest integer.  If the argument is NaN, then
+     *  the return value is 0. If the argument is out of range, then
+     *  the return value is Integer.MAX_VALUE or Integer.MIN_VALUE,
+     *  depending on the sign of the argument.
      *  @param x The number to round.
      *  @return The nearest integer.
-     *  @throws IllegalArgumentException If the argument does not fit
-     *   in an integer.
-     *  @deprecated Use round() instead.
      */
     public static final int roundToInt(final double x) {
-        return round(x);
-    }
-
-    /** Round to the nearest integer.
-     *  @param x The number to round.
-     *  @return The nearest integer.
-     *  @throws IllegalArgumentException If the argument does not fit
-     *   in an integer.
-     */
-    public static final int round(final double x) {
         long returnValue = Math.round(x);
-        if (returnValue > Integer.MAX_VALUE 
-                || returnValue < Integer.MIN_VALUE) {
-            throw new IllegalArgumentException("double value " + x
-                    + " does not fit into an Integer.");
+        if (returnValue >= Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        if (returnValue <= Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
         }
         return (int)returnValue;
     }
