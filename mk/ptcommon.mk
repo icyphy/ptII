@@ -348,11 +348,11 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 	-cp *.class $(PTJAR_TMPDIR)/$(ME)
 	for jar in $(PTCLASSALLJARS) ; do \
 		echo "Unjaring $$jar"; \
-		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
+		(cd $(PTJAR_TMPDIR); $(JAR) -xf ../$$jar); \
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
 	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); jar -cvf tmp.jar .)
+	(cd $(PTJAR_TMPDIR); $(JAR) -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
