@@ -166,6 +166,13 @@ public final class FixPoint implements Cloneable, Serializable {
  	_value     =  value;
     }
 
+    /** Return the absolute value of this fix point number.
+     *  @return A non-negative fix point.
+     */
+    public final FixPoint absolute() {
+        return new FixPoint( _precision, _value.fixvalue.abs());
+    }
+
     /** Return a new Fixpoint number with value equal to the sum
      *  of this Fixpoint number and the argument. The operation is
      *  lossless because the precision of the result is changed to
@@ -229,6 +236,21 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	return y;
     }
+
+    /** Return true if this fix point number is equal to those of the
+     *  argument.  
+     *  @return True if the fix points are equal; false otherwise.
+     */
+    public final boolean equals(FixPoint arg) {
+	// Align the precision of the two Fixpoints
+	Precision  cp = _precision.matchThePoint(this._precision, 
+						 arg.getPrecision());
+	Fixvalue argX = this._alignToPrecision(cp);
+	Fixvalue argY = arg._alignToPrecision(cp);
+
+        return ( argX.fixvalue.equals( argY.fixvalue) );
+    }
+
 
     /** Get a description of the error condition of the Fixpoint 
 	@return The description of the error condition of the Fixpoint
