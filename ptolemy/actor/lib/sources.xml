@@ -39,6 +39,10 @@
 <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
 </entity>
 
+<entity name="Reader" class="ptolemy.actor.lib.Reader">
+<doc>Read in doubles from either stdin or a URL</doc>
+</entity>
+
 <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
