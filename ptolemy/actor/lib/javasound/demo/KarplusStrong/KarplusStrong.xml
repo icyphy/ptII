@@ -115,9 +115,9 @@ javasound package.</text>
         </port>
     </entity>
     <entity name="Allpass Filter" class="ptolemy.actor.lib.IIR">
-        <property name="numerator" class="ptolemy.data.expr.Parameter" value="[0.07317, 1.0]">
+        <property name="numerator" class="ptolemy.data.expr.Parameter" value="{0.07317, 1.0}">
         </property>
-        <property name="denominator" class="ptolemy.data.expr.Parameter" value="[1.0, -0.07317]">
+        <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, -0.07317}">
         </property>
         <doc>IIR filter</doc>
         <property name="_location" class="ptolemy.moml.Location" value="282.0, 128.0">

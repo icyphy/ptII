@@ -48,34 +48,28 @@ are DoubleToken.
 <p>
 This filter has a transfer function given by:
 <pre>
-       b<sub>0</sub> + b<sub>1</sub>z<sup>-1</sup> + ...
-                           + b<sub>M</sub>z<sup>-M</sup>
+       b<sub>0</sub> + b<sub>1</sub>z<sup>-1</sup> + ... + b<sub>M</sub>z<sup>-M</sup>
       ------------------------
-       1 - a<sub>1</sub>z<sup>-1</sup> - ... - a<sub>N</sub>z<sup>-N</sup>
+       1 + a<sub>1</sub>z<sup>-1</sup> + ... + a<sub>N</sub>z<sup>-N</sup>
 </pre>
-
 The constant terms of the numerator polynomial are specified by the
 <i>numerator</i> parameter and the constant terms of the denominator
 polynomial are specified by the <i>denominator</i> parameter.
+Both of these are given as arrays of doubles, using the syntax
+<pre>
+   {b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}
+</pre>
+The default numerator and denominator are both {1.0}, resulting in
+a filter with unity transfer function.
 <p>
-The <i>numerator</i> parameter represents the numerator coefficients
-as a row vector of a token of type DoubleMatrixToken. The format is
-[b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>]. The default
-value of this parameter is [1.0].
+The first coefficient of the
+<i>denominator</i> parameter is required to be 1.0. This
+implementation will issue a warning if the user enters something
+other than 1.0, and will use 1.0 instead.  The value is shown explicitly
+nonetheless so that the numerator and denominator polynomials are easy
+to read.
 <p>
-
-The <i>denominator</i> parameter represents the denominator
-coefficients as a row vector of a token of type DoubleMatrixToken. The
-format is [a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>]. Note
-that the value of a<sub>0</sub> is constrained to be 1. This
-implementation will issue a warning if the user enters as the first
-element of <i>denominator</i> something other than 1.0, and will use
-1.0 instead.  The default value of this parameter is [1.0].
-<p>
-The default values therefore correspond to a filter with a transfer
-function of 1.
-
-<h4>References</h4>
+<b>References</b>
 <p>
 [1]
 A. V. Oppenheim, R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
@@ -98,35 +92,32 @@ public class IIR extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // Parameters
-	double numeratorTaps[][] = {{1.0}};
-	double denominatorTaps[][] = {{1.0}};
-	numerator = new Parameter(this, "numerator",
-                new DoubleMatrixToken(numeratorTaps));
+	numerator = new Parameter(this, "numerator");
+        numerator.setExpression("{1.0}");
 	attributeChanged(numerator);
-	denominator = new Parameter(this, "denominator",
-                new DoubleMatrixToken(denominatorTaps));
+	denominator = new Parameter(this, "denominator");
+        denominator.setExpression("{1.0}");
 	attributeChanged(denominator);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This parameter represents the numerator coefficients as a row
-     *  vector of a token of type DoubleMatrixToken. The format is
-     *  [b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>]. The default
-     *  value of this parameter is [1.0].
+    /** This parameter represents the numerator coefficients as an array
+     *  of a tokens of type double. The format is
+     *  {b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}. The default
+     *  value of this parameter is {1.0}.
      */
     public Parameter numerator;
 
-    /** This  parameter represents the denominator coefficients as a row
-     *  vector of a token of type DoubleMatrixToken. The format is
-     *  [a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>]. Note that
+    /** This  parameter represents the denominator coefficients as an
+     *  array of a tokens of type double. The format is
+     *  {a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}. Note that
      *  the value of a<sub>0</sub> is constrained to be 1.0. This
      *  implementation will issue a warning if it is not.
-     *  The default value of this parameter is [1.0].
+     *  The default value of this parameter is {1.0}.
      */
     public Parameter denominator;
 
@@ -143,12 +134,20 @@ public class IIR extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numerator) {
-	    _numerator =
-                (((DoubleMatrixToken)numerator.getToken()).doubleMatrix())[0];
+            ArrayToken numeratorValue = (ArrayToken)numerator.getToken();
+            _numerator = new double[numeratorValue.length()];
+            for (int i = 0; i < numeratorValue.length(); i++) {
+                _numerator[i] = ((DoubleToken)numeratorValue.getElement(i))
+                        .doubleValue();
+            }
 	} else if (attribute == denominator) {
-	    _denominator =
-                (((DoubleMatrixToken)denominator.
-                        getToken()).doubleMatrix())[0];
+            ArrayToken denominatorValue = (ArrayToken)denominator.getToken();
+            _denominator = new double[denominatorValue.length()];
+            for (int i = 0; i < denominatorValue.length(); i++) {
+                _denominator[i] = ((DoubleToken)denominatorValue.getElement(i))
+                        .doubleValue();
+            }
+
 	    // Note: a<sub>0</sub> must always be 1.
             // Issue a warning if it isn't.
             if (_denominator[0] != 1.0) {
@@ -160,7 +159,7 @@ public class IIR extends Transformer {
                     throw new IllegalActionException(this,
                             "Canceled parameter change.");
                 }
-                // user entered and just use 1.
+                // Override the user and just use 1.
                 _denominator[0] = 1.0;
             }
 	} else {
@@ -195,7 +194,7 @@ public class IIR extends Transformer {
 	    xCurrent = (in).doubleValue();
 	    window = xCurrent;
 	    for (int j = 1; j < _denominator.length; j++) {
-		window += _denominator[j]*_stateVector[(_currentTap + j) %
+		window += -_denominator[j]*_stateVector[(_currentTap + j) %
                         _stateVector.length];
 	    }
 	    // Shadowed state. used in postfire().
@@ -205,7 +204,7 @@ public class IIR extends Transformer {
 	    _stateVector[_currentTap] = window;
 	    yCurrent = 0;
 	    for (int k = 0; k < _numerator.length; k++) {
-		yCurrent +=	_numerator[k]*_stateVector[(_currentTap +k) %
+		yCurrent += _numerator[k]*_stateVector[(_currentTap +k) %
                         _stateVector.length];
 	    }
 	    // Restore state vector to previous state.
@@ -264,7 +263,7 @@ public class IIR extends Transformer {
 
 		window = xCurrent;
 		for (int j = 1; j < _denominator.length; j++) {
-		    window += _denominator[j]*_stateVector[(_currentTap + j) %
+		    window += -_denominator[j]*_stateVector[(_currentTap + j) %
                             _stateVector.length];
 		}
 		_stateVector[_currentTap] = window;

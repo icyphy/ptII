@@ -98,6 +98,7 @@ JSRCS = \
 	RecordAssembler.java \
 	RecordDisassembler.java \
 	Recorder.java \
+	Remainder.java \
 	SequenceActor.java \
 	Sequencer.java \
 	SequenceSource.java \
@@ -114,6 +115,7 @@ JSRCS = \
 	Transformer.java \
 	TrigFunction.java \
 	Uniform.java \
+	Unwrap.java \
 	VariableClock.java \
 	Writer.java
 

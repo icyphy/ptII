@@ -53,6 +53,9 @@
   <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
   </entity>
   
+  <entity name="Remainder" class="ptolemy.actor.lib.Remainder">
+  </entity>
+
   <entity name="Scale" class="ptolemy.actor.lib.Scale">
   </entity>
 
