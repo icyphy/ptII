@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
 import java.io.File;
@@ -621,7 +622,7 @@ public class PythonScript extends TypedAtomicActor {
 
         String className = "ptolemy.kernel.util.NamedObj";
         String classResource =
-                    ptolemy.copernicus.kernel.GeneratorAttribute.lookupClassAsResource(className);
+                    ClassUtilities.lookupClassAsResource(className);
         if (classResource != null) {
             //System.out.println("PythonScript: className: " + classResource);
             File classFile = new File(classResource);
