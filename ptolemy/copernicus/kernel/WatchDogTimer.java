@@ -30,6 +30,8 @@
 
 package ptolemy.copernicus.kernel;
 
+import ptolemy.actor.Manager;
+
 import soot.*;
 import soot.jimple.*;
 import soot.toolkits.scalar.*;
@@ -117,6 +119,9 @@ public class WatchDogTimer extends SceneTransformer {
         if (timeToDie <= 0) {
             return;
         }
+        // Make a record of the time when the WatchDogTimer was set
+        final long startTime = (new Date()).getTime();
+        
         TimerTask doTimeToDie = new TimerTask() {
             public void run() {
                 try {
@@ -147,6 +152,9 @@ public class WatchDogTimer extends SceneTransformer {
                 } catch (Exception e) {
                     System.err.println(e);
                 } finally {
+                    System.out.println("WatchDogTime went off, "
+                            + "time and memory: " 
+                            + Manager.timeAndMemory(startTime));
                     // Do not pass go, do not collect $200
                     System.exit(4);
                 }
