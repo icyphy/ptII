@@ -287,7 +287,7 @@ public class Histogram extends PlotBox {
             Vector pts = (Vector)_points.elementAt(dataset);
             for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
                 Double pt = (Double)pts.elementAt(pointnum);
-                output.println("<p y=\"" + pt.doubleValue() + "\"/");
+                output.println("<p y=\"" + pt.doubleValue() + "\"/>");
             }
             output.println("</dataset>");
         }
