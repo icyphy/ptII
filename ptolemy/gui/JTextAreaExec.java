@@ -140,9 +140,11 @@ public class JTextAreaExec extends JPanel {
                 _cancelButton.doClick();
     }
 
-    /** Clear the text area. */
+    /** Clear the text area, status bar and progress bar. */
     public void clear() {
                 _clearButton.doClick();
+		updateStatusBar("");
+		_updateProgressBar(0);
     }
 
     /** Main method used for testing.
