@@ -1,4 +1,4 @@
-/* A token that contains a reference to a matrix.
+/* Abstract base class for tokens that contain a reference to a 2-D array.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +32,7 @@ import pt.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToken
 /** 
-Abstract base class for tokens that contain a reference to a matrix.
+Abstract base class for tokens that contain a reference to a 2-D array.
 The derived classes should override the clone() method to do a deep copy
 of the token.
 
@@ -44,80 +44,38 @@ public abstract class MatrixToken extends Token {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return the content in the token as a ByteMatrix.
-     *  In this base class, we just throw an exception.
-     *  @exception IllegalActionException
+    /** Return the number of rows in the matrix.
      */
-/*
-    public ByteMatrix byteMatrix()
-	    throws IllegalActionException {
-	Class myclass = getClass();
-        throw new IllegalActionException("Value in class "
-              + myclass.getName() + " cannot be converted to a ByteMatrix.");
-    }
-*/
+    public abstract int numRows();
+ 
+    /** Return the number of columns in the matrix.
+     */
+    public abstract int numColumns();
 
-    /** Return the content in the token as a DoubleMatrix.
-     *  In this base class, we just throw an exception.
-     *  @exception IllegalActionException
+    /** Return the content in the token as a 2-D byte array.
      */
-    public DoubleMatrix doubleMatrix()
-            throws IllegalActionException {
-        Class myclass = getClass();
-        throw new IllegalActionException("Value in class "
-              + myclass.getName() + " cannot be converted to a DoubleMatrix.");
-    }
+    public abstract byte[][] byteMatrix();
+
+    /** Return the content in the token as a 2-D double array.
+     */
+    public abstract double[][] doubleMatrix();
  
-    /** Return the content in the token as a ComplexMatrix.
-     *  In this base class, we just throw an exception.
-     *  @exception IllegalActionException
+    /** Return the content in the token as a 2-D Complex array.
      */
-/*
-    public ComplexMatrix complexMatrix()
-            throws IllegalActionException {
-        Class myclass = getClass();
-        throw new IllegalActionException("Value in class "
-              + myclass.getName() + " cannot be converted to a ComplexMatrix.");
-    }
-*/
+    // FIXME: uncomment this method after the Complex class is available.
+    // public abstract Complex[][] complexMatrix();
+
+    /** Return the content in the token as a 2-D Fix array.
+     */
+    // FIXME: uncomment this method after the Complex class is implemented.
+    // public abstract Fix[][] fixMatrix();
  
-    /** Return the content in the token as a FixMatrix.
-     *  In this base class, we just throw an exception.
-     *  @exception IllegalActionException
+    /** Return the content in the token as a 2-D integer array.
      */
-/*
-    public FixMatrix fixMatrix()
-            throws IllegalActionException {
-        Class myclass = getClass();
-        throw new IllegalActionException("Value in class "
-              + myclass.getName() + " cannot be converted to a FixMatrix.");
-    }
-*/
+    public abstract int[][] intMatrix();
  
-    /** Return the content in the token as a IntMatrix.
-     *  In this base class, we just throw an exception.
-     *  @exception IllegalActionException
+    /** Return the content in the token as a 2-D long array.
      */
-/*
-    public IntMatrix intMatrix()
-            throws IllegalActionException {
-        Class myclass = getClass();
-        throw new IllegalActionException("Value in class "
-              + myclass.getName() + " cannot be converted to a IntMatrix.");
-    }
-*/
- 
-    /** Return the content in the token as a LongMatrix.
-     *  In this base class, we just throw an exception.
-     *  @exception IllegalActionException
-     */
-/*
-    public LongMatrix longMatrix()
-            throws IllegalActionException {
-        Class myclass = getClass();
-        throw new IllegalActionException("Value in class "
-              + myclass.getName() + " cannot be converted to a LongMatrix.");
-    }
-*/
+    public abstract long[][] longMatrix();
 }
 

@@ -1,4 +1,4 @@
-/* A token that contains a reference to an IntMatrix.
+/* A token that contains a reference to a 2-D integer array.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -30,53 +30,146 @@ package pt.data;
 //////////////////////////////////////////////////////////////////////////
 //// IntMatrixToken
 /** 
-A token that contains a reference to an IntMatrix.
+A token that contains a reference to a 2-D integer array.
 
 @author Yuhong Xiong
 $Id$
 */
 public class IntMatrixToken extends MatrixToken {
 
-    /** Construct a token with a null IntMatrix.
+    /** Construct a token with a null 2-D array.
      */
     public IntMatrixToken() {
     }
 
-    /** Construct a token with the specified IntMatrix.
+    /** Construct a token with the specified 2-D array.
      */
-    public IntMatrixToken(IntMatrix value) {
+    public IntMatrixToken(int[][] value) {
 	_value = value;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Make a deep copy of the token and the matrix it refers to.
-     *  @see pt.data.DoubleMatrix#clone()
+    /** Make a deep copy of the token.
      *  @return An identical token.
      *  @exception CloneNotSupportedException May be thrown by derived classes.
      */
     public Object clone()
             throws CloneNotSupportedException {
         IntMatrixToken copy = (IntMatrixToken)super.clone();
-        copy.setValue((IntMatrix)_value.clone());
+	int[][] array = null;
+        if (_value != null) {
+	    int row = _value.length;
+	    int col = _value[0].length;
+            array = new int[row][col];
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    array[i][j] = _value[i][j];
+                }
+            }
+        }
+        copy.setValue(array);
 	return copy;
     }
 
-    /** Set the value of the token to be the specified matrix.
+    /** Set the value of the token to be the specified 2-D array.
      */
-    public void setValue(IntMatrix value) {
+    public void setValue(int[][] value) {
 	_value = value;
     }
 
-    /** Return the content in the token as a IntMatrix.
+    /** Return the number of rows in the matrix.  If the matrix is not
+        initialized, return 0.
      */
-    public IntMatrix intMatrix() {
+    public int numRows() {
+        if (_value == null) {
+            return 0;
+        } else {
+            return _value.length;
+        }
+    }
+ 
+    /** Return the number of columns in the matrix.  If the matrix is not
+        initialized, return 0.
+     */
+    public int numColumns() {
+        if (_value == null) {
+            return 0;
+        } else {
+            return _value[0].length;
+        }
+    }
+
+    /** Return the content in the token as a 2-D byte array.
+     */
+    public byte[][] byteMatrix() {
+        byte[][] array = null;
+        if (_value != null) {
+            int row = _value.length;
+            int col = _value[0].length;
+            array = new byte[row][col];
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    array[i][j] = (byte)_value[i][j];
+                }
+            }
+        }
+	return array;
+    }
+
+    /** Return the content in the token as a 2-D double array.
+     */
+    public double[][] doubleMatrix() {
+        double[][] array = null;
+        if (_value != null) {
+            int row = _value.length;
+            int col = _value[0].length;
+            array = new double[row][col];
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    array[i][j] = (double)_value[i][j];
+                }
+            }
+        }
+	return array;
+    }
+
+    /** Return the content in the token as a 2-D Complex array.
+     */
+    // FIXME: uncomment this method after the Complex class is available.
+    // public Complex[][] complexMatrix();
+ 
+    /** Return the content in the token as a 2-D Fix array.
+     */
+    // FIXME: uncomment this method after the Complex class is implemented.
+    // public Fix[][] fixMatrix();
+
+    /** Return the content in the token as a 2-D integer array.
+     */
+    public int[][] intMatrix() {
 	return _value;
+    }
+
+    /** Return the content in the token as a 2-D long array.
+     */
+    public long[][] longMatrix() {
+        long[][] array = null;
+        if (_value != null) {
+            int row = _value.length;
+            int col = _value[0].length;
+            array = new long[row][col];
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    array[i][j] = (long)_value[i][j];
+                }
+            }
+        }
+	return array;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                        private variables                         ////
-    private IntMatrix _value = null;
+    private int[][] _value = null;
 }
 
