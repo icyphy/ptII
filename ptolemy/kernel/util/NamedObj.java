@@ -47,43 +47,38 @@ reference can be null.
 @see full-classname */
 public class NamedObj {
     /** Constructor with no arguments - Set the name to empty string
-     * @return Reference to created named object
      */	
     public NamedObj() {
         this("");
     }
 
     /** Constructor with 1 argument - Set the name
-     * @param name newName
-     * @return Reference to created named object
      */	
     public NamedObj(String newName) {
         super();
-	name = newName;
+	_name = newName;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
     /** Get the name of the object
-     * @return The object name
      */	
     public String getName() {
-        return name;
+        return _name;
     }
 
    /** Set the name of the object
-     * @param name newName
      */	
     public void setName(String newName) {
-        name = newName;
+        _name = newName;
     }
 
     /** Specify the specific instance's place in the
      * universe-galaxy-star hierarchy. The default implementation
      * returns names that might look like
      * 
-     * <P> universe.galaxy.star.port <P>
+     * <P> .universe.galaxy.star.port <P>
      * 
      * for a porthole; the output is the fullName of the container, plus
      * a period, plus the name of the NamedObj it is called on.
@@ -92,36 +87,39 @@ public class NamedObj {
      * @return The full object name
      */
     public String getFullName() {
-        if(container == null) { return "." + name; }
-        else { return container.getFullName() + "." + name; }
+        if(_container == null) { return "." + _name; }
+        else { return _container.getFullName() + "." + _name; }
     }
 
     /** Get the container entity
-     * @return The container entity
      */	
     public Entity getContainer() {
-        return container;
+        return _container;
     }
 
     /** Set the container entity
-     * @param newContainer An entity to be the new container
-     * @return void
      */	
     public void setContainer(Entity newContainer) {
-        container = newContainer;
+        _container = newContainer;
     }
 
     /** Prepare the object for system execution 
      * (do nothing at this level - define in derived class)
-     * @return void
      */	
     public void reset() {}
 
-    /** Print a description of the object
-     * @return A String describing the object
+    /** Return a description of the object
+     *  this method needed for Tcl Interface class
      */	
     public String toString() {
         return new String(getFullName() + ": " + getClass().getName());
+    }
+
+    /** Create a NamedObj whose name is a given string
+     *  this method needed for Tcl Interface class
+     */	
+    public static NamedObj valueOf (String newName) {
+        return new NamedObj(newName);
     }
 
 
@@ -140,9 +138,6 @@ public class NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* Private variables should not have doc comments, they should
-     * have regular comments.
-     */
-     private String name;            // name
-     private Entity container;       // container
+     private String _name;
+     private Entity _container;
 }
