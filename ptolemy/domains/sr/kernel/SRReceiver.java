@@ -37,18 +37,20 @@ import ptolemy.kernel.util.InternalErrorException;
 //////////////////////////////////////////////////////////////////////////
 //// SRReceiver
 /**
-   The receiver for the Synchronous Reactive (SR) domain.  This receiver is a
-   mailbox with capacity one.  The status of this receiver can be known (either
-   known to contain a token or known not to contain a token) or unknown.  The
-   isKnown() method returns true if the receiver has known status.  If the
-   receiver has known status, the hasToken() method returns whether the receiver
-   has a token.  If the receiver has unknown status, the hasToken() method
+
+   The receiver for the Synchronous Reactive (SR) domain.  This
+   receiver is a mailbox with capacity one.  The status of this
+   receiver can be known (either known to contain a token or known not
+   to contain a token) or unknown.  The isKnown() method returns true
+   if the receiver has known status.  If the receiver has known
+   status, the hasToken() method returns whether the receiver has a
+   token.  If the receiver has unknown status, the hasToken() method
    will throw an UnknownTokenException.
-   <p>
-   In the course of an iteration in SR, receivers can change from unknown status
-   to known status, but never the other way around, as shown by the transitions
-   in the diagram below.
-   <p>
+
+   <p> In the course of an iteration in SR, receivers can change from
+   unknown status to known status, but never the other way around, as
+   shown by the transitions in the diagram below.
+
    <pre>
    known values:     absent     value (present)
    ^         ^
@@ -58,26 +60,28 @@ import ptolemy.kernel.util.InternalErrorException;
    |   |
    unknown
    </pre>
-   <p>
-   The status is automatically set to known when the put() method or clear()
-   method is called.  Once a receiver becomes known, its value (or lack of a
-   value if it is absent) cannot change until the next call to reset().
-   The SRDirector calls reset() between iterations.
-   The hasRoom() method returns true if the state of the receiver is
-   unknown or if it is known but not absent, since only in these circumstances
-   can it accept a token. Attempting to change the status of a receiver
-   from present to absent or from absent to present will
-   result in an exception.  An exception will also be thrown if a receiver has
-   present status and it receives a token that is not the same as the one it
-   already contains (as determined by the isEqualTo() method of the token).
-   Thus, for an actor to be valid in SR, a firing must produce the same outputs
-   given the same inputs (in a given iteration).
-   <p>
-   Since the value of a receiver cannot change (once it is known) in the course
-   of an iteration, tokens need not be consumed.  A receiver retains its token
-   until the director calls the reset() method at the beginning of the next
-   iteration, which resets the receiver to have unknown status.  There is no way
-   for an actor to reset a receiver to have unknown status.
+
+   <p> The status is automatically set to known when the put() method
+   or clear() method is called.  Once a receiver becomes known, its
+   value (or lack of a value if it is absent) cannot change until the
+   next call to reset().  The SRDirector calls reset() between
+   iterations.  The hasRoom() method returns true if the state of the
+   receiver is unknown or if it is known but not absent, since only in
+   these circumstances can it accept a token. Attempting to change the
+   status of a receiver from present to absent or from absent to
+   present will result in an exception.  An exception will also be
+   thrown if a receiver has present status and it receives a token
+   that is not the same as the one it already contains (as determined
+   by the isEqualTo() method of the token).  Thus, for an actor to be
+   valid in SR, a firing must produce the same outputs given the same
+   inputs (in a given iteration).
+
+   <p> Since the value of a receiver cannot change (once it is known)
+   in the course of an iteration, tokens need not be consumed.  A
+   receiver retains its token until the director calls the reset()
+   method at the beginning of the next iteration, which resets the
+   receiver to have unknown status.  There is no way for an actor to
+   reset a receiver to have unknown status.
 
    @author Paul Whitaker, contributor: Christopher Hylands
    @version $Id$
@@ -192,8 +196,6 @@ public class SRReceiver extends AbstractReceiver {
      *  @exception IllegalArgumentException If the state is unknown.
      *  @see #hasToken()
      *  @since Ptolemy II 2.1
-     *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh)
      */
     public boolean hasToken(int numberOfTokens)
             throws IllegalArgumentException {

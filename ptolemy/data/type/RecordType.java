@@ -69,7 +69,7 @@ import ptolemy.kernel.util.InternalErrorException;
    constraint).
 
    @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
-   @version: $Id$
+   @version $Id$
    @since Ptolemy II 3.0
    @Pt.ProposedRating Red (neuendor)
    @Pt.AcceptedRating Red (cxh)
