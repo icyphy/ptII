@@ -459,7 +459,6 @@ proc testMatrixMatrixScalar {op types {matrixSize 2_2}} {
 }
 
 
-
 # Test an operation that takes a matrix and a scalar,
 # like add(long[][], long)
 proc testMatrixScalar {op types {matrixSize 2_2}} {
@@ -1435,6 +1434,18 @@ set types [list \
 	[list Long long long {{{0 0} {0 0}}}]]
 
 testMatrixMatrix subtract $types
+
+######################################################################
+####
+##  (NEW) *ArrayMath Test out double[] toComplexArray(xxx[])
+
+set types [list \
+	[list Double double double {{2.0 + 0.0i -1.0 + 0.0i}}] \
+	[list Float float float {{2.0 + 0.0i -1.0 + 0.0i}}] \
+	[list Integer int int {{2.0 + 0.0i -1.0 + 0.0i}}] \
+	[list Long long long {{2.0 + 0.0i -1.0 + 0.0i}}]]
+
+testArrayMathArray toComplexArray $types
 
 ######################################################################
 ####
