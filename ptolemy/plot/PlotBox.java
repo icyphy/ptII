@@ -34,6 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -834,6 +835,32 @@ public class PlotBox extends JPanel implements Printable {
      *  thread, since it interacts with swing.
      */
     public synchronized void setButtons(boolean visible) {
+
+        if (_printButton == null) {
+            // Load the image by using the absolute path to the gif.
+	    // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+	    // For more information, see
+	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
+            URL img = getClass().getResource("/ptolemy/plot/img/print.gif");
+            if (img != null) {
+                ImageIcon printIcon = new ImageIcon(img);
+                _printButton = new JButton(printIcon);
+                _printButton.setBorderPainted(false);
+            } else {
+                // Backup in case something goes wrong with the
+                // class loader.
+                _printButton = new JButton("P");
+            }
+	    // FIXME: If we failed to get an image, then the letter "P"
+	    // Is not likely to fit into a 20x20 button.
+            _printButton.setPreferredSize(new Dimension(20,20));
+            _printButton.setToolTipText("Print the plot.");
+            _printButton.addActionListener(new ButtonListener());
+            add(_printButton);
+        }
+        _printButton.setVisible(visible);
+
         if (_resetButton == null) {
             // Load the image by using the absolute path to the gif.
 	    // Using a relative location should work, but it does not.
@@ -2029,6 +2056,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @deprecated
      */
     protected void _setButtonsVisibility(boolean vis) {
+        _printButton.setVisible(vis);
         _fillButton.setVisible(vis);
         _formatButton.setVisible(vis);
         _resetButton.setVisible(vis);
@@ -2264,6 +2292,7 @@ public class PlotBox extends JPanel implements Printable {
                     int color = dataset % _colors.length;
                     graphics.setColor(_colors[color]);
                 }
+                // FIXME: The following fails when printing.
                 _drawPoint(graphics, dataset, urx-3, ypos-3, false);
 
                 graphics.setColor(_foreground);
@@ -3038,6 +3067,9 @@ public class PlotBox extends JPanel implements Printable {
     double _originalXlow = 0.0, _originalXhigh = 0.0,
         _originalYlow = 0.0, _originalYhigh = 0.0;
 
+    // A button for printing the plot
+    private transient JButton _printButton = null;
+
     // A button for filling the plot
     private transient JButton _resetButton = null;
 
@@ -3126,6 +3158,19 @@ public class PlotBox extends JPanel implements Printable {
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == _fillButton) {
                 fillPlot();
+            } else if (event.getSource() == _printButton) {
+                PrinterJob job = PrinterJob.getPrinterJob();
+                job.setPrintable(PlotBox.this);
+                if (job.printDialog()) {
+                    try {
+                        job.print();
+                    } catch (Exception ex) {
+                        Component ancestor = getTopLevelAncestor();
+                        JOptionPane.showMessageDialog(ancestor,
+                        "Printing failed:\n" + ex.toString(),
+                        "Print Error", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
             } else if (event.getSource() == _resetButton) {
                 resetAxes();
             } else if (event.getSource() == _formatButton) {
