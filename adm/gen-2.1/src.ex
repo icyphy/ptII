@@ -63,6 +63,7 @@ ptolemy/gui/JPanelTest.java
 ptolemy/copernicus/*/cg
 ptolemy/copernicus/c/test/java.lang.Object.c
 ptolemy/copernicus/c/test/java.lang.Object.h
+ptolemy/copernicus/deep
 ptolemy/copernicus/java/test/ptolemy*
 ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.class
 ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.java
@@ -116,8 +117,10 @@ ptolemy/media/test/tmp2.au
 ptolemy/moml/test/compat
 ptolemy/moml/test/compatDemo
 ptolemy/plot/adm
+ptolemy/plot/build.xml
 ptolemy/plot/Render
 ptolemy/plot/RenderApplication.*
+ptolemy/plot/servlet
 ptolemy/schematic
 ptolemy/system
 ptolemy/vergil/JModelViewer.java
