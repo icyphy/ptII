@@ -137,7 +137,8 @@ public class Effigy extends CompositeEntity {
         } else if (attribute == url) {
             URL u = url.getURL();
             if (u == null) {
-                _modifiableURL = false;
+                // A new model, with no URL, is by default modifiable.
+                _modifiableURL = true;
             } else {
                 String protocol = u.getProtocol();
                 if (!(protocol.equals("file"))) {

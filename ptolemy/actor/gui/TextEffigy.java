@@ -121,6 +121,7 @@ public class TextEffigy extends Effigy {
                 container.uniqueName("effigy"));
         Document doc = new DefaultStyledDocument();
         effigy.setDocument(doc);
+
         if (in != null) {
             // A URL has been given.  Read it.
             BufferedReader reader = new BufferedReader(
@@ -143,6 +144,9 @@ public class TextEffigy extends Effigy {
             } else {
                 effigy.setModifiable(false);
             }
+        } else {
+            // No document associated.  Allow modifications.
+            effigy.setModifiable(true);
         }
         effigy.url.setURL(in);
         return effigy;

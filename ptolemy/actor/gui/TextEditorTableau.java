@@ -35,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JTextArea;
 
@@ -118,7 +119,8 @@ public class TextEditorTableau extends Tableau {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** If the specified effigy already contains a tableau named
+	/** If the specified effigy is a TextEffigy and it
+         *  already contains a tableau named
          *  "textTableau", then return that tableau; otherwise, create
          *  a new instance of TextEditorTableau in the specified
          *  effigy, and name it "textTableau" and return that tableau.
@@ -154,43 +156,48 @@ public class TextEditorTableau extends Tableau {
                 return tableau;
 	    } else {
                 // The effigy is not an instance of TextEffigy.
-                // See whether it contains an instance of TextEffigy,
-                // and if it does return that instance.
-                List effigies = effigy.entityList(TextEffigy.class);
-                if (effigies.size() > 0) {
-                    TextEffigy textEffigy = (TextEffigy)effigies.get(0);
-                    return createTableau(textEffigy);
-                } else {
-                    // It does not contain an instance of TextEffigy.
-                    // Attempt to use it's url attribute and create a new
-                    // instance of TextEffigy contained by the specified one.
-                    URL url = effigy.url.getURL();
-                    TextEffigy textEffigy;
-                    if (effigy instanceof PtolemyEffigy) {
-                        // NOTE: It seems unfortunate here to have
-                        // to distinctly support MoML.  Would it make
-                        // sense for the Effigy base class to have a method
-                        // that gives a textual description of the data?
-                        String moml = ((PtolemyEffigy)effigy)
-                            .getModel().exportMoML();
-                        textEffigy =
-                            TextEffigy.newTextEffigy(effigy, moml);
-                    } else {
-                        textEffigy =
-                            TextEffigy.newTextEffigy(effigy, url, url);
+                // See whether it contains an instance of TextEffigy
+                // named "textEffigy", and if it does return that instance.
+                Iterator effigies = effigy
+                        .entityList(TextEffigy.class).iterator();
+                while (effigies.hasNext()) {
+                    TextEffigy textEffigy = (TextEffigy)effigies.next();
+                    if (textEffigy.getName().equals("textEffigy")) {
+                        return createTableau(textEffigy);
                     }
-                    TextEditorTableau textTableau =
-                        (TextEditorTableau)createTableau(textEffigy);
+                }
+                // It does not contain an instance of TextEffigy with
+                // the name "textEffigy".
+                // Attempt to use it's url attribute and create a new
+                // instance of TextEffigy contained by the specified one.
+                URL url = effigy.url.getURL();
+                TextEffigy textEffigy;
+                if (effigy instanceof PtolemyEffigy) {
+                    // NOTE: It seems unfortunate here to have
+                    // to distinctly support MoML.  Would it make
+                    // sense for the Effigy base class to have a method
+                    // that gives a textual description of the data?
+                    String moml = ((PtolemyEffigy)effigy)
+                            .getModel().exportMoML();
+                    textEffigy =
+                            TextEffigy.newTextEffigy(effigy, moml);
                     // FIXME: Eventually, it would be nice that this be
                     // editable if the PtolemyEffigy is modifiable.
                     // But this requires having an "apply" button.
-                    textTableau.setEditable(false);
-                    if (url != null) {
-                        textEffigy.identifier.setExpression(
-                                url.toExternalForm());
-                    }
-                    return textTableau;
+                    textEffigy.setModifiable(false);
+                    textEffigy.setName("textEffigy");
+                } else {
+                    textEffigy =
+                            TextEffigy.newTextEffigy(effigy, url, url);
+                    textEffigy.setName("textEffigy");
                 }
+                TextEditorTableau textTableau =
+                        (TextEditorTableau)createTableau(textEffigy);
+                if (url != null) {
+                    textEffigy.identifier.setExpression(
+                            url.toExternalForm());
+                }
+                return textTableau;
             }
 	}
     }

@@ -37,6 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.gui.style.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.CloseListener;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -116,11 +117,18 @@ public class ModelPane extends JPanel implements CloseListener {
                     _controlPanel, BoxLayout.Y_AXIS));
             _controlPanel.setBorder(
                     BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            // Add a listener that requests the focus when we click
+            // in the pane. This allows keyboard bindings to work.
+            ClickListener clickListener = new ClickListener();
+            _controlPanel.addMouseListener(clickListener);
+            _controlPanel.addKeyListener(new CommandListener());
 
             if ((show & BUTTONS) != 0) {
                 _buttonPanel = new JPanel();
                 _buttonPanel.setLayout(new BoxLayout(
                         _buttonPanel, BoxLayout.X_AXIS));
+                _buttonPanel.addMouseListener(clickListener);
+
                 // Padding top and bottom...
                 _buttonPanel.setBorder(
                         BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -446,4 +454,82 @@ public class ModelPane extends JPanel implements CloseListener {
 
     // Indicator given to the constructor of how much to show.
     private int _show;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    private class ClickListener extends MouseAdapter {
+        public void mouseClicked(MouseEvent e) {
+            _controlPanel.requestFocus();
+        }
+    }
+
+    private class CommandListener extends KeyAdapter {
+        public void keyPressed(KeyEvent e) {
+            int keycode = e.getKeyCode();
+            switch(keycode) {
+            case KeyEvent.VK_CONTROL:
+                _control = true;
+                break;
+            case KeyEvent.VK_SHIFT:
+                _shift = true;
+                break;
+            case KeyEvent.VK_ENTER:
+                startRun();
+                break;
+            case KeyEvent.VK_G:
+                if (_control) {
+                    startRun();
+                }
+                break;
+            case KeyEvent.VK_H:
+                if (_control) {
+                    MessageHandler.message(_helpString);
+                }
+                break;
+            case KeyEvent.VK_M:
+                if (_control && _model != null) {
+                    System.out.println(_model.exportMoML());
+                    MessageHandler.message("Exported MoML to standard out.");
+                }
+                break;
+            case KeyEvent.VK_S:
+                if (_control) {
+                    stopRun();
+                }
+                break;
+            case KeyEvent.VK_SLASH:
+                if (_shift) {
+                    // Question mark is SHIFT-SLASH
+                    MessageHandler.message(_helpString);
+                }
+                break;
+            default:
+                // None
+            }
+        }
+
+        public void keyReleased(KeyEvent e) {
+            int keycode = e.getKeyCode();
+            switch(keycode) {
+            case KeyEvent.VK_CONTROL:
+                _control = false;
+                break;
+            case KeyEvent.VK_SHIFT:
+                _shift = false;
+                break;
+            default:
+                // None
+            }
+        }
+
+        private boolean _control = false;
+        private boolean _shift = false;
+        private String _helpString = "Key bindings in button panel:\n"
+                + "  Control-G: Start a run.\n"
+                + "  Control-H: Display help.\n"
+                + "  Control-M: Export MoML to standard out.\n"
+                + "  Control-S: Stop a run.\n"
+                + "  ?: Display help.\n";
+    }
 }
