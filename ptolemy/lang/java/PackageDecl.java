@@ -74,6 +74,7 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
     }
 
     public final Environ getEnviron() {
+	ApplicationUtility.trace("PackageDecl.getEnviron()" + getName());
         if (_environ == null) {
             _initEnviron();
         }
@@ -87,16 +88,29 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
     public final boolean hasEnviron() { return true; }
 
     protected void _initEnviron() {
+	/* SDFCodeGeneratorClassFactory.createPtolemyTypeIdentifier()
+	 * PtolemyTypeIdentifier has a static section that calls
+	 * StaticResolution.load().
+	 * StaticResolution has a static section that calls
+	 * StaticResolution.importPackage on java.lang.
+	 * StaticResolution.importPackage calls
+	 * StaticResolution.SYSTEM_PACKAGE.getEnviron(), which calls
+	 * PackageDecl.getEnviron(), which calls this method
+	 * 
+	 * The way to see this is to edit ../ApplicationUtility
+	 * and set enableTrace to true and the recompile.
+	 */
 
-        //ApplicationUtility.trace("_initEnviron");
+        ApplicationUtility.trace("PackageDecl._initEnviron("
+				 + _container + ")");
 
         boolean empty = true;
 
         if (_container == null) {
-            //ApplicationUtility.trace("_initEnviron : no container");
+            ApplicationUtility.trace("_initEnviron : no container");
             _environ = new Environ(null);
         } else {
-            //ApplicationUtility.trace("_initEnviron : has container");
+            ApplicationUtility.trace("_initEnviron : has container");
             _environ = new Environ(_container.getEnviron());
         }
 
@@ -108,8 +122,9 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
             subdir = subdir + File.separatorChar;
         }
 
-        //ApplicationUtility.trace("subdir = " + subdir);
-        //ApplicationUtility.trace("found " + paths.size() + " class paths");
+        ApplicationUtility.trace("PackageDecl: subdir = " + subdir);
+	ApplicationUtility.trace("PackageDecl: found " + paths.size() +
+				 " class paths" + paths.toString());
 
         for (int i = 0; i < paths.size(); i++) {
             String path = (String) paths.get(i);

@@ -114,12 +114,12 @@ public class ResolveImportsVisitor extends JavaVisitor
 
     protected final void _importOnDemand(PackageDecl importedPackage) {
 
-        ApplicationUtility.trace("importOnDemand : importing " +
+        ApplicationUtility.trace("ResolveImportsVisitor._importOnDemand : importing " +
                 importedPackage.toString());
 
         // ignore duplicate imports
         if (_importedPackages.contains(importedPackage)) {
-            ApplicationUtility.warn("importOnDemand : ignoring duplicated package "
+            ApplicationUtility.warn("ResolveImportsVisitor._importOnDemand : ignoring duplicated package "
                     + importedPackage.toString());
             return;
         }
@@ -134,12 +134,12 @@ public class ResolveImportsVisitor extends JavaVisitor
             JavaDecl type = (JavaDecl) envItr.next();
 
             if (type.category != CG_PACKAGE) {
-                ApplicationUtility.trace("importOnDemand: adding " + type.toString());
+                ApplicationUtility.trace("_importOnDemand: adding " + type.toString());
                 _importEnv.add(type); // conflicts appear on use only
             }
         }
 
-        ApplicationUtility.trace("importOnDemand : finished" +
+        ApplicationUtility.trace("_importOnDemand : finished" +
                 importedPackage.toString());
     }
 

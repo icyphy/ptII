@@ -268,10 +268,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             if ((categories & CG_PACKAGE) != 0) {
                 message += "\n\nClasspath error?\n\n";
             }
+	    String envString = env.toString();
+	    if (envString.length() > 100 ) {
+		envString = new String(envString.substring(100) + "...");
+	    }
+
             message += "Symbol name: \"" +
                 name.getIdent() + "\" is undefined in the environment.\n" +
-                "Able to find: " + (env.toString()).substring(100) + "...";
-
+                "Able to find: " + envString + "\n" +
+		"Current Class: " +
+		((currentClass == null) ? "null " : currentClass.toString()) +
+		"Current Package: " +
+		((currentPackage == null) ?
+		 "null " : currentPackage.fullName()) +
+		" categories :" + categories;
             ApplicationUtility.error(message);
         }
 
@@ -287,7 +297,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             TypeNameNode currentClass, JavaDecl currentPackage,
             int categories) {
 
-        ApplicationUtility.trace("resolveAName : " + nameString(name));
+        ApplicationUtility.trace("StaticResolution.resolveAName(): " +
+				 nameString(name));
 
         // check to whether or not we have already resolved the name
         if (name.hasProperty(DECL_KEY)) {
@@ -482,6 +493,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  source. Otherwise do partial resolution only.
      */
     public static CompileUnitNode load(String filename, int pass) {
+	ApplicationUtility.trace("StaticResolution.load(" + filename + ", " +
+			   pass + ")");
+
         return load(new File(filename), pass);
     }
 
@@ -499,7 +513,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  do partial resolution only.
      */
     public static CompileUnitNode loadCanonical(String filename, int pass) {
-        ApplicationUtility.trace(">loading " + filename);
+        ApplicationUtility.trace("StaticResolution: loading " + filename);
 
         String noExtensionName = StringManip.partBeforeLast(filename, '.');
 
@@ -701,16 +715,16 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         // dummy environment
         Environ env = new Environ();
 
-        ApplicationUtility.trace("--- loading java.lang package ---");
+        ApplicationUtility.trace("StaticResolution: --- loading java.lang package ---");
 
         NameNode javaLangName = (NameNode) makeNameNode("java.lang");
         JAVA_LANG_PACKAGE = importPackage(env, javaLangName);
 
-        ApplicationUtility.trace("--- require class on Object ---");
+        ApplicationUtility.trace("StaticResolution: --- require class on Object ---");
 
         OBJECT_DECL = _requireClass(env, "Object");
 
-        ApplicationUtility.trace("--- done require class on Object ---");
+        ApplicationUtility.trace("StaticResolution: --- done require class on Object ---");
 
         OBJECT_TYPE = OBJECT_DECL.getDefType();
 
@@ -756,7 +770,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         CLASS_DECL  = _requireClass(env, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
 
-        ApplicationUtility.trace("--- 1st buildEnvironments ---");
+        ApplicationUtility.trace("StaticResolution: --- 1st buildEnvironments ---");
 
         buildEnvironments();
     }
