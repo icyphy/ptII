@@ -126,7 +126,7 @@ foreach i $configs {
 			}
 			if {![java::isnull $fieldObj]} {
 			    set dottedName [$fieldObj getName $entity]
-			    set sanitizedName [java::call ptolemy.copernicus.kernel.SootUtilities sanitizeName $dottedName]
+			    set sanitizedName [java::call ptolemy.kernel.util.StringUtilities sanitizeName $dottedName]
 			    if {"$sanitizedName" != "$field"} {
 				set msg "\n\nIn '$className'\n\
 					The getName() method returns\n \
@@ -184,4 +184,3 @@ foreach i $configs {
 	list $results
     } {{}}
 }
-
