@@ -43,7 +43,7 @@ so occurrence is a bug. This exception supports all the constructor
 forms of KernelException, but is implemented as a RuntimeException
 so that it does not have to be declared.
 
-@author Edward A. Lee
+@author Edward A. Lee, Jie Liu
 @version $Id$
 */
 public class InvalidStateException extends RuntimeException {
@@ -106,13 +106,20 @@ public class InvalidStateException extends RuntimeException {
      *  @param objects The enumeration of Nameable objects
      *  @param detail The message.
      */
-    public InvalidStateException( Enumeration objects, String detail) {
-        // This method is called in ComponentPort
+    public InvalidStateException(Enumeration objects, String detail) {
         String prefix = "";
+        String name;
         while(objects.hasMoreElements()) {
-            Nameable obj = (Nameable)objects.nextElement();
-            prefix +=  _getFullName(obj)+": ";
+            Object obj = objects.nextElement();
+            if (obj instanceof Nameable) {
+                name = _getFullName((Nameable)obj);
+            } else {
+                name = "<Object of class " + 
+                    (obj.getClass()).getName() + ">";
+            }
+            prefix += name + ", ";
         }
+        prefix += ": ";
         _setMessage(prefix);
         if (detail != null) {
             if (!detail.equals("")) {
