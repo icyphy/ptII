@@ -287,9 +287,9 @@ can also pass <CODE>pxgraph</CODE> command line arguments.
 For example, the HTML below would plot two datafiles at once.  The title
 of the plot would be <CODE>Two datafiles</CODE>.
 <PRE>
-&lt;APPLET name="twofiles" CODE="ptplot.PlotApplet" Height=400 Width=400
-    codebase="../.."
-    archive="ptplot/ptplot.zip"
+&lt;APPLET name="twofiles" CODE="pt.plot.PlotApplet" Height=400 Width=400
+    codebase="../../.."
+    archive="pt/plot/ptplot.zip"
     alt="If you had a java-enabled browser, you would see an applet here."
 &gt;
 &lt;param name="pxgraphargs" value="-t 'Two datafiles' file1.plt file2.plt"&gt;
@@ -320,10 +320,10 @@ cd ptplot
 cp doc/internals/PlotApplication.java .
 </pre>
 
-<li> Set your <CODE>CLASSPATH</CODE> to point to the directory
+<li> Set your <CODE>CLASSPATH</CODE> to point to two directories
 above the ptplot directory:
 <pre>
-setenv CLASSPATH ..
+setenv CLASSPATH ../..
 </pre>
 Note that you might want to use an absolute path for your 
 <CODE>CLASSPATH</CODE> if you plan on using <CODE>PlotApplication</CODE>
@@ -339,7 +339,7 @@ javac PlotApplication.java
 
 <li> Run the class with a sample datafile:
 <pre>
-java ptplot.PlotApplication demo/data.plt
+java pt.plot.PlotApplication demo/data.plt
 </pre>
 </ol>
 </DL>

@@ -33,7 +33,7 @@ messages like:
 <PRE>
 Applet Marks can't start: security violation: security.class 
 from local disk trying to access url: 
-http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
+http://ptolemy.eecs.berkeley.edu/java/pt/plot/demo/data.plt
 </PRE>
 
 <H3><CODE>pxgraph</CODE> script fails with: Unable to initialize threads: cannot find class</H3>
@@ -58,11 +58,11 @@ Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
 </PRE>
 For further debugging, you might find it helpful to follow the instructions below.
  <HR>
-<H3><CODE>pxgraph</CODE> script fails with: Can't find class ptplot.Pxgraph</H3>
+<H3><CODE>pxgraph</CODE> script fails with: Can't find class pt.plot.Pxgraph</H3>
 Here is an example
 <PRE>
 carson [3] pxgraph -help
-Can't find class ptplot.Pxgraph
+Can't find class pt.plot.Pxgraph
 carson [4] 
 </PRE>
 
@@ -98,23 +98,23 @@ JAVAHOME=/opt/jdk1.1.4
 + [ -z /opt/jdk1.1.4 ] 
 + [ ! -r /opt/jdk1.1.4/lib/classes.zip ] 
 + [ no = yes ] 
-+ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help 
-Can't find class ptplot.Pxgraph
++ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip pt.plot.Pxgraph -help 
+Can't find class pt.plot.Pxgraph
 carson [11] 
 </PRE>
 
 In the output below, the key line is the line towards that bottom that
 runs the <CODE>java</CODE> interpreter:
 <PRE>
-+ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help 
++ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip pt.plot.Pxgraph -help 
 </PRE>
 In the pxgraph script, the first element in the <CODE>-classpath</CODE>
 argument should point lead to the <CODE>ptplot.zip</CODE> file.
-In this case, <CODE>/users/cxh/ptbuild/tycho/java/ptplot/ptplot.zip</CODE> 
+In this case, <CODE>/users/cxh/ptbuild/tycho/java/pt/plot/ptplot.zip</CODE> 
 should exist, but it does not:
 <PRE>
-carson [12] ls -l /users/cxh/ptbuild/tycho/java/ptplot/ptplot.zip
-/users/cxh/ptbuild/tycho/java/ptplot/ptplot.zip not found
+carson [12] ls -l /users/cxh/ptbuild/tycho/java/pt/plot/ptplot.zip
+/users/cxh/ptbuild/tycho/java/pt/plot/ptplot.zip not found
 </PRE>
 In this case the problem was that the user did not have Ptplot installed
 in the location that the <CODE>pxgraph</CODE> script was guessing.
@@ -122,7 +122,7 @@ The fix was to install it.
  <P>Another common fix is to edit the <CODE>pxgraph</CODE> script
 and change the variables at the top to point to the proper location.
 See the Pxgraph 
-<A HREF="../codeDoc/ptplot.Pxgraph.html#Installation Instructions">Installation Instructions</A> for details.
+<A HREF="../codeDoc/pt.plot.Pxgraph.html#Installation Instructions">Installation Instructions</A> for details.
 
 
  <HR>
@@ -130,9 +130,9 @@ See the Pxgraph
 If you try to run the Pxgraph class by passing the Pxgraph classname as a command line argument to the java interpreter, you might see:
 <PRE>
 ptplot&gt; java Pxgraph
-java.lang.NoClassDefFoundError: ptplot/Plot
-        at ptplot.Pxgraph.&lt;init&gt;(Pxgraph.java)
-        at ptplot.Pxgraph.main(Pxgraph.java)
+java.lang.NoClassDefFoundError: pt/plot/Plot
+        at pt.plot.Pxgraph.&lt;init&gt;(Pxgraph.java)
+        at pt.plot.Pxgraph.main(Pxgraph.java)
 </PRE>
 The problem here is that the Ptplot java classes are in the Ptplot java
 package, so you need to set your CLASSPATH to the directory that
@@ -144,7 +144,7 @@ would set your classpath to <CODE>/usr/local/java</CODE>
  <P>The following two examples show two ways to set your classpath.
 <PRE>
 cxh@carson 32% setenv CLASSPATH ..:/opt/jdk1.1.4/lib/classes.zip
-cxh@carson 33% java ptplot.Pxgraph -help
+cxh@carson 33% java pt.plot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
  -bd &lt;color&gt; (Unsupported)
