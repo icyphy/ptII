@@ -897,7 +897,7 @@ fi
 
 # PTJAVA_DIR without /cygdrive
 # Use changequote here to preserve square brackets
-PTJAVA_DIR_NO_CYGWIN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+PTJAVA_DIR_NO_CYGDRIVE="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 
 #
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
@@ -4790,7 +4790,7 @@ s%@PTJACL_JAR@%$PTJACL_JAR%g
 s%@PTJAI_DIR@%$PTJAI_DIR%g
 s%@PTJAI_PACKAGES@%$PTJAI_PACKAGES%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
-s%@PTJAVA_DIR_NO_CYGWIN@%$PTJAVA_DIR_NO_CYGWIN%g
+s%@PTJAVA_DIR_NO_CYGDRIVE@%$PTJAVA_DIR_NO_CYGDRIVE%g
 s%@PTJAVA_HOME@%$PTJAVA_HOME%g
 s%@PTJAVA3D_DIR@%$PTJAVA3D_DIR%g
 s%@PTJHDL_DIR@%$PTJHDL_DIR%g
