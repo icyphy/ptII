@@ -164,11 +164,24 @@ public class MouseFilter {
         if (_pressNumber != -1 &&
                 event.getClickCount() != _pressNumber) return false;
         int m = event.getModifiers();
+        // FIXME: Java people have broken the mask mechanism!
+        // When you right click, this gets called with m=4,
+        // indicating that the right mouse button was used.
+        // Unfortunately, the _modifierMask includes the bit
+        // corresponding to m=4 (for Shift?).  Since no
+        // modifiers are required, _modifierFlags = 0, and
+        // this test is never satisfied by a right click.
+        // The result is that when you right click on a
+        // connection between actors, the interactor for
+        // connector does not accept the event, and the
+        // event gets passed to the background graph,
+        // which accepts it and produces the wrong
+        // context menu.
         boolean val = (m & _buttonMask) != 0 &&
-            (_modifierFlags == (m & _modifierMask));
-//         System.out.println("event = " + event);
-//         System.out.println("FILTER = " + this);
-//         System.out.println("ACCEPT? = " + val);
+                (_modifierFlags == (m & _modifierMask));
+        // System.out.println("event = " + event);
+        // System.out.println("FILTER = " + this);
+        // System.out.println("ACCEPT? = " + val);
         return val;
     }
 
