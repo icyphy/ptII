@@ -94,7 +94,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Note that fixing this will probably move the accept method
             // into some sort of factory object (instead of cloning
             // existing styles).
-            parameterStyles = new ParameterEditorStyle[7];
+            parameterStyles = new ParameterEditorStyle[8];
             parameterStyles[0] = new LineStyle();
             parameterStyles[0].setName("Line");
             parameterStyles[1] = new CheckBoxStyle();
@@ -109,6 +109,8 @@ public class StyleConfigurer extends Query implements QueryListener {
             parameterStyles[5].setName("FileChooser");
             parameterStyles[6] = new NotEditableLineStyle();
             parameterStyles[6].setName("Fixed");
+            parameterStyles[7] = new PasswordStyle();
+            parameterStyles[7].setName("Password");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(ex.getMessage());
         }

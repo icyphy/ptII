@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy polymorphic actor classes
+# Makefile for GUI Styles
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -58,6 +58,7 @@ JSRCS = \
 	LineStyle.java \
 	NotEditableLineStyle.java \
 	ParameterEditorStyle.java \
+	PasswordStyle.java \
 	StyleConfigurer.java \
 	TextStyle.java
 
