@@ -186,7 +186,7 @@ jnlp_clean:
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
-KEYDNAME = "CN=Claudius Ptolemaus, OU=Ptolemy Project, O=UC Berkeley, L=Berkeley, S=California, C=US"
+KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US "
 KEYSTORE = ptKeystore
 KEYALIAS = claudius
 # The password should not be stored in a makefile, for production
@@ -370,10 +370,13 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_DIR=/vol/ptolemy/pt0/ptweb/ptolemyII/ptII2.0/jnlp
-DIST_URL=http://ptolemy.eecs.berkeley.edu:/ptolemyII/ptII2.0/jnlp
+DIST_DIR = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII2.0/jnlp
+DIST_URL = http://ptolemy.eecs.berkeley.edu:/ptolemyII/ptII2.0/jnlp
+OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif
 jnlp_dist:
 	rm -f $(JNLPS)
 	$(MAKE) PTII_LOCALURL=$(DIST_URL) $(JNLPS)
-	tar -cf - $(ALL_JNLP_JARS) $(JNLPS) | (cd $(DIST_DIR); tar -xpf -)
+	tar -cf - $(ALL_JNLP_JARS) $(JNLPS) \
+		$(OTHER_FILES_TO_BE_DISTED) | \
+		(cd $(DIST_DIR); tar -xpf -)
 	cp doc/webStartHelp.htm $(DIST_DIR)
