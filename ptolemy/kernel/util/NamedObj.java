@@ -461,6 +461,8 @@ public class NamedObj implements
             }
             newObject._elementName = _elementName;
             newObject._source = _source;
+            
+            newObject._override = null;
 
             // NOTE: The value for the classname and superclass isn't
             // correct if this cloning operation is meant to create
@@ -654,7 +656,7 @@ public class NamedObj implements
      *  @return A MoML description, or an empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isDerived()
+     *  @see #getDerivedLevel()
      */
     public final String exportMoML() {
         try {
@@ -678,7 +680,7 @@ public class NamedObj implements
      *  @return A MoML description, or the empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isDerived()
+     *  @see #getDerivedLevel()
      */
     public final String exportMoML(String name) {
         try {
@@ -706,7 +708,7 @@ public class NamedObj implements
      *  @param output The stream to write to.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isDerived()
+     *  @see #getDerivedLevel()
      */
     public final void exportMoML(Writer output) throws IOException {
         exportMoML(output, 0);
@@ -725,7 +727,7 @@ public class NamedObj implements
      *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isDerived()
+     *  @see #getDerivedLevel()
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
         exportMoML(output, depth, getName());
@@ -771,7 +773,7 @@ public class NamedObj implements
      *  @exception IOException If an I/O error occurs.
      *  @see #clone(Workspace)
      *  @see #isPersistent()
-     *  @see #isDerived()
+     *  @see #getDerivedLevel()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
@@ -1166,7 +1168,7 @@ public class NamedObj implements
      *  @return The level above this object in the containment
      *   hierarchy where a parent-child relationship defines this object.
      *  @see Instantiable
-     *  @see setDerivedLevel(int)
+     *  @see #setDerivedLevel(int)
      */
     public int getDerivedLevel() {
         return _derivedLevel;
@@ -1205,6 +1207,8 @@ public class NamedObj implements
      *   not exists and cannot be created.
      */
     public List propagateExistence() throws IllegalActionException {
+        // Otherwise, _override probably doesn't get set in the
+        // derived object that is created.
         return _getDerivedList(null, false, true, this, 0, null, null);
     }
 
@@ -1220,6 +1224,8 @@ public class NamedObj implements
     public List propagateValue() throws IllegalActionException {
         List override = new LinkedList();
         override.add(new Integer(0));
+        // Mark this object as having been modified directly.
+        _override = override;
         return _getDerivedList(null, true, false, this, 0, override, null);
     }
 
@@ -1410,7 +1416,7 @@ public class NamedObj implements
      *  @exception NameDuplicationException Not thrown in this base class.
      *   May be thrown by derived classes if the container already contains
      *   an object with this name.
-     *  @see #isDerived()
+     *  @see #getDerivedLevel()
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
@@ -2064,6 +2070,7 @@ public class NamedObj implements
      *  @return Return true to suppress MoML export.
      */
     protected boolean _suppressMoML(int depth) {
+        
         // Check whether suppression of MoML has been explicitly
         // requested.
         if (_isPersistent != null) {
@@ -2093,6 +2100,10 @@ public class NamedObj implements
             // above in the hierarchy where we are exporting.
             return false;
         }
+        // At this point, we know the object is implied.
+        // However, we may need to export anyway because it
+        // may have an overridden value.
+        
         // Export MoML if the value of the object is
         // propagated in but from outside the scope
         // of the export.
@@ -2111,8 +2122,9 @@ public class NamedObj implements
         }
 
         // If we get here, then this object is a derived object
-        // that has not been modified, and all its contained
-        // objects have not been modified. In this case,
+        // whose value is defined somewhere within the scope
+        // of the export, and all its contained
+        // objects do not need to export MoML. In this case,
         // it is OK to suppress MoML.
         return true;
     }
@@ -2245,9 +2257,13 @@ public class NamedObj implements
                 // Create a new override list to pass to the container.
                 List newOverride = null;
                 if (propagate) {
-                    newOverride = new LinkedList(override); 
-                    // Prepend a new element to the list, indicating depth.
-                    newOverride.add(0, new Integer(0));
+                    newOverride = new LinkedList(override);
+                    // If the override list is not long enough for the
+                    // new depth, make it long enough. It should at most
+                    // be one element short.
+                    if (newOverride.size() <= depth + 1) {
+                        newOverride.add(new Integer(0));
+                    }
                 }
                 result.addAll(_getDerivedList(
                                       visited,
@@ -2265,15 +2281,11 @@ public class NamedObj implements
             }
 
             // Extract the current breadth from the list.
-            int breadth = 0;
+            int myBreadth = 0;
             if (propagate) {
-                breadth = ((Integer)override.get(0)).intValue();
+                myBreadth = ((Integer)override.get(depth)).intValue();
             }
             
-            // Increment the breadth by one to represent the parent
-            // relationship.
-            breadth = breadth + 1;
-
             // Iterate over the children.
             List othersList = ((Instantiable)context).getChildren();
             if (othersList != null) {
@@ -2328,29 +2340,15 @@ public class NamedObj implements
                         List newOverride = null;
 
                         // If the propagate argument is true, then determine
-                        // whether the object is shadowed, and if it is not,
+                        // whether the candidate object is shadowed, and if it is not,
                         // then apply the propagation change to it.
                         if (propagate) {
                             // Is it shadowed?
-                            int candidateDepth = Integer.MAX_VALUE;
-                            int candidateBreadth = Integer.MAX_VALUE;
-                            if (candidate._override != null) {
-                                candidateDepth = candidate._override.size();
-                                if (candidateDepth > 0) {
-                                    candidateBreadth = ((Integer)candidate
-                                            ._override.get(0)).intValue();
-                                }
-                            }
-                            int myDepth = override.size();
-                            int myBreadth = ((Integer)override.get(0)).intValue();
-                            if (candidate._isPersistent == Boolean.TRUE
-                                    || (candidate._override != null
-                                    && candidateDepth < myDepth)
-                                    || (candidateDepth == myDepth
-                                    && candidateBreadth < myBreadth)) {
-                                // Yes, it is.
+                            if (_isShadowed(candidate._override, override)) {
+                                // Yes it is.
                                 continue;
                             }
+
                             // FIXME: If the following throws an exception, we have
                             // to somehow restore values of previous propagations.
                             _propagateValue(candidate);
@@ -2360,7 +2358,7 @@ public class NamedObj implements
 
                             // Create a new override list to pass to the candidate.
                             newOverride = new LinkedList(override);
-                            newOverride.add(0, new Integer(breadth));
+                            newOverride.set(depth, new Integer(myBreadth + 1));
                         }
 
                         result.add(candidate);
@@ -2389,6 +2387,53 @@ public class NamedObj implements
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return true if the first argument (an _override list)
+     *  indicates that the object owning that override list should
+     *  be shadowed relative to a change made via the path defined by
+     *  the second override list.
+     *  @param candidate The override list of the candidate for a change.
+     *  @param changer The override list for a path for the change.
+     *  @return True if the candidate is shadowed.
+     */
+    private boolean _isShadowed(List candidate, List changer) {
+        if (candidate == null) {
+            return false;
+        }
+        if (changer == null) {
+            // Probably it makes no sense for the second argument
+            // to be null, but in case it is, we declare that there
+            // is shadowing if it is.
+            return true;
+        }
+        // If the the candidate object has a value that has been
+        // set more locally (involving fewer levels of the hierarchy)
+        // than the proposed changer path, then it is shadowed.
+        if (candidate.size() < changer.size()) {
+            return true;
+        }
+        // If the sizes are equal, then we need to compare the
+        // elements of the list, starting with the last.
+        if (candidate.size() == changer.size()) {
+            int index = candidate.size() - 1;
+            while (index >= 0
+                    && candidate.get(index).equals(changer.get(index))) {
+                index--;
+            }
+            if (index < 0) {
+                // The two lists are identical, so there be no shadowing.
+                return false;
+            } else {
+                int candidateBreadth = ((Integer)candidate.get(index)).intValue();
+                int changerBreadth = ((Integer)changer.get(index)).intValue();
+                if (candidateBreadth < changerBreadth) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     /** Mark this object and its contents as being derived objects,
