@@ -140,6 +140,14 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             getContentPane().setLayout(
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
+
+            // The 2 argument requests a go and stop button.
+            // We call _getStopTime() below, so we should set up the
+            // run control panels so that the stop time is set so that
+            // if we hit restore plot size in the Events plotter then
+            // it restores to 0-100 instead of 0-1
+            getContentPane().add(_createRunControls(2));
+
             _query = new Query();
             _query.setBackground(getBackground());
             _query.addLine("busmean", "Bus mean interarrival time", "1.0");
@@ -229,9 +237,6 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             average.input.link(rel3);
             _toplevel.connect(average.output, _recorder.input);
             _initCompleted = true;
-
-            // The 2 argument requests a go and stop button.
-            getContentPane().add(_createRunControls(2));
 
         } catch (Exception ex) {
             report("Setup failed:", ex);
