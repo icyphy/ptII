@@ -79,15 +79,17 @@ public class Location extends SingletonAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a listener to be notified when the value of this settable
-     *  object changes.
+    /** Add a listener to be notified when the value of this attribute changes.
+     *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
      */
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
-        _valueListeners.add(listener);
+        if (!_valueListeners.contains(listener)) {
+            _valueListeners.add(listener);
+        }
     }
 
     /** Clone the location into the specified workspace. The new object is
