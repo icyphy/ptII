@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ASTReflect.java \
 	ChangeTypesVisitor.java \
 	ClassDecl.java \
 	ExprUtility.java \
