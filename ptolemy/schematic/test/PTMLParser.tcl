@@ -57,14 +57,12 @@ test PTMLParser-2.1 {parser tests} {
 } {{<Document>
 <schematic version="1.0" name="SDF">
 <description>Icons for use within SDF</description>
-<entity name="Load BMP File" iconlibrary="examplelibrary.ptml">
+<entity name="Load BMP File" icon="examplelibrary.LoadImage">
 <description>Load the Image that will be transmitted and stored.</description>
-<entitytype ports="2" name="loadimage"></entitytype>
 <parameter value="" name="filename" type="string"></parameter>
 <port multiport="false" name="image" input="false" type="doubleArray" output="true"></port>
 </entity>
-<entity name="Save BMP file" iconlibrary="examplelibrary.ptml">
-<entitytype ports="2" name="saveimage"></entitytype>
+<entity name="Save BMP file" icon="examplelibrary.SaveImage">
 <parameter value="" name="filename" type="string"></parameter>
 <port multiport="false" name="image" input="true" type="doubleArray" output="false"></port>
 </entity>
@@ -111,14 +109,12 @@ test PTMLParser-2.4 {semantic tests:schematic.entity} {
     # uses setup above.
     set entityname [$entitynames nextElement]
     set e [$schematic getEntity $entityname]
-    set entitytype [$e getEntityType]
     set ps [$e parameters]
     set p [$ps nextElement]
     set ports [$e ports]
-    list [$e getName] [$entitytype toString] \
-[$p getName] [$p getType] [$p getValue] [$entitytype getName] 
-} {{Load BMP File} {<entitytype ports="2" name="loadimage"></entitytype>
-} filename string {} loadimage}
+    list [$e getName]\
+[$p getName] [$p getType] [$p getValue]  [$e getIcon]
+} {{Load BMP File} filename string {} examplelibrary.LoadImage}
 
 ######################################################################
 ####

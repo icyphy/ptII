@@ -4,15 +4,13 @@
 <schematic name="SDF" version="1.0">
 <description>Icons for use within SDF</description>
 
-<entity name="Load BMP File" iconlibrary="examplelibrary.ptml">
+<entity name="Load BMP File" icon="examplelibrary.LoadImage">
 <description>Load the Image that will be transmitted and stored.</description>
-<entitytype name="loadimage" ports="2"/>
 <parameter name="filename" type="string"/>
 <port name="image" output="true" type="doubleArray"/>
 </entity>
 
-<entity name="Save BMP file" iconlibrary="examplelibrary.ptml">
-<entitytype name="saveimage" ports="2"/>
+<entity name="Save BMP file" icon="examplelibrary.SaveImage">
 <parameter name="filename" type="string"/>
 <port name="image" input="true" type="doubleArray"/>
 </entity>
