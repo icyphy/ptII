@@ -332,7 +332,6 @@ public class Tableau extends CompositeEntity {
         if (frame != null) {
             if (!frame.isVisible()) {
                 size.setSize(frame);
-                frame.pack();
                 // NOTE: This used to override the location that might
                 // have been set in the _windowProperties attribute.
                 /*
@@ -340,7 +339,21 @@ public class Tableau extends CompositeEntity {
                   ((Top)frame).centerOnScreen();
                   }
                 */
+                frame.pack();
                 frame.setVisible(true);
+                // NOTE: The above calls Component.show()...
+                // We used to override Top.show() (Top extends JFrame)
+                // to call pack(), but this had the unfortunate side
+                // effect of overriding manual placement of windows.
+                // However, due to some weirdness in Swing or the AWT,
+                // calling pack before setVisible() does not have the
+                // same effect as calling pack() within show().
+                // Calling it after, however, is not sufficient.
+                // We have to call it both before and after! Ugh!
+                // If this call to pack is put before the call to
+                // setVisible(true), then the HTML welcome window
+                // when Vergil starts up is the wrong size.
+                frame.pack();
             }
             // Deiconify the window.
             frame.setState(Frame.NORMAL);
