@@ -170,26 +170,33 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
 
     protected Schedule _getSchedule() 
             throws NotSchedulableException, IllegalActionException {
-        System.out.println("Starting PSDFScheduler._getSchedule()"); 
+        _debugMessage("Starting PSDFScheduler._getSchedule()\n"); 
         PSDFDirector director = (PSDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
         PSDFGraphReader graphReader = new PSDFGraphReader();
         PSDFGraph psdfGraph = (PSDFGraph) (graphReader.convert(model));
-        System.out.println("Finished converting to a PSDF graph"); 
-        System.out.println(psdfGraph.toString()); 
+        _debugMessage("Finished converting to a PSDF graph\n"); 
+        _debugMessage(psdfGraph.toString() + "\n"); 
         psdfGraph.printEdgeRateExpressions();
-        System.out.println("Invoking the P-APGAN algorithm"); 
+        _debugMessage("Invoking the P-APGAN algorithm\n"); 
         PSDFAPGANStrategy scheduler = new PSDFAPGANStrategy(psdfGraph);
         ptolemy.graph.sched.Schedule schedule = scheduler.schedule();
-        System.out.println("Returned from P-APGAN; the schedule follows."); 
-        System.out.println(schedule.toString()); 
+        _debugMessage("Returned from P-APGAN; the schedule follows.\n"); 
+        _debugMessage(schedule.toString() + "\n"); 
         SymbolicScheduleElement result = 
                  _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(), 
                  scheduler);
-        System.out.println("Completed PSDFScheduler._getSchedule().\n The "
-                + "schedule follows.\n" + result.toString());
+        _debugMessage("Completed PSDFScheduler._getSchedule().\n The "
+                + "schedule follows.\n" + result.toString() + "\n");
         // Just return an empty schedule for now
         return new Schedule();
+    }
+
+    // Print a debugging message if the debugging flag is turned on.
+    private void _debugMessage(String message) {
+        if (_debugFlag) {
+            System.out.print(message);
+        }
     }
 
     // Evaluate the given parse tree in the scope of the the model
@@ -228,15 +235,30 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             // super node
             } else {
                 Schedule schedule = new Schedule();
+
                 // Expand the super node with adjacent nodes contained 
                 // within it.
                 Edge edge = (Edge)childGraph.edges().iterator().next();
                 ptolemy.graph.Node source = edge.source();
                 ptolemy.graph.Node sink   = edge.sink();
-                ScheduleElement first  = _expandAPGAN(childGraph, source, 
-                        apgan);
-                ScheduleElement second = _expandAPGAN(childGraph, sink, 
-                        apgan);
+                SymbolicScheduleElement first  = 
+                        _expandAPGAN(childGraph, source, apgan);
+                SymbolicScheduleElement second = 
+                        _expandAPGAN(childGraph, sink, apgan);
+
+                // Determine the iteration counts of the source and
+                // sink clusters.
+                String producedExpression = apgan.producedExpression(edge);
+                String consumedExpression = apgan.consumedExpression(edge);
+                String denominator = "gcd(" + producedExpression + ", "
+                        + consumedExpression + ")";
+                String firstIterations = consumedExpression + "/" 
+                        + denominator;
+                String secondIterations = producedExpression + "/"
+                        + denominator;
+                first.setIterationCount(firstIterations);
+                second.setIterationCount(secondIterations);
+
                 schedule.add(first);
                 schedule.add(second);
                 SymbolicSchedule symbolicSchedule = 
@@ -314,6 +336,21 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                 throw new RuntimeException("Error setting iteration count to "
                         + expression + ".\n" + exception.getMessage());
             }
+            _debugMessage("----------------------------\n");
+            _debugMessage("Setting the iteration count of a symbolic schedule "
+                    + "element.\n");
+            _debugMessage("The expression is: " + expression + "\n");
+            _debugMessage("The schedule element is " + _scheduleElement + "\n");
+            _debugMessage("The parse tree follows.\n");
+            _parseTree.displayParseTree("");
+            _debugMessage("----------------------------\n");
+        }
+
+        /** Get the parse tree of the iteration expression. 
+         *  @return The parse tree.
+         */
+        public ASTPtRootNode _parseTree() {
+            return _parseTree;
         }
 
         /** The schedule element that is being symbolically iterated. 
@@ -347,8 +384,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         public String toString() {
             String result = "Fire Actor " 
                     + ((Firing)_scheduleElement).getActor().toString();
-            if (getIterationCount() > 1)
-                result += " " + getIterationCount() + " times";
+            result += "[" +  _parseTree().toString() + "] times";
             return result;
         }
     }
@@ -375,10 +411,8 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             Schedule schedule = (Schedule)_scheduleElement;
             String result = "Execute Symbolic Schedule{\n";
             result += schedule.toString();
-            result += "}";
-            if (getIterationCount() > 1) {
-                result += " " + getIterationCount() + " times";
-            }
+            result += "} ";
+            result += "[" + _parseTree().toString() + "] times"; 
             return result; 
         }
     }
@@ -460,6 +494,8 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             return getAllScopedVariableNames(null, reference);
         }
     }
+
+    private boolean _debugFlag = true;
     private ParseTreeEvaluator _parseTreeEvaluator;
     private ParserScope _parserScope;
 }
