@@ -159,7 +159,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
                 stop.get(0);
                 _tentativeDone = true;
                 _tentativeCycleCount = 0;
-                _tentativeCurrentValue = _tentativeCurrentValue.zero();
+                _tentativeCurrentValue = defaultValue.getToken();
             }
         }
     }

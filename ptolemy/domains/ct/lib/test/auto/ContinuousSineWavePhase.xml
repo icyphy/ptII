@@ -194,6 +194,8 @@
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 155.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -239,7 +241,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.5877852522925, 0.9510565162952, 0.9510565162952, 0.5877852522925, 1.2246467991474E-16, -0.5877852522925, -0.9510565162952, -0.9510565162952, -0.5877852522925, -2.4492935982947E-16, 0.8090169943749, 0.3090169943749, -0.3090169943749, -0.8090169943749, -1.0, -0.8090169943749, -0.3090169943749, 0.3090169943749, 0.809016994375, 1.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5877852522925, 0.9510565162952, 0.9510565162952, 0.5877852522925, 1.2246467991474E-16, -0.5877852522925, -0.9510565162952, -0.9510565162952, -0.5877852522925, -2.4492935982947E-16, 0.8090169943749, 0.3090169943749, -0.3090169943749, -0.8090169943749, -1.0, -0.8090169943749, -0.3090169943749, 0.3090169943749, 0.809016994375, 1.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

@@ -112,6 +112,8 @@ Period: 0.5</text></svg></configure>
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 280.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -212,7 +214,7 @@ Period: 0.5</text></svg></configure>
         </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

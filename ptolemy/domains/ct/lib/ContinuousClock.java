@@ -157,6 +157,10 @@ public class ContinuousClock extends TimedSource {
         numberOfCycles = new Parameter(this,"numberOfCycles");
         numberOfCycles.setTypeEquals(BaseType.INT);
         numberOfCycles.setExpression("-1");
+
+        // Set the defaultValue parameter.
+        defaultValue = new Parameter(this, "defaultValue", new IntToken(0));
+        defaultValue.setTypeEquals(BaseType.UNKNOWN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -183,6 +187,12 @@ public class ContinuousClock extends TimedSource {
      *  {1, 0}
      */
     public Parameter values;
+
+    /** The default value used before the clock starts and after
+     *  the clock stops.
+     *  This parameter must contain a token, and it defaults to 0.
+     */
+    public Parameter defaultValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -351,7 +361,7 @@ public class ContinuousClock extends TimedSource {
         if (cycleLimit > 0
                 && currentTime
                 >= _tentativeStartTime + cycleLimit * periodValue) {
-            _tentativeCurrentValue = _tentativeCurrentValue.zero();
+            _tentativeCurrentValue = defaultValue.getToken();
         }
 
         // Used to use any negative number here to indicate
@@ -375,9 +385,9 @@ public class ContinuousClock extends TimedSource {
         double currentTime = getDirector().getCurrentTime();
         _cycleStartTime = currentTime;
         _startTime = currentTime;
-        // The Clock always starts with the value of the former phase
-        // according to the offsets.
-        _currentValue = _getValue(_offsets.length - 1);
+
+        // The clock starts with the defaultValue.
+        _currentValue = defaultValue.getToken();
         _phase = 0;
 
         _tMinus = true;
