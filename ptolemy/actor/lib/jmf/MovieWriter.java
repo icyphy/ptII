@@ -328,7 +328,7 @@ public class MovieWriter extends Sink
                     "type = " + _fileType + ", which is not one of "
                     + _QUICKTIME + "(QUICKTIME), "
                     + _AVI + "(AVI) or "
-                    + _MPEG + "(MPEG)."
+                    + _MPEG + "(MPEG).");
         }
 
         TrackControl trackControl[] = processor.getTrackControls();
