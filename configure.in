@@ -1226,7 +1226,7 @@ else
 	http://java.sun.com/products/java-media/3D/download.html
 	Java 3D is only needed if you want to build in
 	$JAVA3D_USER_DIR,
-	otherwise the build will proceed fine with out Java 3D.])
+	otherwise the build will proceed fine without Java 3D.])
     fi
     cd "$startdir"
 fi
@@ -1622,6 +1622,76 @@ fi
 
 
 #--------------------------------------------------------------------
+#	Test for quicktime
+#--------------------------------------------------------------------
+# PTQUICKTIME_DIR is set to quicktime and used in
+# $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
+PTQUICKTIME_DIR=
+
+# Set to the location of the QTJava.zip file
+QTJAVA_ZIP=
+
+# We only need to look for Java3D if the gr domain is present
+QUICKTIME_USER_DIR="$PTII/ptolemy/domains/gr/lib/quicktime"
+
+if test ! -d "$QUICKTIME_USER_DIR"; then
+    AC_MSG_RESULT([$QUICKTIME_USER_DIR is not present,
+	so we need not find Quicktime for Java.])
+else
+    AC_MSG_CHECKING([for Quicktime for Java])
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=`pwd`
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" quickTimeTest.java ; then
+       AC_MSG_RESULT(ok)
+       PTQUICKTIME_DIR=quicktime
+    else
+       if test "${MAJOR_OS_NAME:-none}" = "Windows"; then
+	   SAFE_PROGRAMFILES=`echo $PROGRAMFILES | sed -e 's@\\\@/@g'`
+
+           AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed, looking for
+    QTJava.zip in $SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip'])
+	  # Under Windows try to find the jar file
+	  #c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
+	  QTJAVA_ZIP=`cd "$SAFE_PROGRAMFILES"; ls -tr java/*/lib/ext/QTJava.zip | head -1`
+	  if test -z "$QTJAVA_ZIP" ; then
+    	     AC_MSG_WARN(['Did not find "$SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip"'])
+	  else    
+	     QTJAVA_ZIP="$SAFE_PROGRAMFILES/$QTJAVA_ZIP"
+	     if "$JAVAC" -classpath "$QTJAVA_ZIP" quickTimeTest.java ; then
+	         AC_MSG_RESULT(ok, found $QTJAVA_ZIP)
+	         PTQUICKTIME_DIR=quicktime
+	     fi
+	  fi    
+       fi
+       if test -z "$PTQUICKTIME_DIR" ; then
+           AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed.
+    You may need to install QuickTime with the "QuickTime For
+    Java" option from http://developer.apple.com/quicktime/qtjava/
+    During installation, choose "custom" and then "select all".
+    This drops QTJava.zip into the lib/ext of all your installed JREs.
+    Then you have to copy this zip file to the jre/lib/ext directory
+    of your SDK.
+    QuickTime for Java is only needed if you want to build in
+    $QUICKTIME_USER_DIR,
+    otherwise the build will proceed fine without Quicktime for Java.])
+        fi
+    fi
+    cd "$startdir"
+fi
+
+if test -z "$PTQUICKTIME_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/quicktime"
+else
+    if ! -z "$QTJAVA_ZIP"; then
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$QTJAVA_ZIP\"/>"
+    fi
+fi 
+
+#--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
 #	http://www.sable.mcgill.ca/soot/
 #       See if there was a command-line option for where Soot is
@@ -1927,10 +1997,10 @@ if test -d "$X10_DIR"; then
     fi
     if test "$X10_CLASSES" = "no"; then
         AC_MSG_WARN([Failed to find tjx10p-11/lib/x10.jar
-            perhaps X10 is not installed?
-            You need not download X10 unless you plan on building applications
-            using the X10 interface.
-            The X10 SDK can be downloaded from http://x10.homelinux.org])
+    perhaps X10 is not installed?
+    You need not download X10 unless you plan on building applications
+    using the X10 interface.
+    The X10 SDK can be downloaded from http://x10.homelinux.org])
 	# Note that we don't substitute in the ${PTII} or $(X10_DIR) here
 	X10_DIR='${PTII}/vendors/misc/x10'
    	X10_CLASSES='${X10_DIR}/tjx10p-11/lib/x10.jar'
@@ -2147,6 +2217,10 @@ AC_SUBST(PTLEJOS_DIR)
 # $PTII/ptolemy/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_DIR)
 
+# Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
+# QuickTime for Java was found.
+AC_SUBST(PTQUICKTIME_DIR)
+
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
 AC_SUBST(PTTINI_DIR)
@@ -2155,6 +2229,10 @@ AC_SUBST(PTTINI_DIR)
 # $PTII/ptolemy/apps/makefile if Giotto was found
 AC_SUBST(PTGIOTTO_DIR)
 
+# Set to quicktime and used in
+# $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
+AC_SUBST(PTQUICKTIME_DIR)
+
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)
@@ -2162,6 +2240,9 @@ AC_SUBST(PTWABA_DIR)
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
 AC_SUBST(PTII_LOCALURL)
+
+# Set to the location of the QTJava.zip file
+AC_SUBST(QTJAVA_ZIP)
 
 # tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
 AC_SUBST(SOOT_CLASSES)

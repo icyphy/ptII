@@ -94,6 +94,9 @@ KVM_DIR = @KVM_DIR@
 # Directory the Palm Pilot Hot Sync program looks for downloads
 PALM_ADD_ON_DIR = /Program\ Files/Palm/Add-on
 
+# Set to the location of the QTJava.zip file
+QTJAVA_ZIP = @QTJAVA_ZIP@
+
 # Jar files used Soot - a Java Optimization Framework
 SOOT_CLASSES = @SOOT_CLASSES@
 
