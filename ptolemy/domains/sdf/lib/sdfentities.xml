@@ -54,5 +54,53 @@
 </rendition>
 </entity>
 
+<entity name="SDFSine" class="ptolemy.domains.sdf.lib.SDFSine">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="SineFM" class="ptolemy.domains.sdf.lib.SineFM">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="SDFMultiply" class="ptolemy.domains.sdf.lib.SDFMultiply">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="SDFAdd" class="ptolemy.domains.sdf.lib.SDFAdd">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="SDFRamp" class="ptolemy.domains.sdf.lib.SDFRamp">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
+<entity name="SDFConst" class="ptolemy.domains.sdf.lib.SDFConst">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
+<entity name="AudioSource" class="ptolemy.domains.sdf.lib.javasound.AudioSource">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
+<entity name="AudioSink" class="ptolemy.domains.sdf.lib.javasound.AudioSink">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
 </class>
 
