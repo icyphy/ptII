@@ -34,6 +34,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
@@ -267,11 +268,33 @@ public class PtolemyUtilities {
                     localName, stringTokenClass, stringTokenConstructor,
                     StringConstant.v(((StringToken)token).stringValue()));
             return tokenLocal;
-        } else {
+        } else if (token instanceof MatrixToken) {
+            // Can't do this for all tokens, because it causes an
+            // infinite loop!
             String expression = token.toString();
             Local tokenLocal = DataUtilities.generateExpressionCodeBefore(
                     null, null, expression,
                     new HashMap(), new HashMap(), body, insertPoint);
+            return tokenLocal;
+        } else {
+            // We want to avoid doing this for all tokens, because
+            // string constructors are expensive..
+            SootClass tokenClass =
+                 Scene.v().loadClassAndSupport(token.getClass().getName());
+            SootMethod tokenConstructor =
+                tokenClass.getMethod("void <init>(java.lang.String)");
+            Local tokenLocal = Jimple.v().newLocal(localName,
+                    RefType.v(tokenClass));
+            body.getLocals().add(tokenLocal);
+            units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
+                                       Jimple.v().newNewExpr(RefType.v(tokenClass))),
+                    insertPoint);
+            units.insertBefore(
+                    Jimple.v().newInvokeStmt(
+                            Jimple.v().newSpecialInvokeExpr(tokenLocal,
+                                    tokenConstructor,
+                                    StringConstant.v(token.toString()))),
+                    insertPoint);
             return tokenLocal;
         }
     }
