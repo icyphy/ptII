@@ -192,7 +192,7 @@ public abstract class ConditionalBranch {
      *  @param rec The CSPReceiver this branch is trying to rendezvous with.
      */
     public void setReceiver(CSPReceiver rec) {
-         _receiver = rec;
+        _receiver = rec;
     }
 
     /** Set the token contained by this branch. For a ConditionalSend

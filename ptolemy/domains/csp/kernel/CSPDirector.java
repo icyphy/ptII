@@ -223,7 +223,7 @@ public class CSPDirector extends ProcessDirector {
      *  @param req The topology change being queued.
      */
     public synchronized void
-            queueTopologyChangeRequest(TopologyChangeRequest req) {
+    queueTopologyChangeRequest(TopologyChangeRequest req) {
         _topologyChangesPending = true;
         super.queueTopologyChangeRequest(req);
     }
@@ -275,8 +275,8 @@ public class CSPDirector extends ProcessDirector {
         if ((_actorsDelayed !=0) || _topologyChangesPending || 
                 (_getPausedActorsCount() != 0)) {
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
-                    "when there are actors delayed or paused, or when " +
-                    "topology changes are pending.");*/
+              "when there are actors delayed or paused, or when " +
+              "topology changes are pending.");*/
         }
         super.wrapup();
     }
@@ -308,10 +308,10 @@ public class CSPDirector extends ProcessDirector {
      *   negative time.
      */
     protected synchronized void _actorDelayed(double delta, CSPActor actor) 
-        throws InvalidStateException {
+            throws InvalidStateException {
         if (delta < 0.0) {
 	    throw new InvalidStateException(((Nameable)actor).getName() +
-		       ": delayed for negative time.");
+                    ": delayed for negative time.");
 	} else {
             // System.out.println("Delaying actor " + 
             // ((Nameable)actor).getName()+
@@ -338,10 +338,10 @@ public class CSPDirector extends ProcessDirector {
      */
     protected synchronized boolean _checkForDeadlock() {
 	/*
-        System.out.println(Thread.currentThread().getName() +
-                ": _checkForDeadlock: Active = " +
-                _getActiveActorsCount() + ", blocked = " + _actorsBlocked +
-                ", delayed = " + _actorsDelayed );
+          System.out.println(Thread.currentThread().getName() +
+          ": _checkForDeadlock: Active = " +
+          _getActiveActorsCount() + ", blocked = " + _actorsBlocked +
+          ", delayed = " + _actorsDelayed );
 	*/
         if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
             return true;
@@ -355,7 +355,7 @@ public class CSPDirector extends ProcessDirector {
      */
     protected synchronized boolean _checkForPause() {
         if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed == 
-	    _getActiveActorsCount()) {
+                _getActiveActorsCount()) {
             System.out.println("CSPDirector: model successfully paused!");
 	    return true;
         }
@@ -393,65 +393,65 @@ public class CSPDirector extends ProcessDirector {
      */
     protected synchronized boolean _handleDeadlock() {
         try {
-	  if (_topologyChangesPending) {
-	      System.out.println("TOPOLOGY CHANGES PENDING!!");
-	      _processTopologyRequests();
-	      LinkedList newThreads = new LinkedList();
-	      Enumeration newActors = _newActors();
-	      while (newActors.hasMoreElements()) {
-		  Actor actor = (Actor)newActors.nextElement();
-		  System.out.println("Adding and starting new actor; " +
-				     ((Nameable)actor).getName() + "\n");
-		  actor.createReceivers();
-		  actor.initialize();
-		  String name = ((Nameable)actor).getName();
-		  ProcessThread pnt = new ProcessThread(actor, this);
-		  newThreads.insertFirst(pnt);
-	      }
-	      // Note we only start the threads after they have
-	      // all had the receivers created.
-	      Enumeration allThreads = newThreads.elements();
-	      while (allThreads.hasMoreElements()) {
-		  ProcessThread p = (ProcessThread)allThreads.nextElement();
-		  p.start();
-		  _addNewThread(p);
-	      }
-	      _topologyChangesPending = false;
+            if (_topologyChangesPending) {
+                System.out.println("TOPOLOGY CHANGES PENDING!!");
+                _processTopologyRequests();
+                LinkedList newThreads = new LinkedList();
+                Enumeration newActors = _newActors();
+                while (newActors.hasMoreElements()) {
+                    Actor actor = (Actor)newActors.nextElement();
+                    System.out.println("Adding and starting new actor; " +
+                            ((Nameable)actor).getName() + "\n");
+                    actor.createReceivers();
+                    actor.initialize();
+                    String name = ((Nameable)actor).getName();
+                    ProcessThread pnt = new ProcessThread(actor, this);
+                    newThreads.insertFirst(pnt);
+                }
+                // Note we only start the threads after they have
+                // all had the receivers created.
+                Enumeration allThreads = newThreads.elements();
+                while (allThreads.hasMoreElements()) {
+                    ProcessThread p = (ProcessThread)allThreads.nextElement();
+                    p.start();
+                    _addNewThread(p);
+                }
+                _topologyChangesPending = false;
 
-          } else if (_actorsDelayed > 0) {
-	      // Time deadlock.
-	      double nextTime = _getNextTime();
-	      System.out.println("\nCSPDirector: advancing time " +
-				 "to: " + nextTime);
-	      _currentTime = nextTime;
+            } else if (_actorsDelayed > 0) {
+                // Time deadlock.
+                double nextTime = _getNextTime();
+                System.out.println("\nCSPDirector: advancing time " +
+                        "to: " + nextTime);
+                _currentTime = nextTime;
 	      
-	      // Now go through list of delayed actors
-	      // and wake up those at this time
-	      // Note that to deal with roundoff errors on doubles,
-	      // any times within 0.000000001 are considered the same.
-	      boolean done = false;
-	      while (!done && _delayedActorList.size() > 0 ) {
-	          DelayListLink val = (DelayListLink)_delayedActorList.first();
-		  double tolerance = Math.pow(10, -10);
-		  if (Math.abs(val._resumeTime - nextTime) < tolerance) {
-		      _delayedActorList.removeFirst();
-		      val._actor._continue();
-                      /*
-		      System.out.println("\nresuming actor at time: " +
-					 val._resumeTime);
-                      */
-		      _actorsDelayed--;
-		  } else {
-		      done = true;
-		  }
-	      }
-	  } else {
-	      System.out.println("REAL DEADLOCK!!");
-	      // Real deadlock. Return true so that the fire method can return.
-	      return true;
-	  }
-          // Return false for topology changes and time deadlock.
-	  return false;
+                // Now go through list of delayed actors
+                // and wake up those at this time
+                // Note that to deal with roundoff errors on doubles,
+                // any times within 0.000000001 are considered the same.
+                boolean done = false;
+                while (!done && _delayedActorList.size() > 0 ) {
+                    DelayListLink val = (DelayListLink)_delayedActorList.first();
+                    double tolerance = Math.pow(10, -10);
+                    if (Math.abs(val._resumeTime - nextTime) < tolerance) {
+                        _delayedActorList.removeFirst();
+                        val._actor._continue();
+                        /*
+                          System.out.println("\nresuming actor at time: " +
+                          val._resumeTime);
+                        */
+                        _actorsDelayed--;
+                    } else {
+                        done = true;
+                    }
+                }
+            } else {
+                System.out.println("REAL DEADLOCK!!");
+                // Real deadlock. Return true so that the fire method can return.
+                return true;
+            }
+            // Return false for topology changes and time deadlock.
+            return false;
         } catch (TopologyChangeFailedException ex ) {
             throw new InvalidStateException("CSPDirector: failed to " +
                     "complete topology change requests.");

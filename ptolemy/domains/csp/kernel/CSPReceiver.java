@@ -261,7 +261,7 @@ public class CSPReceiver implements ProcessReceiver {
      *   or during a pause).
      */
     protected synchronized void _checkAndWait() throws
-              TerminateProcessException, InterruptedException {
+            TerminateProcessException, InterruptedException {
         _checkFlags();
         wait();
         _checkFlags();
@@ -453,7 +453,7 @@ public class CSPReceiver implements ProcessReceiver {
         _rendezvousComplete = value;
     }
 
-   /* Called only by the get and put methods of this class to indicate
+    /* Called only by the get and put methods of this class to indicate
      * that a put is waiting(value is true) or that the corresponding
      * get has arrived(value is false).
      * @param value boolean indicating whether a put is waiting or not.

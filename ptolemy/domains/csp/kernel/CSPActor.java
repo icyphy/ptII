@@ -156,7 +156,7 @@ public class CSPActor extends AtomicActor {
      */
     public CSPActor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-                super(container, name);
+        super(container, name);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -269,13 +269,13 @@ public class CSPActor extends AtomicActor {
                 // counter indicating # active branches, should be zero
                 if (_branchesActive != 0) {
                     throw new InvalidStateException(getName() +
-                    ": chooseBranch() is exiting with branches" +
-                    " still active.");
+                            ": chooseBranch() is exiting with branches" +
+                            " still active.");
                 }
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(this, "CSPActor.chooseBranch" +
-            " interrupted.");
+                    " interrupted.");
         }
         if (_successfulBranch == -1) {
             // Conditional construct was ended prematurely
@@ -331,7 +331,7 @@ public class CSPActor extends AtomicActor {
 		    return;
 		} else if (delta < 0.0) {
 		    throw new InvalidStateException(getName() +
-				 ": delayed for negative time: " + delta);
+                            ": delayed for negative time: " + delta);
 		} else {
 		    _delayed = true;
 		    ((CSPDirector)getDirector())._actorDelayed(delta, this);
@@ -360,15 +360,15 @@ public class CSPActor extends AtomicActor {
     public void terminate() {
         synchronized(_getInternalLock()) {
             // Now stop any threads created by this director.
-             if (_threadList != null) {
-                 Enumeration threads = _threadList.elements();
-                 while (threads.hasMoreElements()) {
-                     Thread next = (Thread)threads.nextElement();
-                     if (next.isAlive()) {
-                         next.stop();
-                     }
-                 }
-             }
+            if (_threadList != null) {
+                Enumeration threads = _threadList.elements();
+                while (threads.hasMoreElements()) {
+                    Thread next = (Thread)threads.nextElement();
+                    if (next.isAlive()) {
+                        next.stop();
+                    }
+                }
+            }
         }
     }
 
@@ -396,9 +396,9 @@ public class CSPActor extends AtomicActor {
      *  class. It simply prints out a message that the actor is
      *  wrapping up. FIXME: only used for debugging.
      */
-     public void wrapup() {
-         System.out.println("CSPActor: " + getName() + " wrapping up.");
-     }
+    public void wrapup() {
+        System.out.println("CSPActor: " + getName() + " wrapping up.");
+    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
@@ -470,12 +470,12 @@ public class CSPActor extends AtomicActor {
      */
     protected void _branchSucceeded(int branchID) {
         synchronized(_getInternalLock() ) {
-           if (_branchTrying != branchID) {
+            if (_branchTrying != branchID) {
                 throw new InvalidStateException(getName() +
                         ": branchSucceeded called with a branch id not " +
                         "equal to the id of the branch registered as trying.");
             }
-           _successfulBranch = _branchTrying;
+            _successfulBranch = _branchTrying;
             _branchesActive--;
             // wakes up chooseBranch() which wakes up parent thread
             _getInternalLock().notifyAll();
@@ -490,9 +490,9 @@ public class CSPActor extends AtomicActor {
         synchronized(_getInternalLock()) {
  	    if (_blocked) {
 	        if (_branchesBlocked != _branchesStarted) {
-		     throw new InternalErrorException(getName() +
-			     ": blocked when not all enabled branches are " +
-			     "blocked.");
+                    throw new InternalErrorException(getName() +
+                            ": blocked when not all enabled branches are " +
+                            "blocked.");
 		}
                 // Note: acquiring a second lock, need to be careful.
                 ((CSPDirector)getDirector())._actorUnblocked();
@@ -536,8 +536,8 @@ public class CSPActor extends AtomicActor {
             }
         }
         throw new InvalidStateException(getName() + ": Error: branch " +
-               "releasing first without possessing it! :" + _branchTrying +
-               " & " + branchNumber);
+                "releasing first without possessing it! :" + _branchTrying +
+                " & " + branchNumber);
     }
 
     ////////////////////////////////////////////////////////////////////////
