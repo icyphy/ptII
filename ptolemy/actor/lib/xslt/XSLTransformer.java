@@ -84,11 +84,11 @@ public class XSLTransformer extends Transformer{
     ////                     ports and parameters                  ////
 
     /** The URL of the file to read from. This parameter contains
-     *  a StringToken.  
+     *  a StringToken.
      */
     //Note: it is used to be this parameter for specifying the xslt file.
     //public Parameter xsltURL;
-	
+
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by FileAttribute.
      *  @see FileAttribute
@@ -140,7 +140,7 @@ public class XSLTransformer extends Transformer{
                     }
                     try {
                         out.flush();
-                        out.close();		
+                        out.close();
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
                                 "Failed  to close or flush '" + out + "'");
