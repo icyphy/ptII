@@ -257,27 +257,29 @@ public class Lattice extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The order of the filter (i.e. the number of reflection coefficients)
+    /** The order of the filter (i.e. the number of reflection coefficients) */
     protected int _order = 0;
 
-    // Backward prediction errors.  The length is _order.
+    /** Backward prediction errors.  The length is _order. */
     protected double[] _backward = null;
 
-    // Cache of backward prediction errors.
-    // The fire() method updates _forwardCache and postfire()
-    // copies _forwardCache to _forward so this actor will work in domains
-    // like SR.  The length is _order.
+    /** Cache of backward prediction errors.
+     * The fire() method updates _forwardCache and postfire()
+     * copies _forwardCache to _forward so this actor will work in domains
+     * like SR.  The length is _order.
+     */
     protected double[] _backwardCache = null;
 
-    // Forward prediction errors.  The length is _order + 1.
+    /** Forward prediction errors.  The length is _order + 1. */
     protected double[] _forward = null;
 
-    // Cache of forward prediction errors.
-    // The fire() method updates _forwardCache and postfire()
-    // copies _forwardCache to _forward so this actor will work in domains
-    // like SR.  The length is _order + 1.
+    /** Cache of forward prediction errors.
+     * The fire() method updates _forwardCache and postfire()
+     * copies _forwardCache to _forward so this actor will work in domains
+     * like SR.  The length is _order + 1.
+     */
     protected double[] _forwardCache = null;
 
-    // Cache of reflection coefficients.   The length is _order.
+    /** Cache of reflection coefficients.   The length is _order. */
     protected double[] _reflectionCoefficients = null;
 }
