@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2003 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -81,17 +81,18 @@ install: all jars
 #VirtualTinyOS.class: VirtualTinyOS.java
 #	javac -classpath $(ROOT) VirtualTinyOS.java
 
-#cann't do it autumatiocally in the makefile since we need to manually
+#can't do it automatically in the makefile since we need to manually
 #modify the .h file before we could compile the other .c files.
 #VirtualTinyOS.h: VirtualTinyOS.class
 #	javah -classpath $(ROOT) -o VirtualTinyOS.h ptolemy.domains.wireless.lib.tinyOS.VirtualTinyOS
 
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile
-		
 $(SHARED_LIBRARY): VirtualTinyOS.h VirtualTinyOS.c 
-	$(PTCC) -mno-cygwin -Ic:/j2sdk1.4.2/include -Ic:/j2sdk1.4.2/include/win32 -Wl,--add-stdcall-alias -shared $(PTJNI_SHAREDLIBRARY_CFLAG) \
-		-o $@ \
+	$(PTCC) $(PTJNI_NO_CYGWIN) -I$(PTJAVA_DIR)/include \
+		-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE) \
+		$(PTJNI_SHAREDLIBRARY_CFLAG) $(PTJNI_SHAREDLIBRARY_LDFLAG) \
+		-shared -o $@ \
 		Blink.c Timer.c Ledc.c BlinkMain.c VirtualTinyOS.c
 
 # Get the rest of the rules
