@@ -215,18 +215,6 @@ public class ConditionalBranchController {
         if (_successfulBranch == -1) {
             // Conditional construct was ended prematurely
             if (_blocked) {
-                /* FIXME
-                // Actor was registered as blocked when the
-                // construct was terminated.
-                if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._actorReadUnBlocked(false);
-		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._actorWriteUnBlocked();
-		} else {
-                    _getDirector()._actorReadUnBlocked(true);
-                }
-		// _getDirector()._actorUnblocked();
-                */
 		_getDirector()._actorUnBlocked(new CSPReceiver());
             }
             throw new TerminateProcessException(
@@ -288,76 +276,12 @@ public class ConditionalBranchController {
         }
     }
 
-    /** Increase the count of branches that are blocked trying to do
-     *  a rendezvous read. If all the enabled branches (for the CIF 
-     *  or CDO currently being executed) are blocked, register this 
-     *  actor as being blocked.
-    protected void _readBranchBlocked(boolean externalReadBlock) {
-        synchronized(_internalLock) {
-            if( externalReadBlock ) {
-            	_extReadBranchesBlocked++;
-	    } else {
-            	_intReadBranchesBlocked++;
-            }
-            if (_intReadBranchesBlocked + _extReadBranchesBlocked +
-          	    _writeBranchesBlocked == _branchesStarted) {
-                // Note: acquiring a second lock, need to be careful.
-                if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._actorReadBlocked(false);
-		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._actorWriteBlocked();
-		} else {
-                    _getDirector()._actorReadBlocked(true);
-                }
-		// _getDirector()._actorBlocked();
-                _blocked = true;
-            }
-        }
-    }
-     */
-
-    /** Increase the count of branches that are blocked trying to do
-     *  a rendezvous write. If all the enabled branches (for the CIF 
-     *  or CDO currently being executed) are blocked, register this 
-     *  actor as being blocked.
-    protected void _writeBranchBlocked() {
-        synchronized(_internalLock) {
-            _writeBranchesBlocked++;
-            if (_intReadBranchesBlocked + _extReadBranchesBlocked +
-            	     _writeBranchesBlocked == _branchesStarted) {
-                // Note: acquiring a second lock, need to be careful.
-                if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._actorReadBlocked(false);
-		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._actorWriteBlocked();
-		} else {
-                    _getDirector()._actorReadBlocked(true);
-                }
-		// _getDirector()._actorBlocked();
-                _blocked = true;
-            }
-        }
-    }
-     */
-
     /** Increase the count of branches that are blocked trying to rendezvous.
      *  If all the enabled branches (for the CIF or CDO currently
      *  being executed) are blocked, register this actor as being blocked.
      */
     protected void _branchBlocked(CSPReceiver rcvr) {
         synchronized(_internalLock) {
-	    /*
-            if( rcvr.isReadBlocked() ) {
-                if( rcvr.isConnectedToBoundary() ) {
-                    _extReadBranchesBlocked++;
-                }
-                _intReadBranchesBlocked++;
-            }
-	    if( rcvr.isWriteBlocked() ) {
-                _writeBranchesBlocked++;
-            }
-            registerBlock();
-	    */
 	    _branchesBlocked++;
 	    if( _branchesBlocked == _branchesStarted ) {
 		_getDirector()._actorBlocked( rcvr );
@@ -366,22 +290,6 @@ public class ConditionalBranchController {
         }
     }
     
-    /**
-    public void registerBlock() {
-        if( _intReadBranchesBlocked + _extReadBranchesBlocked + 
-        	_writeBranchesBlocked == _branchesStarted ) {
-            if( _extReadBranchesBlocked > 0 ) {
-    		_getDirector()._actorBlocked(new CSPReceiver() );
-	    } else if( _writeBranchesBlocked == _branchesStarted ) {
-    		_getDirector()._actorBlocked(new CSPReceiver() );
-	    } else {
-    		_getDirector()._actorBlocked(new CSPReceiver() );
-	    }
-	    _blocked = true;
-	}
-    }
-     */
-
     /** Registers the calling branch as failed. It reduces the count
      *  of active branches, and if all the active branches have
      *  finished, it wakes notifies chooseBranch() to continue.
@@ -426,27 +334,6 @@ public class ConditionalBranchController {
         }
     }
 
-    /** Decrease the count of branches that are blocked.
-     *  If the actor was previously registered as being blocked, register
-     *  this actor with the director as no longer being blocked.
-    protected void _branchUnblocked() {
-        synchronized(_internalLock) {
- 	    if (_blocked) {
-	        if (_branchesBlocked != _branchesStarted) {
-                    throw new InternalErrorException(
-			    ((Nameable)getParent()).getName() +
-                            ": blocked when not all enabled branches are " +
-                            "blocked.");
-		}
-                // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorUnblocked();
-                _blocked = false;
-            }
-            _branchesBlocked--;
-        }
-    }
-     */
-
     /** Decrease the count of branches that are read blocked.
      *  If the actor was previously registered as being blocked, 
      *  register this actor with the director as no longer being 
@@ -465,44 +352,9 @@ public class ConditionalBranchController {
                 _getDirector()._actorUnBlocked(rcvr);
                 _blocked = false;
             }
-	    /*
-	    if( rcvr.isReadBlocked() ) {
-                if( rcvr.isConnectedToBoundary() ) {
-            	    _extReadBranchesBlocked--;
-                }
-            	_intReadBranchesBlocked--;
-            }
-	    if( rcvr.isWriteBlocked() ) {
-                _writeBranchesBlocked--;
-            }
-	    */
         }
     }
  
-    /** Decrease the count of branches that are write blocked.
-     *  If the actor was previously registered as being blocked, 
-     *  register this actor with the director as no longer being 
-     *  blocked.
-    protected void _writeBranchUnblocked() {
-        synchronized(_internalLock) {
- 	    if (_blocked) {
-	        if (_intReadBranchesBlocked + _extReadBranchesBlocked +
-                	_writeBranchesBlocked != _branchesStarted) {
-                    throw new InternalErrorException(
-			    ((Nameable)getParent()).getName() +
-                            ": blocked when not all enabled branches are " +
-                            "blocked.");
-		}
-                // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorWriteUnBlocked();
-		// _getDirector()._actorUnblocked();
-                _blocked = false;
-            }
-            _writeBranchesBlocked--;
-        }
-    }
-     */
-
     /** Release the status of the calling branch as the first branch
      *  to be ready to rendezvous. This method is only called when both
      *  sides of a communication at a receiver are conditional. In
@@ -556,9 +408,6 @@ public class ConditionalBranchController {
             _blocked = false;
             _branchesActive = 0;
 	    _branchesBlocked = 0;
-            // _intReadBranchesBlocked = 0;
-            // _extReadBranchesBlocked = 0;
-            // _writeBranchesBlocked = 0;
             _branchesStarted = 0;
             _branchTrying = -1;
             _successfulBranch = -1;
@@ -580,18 +429,6 @@ public class ConditionalBranchController {
     // Contains the number of conditional branches that are blocked
     // trying to rendezvous.
     private int _branchesBlocked = 0;
-
-    // Contains the number of conditional read branches that are 
-    // blocked trying to rendezvous.
-    // private int _intReadBranchesBlocked = 0;
-
-    // Contains the number of conditional read branches that are 
-    // blocked trying to rendezvous.
-    // private int _extReadBranchesBlocked = 0;
-
-    // Contains the number of conditional write branches that are 
-    // blocked trying to rendezvous.
-    // private int _writeBranchesBlocked = 0;
 
     // Contains the number of branches that were actually started for
     // the most recent conditional rendezvous.

@@ -238,7 +238,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         if (controller._isBranchFirst(getID())) {
             // receive side ok, need to check that send
             // side also ok
-            // CSPReceiver rec = getReceiver();
             if (rcvr._getOtherController()._isBranchFirst(getID())) {
                 setToken( rcvr.get() );
                 rcvr._setConditionalSend(false, null);
@@ -301,7 +300,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         while (true) {
             if (!isAlive()) {
                 // reset state of receiver
-                // CSPReceiver rec = getReceiver();
                 rcvr._setConditionalReceive(false, null);
                 controller._branchFailed(getID());
                 // wakes up a put if it is waiting
@@ -312,7 +310,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     // I am the branch that succeeds
                     // Note that need to reset condSend
                     // flag BEFORE doing put.
-                    // CSPReceiver rec = getReceiver();
                     rcvr._setConditionalReceive(false, null);
                     setToken( rcvr.get() );
                     controller._branchSucceeded(getID());

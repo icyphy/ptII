@@ -99,6 +99,8 @@ public class CSPReceiver implements ProcessReceiver {
         try {
             if (_isPutWaiting()) {
                 _setPutWaiting(false);  //needs to be done here
+                
+                // See FIXME below
                 tmp = _token;
                 _setRendezvousComplete(false);
                 notifyAll(); //wake up the waiting put;
@@ -118,7 +120,6 @@ public class CSPReceiver implements ProcessReceiver {
                 while (_isConditionalSendWaiting()) {
                     _checkFlagsAndWait();
                 }
-
                 
         	_checkFlags();
                 _getDirector()._actorBlocked(this);
@@ -127,6 +128,11 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
         	_checkFlags();
+                
+                // FIXME: This is a race condition that could
+                // lead to a deadlock false alarm. This should
+                // be done as soon as setGetWaiting(false) is
+                // called.
                 _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 tmp = _token;
@@ -173,7 +179,7 @@ public class CSPReceiver implements ProcessReceiver {
      *  receiver or not.
      */
     public synchronized boolean isReadBlocked() {
-	return _getWaiting;
+	return _readBlocked;
     }
 
     /** Return a true or false to indicate whether there is a write block
@@ -182,7 +188,7 @@ public class CSPReceiver implements ProcessReceiver {
      *  receiver or not.
      */
     public synchronized boolean isWriteBlocked() {
-	return _putWaiting;
+	return _writeBlocked;
     }
 
     /** Return true if this receiver is connected to the inside of a
@@ -245,6 +251,8 @@ public class CSPReceiver implements ProcessReceiver {
             _token = t; // perform transfer
             if (_isGetWaiting()) {
                 _setGetWaiting(false);  //needs to be done here
+                
+                // See FIXME below
                 _setRendezvousComplete(false);
                 notifyAll(); //wake up the waiting get
                 while (!_isRendezvousComplete()) {
@@ -272,6 +280,11 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
         	_checkFlags();
+                
+                // FIXME: This is a race condition that could
+                // lead to a deadlock false alarm. This should
+                // be done as soon as setGetWaiting(false) is
+                // called.
                 _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 _setRendezvousComplete(true);
@@ -516,6 +529,9 @@ public class CSPReceiver implements ProcessReceiver {
     // Container.
     private IOPort _container = null;
 
+    private boolean _readBlocked = false;
+    private boolean _writeBlocked = false;
+    
     // Flag indicating whether or not a get is waiting at this receiver.
     private boolean _getWaiting = false;
 
