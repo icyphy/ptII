@@ -38,7 +38,7 @@ include $(CONFIG)
 
 DIRS = 	demo #doc test
 
-CLASSPATH =	.
+CLASSPATH =	..
 # Order matters here.
 JSRCS = \
 	PlotBox.java \
