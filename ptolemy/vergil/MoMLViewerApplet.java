@@ -46,6 +46,7 @@ import ptolemy.gui.*;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.PtolemyApplet;
@@ -107,7 +108,7 @@ are placed to the left of the visual elements.
 This parameter is ignored unless <i>includeRunPanel</i> is given as "true".
 </ul>
 
-@author  Steve Neuendorffer
+@author  Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
 public class MoMLViewerApplet extends MoMLApplet {
@@ -115,9 +116,7 @@ public class MoMLViewerApplet extends MoMLApplet {
     // FIXME: this is a total hack as a placeholder for a general 
     // implementation going through configurations.
 
-    // FIXME: This does not show a run control panel... although
-    // the same MoML can be shown in another applet, it will be
-    // a different instance of the model.  Perhaps the context menu
+    // FIXME: Perhaps the context menu
     // should have a run-model option?
 
     ///////////////////////////////////////////////////////////////////
@@ -168,10 +167,35 @@ public class MoMLViewerApplet extends MoMLApplet {
       
         GraphPane pane = new GraphPane(controller, model);
         JGraph modelViewer = new JGraph(pane);
-        modelViewer.setMinimumSize(new Dimension(400, 300));
-        modelViewer.setPreferredSize(new Dimension(400, 300));
-        getContentPane().add(new JScrollPane(modelViewer), 
-                BorderLayout.NORTH);
+
+        // Get dimensions from the model, if they are present.
+        // Otherwise, use the same defaults used by vergil.
+        boolean boundsSet = false;
+        try {
+            SizeAttribute vergilBounds = (SizeAttribute)
+                    _toplevel.getAttribute(
+                    "_vergilSize", SizeAttribute.class);
+            boundsSet = vergilBounds.setSize(modelViewer);
+        } catch (Exception ex) {
+            // Ignore and set to default.
+        }
+        if (!boundsSet) {
+            // Set default size
+            Dimension size = new Dimension(400,300);
+            modelViewer.setMinimumSize(size);
+            modelViewer.setPreferredSize(size);
+        }
+
+        // Inherit the background color from the applet parameter.
+        modelViewer.setBackground(getBackground());
+
+        // Do not include a scroll pane, since generally we size the
+        // applet to show the entire model.
+        // JScrollPane scrollPane = new JScrollPane(modelViewer);
+        // getContentPane().add(scrollPane, BorderLayout.NORTH);
+        // scrollPane.setBackground(getBackground());
+
+        getContentPane().add(modelViewer, BorderLayout.NORTH);
 
         // Call the superclass here to get a control panel
         // below the schematic.

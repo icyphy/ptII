@@ -30,6 +30,8 @@
 
 package ptolemy.vergil.ptolemy;
 
+import ptolemy.actor.gui.LocationAttribute;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -160,7 +162,7 @@ import javax.swing.tree.TreePath;
 A simple graph view for ptolemy models.  This represents a level of the
 hierarchy of a ptolemy model as a diva graph.  Cut, copy and paste operations
 are supported using MoML and the graph itself is created using a visual
-notation as a a factory
+notation as a factory
 
 @author  Steve Neuendorffer
 @contributor Edward A. Lee
@@ -194,7 +196,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	_jgraph.setAlignmentY(1);
 	_jgraph.setBackground(BACKGROUND_COLOR);
 
-	// Ugh..  I hate setting the size like this.
+	// FIXME: Ugh..  I hate setting the size like this.
 	_jgraph.setPreferredSize(new Dimension(600, 450));
 	_jgraph.setSize(600, 450);
 
@@ -205,6 +207,31 @@ public abstract class GraphFrame extends PtolemyFrame
 	_graphScrollPane.setHorizontalScrollBarPolicy(
                 _graphScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+        // Set the size and location.
+        // Note that the location is of the frame, while the size
+        // is of the scrollpane.
+        _graphScrollPane.setMinimumSize(new Dimension(200, 200));
+        try {
+            SizeAttribute bounds = (
+                     SizeAttribute)getModel().getAttribute(
+                     "_vergilSize", SizeAttribute.class);
+            if (bounds == null) {
+                bounds = new SizeAttribute(getModel(), "_vergilSize");
+            }
+            bounds.setSize(_graphScrollPane);
+
+            LocationAttribute location
+                     = (LocationAttribute)getModel().getAttribute(
+                     "_vergilLocation", LocationAttribute.class);
+            if (location == null) {
+                     location = new LocationAttribute(
+                     getModel(), "_vergilLocation");
+            }
+            location.setLocation(this);
+        } catch (Exception ex) {
+            // Ignore problems here.  Errors simply result in a default
+            // size and location.
+        }
 	// Create the panner.
 	_graphPanner = new JPanner();
 	_graphPanner.setPreferredSize(new Dimension(200, 150));
@@ -549,11 +576,32 @@ public abstract class GraphFrame extends PtolemyFrame
      *  vs. a simple "save".  If the action is "save as" and we are in
      *  an inside composite actor, then only that composite actor is
      *  saved.  Otherwise, the entire model is saved by delegating to
-     *  the parent class.
+     *  the parent class.  In addition, this method records the current
+     *  size and position of the window in the model.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {
+        // First, record size and position.
+        try {
+            SizeAttribute bounds = (SizeAttribute)getModel().getAttribute(
+                     "_vergilSize", SizeAttribute.class);
+            if (bounds == null) {
+                bounds = new SizeAttribute(getModel(), "_vergilSize");
+            }
+            bounds.recordSize(_graphScrollPane);
+
+            LocationAttribute location
+                    = (LocationAttribute)getModel().getAttribute(
+                    "_vergilLocation", LocationAttribute.class);
+            if (location == null) {
+                location = new LocationAttribute(getModel(), "_vergilLocation");
+            }
+            location.recordLocation(this);
+        } catch (Exception ex) {
+            // Ignore problems here.  Errors simply result in a default
+            // size and location.
+        }
         if (_saveAsFlag && getModel().getContainer() != null) {
             java.io.FileWriter fout = new java.io.FileWriter(file);
             getModel().exportMoML(fout);

@@ -61,7 +61,8 @@ PTCLASSALLJAR = vergil.jar
 
 JSRCS = \
 	VergilApplication.java \
-	MoMLViewerApplet.java 
+	MoMLViewerApplet.java  \
+	TypeAnimatorApplet.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	TODO.txt \
