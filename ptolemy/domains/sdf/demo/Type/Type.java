@@ -78,8 +78,7 @@ It displays a Diva animation of the type resolution process.
 @version $Id$
 */
 
-public class Type extends MoMLViewerApplet
-        implements ValueListener {
+public class Type extends MoMLViewerApplet implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

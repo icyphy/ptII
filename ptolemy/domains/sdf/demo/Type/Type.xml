@@ -10,7 +10,7 @@
            <svg>
            <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This example illustrates features of the type system.
 Alter the types of the ramp sources, and watch the propagation
-of types through the system (try strings).
+of types through the system.
  </text>
            </svg>
            </configure>
@@ -24,32 +24,8 @@ of types through the system (try strings).
         <property name="_location" class="ptolemy.moml.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="Ramp 1 initial value" class="ptolemy.data.expr.Parameter" value="0">
-    </property>
-    <property name="Ramp 1 step" class="ptolemy.data.expr.Parameter" value="1">
-    </property>
-    <property name="Ramp 2 initial value" class="ptolemy.data.expr.Parameter" value="0">
-    </property>
-    <property name="Ramp 2 step" class="ptolemy.data.expr.Parameter" value="1">
-    </property>
-    <property name="8:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="398.0, 214.0">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The Expression block calculates a mathematical expression.
-Right click and select "Edit Parameters" to see the expression.</text>
-           </svg>
-           </configure>
-        </property>
-    </property>
-    <property name="Use Plotter" class="ptolemy.data.expr.Parameter" value="false">
-        <property name="style0" class="ptolemy.actor.gui.style.CheckBoxStyle">
-        </property>
-    </property>
     <property name="Ramp1_output" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="124.0, 95.0">
+        <property name="_location" class="ptolemy.moml.Location" value="100.0, 100.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -60,7 +36,7 @@ Right click and select "Edit Parameters" to see the expression.</text>
         </property>
     </property>
     <property name="Ramp2_output" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="126.0, 201.0">
+        <property name="_location" class="ptolemy.moml.Location" value="102.0, 206.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -71,7 +47,7 @@ Right click and select "Edit Parameters" to see the expression.</text>
         </property>
     </property>
     <property name="Expression_output" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 131.0">
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 132.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -82,7 +58,7 @@ Right click and select "Edit Parameters" to see the expression.</text>
         </property>
     </property>
     <property name="Expression_input2" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="204.0, 168.0">
+        <property name="_location" class="ptolemy.moml.Location" value="154.0, 169.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -93,7 +69,7 @@ Right click and select "Edit Parameters" to see the expression.</text>
         </property>
     </property>
     <property name="Expression_input1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="203.0, 126.0">
+        <property name="_location" class="ptolemy.moml.Location" value="153.0, 127.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -104,7 +80,7 @@ Right click and select "Edit Parameters" to see the expression.</text>
         </property>
     </property>
     <property name="Display_input" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="378.0, 133.0">
+        <property name="_location" class="ptolemy.moml.Location" value="551.0, 142.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -114,15 +90,80 @@ Right click and select "Edit Parameters" to see the expression.</text>
            </configure>
         </property>
     </property>
+    <property name="Ramp3_output" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="128.0, 252.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="RecordAssembler_output" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="377.0, 160.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="RecordDisassembler_second" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="379.0, 256.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="RecordDisassembler_first" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="377.0, 210.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="Plotter_input" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="496.0, 229.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="Ramp1_init" class="ptolemy.data.expr.Parameter" value="0">
+    </property>
+    <property name="Ramp1_step" class="ptolemy.data.expr.Parameter" value="1">
+    </property>
+    <property name="Ramp2_init" class="ptolemy.data.expr.Parameter" value="&quot;a&quot;">
+    </property>
+    <property name="Ramp2_step" class="ptolemy.data.expr.Parameter" value="&quot;b&quot;">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[667, 301]">
+    </property>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="Ramp1_init">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="step" class="ptolemy.data.expr.Parameter" value="Ramp1_step">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 105.0">
+        <property name="_location" class="ptolemy.moml.Location" value="51.0, 110.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -135,12 +176,12 @@ Right click and select "Edit Parameters" to see the expression.</text>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="Ramp2_init">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="step" class="ptolemy.data.expr.Parameter" value="Ramp2_step">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 180.0">
+        <property name="_location" class="ptolemy.moml.Location" value="52.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -153,7 +194,7 @@ Right click and select "Edit Parameters" to see the expression.</text>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="input1 + input2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="260.0, 140.0">
+        <property name="_location" class="ptolemy.moml.Location" value="210.0, 141.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -170,25 +211,112 @@ Right click and select "Edit Parameters" to see the expression.</text>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="426.0, 140.0">
+        <property name="_location" class="ptolemy.moml.Location" value="607.0, 152.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.moml.Location" value="334.0, 175.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="first" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="second" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="75.0, 260.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.moml.Location" value="398.0, 228.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="first" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="second" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Plotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="548.0, 239.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="7.0"/>
+<yRange min="0.0" max="7.0"/>
+<noGrid/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+                                                        </configure>    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="displayRelation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="322.0, 146.0">
-        </vertex>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp1.output" relation="relation4"/>
     <link port="Ramp2.output" relation="relation5"/>
-    <link port="Expression.output" relation="displayRelation"/>
+    <link port="Expression.output" relation="relation1"/>
     <link port="Expression.input1" relation="relation4"/>
     <link port="Expression.input2" relation="relation5"/>
-    <link port="Display.input" relation="displayRelation"/>
+    <link port="Display.input" relation="relation8"/>
+    <link port="RecordAssembler.output" relation="relation6"/>
+    <link port="RecordAssembler.first" relation="relation1"/>
+    <link port="RecordAssembler.second" relation="relation3"/>
+    <link port="Ramp3.output" relation="relation3"/>
+    <link port="RecordDisassembler.input" relation="relation6"/>
+    <link port="RecordDisassembler.first" relation="relation8"/>
+    <link port="RecordDisassembler.second" relation="relation14"/>
+    <link port="Plotter.input" relation="relation14"/>
 </entity>
