@@ -237,7 +237,14 @@ public class PtolemyQuery extends Query
 		    // becuase of the use of SetParameter.
 		    // Write a SetVariable class to fix this. This should be
 		    // fairly trivial to do.
+		    try {
 		    _director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+		    } catch (ChangeFailedException e) {
+			// FIXME: This method should probably throw an
+			// exception, but then a lot of code (including
+			// the base class), would need to be changed.
+			System.err.println("Change failed: " + e);
+		    }
 		} else {
 		    // Director not specified in constructor,
 		    // so get it from the variable.
@@ -252,14 +259,28 @@ public class PtolemyQuery extends Query
 			if (container instanceof Actor) {
 			   director = ((Actor)container).getDirector();
 			   if (director != null) {
-			       director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+			       try {
+				   director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+			       } catch (ChangeFailedException e) {
+				   // FIXME: This method should probably throw an
+				   // exception, but then a lot of code (including
+				   // the base class), would need to be changed.
+				   System.err.println("Change failed: " + e);
+			       }
 			       break;
 			   } else {
 			       container = container.getContainer();
 			   }
 			} else if (container instanceof Director) {
 			    director = (Director)container;
+			    try {
 			    director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+			    } catch (ChangeFailedException e) {
+				// FIXME: This method should probably throw an
+				// exception, but then a lot of code (including
+				// the base class), would need to be changed.
+				System.err.println("Change failed: " + e);
+			    }
 			    break;
 			} else {
 			     container = container.getContainer();
