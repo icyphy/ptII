@@ -206,8 +206,10 @@ public class NamedObjEliminator extends SceneTransformer {
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             SootClass declaringClass =
                                 expr.getMethod().getDeclaringClass();
-                            if (modifiedConstructorClassList.contains(declaringClass)) {
-                                System.out.println("replacing constructor = "
+                            if (expr.getMethod().getName().equals("<init>") && 
+                                    modifiedConstructorClassList.contains(declaringClass)) {
+                                System.out.println(
+                                        "replacing constructor invocation = "
                                         + unit + " in method " + method);
 
                                 // Replace with zero arg object constructor.
