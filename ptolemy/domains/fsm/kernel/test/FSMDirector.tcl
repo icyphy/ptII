@@ -189,6 +189,12 @@ test FSMDirector-5.1 {test fireAt} {
     set e0 [deModel 3.0]
     set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
     [java::field $e1 directorClass] setExpression "ptolemy.domains.fsm.kernel.FSMDirector"
+    # The above won't take hold until parameters are validated.
+    # This is a bit hard to do, since we have to defer change requests,
+    # then execute them.
+    $e0 setDeferringChangeRequests true
+    $e0 validateSettables
+    $e0 executeChangeRequests
     set dir [java::cast ptolemy.domains.fsm.kernel.FSMDirector [$e1 getDirector]]
     set fsm [$e1 getController]
     set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
@@ -357,7 +363,12 @@ test FSMDirector-7.1 {test clone a modal model} {
 
     set e1clone [java::cast ptolemy.domains.fsm.modal.ModalModel \
             [$e1 clone]]
+    
     $e1clone setName e1clone
+    puts {####################################################################################}
+    # FIXME: The following setContainer causes a concurrent modification exception.
+    # presumably this is because queued change requests get executed at that point.
+    # why doesn't the above call to executeChangeRequests take care of that?
     $e1clone setContainer $e0
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
     [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
