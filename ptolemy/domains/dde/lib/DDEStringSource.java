@@ -114,16 +114,7 @@ public abstract class DDEStringSource extends DDESourceActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods			   ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private DDEIOPort _output;
-    private LinkedList _contents;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        inner variables                    ////
+    ////                        inner class                        ////
 
     protected class StringTime {
         public StringTime() {
@@ -151,5 +142,12 @@ public abstract class DDEStringSource extends DDESourceActor {
         private String _str;
         private double _time = TimedQueueReceiver.INACTIVE;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private DDEIOPort _output;
+    private LinkedList _contents;
+
 
 }
