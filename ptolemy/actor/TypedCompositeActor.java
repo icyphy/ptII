@@ -56,14 +56,7 @@ import java.util.List;
 //// TypedCompositeActor
 /**
 A TypedCompositeActor is an aggregation of typed actors.
-The ports of a TypedCompositeActor are constrained to be TypedIOPorts,
-the relations to be TypedIORelations, and the actors to be instances of
-ComponentEntity that implement the TypedActor interface.  Derived classes
-may impose further constraints by overriding newPort(), _addPort(),
-newRelation(), _addRelation(), and _addEntity().
 <p>
-Derived classes may constrain the container by overriding _checkContainer().
-<P>
 When exporting MoML, instances of this class identify their class name
 as TypedCompositeActor. If a derived class does not change this, then it
 too will be identified as a TypedCompositeActor. To change this in a
@@ -74,6 +67,14 @@ getMoMLInfo().className = "<i>full class name</i>";
 If you do this, you will probably also want to override _exportMoMLContents()
 to not generate a description of the contents of the composite, since
 they will be already defined in the Java class.
+<p>
+The ports of a TypedCompositeActor are constrained to be TypedIOPorts,
+the relations to be TypedIORelations, and the actors to be instances of
+ComponentEntity that implement the TypedActor interface.  Derived classes
+may impose further constraints by overriding newPort(), _addPort(),
+newRelation(), _addRelation(), and _addEntity(). Also, derived classes may
+constrain the container by overriding _checkContainer().
+<P>
 
 @author Yuhong Xiong
 @version $Id$
@@ -165,7 +166,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  Specifically, this method scans all the connections within this
      *  composite between opaque TypedIOPorts, if the ports on both ends
      *  of the connection have declared types, the types of both ports
-     *  are examined to see if the the type of the port at the source end
+     *  are examined to see if the type of the port at the source end
      *  of the connection is less than or equal to the type at the
      *  destination port. If not, the two ports have a type conflict.
      *  If the type of the ports on one or both ends of a connection is
