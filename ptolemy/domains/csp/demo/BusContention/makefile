@@ -51,6 +51,11 @@ JSRCS = \
 	BusContentionApplication.java \
 	BusContentionDemo.java \
 	BusContentionGraphic.java \
+	ContentionAlarm.java \
+	Controller.java \
+	Memory.java \
+	PortChannelCode.java \
+	Processor.java
 
 EXTRA_SRCS = \
 	$(JSRCS) \
