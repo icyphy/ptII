@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
 	AtomicActor.tcl \
 	CompositeActor.tcl \
 	Director.tcl \
+	FiringEvent.tcl \
 	GraphReader.tcl \
 	Manager.tcl \
 	NoRoomException.tcl \
