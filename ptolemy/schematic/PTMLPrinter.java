@@ -58,6 +58,9 @@ public class PTMLPrinter {
         Writer out
             = new BufferedWriter(new OutputStreamWriter(os));
         out.write(xmlheader);
+        out.write(docheader);
+        out.write(root.getElementType());
+        out.write(dtdheader);
         out.write(root.toString());
         out.flush();
     }
@@ -90,8 +93,11 @@ public class PTMLPrinter {
     }
 
     static final String xmlheader = new String(
-            "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
-            "<!DOCTYPE ptolemyicon SYSTEM \"ptolemyicon.dtd\">\n");
+            "<?xml version=\"1.0\" standalone=\"no\"?>\n");
+    static final String docheader = new String("<!DOCTYPE ");
+    static final String dtdheader = new String(
+            " PUBLIC \"ptml.dtd\" " +
+            "\"http:\\ptolemy.eecs.berkeley.edu\ptdesign\ptml.dtd\">\n");
     private XMLElement current;
     private XMLElement root;
     private String url;
