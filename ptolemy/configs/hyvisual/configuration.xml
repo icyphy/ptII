@@ -144,18 +144,11 @@ create refinements for the states.</text></svg></configure></property>
       <configure>
         <?moml
           <group>
-<!-- Sources include only generic and timed sources. -->
-<entity name="sources" class="ptolemy.moml.EntityLibrary">
-  <input source="ptolemy/actor/lib/genericsources.xml"/>
-  <input source="ptolemy/actor/lib/timedsources.xml"/>
-</entity>
+<!-- Sources list is custom. -->
+<input source="ptolemy/configs/hyvisual/sources.xml"/>
 
-<!-- Sinks include only generic and timed sinks. -->
-<entity name="sinks" class="ptolemy.moml.EntityLibrary">
-  <doc>Domain-polymorphic sinks</doc>
-  <input source="ptolemy/actor/lib/genericsinks.xml"/>
-  <input source="ptolemy/actor/lib/timedsinks.xml"/>
-</entity>
+<!-- Sinks list is custom. -->
+<input source="ptolemy/configs/hyvisual/sinks.xml"/>
 
 <!---------------------------------------------------------------------------->
 <!-- Standard libraries. -->
