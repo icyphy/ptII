@@ -42,7 +42,7 @@ import ptolemy.plot.*;
 /**
 A sequence plotter.  This plotter contains an instance of the Plot
 class from the Ptolemy plot package as a public member. Data at
-the input, which can consist of any number of channels, is plotted
+the input, which can consist of any number of channels, are plotted
 on this instance.  Each channel is plotted as a separate data set.
 The horizontal axis represents the count of the iterations, scaled
 by the <i>xUnit</i> parameter.  The horizontal increment between

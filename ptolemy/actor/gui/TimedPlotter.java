@@ -43,7 +43,7 @@ import java.awt.Panel;
 /**
 A signal plotter.  This plotter contains an instance of the Plot class
 from the Ptolemy plot package as a public member.  Data at the input, which
-can consist of any number of channels, is plotted on this instance.
+can consist of any number of channels, are plotted on this instance.
 Each channel is plotted as a separate data set.
 The horizontal axis represents time.
 
@@ -80,7 +80,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then updates the ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has an

@@ -47,7 +47,7 @@ A signal plotter that plots in an oscilloscope style, meaning that the
 horizontal axis is wrapped and that there is finite persistence.
 This plotter contains an instance of the Plot class
 from the Ptolemy plot package as a public member.  Data at the input, which
-can consist of any number of channels, is plotted on this instance.
+can consist of any number of channels, are plotted on this instance.
 Each channel is plotted as a separate data set.
 The horizontal axis represents time.
 The <i>width</i> parameter is a double that gives the width
@@ -89,16 +89,18 @@ public class TimedScope extends TimedPlotter {
     /** The width of the X axis (a double). */
     public Parameter width;
 
-    /** The amount of data displayed at any one time. */
+    /** The amount of data displayed at any one time (a double).
+     *  This has units of the X axis.
+     */
     public Parameter persistence;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Notification that an attribute has changed.
-        @exception IllegalActionException If the expression of the
-        attribute cannot be parsed or cannot be evaluated.
-    */
+     *  @exception IllegalActionException If the expression of the
+     *   attribute cannot be parsed or cannot be evaluated.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == width && plot != null) {
@@ -114,7 +116,7 @@ public class TimedScope extends TimedPlotter {
     }
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then updates the ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has an
