@@ -50,6 +50,7 @@ JSRCS = \
 	IntParam.java \
 	MultiPort.java \
 	NamedObj.java \
+	Net.java \
 	Node.java \
 	ObservableParameter.java \
 	Param.java \
@@ -57,8 +58,7 @@ JSRCS = \
 	Particle.java \
 	Port.java \
 	Relation.java \
-	StatusArray.java \
-	Short.java
+	StatusArray.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
