@@ -178,6 +178,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         output.setTypeEquals(BaseType.DOUBLE);
         initialState = new Parameter(this, "initialState",
                 new DoubleToken(_initState));
+        _history = new History(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -202,9 +203,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** Clean the history information.
      */
     public void clearHistory() {
-        if (_history != null) {
-            _history.clear();
-        }
+        _history.clear();
     }
 
     /** This method delegates to the integratorFire() of the 
@@ -233,6 +232,13 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return _auxVariables;
     }
 
+    /** Return the derivative of the latest updated state.
+     *  @return The derivative of the most recent resolved state.
+     */
+    public final double getDerivative() {
+        return _derivative;
+    }
+
     /** Return the history information of the last index-th step.
      *  The index start from 0, and getHistory(0) gives the 
      *  state and derivative of time t(n-1), assuming the current
@@ -246,7 +252,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @param index The index
      *  @return The history array at that index point.
      */
-    public double[] getHistory(int index) {        
+    public double[] getHistory(int index) { 
         return _history.getEntry(index);
     }
 
@@ -261,7 +267,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *
      *  @return the initial state.
      */
-    public double getInitialState() {
+    public final double getInitialState() {
         return _initState;
     }
 
@@ -270,7 +276,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *
      *  @return A double number as the state of the integrator.
      */
-    public double getState() {
+    public final double getState() {
         return _state;
     }
 
@@ -316,10 +322,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _tentativeState = _initState;
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
+        _derivative = _tentativeDerivative;
         if(_debugging) _debug(getName(), " init, token = " + _initState);
-        if (_history == null) {
-            _history = new History(this);
-        }
+        _history.clear();
     }
 
     /** Emit the tentative output, which is the tentative state of the
@@ -328,7 +333,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  completed.
      */
     public void emitTentativeOutputs() throws IllegalActionException {
-        output.broadcast(new DoubleToken(_tentativeState));
+        output.send(0, new DoubleToken(_tentativeState));
     }
 
     /** Return true if the last integration step is successful.
@@ -349,7 +354,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
-        if(_debugging) _debug(getName(), " state: " + _state);
+        _derivative = _tentativeDerivative;
+        if(_debugging) _debug(getName(), " state: " + _state +
+                              " derivative: " + _derivative);
         _pushHistory(_tentativeState, _tentativeDerivative);
         return true;
     }
@@ -379,6 +386,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
         int n = solver.getIntegratorAuxVariableCount();
         if((_auxVariables == null) || (_auxVariables.length < n)) {
             _auxVariables = new double[n];
+        }
+        if(getHistoryCapacity() != solver.getHistoryCapacityRequirement()) {
+            setHistoryCapacity(solver.getHistoryCapacityRequirement());
         }
         if(getValidHistoryCount()>=2) {
             _history.rebalance(dir.getCurrentStepSize());
@@ -466,8 +476,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _tentativeDerivative = value;
     }
 
-    
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     /** Push the state and derivative into the history storage.
@@ -487,6 +495,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _state = value;
     }
 
+    /** Rebalance the history. This method is here for the test purpose.
+     *  @param stepsize The new step size.
+     */
+    protected void _rebalanceHistory(double stepsize) {
+        _history.rebalance(stepsize);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -500,6 +514,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
     private double[] _auxVariables;
     // State.
     private double _state;
+    // Derivative.
+    private double _derivative;
     // tentative state;
     private double _tentativeState;
     // Tentative derivative;
@@ -526,7 +542,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         public History (CTBaseIntegrator container) {
             _container = container;
             _entries = new LinkedList();
-            _capacity = 1;
+            _capacity = 0;
             _stepsize = 0.0;
         }
 
@@ -599,7 +615,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
                     _entries.removeLast();
                 }
                 double ratio = currentStepSize/_stepsize; 
-                System.out.println("ratio="+ratio);
                 for (int i = 1; i < size; i++) {
                     double[] newentry;
                     int bin = (int)Math.floor(i*ratio);
@@ -653,7 +668,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
         // @param p2 Point2, state and derivative.
         // @param s The interpolation point.
         private double[] _Hermite(double[] p1, double[] p2, double s) {
-            
             double s3 = s*s*s;
             double s2 = s*s;
             double h1 = 2*s3 - 3*s2 + 1;
@@ -675,9 +689,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         // @param p2 Point2, state and derivative.
         // @param s The extrapolation ration.
         private double[] _extrapolation(double[] p1, double[] p2, double s) {
-            System.out.println("p1=" + p1[0] + " " + p1[1]);
-            System.out.println("p2=" + p2[0] + " " + p2[1]);
-            System.out.println("s=" + s);
+            
             double[] result = new double[2];
             result[0] = p2[0] - (p1[0] - p2[0])*s;
             result[1] = p2[1] - (p1[1] - p2[1])*s;

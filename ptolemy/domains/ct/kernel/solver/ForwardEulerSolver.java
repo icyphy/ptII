@@ -90,6 +90,13 @@ public class ForwardEulerSolver extends FixedStepSolver {
         return 1;
     }
 
+    /** Return 0 always. No history information is needed.
+     *  @return 0.
+     */
+    public final int getHistoryCapacityRequirement() {
+        return 0;
+    }
+
     /** This method is delegated to the fire() method of the integrator.
      *  It implements the formula in the class document..
      *

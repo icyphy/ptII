@@ -97,6 +97,13 @@ public class BackwardEulerSolver extends FixedStepSolver
         return 1;
     }
 
+    /** Return 0 always. No history information is needed.
+     *  @return 0.
+     */
+    public final int getHistoryCapacityRequirement() {
+        return 0;
+    }
+
     /** For the integrator, do x(n+1) = x(n)+h*x'(n+1). Test if this
      *  calculation is
      *  converge for this integrator.

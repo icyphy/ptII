@@ -117,10 +117,6 @@ public class ImpulseBESolver extends BackwardEulerSolver {
         return true;
     }
 
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

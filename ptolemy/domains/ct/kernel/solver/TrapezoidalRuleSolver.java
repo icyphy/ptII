@@ -262,6 +262,14 @@ public class TrapezoidalRuleSolver extends ODESolver{
         return 2;
     }
 
+    /** Return 2 always. It needs two history points to do prediction.
+     *  @return 2.
+     */
+    public final int getHistoryCapacityRequirement() {
+        return 2;
+    }
+
+
     ////////////////////////////////////////////////////////////////////////
     ////                       protected methods                        ////
     /** Set the convergence flag.

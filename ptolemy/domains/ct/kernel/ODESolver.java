@@ -148,6 +148,12 @@ public abstract class ODESolver extends NamedObj {
      */
     public abstract int getIntegratorAuxVariableCount();
 
+    /** Abstract method returns the number of history information needed
+     *  by this solver.
+     *  @return The number of history information needed.
+     */
+    public abstract int getHistoryCapacityRequirement();
+
     /** The fire method of the integrator is delegated to this method.
      *
      *  @param integrator The integrator of that calls this method.

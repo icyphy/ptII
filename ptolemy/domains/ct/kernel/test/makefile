@@ -54,7 +54,8 @@ JSRCS = \
 	CTDummySink.java \
 	CTDummySource.java \
 	CTDummyStatefulActor.java \
-	CTDummyWaveformGenerator.java
+	CTDummyWaveformGenerator.java \
+	CTTestIntegrator.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

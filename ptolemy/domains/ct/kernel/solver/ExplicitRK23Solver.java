@@ -104,6 +104,14 @@ public class ExplicitRK23Solver extends ODESolver{
         return 4;
     }
 
+    /** Return 1 always. The history information about the last 
+     *  step is needed.
+     *  @return 1.
+     */
+    public final int getHistoryCapacityRequirement() {
+        return 0;
+    }
+
     /** This method is delegated to the fire() method of the integrator.
      *  It implements the formula in the class document.
      *
@@ -125,7 +133,7 @@ public class ExplicitRK23Solver extends ODESolver{
         switch (r) {
         case 0:
             //derivative at t;
-            double k0 = (integrator.getHistory(0))[1];
+            double k0 = integrator.getDerivative();
             integrator.setAuxVariables(0, k0);
             outvalue = xn + h * k0 *_B[0][0];
             break;
