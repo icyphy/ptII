@@ -136,23 +136,21 @@ test Branch-2.2 {Test Branch constructors, reset() and pre-activation state} {
     if { [$branch isBranchPermitted] != 0 } {
     	set val 0
     }
+    if { [$branch numberOfCompletedEngagements] != 0 } {
+     	set val 0
+    }
+    if { [$branch isIterationOver] != 1 } {
+     	set val 0
+    }
     
-#    
-#     if { [$branch numberOfCompletedEngagements] != 0 } {
-#     	set val 0
-#     }
-#     if { [$branch isBranchPermitted] != 0 } {
-#     	set val 0
-#     }
-    
-#     $branch reset
+    $branch reset
    
-#     if { [$branch isActive] != 1 } {
-#     	$val = 0
-#     }
-    
-    # Don't test isIterationOver() right here yet. 
-    # The functionality of reset() will be changing.
+    if { [$branch isActive] != 1 } {
+    	$val = 0
+    }
+    if { [$branch isIterationOver] != 1 } {
+     	set val 0
+    }
     
    list $val
 
