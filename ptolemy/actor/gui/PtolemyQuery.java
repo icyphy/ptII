@@ -77,47 +77,31 @@ to associate a variable to that entry.
 public class PtolemyQuery extends Query
     implements QueryListener, ValueListener {
 
-    /** Construct a panel with no queries in it. This class
-     *  requires a director, in order to queue variable change 
-     *  requests. If this constructor is used, then it is
-     *  assumed that all variables that are attached to parameters
-     *  are associated with a director. Specifically, it is
-     *  assumed that the container of each variable implements
-     *  the Actor interface. If this is not the case, then
-     *  use the other constructor that takes a director as a
-     *  parameter.
+    /** Construct a panel with no queries in it.  Equivalent to 
+     *  calling the second constructor with a null argument.
      */
     public PtolemyQuery() {
-	super();
-	_constructorDirector = false;
-	this.addQueryListener(this);
-	_parameters = new HashMap();
-
-	_ignoreChanged = 0;
-
-	_varToListOfEntries = new HashMap();
-	_ignoreEntryChange = new HashMap();
-	_ignoreVarChangePart1 = new HashMap();
+	this(null);
     }
 
     /** Construct a panel with no queries in it.
      *  When an entry changes, a change request is
-     *  queued with the director. The director
+     *  queued with the given director. The director
      *  will then schedule the corresponding variable's
      *  value to be updated at an appropriate time in 
      *  the execution of the model. Note that
-     *  only one PtolemyQuerey object is allowed per
-     *  director. 
+     *  only one PtolemyQuery object is allowed per
+     *  director.   If the director is null, this query will
+     *  attempt to find a director.
      *  @param director The director for a model. This should
      *  be the director associated with all variables that
      *  are attached to query entries.
      */
     public PtolemyQuery(Director director) {
 	super();
-	_constructorDirector = true;
-	this.addQueryListener(this);
+	addQueryListener(this);
 	_parameters = new HashMap();
-	this._director = director;
+	_director = director;
 	_ignoreChanged = 0;
 
 	_varToListOfEntries = new HashMap();
@@ -191,7 +175,7 @@ public class PtolemyQuery extends Query
     }
 
     /** Set the variable to the value of the Query entry that
-     *  changed. This  method is called whenever an entry changes.
+     *  changed. This method is called whenever an entry changes.
      *  If the variable has a director, then queue a change request with
      *  the director. If the variable does not have a director,
      *  then set the variable imediately, without queuing
@@ -206,102 +190,53 @@ public class PtolemyQuery extends Query
     // FIXME: This only works with a Parameter, not a Variable.
     // See note below.
     public void changed(String name) {
-	//System.out.println("PtolemyQuery: changed(): invoked");
-	//
-	//System.out.println("PtolemyQuery: changed(): name=" + name + ".");
-	//System.out.println("PtolemyQuery: changed(): stringValue(name) " +
-	//   stringValue(name));
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
-	    //System.out.println("PtolemyQuery: changed(): containsKey");
 	    Variable var = (Variable)(_parameters.get(name));
-	    //System.out.println("PtolemyQuery: changed(): getFullName of var" +
-	    //   var.getFullName() + ".");
 	    // Check if we should ignore 
-            if (((Boolean)_ignoreEntryChange.get(name)).booleanValue() == false) {
-		// Don't ignore.
-		//System.out.println("PtolemyQuery: changed(): don't ignore");
-		
-		
-		// Ignore the return call to valueChanged() when the variable
-		// is updated.
-		// Increment the number of times requestChange() is called.
-		// Since the mapping is functional, only increment once.
-		
-		if (_constructorDirector == true) {
-		    // Queue a change request with the director.
-		    // FIXME: 1st param to SetParameter does what?
-		    // Set the variable.
-		    
-		    // FIXME: This only works with Parameter, not Variable,
-		    // becuase of the use of SetParameter.
-		    // Write a SetVariable class to fix this. This should be
-		    // fairly trivial to do.
-		    try {
-		    _director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
-		    } catch (ChangeFailedException e) {
-			// FIXME: This method should probably throw an
-			// exception, but then a lot of code (including
-			// the base class), would need to be changed.
-			System.err.println("Change failed: " + e);
-		    }
-		} else {
-		    // Director not specified in constructor,
-		    // so get it from the variable.
-		    // Get the director from the variable.
-		    
-
-		    Nameable container = var.getContainer();
-		    while (container != null) {
-			// Reason for casting to Actor: Actor has getDirector(),
-			// NamedObj dos not.
-			Director director;
-			if (container instanceof Actor) {
-			   director = ((Actor)container).getDirector();
-			   if (director != null) {
-			       try {
-				   director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
-			       } catch (ChangeFailedException e) {
-				   // FIXME: This method should probably throw an
-				   // exception, but then a lot of code (including
-				   // the base class), would need to be changed.
-				   System.err.println("Change failed: " + e);
-			       }
-			       break;
-			   } else {
-			       container = container.getContainer();
-			   }
-			} else if (container instanceof Director) {
-			    director = (Director)container;
-			    try {
-			    director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
-			    } catch (ChangeFailedException e) {
-				// FIXME: This method should probably throw an
-				// exception, but then a lot of code (including
-				// the base class), would need to be changed.
-				System.err.println("Change failed: " + e);
-			    }
-			    break;
-			} else {
-			     container = container.getContainer();
-			}
-		    }
-		    
-		    // container == null iff attempt to find a director was 
-		    // unsuccessfull.
-		    // So just set the variable here, since there is no
-		    // director to queue a mutation request with.
-		    if (container == null) {
-			var.setExpression(stringValue(name));
-		    }
-		} 
-
-		
-		
-	    } else {
+	    Boolean flag = (Boolean)_ignoreEntryChange.get(name);
+	    if (flag.booleanValue()) {
 		// Don't ignore next time this method is called.
 		_ignoreEntryChange.put(name, new Boolean(false));
+		return;
 	    }
+	    // Don't ignore.
+	    
+	    Director director = _director;
+	    if (_director != null) {
+		// Director not specified in constructor,
+		// so get it from the variable.
+		// Get the director from the variable.
+		Nameable container = var.getContainer();
+		// Walk up the tree until we hit an actor.
+		while (container != null) {
+		    if(container instanceof Director) {
+			director = (Director)container;
+			break;
+		    }
+		    if (container instanceof Actor) {
+			director = ((Actor)container).getDirector();
+			break;
+		    }
+		    container = container.getContainer();
+		}
+	    }
+	    if(director != null && director.getContainer() != null &&
+	       ((CompositeActor)director.getContainer()).getManager() != null) {
+		try {
+		    director.requestChange(new SetParameter((Parameter)var, 
+			(Parameter)var, stringValue(name)));
+		} catch (ChangeFailedException e) {
+		    // FIXME: This method should probably throw an
+		    // exception, but then a lot of code (including
+		    // the base class), would need to be changed.
+		    System.err.println("Change failed: " + e);
+		}
+	    } else {
+		// So just set the variable here, since there is no
+		// director to queue a mutation request with.
+		var.setExpression(stringValue(name));
+	    } 
 	}
     }
 
