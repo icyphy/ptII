@@ -201,14 +201,14 @@ public interface ProcessReceiver extends Receiver {
      */
     public boolean isProducerReceiver();
 
-    /** Determine if this receiver is read blocked.
-     *  @return True if this receiver is read blocked; return
+    /** Determine whether this receiver is read blocked.
+     *  @return True if this receiver is read blocked and
      *   false otherwise.
      */
     public boolean isReadBlocked();
 
-    /** Determine if this receiver is write blocked.
-     *  @return True if this receiver is write blocked; return
+    /** Determine whether this receiver is write blocked.
+     *  @return True if this receiver is write blocked and
      *   false otherwise.
      */
     public boolean isWriteBlocked();

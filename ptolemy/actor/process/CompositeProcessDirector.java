@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
    The <I>output</I> branch controller monitors data transfer for channels
    associated with output opaque ports.
    <P>
-   Associated with the channels of each opaque is a pair of process
+   Associated with the channels of each opaque port is a pair of process
    receivers. The <I>producer receiver</I> serves as the channel source
    and the <I>consumer receiver</I> serves as the channel destination.
    Each branch controller allocates a branch for each process receiver
@@ -113,8 +113,7 @@ import ptolemy.kernel.util.Workspace;
    the composite process director waits until the branch controllers
    block (an inevitable condition) and ends the iteration with postfire()
    returning true indicating that successive iterations are allowed.
-   <P>
-   <P>
+
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 1.0

@@ -54,26 +54,20 @@ import java.io.InterruptedIOException;
    An instance of this class can be created by passing an actor as an
    argument to the constructor. This class runs as a separate thread on
    being started and calls the execution methods on the actor, repeatedly.
-   In specific, it calls the prefire(), fire() and postfire() methods
+   Specifically, it calls initialize(), and then repeatedly calls
+   the prefire(), fire() and postfire() methods
    of the actor. Before termination, this calls the wrapup() method of
    the actor.
    <P>
    If an actor returns false in its postfire() methods, the
-   actor is never fired again and the thread or process would terminate
+   actor is never fired again and the thread or process terminates
    after calling wrapup() on the actor.
    <P>
-   The initialize() method of the actor is not called from this class. It
-   should be called before starting this thread.
-   <P>
-   In process oriented domains, the director needs to keep a count of the
-   number of active processes in the system. This is used for detection of
-   deadlocks, termination, and possibly some other reasons. For this two
-   methods, _increaseActiveCount() and _decreaseActiveCount(), are defined
-   in the ProcessDirector. _increaseActiveCount() is called on the director
-   from the constructor of this class and the _decreaseActiveCount() method
-   is called at the end of the run() method, i.e. before the thread terminates.
-   <P>
-
+   An instance of this class is associated with an instance of ProcessDirector
+   as well as an instance of Actor. The _increaseActiveCount() of the director
+   is called from the constructor of this class, and the _decreaseActiveCount()
+   method is called at the end of the run() method, just before the thread terminates.
+ 
    @author Mudit Goel, Neil Smyth, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
@@ -169,9 +163,7 @@ public class ProcessThread extends PtolemyThread {
                                 break;
                             }
                         }
-                        // NOTE: Do we need to indicate that actor has
-                        // restarted, with something like
-                        _director._actorHasRestarted();
+                         _director._actorHasRestarted();
                     }
                     _debug("-- Thread resuming.");
                 }
