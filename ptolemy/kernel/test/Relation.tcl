@@ -83,7 +83,7 @@ test Relation-3.1 {Test enumPorts on a Relation that has no ports} {
     set enum  [$r1 enumPorts]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {{java.util.NoSuchElementException: List is empty.} 0}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####
@@ -93,7 +93,7 @@ test Relation-3.2 {Test enumPorts on a Relation that has no ports} {
     set enum  [$r1 enumPorts]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {{java.util.NoSuchElementException: List is empty.} 0}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####
@@ -104,7 +104,7 @@ test Relation-4.1 {Test enumPortsExcept on a Relation that has no ports} {
     set enum  [$r1 enumPortsExcept $p1]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {{java.util.NoSuchElementException: List is empty.} 0}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####
@@ -115,7 +115,7 @@ test Relation-4.2 {Test enumPortsExcept on a Relation that has no ports} {
     set enum  [$r1 enumPortsExcept $p1]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {{java.util.NoSuchElementException: List is empty.} 0}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####

@@ -228,7 +228,7 @@ test Port-6.1 {Test enumRelations.  Note that enumRelations is also tested in \
     set enum [$p1 enumRelations]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {{java.util.NoSuchElementException: List is empty.} 0}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####
