@@ -56,6 +56,7 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
@@ -640,15 +641,17 @@ public class HDFFSMDirector extends FSMDirector {
                     }
                 }
                 for (int k = 0; k < rate; k++) {
-                    ptolemy.data.Token t = port.get(i);
-                    if (insideReceivers != null
+                    if (port.hasToken(i)) {
+                        ptolemy.data.Token t = port.get(i);
+                        if (insideReceivers != null
                             && insideReceivers[i] != null) {
-                        for (int j = 0;
-                             j < insideReceivers[i].length; j++) {
-                            insideReceivers[i][j].put(t);
-                        }
+                            for (int j = 0;
+                                j < insideReceivers[i].length; j++) {
+                                insideReceivers[i][j].put(t);
+                            }  
                         // Successfully transferred data, so return true.
                         transferred = true;
+                       }
                     }
                 }
             } catch (NoTokenException ex) {
@@ -853,7 +856,8 @@ public class HDFFSMDirector extends FSMDirector {
             } else if (director instanceof HDFDirector) {
                 foundValidDirector = true;
             } else if (director instanceof SDFDirector ||
-                       director instanceof DDFDirector) {
+                       director instanceof DDFDirector ||
+                       director instanceof GiottoDirector) {
                 foundValidDirector = true;
                 // FIXME
                 // THis flag actually should indicate any director
