@@ -272,6 +272,8 @@ mainVergil.htm: main.htm
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
 ptII$(PTVERSION).releaseVergil.htm: ptII$(PTVERSION).release.htm
 	awk -f javahtml.awk ptII$(PTVERSION).release.htm > $@  
+ptII$(PTVERSION).releaseHyVisual.htm: ptII$(PTVERSION).release.htm
+	awk -f hyVisualHtml.awk ptII$(PTVERSION).release.htm > $@  
 troubleshootingVergil.htm: troubleshooting.htm
 	awk -f javahtml.awk troubleshooting.htm > $@  
 
@@ -296,6 +298,7 @@ whatsnewVergil.htm: whatsnew.htm
 DERIVED_FILES = \
 	mainVergil.htm \
 	ptII$(PTVERSION).releaseVergil.htm \
+	ptII$(PTVERSION).releaseHyVisual.htm \
 	troubleshootingVergil.htm \
 	whatsnew.htm \
 	whatsnewVergil.htm 
