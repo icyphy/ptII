@@ -30,13 +30,24 @@
 
 package ptolemy.vergil.icon;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import javax.swing.SwingConstants;
+
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// BoxedValuesIcon
@@ -51,7 +62,7 @@ than <i>displayWidth</i> (in characters), then it is truncated.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class BoxedValuesIcon extends BoxedValueIcon {
+public class BoxedValuesIcon extends XMLIcon {
 
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
@@ -62,6 +73,70 @@ public class BoxedValuesIcon extends BoxedValueIcon {
     public BoxedValuesIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+        displayWidth = new Parameter(this, "displayWidth");
+        displayWidth.setExpression("80");
+        displayWidth.setTypeEquals(BaseType.INT);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The number of characters to display. This is an integer, with
+     *  default value 80.
+     */
+    public Parameter displayWidth;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Create a new background figure.  This overrides the base class
+     *  to draw a box around the value display, where the width of the
+     *  box depends on the value.
+     *  @return A new figure.
+     */
+    public Figure createBackgroundFigure() {
+        String displayString = _displayString();
+        double width = 60;
+        double heigth = 30;
+        if (displayString != null) {
+            // Measure width of the text.  Unfortunately, this
+            // requires generating a label figure that we will not use.
+            LabelFigure label = new LabelFigure(displayString,
+                    _labelFont, 1.0, SwingConstants.CENTER);
+            Rectangle2D stringBounds = label.getBounds();
+            // NOTE: Padding of 20.
+            width = stringBounds.getWidth() + 20;
+            heigth = stringBounds.getHeight() + 10;
+        }
+        return new BasicRectangle(0, 0, width, heigth, Color.white, 1);
+    }
+    
+    /** Create a new Diva figure that visually represents this icon.
+     *  The figure will be an instance of LabelFigure that renders the
+     *  values of the attributes of the container.
+     *  @return A new CompositeFigure consisting of the label.
+     */
+    public Figure createFigure() {
+        CompositeFigure result = (CompositeFigure)super.createFigure();
+        String truncated = _displayString();
+        // If there is no string to display now, then create a string
+        // with a single blank.
+        if (truncated == null) {
+            truncated = " ";
+        }
+        // NOTE: This violates the Diva MVC architecture!
+        // This attribute is part of the model, and should not have
+        // a reference to this figure.  By doing so, it precludes the
+        // possibility of having multiple views on this model.
+        LabelFigure label = new LabelFigure(truncated,
+                _labelFont, 1.0, SwingConstants.CENTER);
+        Rectangle2D backBounds = result.getBackgroundFigure().getBounds();
+        label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
+        result.add(label);
+        
+        _addLiveFigure(label);
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -82,7 +157,8 @@ public class BoxedValuesIcon extends BoxedValueIcon {
             Iterator settables = container.attributeList(Settable.class).iterator();
             while (settables.hasNext()) {
                 Settable settable = (Settable)settables.next();
-                if (settable.getVisibility() != Settable.FULL) {
+                if (settable.getVisibility() != Settable.FULL
+                        && settable.getVisibility() != Settable.NOT_EDITABLE) {
                     continue;
                 }
                 String name = settable.getName();
@@ -106,4 +182,10 @@ public class BoxedValuesIcon extends BoxedValueIcon {
         }
         return null;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** The font used. */
+    protected static Font _labelFont = new Font("Dialog", Font.PLAIN, 12);
 }
