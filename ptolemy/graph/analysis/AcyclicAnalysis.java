@@ -45,7 +45,6 @@ property.
 @version $Id$
 */
 
-// FIXME: this should be an abstract class.
 public class AcyclicAnalysis extends Analysis {
 
     /** Construct an acyclic analysis for a given directed graph.

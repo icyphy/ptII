@@ -31,7 +31,7 @@
 
 package ptolemy.graph;
 
-import ptolemy.graph.analysis.Analysis;
+import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -187,21 +187,21 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *   <code>false</code> otherwise.
      */
     public boolean isLattice() {
-	_validate();
+    _validate();
 
-	if (bottom() == null || top() == null) {
-	    return false;
-	}
+    if (bottom() == null || top() == null) {
+        return false;
+    }
 
-	Object[] nodes = weightArray(nodes());
-	for (int i = 0; i < nodes.length-1; i++) {
-	    for (int j = i+1; j < nodes.length; j++) {
-		if (leastUpperBound(nodes[i], nodes[j]) == null) {
-		    return false;
-		}
-	    }
-	}
-	return true;
+    Object[] nodes = weightArray(nodes());
+    for (int i = 0; i < nodes.length-1; i++) {
+        for (int j = i+1; j < nodes.length; j++) {
+        if (leastUpperBound(nodes[i], nodes[j]) == null) {
+            return false;
+        }
+        }
+    }
+    return true;
     }
 
     /** Compute the least element of a subset.
@@ -382,7 +382,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      */
     protected void _initializeAnalyses() {
         super._initializeAnalyses();
-        _transitiveClosureAnalysis = new Analysis(this);
+        _transitiveClosureAnalysis = new TransitiveClosureAnalysis(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -408,12 +408,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // compute transitive closure.  Throws InvalidStateException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
+        boolean[][] transitiveClosure = transitiveClosure();
+
         if (!_transitiveClosureAnalysis.obsolete()) {
-            _closure = _transitiveClosure;
+            _closure = transitiveClosure;
             return;
         }
 
-        _computeTransitiveClosure();
         if ( !isAcyclic()) {
             throw new InvalidStateException("DirectedAcyclicGraph._validate: "
                     + "Graph is cyclic.");
@@ -426,28 +427,27 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
                 if (_bottom == null) {
                     _bottom = nodeWeight(i);
                 } else {
-		    _bottom = null;
-		    break;
+            _bottom = null;
+            break;
                 }
             }
         }
 
-	// find top
-	_top = null;
-	for (int i = 0; i < nodeCount(); i++) {
+        // find top
+        _top = null;
+        for (int i = 0; i < nodeCount(); i++) {
             if (outputEdgeCount(node(i)) == 0) {
-                if (_top == null) {
+               if (_top == null) {
                     _top = nodeWeight(i);
                 } else {
                     _top = null;
                     break;
                 }
-	    }
-	}
+            }
+        }
 
-        _closure = _transitiveClosure;
+        _closure = transitiveClosure;
         _tranClosureTranspose = null;
-        _transitiveClosureAnalysis.registerComputation();
     }
 
     // compute the transposition of transitive closure and point _closure
@@ -455,12 +455,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     private void _validateDual() {
         _validate();
 
+        boolean[][] transitiveClosure = transitiveClosure();
         if (_tranClosureTranspose == null) {
-            int size = _transitiveClosure.length;
+            int size = transitiveClosure.length;
             _tranClosureTranspose = new boolean[size][size];
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
-                    _tranClosureTranspose[i][j] = _transitiveClosure[j][i];
+                    _tranClosureTranspose[i][j] = transitiveClosure[j][i];
                 }
             }
         }
@@ -510,8 +511,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         //         } else if (CE < all elements in list) {
         //             empty list and candidate = CE;
         //         } else {
-	//	       // CE is less than some elements in list, but
-	//	       // incomparable with others
+    //         // CE is less than some elements in list, but
+    //         // incomparable with others
         //             remove all elements in list that > CE;
         //             insert CE in list;
         //         }
@@ -525,10 +526,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         for (int i = 0; i < ids.length; i++) {
             boolean listEmpty = incomparables.size() == 0;
             if (candidate == -1 && listEmpty) {
-		// case (1)
+        // case (1)
                 candidate = ids[i];
             } else if (candidate != -1 && listEmpty) {
-		// case (2)
+        // case (2)
                 int result = _compareNodeId(ids[i], candidate);
                 if (result == LOWER) {
                     candidate = ids[i];
@@ -540,8 +541,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
                     candidate = -1;
                 }
             } else if (candidate == -1 && !listEmpty) {
-		// case (3)
-		// flag indicating if the current element should be discarded
+        // case (3)
+        // flag indicating if the current element should be discarded
                 boolean discard = false;
 
                 for (ListIterator iterator = incomparables.listIterator(0);
@@ -565,8 +566,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
 
                 }
             } else {
-		// case (4)
-		// candidate != -1 && !listEmpty
+        // case (4)
+        // candidate != -1 && !listEmpty
                 throw new InvalidStateException("bug in code! " +
                         "Inconsistent data structure!");
             }
@@ -627,7 +628,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             int numUpperBD = 0;
             for (int i = 0; i < size; i++) {
                 isUpperBD[i] = false;
-		if (_closure[i1][i] && _closure[i2][i]) {
+        if (_closure[i1][i] && _closure[i2][i]) {
                     isUpperBD[i] = true;
                     numUpperBD++;
                 }
@@ -663,36 +664,36 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // of this CPO is returned, depending on whether the lub or the glb
     // is computed.
     private Object _lubShared(Object[] subset) {
-	// convert all elements to their IDs
-	int[] subsetId = new int[subset.length];
-	for (int i = 0; i < subset.length; i++) {
-	    subsetId[i] = nodeLabel(subset[i]);
-	}
+    // convert all elements to their IDs
+    int[] subsetId = new int[subset.length];
+    for (int i = 0; i < subset.length; i++) {
+        subsetId[i] = nodeLabel(subset[i]);
+    }
 
-	// find all the upper bounds
-	int size = nodeCount();
-	int numUB = 0;
-	int[] ubId = new int[size];
-	for (int i = 0; i < size; i++) {
-	    boolean isUB = true;
-	    for (int j = 0; j < subsetId.length; j++) {
-		int compare = _compareNodeId(i, subsetId[j]);
-		if (compare == LOWER || compare == INCOMPARABLE) {
-		    isUB = false;
-		    break;
-		}
-	    }
-	    if (isUB) {
-		ubId[numUB++] = i;
-	    }
-	}
+    // find all the upper bounds
+    int size = nodeCount();
+    int numUB = 0;
+    int[] ubId = new int[size];
+    for (int i = 0; i < size; i++) {
+        boolean isUB = true;
+        for (int j = 0; j < subsetId.length; j++) {
+        int compare = _compareNodeId(i, subsetId[j]);
+        if (compare == LOWER || compare == INCOMPARABLE) {
+            isUB = false;
+            break;
+        }
+        }
+        if (isUB) {
+        ubId[numUB++] = i;
+        }
+    }
 
-	// pack all the IDs of all upper bounds into an array
-	int[] ids = new int[numUB];
-	for (int i = 0; i < numUB; i++) {
-	    ids[i] = ubId[i];
-	}
-	return _leastElementNodeId(ids);
+    // pack all the IDs of all upper bounds into an array
+    int[] ids = new int[numUB];
+    for (int i = 0; i < numUB; i++) {
+        ids[i] = ubId[i];
+    }
+    return _leastElementNodeId(ids);
     }
 
     // compute the up-set of an element.
@@ -721,7 +722,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     private boolean[][] _tranClosureTranspose = null;
 
     // The graph analysis for computation of the transitive closure.
-    private Analysis _transitiveClosureAnalysis;
+    private TransitiveClosureAnalysis _transitiveClosureAnalysis;
 
     private Object _bottom = null;
     private Object _top = null;

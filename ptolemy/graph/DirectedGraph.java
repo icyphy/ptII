@@ -31,7 +31,10 @@
 
 package ptolemy.graph;
 
-import ptolemy.graph.analysis.Analysis;
+import ptolemy.graph.analysis.AcyclicAnalysis;
+import ptolemy.graph.analysis.SinkNodeAnalysis;
+import ptolemy.graph.analysis.SourceNodeAnalysis;
+import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,7 +120,7 @@ public class DirectedGraph extends Graph {
      */
     public Collection attemptTopologicalSort(Collection nodeCollection)
             throws IllegalActionException {
-        _computeTransitiveClosure();
+        boolean[][] transitiveClosure = transitiveClosure();
 
         int N = nodeCollection.size();
         Node[] nodeArray = new Node[N];
@@ -130,8 +133,8 @@ public class DirectedGraph extends Graph {
             for (int j = i+1; j < N; j++) {
                 int label1 = nodeLabel(nodeArray[i]);
                 int label2 = nodeLabel(nodeArray[j]);
-                if (_transitiveClosure[label2][label1]) {
-                    if (_transitiveClosure[label1][label2]) {
+                if (transitiveClosure[label2][label1]) {
+                    if (transitiveClosure[label1][label2]) {
                         throw new IllegalActionException("Attempted to"
                                 + " topologically sort cyclic nodes.");
                     } else {
@@ -176,15 +179,15 @@ public class DirectedGraph extends Graph {
      *  not a node in this graph.
      */
     public Collection backwardReachableNodes(Node node) {
-        _computeTransitiveClosure();
+        boolean[][] transitiveClosure = transitiveClosure();
 
         int nodeLabel = nodeLabel(node);
-        ArrayList nodes = new ArrayList(_transitiveClosure.length);
+        ArrayList nodes = new ArrayList(transitiveClosure.length);
         // Look at the corresponding column.
         Iterator graphNodes = nodes().iterator();
         while (graphNodes.hasNext()) {
             Node next = (Node)(graphNodes.next());
-            if (_transitiveClosure[nodeLabel(next)][nodeLabel]) {
+            if (transitiveClosure[nodeLabel(next)][nodeLabel]) {
                 nodes.add(next);
             }
         }
@@ -215,8 +218,8 @@ public class DirectedGraph extends Graph {
      *  the specified nodes; each element is a {@link Node}.
      */
     public Collection backwardReachableNodes(Collection nodeCollection) {
-        _computeTransitiveClosure();
-        ArrayList reachableNodes = new ArrayList(_transitiveClosure.length);
+        boolean[][] transitiveClosure = transitiveClosure();
+        ArrayList reachableNodes = new ArrayList(transitiveClosure.length);
         // Compute the OR of the corresponding rows.
         Iterator graphNodes = nodes().iterator();
         while (graphNodes.hasNext()) {
@@ -226,7 +229,7 @@ public class DirectedGraph extends Graph {
             Iterator nodes = nodeCollection.iterator();
             while (nodes.hasNext()) {
                 Node nextNode = (Node)nodes.next();
-                if (_transitiveClosure[nextLabel][nodeLabel(nextNode)]) {
+                if (transitiveClosure[nextLabel][nodeLabel(nextNode)]) {
                     reachable = true;
                     break;
                 }
@@ -261,14 +264,14 @@ public class DirectedGraph extends Graph {
      *  is a {@link Node}.
      */
     public Collection cycleNodeCollection() {
-        _computeTransitiveClosure();
+        boolean[][] transitiveClosure = transitiveClosure();
 
-        ArrayList result = new ArrayList(_transitiveClosure.length);
+        ArrayList result = new ArrayList(transitiveClosure.length);
         Iterator nodes = nodes().iterator();
         while (nodes.hasNext()) {
             Node next = (Node)nodes.next();
             int label = nodeLabel(next);
-            if (_transitiveClosure[label][label]) {
+            if (transitiveClosure[label][label]) {
                 result.add(next);
             }
         }
@@ -344,18 +347,14 @@ public class DirectedGraph extends Graph {
         return Collections.unmodifiableList(_inputEdgeList(node));
     }
 
-    /** Test if this graph is acyclic (is a DAG).
-     *  The implementation computes the transitive closure of the
-     *  graph, if it is not already computed after the last change to
-     *  this graph.  So the first call to this method after a graph change
-     *  may be slow, but all the subsequent calls return in constant
-     *  time.
+    /** Test if this graph is acyclic (is a DAG). The computation is
+     *  done in <code>AcyclicAnalysis</code>. Please see
+     *  {@link ptolemy.graph.analysis.AcyclicAnalysis}
      *  @return True if the the graph is acyclic, or
      *  empty; false otherwise.
      */
     public boolean isAcyclic() {
-        _computeTransitiveClosure();
-        return _isAcyclic;
+        return ((Boolean)_acyclicAnalysis.result()).booleanValue();
     }
 
     /** Return the number of output edges of a specified node.
@@ -428,13 +427,13 @@ public class DirectedGraph extends Graph {
      *  not a node in this graph.
      */
     public Collection reachableNodes(Node node) {
-        _computeTransitiveClosure();
+        boolean[][] transitiveClosure = transitiveClosure();
         int label = nodeLabel(node);
-        ArrayList result = new ArrayList(_transitiveClosure.length);
+        ArrayList result = new ArrayList(transitiveClosure.length);
         Iterator nodes = nodes().iterator();
         while (nodes.hasNext()) {
             Node next = (Node)nodes.next();
-            if (_transitiveClosure[label][nodeLabel(next)]) {
+            if (transitiveClosure[label][nodeLabel(next)]) {
                 result.add(next);
             }
         }
@@ -477,7 +476,7 @@ public class DirectedGraph extends Graph {
      *  the specified one; each element is a {@link Node}.
      */
     public Collection reachableNodes(Collection nodeCollection) {
-        _computeTransitiveClosure();
+        boolean[][] transitiveClosure = transitiveClosure();
 
         int N = nodeCollection.size();
         int labels[] = new int[N];
@@ -485,7 +484,7 @@ public class DirectedGraph extends Graph {
         for (int i = 0; i < N; i++) {
             labels[i] = nodeLabel((Node)nodes.next());
         }
-        ArrayList reachableNodes = new ArrayList(_transitiveClosure.length);
+        ArrayList reachableNodes = new ArrayList(transitiveClosure.length);
         // Compute the OR of the corresponding rows.
         Iterator graphNodes = nodes().iterator();
         while (graphNodes.hasNext()) {
@@ -493,7 +492,7 @@ public class DirectedGraph extends Graph {
             int nextGraphLabel = nodeLabel(nextGraphNode);
             boolean reachable = false;
             for (int i = 0; i < N; i++) {
-                if (_transitiveClosure[labels[i]][nextGraphLabel]) {
+                if (transitiveClosure[labels[i]][nextGraphLabel]) {
                     reachable = true;
                     break;
                 }
@@ -510,10 +509,10 @@ public class DirectedGraph extends Graph {
      *  the SCCs of the graph in topological order.
      */
     public DirectedGraph[] sccDecomposition() {
-        _computeTransitiveClosure();
+        boolean[][] transitiveClosure = transitiveClosure();
 
         int N = nodeCount();
-        if (_transitiveClosure.length != N) {
+        if (transitiveClosure.length != N) {
             throw new InternalErrorException("Graph inconsistency. A dump"
                     + " of the graph follows.\n" + this);
         }
@@ -542,8 +541,8 @@ public class DirectedGraph extends Graph {
                     // given two nodes, the two are in the same SCC if they
                     // are mutually reachable
                     if (!addedToAnSCC[j]) {
-                        if (_transitiveClosure[i][j] &&
-                                _transitiveClosure[j][i]) {
+                        if (transitiveClosure[i][j] &&
+                                transitiveClosure[j][i]) {
                             nodeList.add(node(j));
                             addedToAnSCC[j] = true;
                         }
@@ -623,18 +622,7 @@ public class DirectedGraph extends Graph {
      *  @see #sinkNodeCount()
      */
     public Collection sinkNodes() {
-        if (_sinkNodeAnalysis.obsolete()) {
-            _sinkNodes = new ArrayList();
-            Iterator nodes = nodes().iterator();
-            while (nodes.hasNext()) {
-                Node node = (Node)nodes.next();
-                if (outputEdgeCount(node) == 0) {
-                    _sinkNodes.add(node);
-                }
-            }
-            _sinkNodeAnalysis.registerComputation();
-        }
-        return Collections.unmodifiableList(_sinkNodes);
+        return (Collection)_sinkNodeAnalysis.result();
     }
 
     /** Return the number of source nodes in this graph.
@@ -652,18 +640,7 @@ public class DirectedGraph extends Graph {
      *  @see #sourceNodeCount()
      */
     public Collection sourceNodes() {
-        if (_sourceNodeAnalysis.obsolete()) {
-            _sourceNodes = new ArrayList();
-            Iterator nodes = nodes().iterator();
-            while (nodes.hasNext()) {
-                Node node = (Node)nodes.next();
-                if (inputEdgeCount(node) == 0) {
-                    _sourceNodes.add(node);
-                }
-            }
-            _sourceNodeAnalysis.registerComputation();
-        }
-        return Collections.unmodifiableList(_sourceNodes);
+        return (Collection)_sourceNodeAnalysis.result();
     }
 
     /** Return the collection of edges that make a node n2 a successor of a
@@ -701,76 +678,36 @@ public class DirectedGraph extends Graph {
         return result;
     }
 
-	/** Return an acyclic graph if this graph is acyclic.
-	 *
-	 *	@return An acyclic graph in the form of
-	 *			{@link DirectedAcyclicGraph}.
-	 *	@exception IllegalArgumentException This graph is not acyclic.
+    /** Return an acyclic graph if this graph is acyclic.
+     *
+     *  @return An acyclic graph in the form of
+     *          {@link DirectedAcyclicGraph}.
+     *  @exception IllegalArgumentException This graph is not acyclic.
      *  FIXME: we need a better exception for this.
-	 */
-	public DirectedAcyclicGraph toDirectedAcyclicGraph() {
-		DirectedAcyclicGraph acyclicGraph;
-		if (isAcyclic()) {
-			acyclicGraph = (DirectedAcyclicGraph)
-					cloneAs(new DirectedAcyclicGraph());
-		} else {
-			throw new IllegalArgumentException("This graph is not acyclic");
-		}
-		return acyclicGraph;
-	}
+     */
+    public DirectedAcyclicGraph toDirectedAcyclicGraph() {
+        DirectedAcyclicGraph acyclicGraph;
+        if (isAcyclic()) {
+            acyclicGraph = (DirectedAcyclicGraph)
+                    cloneAs(new DirectedAcyclicGraph());
+        } else {
+            throw new IllegalArgumentException("This graph is not acyclic");
+        }
+        return acyclicGraph;
+    }
+
+    /** Return transitive closure for the graph. Transitive closure
+     *  computation is embedded in <code>AcyclicAnalysis</code>. Please
+     *  see {@link ptolemy.graph.analysis.AcyclicAnalysis}
+     *
+     *  @return Transitive closure for the graph.
+     */
+    public boolean[][] transitiveClosure() {
+        return _acyclicAnalysis.transitiveClosure();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Compute the transitive closure. Puts the result in the
-     *  boolean array _transitiveClosure. If this graph is empty,
-     *  set the dimension of _transitiveClosure to be 0 by 0.
-     *  The implementation uses Warshall's algorithm, which can be
-     *  found in chapter 6 of "Discrete Mathematics and Its
-     *  Applications," 3rd Ed., by K. H. Rosen.  The complexity
-     *  of this algorithm is O(N^3), where N is the number of nodes.
-     *  This method also checks if the graph is cyclic and stores
-     *  the result in an internal flag.
-     */
-    protected void _computeTransitiveClosure() {
-        if (_transitiveClosure != null) {
-            return;
-        }
-
-        int size = nodeCount();
-
-        // Initialize _transitiveClosure to the adjacency matrix
-        _transitiveClosure = new boolean[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                _transitiveClosure[i][j] = false;
-            }
-            Iterator outputEdges = outputEdges(node(i)).iterator();
-            while (outputEdges.hasNext()) {
-                _transitiveClosure[i][nodeLabel(((Edge)outputEdges.next())
-                        .sink())] = true;
-            }
-        }
-
-        // Warshall's algorithm
-        for (int k = 0; k < size; k++) {
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    _transitiveClosure[i][j] |= _transitiveClosure[i][k] &
-                        _transitiveClosure[k][j];
-                }
-            }
-        }
-
-        // check for cycles.
-        _isAcyclic = true;
-        for (int i = 0; i < size; i++) {
-            if (_transitiveClosure[i][i]) {
-                _isAcyclic = false;
-		break;
-            }
-        }
-    }
 
     /** Connect an edge to a node by appropriately modifying
      * the adjacency information associated with the node.
@@ -801,21 +738,14 @@ public class DirectedGraph extends Graph {
     }
 
     /** Initialize the list of analyses that are associated with this graph,
-     *  and initialize the change counter of the graph. 
+     *  and initialize the change counter of the graph.
      *  @see ptolemy.graph.analysis.Analysis
      */
     protected void _initializeAnalyses() {
         super._initializeAnalyses();
-        _sinkNodeAnalysis = new Analysis(this);
-        _sourceNodeAnalysis = new Analysis(this);
-    }
-
-    /** Register a new edge in the graph.
-     *  @param edge The new edge.
-     */
-    protected void _registerEdge(Edge edge) {
-        super._registerEdge(edge);
-        _transitiveClosure = null;
+        _acyclicAnalysis = new AcyclicAnalysis(this);
+        _sinkNodeAnalysis = new SinkNodeAnalysis(this);
+        _sourceNodeAnalysis = new SourceNodeAnalysis(this);
     }
 
     /** Register a new node in the graph.
@@ -825,21 +755,7 @@ public class DirectedGraph extends Graph {
         super._registerNode(node);
         _inputEdgeMap.put(node, new ArrayList());
         _outputEdgeMap.put(node, new ArrayList());
-        _transitiveClosure = null;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The adjacency matrix representation of the transitive closure.
-     *  The entry (i, j) is <code>true</code> if and only if there
-     *  exists a path from the node with label <i>i</i> to the node with label
-     *  <i>j</i>.
-     *  This array is computed by {@link #_computeTransitiveClosure()}.
-     *  After each graph change, that method should be called before
-     *  this array is used. Otherwise, this array is not valid.
-     */
-    protected boolean[][] _transitiveClosure = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -878,20 +794,13 @@ public class DirectedGraph extends Graph {
     // is an instance of ArrayList whose elements are instances of Edge.
     private HashMap _outputEdgeMap;
 
-    // A flag that indicates whether or not this graph is acyclic.
-    private boolean _isAcyclic;
+    // The graph analysis for computation of acyclic property
+    private AcyclicAnalysis _acyclicAnalysis;
 
     // The graph analysis for computation of sink nodes.
-    private Analysis _sinkNodeAnalysis;
-
-    // The set of sink nodes in this graph. Recomputation requirements
-    // of this data structure are tracked by _sinkNodeAnalysis.
-    private ArrayList _sinkNodes;
+    private SinkNodeAnalysis _sinkNodeAnalysis;
 
     // The graph analysis for computation of source nodes.
-    private Analysis _sourceNodeAnalysis;
+    private SourceNodeAnalysis _sourceNodeAnalysis;
 
-    // The set of source nodes in this graph. Recomputation requirements
-    // of this data structure are tracked by _sourceNodeAnalysis.
-    private ArrayList _sourceNodes;
 }

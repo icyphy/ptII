@@ -58,7 +58,6 @@ One application is to check if a graph is cyclic.
 @version $Id$
 */
 
-// FIXME: this should be an abstract class.
 public class TransitiveClosureAnalysis extends Analysis {
 
     /** Construct a transitive closure analysis for a given directed graph.

@@ -51,7 +51,6 @@ number of nodes in the graph.
 @version $Id$
 */
 
-// FIXME: this should be an abstract class.
 public class SourceNodeAnalysis extends Analysis {
 
     /** Construct a source node analysis for a given graph.

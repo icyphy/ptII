@@ -46,16 +46,20 @@ University of Wisconsin at Madison, August 1993.
 @version $Id$
 */
 
-// FIXME: this should be an abstract class.
-public class Analysis {
+abstract public class Analysis {
 
     /** Construct an analysis for a given graph.
      *  @param graph The given graph.
      */
     public Analysis(Graph graph) {
-        _graph = graph;
-        _graph.addAnalysis(this);
-        reset();
+        if (compatible(graph)) {
+            _graph = graph;
+            _graph.addAnalysis(this);
+            reset();
+        } else {
+            throw new IllegalArgumentException(
+                    incompatibilityDescription(graph));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -162,7 +166,14 @@ public class Analysis {
         return _lastComputation < graph().changeCount();
     }
 
-    /** Return the result (cached value) of the analysis on the associated 
+    /** Reset the analysis to invalidate any cached value (i.e., to force
+     *  recomputation the next time a result of the computation is needed).
+     */
+    public void reset() {
+        _lastComputation = -1;
+    }
+
+    /** Return the result (cached value) of the analysis on the associated
      *  graph. The cached value is updated, through recomputation of
      *  the analysis (using {@link #_compute()}), if the graph
      *  has changed since the last time {@link #result()} was invoked.
@@ -176,14 +187,14 @@ public class Analysis {
         // contract of the method comment.
         if (obsolete()) {
             _cachedResult = _compute();
-            registerComputation();
+            _registerComputation();
         }
         return _convertResult();
     }
 
-    /** Return a description of the analysis. This method 
+    /** Return a description of the analysis. This method
      *  simply returns a description of the associated graph.
-     *  It should be overridden in derived classes to 
+     *  It should be overridden in derived classes to
      *  include details associated with the associated analyses.
      *
      *  @return A description of the analysis.
@@ -201,17 +212,15 @@ public class Analysis {
      *  previous invocation of the analysis; this value can be
      *  used, for example, to facilitate incremental analyses.
      *  This method just returns null, and will typically be overridden
-     *  in each derived class to perform the appropriate graph analysis. 
+     *  in each derived class to perform the appropriate graph analysis.
      */
-    protected Object _compute() {
-        return null;
-    }
+    abstract protected Object _compute();
 
-    /** Convert the cached result ({@link #_cachedResult()}) to a form that is 
-     *  suitable for the client to access (via {@link #result()}). 
+    /** Convert the cached result ({@link #_cachedResult()}) to a form that is
+     *  suitable for the client to access (via {@link #result()}).
      *  This base class method just returns a reference to the cached result.
      *  However, it may be appropriate for derived classes to override this
-     *  method. For example, if the object returned by the analysis is mutable, 
+     *  method. For example, if the object returned by the analysis is mutable,
      *  one may wish to override this method to copy the cached
      *  value (or convert it to some other form) before returning it.
      *  Then changes made by the client to the returned value will
@@ -223,9 +232,6 @@ public class Analysis {
     protected Object _convertResult() {
         return _cachedResult();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
 
     /** The result of the most recent computation of the analysis,
      *  as determined by {@link #_compute()}, and without
@@ -241,18 +247,9 @@ public class Analysis {
    /** Notify the analysis that the associated computation has been
     *  performed. This method should be called immediately after
     *  any invocation of the computation.
-    *  FIXME: This should become private.
     */
-    public void registerComputation() {
+    private void _registerComputation() {
         _lastComputation = graph().changeCount();
-    }
-
-    /** Reset the analysis to invalidate any cached value (i.e., to force
-     *  recomputation the next time a result of the computation is needed).
-     *  FIXME: This should become private.
-     */
-    public void reset() {
-        _lastComputation = -1;
     }
 
 
