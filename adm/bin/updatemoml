@@ -32,7 +32,10 @@
 
 # This script reads in one or more MoML files, filters each file
 # and writes the results out
+# Usage: updatemoml [-n] moml.xml [file2.xml . . .]
+# -n means print the diffs only, do not update the original file
 
+#
 #  cd $PTII
 #  $PTII/adm/bin/ptIItxtfiles | egrep '.xml$' > /tmp/x
 # Remove the .xml files that declare libraries
@@ -42,14 +45,41 @@
 PTII=` echo "$PTII" | sed 's@\\\@/@'`
 UPDATEMOMLFILE="$PTII/adm/bin/updateMoMLFile.tcl"
 
+
+printonly=no
+if [ "$1" = "-n" ]; then
+    printonly=yes
+    shift
+fi
+
 for file in $@
 do
+    if [ ! -f $file ]; then
+	echo "$0: $file does not exist"
+	continue
+    fi
+    grep 'EntityLibrary' $file
+    retval=$?
+    if [ "$retval" = "0" ]; then
+	echo "$0: $file contains EntityLibrary, skipping"
+	continue
+    fi
     $PTII/bin/ptjacl "$UPDATEMOMLFILE" "$file"
     if [ ! -f updateMoMLFiles.xml ]; then
-        echo "$0: $file: error: updateMoMLFiles.xml not found"
+	echo "$0: $file: error: updateMoMLFiles.xml not found"
     else
 	echo "diff $file updateMoMLFiles.xml" 
 	diff $file updateMoMLFiles.xml 
-	#cp updateMoMLFiles.xml $file
+	retval=$?
+	if [ "$retval" = "1" ]; then
+	    if [ "$printonly" = "no" ]; then
+		echo "Updating $file"
+		cp updateMoMLFiles.xml $file
+	    else
+		echo "Would update $file"
+	    fi
+	else    
+	    echo "No differences, so no update"
+	fi    
     fi	
 done
