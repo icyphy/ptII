@@ -40,6 +40,9 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+# _Rounding.tcl is first so as to avoid problems with BigIntegers in
+# Jacl
+
 ####################################################################
 
 test Rounding-1.0 {names} {

@@ -58,7 +58,10 @@ JSRCS = \
 	TestLongUnaryOperation.java
 
 # Non-graphical Java tests written in Tcl
+# _Rounding.tcl is first so as to avoid problems with BigIntegers in
+# Jacl
 JSIMPLE_TESTS = \
+	_Rounding.tcl \
 	ArrayStringFormat.tcl \
 	Complex.tcl \
 	ComplexArrayMath.tcl \
@@ -78,7 +81,6 @@ JSIMPLE_TESTS = \
 	Overflow.tcl \
 	Quantization.tcl \
 	Quantizer.tcl \
-	Rounding.tcl \
 	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.
