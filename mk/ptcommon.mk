@@ -394,7 +394,7 @@ $(PTAUXALLJAR): $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	# Copy any class files from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
 	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
-	for jar in $^; do \
+	for jar in $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED); do \
 		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
 	done
