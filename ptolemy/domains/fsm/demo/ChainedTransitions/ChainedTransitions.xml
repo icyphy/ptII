@@ -107,9 +107,13 @@ when it is enabled.</text></svg></configure>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 816, 535}, maximized = false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 426]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.5, 213.0}">
             </property>
             <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -458,18 +462,26 @@ with initial state as 5.0 and decreasing slope as -1.0.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 85.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 25.0]">
             </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 630, 308}, maximized = false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[415, 199]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{207.5, 99.5}">
         </property>
         <port name="port_3" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 185.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 125.0]">
             </property>
         </port>
         <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 185.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 125.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -491,7 +503,7 @@ with initial state as 5.0 and decreasing slope as -1.0.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 185.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 125.0]">
             </property>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
