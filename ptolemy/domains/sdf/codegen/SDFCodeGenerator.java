@@ -144,7 +144,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
                 _actorInfoMap.put(actor, actorInfo);
 
-                ApplicationUtility.trace("actor " + actor + " fires " +
+                //System.out.println("actor " + actor + " fires " +
                         actorInfo.totalFirings + " time(s).");
 
             }  else {
@@ -767,10 +767,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 } // for (int channel = 0; channel < inputWidth; channel++) ...
 
 
-                ApplicationUtility.trace("connected buffers for port " + 
+                //System.out.println("connected buffers for port " + 
                  port.getName() + " of actor " + actor.getName());
                 for (int ch = 0; ch < inputWidth; ch++) {
-                    ApplicationUtility.trace("ch " + ch + ": " + bufferNames[ch]);
+                    //System.out.println("ch " + ch + ": " + bufferNames[ch]);
                 }
 
                 actorInfo.inputBufferNameMap.put(port, bufferNames);
