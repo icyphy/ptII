@@ -1,7 +1,6 @@
-
 /* Petri net receiver.
 
- Copyright (c) 1999 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,6 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 //// PetriNetReceiver
 /**
 Petri net receiver.
+
+<p>FIXME: What _is_ a PetrinetReceiver?  
+Perhaps the comment should state something about 
+Why don't we just use Mailbox?
 
 @author Yuke Wang and Edward A. Lee
 @version $Id$

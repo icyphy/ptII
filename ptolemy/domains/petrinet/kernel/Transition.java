@@ -62,6 +62,7 @@ import java.util.List;
 //// Transition
 /**
 A Petri net transition
+<p>FIXME: What is a transition?  What does this class do?
 
 @author  Yuke Wang and Edward A. Lee
 @version $Id$
@@ -92,9 +93,10 @@ public class Transition extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
+    /** FIXME: What does this method do?
+     */	
     public void fire() throws IllegalActionException {
+	// FIXME: Why is this method empty?
     }
 }
 

@@ -44,6 +44,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 A Petri net arc Weight
 
+<p>FIXME: What is a Weight?  What does this class do?
+
 @author  Yuke Wang and Edward A. Lee
 @version $Id$
 */
@@ -71,8 +73,5 @@ public class Weight extends Transformer {
 
         initialWeight = new Parameter(this, "initialWeight");
         initialWeight.setExpression("1");
-
     }
-
-
 }

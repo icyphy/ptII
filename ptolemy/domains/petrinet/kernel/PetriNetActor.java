@@ -30,7 +30,7 @@
 
 package ptolemy.domains.petrinet.kernel;
 
-import ptolemy.kernel.CompositeEntity;
+
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.Director;
@@ -52,12 +52,13 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Typeable;
 import ptolemy.data.type.BaseType;
-
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
+import ptolemy.graph.Inequality;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.StringAttribute;
@@ -71,9 +72,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
-import ptolemy.graph.Inequality;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -82,52 +80,53 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Enumeration;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PetrinetActor
 /**
 A Petri net Actor
 
-This is the basic unit of the hierarchical PetriNet component. It contains
+<p>This is the basic unit of the hierarchical PetriNet component. It contains
 ports, places, transitions, and hierarchical petrinet components.
 
-The current version restricts the ports to be uniformly connected to
+<p>The current version restricts the ports to be uniformly connected to
 Places or transitions in one direction. It is not allowed to have the
 ports to connect to places and transitions in the same input or output
 direction.
 
-It is also assumed that a transition is connected to places and a place
+<p>It is also assumed that a transition is connected to places and a place
 is connected to transitions eventually in the hierarchy.
 
-However, the system does not check for such restrictions.
+<p>However, the system does not check for such restrictions.
 
 The flat Peti Net model is defined as follows.
-            place ----> transition ----> place
-A hierarchical Petri Net model is defined as follows:
-            place ----> transition ----> place
-            place ----> (ports) ----> transition ---> (ports) ----> place
-where (ports) means it could be 0 or any finite number of different directional
-ports, ---> means one or more marked or unmarked arcs.
+<br>            place ----> transition ----> place
+<br>A hierarchical Petri Net model is defined as follows:
+<br>            place ----> transition ----> place
+<br>            place ----> (ports) ----> transition ---> (ports) ----> place
 
-In this current implementation, it is restricted that all the inputs/outputs
+<br>where (ports) means it could be 0 or any finite number of
+different directional ports, ---> means one or more marked or unmarked arcs.
+
+<p>In this current implementation, it is restricted that all the inputs/outputs
 to a port are either all places or all transitions plus possible ports.
 
-Multiple arcs are allowed for each connection. Each arc is counted as default
-weight 1, unless otherwise specified.
+<p>Multiple arcs are allowed for each connection. Each arc is counted
+as default weight 1, unless otherwise specified.
 
 
 @author  Yuke Wang
-@version $Id$
-*/
+@version $Id$ */
 public class PetriNetActor extends TypedCompositeActor  {
 
+    /** FIXME: what does this method do? */
     public PetriNetActor() {
         super();
         getMoMLInfo().className =
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
-    /** @param workspace  the workspace for the new actor.
+    /** FIXME: what does this method do?
+     *  @param workspace  the workspace for the new actor.
      */
     public PetriNetActor(Workspace workspace) {
 	super(workspace);
@@ -135,7 +134,8 @@ public class PetriNetActor extends TypedCompositeActor  {
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
-   /** @param workspace  the workspace for the new actor.
+   /** FIXME: what does this method do?
+    *  @param workspace  the workspace for the new actor.
     *  @param name  the name of the actor.
     */
     public PetriNetActor(CompositeEntity container, String name)
@@ -145,13 +145,11 @@ public class PetriNetActor extends TypedCompositeActor  {
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
-
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** @param workspace The workspace for the new actor.
+    /** FIXME: what does this method do?
+     *  @param workspace The workspace for the new actor.
      *  @return A new PetriNetActor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
@@ -163,8 +161,9 @@ public class PetriNetActor extends TypedCompositeActor  {
         return newObject;
     }
 
-
-    /** It is assumed that the top level of the hierarchy is a
+    /** FIXME: what does this method do?  The first sentence should
+     *  be a summary of what this method does.
+     *  It is assumed that the top level of the hierarchy is a
      *  PetiNetDirector.
      *  @exception IllegalActionException If
      *  fireHierarchicalPetriNet throws exception.
@@ -181,29 +180,33 @@ public class PetriNetActor extends TypedCompositeActor  {
 
     }
 
-    /** find all the transitions contained in the PetriNetActor.
+    /** FIXME: needs a one sentence description of what this method
+     *  does.  Something like:
+     *    "If any of the components are Transitions and are testReady,
+     *    return true, otherwise return false."
+     *
+     *  Find all the transitions contained in the PetriNetActor.
      *  the transitions can be deeply contained....
-     *  we will check all the deeply contained transitions and
+     *  We will check all the deeply contained transitions and
      *  see which one is ready to fire.
      *  If there is one transition ready to fire, then the container
      *  PetriNetActor is ready to fire.
-     *  @exception IllegalActionException If
-     *   testReadyTransition throws exception.
+     *  @exception IllegalActionException If testReadyTransition
+     *  throws exception.
      *  @return true or false, a PetriNetActor is ready to fire or not.
      */
     public boolean prefire() throws IllegalActionException {
         System.out.println("inside the PetriNetActor.prefire, the actors is"
                 +  getFullName() );
-        TypedCompositeActor pn = (TypedCompositeActor) this;
         PetriNetDirector director = (PetriNetDirector) getDirector();
         Iterator components = deepEntityList().iterator();
         while (components.hasNext()) {
             Nameable component = (Nameable) components.next();
             if (component instanceof Transition) {
                 Transition transitionComponent = (Transition) component;
-                boolean t = director.testReadyTransition(transitionComponent);
-                if(t)
+		if(director.testReadyTransition(transitionComponent)) {
                     return true;
+		}
             }
         }
         return false;

@@ -8,8 +8,6 @@
  copyright notice and the following two paragraphs appear in all copies
  of this software.
 
-
-
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -46,8 +44,13 @@ import java.util.Random;
 //// Place
 /**
 A Petri net place. It contains an integer as the marking of the
-place. The methods here are used to manipulate the integer marking.
-The TemporaryMarking is used for checking whehter a transition
+place.
+
+<p>FIXME: What is a place?
+<p>FIXME: What is a marking?<p>
+
+The methods here are used to manipulate the integer marking.
+The TemporaryMarking is used for checking whether a transition
 is ready or not.
 
 @author  Yuke Wang and Edward A. Lee
@@ -86,7 +89,6 @@ public class Place extends Transformer {
     ////                         ports and parameters              ////
 
     /** The number of initial tokens in the place. This is an integer. */
-
     public Parameter initialMarking;
 
 
@@ -147,7 +149,6 @@ public class Place extends Transformer {
         _temporaryMarking = i;
     }
 
-
     /** setMarking() is to set the _currentMarking to i
      *  @param i set the marking of the place to i
      */
@@ -168,12 +169,7 @@ public class Place extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-
     // Current marking.
     private int _currentMarking = 0;
     private int _temporaryMarking = 0;
-    // for dealing with multiple arcs between a place and a transition
-
-
-
 }
