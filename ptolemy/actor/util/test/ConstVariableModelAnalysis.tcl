@@ -72,10 +72,10 @@ test ConstVariableModelAnalysis-1.1 {Test simple model} {
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
     # Use lsort for platform independence
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getNotConstVariableNames $e0]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
 } {{} {} {firingCountLimit init step} {}}
 
 
@@ -90,10 +90,10 @@ test ConstVariableModelAnalysis-1.2 {Test hierarchical dependance} {
     $step setExpression p0
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getNotConstVariableNames $e0]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
 } {p0 {} {firingCountLimit init step} {}}
 
 test ConstVariableModelAnalysis-1.3 {Test flat dependance} {
@@ -109,11 +109,11 @@ test ConstVariableModelAnalysis-1.3 {Test flat dependance} {
     $step setExpression p0
     
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getNotConstVariableNames $e0]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
-} {{p1 p0} {} {firingCountLimit init step} {}}
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
+} {{p0 p1} {} {firingCountLimit init step} {}}
 
 
 test ConstVariableModelAnalysis-1.4 {Test unbound variables} {
@@ -130,10 +130,10 @@ test ConstVariableModelAnalysis-1.4 {Test unbound variables} {
     $step setExpression p0
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
 } {{} {a p0 p1} firingCountLimit {init step}}
 
 
@@ -151,10 +151,10 @@ test ConstVariableModelAnalysis-1.5 {Test expressions of unbound variables} {
     $step setExpression p0
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
 } {{} {a p0 p1} firingCountLimit {init step}}
 
 test ConstVariableModelAnalysis-1.6 {Test a model that is not correct (circular dependancy)} {
@@ -171,9 +171,9 @@ test ConstVariableModelAnalysis-1.6 {Test a model that is not correct (circular 
     $step setExpression p0
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
-} {{p1 p0} {firingCountLimit step}}
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]]
+} {{p0 p1} {firingCountLimit step}}
 
 test ConstVariableModelAnalysis-1.7 {Test unbound variables} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -189,10 +189,10 @@ test ConstVariableModelAnalysis-1.7 {Test unbound variables} {
     $step setExpression 5
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
 } {{p0 p1} a {firingCountLimit init step} {}}
 
 test ConstVariableModelAnalysis-1.8 {test scoping} {
@@ -209,10 +209,10 @@ test ConstVariableModelAnalysis-1.8 {test scoping} {
     $step setExpression a
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
 } {step {a init} firingCountLimit {init step}}
 
 test ConstVariableModelAnalysis-1.9 {test scoping} {
@@ -229,10 +229,10 @@ test ConstVariableModelAnalysis-1.9 {test scoping} {
     $step setExpression a
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $ramp]]]
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
 } {init {a step} {firingCountLimit init} step}
 
 # FSM tests.
@@ -270,10 +270,10 @@ test ConstVariableModelAnalysis-2.0 {test fsms.} {
     $t2_action setExpression "p1=2"
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [lsort [listToObjects [$analysis getConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $e0]]] \
-	[lsort [listToObjects [$analysis getConstVariableNames $fsm]]] \
-	[lsort [listToObjects [$analysis getNotConstVariableNames $fsm]]]
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $fsm]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $fsm]]]
 } {init {a step} p2 p1}
 
 test ConstVariableModelAnalysis-2.2 {test modal model.} {
@@ -325,11 +325,11 @@ test ConstVariableModelAnalysis-2.2 {test modal model.} {
     $dynamicVariableSet add $a
 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $e1]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]] \
-	[listToObjects [$analysis getConstVariableNames $fsm]]
-} {init step {init firingCountLimit} p2}
+    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
+	[lsort [listToNames [$analysis getConstVariables $e1]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getConstVariables $fsm]]]
+} {init step {firingCountLimit init} p2}
 
 test ConstVariableModelAnalysis-2.3 {test port parameters} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -352,10 +352,10 @@ test ConstVariableModelAnalysis-2.3 {test port parameters} {
     $blockSize setExpression "inport"
   
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getNotConstVariableNames $e1]] \
-	[listToObjects [$analysis getNotConstVariableNames $ramp]] \
-	[listToObjects [$analysis getNotConstVariableNames $repeat]] \
-	[listToObjects [$analysis getNotConstVariableNames [$repeat getPort input]]]
+    list [lsort [listToNames [$analysis getNotConstVariables $e1]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $repeat]]] \
+	[lsort [listToNames [$analysis getNotConstVariables [$repeat getPort input]]]]
 } {inport init blockSize tokenConsumptionRate}
 
 test ConstVariableModelAnalysis-2.4 {test port parameters} {
@@ -377,15 +377,15 @@ test ConstVariableModelAnalysis-2.4 {test port parameters} {
     $blockSize setExpression "inport"
   
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
-    list [listToObjects [$analysis getConstVariableNames $e1]] \
-	[listToObjects [$analysis getNotConstVariableNames $e1]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]] \
-	[listToObjects [$analysis getNotConstVariableNames $ramp]] \
-	[listToObjects [$analysis getConstVariableNames $repeat]] \
-	[listToObjects [$analysis getNotConstVariableNames $repeat]] \
-	[listToObjects [$analysis getConstVariableNames [$repeat getPort input]]] \
-	[listToObjects [$analysis getNotConstVariableNames [$repeat getPort input]]]
-} {inport {} {init firingCountLimit step} {} {blockSize numberOfTimes} {} tokenConsumptionRate {}}
+    list [lsort [listToNames [$analysis getConstVariables $e1]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $e1]]] \
+	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $ramp]]] \
+	[lsort [listToNames [$analysis getConstVariables $repeat]]] \
+	[lsort [listToNames [$analysis getNotConstVariables $repeat]]] \
+	[lsort [listToNames [$analysis getConstVariables [$repeat getPort input]]]] \
+	     [lsort [listToNames [$analysis getNotConstVariables [$repeat getPort input]]]]
+} {inport {} {firingCountLimit init step} {} {blockSize numberOfTimes} {} tokenConsumptionRate {}}
 
 # Test change context
 test ConstVariableModelAnalysis-3.1 {test port parameters} {

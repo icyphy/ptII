@@ -32,8 +32,6 @@
 package ptolemy.actor.util;
 
 import ptolemy.data.expr.Variable;
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Edge;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,6 +57,7 @@ into a MoML representation of the model.
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 3.1
+@see ptolemy.actor.util.ConstVariableModelAnalysis
 */
 public class DependencyDeclaration extends Attribute {
 
@@ -67,10 +66,10 @@ public class DependencyDeclaration extends Attribute {
      *  be null, or a NullPointerException will be thrown.  If the
      *  name argument is null, then the name is set to the empty
      *  string. Increment the version number of the workspace.
-     *  Set this attribute nonpersistent.
+     *  Set this attribute to be not persistent.
      *
      *  @param container The container.
-     *  @param name The name of this director.
+     *  @param name The name of this attribute.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
@@ -85,15 +84,17 @@ public class DependencyDeclaration extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the set of dependents of the parameter that contains
+    /** Return the list of dependents of the parameter that contains
      * this attribute.  This attribute declares that the container
      * depends on at least the given set of parameters.
+     * @return A list of variables.
      */
     public List getDependents() {
         return _dependents;
     }
 
     /** Set the set of dependents for this declaration.
+     * @param dependents A list of variables.
      */
     public void setDependents(List dependents) {
         _dependents = dependents;
@@ -102,7 +103,7 @@ public class DependencyDeclaration extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    // The declared dependents;
+    // The declared dependents.
     private List _dependents;
 
 }
