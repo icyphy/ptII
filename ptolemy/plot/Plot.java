@@ -571,7 +571,8 @@ public class Plot extends PlotBox {
         repaint();
     }
 
-    /** Turn bars on or off (for bar charts).
+    /** Turn bars on or off (for bar charts).  Note that this is a global
+     *  property, not per dataset.
      *  @param on If true, turn bars on.
      */
     public void setBars(boolean on) {
