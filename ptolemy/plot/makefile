@@ -47,6 +47,7 @@ CLASSPATH =	..
 # Order matters here.
 JSRCS = \
 	CmdLineArgException.java \
+	Message.java \
 	PlotBox.java \
 	Plot.java \
 	PlotDataException.java \
