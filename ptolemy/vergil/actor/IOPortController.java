@@ -138,8 +138,9 @@ public class IOPortController extends AttributeController {
 
             // If the port has an attribute called "_hide", then
             // do not render it.
-            if (port.getAttribute("_hide") != null)
+            if (_isPropertySet(port, "_hide")) {
                 return null;
+            }
 
             boolean isInput = false;
             boolean isOutput = false;

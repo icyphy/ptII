@@ -30,9 +30,10 @@ package ptolemy.domains.wireless.kernel;
 
 import java.util.List;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -76,7 +77,8 @@ public class ChannelPort extends WirelessIOPort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name, true, true);
         setPersistent(false);
-        new Attribute(this, "_hide");
+        SingletonParameter hide = new SingletonParameter(this, "_hide");
+        hide.setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

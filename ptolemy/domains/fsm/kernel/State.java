@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -41,6 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
@@ -96,6 +98,12 @@ public class State extends ComponentEntity {
         _attachText("_iconDescription", "<svg>\n" +
                 "<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n" +
                 "</svg>\n");
+
+        // Specify that the name should be centered in graphical displays.
+        SingletonParameter center
+                = new SingletonParameter(this, "_centerName");
+        center.setExpression("true");
+        center.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////

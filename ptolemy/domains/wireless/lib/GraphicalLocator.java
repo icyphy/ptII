@@ -34,7 +34,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -84,8 +83,10 @@ public class GraphicalLocator extends Locator {
                 "{range = outputRange}");
 
         // Hide the ports in Vergil.
-        new Attribute(output, "_hide");
-        new Attribute(input, "_hide");
+        SingletonParameter hide = new SingletonParameter(output, "_hide");
+        hide.setToken(BooleanToken.TRUE);
+        hide = new SingletonParameter(input, "_hide");
+        hide.setToken(BooleanToken.TRUE);
 
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
@@ -110,7 +111,7 @@ public class GraphicalLocator extends Locator {
         node_icon.setPersistent(false);
 
         // Hide the name of this sensor node.
-        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
     }

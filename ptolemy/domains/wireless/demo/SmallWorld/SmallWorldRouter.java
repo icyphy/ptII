@@ -159,9 +159,12 @@ public class SmallWorldRouter extends TypedAtomicActor {
         _distance.setExpression("Infinity");
 
         // Hide the ports in Vergil.
-        new Attribute(output, "_hide");
-        new Attribute(input, "_hide");
-        new Attribute(test, "_hide");
+        SingletonParameter hide = new SingletonParameter(output, "_hide");
+        hide.setToken(BooleanToken.TRUE);
+        hide = new SingletonParameter(input, "_hide");
+        hide.setToken(BooleanToken.TRUE);
+        hide = new SingletonParameter(test, "_hide");
+        hide.setToken(BooleanToken.TRUE);
 
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
@@ -185,7 +188,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
         node_icon.setPersistent(false);
 
         // Hide the name of this sensor node.
-        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
     }

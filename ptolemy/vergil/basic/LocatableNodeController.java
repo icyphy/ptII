@@ -32,6 +32,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
@@ -185,7 +189,7 @@ public class LocatableNodeController extends BasicNodeController {
 
     /** Render the children of the specified node.
      *  This overrides the base class to do nothing if the node
-     *  contains an attribute named "_hide".
+     *  contains a parameter named "_hide" with value true.
      *  @param node The node with children to render.
      */
     protected void _drawChildren(java.lang.Object node) {
@@ -193,8 +197,8 @@ public class LocatableNodeController extends BasicNodeController {
     }
 
     /** Render the specified node.  This overrides the base class to
-     *  return an invisible figure if the node contains an attribute
-     *  named "_hide".   This overrides the base class
+     *  return an invisible figure if the node contains a parameter
+     *  named "_hide" with value true.  This overrides the base class
      *  to assign a location and to highlight the node if it is an
      *  inherited object, and hence cannot be deleted.
      *  @param node The node to render.
@@ -252,25 +256,55 @@ public class LocatableNodeController extends BasicNodeController {
         }
     }
 
-    /** In this base class, return true if the specified node contains an
-     *  attribute named "_hide". Derived classes can override this method
+    /** In this base class, return true if the specified node contains a
+     *  parameter named "_hide" with value true or an attribute that is not
+     *  a parameter named "_hide". Derived classes can override this method
      *  to provide more sophisticated methods of choosing which nodes to
      *  display.
      */
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
-            if (((NamedObj)((Locatable)node)
-                        .getContainer()).getAttribute("_hide") != null) {
+            if (_isPropertySet(((Locatable)node).getContainer(), "_hide")) {
                 return true;
             }
         }
         if (node instanceof NamedObj) {
-            if (((NamedObj)node).getAttribute("_hide") != null) {
+            if (_isPropertySet((NamedObj)node, "_hide")) {
                 return true;
             }
         }
         return false;
     }
+        
+    /** Return true if the property of the specified name is set for
+     *  the specified object. A property is specified if the specified
+     *  object contains an attribute with the specified name and that
+     *  attribute is either not a boolean-valued parameter, or it is
+     *  a boolean-valued parameter with value true.
+     *  @param object The object.
+     *  @param name The property name.
+     *  @return True if the property is set.
+     */
+    protected boolean _isPropertySet(NamedObj object, String name) {
+        Attribute attribute = object.getAttribute(name);
+        if (attribute == null) {
+            return false;
+        }
+        if (attribute instanceof Parameter) {
+            try {
+                Token token = ((Parameter)attribute).getToken();
+                if (token instanceof BooleanToken) {
+                    if (!((BooleanToken)token).booleanValue()) {
+                        return false;
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // Ignore, using default of true.
+            }
+        }
+        return true;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

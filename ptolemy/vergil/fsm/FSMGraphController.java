@@ -39,6 +39,7 @@ import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
@@ -58,7 +59,6 @@ import ptolemy.vergil.fsm.modal.ModalTransitionController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
-
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.Site;
@@ -272,8 +272,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         CompositeEntity container = new CompositeEntity();
         try {
             State state = new State(container, "S");
-            _prototypeState = new Location(state, "_location");
-            new SingletonAttribute(state, "_centerName");
+            _prototypeState = new Location(state, "_location");            
         } catch (KernelException ex) {
             // This should not happen.
             throw new InternalErrorException(null, ex, null);
@@ -430,9 +429,6 @@ public class FSMGraphController extends FSMViewerGraphController {
                         + ", "
                         + y
                         + "]\"/>\n"
-                        + "<property name=\"_centerName\""
-                        + " class=\"ptolemy.kernel.util.SingletonAttribute\""
-                        + "/>\n"
                         + "</entity>\n");
             }
 

@@ -388,7 +388,6 @@ public class ModalModel extends CTCompositeActor {
         //        library.setName("state library");
         //        attribute.setLibrary(library);
         //        State state = new State(library, "state");
-        //        new Attribute(state, "_centerName");
         //        new HierarchicalStateControllerFactory(state, "_controllerFactory");
 
         // Import utilities file (including annotations, etc.)
