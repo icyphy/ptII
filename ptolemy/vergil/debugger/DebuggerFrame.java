@@ -532,7 +532,7 @@ public class DebuggerFrame extends PtolemyFrame
 	_toolbar.add(stepOut);
 
 	//MicroStep button
-	mstep = new JButton("µStep");
+	mstep = new JButton("\u00B5Step");
 	mstep.setMnemonic(KeyEvent.VK_P);
 	mstep.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
