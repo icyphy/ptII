@@ -44,7 +44,8 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in tycho.mk)
 JDOCFLAGS = 	-author -version -public
 
-DIRS = 		mutation util test doc demo
+# Order matters here, go into util first, since mutation depends on it
+DIRS = 		util mutation test doc demo
 
 CLASSPATH = ../..
 
