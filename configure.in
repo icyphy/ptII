@@ -1348,6 +1348,9 @@ Linux)
 CYGWIN*)
 	PTMATLAB_SUPPORTED=yes
 	;;
+SunOS*)
+	PTMATLAB_SUPPORTED=yes
+	;;
 esac
 
 
@@ -1368,13 +1371,23 @@ else
     If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable.]);
 	else 
+	    AC_MSG_CHECKING(to see if we need to adjust Matlab path with cygpath)	
+    	    AC_PATH_PROG(CYGPATH, cygpath)		    	
+  	    if test "${CYGPATH:-none}" = "none"; then
+		AC_MSG_RESULT([cygpath not found, no need to adjust])
+	    else
+		# If we are under Windows, run cygpath -m to fix up
+		# path
+		MATLAB=`"$CYGPATH" -m "$MATLAB"`
+		AC_MSG_RESULT(yes, found cygpath, new value is '$MATLAB_DIR')
+	    fi	
+
 	    startdir=`pwd`
 	    cd "$srcdir/config"
 	    if "$JAVAC" MatlabRootDirectory.java ; then
 		AC_MSG_RESULT(ok)
 		AC_MSG_CHECKING([the value of the Matlab root directory ])
 		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
-		    # Run it again and get the results
 		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
 		    AC_MSG_RESULT('$MATLAB_DIR')
 		else	
@@ -1400,8 +1413,14 @@ else
 		CYGWIN*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/win32
 			;;
+		SunOS*)
+			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/sol2
+			;;
+		*)
+			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
+			;;
 		esac
-		AC_MSG_RESULT([using ${MATLAB_LIBDIR} for Matlab's engine libraries])
+		AC_MSG_RESULT([using '${MATLAB_LIBDIR}' for Matlab's engine libraries])
 		AC_MSG_CHECKING([for gcc])
 		AC_PATH_PROG(PTCC, gcc)
 		if test "${PTCC:-none}" != "none"; then

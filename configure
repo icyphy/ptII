@@ -2331,6 +2331,9 @@ Linux)
 CYGWIN*)
 	PTMATLAB_SUPPORTED=yes
 	;;
+SunOS*)
+	PTMATLAB_SUPPORTED=yes
+	;;
 esac
 
 
@@ -2347,7 +2350,7 @@ else
 	# Extract the first word of "matlab", so it can be a program name with args.
 set dummy matlab; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2351: checking for $ac_word" >&5
+echo "configure:2354: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_MATLAB'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2385,14 +2388,59 @@ fi
     If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable." 1>&2;
 	else 
+	    echo $ac_n "checking to see if we need to adjust Matlab path with cygpath""... $ac_c" 1>&6
+echo "configure:2393: checking to see if we need to adjust Matlab path with cygpath" >&5	
+    	    # Extract the first word of "cygpath", so it can be a program name with args.
+set dummy cygpath; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:2397: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_CYGPATH'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$CYGPATH" in
+  /*)
+  ac_cv_path_CYGPATH="$CYGPATH" # Let the user override the test with a path.
+  ;;
+  ?:/*)			 
+  ac_cv_path_CYGPATH="$CYGPATH" # Let the user override the test with a dos path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
+  ac_dummy="$PATH"
+  for ac_dir in $ac_dummy; do 
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_CYGPATH="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+CYGPATH="$ac_cv_path_CYGPATH"
+if test -n "$CYGPATH"; then
+  echo "$ac_t""$CYGPATH" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+		    	
+  	    if test "${CYGPATH:-none}" = "none"; then
+		echo "$ac_t""cygpath not found" 1>&6
+	    else
+		# If we are under Windows, run cygpath -m to fix up
+		# path
+		MATLAB=`"$CYGPATH" -m "$MATLAB"`
+		echo "$ac_t""yes" 1>&6
+	    fi	
+
 	    startdir=`pwd`
 	    cd "$srcdir/config"
 	    if "$JAVAC" MatlabRootDirectory.java ; then
 		echo "$ac_t""ok" 1>&6
 		echo $ac_n "checking the value of the Matlab root directory ""... $ac_c" 1>&6
-echo "configure:2394: checking the value of the Matlab root directory " >&5
+echo "configure:2443: checking the value of the Matlab root directory " >&5
 		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
-		    # Run it again and get the results
 		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
 		    echo "$ac_t""'$MATLAB_DIR'" 1>&6
 		else	
@@ -2418,14 +2466,20 @@ echo "configure:2394: checking the value of the Matlab root directory " >&5
 		CYGWIN*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/win32
 			;;
+		SunOS*)
+			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/sol2
+			;;
+		*)
+			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
+			;;
 		esac
-		echo "$ac_t""using ${MATLAB_LIBDIR} for Matlab's engine libraries" 1>&6
+		echo "$ac_t""using '${MATLAB_LIBDIR}' for Matlab's engine libraries" 1>&6
 		echo $ac_n "checking for gcc""... $ac_c" 1>&6
-echo "configure:2425: checking for gcc" >&5
+echo "configure:2479: checking for gcc" >&5
 		# Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2429: checking for $ac_word" >&5
+echo "configure:2483: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_PTCC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2465,7 +2519,7 @@ fi
 			# Extract the first word of "cc", so it can be a program name with args.
 set dummy cc; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2469: checking for $ac_word" >&5
+echo "configure:2523: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_PTCC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2543,7 +2597,7 @@ if test ! -d "$PTII/ptolemy/copernicus"; then
     SOOT_DIR='${PTII}/lib'
 else
     echo $ac_n "checking for soot directory""... $ac_c" 1>&6
-echo "configure:2547: checking for soot directory" >&5
+echo "configure:2601: checking for soot directory" >&5
     # Check whether --with-soot or --without-soot was given.
 if test "${with_soot+set}" = set; then
   withval="$with_soot"
@@ -2556,11 +2610,11 @@ fi
     if test -d "$SOOT_DIR"; then
 	echo "$ac_t""$SOOT_DIR" 1>&6
         echo $ac_n "checking for \$SOOT_DIR/sootclasses.jar""... $ac_c" 1>&6
-echo "configure:2560: checking for \$SOOT_DIR/sootclasses.jar" >&5
+echo "configure:2614: checking for \$SOOT_DIR/sootclasses.jar" >&5
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
 	    echo "$ac_t""$SOOT_DIR/sootclasses.jar" 1>&6
 	    echo $ac_n "checking for \$SOOT_DIR/jasminclasses.jar""... $ac_c" 1>&6
-echo "configure:2564: checking for \$SOOT_DIR/jasminclasses.jar" >&5
+echo "configure:2618: checking for \$SOOT_DIR/jasminclasses.jar" >&5
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 echo "$ac_t""$SOOT_DIR/jasminclasses.jar" 1>&6
             fi
@@ -2586,7 +2640,7 @@ echo "configure:2564: checking for \$SOOT_DIR/jasminclasses.jar" >&5
     fi
 
     echo $ac_n "checking for rt.jar by compiling config/SystemJar.java""... $ac_c" 1>&6
-echo "configure:2590: checking for rt.jar by compiling config/SystemJar.java" >&5
+echo "configure:2644: checking for rt.jar by compiling config/SystemJar.java" >&5
     # Check whether --with-javasystemjar or --without-javasystemjar was given.
 if test "${with_javasystemjar+set}" = set; then
   withval="$with_javasystemjar"
@@ -2601,7 +2655,7 @@ fi
     if "$JAVAC" SystemJar.java ; then
 	echo "$ac_t""ok" 1>&6
 	echo $ac_n "checking the value of the java.home property ""... $ac_c" 1>&6
-echo "configure:2605: checking the value of the java.home property " >&5
+echo "configure:2659: checking the value of the java.home property " >&5
 	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
@@ -2638,7 +2692,7 @@ if test ! -d "$PTII/ptolemy/apps/tini"; then
     TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
 else
     echo $ac_n "checking for tini directory""... $ac_c" 1>&6
-echo "configure:2642: checking for tini directory" >&5
+echo "configure:2696: checking for tini directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -2651,7 +2705,7 @@ fi
     if test -d "$TINI_DIR"; then
     	echo "$ac_t""$TINI_DIR" 1>&6
       	echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:2655: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:2709: checking for \$TINI_DIR/bin/tini.jar" >&5
 	if test -f "$TINI_DIR/bin/tini.jar"; then
 	   echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	   TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
@@ -2694,7 +2748,7 @@ if test ! -d "$PTII/ptolemy/domains/giotto"; then
     GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
 else
     echo $ac_n "checking for giotto directory""... $ac_c" 1>&6
-echo "configure:2698: checking for giotto directory" >&5
+echo "configure:2752: checking for giotto directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -2707,7 +2761,7 @@ fi
     if test -d "$GIOTTO_DIR"; then
     	echo "$ac_t""$GIOTTO_DIR" 1>&6
       	echo $ac_n "checking for \$GIOTTO_DIR/giotto.jar""... $ac_c" 1>&6
-echo "configure:2711: checking for \$GIOTTO_DIR/giotto.jar" >&5
+echo "configure:2765: checking for \$GIOTTO_DIR/giotto.jar" >&5
 	if test -f "$GIOTTO_DIR/giotto.jar"; then
 	   echo "$ac_t""$GIOTTO_DIR/giotto.jar" 1>&6
 	   GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
@@ -2753,7 +2807,7 @@ if test ! -d "$PTII/ptolemy/apps/kvm"; then
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:2757: checking for waba directory" >&5
+echo "configure:2811: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -2766,7 +2820,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:2770: checking for \$WABA_DIR/classes" >&5
+echo "configure:2824: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -2776,13 +2830,13 @@ echo "configure:2770: checking for \$WABA_DIR/classes" >&5
     else
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:2780: checking for waba directory in /waba" >&5
+echo "configure:2834: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:2786: checking for \$WABA_DIR/classes" >&5
+echo "configure:2840: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -3172,6 +3226,7 @@ s%@JAVA@%$JAVA%g
 s%@PTCC@%$PTCC%g
 s%@JJTREE@%$JJTREE%g
 s%@MATLAB@%$MATLAB%g
+s%@CYGPATH@%$CYGPATH%g
 s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
 s%@CMKIT_DIR@%$CMKIT_DIR%g
 s%@COMMAPI_DIR@%$COMMAPI_DIR%g
