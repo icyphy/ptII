@@ -276,7 +276,7 @@ $(PTII_SRC_JAR): src_jar
 	(cd src_jar/ptII$(VERSION); $(JAR) -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
-src_jar: $(PTII_SRC) 
+src_jar: #$(PTII_SRC) 
 	mkdir src_jar;
 	(cd src_jar; tar -zxf $(PTII_SRC))
 	rm -f src_jar/ptII$(VERSION)/doc/design/hyvisual.pdf
