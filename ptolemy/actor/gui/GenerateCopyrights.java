@@ -135,15 +135,11 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.domains.psdf.kernel.PSDFScheduler",
-                "ptolemy/domains/psdf/synthesis-copyright.html");
+                "ptolemy/domains/psdf/synthesis-copyright.htm");
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
-
-        _addIfPresent(copyrightsMap,
-                "synthesis.dif.psdf.PSDFGraph",
-                "ptolemy/domains/psdf/synthesis-copyright.htm");
 
         // FIXME: This is really lame needing to add in sub package
         // copyrights for other apps, but it is the best we can do right now.
