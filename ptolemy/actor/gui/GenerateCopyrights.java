@@ -132,7 +132,7 @@ public class GenerateCopyrights {
                 "mescal/configs/doc/cup-copyright.htm");
 
         _addIfPresent(copyrightsMap,
-                "org.satlive.jsat.objects.ExternalLiteral"
+                "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
         // Now generate the HTML
