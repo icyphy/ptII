@@ -1,6 +1,6 @@
 /* Interface for objects with a name and a container.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,10 +50,14 @@ of arbitrary objects.
 public interface Nameable {
 
     /////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ////                         public methods                          ////
 
-    /** Return the container.
+    /** Return a description of the object
+     *  @param verbose The level of verbosity.
      */
+    public String description(int verbose);
+
+    /** Return the container. */
     public Nameable getContainer();
 
     /** In an implementation, the full name should reflect the container
@@ -71,4 +75,22 @@ public interface Nameable {
      *  @param name The new name.  
      */
     public void setName(String name) throws IllegalActionException;
+
+    /////////////////////////////////////////////////////////////////////////
+    ////                         public variable                         ////
+
+    /** The description() method returns only the full name of this object. */ 
+    public static final int QUIET = 0;
+
+    /** 
+     * The description() method returns the the full name of this object and 
+     * any objects this object refers to.
+     */ 
+    public static final int NAMES = 1;
+
+    /**
+     * The description() method returns a complete description of the
+     * object that is sufficient to recontruct the object.
+     */ 
+    public static final int VERBOSE = 2;
 }

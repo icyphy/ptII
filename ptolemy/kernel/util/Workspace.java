@@ -94,6 +94,20 @@ public class Workspace implements Nameable, Serializable {
         incrVersion();
     }
 
+    /** Return a description of the object
+     *  @param verbose The level of verbosity.
+     */
+    public String description(int verbose){
+        switch (verbose) {
+        case pt.kernel.Nameable.VERBOSE:
+        case pt.kernel.Nameable.NAMES:
+            return toString();
+        case pt.kernel.Nameable.QUIET:
+        default:
+            return toString();
+        }
+    }
+
     /** Enumerate the elements in the contents list, in the order in which
      *  they were added.
      *  @return An enumaration of Nameable objects.
@@ -168,6 +182,11 @@ public class Workspace implements Nameable, Serializable {
         }
         _name = name;
         incrVersion();
+    }
+
+    /** Return a concise description of the object. */ 
+    public String toString() {
+        return "pt.kernel.Workspace `" + getFullName()+ "'";
     }
 
     //////////////////////////////////////////////////////////////////////////
