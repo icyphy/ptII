@@ -102,7 +102,7 @@ MISC_FILES =	$(DIRS) lib
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
 	'Manager$$1.class' \
 	'Manager$$State.class' \
 	'TypedIOPort$$1.class' \
