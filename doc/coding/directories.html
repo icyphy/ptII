@@ -1,0 +1,88 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Ptolemy II Directory Structure</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1><A NAME="java">Ptolemy II Ptolemy II Directory Structure</A></h1>
+<HR>
+<dl>
+<dt> <a href="../.."><CODE>ptII</CODE></a>
+<dd> 
+	<dl>
+	<dt> <a href="../../makefile"><CODE>makefile</CODE></a>
+	<dd> Top level makefile
+
+	<dt><CODE>adm/</CODE> 
+	<dd> The admin directory, containing release
+	notes, announcements, and so on. This directory is not
+	shipped with the rest of the distribution.
+		<dl>
+		<dt> <CODE>bin/</CODE>
+		<dd> Scripts used for building and testing
+		<dt> <CODE>dist/</CODE>
+		<dd> The distribution directory. The contents of this
+		directory are automatically generated.
+		</dl>
+
+	<dt><CODE>devel/</CODE> 
+	<dd> Code that is under development and not to be released.
+
+	<dt><a href="../../mk"><CODE>mk</CODE></a>
+	<dd> Makefiles that are included into other makefiles
+		<dl>
+		<dt> <a href="../../mk/tycho.mk"><CODE>tycho.mk</CODE></a>
+		<dd> Contains installation dependent makefile variables,
+		such as the location of the Java Development Kit
+		<CODE>tycho.mk</CODE> is the file you should modify
+		with local pathnames.	
+
+		<dt> <a href="../../mk/tydir.mk"><CODE>tydir.mk</CODE></a>
+		<dd> Used in directories that contain source files that
+		are not compiled.
+
+		<dt> <a href="../../mk/tydir.mk"><CODE>tydir.mk</CODE></a>
+		<dd> Used in directories that contain no source files,
+		only subdirectories.
+
+		<dt> <a href="../../mk/tycommon.mk"><CODE>tycommon.mk</CODE></a>
+		<dd> Contains rules to build files from source files.
+		</dl>
+
+
+	<dt><CODE>pt/</CODE> 
+	<dd> Java code used to implement Ptolemy II
+		<dl>
+		<dt> <a href="../../pt/actor"><CODE>actor</CODE></a>
+		<dd> Functional block code
+		<dt> <a href="../../pt/data"><CODE>data</CODE></a>
+		<dd> Code used to pass data between blocks
+		<dt> <a href="../../pt/domains"><CODE>domains</CODE></a>
+		<dd> Various models of computation
+		<dt> <a href="../../pt/kernel"><CODE>kernel</CODE></a>
+		<dd> Ptolemy II Kernel
+		<dt> <a href="../../pt/kernel"><CODE>plot</CODE></a>
+		<dd> Ptplot 2-D graphing package
+		</dl>
+
+	<dt><CODE>util/</CODE> 
+	<dd> Ptolemy II Non-Java Utilities
+		<dl>
+		<dt> <a href="../../util/testsuite"><CODE>testsuite</CODE></a>
+		<dd> Test suite infrastructure that uses Tcl Blend
+		</dl>
+
+	</dl>
+
+</dl>
+
+ <P>
+<a href="../index.html">Ptolemy II Home Page</a><br>
+<HR>
+Copyright &#169 1997-$Date$ The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>ptII@eecs.berkeley.edu</author>
+</body>
+</html>
