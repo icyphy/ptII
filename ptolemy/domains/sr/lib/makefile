@@ -60,8 +60,8 @@ JSRCS = \
 	NonStrictThreeBitAdder.java \
 	SingleTokenDistributor.java \
 	SingleTokenCommutator.java \
-        Undefined.java\
-        TokenMultiplexor.java
+        Undefined.java
+
 OTHER_FILES_TO_BE_JARED = \
 	srentities.xml
 

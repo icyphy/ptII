@@ -1,6 +1,6 @@
 /* A distributor that processes a single token per iteration.
 
- Copyright (c) 1997-2002 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,11 +24,11 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sr.lib;
+package ptolemy.actor.lib;
 
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
@@ -51,7 +51,7 @@ of this actor, it will read the next channel.
 
 @author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 2.1
 */
 public class  TokenMultiplexor  extends Transformer
     implements SequenceActor {

@@ -143,6 +143,7 @@ JSRCS = \
 	Test.java \
 	TimedActor.java \
 	TimedSource.java \
+	TokenMultiplexor.java \
 	Transformer.java \
 	TrigFunction.java \
         TriggeredClock.java \
