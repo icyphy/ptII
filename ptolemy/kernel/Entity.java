@@ -85,11 +85,11 @@ public abstract class Entity extends NamedObj {
 
 
     /** Return an enumeration of the Entities that are connected
-     *  to this Entity via the specified Port. The enumeration does 
-     *  not contain this particular Entity. 
+     * to this Entity via the specified Port. The enumeration does 
+     * not contain this particular Entity. 
      * @param portName The name of the specified Port.
-     *  QFIXME: Should we verify that the specified port name is valid.
-     *  Suppose no such Port is owned.
+     * QFIXME: Should we verify that the specified port name is valid.
+     * Suppose no such Port is owned.
      */	
     public Enumeration enumEntities(String portName) {
 	 Enumeration thisEntitiesPorts = _portList.enumPorts(); 
@@ -118,7 +118,7 @@ public abstract class Entity extends NamedObj {
 
 
     /** Return an enumeration of Relations that this
-     *  Entity is connected through.
+     * Entity is connected through.
      */	
     public Enumeration enumRelations() {
 	 Enumeration ports = _portList.enumPorts(); 
@@ -134,9 +134,9 @@ public abstract class Entity extends NamedObj {
 
 
     /** Return an enumeration of Relations that are connected to this 
-     *  Entity via the specified Port.
-     *  QFIXME: Should we verify that portName is valid?
-     *  Suppose no such Port is owned.
+     * Entity via the specified Port.
+     * QFIXME: Should we verify that portName is valid?
+     * Suppose no such Port is owned.
      */	
     public Enumeration enumRelations(String portName) {
 	 Enumeration ports = _portList.enumPorts(); 
@@ -170,7 +170,7 @@ public abstract class Entity extends NamedObj {
 
 
     /** Return the number of Entities connected to this Entity
-     *  through the specified Port.
+     * through the specified Port.
      * @param portName The name of the specified Port.
      */	
     public int numberOfConnectedEntities(String portName) {
