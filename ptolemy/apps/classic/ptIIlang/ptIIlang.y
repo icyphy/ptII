@@ -1099,10 +1099,25 @@ void genPort ()
 
 	// JAVA
 	// FIXME: handle input or output ports
-	if (strcmp(portName, "output") == 0) {
-		sprintf(str1, "false, true");
-	} else {
+	switch ( portDir ) {
+	case 0:
+		// input
 		sprintf(str1, "true, false");
+		break;
+	case 1:
+		// output
+		sprintf(str1, "false, true");
+		break;
+	case 2:
+		// inout
+		sprintf(str1, "true, true");
+		break;
+	default: 
+		fprintf (stderr, "portDir is not 0, 1 or 2, it is %s\n",
+			portDir);
+		yyerror("portDir is not 0, 1, or 2.");
+		/* NOTREACHED */
+		break;
 	}
 	sprintf (str2, "        %s = new TypedIOPort(this, \"%s\", %s);\n", portName, portName, str1);
 	strcat (javaConsStuff, str2);
@@ -1112,7 +1127,12 @@ void genPort ()
 		sprintf(ptIIType, "DOUBLE");
 	}
 	
-	sprintf (str2, "        %s.setTypeEquals(BaseType.%s);\n", portName, ptIIType);
+	if (portMulti) {
+	        sprintf (str2, "        %s.setMultiport(true);\n", portName);
+		strcat (javaConsStuff, str2);
+	}
+	sprintf (str2, "        %s.setTypeEquals(BaseType.%s);\n",
+		 portName, ptIIType);
 	strcat (javaConsStuff, str2);
 
 	// Ports and Parameters 
@@ -1367,7 +1387,13 @@ void cvtCodeBlock( src_in, dst_in, extendB)
 	case NEWLINE:
 	    *dst++ = ESC; *dst++ = 'n';
 	    if ( *src == '\0' )	break;
-	    *dst++ = '"'; *dst++ = NEWLINE; *dst++ = '"';
+	    // FIXME: This java hack breaks compatibility with the C++ ptlang
+	    //*dst++ = '"'; *dst++ = NEWLINE; *dst++ = '"';
+	    *dst++ = '"'; *dst++ = NEWLINE; *dst++ = ' ';
+	    *dst++ = ' '; *dst++ = ' '; *dst++ = ' '; 
+	    *dst++ = ' '; *dst++ = ' '; *dst++ = ' '; 
+	    *dst++ = ' ';
+	    *dst++ = '+'; *dst++ = ' '; *dst++ = '"';
 	    break;
 	case '@':
 	    if ( ! extendB ) {
@@ -1950,22 +1976,6 @@ void genDef ()
         //		 fullClass, fullClass);
 	//	}
 	//}
-/* generate the CodeBlock constructor calls */
-	for (i=0; i<numBlocks; i++) {
-	    if ( codeBlockArgs[i] == NULL ) {
-		fprintf (fp, "\nCodeBlock %s :: %s (\n%s\n",
-			fullClass,codeBlockNames[i],codeBlockLines[i]);
-		genCodeBlock( fp, codeBlocks[i], 0);
-		fprintf (fp, ");\n");
-	    } else {
-		fprintf (fp, "\nconst char* %s :: %s(%s) {\n%s\n",
-			fullClass,codeBlockNames[i],codeBlockArgs[i],
-			codeBlockLines[i]);
-		fprintf (fp, "\tstatic StringList _str_; _str_.initialize(); _str_ << \n");
-		genCodeBlock( fp, codeBlocks[i], 1);
-		fprintf (fp, ";\n\treturn (const char*)_str_;\n}\n");
-	    }
-	}
 /* prefix code and constructor */
 	// /* Core constructor takes corona as argument. */
 	//if ( coreDef == 1 ) {
@@ -2003,6 +2013,7 @@ void genDef ()
 	fprintf(fp, "    ///////////////////////////////////////////////////////////////////\n");
 	fprintf(fp, "    ////                     ports and parameters                  ////\n");
 	fprintf(fp, "%s", javaPortsAndParameters);
+	fprintf(fp, "\n");
 
 	fprintf(fp, "    ///////////////////////////////////////////////////////////////////\n");
 	fprintf(fp, "    ////                     public methods                        ////\n");
@@ -2013,8 +2024,15 @@ void genDef ()
 		    cvtMethod( codeBody[i], dst);
 		    fprintf (fp, "\n    /**\n");
 		    fprintf (fp, "     */\n");
-		    fprintf (fp, "    public %s %s() {\n        /*\n   \n    %s\n         */\n    }\n",
+		    fprintf (fp, "    public %s %s() {\n        /*\n   \n    %s\n         */\n",
 		      codeType[i], codeFuncName[i], dst);
+		    if (strncmp(codeType[i], "void", 4) != 0) { 
+			    fprintf (fp, "        // Dummy return value.\n");
+			    char returnValue[SMALLBUFSIZE];
+			    strcpy(returnValue, "0");
+			    fprintf (fp, "        return %s;\n", returnValue);
+                    }
+		    fprintf (fp, "     }\n");
 		    free(dst);
 		}
 	}
@@ -2046,6 +2064,30 @@ void genDef ()
 	//		"static RegisterBlock registerBlock(proto,\"%s\");\n",
 	//		objName );
 	//}
+
+/* generate the CodeBlocks */
+	if (numBlocks > 0) {
+		fprintf(fp, "    ///////////////////////////////////////////////////////////////////\n");
+		fprintf(fp, "    ////                     private variables                     ////\n");
+
+		fprintf (fp, "\n    // Codeblock(s)\n");
+        }
+	for (i=0; i<numBlocks; i++) {
+	    if ( codeBlockArgs[i] == NULL ) {
+		fprintf (fp, "\n    public String %s = \n        ",
+			codeBlockNames[i]);
+		genCodeBlock( fp, codeBlocks[i], 0);
+		fprintf (fp, ";\n");
+	    } else {
+		fprintf (fp, "\nconst char* %s :: %s(%s) {\n%s\n",
+			fullClass,codeBlockNames[i],codeBlockArgs[i],
+			codeBlockLines[i]);
+		fprintf (fp, "\tstatic StringList _str_; _str_.initialize(); _str_ << \n");
+		genCodeBlock( fp, codeBlocks[i], 1);
+		fprintf (fp, ";\n\treturn (const char*)_str_;\n}\n");
+	    }
+	}
+
 	fprintf (fp, "}\n");  
 	(void) fclose(fp);
     }  /* htmlOnly */
