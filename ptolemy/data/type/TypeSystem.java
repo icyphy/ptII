@@ -60,45 +60,68 @@ public class TypeSystem implements TypeResolver
      *  does not fall on ArrayTypes.
      */
     public Enumeration resolveTypes(Enumeration constraints) {
-        
+        LinkedList expandedconstraints = new LinkedList();
         LinkedList dataconstraints = new LinkedList();
-        LinkedList dimensionconstraints = new LinkedList();
+        LinkedList arrayconstraints = new LinkedList();
 
         while(constraints.hasMoreElements()) {
             Inequality constraint = (Inequality) constraints.nextElement();
-            InequalityTerm lesser = constraint.getLesserTerm();
-            InequalityTerm greater = constraint.getGreaterTerm();
-            if((lesser instanceof DataType) && (greater instanceof DataType)) {
+            Enumeration expconstraint = _expandConstraint(constraint);
+            expandedconstraints.appendElements(expconstraint);
+        }
+            
+        constraints = expandedconstraints.elements();
+        while(constraints.hasMoreElements()) {
+            Inequality constraint = (Inequality) constraints.nextElement();
+            if(_validConstraint(constraint, DataType.class)) {
                 dataconstraints.insertLast(constraint);
             }
-            else if((lesser instanceof ArrayType) && 
-                    (greater instanceof ArrayType)) {
-                dimensionconstraints.insertLast(constraint);
-            }
-            else if((lesser instanceof Type) && 
-                    (greater instanceof Type)) {
-                Type lt = (Type) lesser;
-                Type gt = (Type) greater;
-                Inequality i1 = new Inequality(lt.getDataType(),
-                        gt.getDataType());
-                dataconstraints.insertLast(i1);
-                Inequality i2 = new Inequality(lt.getArrayType(), 
-                        gt.getArrayType());
-                dimensionconstraints.insertLast(i2);
+            else
+                if(_validConstraint(constraint, ArrayType.class)) { 
+                    arrayconstraints.insertLast(constraint);
             }
         }
         
         DataTypeResolver dataresolver = new DataTypeResolver();
         Enumeration dataconflicts = 
             dataresolver.resolveTypes(dataconstraints.elements());
-        ArrayTypeResolver dimensionresolver = new ArrayTypeResolver();
-        Enumeration dimensionconflicts = 
-            dimensionresolver.resolveTypes(dimensionconstraints.elements());
-
+        
+        ArrayTypeResolver arrayresolver = new ArrayTypeResolver();
+        Enumeration arrayconflicts = 
+            arrayresolver.resolveTypes(arrayconstraints.elements());
+        
         LinkedList conflicts = new LinkedList();
         conflicts.appendElements(dataconflicts);
-        conflicts.appendElements(dimensionconflicts);
+        conflicts.appendElements(arrayconflicts);
+        
+        
+        
         return conflicts.elements();
     }
+    
+    public Enumeration _expandConstraint(Inequality constraint) {
+        LinkedList constraints = new LinkedList();
+        InequalityTerm lesser = constraint.getLesserTerm();
+        if(lesser instanceof DataType) {
+            constraints.appendElements(
+                    ((DataType) lesser).expandConstraint(constraint));
+        } else if(lesser instanceof ArrayType) {
+            constraints.appendElements(
+                    ((ArrayType) lesser).expandConstraint(constraint));
+        } else 
+            throw new RuntimeException("Constraints must be expressed " +
+                    "between two Types of the same class");
+        return constraints.elements();
+    }    
+
+    public boolean _validConstraint(Inequality constraint, Class cclass) {
+        InequalityTerm lesser = constraint.getLesserTerm();
+        InequalityTerm greater = constraint.getGreaterTerm();
+        if((cclass.isInstance(lesser)) && (cclass.isInstance(greater))) {
+            return true;
+        } else
+            return false;
+    }
 }
+
 

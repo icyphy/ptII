@@ -35,6 +35,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
 import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayTypeResolver
@@ -54,51 +55,31 @@ public class ArrayTypeResolver implements TypeResolver
     /** Check types on all the connections and resolve undeclared types.
      *  This method is not write-synchronized on the workspace, so one
      *  of its calling methods should be (normally Manager.resolveTypes()).
+     *  Constraints that are not constraints on ArrayTypes are ignored.
      * 
-     *  @return An enumeration of Typeable objects that failed type checking.
-     *  @exception InternalErrorException If a constraint is given that
-     *  does not fall on ArrayTypes.
+     *  @return An enumeration of Typeables for which no solution was
+     *  found for the array type constraints.
      */
     public Enumeration resolveTypes(Enumeration constraints) {
-	LinkedList dataconstraints = new LinkedList();
-	LinkedList dimensionconstraints = new LinkedList();
+	LinkedList arrayconstraints = new LinkedList();
     
 	while(constraints.hasMoreElements()) {
             Inequality constraint = (Inequality) constraints.nextElement();
             InequalityTerm lesser = constraint.getLesserTerm();
             InequalityTerm greater = constraint.getGreaterTerm();
-            if((lesser instanceof DataType) && (greater instanceof DataType)) {
-                dataconstraints.insertLast(constraint);
-            }
-            else if((lesser instanceof ArrayType) && 
+
+            if((lesser instanceof ArrayType) && 
                     (greater instanceof ArrayType)) {
-                dimensionconstraints.insertLast(constraint);
-            }
-            else if((lesser instanceof Type) && 
-                    (greater instanceof Type)) {
-                Type lt = (Type) lesser;
-                Type gt = (Type) greater;
-                Inequality i1 = new Inequality(lt.getDataType(),
-                        gt.getDataType());
-                dataconstraints.insertLast(i1);
-                Inequality i2 = new Inequality(lt.getArrayType(), 
-                        gt.getArrayType());
-                dimensionconstraints.insertLast(i2);
+                arrayconstraints.insertLast(constraint);
             }
         }
-        
-        DataTypeResolver dataresolver = new DataTypeResolver();
-        Enumeration dataconflicts = 
-            dataresolver.resolveTypes(dataconstraints.elements());
 
-        LatticeTypeResolver dimensionresolver = new ArrayTypeResolver();
-        Enumeration dimensionconflicts = 
-            dimensionresolver.resolveTypes(dimensionconstraints.elements());
+        LatticeTypeResolver arrayresolver = 
+            new LatticeTypeResolver(ArrayType.getTypeLattice());
+        Enumeration arrayconflicts = 
+            arrayresolver.resolveTypes(arrayconstraints.elements());
 
-        LinkedList conflicts = new LinkedList();
-        conflicts.appendElements(dataconflicts);
-        conflicts.appendElements(dimensionconflicts);
-        return conflicts.elements();
+        return arrayconflicts;
     }
 }
 

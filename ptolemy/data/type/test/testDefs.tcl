@@ -1,85 +1,56 @@
-# Makefile for Java Ptolemy type classes
+# Load test bed definitions
 #
-# @Authors: Christopher Hylands, Neil Smyth based on a file by Thomas M. Parks
+# @Author: Christopher Hylands
 #
-# $Id$
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
-#
+# 
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-#
+# 
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-#
+# 
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-#
+# 
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#######################################################################
 
-ME =		ptolemy/data/type
+# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
-DIRS = 		test #doc
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
-# Root of the Ptolemy II directory
-ROOT =		../../..
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-CLASSPATH =	$(ROOT)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. .. ..]
+}
 
-# Used to build jar files
-PTPACKAGE = 	type
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-JSRCS = \
-	ArrayType.java \
-	ArrayTypeLattice.java \
-	ArrayTypeResolver.java \
-	DataType.java \
-	DataTypeResolver.java \
-	LatticeTypeResolver.java \
-	Type.java \
-	TypeSystem.java \
-	TypeResolver.java
-
-EXTRA_SRCS =	$(JSRCS)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) doc
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-
-all: jclass
-install: jclass $(PTCLASSJAR)
-docs: javadocs
-
-depend:
-	@echo "no dependencies in this directory"
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
-
-
-
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then { 
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}

@@ -50,7 +50,7 @@ getTypeLattice method.
 @see ptolemy.graph.CPO
 */
 
-public final class DataType implements InequalityTerm
+public final class DataType extends Type implements InequalityTerm
 {
     /** Create a new variable data type object with the same value as 
      *  BOTTOM.
@@ -123,6 +123,13 @@ public final class DataType implements InequalityTerm
         return terms;
     }
 
+    public boolean isEqualTo(Object t) {
+        if (t instanceof DataType) 
+            return _value == ((DataType) t)._value;
+        else
+            return false;
+    }
+        
     /** Check whether this term can be set to a specific element of the
      *  underlying CPO. Only variable terms are settable, constant
      *  and function terms are not.
@@ -160,6 +167,18 @@ public final class DataType implements InequalityTerm
         }
         _value = (DataTypeEnum) e;
     }    
+
+    /** Return a string representing this type
+     */
+    public String toString() {
+        String s = new String("DataType(");
+        s += _value.getName();
+        s += ")";
+        if(isSettable()) 
+            return "Var" + s;
+        else 
+            return "Const" + s;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                    public static methods                  ////
@@ -245,6 +264,11 @@ public final class DataType implements InequalityTerm
             _name = name;
             _instantiable = instantiable;
         }
+
+        public String getName() {
+            return _name;
+        }
+
         private String _name;
         private boolean _instantiable;
     }

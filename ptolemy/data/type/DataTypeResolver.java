@@ -35,6 +35,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
 import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DataTypeResolver
@@ -60,12 +61,22 @@ public class DataTypeResolver
      *  does not fall on DataTypes.
      */
     public Enumeration resolveTypes(Enumeration constraints) {
-        // FIXME should ensure that all the constraints act on 
-        // DataTypes.
+	LinkedList dataconstraints = new LinkedList();
+    
+	while(constraints.hasMoreElements()) {
+            Inequality constraint = (Inequality) constraints.nextElement();
+            InequalityTerm lesser = constraint.getLesserTerm();
+            InequalityTerm greater = constraint.getGreaterTerm();
+
+            if((lesser instanceof DataType) && 
+                    (greater instanceof DataType)) {
+                dataconstraints.insertLast(constraint);
+            }
+        }
 
         LatticeTypeResolver resolver = 
             new LatticeTypeResolver(DataType.getTypeLattice());
-        return resolver.resolveTypes(constraints);
+        return resolver.resolveTypes(dataconstraints.elements());
     }
 }
 

@@ -62,9 +62,8 @@ public class LatticeTypeResolver {
      *  This method is not write-synchronized on the workspace, so one
      *  of its calling methods should be (normally Manager.resolveTypes()).
      * 
-     *  @return An enumeration of Typeable objects that failed type checking.
-     *  @exception InternalErrorException If a constraint is given that
-     *  does not fall on DimensionTypes.
+     *  @return An enumeration of Typeable objects for which no solution
+     *  to the constraints was found.
      */
     public Enumeration resolveTypes(Enumeration constraints) {
 
@@ -99,16 +98,6 @@ public class LatticeTypeResolver {
                         // typeObj is a Typeable
                         conflicts.insertLast(typeObj);
                     }
-                }
-            }
-            
-            // check whether resolved types are acceptable.
-            // They might be, for example, NaT.
-            Enumeration var = solver.variables();
-            while (var.hasMoreElements()) {
-                InequalityTerm term = (InequalityTerm)var.nextElement();
-                if ( !term.isTypeAcceptable()) {
-                    conflicts.insertLast(term.getAssociatedObject());
                 }
             }
         }

@@ -35,6 +35,7 @@ import ptolemy.graph.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import java.util.Enumeration;
+import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayType
@@ -46,14 +47,14 @@ $Id$
 
 */
 
-public class ArrayType implements InequalityTerm
+public class ArrayType extends Type implements InequalityTerm
 {
     /**
      * Create a new array type variable, initialized to 
      * ArrayType.BOTTOM;
      */
     public ArrayType() {
-        this(ArrayType.BOTTOM);
+        this(new ArrayType(ArrayType.BOTTOM));
         _isSettable = true;
     }
 
@@ -82,6 +83,25 @@ public class ArrayType implements InequalityTerm
         _isSettable = type._isSettable;
     }
 
+    /** Given a constraint on this Type, return an enumeration of constraints
+     *  on other types, on which this type depends.
+     *  If the constraint is not on array types, then throw an exception.
+     */
+    public Enumeration expandConstraint(Inequality constraint) {
+        LinkedList l = new LinkedList();
+        l.insertFirst(constraint);
+        
+        // Add a constraint on the types contained by the array type
+         
+        ArrayType lesser = (ArrayType) constraint.getLesserTerm();
+        ArrayType greater = (ArrayType) constraint.getGreaterTerm();
+        // FIXME Should not assume DataType
+        Inequality typecon = new Inequality((DataType)lesser._type, 
+                (DataType)greater._type);
+        l.appendElements(lesser._type.expandConstraint(typecon));
+        return l.elements();
+    }
+
     /** Return the Object associated with this term. If this term is
      *  not associated with a particular Object, or it is not necessary
      *  to obtain the reference of the associated Object, this method
@@ -92,6 +112,13 @@ public class ArrayType implements InequalityTerm
         return null;
     }
 
+    /** Return the type that is associated with all the elements of this
+     *  array.
+     */
+    public Type getContainedType() {
+        return _type;
+    }
+
     /** Return the value of this term.  If this term is a constant,
      *  return that constant; if this term is a variable, return the
      *  current value of that variable; if this term is a function,
@@ -100,7 +127,9 @@ public class ArrayType implements InequalityTerm
      *  @return an Object representing an element in the underlying CPO.
      */
     public Object getValue() {
-        return this;
+        ArrayType ctype = new ArrayType(this);
+        ctype._isSettable = false;
+        return ctype;
     }
 
     /** Return an array of variables contained in this term.
@@ -133,7 +162,7 @@ public class ArrayType implements InequalityTerm
         for(i = 0; i < _dimensions; i++) {
             if(_size[i] != dtype._size[i]) return false;
         }
-        return _type.isEqualTo(type._type);
+        return _type.isEqualTo(dtype._type);
     }
 
     /** Check whether this term can be set to a specific element of the
@@ -156,7 +185,7 @@ public class ArrayType implements InequalityTerm
         if(this.isEqualTo(BOTTOM)) return false;
         if(_dimensions < 0) return false;
         if(_dimensions > 2) return false;
-        return _type.isTypeAcceptable();
+        return this._type.isTypeAcceptable();
     }
 
     /** Set the value of this term to the specified CPO element.
@@ -178,10 +207,30 @@ public class ArrayType implements InequalityTerm
         ArrayType dtype = (ArrayType) e;
         _dimensions = dtype._dimensions;
         _size = dtype._size;        
-	_type = dtype._type;
+	//_type = dtype._type;
     }
 
- 
+    /** Return a string representing this type
+     */
+    public String toString() {
+        String s = new String("ArrayType(");
+        s += _dimensions + ", {";
+        int i;
+        for(i = 0; i < _dimensions; i++) {
+            s += _size[i] + ", ";
+        }
+        
+        s += "}, " + _type.toString();
+        s += ")";
+        if(isSettable()) 
+            return "Var" + s;
+        else 
+            return "Const" + s;
+    }
+        
+
+
+
     /** Return the lattice associated with this type
      */
     public static CPO getTypeLattice() {
@@ -198,7 +247,7 @@ public class ArrayType implements InequalityTerm
      * A general dimension type.
      */
     public static final ArrayType TOP = new ArrayType(-2, null,
-						      new DataType));
+						      new DataType());
 
     /** The number of dimensions of an object of this type.
      *  1 = 1D array, 2 = 2D array, etc.
