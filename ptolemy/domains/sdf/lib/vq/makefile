@@ -59,7 +59,8 @@ JSRCS = \
 	RateSelector.java \
 	VQDecode.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	sdfvqentities.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -69,8 +70,8 @@ MISC_FILES =	$(DIRS) data
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'ImageDisplay$$_PictureFrame.class'
-
+	'ImageDisplay$$_PictureFrame.class' \
+	'ImageDisplay$$1.class'
 JCLASS = $(JSRCS:%.java=%.class)
 
 
