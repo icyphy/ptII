@@ -32,7 +32,7 @@
 ME =		doc
 
 # Sub directories to run make in.
-DIRS =		 coding design tour tutorial  #internals #usersGuides
+DIRS =		 coding design tour tutorial ui  #internals #usersGuides
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -153,7 +153,7 @@ $(VERGIL_DOCS): javahtml.awk
 # Version of main.htm without links
 # Convert <a href="foobar" target="body">bif</a> -> bif
 mainVergil.htm: main.htm
-	sed 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' $^ > $@
+	sed 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' $< > $@
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
