@@ -384,6 +384,8 @@ public class Agent {
 	  TypedIOPort expressionOutput = expression.output;
 	  TypedIOPort integratorInput = integrator.input;
 
+	  Parameter signalType;
+
 	  TypedIORelation relation0 = new TypedIORelation(_container, "relation0");
 	  expressionOutput.link(relation0);
 	  integratorInput.link(relation0);
@@ -395,7 +397,10 @@ public class Agent {
 	  while (exprInputs.hasNext()) {
 	    String inputPortName = (String) exprInputs.next();
 	    TypedIOPort expressionInput = new TypedIOPort(expression, inputPortName, true, false);
-	  }
+	    if (_container instanceof Refinement) {
+	      signalType = new Parameter(expressionInput, "signalType", new StringToken("CONTINUOUS"));
+	    }
+      	  }
 
 	  ListIterator outputs = getOutputs().listIterator();
 	  if (getOutputs().size() > 1) throw new IllegalActionException ("Can not handle actor with more than one output.");
@@ -406,7 +411,6 @@ public class Agent {
 	    TypedIOPort integratorOutput = integrator.output;
 	    integratorOutput.link(relation1);
 	    containerOutput.link(relation1);
-	    System.out.println("------------------> " + containerOutput.getName());
 	  }
 
 	  ListIterator inputs = getInputs().listIterator();
@@ -416,6 +420,9 @@ public class Agent {
 
 	    // the inputs of composite actor are also inputs for expression actor
 	    TypedIOPort expressionInput = new TypedIOPort(expression, inputStr, true, false);
+	    if (_container instanceof Refinement) {
+	      signalType = new Parameter(expressionInput, "signalType", new StringToken("CONTINUOUS"));
+	    }
 	  }
 	} else {
 	  // modal model
@@ -473,8 +480,6 @@ public class Agent {
 	    ModalPort _containerInput = (ModalPort) _container.newPort(inputStr);
 	    _containerInput.setInput(true);
 	  }
-
-	  return;
 
 	}
       } else {
