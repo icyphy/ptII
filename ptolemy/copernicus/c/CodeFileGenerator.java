@@ -84,13 +84,14 @@ public class CodeFileGenerator extends CodeGenerator {
         source.setApplicationClass();
         _updateRequiredTypes(source.getType());
 
-        //add runtime include files
+        // Add runtime include files.
         _context.addIncludeFile("<setjmp.h>");
         _context.addIncludeFile("<stdlib.h>");
-        //_context.addIncludeFile("\"array.h\"");
-        //moved to HeaderFileGenerator
         _context.addIncludeFile("\"pccg_runtime.h\"");
-        _context.addIncludeFile("\"strings.h\"");
+
+        if (!_context.getSingleClassMode()) {
+            _context.addIncludeFile("\"strings.h\"");
+        }
 
         // Generate function prototypes for all private methods.
         int count = 0;
@@ -114,8 +115,12 @@ public class CodeFileGenerator extends CodeGenerator {
         // Generate the code for all of the methods.
         methods = source.getMethods().iterator();
         while (methods.hasNext()) {
-            String methodCode = _generateMethod((SootMethod)(methods.next()));
-            bodyCode.append(methodCode);
+            SootMethod thisMethod = (SootMethod)methods.next();
+            String methodCode = _generateMethod(thisMethod);
+            // Only generate required methods.
+            if (RequiredFileGenerator.isRequiredMethod(thisMethod)) {
+                bodyCode.append(methodCode);
+            }
             if (methodCode.length() != 0) {
                 bodyCode.append("\n");
             }
@@ -154,8 +159,9 @@ public class CodeFileGenerator extends CodeGenerator {
         if (stringConstants.hasNext()) {
             code.append(_comment("Pointers to string constants"));
             while (stringConstants.hasNext()) {
-                code.append("static " + typeName + " " +
-                        _context.getIdentifier((String)(stringConstants.next()))
+                code.append("static " + typeName + " "
+                        + _context.getIdentifier((String)(stringConstants.
+                                next()))
                         + ";\n");
             }
         }
@@ -209,8 +215,8 @@ public class CodeFileGenerator extends CodeGenerator {
             while (stringConstants.hasNext()) {
                 StringBuffer value = new StringBuffer(
                                         stringConstants.next().toString());
-                //replace all incidences of " with \" to prevent bad characters
-                //between quotes
+                // Replace all incidences of " with \" to prevent bad characters
+                // between quotes.
                 for(int i = 0; i<value.length(); i++) {
                     if (value.charAt(i) == '"') {
                         value.insert(i,"\\");
@@ -222,8 +228,6 @@ public class CodeFileGenerator extends CodeGenerator {
                 code.append(_indent(1) + identifier + " = (" + stringType +
                         ")(malloc(sizeof (struct " + stringType + ")));\n");
 
-                // FIXME: Is this .methods. here general enough?
-                // I think so.
                 code.append(_indent(1) + stringStructure + ".methods."
                         + stringInitializer
                         + "(" + identifier + ", \"" + value + "\");\n");
@@ -348,44 +352,44 @@ public class CodeFileGenerator extends CodeGenerator {
             if (thisLocalName != null) visitor.setThisLocalName(thisLocalName);
             units = body.getUnits().iterator();
 
-            // Prologue
-            code.append(_indent(1) + "extern jmp_buf env;\n");
-            code.append(_indent(1) + "extern int epc;\n");
-            code.append(_indent(1) + "jmp_buf caller_env;\n");
-            code.append(_indent(1) + "extern char *exception_type;\n");
-            code.append(_indent(1) + "extern int exception_id;\n");
-            code.append(_indent(1) + "int caller_epc = epc;\n\n");
+            if (!_context.getSingleClassMode()) {
+                // Prologue.
+                code.append(_indent(1) + "extern jmp_buf env;\n");
+                code.append(_indent(1) + "extern int epc;\n");
+                code.append(_indent(1) + "jmp_buf caller_env;\n");
+                code.append(_indent(1) + "extern char *exception_type;\n");
+                code.append(_indent(1) + "extern int exception_id;\n");
+                code.append(_indent(1) + "int caller_epc = epc;\n\n");
 
-            //FIXME: this is a dummy to suppress warnings
-            code.append(_indent(1)+ "exception_id = 13;   /*dummy*/\n");
-            code.append(_indent(1)
-                    + "strcpy(exception_type, \"13\"); /*dummy*/\n");
-
-            /*
-            if (tracker.trapsExist()) {
+                //FIXME: this is a dummy to suppress warnings
+                code.append(_indent(1)+ "exception_id = 13;   /*dummy*/\n");
                 code.append(_indent(1)
-                        +"extern i72706427_Exception exception_id;\n");
-                //FIXME: generate this  ixxyywhatever automatically
-            }
-            */
+                        + "strcpy(exception_type, \"13\"); /*dummy*/\n");
 
-            code.append("\n"+_indent(1)
-                        +"memcpy(caller_env, env, sizeof(jmp_buf));\n");
+                code.append("\n"+_indent(1)
+                            +"memcpy(caller_env, env, sizeof(jmp_buf));\n");
 
-            if (tracker.trapsExist()) {
-                code.append(_indent(1)+"epc = setjmp(env);\n");
-                code.append(_indent(1)+"if(epc == 0)\n");
-                code.append(_indent(1)+"{\n");
-            }
+                if (tracker.trapsExist()) {
+                    code.append(_indent(1)+"epc = setjmp(env);\n");
+                    code.append(_indent(1)+"if(epc == 0)\n");
+                    code.append(_indent(1)+"{\n");
+                }
 
-            if (tracker.trapsExist()) {
-                indentLevel = 2;
+                if (tracker.trapsExist()) {
+                    indentLevel = 2;
+                }
+                else {
+                    indentLevel = 1;
+                }
             }
             else {
                 indentLevel = 1;
             }
 
             visitor.indentLevel = indentLevel;
+
+            boolean handle_exceptions = tracker.trapsExist()
+                    && (!_context.getSingleClassMode());
 
             //Exception-catching in the body.
             while (units.hasNext()) {
@@ -395,7 +399,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 }
 
                 //Code for begin Unit in exceptions.
-                if (tracker.trapsExist()&&tracker.isBeginUnit(unit)) {
+                if (handle_exceptions && tracker.isBeginUnit(unit)) {
                     tracker.beginUnitEncountered(unit);
                     code.append(_indent(2)+"epc = "+ tracker.getEpc()+";\n");
                     code.append(_indent(2)+"/*Trap " +tracker.beginIndexOf(unit)
@@ -412,7 +416,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 }
 
                 //Code for end unit in exceptions.
-                if(tracker.trapsExist()&&tracker.isEndUnit(unit)) {
+                if(handle_exceptions && tracker.isEndUnit(unit)) {
                     code.append(_indent(2)+"/* That was end unit for trap "+
                                 tracker.endIndexOf(unit)+" */\n");
                     tracker.endUnitEncountered(unit);
@@ -421,7 +425,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 }
 
                 //Code for handler unit in exceptions.
-                if(tracker.trapsExist()&&tracker.isHandlerUnit(unit)) {
+                if(handle_exceptions && tracker.isHandlerUnit(unit)) {
                     code.append(_indent(2)+"/* Handler Unit for Trap "+
                                 tracker.handlerIndexOf(unit)+" */\n");
                 }
@@ -501,15 +505,17 @@ public class CodeFileGenerator extends CodeGenerator {
         }
     }
 
-    // Generate code to initialize method pointers (in the method table)
-    // in a structure that implements a class.
+    /** Generate code to initialize method pointers (in the method table)
+        in a structure that implements a class.
+     */
     private String _generateMethodPointerInitialization(List methodList,
             String argumentReference) {
         StringBuffer code = new StringBuffer();
         Iterator methods = methodList.iterator();
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
-            if (!method.isStatic()) {
+            if (!method.isStatic()
+                    && RequiredFileGenerator.isRequiredMethod(method)) {
                 code.append(_indent(1) + argumentReference
                         + "methods." + CNames.methodNameOf(method) + " = "
                         + CNames.functionNameOf(method) + ";\n");

@@ -43,11 +43,10 @@ import soot.jimple.internal.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSwitch
-/**
-   An implementation of the visitor design pattern that generates C code
-   from Jimple statements. Code generated in this class is placed
-   in an internal code stack (see {@link #_push(StringBuffer)},
-   and {@link #_pop()}).
+/** An implementation of the visitor design pattern that generates C code
+    from Jimple statements. Code generated in this class is placed in an
+    internal code stack (see {@link #_push(StringBuffer)}, and {@link
+    #_pop()}).
 
    @author Shuvra S. Bhattacharyya, Ankush Varma
    @version $Id$
@@ -59,8 +58,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
 
-    /** Current Indentation level: Used by other classes if they need to know
-     * the degree of indentation in the currently generated code.
+    /** Current Indentation level: Used by other classes if they need to know or
+     *  change  the degree of indentation in the currently generated code.
      */
     public byte indentLevel;
 
@@ -210,7 +209,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseStringConstant(StringConstant v) {
         StringBuffer stringConst = new StringBuffer(v.value);
 
-        // convert \ to \\
+        // Convert \ to \\.
         for(int i = 0; i < stringConst.length(); i++) {
             if (stringConst.charAt(i) == '\\') {
                 stringConst.insert(i, '\\');
@@ -219,7 +218,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
 
-        // convert " to \"
+        // Convert " to \".
         for(int i = 0; i < stringConst.length(); i++) {
             if (stringConst.charAt(i) == '"') {
                 stringConst.insert(i, '\\');
@@ -228,7 +227,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
 
-        // format newlines properly
+        // Format newlines properly.
         for(int i = 0; i < stringConst.length(); i++) {
             if (stringConst.charAt(i) == '\n') {
                 stringConst.replace(i,i+1, "\\n");
@@ -240,19 +239,19 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// public methods that implement the ExprSwitch interface    ////
+    //// Public methods that implement the ExprSwitch interface.   ////
 
     public void caseAddExpr(AddExpr v) {
         _generateBinaryOperation(v, "+");
     }
 
     public void caseAndExpr(AndExpr v) {
-        //bitwise AND operator
+        // Bitwise AND operator.
         _generateBinaryOperation(v, "&");
     }
 
     public void caseCastExpr(CastExpr v) {
-        //FIXME: Does not handle null cast
+        //FIXME: Does not handle null cast.
         if (!v.getOp().toString().equals("null")) {
             _push("("+CNames.typeNameOf(v.getCastType())+")"
                 +CNames.localNameOf((Local)v.getOp()));
@@ -310,7 +309,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param v The instanceof expression.
      */
     public void caseInstanceOfExpr(InstanceOfExpr v) {
-        // FIXME: add support for all relevant types.
+        // FIXME: Add support for all relevant types.
         Type type = v.getCheckType();
 
         if ((type instanceof RefType)) {
@@ -405,7 +404,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseOrExpr(OrExpr v) {
-        //bitwise OR
+        // Bitwise OR.
         _generateBinaryOperation(v,"|");
     }
 
@@ -578,7 +577,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     ///////////////////////////////////////////////////////////////////
     //// public methods that implement the StmtSwitch interface    ////
 
-    /** Generate code for an assignment statement
+    /** Generate code for an assignment statement.
      *  @param stmt The assignment statment.
      */
     public void caseAssignStmt(AssignStmt stmt) {
@@ -675,12 +674,17 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             indent = "        ";
         }
 
-        _push("\n"
-            + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
-            + indent + "epc = caller_epc;\n"
-            + indent + "return "
-            + "(" + CNames.typeNameOf(returnType) + ")"
-            + _pop());
+        if (!_context.getSingleClassMode()) {
+            _push("\n"
+                + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
+                + indent + "epc = caller_epc;\n"
+                + indent + "return "
+                + "(" + CNames.typeNameOf(returnType) + ")"
+                + _pop());
+        }
+        else {
+            _push("\n" +indent + "return " + _pop());
+        }
     }
 
     public void caseReturnVoidStmt(ReturnVoidStmt stmt) {
@@ -693,10 +697,17 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             indent = "        ";
         }
 
-        _push("\n"
-            + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
-            + indent + "epc = caller_epc;\n"
-            + indent + "return ");
+        if (!_context.getSingleClassMode()) {
+            _push("\n"
+                + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
+                + indent + "epc = caller_epc;\n"
+                + indent + "return ");
+        }
+        else {
+            _push("\n" +indent + "return ");
+        }
+
+
 
     }
 

@@ -138,7 +138,7 @@ public class CNames {
                 name = _sanitize("n" + prefixCode + "_" + method.getName());
                 //f for function,  n for native
             }
-            else{
+            else {
                 // Hash the class name + type signature combination to
                 // avoid naming conflicts.
                 String prefixBase = method.getDeclaringClass().getName()
@@ -259,8 +259,9 @@ public class CNames {
     public static String typeNameOf(Type type) {
         // FIXME: do this more efficiently.
         String name = null;
-        if (type instanceof RefType)
+        if (type instanceof RefType) {
             name = instanceNameOf(((RefType)type).getSootClass());
+        }
         else if (type instanceof ArrayType) {
             name="iA"+((ArrayType)type).numDimensions+"_"
                     +typeNameOf(((ArrayType)type).baseType);

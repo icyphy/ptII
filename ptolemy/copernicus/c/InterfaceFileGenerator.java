@@ -47,13 +47,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-/**
-  A C code generator for generating "interface files" (_i.h files)
-  that implement Java classes.
+/** A C code generator for generating "interface files" (_i.h files)
+    that implement Java classes.
 
-  @author Ankush Varma
-  @version $Id$
-  @since Ptolemy II 2.0
+    @author Ankush Varma
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 
 // FIXME: Handle (ignore?) phantom methods and fields.
@@ -85,21 +84,21 @@ public class InterfaceFileGenerator extends CodeGenerator {
         Iterator membersIter;
 
         // Extract the unique class name and instance-specific type name to
-        // use for the class
+        // use for the class.
         String className = source.getName();
         String typeName = CNames.instanceNameOf(source);
         String objectName = CNames.classNameOf(source);
 
-        // Avoid multiple inclusions of the generated header file
+        // Avoid multiple inclusions of the generated header file.
         headerCode.append("\n#ifndef _" + typeName + "_i_h\n");
         headerCode.append("#define _" + typeName + "_i_h\n\n");
         footerCode.append("\n#endif\n\n");
 
-        // FIXME: generate header code for inner classes (probably here)
+        // FIXME: generate header code for inner classes (probably here).
 
         // Generate typedef for instance-specific structure. The actual
         // definition of the structure will be placed after the definition
-        // of the class-specific structure;
+        // of the class-specific structure.
 
 
         bodyCode.append("struct " + typeName + ";\n");
@@ -113,10 +112,7 @@ public class InterfaceFileGenerator extends CodeGenerator {
         bodyCode.append("typedef struct " +objectName+ " *" + objectName
                         +";\n");
 
-
-
-
-         // Return an appropriate concatenation of the code strings.
+        // Return an appropriate concatenation of the code strings.
         return (headerCode.append(bodyCode.append(footerCode))).toString();
     }
 

@@ -76,11 +76,18 @@ public class JavaToC {
 
         if (verbose) {
             System.out.println("JavaToC.convert(): classpath is: "
-                    + classPath); 
+                    + classPath);
         }
 
-        // Initialize code generation
+        // Initialize code generation.
         Scene.v().setSootClassPath(classPath);
+        Scene.v().loadClassAndSupport(className);
+        RequiredFileGenerator RFG = new RequiredFileGenerator();
+
+        if (!generateSingleClass) {
+            RFG.init(classPath, className);
+        }
+
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
         CodeFileGenerator cGenerator = new CodeFileGenerator();
         InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
@@ -90,11 +97,10 @@ public class JavaToC {
             hGenerator.setSingleClassMode();
         }
 
-        Scene.v().loadClassAndSupport(className);
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
-        //generate the _i.h file
+        // Generate the _i.h file.
         String code = iGenerator.generate(sootClass);
         FileHandler.write(className+"_i.h", code);
 
@@ -106,22 +112,19 @@ public class JavaToC {
         code = cGenerator.generate(sootClass);
         FileHandler.write(className+".c", code);
 
-        // generate other required files
-        RequiredFileGenerator RFG = new RequiredFileGenerator();
+        if (!generateSingleClass) {
+            // Generate other required files.
+            RFG.generateTransitiveClosureOf(classPath,
+                            className, compileMode, verbose);
 
-        RFG.generateTransitiveClosureOf(classPath,
-                        className, compileMode, verbose);
-
-        // Generate the makefile
-        MakeFileGenerator.generateMakeFile(classPath, className,
-            RFG.getRequiredClasses(classPath, className));
-
-
+            // Generate the makefile
+            MakeFileGenerator.generateMakeFile(classPath, className,
+                RFG.getRequiredClasses(classPath, className));
+        }
     }
 
-    /**
-     * Prints out the help message on usage of this class and command-line
-     * arguments.
+    /** Prints out the help message on usage of this class and command-line
+     *  arguments.
      */
     public static void showHelp() {
         System.out.println( "USAGE: java "
@@ -145,14 +148,14 @@ public class JavaToC {
         String classPath = new String(args[0]);
         String className = new String();
 
-        // default flags
+        // Default flags.
         String compileMode = new String("full");
         boolean verbose = false;
 
-        // actual flags
+        // Actual flags.
         for(int i = 1;i<args.length; i++) {
             if (args[i].startsWith("-")) {
-                //its a flag
+                // Its a flag.
                 if     (args[i].equals("-v")) verbose = true;
                 else if(args[i].equals("-q")) verbose = false;
                 else if(args[i].equals("-singleClass"))
@@ -178,13 +181,13 @@ public class JavaToC {
 
             }
             else {
-                //its the name of a class to convert
+                // Its the name of a class to convert.
                 className=args[i];
                 convert(classPath, className, compileMode, verbose);
             }
         }
 
-        if(className.equals("")) showHelp(); //if no className specified
-
+        // If no className specified
+        if(className.equals("")) showHelp();
     }
 }

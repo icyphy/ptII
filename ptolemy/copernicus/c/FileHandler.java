@@ -44,19 +44,18 @@ import java.io.IOException;
 
 public class FileHandler {
 
-    /**
-     * @param fileName A fileName
-     * @return True if a file with that name exists.
+    /** Tells whether a file with a given name exists.
+     *  @param fileName A fileName.
+     *  @return True if a file with that name exists.
      */
     public static boolean exists(String fileName) {
         File f = new File(fileName);
         return(f.exists());
     }
 
-    /**
-     * Write out the given string to a file.
-     * @param fileName The file to write to.
-     * @param code The String to write.
+    /** Write out the given string to a file.
+     *  @param fileName The file to write to.
+     *  @param code The String to write.
      */
     public static void write(String fileName, String code) {
         try {

@@ -101,7 +101,13 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         // Runtime include files
         headerCode.append("/* Runtime Include Files */\n");
-        headerCode.append("#include \"pccg_array.h\"\n\n");
+        if (!_context.getSingleClassMode()) {
+                        headerCode.append("#include \"pccg_array.h\"\n\n");
+        }
+        else {
+            headerCode.append("#include \"pccg_single.h\"\n\n");
+        }
+
 
         // FIXME: generate header code for inner classes (probably here)
 
@@ -139,7 +145,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         // run-time (array classes are created on demand).
         // This is declared as a pointer to the struct that implements
         // java.lang.Object so that access to common members of the
-        // structure (across all classes) is facilitated..
+        // structure (across all classes) is facilitated.
         // The pointer declaration is commented out if we are in single
         // class mode.
         bodyCode.append(_indent(1) + _comment("Pointer to array class"));
@@ -278,10 +284,19 @@ public class HeaderFileGenerator extends CodeGenerator {
             headerCode.append(_comment("System and runtime include files"));
         }
         while (includeFiles.hasNext()) {
+            if (_context.getSingleClassMode()) {
+                headerCode.append("/* ");
+            }
+
             headerCode.append("#include ");
             String fileName = new String((String)includeFiles.next());
             fileName = fileName.substring(0, fileName.length()-3)+"_i.h\"";
             headerCode.append(fileName);
+
+            if (_context.getSingleClassMode()) {
+                headerCode.append(" */");
+            }
+
             headerCode.append("\n");
         }
 
@@ -290,10 +305,19 @@ public class HeaderFileGenerator extends CodeGenerator {
             headerCode.append("\n" + _comment("Converted classes"));
         }
         while (requiredTypes.hasNext()) {
+            if (_context.getSingleClassMode()) {
+                headerCode.append("/* ");
+            }
+
             headerCode.append("#include \"");
             String fileName = new String((String)requiredTypes.next());
             fileName = fileName.substring(0, fileName.length()-2)+"_i.h\"";
             headerCode.append(fileName);
+
+            if (_context.getSingleClassMode()) {
+                headerCode.append(" */");
+            }
+
             headerCode.append("\n");
         }
 
@@ -361,13 +385,14 @@ public class HeaderFileGenerator extends CodeGenerator {
         return fieldCode.toString();
     }
 
-    // Generate C declarations corresponding to all non-static fields inherited
-    // from a given superclass.
-    // Rules for visiblity:
-    // Public    fields  - globally visible.
-    // Protected fields  - visible only to subclasses
-    // Private   fields  - visible only inside the class.
-    // "friendly" fields - visible in the same package.
+    /** Generate C declarations corresponding to all non-static fields inherited
+     *  from a given superclass.
+     *  Rules for visiblity:
+     *  Public    fields  - globally visible.
+     *  Protected fields  - visible only to subclasses
+     *  Private   fields  - visible only inside the class.
+     *  "friendly" fields - visible in the same package.
+    */
     private String _generateInheritedFields(SootClass source,
             SootClass superClass) {
         StringBuffer fieldCode = new StringBuffer();
@@ -409,8 +434,8 @@ public class HeaderFileGenerator extends CodeGenerator {
      *
      *  is inserted at the beginning, before the methods are declared.
      *  The comment is omitted if no code is produced by this method
-     *  (i.e., there are no
-     *  non-static methods to generate pointers for).
+     *  (that is, there are no non-static methods to generate pointers for).
+     *
      *  @param methodList The list of methods.
      *  @param comment A comment to insert in the generated code. This comment
      *  @return Function pointer code for specified Java methods.
@@ -441,8 +466,8 @@ public class HeaderFileGenerator extends CodeGenerator {
                 _updateRequiredTypes(method.getReturnType());
                 insertedMethods++;
 
-                // it add the method's return type to the context if it is an
-                // array
+                // Add the method's return type to the context as a required
+                // type if it is an array.
                 if (method.getReturnType() instanceof ArrayType) {
                     _context.addArrayInstance(
                         CNames.typeNameOf(method.getReturnType()));

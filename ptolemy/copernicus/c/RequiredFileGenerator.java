@@ -47,9 +47,8 @@ import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
 import soot.jimple.toolkits.invoke.InvokeGraph;
 
 
-/**
-A class that generates the other required files in the
-transitive closure.
+/** A class that generates the other required files in the
+    transitive closure.
 
 @author Ankush Varma
 @version $Id$
@@ -57,26 +56,35 @@ transitive closure.
 */
 
 public class RequiredFileGenerator {
-    /**
-     * dummy constructor
+    /** Initialize the Object.
      */
     public void RequiredFileGenerator() {
-            // dummy constructor
+        _requiredMethods = new HashSet();
+        _requiredClasses = new HashSet();
+    }
 
-        }
+    /** Initialize and compute the required classes and methods.
+     *  @param classPath The classpath.
+     *  @param className The name of the class which we will take as the root
+     *  from which others are called.
+     */
+    public void init(String classPath, String className) {
+        _compute(classPath, className);
+    }
 
-    /**
-     * Generate the .h files for all classes in the transitive closure of the
-     * given class and the .c files for required classes only.
-     * @param classPath The classPath.
-     * @param className The class for which the transitive closure is to be
-     * generated.
-     * @param compileMode The compilation mode.
-     * @param verbose Whether routine messages are to be generated.
-     * @throws IOException On file I/O errors.
+
+    /** Generate the .h files for all classes in the transitive closure of the
+     *  given class, and the .c files for required classes only. A class is
+     *  considered "required" if it contains atleast one method that is in the
+     *  transitive closure of methods called in the main class.
+     *  @param classPath The classPath.
+     *  @param className The main class.
+     *  @param compileMode The compilation mode.
+     *  @param verbose Whether routine messages are to be generated.
+     *  @exception IOException If  file I/O errors occur.
      */
     public static void generateTransitiveClosureOf(String classPath,
-            String className, String compileMode, boolean verbose) 
+            String className, String compileMode, boolean verbose)
             throws IOException {
         if (!compileMode.equals("singleClass")) {
             _compute(classPath, className);
@@ -84,7 +92,7 @@ public class RequiredFileGenerator {
             Scene.v().setSootClassPath(classPath);
             Scene.v().loadClassAndSupport(className);
 
-            //generate headers for everything in the transitive closure
+            // Generate headers for everything in the transitive closure.
             Iterator j = Scene.v().getClasses().iterator();
             while(j.hasNext()) {
                 String nextClassName=((SootClass)j.next()).getName();
@@ -92,7 +100,7 @@ public class RequiredFileGenerator {
                     verbose);
             }
 
-            //generate only the required .c files
+            // Generate only the required .c files.
             Iterator i = _requiredClasses.iterator();
             while (i.hasNext()) {
                 String nextClassName=((SootClass)i.next()).getName();
@@ -108,8 +116,8 @@ public class RequiredFileGenerator {
     }
 
 
-    /**
-        @return The names of all required Classes
+    /** Returns the set of all required classes.
+     *  @return The set of all required Classes.
      */
     public static Collection getRequiredClasses(String classPath, String
             className) {
@@ -117,10 +125,27 @@ public class RequiredFileGenerator {
         return (Collection) _requiredClasses;
     }
 
+    /** Returns whether a given method is required or not.
+        @param methodName Any method.
+        @return True if it is a required method.
+        A method is "required" if it is part of the active invoke graph.
+        If the RequiredFileGenerator was not initialized, it'll always
+        return true. All methods in the main class are automatically required.
+    */
+    public static boolean isRequiredMethod(SootMethod meth) {
+        if (_requiredMethods != null) {
+            return _requiredMethods.contains(meth);
+        }
+        else {
+            // It goes here if it initialization(_compute()) was not
+            // done.
+            return true;
+        }
+    }
 
-    /**
-     * @param className The name of a class.
-     * @return The C fileName corresponding to this class.
+    /** Returns the C filename corresponding to a class.
+     *  @param className The name of a class.
+     *  @return The C fileName corresponding to this class.
      */
     public static String classNameToFileName(String className) {
         if (isSystemClass(className)) {
@@ -132,9 +157,9 @@ public class RequiredFileGenerator {
         }
     }
 
-    /**
-     * @param className A class.
-     * @return True if the given class is a System class.
+    /** Returns whether a given class is a System class.
+     *  @param className A class.
+     *  @return True if the given class is a System class.
      */
     public static boolean isSystemClass(String className) {
 
@@ -148,11 +173,11 @@ public class RequiredFileGenerator {
     }
 
 
-    /** Calculate which classes and methods are really needed
-        @param classPath
-        @param className
-      */
-    protected static void _compute(String classPath, String className) {
+    /** Calculate which classes and methods are really needed.
+        @param classPath The classpath.
+        @param className The name of the class.
+     */
+    private static void _compute(String classPath, String className) {
          _requiredMethods = new HashSet();
          _requiredClasses = new HashSet();
          Scene.v().setSootClassPath(classPath);
@@ -175,6 +200,7 @@ public class RequiredFileGenerator {
                  SootMethod newMethod = (SootMethod)i.next();
                  _requiredMethods.add(newMethod);
              }
+             _requiredMethods.add(thisMethod);
          }
 
          Iterator requiredMethodsIter = _requiredMethods.iterator();
@@ -192,11 +218,11 @@ public class RequiredFileGenerator {
         @param className The name of the class.
         @param compileMode The compilation mode.
         @param verbose Whether routine messages should be generated.
-    */
-    protected static void _generateC(String classPath, String className,
+     */
+    private static void _generateC(String classPath, String className,
             String compileMode, boolean verbose) {
 
-        // Initialize code generation
+        // Initialize code generation.
         Scene.v().setSootClassPath(classPath);
         CodeFileGenerator cGenerator = new CodeFileGenerator();
 
@@ -208,7 +234,7 @@ public class RequiredFileGenerator {
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
-        //Make changes in the filename
+        // Make changes in the filename.
         String fileName = new String();
         fileName = classNameToFileName(className);
 
@@ -226,17 +252,16 @@ public class RequiredFileGenerator {
         }
     }
 
-    /**
-     * generate the .h and _i.h Files required for a given class
-     * @param classPath The class path.
-     * @param className The class for which the files should be generated.
-     * @param compileMode The compilation mode.
-     * @param verbose Whether routine messages should be generated.
+    /** Generate the .h and _i.h Files required for a given class.
+     *  @param classPath The class path.
+     *  @param className The class for which the files should be generated.
+     *  @param compileMode The compilation mode.
+     *  @param verbose Whether routine messages should be generated.
      */
-    protected static void _generateHeaders(String classPath, String className,
+    private static void _generateHeaders(String classPath, String className,
             String compileMode, boolean verbose) throws IOException {
 
-        // Initialize code generation
+        // Initialize code generation.
         Scene.v().setSootClassPath(classPath);
 
         HeaderFileGenerator hGenerator      = new HeaderFileGenerator();
@@ -251,13 +276,13 @@ public class RequiredFileGenerator {
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
-        //Make changes in the filename
+        // Make changes in the filename.
         String fileName = new String();
         fileName = classNameToFileName(className);
 
-        //create any parent directories
+        // Create any parent directories, if required.
         if (fileName.lastIndexOf('/')>0) {
-        //the file requires some directories
+        // The file requires some directories.
             if(verbose) System.out.println(className);
             File dummyFile = new File(fileName.substring(0,
                                         fileName.lastIndexOf('/')));
@@ -286,8 +311,8 @@ public class RequiredFileGenerator {
         }
     }
 
-    protected static HashSet _requiredMethods;
-    protected static HashSet _requiredClasses;
+    private static HashSet _requiredMethods;
+    private static HashSet _requiredClasses;
 
 }
 

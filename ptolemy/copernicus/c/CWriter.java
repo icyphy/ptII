@@ -39,11 +39,10 @@ import soot.toolkits.graph.*;
 import java.util.*;
 import java.io.*;
 
-/**
-A transformer that writes C source code.
-@author Shuvra S. Bhattacharyya
-@version $Id$
-@since Ptolemy II 2.0
+/** A transformer that writes C source code.
+    @author Shuvra S. Bhattacharyya
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 public class CWriter extends SceneTransformer {
     /** Return a new CWriter.
@@ -53,19 +52,19 @@ public class CWriter extends SceneTransformer {
         return instance;
     }
 
-    /** Get the options associated with the C Writer. 
-     *  @return The options. 
+    /** Get the options associated with the C Writer.
+     *  @return The options.
      */
     public String getDeclaredOptions() {
         // FIXME: conditionally allow the debug option.
         // return super.getDeclaredOptions() + " debug outDir";
         // The debug option suppresses exceptions, which in turn forces
         // repeated attempts to generate class files.
-        System.out.println("Options: " + super.getDeclaredOptions()); 
+        System.out.println("Options: " + super.getDeclaredOptions());
         return super.getDeclaredOptions() + " outDir";
     }
 
-    /** Test if the internal transform associated with this writer has 
+    /** Test if the internal transform associated with this writer has
      *  completed.
      *  @return True if the transform has completed.
      */

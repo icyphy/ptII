@@ -41,8 +41,7 @@ import java.util.LinkedList;
 import soot.SootClass;
 import soot.SootMethod;
 
-/**
-   A class that extracts ordered lists of method declarations
+/** A class that extracts ordered lists of method declarations
    with an ordering convention that facilitates translation
    of methods into function pointers (e.g., for C code generation).
    <p>

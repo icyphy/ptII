@@ -37,24 +37,24 @@ import java.util.Collection;
 import soot.Scene;
 import soot.SootClass;
 
-/** A class that generates the makefile for the given class
+/** A class that generates the makefile for the given class. The generated file
+    has the name (class).make.
 
-   @author Ankush Varma
-   @version $Id$
-   @since Ptolemy II 2.0
+    @author Ankush Varma
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 
 public class MakeFileGenerator {
-    /**
-     * Dummy constructor
+    /** Dummy constructor
      */
     public void MakeFileGenerator() {
     }
 
-    /**
-     * create the MakeFile
-     * @param classPath The classPath
-     * @param className The class for which the Makefile is to be generated.
+    /** Create the MakeFile.
+     *  @param classPath The classPath.
+     *  @param className The class for which the Makefile is to be generated.
+     *  The makefile will have the name <i>className</i>.make.
      */
     public static void generateMakeFile(String classPath, String className,
         Collection requiredClasses) {
@@ -69,8 +69,7 @@ public class MakeFileGenerator {
 
         code.append("THIS = " + className + ".make\n");
 
-
-        //get names of all .c files in the transitive closure
+        // Get names of all .c files in the transitive closure.
         Iterator i = requiredClasses.iterator();
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
                 + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n");
@@ -81,7 +80,7 @@ public class MakeFileGenerator {
             code.append("\t" + name + ".c\\\n");
         }
 
-        code.append("\n");//takes care of blank line for last "\"
+        code.append("\n");// Takes care of blank line for last "\".
 
 
         code.append("\nOBJECTS = $(SOURCES:.c=.o)\n");
@@ -111,24 +110,23 @@ public class MakeFileGenerator {
 
     }
 
-    /**
-     * finds filename corrseponding to class and replaces
-     * "$" with "$$" for compatibility with the make utility.
-     * @param className The name of the class.
-     * @return The corresponding filename as it should be written to the
-     * makeFile.
+    /** Finds the filename corresponding to this class and replaces
+     *  "$" with "$$" for compatibility with the <i>make</i> utility.
+     *  @param className The name of the class.
+     *  @return The corresponding filename as it should be written to the
+     *  makeFile.
      */
     protected static String _classNameToMakeFileName(String className) {
         StringBuffer name = new StringBuffer(
             RequiredFileGenerator.classNameToFileName(className));
 
+        // Replace "$" with "$$"so that the make utility interprets names
+        // correctly.
         for(int j = 0;j<name.length();j++) {
             if (name.charAt(j) == '$') {
                 name.insert(j,"$");
                 j++;
             }
-            //replace "$" with "$$"
-            //so that makefile interprets names correctly
         }
 
         return name.toString();

@@ -63,13 +63,12 @@ import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main
-/**
-Read in a MoML model, generate .c files with very few
-dependencies on Ptolemy II.
+/** Read in a MoML model, generate .c files with very few
+    dependencies on Ptolemy II.
 
-@author Shuvra S. Bhattacharyya, Michael Wirthlin, Stephen Neuendorffer, 
-Edward A. Lee, Christopher Hylands
-@version $Id$
+    @author Shuvra S. Bhattacharyya, Michael Wirthlin, Stephen Neuendorffer,
+    Edward A. Lee, Christopher Hylands
+    @version $Id$
 */
 
 public class Main extends KernelMain {
@@ -151,11 +150,11 @@ public class Main extends KernelMain {
         // it won't run.  Note that later we will call setLibraryClass() on
         // this class so that we don't actually generate code for it.
         args[0] = "java.lang.Object";
-    
+
         // Rather than calling soot.Main.main() here directly, which
         // spawns a separate thread, we run this in the same thread
         //soot.Main.main(args);
-        System.out.println("debug args = " + Arrays.asList(args)); 
+        System.out.println("debug args = " + Arrays.asList(args));
         soot.Main.setReservedNames();
         soot.Main.setCmdLineArgs(args);
         soot.Main main = new soot.Main();
@@ -165,10 +164,10 @@ public class Main extends KernelMain {
         // main.run(false);
         main.run();
     }
-    
-    
+
+
     /** Read in a MoML model, generate .class files for use with C.
-     *  Arguments are passed on to soot, except for special non-Soot 
+     *  Arguments are passed on to soot, except for special non-Soot
      *  arguments that are used to configure the overall code generation
      *  process. Presently, two non-Soot argument are recognized:
      *  "-clooped," which indicates that schedule loops should be translated
@@ -177,7 +176,7 @@ public class Main extends KernelMain {
      *  The first argument specifies the MoML model. This is followed
      *  by zero or more non-Soot arguments, after which the Soot arguments
      *  are listed.
-     *  @param Code generation arguments.
+     *  @param args Code generation arguments.
      *  @exception IllegalActionException If the model cannot be parsed.
      *  @exception NameDuplicationException If the name of the
      *  model cannot be changed to a Java identifier String.
@@ -198,7 +197,7 @@ public class Main extends KernelMain {
         for (int i = 0; i < args.length; i++) {
             skipArgument[i] = false;
         }
-        
+
         // Extract non-Soot arguments.
         int index = 1;    // Index into original argument array.
         boolean done = false; // Finished looking for non-Soot arguments.
@@ -215,7 +214,7 @@ public class Main extends KernelMain {
                  skipCount++;
             } else {
                 done = true;
-            }  
+            }
         }
 
         // Filter out arguments not meant for Soot.
@@ -227,7 +226,7 @@ public class Main extends KernelMain {
         for (int i = 0; i < args.length; i++) {
             if (!skipArgument[i]) {
                 sootArguments[sootIndex++] = args[i];
-            }    
+            }
         }
 
 	    // Create instance classes for the actors.
@@ -252,7 +251,7 @@ public class Main extends KernelMain {
             } else if (_debug) {
                 System.err.println("Warning: exception after code generation"
                         + " completed.\n" + exception + "\n");
-                exception.printStackTrace(); 
+                exception.printStackTrace();
             }
         }
     }

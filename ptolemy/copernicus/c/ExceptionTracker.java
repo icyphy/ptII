@@ -40,16 +40,15 @@ import soot.util.Chain;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-/**
-A class that keeps track of Exceptions and Traps.
-@author Ankush Varma
-@version $Id$
-@since Ptolemy II 2.0
+/** A class that keeps track of Exceptions and Traps.
+    @author Ankush Varma
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 
 public class ExceptionTracker {
 
-    /** A dummy initializer method
+    /** A dummy initializer method.
      */
     public void ExceptionTracker() {
         //do nothing
@@ -109,10 +108,9 @@ public class ExceptionTracker {
     }
 
 
-    /**
-     * Initializes the class with a given body. This method must be called
-     * before calling any of the other methods.
-     * @param body The Body for which exceptions are to be tracked.
+    /** Initializes the class with a given body. This method must be called
+     *  before calling any of the other methods.  @param body The Body for
+     *  which exceptions are to be tracked.
      */
     public void init(Body body) {
         _trapChain = body.getTraps();
@@ -123,8 +121,8 @@ public class ExceptionTracker {
         _endUnitList     = new LinkedList();
         _handlerUnitList = new LinkedList();
 
-                _currently_active_traps = new LinkedList();
-                _trapsForEachEpc = new LinkedList();
+        _currently_active_traps = new LinkedList();
+        _trapsForEachEpc = new LinkedList();
 
 
         while (i.hasNext()) {
@@ -142,31 +140,30 @@ public class ExceptionTracker {
     }
 
 
-    /**
-     * @return True if any traps exist in the body.
+    /** Returns whether the body has any traps in it.
+     *  @return True if any traps exist in the body.
      */
     public boolean trapsExist() {
         return(_beginUnitList.size() != 0);
     }
 
-    /**
-     * @return The number of traps in the body.
+    /** Returns the number of traps in the body.
+     *  @return The number of traps in the body.
      */
     public int numberOfTraps() {
         return(_beginUnitList.size());
     }
 
-    /**
-     * @return The current Exceptional PC
+    /** Returns the current Exceptional PC.
+     *  @return The current Exceptional PC.
      */
     public int getEpc() {
        return _epc;
     }
 
-    /**
-     * Record that this beginUnit has been encountered and perform the
-     * appropriate housekeeping functions.
-     * @param u The Unit.
+    /** Record that this beginUnit has been encountered and perform the
+     *  appropriate housekeeping functions.
+     *  @param u The Unit.
      */
     public void beginUnitEncountered(Unit u) {
         _storeState();
@@ -184,10 +181,9 @@ public class ExceptionTracker {
         }
     }
 
-   /**
-    * Record that this endUnit has been encountered and perform the
-    * appropriate housekeeping functions.
-    * @param u The Unit.
+   /** Record that this endUnit has been encountered and perform the
+    *  appropriate housekeeping functions.
+    *  @param u The Unit.
     */
    public void endUnitEncountered(Unit u) {
        _storeState();
@@ -195,7 +191,7 @@ public class ExceptionTracker {
        _epc++;
        Iterator i = _trapChain.iterator();
 
-       //record all traps ending here as inactive
+       // Record all traps ending here as inactive.
        while (i.hasNext()) {
            Trap ThisTrap = (Trap)i.next();
            if (ThisTrap.getEndUnit() == u)
@@ -205,10 +201,11 @@ public class ExceptionTracker {
    }
 
 
-   /**
-    * @param epc The exceptional pc.
-    * @return A list of all handlerUnits associated with
-    * the given epc.
+   /** Returns a list of all handler units associated with the given exceptional
+    *  pc.
+    *  @param epc The exceptional pc.
+    *  @return A list of all handlerUnits associated with
+    *  the given epc.
     */
    public LinkedList getHandlerUnitList(int epc) {
        LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
@@ -223,46 +220,56 @@ public class ExceptionTracker {
        return ListOfHandlers;
    }
 
-    /**
-     * @param epc The exceptional pc
-     * @return A list of all Traps for the given epc.
+    /** Returns a list of all Traps for the given exceptional PC.
+     *  @param epc The exceptional pc.
+     *  @return A list of all Traps for the given epc.
      */
     public LinkedList getTrapsForEpc(int epc) {
         return (LinkedList)_trapsForEachEpc.get(epc);
     }
 
-    /**
-     * @return A chain of all the Traps in the body.
+    /** Returns a chain of all the Traps in the body.
+     *  @return A chain of all the Traps in the body.
      */
     public Chain getTrapChain() {
         return _trapChain;
     }
 
-    /**
-     * Store the current state of the ExceptionTracker.
-     */
+    /** Store the current state of the ExceptionTracker. */
     protected void _storeState() {
         _trapsForEachEpc.add(_currently_active_traps.clone());
         //Yes, this is a list of lists.
     }
 
 
-
+    /** The exceptional pc.
+     */
     protected int _epc;
 
+    /** The Chain of Traps.
+     */
     protected Chain _trapChain;
 
+    /** The list of beginUnits.
+     */
     protected LinkedList _beginUnitList;
+
+    /** The list of endUnits.
+     */
     protected LinkedList _endUnitList;
+
+    /** The list of handlerUnits.
+     */
     protected LinkedList _handlerUnitList;
 
+    /** The list of currently active Traps.
+     */
     protected LinkedList _currently_active_traps;
 
-    /**
-     * List containing the lists of traps for each epc
-     * the index in this list is the epc, so the
-     * epc is not explicitly stored in this data
-     * structure.
+    /** List containing the lists of traps for each epc.
+     *  The index in this list is the epc, so the
+     *  epc is not explicitly stored in this data
+     *  structure.
      */
 
     protected LinkedList _trapsForEachEpc;
