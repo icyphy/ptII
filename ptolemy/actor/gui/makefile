@@ -129,6 +129,8 @@ OPTIONAL_FILES = \
 	'Configurer$$1.class' \
 	'DebugListenerTableau$$1.class' \
 	'DebugListenerTableau$$DebugListenerFrame.class' \
+	'EditParametersDialog$$1.class' \
+	'EditParametersDialog$$2.class' \
 	'HTMLEffigy$$Factory.class' \
 	'HTMLViewerTableau$$Factory.class' \
 	'JVMTableau$$1.class' \
