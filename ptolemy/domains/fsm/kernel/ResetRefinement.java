@@ -43,7 +43,7 @@ contained by a transition in an FSMActor, which will be called the
 associated FSMActor of this action.
 <p>
 There is no reset() method in the Actor interface. This action just calls
-the initialize() method of the refinement.
+the preinitialize() and the initialize() methods of the refinement.
 <p>
 Note: this class is still under development.
 
@@ -81,11 +81,12 @@ public class ResetRefinement extends Action implements CommitAction {
     ////                         public methods                    ////
 
     /** Reset the refinement of the destination state of the transition
-     *  containing this action by calling its initialize() method. An
+     *  containing this action by calling its preinitialize() and
+     *  initialize() method. An
      *  exception is thrown if the destination state has no refinement.
      *  @exception IllegalActionException If the destination state has
-     *   no refinement, or if thrown by the initialize() method of the
-     *   refinement.
+     *   no refinement, or if thrown by the preinitialize() and the 
+     *   initialize() method of the refinement.
      */
     public void execute() throws IllegalActionException {
         State dest = ((Transition)getContainer()).destinationState();
@@ -94,7 +95,7 @@ public class ResetRefinement extends Action implements CommitAction {
             throw new IllegalActionException(this, dest,
                     "The destination state has no refinement.");
         }
+        ref.preinitialize();
         ref.initialize();
     }
-
 }
