@@ -90,9 +90,9 @@ class Label {
         return _block;
     }
 
-//      public ConditionExpr beginCondition(){
-//          return _beginCondition;
-//      }
+    //      public ConditionExpr beginCondition(){
+    //          return _beginCondition;
+    //      }
 
     public ConditionExpr endCondition(){
         //return _endCondition;
@@ -117,11 +117,11 @@ class Label {
      */
     protected int _level = 0;
 
-//      /**
-//       * Each Label has a beginning condition, which is the condition that caused
-//       * this label to be created
-//       */
-//      protected ConditionExpr _beginCondition = null;
+    //      /**
+    //       * Each Label has a beginning condition, which is the condition that caused
+    //       * this label to be created
+    //       */
+    //      protected ConditionExpr _beginCondition = null;
 
     /**
      * A Label can have an end condition, where this label is "split" into

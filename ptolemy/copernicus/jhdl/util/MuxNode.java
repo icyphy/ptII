@@ -57,10 +57,10 @@ public class MuxNode implements GraphNode {
           now we can't detect this.  Need to implement it in the future.
         */
 
-      Node returnNode = (Node)_valueToResult.get(value);
-      if (returnNode != null){
-        return returnNode;
-      }
+        Node returnNode = (Node)_valueToResult.get(value);
+        if (returnNode != null){
+            return returnNode;
+        }
 
         System.out.println("Getting from true input");
         Node trueResult = _trueInput.createDataFlow(graph, value);
@@ -77,18 +77,18 @@ public class MuxNode implements GraphNode {
         System.out.println("cond: "+condResult);
 
         if (trueResult == null && falseResult == null){ //&& condResult == null)
-          _valueToResult.put(value, null);
-          return null;
+            _valueToResult.put(value, null);
+            return null;
         }
 
         if (trueResult == null){
-          _valueToResult.put(value, falseResult);
+            _valueToResult.put(value, falseResult);
             return falseResult;
         }
 
         if (falseResult == null){
-          _valueToResult.put(value, trueResult);
-          return trueResult;
+            _valueToResult.put(value, trueResult);
+            return trueResult;
         }
 
         MuxNode newMux = new MuxNode(trueResult, falseResult, condResult, 1);
@@ -96,11 +96,11 @@ public class MuxNode implements GraphNode {
         Node newMuxNode = graph.addNodeWeight(newMux);
 
         //if (!graph.edgeExists(trueResult, newMuxNode))
-            graph.addEdge(trueResult, newMuxNode, "true");
-            //if (!graph.edgeExists(falseResult, newMuxNode))
-            graph.addEdge(falseResult, newMuxNode, "false");
-            //if (!graph.edgeExists(condResult, newMuxNode))
-            graph.addEdge(condResult, newMuxNode, "cond");
+        graph.addEdge(trueResult, newMuxNode, "true");
+        //if (!graph.edgeExists(falseResult, newMuxNode))
+        graph.addEdge(falseResult, newMuxNode, "false");
+        //if (!graph.edgeExists(condResult, newMuxNode))
+        graph.addEdge(condResult, newMuxNode, "cond");
 
         _valueToResult.put(value, newMuxNode);
         return newMuxNode;
@@ -110,8 +110,8 @@ public class MuxNode implements GraphNode {
         return "mux";
     }
 
-  HashMap _valueToResult;
-  GraphNode _trueInput;
-  GraphNode _falseInput;
-  SuperBlock _conditionBlock;
+    HashMap _valueToResult;
+    GraphNode _trueInput;
+    GraphNode _falseInput;
+    SuperBlock _conditionBlock;
 }

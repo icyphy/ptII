@@ -102,25 +102,25 @@ public abstract class CompoundBooleanExpression implements Value, ConditionExpr 
             Value op1 = ((ConditionExpr)inValue).getOp1();
             Value op2 = ((ConditionExpr)inValue).getOp2();
             if (inValue instanceof EqExpr) {
-                  newValue = new JNeExpr(op1,op2);
+                newValue = new JNeExpr(op1,op2);
             } else if (inValue instanceof GeExpr) {
-                  newValue = new JLtExpr(op1,op2);
+                newValue = new JLtExpr(op1,op2);
             } else if (inValue instanceof GtExpr) {
-                  newValue = new JLeExpr(op1,op2);
+                newValue = new JLeExpr(op1,op2);
             } else if (inValue instanceof LeExpr) {
-                  newValue = new JGtExpr(op1,op2);
+                newValue = new JGtExpr(op1,op2);
             } else if (inValue instanceof LtExpr) {
-                  newValue = new JGeExpr(op1,op2);
+                newValue = new JGeExpr(op1,op2);
             } else if (inValue instanceof NeExpr) {
-                  newValue = new JEqExpr(op1,op2);
+                newValue = new JEqExpr(op1,op2);
             } else if (inValue instanceof CompoundBooleanExpression) {
-                  newValue = ((CompoundBooleanExpression)inValue).invert();
+                newValue = ((CompoundBooleanExpression)inValue).invert();
             } else
                 throw new IllegalActionException("Unknown ConditionExpr "+
-                                                 inValue.getClass());
+                        inValue.getClass());
         } else
             throw new IllegalActionException("Can't Invert " +
-                                             inValue.getClass());
+                    inValue.getClass());
         return newValue;
     }
 

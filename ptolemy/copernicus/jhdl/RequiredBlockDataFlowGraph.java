@@ -39,37 +39,37 @@ import java.util.HashSet;
 
 public class RequiredBlockDataFlowGraph extends BlockDataFlowGraph {
 
-  public RequiredBlockDataFlowGraph(Block block) throws JHDLUnsupportedException {
-    super(block);
+    public RequiredBlockDataFlowGraph(Block block) throws JHDLUnsupportedException {
+        super(block);
 
-  }
-
-  public HashSet getRequiredNodeSet() {
-
-    if (_requiredNodeSet == null) {
-      _requiredNodeSet = new HashSet();
     }
 
-    return _requiredNodeSet;
-  }
+    public HashSet getRequiredNodeSet() {
 
-  protected Node _processInvokeExpr(InvokeExpr ie)
-    throws JHDLUnsupportedException {
+        if (_requiredNodeSet == null) {
+            _requiredNodeSet = new HashSet();
+        }
 
-    if (_requiredNodeSet == null) {
-      _requiredNodeSet = new HashSet();
+        return _requiredNodeSet;
     }
 
-    //The data flattening will start from output ports, so
-    //they are the required nodes
-    if (ie.getMethod().getName().equals("send")){
-      _requiredNodeSet.add(ie);
+    protected Node _processInvokeExpr(InvokeExpr ie)
+            throws JHDLUnsupportedException {
+
+        if (_requiredNodeSet == null) {
+            _requiredNodeSet = new HashSet();
+        }
+
+        //The data flattening will start from output ports, so
+        //they are the required nodes
+        if (ie.getMethod().getName().equals("send")){
+            _requiredNodeSet.add(ie);
+        }
+
+        return super._processInvokeExpr(ie);
     }
 
-    return super._processInvokeExpr(ie);
-  }
 
-
-  protected HashSet _requiredNodeSet;
+    protected HashSet _requiredNodeSet;
 
 }

@@ -84,8 +84,8 @@ public class SootASTVisitor {
             // Process all Stmt units in this graph
             Stmt stmt = (Stmt)units.next();
             if (DEBUG) System.out.println("Statement Class="+
-                                          stmt.getClass().getName()+
-                                          "\n\t\""+stmt+"\"");
+                    stmt.getClass().getName()+
+                    "\n\t\""+stmt+"\"");
             processStmt(stmt);
         }
     }
@@ -99,7 +99,7 @@ public class SootASTVisitor {
         if (stmt instanceof MonitorStmt)
             s = processMonitorStmt((MonitorStmt) stmt);
         if (stmt instanceof GotoStmt)
-             s = processGotoStmt((GotoStmt) stmt);
+            s = processGotoStmt((GotoStmt) stmt);
         if (stmt instanceof InvokeStmt)
             s = processInvokeStmt((InvokeStmt) stmt);
         if (stmt instanceof IfStmt)
@@ -117,17 +117,17 @@ public class SootASTVisitor {
         if (stmt instanceof TableSwitchStmt)
             s = processTableSwitchStmt((TableSwitchStmt) stmt);
         if (stmt instanceof ThrowStmt)
-             s = processThrowStmt((ThrowStmt) stmt);
+            s = processThrowStmt((ThrowStmt) stmt);
 
         if (s == null)
             throw new SootASTException("Unsupported Statement:"+stmt+
-                                       " of type "+stmt.getClass().getName());
+                    " of type "+stmt.getClass().getName());
 
         return s;
     }
 
     public Stmt processDefinitionStmt(DefinitionStmt stmt)
-        throws SootASTException {
+            throws SootASTException {
 
         Value rightOp = processValue(stmt.getRightOp());
         Value leftOp = processValue(stmt.getLeftOp(),true);
@@ -135,7 +135,7 @@ public class SootASTVisitor {
     }
 
     public Stmt processDefinitionStmt(DefinitionStmt stmt,
-                                      Value rightOp, Value leftOp) {
+            Value rightOp, Value leftOp) {
         if (stmt instanceof AssignStmt)
             return processAssignStmt((AssignStmt) stmt, leftOp, rightOp);
         if (stmt instanceof IdentityStmt)
@@ -144,12 +144,12 @@ public class SootASTVisitor {
     }
 
     public Stmt processAssignStmt(AssignStmt stmt, Value leftOp,
-                                  Value rightOp) {
+            Value rightOp) {
         return null;
     }
 
     public Stmt processIdentityStmt(IdentityStmt stmt, Value leftOp,
-                                    Value rightOp) {
+            Value rightOp) {
         return null;
     }
 
@@ -158,7 +158,7 @@ public class SootASTVisitor {
     }
 
     public Stmt processMonitorStmt(MonitorStmt stmt)
-        throws SootASTException {
+            throws SootASTException {
         Value op = processValue(stmt.getOp());
         return processMonitorStmt(stmt, op);
     }
@@ -185,18 +185,18 @@ public class SootASTVisitor {
     }
 
     public Stmt processInvokeStmt(InvokeStmt stmt)
-        throws SootASTException {
+            throws SootASTException {
         InvokeExpr ie = (InvokeExpr) processValue(stmt.getInvokeExpr());
         return processInvokeStmt(stmt, ie);
     }
 
     public Stmt processInvokeStmt(InvokeStmt stmt, InvokeExpr ie)
-        throws SootASTException {
+            throws SootASTException {
         return null;
     }
 
     public Value processInvokeExpr(InvokeExpr ie)
-        throws SootASTException {
+            throws SootASTException {
 
         // Process all arguments to the invoke expression
         List args = ie.getArgs();
@@ -208,16 +208,16 @@ public class SootASTVisitor {
         if (ie instanceof InstanceInvokeExpr)
             return processInstanceInvokeExpr((InstanceInvokeExpr)ie,vargs);
         // Grimp
-//          else if (ie instanceof NewInvokeExpr)
-//              return v.visitNewInvokeExpr((NewInvokeExpr) ie,vargs);
+        //          else if (ie instanceof NewInvokeExpr)
+        //              return v.visitNewInvokeExpr((NewInvokeExpr) ie,vargs);
         else if (ie instanceof StaticInvokeExpr)
             return processStaticInvokeExpr((StaticInvokeExpr) ie,vargs);
         return null;
     }
 
     public Value processInstanceInvokeExpr(InstanceInvokeExpr ie,
-                                           Value args[])
-        throws SootASTException {
+            Value args[])
+            throws SootASTException {
 
         Value base = processValue(ie.getBase());
         if (ie instanceof InterfaceInvokeExpr)
@@ -230,16 +230,16 @@ public class SootASTVisitor {
     }
 
     public Value processInterfaceInvokeExpr(InterfaceInvokeExpr ie,
-                                            Value args[], Value base) {
+            Value args[], Value base) {
         return null;
     }
 
     public Value processSpecialInvokeExpr(SpecialInvokeExpr ie,
-                                          Value args[], Value base) {
+            Value args[], Value base) {
         return null;
     }
     public Value processVirtualInvokeExpr(VirtualInvokeExpr ie,
-                                          Value args[], Value base) {
+            Value args[], Value base) {
         return null;
     }
     //    public Value processNewInvokeExpr(NewInvokeExpr ie, Value args[]);
@@ -248,7 +248,7 @@ public class SootASTVisitor {
     }
 
     public Stmt processIfStmt(IfStmt stmt)
-        throws SootASTException {
+            throws SootASTException {
         ConditionExpr condition = (ConditionExpr) stmt.getCondition();
         //processConditionExpr(condition);
         processValue(condition);
@@ -260,7 +260,7 @@ public class SootASTVisitor {
     }
 
     public Value processConditionExpr(ConditionExpr ce)
-        throws SootASTException {
+            throws SootASTException {
         Value op1 = processValue(ce.getOp1());
         Value op2 = processValue(ce.getOp2());
         return processConditionExpr(ce, op1, op2);
@@ -290,7 +290,7 @@ public class SootASTVisitor {
     public Value processNeExpr(NeExpr ce, Value op1, Value op2) {return null;}
 
     public Stmt processLookupSwitchStmt(LookupSwitchStmt stmt)
-        throws SootASTException {
+            throws SootASTException {
         Value key = processValue(stmt.getKey());
         return processLookupSwitchStmt(stmt, key);
     }
@@ -308,7 +308,7 @@ public class SootASTVisitor {
     }
 
     public Stmt processReturnStmt(ReturnStmt stmt)
-        throws SootASTException {
+            throws SootASTException {
         Value returnVal = processValue(stmt.getOp());
         return processReturnStmt(stmt, returnVal);
     }
@@ -322,7 +322,7 @@ public class SootASTVisitor {
     }
 
     public Stmt processTableSwitchStmt(TableSwitchStmt stmt)
-        throws SootASTException {
+            throws SootASTException {
         Value key = processValue(stmt.getKey());
         return processTableSwitchStmt(stmt, key);
     }
@@ -332,7 +332,7 @@ public class SootASTVisitor {
     }
 
     public Stmt processThrowStmt(ThrowStmt stmt)
-        throws SootASTException {
+            throws SootASTException {
         Value op = processValue(stmt.getOp());
         return processThrowStmt(stmt, op);
     }
@@ -346,13 +346,13 @@ public class SootASTVisitor {
     }
 
     public Value processValue(Value val, boolean left)
-        throws SootASTException {
+            throws SootASTException {
 
         Value r = null;
 
         if (DEBUG) System.out.println("\tValue="+val+" class="+
-                                      val.getClass().getName()+" identity="+
-                                      System.identityHashCode(val));
+                val.getClass().getName()+" identity="+
+                System.identityHashCode(val));
 
         // skip ConditionExpr & InvokeExpr
         if (val instanceof UnopExpr)
@@ -380,12 +380,12 @@ public class SootASTVisitor {
 
         if (r == null)
             throw new SootASTException("Unknown Value:"+val+" of type "+
-                                       val.getClass().getName());
+                    val.getClass().getName());
         return r;
     }
 
     public Value processUnopExpr(UnopExpr expr)
-        throws SootASTException {
+            throws SootASTException {
         Value op = processValue(expr.getOp());
         return processUnopExpr(expr, op);
     }
@@ -407,7 +407,7 @@ public class SootASTVisitor {
     }
 
     public Value processBinopExpr(BinopExpr expr)
-        throws SootASTException {
+            throws SootASTException {
 
         Value op1 = processValue(expr.getOp1());
         Value op2 = processValue(expr.getOp2());
@@ -417,8 +417,8 @@ public class SootASTVisitor {
 
     public Value processBinopExpr(BinopExpr expr, Value op1, Value op2) {
 
-//          if (expr instanceof ConditionExpr)
-//              return processConditionExpr((ConditionExpr) expr, op1, op2);
+        //          if (expr instanceof ConditionExpr)
+        //              return processConditionExpr((ConditionExpr) expr, op1, op2);
 
         if (expr instanceof AddExpr)
             return processAddExpr((AddExpr) expr, op1, op2);
@@ -517,7 +517,7 @@ public class SootASTVisitor {
     }
 
     public Value processConcreteRef(ConcreteRef cr, boolean left)
-        throws SootASTException {
+            throws SootASTException {
         if (cr instanceof ArrayRef)
             return processArrayRef((ArrayRef) cr, left);
         if (cr instanceof FieldRef)
@@ -526,19 +526,19 @@ public class SootASTVisitor {
     }
 
     public Value processArrayRef(ArrayRef ifr, boolean left)
-        throws SootASTException {
+            throws SootASTException {
         Value base = processValue(ifr.getBase());
         Value index = processValue(ifr.getIndex());
         return processArrayRef(ifr, base, index, left);
     }
 
     public Value processArrayRef(ArrayRef ifr, Value base, Value index,
-                                 boolean left) {
+            boolean left) {
         return null;
     }
 
     public Value processFieldRef(FieldRef ifr, boolean left)
-        throws SootASTException {
+            throws SootASTException {
         if (ifr instanceof InstanceFieldRef)
             return processInstanceFieldRef((InstanceFieldRef) ifr, left);
         if (ifr instanceof StaticFieldRef)
@@ -547,13 +547,13 @@ public class SootASTVisitor {
     }
 
     public Value processInstanceFieldRef(InstanceFieldRef ifr, boolean left)
-        throws SootASTException {
+            throws SootASTException {
         Value base = processValue(ifr.getBase());
         return processInstanceFieldRef(ifr,base,left);
     }
 
     public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base,
-                                         boolean left) {
+            boolean left) {
         return null;
     }
 
@@ -606,7 +606,7 @@ public class SootASTVisitor {
     }
 
     public Value processInstanceOfExpr(InstanceOfExpr ifr)
-        throws SootASTException {
+            throws SootASTException {
         Value op = processValue(ifr.getOp());
         return processInstanceOfExpr(ifr,op);
     }
@@ -616,7 +616,7 @@ public class SootASTVisitor {
     }
 
     public Value processNewArrayExpr(NewArrayExpr ifr)
-        throws SootASTException {
+            throws SootASTException {
         Value size = processValue(ifr.getSize());
         return processNewArrayExpr(ifr,size);
     }
@@ -626,7 +626,7 @@ public class SootASTVisitor {
     }
 
     public Value processNewMultiArrayExpr(NewMultiArrayExpr ifr)
-        throws SootASTException {
+            throws SootASTException {
         List sizes = ifr.getSizes();
         Value vsizes[] = new Value[sizes.size()];
         for (int i = 0; i < sizes.size(); i++) {
@@ -636,7 +636,7 @@ public class SootASTVisitor {
     }
 
     public Value processNewMultiArrayExpr(NewMultiArrayExpr ifr,
-                                          Value sizes[]) {
+            Value sizes[]) {
         return null;
     }
 
@@ -665,9 +665,9 @@ public class SootASTVisitor {
                 System.exit(1);
             }
         }
-//          for (int i = 0;i<graphs.length;i++)
-//              System.out.println("Block "+i+" Value Map=\n"+
-//                                 graphs[i].getValueMap());
+        //          for (int i = 0;i<graphs.length;i++)
+        //              System.out.println("Block "+i+" Value Map=\n"+
+        //                                 graphs[i].getValueMap());
     }
 
 }

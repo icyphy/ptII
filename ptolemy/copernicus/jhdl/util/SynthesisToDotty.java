@@ -75,15 +75,15 @@ public class SynthesisToDotty extends GraphToDotty {
                 blockToVertex.put(source, bigHack);
                 if (bigHack == null){
                     sb.append("\t\""+name+"\" [label=\""+
-                              b.getBlock().toShortString()+"\"];\r\n");
+                            b.getBlock().toShortString()+"\"];\r\n");
                 }
             } else {
                 name="v"+count;
                 sb.append("\t\""+name+"\"");
                 if (source.hasWeight()){
                     sb.append(" [label=\""
-                              +convertSpecialsToEscapes(source.getWeight().toString())
-                              +"\"]");
+                            +convertSpecialsToEscapes(source.getWeight().toString())
+                            +"\"]");
                 }
                 sb.append(";\r\n");
             }
@@ -134,8 +134,8 @@ public class SynthesisToDotty extends GraphToDotty {
                     }
 
                     sb.append(" label=\""+
-                              convertSpecialsToEscapes(edge.getWeight().toString())
-                              +"\"");
+                            convertSpecialsToEscapes(edge.getWeight().toString())
+                            +"\"");
                 }
                 sb.append("];\r\n");
             }
@@ -165,8 +165,8 @@ public class SynthesisToDotty extends GraphToDotty {
 
             if (source.hasWeight()){
                 sb.append(" [label=\""
-                          +convertSpecialsToEscapes(source.getWeight().toString())
-                          +"\"]");
+                        +convertSpecialsToEscapes(source.getWeight().toString())
+                        +"\"]");
             }
             sb.append(";\r\n");
             hm.put(source, name);
@@ -180,8 +180,8 @@ public class SynthesisToDotty extends GraphToDotty {
                 sb.append("\t\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
                 if (edge.hasWeight()){
                     sb.append(" [label=\""+
-                              convertSpecialsToEscapes(edge.getWeight().toString())
-                              +"\"]");
+                            convertSpecialsToEscapes(edge.getWeight().toString())
+                            +"\"]");
                 }
                 sb.append(";\r\n");
             }

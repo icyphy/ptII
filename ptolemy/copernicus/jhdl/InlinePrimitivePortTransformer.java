@@ -133,7 +133,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
         Map portToTypeNameToInsideBufferField = new HashMap();
         Map portToInsideIndexArrayField = new HashMap();
 
-       _inlinePortCalls(ModelTransformer.getModelClass(), _model,
+        _inlinePortCalls(ModelTransformer.getModelClass(), _model,
                 portToTypeNameToBufferField,
                 portToIndexArrayField,
                 portToTypeNameToInsideBufferField,

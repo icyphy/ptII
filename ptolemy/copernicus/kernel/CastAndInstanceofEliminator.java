@@ -63,8 +63,8 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
     {
         JimpleBody body = (JimpleBody)b;
 
-//         System.out.println("CastAndInstanceofEliminator.internalTransform("
-//                 + b.getMethod() + phaseName + ")");
+        //         System.out.println("CastAndInstanceofEliminator.internalTransform("
+        //                 + b.getMethod() + phaseName + ")");
 
         boolean debug = Options.getBoolean(options, "debug");
 
@@ -96,11 +96,11 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     Value op = expr.getOp();
                     Type opType = op.getType();
 
-//                     // Skip locals that are unsafe.
-//                     if (castType.equals(opType) &&
-//                             !unsafeLocalSet.contains(op)) {
-//                         box.setValue(op);
-//                     }
+                    //                     // Skip locals that are unsafe.
+                    //                     if (castType.equals(opType) &&
+                    //                             !unsafeLocalSet.contains(op)) {
+                    //                         box.setValue(op);
+                    //                     }
                     if (unsafeLocalSet.contains(op)) {
                         continue;
                     }
@@ -273,7 +273,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                         opClass.equals(checkClass)) {
                     // Then we know the instanceof will be true.
                     if (debug) System.out.println("Replacing " +
-                           "with assignment.");
+                            "with assignment.");
                     box.setValue(op);
                 }
             } else {

@@ -126,7 +126,7 @@ public class LibraryUsageReporter extends SceneTransformer {
         try {
             FileWriter writer = new FileWriter(outDir + "/jarClassList.txt");
             for (Iterator classes = RTAReachableClasses.iterator();
-                classes.hasNext();) {
+                 classes.hasNext();) {
                 SootClass theClass = (SootClass)classes.next();
                 if (!theClass.getName().startsWith("java")) {
                     writer.write(theClass.getName());

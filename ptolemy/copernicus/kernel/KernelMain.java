@@ -333,7 +333,7 @@ public class KernelMain {
         // Call the MOML parser on the test file to generate a Ptolemy II
         // model.
         _momlClassName = momlClassName;
-               CompositeActor toplevel = null;
+        CompositeActor toplevel = null;
         // First, try it as a top level model
         String source = "<entity name=\"ToplevelModel\""
             + " class=\"" + momlClassName + "\"/>\n";

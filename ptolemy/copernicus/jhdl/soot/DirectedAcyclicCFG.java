@@ -110,7 +110,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
      * create the topology of the graph.
      **/
     protected void _createGraph(BriefBlockGraph bbg)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         // Save Body
         _bbgraph = bbg;

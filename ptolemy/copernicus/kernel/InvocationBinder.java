@@ -82,93 +82,93 @@ public class InvocationBinder extends SceneTransformer
         VariableTypeAnalysis vta = null;
 
         for (int i = 0; i < VTApasses; i++)
-        {
-            if (Main.isVerbose)
-                System.out.println(graph.computeStats());
-            vta = new VariableTypeAnalysis(graph);
-            vta.trimActiveInvokeGraph();
-            graph.refreshReachableMethods();
-        }
+            {
+                if (Main.isVerbose)
+                    System.out.println(graph.computeStats());
+                vta = new VariableTypeAnalysis(graph);
+                vta.trimActiveInvokeGraph();
+                graph.refreshReachableMethods();
+            }
 
         if (Main.isVerbose)
             System.out.println(graph.computeStats());
 
         Iterator classesIt = Scene.v().getApplicationClasses().iterator();
         while (classesIt.hasNext())
-        {
-            SootClass c = (SootClass)classesIt.next();
-
-            LinkedList methodsList = new LinkedList();
-            methodsList.addAll(c.getMethods());
-
-            while (!methodsList.isEmpty())
             {
-                SootMethod container = (SootMethod)methodsList.removeFirst();
+                SootClass c = (SootClass)classesIt.next();
 
-                if (!container.isConcrete()) {
-                    System.out.println("skipping " + container + ": not concrete");
-                    continue;
-                }
-                if (graph.getSitesOf(container).size() == 0) {
-                    System.out.println("skipping " + container + ": not called");
+                LinkedList methodsList = new LinkedList();
+                methodsList.addAll(c.getMethods());
 
-                    continue;
-                }
+                while (!methodsList.isEmpty())
+                    {
+                        SootMethod container = (SootMethod)methodsList.removeFirst();
 
-                JimpleBody b = (JimpleBody)container.getActiveBody();
+                        if (!container.isConcrete()) {
+                            System.out.println("skipping " + container + ": not concrete");
+                            continue;
+                        }
+                        if (graph.getSitesOf(container).size() == 0) {
+                            System.out.println("skipping " + container + ": not called");
 
-                List unitList = new ArrayList(); unitList.addAll(b.getUnits());
-                Iterator unitIt = unitList.iterator();
+                            continue;
+                        }
 
-                while (unitIt.hasNext())
-                {
-                    Stmt s = (Stmt)unitIt.next();
-                    if (!s.containsInvokeExpr())
-                        continue;
+                        JimpleBody b = (JimpleBody)container.getActiveBody();
+
+                        List unitList = new ArrayList(); unitList.addAll(b.getUnits());
+                        Iterator unitIt = unitList.iterator();
+
+                        while (unitIt.hasNext())
+                            {
+                                Stmt s = (Stmt)unitIt.next();
+                                if (!s.containsInvokeExpr())
+                                    continue;
 
 
-                    InvokeExpr ie = (InvokeExpr)s.getInvokeExpr();
+                                InvokeExpr ie = (InvokeExpr)s.getInvokeExpr();
 
-                    if (ie instanceof StaticInvokeExpr ||
-                            ie instanceof SpecialInvokeExpr) {
-                        System.out.println("skipping " + container + ":" +
-                                s + ": not virtual");
+                                if (ie instanceof StaticInvokeExpr ||
+                                        ie instanceof SpecialInvokeExpr) {
+                                    System.out.println("skipping " + container + ":" +
+                                            s + ": not virtual");
 
-                        continue;
+                                    continue;
+                                }
+
+                                // System.out.println("considering " + ie);
+                                List targets = graph.getTargetsOf(s);
+                                // System.out.println("targets = " + targets);
+
+                                if (targets.size() != 1)
+                                    continue;
+
+                                // Ok, we have an Interface or VirtualInvoke going to 1.
+
+                                SootMethod target = (SootMethod)targets.get(0);
+
+                                if (!AccessManager.ensureAccess(container, target, modifierOptions)) {
+                                    //    System.out.println("skipping: no access");
+
+                                    continue;
+                                }
+                                if (!target.isConcrete()) {
+                                    // System.out.println("skipping: not concrete");
+
+                                    continue;
+                                }
+                                // Change the InterfaceInvoke or VirtualInvoke to
+                                // a new VirtualInvoke.
+                                ValueBox box = s.getInvokeExprBox();
+                                box.setValue(
+                                        Jimple.v().newVirtualInvokeExpr(
+                                                (Local)((InstanceInvokeExpr)ie).getBase(),
+                                                target,
+                                                ie.getArgs()));
+                            }
                     }
-
-                    // System.out.println("considering " + ie);
-                    List targets = graph.getTargetsOf(s);
-                    // System.out.println("targets = " + targets);
-
-                    if (targets.size() != 1)
-                        continue;
-
-                    // Ok, we have an Interface or VirtualInvoke going to 1.
-
-                    SootMethod target = (SootMethod)targets.get(0);
-
-                    if (!AccessManager.ensureAccess(container, target, modifierOptions)) {
-                        //    System.out.println("skipping: no access");
-
-                        continue;
-                    }
-                    if (!target.isConcrete()) {
-                        // System.out.println("skipping: not concrete");
-
-                        continue;
-                    }
-                    // Change the InterfaceInvoke or VirtualInvoke to
-                    // a new VirtualInvoke.
-                    ValueBox box = s.getInvokeExprBox();
-                    box.setValue(
-                            Jimple.v().newVirtualInvokeExpr(
-                                    (Local)((InstanceInvokeExpr)ie).getBase(),
-                                    target,
-                                    ie.getArgs()));
-                }
             }
-        }
 
         Scene.v().releaseActiveInvokeGraph();
     }

@@ -39,8 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class IntIOPort extends TypedIOPort {
 
     public IntIOPort(ComponentEntity container, String name,
-                     boolean isInput, boolean isOutput)
-        throws IllegalActionException, NameDuplicationException {
+            boolean isInput, boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
         setTypeEquals(BaseType.INT);
     }

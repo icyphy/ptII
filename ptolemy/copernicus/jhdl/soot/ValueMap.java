@@ -194,9 +194,9 @@ public class ValueMap extends HashListMap {
         add(nodeValue,n);
 
         if (DEBUG) System.out.print("ValueMap:Adding node="+n+" with weight "+
-                                    nodeValue + " of type " +
-                                    nodeValue.getClass().getName()
-                                    +"\n");
+                nodeValue + " of type " +
+                nodeValue.getClass().getName()
+                +"\n");
         return n;
     }
 
@@ -236,7 +236,7 @@ public class ValueMap extends HashListMap {
         // is a matching InstanceFieldRef (i.e. same base and
         // same field).
         InstanceFieldRef dupIfr = null;
-//        for (Iterator i = _graph.nodes().iterator();i.hasNext();) {
+        //        for (Iterator i = _graph.nodes().iterator();i.hasNext();) {
         for (Iterator i = getNodes().iterator();i.hasNext();) {
             Node n = (Node) i.next();
             if (n.getWeight() instanceof InstanceFieldRef) {
@@ -261,7 +261,7 @@ public class ValueMap extends HashListMap {
     // TODO: This method may need to go in a different class (more
     // general than this class)
     public static boolean equalIFR(InstanceFieldRef ifr1,
-                                   InstanceFieldRef ifr2) {
+            InstanceFieldRef ifr2) {
         return ifr1.getBase().equals(ifr2.getBase()) &&
             ifr1.getField().equals(ifr2.getField());
     }
@@ -368,10 +368,10 @@ public class ValueMap extends HashListMap {
         if (!isVariableValue(v))
             return false;
         if (v instanceof Local &&
-            _graph.inputEdgeCount(n) == 1)
+                _graph.inputEdgeCount(n) == 1)
             return true;
         if (v instanceof InstanceFieldRef &&
-            _graph.inputEdgeCount(n) == 2)
+                _graph.inputEdgeCount(n) == 2)
             return true;
         return false;
     }
@@ -394,13 +394,13 @@ public class ValueMap extends HashListMap {
         /*
           // This code will get all assigned nodes and not just
           // the most recently assigned nodes
-        Collection c = getNodes();
-        Collection an = new Vector(c.size());
-        for (Iterator i = c.iterator();i.hasNext();) {
-            Node n = (Node) i.next();
-            if (isAssigned(n))
-                an.add(n);
-        }
+          Collection c = getNodes();
+          Collection an = new Vector(c.size());
+          for (Iterator i = c.iterator();i.hasNext();) {
+          Node n = (Node) i.next();
+          if (isAssigned(n))
+          an.add(n);
+          }
         */
         return an;
     }
@@ -473,10 +473,10 @@ public class ValueMap extends HashListMap {
         for (Iterator i = succeedingGraph.nodes().iterator(); i.hasNext();) {
             Node node = (Node) i.next();
             if (DEBUG) System.out.print("ValueMap:Merging node="+node+
-                                        " with weight "+
-                                        node.getWeight() + " of type " +
-                                        node.getWeight().getClass().getName()
-                                        +"\n");
+                    " with weight "+
+                    node.getWeight() + " of type " +
+                    node.getWeight().getClass().getName()
+                    +"\n");
             Object nodeWeight = node.getWeight();
             Node newNode = null;
             if (nodeWeight instanceof Value) {

@@ -92,7 +92,7 @@ import soot.toolkits.graph.Block;
 public class BooleanNotCompactor {
 
     public static void compact(SootMethod method)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Body mbody = method.retrieveActiveBody();
         PatchingChain chain = mbody.getUnits();
 
@@ -119,7 +119,7 @@ public class BooleanNotCompactor {
      * - Assignment statements must converge to same statement
      **/
     protected static Unit mergeBooleanAssign(PatchingChain chain,
-                                             Unit root) {
+            Unit root) {
 
         // 0 Unit must be an IfStmt statment
         if (!(root instanceof IfStmt))
@@ -151,16 +151,16 @@ public class BooleanNotCompactor {
         Value falseValue = ((AssignStmt) successor).getRightOp();
         Value trueValue = ((AssignStmt) target).getRightOp();
         if (!(falseValue instanceof IntConstant) ||
-            !(trueValue instanceof IntConstant))
+                !(trueValue instanceof IntConstant))
             return null;
 
         // 5. falseInt must be not trueInt
         int falseInt = ((IntConstant) falseValue).value;
         int trueInt = ((IntConstant) trueValue).value;
-//          if ((falseInt ^ trueInt) != 1)
-//              return null;
-          if (falseInt != 1 || trueInt != 0)
-              return null;
+        //          if ((falseInt ^ trueInt) != 1)
+        //              return null;
+        if (falseInt != 1 || trueInt != 0)
+            return null;
 
         // 6. Each block must converge
         Unit falseSuccessor = (Unit) chain.getSuccOf(successor);

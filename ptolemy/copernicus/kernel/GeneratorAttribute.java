@@ -112,7 +112,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
         initialParametersURL =
             new Parameter(this, "initialParametersURL",
-                          new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
+                    new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,35 +140,35 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  accordingly.
      */
     public void initialize()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (_initialized) {
             return;
         }
 
         if (initialParametersURL == null) {
             throw new IllegalActionException(this, "initialParametersURL "
-                                             + "parameter was null?");
+                    + "parameter was null?");
         }
 
         // Read in the initialParameters file.
         URL initialParameters =
             getClass().getClassLoader()
             .getResource(((StringToken)initialParametersURL.getToken())
-                         .stringValue());
+                    .stringValue());
         if (initialParameters == null) {
             throw new IllegalActionException(this, "Failed to find the "
-                                             + "value of the "
-                                             + "initialParametersURL: '"
-                                             + initialParametersURL
-                                             .getExpression()
-                                             + "'");
+                    + "value of the "
+                    + "initialParametersURL: '"
+                    + initialParametersURL
+                    .getExpression()
+                    + "'");
         }
 
 
         try {
             BufferedReader inputReader = new BufferedReader(
-                                          new InputStreamReader(
-                                          initialParameters.openStream()));
+                    new InputStreamReader(
+                            initialParameters.openStream()));
 
             String inputLine;
             StringBuffer buffer = new StringBuffer();
@@ -177,23 +177,23 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             }
             inputReader.close();
             addChangeListener(this);
-              try {
-                  requestChange(new MoMLChangeRequest(this, this,
-                                                  buffer.toString()));
-              } catch (Exception ex) {
-                  throw new IllegalActionException(this, ex, "Failed to parse "
-                                                   + buffer.toString());
-              }
+            try {
+                requestChange(new MoMLChangeRequest(this, this,
+                        buffer.toString()));
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex, "Failed to parse "
+                        + buffer.toString());
+            }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to parse '"
-                                             + initialParametersURL
-                                             .getExpression()
-                                             + "'");
+                    + initialParametersURL
+                    .getExpression()
+                    + "'");
         }
         // We sanity check after modelPath has had a chance to be
         // set so that we avoid calling the parser on the initial default
         // file that we are not going to use anyway.
-         //sanityCheckAndUpdateParameters();
+        //sanityCheckAndUpdateParameters();
 
         _initialized = true;
     }
@@ -228,7 +228,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             // it is in
             resourceResults =
                 resourceResults.substring(0,resourceResults.length()-
-                                          necessaryResource.length());
+                        necessaryResource.length());
             // Strip off the file:/
             if (resourceResults.startsWith("file:/")) {
                 resourceResults = resourceResults.substring(6);
@@ -238,7 +238,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             if (resourceResults.endsWith("!/")) {
                 resourceResults =
                     resourceResults.substring(0,
-                                              resourceResults.length()-2);
+                            resourceResults.length()-2);
             }
 
             // Unfortunately, under Windows, URL.getFile() may
@@ -249,7 +249,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             // Convert backslashes
             String sanitizedResourceName =
                 StringUtilities.substitute(resourceFile.getPath(),
-                                           "\\", "/");
+                        "\\", "/");
             return sanitizedResourceName;
         }
         return null;
@@ -266,7 +266,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  parameter is used.
      */
     public void sanityCheckAndUpdateParameters(String modelPathOrURL)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // If necessary, initialize.
         if (!_initialized) {
             initialize();
@@ -276,8 +276,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             // Get the modelPath and update modelPath and model.
             modelPathOrURL =
                 ((StringToken)
-                 ((Parameter)getAttribute("modelPath"))
-                 .getToken()).stringValue();
+                        ((Parameter)getAttribute("modelPath"))
+                        .getToken()).stringValue();
 
         // Update the modelName and iterations Parameters.
         updateModelAttributes(modelPathOrURL);
@@ -285,13 +285,13 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
         String ptII =
             ((StringToken)
-             ((Parameter)getAttribute("ptII"))
-             .getToken()).stringValue();
+                    ((Parameter)getAttribute("ptII"))
+                    .getToken()).stringValue();
 
         String ptIIUserDirectory =
             ((StringToken)
-             ((Parameter)getAttribute("ptIIUserDirectory"))
-             .getToken()).stringValue();
+                    ((Parameter)getAttribute("ptIIUserDirectory"))
+                    .getToken()).stringValue();
 
 
         // Check that we will be able to write to the value of
@@ -300,9 +300,9 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
         // does not equal ptII.
         File ptIIUserDirectoryFile = new File(ptIIUserDirectory);
         if (!ptIIUserDirectoryFile.isDirectory()
-            || !ptIIUserDirectoryFile.canWrite()
-            || (JNLPUtilities.isRunningUnderWebStart()
-                    && ptIIUserDirectory == ptII)) {
+                || !ptIIUserDirectoryFile.canWrite()
+                || (JNLPUtilities.isRunningUnderWebStart()
+                        && ptIIUserDirectory == ptII)) {
 
             // It would be nice to tell the user we are changing the
             // ptIIUserDirectory directory of the build.  Usually
@@ -320,20 +320,20 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                     ptIIUserDirectoryFile.mkdirs();
                 }
                 if (!ptIIUserDirectoryFile.isDirectory()
-                    || !ptIIUserDirectoryFile.canWrite()) {
+                        || !ptIIUserDirectoryFile.canWrite()) {
                     throw new IllegalActionException("'" + ptIIUserDirectory
-                                                     + "' was not a "
-                                                     + "writable directory, "
-                                                     + "so we tried '"
-                                                     + ptIIUserDirectoryFile
-                                                     + "', but we failed to "
-                                                     + "make a writable"
-                                                     + "directory?");
+                            + "' was not a "
+                            + "writable directory, "
+                            + "so we tried '"
+                            + ptIIUserDirectoryFile
+                            + "', but we failed to "
+                            + "make a writable"
+                            + "directory?");
                 } else {
                     ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
                     ((Parameter)getAttribute("ptIIUserDirectory"))
                         .setExpression("property(\"user.dir\") + "
-                                       + "\"/ptII/cg\"");
+                                + "\"/ptII/cg\"");
                 }
             }
         }
@@ -361,28 +361,28 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
         // FIXME: Variables should be visible in the UI, but not editable.
         String targetPackage =
             ((StringToken)
-             ((Parameter)getAttribute("targetPackage"))
-             .getToken()).stringValue();
+                    ((Parameter)getAttribute("targetPackage"))
+                    .getToken()).stringValue();
 
         String targetPath = StringUtilities.substitute(targetPackage,
-                                                       ".", "/");
+                ".", "/");
 
         ((Variable)getAttribute("targetPath"))
-             .setExpression("\"" + targetPath + "\"");
+            .setExpression("\"" + targetPath + "\"");
 
         // Check that ptIIUserDirectory + targetPath is writable.
         // targetPath depends on ptIIUserDirectory, so we should mess with ptIIUserDirectory first.
 
         File targetPathFile = new File(ptIIUserDirectory, targetPath);
         if (!targetPathFile.isDirectory()
-            || !targetPathFile.canWrite()) {
+                || !targetPathFile.canWrite()) {
             // Make any directories
             if (!targetPathFile.mkdirs()) {
-                    throw new
-                        IllegalActionException("'" + targetPathFile
-                                               + "' was not a "
-                                               + "writable directory, and "
-                                               + "mkdirs() failed");
+                throw new
+                    IllegalActionException("'" + targetPathFile
+                            + "' was not a "
+                            + "writable directory, and "
+                            + "mkdirs() failed");
             }
         }
 
@@ -407,9 +407,9 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                 }
 
                 results.append("Parameter:      " + attribute.getName()
-                               + "\n Expression:    "
-                               + ((Parameter)attribute).getExpression()
-                               + value.toString()
+                        + "\n Expression:    "
+                        + ((Parameter)attribute).getExpression()
+                        + value.toString()
                                );
             } else {
                 results.append("Attribute:      " + attribute.getName());
@@ -419,7 +419,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             if (tooltipAttribute != null
                     && tooltipAttribute instanceof Documentation) {
                 results.append("\n Documentation: "
-                               + ((Documentation)tooltipAttribute).getValue());
+                        + ((Documentation)tooltipAttribute).getValue());
             } else {
                 String tip = Documentation.consolidate((NamedObj)attribute);
                 if (tip != null) {
@@ -440,14 +440,14 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  @param modelPathOrURL The file pathname or URL to the model.
      */
     public void updateModelAttributes(String modelPathOrURL)
-    throws IllegalActionException {
+            throws IllegalActionException {
         URL modelURL;
         try {
             modelURL = MoMLApplication.specToURL(modelPathOrURL);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                                             "Failed to parse '"
-                                             + modelPathOrURL + "'");
+                    "Failed to parse '"
+                    + modelPathOrURL + "'");
         }
 
         MoMLParser parser = new MoMLParser();
@@ -487,18 +487,18 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                         modelPathOrURL = anotherURL.toExternalForm();
                     } else {
                         throw new Exception("1. Failed to find '"
-                                            + modelURL.toExternalForm()
-                                            + "'\n"
-                                            + "2. Failed to find '"
-                                            + anotherURL
-                                            + "'");
+                                + modelURL.toExternalForm()
+                                + "'\n"
+                                + "2. Failed to find '"
+                                + anotherURL
+                                + "'");
                     }
                 } catch (Exception ex1) {
                     throw new IllegalActionException(this, ex1,
-                                        "Failed to parse '"
-                                        + modelPathOrURL + "'"
-                                        + " Tried loading as a resource, too!"
-                                        );
+                            "Failed to parse '"
+                            + modelPathOrURL + "'"
+                            + " Tried loading as a resource, too!"
+                                                     );
                 }
             }
 
@@ -519,7 +519,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             // If we save a blank model, then there might not be a director.
             Parameter iterations = (Parameter)getAttribute("iterations");
             if (director == null) {
-                    iterations.setExpression("1000");
+                iterations.setExpression("1000");
             } else {
                 Attribute directorIterations =
                     director.getAttribute("iterations");
@@ -534,8 +534,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                                             "Failed to parse '"
-                                             + modelPathOrURL + "'");
+                    "Failed to parse '"
+                    + modelPathOrURL + "'");
         } finally {
             parser.setMoMLFilters(oldFilters);
         }
@@ -554,8 +554,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
         ArrayToken necessaryClassesToken =
             (ArrayToken)
-             ((Parameter)getAttribute("necessaryClasses"))
-             .getToken();
+            ((Parameter)getAttribute("necessaryClasses"))
+            .getToken();
 
 
         List classPathList = new LinkedList();
@@ -568,7 +568,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                 lookupClassAsResource(necessaryClass);
 
             if (sanitizedResourceName != null
-                && !classPathList.contains(sanitizedResourceName)) {
+                    && !classPathList.contains(sanitizedResourceName)) {
                 classPathList.add(sanitizedResourceName);
             }
         }
@@ -579,8 +579,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
         // changes the classPathSeparator parameter, then we better use it.
         String classPathSeparator =
             ((StringToken)
-             ((Parameter)getAttribute("classPathSeparator"))
-             .getToken()).stringValue();
+                    ((Parameter)getAttribute("classPathSeparator"))
+                    .getToken()).stringValue();
 
 
         StringBuffer necessaryClassPath = new StringBuffer();
@@ -596,7 +596,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
         ((Parameter)getAttribute("necessaryClassPath"))
             .setExpression("\"" + necessaryClassPath.toString()
-                           + "\"");
+                    + "\"");
     }
 
     ///////////////////////////////////////////////////////////////////

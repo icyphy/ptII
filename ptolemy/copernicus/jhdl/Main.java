@@ -89,7 +89,7 @@ public class Main extends KernelMain {
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
-                                                    WatchDogTimer.v()));
+                WatchDogTimer.v()));
 
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
@@ -127,7 +127,7 @@ public class Main extends KernelMain {
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
-                         FieldsForEntitiesTransformer.v(_toplevel)));
+                        FieldsForEntitiesTransformer.v(_toplevel)));
 
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
@@ -207,9 +207,9 @@ public class Main extends KernelMain {
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
-                                                    ClassWriter.v()));
+                ClassWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
-                                                    JimpleWriter.v()));
+                JimpleWriter.v()));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
@@ -262,7 +262,7 @@ public class Main extends KernelMain {
      *  model cannot be changed to a Java identifier String.
      */
     public static void main(String[] args)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         Main main = new Main(args);
 
         // Parse the model.
@@ -282,24 +282,24 @@ public class Main extends KernelMain {
      */
     private void _addStandardOptimizations(Pack pack) {
         pack.add(new Transform("jop.cse",
-                         new TransformerAdapter(CommonSubexpressionEliminator.v())));
+                new TransformerAdapter(CommonSubexpressionEliminator.v())));
         pack.add(new Transform("jop.cp",
-                         new TransformerAdapter(CopyPropagator.v())));
+                new TransformerAdapter(CopyPropagator.v())));
         pack.add(new Transform("jop.cpf",
-                         new TransformerAdapter(ConstantPropagatorAndFolder.v())));
+                new TransformerAdapter(ConstantPropagatorAndFolder.v())));
         pack.add(new Transform("jop.cbf",
-                         new TransformerAdapter(ConditionalBranchFolder.v())));
+                new TransformerAdapter(ConditionalBranchFolder.v())));
         pack.add(new Transform("jop.dae",
-                         new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
+                new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
         pack.add(new Transform("jop.uce1",
-                         new TransformerAdapter(UnreachableCodeEliminator.v())));
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf1",
-                         new TransformerAdapter(UnconditionalBranchFolder.v())));
+                new TransformerAdapter(UnconditionalBranchFolder.v())));
         pack.add(new Transform("jop.uce2",
-                         new TransformerAdapter(UnreachableCodeEliminator.v())));
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf2",
-                         new TransformerAdapter(UnconditionalBranchFolder.v())));
+                new TransformerAdapter(UnconditionalBranchFolder.v())));
         pack.add(new Transform("jop.ule",
-                         new TransformerAdapter(UnusedLocalEliminator.v())));
+                new TransformerAdapter(UnusedLocalEliminator.v())));
     }
 }

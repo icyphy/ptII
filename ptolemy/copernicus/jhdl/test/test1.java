@@ -51,7 +51,7 @@ import ptolemy.domains.sdf.kernel.SDFIOPort;
 public class test1 extends TypedAtomicActor {
 
     public test1(CompositeEntity container, String name)
-                throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         input = new SDFIOPort(this, "input", true, false);
@@ -60,8 +60,8 @@ public class test1 extends TypedAtomicActor {
 
     }
 
-//      ///////////////////////////////////////////////////////////////////
-//      ////                         public variables                  ////
+    //      ///////////////////////////////////////////////////////////////////
+    //      ////                         public variables                  ////
 
     public SDFIOPort input;
 
@@ -166,7 +166,7 @@ public class test1 extends TypedAtomicActor {
         }
         d = 3;
         if ((b < 4 || b > 10) && c == 10 || (c < 3 && b > 5) ||
-            (b > 4 || b < 6)) {
+                (b > 4 || b < 6)) {
             d = 2;
         } else {
             d = 4;

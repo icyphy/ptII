@@ -86,7 +86,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
      * (i.e. definitions) must be made available for subsequent blocks.
      **/
     public IntervalDFG(IntervalChain ic, Collection requiredDefinitions)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         // Create DFG from the Block object associated with the root
         // Node of the given IntervalChain
@@ -97,7 +97,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
     }
 
     protected void _processChain(Collection requiredDefinitions)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         // 1. Create graph for next interval
         // 2. Deterimine defintions for this Node
@@ -177,13 +177,13 @@ public class IntervalDFG extends BlockDataFlowGraph {
                 for (i=childMap.getDefs().keySet().iterator();i.hasNext();) {
                     Value origv = (Value) i.next();
                     Node n = (Node) childMap.getDefs().get(origv);
-//                      System.out.println("New def="+n+" id="+
-//                                         System.identityHashCode(n));
+                    //                      System.out.println("New def="+n+" id="+
+                    //                                         System.identityHashCode(n));
                     if (isRequired(origv)) {
-//                          System.out.println("def needed");
+                        //                          System.out.println("def needed");
                         Node childn = childMap.getLast(origv);
                         Node parentn = getOrCreateNode(origv);
-                          _multiplexNodes(childDFG,childn,parentn);
+                        _multiplexNodes(childDFG,childn,parentn);
                         //System.out.println("Multiplexing node "+childn);
                     }
                 }
@@ -215,12 +215,12 @@ public class IntervalDFG extends BlockDataFlowGraph {
                 for (i=child2Map.getDefs().keySet().iterator();i.hasNext();) {
                     Value origv = (Value) i.next();
                     if (isRequired(origv) &&
-                        !child1Map.getDefs().containsKey(origv)) {
+                            !child1Map.getDefs().containsKey(origv)) {
                         Node child2n = (Node) child2Map.getDefs().get(origv);
                         Node parentn = getOrCreateNode(origv);
                         _multiplexNodes(child2DFG,child2n,parentn);
-//                          System.out.println("Multiplexing node from parent "+
-//                                             child2n);
+                        //                          System.out.println("Multiplexing node from parent "+
+                        //                                             child2n);
                     }
                 }
             } else {
@@ -242,17 +242,17 @@ public class IntervalDFG extends BlockDataFlowGraph {
             newDefs.add( ((Node) i.next()).getWeight() );
         _requiredDefinitions.addAll(newDefs);
 
-//          System.out.print(_ic.toShortString()+" defs=");
+        //          System.out.print(_ic.toShortString()+" defs=");
         for (Iterator i=_requiredDefinitions.iterator();i.hasNext();) {
             Object o=i.next();
-//              System.out.print(o+" ("+System.identityHashCode(o)+") ");
+            //              System.out.print(o+" ("+System.identityHashCode(o)+") ");
         }
         //System.out.println();
 
         // Connect previously created chain to this node
         if (_next != null) {
             //DEBUG=true; System.out.println("*** Serial Merge ***");
-              mergeSerial(_next);
+            mergeSerial(_next);
             //DEBUG=false;
         }
     }
@@ -275,7 +275,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
             if (driver != null)
                 nodeMap.put(node,driver);
             else {
-                    if (node.getWeight() instanceof InstanceFieldRef) {
+                if (node.getWeight() instanceof InstanceFieldRef) {
                     InstanceFieldRef ifr = (InstanceFieldRef) node.getWeight();
                     InstanceFieldRef nifr =
                         _getMatchingInstanceFieldRef((InstanceFieldRef) ifr);
@@ -308,7 +308,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
                     addEdge(src,snk);
                 Object snkWeight = snk.getWeight();
                 if (snkWeight instanceof Local ||
-                    snkWeight instanceof InstanceFieldRef)
+                        snkWeight instanceof InstanceFieldRef)
                     _valueMap.addNewDef(snk);
             }
         }
@@ -318,9 +318,9 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
         super.addNode(n);
         Object weight = n.getWeight();
-          if (weight instanceof Local) {
+        if (weight instanceof Local) {
             _valueMap.addLocal((Local)weight,n);
-          }
+        }
         if (weight instanceof InstanceFieldRef) {
             _valueMap.addInstanceFieldRef((InstanceFieldRef)weight,n);
         }
@@ -349,18 +349,18 @@ public class IntervalDFG extends BlockDataFlowGraph {
     public IntervalChain getIntervalChain() { return _ic; }
 
     /*
-    public boolean isValueDefined(Value v) {
-        if (_requiredDefinitions.contains(v))
-            return true;
-        if (v instanceof InstanceFieldRef) {
-            InstanceFieldRef d =
-                getMatchingInstanceFieldRef((InstanceFieldRef)v,
-                                            _requiredDefinitions);
-            if (d != null)
-                return true;
-        }
-        return false;
-    }
+      public boolean isValueDefined(Value v) {
+      if (_requiredDefinitions.contains(v))
+      return true;
+      if (v instanceof InstanceFieldRef) {
+      InstanceFieldRef d =
+      getMatchingInstanceFieldRef((InstanceFieldRef)v,
+      _requiredDefinitions);
+      if (d != null)
+      return true;
+      }
+      return false;
+      }
     */
 
     public Collection getRequiredDefinitions() {
@@ -373,8 +373,8 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
 
     protected Node _multiplexNodes(IntervalDFG child1DFG,
-                                   Node child1,
-                                   Node child2) {
+            Node child1,
+            Node child2) {
 
         Value value = (Value) child1.getWeight();
 
@@ -388,8 +388,8 @@ public class IntervalDFG extends BlockDataFlowGraph {
             falseNode = child1;
         }
 
-//          BinaryMux bmn = new BinaryMux(trueNode,falseNode,cNode,
-//                                                value.toString());
+        //          BinaryMux bmn = new BinaryMux(trueNode,falseNode,cNode,
+        //                                                value.toString());
         BinaryMux bmn = new BinaryMux(value.toString());
         Node muxNode = addNodeWeight(bmn);
 
@@ -413,13 +413,13 @@ public class IntervalDFG extends BlockDataFlowGraph {
         Node newNode = _valueMap.getLast(v);
         if (DEBUG)
             System.out.println("newNode = "+newNode+" value="+v+
-                               " id="+System.identityHashCode(v));
+                    " id="+System.identityHashCode(v));
         if (newNode == null) {
-              if (v instanceof InstanceFieldRef) {
-                  InstanceFieldRef ifr = (InstanceFieldRef) v;
-//                  InstanceFieldRef ifr_p = _getMatchingInstanceFieldRef(ifr);
-//                  newNode = _valueMap.getLast(ifr_p);
-//                  if (newNode == null)
+            if (v instanceof InstanceFieldRef) {
+                InstanceFieldRef ifr = (InstanceFieldRef) v;
+                //                  InstanceFieldRef ifr_p = _getMatchingInstanceFieldRef(ifr);
+                //                  newNode = _valueMap.getLast(ifr_p);
+                //                  if (newNode == null)
                 newNode = _createInstanceFieldRef(ifr);
             } else if (v instanceof Local) {
                 newNode = _createLocal((Local)v);
@@ -438,7 +438,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
                 if (o instanceof InstanceFieldRef) {
                     InstanceFieldRef oifr = (InstanceFieldRef) o;
                     if (vifr.getBase().equals(oifr.getBase()) &&
-                        vifr.getField().equals(oifr.getField()))
+                            vifr.getField().equals(oifr.getField()))
                         return true;
                 }
             }
@@ -470,9 +470,9 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
         Block dest = (Block) childCFGNode.getWeight();
 
-//          System.out.println("IFstmt="+ifs+" target="+
-//                             ifs.getTargetBox().getUnit()+" dest head="+
-//                             dest.getHead());
+        //          System.out.println("IFstmt="+ifs+" target="+
+        //                             ifs.getTargetBox().getUnit()+" dest head="+
+        //                             dest.getHead());
 
 
         if (ifs.getTargetBox().getUnit() == dest.getHead())
@@ -488,7 +488,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
             Node node = (Node) i.next();
             Object weight = node.getWeight();
             if (inputEdgeCount(node) == 1 &&
-                weight instanceof InstanceFieldRef) {
+                    weight instanceof InstanceFieldRef) {
                 nodes.add(node);
             }
         }
@@ -496,7 +496,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
     }
 
     public static IntervalDFG createIntervalDFG(String args[])
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         IntervalChain ic = IntervalChain.createIntervalChain(args,true);
         return new IntervalDFG(ic);
     }
@@ -511,12 +511,12 @@ public class IntervalDFG extends BlockDataFlowGraph {
             System.exit(1);
         }
 
-//          System.out.println(im);
-//          BlockDataFlowGraph graphs[] =
-//              BlockDataFlowGraph.getBlockDataFlowGraphs(args);
-//          for (int i = 0;i<graphs.length;i++)
-//              PtDirectedGraphToDotty.writeDotFile("bbgraph"+i,
-//                                                  graphs[i]);
+        //          System.out.println(im);
+        //          BlockDataFlowGraph graphs[] =
+        //              BlockDataFlowGraph.getBlockDataFlowGraphs(args);
+        //          for (int i = 0;i<graphs.length;i++)
+        //              PtDirectedGraphToDotty.writeDotFile("bbgraph"+i,
+        //                                                  graphs[i]);
         PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
         dgToDotty.writeDotFile(".", "merge", im);
     }
@@ -546,11 +546,11 @@ class IValueMap {
         return vm;
     }
     public void addLocal(Local l,Node n) {
-          locals.add(l,n);
+        locals.add(l,n);
         //newDefs.add(n);
     }
     public void addInstanceFieldRef(InstanceFieldRef ifr,Node n) {
-          instanceFieldRefs.add(ifr,n);
+        instanceFieldRefs.add(ifr,n);
         //newDefs.add(n);
     }
     public void addNewDef(Node n) {
@@ -577,7 +577,7 @@ class IValueMap {
         for (Iterator it = instanceFieldRefs.keySet().iterator();it.hasNext();) {
             InstanceFieldRef ifr_n = (InstanceFieldRef) it.next();
             if (ifr_n.getBase().equals(baseValue) &&
-                ifr_n.getField().equals(field)) {
+                    ifr_n.getField().equals(field)) {
                 previous = ifr_n;
             }
         }
@@ -593,7 +593,7 @@ class IValueMap {
 
   - get snapshot of definitions before mergining.
   - use copy of snapshot before each iteration
-    (multiple copies for each branch)
+  (multiple copies for each branch)
   - come up with own addNode method that updates these value maps
 
- */
+*/

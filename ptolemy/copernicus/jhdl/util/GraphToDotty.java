@@ -72,11 +72,11 @@ public abstract class GraphToDotty {
             case '\t':
                 strBuf.append("\\t");
                 break;
-              case '\r':
+            case '\r':
                 // determine use of \r based on current MYEOL value
                 if (MYEOL.equals("\r\n"))
                     strBuf.append("\\r");
-                  break;
+                break;
             case '\"':
                 strBuf.append("\\\"");
                 break;
@@ -103,19 +103,19 @@ public abstract class GraphToDotty {
         byte bbytes[] = basename.getBytes();
         //        byte nbytes[] = new byte[bbytes.length];
         if (!((bbytes[0] >= 'a' && bbytes[0] <= 'z') ||
-              (bbytes[0] >= 'A' && bbytes[0] <= 'Z')))
+                (bbytes[0] >= 'A' && bbytes[0] <= 'Z')))
             bbytes[0] = 'A';
         // Colons are valid in DOS filenames...
         /*        for (int i=0;i<bbytes.length;i++) {
-            switch(bbytes[i]) {
-            case ':':
-                nbytes[i] = '_';
-                break;
-            default:
-                nbytes[i] = bbytes[i];
-                break;
-            }
-                }*/
+                  switch(bbytes[i]) {
+                  case ':':
+                  nbytes[i] = '_';
+                  break;
+                  default:
+                  nbytes[i] = bbytes[i];
+                  break;
+                  }
+                  }*/
         return new String(bbytes);
     }
 

@@ -98,7 +98,7 @@ public class ConditionalControlCompactor {
      * several new Expression nodes unique to this package are used.
      **/
     public static void compact(SootMethod method)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         Body mbody = method.retrieveActiveBody();
         PatchingChain chain = mbody.getUnits();
@@ -116,7 +116,7 @@ public class ConditionalControlCompactor {
             Iterator i = chain.snapshotIterator();
             for (Unit current = (Unit) i.next();i.hasNext();) {
 
-                    //System.out.println("Attemping to merge Unit "+
+                //System.out.println("Attemping to merge Unit "+
                 //current);
 
                 // If current Unit has been removed, skip over it
@@ -180,7 +180,7 @@ public class ConditionalControlCompactor {
      *
      **/
     protected static Unit mergeUnit(PatchingChain chain, Unit root)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         // 1. Is root an IfStmt?
         if (!(root instanceof IfStmt))
@@ -201,7 +201,7 @@ public class ConditionalControlCompactor {
         // 3. See if target of rootIfStmt goes to same unit
         //    as target OR succesesor of successorIfStmt
         if (!((rootTarget == successorSuccessor) ^
-              (rootTarget == successorTarget)))
+                (rootTarget == successorTarget)))
             return null;
 
         // root and successor units can be merged.
@@ -212,14 +212,14 @@ public class ConditionalControlCompactor {
         if (rootTarget == successorSuccessor) {
             // Expression = 'rootCondition & successorCondition
             newExpression = new CompoundAndExpression(
-                CompoundBooleanExpression.invertValue(rootCondition),
-                successorCondition);
+                    CompoundBooleanExpression.invertValue(rootCondition),
+                    successorCondition);
 
         } else {
             // Expression = rootCondition | successorCondition
             newExpression =
                 new CompoundOrExpression(rootCondition,
-                                         successorCondition);
+                        successorCondition);
         }
         rootIfStmt.setCondition(newExpression);
 
@@ -232,7 +232,7 @@ public class ConditionalControlCompactor {
     }
 
     protected static Unit mergeUnit2(PatchingChain chain, Unit root)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         // 1. Is root an IfStmt?
         if (!(root instanceof IfStmt))
@@ -251,7 +251,7 @@ public class ConditionalControlCompactor {
         // 3. See if target of rootIfStmt goes to same unit
         //    as target OR succesesor of successorIfStmt
         if (!((rootTarget == successorSuccessor) ^
-              (rootTarget == successorTarget)))
+                (rootTarget == successorTarget)))
             return null;
 
         // root and successor units can be merged.
@@ -262,14 +262,14 @@ public class ConditionalControlCompactor {
         if (rootTarget == successorSuccessor) {
             // Expression = 'rootCondition & successorCondition
             newExpression = new CompoundAndExpression(
-                CompoundBooleanExpression.invertValue(rootCondition),
-                successorCondition);
+                    CompoundBooleanExpression.invertValue(rootCondition),
+                    successorCondition);
 
         } else {
             // Expression = rootCondition | successorCondition
             newExpression =
                 new CompoundOrExpression(rootCondition,
-                                         successorCondition);
+                        successorCondition);
         }
         rootIfStmt.setCondition(newExpression);
 

@@ -72,8 +72,8 @@ public class BlockGraphToDotty extends GraphToDotty {
             Block source = (Block)nodes.next();
             String name="v" + count++;
             sb.append("\t\""+name+"\" [label=\""
-                      +convertSpecialsToEscapes(source.toString(m))
-                      +"\"];"+MYEOL);
+                    +convertSpecialsToEscapes(source.toString(m))
+                    +"\"];"+MYEOL);
             hm.put(source, name);
         }
         sb.append("\t// Edges\r\n");

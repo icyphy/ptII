@@ -62,8 +62,8 @@ import soot.*;
 public class SDFGToJHDLCircuit {
 
     public SDFGToJHDLCircuit(SootBlockDirectedGraph sdfg,
-                             JHDLTestbench parent)
-        throws JHDLUnsupportedException {
+            JHDLTestbench parent)
+            throws JHDLUnsupportedException {
         _cell = new Logic(parent,"newcell");
         _jtb = parent;
         _sdfg = sdfg;
@@ -105,7 +105,7 @@ public class SDFGToJHDLCircuit {
      * return statement.
      **/
     protected Collection _determineOutputNodes()
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Vector v = new Vector(1);
         // Find return statement node
         Node returnNode = null;
@@ -148,7 +148,7 @@ public class SDFGToJHDLCircuit {
         // Process Node
         Object nweight = node.getWeight();
         if (DEBUG) System.out.println("Node "+nweight+" ("+
-                                      nweight.getClass().getName()+")");
+                nweight.getClass().getName()+")");
 
         if (nweight instanceof ParameterRef) {
             _processParameterRef(node);
@@ -170,7 +170,7 @@ public class SDFGToJHDLCircuit {
     }
 
     protected void _processParameterRef(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         ParameterRef pr = (ParameterRef) node.getWeight();
         Type t = pr.getType();
         // Currently only support IntType
@@ -213,7 +213,7 @@ public class SDFGToJHDLCircuit {
     }
 
     protected void _processBinopExpr(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         // get two nodes coming into this op
         Wire wire1=null;
@@ -270,12 +270,12 @@ public class SDFGToJHDLCircuit {
         _wireMap.put(node,output);
         if (DEBUG)
             System.out.println("Creating Wire "+output+" for Node "+node+
-                               "("+System.identityHashCode(node)+")");
+                    "("+System.identityHashCode(node)+")");
 
     }
 
     protected void _processUnopExpr(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         // get nodes coming into this op
         Wire wire1=null;
         Collection inEdges = _sdfg.inputEdges(node);
@@ -299,8 +299,8 @@ public class SDFGToJHDLCircuit {
     }
 
     protected Wire _processConditionExpr(Node node, Wire wire1,
-                                         Wire wire2)
-        throws JHDLUnsupportedException {
+            Wire wire2)
+            throws JHDLUnsupportedException {
 
         Object nweight = node.getWeight();
         if (nweight instanceof CompoundBooleanExpression)
@@ -310,8 +310,8 @@ public class SDFGToJHDLCircuit {
     }
 
     protected Wire _processCompoundBooleanExpression(Node node, Wire wire1,
-                                                     Wire wire2)
-        throws JHDLUnsupportedException {
+            Wire wire2)
+            throws JHDLUnsupportedException {
 
         Object nweight = node.getWeight();
         if (nweight instanceof CompoundAndExpression) {
@@ -324,8 +324,8 @@ public class SDFGToJHDLCircuit {
     }
 
     protected Wire _processSimpleConditionExpr(Node node, Wire wire1,
-                                               Wire wire2)
-        throws JHDLUnsupportedException {
+            Wire wire2)
+            throws JHDLUnsupportedException {
 
         // TODO: more agressive bitwidth analysis
         int wireSize = wire1.getWidth() > wire2.getWidth() ?
@@ -339,9 +339,9 @@ public class SDFGToJHDLCircuit {
 
         // LE, GE, GT, and LT are all performed with an adder
         if (weight instanceof LeExpr ||
-            weight instanceof GeExpr ||
-            weight instanceof GtExpr ||
-            weight instanceof LtExpr) {
+                weight instanceof GeExpr ||
+                weight instanceof GtExpr ||
+                weight instanceof LtExpr) {
 
             Wire notB = _cell.not(newWire2);
             Wire cin = _cell.wire(1);
@@ -368,7 +368,7 @@ public class SDFGToJHDLCircuit {
             }
 
         } else if (weight instanceof EqExpr ||
-                   weight instanceof NeExpr) {
+                weight instanceof NeExpr) {
             // Need to build a better EQ and NE module (carry chain?)
             Wire equal = _cell.nor(_cell.xor(newWire1,newWire2));
             if (weight instanceof EqExpr)
@@ -391,32 +391,32 @@ public class SDFGToJHDLCircuit {
     protected Wire _createMultiplier(Wire wire1, Wire wire2 ) {
         Wire allbits = _cell.wire(64);
         new arrayMult(_cell,       // parent
-                      wire1,       // x
-                      wire2,       // y
-                      null,        // clk_en
-                      allbits,     // pout
-                      true,        // signed
-                      0);          // pipedepth
+                wire1,       // x
+                wire2,       // y
+                null,        // clk_en
+                allbits,     // pout
+                true,        // signed
+                0);          // pipedepth
         Wire output = allbits.range(31,0);
         return output;
     }
 
     protected Wire _createAnd(Wire wire1, Wire wire2 )
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         if (wire1.getWidth() != wire2.getWidth())
             _error("Mismatched Bits for Binary operation");
         return _cell.and(wire1,wire2);
     }
 
     protected Wire _createOr(Wire wire1, Wire wire2 )
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         if (wire1.getWidth() != wire2.getWidth())
             _error("Mismatched Bits for Binary operation");
         return _cell.or(wire1,wire2);
     }
 
     protected Wire _createXor(Wire wire1, Wire wire2 )
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         if (wire1.getWidth() != wire2.getWidth())
             _error("Mismatched Bits for Binary operation");
         return _cell.xor(wire1,wire2);
@@ -427,7 +427,7 @@ public class SDFGToJHDLCircuit {
     }
 
     protected void _processReturnStmt(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         // Get input wire
         Node predecessor=null;
         for (Iterator ie=_sdfg.inputEdges(node).iterator();
@@ -445,7 +445,7 @@ public class SDFGToJHDLCircuit {
     }
 
     protected void _processBinaryMux(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         BinaryMux w = (BinaryMux) node.getWeight();
 
@@ -461,7 +461,7 @@ public class SDFGToJHDLCircuit {
         Object o = _wireMap.get(node);
         if (o == null)
             _error("No wire for Node " + node + " ("+
-                   System.identityHashCode(node)+")");
+                    System.identityHashCode(node)+")");
         return (Wire) o;
     }
 
@@ -498,15 +498,15 @@ public class SDFGToJHDLCircuit {
     }
 
     protected static void _error(String s)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         throw new JHDLUnsupportedException(s);
     }
 
     protected static void _unsupportedOperation(Object o)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         throw new JHDLUnsupportedException("Object "+
-                                           o.getClass().getName()+
-                                           " not supported");
+                o.getClass().getName()+
+                " not supported");
     }
 
 

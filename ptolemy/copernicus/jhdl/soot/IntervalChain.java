@@ -86,7 +86,7 @@ public class IntervalChain {
      * recursively as Chains are built from a top-level graph.
      **/
     public IntervalChain(IntervalChain parent, Node root)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _parent = parent;
         _graph = getGraph();
         _root = root;
@@ -347,7 +347,7 @@ public class IntervalChain {
         default:
             _processForkNode();
             break;
-         }
+        }
         if (DEBUG) System.out.println();
         //System.out.println("True branch="+isTrueBranch()+" "+getRootShortString());
     }
@@ -407,7 +407,7 @@ public class IntervalChain {
             _graph.getImmediatePostDominator(_root);
         if (DEBUG)
             System.out.print("Fork "+ns(_root)+" ipd="+
-                             ns(immediatePostDominator));
+                    ns(immediatePostDominator));
 
         // If the ipd is one of the dominated children, remove it from
         // the list of dominated children.
@@ -439,18 +439,18 @@ public class IntervalChain {
                 // Note that a merge Node for this interval has
                 // not yet been created (ipd may be a child interval)
                 if (childInterval.getChainSinkTarget() !=
-                    immediatePostDominator &&
-                    childInterval.getRoot() != immediatePostDominator) {
+                        immediatePostDominator &&
+                        childInterval.getRoot() != immediatePostDominator) {
                     canMerge = false;
                     if (DEBUG)
                         System.out.print(" childInterval "+is(childInterval)+
-                                         "!=ipd "+
-                                         ns(immediatePostDominator)+
-                                         "(target="+
-                                         ns(childInterval.getChainSinkTarget())
-                                         +" "+
-                                         is(childInterval.getChainSinkInterval())
-                                         +")");
+                                "!=ipd "+
+                                ns(immediatePostDominator)+
+                                "(target="+
+                                ns(childInterval.getChainSinkTarget())
+                                +" "+
+                                is(childInterval.getChainSinkInterval())
+                                +")");
                 }
             }
             for (Iterator i = nonDomChildren.iterator();
@@ -460,7 +460,7 @@ public class IntervalChain {
                     canMerge = false;
                     if (DEBUG)
                         System.out.print(" child "+ns(child)+"!= ipd "+
-                                         ns(immediatePostDominator));
+                                ns(immediatePostDominator));
                 }
             }
             // If Interval cannot be merged, it is invalid
@@ -580,8 +580,8 @@ public class IntervalChain {
     protected Node addSpecialJoinNode(Node join) {
         Collection joinInEdges = _graph.inputEdges(join);
         if (joinInEdges.size() > 1) {
-//              System.out.print(" spjoin="+ns(join)+" edges="+
-//                               joinInEdges.size());
+            //              System.out.print(" spjoin="+ns(join)+" edges="+
+            //                               joinInEdges.size());
             String newNodeWeight="spjoin__";
             Vector remove = new Vector(joinInEdges.size());
             // Figure out the weight and collect edges
@@ -617,7 +617,7 @@ public class IntervalChain {
      * @see DominatorCFG#createDominatorCFG(String[],boolean)
      **/
     public static IntervalChain createIntervalChain(String args[],
-                                                    boolean writeGraphs) {
+            boolean writeGraphs) {
         IntervalChain ic=null;
         try {
             DominatorCFG _cfg =

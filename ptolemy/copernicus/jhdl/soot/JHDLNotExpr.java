@@ -56,13 +56,13 @@ import soot.jimple.internal.*;
 public class JHDLNotExpr implements UnopExpr {
 
     /*
-    public JHDLNotExpr(CompoundBooleanExpression op) {
-        super(Jimple.v().newConditionExprBox(op));
-    }
+      public JHDLNotExpr(CompoundBooleanExpression op) {
+      super(Jimple.v().newConditionExprBox(op));
+      }
 
-    public JHDLNotExpr(Value op) {
-        super(Jimple.v().newImmediateBox(op));
-    }
+      public JHDLNotExpr(Value op) {
+      super(Jimple.v().newImmediateBox(op));
+      }
     */
     public JHDLNotExpr(Value op) {
         this.op = op;
@@ -80,9 +80,9 @@ public class JHDLNotExpr implements UnopExpr {
     public boolean equivTo(Object o)
     {
         if (o instanceof JHDLNotExpr)
-        {
-            return getOpBox().getValue().equivTo(((JHDLNotExpr)o).getOpBox().getValue());
-        }
+            {
+                return getOpBox().getValue().equivTo(((JHDLNotExpr)o).getOpBox().getValue());
+            }
         return false;
     }
 
@@ -108,8 +108,8 @@ public class JHDLNotExpr implements UnopExpr {
         Value op = getOpBox().getValue();
 
         if (op.getType().equals(IntType.v()) || op.getType().equals(ByteType.v()) ||
-            op.getType().equals(ShortType.v()) || op.getType().equals(BooleanType.v()) ||
-            op.getType().equals(CharType.v()))
+                op.getType().equals(ShortType.v()) || op.getType().equals(BooleanType.v()) ||
+                op.getType().equals(CharType.v()))
             return IntType.v();
         else if (op.getType().equals(LongType.v()))
             return LongType.v();

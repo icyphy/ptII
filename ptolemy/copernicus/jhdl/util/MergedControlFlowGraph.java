@@ -72,25 +72,25 @@ public class MergedControlFlowGraph extends DirectedGraph {
         _controlFlowAnalysis();
     }
 
-//      public DirectedGraph createDataFlowGraph() {
-//          // 1. Create dataflow graph of each basic block
-//          // 2. Determine hierarchical super block boundaries
-//          // 3. Determine signal multiplexing
-//          // 4. Combine dataflow graphs
+    //      public DirectedGraph createDataFlowGraph() {
+    //          // 1. Create dataflow graph of each basic block
+    //          // 2. Determine hierarchical super block boundaries
+    //          // 3. Determine signal multiplexing
+    //          // 4. Combine dataflow graphs
 
-//          // Create dataflow of each basic block
-//          List blockList = _bbgraph.getBlocks();
-//          for (int blockNum=0;blockNum<blockList.size();blockNum++) {
-//              Block block=(Block)blockList.get(blockNum);
-//              BlockDataFlowGraph dataFlowGraph=null;
-//              try {
-//                  dataFlowGraph = new BlockDataFlowGraph(block);
-//              } catch(IllegalActionException e) {
-//                  System.err.println(e);
-//              }
-//          }
-//          return null;
-//      }
+    //          // Create dataflow of each basic block
+    //          List blockList = _bbgraph.getBlocks();
+    //          for (int blockNum=0;blockNum<blockList.size();blockNum++) {
+    //              Block block=(Block)blockList.get(blockNum);
+    //              BlockDataFlowGraph dataFlowGraph=null;
+    //              try {
+    //                  dataFlowGraph = new BlockDataFlowGraph(block);
+    //              } catch(IllegalActionException e) {
+    //                  System.err.println(e);
+    //              }
+    //          }
+    //          return null;
+    //      }
 
     /**
      * create the topology of the graph.
@@ -126,11 +126,11 @@ public class MergedControlFlowGraph extends DirectedGraph {
                 addEdge(nb,sb);
             }
         }
-         if (!isAcyclic()) {
-             System.err.println(_toDotty.convert(this, "this"));
+        if (!isAcyclic()) {
+            System.err.println(_toDotty.convert(this, "this"));
             System.out.println("Warning! Graph has feedback");
             //    throw new IllegalActionException("Feedback currently not supported");
-         }
+        }
     }
 
     protected void _controlFlowAnalysis() throws IllegalActionException {

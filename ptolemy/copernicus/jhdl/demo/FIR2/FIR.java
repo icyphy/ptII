@@ -124,9 +124,9 @@ public class FIR extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         // Set type constraints.
-//          ArrayType paramType = (ArrayType)taps.getType();
-//          InequalityTerm elementTerm = paramType.getElementTypeTerm();
-//          output.setTypeAtLeast(elementTerm);
+        //          ArrayType paramType = (ArrayType)taps.getType();
+        //          InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        //          output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
 
         _taps0 = new FixToken(0.023428499999999998, 16, 2);
@@ -150,85 +150,85 @@ public class FIR extends TypedAtomicActor {
      *  to be at least that of the input.
      */
     public TypedIOPort output;
-//      /** The decimation ratio of the filter. This must contain an
-//       *  IntToken, and by default it has value one.
-//       */
-//      public Parameter decimation;
+    //      /** The decimation ratio of the filter. This must contain an
+    //       *  IntToken, and by default it has value one.
+    //       */
+    //      public Parameter decimation;
 
-//      /** The decimation phase of the filter. This must contain an
-//       *  IntToken, and by default it has value zero.
-//       */
-//      public Parameter decimationPhase;
+    //      /** The decimation phase of the filter. This must contain an
+    //       *  IntToken, and by default it has value zero.
+    //       */
+    //      public Parameter decimationPhase;
 
-//      /** The interpolation ratio of the filter. This must contain an
-//       *  IntToken, and by default it has value one.
-//       */
-//      public Parameter interpolation;
+    //      /** The interpolation ratio of the filter. This must contain an
+    //       *  IntToken, and by default it has value one.
+    //       */
+    //      public Parameter interpolation;
 
-//      /** The taps of the filter. This has a type of ArrayToken.
-//       *  By default, it contains an array with a single integer one,
-//       *  meaning that the output of the filter is the same as the input.
-//       */
-//      public Parameter taps;
+    //      /** The taps of the filter. This has a type of ArrayToken.
+    //       *  By default, it contains an array with a single integer one,
+    //       *  meaning that the output of the filter is the same as the input.
+    //       */
+    //      public Parameter taps;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-//      /** Set a flag that causes recalculation of various local variables
-//       *  that are used in execution on the next invocation of fire().
-//       *  @param attribute The attribute that changed.
-//       */
-//      public void attributeChanged(Attribute attribute)
-//              throws IllegalActionException {
-//          if (attribute == interpolation) {
-//              IntToken token = (IntToken)(interpolation.getToken());
-//              _interpolationValue = token.intValue();
-//              if (_interpolationValue <= 0) {
-//                  throw new IllegalActionException(this,
-//                          "Invalid interpolation: " + _interpolationValue
-//                          + ". Must be positive.");
-//              }
-//              output.setTokenProductionRate(_interpolationValue);
-//              Director director = getDirector();
-//              if (director != null) {
-//                  director.invalidateSchedule();
-//              }
-//              _reinitializeNeeded = true;
-//          } else if (attribute == decimation) {
-//              IntToken token = (IntToken)(decimation.getToken());
-//              _decimationValue = token.intValue();
-//              if (_decimationValue <= 0) {
-//                  throw new IllegalActionException(this,
-//                          "Invalid decimation: " + _decimationValue
-//                          + ". Must be positive.");
-//              }
-//              input.setTokenConsumptionRate(_decimationValue);
-//              Director director = getDirector();
-//              if (director != null) {
-//                  director.invalidateSchedule();
-//              }
-//              _reinitializeNeeded = true;
-//          } else if (attribute == decimationPhase) {
-//              IntToken token = (IntToken)(decimationPhase.getToken());
-//              _decimationPhaseValue = token.intValue();
-//              if (_decimationPhaseValue < 0) {
-//                  throw new IllegalActionException(this,
-//                          "Invalid decimationPhase: " + _decimationPhaseValue
-//                          + ". Must be nonnegative.");
-//              }
-//              _reinitializeNeeded = true;
-//          } else if (attribute == taps) {
-//              ArrayToken tapsToken = (ArrayToken)(taps.getToken());
-//              _taps = tapsToken.arrayValue();
+    //      /** Set a flag that causes recalculation of various local variables
+    //       *  that are used in execution on the next invocation of fire().
+    //       *  @param attribute The attribute that changed.
+    //       */
+    //      public void attributeChanged(Attribute attribute)
+    //              throws IllegalActionException {
+    //          if (attribute == interpolation) {
+    //              IntToken token = (IntToken)(interpolation.getToken());
+    //              _interpolationValue = token.intValue();
+    //              if (_interpolationValue <= 0) {
+    //                  throw new IllegalActionException(this,
+    //                          "Invalid interpolation: " + _interpolationValue
+    //                          + ". Must be positive.");
+    //              }
+    //              output.setTokenProductionRate(_interpolationValue);
+    //              Director director = getDirector();
+    //              if (director != null) {
+    //                  director.invalidateSchedule();
+    //              }
+    //              _reinitializeNeeded = true;
+    //          } else if (attribute == decimation) {
+    //              IntToken token = (IntToken)(decimation.getToken());
+    //              _decimationValue = token.intValue();
+    //              if (_decimationValue <= 0) {
+    //                  throw new IllegalActionException(this,
+    //                          "Invalid decimation: " + _decimationValue
+    //                          + ". Must be positive.");
+    //              }
+    //              input.setTokenConsumptionRate(_decimationValue);
+    //              Director director = getDirector();
+    //              if (director != null) {
+    //                  director.invalidateSchedule();
+    //              }
+    //              _reinitializeNeeded = true;
+    //          } else if (attribute == decimationPhase) {
+    //              IntToken token = (IntToken)(decimationPhase.getToken());
+    //              _decimationPhaseValue = token.intValue();
+    //              if (_decimationPhaseValue < 0) {
+    //                  throw new IllegalActionException(this,
+    //                          "Invalid decimationPhase: " + _decimationPhaseValue
+    //                          + ". Must be nonnegative.");
+    //              }
+    //              _reinitializeNeeded = true;
+    //          } else if (attribute == taps) {
+    //              ArrayToken tapsToken = (ArrayToken)(taps.getToken());
+    //              _taps = tapsToken.arrayValue();
 
-//              // Get a token representing zero in the appropriate type.
-//              _zero = _taps[0].zero();
+    //              // Get a token representing zero in the appropriate type.
+    //              _zero = _taps[0].zero();
 
-//              _reinitializeNeeded = true;
-//          } else {
-//              super.attributeChanged(attribute);
-//          }
-//      }
+    //              _reinitializeNeeded = true;
+    //          } else {
+    //              super.attributeChanged(attribute);
+    //          }
+    //      }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then resets the type constraints.
@@ -242,29 +242,29 @@ public class FIR extends TypedAtomicActor {
         FIR newObject = (FIR)(super.clone(workspace));
 
         // Set the type constraints.
-//          ArrayType paramType = (ArrayType)newObject.taps.getType();
-//          InequalityTerm elementTerm = paramType.getElementTypeTerm();
-//          newObject.output.setTypeAtLeast(elementTerm);
+        //          ArrayType paramType = (ArrayType)newObject.taps.getType();
+        //          InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        //          newObject.output.setTypeAtLeast(elementTerm);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 
     // FIXME: State update should occur in postfire.
 
-//      public void fire() throws IllegalActionException {
-//          int a,b,c,d;
+    //      public void fire() throws IllegalActionException {
+    //          int a,b,c,d;
 
-//          a=3;
-//          b=a*4;
+    //          a=3;
+    //          b=a*4;
 
-//          a=2;
-//          c=a+5;
-//          d=b-c;
+    //          a=2;
+    //          c=a+5;
+    //          d=b-c;
 
-//          if (d > 8){
-//              d=a*a;
-//          }
-//      }
+    //          if (d > 8){
+    //              d=a*a;
+    //          }
+    //      }
 
     /** Consume the inputs and produce the outputs of the FIR filter.
      *  @exception IllegalActionException If parameter values are invalid,
@@ -283,21 +283,21 @@ public class FIR extends TypedAtomicActor {
 
         _data0=input.get(0);
 
-//          switch(_mostRecent){
-//          case 0: _data0 = input.get(0); break;
-//          case 1: _data1 = input.get(0); break;
-//          case 2: _data2 = input.get(0);
-//          }
+        //          switch(_mostRecent){
+        //          case 0: _data0 = input.get(0); break;
+        //          case 1: _data1 = input.get(0); break;
+        //          case 2: _data2 = input.get(0);
+        //          }
 
         //Until switch support is working, use a bunch of ifs (should be
         //identical in the results, however
-//          if (_mostRecent == 0){
-//              _data0 = input.get(0);
-//          } else if (_mostRecent == 1){
-//              _data1 = input.get(0);
-//          } else if (_mostRecent == 2){
-//              _data2 = input.get(0);
-//          }
+        //          if (_mostRecent == 0){
+        //              _data0 = input.get(0);
+        //          } else if (_mostRecent == 1){
+        //              _data1 = input.get(0);
+        //          } else if (_mostRecent == 2){
+        //              _data2 = input.get(0);
+        //          }
 
         //Can't support arrays yet
         //_data[_mostRecent] = input.get(0);
@@ -311,21 +311,21 @@ public class FIR extends TypedAtomicActor {
         //while (phase < 1) {
         _outToken = _zero;
 
-                // Compute the inner product.
-//          for (int i = 0; i < _phaseLength; i++) {
-//              int tapsIndex = i;
+        // Compute the inner product.
+        //          for (int i = 0; i < _phaseLength; i++) {
+        //              int tapsIndex = i;
 
-//              int dataIndex =
-//                  (_mostRecent + i)%(_data.length);
+        //              int dataIndex =
+        //                  (_mostRecent + i)%(_data.length);
 
-//              if (tapsIndex < _taps.length) {
-//                  _tapItem = _taps[tapsIndex];
-//                  _dataItem = _data[dataIndex];
-//                  _dataItem = _tapItem.multiply( _dataItem );
-//                  _outToken = _outToken.add( _dataItem );
-//              }
-//              // else assume tap is zero, so do nothing.
-//          }
+        //              if (tapsIndex < _taps.length) {
+        //                  _tapItem = _taps[tapsIndex];
+        //                  _dataItem = _data[dataIndex];
+        //                  _dataItem = _tapItem.multiply( _dataItem );
+        //                  _outToken = _outToken.add( _dataItem );
+        //              }
+        //              // else assume tap is zero, so do nothing.
+        //          }
 
         //// Manual unrolling of above FOR loop
         int tapsIndex = 0;
@@ -349,49 +349,49 @@ public class FIR extends TypedAtomicActor {
             _outToken = _outToken.add( _dataItem );
         }
 
-//          tapsIndex = 1;
+        //          tapsIndex = 1;
 
-//          dataIndex = (_mostRecent + 1)%(3);
+        //          dataIndex = (_mostRecent + 1)%(3);
 
-//          if (tapsIndex < 3) {
-//              _tapItem = _taps1;
+        //          if (tapsIndex < 3) {
+        //              _tapItem = _taps1;
 
-//              //Man, I need to find a way to get arrays working...
-//              //_dataItem = _data[dataIndex];
+        //              //Man, I need to find a way to get arrays working...
+        //              //_dataItem = _data[dataIndex];
 
-//              if (dataIndex == 0){
-//                  _dataItem = _data0;
-//              } else if (dataIndex == 1){
-//                  _dataItem = _data1;
-//              } else if (dataIndex == 2){
-//                  _dataItem = _data2;
-//              }
+        //              if (dataIndex == 0){
+        //                  _dataItem = _data0;
+        //              } else if (dataIndex == 1){
+        //                  _dataItem = _data1;
+        //              } else if (dataIndex == 2){
+        //                  _dataItem = _data2;
+        //              }
 
-//              _dataItem = _tapItem.multiply( _dataItem );
-//              _outToken = _outToken.add( _dataItem );
-//          }
+        //              _dataItem = _tapItem.multiply( _dataItem );
+        //              _outToken = _outToken.add( _dataItem );
+        //          }
 
-//          tapsIndex = 2;
+        //          tapsIndex = 2;
 
-//          dataIndex = (_mostRecent + 2)%(3);
+        //          dataIndex = (_mostRecent + 2)%(3);
 
-//          if (tapsIndex < 3) {
-//              _tapItem = _taps2;
+        //          if (tapsIndex < 3) {
+        //              _tapItem = _taps2;
 
-//              //Man, I need to find a way to get arrays working...
-//              //_dataItem = _data[dataIndex];
+        //              //Man, I need to find a way to get arrays working...
+        //              //_dataItem = _data[dataIndex];
 
-//              if (dataIndex == 0){
-//                  _dataItem = _data0;
-//              } else if (dataIndex == 1){
-//                  _dataItem = _data1;
-//              } else if (dataIndex == 2){
-//                  _dataItem = _data2;
-//              }
+        //              if (dataIndex == 0){
+        //                  _dataItem = _data0;
+        //              } else if (dataIndex == 1){
+        //                  _dataItem = _data1;
+        //              } else if (dataIndex == 2){
+        //                  _dataItem = _data2;
+        //              }
 
-//              _dataItem = _tapItem.multiply( _dataItem );
-//              _outToken = _outToken.add( _dataItem );
-//          }
+        //              _dataItem = _tapItem.multiply( _dataItem );
+        //              _outToken = _outToken.add( _dataItem );
+        //          }
 
         output.send(0, _outToken);
     }
@@ -432,32 +432,32 @@ public class FIR extends TypedAtomicActor {
     ////                         protected methods                 ////
 
     // Reinitialize local variables in response to changes in attributes.
-//      protected void _reinitialize() throws IllegalActionException {
-//  //          if (_decimationPhaseValue >= _decimationValue) {
-//  //              throw new IllegalActionException(this,
-//  //                      "Invalid decimationPhase: " + _decimationPhaseValue
-//  //                      + ". Must be less than decimation: " + _decimationValue + ".");
-//  //          }
+    //      protected void _reinitialize() throws IllegalActionException {
+    //  //          if (_decimationPhaseValue >= _decimationValue) {
+    //  //              throw new IllegalActionException(this,
+    //  //                      "Invalid decimationPhase: " + _decimationPhaseValue
+    //  //                      + ". Must be less than decimation: " + _decimationValue + ".");
+    //  //          }
 
-//          //_phaseLength = (int)(_taps.length / _interpolationValue);
-//          _phaseLength = _taps.length;
+    //          //_phaseLength = (int)(_taps.length / _interpolationValue);
+    //          _phaseLength = _taps.length;
 
-//          //if ((_taps.length % _interpolationValue) != 0) _phaseLength++;
+    //          //if ((_taps.length % _interpolationValue) != 0) _phaseLength++;
 
-//          // Create new data array and initialize index into it.
-//          // Avoid losing the data if possible.
-//          // FIXME: data is thrown away if the filter length increases.  This
-//          // is not necessary.
-//          int length = _phaseLength;
-//          if (_data == null || _data.length != length) {
-//              _data = new Token[length];
-//              for (int i = 0; i < length; i++ ) {
-//                  _data[i] = _zero;
-//              }
-//              _mostRecent = _phaseLength;
-//          }
-//          _reinitializeNeeded = false;
-//      }
+    //          // Create new data array and initialize index into it.
+    //          // Avoid losing the data if possible.
+    //          // FIXME: data is thrown away if the filter length increases.  This
+    //          // is not necessary.
+    //          int length = _phaseLength;
+    //          if (_data == null || _data.length != length) {
+    //              _data = new Token[length];
+    //              for (int i = 0; i < length; i++ ) {
+    //                  _data[i] = _zero;
+    //              }
+    //              _mostRecent = _phaseLength;
+    //          }
+    //          _reinitializeNeeded = false;
+    //      }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

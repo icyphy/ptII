@@ -64,7 +64,7 @@ public class Predefined {
     }
 
     public void convertEntityToGraph(Entity entity, DirectedGraph graph)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         if (!isDefined(entity))
             throw new IllegalActionException(entity+" not predefined");

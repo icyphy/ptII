@@ -189,13 +189,13 @@ public class Copernicus {
      *  @return The command to create the generated code.
      */
     public static String commandToCompile(GeneratorAttribute
-                                          generatorAttribute)
-        throws Exception {
+            generatorAttribute)
+            throws Exception {
         String compileCommandTemplateFile =
             ((StringToken)
-              ((Parameter)generatorAttribute
-               .getAttribute("compileCommandTemplateFile"))
-             .getToken()).stringValue();
+                    ((Parameter)generatorAttribute
+                            .getAttribute("compileCommandTemplateFile"))
+                    .getToken()).stringValue();
         return substitute(compileCommandTemplateFile, generatorAttribute);
     }
 
@@ -211,12 +211,12 @@ public class Copernicus {
      *  @return The command to run the generated code.
      */
     public static String commandToRun(GeneratorAttribute generatorAttribute)
-        throws Exception {
+            throws Exception {
         String runCommandTemplateFile =
             ((StringToken)
-              ((Parameter)generatorAttribute
-               .getAttribute("runCommandTemplateFile"))
-             .getToken()).stringValue();
+                    ((Parameter)generatorAttribute
+                            .getAttribute("runCommandTemplateFile"))
+                    .getToken()).stringValue();
         return substitute(runCommandTemplateFile, generatorAttribute);
     }
 
@@ -228,31 +228,31 @@ public class Copernicus {
      *  the generated code.
      */
     public static void compileAndRun(GeneratorAttribute generatorAttribute)
-        throws Exception {
+            throws Exception {
         int exitValue = 1;
         if (((BooleanToken)
-             ((Parameter)generatorAttribute
-               .getAttribute("compile"))
-             .getToken()).booleanValue()) {
+                ((Parameter)generatorAttribute
+                        .getAttribute("compile"))
+                .getToken()).booleanValue()) {
             String command = commandToCompile(generatorAttribute);
             exitValue = executeCommand(command);
             if (exitValue != 0) {
                 throw new Exception("Problem executing command. "
-                                    + "Return value was: " + exitValue
-                                    + ". Command was:\n" + command);
+                        + "Return value was: " + exitValue
+                        + ". Command was:\n" + command);
             }
         }
 
         if (((BooleanToken)
-             ((Parameter)generatorAttribute
-               .getAttribute("run"))
-             .getToken()).booleanValue()) {
+                ((Parameter)generatorAttribute
+                        .getAttribute("run"))
+                .getToken()).booleanValue()) {
             String command = commandToRun(generatorAttribute);
             exitValue = executeCommand(command);
             if (exitValue != 0) {
                 throw new Exception("Problem executing command. "
-                                    + "Return value was: " + exitValue
-                                    + ". Command was:\n" + command);
+                        + "Return value was: " + exitValue
+                        + ". Command was:\n" + command);
             }
         }
     }
@@ -270,7 +270,7 @@ public class Copernicus {
 
         if (command == null || command.length() == 0 ) {
             System.out.println("Warning, null or 0 length command string "
-                               + "passed to Copernicus.executeCommand()");
+                    + "passed to Copernicus.executeCommand()");
             return 0;
         }
 
@@ -278,9 +278,9 @@ public class Copernicus {
 
         if (commands.length == 0) {
             System.out.println("Warning, command was parsed to 0 tokens, "
-                                 + "perhaps the command string was empty or "
-                                 + "consisted only of comments?\n"
-                                 + "command string was '" + command + "'");
+                    + "perhaps the command string was empty or "
+                    + "consisted only of comments?\n"
+                    + "command string was '" + command + "'");
             return 0;
         }
         System.out.println("About to execute:\n ");
@@ -296,7 +296,7 @@ public class Copernicus {
 
         // 0 indicates normal execution
         int processReturnCode = 1;
-             try {
+        try {
             // This code is similar to tcl.lang.ExecCmd, so if you
             // make changes here, please take a look at ExecCmd and
             // see if it needs updating.
@@ -323,7 +323,7 @@ public class Copernicus {
                 }
             } catch (InterruptedException interrupted) {
                 System.out.println("InterruptedException: "
-                                   + interrupted);
+                        + interrupted);
                 throw interrupted;
             }
             System.out.println("All Done.");
@@ -404,12 +404,12 @@ public class Copernicus {
             }
         }
 
-//         System.out.println("The map for " + namedObj +":");
-//         Iterator keys = substituteMap.keySet().iterator();
-//         while (keys.hasNext()) {
-//             String key = (String)keys.next();
-//             System.out.println(key + "\t" + (String)substituteMap.get(key));
-//         }
+        //         System.out.println("The map for " + namedObj +":");
+        //         Iterator keys = substituteMap.keySet().iterator();
+        //         while (keys.hasNext()) {
+        //             String key = (String)keys.next();
+        //             System.out.println(key + "\t" + (String)substituteMap.get(key));
+        //         }
 
         return substituteMap;
     }
@@ -438,7 +438,7 @@ public class Copernicus {
             }
             inputFile =
                 new BufferedReader(new InputStreamReader(inputFileURL
-                                                         .openStream()));
+                        .openStream()));
         }
         return inputFile;
     }
@@ -468,7 +468,7 @@ public class Copernicus {
         while (keys.hasNext()) {
             String key = (String)keys.next();
             input = StringUtilities.substitute(input, key,
-                                               (String)substituteMap.get(key));
+                    (String)substituteMap.get(key));
         }
         return input;
     }
@@ -484,8 +484,8 @@ public class Copernicus {
      *  @return The contents of inputFileName after doing the substitutions
      */
     public static String substitute(String inputFileName,
-                                    NamedObj namedObj)
-        throws FileNotFoundException, IOException {
+            NamedObj namedObj)
+            throws FileNotFoundException, IOException {
 
         Map substituteMap;
         try {
@@ -494,8 +494,8 @@ public class Copernicus {
             // IOException does not have a constructor that takes a
             // cause argument.
             IOException exception = new IOException("Problem generating a "
-                                                    + "substitution map for "
-                                                    + namedObj.getName());
+                    + "substitution map for "
+                    + namedObj.getName());
             exception.initCause(ex);
             throw exception;
         }
@@ -504,19 +504,19 @@ public class Copernicus {
             .getResource(inputFileName);
         if (inputFileURL == null) {
             throw new FileNotFoundException("Failed to find '"
-                                            + inputFileName
-                                            + "' as a resource");
+                    + inputFileName
+                    + "' as a resource");
         }
         BufferedReader inputReader =
             new BufferedReader(new InputStreamReader(inputFileURL
-                                                     .openStream()));
+                    .openStream()));
         String inputLine;
         StringBuffer output = new StringBuffer();
         String lineSeparator = System.getProperty("line.separator");
         while ( (inputLine = inputReader.readLine()) != null) {
             output.append(substitute(inputLine + lineSeparator,
                     substituteMap));
-         }
+        }
         inputReader.close();
         return output.toString();
     }
@@ -540,7 +540,7 @@ public class Copernicus {
         String inputLine;
         while ( (inputLine = inputFile.readLine()) != null) {
             outputFile.println(substitute(inputLine, substituteMap));
-         }
+        }
         inputFile.close();
         outputFile.close();
     }
@@ -719,7 +719,7 @@ public class Copernicus {
 
     /** The form of the command line. */
     protected String _commandTemplate =
-        "copernicus [options . . .] [relative xml filename]\n"
+    "copernicus [options . . .] [relative xml filename]\n"
     + "This command used to generate code from a model."
     + "This command is very complex, see $PTII/doc/codegen.htm for details\n\n"
     + "This command does command line argument substitution by reading\n"

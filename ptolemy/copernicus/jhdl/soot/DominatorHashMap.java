@@ -132,10 +132,10 @@ public class DominatorHashMap extends HashMap {
             Node n = (Node) i.next();
             sb.append(_graph.nodeString(n)+"=");
             Object o = _immediateDominators.get(n);
-//              if (o==null)
-//                  sb.append("none");
-//              else
-//                  sb.append(_graph.nodeString((Node)o));
+            //              if (o==null)
+            //                  sb.append("none");
+            //              else
+            //                  sb.append(_graph.nodeString((Node)o));
             if (o instanceof Node)
                 sb.append(_graph.nodeString((Node) o));
             else
@@ -204,7 +204,7 @@ public class DominatorHashMap extends HashMap {
 
         int graphSize = _graph.nodeCount();
 
-         // Create a Dominator Vector for each node in graph
+        // Create a Dominator Vector for each node in graph
         for (Iterator i = _graph.nodes().iterator(); i.hasNext();) {
             Node n = (Node) i.next();
             Vector d=null;
@@ -233,8 +233,8 @@ public class DominatorHashMap extends HashMap {
 
                 if (n==_root)
                     continue;
-//                    System.out.println("Dominators for block "+
-//                                       ((Block)n.getWeight()).getIndexInMethod());
+                //                    System.out.println("Dominators for block "+
+                //                                       ((Block)n.getWeight()).getIndexInMethod());
                 Vector nDominators = (Vector) get(n);
                 // Loop through predecessors of n
                 Vector intersection=null;
@@ -255,11 +255,11 @@ public class DominatorHashMap extends HashMap {
                     } else {
                         // compute the intersection with p
                         Vector remove = new Vector(intersection.size());
-                          for (Iterator k=intersection.iterator();k.hasNext();) {
-                              Object o=k.next();
-                              if (!(pDominators.contains(o)))
+                        for (Iterator k=intersection.iterator();k.hasNext();) {
+                            Object o=k.next();
+                            if (!(pDominators.contains(o)))
                                 remove.add(o);
-                          }
+                        }
                         // remove elements that need removing
                         for (Iterator k=remove.iterator();k.hasNext();) {
                             intersection.remove(k.next());
@@ -271,7 +271,7 @@ public class DominatorHashMap extends HashMap {
                 // Add itself.
                 intersection.add(n);
                 if (intersection.size() < nDominators.size()) {
-                      changed = true;
+                    changed = true;
                     put(n,intersection);
                 }
             }
@@ -287,13 +287,13 @@ public class DominatorHashMap extends HashMap {
     }
 
     /*
-    protected Object[] _reverseList(Object [] ol) {
-        int len = ol.length;
-        Object[] o = new Object[len];
-        for (int i=0;i<ol.length;i++)
-            o[i]=ol[len-i-1];
-        return o;
-    }
+      protected Object[] _reverseList(Object [] ol) {
+      int len = ol.length;
+      Object[] o = new Object[len];
+      for (int i=0;i<ol.length;i++)
+      o[i]=ol[len-i-1];
+      return o;
+      }
     */
     protected Collection _reverseList(Collection l) {
         Vector v = new Vector(l.size());
@@ -308,7 +308,7 @@ public class DominatorHashMap extends HashMap {
         try {
             DominatorHashMap dhm = new DominatorHashMap(_cfg);
             System.out.println("Dominators\n"+dhm);
-             DominatorHashMap post = new DominatorHashMap(_cfg,true);
+            DominatorHashMap post = new DominatorHashMap(_cfg,true);
             System.out.println("Post Dominators\n"+post);
             System.out.println("Immediate Dominators");
             System.out.println(dhm.immediateDominatorsString());

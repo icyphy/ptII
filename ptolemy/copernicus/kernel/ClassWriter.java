@@ -106,9 +106,9 @@ public class ClassWriter extends SceneTransformer {
             } catch (Exception ex) {
                 // If we get an IOException, we might not have any idea
                 // of which directory was problematic
-                 throw new RuntimeException("Creating class file for '" +
-                         theClass + "' in directory '" + outDir + "' failed",
-                         ex);
+                throw new RuntimeException("Creating class file for '" +
+                        theClass + "' in directory '" + outDir + "' failed",
+                        ex);
             }
         }
     }

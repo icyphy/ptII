@@ -136,12 +136,12 @@ public abstract class AbstractCompoundExpression
     public boolean equivTo(Object o)
     {
         if (o instanceof AbstractCompoundExpression)
-        {
-            AbstractCompoundExpression abe = (AbstractCompoundExpression)o;
-            return op1Box.getValue().equivTo(abe.op1Box.getValue()) &&
-                op2Box.getValue().equivTo(abe.op2Box.getValue()) &&
-                getSymbol().equals(abe.getSymbol());
-        }
+            {
+                AbstractCompoundExpression abe = (AbstractCompoundExpression)o;
+                return op1Box.getValue().equivTo(abe.op1Box.getValue()) &&
+                    op2Box.getValue().equivTo(abe.op2Box.getValue()) &&
+                    getSymbol().equals(abe.getSymbol());
+            }
         return false;
     }
 

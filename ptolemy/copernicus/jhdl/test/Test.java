@@ -64,7 +64,7 @@ public class Test {
      * used for all testing of JHDL code generation files.
      **/
     public static final String DEFAULT_TESTCLASS =
-        "ptolemy.copernicus.jhdl.test.test1";
+    "ptolemy.copernicus.jhdl.test.test1";
 
     /**
      * This static String constant specifies the default method name

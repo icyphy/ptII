@@ -350,16 +350,16 @@ public class MakefileWriter extends SceneTransformer {
 
     /** Return true if _possibleSubdirectory is a subdirectory of parent. */
     private static boolean _isSubdirectory(String parent,
-                                    String possibleSubdirectory)
-        throws IOException {
+            String possibleSubdirectory)
+            throws IOException {
         //System.out.println("_isSubdirectory: start \n\t" + parent + "\n\t" +
         //                           possibleSubdirectory);
         File parentFile = new File(parent);
         File possibleSubdirectoryFile = new File(possibleSubdirectory);
         if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
             throw new IOException ("'" + parent + "' or '"
-                                   + possibleSubdirectory + "' is a file, "
-                                   + "it should be a directory");
+                    + possibleSubdirectory + "' is a file, "
+                    + "it should be a directory");
         }
         String parentCanonical = parentFile.getCanonicalPath();
         String possibleSubdirectoryCanonical =

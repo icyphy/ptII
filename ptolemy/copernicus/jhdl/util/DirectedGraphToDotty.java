@@ -60,8 +60,8 @@ public class DirectedGraphToDotty extends GraphToDotty {
             Object source = nodes.next();
             String name="v" + count++;
             sb.append("\t\""+name+"\" [label=\""
-                      +convertSpecialsToEscapes(source.toString())
-                      +"\"];\r\n");
+                    +convertSpecialsToEscapes(source.toString())
+                    +"\"];\r\n");
             hm.put(source, name);
         }
         sb.append("\t// Edges\r\n");

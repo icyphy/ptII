@@ -43,12 +43,12 @@ import soot.jimple.internal.*;
 public class BinaryMux {
 
     /*
-    public BinaryMux(Node t, Node f, Node c, String name) {
-        _trueNode = t;
-        _falseNode = f;
-        _conditionNode = c;
-        _name = name;
-    }
+      public BinaryMux(Node t, Node f, Node c, String name) {
+      _trueNode = t;
+      _falseNode = f;
+      _conditionNode = c;
+      _name = name;
+      }
     */
     public BinaryMux(String name) {
         _name = name;
@@ -59,7 +59,7 @@ public class BinaryMux {
         for (Iterator i=g.inputEdges(muxnode).iterator();i.hasNext();) {
             Edge e = (Edge) i.next();
             if (e.hasWeight() &&
-                ((String) e.getWeight()).equals(weight)) {
+                    ((String) e.getWeight()).equals(weight)) {
                 n = e.source();
             }
         }
@@ -85,14 +85,14 @@ public class BinaryMux {
     public static final String CONDITION_LABEL="condition";
 
     /*
-    // Hack. Need to come up with a better way to represent Values
-    public boolean equivTo(Object o) { return false; }
-    public int equivHashCode() { return 0; }
-    public void convertToBaf(JimpleToBafContext context, List l) {}
-    public void apply(Switch sw) {}
-    public List getUseBoxes() { return null; }
-    public Type getType() {return null;}
-    public Object clone() { return null;}
+      // Hack. Need to come up with a better way to represent Values
+      public boolean equivTo(Object o) { return false; }
+      public int equivHashCode() { return 0; }
+      public void convertToBaf(JimpleToBafContext context, List l) {}
+      public void apply(Switch sw) {}
+      public List getUseBoxes() { return null; }
+      public Type getType() {return null;}
+      public Object clone() { return null;}
     */
 
     String _name;

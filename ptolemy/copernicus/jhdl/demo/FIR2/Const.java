@@ -66,8 +66,8 @@ public class Const extends TypedAtomicActor {
     public Const(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-            value = new Parameter(this, "value", new IntToken(1));
-            output = new TypedIOPort(this, "output", false, true);
+        value = new Parameter(this, "value", new IntToken(1));
+        output = new TypedIOPort(this, "output", false, true);
 
         // Set the type constraint.
         output.setTypeAtLeast(value);

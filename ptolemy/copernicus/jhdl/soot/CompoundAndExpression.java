@@ -57,12 +57,12 @@ public class CompoundAndExpression extends AbstractCompoundExpression {
     public final String getSymbol() { return " && "; }
     public Object clone() {
         return new CompoundAndExpression( Jimple.cloneIfNecessary(getOp1()),
-                                          Jimple.cloneIfNecessary(getOp2()));
+                Jimple.cloneIfNecessary(getOp2()));
 
     }
     public CompoundBooleanExpression invert() throws IllegalActionException {
         // Apply demorgan's theorem
         return new CompoundOrExpression( invertValue(getOp1()),
-                                         invertValue(getOp2()) );
+                invertValue(getOp2()) );
     }
 }
