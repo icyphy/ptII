@@ -73,9 +73,14 @@ public class RLEDiva extends PNApplet implements Runnable {
      */
     private HashMap nodeMap = new HashMap();
 
+    Panel divapanel;
+
     /** The JGraph where we display stuff
      */
     JGraph jgraph = new JGraph();
+
+    /** Listener for traces and graph layout */
+    StateListener listener;
 
     GraphModel _gmodel;
 
@@ -120,13 +125,47 @@ public class RLEDiva extends PNApplet implements Runnable {
 
         // Process the background parameter.
         super.init();
+	setLayout(new BorderLayout(15, 15));
+
+	//Add a control panel in the main panel.
+	_goButton = new Button("Go");
+	Panel controlPanel = new Panel();
+	//add(_goButton);
+	controlPanel.add(_goButton);
+	_goButton.addActionListener(new GoButtonListener());
 
 	Button layout = new Button("Layout");
-	add("North", layout);
+	controlPanel.add(layout);
 	layout.addActionListener(new LayoutListener());
+
+	add(controlPanel, BorderLayout.NORTH);
+
+        Panel displayPanel = new Panel();
+        displayPanel.setLayout(new BorderLayout(15, 15));
+        displayPanel.setSize(420, 200);
+
+        Panel originalPanel = new Panel();
+	//FIXME: HACK HACK
+        originalPanel.setSize(134, 94);
+        displayPanel.add(originalPanel, "West");
+
+        Panel compressedPanel = new Panel();
+	//FIXME: HACK HACK
+        compressedPanel.setSize(134, 94);
+        displayPanel.add(compressedPanel, "East");
+
+	add(displayPanel, BorderLayout.CENTER);
+        //validate();
 
         // Construct the Ptolemy kernel topology
         constructPtolemyModel();
+	a8.setPanel(compressedPanel);
+	a7.setPanel(originalPanel);
+
+	divapanel = new Panel();
+	divapanel.setLayout(new BorderLayout(15, 15));    
+	divapanel.setSize(850, 700);
+	add(divapanel, BorderLayout.SOUTH);
 	
         // Construct the graph representing the PN topology
 	_gmodel = constructThreadGraph();
@@ -161,12 +200,14 @@ public class RLEDiva extends PNApplet implements Runnable {
 	    ex.printStackTrace();
 	    System.exit(0);
 	}
-
-
+	
+	validate();
 
         // Add the process state listener
-        _director.addProcessListener(new StateListener(
-		(GraphPane) jgraph.getCanvasPane()));
+	//FIXME: HACK HACK HACK 
+	listener = new StateListener((GraphPane) jgraph.getCanvasPane());
+        _director.addProcessListener(listener);
+	
 	
         // Run the model
 	System.out.println("Connections made");
@@ -309,7 +350,7 @@ public class RLEDiva extends PNApplet implements Runnable {
      * and then set the model once the window is showing.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-	add("North", g);
+	divapanel.add(g, BorderLayout.NORTH);
 	g.setPreferredSize(new Dimension(800, 300));
 
         // Make sure we have the right renders and then
@@ -358,7 +399,7 @@ public class RLEDiva extends PNApplet implements Runnable {
         //traceWindow = new BasicWindow("PN Thread Trace");
         tracePane = new TracePane();
         JCanvas traceWidget = new JCanvas(tracePane);
-        add("South", traceWidget);
+        divapanel.add(traceWidget, BorderLayout.SOUTH);
 	traceWidget.setPreferredSize(new Dimension(800, 300));
 
         // Configure the view
@@ -399,7 +440,7 @@ public class RLEDiva extends PNApplet implements Runnable {
         private double _startTime[] = new double[9];
 
         // The absolute start time
-        private long _start = 0;
+        private long _start = -1;
 
         // The current element of each state;
         private TraceModel.Element _currentElement[];
@@ -410,7 +451,7 @@ public class RLEDiva extends PNApplet implements Runnable {
             _graphPane = pane;
 
             // Set system "start" time
-            _start = System.currentTimeMillis();
+            //_start = System.currentTimeMillis();
 
            // Initial elements of all traces
             TraceModel model = tracePane.getTraceModel();
@@ -437,6 +478,13 @@ public class RLEDiva extends PNApplet implements Runnable {
                 }
             }
         }
+
+	/** Set the starting time for the trace graph in milliseconds
+	 *  @time the current system time in milliseconds
+	 */
+	public void setStartTime(long time) {
+	    _start = time;
+	}
 
         /** Respond to a state changed event.
          */
@@ -613,7 +661,8 @@ public class RLEDiva extends PNApplet implements Runnable {
         }
     }   
 
-    /*private */Manager _manager;
+    /*private */
+    //Manager _manager;
     /*private*/ boolean _isSimulationRunning = false;
     Thread simulationThread;
     int _SIZE = 150;
@@ -636,6 +685,8 @@ public class RLEDiva extends PNApplet implements Runnable {
                 if (!(simulationThread.isAlive())) {
                     simulationThread = new Thread(RLEDiva.this);
                     // start() will eventually call the run() method.
+		    RLEDiva.this.listener.setStartTime(
+			    System.currentTimeMillis());
                     simulationThread.start();
                 }
             } catch (Exception e) {
