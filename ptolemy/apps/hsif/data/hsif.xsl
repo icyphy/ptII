@@ -797,7 +797,7 @@
                 <xsl:when test="$temp!='NOP'"><xsl:value-of select="$temp"/></xsl:when>
             </xsl:choose>
         </xsl:for-each>
-        <xsl:value-of select="@value|key('nid',@var)/@name|key('nid',@par)/@name"/>
+        <xsl:value-of select="@value|key('nid',@var)/@name|@name"/>
     </xsl:for-each>
     <!-- weird behaviors -->
     <xsl:apply-templates select="ParExpr"/>
