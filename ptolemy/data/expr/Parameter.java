@@ -1,4 +1,4 @@
-/* Parameter is another name for a Variable.
+/* Parameter is a subclass of Variable with support for strings.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,6 +30,7 @@
 */
 
 package ptolemy.data.expr;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -39,15 +40,30 @@ import ptolemy.util.StringUtilities;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Parameter
 /**
-Parameter is almost identical to Variable, its base class, with the
-only difference being the MoML representation, and the fact that it
-is fully visible in a user interface.  The base class by default has no MoML
-representation, and therefore is not a persistent object.  This class
-has one by default.
+Parameter extends Variable with support for string-valued variables that
+makes these friendlier at the user interface level. In particular,
+after calling setStringMode(true), then when setting the value of
+this parameter, the string that you pass to setExpression(String)
+is taken to be literally the value of the instance of StringToken
+that represents the value of this parameter. It is not necessary
+to enclose it in quotation marks (and indeed, if you do, the quotation
+marks will become part of the value of the string).  In addition,
+the type of this parameter will be set to string.
+<p>
+In addition, this class supports an annotation that specifies
+choices for values.  A user interface can use this to present a
+choice dialog that offers the specified values.  This is typically
+used when a particular set of choices make sense.  The values can
+be any expression, or if used in conjunction with string mode,
+any string.
+<p>
+By default, an instance of Parameter, unlike Variable, is persistent.
 <p>
 By convention, an instance of NamedObj has a set of attributes,
 some of which are visible to users and some of which are not.
@@ -142,6 +158,17 @@ public class Parameter extends Variable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a choice.
+     *  @param choice A choice to offer to the user.
+     *  @see #removeChoice(String)
+     */
+    public void addChoice(String choice) {
+        if (_choices == null) {
+            _choices = new ArrayList();
+        }
+        _choices.add(choice);
+    }
+
     /** Write a MoML description of this object, unless this object is
      *  not persistent. MoML is an XML modeling markup language.
      *  In this class, the object is identified by the "property"
@@ -186,4 +213,104 @@ public class Parameter extends Variable {
         output.write(_getIndentPrefix(depth) + "</"
                 + getMoMLInfo().elementName + ">\n");
     }
+    
+    /** Get choices.
+     *  @return An array of choices, or null if there are none.
+     *  @see #addChoice(String)
+     */
+    public String[] getChoices() {
+        if (_choices == null || _choices.size() == 0) {
+            return null;
+        } else {
+            return (String [])_choices.toArray(new String[_choices.size()]);
+        }
+    }
+    
+    /** Override the base class to remove the enclosing quotation marks
+     *  and reverse the escaping of quotation marks and backslashes that
+     *  is done in setExpression() if this parameter is in string mode.
+     *  @return The expression used to set the value of this parameter.
+     *  @see #setExpression(String)
+     */
+    public String getExpression() {
+        String value = super.getExpression();
+        if (isStringMode()) {
+            String trimmed = value.trim();
+            if (trimmed.startsWith("\"") && trimmed.endsWith("\"")) {
+                value = trimmed.substring(1, trimmed.length()-1);
+            }
+            // NOTE: To get a backslash in a regexp, need two backslashes.
+            // To get two backslashes in a string, you need four.
+            // Hence the second substitution looks really weird.
+            // It is not clear to me why we need eight in the replacement,
+            // but it works.
+            value = value.replaceAll("\\\\\"", "\"").replaceAll("\\\\\\\\", "\\\\");
+        }
+        return value;
+    }
+    
+    /** Return true if this parameter is in string mode.
+     *  @return True if this parameter is in string mode.
+     *  @see #setStringMode(boolean)
+     */
+    public boolean isStringMode() {
+        return _stringMode;
+    }
+    
+    /** Remove a choice.
+     *  @param choice A choice to remove from the list offered to the user.
+     *  @see #removeChoice(String)
+     */
+    public void removeChoice(String choice) {
+        if (_choices != null) {
+            _choices.remove(choice);
+        }
+    }
+    
+    /** Override the base class to wrap the argument in quotation marks
+     *  if this parameter is in string mode, and to escape quotation marks
+     *  and backslashes so that they persist literally in the string.
+     *  @param expr The expression for this parameter.
+     */
+    public void setExpression(String expr) {
+        if (isStringMode()) {
+            // NOTE: To get a backslash in a regexp, need two backslashes.
+            // To get two backslashes in a string, you need four.
+            // Hence the second substitution looks really weird.
+            // It is not clear to me why we need eight in the replacement,
+            // but it works.
+            expr = "\""
+                    + expr.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\"")
+                    + "\"";
+        }
+        super.setExpression(expr);
+    }
+    
+    /** Specify whether this parameter should be in string mode.
+     *  If the argument is true, then specify that the type of this
+     *  parameter is string. Otherwise, specify that the type is
+     *  unknown.
+     *  @param stringMode True to put the parameter in string mode.
+     *  @exception IllegalActionException If the current value of this
+     *   parameter is incompatible with the resulting type.
+     *  @see #isStringMode()
+     */
+    public void setStringMode(boolean stringMode)
+            throws IllegalActionException {
+        _stringMode = stringMode;
+        if (_stringMode) {
+            setTypeEquals(BaseType.STRING);
+        } else {
+            setTypeEquals(BaseType.UNKNOWN);
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The List of choices. */
+    private List _choices;
+
+    /** Indicator of whether this parameter is in string mode. */
+    private boolean _stringMode;
 }

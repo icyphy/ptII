@@ -99,6 +99,7 @@ JSRCS = \
         ParserScope.java \
         ScopeExtender.java \
         ScopeExtendingAttribute.java \
+        StringParameter.java \
 	TokenMgrError.java \
 	UnknownResultException.java \
 	UtilityFunctions.java \

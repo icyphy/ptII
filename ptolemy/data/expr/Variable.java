@@ -32,8 +32,6 @@ in expressions.
 
 package ptolemy.data.expr;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
