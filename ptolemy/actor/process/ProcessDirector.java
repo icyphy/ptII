@@ -147,8 +147,8 @@ public class ProcessDirector extends Director {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
-            while (!_isDeadlocked() && !_areAllThreadsStopped()) {
-                workspace.wait(this);
+            while( !_areAllThreadsStopped() && !_isDeadlocked() ) {
+		workspace.wait(this);
             }
             if( _isDeadlocked() ) {
                 _notdone = !_handleDeadlock();
@@ -507,7 +507,7 @@ public class ProcessDirector extends Director {
      */
     protected synchronized boolean _areAllThreadsStopped() {
 	// All threads are stopped due to stopFire()
-	if( _threadsStopped != 0 && _threadsStopped >= _actorsActive ) {
+	if( _threadsStopped > 0 && _threadsStopped >= _actorsActive ) {
 	    return true; 
 	} 
 	return false;
@@ -663,4 +663,5 @@ public class ProcessDirector extends Director {
     // A count of the active threads controlled by this director that
     // have been stopped
     private int _threadsStopped = 0;
+
 }
