@@ -42,6 +42,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -71,7 +72,7 @@ command line argument that names a directory in ptolemy/configs that
 contains a configuration.xml file.  For example, if we call vergil
 -ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and
 ptolemy/configs/ptiny/intro.htm.  The default configuration is
-ptolemy/configs/vergilConfiguration.xml, which is loaded before any
+ptolemy/configs/full/configuration.xml, which is loaded before any
 other command-line arguments are processed.
 
 <p>This application also takes an optional command line argument pair
@@ -88,8 +89,6 @@ are equivalent
 <p>
 If there are no command-line arguments at all, then the configuration
 file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
-
-
 
 @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands 
 @version $Id$
@@ -213,7 +212,7 @@ public class VergilApplication extends MoMLApplication {
     ////                         protected methods                 ////
 
     /** Return a default Configuration.  The initial default configuration
-     *  is the MoML file ptolemy/configs/vergilConfiguration.xml, but
+     *  is the MoML file ptolemy/configs/full/configuration.xml, but
      *  using different command line arguments can change the value    
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
@@ -221,7 +220,8 @@ public class VergilApplication extends MoMLApplication {
     protected Configuration _createDefaultConfiguration() throws Exception {
 
         if (_configurationURLSpec == null) {
-            _configurationURLSpec = "ptolemy/configs/vergilConfiguration.xml";
+            _configurationURLSpec =
+                "ptolemy/configs/full/configuration.xml";
         }
         Configuration configuration = null;
         try {
@@ -279,13 +279,12 @@ public class VergilApplication extends MoMLApplication {
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl.openStream());
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
-        URL idurl;
+
         if (_configurationSubdirectory == null) {
-            idurl = specToURL("ptolemy/configs/intro.htm");
-        } else {
-            idurl = specToURL("ptolemy/configs/"
-                    + _configurationSubdirectory + "/intro.htm");
+            _configurationSubdirectory = "full";
         }
+        URL idurl = specToURL("ptolemy/configs/"
+                + _configurationSubdirectory + "/intro.htm");
 
         doc.identifier.setExpression(idurl.toExternalForm());
         return configuration;
@@ -298,7 +297,7 @@ public class VergilApplication extends MoMLApplication {
     protected void _parseArgs(final String args[]) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
 
-//         // NOTE: Java superstition dictates that if you want something
+//         // FIXME: Java superstition dictates that if you want something
 //         // to work, you should invoke it in event thread.  Otherwise,
 //         // weird things happens at the user interface level.  This
 //         // seems to prevent occasional errors rending HTML.
@@ -378,16 +377,50 @@ public class VergilApplication extends MoMLApplication {
                 result += "\nThe following Boolean flags start vergil using "
                     + "different configurations:\n";
                 for(i = 0; i < configurationDirectories.length; i++) {
-                    result += " -" + configurationDirectories[i].getName()
-                        + "\tread in "
-                        + configurationDirectories[i] + File.separator
-                        + "configuration.xml\n";
+                    result += " -" + configurationDirectories[i].getName();
+                    String configurationFileName = configurationDirectories[i]
+                        + File.separator
+                        + "configuration.xml";
+                    boolean printDefaultConfigurationMessage = true;
+                    try {
+                        // Read the configuration and get the top level docs
+
+                        // FIXME: this will not work if the configs are
+                        // in jar files.
+
+                        // FIXME: Skip jxta, since it starts up the jxta config
+                        // tools.
+                        if (!configurationDirectories[i]
+                                .getName().equals("jxta")) {
+                            Configuration configuration =
+                                _readConfiguration(configurationFileName);
+                            if (configuration != null
+                                    && configuration.getAttribute("_doc") 
+                                    != null
+                                    && configuration.getAttribute("_doc") 
+                                    instanceof Documentation
+                                ) {
+                                Documentation doc = 
+                                    (Documentation)configuration
+                                    .getAttribute("_doc");
+                                result += "\t" + doc.getValue() + "\n";
+                                printDefaultConfigurationMessage = false;
+                            }
+                        }
+                    } catch (Exception ex) {
+                        //result += "\tCould not read configuration" 
+                        //    + "\n" + ex;
+                        //ex.printStackTrace();
+                    }
+                    if (printDefaultConfigurationMessage) {
+                        result += "\tuses "
+                            + configurationFileName + "\n";
+                    }
                 } 
             }
         } catch (Exception ex) {
-            result += "Warning: Failed to find any configurations in "
+            result += "Warning: Failed to find configuration(s) in "
                 + "ptolemy/configs" + ex;
-
         }
         return result;
     }
