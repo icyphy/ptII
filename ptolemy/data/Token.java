@@ -65,31 +65,31 @@ public class Token implements Serializable {
      *  argument Token added to the value of this Token.
      *  It should be overridden in derived
      *  classes to provide type specific actions for add.
-     *  @param rightArg The token whose value we add to the value of
+     *  @param rightArgument The token whose value we add to the value of
      *   this token.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token add(Token rightArg) throws IllegalActionException {
+    public Token add(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException("Addition not supported between "
                 + this.getClass().getName() + " and "
-                + rightArg.getClass().getName() + ".");
+                + rightArgument.getClass().getName() + ".");
     }
 
     /** Return a new token whose value is the value of this
      *  Token added to the value of the argument Token.
      *  It should be overridden in derived classes
      *  to provide type specific actions for add.
-     *  @param leftArg The token containing the value to which we add the
+     *  @param leftArgument The token containing the value to which we add the
      *   value of this token to get the value of the new token.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token addReverse(Token leftArg) throws IllegalActionException {
+    public Token addReverse(Token leftArgument) throws IllegalActionException {
         throw new IllegalActionException("Addition not supported between "
-                + leftArg.getClass().getName() + " and "
+                + leftArgument.getClass().getName() + " and "
                 + this.getClass().getName() + ".");
     }
 
@@ -171,30 +171,30 @@ public class Token implements Serializable {
      *  modulo the value of the argument token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for modulo.
-     *  @param rightArg The token whose value we do modulo with.
+     *  @param rightArgument The token whose value we do modulo with.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token modulo(Token rightArg) throws  IllegalActionException {
+    public Token modulo(Token rightArgument) throws  IllegalActionException {
         throw new IllegalActionException("Modulo operation not supported: "
                 + this.getClass().getName() + " modulo "
-                + rightArg.getClass().getName() + ".");
+                + rightArgument.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of the argument token
      *  modulo the value of this token.
      *  This should be overridden in derived classes to provide type specific
      *  actions for modulo.
-     *  @param leftArg The token whose value we modulo on.
+     *  @param leftArgument The token whose value we modulo on.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token moduloReverse(Token leftArg)
+    public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         throw new IllegalActionException("Modulo operation not supported on "
-                + leftArg.getClass().getName() + " objects modulo "
+                + leftArgument.getClass().getName() + " objects modulo "
                 + this.getClass().getName() + " objects.");
     }
 
@@ -247,30 +247,30 @@ public class Token implements Serializable {
      *  subtracted from the value of this Token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for subtract.
-     *  @param rightArg The token whose value we subtract from this Token.
+     *  @param rightArgument The token whose value we subtract from this Token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token subtract(Token rightArg) throws  IllegalActionException {
+    public Token subtract(Token rightArgument) throws  IllegalActionException {
         throw new IllegalActionException("Subtraction not supported on "
                 + this.getClass().getName() + " minus "
-                + rightArg.getClass().getName() + ".");
+                + rightArgument.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of this Token
      *  subtracted from the value of the argument Token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for subtract.
-     *  @param leftArg The token to subtract the value of this Token from.
+     *  @param leftArgument The token to subtract the value of this Token from.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token subtractReverse(Token leftArg)
+    public Token subtractReverse(Token leftArgument)
             throws  IllegalActionException {
         throw new IllegalActionException("Subtraction not supported on "
-                + leftArg.getClass().getName() + " minus "
+                + leftArgument.getClass().getName() + " minus "
                 + this.getClass().getName() + ".");
     }
 

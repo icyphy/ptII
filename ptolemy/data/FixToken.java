@@ -411,21 +411,21 @@ public class FixToken extends ScalarToken {
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be subtracted from this Token.
      */
-    public Token subtract(Token rightArg)
+    public Token subtract(Token rightArgument)
 	    throws IllegalActionException {
-        int compare = TypeLattice.compare(this, rightArg);
+        int compare = TypeLattice.compare(this, rightArgument);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("FixToken.subtract: " +
-                    "type of argument: " + rightArg.getClass().getName() +
+                    "type of argument: " + rightArgument.getClass().getName() +
                     "is incomparable with FixToken in the type " +
                     "hierarchy.");
         }
 
         if (compare == CPO.LOWER) {
-            return rightArg.subtractReverse(this);
+            return rightArgument.subtractReverse(this);
         } else {
 	    // argument type is lower or the same as FixPoint.
-	    FixToken comptoken = (FixToken)convert(rightArg);
+	    FixToken comptoken = (FixToken)convert(rightArgument);
             FixPoint result = _value.subtract(comptoken.fixValue());
             return new FixToken(result);
         }
@@ -434,21 +434,21 @@ public class FixToken extends ScalarToken {
     /** Return a new token whose value is the value of this token
      *  subtracted from the value of the argument token. The type of
      *  the specified token must be lower than FixToken.
-     *  @param leftArg The token to subtract this token from.
+     *  @param leftArgument The token to subtract this token from.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than FixToken;
      */
-    public Token subtractReverse(Token leftArg)
+    public Token subtractReverse(Token leftArgument)
 	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, leftArg);
+	int compare = TypeLattice.compare(this, leftArgument);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                    + "token " + leftArg.getClass().getName() + " is not "
+                    + "token " + leftArgument.getClass().getName() + " is not "
                     + "lower than " + getClass().getName());
         }
 
-        FixToken tem = (FixToken)this.convert(leftArg);
+        FixToken tem = (FixToken)this.convert(leftArgument);
         FixPoint result = tem.fixValue().subtract(_value);
         return new FixToken(result);
     }

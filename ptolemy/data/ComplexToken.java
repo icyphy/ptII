@@ -366,26 +366,26 @@ public class ComplexToken extends ScalarToken {
      *  information. The type of the returned token is one of the
      *  above two types that allows lossless conversion from the other.
      *
-     *  @param rightArg The token to subtract this Token by.
+     *  @param rightArgument The token to subtract this Token by.
      *  @return A new Token containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be subtracted from this Token.
      */
-    public Token subtract(Token rightArg)
+    public Token subtract(Token rightArgument)
 	    throws IllegalActionException {
-        int compare = TypeLattice.compare(this, rightArg);
+        int compare = TypeLattice.compare(this, rightArgument);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexToken.subtract: " +
-                    "type of argument: " + rightArg.getClass().getName() +
+                    "type of argument: " + rightArgument.getClass().getName() +
                     "is incomparable with ComplexToken in the type " +
                     "hierarchy.");
         }
 
         if (compare == CPO.LOWER) {
-            return rightArg.subtractReverse(this);
+            return rightArgument.subtractReverse(this);
         } else {
 	    // argument type is lower or the same as Complex.
-	    ComplexToken comptoken = (ComplexToken)convert(rightArg);
+	    ComplexToken comptoken = (ComplexToken)convert(rightArgument);
             Complex result = _value.subtract(comptoken.complexValue());
             return new ComplexToken(result);
         }
@@ -394,21 +394,21 @@ public class ComplexToken extends ScalarToken {
     /** Return a new token whose value is the value of this token
      *  subtracted from the value of the argument token. The type of
      *  the specified token must be lower than ComplexToken.
-     *  @param leftArg The token to subtract this token from.
+     *  @param leftArgument The token to subtract this token from.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than ComplexToken;
      */
-    public Token subtractReverse(Token leftArg)
+    public Token subtractReverse(Token leftArgument)
 	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, leftArg);
+	int compare = TypeLattice.compare(this, leftArgument);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                    + "token " + leftArg.getClass().getName() + " is not lower "
-                    + "than " + getClass().getName());
+                    + "token " + leftArgument.getClass().getName()
+		    + " is not lower than " + getClass().getName());
         }
 
-        ComplexToken tem = (ComplexToken)this.convert(leftArg);
+        ComplexToken tem = (ComplexToken)this.convert(leftArgument);
         Complex result = tem.complexValue().subtract(_value);
         return new ComplexToken(result);
     }

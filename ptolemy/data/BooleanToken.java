@@ -83,38 +83,38 @@ public class BooleanToken extends Token {
      *  A BooleanToken can be added to another
      *  BooleanToken or to a StringToken. For booleans, addition
      *  is logical exclusive or.
-     *  @param rightArg The token to add to.
+     *  @param rightArgument The token to add to.
      *  @exception IllegalActionException If the passed token
      *   is not a StringToken or a BooleanToken.
      *  @return A BooleanToken containing the logical exclusive or.
      */
-    public Token add(ptolemy.data.Token rightArg)
+    public Token add(ptolemy.data.Token rightArgument)
             throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, rightArg);
+        int typeInfo = TypeLattice.compare(this, rightArgument);
         if (typeInfo == CPO.LOWER) {
-            return rightArg.addReverse(this);
-        } else if (rightArg instanceof BooleanToken) {
-            boolean rightValue = ((BooleanToken)rightArg).booleanValue();
+            return rightArgument.addReverse(this);
+        } else if (rightArgument instanceof BooleanToken) {
+            boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
             if ((_value || rightValue) && !(_value && rightValue)) {
                 return TRUE;
             } else {
                 return FALSE;
             }
         } else {
-            return super.add(rightArg);
+            return super.add(rightArgument);
         }
     }
 
     /** Return the argument plus this token.  The argument is assumed
      *  to be convertible to a BooleanToken.  For booleans, addition
      *  is logical exclusive or.
-     *  @param leftArg The token to add to this token.
+     *  @param leftArgument The token to add to this token.
      *  @exception IllegalActionException If the argument cannot be
      *   converted to a BooleanToken.
      *  @return A BooleanToken containing the logical exclusive or.
      */
-    public Token addReverse(Token leftArg) throws IllegalActionException {
-        BooleanToken converted = (BooleanToken)this.convert(leftArg);
+    public Token addReverse(Token leftArgument) throws IllegalActionException {
+        BooleanToken converted = (BooleanToken)this.convert(leftArgument);
         boolean leftValue = converted.booleanValue();
         if ((_value || leftValue) && !(_value && leftValue)) {
             return TRUE;
@@ -263,8 +263,9 @@ public class BooleanToken extends Token {
      *   convertible to a BooleanToken.
      *  @return A BooleanToken containing the product.
      */
-    public Token multiplyReverse(Token leftArg) throws IllegalActionException {
-        BooleanToken converted = (BooleanToken)this.convert(leftArg);
+    public Token multiplyReverse(Token leftArgument)
+            throws IllegalActionException {
+        BooleanToken converted = (BooleanToken)this.convert(leftArgument);
         boolean leftValue = converted.booleanValue();
         if (leftValue && _value) {
             return TRUE;
@@ -299,34 +300,35 @@ public class BooleanToken extends Token {
      *  and observing that <i>b</i> + <i>b</i> = <i>false</i> and
      *  <i>c</i> + <i>false</i> = <i>c</i>, we note that subtraction
      *  is identical to addition.
-     *  @param rightArg The token to subtract from this token.
+     *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If the passed token is
      *   not a boolean.
      *  @return A new BooleanToken containing the difference.
      */
-    public Token subtract(Token rightArg) throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, rightArg);
+    public Token subtract(Token rightArgument) throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, rightArgument);
         if (typeInfo == CPO.LOWER) {
-            return rightArg.subtractReverse(this);
-        } else if (rightArg instanceof BooleanToken) {
-            return add(rightArg);
+            return rightArgument.subtractReverse(this);
+        } else if (rightArgument instanceof BooleanToken) {
+            return add(rightArgument);
         } else if (typeInfo == CPO.HIGHER){
-            BooleanToken converted = (BooleanToken)this.convert(rightArg);
+            BooleanToken converted = (BooleanToken)this.convert(rightArgument);
             return add(converted);
         } else {
-            return super.subtract(rightArg);
+            return super.subtract(rightArgument);
         }
     }
 
     /** Return the argument minus this token.  The argument is assumed
      *  to be convertible to a BooleanToken.
-     *  @param leftArg The token to subtract this token from.
+     *  @param leftArgument The token to subtract this token from.
      *  @exception IllegalActionException If the argument cannot be
      *   converted to a BooleanToken.
      *  @return A new BooleanToken containing the difference.
      */
-    public Token subtractReverse(Token leftArg) throws IllegalActionException {
-        return addReverse(leftArg);
+    public Token subtractReverse(Token leftArgument)
+            throws IllegalActionException {
+        return addReverse(leftArgument);
     }
 
     /** Return the value of this token as a string that can be parsed

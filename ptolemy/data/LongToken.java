@@ -404,21 +404,21 @@ public class LongToken extends ScalarToken {
      *  subtracted from the value of this Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightArg The token to subtract to this Token.
+     *  @param rightArgument The token to subtract to this Token.
      *  @exception IllegalActionException If the passed token is
      *   not of a type that can be subtracted from this Tokens value.
      *  @return A new Token containing the result.
      */
-    public Token subtract(Token rightArg) throws IllegalActionException {
-        long typeInfo = TypeLattice.compare(this, rightArg);
+    public Token subtract(Token rightArgument) throws IllegalActionException {
+        long typeInfo = TypeLattice.compare(this, rightArgument);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.subtractReverse(this);
-            } else if (rightArg instanceof LongToken) {
-                long result = _value -  ((LongToken)rightArg).longValue();
+                return rightArgument.subtractReverse(this);
+            } else if (rightArgument instanceof LongToken) {
+                long result = _value -  ((LongToken)rightArgument).longValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.HIGHER){
-                LongToken tmp = (LongToken)this.convert(rightArg);
+                LongToken tmp = (LongToken)this.convert(rightArgument);
                 long result = _value - tmp.longValue();
                 return new LongToken(result);
             } else {
@@ -427,7 +427,7 @@ public class LongToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "subtract method not supported between ";
             str = str + this.getClass().getName() + " and ";
-            str = str + rightArg.getClass().getName();
+            str = str + rightArgument.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
@@ -436,13 +436,14 @@ public class LongToken extends ScalarToken {
      *  subtracted from the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param leftArg The token to add this Token to.
+     *  @param leftArgument The token to add this Token to.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value.
      *  @return A new Token containing the result.
      */
-    public Token subtractReverse(Token leftArg) throws IllegalActionException {
-        LongToken tmp = (LongToken)this.convert(leftArg);
+    public Token subtractReverse(Token leftArgument)
+            throws IllegalActionException {
+        LongToken tmp = (LongToken)this.convert(leftArgument);
         long result = tmp.longValue() - _value;
         return new LongToken(result);
     }

@@ -91,22 +91,23 @@ public class DoubleToken extends ScalarToken {
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve a lossless conversion.
-     *  @param rightArg The token to add to this Token.
+     *  @param rightArgument The token to add to this Token.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value.
      *  @return A new Token containing the result.
      */
-    public Token add(ptolemy.data.Token rightArg)
+    public Token add(ptolemy.data.Token rightArgument)
             throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, rightArg);
+        int typeInfo = TypeLattice.compare(this, rightArgument);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.addReverse(this);
-            } else if (rightArg instanceof DoubleToken) {
-                double result = _value + ((DoubleToken)rightArg).doubleValue();
+                return rightArgument.addReverse(this);
+            } else if (rightArgument instanceof DoubleToken) {
+                double result =
+		        _value + ((DoubleToken)rightArgument).doubleValue();
                 return new DoubleToken(result);
             } else  if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(rightArg);
+                DoubleToken tmp = (DoubleToken)this.convert(rightArgument);
                 double result = _value + tmp.doubleValue();
                 return new DoubleToken(result);
             } else {
@@ -115,7 +116,7 @@ public class DoubleToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "add method not supported between ";
             str = str + this.getClass().getName() + " and ";
-            str = str + rightArg.getClass().getName();
+            str = str + rightArgument.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
@@ -124,14 +125,14 @@ public class DoubleToken extends ScalarToken {
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve
      *  a lossless conversion.
-     *  @param leftArg The token to add this Token to.
+     *  @param leftArgument The token to add this Token to.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value.
      *  @return A new Token containing the result.
      */
-    public Token addReverse(ptolemy.data.Token leftArg)
+    public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(leftArg);
+        DoubleToken tmp = (DoubleToken)this.convert(leftArgument);
         double result = tmp.doubleValue() + _value;
         return new DoubleToken(result);
     }
@@ -319,21 +320,22 @@ public class DoubleToken extends ScalarToken {
      *  modulo the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightArg The token to modulo this Token by
+     *  @param rightArgument The token to modulo this Token by
      *  @exception IllegalActionException If the passed token is
      *  not of a type that can be  used with modulo.
      *  @return A new Token containing the result.
      */
-    public Token modulo(Token rightArg) throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, rightArg);
+    public Token modulo(Token rightArgument) throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, rightArgument);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.moduloReverse(this);
-            } else if (rightArg instanceof DoubleToken) {
-                double result = _value % ((DoubleToken)rightArg).doubleValue();
+                return rightArgument.moduloReverse(this);
+            } else if (rightArgument instanceof DoubleToken) {
+                double result =
+		        _value % ((DoubleToken)rightArgument).doubleValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(rightArg);
+                DoubleToken tmp = (DoubleToken)this.convert(rightArgument);
                 double result = _value % tmp.doubleValue();
                 return new DoubleToken(result);
             } else {
@@ -342,7 +344,7 @@ public class DoubleToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "modulo method not supported between ";
             str = str + this.getClass().getName() + " and ";
-            str = str + rightArg.getClass().getName();
+            str = str + rightArgument.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
@@ -351,14 +353,15 @@ public class DoubleToken extends ScalarToken {
      *  modulo the value of this token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
-     *  @param leftArg The token to apply modulo to by the value of this
+     *  @param leftArgument The token to apply modulo to by the value of this
      *   Token.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can apply modulo by this Tokens value.
      *  @return A new Token containing the result.
      */
-    public Token moduloReverse(Token leftArg) throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(leftArg);
+    public Token moduloReverse(Token leftArgument)
+            throws IllegalActionException {
+        DoubleToken tmp = (DoubleToken)this.convert(leftArgument);
         double result = tmp.doubleValue() %  _value;
         return new DoubleToken(result);
     }
@@ -425,21 +428,22 @@ public class DoubleToken extends ScalarToken {
      *  subtracted from the value of this Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightArg The token to subtract to this Token.
+     *  @param rightArgument The token to subtract to this Token.
      *  @exception IllegalActionException If the passed token is
      *   not of a type that can be subtracted from this Tokens value.
      *  @return A new Token containing the result.
      */
-    public Token subtract(Token rightArg) throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, rightArg);
+    public Token subtract(Token rightArgument) throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, rightArgument);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.subtractReverse(this);
-            } else if (rightArg instanceof DoubleToken) {
-                double result = _value -  ((DoubleToken)rightArg).doubleValue();
+                return rightArgument.subtractReverse(this);
+            } else if (rightArgument instanceof DoubleToken) {
+                double result =
+		        _value -  ((DoubleToken)rightArgument).doubleValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(rightArg);
+                DoubleToken tmp = (DoubleToken)this.convert(rightArgument);
                 double result = _value - tmp.doubleValue();
                 return new DoubleToken(result);
             } else {
@@ -448,7 +452,7 @@ public class DoubleToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "subtract method not supported between ";
             str = str + this.getClass().getName() + " and ";
-            str = str + rightArg.getClass().getName();
+            str = str + rightArgument.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
@@ -457,13 +461,14 @@ public class DoubleToken extends ScalarToken {
      *  subtracted from the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param leftArg The token to subtract this Token from.
+     *  @param leftArgument The token to subtract this Token from.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value.
      *  @return A new Token containing the result.
      */
-    public Token subtractReverse(Token leftArg) throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(leftArg);
+    public Token subtractReverse(Token leftArgument)
+            throws IllegalActionException {
+        DoubleToken tmp = (DoubleToken)this.convert(leftArgument);
         double result = tmp.doubleValue() - _value;
         return new DoubleToken(result);
     }
