@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
@@ -46,6 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -206,67 +206,13 @@ public class FileParameter extends StringParameter {
      */
     public URL asURL() throws IllegalActionException {
         String name = stringValue();
-
-        if (name == null || name.trim().equals("")) {
-            return null;
-        }
-        // If the name begins with "$CLASSPATH", then attempt to
-        // open the file relative to the classpath.
-        // NOTE: Use the dummy variable constant set up in the constructor.
-        if (name.startsWith(_CLASSPATH_VALUE)) {
-            // Try relative to classpath.
-            // The +1 is to skip over the delimitter after $CLASSPATH.
-            String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
-            URL result = getClass().getClassLoader().getResource(trimmedName);
-            if (result == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find file in classpath: " + name);
-            }
-            return result;
-        }
-
-        File file = new File(name);
-        if (file.isAbsolute()) {
-            if (!file.canRead()) {
-                throw new IllegalActionException(this,
-                        "Cannot read file '" + name + "'");
-            }
-            try {
-                return file.toURL();
-            } catch (MalformedURLException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Problem with URL format in '" + name + "'");
-            }
-        } else {
-            // Try relative to the base directory.
-            URI modelURI = getBaseDirectory();
-            if (modelURI != null) {
-                try {
-                    // Try to resolve the URI.
-                    URI newURI = modelURI.resolve(name);
-                    return newURI.toURL();
-                } catch (MalformedURLException e) {
-                    throw new IllegalActionException(this,
-                            "Unable to open as a file or URL: " + name);
-                } catch (IllegalArgumentException ex2) {
-                    throw new IllegalActionException(this, ex2,
-                            "Problem with URI format in '" + name + "'. "
-                            + "This can happen if the '" + name
-                            + "' is not absolute"
-                            + " and is not present relative to the directory"
-                            + " in which the specified model was read"
-                            + " (which was '" + modelURI + "')");
-                }
-            }
-
-            // As a last resort, try an absolute URL.
-            try {
-                // Try an absolute URL
-                return new URL(name);
-            } catch (MalformedURLException e) {
-                throw new IllegalActionException(this,
-                        "Unable to open as a file or URL: " + name);
-            }
+        
+        try {
+            return StringUtilities.stringToURL(
+                    name, getBaseDirectory(), getClass().getClassLoader());
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Cannot read file '" + name + "'");
         }
     }
 
@@ -437,15 +383,6 @@ public class FileParameter extends StringParameter {
     /** The base directory to use for relative file names. */
     private URI _baseDirectory;
     
-    /** Tag value used by this class and registered as a parser
-     *  constant for the identifier "CLASSPATH" to indicate searching
-     *  in the classpath.  This is a hack, but it deals with the fact
-     *  that Java is not symmetric in how it deals with getting files
-     *  from the classpath (using getResource) and getting files from
-     *  the file system.
-     */
-    private static String _CLASSPATH_VALUE = "xxxxxxCLASSPATHxxxxxx";
-
     /** The current reader for the input file. */
     private BufferedReader _reader;
 
