@@ -431,7 +431,7 @@ The comment towards the top of the file contains instructions about
 how to compile it.
 
 
-<dt> <A NAME"#simpleapplet"><B>3.8 How do I create a simple standalone Plot applet?</B></A>
+<dt> <A NAME="simpleapplet"><B>3.8 How do I create a simple standalone Plot applet?</B></A>
 
 <dd> The applet <CODE>codebase</CODE> parameter controls where
 and applet may look for data files.  See
@@ -465,17 +465,17 @@ and change
 
 <pre>
 25,26c25,26
-< <PARAM NAME="codebase"   VALUE=".">
-< <PARAM NAME="archive"    VALUE="plotmlapplet.jar">
+&lt; &lt;PARAM NAME="codebase"   VALUE="."&gt;
+&lt; &lt;PARAM NAME="archive"    VALUE="plotmlapplet.jar"&gt;
 ---
-> <PARAM NAME="codebase"   VALUE="../../..">
-> <PARAM NAME="archive"    VALUE="ptolemy/plot/plotmlapplet.jar">
+&gt; &lt;PARAM NAME="codebase"   VALUE="../../.."&gt;
+&gt; &lt;PARAM NAME="archive"    VALUE="ptolemy/plot/plotmlapplet.jar"&gt;
 36,37c36,37
-<    codebase="."
-<    archive="plotmlapplet.jar"
+&lt;    codebase="."
+&lt;    archive="plotmlapplet.jar"
 ---
->    codebase="../../.."
->    archive="ptolemy/plot/plotmlapplet.jar"
+&gt;    codebase="../../.."
+&gt;    archive="ptolemy/plot/plotmlapplet.jar"
 </pre>
 
 
@@ -486,9 +486,9 @@ and change
 
 <pre>
 2c2
-< <!DOCTYPE plot SYSTEM "PlotML_1.dtd">
+&lt; &lt;!DOCTYPE plot SYSTEM "PlotML_1.dtd"&gt;
 ---
-> <!DOCTYPE plot SYSTEM "../plotml/plotml.dtd">
+&gt; &lt;!DOCTYPE plot SYSTEM "../plotml/plotml.dtd"&gt;
 </pre>
 </ol>
 If you have problems, then be sure to enable the Java plugin
