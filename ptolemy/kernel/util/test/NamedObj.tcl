@@ -181,7 +181,7 @@ test NamedObj-6.1 {Test toString} {
 ######################################################################
 ####
 # 
-test NamedObj-6.1 {Test description} {
+test NamedObj-6.2 {Test description} {
     set n [java::new pt.kernel.Workspace "foo"]
     set a [java::new pt.kernel.NamedObj]
     set b [java::new pt.kernel.NamedObj $n ""]
@@ -196,12 +196,12 @@ test NamedObj-6.1 {Test description} {
     [$b description 2]\n\
     [$c description 2]"
 
-} {{{pt.kernel.NamedObj {.}}
- {pt.kernel.NamedObj {foo.}}
- {pt.kernel.NamedObj {foo.car}}
- {pt.kernel.NamedObj {.} {pt.kernel.Workspace {}}}
- {pt.kernel.NamedObj {foo.} {pt.kernel.Workspace {foo}}}
- {pt.kernel.NamedObj {foo.car} {pt.kernel.Workspace {foo}}}
- {pt.kernel.NamedObj {.} {pt.kernel.Workspace {}}}
- {pt.kernel.NamedObj {foo.} {pt.kernel.Workspace {foo}}}
- {pt.kernel.NamedObj {foo.car} {pt.kernel.Workspace {foo}}}}}
+} {{{ pt.kernel.NamedObj {.} }
+ { pt.kernel.NamedObj {foo.} }
+ { pt.kernel.NamedObj {foo.car} }
+ { . }
+ { foo. }
+ { foo.car }
+ { pt.kernel.NamedObj {.} }
+ { pt.kernel.NamedObj {foo.} }
+ { pt.kernel.NamedObj {foo.car} }}}
