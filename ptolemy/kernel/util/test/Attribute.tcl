@@ -80,7 +80,7 @@ test Attribute-6.2 {Test description} {
     set b [java::new pt.kernel.util.Attribute $w]
     set c [java::new pt.kernel.util.Attribute $n C]
     # Test with DEEP bit not set
-    set detail [expr "[java::field pt.kernel.util.NamedObj ALL] & \
+    set detail [expr "[java::field pt.kernel.util.NamedObj COMPLETE] & \
             ~[java::field pt.kernel.util.NamedObj DEEP]"]
     list [$a description $detail] \
 	    [$b description $detail] \
@@ -90,7 +90,7 @@ test Attribute-6.2 {Test description} {
 }} {pt.kernel.util.Attribute {W.} attributes {
 }} {pt.kernel.util.Attribute {.N.C} attributes {
 }} {pt.kernel.util.NamedObj {.N} attributes {
-    pt.kernel.util.Attribute {.N.C}
+    {pt.kernel.util.Attribute {.N.C}}
 }}}
 
 ######################################################################
@@ -119,7 +119,7 @@ test Attribute-7.2 {Test cloning of NamedObj with attributes} {
     set nw [$n clone]
     list [$nx description $detail] [$nw description $detail]
 } {{pt.kernel.util.NamedObj {X.N} attributes {
-    pt.kernel.util.Attribute {X.N.C}
+    {pt.kernel.util.Attribute {X.N.C}}
 }} {pt.kernel.util.NamedObj {.N} attributes {
-    pt.kernel.util.Attribute {.N.C}
+    {pt.kernel.util.Attribute {.N.C}}
 }}}

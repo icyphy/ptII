@@ -148,10 +148,10 @@ test NamedObj-6.2 {Test description} {
     set a [java::new pt.kernel.util.NamedObj]
     set b [java::new pt.kernel.util.NamedObj $n ""]
     set c [java::new pt.kernel.util.NamedObj $n "car" ]
-    list "[$a description [java::field pt.kernel.util.NamedObj ALL]]\n\
-	    [$b description [java::field pt.kernel.util.NamedObj ALL]]\n\
-	    [$c description [java::field pt.kernel.util.NamedObj ALL]]\n\
-	    [$n description [java::field pt.kernel.util.NamedObj ALL]]"
+    list "[$a description [java::field pt.kernel.util.NamedObj COMPLETE]]\n\
+	    [$b description [java::field pt.kernel.util.NamedObj COMPLETE]]\n\
+	    [$c description [java::field pt.kernel.util.NamedObj COMPLETE]]\n\
+	    [$n description [java::field pt.kernel.util.NamedObj COMPLETE]]"
 } {{pt.kernel.util.NamedObj {.} attributes {
 }
  pt.kernel.util.NamedObj {foo.} attributes {
@@ -159,10 +159,10 @@ test NamedObj-6.2 {Test description} {
  pt.kernel.util.NamedObj {foo.car} attributes {
 }
  pt.kernel.util.Workspace {foo} directory {
-    pt.kernel.util.NamedObj {foo.} attributes {
-    }
-    pt.kernel.util.NamedObj {foo.car} attributes {
-    }
+    {pt.kernel.util.NamedObj {foo.} attributes {
+    }}
+    {pt.kernel.util.NamedObj {foo.car} attributes {
+    }}
 }}}
 
 ######################################################################
@@ -172,6 +172,6 @@ test NamedObj-7.1 {Test clone} {
     set n [java::new pt.kernel.util.Workspace "N"]
     set a [java::new pt.kernel.util.NamedObj $n "A" ]
     set b [$a clone]
-    $b description [java::field pt.kernel.util.NamedObj ALL]
+    $b description [java::field pt.kernel.util.NamedObj COMPLETE]
 } {pt.kernel.util.NamedObj {N.A} attributes {
 }}

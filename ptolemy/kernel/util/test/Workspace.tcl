@@ -124,13 +124,13 @@ test Workspace-5.2 {Test multi-thread access} {
     # Give the thread a chance to start up.
     sleep 1
     $t profile
-} {T.read()
+} {T.getReadAccess()
 T.doneReading()
-T.read()
+T.getReadAccess()
 T.doneReading()
-T.read()
+T.getReadAccess()
 T.doneReading()
-T.write()
+T.getWriteAccess()
 T.doneWriting()
 }
 
@@ -143,20 +143,20 @@ test Workspace-5.3 {Test multi-thread access} {
     # Give the threads a chance to start up.
     sleep 1
     list [$t1 profile] [$t2 profile]
-} {{T1.read()
+} {{T1.getReadAccess()
 T1.doneReading()
-T1.read()
+T1.getReadAccess()
 T1.doneReading()
-T1.read()
+T1.getReadAccess()
 T1.doneReading()
-T1.write()
+T1.getWriteAccess()
 T1.doneWriting()
-} {T2.read()
+} {T2.getReadAccess()
 T2.doneReading()
-T2.read()
+T2.getReadAccess()
 T2.doneReading()
-T2.read()
+T2.getReadAccess()
 T2.doneReading()
-T2.write()
+T2.getWriteAccess()
 T2.doneWriting()
 }}

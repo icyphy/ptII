@@ -59,8 +59,8 @@ public class TestWorkspace extends Thread {
     public synchronized void run() {
         for (int i=0; i < 3; i++) {
             try {
-                _workspace.read();
-                _profile += _name + ".read()\n";
+                _workspace.getReadAccess();
+                _profile += _name + ".getReadAccess()\n";
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {}
@@ -70,8 +70,8 @@ public class TestWorkspace extends Thread {
             }
         }
         try {
-            _workspace.write();
-            _profile += _name + ".write()\n";
+            _workspace.getWriteAccess();
+            _profile += _name + ".getWriteAccess()\n";
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {}
