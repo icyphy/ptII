@@ -42,8 +42,9 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test XSLTUtilities-1.1 {Call main} {
-    catch {file delete -force out.xml} ignore
-    puts "deleting out.xml failed, ignoring: $ignore"
+    if [catch {file delete -force out.xml} ignore] {
+	puts "deleting out.xml failed, ignoring: $ignore"
+    }
 
     set args [java::new {String[]} {3} {test.xml addMarkers.xsl out.xml}]
     java::call ptolemy.util.XSLTUtilities main $args
@@ -185,7 +186,7 @@ test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the 
 #
 test XSLTUtilities-3.4 {Call transform(String, String, String)} {
     # Close before deleting
-    close $file
+    catch {close $file}
     file delete -force out.xml
 
     # Note that this operates on pathnames, not files in the classpath
