@@ -104,7 +104,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
         Scheduler newobj = (Scheduler) super.clone(ws);
         newobj._container = null;
         newobj._valid = false;
-        newobj._cachedschedule = null;
+        newobj._cachedSchedule = null;
         return newobj;
     }
 
@@ -221,13 +221,13 @@ public class Scheduler extends NamedObj implements TopologyListener{
                         "is a dangling scheduler.");
             }
             if(!valid()) {
-                _cachedschedule = new LinkedList();
+                _cachedSchedule = new LinkedList();
                 Enumeration newSchedEnum = _schedule();
                 while (newSchedEnum.hasMoreElements()) {
-                    _cachedschedule.insertLast(newSchedEnum.nextElement());
+                    _cachedSchedule.insertLast(newSchedEnum.nextElement());
                 }
             }
-            return _cachedschedule.elements();
+            return _cachedSchedule.elements();
         } finally {
             workspace().doneReading();
         }
@@ -300,7 +300,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
     // The flag that indicate whether the current schedule is valid.
     private boolean _valid = false;
     // The cached schedule.
-    private LinkedList _cachedschedule = null;
+    private LinkedList _cachedSchedule = null;
     // The static name
     private static final String _DEFAULT_SCHEDULER_NAME = "Basic_Scheduler";
 }
