@@ -195,7 +195,7 @@ public class MultiportToSinglePort implements MoMLFilter {
                     + ": Update any actor multiports that are now\n"
                     + "single ports.\n"
                     + "Below are the actors that are affected, along "
-                    + "with the port name:"
+                    + "with the port name:\n"
                              );
         Iterator actors = _actorsWithMultiPortToSinglePortChanges.keySet().iterator();
         while (actors.hasNext()) {
