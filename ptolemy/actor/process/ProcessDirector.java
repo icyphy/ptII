@@ -128,7 +128,7 @@ public class ProcessDirector extends Director {
      *  director. A flag is set in all the receivers which causes 
      *  each process to terminate at the earliest communication point.
      */
-    public synchronized void finish() {
+    public void finish() {
 	try {
 	    wrapup();
 	} catch( IllegalActionException e ) {
