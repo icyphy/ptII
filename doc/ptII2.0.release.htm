@@ -230,8 +230,9 @@ Models can be annotated with the Web Start format version number of
 Ptolemy II that is required to run the model.  In the future, we will
 use this attribute to manage backward compatibility.
 
-<li> <a href="codeDoc/ptolemy/data/ByteToken.html">ptolemy.data.ByteToken</a>
-(Winthrop Williams, Steve Neuendorffer) - A new Token supporting bytes.
+<li> <a href="codeDoc/ptolemy/data/UnsignedByteToken.html">ptolemy.data.UnsignedByteToken</a>
+(Winthrop Williams, Steve Neuendorffer) - A new Token supporting
+unsigned bytes.
 
  <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
 
@@ -811,7 +812,16 @@ in floating point numbers.
 Matlab be installed on the local machine. 
 The Matlab interface should work with version of Matlab from
 R11 (5.3) and up to and including R12.1 (6.1)
-
+<p>Didier Mauuary reports that under Windows 98, configure failed
+to set up the <code>MATLAB_DIR</code>, <code>PTCC</code>
+and <code>PTDLLTOOL</code> makefile variables, but after
+he set them by hand:
+<pre>
+ MATLAB_DIR = /cygdrive/c/MATLABR11
+ PTCC = gcc
+ PTDLLTOOL = dlltool
+</pre>
+he was able to get farther with the recompilation of the Matlab interface.
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
