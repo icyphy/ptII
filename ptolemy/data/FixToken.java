@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
+@AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 
 */
 
