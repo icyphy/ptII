@@ -23,6 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -56,7 +58,7 @@ with the maximum value, then the index of the first such entry
 is what is produced.
 
 @author Mark Oliver
-@version $ID: ArrayMaximum.java,v0.1 2003/05/19
+@version $Id$
 */
 
 public class ArrayMaximum extends Transformer {
