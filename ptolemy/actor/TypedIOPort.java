@@ -151,7 +151,7 @@ public class TypedIOPort extends IOPort {
     }
 
     /** Return an InequalityTerm encapsulating the resolved type of
-     *  this port. The InequalityTerm can be used to from type constraints.
+     *  this port. The InequalityTerm can be used to form type constraints.
      *  If this port has a declared type, the inequality
      *  term represents a type constant; otherwise, it represents a
      *  type variable.
