@@ -313,20 +313,29 @@ public class PropertyClassChanges implements MoMLFilter {
         inputOutputTypedIOPortClassChanges.put("output",
                 "ptolemy.actor.TypedIOPort");
 
+        _actorsWithPropertyClassChanges
+        .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
+                inputOutputTypedIOPortClassChanges);
+
         // SRDirector
         HashMap srDirectorClassChanges = new HashMap();
         // Key = property name, Value = new class name
-        trigFunctionClassChanges.put("scheduler",
+        srDirectorClassChanges.put("scheduler",
                 "ptolemy.data.expr.StringParameter");
 
         _actorsWithPropertyClassChanges
             .put("ptolemy.domains.sr.kernel.Director",
                     srDirectorClassChanges);
 
-        _actorsWithPropertyClassChanges
-            .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
-                    inputOutputTypedIOPortClassChanges);
+        // ModalModel
+        HashMap modalModelClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        modalModelClassChanges.put("directorClass",
+                "ptolemy.data.expr.StringParameter");
 
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.domains.fsm.kernel.ModalModel",
+                    modalModelClassChanges);
 
         // ImageUnpartition
         _actorsWithPropertyClassChanges
