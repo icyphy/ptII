@@ -139,7 +139,7 @@ public class ArrayMem extends TypedAtomicActor {
     public TypedIOPort write;
     /**The ser/par control for reading and writing**/
     public TypedIOPort serPar;
-    /** The serieal data input*/
+    /** The serial data input*/
     public  TypedIOPort dataInSer;
     /** The serial data output*/
     public  TypedIOPort dataOutSer;
