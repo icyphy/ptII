@@ -85,7 +85,11 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-
+RampArraySystem: jclass
+	CLASSPATH="$(CLASSPATH)" \
+		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
+		-class ptolemy.domains.sdf.codegen.test.RampArraySystem \
+		-iterations 10
 
 depend:
 	@echo "no dependencies in this directory"
