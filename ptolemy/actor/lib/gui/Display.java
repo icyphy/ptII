@@ -227,6 +227,10 @@ public class Display extends Sink implements Placeable, SequenceActor {
             textArea = new JTextArea();
             _scrollPane = new JScrollPane(textArea);
             _frame.getContentPane().add(_scrollPane);
+            // FIXME: uncomment the two lines below to use the Display actor 
+            // inside a non-toplevel composite actor in Vergil
+            // _frame.setSize(200,200);
+            // _frame.setVisible(true);
         } else {
             textArea = new JTextArea();
             _scrollPane = new JScrollPane(textArea);
