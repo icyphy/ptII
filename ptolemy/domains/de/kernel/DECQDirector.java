@@ -58,15 +58,15 @@ import java.util.Enumeration;
  *  Sorting in the CalendarQueue class is done with respect to sort-keys
  *  which are implemented by the DESortKey class. DESortKey consists of a
  *  time stamp (double) and a depth (long). The time stamp
- *  indicates the time when the event occurs, and depth
+ *  indicates the time when the event occurs, and the depth
  *  indicates the relative priority of events with the same time stamp
- *  (simultaneous events).  The depth is determined by topologically
+ *  (i.e. simultaneous events).  The depth is determined by topologically
  *  sorting the ports according to data dependencies over which there
  *  is no time delay.
  *  <p>
- *  Ports in the DE domain may instances of DEIOPort. The DEIOPort class
+ *  Ports in the DE domain may be instances of DEIOPort. The DEIOPort class
  *  should be used whenever an actor introduces time delays between the
- *  inputs and the outputs.  When ordinary IOPort is used, the scheduler
+ *  inputs and the outputs. When ordinary IOPort is used, the scheduler
  *  assumes, for the purpose of calculating priorities, that the delay
  *  across the actor is zero.
  *  <p>
@@ -307,6 +307,8 @@ public class DECQDirector extends Director {
     public boolean prefire()
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
+	// During prefire, new actor will be chosen to fire
+	// therefore, initialize _actorToFire field.
         _actorToFire = null;
 	if (super.prefire()) {
             DEEvent currentEvent = null;
@@ -329,8 +331,25 @@ public class DECQDirector extends Director {
                     // Advance current time.
                     _currentTime = currentEvent.key.timeStamp();
 
-                    if (_currentTime < _startTime) _startTime = _currentTime;
-                    if (_currentTime > _stopTime) return false;
+		    // FIXME: The following line should happen only during the 
+		    // first prefire(), because subsequent enqueue is 
+		    // restricted to be ahead of _currentTime.
+		    // FIXME: debug structure here...
+		    if (_currentTime < _startTime) {
+			if (_startTimeInitialized) {
+			    throw new InternalErrorException("DECQDirector "+
+				    "prefire bug.. trying to initiale start "+
+				    "time twice.");
+			}
+
+			_startTime = _currentTime;
+			_startTimeInitialized = true;
+		    }
+
+                    if (_currentTime > _stopTime) {
+			// The stopping condition is met.
+			return false;
+		    }
 
                     // Transfer the event to the port
                     DEReceiver rec = currentEvent.receiver;
@@ -360,7 +379,12 @@ public class DECQDirector extends Director {
                             DEReceiver rec = currentEvent.receiver;
                             if (rec != null) {
                                 rec._triggerEvent(currentEvent.token);
-                            }
+                            } else {
+				// FIXME: what should happen here...
+				// This shouldn't happen ?
+				throw new InternalErrorException("DECQDir"+
+					"ector, please consider this case.");
+			    }
                         } else {
                             // Put it back in the queue.
                             fifo.put(currentEvent);
@@ -507,6 +531,9 @@ public class DECQDirector extends Director {
 	Object[] sort = (Object[]) _dag.topSort();
 	for(int i=sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];
+            // FIXME: Debugging topological sort
+            System.out.println(p.description(FULLNAME) + ":" + i);
+            // FIXME: End debugging
             // set the fine levels of all DEReceiver instances in IOPort p
             // to be i
             // FIXME: should I use deepGetReceivers() here ?
@@ -517,7 +544,7 @@ public class DECQDirector extends Director {
                 // do nothing
                 // FIXME: Replace with InternalErrorException and a more
                 // meaningful message.
-                throw new InvalidStateException("Bug in DECQDirector."+
+                throw new InternalErrorException("Bug in DECQDirector."+
                         "computeDepth() (3)");
             }
 	    if (r == null) {
@@ -555,7 +582,8 @@ public class DECQDirector extends Director {
         // Constructor to use when there is a token and destination receiver.
         DEEvent(DEReceiver r, Token t, DESortKey k)
                 throws IllegalActionException {
-            if(r != null) {
+	    // check the validity of the receiver.
+	    if(r != null) {
                 Nameable port = r.getContainer();
                 if(port != null) {
                     actor = (Actor)port.getContainer();
@@ -565,6 +593,7 @@ public class DECQDirector extends Director {
                 throw new IllegalActionException(
                     "Attempt to queue an event with an invalid receiver.");
             }
+	    
             receiver = r;
             token = t;
             key = k;
@@ -606,4 +635,7 @@ public class DECQDirector extends Director {
     // edges represent delay free paths.  This is used for prioritzing
     // simultaneous events.
     private DirectedGraph _dag = new DirectedGraph();
+
+    // FIXME: debug variables
+    private boolean _startTimeInitialized = false;
 }
