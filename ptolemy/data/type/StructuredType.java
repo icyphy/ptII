@@ -49,8 +49,7 @@ interface defines methods for these operations.
 Subclasses should override clone() to do a deep cloning.
 
 @author Yuhong Xiong, Steve Neuendorffer
-$Id$
-
+@version $Id$
 */
 
 public abstract class StructuredType implements Type, Cloneable {

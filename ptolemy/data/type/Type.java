@@ -42,7 +42,7 @@ All instances of Type must be immutable to avoid circular containment
 in structured types.
 
 @author Yuhong Xiong, Steve Neuendorffer
-$Id$
+@version $Id$
 */
 
 public interface Type 
