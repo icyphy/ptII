@@ -179,13 +179,23 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  created.  If its value is greater than one, then a "Stop" button
      *  is also created.  Derived classes may override this method to add
      *  additional controls, or to create a panel with a different layout.
+     *  Note that init() should be called before this so that the
+     *  background color of the panel is set correctly from the applet
+     *  parameters.  Otherwise, the background is likely to be WWW gray.
      *  @param numberOfButtons How many buttons to create.
      */
     protected JPanel _createRunControls(int numberOfButtons) {
         JPanel panel = new JPanel();
         // Despite Sun's documentation, the default is that a panel
-        // is opaque, so the background doesn't come through.  Change that...
-        panel.setOpaque(false);
+        // is opaque, so the background doesn't come through. We could do
+        //   panel.setOpaque(false);
+        // but this has the side effect that the panel does not repaint
+        // properly if double buffering has been turned off for the parent
+        // window.  So instead, we set the background.  Note that this means
+        // that init() should be called before this is called.
+        if (_background != null) {
+            panel.setBackground(_background);
+        }
         if (numberOfButtons > 0) {
             _goButton = new JButton("Go");
             panel.add(_goButton);
