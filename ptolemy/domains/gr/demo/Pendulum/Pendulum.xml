@@ -37,8 +37,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="bob_radius">
         </property>
-        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-        </property>
         <property name="_location" class="ptolemy.moml.Location" value="79.0, 176.0">
         </property>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
@@ -112,8 +110,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="0.75">
         </property>
-        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-        </property>
         <property name="_location" class="ptolemy.moml.Location" value="78.0, 237.5">
         </property>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
@@ -148,8 +144,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="text" class="ptolemy.data.expr.Parameter" value="&quot;Pendulum Model&quot;">
-        </property>
-        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 117.0">
         </property>
@@ -431,8 +425,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-            </property>
             <property name="_location" class="ptolemy.moml.Location" value="96.0, 163.5">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
@@ -478,8 +470,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-            </property>
             <property name="_location" class="ptolemy.moml.Location" value="96.0, 55.5">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
@@ -497,8 +487,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-            </property>
             <property name="_location" class="ptolemy.moml.Location" value="94.0, 111.5">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
@@ -515,8 +503,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
-            </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="97.0, 216.5">
             </property>

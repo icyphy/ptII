@@ -39,8 +39,6 @@
         </property>
         <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-        </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="446.0, 179.0">
@@ -53,8 +51,6 @@
         <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 0.0]">
         </property>
         <property name="shininess" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
         </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="0.15">
         </property>
@@ -148,8 +144,6 @@
         <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 1.0]">
         </property>
         <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
         </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="0.08">
         </property>
@@ -415,8 +409,6 @@
         <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
         </property>
         <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
         </property>
         <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="6.2831853">
         </property>
