@@ -33,4 +33,5 @@
  -p wjtp.snapshot6 "outDir:@ptIIUserDirectory@/@targetPath@/jimple6"
  -p wjtp.finalSnapshot "outDir:@ptIIUserDirectory@/@targetPath@"
  -p wjtp.iee enabled
+ -p wjtp.makefileWriter "targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@,templateDirectory:ptolemy/copernicus/java"
  @compileOptions@
