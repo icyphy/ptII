@@ -80,13 +80,8 @@ import ptolemy.kernel.util.*;
 
 public class ConditionalBranchController {
     /** Construct a controller in the specified container, which should
-        be an actor. The container argument must not be null, or a
-        NullPointerException will be thrown.
+        be an actor.
         @param container The parent actor that contains this object.
-        @exception IllegalActionException If the entity cannot be contained
-        by the proposed container.
-        @exception NameDuplicationException If the name argument coincides
-        with an entity already in the container.
      */
     public ConditionalBranchController(Actor container) {
         _parentActor = container;
