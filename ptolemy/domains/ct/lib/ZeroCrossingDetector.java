@@ -163,16 +163,18 @@ public class ZeroCrossingDetector extends Transformer
      */
     public void fire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase() && hasCurrentEvent()) {
-            // Emit event.
-            if(_debugging) _debug(getFullName() + " Emitting event: " +
-                    _inputToken.toString());
-            if (_inputToken != null) {
-                output.send(0, _inputToken);
-            } else {
-                output.send(0, defaultEventValue.getToken());
+        if (director.isDiscretePhase()) {
+            if (hasCurrentEvent()) {
+                // Emit event.
+                if(_debugging) _debug(getFullName() + " Emitting event: " +
+                        _inputToken.toString());
+                if (_inputToken != null) {
+                    output.send(0, _inputToken);
+                } else {
+                    output.send(0, defaultEventValue.getToken());
+                }
+                _eventNow = false;
             }
-            _eventNow = false;
         } else {
             //consume the input.
             _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
