@@ -32,6 +32,7 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -46,7 +47,12 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// RecordToken
 /**
-A token that contains a set of label/token pairs.
+A token that contains a set of label/token pairs. Operations on record
+tokens function like a database merge, but where the operation specifies
+what to do with common fields.  Thus, for example, if two record tokens
+are added or subtracted, then common records
+(those with the same labels) will be added or subtracted,
+and the disjoint records will simply be copied into the result.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
@@ -190,6 +196,40 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     public int length() {
         return _fields.size();
+    }
+
+    /** Return a new token created by merging the two specified tokens,
+     *  where preference is given to the first token when field labels
+     *  are the same.
+     *  @param token1 The higher priority record token.
+     *  @param token2 The lower priority record token.
+     *  @return A new RecordToken.
+     */
+    public static RecordToken merge(RecordToken token1, RecordToken token2) {
+        Set unionSet = new HashSet();
+        Set labelSet1 = token1._fields.keySet();
+        Set labelSet2 = token2._fields.keySet();
+        unionSet.addAll(labelSet1);
+        unionSet.addAll(labelSet2);
+
+        Object[] labelsObjects = unionSet.toArray();
+        int size = labelsObjects.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
+            Token value1 = token1.get(labels[i]);
+            if (value1 != null) {
+                values[i] = value1;
+            } else {
+                values[i] = token2.get(labels[i]);
+            }
+        }
+        try {
+            return new RecordToken(labels, values);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
     }
 
     /** Returns a new RecordToken representing the multiplicative identity.
@@ -501,13 +541,13 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken)rightArgument;
 
-        Set intersectionSet = new HashSet();
+        Set unionSet = new HashSet();
         Set myLabelSet = _fields.keySet();
         Set argLabelSet = recordToken._fields.keySet();
-        intersectionSet.addAll(myLabelSet);
-        intersectionSet.retainAll(argLabelSet);
+        unionSet.addAll(myLabelSet);
+        unionSet.addAll(argLabelSet);
 
-        Object[] labelsObjects = intersectionSet.toArray();
+        Object[] labelsObjects = unionSet.toArray();
         int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
@@ -515,7 +555,13 @@ public class RecordToken extends AbstractNotConvertibleToken {
             labels[i] = (String)labelsObjects[i];
             Token value1 = this.get(labels[i]);
             Token value2 = recordToken.get(labels[i]);
-            values[i] = value1.subtract(value2);
+            if (value1 == null) {
+                values[i] = value2;
+            } else if (value2 == null) {
+                values[i] = value1;
+            } else {
+                values[i] = value1.subtract(value2);
+            }
         }
 
         return new RecordToken(labels, values);

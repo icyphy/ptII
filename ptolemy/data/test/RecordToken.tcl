@@ -369,14 +369,21 @@ test RecordToken-8.2 {Test subtract} {
     set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
 
     [$r1 subtract $r2] toString
-} {{name=-1.5, value=-4.5}}
+} {{extra1=2, extra2=8.5, name=-1.5, value=-4.5}}
+
+######################################################################
+####
+# 
+test RecordToken-8.2.1 {Test merge} {
+    [$r1 merge $r1 $r2] toString
+} {{extra1=2, extra2=8.5, name=2.5, value=1}}
 
 ######################################################################
 ####
 # 
 test RecordToken-8.3 {Test subtract, reverse the order} {
     [$r2 subtract $r1] toString
-} {{name=1.5, value=4.5}}
+} {{extra1=2, extra2=8.5, name=1.5, value=4.5}}
 
 ######################################################################
 ####
@@ -398,6 +405,17 @@ test RecordToken-8.4 {Test subtracting with empty record} {
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
     [$r subtract $r1] toString
+} {{extra1=2, name="foo", value=1}}
+
+######################################################################
+####
+# 
+test RecordToken-8.4.1 {Test merge with empty record} {
+    [$r merge $r $r1] toString
+} {{extra1=2, name="foo", value=1}}
+
+test RecordToken-8.4.1 {Test merge with two empty records} {
+    [$r merge $r $r] toString
 } {{}}
 
 ######################################################################
@@ -405,7 +423,7 @@ test RecordToken-8.4 {Test subtracting with empty record} {
 # 
 test RecordToken-8.5 {Test subtracting with empty record, reverse order} {
     [$r1 subtract $r] toString
-} {{}}
+} {{extra1=2, name="foo", value=1}}
 
 ######################################################################
 ####
