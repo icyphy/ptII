@@ -199,8 +199,8 @@ import ptolemy.kernel.util.Workspace;
    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Yellow (eal)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Yellow (hyzheng)
    @see DEReceiver
    @see ptolemy.actor.util.CalendarQueue
 */
