@@ -1,7 +1,7 @@
 /* An IODependence contains the input/output dependence information
 of an actor.
 
- Copyright (c) 1997-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,7 +58,7 @@ object.
 <p>
 Each input port has an IOInformation, which is an inner class providing
 access to the relation between the input port and all the output ports.
-Output ports are divided into three groups: (a)those immidiately dependent
+Output ports are divided into three groups: (a)those immediately dependent
 on the input, (b)those not immediately dependent on the input, and (c)those
 not dependent on the input. The outputs in group (a) can be accessed with
 <i>getDelayToPorts()</i>method, and the outputs in group (b) can be accessed
@@ -68,7 +68,7 @@ discarded.
 
 @author Haiyang Zheng
 @version $Id$
-@since Ptolemy II 3.0
+@since Ptolemy II 3.1
 */
 public class IODependence extends Attribute {
 
