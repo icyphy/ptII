@@ -206,7 +206,9 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Construct a plot box with a default configuration. */
     public PlotBox() {
+        // Can't trust the Java default, since its undocumented...
         setOpaque(true);
+
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         addMouseListener(new ZoomListener());
         addKeyListener(new CommandListener());
@@ -657,7 +659,7 @@ public class PlotBox extends JPanel implements Printable {
         }
         graphics.translate((int)format.getImageableX(),
                 (int)format.getImageableY());
-        printAll(graphics);
+        _drawPlot(graphics, true);
         return Printable.PAGE_EXISTS;
     }
 
@@ -1023,8 +1025,13 @@ public class PlotBox extends JPanel implements Printable {
         Rectangle drawRect = getBounds();
         graphics.setPaintMode();
         if (clearfirst) {
-            graphics.setColor(Color.white);
-            graphics.clearRect(0, 0, drawRect.width, drawRect.height);
+            // NOTE: calling clearRect() here permits the background
+            // color to show through, but it messes up printing.
+            // Printing results in black-on-black title and axis labels.
+            // FIXME: The following, regrettably, ignores the background
+            // color for some reason.
+            graphics.setColor(_background);
+            graphics.drawRect(0, 0, drawRect.width, drawRect.height);
             graphics.setColor(Color.black);
         }
 
