@@ -30,25 +30,31 @@
 
 package ptolemy.domains.ct.demo.SigmaDelta;
 
-import java.awt.BorderLayout;
-import java.awt.event.*;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
-import ptolemy.domains.de.kernel.*;
-import ptolemy.domains.de.lib.*;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.lib.*;
-import ptolemy.domains.sdf.lib.FIR;
-import ptolemy.actor.*;
-import ptolemy.gui.Query;
-import ptolemy.actor.lib.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.AddSubtract;
+import ptolemy.actor.lib.Average;
+import ptolemy.actor.lib.Clock;
+import ptolemy.actor.lib.CurrentTime;
+import ptolemy.actor.lib.Quantizer;
+import ptolemy.actor.lib.Scale;
+import ptolemy.actor.lib.TrigFunction;
 import ptolemy.actor.lib.gui.TimedPlotter;
-import ptolemy.actor.gui.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ct.kernel.CTMixedSignalDirector;
+import ptolemy.domains.ct.lib.CTPeriodicSampler;
+import ptolemy.domains.ct.lib.Integrator;
+import ptolemy.domains.ct.lib.ZeroOrderHold;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.lib.Sampler;
+import ptolemy.domains.sdf.lib.FIR;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
