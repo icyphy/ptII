@@ -96,18 +96,47 @@ test Workspace-3.3 {Add objects twice to the workspace directory} {
 #
 test Workspace-4.1 {Remove objects from the workspace directory} {
     set w [java::new ptolemy.kernel.util.Workspace W]
+    set version1 [$w getVersion]
     set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
     set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]
     set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
+    set version2 [$w getVersion]
     $w remove $n2
-    enumToFullNames [$w directory]
-} {W.N1 W.N3}
+    set version3 [$w getVersion]
+    list $version1 \
+	    $version2 \
+	    [enumToFullNames [$w directory]] \
+	    $version3
+} {1 7 {W.N1 W.N3} 8}
 
-test Workspace-4.2 {Remove all objects from the workspace directory} {
+test Workspace-4.2 {Call getContainer} {
     # NOTE: Uses previous setup
+    expr {[$w getContainer] == [java::null]}
+} {1}
+
+test Workspace-4.3 {Call description} {
+    # NOTE: Uses previous setup
+    $w description
+} {ptolemy.kernel.util.Workspace {W} directory {
+    {ptolemy.kernel.util.NamedObj {W.N1} attributes {
+    }}
+    {ptolemy.kernel.util.NamedObj {W.N3} attributes {
+    }}
+}}
+
+test Workspace-4.4 {Call toString} {
+    # NOTE: Uses previous setup
+    $w toString
+} {ptolemy.kernel.util.Workspace {W}}
+
+test Workspace-4.4 {Remove all objects from the workspace directory} {
+    # NOTE: Uses previous setup
+    set version1 [$w getVersion]
     $w removeAll
-    enumToFullNames [$w directory]
-} {}
+    set result1 [enumToFullNames [$w directory]]
+    set version2 [$w getVersion]
+    list $version1 $result1 $version2
+} {8 {} 9}
 
 ######################################################################
 ####
@@ -232,3 +261,21 @@ T4.doneReading()
 T4.getWriteAccess()
 T4.doneWriting()
 }} 
+
+######################################################################
+####
+#
+test Workspace-7.1 {Test isReadOnly, setReadOnly} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set readOnly1 [$w isReadOnly]
+    set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
+    $w setReadOnly 1
+    set readOnly2 [$w isReadOnly]
+    catch {set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]} errMsg
+    $w setReadOnly 0
+    set readOnly3 [$w isReadOnly]
+    set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]
+    set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
+    list $readOnly1 $readOnly2 $errMsg $readOnly3 \
+	    [enumToFullNames [$w directory]]
+} {0 1 {ptolemy.kernel.util.InvalidStateException: W: Trying to relinquish write access on a write-protected workspace.} 0 {W.N1 W.null W.N2 W.N3}}
