@@ -82,6 +82,14 @@ public class DEEventTag {
         return _timeStamp;
     }
 
+    /** Return information about the tag, including both the event
+     *  time stamp and the depth.
+     *  @return A string describing the tag.
+     */
+    public String toString() {
+        return "DEEventTag(" + _timeStamp + ", " + _receiverDepth + ")";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
