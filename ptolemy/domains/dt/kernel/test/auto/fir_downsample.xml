@@ -4,7 +4,7 @@
 <entity name="bug" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 375]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[9, 167]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 140]">
     </property>
     <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -82,7 +82,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,1.0,1.0,3.0,7.0,11.0,12.0,10.0,8.0,7.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,7.0,8.0,10.0,12.0,11.0,7.0,8.0,10.0,12.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
