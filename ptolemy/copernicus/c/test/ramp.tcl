@@ -98,9 +98,9 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
 
     # Make sure all the output files were created.
     list  \
-        [file readable $outputDirectory/.CGModelfileTest.c] \
-        [file readable $outputDirectory/.CGModelfileTest.h] \
-        [file readable $outputDirectory/.CGModelfileTest_i.h] \
+        [file readable $outputDirectory/.CGModelramp.c] \
+        [file readable $outputDirectory/.CGModelramp.h] \
+        [file readable $outputDirectory/.CGModelramp_i.h] \
         [file readable $outputDirectory/.CGramp.c] \
         [file readable $outputDirectory/.CGramp.h] \
         [file readable $outputDirectory/.CGramp_i.h] \
