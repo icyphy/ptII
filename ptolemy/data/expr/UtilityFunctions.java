@@ -97,6 +97,54 @@ public class UtilityFunctions {
         return Constants.constants();
     }
 
+    /** Find a file or directory. If the file does not exist as is, then
+     *  search the current working directory, the user's home directory,
+     *  and finally, the classpath.
+     *  @param name Path of a file or directory to find.
+     *  @return Canonical absolute path if the file or directory is found,
+     *   otherwise the argument is returned unchanged.
+     */
+    public static String findFile(String name) {
+        File file = new File(name);
+        if (!file.exists()) {
+            String curDir = StringUtilities.getProperty("user.dir");
+            file = new File(curDir, name);
+        }
+        if (!file.exists()) {
+            String curDir = StringUtilities.getProperty("user.home");
+            file = new File(curDir, name);
+        }
+        if (!file.exists()) {
+            String cp = System.getProperty("java.class.path");
+            StringTokenizer tokens = new StringTokenizer(cp,
+                    System.getProperty("path.separator"));
+            while (tokens.hasMoreTokens()) {
+                String token = tokens.nextToken();
+                file = new File(token, name);
+                if (file.exists()) break;
+            }
+        }
+        if (file.exists()) {
+            try {
+                return file.getCanonicalPath();
+            } catch (java.io.IOException ex) {
+                return file.getAbsolutePath();
+            }
+        }
+        else
+            return name;
+    }
+
+    /** Return the approximate number of bytes available for future
+     *  object allocation.  Note that requesting a garbage collection
+     *  may change this value.
+     *  @return The approximate number of bytes available.
+     *  @see #totalMemory()
+     */
+    public static LongToken freeMemory() {
+        return new LongToken(Runtime.getRuntime().freeMemory());
+    }
+
     /** Return a Gaussian random number.
      *  @param mean The mean.
      *  @param standardDeviation The standard deviation.
@@ -158,54 +206,6 @@ public class UtilityFunctions {
                     + "Cannot create the DoubleMatrixToken that contains "
                     + "Gaussian random numbers.");
         }
-    }
-
-    /** Find a file or directory. If the file does not exist as is, then
-     *  search the current working directory, the user's home directory,
-     *  and finally, the classpath.
-     *  @param name Path of a file or directory to find.
-     *  @return Canonical absolute path if the file or directory is found,
-     *   otherwise the argument is returned unchanged.
-     */
-    public static String findFile(String name) {
-        File file = new File(name);
-        if (!file.exists()) {
-            String curDir = StringUtilities.getProperty("user.dir");
-            file = new File(curDir, name);
-        }
-        if (!file.exists()) {
-            String curDir = StringUtilities.getProperty("user.home");
-            file = new File(curDir, name);
-        }
-        if (!file.exists()) {
-            String cp = System.getProperty("java.class.path");
-            StringTokenizer tokens = new StringTokenizer(cp,
-                    System.getProperty("path.separator"));
-            while (tokens.hasMoreTokens()) {
-                String token = tokens.nextToken();
-                file = new File(token, name);
-                if (file.exists()) break;
-            }
-        }
-        if (file.exists()) {
-            try {
-                return file.getCanonicalPath();
-            } catch (java.io.IOException ex) {
-                return file.getAbsolutePath();
-            }
-        }
-        else
-            return name;
-    }
-
-    /** Return the approximate number of bytes available for future
-     *  object allocation.  Note that requesting a garbage collection
-     *  may change this value.
-     *  @return The approximate number of bytes available.
-     *  @see #totalMemory()
-     */
-    public static LongToken freeMemory() {
-        return new LongToken(Runtime.getRuntime().freeMemory());
     }
 
     /** Get the specified property from the environment. An empty string
@@ -524,7 +524,7 @@ public class UtilityFunctions {
                 Token args = (Token)array.getElement(i);
                 LinkedList arglist = new LinkedList();
                 arglist.add(args);
-                result[i] =function.apply(arglist);
+                result[i] = function.apply(arglist);
             }
         } else if (arity > 1){
             for (int i = 0; i < array.length(); i++) {
@@ -542,7 +542,7 @@ public class UtilityFunctions {
                     for (int j = 0; j< arity; j++) {
                         arglist.add(castArgs.getElement(j));
                     }
-                    result[i] =function.apply(arglist);
+                    result[i] = function.apply(arglist);
                 }
             }
         } else {
@@ -580,7 +580,7 @@ public class UtilityFunctions {
             } else if(castFunctionType.getArgCount() > 1) {
                 Type firstArgType = castFunctionType.getArgType(0);
                 boolean flag = true;
-                for (int i =1; i< castFunctionType.getArgCount(); i++) {
+                for (int i = 1; i< castFunctionType.getArgCount(); i++) {
                     Type argType = castFunctionType.getArgType(i);
                     if (argType != firstArgType) {
                         i = castFunctionType.getArgCount();
@@ -776,20 +776,6 @@ public class UtilityFunctions {
         }
     }
 
-    /** Return the (exact) return type of the random function above.
-     *  If the argument is BaseType.INT, then return and ArrayType of
-     *  BaseType.DOUBLE, otherwise return BaseType.UNKNOWN.
-     *  @param type The type of the argument to the corresponding function.
-     *  @return The type of the value returned from the corresponding function.
-     */
-    public static Type randomReturnType(Type type) {
-        if(type.equals(BaseType.INT)) {
-            return new ArrayType(BaseType.DOUBLE);
-        } else {
-            return BaseType.UNKNOWN;
-        }
-    }
-
     /** Return a matrix of IID random numbers with value greater than
      *  or equal to 0.0 and less than 1.0.
      *  @param rows The number of rows.
@@ -810,6 +796,20 @@ public class UtilityFunctions {
             throw new InternalErrorException("UtilityFunction.random: "
                     + "Cannot create the DoubleMatrixToken that contains "
                     + "random numbers.");
+        }
+    }
+
+    /** Return the (exact) return type of the random function above.
+     *  If the argument is BaseType.INT, then return and ArrayType of
+     *  BaseType.DOUBLE, otherwise return BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type randomReturnType(Type type) {
+        if(type.equals(BaseType.INT)) {
+            return new ArrayType(BaseType.DOUBLE);
+        } else {
+            return BaseType.UNKNOWN;
         }
     }
 
@@ -1036,7 +1036,8 @@ public class UtilityFunctions {
      *  @return The value.
      */
     /* FIXME: Removed pending implementing assignments.
-       public static ptolemy.data.Token set(String name, ptolemy.data.Token value) {
+       public static ptolemy.data.Token set(String name,
+           ptolemy.data.Token value) {
        Constants.add(name, value);
        return value;
        }
