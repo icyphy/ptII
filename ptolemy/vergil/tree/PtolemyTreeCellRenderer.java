@@ -30,10 +30,11 @@
 
 package ptolemy.vergil.tree;
 
+import ptolemy.actor.gui.Documentation;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.actor.gui.Documentation;
+import ptolemy.moml.EntityLibrary;
 
 import java.awt.Component;
 import javax.swing.JTree;
@@ -78,29 +79,35 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 	    component.setText(object.getName());
 
             // Render an icon, if one has been defined.
-	    NamedObj iconObject = object.getAttribute("_icon");
-	    if(iconObject != null && 
-	       iconObject instanceof ptolemy.moml.Icon) {
-		ptolemy.vergil.toolbox.EditorIcon icon = 
-		    (ptolemy.vergil.toolbox.EditorIcon) iconObject;
+            // NOTE: Avoid asking for attributes if the entity is a library
+            // because this will trigger evaluation, defeating deferred
+            // evaluation.
+            if (!(object instanceof EntityLibrary)) {
+                NamedObj iconObject = object.getAttribute("_icon");
+                if(iconObject != null && 
+                        iconObject instanceof ptolemy.moml.Icon) {
+                    ptolemy.vergil.toolbox.EditorIcon icon = 
+                            (ptolemy.vergil.toolbox.EditorIcon) iconObject;
 
-                // Wow.. this is a confusing line of code.. :)
-                component.setIcon(icon.createIcon());
-            }
+                    // Wow.. this is a confusing line of code.. :)
+                    component.setIcon(icon.createIcon());
+                }
 
-            Attribute tooltipAttribute = object.getAttribute("tooltip");
-            if (tooltipAttribute != null
-                    && tooltipAttribute instanceof Documentation) {
-                component.setToolTipText(
-                    ((Documentation)tooltipAttribute).getValue());
-            } else {
-                String tip = Documentation.consolidate(object);
-                if (tip != null) {
-                    component.setToolTipText(tip);
+                Attribute tooltipAttribute = object.getAttribute("tooltip");
+                if (tooltipAttribute != null
+                        && tooltipAttribute instanceof Documentation) {
+                    component.setToolTipText(
+                            ((Documentation)tooltipAttribute).getValue());
+                } else {
+                    String tip = Documentation.consolidate(object);
+                    if (tip != null) {
+                            component.setToolTipText(tip);
+                    }
                 }
             }
 
             // FIXME: Create a default icon if none has been defined.
+            // FIXME: Create a special icon for libraries?
         }
 	return component;
     }

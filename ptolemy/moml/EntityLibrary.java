@@ -104,6 +104,38 @@ is created with the same (unevaluated) MoML text, rather than being
 populated with the contents specified by that text.  If the object
 is cloned after being populated, the clone will also be populated.
 <p>
+A third subtlety involves the doc element.  Unfortunately, MoML
+semantics define the doc element to replace any previously existing
+doc elements.  But to find out whether there is any previously
+existing doc element, the MoML parser calls getAttribute, which
+has the effect of populating the library.  Thus, doc elements
+should go inside the group, not outside.  For example, the
+following organization results in no deferred evaluation:
+<pre>
+  &lt;entity name="director library" class="ptolemy.moml.EntityLibrary"&gt;
+    &lt;doc&gt;default director library&lt;/doc&gt;
+    &lt;configure&gt;
+      &lt;?moml
+        &lt;group&gt;
+        ...
+        &lt;/group&gt;
+      ?&gt;
+    &lt;/configure&gt;
+  &lt;/entity&gt;
+</pre>
+The following, by contrast, is OK:
+<pre>
+  &lt;entity name="director library" class="ptolemy.moml.EntityLibrary"&gt;
+    &lt;configure&gt;
+      &lt;?moml
+        &lt;group&gt;
+        &lt;doc&gt;default director library&lt;/doc&gt;
+        ...
+        &lt;/group&gt;
+      ?&gt;
+    &lt;/configure&gt;
+  &lt;/entity&gt;
+</pre>
 
 @author Edward A. Lee
 @version $Id$
@@ -252,14 +284,22 @@ public class EntityLibrary
      *  object contained by an object contained by this, etc.
      *  This method ignores whether the entities report that they are
      *  atomic (see CompositeEntity), and always returns false if the entities
-     *  are not in the same workspace. This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
+     *  are not in the same workspace.
      *  This method is read-synchronized on the workspace.
      *  @see ptolemy.kernel.CompositeEntity#isAtomic()
      *  @return True if this contains the argument, directly or indirectly.
      */
     public boolean deepContains(NamedObj inside) {
-        populate();
+        // If this has not yet been populated, then it can't possibly contain
+        // the proposed object because the proposed object would not
+        // exist yet.  Therefore, we do not need to populate.
+        // Note that this makes this method override completely
+        // unnecessary, but we keep it here anyway to record the fact.
+        // Note that if we do call populate here, then the library
+        // will be populated whenever setContainer() is called on this
+        // library, which means that deferred evaluation will not ever
+        // actually be deferred.
+        // populate();
         return super.deepContains(inside);
     }
 
@@ -352,7 +392,9 @@ public class EntityLibrary
             // Avoid populating during cloning.
             if (_cloning) return;
             _populating = true;
+
             if (!_configureDone) {
+
                 // NOTE: Set this early to prevent repeated attempts to
                 // evaluate if an exception occurs.  This way, it will
                 // be possible to examine a partially populated entity.

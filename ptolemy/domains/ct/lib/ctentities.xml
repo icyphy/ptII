@@ -3,10 +3,11 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <entity name="continuous time" class="ptolemy.moml.EntityLibrary">
-  <doc>Continuous-time actors</doc>
   <configure>
     <?moml
       <group>
+<doc>Continuous-time actors</doc>
+
 <entity name="CTPeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>

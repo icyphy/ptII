@@ -2,10 +2,10 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="conversions" class="ptolemy.moml.EntityLibrary">
-  <doc>Conversion actors</doc>
   <configure>
     <?moml
       <group>
+<doc>Conversion actors</doc>
 
 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">

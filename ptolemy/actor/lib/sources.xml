@@ -2,10 +2,10 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="sources" class="ptolemy.moml.EntityLibrary">
-  <doc>Domain-polymorphic sources</doc>
   <configure>
     <?moml
       <group>
+<doc>Domain-polymorphic sources</doc>
 
 <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">

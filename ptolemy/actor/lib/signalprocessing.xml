@@ -2,10 +2,10 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="signal processing" class="ptolemy.moml.EntityLibrary">
-  <doc>Signal processing actors</doc>
   <configure>
     <?moml
       <group>
+  <doc>Signal processing actors</doc>
 
   <entity name="DB" class="ptolemy.actor.lib.DB">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">

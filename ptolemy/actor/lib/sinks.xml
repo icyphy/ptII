@@ -2,10 +2,10 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="sinks" class="ptolemy.moml.EntityLibrary">
-  <doc>Domain-polymorphic sinks</doc>
   <configure>
     <?moml
       <group>
+<doc>Domain-polymorphic sinks</doc>
 
 <entity name="Discard" class="ptolemy.actor.lib.Discard">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">

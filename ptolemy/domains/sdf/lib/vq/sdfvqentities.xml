@@ -3,10 +3,10 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <entity name="image processing" class="ptolemy.moml.EntityLibrary">
-  <doc>Image processing actors</doc>
   <configure>
     <?moml
       <group>
+  <doc>Image processing actors</doc>
 
 <entity name="HTVQEncode" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">

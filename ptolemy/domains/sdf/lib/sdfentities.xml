@@ -2,10 +2,10 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="sdf" class="ptolemy.moml.EntityLibrary">
-  <doc>Synchronous dataflow actors</doc>
   <configure>
     <?moml
       <group>
+<doc>Synchronous dataflow actors</doc>
 
 <entity name="Delay" class="ptolemy.domains.sdf.lib.Delay">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">

@@ -70,7 +70,7 @@ There can be any number of instances of this class in an effigy.
 @version $Id$
 @see Effigy
 @see HTMLViewer
-@see MoMLApplication#specToURL()
+@see MoMLApplication#specToURL(String)
 */
 public class HTMLViewerTableau extends Tableau {
 

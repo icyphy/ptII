@@ -93,10 +93,10 @@
 
   <!-- Default entity library to appear in the library browser. -->
   <entity name="actor library" class="ptolemy.moml.EntityLibrary">
-    <doc>default entity library</doc>
     <configure>
       <?moml
         <group>
+          <doc>default entity library</doc>
           <input source="../actor/lib/sources.xml"/>
           <input source="../actor/lib/sinks.xml"/>
           <input source="../actor/lib/math.xml"/>

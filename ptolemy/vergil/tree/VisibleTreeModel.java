@@ -35,6 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.LibraryMarkerAttribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.gui.MessageHandler;
+import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLParser;
 
 import java.net.URL;
@@ -136,9 +137,16 @@ public class VisibleTreeModel extends EntityTreeModel {
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
-        // FIXME: Only doing attributes for now.
+        // NOTE: handle EntityLibrary specially to prevent evaluation
+        // of the library prematurely.
+        if (object instanceof EntityLibrary) return false;
+
+        // If the object is not an instance of NamedObj, then it is certainly
+        // atomic.
 	if (!(object instanceof NamedObj)) return true;
         NamedObj obj = (NamedObj)object;
+
+        // FIXME: Only doing attributes for now.
         // FIXME: How do we determine whether an attribute is visible?
         // Here, we only show directors.
         List attributes = obj.attributeList(Director.class);
