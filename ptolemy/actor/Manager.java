@@ -278,7 +278,8 @@ public final class Manager extends NamedObj implements Runnable {
 	}
     }
 
-    /** If running and paused, resume the currently paused simulation by
+    /** If the model is running and paused, resume the
+     *  currently paused simulation by
      *  turning off the paused flag and waking the simulation thread up.
      *  This thread is synchronized so that it runs atomically with respect to
      *  the other methods in manager that control the simulation thread.
