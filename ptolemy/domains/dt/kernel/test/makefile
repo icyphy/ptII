@@ -64,7 +64,7 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) dtTestEntities.xml
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) dtTestEntities.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -86,7 +86,7 @@ install: jclass
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test_auto #test_jsimple
 
 test_java: jclass
 
