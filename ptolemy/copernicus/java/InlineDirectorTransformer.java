@@ -111,10 +111,47 @@ public class InlineDirectorTransformer extends SceneTransformer {
         System.out.println("InlineDirectorTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
         
+        // First remove methods that are called on the director.
+        // Loop over all the entity classes...
+        for(Iterator i = _model.entityList().iterator();
+            i.hasNext();) {
+            Entity entity = (Entity)i.next();
+            String className = 
+                ActorTransformer.getInstanceClassName(entity, options);
+            SootClass theClass = 
+                Scene.v().loadClassAndSupport(className);
+       
+            // Loop over all the methods...
+            for(Iterator methods = theClass.getMethods().iterator();
+                methods.hasNext();) {
+                SootMethod method = (SootMethod)methods.next();
+
+                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+
+                // Loop over all the statements.
+                for(Iterator units = body.getUnits().snapshotIterator();
+                    units.hasNext();) {
+                    Stmt unit = (Stmt)units.next();
+                    if(!unit.containsInvokeExpr()) {
+                        continue;
+                    }
+                    ValueBox box = (ValueBox)unit.getInvokeExprBox();
+                    InvokeExpr r = (InvokeExpr)box.getValue();
+                    if(r.getMethod().getSubSignature().equals(
+                            PtolemyUtilities.invalidateResolvedTypesMethod.getSubSignature())) {
+                        // Replace calls to getDirector with
+                        // null.  FIXME: we should be able to
+                        // do better than this?
+                        body.getUnits().remove(unit);
+                    }
+                }
+            }
+        } 
+        
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
       
         SootClass modelClass = ModelTransformer.getModelClass();
-
+        
         // Inline the director
         {
             // populate the preinitialize method
