@@ -97,24 +97,6 @@ public class DDEActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the current time of this actor. The current time
-     *  is equal to the time stamp associated with the token most
-     *  recently consumed by any of the receivers contained by
-     *  this DDEActor. If the current thread accessing this method
-     *  is not an instance of DDEThread, then return the cached
-     *  current time value.
-     * @return The current time of this DDEActor.
-    public double getCurrentTime() {
-	Thread thread = Thread.currentThread();
-	if( thread instanceof DDEThread ) {
-	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-	    _currentTime = timeKeeper.getCurrentTime();
-	}
-
-	return _currentTime;
-    }
-     */
-
     /** Return the last port through which a token was consumed by
      *  this actor. If no tokens have ever been consumed through any
      *  ports of this actr, then return null.
