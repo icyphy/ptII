@@ -1,6 +1,6 @@
+<!-- $Id$-->
 <HTML>
 <HEAD>
-<!-- $Id$>
 <TITLE>Demo of DE simulation applet</TITLE>
 </HEAD>
 <body bgcolor=#FAF0E6>
@@ -14,6 +14,7 @@ be made public, or else everything has to be compiled under jdk 1.2.
 <center>
 <applet name="DE Simulation"
    bgcolor=#FAF0E6
+   archive="ptolemy/domains/de/demo/clockapplet.jar"
    code=ptolemy.domains.de.demo.ClockApplet.class
    codebase=../../../..
    width=600 height=400>
@@ -22,11 +23,21 @@ If you were able to run applets, you would have a waveform demo here.
 </i></center>
 </applet>
 </center>
-<HR>
-<CENTER>
-UNIVERSITY OF CALIFORNIA<BR>
-Department of Electrical Engineering and Computer Sciences<BR>
-</CENTER>
-</BODY>
-</HTML>
+This applet is implemented by
+<a href="ClockApplet.java"><CODE>ClockApplet.java</CODE></a>.
+ <p>The simulation consists of a 
+<a href="../lib/DEClock.java">Clock</a> Actor, a
+<a href="../lib/DEPoisson.java">Poisson</a> Actor, and a
+<a href="../lib/DEWaitingTime.java">WaitingTime</a> Actor
+connected to a 
+<a href="../lib/DEPlot.java">Plot</a> Actor.
 
+<HR>
+<hr>
+Copyright &#169 1998 The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>ptII@eecs.berkeley.edu</author>
+</body>
+</html>
