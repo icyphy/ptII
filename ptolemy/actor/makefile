@@ -73,8 +73,11 @@ JSRCS = \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
+	NotScheduleableException.java \
 	QueueReceiver.java \
-	Receiver.java
+	Receiver.java \
+	Scheduler.java \
+	StaticSchedulingDirector.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
