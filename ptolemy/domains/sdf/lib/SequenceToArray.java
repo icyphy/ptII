@@ -129,7 +129,10 @@ public class SequenceToArray extends SDFTransformer {
         super.fire();
         arrayLength.update();
         int length = ((IntToken)arrayLength.getToken()).intValue();
-        Token[] valueArray = input.get(0, length);
+
+        Token[] valueArray = new Token[length];
+        System.arraycopy(input.get(0, length),
+                0, valueArray, 0,length);
 
         output.send(0, new ArrayToken(valueArray));
     }
