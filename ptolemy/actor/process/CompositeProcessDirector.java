@@ -47,8 +47,8 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CompositeProcessDirector
 /**
-A base class for directors in process oriented domains that incorporates
-hierarchical, heterogeneity. As with the ProcessDirector class,
+A base class for directors in process oriented domains that incorporate
+hierarchical heterogeneity. As with the ProcessDirector class,
 CompositeProcessDirectors need to keep a count of the number of active
 processes and the number of processes that are blocked for any reason
 (e.g., trying to read from an empty channel in PN).
@@ -147,7 +147,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  NullPointerException will be thrown. If the name argument is null,
      *  then the name is set to the empty string. Increment the version
      *  number of the workspace.
-     *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      *  @exception IllegalActionException If the name contains a period,
@@ -169,7 +168,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
      *  and no topology listeners. The count of active processes is zero.
-     *
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
@@ -191,14 +189,12 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  whether the ports passed in as arguments are input or output
      *  ports. If any of the ports are input (output) ports, then they
      *  will be added to the input (output) branch controller.
-     *
      *  @param ports The ports for which branches will be assigned.
      *  @exception IllegalActionException If any of the ports are
      *   not opaque.
      */
     public void createBranchController(Iterator ports)
-                throws IllegalActionException {
-
+            throws IllegalActionException {
         IOPort port = null;
         while ( ports.hasNext() ) {
             port = (IOPort)ports.next();
@@ -218,10 +214,8 @@ public class CompositeProcessDirector extends ProcessDirector {
     /** Return the input branch controller of this director. If
      *  this method is called prior to the invocation of
      *  initialize(), then this method will return null.
-     *
      *  @return The input branch controller of this director.
      */
-
     public BranchController getInputController() {
         return _inputBranchController;
     }
@@ -229,7 +223,6 @@ public class CompositeProcessDirector extends ProcessDirector {
     /** Return the output branch controller of this director. If
      *  this method is called prior to the invocation of
      *  initialize(), then this method will return null.
-     *
      *  @return The output branch controller of this director.
      */
     public BranchController getOutputController() {
@@ -374,16 +367,15 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   this director.
      */
     public void wrapup() throws IllegalActionException {
-        if ( _debugging ) _debug(_name+": calling wrapup()");
-
-        // Kill all branch controllers
+        // Kill all branch controllers.
         stopInputBranchController();
         stopOutputBranchController();
 
-        if ( _debugging ) _debug(_name+": finished deactivating branches");
+        if ( _debugging ) {
+            _debug("Finished deactivating branches.");
+        }
 
         super.wrapup();
-
     }
 
     ///////////////////////////////////////////////////////////////////
