@@ -417,7 +417,7 @@ public class UtilityFunctions {
 	 *   lengths.
 	 */
     public static ArrayToken map(FunctionToken function, ArrayToken array)
-	        throws IllegalActionException { 
+	        throws IllegalActionException {
         int arity = function.getNumberOfArguments();
         ArrayToken result = null;
         if (BaseType.SCALAR.isCompatible(array.getElementType())){
@@ -863,7 +863,7 @@ public class UtilityFunctions {
      *  This method is polymorphic in that it can sum any array
      *  whose elements support addition.
      *  @param array An array.
-     *  @returns The sum of the elements of the array.
+     *  @return The sum of the elements of the array.
      *  @exception IllegalActionException If the length of the
      * array is zero, or if the array elements do not support
      * addition.
