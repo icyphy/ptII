@@ -96,7 +96,6 @@ proc sootShallowCodeGeneration {modelPath} {
 	puts $results
 	error $errMsg
     }
-	puts $results
     # If the model has a different name than the file name, we
     # handle it here.
     set results [exec make -C .. MODEL=$modelName \
