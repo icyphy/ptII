@@ -44,8 +44,8 @@ association values.
 */
 public class GraphElementException extends GraphException {
 
-    /** Constructor with an argument of string message.
-     *  @param message The exception message.
+    /** Constructor for a given message.
+     *  @param message The message.
      */
     public GraphElementException(String message) {
         super(message);

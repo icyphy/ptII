@@ -41,6 +41,13 @@ incorrect weights.
 */
 public class GraphWeightException extends GraphException {
 
+    /** Constructor for a given message.
+     *  @param message The message.
+     */
+    public GraphWeightException(String message) {
+        super(message);
+    }
+
     /** Constructor with arguments of weight, element, graph,
      *  and a message.
      *  This exception is generally thrown because of invalid weight

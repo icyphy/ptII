@@ -62,6 +62,13 @@ JSRCS = \
     Element.java \
     ElementList.java \
     Graph.java \
+    GraphActionException.java \
+    GraphConstructionException.java \
+    GraphElementException.java \
+    GraphException.java \
+    GraphStateException.java \
+    GraphTopologyException.java \
+    GraphWeightException.java \
     Graphs.java \
     LabeledList.java \
     Inequality.java \
