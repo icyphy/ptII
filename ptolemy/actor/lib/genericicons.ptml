@@ -4,6 +4,14 @@
 <iconlibrary name="generic" version="1.0">
 <description>Generic Icons</description>
 
+<icon name="director">
+<description>A default icon for directors</description>
+<xmlgraphic>
+<rectangle coords="0 0 60 40" fill="orange"/>
+<rectangle coords="10 10 50 30" fill="blue"/>
+</xmlgraphic>
+</icon>
+
 <icon name="source">
 <description>A default icon for sources</description>
 <xmlgraphic>
@@ -18,6 +26,9 @@
 <polygon coords="50 10 10 20 50 30" fill="blue"/>
 </xmlgraphic>
 </icon>
+
+<terminalstyle name="none">
+</terminalstyle>
 
 <terminalstyle name="source">
 <terminal name="output" x="64" y="20"/>
