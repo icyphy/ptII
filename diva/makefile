@@ -52,6 +52,14 @@ PTCLASSALLJARS = \
 		resource/resource.jar \
 		util/util.jar
 
+# Note that $PTII/lib/diva.jar should be updated periodically.
+# $PTII/lib/diva.jar is used by the applets, and vergil starts up much
+# more quickly if diva.jar is in the path before $PTII.
+# To update $PTII/lib/diva.jar, do:
+#   make install
+#   cd $PTII/lib
+#   cp $PTII/diva/diva.jar
+#   cvs commit -m "useful message about the change" diva.jar
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 EXTRA_SRCS =
