@@ -764,7 +764,9 @@ public class Pxgraph extends Frame {
         if (printjob != null) {          
             Graphics printgraphics = printjob.getGraphics();
             if (printgraphics != null) {
-                Dimension dim = getSize();
+                Dimension dim = size(); // size is deprecated in 1.1, we
+                                        // should use getSize(), but getSize
+                                        // is not in 1.0.2.        
                 
                 // Make the buttons invisible
                 _setButtonsVisibility(false);
