@@ -256,7 +256,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 350.0">
                 </property>
             </port>
-            <entity name="FilterMPDU" class="ptolemy.actor.TypedCompositeActor">
+            <entity name="FilterMPDU" class="ptolemy.domains.wireless.lib.network.mac.FilterMpdu">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 140.0">
                 </property>
                 <port name="toProtocolControl" class="ptolemy.actor.TypedIOPort">
@@ -577,7 +577,7 @@
                 <link port="modal model.start" relation="relation"/>
                 <link port="SingleEvent.output" relation="relation"/>
             </entity>
-            <entity name="ValidateMPDU" class="ptolemy.actor.TypedCompositeActor">
+            <entity name="ValidateMPDU" class="ptolemy.domains.wireless.lib.network.mac.ValidateMpdu">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 250.0">
                 </property>
                 <port name="toFilterMpdu" class="ptolemy.actor.TypedIOPort">
@@ -727,7 +727,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-235.0, -5.0">
                 </property>
             </port>
-            <entity name="DataPump" class="ptolemy.actor.TypedCompositeActor">
+            <entity name="DataPump" class="ptolemy.domains.wireless.lib.network.mac.DataPump">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-35.0, -5.0">
                 </property>
                 <port name="TXTXRequest" class="ptolemy.actor.TypedIOPort">
@@ -787,7 +787,7 @@
                     </property>
                 </port>
             </entity>
-            <entity name="BackoffProcedure" class="ptolemy.actor.TypedCompositeActor">
+            <entity name="BackoffProcedure" class="ptolemy.domains.wireless.lib.network.mac.Backoff">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, -5.0">
                 </property>
                 <port name="fromDataPump" class="ptolemy.actor.TypedIOPort">
@@ -961,7 +961,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 120.0">
                 </property>
             </port>
-            <entity name="TXCoordinationSTA" class="ptolemy.actor.TypedCompositeActor">
+            <entity name="TXCoordinationSTA" class="ptolemy.domains.wireless.lib.network.mac.TxCoordination">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 35.0">
                 </property>
                 <port name="TXTXRequest" class="ptolemy.actor.TypedIOPort">
@@ -1014,7 +1014,7 @@
                     </property>
                 </port>
             </entity>
-            <entity name="RXCoordination" class="ptolemy.actor.TypedCompositeActor">
+            <entity name="RXCoordination" class="ptolemy.domains.wireless.lib.network.mac.RxCoordination">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 35.0">
                 </property>
                 <port name="fromReception" class="ptolemy.actor.TypedIOPort">

@@ -72,7 +72,7 @@ public class FilterMpdu extends MACActorBase {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        fromValidateMpdu = new TypedIOPort(this, "fromValidateMPDU", true, false);
+        fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
 
         fromValidateMpdu.setTypeEquals(BaseType.GENERAL);
         
