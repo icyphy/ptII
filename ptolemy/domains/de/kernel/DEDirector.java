@@ -1212,7 +1212,7 @@ public class DEDirector extends Director implements TimedDirector {
             while (outputs.hasNext()) {
                 IOPort outputPort = (IOPort)outputs.next();
                 int outputDepth = _getDepthOfIOPort(outputPort);
-                if (outputDepth < depth) {
+                if (outputDepth < depth || depth == -1) {
                     depth = outputDepth;
                 }
             }
