@@ -221,9 +221,15 @@ public class SCDirector extends Director {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                actor.createReceivers();
-                actor.initialize();
+                if (actor == _controller) {
+                    continue;
+                } else {
+                    actor.createReceivers();
+                    actor.initialize();
+                }
             }
+            _controller.createReceivers();
+            _controller.initialize();
         }
 
 /* REMOVE! */
@@ -348,6 +354,9 @@ System.out.println("Result of prefire " + ((ComponentEntity)refine).getFullName(
             try {
                 Token t = port.get(0);
                 p = (IOPort)_controller.getPort(port.getName());
+
+System.out.println("Try get a port from " + ((ComponentEntity)_controller).getFullName());
+
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
                     if (rec.hasToken()) {
@@ -381,21 +390,55 @@ System.out.println("Result of prefire " + ((ComponentEntity)refine).getFullName(
      *   output port.
      */
     public void transferOutputs(IOPort port) throws IllegalActionException {
+
+//System.out.println("SCD Transferout: port is " + port.getFullName());
+
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not an opaque output port.");
         }
         // do not handle multiple tokens, multiple channels now
         Receiver insiderec = (port.getInsideReceivers())[0][0];
+
+//System.out.println("Check 1");
+
         CompositeActor cont = (CompositeActor)getContainer();
+
+//System.out.println("Check 2");
+
         IOPort p = (IOPort)cont.getPort(port.getName());
+
+//System.out.println("Check 3");
+
         if (insiderec.hasToken()) {
+
+//System.out.println("Check 4");
+
             try {
                 Token t = insiderec.get();
+
+//System.out.println("Check 5" + t.stringValue());
+
                 _controller.currentState().setLocalInputVar(port.getName(), t);
+
+//System.out.println("Check 6 " + p.getFullName() + " is null? " + (p == null));
+
                 if (p != null) {
+
+//if (p.getInsideReceivers() == null) {
+//System.out.println("Inside receiver for " + p.getFullName() + " is null!");
+//}
+
+//System.out.println("Check 6.5");
+
                     Receiver rec = (p.getInsideReceivers())[0][0];
+
+//System.out.println("Check 7");
+
                     rec.put(t);
+
+//System.out.println("Check 8");
+
                 }
             } catch (NoTokenException ex) {
                 throw new InternalErrorException(
