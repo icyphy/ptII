@@ -77,5 +77,15 @@ public abstract class XMLElement {
     public void setAttribute (String name, String value) {
         ;
     }
+
+    /**
+     * Add an attribute with the given name to this element.
+     * This method is package-private, since only the XML
+     * parser is allowed to add attributes. The initial value
+     * of a new attribute is the null string.
+     */
+    void addAttribute (String name) {
+        ;
+    }
 }
 
