@@ -106,20 +106,20 @@ public class ExplicitRK23Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 4 to indicate that four auxiliary variables are
-     *  needed by this solver.
-     *  @return 4.
-     */
-    public final int getIntegratorAuxVariableCount() {
-        return 4;
-    }
-
     /** Return 0 to indicate that no history information is needed
      *  by this solver.
      *  @return 0.
      */
     public final int getHistoryCapacityRequirement() {
         return 0;
+    }
+
+    /** Return 4 to indicate that four auxiliary variables are
+     *  needed by this solver.
+     *  @return 4.
+     */
+    public final int getIntegratorAuxVariableCount() {
+        return 4;
     }
 
     /** Provide the fire() method for integrators under this solver.

@@ -40,12 +40,11 @@ Interface for actors that support inter-process communication.
 @since Ptolemy II 0.2
 */
 public interface IPCInterface {
-    /** Return the external tool process.
-     */
-    public Process getToolProcess();
-
     /** Return the name of the tool
      */
     public String getToolName();
 
+    /** Return the external tool process.
+     */
+    public Process getToolProcess();
 }

@@ -302,6 +302,14 @@ public class LevelCrossingDetector extends Transformer
         return true;
     }
 
+    /** Return the maximum Double, since this actor does not predict
+     *  step size.
+     *  @return java.Double.MAX_VALUE.
+     */
+    public double predictedStepSize() {
+        return java.lang.Double.MAX_VALUE;
+    }
+
     /** If the level has changed during the last iteration, update
      *  the parameter value. Note that only after the calling of this
      *  method, would the new value of level be used for detection.
@@ -315,14 +323,6 @@ public class LevelCrossingDetector extends Transformer
             _levelChanged = false;
         }
         return super.prefire();
-    }
-
-    /** Return the maximum Double, since this actor does not predict
-     *  step size.
-     *  @return java.Double.MAX_VALUE.
-     */
-    public double predictedStepSize() {
-        return java.lang.Double.MAX_VALUE;
     }
 
     /** Return the refined step size if there is a missed event,

@@ -92,19 +92,19 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return 0 to indicate that this solver needs no history information.
+     *  @return 0.
+     */
+    public int getHistoryCapacityRequirement() {
+        return 0;
+    }
+
     /** Return 1 to indicate that this solver needs one auxiliary variable
      *  from each integrator when solving the ODE.
      *  @return 1.
      */
     public int getIntegratorAuxVariableCount() {
         return 1;
-    }
-
-    /** Return 0 to indicate that this solver needs no history information.
-     *  @return 0.
-     */
-    public int getHistoryCapacityRequirement() {
-        return 0;
     }
 
     /** Perform the fire() method for the argument integrator. This implements

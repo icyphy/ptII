@@ -108,13 +108,6 @@ public class DerivativeResolver extends ODESolver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 0 to indicate that the solver needs no auxiliary variable.
-     *  @return 0.
-     */
-    public final int getIntegratorAuxVariableCount() {
-        return 0;
-    }
-
     /** Return 0 to indicate that no history information is needed
      *  by this solver.
      *  @return 0.
@@ -123,12 +116,19 @@ public class DerivativeResolver extends ODESolver
         return 0;
     }
 
+    /** Return 0 to indicate that the solver needs no auxiliary variable.
+     *  @return 0.
+     */
+    public final int getIntegratorAuxVariableCount() {
+        return 0;
+    }
+
     /** Provides the fire() method for the given integrator.
      *  This remembers the input token, and use it for x'(t).
      *
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  May be needed by the derived class.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {

@@ -97,20 +97,20 @@ public class BackwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 1 to indicate that an integrator under this solver needs
-     *  one auxiliary variable.
-     *  @return 1.
-     */
-    public int getIntegratorAuxVariableCount() {
-        return 1;
-    }
-
     /** Return 0 to indicate that no history information is needed by
      *  this solver.
      *  @return 0.
      */
     public int getHistoryCapacityRequirement() {
         return 0;
+    }
+
+    /** Return 1 to indicate that an integrator under this solver needs
+     *  one auxiliary variable.
+     *  @return 1.
+     */
+    public int getIntegratorAuxVariableCount() {
+        return 1;
     }
 
     /** Provide the fire() method for the integrator under this solver.

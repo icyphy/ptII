@@ -199,6 +199,26 @@ public class EventSource extends TypedAtomicActor
         return newObject;
     }
 
+    /** Emit the discrete event that happens at the current time. If there
+     *  is no such events, do nothing.
+     *  @exception IllegalActionException If the event cannot be sent.
+     */
+    public void fire() throws IllegalActionException {
+        CTDirector director = (CTDirector)getDirector();
+        if (director.isDiscretePhase() && hasCurrentEvent()) {
+            output.send(0, ((ArrayToken)values.getToken()).getElement(_phase));
+        }
+    }
+
+    /** Return true if there is an event at the current time.
+     *  @return True if there is an event to emit now.
+     */
+    public boolean hasCurrentEvent() {
+        CTDirector director = (CTDirector)getDirector();
+        return (Math.abs(director.getCurrentTime() -_nextOutputTime)
+                < director.getTimeResolution());
+    }
+
     /** Schedule the first firing and initialize local variables.
      *  @exception IllegalActionException If the parent class throws it,
      *   or if the <i>values</i> parameter is not a row vector, or if the
@@ -244,26 +264,6 @@ public class EventSource extends TypedAtomicActor
             director.fireAt(this, _nextOutputTime);
         }
         return true;
-    }
-
-    /** Emit the discrete event that happens at the current time. If there
-     *  is no such events, do nothing.
-     *  @exception IllegalActionException If the event cannot be sent.
-     */
-    public void fire() throws IllegalActionException {
-        CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase() && hasCurrentEvent()) {
-            output.send(0, ((ArrayToken)values.getToken()).getElement(_phase));
-        }
-    }
-
-    /** Return true if there is an event at the current time.
-     *  @return True if there is an event to emit now.
-     */
-    public boolean hasCurrentEvent() {
-        CTDirector director = (CTDirector)getDirector();
-        return (Math.abs(director.getCurrentTime() -_nextOutputTime)
-                < director.getTimeResolution());
     }
 
     ///////////////////////////////////////////////////////////////////
