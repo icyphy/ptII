@@ -116,6 +116,8 @@ public class ProcessDirector extends Director {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         ProcessDirector newobj = (ProcessDirector)super.clone(ws);
         newobj._actorsActive = 0;
+        newobj._deadlock = false;
+        newobj._notdone = true;
         newobj._pausedReceivers = new LinkedList();
         newobj._pauseRequested = false;
         newobj._threadList = new LinkedList();
@@ -200,12 +202,12 @@ public class ProcessDirector extends Director {
         _checkForPause();
     }
 
-    /** This returns false if the simulation has reached a deadlock and can
+    /** This returns false if the model has reached a deadlock and can
      *  be terminated if desired. This flag is set on detection of a deadlock
      *  in the fire() method.
      *  @return false if the director has detected a deadlock and does not
-     *  wish to be scheduled.
-     *  @exception IllegalActionException This is never thrown in PN
+     *   wish to be scheduled.
+     *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
 	return _notdone;
@@ -215,76 +217,51 @@ public class ProcessDirector extends Director {
     /** Return true indicating that the director is ready to be fired. This
      *  starts a thread corresponding to all the actors that were created
      *  in the initialize() method.
-     *  @return true always.
-     *  @exception IllegalActionException This is never thrown in PN
+     *  @return true Always returns true.
+     *  @exception IllegalActionException If a derived class throws it.
      */
-    public boolean prefire()
-	    throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException  {
         Enumeration threads = _threadList.elements();
         // Starting threads.
         while (threads.hasMoreElements()) {
-            ProcessThread pnt = (ProcessThread)threads.nextElement();
-            pnt.start();
+            ProcessThread thread = (ProcessThread)threads.nextElement();
+            thread.start();
         }
         return true;
     }
 
-    /** Pause the simulation. This method iterates through the set of
-     *  actors in the compositeActor and sets the pause flag of all
+    /** Pause the execution of the model. This method iterates through the 
+     *  set of actors in the compositeActor and sets the pause flag of all
      *  the receivers. It also sets the pause flag in all the output
      *  ports of the CompositeActor under control of this director.
      *  <p>
-     *  FIXME: should a simulationPausedEvent be sent when the
-     *  simulation is fully paused?
-     *  <p>
-     *  FIXME: why is this read locked?
+     *  FIXME: should a pausedEvent be sent when the
+     *  model is fully paused?
      *  @exception IllegalActionException If cannot access all the receivers.
      */
-    public void setPauseRequested() throws IllegalActionException {
-        synchronized(this) {
-            // If already paused do nothing.
-            if (_pauseRequested) {
-                return;
-            }
-            _pauseRequested = true;
+    public synchronized void setPauseRequested() 
+            throws IllegalActionException {
+        // If already paused do nothing.
+        if (_pauseRequested) {
+            return;
         }
-	workspace().getReadAccess();
-	try {
-	    //LinkedList _pausedReceivers = new LinkedList();
-
-	    // Obtaining a list of all actors in this compositeActor
-	    CompositeActor cont = (CompositeActor)getContainer();
-            Enumeration allMyActors = cont.deepGetEntities();
-            Enumeration actorPorts;
-
-            ProcessReceiver nextRec;
-
-            while (allMyActors.hasMoreElements()) {
-                // Obtaining all the ports of each actor
-                Actor actor = (Actor)allMyActors.nextElement();
-                actorPorts = actor.inputPorts();
-                while (actorPorts.hasMoreElements()) {
-                    IOPort port = (IOPort)actorPorts.nextElement();
-                    // Setting paused flag in the receivers..
-                    Receiver[][] receivers = port.getReceivers();
-                    for (int i = 0; i<receivers.length; i++) {
-                        for (int j = 0; j<receivers[i].length; j++) {
-                            nextRec = (ProcessReceiver)receivers[i][j];
-                            nextRec.setPause(true);
-                            _pausedReceivers.insertFirst(receivers[i][j]);
-                        }
-		    }
-		}
-	    }
-
-            // If this director is controlling a CompositeActor with
-            // output ports, need to set the simulationFinished flag
-            // there as well.
-            // FIXME: is this the best way to set these flags.
-            actorPorts  = cont.outputPorts();
+        _pauseRequested = true;
+        //workspace.getReadAccess();
+	
+        // Obtaining a list of all actors in this compositeActor
+        CompositeActor cont = (CompositeActor)getContainer();
+        Enumeration allMyActors = cont.deepGetEntities();
+        Enumeration actorPorts;
+        
+        ProcessReceiver nextRec;
+        
+        while (allMyActors.hasMoreElements()) {
+            // Obtaining all the ports of each actor
+            Actor actor = (Actor)allMyActors.nextElement();
+            actorPorts = actor.inputPorts();
             while (actorPorts.hasMoreElements()) {
                 IOPort port = (IOPort)actorPorts.nextElement();
-                // Terminating the ports and hence the star
+                // Setting paused flag in the receivers..
                 Receiver[][] receivers = port.getReceivers();
                 for (int i = 0; i<receivers.length; i++) {
                     for (int j = 0; j<receivers[i].length; j++) {
@@ -294,17 +271,36 @@ public class ProcessDirector extends Director {
                     }
                 }
             }
-
-            // Now wake up all the receivers.
-            (new NotifyThread(_pausedReceivers)).start();
-
-            return;
-	} finally {
-	    workspace().doneReading();
-	}
+        }
+        
+        // If this director is controlling a CompositeActor with
+        // output ports, need to set the finished flag
+        // there as well.
+        // FIXME: is this the best way to set these flags.
+        actorPorts  = cont.outputPorts();
+        while (actorPorts.hasMoreElements()) {
+            IOPort port = (IOPort)actorPorts.nextElement();
+            // Terminating the ports and hence the star
+            Receiver[][] receivers = port.getReceivers();
+            for (int i = 0; i<receivers.length; i++) {
+                for (int j = 0; j<receivers[i].length; j++) {
+                    nextRec = (ProcessReceiver)receivers[i][j];
+                    nextRec.setPause(true);
+                    _pausedReceivers.insertFirst(receivers[i][j]);
+                }
+            }
+        }
+        
+        // Now wake up all the receivers.
+        (new NotifyThread(_pausedReceivers)).start();
+        
+        return;
+        //} finally {
+        //workspace().doneReading();
+        //}
     }
-
-    /** Resumes the simulation. If the simulation is not paused do nothing.
+    
+    /** Resumes execution of the model. If the model is not paused do nothing.
      */
     public synchronized void setResumeRequested() {
         if (!_pauseRequested) {
@@ -327,7 +323,8 @@ public class ProcessDirector extends Director {
 
     /** Terminate all threads under control of this director immediately.
      *  This abrupt termination will not allow normal cleanup actions
-     *  to be performed.
+     *  to be performed, and the model should be recreated after calling 
+     *  this method.
      *
      *  FIXME: for now call Thread.stop() but should change to use
      *  Thread.destroy() when it is eventually implemented.
@@ -347,7 +344,7 @@ public class ProcessDirector extends Director {
     }
 
 
-    /** End the simulation. A flag is set in all the receivers
+    /** End the execution of the model. A flag is set in all the receivers
      *  which causes each process to terminate the next time it
      *  reaches a communication point.
      *  <p>
@@ -384,7 +381,7 @@ public class ProcessDirector extends Director {
             }
 
             // If this director is controlling a CompositeActor with
-            // output ports, need to set the simulationFinished flag
+            // output ports, need to set the finished flag
             // there as well.
             actorPorts  = cont.outputPorts();
             while (actorPorts.hasMoreElements()) {
@@ -471,7 +468,6 @@ public class ProcessDirector extends Director {
 
     // The threads started by this director.
     protected LinkedList _threadList = new LinkedList();
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
