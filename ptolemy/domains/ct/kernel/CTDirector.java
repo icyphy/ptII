@@ -81,7 +81,7 @@ import ptolemy.kernel.util.Workspace;
    ODE solvers and actors. These parameters are: <Br>
    <LI> <code>startTime</code>: The start time of the
    simulation. This parameter is effective only if the director
-   is at the top level. Default value is 0.0.
+   is at the top level. The default value is 0.0.
    <LI> <code>stopTime</code>: The stop time of the simulation.
    This parameter is effective only if the director
    is at the top level. The default value is Infinity, which
@@ -89,28 +89,27 @@ import ptolemy.kernel.util.Workspace;
    <LI> <code>initStepSize</code>: The suggested integration step size
    by the user. This will be the step size for fixed step
    size ODE solvers if there is no breakpoint. However, it is just
-   a hint. Default value is 0.1
+   a hint. The default value is 0.1
    <LI> <code>minStepSize</code>: The minimum step
-   size that users want to use in the simulation. Default value is 1e-5.
+   size that users want to use in the simulation. The default value is 1e-5.
    <LI> <code>maxStepSize</code>: The maximum step
    size that users want to use in the simulation. Usually used to control
-   the simulation speed. Default value is 1.0.
+   the simulation speed. The default value is 1.0.
    <LI> <code>maxIterations</code>:
    Used only in implicit ODE solvers. This is the maximum number of
    iterations for finding the fixed point at one time point.
-   Default value is 20.
+   The default value is 20.
    <LI> <code>errorTolerance</code>: This is the local truncation
    error tolerance, used for controlling the integration accuracy
    in variable step size ODE solvers. If the local truncation error
    at some step size control actors are greater than this tolerance, then the
    integration step is considered to have failed, and should be restarted with
-   a reduced step size. Default value is 1e-4.
+   a reduced step size. The default value is 1e-4.
    <LI> <code>valueResolution</code>:
    This is used to control the convergence of fixed point iterations.
-   If in two successive iterations the differences of the state variables
+   If in two successive iterations the difference of the state variables
    is less than this resolution, then the fixed point is considered to have
-   reached.
-   Default value is 1e-6.
+   reached. The default value is 1e-6.
    <P>
    This director maintains a breakpoint table to record all predictable
    breakpoints that are greater than or equal to
@@ -118,15 +117,15 @@ import ptolemy.kernel.util.Workspace;
    Breakpoints at the same time are considered to be identical, and the
    breakpoint table does not contain duplicate time points. A breakpoint can
    be inserted into the table by calling the fireAt() method. The fireAt method
-   may be requested by the director, which inserts the start time of the
+   may be requested by the director, which inserts the stop time of the
    execution. The fireAt method may also be requested by actors and the
    requested firing time will be inserted into the breakpoint table.
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public abstract class CTDirector extends StaticSchedulingDirector
     implements TimedDirector, CTGeneralDirector {
@@ -331,7 +330,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** Override the fire() method of the super class. This method is
      *  abstract in this abstract base class. The derived classes need to
-     *  override this method for comcrete implementation.
+     *  override this method for concrete implementation.
      */
     public abstract void fire() throws IllegalActionException;
 
@@ -565,10 +564,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return new CTReceiver();
     }
 
-    /** If this director is not at the top level and the breakpoint table
-     *  is not empty, request a refiring at the first breakpoint. Otherwise,
-     *  if the stop() method has not been called and all the actors return
-     *  true at postfire, return true.
+    /** If the stop() method has not been called and all the actors return
+     *  true at postfire, return true. Otherwise, return false. 
+     *  If this director is not at the top level and the breakpoint table
+     *  is not empty, request a refiring at the first breakpoint. 
      *  @return True if the Director wants to be fired again in the future.
      *  @exception IllegalActionException If refiring can not be granted.
      */
@@ -593,24 +592,22 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Invoke prefire() on all DYNAMIC_ACTORS, such as integrators,
-     *  and emit their tentative outputs.
+     *  and emit their current states.
      *  Return true if all the prefire() methods return true and stop()
-     *  is not called. Otherwise, return false.  Note that prefire()
-     *  is called on all actors even if one returns false.
+     *  is not called. Otherwise, return false.  
      *  @return True if all dynamic actors return true from their prefire()
      *  methods and stop() is called.
      *  @exception IllegalActionException If scheduler throws it, or dynamic
-     *  actors throw it in their prefire method, or they can not be prefired.
+     *  actors throw it in their prefire() method, or they can not be prefired.
      */
     public boolean prefireDynamicActors() throws IllegalActionException {
 
         // NOTE: We will also treat dynamic actors as waveform generators.
-        // This is crucial to implemet dirac function.
+        // This is crucial to implement Dirac function.
 
         _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
 
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        boolean result = true;
         Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS)
             .actorIterator();
 
@@ -625,6 +622,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
                 ready =
                     ready && ((CTCompositeActor)actor).prefireDynamicActors();
             }
+            // If ready is false, at least one dynamic actor is not
+            // ready to fire. This should never happen.
             if (!ready) {
                 _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                 throw new IllegalActionException((Nameable)actor,
@@ -638,7 +637,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
                 _debug("Prefire of " + ((Nameable)actor).getName()
                         + " returns " + ready);
             }
-            result = result && ready;
         }
 
         // NOTE: Need for integrators to emit their current states so that
@@ -659,19 +657,19 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
-        return result && !_stopRequested;
+        return !_stopRequested;
     }
 
     /** Preinitialize the model for an execution. This method is
-     *  called only once for each simulation. If this director does
-     *  not have a container and a scheduler, or the director does not
-     *  fit in this level of hierarchy, an IllegalActionException will
-     *  be thrown. The schedule is invalidated, statistical variables
-     *  and the breakpoint table are cleared, all actors are
-     *  preinitialized.
+     *  called only once for each simulation. The schedule is invalidated, 
+     *  statistical variables and the breakpoint table are cleared, all actors 
+     *  are preinitialized. 
+     *  If this director does not have a container and a scheduler, or the 
+     *  director does not fit in this level of hierarchy, an 
+     *  IllegalActionException will be thrown. 
      *  <p>
      *  Note, however, time does not have a meaning when actors are
-     *  preinitialized. So actors must not use a notion of time at their
+     *  preinitialized. So actors must not use a notion of time in their
      *  preinitialize() methods.
      *
      *  @exception IllegalActionException If this director has no
@@ -717,8 +715,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         super.preinitialize();
 
-        // Time objects can only initialized at the end of this method after
-        // the time scale and time resolutioin are evaluated.
+        // Time objects can only be initialized at the end of this method after
+        // the time scale and time resolution are evaluated.
         // NOTE: Time resolution is provided by the preinitialize() method in
         // the super class (Director). So, this method must be called
         // after the super.preinitialize() is called.

@@ -60,15 +60,15 @@ import ptolemy.kernel.util.Workspace;
    At the time points where abrupt changes happen, a special ODE solver, called
    <i>breakpointODESolver</i>, is used. Typically, breakpointODESolver does not
    advance time. The job for a breakpointODESolver is to find the states of
-   the system at a breakpoint. Usually, the system has more than one states at
+   the system at a breakpoint. Usually, the system has more than one state at
    such time points, which is also known as discontinuities. We call the first
    state at a discontinuity the <i>initial</i> state, and the last state the
-   <i>final</i> states. Therefore, a breakpointODESolver is responsible to
+   <i>final</i> state. Therefore, a breakpointODESolver is responsible to
    resolve the final state of a discontinuity from the inputs and the initial
    states.
    <p>
    The following paper gives a detailed explanation of initial and final states
-   and how the final states are resolved.
+   and how the initial and final states are resolved.
    <ul>
    <li>Edward A. Lee and Haiyang Zheng, <i>Operational Semantics of Hybrid
    Systems</i>, Invited paper in Proceedings of Hybrid Systems: Computation and
@@ -96,9 +96,9 @@ import ptolemy.kernel.util.Workspace;
    This director has two more parameters than the CTDirector base class.<BR>
    <UL>
    <LI><I>ODESolver</I>: This is the name of the ODE solver that is used
-   for integrate ODEs over a time interval.
+   to integrate ODEs over a time interval.
    <LI><I>breakpointODESolver</I>: This is the name of the ODE solver used
-   at breakpoints. The breakpoint ODE solvers does not need history information
+   at breakpoints. The breakpoint ODE solvers do not need history information
    (this property is called self-start). There is only one such solver in this
    director: {@link ptolemy.domains.ct.kernel.solver.DerivativeResolver}.
    </UL>
