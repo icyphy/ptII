@@ -116,10 +116,12 @@ public class PNDirector extends ProcessDirector {
     public synchronized void delayBlock() {
 	_delayBlockCount++;
 	//System.out.println("Readblocked with count "+_readBlockCount);
-	_checkForDeadlock();
-        if (_pauseRequested) {
-            _checkForPause();
-        }
+	if (_checkForDeadlock() || _checkForPause()) {
+	    notifyAll();
+	}
+        //if (_pauseRequested) {
+	//_checkForPause();
+        //}
 	return;
     }
 
@@ -136,7 +138,30 @@ public class PNDirector extends ProcessDirector {
      */
     public void fire()
 	    throws IllegalActionException {
-        while (!_handleDeadlock());
+	boolean urgentmut;
+        Workspace worksp = workspace();
+	synchronized (this) {
+	    while (!_checkForDeadlock() && !_urgentMutations) {
+		//System.out.println("Waiting with mutations = "+_urgentMutations);
+		worksp.wait(this);
+	    }
+	    urgentmut = _urgentMutations;
+	    _urgentMutations = false;
+	}
+	//System.out.println(" deadlock = "+deadl+" and mut ="+urgentmut);
+	if (urgentmut) {
+	    //System.out.println("Performed mutations");
+            try {
+                _processTopologyRequests();
+                // FIXME: Should type resolution be done here?
+            } catch (TopologyChangeFailedException e) {
+                throw new IllegalActionException("Name duplication error: " +
+                        e.getMessage());
+            }
+	    return;
+	} else {
+	    _notdone = !_handleDeadlock();
+	}
         //System.out.println("Done firing");
     }
 
@@ -146,7 +171,6 @@ public class PNDirector extends ProcessDirector {
     public synchronized void fireAt(Actor actor, double newfiringtime)
             throws IllegalActionException {
         _eventQueue.put(new Double(newfiringtime), actor);
-        //_eventQueue.insert(new Double(newfiringtime));
         //FIXME: Blocked on a delay
         delayBlock();
         try {
@@ -176,70 +200,6 @@ public class PNDirector extends ProcessDirector {
             throws IllegalActionException {
         _currenttime = newTime;
     }
-
-
-    /** This method iterates through the set of actors in the compositeActor
-     *  and sets the pause flag of all the receivers.
-     *  @return The set of LinkedLists that are being paused.
-     *  @exception IllegalActionException Might be thrown by a called method.
-     */
-    public LinkedList setPause() throws IllegalActionException {
-        synchronized(this) {
-            _pauseRequested = true;
-        }
-	workspace().getReadAccess();
-	try {
-	    // Obtaining a list of all actors in this compositeActor
-	    LinkedList pausedreceivers = new LinkedList();
-	    Enumeration allStars =
-		((CompositeEntity)getContainer()).deepGetEntities();
-	    while (allStars.hasMoreElements()) {
-		// Obtaining all the ports of each actor
-		Enumeration starPorts =
-		    ((Entity)(allStars.nextElement())).getPorts();
-		while (starPorts.hasMoreElements()) {
-		    IOPort port = (IOPort)starPorts.nextElement();
-		    if(port.isInput()) {
-			Receiver[][] receivers = port.getReceivers();
-			for (int i=0; i<receivers.length; i++) {
-			    for (int j=0; j<receivers[i].length; j++) {
-				((PNQueueReceiver)receivers[i][j]).setPause(true);
-				pausedreceivers.insertFirst(receivers[i][j]);
-                                //The paused count is increased using 
-                                //increasePausedCount()
-			    }
-			}
-		    }
-		}
-	    }
-            //A linked list of pausedreceivers is returned as it might not be
-            //possible to resume these receivers otherwise if they have been
-            //removed from the hierarchy. They still need to be awakened so
-            //that the deadlocks can be detected and threads terminated.
-	    return pausedreceivers;
-	} finally {
-	    workspace().doneReading();
-	}
-    }
-
-    /** This resumes all the paused receivers
-     *  @param pausedreceivers This is the list of receivers whose pause flag
-     *  was set to true in the setPause() method
-     */
-    //FIXME: Should the list of receivers be passed as an argument?
-    public void setResumeRequested() {
-	Enumeration receivers = _pausedRecs.elements();
-	while (receivers.hasMoreElements()) {
-	    PNQueueReceiver receiver = (PNQueueReceiver)receivers.nextElement();
-            receiver.setPause(false);
-	}
-        synchronized (this) {
-            _pausedRecs.clear();
-            _actorsPaused= 0;
-            _pauseRequested = false;
-        }
-    }
-
 
     /** This returns false if the simulation has reached a deadlock and can
      *  be terminated if desired. This flag is set on detection of a deadlock
@@ -284,37 +244,12 @@ public class PNDirector extends ProcessDirector {
      *   performs a mutation and informs any listeners about it.
      */
     public void queueTopologyChangeRequest(TopologyChangeRequest request) {
-        try {
-            super.queueTopologyChangeRequest(request);
-            _pausedRecs = setPause();
-            synchronized(this) {
-                _urgentMutations = true;
-                notifyAll();
-            }
-        } catch (IllegalActionException e) {
-            System.err.println(e.toString());
-        }
+	super.queueTopologyChangeRequest(request);
+	synchronized(this) {
+	    _urgentMutations = true;
+	    notifyAll();
+	}
     }
-
-    /** Return true indicating that the director is ready to be fired. This
-     *  starts a thread corresponding to all the actors that were created
-     *  in the initialize() method.
-     *  @return true always.
-     *  @exception IllegalActionException This is never thrown in PN
-     */
-    public boolean prefire()
-            throws IllegalActionException  {
-        Enumeration threads = _threadList.elements();
-        // Starting threads.
-        while (threads.hasMoreElements()) {
-            ProcessThread pnt = (ProcessThread)threads.nextElement();
-            pnt.start();
-        }
-        _threadList.clear(); // Should it be cleared or given to manager?
-        return true;
-    }
-
-
 
     /** Increments the number of queues and hence processes blocked on a read.
      *  It checks for deadlocks as a consequence of an additional process being
@@ -324,10 +259,9 @@ public class PNDirector extends ProcessDirector {
     public synchronized void readBlock() {
 	_readBlockCount++;
 	//System.out.println("Readblocked with count "+_readBlockCount);
-	_checkForDeadlock();
-        if (_pauseRequested) {
-            _checkForPause();
-        }
+	if (_checkForDeadlock() || _checkForPause()) {
+	    notifyAll();
+	}
 	return;
     }
 
@@ -340,20 +274,6 @@ public class PNDirector extends ProcessDirector {
     }
 
 
-    public void terminate() {
-        //FIXME: Create this method. Should wait till the end of ActorListener
-    }
-
-    /** This terminates all the actors in the corresponding CompositeActor
-     *  @exception IllegalActionException if a method accessing the topology
-     *  throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-	System.out.println("Wrapup calling terminateALl");
-        _terminateAll();
-        return;
-    }
-
     /** Increments the number of actors blocked while writing to a receiver
      *  and checks for deadlocks. If pause has been requested, it checks
      *  if the simulation has been paused.
@@ -364,10 +284,12 @@ public class PNDirector extends ProcessDirector {
 	_writeBlockCount++;
 	_writeblockedQs.insertFirst(queue);
 	//System.out.println("WriteBlockedQ "+_writeBlockCount );
-	_checkForDeadlock();
-        if (_pauseRequested) {
-            _checkForPause();
-        }
+	if (_checkForDeadlock() || _checkForPause()) {
+	    notifyAll();
+	}
+        //if (_pauseRequested) {
+	//_checkForPause();
+        //}
 	return;
     }
 
@@ -393,24 +315,26 @@ public class PNDirector extends ProcessDirector {
     // blocked queue. 1 if check is being done when a process stopped.
     // This is not synchronized and thus should be called from a synchronized
     // method
-    protected synchronized void _checkForDeadlock() {
-	if (_readBlockCount + _writeBlockCount + _delayBlockCount >= _actorsActive) {
-	    _deadlock = true;
+    protected synchronized boolean _checkForDeadlock() {
+	if (_readBlockCount + _writeBlockCount + _delayBlockCount 
+		>= _getActiveActorsCount()) {
+	    return true;
             //System.out.println("aac ="+_actorsActive+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" db = "+ _delayBlockCount);
-
-	    notifyAll();
+	} else {
+	    return false;
 	}
-	return;
     }
 
     //Check if all threads are either blocked or paused
-    protected synchronized void _checkForPause() {
+    protected synchronized boolean _checkForPause() {
 	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_actorsPaused);
-	if (_readBlockCount + _writeBlockCount + _actorsPaused + _delayBlockCount >= _actorsActive) {
-	    _paused = true;
-            notifyAll();
+	if (_readBlockCount + _writeBlockCount + _getPausedActorsCount() +
+		_delayBlockCount >= _getActiveActorsCount()) {
+	    return true;
+	} else {
+	    return false;
 	}
-	return;
+	//return;
     }
 
     // Finds the QueueReceiver with the smallest write capacity
@@ -464,92 +388,24 @@ public class PNDirector extends ProcessDirector {
     //This is not synchronized and should be synchronized in the calling method
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
-        //Maintaining cache so that I can synchronize after this
-	boolean urgentmut;
-	boolean deadl;
-	int writebl;
-        int delaybl;
-        Workspace worksp = workspace();
-	synchronized (this) {
-	    while (!_deadlock && !_urgentMutations) {
-		//System.out.println("Waiting with mutations = "+_urgentMutations);
-		worksp.wait(this);
-	    }
-	    urgentmut = _urgentMutations;
-	    _urgentMutations = false;
-	    deadl = _deadlock;
-	    writebl = _writeBlockCount;
-            delaybl = _delayBlockCount;
-	}
-	//System.out.println(" deadlock = "+deadl+" and mut ="+urgentmut);
-	if (urgentmut) {
-            synchronized (this) {
-                while (!_paused) {
-                    worksp.wait(this);
-                }
-                _paused = false;
-                _deadlock = false;
-            }
-	    //System.out.println("Performed mutations");
-            try {
-                //FIXME: Should it be while or if?
-                _processTopologyRequests();
-                //if (_performMutations()) {
-                // Initialize any new actors
-                //Creates receivers and then starts up threads for all
-                //System.out.println("Initializing new actors");
-	 	//_pnActorListener.initializeNewActors();
-                // FIXME: Should type resolution be done here?
-                //}
-
-                LinkedList threadlist = new LinkedList();
-                //FIXME: Maybe we require a cleaner method for this
-                //FIXME: Where does the type resolution go?
-                Enumeration newactors = _newActors();
-                while (newactors.hasMoreElements()) {
-                    increaseActiveCount();
-                    Actor actor = (Actor)newactors.nextElement();
-                    actor.createReceivers();
-                    actor.initialize();
-                    ProcessThread pnt = new ProcessThread(actor, this);
-                    threadlist.insertFirst(pnt);
-                }
-                //Resume the paused actors
-                setResumeRequested();
-                Enumeration threads = threadlist.elements();
-                //Starting threads;
-                while (threads.hasMoreElements()) {
-                    ProcessThread pnt = (ProcessThread)threads.nextElement();
-                    pnt.start();
-                    //System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
-                }
-            } catch (TopologyChangeFailedException e) {
-                throw new IllegalActionException("Name duplication error: " +
-                        e.getMessage());
-            }
-	    return false;
-	}
-        if (writebl==0 && deadl) {
+        if (_writeBlockCount==0) {
             //Check if there are any events in the future.
-            //FIXME: Is this the right way?
-            if (delaybl ==0) {
+            if (_delayBlockCount ==0) {
                 System.out.println("real deadlock. Everyone would be erased");
-                _notdone = false;
                 return true;
             } else {
                 //Advance time to next possible time.
                 synchronized(this) {
-                    _deadlock = false;
                     try {
                         _eventQueue.take();
                         _currenttime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
+			delayUnblock();
                     } catch (IllegalAccessException e) {
                         throw new IllegalActionException(this, "Inconsistency"+
                                 " in number of actors blocked on delays count"+
                                 " and the entries in the CalendarQueue");
                     }
 
-                    delayUnblock();
                     boolean sametime = true;
                     while (sametime) {
                         if (!_eventQueue.isEmpty()) {
@@ -557,11 +413,11 @@ public class PNDirector extends ProcessDirector {
                                 Actor actor = (Actor)_eventQueue.take();
 
                                 double newtime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
-                                if (newtime != _currenttime) {
+				if (newtime == _currenttime) {
+				    delayUnblock();
+				} else {
                                     _eventQueue.put(new Double(newtime), actor);
                                     sametime = false;
-                                } else {
-                                    delayUnblock();
                                 }
                             } catch (IllegalAccessException e) {
                                 throw new InternalErrorException(e.toString());
@@ -577,7 +433,7 @@ public class PNDirector extends ProcessDirector {
         } else {
             //its an artificial deadlock;
             System.out.println("Artificial deadlock");
-            _deadlock = false;
+            //_deadlock = false;
             // find the input port with lowest capacity queue;
             // that is blocked on a write and increment its capacity;
             _incrementLowestWriteCapacityPort();
@@ -586,132 +442,43 @@ public class PNDirector extends ProcessDirector {
         return false;
     }
 
-    // Terminates all stars and hence the simulation
-    //FIXME: This does not handle compositeActors within toplevel CompositeActor
-    private void _terminateAll() throws IllegalActionException {
-	    // Obtaining all stars in the current galaxy
-	    Enumeration allStars =
-		((CompositeEntity)getContainer()).deepGetEntities();
-	    while (allStars.hasMoreElements()) {
-		// Obtaining all the ports of each star
-		Enumeration starPorts =
-		    ((Entity)(allStars.nextElement())).getPorts();
-		while (starPorts.hasMoreElements()) {
-		    IOPort port = (IOPort)starPorts.nextElement();
-		    // Terminating the ports and hence the star
-		    if(port.isInput()) {
-			//FIXME: Get all receivers
-			Receiver[][] receivers = port.getReceivers();
-			for (int i=0; i<receivers.length; i++) {
-			    for (int j=0; j<receivers[i].length; j++) {
-				((PNQueueReceiver)receivers[i][j]).setFinish();
-			    }
-			}
-		    }
-		}
-	    }
+    protected void _processTopologyRequests()
+            throws IllegalActionException, TopologyChangeFailedException {
+	Workspace worksp = workspace();
+	pause();
+	super._processTopologyRequests();
+	LinkedList threadlist = new LinkedList();
+	//FIXME: Where does the type resolution go?
+	Enumeration newactors = _newActors();
+	while (newactors.hasMoreElements()) {
+	    Actor actor = (Actor)newactors.nextElement();
+	    actor.createReceivers();
+	    actor.initialize();
+	    ProcessThread pnt = new ProcessThread(actor, this);
+	    threadlist.insertFirst(pnt);
+	    _addNewThread(pnt);
+	}
+	//Resume the paused actors
+	resume();
+	Enumeration threads = threadlist.elements();
+	//Starting threads;
+	while (threads.hasMoreElements()) {
+	    ProcessThread pnt = (ProcessThread)threads.nextElement();
+	    pnt.start();
+	    //System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    //private long _pausedcount = 0;
-
-    //private LinkedList _threadlist = new LinkedList();
-    //private boolean _pause = false;
-    private boolean _paused = false;
-    private boolean _mutate = true;
-    private boolean _deadlock = false;
     private boolean _notdone = true;
     private int _delayBlockCount = 0;
     private int _readBlockCount = 0;
-    private boolean _terminate = false;
+    //private boolean _terminate = false;
     private boolean _urgentMutations = false;
     private int _writeBlockCount = 0;
-    private LinkedList _pausedRecs = new LinkedList();
     private LinkedList _writeblockedQs = new LinkedList();
     private CalendarQueue _eventQueue;
     private double _currenttime = 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
