@@ -151,7 +151,7 @@ public class UpSample extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	Token token = input.get(0);
+        Token token = input.get(0);
         int factorValue = ((IntToken)factor.getToken()).intValue();
         int phaseValue = ((IntToken)phase.getToken()).intValue();
         if (phaseValue >= factorValue) {

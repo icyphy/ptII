@@ -84,14 +84,14 @@ public class ExecEvent implements DebugEvent {
     }
 
     public static class ExecEventType {
-	private ExecEventType(String name) {
-	    _name = name;
-	}
+        private ExecEventType(String name) {
+            _name = name;
+        }
 
-	public String getName() {
-	    return _name;
-	}
-	private String _name;
+        public String getName() {
+            return _name;
+        }
+        private String _name;
     }
 
     public static ExecEventType BLOCKED =

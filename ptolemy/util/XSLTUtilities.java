@@ -98,24 +98,24 @@ public class XSLTUtilities {
      * @exception Exception If there are problems with the transform.
      */
     public static void main(String []args) throws Exception {
-	if (args.length < 3) {
-	    System.err.println("Usage: java -classpath $PTII "
-			       + "ptolemy.util.XSLTUtilities inputFile "
-			       + "xslFile1 [xslFile2 . . .] outputFile");
-	    System.exit(2);
-	}
-	// Make sure we can write the output first
-	FileWriter fileWriter = new FileWriter(args[args.length - 1]);
-	Document inputDocument = parse(args[0]);
+        if (args.length < 3) {
+            System.err.println("Usage: java -classpath $PTII "
+                               + "ptolemy.util.XSLTUtilities inputFile "
+                               + "xslFile1 [xslFile2 . . .] outputFile");
+            System.exit(2);
+        }
+        // Make sure we can write the output first
+        FileWriter fileWriter = new FileWriter(args[args.length - 1]);
+        Document inputDocument = parse(args[0]);
 
         List transforms = new LinkedList();
-	for(int i = 1; i < args.length - 1; i++) {
-	    transforms.add(args[i]);
-	}
-	Document outputDocument =
+        for(int i = 1; i < args.length - 1; i++) {
+            transforms.add(args[i]);
+        }
+        Document outputDocument =
             XSLTUtilities.transform(inputDocument, transforms);
-	fileWriter.write(XSLTUtilities.toString(outputDocument));
-	fileWriter.close();
+        fileWriter.write(XSLTUtilities.toString(outputDocument));
+        fileWriter.close();
     }
 
     /** Parse a document.
@@ -127,11 +127,11 @@ public class XSLTUtilities {
      * transformation.
      */
     public static Document parse(String filename) throws Exception {
-	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-	// We use InputSource here so that we can specify the filename
-	// argument as a jar url so that HSIFToMoML works under Web Start.
-	return builder.parse(new InputSource(filename));
+        // We use InputSource here so that we can specify the filename
+        // argument as a jar url so that HSIFToMoML works under Web Start.
+        return builder.parse(new InputSource(filename));
     }
 
     /** Given a Document, generate a String.
@@ -140,18 +140,18 @@ public class XSLTUtilities {
      *  @exception Exception
      */
     public static String toString(Document document) throws Exception {
-	// FIXME: Joern's sample code had this in it, but if we
-	// include it, then we get Provider   not found errors
-	//String defaultDBFI =
-	//    System.getProperty("javax.xml.parsers.DocumentBuilderFactory");
-	//System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
-	//		   defaultDBFI == null ? "" : defaultDBFI);
+        // FIXME: Joern's sample code had this in it, but if we
+        // include it, then we get Provider   not found errors
+        //String defaultDBFI =
+        //    System.getProperty("javax.xml.parsers.DocumentBuilderFactory");
+        //System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
+        //                   defaultDBFI == null ? "" : defaultDBFI);
 
         Properties format = org.apache.xalan.templates.OutputProperties
-	    .getDefaultMethodProperties("xml");
+            .getDefaultMethodProperties("xml");
         format.setProperty("indent", "yes");
         format.setProperty("{http://xml.apache.org/xslt}indent-amount",
-			   "4");
+                           "4");
         Serializer serializer = SerializerFactory.getSerializer(format);
         OutputStream outputStream = new ByteArrayOutputStream();
         serializer.setOutputStream(outputStream);
@@ -171,28 +171,28 @@ public class XSLTUtilities {
             String xslFileName) throws Exception {
         TransformerFactory transformerFactory =
             TransformerFactory.newInstance();
-	Transformer transformer = null;
-	try {
-	    transformer = transformerFactory
-		.newTransformer(new StreamSource(xslFileName));
-	} catch (javax.xml.transform.TransformerConfigurationException ex) {
-	    try {
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory
+                .newTransformer(new StreamSource(xslFileName));
+        } catch (javax.xml.transform.TransformerConfigurationException ex) {
+            try {
                 // We might be in the Swing Event thread, so
                 // Thread.currentThread().getContextClassLoader()
                 // .getResource(entry) probably will not work.
                 Class refClass = Class.forName("ptolemy.util.XSLTUtilities");
                 URL entryURL =
-		    refClass.getClassLoader().getResource(xslFileName);
-		if (entryURL != null) {
-		    transformer = transformerFactory
-			.newTransformer(new StreamSource(entryURL.toString()));
-		} else {
-		    throw ex;
-		}
-	    } catch (Exception ex2) {
-		throw ex;
-	    }
-	}
+                    refClass.getClassLoader().getResource(xslFileName);
+                if (entryURL != null) {
+                    transformer = transformerFactory
+                        .newTransformer(new StreamSource(entryURL.toString()));
+                } else {
+                    throw ex;
+                }
+            } catch (Exception ex2) {
+                throw ex;
+            }
+        }
         DOMResult result = new DOMResult();
         transformer.transform(new DOMSource(inputDocument), result);
         return (Document)result.getNode();
@@ -223,15 +223,15 @@ public class XSLTUtilities {
      * @exception Thrown if there is a problem with the transformation.
      */
     public static void transform (String xsltFileName,
-				  String sourceFileName,
-				  String resultFileName) throws Exception {
+                                  String sourceFileName,
+                                  String resultFileName) throws Exception {
         OutputStream resultStream = new FileOutputStream(resultFileName);
         StreamSource source = new StreamSource(sourceFileName);
         StreamResult result = new StreamResult(resultStream);
         TransformerFactory transformerFactory =
-	    TransformerFactory.newInstance();
+            TransformerFactory.newInstance();
         Transformer transformer = transformerFactory
-	    .newTransformer(new StreamSource(xsltFileName));
+            .newTransformer(new StreamSource(xsltFileName));
         transformer.setOutputProperty("indent", "yes");
         transformer.transform(source, result);
         resultStream.flush();

@@ -150,11 +150,11 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
         BasicFigure bf = new BasicFigure(shape);
         bf.setFillPaint(fill);
 
-	if(model.isComposite(node)) {
+        if(model.isComposite(node)) {
             CompositeFigure rep = new CompositeFigure(bf);
-	    double scale = getCompositeScale();
+            double scale = getCompositeScale();
             rep.getTransformContext().getTransform().scale(scale, scale);
-	    return rep;
+            return rep;
         }
 
         bf.setToolTipText(bf.toString());

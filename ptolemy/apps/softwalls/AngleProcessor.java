@@ -58,12 +58,12 @@ public class AngleProcessor extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public AngleProcessor(CompositeEntity container, String name)
-	throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
 
-	super(container, name);
+        super(container, name);
 
-	// Create and configure ports
-	inputAngle = new TypedIOPort(this, "inputAngle", true, false);
+        // Create and configure ports
+        inputAngle = new TypedIOPort(this, "inputAngle", true, false);
         outputAngle = new TypedIOPort(this, "outputAngle", false, true);
     }
 

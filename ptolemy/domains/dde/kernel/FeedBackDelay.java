@@ -100,7 +100,7 @@ public class FeedBackDelay extends DDEActor {
      */
     public FeedBackDelay(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
-	super(workspace);
+        super(workspace);
         _setVariables();
     }
 
@@ -147,7 +147,7 @@ public class FeedBackDelay extends DDEActor {
      * @return The delay value of this actor.
      */
     public double getDelay() throws IllegalActionException {
-	return ((DoubleToken)delay.getToken()).doubleValue();
+        return ((DoubleToken)delay.getToken()).doubleValue();
     }
 
     /** Consume a single input token and produce an identical output
@@ -164,13 +164,13 @@ public class FeedBackDelay extends DDEActor {
      *  sending the output token or setting the current time.
      */
     public void fire() throws IllegalActionException {
-	Token token = _getNextInput();
+        Token token = _getNextInput();
         boolean delayNullVal =
             ((BooleanToken)nullDelay.getToken()).booleanValue();
         boolean delayRealVal =
             ((BooleanToken)realDelay.getToken()).booleanValue();
-	Thread thread = Thread.currentThread();
-	if ( thread instanceof DDEThread ) {
+        Thread thread = Thread.currentThread();
+        if ( thread instanceof DDEThread ) {
             DDEThread ddeThread = (DDEThread)thread;
             if ( token instanceof NullToken ) {
                 if ( delayNullVal ) {
@@ -189,7 +189,7 @@ public class FeedBackDelay extends DDEActor {
                             getDirector().getCurrentTime() );
                 }
             }
-	}
+        }
     }
 
     /** Initialize this actor by setting all receivers so that
@@ -200,24 +200,24 @@ public class FeedBackDelay extends DDEActor {
      * @see ptolemy.domains.dde.kernel.DDEReceiver
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
+        super.initialize();
 
         Receiver[][] receivers = output.getRemoteReceivers();
-	for ( int i = 0; i < receivers.length; i++ ) {
-	    for ( int j = 0; j < receivers[i].length; j++ ) {
-            	DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
+        for ( int i = 0; i < receivers.length; i++ ) {
+            for ( int j = 0; j < receivers[i].length; j++ ) {
+                    DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( new Token(), PrioritizedTimedQueue.IGNORE );
             }
         }
 
 
-	receivers = input.getReceivers();
-	for ( int i = 0; i < receivers.length; i++ ) {
-	    for ( int j = 0; j < receivers[i].length; j++ ) {
-		DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
-		rcvr._hideNullTokens(false);
-	    }
-	}
+        receivers = input.getReceivers();
+        for ( int i = 0; i < receivers.length; i++ ) {
+            for ( int j = 0; j < receivers[i].length; j++ ) {
+                DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
+                rcvr._hideNullTokens(false);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -229,9 +229,9 @@ public class FeedBackDelay extends DDEActor {
     private void _sendOutToken(Token token, double time) {
         Receiver[][] receivers =
             (Receiver[][])output.getRemoteReceivers();
-	for ( int i = 0; i < receivers.length; i++ ) {
-	    for ( int j = 0; j < receivers[i].length; j++ ) {
-            	DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
+        for ( int i = 0; i < receivers.length; i++ ) {
+            for ( int j = 0; j < receivers[i].length; j++ ) {
+                    DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( token, time );
             }
         }
@@ -240,11 +240,11 @@ public class FeedBackDelay extends DDEActor {
     /** Syntactic sugar for initializing parameters.
      */
     private void _setVariables() throws IllegalActionException,
-    	    NameDuplicationException {
-	input = new TypedIOPort(this, "input", true, false);
-	output = new TypedIOPort(this, "output", false, true);
-	input.setTypeEquals(BaseType.GENERAL);
-	output.setTypeEquals(BaseType.GENERAL);
+                NameDuplicationException {
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
+        input.setTypeEquals(BaseType.GENERAL);
+        output.setTypeEquals(BaseType.GENERAL);
 
         nullDelay = new
             Parameter(this, "nullDelay", new BooleanToken(true));

@@ -101,33 +101,33 @@ public class Wire extends TypedAtomicActor {
      *  the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
-	Token token = null;
-	Receiver[][] inputReceivers = input.getReceivers();
-	if ( inputReceivers.length == 0 ) {
-	    _continueIterations = false;
-	}
-	for ( int i = 0; i < inputReceivers.length; i++ ) {
-	    for ( int j = 0; j < inputReceivers[i].length; j++ ) {
-		DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
-		if ( inputReceiver.hasToken() ) {
-		    token = inputReceiver.get();
-		    Receiver[][] outReceivers = output.getRemoteReceivers();
-		    for ( int k = 0; k < outReceivers.length; k++ ) {
-			for ( int l = 0; l < outReceivers[k].length; l++ ) {
-			    DDEReceiver outReceiver =
+        Token token = null;
+        Receiver[][] inputReceivers = input.getReceivers();
+        if ( inputReceivers.length == 0 ) {
+            _continueIterations = false;
+        }
+        for ( int i = 0; i < inputReceivers.length; i++ ) {
+            for ( int j = 0; j < inputReceivers[i].length; j++ ) {
+                DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
+                if ( inputReceiver.hasToken() ) {
+                    token = inputReceiver.get();
+                    Receiver[][] outReceivers = output.getRemoteReceivers();
+                    for ( int k = 0; k < outReceivers.length; k++ ) {
+                        for ( int l = 0; l < outReceivers[k].length; l++ ) {
+                            DDEReceiver outReceiver =
                                 (DDEReceiver)outReceivers[k][l];
-			    Thread thread = Thread.currentThread();
-			    if ( thread instanceof DDEThread ) {
-				TimeKeeper timeKeeper =
+                            Thread thread = Thread.currentThread();
+                            if ( thread instanceof DDEThread ) {
+                                TimeKeeper timeKeeper =
                                     ((DDEThread)thread).getTimeKeeper();
-			        outReceiver.put(token,
+                                outReceiver.put(token,
                                         timeKeeper.getCurrentTime());
-			    }
-			}
-		    }
-		}
-	    }
-	}
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /** Return true if this actor will allow subsequent iterations to
@@ -136,7 +136,7 @@ public class Wire extends TypedAtomicActor {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-	return _continueIterations;
+        return _continueIterations;
     }
 
     ///////////////////////////////////////////////////////////////////

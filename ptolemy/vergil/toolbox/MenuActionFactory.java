@@ -47,7 +47,7 @@ A factory that adds a given action a given context menu.
 */
 public class MenuActionFactory implements MenuItemFactory {
     public MenuActionFactory(Action action) {
-	_action = action;
+        _action = action;
     }
 
     /**
@@ -55,7 +55,7 @@ public class MenuActionFactory implements MenuItemFactory {
      * parameters on the given target.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
-	return menu.add(_action, (String)_action.getValue(Action.NAME));
+        return menu.add(_action, (String)_action.getValue(Action.NAME));
     }
 
     // The action that will be added to the context menu.

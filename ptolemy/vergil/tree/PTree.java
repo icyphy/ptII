@@ -68,9 +68,9 @@ public class PTree extends JTree {
         // The use of EntityTreeModel here is what restricts the
         // tree to displaying only entities.
         super(model);
-	setCellRenderer(new PtolemyTreeCellRenderer());
-	DragSource.getDefaultDragSource().
-	    createDefaultDragGestureRecognizer(
+        setCellRenderer(new PtolemyTreeCellRenderer());
+        DragSource.getDefaultDragSource().
+            createDefaultDragGestureRecognizer(
                     this, DnDConstants.ACTION_COPY_OR_MOVE,
                     new DesignTreeDragGestureListener());
     }
@@ -81,8 +81,8 @@ public class PTree extends JTree {
     // A Drag Gesture listener for the tree.
     private class DesignTreeDragGestureListener implements DragGestureListener
     {
-	public void dragGestureRecognized(DragGestureEvent e) {
-	    final DragSourceListener dsl = new DragSourceListener() {
+        public void dragGestureRecognized(DragGestureEvent e) {
+            final DragSourceListener dsl = new DragSourceListener() {
                     public void dragDropEnd(DragSourceDropEvent dsde) {}
                     public void dragEnter(DragSourceDragEvent dsde) {
                         DragSourceContext context = dsde.getDragSourceContext();
@@ -100,27 +100,27 @@ public class PTree extends JTree {
                     public void dropActionChanged(DragSourceDragEvent dsde) {}
                 };
 
-	    Component source = e.getComponent();
-	    if (source instanceof JTree) {
-		JTree tree = (JTree) source;
-		Point sourcePoint = e.getDragOrigin();
-		TreePath path =
-		    tree.getPathForLocation(sourcePoint.x,
+            Component source = e.getComponent();
+            if (source instanceof JTree) {
+                JTree tree = (JTree) source;
+                Point sourcePoint = e.getDragOrigin();
+                TreePath path =
+                    tree.getPathForLocation(sourcePoint.x,
                             sourcePoint.y);
-		// If we didn't select anything.. then don't drag.
-		if (path == null) return;
-		Object object = path.getLastPathComponent();
-		if (object == null) return;
-		if (object instanceof NamedObj) {
-		    PtolemyTransferable transferable =
-			new PtolemyTransferable();
+                // If we didn't select anything.. then don't drag.
+                if (path == null) return;
+                Object object = path.getLastPathComponent();
+                if (object == null) return;
+                if (object instanceof NamedObj) {
+                    PtolemyTransferable transferable =
+                        new PtolemyTransferable();
                     transferable.addObject((NamedObj)object);
-		    //initial cursor, transferable, dsource listener
-		    e.startDrag(DragSource.DefaultCopyNoDrop,
+                    //initial cursor, transferable, dsource listener
+                    e.startDrag(DragSource.DefaultCopyNoDrop,
                             transferable, dsl);
 
-		}
-	    }
-	}
+                }
+            }
+        }
     }
 }

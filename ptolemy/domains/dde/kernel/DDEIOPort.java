@@ -147,7 +147,7 @@ public class DDEIOPort extends TypedIOPort {
             throws IllegalActionException, NoRoomException {
         // FIXME: Now that TypedIOPort has
         // broadcast(Token[] tokenArray, int vectorLength)
-	// we should add a similar method to DDEIOPort.
+        // we should add a similar method to DDEIOPort.
         try {
             workspace().getReadAccess();
 
@@ -181,19 +181,19 @@ public class DDEIOPort extends TypedIOPort {
      */
     public void send(int chIndex, Token token, double sendTime)
             throws IllegalActionException, NoRoomException {
-	double currentTime = 0.0;
-	Thread thread = Thread.currentThread();
-	DDEThread ddeThread = null;
-	if ( thread instanceof DDEThread ) {
-	    ddeThread = (DDEThread)thread;
-	    currentTime = ddeThread.getTimeKeeper().getCurrentTime();
-	}
+        double currentTime = 0.0;
+        Thread thread = Thread.currentThread();
+        DDEThread ddeThread = null;
+        if ( thread instanceof DDEThread ) {
+            ddeThread = (DDEThread)thread;
+            currentTime = ddeThread.getTimeKeeper().getCurrentTime();
+        }
         if ( sendTime < currentTime &&
-		sendTime != PrioritizedTimedQueue.IGNORE &&
-		sendTime != PrioritizedTimedQueue.INACTIVE ) {
+                sendTime != PrioritizedTimedQueue.IGNORE &&
+                sendTime != PrioritizedTimedQueue.INACTIVE ) {
             throw new IllegalActionException( this, "Time values in "
                     + "the past are not allowed.");
-	}
+        }
 
         if ( thread instanceof DDEThread ) {
             ddeThread = (DDEThread)thread;

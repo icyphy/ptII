@@ -55,8 +55,8 @@ import ptolemy.kernel.*;
  * simple graphs that have edges connecting simple nodes. It
  * sets up some simple interaction on its view's pane.
  *
- * @author 	Michael Shilman (michaels@eecs.berkeley.edu)
- * @version	$Revision$
+ * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @version        $Revision$
  * @rating      Red
  */
 public class MetaEdgeController extends CompositeEntity
@@ -90,8 +90,8 @@ public class MetaEdgeController extends CompositeEntity
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	//SelectionModel sm = getController().getSelectionModel();
-	setEdgeInteractor(new MetaInteractor(this, "_interactor"));
+        //SelectionModel sm = getController().getSelectionModel();
+        setEdgeInteractor(new MetaInteractor(this, "_interactor"));
 
         // Create and set up the manipulator for connectors
         //       ConnectorManipulator manipulator = new ConnectorManipulator();
@@ -105,44 +105,44 @@ public class MetaEdgeController extends CompositeEntity
 
         // Create and set up the target for connectors
         /*    PerimeterTarget ct = new PerimeterTarget() {
-	    // Accept the head if the model graph model allows it.
-	    public boolean acceptHead (Connector c, Figure f) {
-		Object node = f.getUserObject();
-		Object edge = c.getUserObject();
-		MutableGraphModel model =
-		(MutableGraphModel)getController().getGraphModel();
-                if (model.isNode(node) &&
-		    model.isEdge(edge) &&
-		    model.acceptHead(edge, node)) {
-			return super.acceptHead(c, f);
-	        } else return false;
-	    }
-
-	    // Accept the tail if the model graph model allows it.
-            public boolean acceptTail (Connector c, Figure f) {
-		Object node = f.getUserObject();
-		Object edge = c.getUserObject();
+            // Accept the head if the model graph model allows it.
+            public boolean acceptHead (Connector c, Figure f) {
+                Object node = f.getUserObject();
+                Object edge = c.getUserObject();
                 MutableGraphModel model =
-		(MutableGraphModel)getController().getGraphModel();
-		if (model.isNode(node) &&
-		    model.isEdge(edge) &&
-		    model.acceptTail(edge, node)) {
-			return super.acceptTail(c, f);
-		} else return false;
-	    }
+                (MutableGraphModel)getController().getGraphModel();
+                if (model.isNode(node) &&
+                    model.isEdge(edge) &&
+                    model.acceptHead(edge, node)) {
+                        return super.acceptHead(c, f);
+                } else return false;
+            }
 
-	    // If we have any terminals, then return the connection
-	    //  site of the terminal instead of a new perimeter site.
+            // Accept the tail if the model graph model allows it.
+            public boolean acceptTail (Connector c, Figure f) {
+                Object node = f.getUserObject();
+                Object edge = c.getUserObject();
+                MutableGraphModel model =
+                (MutableGraphModel)getController().getGraphModel();
+                if (model.isNode(node) &&
+                    model.isEdge(edge) &&
+                    model.acceptTail(edge, node)) {
+                        return super.acceptTail(c, f);
+                } else return false;
+            }
+
+            // If we have any terminals, then return the connection
+            //  site of the terminal instead of a new perimeter site.
             public Site getHeadSite(Figure f, double x, double y) {
-		if(f instanceof Terminal) {
-		    Site site = ((Terminal)f).getConnectSite();
-		    return site;
-		} else {
-		    return super.getHeadSite(f, x, y);
-		}
-	    }
-	};
-	setConnectorTarget(ct);
+                if(f instanceof Terminal) {
+                    Site site = ((Terminal)f).getConnectSite();
+                    return site;
+                } else {
+                    return super.getHeadSite(f, x, y);
+                }
+            }
+        };
+        setConnectorTarget(ct);
         */
     }
 
@@ -156,46 +156,46 @@ public class MetaEdgeController extends CompositeEntity
      * valid site on the node's figure.
      */
     public void addEdge(Object edge, Object node,
-			int end, double x, double y) {
+                        int end, double x, double y) {
         MutableGraphModel model =
-	    (MutableGraphModel)getController().getGraphModel();
+            (MutableGraphModel)getController().getGraphModel();
         Figure nf = getController().getFigure(node);
         FigureLayer layer = getController().getGraphPane().getForegroundLayer();
         Site headSite, tailSite;
 
 
-	// Temporary sites.  One of these will get blown away later.
-	headSite = new AutonomousSite(layer, x, y);
-	tailSite = new AutonomousSite(layer, x, y);
+        // Temporary sites.  One of these will get blown away later.
+        headSite = new AutonomousSite(layer, x, y);
+        tailSite = new AutonomousSite(layer, x, y);
 
-	// Render the edge.
-	Connector c = render(edge, layer, tailSite, headSite);
+        // Render the edge.
+        Connector c = render(edge, layer, tailSite, headSite);
 
-	try {
-	    //Attach the appropriate end of the edge to the node.
-	    if (end == ConnectorEvent.TAIL_END) {
-		tailSite = getConnectorTarget().getTailSite(c, nf, x, y);
-		if(tailSite == null) {
-		    throw new RuntimeException("Invalid connector target: " +
-			"no valid site found for tail of new connector.");
-		}
-		model.setEdgeTail(getController(), edge, node);
-		c.setTailSite(tailSite);
-	    } else {
-		headSite = getConnectorTarget().getHeadSite(c, nf, x, y);
-		if(headSite == null) {
-		    throw new RuntimeException("Invalid connector target: " +
-			"no valid site found for head of new connector.");
-		}
-		model.setEdgeHead(getController(), edge, node);
-		c.setHeadSite(headSite);
-	    }
-	} catch (GraphException ex) {
-	    // If an error happened then blow away the edge, and rethrow
-	    // the exception
-	    removeEdge(edge);
-	    throw ex;
-	}
+        try {
+            //Attach the appropriate end of the edge to the node.
+            if (end == ConnectorEvent.TAIL_END) {
+                tailSite = getConnectorTarget().getTailSite(c, nf, x, y);
+                if(tailSite == null) {
+                    throw new RuntimeException("Invalid connector target: " +
+                        "no valid site found for tail of new connector.");
+                }
+                model.setEdgeTail(getController(), edge, node);
+                c.setTailSite(tailSite);
+            } else {
+                headSite = getConnectorTarget().getHeadSite(c, nf, x, y);
+                if(headSite == null) {
+                    throw new RuntimeException("Invalid connector target: " +
+                        "no valid site found for head of new connector.");
+                }
+                model.setEdgeHead(getController(), edge, node);
+                c.setHeadSite(headSite);
+            }
+        } catch (GraphException ex) {
+            // If an error happened then blow away the edge, and rethrow
+            // the exception
+            removeEdge(edge);
+            throw ex;
+        }
     }
 
     /**
@@ -204,9 +204,9 @@ public class MetaEdgeController extends CompositeEntity
      */
     public void addEdge(Object edge, Object tail, Object head) {
         // Connect the edge
-	MutableGraphModel model =
-	    (MutableGraphModel)getController().getGraphModel();
-	model.connectEdge(getController(), edge, tail, head);
+        MutableGraphModel model =
+            (MutableGraphModel)getController().getGraphModel();
+        model.connectEdge(getController(), edge, tail, head);
 
         drawEdge(edge);
     }
@@ -216,16 +216,16 @@ public class MetaEdgeController extends CompositeEntity
      * edge from the graph model.
      */
     public void clearEdge(Object edge) {
-	Figure f = getController().getFigure(edge);
+        Figure f = getController().getFigure(edge);
         if(f != null) {
-	    CanvasComponent container = f.getParent();
-	    f.setUserObject(null);
+            CanvasComponent container = f.getParent();
+            f.setUserObject(null);
             getController().setFigure(edge, null);
-	    if(container instanceof FigureLayer) {
-		((FigureLayer)container).remove(f);
-	    } else if(container instanceof CompositeFigure) {
-		((CompositeFigure)container).remove(f);
-	    }
+            if(container instanceof FigureLayer) {
+                ((FigureLayer)container).remove(f);
+            } else if(container instanceof CompositeFigure) {
+                ((CompositeFigure)container).remove(f);
+            }
         }
     }
 
@@ -242,59 +242,59 @@ public class MetaEdgeController extends CompositeEntity
         Object tail = model.getTail(edge);
         Object head = model.getHead(edge);
 
-	Connector connector = (Connector)getController().getFigure(edge);
+        Connector connector = (Connector)getController().getFigure(edge);
         Figure tailFigure = getController().getFigure(tail);
         Figure headFigure = getController().getFigure(head);
 
-	Site tailSite;
-	Site headSite;
-	// If the tail is not attached,
-	if(tailFigure == null) {
-	    // Then try to find the old tail site.
-	    if(connector != null) {
-		tailSite = connector.getTailSite();
-	    } else {
-		// FIXME try to manufacture a site.
-		//throw new RuntimeException("drawEdge failed: could not find" +
-		//			   " a tail site.");
-		return null;
-	    }
-	} else {
-	    // Get a new tail site based on the tail figure.
-	    Rectangle2D bounds = tailFigure.getBounds();
-	    tailSite = getConnectorTarget().getTailSite(tailFigure,
-		bounds.getCenterX(), bounds.getCenterY());
-	}
+        Site tailSite;
+        Site headSite;
+        // If the tail is not attached,
+        if(tailFigure == null) {
+            // Then try to find the old tail site.
+            if(connector != null) {
+                tailSite = connector.getTailSite();
+            } else {
+                // FIXME try to manufacture a site.
+                //throw new RuntimeException("drawEdge failed: could not find" +
+                //                           " a tail site.");
+                return null;
+            }
+        } else {
+            // Get a new tail site based on the tail figure.
+            Rectangle2D bounds = tailFigure.getBounds();
+            tailSite = getConnectorTarget().getTailSite(tailFigure,
+                bounds.getCenterX(), bounds.getCenterY());
+        }
 
-	// If the head is not attached,
-	if(headFigure == null) {
-	    // Then try to find the old head site.
-	    if(connector != null) {
-		headSite = connector.getHeadSite();
-	    } else {
-		// FIXME try to manufacture a site.
-		//throw new RuntimeException("drawEdge failed: could not find" +
-		//			   " a head site.");
-		return null;
-	    }
-	} else {
-	    // Get a new head site based on the head figure.
-	    Rectangle2D bounds = headFigure.getBounds();
-	    headSite = getConnectorTarget().getHeadSite(headFigure,
-		bounds.getCenterX(), bounds.getCenterY());
-	}
+        // If the head is not attached,
+        if(headFigure == null) {
+            // Then try to find the old head site.
+            if(connector != null) {
+                headSite = connector.getHeadSite();
+            } else {
+                // FIXME try to manufacture a site.
+                //throw new RuntimeException("drawEdge failed: could not find" +
+                //                           " a head site.");
+                return null;
+            }
+        } else {
+            // Get a new head site based on the head figure.
+            Rectangle2D bounds = headFigure.getBounds();
+            headSite = getConnectorTarget().getHeadSite(headFigure,
+                bounds.getCenterX(), bounds.getCenterY());
+        }
 
-	// If we did have an old figure, throw it away.
-	if(connector != null) {
-	    clearEdge(edge);
-	}
+        // If we did have an old figure, throw it away.
+        if(connector != null) {
+            clearEdge(edge);
+        }
 
         // Create the figure
         Connector c = render(edge, layer, tailSite, headSite);
-	getController().dispatch(new GraphViewEvent(this,
-						GraphViewEvent.EDGE_DRAWN,
-						edge));
-	return c;
+        getController().dispatch(new GraphViewEvent(this,
+                                                GraphViewEvent.EDGE_DRAWN,
+                                                edge));
+        return c;
     }
 
     /**
@@ -308,7 +308,7 @@ public class MetaEdgeController extends CompositeEntity
      * Get the graph controller that this controller is contained in.
      */
     public GraphController getController() {
-	return (GraphController)getContainer();
+        return (GraphController)getContainer();
     }
 
     /**
@@ -341,19 +341,19 @@ public class MetaEdgeController extends CompositeEntity
      * at that time.
      */
     protected void initializeInteraction () {
-	GraphPane pane = getController().getGraphPane();
+        GraphPane pane = getController().getGraphPane();
     }
 
     /**
      * Remove the edge.
      */
     public void removeEdge(Object edge) {
-	clearEdge(edge);
+        clearEdge(edge);
         MutableGraphModel model =
-	    (MutableGraphModel)getController().getGraphModel();
-	model.setEdgeHead(getController(), edge, null);
-	model.setEdgeTail(getController(), edge, null);
-	getController().getGraphPane().repaint();
+            (MutableGraphModel)getController().getGraphModel();
+        model.setEdgeHead(getController(), edge, null);
+        model.setEdgeTail(getController(), edge, null);
+        getController().getGraphPane().repaint();
     }
 
     /**
@@ -365,13 +365,13 @@ public class MetaEdgeController extends CompositeEntity
     public void setConnectorTarget (ConnectorTarget t) {
         _connectorTarget = t;
 
-	// FIXME: This is rather dangerous because it assumes a
-	// basic selection renderer.
-        /*	BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
-	    getEdgeInteractor().getSelectionRenderer();
-	ConnectorManipulator manipulator = (ConnectorManipulator)
-	    selectionRenderer.getDecorator();
-	manipulator.setConnectorTarget(t);
+        // FIXME: This is rather dangerous because it assumes a
+        // basic selection renderer.
+        /*        BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
+            getEdgeInteractor().getSelectionRenderer();
+        ConnectorManipulator manipulator = (ConnectorManipulator)
+            selectionRenderer.getDecorator();
+        manipulator.setConnectorTarget(t);
         */
     }
 
@@ -418,14 +418,14 @@ public class MetaEdgeController extends CompositeEntity
     /** Render the edge on the given layer between the two sites.
      */
     public Connector render(Object edge, FigureLayer layer,
-			       Site tailSite, Site headSite) {
-	Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
+                               Site tailSite, Site headSite) {
+        Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
         ef.setInteractor(getEdgeInteractor());
         ef.setUserObject(edge);
         getController().setFigure(edge, ef);
 
         layer.add(ef);
-	ef.route();
+        ef.route();
         return ef;
     }
 
@@ -445,29 +445,29 @@ public class MetaEdgeController extends CompositeEntity
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
             MutableGraphModel model =
-		(MutableGraphModel) getController().getGraphModel();
-	    try {
-		switch (evt.getEnd()) {
-		case ConnectorEvent.HEAD_END:
-		    model.setEdgeHead(getController(), edge, node);
-		    break;
-		case ConnectorEvent.TAIL_END:
-		    model.setEdgeTail(getController(), edge, node);
-		    break;
-		default:
-		    throw new IllegalStateException(
-			"Cannot handle both ends of an edge being dragged.");
-		}
-	    } catch (GraphException ex) {
-		SelectionModel selectionModel =
-		    getController().getSelectionModel();
-		// If it is illegal then blow away the edge.
-		if(selectionModel.containsSelection(c)) {
-		    selectionModel.removeSelection(c);
-		}
-		removeEdge(edge);
-		throw ex;
-	    }
+                (MutableGraphModel) getController().getGraphModel();
+            try {
+                switch (evt.getEnd()) {
+                case ConnectorEvent.HEAD_END:
+                    model.setEdgeHead(getController(), edge, node);
+                    break;
+                case ConnectorEvent.TAIL_END:
+                    model.setEdgeTail(getController(), edge, node);
+                    break;
+                default:
+                    throw new IllegalStateException(
+                        "Cannot handle both ends of an edge being dragged.");
+                }
+            } catch (GraphException ex) {
+                SelectionModel selectionModel =
+                    getController().getSelectionModel();
+                // If it is illegal then blow away the edge.
+                if(selectionModel.containsSelection(c)) {
+                    selectionModel.removeSelection(c);
+                }
+                removeEdge(edge);
+                throw ex;
+            }
         }
     }
 }

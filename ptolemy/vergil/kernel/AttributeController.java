@@ -69,7 +69,7 @@ public class AttributeController extends IconController {
      *  @param access The access level.
      */
     public AttributeController(GraphController controller, Access access) {
-	super(controller);
+        super(controller);
 
         if (access == FULL) {
             // Add to the context menu.

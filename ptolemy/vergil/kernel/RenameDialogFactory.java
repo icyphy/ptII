@@ -86,6 +86,6 @@ public class RenameDialogFactory implements MenuItemFactory {
                 }
             }
         };
-	return menu.add(action, name);
+        return menu.add(action, name);
     }
 }

@@ -146,7 +146,7 @@ public class URIAttribute extends SingletonAttribute {
         // Warning, this method used to call java.net.URI.toURL(), which has
         // a bug with jar urls. If we have a jar url, (for example
         // jar:file:/C:/foo.jar!/intro.htm) then the java.net.URI toURL()
-     	// method will return a URL like jar:, which is missing the file: part
+             // method will return a URL like jar:, which is missing the file: part
         // This causes problems with Web Start.
         //
         // BTW - Here is how to replicate the problem with

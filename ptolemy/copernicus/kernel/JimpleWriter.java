@@ -58,7 +58,7 @@ public class JimpleWriter extends SceneTransformer {
 
     /** Write out the Jimple file.
      *  Sample option arguments:
-     *	<code>-p wjtp.writeJimple1 outDir:jimple1</code>
+     *        <code>-p wjtp.writeJimple1 outDir:jimple1</code>
      *
      *  @see ClassWriter
      *  @param phaseName The name of the phase, for example

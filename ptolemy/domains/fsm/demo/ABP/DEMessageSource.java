@@ -113,14 +113,14 @@ public class DEMessageSource extends TypedAtomicActor {
         double maxDelayValue =
             ((DoubleToken)maxDelay.getToken()).doubleValue();
 
-	if (next.hasToken(0)) {
+        if (next.hasToken(0)) {
             next.get(0);
             if (now < _nextMsgTime) {
                 // ignore this
             } else {
                 // compute a random delay between zero and MaxDelay.
                 double delay = maxDelayValue * Math.random();
-	        dir.fireAt(this, now + delay);
+                dir.fireAt(this, now + delay);
                 _nextMsgTime = now + delay;
             }
 

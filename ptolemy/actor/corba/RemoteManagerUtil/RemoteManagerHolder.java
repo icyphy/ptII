@@ -9,8 +9,8 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 public final class RemoteManagerHolder implements org.omg.CORBA.portable.Streamable
 {
   public ptolemy.actor.corba.RemoteManagerUtil.RemoteManager value = null;

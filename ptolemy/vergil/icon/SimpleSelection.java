@@ -32,7 +32,7 @@ public class SimpleSelection implements Transferable, ClipboardOwner {
 
         _selection = selection;
 
-	_flavor = flavor;
+        _flavor = flavor;
 
     }
 
@@ -54,11 +54,11 @@ public class SimpleSelection implements Transferable, ClipboardOwner {
 
         if (f.equals (_flavor)) {
 
-	    return _selection;
+            return _selection;
 
-	}
+        }
 
-	else throw new UnsupportedFlavorException (f);
+        else throw new UnsupportedFlavorException (f);
 
     }
 

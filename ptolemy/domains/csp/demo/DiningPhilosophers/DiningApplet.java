@@ -233,9 +233,9 @@ public class DiningApplet extends Applet
 
         // Now create the panel that controls the applet
         Panel controlPanel = new Panel();
-	/*
+        /*
           add( _createRunControls(3), "West" );
-	*/
+        */
 
         add(controlPanel, "West");
 
@@ -335,7 +335,7 @@ public class DiningApplet extends Applet
         NumberFormat nf = NumberFormat.getNumberInstance();
         public void run() {
             while ( true ) {
-            	if ( simulationThread == null ) {
+                    if ( simulationThread == null ) {
                     return;
                 } else if ( !simulationThread.isAlive() ) {
                     return;

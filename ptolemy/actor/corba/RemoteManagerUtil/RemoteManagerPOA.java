@@ -10,8 +10,8 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
  implements ptolemy.actor.corba.RemoteManagerUtil.RemoteManagerOperations, org.omg.CORBA.portable.InvokeHandler
 {
@@ -44,10 +44,10 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
     {
 
   /* Mirror the execute() method of Ptolemy II
-		 * manager interface.
-		 * @exception CorbaIllegalActionException If the
-		 *   method is an illegal action of the actor.
-		 */
+                 * manager interface.
+                 * @exception CorbaIllegalActionException If the
+                 *   method is an illegal action of the actor.
+                 */
        case 0:  // RemoteManagerUtil/RemoteManager/execute
        {
          try {
@@ -62,10 +62,10 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
 
 
   /* Mirror the initialize() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
        case 1:  // RemoteManagerUtil/RemoteManager/initialize
        {
          try {
@@ -80,10 +80,10 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
 
 
   /* Mirror the pause() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
        case 2:  // RemoteManagerUtil/RemoteManager/pause
        {
          try {
@@ -98,10 +98,10 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
 
 
   /* Mirror the resume() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
        case 3:  // RemoteManagerUtil/RemoteManager/resume
        {
          try {
@@ -116,10 +116,10 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
 
 
   /* Mirror the startRun() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
        case 4:  // RemoteManagerUtil/RemoteManager/startRun
        {
          try {
@@ -134,10 +134,10 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
 
 
   /* Mirror the stop() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
        case 5:  // RemoteManagerUtil/RemoteManager/stop
        {
          try {
@@ -152,10 +152,10 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
 
 
   /* Mirror the terminate() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
        case 6:  // RemoteManagerUtil/RemoteManager/terminate
        {
          try {
@@ -170,12 +170,12 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
 
 
   /* Mirror the terminate() method of Ptolemy II
-  		 * remoteManager interface.
-		 * @exception CorbaIllegalActionException If the
-		 *  query of parameter is not supported by the actor.
-		 * @exception CorbaUnknowParamException If the parameter
-		 *  name is not known by the actor.
-		 */
+                   * remoteManager interface.
+                 * @exception CorbaIllegalActionException If the
+                 *  query of parameter is not supported by the actor.
+                 * @exception CorbaUnknowParamException If the parameter
+                 *  name is not known by the actor.
+                 */
        case 7:  // RemoteManagerUtil/RemoteManager/changeModel
        {
          try {

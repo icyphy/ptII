@@ -221,8 +221,8 @@ public class TextEditorTableau extends Tableau {
                     textEffigy.setModifiable(false);
                     textEffigy.setName("textEffigy");
                 } else {
-		    // The View Source choice of the HTMLViewer runs this code.
-		    textEffigy = (TextEffigy)
+                    // The View Source choice of the HTMLViewer runs this code.
+                    textEffigy = (TextEffigy)
                         _newTextEffigyURL.invoke
                         (null, new Object[]{effigy, url, url});
                     textEffigy.setName("textEffigy");

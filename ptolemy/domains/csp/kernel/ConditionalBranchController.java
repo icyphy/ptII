@@ -131,7 +131,7 @@ public class ConditionalBranchController {
                     if (branches[i].getGuard()) {
                         // Create a thread for this enabled branch
                         Nameable act =
-			    (Nameable)branches[i].getController().getParent();
+                            (Nameable)branches[i].getController().getParent();
                         String name = act.getName() + branches[i].getID();
                         Thread t = new Thread((Runnable)branches[i], name);
                         _threadList.add(0, t);
@@ -172,7 +172,7 @@ public class ConditionalBranchController {
                         _branchesActive++;
                     }
                     _branchesStarted = _branchesActive;
-		    // wait for a branch to succeed
+                    // wait for a branch to succeed
                     while ((_successfulBranch == -1) &&
                             (_branchesActive > 0)) {
                         _internalLock.wait();
@@ -206,20 +206,20 @@ public class ConditionalBranchController {
                 // counter indicating # active branches, should be zero
                 if (_branchesActive != 0) {
                     throw new InvalidStateException(
-			    ((Nameable)getParent()).getName() +
+                            ((Nameable)getParent()).getName() +
                             ": chooseBranch() is exiting with branches" +
                             " still active.");
                 }
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(
-		    ((Nameable)getParent()).getName() +
-		    ".chooseBranch interrupted.");
+                    ((Nameable)getParent()).getName() +
+                    ".chooseBranch interrupted.");
         }
         if (_successfulBranch == -1) {
             // Conditional construct was ended prematurely
             if (_blocked) {
-		_getDirector()._actorUnBlocked(new CSPReceiver());
+                _getDirector()._actorUnBlocked(new CSPReceiver());
             }
             throw new TerminateProcessException(
                     ((Nameable)getParent()).getName() +
@@ -286,11 +286,11 @@ public class ConditionalBranchController {
      */
     protected void _branchBlocked(CSPReceiver receiver) {
         synchronized(_internalLock) {
-	    _branchesBlocked++;
-	    if ( _branchesBlocked == _branchesStarted ) {
-		_getDirector()._actorBlocked( receiver );
-		_blocked = true;
-	    }
+            _branchesBlocked++;
+            if ( _branchesBlocked == _branchesStarted ) {
+                _getDirector()._actorBlocked( receiver );
+                _blocked = true;
+            }
         }
     }
 
@@ -327,7 +327,7 @@ public class ConditionalBranchController {
         synchronized(_internalLock ) {
             if (_branchTrying != branchID) {
                 throw new InvalidStateException(
-			((Nameable)getParent()).getName() +
+                        ((Nameable)getParent()).getName() +
                         ": branchSucceeded called with a branch id not " +
                         "equal to the id of the branch registered as trying.");
             }
@@ -345,13 +345,13 @@ public class ConditionalBranchController {
      */
     protected void _branchUnblocked(CSPReceiver receiver) {
         synchronized(_internalLock) {
- 	    if (_blocked) {
-	        if (_branchesBlocked != _branchesStarted) {
+             if (_blocked) {
+                if (_branchesBlocked != _branchesStarted) {
                     throw new InternalErrorException(
-			    ((Nameable)getParent()).getName() +
+                            ((Nameable)getParent()).getName() +
                             ": blocked when not all enabled branches are " +
                             "blocked.");
-		}
+                }
                 // Note: acquiring a second lock, need to be careful.
                 _getDirector()._actorUnBlocked(receiver);
                 _blocked = false;
@@ -377,9 +377,9 @@ public class ConditionalBranchController {
             }
         }
         throw new InvalidStateException(
-		((Nameable)getParent()).getName() +
-		": Error: branch releasing first without possessing it! :"
-		+ _branchTrying + " & " + branchNumber);
+                ((Nameable)getParent()).getName() +
+                ": Error: branch releasing first without possessing it! :"
+                + _branchTrying + " & " + branchNumber);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -389,18 +389,18 @@ public class ConditionalBranchController {
      */
     private CSPDirector _getDirector() {
         try {
-	    if (_parentActor instanceof CompositeActor) {
-		return  (CSPDirector)_parentActor.getExecutiveDirector();
-	    } else {
-		return  (CSPDirector)_parentActor.getDirector();
-	    }
+            if (_parentActor instanceof CompositeActor) {
+                return  (CSPDirector)_parentActor.getExecutiveDirector();
+            } else {
+                return  (CSPDirector)_parentActor.getDirector();
+            }
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
-	    throw new TerminateProcessException("CSPReceiver: trying to " +
+            throw new TerminateProcessException("CSPReceiver: trying to " +
                     " rendezvous with a receiver with no " +
                     "director => terminate.");
-	}
+        }
     }
 
     /* Resets the internal state controlling the execution of a conditional
@@ -412,11 +412,11 @@ public class ConditionalBranchController {
             _blocked = false;
             _blockedBranchReceivers.clear();
             _branchesActive = 0;
-	    _branchesBlocked = 0;
+            _branchesBlocked = 0;
             _branchesStarted = 0;
             _branchTrying = -1;
             _successfulBranch = -1;
-	    _threadList = null;
+            _threadList = null;
         }
     }
 

@@ -10,8 +10,8 @@ package ptolemy.actor.corba.util;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implements ptolemy.actor.corba.util.CorbaActor
 {
     // Constructors
@@ -31,10 +31,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Mirror the fire() method of Ptolemy II
-  		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * executable interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
     public void fire () throws ptolemy.actor.corba.util.CorbaIllegalActionException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -57,12 +57,12 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Return the value (in the form of a string) of
-  		 * a parameter.
-  		 * @exception CorbaIllegalActionException If the
-  		 *  query of parameter is not supported by the actor.
-  		 * @exception CorbaUnknowParamException If the parameter
-  		 *  name is not known by the actor.
-  		 */
+                   * a parameter.
+                   * @exception CorbaIllegalActionException If the
+                   *  query of parameter is not supported by the actor.
+                   * @exception CorbaUnknowParamException If the parameter
+                   *  name is not known by the actor.
+                   */
     public String getParameter (String paramName) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownParamException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -90,10 +90,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Mirror the initialize() method of Ptolemy II
-  		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * executable interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
     public void initialize () throws ptolemy.actor.corba.util.CorbaIllegalActionException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -116,14 +116,14 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Return true if the specified channel of the specified
-  	  	 * port contains unsent data.
-  		 * @exception CorbaIllegalActionException If the query is
-  		 *   not supported by the actor.
-  		 * @exception CorbaUnknownPortException If the specified
-  		 *   port is not known by the actor.
-  		 * @exception CorbaIndexOutofBoundException If the
-  		 *   channel index is out of the width of the port.
-  		 */
+                     * port contains unsent data.
+                   * @exception CorbaIllegalActionException If the query is
+                   *   not supported by the actor.
+                   * @exception CorbaUnknownPortException If the specified
+                   *   port is not known by the actor.
+                   * @exception CorbaIndexOutofBoundException If the
+                   *   channel index is out of the width of the port.
+                   */
     public boolean hasData (String portName, short portIndex) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaUnknownPortException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -154,8 +154,8 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Return true if there is a parameter of the specified
-  	 	 * name defined in the actor.
-  		 */
+                    * name defined in the actor.
+                   */
     public boolean hasParameter (String paramName)
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -178,12 +178,12 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Return true if there is a port of the specified name
-  		 * and specified property contained by the actor.
-  		 * @param portName The name of the port.
-  		 * @param isInput True if the port is an input port.
-  		 * @param isOutput True if the port is an output port.
-  		 * @param isMultiport True if the port is a multiport.
-  		 */
+                   * and specified property contained by the actor.
+                   * @param portName The name of the port.
+                   * @param isInput True if the port is an input port.
+                   * @param isOutput True if the port is an output port.
+                   * @param isMultiport True if the port is a multiport.
+                   */
     public boolean hasPort (String portName, boolean isInput, boolean isOutput, boolean isMultiport)
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -209,15 +209,15 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Set the width of the specified port.
-  		 * @param portName The name of the port.
-  		 * @param width The width to be set.
-  		 * @exception CorbaIllegalActionException If the width
-  		 *  to be set is not supported by the port, e.g. the
-  		 *  port is restricted to a single port, but the width
-  		 *  to be set is greater than one.
-  		 * @exception CorbaUnknownPortException If the port is \
-  		 *  not known by the actor.
-  		 */
+                   * @param portName The name of the port.
+                   * @param width The width to be set.
+                   * @exception CorbaIllegalActionException If the width
+                   *  to be set is not supported by the port, e.g. the
+                   *  port is restricted to a single port, but the width
+                   *  to be set is greater than one.
+                   * @exception CorbaUnknownPortException If the port is \
+                   *  not known by the actor.
+                   */
     public void setPortWidth (String portName, short width) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -244,10 +244,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Mirror the postfire() method of Ptolemy II
-  		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * executable interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
     public boolean postfire () throws ptolemy.actor.corba.util.CorbaIllegalActionException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -272,10 +272,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Mirror the prefire() method of Ptolemy II
-  		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * executable interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
     public boolean prefire () throws ptolemy.actor.corba.util.CorbaIllegalActionException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -300,10 +300,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Mirror the preinitialize() method of Ptolmey II
-  		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * executable interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
     public boolean preinitialize () throws ptolemy.actor.corba.util.CorbaIllegalActionException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -328,15 +328,15 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Set the value of the specified parameter.
-  		 * @param paramName The parameter name.
-  		 * @param paramValue The value to be set.
-  		 * @exception CorbaIllegalActionException If the set
-  		 *  value opertaion is not supported by the parameter.
-  		 * @exception CorbaUnknownParamException If the
-  		 *  parameter name is not known by the actor.
-  		 * @exception CorbaIllegalValueException If the value
-  		 *  is invalid for this parameter.
-  		 */
+                   * @param paramName The parameter name.
+                   * @param paramValue The value to be set.
+                   * @exception CorbaIllegalActionException If the set
+                   *  value opertaion is not supported by the parameter.
+                   * @exception CorbaUnknownParamException If the
+                   *  parameter name is not known by the actor.
+                   * @exception CorbaIllegalValueException If the value
+                   *  is invalid for this parameter.
+                   */
     public void setParameter (String paramName, String paramValue) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownParamException, ptolemy.actor.corba.util.CorbaIllegalValueException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -365,10 +365,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /*  Mirror the stopFire() method of Ptolemy II
-  		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * executable interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
     public void stopFire () throws ptolemy.actor.corba.util.CorbaIllegalActionException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -391,10 +391,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Mirror the terminate() method of Ptolemy II
-  		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * executable interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
     public void terminate () throws ptolemy.actor.corba.util.CorbaIllegalActionException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -417,18 +417,18 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Transfer the input data to the specified port.
-  		 * @param portName The port name.
-  		 * @param portIndex The channel number within the port.
-  		 * @param tokenValue The string for the value of the
-  		 *        data token.
-  		 * @exception CorbaIllegalActionException If the action is
-  		 *  illegal.
-  		 * @exception CorbaUnknownPortException If the port is unknown.
-  		 * @exception CorbaIndexOutofBoundException If the index
-  		 *  number is out of the width of the port.
-  		 * @exception CorbaIllegalValueException If the value is not
-  		 *  valid, e.g. the string cannot be converted to a value.
-  		 */
+                   * @param portName The port name.
+                   * @param portIndex The channel number within the port.
+                   * @param tokenValue The string for the value of the
+                   *        data token.
+                   * @exception CorbaIllegalActionException If the action is
+                   *  illegal.
+                   * @exception CorbaUnknownPortException If the port is unknown.
+                   * @exception CorbaIndexOutofBoundException If the index
+                   *  number is out of the width of the port.
+                   * @exception CorbaIllegalValueException If the value is not
+                   *  valid, e.g. the string cannot be converted to a value.
+                   */
     public void transferInput (String portName, short portIndex, String tokenValue) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaIllegalValueException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -460,15 +460,15 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Transfer the output from an output port.
-  		 * @param portName The port name
-  		 * @param portIndex The channel index within the port.
-  		 * @exception CorbaIllegalActionException If the operation
-  		 *  is illegal, e.g. the port is not an output port.
-  		 * @exception CorbaUnknownPortException If the port name
-  		 *  is unknown.
-  		 * @exception CorbaIndexOutofBoundException If the index
-  		 *  number is out of the width of the port.
-  		 */
+                   * @param portName The port name
+                   * @param portIndex The channel index within the port.
+                   * @exception CorbaIllegalActionException If the operation
+                   *  is illegal, e.g. the port is not an output port.
+                   * @exception CorbaUnknownPortException If the port name
+                   *  is unknown.
+                   * @exception CorbaIndexOutofBoundException If the index
+                   *  number is out of the width of the port.
+                   */
     public String transferOutput (String portName, short portIndex) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException
     {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -499,10 +499,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
 
     /* Mirror the wrapup() method of Ptolemy II
-  		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * executable interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
     public void wrapup () throws ptolemy.actor.corba.util.CorbaIllegalActionException
     {
         org.omg.CORBA.portable.InputStream _in = null;

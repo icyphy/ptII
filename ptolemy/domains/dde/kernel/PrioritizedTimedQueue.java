@@ -124,7 +124,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public PrioritizedTimedQueue(IOPort container)
              throws IllegalActionException {
-	super(container);
+        super(container);
     }
 
     /** Construct an empty queue with the specified IOPort container
@@ -136,8 +136,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public PrioritizedTimedQueue(IOPort container, int priority)
              throws IllegalActionException {
-	super(container);
-	_priority = priority;
+        super(container);
+        _priority = priority;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public Token get() {
         // Get a token and set all relevant
         // local time parameters
-	Token token = null;
+        Token token = null;
         Event event = (Event)_queue.take();
         if (event == null) {
             throw new NoTokenException(getContainer(),
@@ -171,7 +171,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
         // Set relevant TimeKeeper time parameters
-	Thread thread = Thread.currentThread();
+        Thread thread = Thread.currentThread();
         try {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
@@ -190,7 +190,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
             TimeKeeper timeKeeper =
                 ((DDEThread)thread).getTimeKeeper();
 
-	    timeKeeper.removeAllIgnoreTokens();
+            timeKeeper.removeAllIgnoreTokens();
         }
 
         return token;
@@ -239,11 +239,11 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   explicitly.
      */
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
-	if (numberOfTokens < 1) {
-	    throw new IllegalArgumentException(
+        if (numberOfTokens < 1) {
+            throw new IllegalArgumentException(
                     "hasRoom() requires a positive argument.");
         }
-	return (_queue.getCapacity() - _queue.size() > numberOfTokens);
+        return (_queue.getCapacity() - _queue.size() > numberOfTokens);
     }
 
     /** Return true if there are tokens stored on the queue. Return
@@ -264,10 +264,10 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public boolean hasToken(int numberOfTokens)
             throws IllegalArgumentException {
-	if (numberOfTokens < 1)
-	    throw new IllegalArgumentException(
+        if (numberOfTokens < 1)
+            throw new IllegalArgumentException(
                     "hasToken() requires a positive argument.");
-	return (_queue.size() > numberOfTokens);
+        return (_queue.size() > numberOfTokens);
     }
 
     /** Throw an exception, since this method is not used in
@@ -276,8 +276,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  @exception NoRoomException If the receiver is full.
      */
     public void put(Token token) {
-	throw new NoRoomException("put(Token) is not used in the " +
-				  "DDE domain.");
+        throw new NoRoomException("put(Token) is not used in the " +
+                                  "DDE domain.");
     }
 
     /** Put a token on the queue with the specified time stamp and set
@@ -293,56 +293,56 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @exception NoRoomException If the queue is full.
      */
     public void put(Token token, double time) throws NoRoomException {
-	if ( time < _lastTime && time != INACTIVE && time != IGNORE ) {
-	    NamedObj actor = (NamedObj)getContainer().getContainer();
-	    throw new IllegalArgumentException(actor.getName() +
-		    " - Attempt to set current time to the past; time = "
+        if ( time < _lastTime && time != INACTIVE && time != IGNORE ) {
+            NamedObj actor = (NamedObj)getContainer().getContainer();
+            throw new IllegalArgumentException(actor.getName() +
+                    " - Attempt to set current time to the past; time = "
                     + time + ". The _lastTime was " + _lastTime);
-	} else if ( time < 0.0 && time != INACTIVE && time != IGNORE ) {
-	    NamedObj actor = (NamedObj)getContainer().getContainer();
-	    throw new IllegalArgumentException(actor.getName() +
-		    " - Attempt to set current time to a" +
-		    " a negative value = " + time);
-	}
+        } else if ( time < 0.0 && time != INACTIVE && time != IGNORE ) {
+            NamedObj actor = (NamedObj)getContainer().getContainer();
+            throw new IllegalArgumentException(actor.getName() +
+                    " - Attempt to set current time to a" +
+                    " a negative value = " + time);
+        }
 
-	/*
-	String containerName = actor.getName();
-	Thread thread = Thread.currentThread();
-	String invokerName = "";
-	if ( thread instanceof DDEThread ) {
-	    DDEThread ddeThread = (DDEThread)thread;
-	    invokerName = ((Nameable)ddeThread.getActor()).getName();
-	}
+        /*
+        String containerName = actor.getName();
+        Thread thread = Thread.currentThread();
+        String invokerName = "";
+        if ( thread instanceof DDEThread ) {
+            DDEThread ddeThread = (DDEThread)thread;
+            invokerName = ((Nameable)ddeThread.getActor()).getName();
+        }
 
-	if ( containerName.endsWith("2") || invokerName.endsWith("2") ) {
-	if ( token instanceof NullToken ) {
-	    System.out.println(invokerName + " put NullToken into the receiver of "
+        if ( containerName.endsWith("2") || invokerName.endsWith("2") ) {
+        if ( token instanceof NullToken ) {
+            System.out.println(invokerName + " put NullToken into the receiver of "
                     + containerName + " at " + time + ". Last time is " + _lastTime);
-	} else {
-	    System.out.println(invokerName + " put RealToken into the receiver of "
+        } else {
+            System.out.println(invokerName + " put RealToken into the receiver of "
                     + containerName + " at " + time + ". Last time is " + _lastTime);
-	}
-	}
-	*/
+        }
+        }
+        */
 
-	double _lastTimeCache = _lastTime;
-	double _receiverTimeCache = _receiverTime;
-	_lastTime = time;
-	Event event = new Event(token, time);
+        double _lastTimeCache = _lastTime;
+        double _receiverTimeCache = _receiverTime;
+        _lastTime = time;
+        Event event = new Event(token, time);
         if ( _queue.size() == 0 ) {
             _receiverTime = _lastTime;
         }
 
-	try {
-	    if (!_queue.put(event)) {
-		throw new NoRoomException (getContainer(),
+        try {
+            if (!_queue.put(event)) {
+                throw new NoRoomException (getContainer(),
                     "Queue is at capacity. Cannot insert token.");
-	    }
-	} catch( NoRoomException e ) {
-	    _lastTime = _lastTimeCache;
-	    _receiverTime = _receiverTimeCache;
-	    throw e;
-	}
+            }
+        } catch( NoRoomException e ) {
+            _lastTime = _lastTimeCache;
+            _receiverTime = _receiverTimeCache;
+            throw e;
+        }
     }
 
     /** Remove the oldest token off of this queue if it has a
@@ -370,26 +370,26 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
         // Set relevant time keeper time parameters
-	Thread thread = Thread.currentThread();
+        Thread thread = Thread.currentThread();
         try {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
-		timeKeeper._setOutputTime( timeKeeper.getCurrentTime() );
+                timeKeeper._setOutputTime( timeKeeper.getCurrentTime() );
             }
         } catch( IllegalActionException e ) {
             System.err.println("An exception thrown while setting"
                     + " the output time of TimeKeeper");
         }
 
-	// Set the receiver time if value is still IGNORE
-	if ( getReceiverTime() == PrioritizedTimedQueue.IGNORE ) {
-	    if ( thread instanceof DDEThread ) {
+        // Set the receiver time if value is still IGNORE
+        if ( getReceiverTime() == PrioritizedTimedQueue.IGNORE ) {
+            if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
-		_setReceiverTime( timeKeeper.getCurrentTime() );
-	    }
-	}
+                _setReceiverTime( timeKeeper.getCurrentTime() );
+            }
+        }
     }
 
     /** Reset local flags. The local flags of this receiver impact
@@ -400,9 +400,9 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public void reset() {
         DDEDirector director = (DDEDirector)
             ((Actor)getContainer().getContainer()).getDirector();
-	double time = director.getCurrentTime();
-	_receiverTime = time;
-	_lastTime = time;
+        double time = director.getCurrentTime();
+        _receiverTime = time;
+        _lastTime = time;
         // I believe this is not needed anymore, because receivers are
         // automatically recreated by the kernel each execution. -SN 3/19/2002
         // _queue.clear();
@@ -417,7 +417,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  package friendly variables 		   ////
+    ////                  package friendly variables                    ////
 
     // This time value is used in conjunction with completionTime to
     // indicate that a receiver will continue operating indefinitely.
@@ -455,12 +455,12 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  oldest queue position; return false otherwise.
      */
     boolean _hasNullToken() {
-	if ( _queue.size() > 0 ) {
-	    Event event = (Event)_queue.get(0);
-	    if ( event.getToken() instanceof NullToken ) {
-		return true;
-	    }
-	}
+        if ( _queue.size() > 0 ) {
+            Event event = (Event)_queue.get(0);
+            if ( event.getToken() instanceof NullToken ) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -472,10 +472,10 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @param time The completion time of this receiver.
      */
     void _setCompletionTime(double time) {
-	if ( time < 0.0 && time != PrioritizedTimedQueue.ETERNITY ) {
-	    throw new IllegalArgumentException("Attempt to set "
-            	    + "completion time to a negative value.");
-	}
+        if ( time < 0.0 && time != PrioritizedTimedQueue.ETERNITY ) {
+            throw new IllegalArgumentException("Attempt to set "
+                        + "completion time to a negative value.");
+        }
         _completionTime = time;
     }
 
@@ -486,9 +486,9 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @param time The new receiver time.
      */
     synchronized void _setReceiverTime(double time) {
-	if ( !(_queue.size() > 0) ) {
+        if ( !(_queue.size() > 0) ) {
             _receiverTime = time;
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -516,44 +516,44 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // may be considered redundant.
     private class Event {
 
-	// Construct an Event with a token and time stamp.
-	public Event(Token token, double time) {
-	    _token = token;
-	    _timeStamp = time;
-	}
+        // Construct an Event with a token and time stamp.
+        public Event(Token token, double time) {
+            _token = token;
+            _timeStamp = time;
+        }
 
-	// Construct an Event with a token, a time stamp and a
-	// destination receiver.
-	public Event(Token token, double time, Receiver receiver) {
-	    this(token, time);
-	    _receiver = receiver;
-	}
+        // Construct an Event with a token, a time stamp and a
+        // destination receiver.
+        public Event(Token token, double time, Receiver receiver) {
+            this(token, time);
+            _receiver = receiver;
+        }
 
 
         ///////////////////////////////////////////////////////////
-	////                     public inner methods          ////
+        ////                     public inner methods          ////
 
-	// Return the destination receiver of this event.
-	public Receiver getReceiver() {
-	    return _receiver;
-	}
+        // Return the destination receiver of this event.
+        public Receiver getReceiver() {
+            return _receiver;
+        }
 
-	// Return the time stamp of this event.
-	public double getTime() {
-	    return _timeStamp;
-	}
+        // Return the time stamp of this event.
+        public double getTime() {
+            return _timeStamp;
+        }
 
-	// Return the token of this event.
-	public Token getToken() {
-	    return _token;
-	}
+        // Return the token of this event.
+        public Token getToken() {
+            return _token;
+        }
 
         ///////////////////////////////////////////////////////////
         ////                     private inner variables       ////
 
-	double _timeStamp = 0.0;
-	Token _token = null;
-	Receiver _receiver = null;
+        double _timeStamp = 0.0;
+        Token _token = null;
+        Receiver _receiver = null;
     }
 
 }

@@ -78,14 +78,14 @@ public class CSPBuffer extends CSPActor {
      *   coincides with a parameter already in this actor.
      */
     public CSPBuffer() throws IllegalActionException,
-    	    NameDuplicationException {
+                NameDuplicationException {
         super();
         depth = new Parameter(this, "depth", (new IntToken(1)) );
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
-	output.setTypeEquals(BaseType.GENERAL);
-	input.setTypeEquals(BaseType.GENERAL);
+        output.setTypeEquals(BaseType.GENERAL);
+        input.setTypeEquals(BaseType.GENERAL);
     }
 
     /** Construct a CSPBuffer in the specified container with the
@@ -132,12 +132,12 @@ public class CSPBuffer extends CSPActor {
     public CSPBuffer(TypedCompositeActor container, String name, int theDepth)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	depth = new Parameter(this, "depth", (new IntToken(theDepth)) );
-	output = new TypedIOPort(this, "output", false, true);
-	input = new TypedIOPort(this, "input", true, false);
+        depth = new Parameter(this, "depth", (new IntToken(theDepth)) );
+        output = new TypedIOPort(this, "output", false, true);
+        input = new TypedIOPort(this, "input", true, false);
 
-	output.setTypeEquals(BaseType.GENERAL);
-	input.setTypeEquals(BaseType.GENERAL);
+        output.setTypeEquals(BaseType.GENERAL);
+        input.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -66,17 +66,17 @@ public class CSPGetToken extends CSPGet {
     /**
      */
     public Token getToken(int cntr) {
-	return _tokens[cntr];
+        return _tokens[cntr];
     }
 
     /**
      */
     public void fire() throws IllegalActionException {
-	int cnt = 0;
-	while (cnt < _numTokens) {
-	    _tokens[cnt] = inputPort.get(0);
-	    cnt++;
-	}
+        int cnt = 0;
+        while (cnt < _numTokens) {
+            _tokens[cnt] = inputPort.get(0);
+            cnt++;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

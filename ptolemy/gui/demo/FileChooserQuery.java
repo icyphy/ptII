@@ -59,7 +59,7 @@ public class FileChooserQuery extends JFrame
         super("FileChooserQuery");
 
         JPanel contentPane = new JPanel();
-	_query = new Query();
+        _query = new Query();
         contentPane.add(_query);
 
         _query.addCheckBox("check", "Check box", true);
@@ -68,8 +68,8 @@ public class FileChooserQuery extends JFrame
         _query.addDisplay("display", "Display", "displayed string");
         String[] choices = {"a", "b", "c"};
         _query.addChoice("choice", "Choice", choices, "b");
-	String[] moreChoices = {"d", "e", "f"};
-	_query.addChoice("editchoice", "Editable Choice", moreChoices, "d",
+        String[] moreChoices = {"d", "e", "f"};
+        _query.addChoice("editchoice", "Editable Choice", moreChoices, "d",
                 true);
         _query.addSlider("slider", "Slider", 0, -100, 100);
         String[] options = {"mayonnaise", "mustard", "both", "none"};
@@ -93,7 +93,7 @@ public class FileChooserQuery extends JFrame
      */
     public void changed(String name) {
         System.out.println("Changed " + name + " to: "
-			   + _query.getStringValue(name));
+                           + _query.getStringValue(name));
     }
 
     /** Create a FileChooserQuery and configure it
@@ -101,11 +101,11 @@ public class FileChooserQuery extends JFrame
     public static void main(String[] args) {
         JFrame frame = new FileChooserQuery();
 
-	frame.addWindowListener(new WindowAdapter() {
-		public void windowClosing(WindowEvent e) {
-		    System.exit(0);
-		}
-	    });
+        frame.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
 
         frame.pack();
         frame.setVisible(true);

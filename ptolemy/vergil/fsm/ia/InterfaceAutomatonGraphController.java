@@ -66,8 +66,8 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
      *   of the current model.
      */
     public InterfaceAutomatonGraphController(File directory) {
-	super();
-	_directory = directory;
+        super();
+        _directory = directory;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,7 +84,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
 
         // Add an item that does composition.
         // menu.addSeparator();
-	diva.gui.GUIUtilities.addMenuItem(menu, _composeWithAction);
+        diva.gui.GUIUtilities.addMenuItem(menu, _composeWithAction);
         // diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
     }
 
@@ -107,23 +107,23 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
     public class ComposeWithAction extends AbstractAction {
 
         /** Create a new action to perform composition. */
-	public ComposeWithAction() {
-	    super("Compose With");
-	    putValue("tooltip", "Compose with another interface automaton");
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+        public ComposeWithAction() {
+            super("Compose With");
+            putValue("tooltip", "Compose with another interface automaton");
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_C));
-	}
+        }
 
         /** Compose with another interface automaton by first opening a file
-	 *  chooser dialog and then composing with the specified model.
-	 *  The specified model and the composition result are shown in
-	 *  two new interface automaton graph frames.
+         *  chooser dialog and then composing with the specified model.
+         *  The specified model and the composition result are shown in
+         *  two new interface automaton graph frames.
          */
-	public void actionPerformed(ActionEvent e) {
-	    // NOTE: This code is mostly copied from Top.
+        public void actionPerformed(ActionEvent e) {
+            // NOTE: This code is mostly copied from Top.
             JFileChooser fileDialog = new JFileChooser();
             fileDialog.setDialogTitle(
-	            "Select an interface automaton to compose with.");
+                    "Select an interface automaton to compose with.");
 
             if (_directory != null) {
                 fileDialog.setCurrentDirectory(_directory);
@@ -139,24 +139,24 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
             }
             int returnValue = fileDialog.showOpenDialog(getFrame());
             if (returnValue == JFileChooser.APPROVE_OPTION) {
-	        _directory = fileDialog.getCurrentDirectory();
+                _directory = fileDialog.getCurrentDirectory();
                 try {
                     // NOTE: It would be nice if it were possible to enter
                     // a URL in the file chooser, but Java's file chooser does
                     // not permit this, regrettably.  So we have a separate
                     // menu item for this.
                     File file = fileDialog.getSelectedFile().getCanonicalFile();
-		    URL url = file.toURL();
+                    URL url = file.toURL();
 
                     // NOTE: Used to use for the first argument the following,
-		    // but it seems to not work for relative file references:
+                    // but it seems to not work for relative file references:
                     // new URL("file", null, _directory.getAbsolutePath()
                     Configuration configuration = getConfiguration();
                     Tableau newAutomatonTableau =
                         configuration.openModel(url, url, url.toExternalForm());
 
                     // compose the two interface automata and show result
-		    InterfaceAutomaton model1 =
+                    InterfaceAutomaton model1 =
                         (InterfaceAutomaton)getFrame().getModel();
                     InterfaceAutomatonGraphFrame graphFrame2 =
                         (InterfaceAutomatonGraphFrame)

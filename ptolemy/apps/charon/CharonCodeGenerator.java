@@ -116,7 +116,7 @@ public class CharonCodeGenerator extends Attribute {
             throws IllegalActionException, NameDuplicationException {
         super(_container, name);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>"
                 + "<text x=\"-40\" y=\"-5\" "
@@ -133,28 +133,28 @@ public class CharonCodeGenerator extends Attribute {
      *  @return The Charon code.
      */
     public String generateCode() throws IllegalActionException {
-	try {
-	    // initialization
-	    generatedCode = "";
-	    _modeCode = "";
-	    if (!_initialize()) {
-	        return "Can not generate code for this model!";
-    	    }
+        try {
+            // initialization
+            generatedCode = "";
+            _modeCode = "";
+            if (!_initialize()) {
+                return "Can not generate code for this model!";
+                }
 
-	    String containerName = _container.getName();
+            String containerName = _container.getName();
 
-	    // the top level agent is a composite agent too.
-	    generatedCode += _compositeAgentCode(_container)
-			   + _modeCode;
+            // the top level agent is a composite agent too.
+            generatedCode += _compositeAgentCode(_container)
+                           + _modeCode;
 
 
-	} catch (IllegalActionException ex) {
-	    System.out.println(ex.getMessage());
-	    throw new IllegalActionException(ex.getMessage());
-	}
+        } catch (IllegalActionException ex) {
+            System.out.println(ex.getMessage());
+            throw new IllegalActionException(ex.getMessage());
+        }
 
-	//return generatedCode;
-	return generatedCode;
+        //return generatedCode;
+        return generatedCode;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -172,8 +172,8 @@ public class CharonCodeGenerator extends Attribute {
      * @ return Ture if container is not null.
      */
     private boolean _initialize() throws IllegalActionException {
-	_container = (TypedCompositeActor) getContainer();
-	return (_container != null);
+        _container = (TypedCompositeActor) getContainer();
+        return (_container != null);
     }
 
     /** Topology analysis to get a list of agents.
@@ -184,23 +184,23 @@ public class CharonCodeGenerator extends Attribute {
      * @return List of agents defined in model.
      */
     private LinkedList _agents(CompositeActor actor) throws IllegalActionException {
-	LinkedList agentList = new LinkedList();
-	ListIterator agentsIterator =  actor.entityList(TypedCompositeActor.class).listIterator();
-	while (agentsIterator.hasNext()) {
-	    TypedCompositeActor agent = (TypedCompositeActor) agentsIterator.next();
-	    Parameter charonAgent = (Parameter) agent.getAttribute("charonAgent");
-	    if (charonAgent == null || ((BooleanToken) charonAgent.getToken()).booleanValue()) {
-		agentList.add(agent);
-	    }
-      	}
-	return agentList;
+        LinkedList agentList = new LinkedList();
+        ListIterator agentsIterator =  actor.entityList(TypedCompositeActor.class).listIterator();
+        while (agentsIterator.hasNext()) {
+            TypedCompositeActor agent = (TypedCompositeActor) agentsIterator.next();
+            Parameter charonAgent = (Parameter) agent.getAttribute("charonAgent");
+            if (charonAgent == null || ((BooleanToken) charonAgent.getToken()).booleanValue()) {
+                agentList.add(agent);
+            }
+              }
+        return agentList;
     }
 
     // Topology analysis to get the list of assertions.
     private LinkedList _assertions(CompositeActor actor) throws IllegalActionException {
-	LinkedList assertionList = new LinkedList();
-	assertionList =  (LinkedList) actor.entityList(Assertion.class);
-	return assertionList;
+        LinkedList assertionList = new LinkedList();
+        assertionList =  (LinkedList) actor.entityList(Assertion.class);
+        return assertionList;
     }
 
     /** Return a list of source ports connected to this port on the
@@ -216,22 +216,22 @@ public class CharonCodeGenerator extends Attribute {
             _workspace.getReadAccess();
             Actor container = (Actor)input.getContainer();
             Director excDirector = ((Actor) container).getExecutiveDirector();
-	    int depthOfContainer = ((NamedObj) container).depthInHierarchy();
+            int depthOfContainer = ((NamedObj) container).depthInHierarchy();
             LinkedList result = new LinkedList();
-	    Iterator ports = input.connectedPortList().iterator();
+            Iterator ports = input.connectedPortList().iterator();
             while (ports.hasNext()) {
-		IOPort port = (IOPort)ports.next();
+                IOPort port = (IOPort)ports.next();
                 int depth = port.depthInHierarchy();
                 if (port.isInput() && depth <= depthOfContainer) {
                     result.addLast(port);
                 } else if (port.isOutput() && (depth == (depthOfContainer + 1))) {
                     result.addLast(port);
                 }
-	    }
-	    return result;
-	} finally {
-	    _workspace.doneReading();
-	}
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
 
@@ -245,192 +245,192 @@ public class CharonCodeGenerator extends Attribute {
      // only atomic agent has mode
     private String _compositeAgentCode(CompositeActor actor) throws IllegalActionException {
 
-	if (FSMDirector.class.isInstance(actor.getDirector())) {
-//	    System.out.println("in FSM");
-	    return _agentCode(actor);
-	}
+        if (FSMDirector.class.isInstance(actor.getDirector())) {
+//            System.out.println("in FSM");
+            return _agentCode(actor);
+        }
 
-	LinkedList subAgents = _agents(actor);
+        LinkedList subAgents = _agents(actor);
 
-	if (subAgents.size() == 0) return _agentCode(actor);
+        if (subAgents.size() == 0) return _agentCode(actor);
 
-	String compositeCodeString = "";
-	String subAgentCode = "";
-	String privateVariables = "";
+        String compositeCodeString = "";
+        String subAgentCode = "";
+        String privateVariables = "";
 
-	ListIterator subAgentsIterator = subAgents.listIterator();
+        ListIterator subAgentsIterator = subAgents.listIterator();
 
-	// the output ports of composite agent
-	// In fact, there is always at most one output
-	List outputPorts = actor.outputPortList();
-	ListIterator outputPortsIterator = actor.outputPortList().listIterator();
-
-
-	if (outputPorts.size() > 1)
-	  throw new IllegalActionException(" The agent has more than one output!");
-
-	// get the source subAgent name
-	String outputAgentName = "";
-	String outputPortName = "";
-	String sourceForOutputName = "";
-
-	while (outputPortsIterator.hasNext()) {
-	  TypedIOPort output = (TypedIOPort) outputPortsIterator.next();
-	  outputPortName = output.getName();
-	  ListIterator sourcePorts = output.insidePortList().listIterator();
+        // the output ports of composite agent
+        // In fact, there is always at most one output
+        List outputPorts = actor.outputPortList();
+        ListIterator outputPortsIterator = actor.outputPortList().listIterator();
 
 
-	  TypedIOPort sourcePort = new TypedIOPort();
+        if (outputPorts.size() > 1)
+          throw new IllegalActionException(" The agent has more than one output!");
 
-	  while (sourcePorts.hasNext()) {
-	    TypedIOPort port = (TypedIOPort) sourcePorts.next();
-	    if (port.isOutput()) {
-	      if (sourcePort == null) {
-		throw new IllegalActionException(" The output has more than one source!");
-	      } else {
-		sourcePort = port;
-		sourceForOutputName = sourcePort.getName();
-		Nameable sourceContainer = sourcePort.getContainer();
-		outputAgentName = sourceContainer.getName();
-	      }
-	    }
-	  }
+        // get the source subAgent name
+        String outputAgentName = "";
+        String outputPortName = "";
+        String sourceForOutputName = "";
+
+        while (outputPortsIterator.hasNext()) {
+          TypedIOPort output = (TypedIOPort) outputPortsIterator.next();
+          outputPortName = output.getName();
+          ListIterator sourcePorts = output.insidePortList().listIterator();
 
 
-	}
+          TypedIOPort sourcePort = new TypedIOPort();
 
-	while (subAgentsIterator.hasNext()) {
-
-	    String subAgentConnectionInputs = "";
-	    String subAgentConnectionOutputs = "";
-
-	    CompositeActor subAgent = (CompositeActor)subAgentsIterator.next();
-
-	    if (outputAgentName.equals(subAgent.getName())) {
-	      // the inside output actually is input to outside environment
-	      subAgentConnectionOutputs += sourceForOutputName;
-	      subAgentConnectionInputs += outputPortName;
-	    }
-
-	    subAgentCode += "  agent "
-			  + subAgent.getName().toLowerCase() + " = "
-			  + subAgent.getName()
-			  + " ( ";
-
-      	    if (actor.depthInHierarchy() == 0) {
-		subAgentCode += _agentParameterTokens((NamedObj)subAgent);
-	    } else {
-		subAgentCode += _agentParameters((NamedObj)subAgent, false);
-	    }
-
-    	    subAgentCode += " );"
-			  + _endLine;
-
-	    ListIterator subAgentInputs = subAgent.inputPortList().listIterator();
-
-	    while (subAgentInputs.hasNext()) {
-		TypedIOPort input = (TypedIOPort) subAgentInputs.next();
-		LinkedList sourceList = _shallowSourcePortList(input);
-		ListIterator sources = sourceList.listIterator();
-		boolean privateVariable = true;
-		while (sources.hasNext()) {
-		    TypedIOPort source = (TypedIOPort) sources.next();
-		    if (source.depthInHierarchy() != input.depthInHierarchy()) {
-		        privateVariable = false;
-		    }
-
-		    if (!(source.getName().equals(input.getName()))) {
-		        if (subAgentConnectionOutputs == "") {
-			    subAgentConnectionOutputs += source.getName();
-			    subAgentConnectionInputs += input.getName();
-			} else {
-			    subAgentConnectionOutputs += ", "
-						       + source.getName();
-			    subAgentConnectionInputs += ", "
-						      + input.getName();
-			}
-		    }
-		}
-		if (privateVariable) {
-		    if (privateVariables == "") {
-		        privateVariables += "private analog real "
-					  + input.getName();
-		    } else {
-		        privateVariables += ", "
-					  + input.getName();
-		    }
-		}
-	    }
-
-	    if (subAgentConnectionInputs.length() != 0) {
-		subAgentCode += "       [ "
-			      + subAgentConnectionInputs
-			      + " := "
-			      + subAgentConnectionOutputs
-			      + " ] ;"
-			      + _endLine;
-	    }
-
-	    compositeCodeString += _compositeAgentCode(subAgent);
-	}
-
-	compositeCodeString += "agent";
-
-	String parameterString = "";
-	String inputString = "";
-	String outputString = "";
-	String initString = "";
-	String modeString = "";
-	String modeParameterString = "";
-
-	LinkedList parameterList = (LinkedList)actor.attributeList(Parameter.class);
-	int parameterNumber = parameterList.size();
-	ListIterator parameters = parameterList.listIterator();
-
-	_inPorts = actor.inputPortList().iterator();
-	while (_inPorts.hasNext()) {
-	    if (inputString == "") {
-	        inputString += "read analog real "
-			         + ((NamedObj)_inPorts.next()).getName();
-	    } else {
-	        inputString += ", "
-			         + ((NamedObj)_inPorts.next()).getName();
-	    }
-	}
-	if (inputString != "") inputString += ";";
+          while (sourcePorts.hasNext()) {
+            TypedIOPort port = (TypedIOPort) sourcePorts.next();
+            if (port.isOutput()) {
+              if (sourcePort == null) {
+                throw new IllegalActionException(" The output has more than one source!");
+              } else {
+                sourcePort = port;
+                sourceForOutputName = sourcePort.getName();
+                Nameable sourceContainer = sourcePort.getContainer();
+                outputAgentName = sourceContainer.getName();
+              }
+            }
+          }
 
 
-	_outPorts = actor.outputPortList().iterator();
+        }
 
-	if (_outPorts.hasNext()) {
-	    String outportName = ((NamedObj)_outPorts.next()).getName();
-	    if (outputString == "") {
-		outputString += "write analog real "
-				 + outportName;
+        while (subAgentsIterator.hasNext()) {
 
-	    } else {
-		outputString += ", "
-				 + outportName;
-	    }
-	}
-	if (outputString != "") outputString += ";";
+            String subAgentConnectionInputs = "";
+            String subAgentConnectionOutputs = "";
 
-	if (privateVariables.length() != 0) privateVariables += ";";
+            CompositeActor subAgent = (CompositeActor)subAgentsIterator.next();
 
-	compositeCodeString += " "
-		    + actor.getName()
-		    + " ( ";
+            if (outputAgentName.equals(subAgent.getName())) {
+              // the inside output actually is input to outside environment
+              subAgentConnectionOutputs += sourceForOutputName;
+              subAgentConnectionInputs += outputPortName;
+            }
 
-	if (actor.depthInHierarchy() != 0)
-	    compositeCodeString += _agentParameters((NamedObj)actor, true);
+            subAgentCode += "  agent "
+                          + subAgent.getName().toLowerCase() + " = "
+                          + subAgent.getName()
+                          + " ( ";
 
-	compositeCodeString += " )" + _endLine
-			    + "{" + _endLine
-			    + "  " + outputString + _endLine
-			    + "  " + inputString + _endLine
-			    + "  " + privateVariables + _endLine
-			    + subAgentCode + _endLine
-			    + "}" + _endLine;
+                  if (actor.depthInHierarchy() == 0) {
+                subAgentCode += _agentParameterTokens((NamedObj)subAgent);
+            } else {
+                subAgentCode += _agentParameters((NamedObj)subAgent, false);
+            }
+
+                subAgentCode += " );"
+                          + _endLine;
+
+            ListIterator subAgentInputs = subAgent.inputPortList().listIterator();
+
+            while (subAgentInputs.hasNext()) {
+                TypedIOPort input = (TypedIOPort) subAgentInputs.next();
+                LinkedList sourceList = _shallowSourcePortList(input);
+                ListIterator sources = sourceList.listIterator();
+                boolean privateVariable = true;
+                while (sources.hasNext()) {
+                    TypedIOPort source = (TypedIOPort) sources.next();
+                    if (source.depthInHierarchy() != input.depthInHierarchy()) {
+                        privateVariable = false;
+                    }
+
+                    if (!(source.getName().equals(input.getName()))) {
+                        if (subAgentConnectionOutputs == "") {
+                            subAgentConnectionOutputs += source.getName();
+                            subAgentConnectionInputs += input.getName();
+                        } else {
+                            subAgentConnectionOutputs += ", "
+                                                       + source.getName();
+                            subAgentConnectionInputs += ", "
+                                                      + input.getName();
+                        }
+                    }
+                }
+                if (privateVariable) {
+                    if (privateVariables == "") {
+                        privateVariables += "private analog real "
+                                          + input.getName();
+                    } else {
+                        privateVariables += ", "
+                                          + input.getName();
+                    }
+                }
+            }
+
+            if (subAgentConnectionInputs.length() != 0) {
+                subAgentCode += "       [ "
+                              + subAgentConnectionInputs
+                              + " := "
+                              + subAgentConnectionOutputs
+                              + " ] ;"
+                              + _endLine;
+            }
+
+            compositeCodeString += _compositeAgentCode(subAgent);
+        }
+
+        compositeCodeString += "agent";
+
+        String parameterString = "";
+        String inputString = "";
+        String outputString = "";
+        String initString = "";
+        String modeString = "";
+        String modeParameterString = "";
+
+        LinkedList parameterList = (LinkedList)actor.attributeList(Parameter.class);
+        int parameterNumber = parameterList.size();
+        ListIterator parameters = parameterList.listIterator();
+
+        _inPorts = actor.inputPortList().iterator();
+        while (_inPorts.hasNext()) {
+            if (inputString == "") {
+                inputString += "read analog real "
+                                 + ((NamedObj)_inPorts.next()).getName();
+            } else {
+                inputString += ", "
+                                 + ((NamedObj)_inPorts.next()).getName();
+            }
+        }
+        if (inputString != "") inputString += ";";
+
+
+        _outPorts = actor.outputPortList().iterator();
+
+        if (_outPorts.hasNext()) {
+            String outportName = ((NamedObj)_outPorts.next()).getName();
+            if (outputString == "") {
+                outputString += "write analog real "
+                                 + outportName;
+
+            } else {
+                outputString += ", "
+                                 + outportName;
+            }
+        }
+        if (outputString != "") outputString += ";";
+
+        if (privateVariables.length() != 0) privateVariables += ";";
+
+        compositeCodeString += " "
+                    + actor.getName()
+                    + " ( ";
+
+        if (actor.depthInHierarchy() != 0)
+            compositeCodeString += _agentParameters((NamedObj)actor, true);
+
+        compositeCodeString += " )" + _endLine
+                            + "{" + _endLine
+                            + "  " + outputString + _endLine
+                            + "  " + inputString + _endLine
+                            + "  " + privateVariables + _endLine
+                            + subAgentCode + _endLine
+                            + "}" + _endLine;
 
         return compositeCodeString;
     }
@@ -443,31 +443,31 @@ public class CharonCodeGenerator extends Attribute {
      */
      private String _agentParameters(NamedObj agent, boolean typed) {
 
-	LinkedList parameterList = (LinkedList)agent.attributeList(Parameter.class);
-	ListIterator parameters = parameterList.listIterator();
+        LinkedList parameterList = (LinkedList)agent.attributeList(Parameter.class);
+        ListIterator parameters = parameterList.listIterator();
 
-	String prefix = "";
-	if (typed) prefix = "real ";
+        String prefix = "";
+        if (typed) prefix = "real ";
 
-	String parameterString = "";
+        String parameterString = "";
 
-	while (parameters.hasNext()) {
+        while (parameters.hasNext()) {
 
-	    String parameterName = ((NamedObj)parameters.next()).getName();
-	    if (parameterName.startsWith("_")) continue;
+            String parameterName = ((NamedObj)parameters.next()).getName();
+            if (parameterName.startsWith("_")) continue;
 
-	    if (parameterString == "") {
-	        parameterString += prefix
-			         + parameterName;
+            if (parameterString == "") {
+                parameterString += prefix
+                                 + parameterName;
 
-	    } else {
-	        parameterString += ", "
-		                 + prefix
-			         + parameterName;
-	    }
-	}
+            } else {
+                parameterString += ", "
+                                 + prefix
+                                 + parameterName;
+            }
+        }
 
-	return parameterString;
+        return parameterString;
      }
 
     /** Generate string of evaluated tokens of parameters of the agent.
@@ -477,28 +477,28 @@ public class CharonCodeGenerator extends Attribute {
      */
      private String _agentParameterTokens(NamedObj agent) throws IllegalActionException {
 
-	LinkedList parameterList = (LinkedList)agent.attributeList(Parameter.class);
-	ListIterator parameters = parameterList.listIterator();
+        LinkedList parameterList = (LinkedList)agent.attributeList(Parameter.class);
+        ListIterator parameters = parameterList.listIterator();
 
-	String tokenString = "";
+        String tokenString = "";
 
-	while (parameters.hasNext()) {
+        while (parameters.hasNext()) {
 
-	    Parameter parameter = (Parameter) parameters.next();
-	    String parameterName = parameter.getName();
-	    if (parameterName.startsWith("_")) continue;
+            Parameter parameter = (Parameter) parameters.next();
+            String parameterName = parameter.getName();
+            if (parameterName.startsWith("_")) continue;
 
-	    String tokenValue = parameter.getToken().toString();
+            String tokenValue = parameter.getToken().toString();
 
-	    if (tokenString == "") {
-	        tokenString += tokenValue;
-	    } else {
-	        tokenString += ", "
-			     + tokenValue;
-	    }
-	}
+            if (tokenString == "") {
+                tokenString += tokenValue;
+            } else {
+                tokenString += ", "
+                             + tokenValue;
+            }
+        }
 
-	return tokenString;
+        return tokenString;
      }
 
     /** Generate code for the agent.
@@ -509,183 +509,183 @@ public class CharonCodeGenerator extends Attribute {
      private String _agentCode(CompositeActor actor) throws IllegalActionException {
 
 //    System.out.println("dealing with " + actor.getFullName());
-	String codeString = "agent";
-	String parameterString = "";
-	String inputString = "";
-	String outputString = "";
-	String initString = "";
-	String modeString = "";
-	String modeParameterString = "";
-	String typedModeParameterString = "";
-	String flowString = "";
-	String invariantString = "";
+        String codeString = "agent";
+        String parameterString = "";
+        String inputString = "";
+        String outputString = "";
+        String initString = "";
+        String modeString = "";
+        String modeParameterString = "";
+        String typedModeParameterString = "";
+        String flowString = "";
+        String invariantString = "";
 
-	LinkedList parameterList = (LinkedList)actor.attributeList(Parameter.class);
+        LinkedList parameterList = (LinkedList)actor.attributeList(Parameter.class);
 
-/*	Parameter invariantPara = (Parameter) actor.getAttribute("_invariant");
-	if (invariantPara  != null) {
-	    invariantString = "inv { "
-			    + ((StringToken)invariantPara.getToken()).stringValue()
-			    + " } ";
-	    //get rid of _invariant parameter
-	    parameterList.remove(invariantPara);;
-	    //FIXME: it seems that after getAttribute,
-	    //the attribute does not exist?
-	}
+/*        Parameter invariantPara = (Parameter) actor.getAttribute("_invariant");
+        if (invariantPara  != null) {
+            invariantString = "inv { "
+                            + ((StringToken)invariantPara.getToken()).stringValue()
+                            + " } ";
+            //get rid of _invariant parameter
+            parameterList.remove(invariantPara);;
+            //FIXME: it seems that after getAttribute,
+            //the attribute does not exist?
+        }
 */
 
-	ListIterator assertions = _assertions(actor).listIterator();
+        ListIterator assertions = _assertions(actor).listIterator();
 
-	while (assertions.hasNext()) {
-	  Assertion assertion = (Assertion) assertions.next();
-	  if (invariantString.length() == 0) {
-	    invariantString = "inv { "
-			    + assertion.assertion.getExpression();
-	  } else {
-	    invariantString += " ; "
-			     + assertion.assertion.getExpression();
-	  }
-	  invariantString += " } ";
-	}
+        while (assertions.hasNext()) {
+          Assertion assertion = (Assertion) assertions.next();
+          if (invariantString.length() == 0) {
+            invariantString = "inv { "
+                            + assertion.assertion.getExpression();
+          } else {
+            invariantString += " ; "
+                             + assertion.assertion.getExpression();
+          }
+          invariantString += " } ";
+        }
 
-	int parameterNumber = parameterList.size();
-	ListIterator parameters = parameterList.listIterator();
+        int parameterNumber = parameterList.size();
+        ListIterator parameters = parameterList.listIterator();
 
-	_inPorts = actor.inputPortList().iterator();
-	while (_inPorts.hasNext()) {
-	    if (inputString == "") {
-	        inputString += "read analog real "
-			         + ((NamedObj)_inPorts.next()).getName();
-	    } else {
-	        inputString += ", "
-			         + ((NamedObj)_inPorts.next()).getName();
-	    }
-	}
-	if (inputString != "") inputString += ";";
-
-
-	_outPorts = actor.outputPortList().iterator();
-	int outportNumber = actor.outputPortList().size();
-
-	// since the parameters are either for mode or for outport,
-	// we assume the number of the parameters for outport is the same
-	// with the number of outport(s)
-	boolean parameterForOutport = false;
-
-	while (parameters.hasNext()) {
-
-	    String parameterName = ((NamedObj)parameters.next()).getName();
-
-	    if (parameterName.startsWith("_")) {
-		continue;
-	    }
-
-	    if (parameters.nextIndex() > (parameterNumber - outportNumber)) {
-		parameterForOutport = true;
-      	    }
-
-	    if (parameterString == "") {
-	        parameterString += "real "
-			         + parameterName;
-
-	    } else {
-	        parameterString += ", real "
-			         + parameterName;
-	    }
-
-	    if (parameterForOutport) {
-
-		if (_outPorts.hasNext()) {
-		    String outportName = ((NamedObj)_outPorts.next()).getName();
-		    if (outputString == "") {
-			outputString += "write analog real "
-					 + outportName;
-
-		    } else {
-			outputString += ", "
-					 + outportName;
-		    }
-		    initString += outportName
-				+ " = "
-				+ parameterName
-				+ " ;";
-		}
-	    } else {
-
-	        if (modeParameterString == "") {
-		    modeParameterString += parameterName;
-		    typedModeParameterString += "real "
-					      + parameterName;
-		} else {
-		    modeParameterString += ", "
-					 + parameterName;
-		    typedModeParameterString += ", real "
-					      + parameterName;
-		}
-
-	    }
-
-	}
-
-	if (outputString != "") outputString += ";";
-
-	initString = "init { " + initString + " }";
-
-	modeString = "mode top = "
-		   + actor.getName()
-		   + "TopMode"
-		   + " ( "
-		   + modeParameterString
-		   + " ) ;";
-
-	codeString += " "
-		    + actor.getName()
-		    + " ( "
-		    + parameterString
-		    + " )" + _endLine
-		    + "{" + _endLine
-		    + "  " + outputString + _endLine
-		    + "  " + inputString + _endLine
-		    + "  " + initString + _endLine
-		    + "  " + modeString + _endLine
-		    + "}" + _endLine;
+        _inPorts = actor.inputPortList().iterator();
+        while (_inPorts.hasNext()) {
+            if (inputString == "") {
+                inputString += "read analog real "
+                                 + ((NamedObj)_inPorts.next()).getName();
+            } else {
+                inputString += ", "
+                                 + ((NamedObj)_inPorts.next()).getName();
+            }
+        }
+        if (inputString != "") inputString += ";";
 
 
-	if (FSMDirector.class.isInstance(actor.getDirector())) {
+        _outPorts = actor.outputPortList().iterator();
+        int outportNumber = actor.outputPortList().size();
+
+        // since the parameters are either for mode or for outport,
+        // we assume the number of the parameters for outport is the same
+        // with the number of outport(s)
+        boolean parameterForOutport = false;
+
+        while (parameters.hasNext()) {
+
+            String parameterName = ((NamedObj)parameters.next()).getName();
+
+            if (parameterName.startsWith("_")) {
+                continue;
+            }
+
+            if (parameters.nextIndex() > (parameterNumber - outportNumber)) {
+                parameterForOutport = true;
+                  }
+
+            if (parameterString == "") {
+                parameterString += "real "
+                                 + parameterName;
+
+            } else {
+                parameterString += ", real "
+                                 + parameterName;
+            }
+
+            if (parameterForOutport) {
+
+                if (_outPorts.hasNext()) {
+                    String outportName = ((NamedObj)_outPorts.next()).getName();
+                    if (outputString == "") {
+                        outputString += "write analog real "
+                                         + outportName;
+
+                    } else {
+                        outputString += ", "
+                                         + outportName;
+                    }
+                    initString += outportName
+                                + " = "
+                                + parameterName
+                                + " ;";
+                }
+            } else {
+
+                if (modeParameterString == "") {
+                    modeParameterString += parameterName;
+                    typedModeParameterString += "real "
+                                              + parameterName;
+                } else {
+                    modeParameterString += ", "
+                                         + parameterName;
+                    typedModeParameterString += ", real "
+                                              + parameterName;
+                }
+
+            }
+
+        }
+
+        if (outputString != "") outputString += ";";
+
+        initString = "init { " + initString + " }";
+
+        modeString = "mode top = "
+                   + actor.getName()
+                   + "TopMode"
+                   + " ( "
+                   + modeParameterString
+                   + " ) ;";
+
+        codeString += " "
+                    + actor.getName()
+                    + " ( "
+                    + parameterString
+                    + " )" + _endLine
+                    + "{" + _endLine
+                    + "  " + outputString + _endLine
+                    + "  " + inputString + _endLine
+                    + "  " + initString + _endLine
+                    + "  " + modeString + _endLine
+                    + "}" + _endLine;
 
 
-    	    // mode code generation goes here.
-	    _modeCode += "mode "
-		       + actor.getName()
-		       + "TopMode"
-		       + " ( "
-		       + typedModeParameterString
-		       + " )" + _endLine
-		       + "{" + _endLine
-		       + "  " + outputString + _endLine
-		       + "  " + inputString + _endLine;
-	    // notice the _fsmModeCode(actor) will modify the _modeCode with transitions code
-	    // and return the mode code for each sub mode.(refinement)
-	    String subModeString = _fsmModeCode(((FSMDirector)actor.getDirector()).getController(), inputString, outputString);
-       	    _modeCode +="  " + invariantString + _endLine
-		       + "}" + _endLine
-		       + subModeString;
+        if (FSMDirector.class.isInstance(actor.getDirector())) {
 
-	} else {
-	    flowString = _graphToText(actor);
-	    _modeCode += "mode "
-		       + actor.getName()
-		       + "TopMode"
-		       + " ( "
-		       + typedModeParameterString
-		       + " )" + _endLine
-		       + "{" + _endLine
-		       + "  " + outputString + _endLine
-		       + "  " + inputString + _endLine
-		       + "  " + flowString + _endLine
-		       + "  " + invariantString + _endLine
-		       + "}" + _endLine;
-	}
+
+                // mode code generation goes here.
+            _modeCode += "mode "
+                       + actor.getName()
+                       + "TopMode"
+                       + " ( "
+                       + typedModeParameterString
+                       + " )" + _endLine
+                       + "{" + _endLine
+                       + "  " + outputString + _endLine
+                       + "  " + inputString + _endLine;
+            // notice the _fsmModeCode(actor) will modify the _modeCode with transitions code
+            // and return the mode code for each sub mode.(refinement)
+            String subModeString = _fsmModeCode(((FSMDirector)actor.getDirector()).getController(), inputString, outputString);
+                   _modeCode +="  " + invariantString + _endLine
+                       + "}" + _endLine
+                       + subModeString;
+
+        } else {
+            flowString = _graphToText(actor);
+            _modeCode += "mode "
+                       + actor.getName()
+                       + "TopMode"
+                       + " ( "
+                       + typedModeParameterString
+                       + " )" + _endLine
+                       + "{" + _endLine
+                       + "  " + outputString + _endLine
+                       + "  " + inputString + _endLine
+                       + "  " + flowString + _endLine
+                       + "  " + invariantString + _endLine
+                       + "}" + _endLine;
+        }
 
 
         return codeString;
@@ -701,85 +701,85 @@ public class CharonCodeGenerator extends Attribute {
      */
 
      private String _fsmModeCode(FSMActor fsm, String inputPorts, String outputPorts) throws IllegalActionException {
-	String subModeCode = "";
-	String transitionString = "";
+        String subModeCode = "";
+        String transitionString = "";
 
-	transitionString += "  trans from default to "
-		        + fsm.getInitialState().getName() + _endLine
-			+ "  when ( true ) do { } " + _endLine;
+        transitionString += "  trans from default to "
+                        + fsm.getInitialState().getName() + _endLine
+                        + "  when ( true ) do { } " + _endLine;
 
         ListIterator stateIterator = fsm.entityList().listIterator();
 
-	while (stateIterator.hasNext()) {
-	  State st = (State) stateIterator.next();
+        while (stateIterator.hasNext()) {
+          State st = (State) stateIterator.next();
 
 
-	  if (st.getRefinement() != null) {
-	    Actor[] refinements = st.getRefinement();
-	    CompositeActor refinement = (CompositeActor) refinements[0];
-	    String stParameters = _agentParameters(refinement, false);
-	    String typedStParameters = _agentParameters(refinement, true);
-	    String flowString = "";
-	    String invariantString = "";
+          if (st.getRefinement() != null) {
+            Actor[] refinements = st.getRefinement();
+            CompositeActor refinement = (CompositeActor) refinements[0];
+            String stParameters = _agentParameters(refinement, false);
+            String typedStParameters = _agentParameters(refinement, true);
+            String flowString = "";
+            String invariantString = "";
 
-	    _modeCode += "  mode "
-		       + st.getName() + " = "
-		       + st.getName() + "Mode"
-		       + " ( "
-		       + stParameters
-		       + " );"
-		       + _endLine;
-
-
-
-	    flowString = _graphToText(refinement);
+            _modeCode += "  mode "
+                       + st.getName() + " = "
+                       + st.getName() + "Mode"
+                       + " ( "
+                       + stParameters
+                       + " );"
+                       + _endLine;
 
 
-	    ListIterator assertions = _assertions(refinement).listIterator();
-	    while (assertions.hasNext()) {
-	      Assertion assertion = (Assertion) assertions.next();
-	      if (invariantString.length() == 0) {
-		invariantString = "inv { "
-				+ assertion.assertion.getExpression();
-	      } else {
-		invariantString += " ; "
-				 + assertion.assertion.getExpression();
-	      }
-	      invariantString += " } ";
-	    }
 
-	    subModeCode += "mode "
-		         + st.getName() + "Mode "
-			 + "( "
-			 + typedStParameters
-			 + " )" + _endLine
-			 + "{" + _endLine
-			 + "  " + outputPorts + _endLine
-			 + "  " + inputPorts + _endLine
-			 + "  " + flowString + _endLine
-			 + "  " + invariantString + _endLine
-			 + "}" + _endLine;
+            flowString = _graphToText(refinement);
 
-	    LinkedList transitionList = new LinkedList();
-	    transitionList.addAll(st.preemptiveTransitionList());
-	    transitionList.addAll(st.nonpreemptiveTransitionList());
-	    ListIterator transitionItr = transitionList.listIterator();
-	    while (transitionItr.hasNext()) {
-		Transition tr = (Transition) transitionItr.next();
-		State newState = tr.destinationState();
-		String guardString = tr.getGuardExpression();
-		transitionString += "  trans from "
-			        + st.getName() + " to "
-				+ newState.getName() + _endLine
-				+ "  when ( " + guardString + ") " + _endLine
-				+ "  do {}" + _endLine;
-	    }
-	  }
-	}
 
-	_modeCode += transitionString + _endLine;
+            ListIterator assertions = _assertions(refinement).listIterator();
+            while (assertions.hasNext()) {
+              Assertion assertion = (Assertion) assertions.next();
+              if (invariantString.length() == 0) {
+                invariantString = "inv { "
+                                + assertion.assertion.getExpression();
+              } else {
+                invariantString += " ; "
+                                 + assertion.assertion.getExpression();
+              }
+              invariantString += " } ";
+            }
 
-	return subModeCode;
+            subModeCode += "mode "
+                         + st.getName() + "Mode "
+                         + "( "
+                         + typedStParameters
+                         + " )" + _endLine
+                         + "{" + _endLine
+                         + "  " + outputPorts + _endLine
+                         + "  " + inputPorts + _endLine
+                         + "  " + flowString + _endLine
+                         + "  " + invariantString + _endLine
+                         + "}" + _endLine;
+
+            LinkedList transitionList = new LinkedList();
+            transitionList.addAll(st.preemptiveTransitionList());
+            transitionList.addAll(st.nonpreemptiveTransitionList());
+            ListIterator transitionItr = transitionList.listIterator();
+            while (transitionItr.hasNext()) {
+                Transition tr = (Transition) transitionItr.next();
+                State newState = tr.destinationState();
+                String guardString = tr.getGuardExpression();
+                transitionString += "  trans from "
+                                + st.getName() + " to "
+                                + newState.getName() + _endLine
+                                + "  when ( " + guardString + ") " + _endLine
+                                + "  do {}" + _endLine;
+            }
+          }
+        }
+
+        _modeCode += transitionString + _endLine;
+
+        return subModeCode;
      }
 
     /** Transform the graphic block diagram to text expression.
@@ -790,85 +790,85 @@ public class CharonCodeGenerator extends Attribute {
      */
 
      private String _graphToText(CompositeActor container) throws IllegalActionException {
-	// It is not trivial to transform graph to text.
-	// Here, we assume there is only one Integrator and one expression actor.
+        // It is not trivial to transform graph to text.
+        // Here, we assume there is only one Integrator and one expression actor.
 
-	String txtString = "";
-	LinkedList actors = new LinkedList(container.entityList());
-	ListIterator actorIterator = actors.listIterator();
+        String txtString = "";
+        LinkedList actors = new LinkedList(container.entityList());
+        ListIterator actorIterator = actors.listIterator();
 
-	// we begin with Integrator.
-	AtomicActor beginActor = new AtomicActor();
-	while (actorIterator.hasNext()) {
-	    Actor actor = (Actor) actorIterator.next();
-	    if (Integrator.class.isInstance(actor)) {
-	        beginActor = (AtomicActor) actor;
-		break;
-	    }
-	}
+        // we begin with Integrator.
+        AtomicActor beginActor = new AtomicActor();
+        while (actorIterator.hasNext()) {
+            Actor actor = (Actor) actorIterator.next();
+            if (Integrator.class.isInstance(actor)) {
+                beginActor = (AtomicActor) actor;
+                break;
+            }
+        }
 
-	if (beginActor == null) {
-	    throw new IllegalActionException("Integrator is needed!");
-	} else {
+        if (beginActor == null) {
+            throw new IllegalActionException("Integrator is needed!");
+        } else {
 
-	    // we trace the output of the Integrator
-	    // we assume the output of the integrator is connectted
-	    // to the container output directly and they have same names
-	    // for simplicity at this time.
-	    // FIXME: we really need to reconsider the methods of ports.
-	    List outputs = beginActor.outputPortList();
-	    ListIterator outputIterator = outputs.listIterator();
-	    String outputName = "";
-	    if (outputs.size() != 1) {
-		throw new IllegalActionException("Integrator only have one output!  " + outputs.size());
-	    } else {
-		TypedIOPort output = (TypedIOPort) outputIterator.next();
-		ListIterator sinkIterator = output.connectedPortList().listIterator();
-		while (sinkIterator.hasNext()) {
-		    TypedIOPort sink = (TypedIOPort) sinkIterator.next();
-		    if (sink.isOutput()) {
-		        //FIXME: we need to consider depth in hierarchy
-			//to avoid two outputs connected to same output
-			//of composite actor
-			outputName = sink.getName();
-		    }
-		}
-		txtString += "diff { d("
-			   + outputName
-			   + ") == ";
-	    }
+            // we trace the output of the Integrator
+            // we assume the output of the integrator is connectted
+            // to the container output directly and they have same names
+            // for simplicity at this time.
+            // FIXME: we really need to reconsider the methods of ports.
+            List outputs = beginActor.outputPortList();
+            ListIterator outputIterator = outputs.listIterator();
+            String outputName = "";
+            if (outputs.size() != 1) {
+                throw new IllegalActionException("Integrator only have one output!  " + outputs.size());
+            } else {
+                TypedIOPort output = (TypedIOPort) outputIterator.next();
+                ListIterator sinkIterator = output.connectedPortList().listIterator();
+                while (sinkIterator.hasNext()) {
+                    TypedIOPort sink = (TypedIOPort) sinkIterator.next();
+                    if (sink.isOutput()) {
+                        //FIXME: we need to consider depth in hierarchy
+                        //to avoid two outputs connected to same output
+                        //of composite actor
+                        outputName = sink.getName();
+                    }
+                }
+                txtString += "diff { d("
+                           + outputName
+                           + ") == ";
+            }
 
-	    // we trace the input of the integrator
-	    List inputs = beginActor.inputPortList();
-	    ListIterator inputIterator = inputs.listIterator();
-	    if (inputs.size() != 1) {
-		throw new IllegalActionException("Integrator only have one input!");
-	    } else {
-		TypedIOPort input = (TypedIOPort) inputIterator.next();
-		List sources = input.connectedPortList();
-		if (sources.size() != 1) {
-		    throw new IllegalActionException("There is only one connection to the input!");
-		} else {
-		    TypedIOPort source = (TypedIOPort) sources.get(0);
-		    // if there is just an integrator
-		    if (source.isInput()) {
-			txtString += source.getName() + " ; }" + _endLine;
-		    }
-		    // if there is some expression actor
-		    else {
-			AtomicActor expressionActor = (AtomicActor) source.getContainer();
-			if (Expression.class.isInstance(expressionActor)) {
-			    Parameter expPara = (Parameter) expressionActor.getAttribute("expression");
-			    txtString += expPara.getExpression()
-				       + " ; } " + _endLine;
-			} else {
-			    throw new IllegalActionException("This should be Expression Atomic Actor!");
-			}
-		    }
-		}
-	    }
-	 }
-	return txtString;
+            // we trace the input of the integrator
+            List inputs = beginActor.inputPortList();
+            ListIterator inputIterator = inputs.listIterator();
+            if (inputs.size() != 1) {
+                throw new IllegalActionException("Integrator only have one input!");
+            } else {
+                TypedIOPort input = (TypedIOPort) inputIterator.next();
+                List sources = input.connectedPortList();
+                if (sources.size() != 1) {
+                    throw new IllegalActionException("There is only one connection to the input!");
+                } else {
+                    TypedIOPort source = (TypedIOPort) sources.get(0);
+                    // if there is just an integrator
+                    if (source.isInput()) {
+                        txtString += source.getName() + " ; }" + _endLine;
+                    }
+                    // if there is some expression actor
+                    else {
+                        AtomicActor expressionActor = (AtomicActor) source.getContainer();
+                        if (Expression.class.isInstance(expressionActor)) {
+                            Parameter expPara = (Parameter) expressionActor.getAttribute("expression");
+                            txtString += expPara.getExpression()
+                                       + " ; } " + _endLine;
+                        } else {
+                            throw new IllegalActionException("This should be Expression Atomic Actor!");
+                        }
+                    }
+                }
+            }
+         }
+        return txtString;
      }
 
     ///////////////////////////////////////////////////////////////////

@@ -67,10 +67,10 @@ public class ConstVariableRate extends Const {
     public ConstVariableRate(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	Parameter tokenProductionRate =
-	    new Parameter(output, "tokenProductionRate",
+        Parameter tokenProductionRate =
+            new Parameter(output, "tokenProductionRate",
                     new IntToken(1));
-    	rate = new Parameter(this, "rate", new IntToken(1));
+            rate = new Parameter(this, "rate", new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,19 +94,19 @@ public class ConstVariableRate extends Const {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if (attribute == rate) {
-	    _productionRate =
-		((IntToken)rate.getToken()).intValue();
-	    if(_productionRate < 0) throw new IllegalActionException(
+        if (attribute == rate) {
+            _productionRate =
+                ((IntToken)rate.getToken()).intValue();
+            if(_productionRate < 0) throw new IllegalActionException(
                 "Rate must be >= 0");
-	    Parameter tokenProductionRate =
-		(Parameter)output.getAttribute("tokenProductionRate");
-	    tokenProductionRate.setToken(new IntToken(_productionRate));
-	    Director dir = getDirector();
+            Parameter tokenProductionRate =
+                (Parameter)output.getAttribute("tokenProductionRate");
+            tokenProductionRate.setToken(new IntToken(_productionRate));
+            Director dir = getDirector();
             if (dir != null) {
                 dir.invalidateSchedule();
             }
-	} else {
+        } else {
             super.attributeChanged(attribute);
         }
     }
@@ -120,9 +120,9 @@ public class ConstVariableRate extends Const {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         ConstVariableRate newObject =
-	    (ConstVariableRate)super.clone(workspace);
+            (ConstVariableRate)super.clone(workspace);
         return newObject;
     }
 
@@ -132,9 +132,9 @@ public class ConstVariableRate extends Const {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	for (int i = 1; i < _productionRate; i++) {
-	    output.send(0, value.getToken());
-	}
+        for (int i = 1; i < _productionRate; i++) {
+            output.send(0, value.getToken());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

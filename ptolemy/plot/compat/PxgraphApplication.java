@@ -130,7 +130,7 @@ public class PxgraphApplication extends PlotApplication {
                 "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
                 "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version " + PlotBox.PTPLOT_RELEASE +
-	        ", Build: $Id$\n\n"+
+                ", Build: $Id$\n\n"+
                 "For help, type 'pxgraph -help', or see \n" +
                 "the class documentation in the plot.compat package.\n" +
                 "For more information, see\n" +

@@ -50,7 +50,7 @@ public class TestConstant implements InequalityTerm {
      *  @param value A String
      */
     public TestConstant(String value) {
-	_value = value;
+        _value = value;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ public class TestConstant implements InequalityTerm {
      *  @return A String
      */
     public Object getAssociatedObject() {
-	return _value;
+        return _value;
     }
 
     /** Return the information of this term. The information is a
@@ -79,21 +79,21 @@ public class TestConstant implements InequalityTerm {
      *  @return a String
      */
     public Object getValue() {
-	return _value;
+        return _value;
     }
 
     /** Return an array of size zero.
      *  @return an array of InequalityTerms
      */
     public InequalityTerm[] getVariables() {
-	return new InequalityTerm[0];
+        return new InequalityTerm[0];
     }
 
     /** Return false.
      *  @return false
      */
     public boolean isSettable() {
-	return false;
+        return false;
     }
 
     /** Throw an Exception.
@@ -101,9 +101,9 @@ public class TestConstant implements InequalityTerm {
      *   constant.
      */
     public void initialize(Object e)
-	    throws IllegalActionException {
-	throw new IllegalActionException("TestConstant.initialize: This term "
-		+ "is a constant.");
+            throws IllegalActionException {
+        throw new IllegalActionException("TestConstant.initialize: This term "
+                + "is a constant.");
     }
 
     /** Check whether the current value of this term is acceptable,
@@ -133,8 +133,8 @@ public class TestConstant implements InequalityTerm {
      */
     public void setValue(Object e)
             throws IllegalActionException {
-	throw new IllegalActionException("TestConstant.setValue: This term " +
-		"is a constant.");
+        throw new IllegalActionException("TestConstant.setValue: This term " +
+                "is a constant.");
     }
 
     /** Override the base class to describe the constant.

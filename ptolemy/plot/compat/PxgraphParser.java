@@ -825,7 +825,7 @@ public class PxgraphParser {
             boolean connected = false;
             byte input[] = new byte[4];
 
-	    if (_connected) connected = true;
+            if (_connected) connected = true;
             switch (_endian) {
             case _NATIVE_ENDIAN:
                 try {
@@ -845,10 +845,10 @@ public class PxgraphParser {
             }
 
             try {
-		// Flag that we are starting a new data set.
-		_firstInSet = true;
-		// Flag that we have not seen a DataSet line in this file.
-		_sawFirstDataset = false;
+                // Flag that we are starting a new data set.
+                _firstInSet = true;
+                // Flag that we have not seen a DataSet line in this file.
+                _sawFirstDataset = false;
 
 
                 c = in.readByte();
@@ -873,10 +873,10 @@ public class PxgraphParser {
 
                     x = Float.intBitsToFloat(bits);
                     y = in.readFloat();
-		    // _addLegendIfNecessary might increment _currentdataset
-		    connected = _addLegendIfNecessary(connected);
+                    // _addLegendIfNecessary might increment _currentdataset
+                    connected = _addLegendIfNecessary(connected);
                     _plot.addPoint(_currentdataset, x, y, connected);
-		    if (_connected) connected = true;
+                    if (_connected) connected = true;
 
 
                     while (true) {
@@ -884,7 +884,7 @@ public class PxgraphParser {
                         y = in.readFloat();
                         connected = _addLegendIfNecessary(connected);
                         _plot.addPoint(_currentdataset, x, y, connected);
-			if (_connected) connected = true;
+                        if (_connected) connected = true;
                     }
                 } else {
                     // Assume that the data is in the pxgraph binary format.
@@ -920,15 +920,15 @@ public class PxgraphParser {
                             }
                             pointCount++;
                             connected = _addLegendIfNecessary(connected);
-			    _plot.addPoint(_currentdataset, x, y, connected);
-			    if (_connected) connected = true;
+                            _plot.addPoint(_currentdataset, x, y, connected);
+                            if (_connected) connected = true;
                             break;
                         case 'e':
                             // End of set name.
                             connected = false;
                             break;
                         case 'n':
-			    _firstInSet = true;
+                            _firstInSet = true;
                             _sawFirstDataset = true;
                             StringBuffer datasetname = new StringBuffer();
                             _currentdataset++;
@@ -983,7 +983,7 @@ public class PxgraphParser {
             _sawFirstDataset = true;
             _currentdataset++;
         }
-	if (_plot.getLegend(_currentdataset) == null) {
+        if (_plot.getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
             _firstInSet = true;

@@ -76,10 +76,10 @@ public class CSPMultiSource extends CSPActor {
      *   name coincides with a port already in this actor.
      */
     public CSPMultiSource() throws
-    	    IllegalActionException, NameDuplicationException {
+                IllegalActionException, NameDuplicationException {
         super();
         tokenLimit = new Parameter( this, "tokenLimit",
-        	(new IntToken(-1)) );
+                (new IntToken(-1)) );
     }
 
     /** Construct a CSPMultiSource with the specified container and
@@ -101,14 +101,14 @@ public class CSPMultiSource extends CSPActor {
      *   in this actor.
      */
     public CSPMultiSource(TypedCompositeActor container, String name,
-    	    int limit) throws IllegalActionException,
+                int limit) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-	output.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.INT);
         tokenLimit = new Parameter( this, "tokenLimit",
-        	(new IntToken(limit)) );
+                (new IntToken(limit)) );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -181,9 +181,9 @@ public class CSPMultiSource extends CSPActor {
             }
         } catch (IllegalActionException ex) {
             throw new TerminateProcessException(getName() + ": could not " +
-		    "create all branches for CDO.");
+                    "create all branches for CDO.");
         }
-	return;
+        return;
     }
 
     /** Return false indicating that iteration of this actor should

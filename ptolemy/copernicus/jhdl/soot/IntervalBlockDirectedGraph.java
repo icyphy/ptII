@@ -72,28 +72,28 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * object from an IntervalChain object.
      **/
     public IntervalBlockDirectedGraph(IntervalChain ic)
-	throws JHDLUnsupportedException, SootASTException {
+        throws JHDLUnsupportedException, SootASTException {
 
-	// Create DFG from the Block object associated with the root
-	// Node of the given IntervalChain
-	super(ic.getRootBlock());
-	new ControlSootDFGBuilder(this);
+        // Create DFG from the Block object associated with the root
+        // Node of the given IntervalChain
+        super(ic.getRootBlock());
+        new ControlSootDFGBuilder(this);
 
-	_ic = ic;
+        _ic = ic;
 
-	if (DEBUG)
-	    System.out.println(toShortString()+":Creating IDFG");
+        if (DEBUG)
+            System.out.println(toShortString()+":Creating IDFG");
 
-	_processChain();
+        _processChain();
 
-	if (DEBUG)
-	    System.out.println(toShortString()+":Completed IDFG");
+        if (DEBUG)
+            System.out.println(toShortString()+":Completed IDFG");
 
-	if (DEBUG) {
-	    String filename = new String(toShortString()+"graph");
-	    PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
+        if (DEBUG) {
+            String filename = new String(toShortString()+"graph");
+            PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
             dgToDotty.writeDotFile(".",filename,this);
-	}
+        }
 
     }
 
@@ -102,38 +102,38 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * object from a SootMethod.
      **/
     public IntervalBlockDirectedGraph(SootMethod method)
-	throws JHDLUnsupportedException, SootASTException,
-	       IllegalActionException {
-	this(new IntervalChain(method));
+        throws JHDLUnsupportedException, SootASTException,
+               IllegalActionException {
+        this(new IntervalChain(method));
     }
 
     protected void _processChain()
-	throws JHDLUnsupportedException, SootASTException {
+        throws JHDLUnsupportedException, SootASTException {
 
-	// 1. Create graph for next inverval in chain if there is one.
-	//    (This algorithm works bottom up so that all required
-	//     definitions downstream are known before upstream
-	//     DFGs are constructed).
-	IntervalChain nextChain = _ic.getNext();
-	if (nextChain != null) {
-	    _next = new IntervalBlockDirectedGraph(nextChain);
-	} else {
-	    _next = null;
-	}
+        // 1. Create graph for next inverval in chain if there is one.
+        //    (This algorithm works bottom up so that all required
+        //     definitions downstream are known before upstream
+        //     DFGs are constructed).
+        IntervalChain nextChain = _ic.getNext();
+        if (nextChain != null) {
+            _next = new IntervalBlockDirectedGraph(nextChain);
+        } else {
+            _next = null;
+        }
 
-	// 2. Merge Children Nodes
-	if (_ic.isSimpleMerge())
-	    _simpleMerge();
-	else if (_ic.isSpecialMerge()) {
-	    _specialMerge();
-	}
-	// else it is a chain that doesn't need merging
+        // 2. Merge Children Nodes
+        if (_ic.isSimpleMerge())
+            _simpleMerge();
+        else if (_ic.isSpecialMerge()) {
+            _specialMerge();
+        }
+        // else it is a chain that doesn't need merging
 
 
-	// 3. Connect previously created chain to this node
-	if (_next != null) {
-  	    _valueMap.mergeSerial(_next._valueMap);
-	}
+        // 3. Connect previously created chain to this node
+        if (_next != null) {
+              _valueMap.mergeSerial(_next._valueMap);
+        }
 
     }
 
@@ -142,70 +142,70 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * construct.
      **/
     protected void _simpleMerge()
-	throws JHDLUnsupportedException, SootASTException {
+        throws JHDLUnsupportedException, SootASTException {
 
-	if (DEBUG)
-	    System.out.println(toShortString()+":Merge children");
+        if (DEBUG)
+            System.out.println(toShortString()+":Merge children");
 
-	// key=IntervalChain root Node, Value=IntervalChain
-	Map children = _ic.getChildren();
+        // key=IntervalChain root Node, Value=IntervalChain
+        Map children = _ic.getChildren();
 
-	// Iterate over the children:
-	// - merge the child
-	// - save the ValueMap for the control path
-	// key=IntervalBlockDirectedGraph, Value=ValueMap
-	HashMap childrenValueMaps = new HashMap(children.size());
-	Iterator i = children.values().iterator();i.hasNext();
-	ValueMap initialValueMap = (ValueMap) _valueMap.clone();
-	while (i.hasNext()) {
-	    IntervalChain childInterval = (IntervalChain) i.next();
-	    // Create a new dfg for child
-	    IntervalBlockDirectedGraph childDFG =
-		new IntervalBlockDirectedGraph(childInterval);
-	    ValueMap valueMapCopy = (ValueMap) _valueMap.clone();
-//    	    System.out.println("_valueMap=\n"+_valueMap);
-//    	    System.out.println("valueMapCopy=\n"+valueMapCopy);
-	    valueMapCopy.mergeSerial(childDFG._valueMap);
-//    	    System.out.println("_valueMap=\n"+_valueMap);
-//    	    System.out.println("valueMapCopy=\n"+valueMapCopy);
-	    childrenValueMaps.put(childDFG,valueMapCopy);
-	}
+        // Iterate over the children:
+        // - merge the child
+        // - save the ValueMap for the control path
+        // key=IntervalBlockDirectedGraph, Value=ValueMap
+        HashMap childrenValueMaps = new HashMap(children.size());
+        Iterator i = children.values().iterator();i.hasNext();
+        ValueMap initialValueMap = (ValueMap) _valueMap.clone();
+        while (i.hasNext()) {
+            IntervalChain childInterval = (IntervalChain) i.next();
+            // Create a new dfg for child
+            IntervalBlockDirectedGraph childDFG =
+                new IntervalBlockDirectedGraph(childInterval);
+            ValueMap valueMapCopy = (ValueMap) _valueMap.clone();
+//                System.out.println("_valueMap=\n"+_valueMap);
+//                System.out.println("valueMapCopy=\n"+valueMapCopy);
+            valueMapCopy.mergeSerial(childDFG._valueMap);
+//                System.out.println("_valueMap=\n"+_valueMap);
+//                System.out.println("valueMapCopy=\n"+valueMapCopy);
+            childrenValueMaps.put(childDFG,valueMapCopy);
+        }
 
-	Iterator childMapIterator = childrenValueMaps.values().iterator();
- 	Iterator childDFGs = childrenValueMaps.keySet().iterator();
-	int numChildren = children.values().size();
+        Iterator childMapIterator = childrenValueMaps.values().iterator();
+         Iterator childDFGs = childrenValueMaps.keySet().iterator();
+        int numChildren = children.values().size();
 
-	if (numChildren == 1) {
-	    // merge root w/child
- 	    ValueMap childMap = (ValueMap) childMapIterator.next();
- 	    IntervalBlockDirectedGraph childDFG =
- 		(IntervalBlockDirectedGraph) childDFGs.next();
-	    joinOneChild(childDFG,childMap);
- 	} else if (numChildren == 2) {
-	    // merge two children
-	    ValueMap childMap1 = (ValueMap) childMapIterator.next();
-	    ValueMap childMap2 = (ValueMap) childMapIterator.next();
- 	    IntervalBlockDirectedGraph child1DFG =
- 		(IntervalBlockDirectedGraph) childDFGs.next();
- 	    IntervalBlockDirectedGraph child2DFG =
- 		(IntervalBlockDirectedGraph) childDFGs.next();
-	    joinTwoChildren(childMap1,child1DFG,
-			    childMap2,child2DFG);
-	} else {
-	    // A switch.
-	    throw new JHDLUnsupportedException("Switches not yet supported");
-	    // merge switch targets
-	}
+        if (numChildren == 1) {
+            // merge root w/child
+             ValueMap childMap = (ValueMap) childMapIterator.next();
+             IntervalBlockDirectedGraph childDFG =
+                 (IntervalBlockDirectedGraph) childDFGs.next();
+            joinOneChild(childDFG,childMap);
+         } else if (numChildren == 2) {
+            // merge two children
+            ValueMap childMap1 = (ValueMap) childMapIterator.next();
+            ValueMap childMap2 = (ValueMap) childMapIterator.next();
+             IntervalBlockDirectedGraph child1DFG =
+                 (IntervalBlockDirectedGraph) childDFGs.next();
+             IntervalBlockDirectedGraph child2DFG =
+                 (IntervalBlockDirectedGraph) childDFGs.next();
+            joinTwoChildren(childMap1,child1DFG,
+                            childMap2,child2DFG);
+        } else {
+            // A switch.
+            throw new JHDLUnsupportedException("Switches not yet supported");
+            // merge switch targets
+        }
     }
 
     public void _specialMerge() throws JHDLUnsupportedException {
-	throw new JHDLUnsupportedException("Special Nodes not yet supported");
+        throw new JHDLUnsupportedException("Special Nodes not yet supported");
     }
 
     public IntervalChain getIntervalChain() { return _ic; }
 
     public String toBriefString() {
-	return _ic.toShortString();
+        return _ic.toShortString();
     }
 
     /**
@@ -231,175 +231,175 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      *     be childDFG._valueMap since it isn't in graph)
      **/
     public void joinOneChild(IntervalBlockDirectedGraph childDFG,
-			     ValueMap childMap) {
+                             ValueMap childMap) {
 
-	if (DEBUG) System.out.println("Merge single fork "+
-				      childDFG.toShortString()+
-				      " with parent "+toShortString());
-	// Determine which branch is true
-	boolean childTrue;
-	if (childDFG._ic.isTrueBranch())
-	    childTrue = true;
- 	else
-	    childTrue = false;
+        if (DEBUG) System.out.println("Merge single fork "+
+                                      childDFG.toShortString()+
+                                      " with parent "+toShortString());
+        // Determine which branch is true
+        boolean childTrue;
+        if (childDFG._ic.isTrueBranch())
+            childTrue = true;
+         else
+            childTrue = false;
 
-	// Determine Values assigned in parent
-	Collection parentAssignedValues = _valueMap.getAssignedValues();
-	if (DEBUG) {
-	    System.out.print("\tParent assigned values=");
-	    printAssignedValues(parentAssignedValues);
-	}
+        // Determine Values assigned in parent
+        Collection parentAssignedValues = _valueMap.getAssignedValues();
+        if (DEBUG) {
+            System.out.print("\tParent assigned values=");
+            printAssignedValues(parentAssignedValues);
+        }
 
-	// Determine Values assigned in child
-	Collection childAssignedNodes = childDFG._valueMap.getAssignedNodes();
-	if (DEBUG) {
-	    System.out.print("\tChildren assigned values=");
-	    printAssignedValues(childDFG._valueMap.getAssignedValues());
-	    System.out.print("\tChildren assigned Nodes=");
-	    for (Iterator i=childAssignedNodes.iterator();i.hasNext();) {
-		Node n = (Node) i.next();
-		System.out.print(n+" ");
-	    }
-	    System.out.println();
-	}
+        // Determine Values assigned in child
+        Collection childAssignedNodes = childDFG._valueMap.getAssignedNodes();
+        if (DEBUG) {
+            System.out.print("\tChildren assigned values=");
+            printAssignedValues(childDFG._valueMap.getAssignedValues());
+            System.out.print("\tChildren assigned Nodes=");
+            for (Iterator i=childAssignedNodes.iterator();i.hasNext();) {
+                Node n = (Node) i.next();
+                System.out.print(n+" ");
+            }
+            System.out.println();
+        }
 
-	// Iterate over all Nodes assigned in child.
-	// If the value is also assigned in the parent,
-	// multiplex the two nodes
-	for (Iterator i=childAssignedNodes.iterator();i.hasNext();) {
-	    Node childNode = (Node) i.next();
-	    Value nodeValue = (Value) childNode.getWeight();
-	    if (parentAssignedValues.contains(nodeValue)) {
-		Node rootNode = _valueMap.getValueNode(nodeValue);
-		Node childMergeNode = childMap.getValueNode(nodeValue);
-		if (childTrue)
-		    _multiplexTwoNodes(childMergeNode,rootNode,childMap);
-		else
-		    _multiplexTwoNodes(rootNode,childMergeNode,childMap);
-	    }
- 	}
-	_valueMap = childMap;
+        // Iterate over all Nodes assigned in child.
+        // If the value is also assigned in the parent,
+        // multiplex the two nodes
+        for (Iterator i=childAssignedNodes.iterator();i.hasNext();) {
+            Node childNode = (Node) i.next();
+            Value nodeValue = (Value) childNode.getWeight();
+            if (parentAssignedValues.contains(nodeValue)) {
+                Node rootNode = _valueMap.getValueNode(nodeValue);
+                Node childMergeNode = childMap.getValueNode(nodeValue);
+                if (childTrue)
+                    _multiplexTwoNodes(childMergeNode,rootNode,childMap);
+                else
+                    _multiplexTwoNodes(rootNode,childMergeNode,childMap);
+            }
+         }
+        _valueMap = childMap;
     }
 
     public void joinTwoChildren(ValueMap child1Map,
-				IntervalBlockDirectedGraph child1DFG,
-				ValueMap child2Map,
-				IntervalBlockDirectedGraph child2DFG) {
+                                IntervalBlockDirectedGraph child1DFG,
+                                ValueMap child2Map,
+                                IntervalBlockDirectedGraph child2DFG) {
 
-	if (DEBUG) System.out.println("Merge dual forks "+
-				      child1DFG.toShortString()+" and "+
-				      child2DFG.toShortString()+
-				      " with parent "+toShortString());
+        if (DEBUG) System.out.println("Merge dual forks "+
+                                      child1DFG.toShortString()+" and "+
+                                      child2DFG.toShortString()+
+                                      " with parent "+toShortString());
 
 
-	// Determine which branch is true
-	boolean child1True;
-	if (child1DFG._ic.isTrueBranch())
-	    child1True = true;
- 	else
-	    child1True = false;
+        // Determine which branch is true
+        boolean child1True;
+        if (child1DFG._ic.isTrueBranch())
+            child1True = true;
+         else
+            child1True = false;
 
-	// Determine Values assigned in parent
-	Collection parentAssignedValues = _valueMap.getAssignedValues();
-	if (DEBUG) {
-	    System.out.print("Parent assigned values=");
-	    printAssignedValues(parentAssignedValues);
-	}
+        // Determine Values assigned in parent
+        Collection parentAssignedValues = _valueMap.getAssignedValues();
+        if (DEBUG) {
+            System.out.print("Parent assigned values=");
+            printAssignedValues(parentAssignedValues);
+        }
 
-	// Determine Values assigned in each child
-	// (not including those assigned in parent)
-	Collection child1AssignedValues =
-	    child1DFG._valueMap.getAssignedValues();
-	Collection child2AssignedValues =
-	    child2DFG._valueMap.getAssignedValues();
+        // Determine Values assigned in each child
+        // (not including those assigned in parent)
+        Collection child1AssignedValues =
+            child1DFG._valueMap.getAssignedValues();
+        Collection child2AssignedValues =
+            child2DFG._valueMap.getAssignedValues();
 
-	// Iterate over all assignment Nodes in child1
-	for (Iterator i=child1DFG._valueMap.getAssignedNodes().iterator();
-	     i.hasNext();) {
-	    Node childNode = (Node) i.next();
-	    Value nodeValue = (Value) childNode.getWeight();
-	    if (child2AssignedValues.contains(nodeValue)) {
-		Node child2Node = child2Map.getValueNode(nodeValue);
-		Node child1MergeNode = child1Map.getValueNode(nodeValue);
-		if (child1True)
-		    _multiplexTwoNodes(child1MergeNode,child2Node,child1Map);
-		else
-		    _multiplexTwoNodes(child2Node,child1MergeNode,child1Map);
-	    } else if (parentAssignedValues.contains(nodeValue)) {
-		Node rootNode = _valueMap.getValueNode(nodeValue);
-		Node child1MergeNode = child1Map.getValueNode(nodeValue);
-		if (child1True)
-		    _multiplexTwoNodes(child1MergeNode,rootNode,child1Map);
-		else
-		    _multiplexTwoNodes(rootNode,child1MergeNode,child1Map);
-	    }
- 	}
+        // Iterate over all assignment Nodes in child1
+        for (Iterator i=child1DFG._valueMap.getAssignedNodes().iterator();
+             i.hasNext();) {
+            Node childNode = (Node) i.next();
+            Value nodeValue = (Value) childNode.getWeight();
+            if (child2AssignedValues.contains(nodeValue)) {
+                Node child2Node = child2Map.getValueNode(nodeValue);
+                Node child1MergeNode = child1Map.getValueNode(nodeValue);
+                if (child1True)
+                    _multiplexTwoNodes(child1MergeNode,child2Node,child1Map);
+                else
+                    _multiplexTwoNodes(child2Node,child1MergeNode,child1Map);
+            } else if (parentAssignedValues.contains(nodeValue)) {
+                Node rootNode = _valueMap.getValueNode(nodeValue);
+                Node child1MergeNode = child1Map.getValueNode(nodeValue);
+                if (child1True)
+                    _multiplexTwoNodes(child1MergeNode,rootNode,child1Map);
+                else
+                    _multiplexTwoNodes(rootNode,child1MergeNode,child1Map);
+            }
+         }
 
-	// Iterate over all assignment Nodes in child2
-	for (Iterator i=child2DFG._valueMap.getAssignedNodes().iterator();
-	     i.hasNext();) {
-	    Node childNode = (Node) i.next();
-	    Value nodeValue = (Value) childNode.getWeight();
+        // Iterate over all assignment Nodes in child2
+        for (Iterator i=child2DFG._valueMap.getAssignedNodes().iterator();
+             i.hasNext();) {
+            Node childNode = (Node) i.next();
+            Value nodeValue = (Value) childNode.getWeight();
 
-	    // If the value also exists in child1, it has been
-	    // processed. Continue.
+            // If the value also exists in child1, it has been
+            // processed. Continue.
 
-	    if (child1AssignedValues.contains(nodeValue))
-		continue;
+            if (child1AssignedValues.contains(nodeValue))
+                continue;
 
-	    // This is the case when the value is defined in child2
-	    // and in the root, but not in child1
-	    if (parentAssignedValues.contains(nodeValue)) {
-		Node rootNode = _valueMap.getValueNode(nodeValue);
-		Node child2MergeNode = child2Map.getValueNode(nodeValue);
+            // This is the case when the value is defined in child2
+            // and in the root, but not in child1
+            if (parentAssignedValues.contains(nodeValue)) {
+                Node rootNode = _valueMap.getValueNode(nodeValue);
+                Node child2MergeNode = child2Map.getValueNode(nodeValue);
 
-		if (!child1True)
-		    _multiplexTwoNodes(child2MergeNode,rootNode,child2Map);
-		else
-		    _multiplexTwoNodes(rootNode,child2MergeNode,child2Map);
-	    }
- 	}
+                if (!child1True)
+                    _multiplexTwoNodes(child2MergeNode,rootNode,child2Map);
+                else
+                    _multiplexTwoNodes(rootNode,child2MergeNode,child2Map);
+            }
+         }
 
-	// Merge Value Maps!
-	_valueMap.updateMap();
+        // Merge Value Maps!
+        _valueMap.updateMap();
 
     }
 
     protected void printAssignedValues(Collection values) {
-	for (Iterator i=values.iterator();i.hasNext();) {
-	    Value v = (Value) i.next();
-	    System.out.print(v+"("+System.identityHashCode(v)+") ");
-	}
-	System.out.println();
+        for (Iterator i=values.iterator();i.hasNext();) {
+            Value v = (Value) i.next();
+            System.out.print(v+"("+System.identityHashCode(v)+") ");
+        }
+        System.out.println();
     }
 
     protected Node _multiplexTwoNodes(Node trueNode,
-				      Node falseNode,
-				      ValueMap map) {
+                                      Node falseNode,
+                                      ValueMap map) {
 
-	if (DEBUG)
-	    System.out.println("\tMultiplex: True="+
-			       trueNode+"("+System.identityHashCode(trueNode)
-			       +")"+
-			       " False="+falseNode+"("+
-			       System.identityHashCode(trueNode)+")");
+        if (DEBUG)
+            System.out.println("\tMultiplex: True="+
+                               trueNode+"("+System.identityHashCode(trueNode)
+                               +")"+
+                               " False="+falseNode+"("+
+                               System.identityHashCode(trueNode)+")");
 
-	// Get the edges associated with the original CFG.
-	Node cNode = getConditionNode();
+        // Get the edges associated with the original CFG.
+        Node cNode = getConditionNode();
 
-	Value value = (Value) trueNode.getWeight();
- 	BinaryMux bmn = new BinaryMux(value.toString());
+        Value value = (Value) trueNode.getWeight();
+         BinaryMux bmn = new BinaryMux(value.toString());
 
-	Node muxNode = addNodeWeight(bmn);
+        Node muxNode = addNodeWeight(bmn);
 
- 	addEdge(trueNode,muxNode,BinaryMux.TRUE_LABEL);
-	addEdge(falseNode,muxNode,BinaryMux.FALSE_LABEL);
-	addEdge(cNode,muxNode,BinaryMux.CONDITION_LABEL);
+         addEdge(trueNode,muxNode,BinaryMux.TRUE_LABEL);
+        addEdge(falseNode,muxNode,BinaryMux.FALSE_LABEL);
+        addEdge(cNode,muxNode,BinaryMux.CONDITION_LABEL);
 
-  	Node newNode = map.addValueNode(value);
-	addEdge(muxNode,newNode);
+          Node newNode = map.addValueNode(value);
+        addEdge(muxNode,newNode);
 
-	return newNode;
+        return newNode;
     }
 
 
@@ -408,9 +408,9 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * Return the Node associated with the Condition of the IfStmt.
      **/
     public Node getConditionNode() {
-	IfStmt ifs = getIfStmt();
-	Value v = ifs.getCondition();
-	return _valueMap.getValueNode(v);
+        IfStmt ifs = getIfStmt();
+        Value v = ifs.getCondition();
+        return _valueMap.getValueNode(v);
     }
 
     /**
@@ -420,17 +420,17 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * null.
      **/
     public IfStmt getIfStmt() {
-	Node root = _ic.getRoot();
-	Block b = (Block) root.getWeight();
-	Unit u = b.getTail();
-	if (u instanceof IfStmt)
-	    return (IfStmt) u;
-	else
-	    return null;
+        Node root = _ic.getRoot();
+        Block b = (Block) root.getWeight();
+        Unit u = b.getTail();
+        if (u instanceof IfStmt)
+            return (IfStmt) u;
+        else
+            return null;
     }
 
     public String toShortString() {
-	return _ic.toShortString();
+        return _ic.toShortString();
     }
 
     /**
@@ -449,49 +449,49 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * TODO: modify this method to use the SootMethod constructor
      **/
     public static IntervalBlockDirectedGraph createIntervalBlockDirectedGraph(String args[],boolean writeGraphs)
-	throws JHDLUnsupportedException {
-	IntervalChain ic = IntervalChain.createIntervalChain(args,writeGraphs);
-	IntervalBlockDirectedGraph ibdg=null;
-	try {
-	    ibdg = new IntervalBlockDirectedGraph(ic);
-	} catch (SootASTException e) {
-	    System.err.println(e);
-	    System.exit(1);
-	}
-	if (writeGraphs) {
-	    PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
+        throws JHDLUnsupportedException {
+        IntervalChain ic = IntervalChain.createIntervalChain(args,writeGraphs);
+        IntervalBlockDirectedGraph ibdg=null;
+        try {
+            ibdg = new IntervalBlockDirectedGraph(ic);
+        } catch (SootASTException e) {
+            System.err.println(e);
+            System.exit(1);
+        }
+        if (writeGraphs) {
+            PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
             dgToDotty.writeDotFile(".", "merge",ibdg);
         }
-	return ibdg;
+        return ibdg;
     }
 
     public static boolean DEBUG=false;
 
     public static void main(String args[]) {
 
-	SootBlockDirectedGraph graphs[] =
-	    ControlSootDFGBuilder.createDataFlowGraphs(args,true);
-	/*
-	for (int i = 0; i<graphs.length;i++) {
-	    System.out.print("Assigned Nodes for Graph "+i);
-	    for (Iterator j =
-		     graphs[i].getValueMap().assignedNodes().iterator();
-		 j.hasNext();) {
-		Object o = j.next();
-		System.out.print(" "+o);
-	    }
-	    System.out.println();
-	}
-	*/
+        SootBlockDirectedGraph graphs[] =
+            ControlSootDFGBuilder.createDataFlowGraphs(args,true);
+        /*
+        for (int i = 0; i<graphs.length;i++) {
+            System.out.print("Assigned Nodes for Graph "+i);
+            for (Iterator j =
+                     graphs[i].getValueMap().assignedNodes().iterator();
+                 j.hasNext();) {
+                Object o = j.next();
+                System.out.print(" "+o);
+            }
+            System.out.println();
+        }
+        */
 
-	//BlockDataFlowGraph.DEBUG=true;
-	IntervalBlockDirectedGraph im = null;
-	try {
-	    im = createIntervalBlockDirectedGraph(args,true);
-	} catch (JHDLUnsupportedException e) {
-	    e.printStackTrace();
-	    System.exit(1);
-	}
+        //BlockDataFlowGraph.DEBUG=true;
+        IntervalBlockDirectedGraph im = null;
+        try {
+            im = createIntervalBlockDirectedGraph(args,true);
+        } catch (JHDLUnsupportedException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
 
     }
 

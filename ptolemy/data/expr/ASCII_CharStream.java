@@ -145,7 +145,7 @@ public final class ASCII_CharStream
         // leak?
         try {
             // System.out.println("ASCI_CharStream.ReInit(): closing "
-            //		   + inputStream);
+            //                   + inputStream);
             inputStream.close();
         } catch (Exception ex) {
             throw new RuntimeException("ASCII_CharStream: close failed? "

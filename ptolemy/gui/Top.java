@@ -192,14 +192,14 @@ public abstract class Top extends JFrame {
     }
 
     /** Report a Throwable, which is usually an Exception but can also
-     *	be an Error.  This displays a message in a dialog by
+     *        be an Error.  This displays a message in a dialog by
      *  calling the two-argument version with an empty string as the
      *  first argument.
      *  @param throwable The Throwable to report
      *  @see #report(String, Throwable)
      */
     public void report(Throwable throwable) {
-	report("", throwable);
+        report("", throwable);
     }
 
     /** Report a message to the user by displaying it in a status bar,
@@ -213,7 +213,7 @@ public abstract class Top extends JFrame {
     }
 
     /** Report a Throwable, which is usually an Exception but can also
-     *	be an Error.
+     *        be an Error.
      *  This pops up a window with the option of examining the stack
      *  trace, and reports the specified message in the status bar, if
      *  there is one.
@@ -222,8 +222,8 @@ public abstract class Top extends JFrame {
      */
     public void report(String message, Throwable throwable) {
         if (_statusBar != null) {
-	    _statusBar.setMessage(MessageHandler.shortDescription(throwable)
-				  + ". " + message);
+            _statusBar.setMessage(MessageHandler.shortDescription(throwable)
+                                  + ". " + message);
         }
         MessageHandler.error(message, throwable);
     }
@@ -294,13 +294,13 @@ public abstract class Top extends JFrame {
             _fileMenuItems[5].setAccelerator(
                     KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
             // Print button disabled by default, unless this class implements
-	    // one of the JDK1.2 printing interfaces.
+            // one of the JDK1.2 printing interfaces.
             if (this instanceof Printable ||
                     this instanceof Pageable) {
-		_fileMenuItems[5].setEnabled(true);
-	    } else {
-		_fileMenuItems[5].setEnabled(false);
-	    }
+                _fileMenuItems[5].setEnabled(true);
+            } else {
+                _fileMenuItems[5].setEnabled(false);
+            }
 
             // Close button = ctrl-w.
             _fileMenuItems[6].setAccelerator(
@@ -346,7 +346,7 @@ public abstract class Top extends JFrame {
                 getContentPane().add(_statusBar, BorderLayout.SOUTH);
             }
         }
-	super.pack();
+        super.pack();
         if (_centering) {
             centerOnScreen();
         }
@@ -481,9 +481,9 @@ public abstract class Top extends JFrame {
      */
     protected void _open() {
         JFileChooser fileDialog = new JFileChooser();
-	if (_fileFilter != null) {
-	    fileDialog.addChoosableFileFilter(_fileFilter);
-	}
+        if (_fileFilter != null) {
+            fileDialog.addChoosableFileFilter(_fileFilter);
+        }
         fileDialog.setDialogTitle("Select a model file.");
 
         if (_directory != null) {
@@ -502,7 +502,7 @@ public abstract class Top extends JFrame {
         }
         if (fileDialog.showOpenDialog(this)
                 == JFileChooser.APPROVE_OPTION) {
-	    _directory = fileDialog.getCurrentDirectory();
+            _directory = fileDialog.getCurrentDirectory();
             try {
                 // NOTE: It would be nice if it were possible to enter
                 // a URL in the file chooser, but Java's file chooser does
@@ -559,23 +559,23 @@ public abstract class Top extends JFrame {
      *  it.
      */
     protected void _print() {
-	PrinterJob job = PrinterJob.getPrinterJob();
-	if (this instanceof Pageable) {
-	    job.setPageable((Pageable)this);
-	} else if (this instanceof Printable) {
-	    PageFormat format = job.pageDialog(job.defaultPage());
-	    job.setPrintable((Printable)this, format);
-	} else {
-	    // Can't print it.
-	    return;
-	}
-	if (job.printDialog()) {
-	    try {
-		job.print();
-	    } catch (Exception ex) {
-		MessageHandler.error("Printing Failed", ex);
-	    }
-	}
+        PrinterJob job = PrinterJob.getPrinterJob();
+        if (this instanceof Pageable) {
+            job.setPageable((Pageable)this);
+        } else if (this instanceof Printable) {
+            PageFormat format = job.pageDialog(job.defaultPage());
+            job.setPrintable((Printable)this, format);
+        } else {
+            // Can't print it.
+            return;
+        }
+        if (job.printDialog()) {
+            try {
+                job.print();
+            } catch (Exception ex) {
+                MessageHandler.error("Printing Failed", ex);
+            }
+        }
     }
 
     /** Read the specified URL.
@@ -608,9 +608,9 @@ public abstract class Top extends JFrame {
      */
     protected boolean _saveAs() {
         JFileChooser fileDialog = new JFileChooser();
-	if (_fileFilter != null) {
-	    fileDialog.addChoosableFileFilter(_fileFilter);
-	}
+        if (_fileFilter != null) {
+            fileDialog.addChoosableFileFilter(_fileFilter);
+        }
         fileDialog.setDialogTitle("Save as...");
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -647,8 +647,8 @@ public abstract class Top extends JFrame {
                     return false;
                 }
             }
-	    // Truncate the name so that dialogs under Web Start on the Mac
-	    // work better.
+            // Truncate the name so that dialogs under Web Start on the Mac
+            // work better.
             setTitle(StringUtilities.abbreviate(_getName()));
             _directory = fileDialog.getCurrentDirectory();
             return _save();
@@ -767,28 +767,28 @@ public abstract class Top extends JFrame {
 
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-	    try {
-		if (actionCommand.equals("Open File")) {
-		    _open();
-		} else if (actionCommand.equals("Open URL")) {
-		    _openURL();
-		} else if (actionCommand.equals("Save")) {
-		    _save();
-		} else if (actionCommand.equals("SaveAs")) {
-		    _saveAs();
-		} else if (actionCommand.equals("Print")) {
-		    _print();
-		} else if (actionCommand.equals("Close")) {
-		    _close();
-		} else if (actionCommand.equals("Exit")) {
-		    _exit();
-		}
-	    } catch (Exception exception) {
-		// If we do not catch exceptions here, then they
-		// disappear to stdout, which is bad if we launched
-		// where there is no stdout visible.
-		MessageHandler.error("File Menu Exception:", exception);
-	    }
+            try {
+                if (actionCommand.equals("Open File")) {
+                    _open();
+                } else if (actionCommand.equals("Open URL")) {
+                    _openURL();
+                } else if (actionCommand.equals("Save")) {
+                    _save();
+                } else if (actionCommand.equals("SaveAs")) {
+                    _saveAs();
+                } else if (actionCommand.equals("Print")) {
+                    _print();
+                } else if (actionCommand.equals("Close")) {
+                    _close();
+                } else if (actionCommand.equals("Exit")) {
+                    _exit();
+                }
+            } catch (Exception exception) {
+                // If we do not catch exceptions here, then they
+                // disappear to stdout, which is bad if we launched
+                // where there is no stdout visible.
+                MessageHandler.error("File Menu Exception:", exception);
+            }
             // NOTE: The following should not be needed, but jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -804,18 +804,18 @@ public abstract class Top extends JFrame {
 
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-	    try {
-		if (actionCommand.equals("About")){
-		    _about();
-		} else if (actionCommand.equals("Help")) {
-		    _help();
-		}
-	    } catch (Exception exception) {
-		// If we do not catch exceptions here, then they
-		// disappear to stdout, which is bad if we launched
-		// where there is no stdout visible.
-		MessageHandler.error("Help Menu Exception:", exception);
-	    }
+            try {
+                if (actionCommand.equals("About")){
+                    _about();
+                } else if (actionCommand.equals("Help")) {
+                    _help();
+                }
+            } catch (Exception exception) {
+                // If we do not catch exceptions here, then they
+                // disappear to stdout, which is bad if we launched
+                // where there is no stdout visible.
+                MessageHandler.error("Help Menu Exception:", exception);
+            }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.

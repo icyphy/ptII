@@ -81,55 +81,55 @@ public class StyleConfigurer extends Query implements QueryListener {
      */
     public StyleConfigurer(NamedObj object) throws IllegalActionException {
         super();
-	this.addQueryListener(this);
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.addQueryListener(this);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
 
-	setTextWidth(25);
+        setTextWidth(25);
 
-	try {
-	    // FIXME this list should not be statically specified.
-	    // Note that fixing this will probably move the accept method
-	    // into some sort of factory object (instead of cloning
-	    // existing styles).
-	    parameterStyles = new ParameterEditorStyle[7];
-	    parameterStyles[0] = new LineStyle();
-	    parameterStyles[0].setName("Line");
-	    parameterStyles[1] = new CheckBoxStyle();
-	    parameterStyles[1].setName("Check Box");
-	    parameterStyles[2] = new ChoiceStyle();
-	    parameterStyles[2].setName("Choice");
-	    parameterStyles[3] = new EditableChoiceStyle();
-	    parameterStyles[3].setName("EditableChoice");
- 	    parameterStyles[4] = new TextStyle();
-	    parameterStyles[4].setName("Text");
-	    parameterStyles[5] = new FileChooserStyle();
-	    parameterStyles[5].setName("FileChooser");
-	    parameterStyles[6] = new NotEditableLineStyle();
-	    parameterStyles[6].setName("Fixed");
-	} catch (NameDuplicationException ex) {
-	    throw new InternalErrorException(ex.getMessage());
-	}
+        try {
+            // FIXME this list should not be statically specified.
+            // Note that fixing this will probably move the accept method
+            // into some sort of factory object (instead of cloning
+            // existing styles).
+            parameterStyles = new ParameterEditorStyle[7];
+            parameterStyles[0] = new LineStyle();
+            parameterStyles[0].setName("Line");
+            parameterStyles[1] = new CheckBoxStyle();
+            parameterStyles[1].setName("Check Box");
+            parameterStyles[2] = new ChoiceStyle();
+            parameterStyles[2].setName("Choice");
+            parameterStyles[3] = new EditableChoiceStyle();
+            parameterStyles[3].setName("EditableChoice");
+             parameterStyles[4] = new TextStyle();
+            parameterStyles[4].setName("Text");
+            parameterStyles[5] = new FileChooserStyle();
+            parameterStyles[5].setName("FileChooser");
+            parameterStyles[6] = new NotEditableLineStyle();
+            parameterStyles[6].setName("Fixed");
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException(ex.getMessage());
+        }
 
-	Iterator parameters
+        Iterator parameters
             = object.attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
             Settable param = (Settable)parameters.next();
             // Skip if the parameter is not visible.
             if (param.getVisibility() == Settable.NONE) continue;
 
- 	    // Get the current style.
-	    boolean foundOne = false;
-	    Iterator styles = ((NamedObj)param)
+             // Get the current style.
+            boolean foundOne = false;
+            Iterator styles = ((NamedObj)param)
                 .attributeList(ParameterEditorStyle.class).iterator();
-	    ParameterEditorStyle foundStyle = null;
-	    while (styles.hasNext()) {
-		foundOne = true;
-		foundStyle = (ParameterEditorStyle)styles.next();
-	    }
+            ParameterEditorStyle foundStyle = null;
+            while (styles.hasNext()) {
+                foundOne = true;
+                foundStyle = (ParameterEditorStyle)styles.next();
+            }
 
-	    List styleList = new ArrayList();
+            List styleList = new ArrayList();
             // The index of the default;
             int defaultIndex = 0;
 
@@ -158,11 +158,11 @@ public class StyleConfigurer extends Query implements QueryListener {
             }
 
             String styleArray[] =
-		(String[])styleList.toArray(new String[styleList.size()]);
+                (String[])styleList.toArray(new String[styleList.size()]);
 
-	    addChoice(param.getName(), param.getName(),
+            addChoice(param.getName(), param.getName(),
                     styleArray, styleArray[defaultIndex]);
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -173,27 +173,27 @@ public class StyleConfigurer extends Query implements QueryListener {
      *  @param name The name of the entry.
      */
     public void changed(String name) {
-	ParameterEditorStyle found = null;
-	Attribute param = _object.getAttribute(name);
-	for (int i = 0; i < parameterStyles.length && found == null; i++) {
-	    if (getStringValue(name).equals(parameterStyles[i].getName())) {
-		found = parameterStyles[i];
-	    }
-	}
-	Iterator styles
-	    = param.attributeList(ParameterEditorStyle.class).iterator();
-	ParameterEditorStyle style = null;
-	try {
-	    while (styles.hasNext()) {
-		style = (ParameterEditorStyle)styles.next();
-		style.setContainer(null);
-	    }
-	    style = (ParameterEditorStyle)found.clone(_object.workspace());
-	    style.setName(style.uniqueName("style"));
-	    style.setContainer(param);
-	} catch (Exception ex) {
-	    System.out.println(ex.getMessage());
-	}
+        ParameterEditorStyle found = null;
+        Attribute param = _object.getAttribute(name);
+        for (int i = 0; i < parameterStyles.length && found == null; i++) {
+            if (getStringValue(name).equals(parameterStyles[i].getName())) {
+                found = parameterStyles[i];
+            }
+        }
+        Iterator styles
+            = param.attributeList(ParameterEditorStyle.class).iterator();
+        ParameterEditorStyle style = null;
+        try {
+            while (styles.hasNext()) {
+                style = (ParameterEditorStyle)styles.next();
+                style.setContainer(null);
+            }
+            style = (ParameterEditorStyle)found.clone(_object.workspace());
+            style.setName(style.uniqueName("style"));
+            style.setContainer(param);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     /** Request restoration of the parameter values to what they

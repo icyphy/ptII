@@ -68,36 +68,36 @@ public class HelloWorld {
         DDEDirector director =
             new DDEDirector(topLevelActor, "director");
         Parameter stopTime = (Parameter)director.getAttribute("stopTime");
-	stopTime.setToken( new DoubleToken(57.0) );
+        stopTime.setToken( new DoubleToken(57.0) );
         topLevelActor.setManager( manager );
 
         // Set up next level actors
-	Clock vowelSrc = new Clock( topLevelActor, "vowelSrc" );
-	vowelSrc.values.setExpression( "[1,1,1,1,1,1,1,1,1,1,1,1,1]" );
-	vowelSrc.period.setToken( new DoubleToken(100.0) );
-	vowelSrc.offsets.setExpression( "[0.5,2.0,5.0,7.0,8.0,11.0,12.5,13.5,14.0,15.5,17.5,19.5,20.5]" );
-	vowelSrc.stopTime.setToken( new DoubleToken(30.0) );
+        Clock vowelSrc = new Clock( topLevelActor, "vowelSrc" );
+        vowelSrc.values.setExpression( "[1,1,1,1,1,1,1,1,1,1,1,1,1]" );
+        vowelSrc.period.setToken( new DoubleToken(100.0) );
+        vowelSrc.offsets.setExpression( "[0.5,2.0,5.0,7.0,8.0,11.0,12.5,13.5,14.0,15.5,17.5,19.5,20.5]" );
+        vowelSrc.stopTime.setToken( new DoubleToken(30.0) );
 
-	Clock consonantsSrc = new Clock( topLevelActor, "consonantsSrc" );
-	consonantsSrc.values.setExpression( "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]" );
-	consonantsSrc.period.setToken( new DoubleToken(100.0) );
-	consonantsSrc.offsets.setExpression( "[0.0, 1.0, 1.5, 4.0, 4.5, 6.0, 6.5, 7.5, 8.5, 9.0, 10.0, 10.5, 12.0, 13.0, 14.5, 16.0, 17.0, 18.0, 18.5, 19.0, 20.0]" );
-	consonantsSrc.stopTime.setToken( new DoubleToken(30.0) );
+        Clock consonantsSrc = new Clock( topLevelActor, "consonantsSrc" );
+        consonantsSrc.values.setExpression( "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]" );
+        consonantsSrc.period.setToken( new DoubleToken(100.0) );
+        consonantsSrc.offsets.setExpression( "[0.0, 1.0, 1.5, 4.0, 4.5, 6.0, 6.5, 7.5, 8.5, 9.0, 10.0, 10.5, 12.0, 13.0, 14.5, 16.0, 17.0, 18.0, 18.5, 19.0, 20.0]" );
+        consonantsSrc.stopTime.setToken( new DoubleToken(30.0) );
 
-	Clock punctuationSrc = new Clock( topLevelActor, "punctuationSrc" );
-	punctuationSrc.values.setExpression( "[1, 1, 1, 1, 1, 1, 1, 1, 1]" );
-	punctuationSrc.period.setToken( new DoubleToken(100.0) );
-	punctuationSrc.offsets.setExpression( "[2.5, 3.0, 3.5, 5.5, 9.5, 11.5, 15.0, 16.5, 21.0]" );
-	punctuationSrc.stopTime.setToken( new DoubleToken(30.0) );
+        Clock punctuationSrc = new Clock( topLevelActor, "punctuationSrc" );
+        punctuationSrc.values.setExpression( "[1, 1, 1, 1, 1, 1, 1, 1, 1]" );
+        punctuationSrc.period.setToken( new DoubleToken(100.0) );
+        punctuationSrc.offsets.setExpression( "[2.5, 3.0, 3.5, 5.5, 9.5, 11.5, 15.0, 16.5, 21.0]" );
+        punctuationSrc.stopTime.setToken( new DoubleToken(30.0) );
 
         PrintString printer = new
-	    PrintString( topLevelActor, "printer" );
+            PrintString( topLevelActor, "printer" );
         Consonants consonants = new
-	    Consonants( topLevelActor, "consonants" );
+            Consonants( topLevelActor, "consonants" );
         Vowels vowels = new
-	    Vowels( topLevelActor, "vowels" );
+            Vowels( topLevelActor, "vowels" );
         Punctuation punctuation = new
-	    Punctuation( topLevelActor, "punctuation" );
+            Punctuation( topLevelActor, "punctuation" );
         // System.out.println("Actors have been instantiated.");
 
         // Set up ports, relation
@@ -118,14 +118,14 @@ public class HelloWorld {
         // System.out.println("Ports and relations are finished.");
 
         // Set up connections
-	topLevelActor.connect( vSrcOut, vInput );
-	topLevelActor.connect( vOutput, input );
+        topLevelActor.connect( vSrcOut, vInput );
+        topLevelActor.connect( vOutput, input );
 
-	topLevelActor.connect( cSrcOut, cInput );
-	topLevelActor.connect( cOutput, input );
+        topLevelActor.connect( cSrcOut, cInput );
+        topLevelActor.connect( cOutput, input );
 
-	topLevelActor.connect( pSrcOut, pInput );
-	topLevelActor.connect( pOutput, input );
+        topLevelActor.connect( pSrcOut, pInput );
+        topLevelActor.connect( pOutput, input );
 
         // System.out.println("Connections are complete.");
 

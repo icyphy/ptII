@@ -470,7 +470,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @param exception The exception.
      */
     public void notifyListenersOfException(Exception exception) {
-	notifyListenersOfThrowable(exception);
+        notifyListenersOfThrowable(exception);
     }
 
     /** Notify all the execution listeners of a Throwable
@@ -482,10 +482,10 @@ public class Manager extends NamedObj implements Runnable {
      *  @param throwable The throwable
      */
     public void notifyListenersOfThrowable(Throwable throwable) {
-	// We use Throwables instead of Exceptions so that we can catch
-	// Errors like java.lang.UnsatisfiedLink.
+        // We use Throwables instead of Exceptions so that we can catch
+        // Errors like java.lang.UnsatisfiedLink.
         String errorMessage = shortDescription(throwable)
-	    + " occurred: " + throwable.getClass()
+            + " occurred: " + throwable.getClass()
             + "(" + throwable.getMessage() + ")";
         _debug("-- Manager notifying listeners of exception: " + throwable);
         if (_executionListeners == null) {
@@ -756,8 +756,8 @@ public class Manager extends NamedObj implements Runnable {
         try {
             execute();
         } catch (Throwable throwable) {
-	    // If running tried to load in some native code using JNI
-	    // then we may get an Error here
+            // If running tried to load in some native code using JNI
+            // then we may get an Error here
             notifyListenersOfThrowable(throwable);
         } finally {
             _thread = null;
@@ -771,17 +771,17 @@ public class Manager extends NamedObj implements Runnable {
      *  "Throwable".
      */
     public static String shortDescription(Throwable throwable) {
-	// FIXME: This code is a duplicate of MessageHandler.shortDescription()
-	// but we don't want to import ptolemy.actor.gui.MessageHandler here.
-	String throwableType = null;
-	if (throwable instanceof Exception) {
-	    throwableType = "Exception";
-	} else if (throwable instanceof Error) {
-	    throwableType = "Error";
-	} else {
-	    throwableType = "Throwable";
-	}
-	return throwableType;
+        // FIXME: This code is a duplicate of MessageHandler.shortDescription()
+        // but we don't want to import ptolemy.actor.gui.MessageHandler here.
+        String throwableType = null;
+        if (throwable instanceof Exception) {
+            throwableType = "Exception";
+        } else if (throwable instanceof Error) {
+            throwableType = "Error";
+        } else {
+            throwableType = "Throwable";
+        }
+        return throwableType;
     }
 
     /** Start an execution in another thread and return.  Any exceptions

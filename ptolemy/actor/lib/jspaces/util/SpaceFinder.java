@@ -63,7 +63,7 @@ public class SpaceFinder {
      *   found.
      */
     public static final JavaSpace getSpace(String name)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         try {
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(

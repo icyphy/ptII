@@ -119,35 +119,35 @@ public class ActorGraphTableau extends Tableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create an factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create an factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
-	/** Create a tableau in the default workspace with no name for the
-	 *  given Effigy.  The tableau will created with a new unique name
-	 *  in the given model effigy.  If this factory cannot create a tableau
-	 *  for the given effigy (perhaps because the effigy is not of the
-	 *  appropriate subclass) then return null.
+        /** Create a tableau in the default workspace with no name for the
+         *  given Effigy.  The tableau will created with a new unique name
+         *  in the given model effigy.  If this factory cannot create a tableau
+         *  for the given effigy (perhaps because the effigy is not of the
+         *  appropriate subclass) then return null.
          *  It is the responsibility of callers of this method to check the
          *  return value and call show().
-	 *
-	 *  @param effigy The model effigy.
-	 *  @return A new ActorGraphTableau, if the effigy is a
-	 *  PtolemyEffigy, or null otherwise.
-	 *  @exception Exception If an exception occurs when creating the
-	 *  tableau.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof PtolemyEffigy) {
+         *
+         *  @param effigy The model effigy.
+         *  @return A new ActorGraphTableau, if the effigy is a
+         *  PtolemyEffigy, or null otherwise.
+         *  @exception Exception If an exception occurs when creating the
+         *  tableau.
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 ActorGraphTableau tableau =
                     (ActorGraphTableau)effigy.getEntity("graphTableau");
@@ -159,12 +159,12 @@ public class ActorGraphTableau extends Tableau {
                     tableau = new ActorGraphTableau(
                             (PtolemyEffigy)effigy, "graphTableau", library);
                 }
-		// Don't call show() here, it is called for us in
-		// TableauFrame.ViewMenuListener.actionPerformed()
+                // Don't call show() here, it is called for us in
+                // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 }

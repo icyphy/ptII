@@ -79,30 +79,30 @@ public class ProcessAudio implements Runnable {
     double pitchScaleIn1 = 1.0;
 
     public void start() {
-	System.out.println("Sampling rate = " + sampleRate + " Hz.");
-	errStr = null;
-	thread = new Thread(this);
-	thread.start();
+        System.out.println("Sampling rate = " + sampleRate + " Hz.");
+        errStr = null;
+        thread = new Thread(this);
+        thread.start();
     }
 
     public void stop() {
-	thread = null;
+        thread = null;
     }
 
     private void shutDown(String message) {
-	if ((errStr = message) != null) {
-	    System.err.println(errStr);
-	}
-	if (thread != null) {
-	    thread = null;
-	    // Now exit.
-	    System.exit(0);
-	}
+        if ((errStr = message) != null) {
+            System.err.println(errStr);
+        }
+        if (thread != null) {
+            thread = null;
+            // Now exit.
+            System.exit(0);
+        }
     }
 
     // Update the pitch scale factor.
     public void updatePitchScaleFactor(double pitchScaleIn) {
-	this.pitchScaleIn1 = pitchScaleIn;
+        this.pitchScaleIn1 = pitchScaleIn;
     }
 
 
@@ -110,87 +110,87 @@ public class ProcessAudio implements Runnable {
     // Set the sampling rate. Valid sampling rates are 11025, 22050, 44100.
     // This method should be the first method called in this class.
     public void setSamplingRate(double sr) {
-	this.sampleRate = sr;
+        this.sampleRate = sr;
     }
 
     public void run() {
 
-	// Capture specific stuff:
+        // Capture specific stuff:
 
         int sampleSizeInBits = 16;
         int channels = 1;
 
-	int inBufferSize = 6000;  // Internal buffer size for capture.
-	int outBufferSize = 6000; // Internal buffer size for playback.
+        int inBufferSize = 6000;  // Internal buffer size for capture.
+        int outBufferSize = 6000; // Internal buffer size for playback.
 
-	// Amount of data to read or write from/to the internal buffer
-	// at a time. This should be set smaller than the internal buffer
-	// size!
-	int getSamplesSize = 256;
+        // Amount of data to read or write from/to the internal buffer
+        // at a time. This should be set smaller than the internal buffer
+        // size!
+        int getSamplesSize = 256;
 
-	SoundCapture soundCapture =
-	    new SoundCapture((float)sampleRate, sampleSizeInBits,
+        SoundCapture soundCapture =
+            new SoundCapture((float)sampleRate, sampleSizeInBits,
                     channels, inBufferSize,
                     getSamplesSize);
 
-	int putSamplesSize = getSamplesSize;
+        int putSamplesSize = getSamplesSize;
 
         // Construct a sound playback object that plays audio
-	//through the computer's speaker.
-	SoundPlayback soundPlayback = new SoundPlayback((float)sampleRate,
+        //through the computer's speaker.
+        SoundPlayback soundPlayback = new SoundPlayback((float)sampleRate,
                 sampleSizeInBits,
                 channels,
                 outBufferSize,
                 putSamplesSize);
 
-	// Initialize and begin real-time capture and playback.
-	try{
-	    soundCapture.startCapture();
-	    soundPlayback.startPlayback();
-	} catch (Exception ex) {
-	    System.err.println(ex);
-	}
+        // Initialize and begin real-time capture and playback.
+        try{
+            soundCapture.startCapture();
+            soundPlayback.startPlayback();
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
 
 
-	double[][] capturedSamplesArray =
-	    new double[channels][getSamplesSize];
+        double[][] capturedSamplesArray =
+            new double[channels][getSamplesSize];
 
 
-	// Initialize the pitch detector.
-	int vectorSize = getSamplesSize*channels;
-	PitchDetector pd = new PitchDetector(vectorSize,
+        // Initialize the pitch detector.
+        int vectorSize = getSamplesSize*channels;
+        PitchDetector pd = new PitchDetector(vectorSize,
                 (int)sampleRate);
-	// Initialize the pitch shifter.
-	PitchShift ps = new PitchShift((float)sampleRate);
+        // Initialize the pitch shifter.
+        PitchShift ps = new PitchShift((float)sampleRate);
 
-	double[] currPitchArray;
+        double[] currPitchArray;
 
-	while (thread != null) {
-	    try {
+        while (thread != null) {
+            try {
 
-		// Read in some captured audio.
-		capturedSamplesArray = soundCapture.getSamples();
+                // Read in some captured audio.
+                capturedSamplesArray = soundCapture.getSamples();
 
-		///////////////////////////////////////////////////////////
-		//////   Do processing on audioInDoubleArray here     /////
+                ///////////////////////////////////////////////////////////
+                //////   Do processing on audioInDoubleArray here     /////
 
-		currPitchArray = pd.performPitchDetect(capturedSamplesArray[0]);
+                currPitchArray = pd.performPitchDetect(capturedSamplesArray[0]);
 
-		capturedSamplesArray[0] = ps.performPitchShift(capturedSamplesArray[0],
+                capturedSamplesArray[0] = ps.performPitchShift(capturedSamplesArray[0],
                         currPitchArray, pitchScaleIn1);
 
-		// Play the processed audio samples.
-		soundPlayback.putSamples(capturedSamplesArray);
+                // Play the processed audio samples.
+                soundPlayback.putSamples(capturedSamplesArray);
 
-	    } catch (Exception e) {
-		shutDown("Error during playback: " + e);
-		break;
-	    }
-	}
-	// we reached the end of the stream.  let the data play out, then
-	// stop and close the line.
+            } catch (Exception e) {
+                shutDown("Error during playback: " + e);
+                break;
+            }
+        }
+        // we reached the end of the stream.  let the data play out, then
+        // stop and close the line.
 
-	shutDown(null);
+        shutDown(null);
 
     }
 }

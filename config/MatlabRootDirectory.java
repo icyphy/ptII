@@ -64,13 +64,13 @@ public class MatlabRootDirectory {
     // Given the pathname to the matlab executable, return the path name
     // of the Matlab directory.
     private static String _getMatlabRootDirectory(String matlabExecutable) {
-	// Return the directory above the bin/ directory in
-	// the path to the matlab executable
-	// We could use java.io.File here, but the problem is that
-	// if we pass in /cygwin/c/ptII/bin/matlab, then
-	// the name we will return will be \cygwin\c\ptII, which
-	// will cause problems with the backslash when we do
-	// 'if test -d \cygwin\c\ptII'
-	return matlabExecutable.substring(0,matlabExecutable.lastIndexOf("/bin/"));
+        // Return the directory above the bin/ directory in
+        // the path to the matlab executable
+        // We could use java.io.File here, but the problem is that
+        // if we pass in /cygwin/c/ptII/bin/matlab, then
+        // the name we will return will be \cygwin\c\ptII, which
+        // will cause problems with the backslash when we do
+        // 'if test -d \cygwin\c\ptII'
+        return matlabExecutable.substring(0,matlabExecutable.lastIndexOf("/bin/"));
     }
 }

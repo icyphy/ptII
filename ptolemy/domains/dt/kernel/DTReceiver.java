@@ -131,14 +131,14 @@ public class DTReceiver extends SDFReceiver {
         double periodValue;
         boolean isCompositeContainer = !((ComponentEntity) _to).isAtomic();
 
-    	if (_from == null)  {
-    	    throw new InternalErrorException(
+            if (_from == null)  {
+                throw new InternalErrorException(
                     "internal DT error: Receiver with null source");
-    	} else {
+            } else {
 
-    	    Parameter param = (Parameter)
+                Parameter param = (Parameter)
                 _fromPort.getAttribute("tokenProductionRate");
-    	    if (param == null) {
+                if (param == null) {
                 _outrate = 1;
             } else {
                 _outrate = ((IntToken)param.getToken()).intValue();
@@ -149,7 +149,7 @@ public class DTReceiver extends SDFReceiver {
             } else {
                 param =
                     (Parameter) _toPort.getAttribute("tokenConsumptionRate");
-    	        if (param == null) {
+                    if (param == null) {
                     _inRate = 1;
                 } else {
                     _inRate = ((IntToken)param.getToken()).intValue();
@@ -157,15 +157,15 @@ public class DTReceiver extends SDFReceiver {
             }
 
             IOPort containerPort = (IOPort) this.getContainer();
-    	    Actor containerActor = (Actor) _toPort.getContainer();
-    	    DTDirector localDirector;
+                Actor containerActor = (Actor) _toPort.getContainer();
+                DTDirector localDirector;
 
-    	    if ((containerActor instanceof TypedCompositeActor ) &&
-    	        (!containerPort.isOutput())) {
-    	        localDirector = (DTDirector) containerActor.getExecutiveDirector();
-    	    } else {
-    	        localDirector = (DTDirector) containerActor.getDirector();
-    	    }
+                if ((containerActor instanceof TypedCompositeActor ) &&
+                    (!containerPort.isOutput())) {
+                    localDirector = (DTDirector) containerActor.getExecutiveDirector();
+                } else {
+                    localDirector = (DTDirector) containerActor.getDirector();
+                }
 
 
             // FIXME: check tunneling topology
@@ -177,7 +177,7 @@ public class DTReceiver extends SDFReceiver {
             } else {
                 repeats = localDirector._getRepetitions(_to);
                 _tokenFlowRate = repeats * _inRate;
-            	_deltaTime = periodValue / _tokenFlowRate;
+                    _deltaTime = periodValue / _tokenFlowRate;
 
             }
         }
@@ -191,25 +191,25 @@ public class DTReceiver extends SDFReceiver {
      */
     public void determineEnds() {
         _toPort = this.getContainer();
-    	_to = (Actor) _toPort.getContainer();
-    	_fromPort = null;
+            _to = (Actor) _toPort.getContainer();
+            _fromPort = null;
         IOPort connectedPort = null;
         List listOfConnectedPorts = null;
         boolean isCompositeContainer = !((ComponentEntity) _to).isAtomic();
 
-    	if (isCompositeContainer && (_toPort.isOutput()) ) {
-    	    listOfConnectedPorts = _toPort.insidePortList();
-    	} else {
-    	    listOfConnectedPorts = _toPort.connectedPortList();
-    	}
+            if (isCompositeContainer && (_toPort.isOutput()) ) {
+                listOfConnectedPorts = _toPort.insidePortList();
+            } else {
+                listOfConnectedPorts = _toPort.connectedPortList();
+            }
 
-    	Iterator portListIterator = listOfConnectedPorts.iterator();
+            Iterator portListIterator = listOfConnectedPorts.iterator();
 
     foundReceiver:
-    	while (portListIterator.hasNext()) {
-    	    connectedPort = (IOPort) portListIterator.next();
+            while (portListIterator.hasNext()) {
+                connectedPort = (IOPort) portListIterator.next();
 
-    	    if (connectedPort.isOutput() == true) {
+                if (connectedPort.isOutput() == true) {
                 Receiver[][] remoteReceivers =
                                    connectedPort.getRemoteReceivers();
 
@@ -226,27 +226,27 @@ public class DTReceiver extends SDFReceiver {
                         }
                     }
                 }
-    	    } else if (connectedPort.getContainer()
-    	                          instanceof TypedCompositeActor) {
-    	        // FIXME: should use at isAtomic() instead of instanceof?
-    	        _from = (Actor) connectedPort.getContainer();
-    	        _fromPort = connectedPort;
-    	        if (_fromPort == null) {
-    	            throw new InternalErrorException(
+                } else if (connectedPort.getContainer()
+                                      instanceof TypedCompositeActor) {
+                    // FIXME: should use at isAtomic() instead of instanceof?
+                    _from = (Actor) connectedPort.getContainer();
+                    _fromPort = connectedPort;
+                    if (_fromPort == null) {
+                        throw new InternalErrorException(
                             "internal DT error: Receiver with null source");
-    	        }
-    	        break foundReceiver;
-    	    } else if (connectedPort.isInput() == true) {
+                    }
+                    break foundReceiver;
+                } else if (connectedPort.isInput() == true) {
                 // This case occurs when the destination port and
                 // the queried connected port are both inputs.
                 // This case should be ignored.
-    	    }
-    	}
+                }
+            }
 
-    	if (_fromPort == null) {
-    	    throw new InternalErrorException(
+            if (_fromPort == null) {
+                throw new InternalErrorException(
                     "internal DT error: Receiver with null source");
-    	}
+            }
     }
 
 

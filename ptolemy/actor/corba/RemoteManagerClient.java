@@ -178,7 +178,7 @@ public class RemoteManagerClient extends TypedAtomicActor {
 
     /** React to a change of the _director or other property. */
     public void attributeChanged(Attribute attribute)
-	throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == controllerURL) {
             try {
                 StringToken URLToken = (StringToken)controllerURL.getToken();

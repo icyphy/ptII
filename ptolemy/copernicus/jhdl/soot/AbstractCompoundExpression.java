@@ -67,14 +67,14 @@ public abstract class AbstractCompoundExpression
     implements Expr, ToBriefString {
 
     public AbstractCompoundExpression(Value op1, Value op2) {
-	if (op1 instanceof ConditionExpr)
-	    this.op1Box = Jimple.v().newConditionExprBox(op1);
-	else
-	    this.op1Box = Jimple.v().newArgBox(op1);
-	if (op2 instanceof ConditionExpr)
-	    this.op2Box = Jimple.v().newConditionExprBox(op2);
-	else
-	    this.op2Box = Jimple.v().newArgBox(op2);
+        if (op1 instanceof ConditionExpr)
+            this.op1Box = Jimple.v().newConditionExprBox(op1);
+        else
+            this.op1Box = Jimple.v().newArgBox(op1);
+        if (op2 instanceof ConditionExpr)
+            this.op2Box = Jimple.v().newConditionExprBox(op2);
+        else
+            this.op2Box = Jimple.v().newArgBox(op2);
     }
     public void apply(Switch sw) {}; //?
 

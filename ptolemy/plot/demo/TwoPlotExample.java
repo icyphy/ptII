@@ -73,11 +73,11 @@ public class TwoPlotExample extends JFrame {
         setSize(800, 300);
 
         // Create the left plot by calling methods.
-	// Note that most of these methods should be called in
-	// the event thread, see the Plot.java class comment.
-	// In this case, main() is invoking this constructor in
-	// the event thread.
-	leftPlot.setSize(350, 300);
+        // Note that most of these methods should be called in
+        // the event thread, see the Plot.java class comment.
+        // In this case, main() is invoking this constructor in
+        // the event thread.
+        leftPlot.setSize(350, 300);
         leftPlot.setButtons(true);
         leftPlot.setTitle("Left Plot");
         leftPlot.setYRange(-4, 4);
@@ -92,8 +92,8 @@ public class TwoPlotExample extends JFrame {
         leftPlot.setMarksStyle("none");
         leftPlot.setImpulses(true);
 
-	// Call setConnected before reading in data.
-	leftPlot.setConnected(false, 1);
+        // Call setConnected before reading in data.
+        leftPlot.setConnected(false, 1);
 
         boolean first = true;
 
@@ -124,7 +124,7 @@ public class TwoPlotExample extends JFrame {
 
         // Create the right plot by reading in a file.
         rightPlot.setButtons(true);
-	leftPlot.setSize(350, 300);
+        leftPlot.setSize(350, 300);
         File file = new File(".", "data.plt");
         try {
             rightPlot.clear(true);
@@ -170,13 +170,13 @@ public class TwoPlotExample extends JFrame {
      *  happens in the constructor.
      */
     public static void main(String args[]) {
-	// We execute everything in the Swing Event Thread, see
-	// the comment
+        // We execute everything in the Swing Event Thread, see
+        // the comment
         Runnable doAction = new Runnable() {
-		public void run() {
-		    TwoPlotExample twoPlotExample = new TwoPlotExample();
-		}
-	    };
-	SwingUtilities.invokeLater(doAction);
+                public void run() {
+                    TwoPlotExample twoPlotExample = new TwoPlotExample();
+                }
+            };
+        SwingUtilities.invokeLater(doAction);
     }
 }

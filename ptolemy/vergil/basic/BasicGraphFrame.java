@@ -879,7 +879,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
         catch (Exception ex) {
             MessageHandler.error("Delete failed, changeRequest was:" + moml,
-				 ex);
+                                 ex);
         }
         graphModel.dispatchGraphEvent(
                 new GraphEvent(
@@ -950,13 +950,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // the way some relations are hidden and ports are shown directly
         // connected
 
-	// Formerly, we used an ArrayList here, but this caused problems
-	// if we had a relation between two links and the user selected
-	// the relation and a link by dragging a box.
-	// JDK1.4 provides us with a LinkedHashSet that is ordered and
-	// has unique elements, so we use that. -cxh 11/16/02
-	//
-	//ArrayList namedObjList = new ArrayList(namedObjEdgeSet);
+        // Formerly, we used an ArrayList here, but this caused problems
+        // if we had a relation between two links and the user selected
+        // the relation and a link by dragging a box.
+        // JDK1.4 provides us with a LinkedHashSet that is ordered and
+        // has unique elements, so we use that. -cxh 11/16/02
+        //
+        //ArrayList namedObjList = new ArrayList(namedObjEdgeSet);
         //namedObjList.addAll(namedObjNodeSet);
 
         LinkedHashSet namedObjList = new LinkedHashSet(namedObjEdgeSet);
@@ -1029,7 +1029,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
         catch (Exception ex) {
             MessageHandler.error("Delete failed, changeRequest was:" + moml,
-				 ex);
+                                 ex);
         }
     }
 

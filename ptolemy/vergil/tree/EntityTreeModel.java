@@ -73,7 +73,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param listener The listener to add.
      */
     public void addTreeModelListener(TreeModelListener listener) {
-	_listenerList.add(listener);
+        _listenerList.add(listener);
     }
 
     /** Get the child of the given parent at the given index.
@@ -84,9 +84,9 @@ public class EntityTreeModel implements TreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
-	if (index > getChildCount(parent)) return null;
-	CompositeEntity entity = (CompositeEntity)parent;
-	return entity.entityList().get(index);
+        if (index > getChildCount(parent)) return null;
+        CompositeEntity entity = (CompositeEntity)parent;
+        return entity.entityList().get(index);
     }
 
     /** Return the number of children of the given parent, which in
@@ -95,9 +95,9 @@ public class EntityTreeModel implements TreeModel {
      *  @return The number of contained entities.
      */
     public int getChildCount(Object parent) {
-	if (!(parent instanceof CompositeEntity)) return 0;
-	CompositeEntity entity = (CompositeEntity)parent;
-	return entity.numEntities();
+        if (!(parent instanceof CompositeEntity)) return 0;
+        CompositeEntity entity = (CompositeEntity)parent;
+        return entity.numEntities();
     }
 
     /** Return the index of the given child within the given parent.
@@ -105,16 +105,16 @@ public class EntityTreeModel implements TreeModel {
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
-	if (!(parent instanceof CompositeEntity)) return -1;
-	CompositeEntity entity = (CompositeEntity)parent;
-	return entity.entityList().indexOf(child);
+        if (!(parent instanceof CompositeEntity)) return -1;
+        CompositeEntity entity = (CompositeEntity)parent;
+        return entity.entityList().indexOf(child);
     }
 
     /** Get the root of this tree model.
      *  @return An Entity.
      */
     public Object getRoot() {
-	return _root;
+        return _root;
     }
 
     /** Return true if the object is a leaf node.  In this base class,
@@ -122,7 +122,7 @@ public class EntityTreeModel implements TreeModel {
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
-	if (!(object instanceof CompositeEntity)) return true;
+        if (!(object instanceof CompositeEntity)) return true;
         // NOTE: The following is probably not a good idea because it
         // will force evaluation of the contents of a Library prematurely.
         // if (((CompositeEntity)object).numEntities() == 0) return true;
@@ -135,7 +135,7 @@ public class EntityTreeModel implements TreeModel {
         if (_root != null) {
             _root.removeChangeListener(_rootListener);
         }
-	_root = root;
+        _root = root;
         if (_root != null) {
             _root.addChangeListener(_rootListener);
         }
@@ -145,7 +145,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param listener The listener to remove.
      */
     public void removeTreeModelListener(TreeModelListener listener) {
-	_listenerList.remove(listener);
+        _listenerList.remove(listener);
     }
 
     /** Notify listeners that the object at the given path has changed.
@@ -153,31 +153,31 @@ public class EntityTreeModel implements TreeModel {
      *  @param newValue The new value of the node.
      */
     public void valueForPathChanged(TreePath path, Object newValue) {
-	Iterator listeners = _listenerList.iterator();
-	TreeModelEvent event = new TreeModelEvent(this, path);
-	while (listeners.hasNext()) {
-	    TreeModelListener listener = (TreeModelListener)listeners.next();
-	    listener.treeStructureChanged(event);
-	}
+        Iterator listeners = _listenerList.iterator();
+        TreeModelEvent event = new TreeModelEvent(this, path);
+        while (listeners.hasNext()) {
+            TreeModelListener listener = (TreeModelListener)listeners.next();
+            listener.treeStructureChanged(event);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     public class TreeUpdateListener implements ChangeListener {
-	/** Trigger an update of the entire tree.
-	 */
-	public void changeExecuted(ChangeRequest change) {
-	    // FIXME it would be nice if there was more information in
-	    // the change about the context of the change.
-	    valueForPathChanged(new TreePath(getRoot()), getRoot());
-	}
+        /** Trigger an update of the entire tree.
+         */
+        public void changeExecuted(ChangeRequest change) {
+            // FIXME it would be nice if there was more information in
+            // the change about the context of the change.
+            valueForPathChanged(new TreePath(getRoot()), getRoot());
+        }
 
-	/** Trigger an update of the entire tree.
-	 */
-	public void changeFailed(ChangeRequest change, Exception exception) {
-	    valueForPathChanged(new TreePath(getRoot()), getRoot());
-	}
+        /** Trigger an update of the entire tree.
+         */
+        public void changeFailed(ChangeRequest change, Exception exception) {
+            valueForPathChanged(new TreePath(getRoot()), getRoot());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

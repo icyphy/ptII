@@ -61,52 +61,52 @@ MoML, this class illustrates how to define a model in Java.
 public class Butterfly extends TypedCompositeActor {
 
     public Butterfly(Workspace workspace)
-	    throws IllegalActionException, NameDuplicationException {
-	super(workspace);
-	setName("Butterfly");
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        setName("Butterfly");
 
         // Create the director, and set the number of iterations to execute.
-	SDFDirector director = new SDFDirector(this, "director");
+        SDFDirector director = new SDFDirector(this, "director");
         director.iterations.setExpression("2400");
-	setDirector(director);
+        setDirector(director);
 
         // Create the actors, and set their parameters.
         // First, the source, which counts up from 0.0 in steps of pi/100.
-	Ramp ramp = new Ramp(this, "Ramp");
-	ramp.step.setExpression("PI/100.0");
+        Ramp ramp = new Ramp(this, "Ramp");
+        ramp.step.setExpression("PI/100.0");
 
         // Next, the expression, for which we have to create an input port.
-	Expression expression = new Expression(this, "Expression");
-	TypedIOPort expInput = new TypedIOPort(expression, "ramp");
+        Expression expression = new Expression(this, "Expression");
+        TypedIOPort expInput = new TypedIOPort(expression, "ramp");
         expInput.setInput(true);
-	expression.expression.setExpression("-2.0*cos(4.0*ramp) + "
+        expression.expression.setExpression("-2.0*cos(4.0*ramp) + "
                + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)");
 
         // Next, a conversion to use the ramp as an angle specifier,
         // and the output of the expression as the vector length.
-	PolarToCartesian polarToCartesian =
-	        new PolarToCartesian(this, "Polar to Cartesian");
+        PolarToCartesian polarToCartesian =
+                new PolarToCartesian(this, "Polar to Cartesian");
 
         // Finally, the plotter.
-	XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");
-	xyPlotter.plot = new Plot();
+        XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");
+        xyPlotter.plot = new Plot();
         xyPlotter.plot.setGrid(false);
-	xyPlotter.plot.setXRange(-3, 4);
-	xyPlotter.plot.setYRange(-4, 4);
+        xyPlotter.plot.setXRange(-3, 4);
+        xyPlotter.plot.setYRange(-4, 4);
 
         // Make the connections.
         // The ports are public members of these classes.
         // The first connection is a three way connection, so we have
         // to create a relation and then link to it.
-	TypedIORelation node = (TypedIORelation) newRelation("node");
+        TypedIORelation node = (TypedIORelation) newRelation("node");
         ramp.output.link(node);
         expInput.link(node);
         polarToCartesian.angle.link(node);
 
         // The rest of the connections are point-to-point, so we can use
         // the connect() method.
-	connect(expression.output, polarToCartesian.magnitude);
-	connect(polarToCartesian.x, xyPlotter.inputX);
-	connect(polarToCartesian.y, xyPlotter.inputY);
+        connect(expression.output, polarToCartesian.magnitude);
+        connect(polarToCartesian.x, xyPlotter.inputX);
+        connect(polarToCartesian.y, xyPlotter.inputY);
     }
 }

@@ -86,19 +86,19 @@ public class DDEGetNToken extends DDEGet {
     /**
      */
     public double getAfterTime(int cntr) {
-	return _afterTimes[cntr];
+        return _afterTimes[cntr];
     }
 
     /**
      */
     public double getBeforeTime(int cntr) {
-	return _beforeTimes[cntr];
+        return _beforeTimes[cntr];
     }
 
     /**
      */
     public Token getToken(int cntr) {
-	return _tokens[cntr];
+        return _tokens[cntr];
     }
 
     public void initialize() throws IllegalActionException {
@@ -116,35 +116,35 @@ public class DDEGetNToken extends DDEGet {
     /**
      */
     public void fire() throws IllegalActionException {
-	int cnt = 0;
-	Token token;
-	while (cnt < _numTokens) {
-	    boolean finished = false;
+        int cnt = 0;
+        Token token;
+        while (cnt < _numTokens) {
+            boolean finished = false;
             Thread thread = Thread.currentThread();
-	    if ( thread instanceof DDEThread ) {
-		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-		_beforeTimes[cnt] = timeKeeper.getCurrentTime();
-		Receiver[][] rcvrs = input.getReceivers();
-		for ( int i = 0; i < rcvrs.length; i++ ) {
-		    for ( int j = 0; j < rcvrs[i].length; j++ ) {
-			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-			if ( rcvr.hasToken() ) {
+            if ( thread instanceof DDEThread ) {
+                TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+                _beforeTimes[cnt] = timeKeeper.getCurrentTime();
+                Receiver[][] rcvrs = input.getReceivers();
+                for ( int i = 0; i < rcvrs.length; i++ ) {
+                    for ( int j = 0; j < rcvrs[i].length; j++ ) {
+                        DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+                        if ( rcvr.hasToken() ) {
                             // System.out.println("#####");
                             System.out.println("#####Past DDEGetNToken.rcvr.hasToken()");
                             // System.out.println("#####");
-			    _tokens[cnt] = rcvr.get();
-			    _afterTimes[cnt] = timeKeeper.getCurrentTime();
-		            cnt++;
-			    j = rcvrs[i].length + 1;
-			    finished = true;
-			}
-		    }
-		    if ( finished ) {
-			i = rcvrs.length + 1;
-		    }
-		}
-	    }
-	}
+                            _tokens[cnt] = rcvr.get();
+                            _afterTimes[cnt] = timeKeeper.getCurrentTime();
+                            cnt++;
+                            j = rcvrs[i].length + 1;
+                            finished = true;
+                        }
+                    }
+                    if ( finished ) {
+                        i = rcvrs.length + 1;
+                    }
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

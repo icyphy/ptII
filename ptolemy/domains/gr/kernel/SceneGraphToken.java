@@ -139,10 +139,10 @@ public class SceneGraphToken extends Token {
         }
 
         /** Test if the argument type is compatible with this type.
-	 *  The method returns true if this type is UNKNOWN, since any type
-	 *  is a substitution instance of it. If this type is not UNKNOWN,
-	 *  this method returns true if the argument type is less than or
-	 *  equal to this type in the type lattice, and false otherwise.
+         *  The method returns true if this type is UNKNOWN, since any type
+         *  is a substitution instance of it. If this type is not UNKNOWN,
+         *  this method returns true if the argument type is less than or
+         *  equal to this type in the type lattice, and false otherwise.
          *  @param type An instance of Type.
          *  @return True if the argument type is compatible with this type.
          */

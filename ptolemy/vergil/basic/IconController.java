@@ -64,8 +64,8 @@ public class IconController extends ParameterizedNodeController {
      *  @param controller The associated graph controller.
      */
     public IconController(GraphController controller) {
-	super(controller);
-	setNodeRenderer(new IconRenderer());
+        super(controller);
+        setNodeRenderer(new IconRenderer());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -73,16 +73,16 @@ public class IconController extends ParameterizedNodeController {
 
     /** An icon renderer. */
     public static class IconRenderer implements NodeRenderer {
-	public Figure render(Object n) {
-	    Locatable location = (Locatable)n;
-	    NamedObj object = (NamedObj) location.getContainer();
+        public Figure render(Object n) {
+            Locatable location = (Locatable)n;
+            NamedObj object = (NamedObj) location.getContainer();
 
-	    // NOTE: this code is similar to that in PtolemyTreeCellRenderer
+            // NOTE: this code is similar to that in PtolemyTreeCellRenderer
             Figure result = null;
             try {
                 List iconList = object.attributeList(EditorIcon.class);
                 if (iconList.size() == 0) {
-		    EditorIcon icon = new XMLIcon(object, "_icon");
+                    EditorIcon icon = new XMLIcon(object, "_icon");
                     result = icon.createFigure();
                 } else if (iconList.size() == 1) {
                     EditorIcon icon = (EditorIcon)iconList.iterator().next();
@@ -96,14 +96,14 @@ public class IconController extends ParameterizedNodeController {
                         ((CompositeFigure)result).add(icon.createFigure());
                     }
                 }
-	    } catch (KernelException ex) {
-		throw new InternalErrorException(null, ex,
- 			"Could not create icon " +
+            } catch (KernelException ex) {
+                throw new InternalErrorException(null, ex,
+                         "Could not create icon " +
                         "in " + object + " even " +
                         "though one did not previously exist.");
-	    }
+            }
             result.setToolTipText(object.getClass().getName());
-	    return result;
-	}
+            return result;
+        }
     }
 }

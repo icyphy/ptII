@@ -92,19 +92,19 @@ import soot.toolkits.graph.Block;
 public class BooleanNotCompactor {
 
     public static void compact(SootMethod method)
-	throws IllegalActionException {
-	Body mbody = method.retrieveActiveBody();
-	PatchingChain chain = mbody.getUnits();
+        throws IllegalActionException {
+        Body mbody = method.retrieveActiveBody();
+        PatchingChain chain = mbody.getUnits();
 
-	for (Unit current = (Unit) chain.snapshotIterator().next();
-	     current != null;) {
+        for (Unit current = (Unit) chain.snapshotIterator().next();
+             current != null;) {
 
-	    Unit u = mergeBooleanAssign(chain,current);
-	    if (u == null)
-		current = (Unit) chain.getSuccOf(current);
-	    else
-		current = (Unit) chain.getSuccOf(u);
-	}
+            Unit u = mergeBooleanAssign(chain,current);
+            if (u == null)
+                current = (Unit) chain.getSuccOf(current);
+            else
+                current = (Unit) chain.getSuccOf(u);
+        }
     }
 
     /**
@@ -119,101 +119,101 @@ public class BooleanNotCompactor {
      * - Assignment statements must converge to same statement
      **/
     protected static Unit mergeBooleanAssign(PatchingChain chain,
-					     Unit root) {
+                                             Unit root) {
 
-	// 0 Unit must be an IfStmt statment
-	if (!(root instanceof IfStmt))
-	    return null;
-	IfStmt rootIfStmt = (IfStmt) root;
+        // 0 Unit must be an IfStmt statment
+        if (!(root instanceof IfStmt))
+            return null;
+        IfStmt rootIfStmt = (IfStmt) root;
 
-	// 1. successor must be an assignment statment
-	Unit successor = (Unit) chain.getSuccOf(rootIfStmt);
-	if (!(successor instanceof AssignStmt))
-	    return null;
+        // 1. successor must be an assignment statment
+        Unit successor = (Unit) chain.getSuccOf(rootIfStmt);
+        if (!(successor instanceof AssignStmt))
+            return null;
 
-	// 2. target must be an assignment statment
-	Unit target = rootIfStmt.getTarget();
-	if (!(target instanceof AssignStmt))
-	    return null;
+        // 2. target must be an assignment statment
+        Unit target = rootIfStmt.getTarget();
+        if (!(target instanceof AssignStmt))
+            return null;
 
-	//System.out.println("Dual Assignment Targets");
+        //System.out.println("Dual Assignment Targets");
 
-	// 3. Assignment statements must be to the same value
-	// TODO: fieldrefs?
-	Value falseAssignValue = ((AssignStmt) successor).getLeftOp();
-	Value trueAssignValue = ((AssignStmt) target).getLeftOp();
-	if (falseAssignValue != trueAssignValue)
-	    return null;
+        // 3. Assignment statements must be to the same value
+        // TODO: fieldrefs?
+        Value falseAssignValue = ((AssignStmt) successor).getLeftOp();
+        Value trueAssignValue = ((AssignStmt) target).getLeftOp();
+        if (falseAssignValue != trueAssignValue)
+            return null;
 
-	//System.out.println("Target same value");
+        //System.out.println("Target same value");
 
-	// 4. Values being assigned must be a constant
-	Value falseValue = ((AssignStmt) successor).getRightOp();
-	Value trueValue = ((AssignStmt) target).getRightOp();
-	if (!(falseValue instanceof IntConstant) ||
-	    !(trueValue instanceof IntConstant))
-	    return null;
+        // 4. Values being assigned must be a constant
+        Value falseValue = ((AssignStmt) successor).getRightOp();
+        Value trueValue = ((AssignStmt) target).getRightOp();
+        if (!(falseValue instanceof IntConstant) ||
+            !(trueValue instanceof IntConstant))
+            return null;
 
-	// 5. falseInt must be not trueInt
-	int falseInt = ((IntConstant) falseValue).value;
-	int trueInt = ((IntConstant) trueValue).value;
-//  	if ((falseInt ^ trueInt) != 1)
-//  	    return null;
-  	if (falseInt != 1 || trueInt != 0)
-  	    return null;
+        // 5. falseInt must be not trueInt
+        int falseInt = ((IntConstant) falseValue).value;
+        int trueInt = ((IntConstant) trueValue).value;
+//          if ((falseInt ^ trueInt) != 1)
+//              return null;
+          if (falseInt != 1 || trueInt != 0)
+              return null;
 
-	// 6. Each block must converge
-	Unit falseSuccessor = (Unit) chain.getSuccOf(successor);
-	Unit trueSuccessor = (Unit) chain.getSuccOf(target);
-	if ( !(falseSuccessor instanceof GotoStmt) )
-	    return null;
-	if ( ((GotoStmt) falseSuccessor).getTarget() != trueSuccessor)
-	    return null;
+        // 6. Each block must converge
+        Unit falseSuccessor = (Unit) chain.getSuccOf(successor);
+        Unit trueSuccessor = (Unit) chain.getSuccOf(target);
+        if ( !(falseSuccessor instanceof GotoStmt) )
+            return null;
+        if ( ((GotoStmt) falseSuccessor).getTarget() != trueSuccessor)
+            return null;
 
 
 
-	// Create new unit
-	ConditionExpr ifCondition = (ConditionExpr) rootIfStmt.getCondition();
-	System.out.println("if="+ifCondition);
-	Value v = null;
-	if (ifCondition instanceof CompoundBooleanExpression)
-	    v = new JHDLNotExpr( ifCondition );
-	else
-	    v = new JHDLNotExpr(ifCondition.getOp1());
-	AssignStmt a = new JAssignStmt(falseAssignValue,v);
-	System.out.println(a);
-	Unit preceeding = (Unit) chain.getPredOf(root);
-	chain.insertAfter(a,preceeding);
+        // Create new unit
+        ConditionExpr ifCondition = (ConditionExpr) rootIfStmt.getCondition();
+        System.out.println("if="+ifCondition);
+        Value v = null;
+        if (ifCondition instanceof CompoundBooleanExpression)
+            v = new JHDLNotExpr( ifCondition );
+        else
+            v = new JHDLNotExpr(ifCondition.getOp1());
+        AssignStmt a = new JAssignStmt(falseAssignValue,v);
+        System.out.println(a);
+        Unit preceeding = (Unit) chain.getPredOf(root);
+        chain.insertAfter(a,preceeding);
 
-	// Remove units
-	chain.remove(root);
-	chain.remove(successor);
-	chain.remove(falseSuccessor);
-	chain.remove(target);
-	//	chain.remove();
+        // Remove units
+        chain.remove(root);
+        chain.remove(successor);
+        chain.remove(falseSuccessor);
+        chain.remove(target);
+        //        chain.remove();
 
-	return a;
+        return a;
     }
 
     public static void main(String args[]) {
 
-	soot.SootMethod testMethod =
-	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
+        soot.SootMethod testMethod =
+            ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 
-	soot.Body body = testMethod.retrieveActiveBody();
-	soot.toolkits.graph.CompleteUnitGraph unitGraph =
-	    new soot.toolkits.graph.CompleteUnitGraph(body);
-	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty toDotty = new BlockGraphToDotty();
+        soot.Body body = testMethod.retrieveActiveBody();
+        soot.toolkits.graph.CompleteUnitGraph unitGraph =
+            new soot.toolkits.graph.CompleteUnitGraph(body);
+        BriefBlockGraph bbgraph = new BriefBlockGraph(body);
+        BlockGraphToDotty toDotty = new BlockGraphToDotty();
         toDotty.writeDotFile(".", "beforegraph", bbgraph);
-	try {
-	    ConditionalControlCompactor.compact(testMethod);
-	    compact(testMethod);
-	} catch (IllegalActionException e) {
-	    System.err.println(e);
-	}
-	bbgraph = new BriefBlockGraph(body);
-	toDotty.writeDotFile(".", "aftergraph", bbgraph);
+        try {
+            ConditionalControlCompactor.compact(testMethod);
+            compact(testMethod);
+        } catch (IllegalActionException e) {
+            System.err.println(e);
+        }
+        bbgraph = new BriefBlockGraph(body);
+        toDotty.writeDotFile(".", "aftergraph", bbgraph);
 
     }
 

@@ -140,7 +140,7 @@ public class PtolemyApplet extends BasicJApplet
      *  @param throwable The throwable that triggered the error.
      */
     public void executionError(Manager manager, Throwable throwable) {
-	report(throwable);
+        report(throwable);
     }
 
     /** Report that execution of the model has finished.  This is

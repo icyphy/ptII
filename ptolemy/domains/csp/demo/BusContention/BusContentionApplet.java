@@ -122,7 +122,7 @@ public class BusContentionApplet extends PtolemyApplet {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         _toplevel = toplevel;
         toplevel.setName("BusContention");
-	new CSPDirector(toplevel, "CSPDirector");
+        new CSPDirector(toplevel, "CSPDirector");
 
         // Instantiate Actors
         _contentionActor = new Controller( toplevel, "controller" );
@@ -135,17 +135,17 @@ public class BusContentionApplet extends PtolemyApplet {
         TypedIORelation inReqs, outReqs,
             reads, writes, outContends, inContends;
 
-	// Set up connections
+        // Set up connections
         inReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor1.requestOutput );
-	inReqs = (TypedIORelation)toplevel.connect(
+        inReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor2.requestOutput );
         inReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor3.requestOutput );
-	outContends = (TypedIORelation)toplevel.connect(
+        outContends = (TypedIORelation)toplevel.connect(
                 _contentionActor.contendOutput,
                 _alarmActor.input );
         inContends = (TypedIORelation)toplevel.connect(
@@ -184,36 +184,36 @@ public class BusContentionApplet extends PtolemyApplet {
     /** Create an animation pane.
      */
     protected void _createView() {
-	super._createView();
+        super._createView();
 
-	_divaPanel = new JPanel( new BorderLayout() );
+        _divaPanel = new JPanel( new BorderLayout() );
         _divaPanel.setBorder(new TitledBorder(
                 new LineBorder(Color.black), "Animation"));
         _divaPanel.setBackground(getBackground());
-	_divaPanel.setPreferredSize( new Dimension(500, 450) );
-	_divaPanel.setBackground(getBackground());
-	getContentPane().add( _divaPanel, BorderLayout.SOUTH );
+        _divaPanel.setPreferredSize( new Dimension(500, 450) );
+        _divaPanel.setBackground(getBackground());
+        getContentPane().add( _divaPanel, BorderLayout.SOUTH );
 
         _graph = _constructGraph();
 
-	final BasicGraphModel finalGraphModel = _graph;
-	// display the graph.
-	final GraphController gc = new BusContentionGraphController();
+        final BasicGraphModel finalGraphModel = _graph;
+        // display the graph.
+        final GraphController gc = new BusContentionGraphController();
 
-	final GraphPane gp = new GraphPane(gc, _graph);
-	_jgraph = new JGraph(gp);
-	_jgraph.repaint();
+        final GraphPane gp = new GraphPane(gc, _graph);
+        _jgraph = new JGraph(gp);
+        _jgraph.repaint();
 
-	// Adding it to the center so that it fills the containing panel.
-	_divaPanel.add(_jgraph, BorderLayout.CENTER );
+        // Adding it to the center so that it fills the containing panel.
+        _divaPanel.add(_jgraph, BorderLayout.CENTER );
 
-	_jgraph.setBackground(getBackground());
+        _jgraph.setBackground(getBackground());
 
-	StateListener listener =
+        StateListener listener =
             new StateListener((GraphPane)_jgraph.getCanvasPane());
-	_processActor1.addDebugListener(listener);
-	_processActor2.addDebugListener(listener);
-	_processActor3.addDebugListener(listener);
+        _processActor1.addDebugListener(listener);
+        _processActor2.addDebugListener(listener);
+        _processActor3.addDebugListener(listener);
     }
 
     /** Override the baseclass start method so that the model
@@ -224,7 +224,7 @@ public class BusContentionApplet extends PtolemyApplet {
      *  hasn't yet been displayed.
      */
     public void start() {
- 	_doLayout(_graph, _jgraph.getGraphPane());
+         _doLayout(_graph, _jgraph.getGraphPane());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,8 +235,8 @@ public class BusContentionApplet extends PtolemyApplet {
      *  but it will do for now...
      */
     private BasicGraphModel _constructGraph() {
-	BasicGraphModel model = new BasicGraphModel();
-	Object root = model.getRoot();
+        BasicGraphModel model = new BasicGraphModel();
+        Object root = model.getRoot();
 
         // Nodes, with user object set to the actor
         Object n1 = model.createNode(_contentionActor);
@@ -261,60 +261,60 @@ public class BusContentionApplet extends PtolemyApplet {
         _nodeMap.put(_processActor3, n6);
 
         // Edges
-	Object e;
+        Object e;
 
-	e = model.createEdge(null);
-	model.setEdgeHead(this, e, n1);
-	model.setEdgeTail(this, e, n2);
+        e = model.createEdge(null);
+        model.setEdgeHead(this, e, n1);
+        model.setEdgeTail(this, e, n2);
 
- 	e = model.createEdge(null);
-	model.setEdgeHead(this, e, n1);
-	model.setEdgeTail(this, e, n4);
+         e = model.createEdge(null);
+        model.setEdgeHead(this, e, n1);
+        model.setEdgeTail(this, e, n4);
 
-	e = model.createEdge(null);
-	model.setEdgeHead(this, e, n1);
-	model.setEdgeTail(this, e, n5);
+        e = model.createEdge(null);
+        model.setEdgeHead(this, e, n1);
+        model.setEdgeTail(this, e, n5);
 
-	e = model.createEdge(null);
-	model.setEdgeHead(this, e, n1);
-	model.setEdgeTail(this, e, n6);
+        e = model.createEdge(null);
+        model.setEdgeHead(this, e, n1);
+        model.setEdgeTail(this, e, n6);
 
-	e = model.createEdge(null);
-	model.setEdgeHead(this, e, n3);
-	model.setEdgeTail(this, e, n4);
+        e = model.createEdge(null);
+        model.setEdgeHead(this, e, n3);
+        model.setEdgeTail(this, e, n4);
 
-	e = model.createEdge(null);
-	model.setEdgeHead(this, e, n3);
-	model.setEdgeTail(this, e, n5);
+        e = model.createEdge(null);
+        model.setEdgeHead(this, e, n3);
+        model.setEdgeTail(this, e, n5);
 
-	e = model.createEdge(null);
-	model.setEdgeHead(this, e, n3);
-	model.setEdgeTail(this, e, n6);
+        e = model.createEdge(null);
+        model.setEdgeHead(this, e, n3);
+        model.setEdgeTail(this, e, n6);
 
-	return model;
+        return model;
     }
 
     /** Layout the graph again.
      */
     private void _doLayout(GraphModel graph, GraphPane gp) {
         // Do the layout
-	try {
-	    final GraphModel layoutGraph = graph;
-	    final GraphController gc = gp.getGraphController();
-	    final GraphPane pane = gp;
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    // Layout is a bit stupid
-		    LayoutTarget target = new BasicLayoutTarget(gc);
-		    LevelLayout staticLayout = new LevelLayout(target);
-		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-		    staticLayout.layout(layoutGraph.getRoot());
-		    pane.repaint();
-		}
-	    });
-	} catch (Exception e) {
-	    System.out.println(e);
-	}
+        try {
+            final GraphModel layoutGraph = graph;
+            final GraphController gc = gp.getGraphController();
+            final GraphPane pane = gp;
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    // Layout is a bit stupid
+                    LayoutTarget target = new BasicLayoutTarget(gc);
+                    LevelLayout staticLayout = new LevelLayout(target);
+                    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+                    staticLayout.layout(layoutGraph.getRoot());
+                    pane.repaint();
+                }
+            });
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -347,47 +347,47 @@ public class BusContentionApplet extends PtolemyApplet {
     //// LayoutListener
 
     private class LayoutListener implements ActionListener {
-	public void actionPerformed(ActionEvent evt) {
-	    final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
-	    final GraphModel g = _graph;
-	    _doLayout(g, gp);
-	}
+        public void actionPerformed(ActionEvent evt) {
+            final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
+            final GraphModel g = _graph;
+            _doLayout(g, gp);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     //// BusContentionGraphController
     public class BusContentionGraphController extends BasicGraphController {
-	private SelectionDragger _selectionDragger;
-	/**
-	 * Create a new basic controller with default
-	 * node and edge interactors.
-	 */
-	public BusContentionGraphController() {
-	    // The interactors attached to nodes and edges
-	    setNodeController(new BasicNodeController(this));
-	    setEdgeController(new BasicEdgeController(this));
-	    getNodeController().setNodeRenderer(new ThreadRenderer(this));
-	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
-	}
+        private SelectionDragger _selectionDragger;
+        /**
+         * Create a new basic controller with default
+         * node and edge interactors.
+         */
+        public BusContentionGraphController() {
+            // The interactors attached to nodes and edges
+            setNodeController(new BasicNodeController(this));
+            setEdgeController(new BasicEdgeController(this));
+            getNodeController().setNodeRenderer(new ThreadRenderer(this));
+            getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
+        }
 
 
-	/**
-	 * Initialize all interaction on the graph pane. This method
-	 * is called by the setGraphPane() method of the superclass.
-	 * This initialization cannot be done in the constructor because
-	 * the controller does not yet have a reference to its pane
-	 * at that time.
-	 */
-	protected void initializeInteraction() {
-	    GraphPane pane = getGraphPane();
+        /**
+         * Initialize all interaction on the graph pane. This method
+         * is called by the setGraphPane() method of the superclass.
+         * This initialization cannot be done in the constructor because
+         * the controller does not yet have a reference to its pane
+         * at that time.
+         */
+        protected void initializeInteraction() {
+            GraphPane pane = getGraphPane();
 
-	    // Create and set up the selection dragger
-	    _selectionDragger = new SelectionDragger(pane);
-	    _selectionDragger.addSelectionInteractor(
+            // Create and set up the selection dragger
+            _selectionDragger = new SelectionDragger(pane);
+            _selectionDragger.addSelectionInteractor(
                     (SelectionInteractor)getEdgeController().getEdgeInteractor());
-	    _selectionDragger.addSelectionInteractor(
+            _selectionDragger.addSelectionInteractor(
                     (SelectionInteractor)getNodeController().getNodeInteractor());
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -437,17 +437,17 @@ public class BusContentionApplet extends PtolemyApplet {
             _graphPane = pane;
         }
 
-	/** Ignore messages.
-	 */
-	public void message(String message) {
-	}
+        /** Ignore messages.
+         */
+        public void message(String message) {
+        }
 
         /** React to the given event.
          */
         public void event(DebugEvent debugEvent) {
-	    // only trap ExecEvents.
-	    if (!(debugEvent instanceof ExecEvent)) return;
-	    ExecEvent event = (ExecEvent) debugEvent;
+            // only trap ExecEvents.
+            if (!(debugEvent instanceof ExecEvent)) return;
+            ExecEvent event = (ExecEvent) debugEvent;
             final ExecEvent.ExecEventType state = event.getState();
             NamedObj actor = event.getSource();
 
@@ -463,19 +463,19 @@ public class BusContentionApplet extends PtolemyApplet {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
                         if (state == ExecEvent.WAITING)
-			    figure.setFillPaint(Color.yellow);
-			else if (state == ExecEvent.ACCESSING)
+                            figure.setFillPaint(Color.yellow);
+                        else if (state == ExecEvent.ACCESSING)
                             figure.setFillPaint(Color.green);
-			else if (state == ExecEvent.BLOCKED)
+                        else if (state == ExecEvent.BLOCKED)
                             figure.setFillPaint(Color.red);
-			else
+                        else
                             System.err.println("Unknown state: " + state);
                     }
                 });
             }
             catch (Exception e) {
-		e.printStackTrace();
-	    }
+                e.printStackTrace();
+            }
         }
     }
 
@@ -492,20 +492,20 @@ public class BusContentionApplet extends PtolemyApplet {
          */
         private double _size = 50;
 
-	/** The graph controller
-	 */
-	private GraphController _controller;
+        /** The graph controller
+         */
+        private GraphController _controller;
 
-	public ThreadRenderer(GraphController controller) {
-	    _controller = controller;
-	}
+        public ThreadRenderer(GraphController controller) {
+            _controller = controller;
+        }
 
         /**
          * Return the rendered visual representation of this node.
          */
         public Figure render(Object n) {
             ComponentEntity actor = (ComponentEntity)
-		_controller.getGraphModel().getSemanticObject(n);
+                _controller.getGraphModel().getSemanticObject(n);
 
             boolean isEllipse =
                 actor instanceof Controller
@@ -518,7 +518,7 @@ public class BusContentionApplet extends PtolemyApplet {
                 f = new BasicEllipse(0, 0, _size, _size);
             } else {
                 f = new BasicRectangle(0, 0, _size, _size);
-		f.setFillPaint(Color.blue);
+                f.setFillPaint(Color.blue);
             }
             String label = actor.getName();
             LabelWrapper w = new LabelWrapper(f, label);

@@ -79,9 +79,9 @@ public class LineCoder extends SDFTransformer {
         wordLength = new Parameter(this, "wordLength", new IntToken(1));
         wordLength.setTypeEquals(BaseType.INT);
 
-	ArrayType paramType = (ArrayType)table.getType();
-	InequalityTerm elementTerm = paramType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        ArrayType paramType = (ArrayType)table.getType();
+        InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,7 +135,7 @@ public class LineCoder extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         LineCoder newObject = (LineCoder)(super.clone(workspace));
 
         // set the type constraints

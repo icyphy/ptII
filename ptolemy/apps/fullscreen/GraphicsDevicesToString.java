@@ -24,8 +24,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -69,7 +69,7 @@ public class GraphicsDevicesToString extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(new ArrayType(BaseType.OBJECT));
-	output.setTypeEquals(BaseType.STRING);
+        output.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,44 +83,44 @@ public class GraphicsDevicesToString extends Transformer {
      *  @exception IllegalActionException If there is no director.  */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
-	StringBuffer description = new StringBuffer();
+        StringBuffer description = new StringBuffer();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-		Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
+                Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
 
-		System.out.println("GraphicsDevicesToString.fire(): "
-				   + "width: " + width + " token length:"
-				   + inputArray.length);
+                System.out.println("GraphicsDevicesToString.fire(): "
+                                   + "width: " + width + " token length:"
+                                   + inputArray.length);
 
-		for( int graphicsDeviceCount = 0;
-		     graphicsDeviceCount < inputArray.length;
-		     graphicsDeviceCount++) {
+                for( int graphicsDeviceCount = 0;
+                     graphicsDeviceCount < inputArray.length;
+                     graphicsDeviceCount++) {
 
-		    GraphicsDevice graphicsDevice =
-			(GraphicsDevice)
-			(((ObjectToken)inputArray[graphicsDeviceCount])
-			 .getValue());
+                    GraphicsDevice graphicsDevice =
+                        (GraphicsDevice)
+                        (((ObjectToken)inputArray[graphicsDeviceCount])
+                         .getValue());
 
-		    String graphicsDeviceType = "UNKNOWN";
-		    switch (graphicsDevice.getType()) {
-		    case GraphicsDevice.TYPE_RASTER_SCREEN:
-			graphicsDeviceType = "TYPE_RASTER_SCREEN";
-			break;
-		    case GraphicsDevice.TYPE_PRINTER:
-			graphicsDeviceType = "TYPE_PRINTER";
-			break;
-		    case GraphicsDevice.TYPE_IMAGE_BUFFER:
-			graphicsDeviceType = "TYPE_IMAGE_BUFFER";
-			break;
-		    }
-		    description.append("GraphicsDevice: "
-				       + graphicsDeviceCount
-				       + " "
-				       + graphicsDeviceType + "\n");
-		}
+                    String graphicsDeviceType = "UNKNOWN";
+                    switch (graphicsDevice.getType()) {
+                    case GraphicsDevice.TYPE_RASTER_SCREEN:
+                        graphicsDeviceType = "TYPE_RASTER_SCREEN";
+                        break;
+                    case GraphicsDevice.TYPE_PRINTER:
+                        graphicsDeviceType = "TYPE_PRINTER";
+                        break;
+                    case GraphicsDevice.TYPE_IMAGE_BUFFER:
+                        graphicsDeviceType = "TYPE_IMAGE_BUFFER";
+                        break;
+                    }
+                    description.append("GraphicsDevice: "
+                                       + graphicsDeviceCount
+                                       + " "
+                                       + graphicsDeviceType + "\n");
+                }
             }
         }
-	Token out = new StringToken(description.toString());
-	output.broadcast(out);
+        Token out = new StringToken(description.toString());
+        output.broadcast(out);
     }
 }

@@ -133,7 +133,7 @@ public class Joystick extends Source {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	super.attributeChanged(attribute);
+        super.attributeChanged(attribute);
     }
 
     /** Transfers data between the Ptolemy model and the built in
@@ -155,7 +155,7 @@ public class Joystick extends Source {
      *  @exception IllegalActionException Thrown if the try fails.
      */
     public synchronized void fire() throws IllegalActionException {
-	super.fire();
+        super.fire();
     }
 
     /** [Pre]initialize does the resource allocation for this actor.

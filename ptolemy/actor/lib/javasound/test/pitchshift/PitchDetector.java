@@ -55,18 +55,18 @@ public class PitchDetector {
      */
     public PitchDetector(int vectorSize,int sampleRate) {
         this._sampleRate = sampleRate;
-	this._minAutoCorInd = (int)((double)_sampleRate/_maxAllowablePitch);
-	this._maxAutoCorInd = (int)(1.1*(double)_sampleRate/_minAllowablePitch);
+        this._minAutoCorInd = (int)((double)_sampleRate/_maxAllowablePitch);
+        this._maxAutoCorInd = (int)(1.1*(double)_sampleRate/_minAllowablePitch);
         // FIXME: Should force _recentInputArraySize to be a power of 2.
         this._recentInputArraySize = 2048;
 
         this._outPitchArray = new double[vectorSize];
         this._magSqDFT = new double[2*_recentInputArraySize];
 
-	this._autocorEst = new double[2*_recentInputArraySize];
+        this._autocorEst = new double[2*_recentInputArraySize];
 
-	// Make this double the length, since need zero padding for
-	// the DFT.
+        // Make this double the length, since need zero padding for
+        // the DFT.
         this._recentInputArray = new double[2*_recentInputArraySize];
     }
 
@@ -93,94 +93,94 @@ public class PitchDetector {
     public double[] performPitchDetect(double [] inputArray) {
 
 
-	// The number of samples of the input signal to skip
-	// between autocorrelation estimates. Must be a
-	// non-negative integer. A value of zero means that
-	// the FFTs are computed back-to-back. Increasing
-	// this value will result in less frequent pitch updates,
-	// and less CPU usage.
-	int skipSamples = 0;
+        // The number of samples of the input signal to skip
+        // between autocorrelation estimates. Must be a
+        // non-negative integer. A value of zero means that
+        // the FFTs are computed back-to-back. Increasing
+        // this value will result in less frequent pitch updates,
+        // and less CPU usage.
+        int skipSamples = 0;
 
-	int curSkipSmaple = 0;
+        int curSkipSmaple = 0;
         // Main loop.
         for (int vectorLoopPos = 0; vectorLoopPos < inputArray.length;
              vectorLoopPos++) {
             //System.out.println("vectorLoopPos " + vectorLoopPos);
-	    // Want to leave half of the array full of zeros, so that
-	    // we will have the appropriate amount of zero-padding
-	    // required for the DFT.
-	    if (curSkipSmaple == 0) {
-		if (_recentInputArrayPos < _recentInputArraySize) {
-		    // Ok to read in another samples, array not full yet.
+            // Want to leave half of the array full of zeros, so that
+            // we will have the appropriate amount of zero-padding
+            // required for the DFT.
+            if (curSkipSmaple == 0) {
+                if (_recentInputArrayPos < _recentInputArraySize) {
+                    // Ok to read in another samples, array not full yet.
 
-		    // Read in an input sample.
-		    _recentInputArray[_recentInputArrayPos] =
-			inputArray[vectorLoopPos];
-		    _recentInputArrayPos++;
-		} else  {
-		    // Step 2. Take DFT of recent input padded with zeros.
-		    _dftInput = SignalProcessing.FFTComplexOut(_recentInputArray);
+                    // Read in an input sample.
+                    _recentInputArray[_recentInputArrayPos] =
+                        inputArray[vectorLoopPos];
+                    _recentInputArrayPos++;
+                } else  {
+                    // Step 2. Take DFT of recent input padded with zeros.
+                    _dftInput = SignalProcessing.FFTComplexOut(_recentInputArray);
 
-		    // Step 3. Take the Mag^2 of the DFT.
-		    for (int ind2 = 0; ind2 <
-			     _recentInputArray.length; ind2++) {
-			_magSqDFT[ind2] =
-			    _dftInput[ind2].magnitude()*_dftInput[ind2].magnitude();
-		    }
-		    // Step 4. Take IDFT of _magSqDFT.
-		    _autocorEst =
-			SignalProcessing.IFFTRealOut(_magSqDFT);
-		    double maxAutoCorVal = _autocorEst[0];
-		    // Normalize the autocorrelation estimate.
-		    for (int i = 0; i < _maxAutoCorInd; i++) {
-			_autocorEst[i] = _autocorEst[i]/maxAutoCorVal;
-			//System.out.println("_autocorEst[" +i+"] = " + _autocorEst[i]);
-			if (_autocorEst[i] > 1.01) {
-			    System.out.println("FIXME: _autocorEst[" +i+"] = " + _autocorEst[i]);
-			}
-		    }
-		    // Step 5. Find the peak in the the autocorrelation estimate.
+                    // Step 3. Take the Mag^2 of the DFT.
+                    for (int ind2 = 0; ind2 <
+                             _recentInputArray.length; ind2++) {
+                        _magSqDFT[ind2] =
+                            _dftInput[ind2].magnitude()*_dftInput[ind2].magnitude();
+                    }
+                    // Step 4. Take IDFT of _magSqDFT.
+                    _autocorEst =
+                        SignalProcessing.IFFTRealOut(_magSqDFT);
+                    double maxAutoCorVal = _autocorEst[0];
+                    // Normalize the autocorrelation estimate.
+                    for (int i = 0; i < _maxAutoCorInd; i++) {
+                        _autocorEst[i] = _autocorEst[i]/maxAutoCorVal;
+                        //System.out.println("_autocorEst[" +i+"] = " + _autocorEst[i]);
+                        if (_autocorEst[i] > 1.01) {
+                            System.out.println("FIXME: _autocorEst[" +i+"] = " + _autocorEst[i]);
+                        }
+                    }
+                    // Step 5. Find the peak in the the autocorrelation estimate.
 
-		    // Find the index at which the autocorrelation function
-		    // becomes less than the threshold.
-		    int firstZzeroIndex = -1;
-		    double closeEnoughToZero = 0.25;
+                    // Find the index at which the autocorrelation function
+                    // becomes less than the threshold.
+                    int firstZzeroIndex = -1;
+                    double closeEnoughToZero = 0.25;
 
-		    for (int j = _minAutoCorInd; j < _maxAutoCorInd; j++) {
-			if (_autocorEst[j] < closeEnoughToZero) {
-			    firstZzeroIndex = j;
-			    //System.out.println("firstZzeroIndex = " + firstZzeroIndex);
-			    break;
-			}
-		    }
-		    double maxv = 0;
-		    int maxInd = 0;
-		    if (firstZzeroIndex > 0) {
-			for (int m = firstZzeroIndex; m <
-				 _maxAutoCorInd; m++) {
-			    if (_autocorEst[m] > maxv) {
-				maxv = _autocorEst[m];
-				maxInd = m;
-			    }
-			}
-		    }
-		    _currentPitch = -1;
-		    if (maxv > 0.3) {
-			_currentPitch = (double)_sampleRate/(double)maxInd;
-		    }
-		    //if (_currentPitch < 0) {
-		    //System.out.println("_currentPitch = " + _currentPitch);
-		    //System.out.println("value = " + _autocorEst[maxInd]);
-		    //System.out.println("index = " + maxInd);
-		    //System.out.println("index = " + maxInd);
-		    //}
-		    _recentInputArrayPos = 0;
-		    curSkipSmaple = skipSamples;
-		    //System.out.println("Done");
-		}
-	    } else {
-		curSkipSmaple--;
-	    }
+                    for (int j = _minAutoCorInd; j < _maxAutoCorInd; j++) {
+                        if (_autocorEst[j] < closeEnoughToZero) {
+                            firstZzeroIndex = j;
+                            //System.out.println("firstZzeroIndex = " + firstZzeroIndex);
+                            break;
+                        }
+                    }
+                    double maxv = 0;
+                    int maxInd = 0;
+                    if (firstZzeroIndex > 0) {
+                        for (int m = firstZzeroIndex; m <
+                                 _maxAutoCorInd; m++) {
+                            if (_autocorEst[m] > maxv) {
+                                maxv = _autocorEst[m];
+                                maxInd = m;
+                            }
+                        }
+                    }
+                    _currentPitch = -1;
+                    if (maxv > 0.3) {
+                        _currentPitch = (double)_sampleRate/(double)maxInd;
+                    }
+                    //if (_currentPitch < 0) {
+                    //System.out.println("_currentPitch = " + _currentPitch);
+                    //System.out.println("value = " + _autocorEst[maxInd]);
+                    //System.out.println("index = " + maxInd);
+                    //System.out.println("index = " + maxInd);
+                    //}
+                    _recentInputArrayPos = 0;
+                    curSkipSmaple = skipSamples;
+                    //System.out.println("Done");
+                }
+            } else {
+                curSkipSmaple--;
+            }
             _outPitchArray[vectorLoopPos] = _currentPitch;
         }
         return _outPitchArray;

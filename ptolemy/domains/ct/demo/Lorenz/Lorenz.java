@@ -66,18 +66,18 @@ a CT director, which includes a sophisticated ODE numerical solver.
 public class Lorenz extends TypedCompositeActor {
 
     public Lorenz(Workspace workspace)
-	    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         // Create the model.
         super(workspace);
-	setName("LorenzSystem");
+        setName("LorenzSystem");
         Manager manager = new Manager(workspace, "Manager");
         setManager(manager);
 
         // Set up the top level composite actor, director and manager
         CTMultiSolverDirector director =
             new CTMultiSolverDirector(this, "CTMultiSolverDirector");
-	setDirector(director);
+        setDirector(director);
         director.stopTime.setToken(new DoubleToken(50.0));
 
         // To get debug outputs, uncomment these:

@@ -143,7 +143,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  @return The configuration.
      */
     public Configuration getConfiguration() {
-	return _configuration;
+        return _configuration;
     }
 
     /** Get the graph frame, or null if there is none.  This is used by
@@ -329,7 +329,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  will not have been fully constructed by the time this is called.
      */
     protected void _createControllers() {
-	_portController = new ExternalIOPortController(this,
+        _portController = new ExternalIOPortController(this,
                  AttributeController.PARTIAL);
     }
 
@@ -346,10 +346,10 @@ public abstract class BasicGraphController extends AbstractGraphController
      */
     protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
-	_menuFactory = new SchematicContextMenuFactory(this);
-	_menuCreator = new MenuCreator(_menuFactory);
-	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
-	pane.getBackgroundEventLayer().setConsuming(false);
+        _menuFactory = new SchematicContextMenuFactory(this);
+        _menuCreator = new MenuCreator(_menuFactory);
+        pane.getBackgroundEventLayer().addInteractor(_menuCreator);
+        pane.getBackgroundEventLayer().setConsuming(false);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -422,36 +422,36 @@ public abstract class BasicGraphController extends AbstractGraphController
          *  @param mnemonicKey The KeyEvent field for the mnemonic key to
          *   use in the menu.
          */
-	public NewPortAction(
+        public NewPortAction(
                 IOPort prototype, String description, int mnemonicKey) {
-	    super(description);
+            super(description);
             _prototype = prototype;
-	    String dflt = "";
-	    // Creating the renderers this way is rather nasty..
-	    // Standard toolbar icons are 25x25 pixels.
-	    NodeRenderer renderer = _portController.getNodeRenderer();
+            String dflt = "";
+            // Creating the renderers this way is rather nasty..
+            // Standard toolbar icons are 25x25 pixels.
+            NodeRenderer renderer = _portController.getNodeRenderer();
             Object location = null;
             if (_prototype != null) {
                 location = _prototype.getAttribute("_location");
             }
-	    Figure figure = renderer.render(location);
+            Figure figure = renderer.render(location);
 
-	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
-	    putValue(GUIUtilities.LARGE_ICON, icon);
+            FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
+            putValue(GUIUtilities.LARGE_ICON, icon);
 
-	    putValue("tooltip", description);
-	    putValue(GUIUtilities.MNEMONIC_KEY,
+            putValue("tooltip", description);
+            putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(mnemonicKey));
-	}
+        }
 
         /** Create a new port. */
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    double x;
-	    double y;
-	    if (getSourceType() == TOOLBAR_TYPE ||
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            double x;
+            double y;
+            if (getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
-		// No location in the action, so put it in the middle.
+                // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = BasicGraphController.this.getFrame();
                 if (frame != null) {
                     // Put in the middle of the visible part.
@@ -484,7 +484,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                     x = center.getX()/2;
                     y = center.getY()/2;
                 }
-	    } else {
+            } else {
                 // Transform
                 AffineTransform current =
                     getGraphPane().getTransformContext().getTransform();
@@ -498,14 +498,14 @@ public abstract class BasicGraphController extends AbstractGraphController
                 Point2D point = new Point2D.Double(getX(), getY());
 
                 inverse.transform(point, point);
-		x = point.getX();
-		y = point.getY();
-	    }
+                x = point.getX();
+                y = point.getY();
+            }
 
-	    AbstractBasicGraphModel graphModel =
+            AbstractBasicGraphModel graphModel =
                     (AbstractBasicGraphModel)getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
-	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
+            final CompositeEntity toplevel = graphModel.getPtolemyModel();
             NamedObj container =
                 MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
@@ -513,16 +513,16 @@ public abstract class BasicGraphController extends AbstractGraphController
             }
 
             final NamedObj context = container;
-	    final String portName = toplevel.uniqueName("port");
-	    final String locationName = "_location";
-	    // Create the port.
-	    StringBuffer moml = new StringBuffer();
+            final String portName = toplevel.uniqueName("port");
+            final String locationName = "_location";
+            // Create the port.
+            StringBuffer moml = new StringBuffer();
             if (container != toplevel) {
                 moml.append("<entity name=\"" +
                         toplevel.getName(container) + "\">\n");
             }
-	    moml.append("<port name=\"" + portName + "\">\n");
-	    moml.append("<property name=\"" + locationName +
+            moml.append("<port name=\"" + portName + "\">\n");
+            moml.append("<property name=\"" + locationName +
                     "\" class=\"ptolemy.kernel.util.Location\"/>\n");
             if (_prototype != null) {
                 if (_prototype.isInput()) {
@@ -535,13 +535,13 @@ public abstract class BasicGraphController extends AbstractGraphController
                     moml.append("<property name=\"multiport\"/>");
                 }
             }
-	    moml.append("</port>");
+            moml.append("</port>");
             if (container != toplevel) {
                 moml.append("</entity>");
             }
 
-	    MoMLChangeRequest request =
-		new MoMLChangeRequest(this, container, moml.toString()) {
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(this, container, moml.toString()) {
                 protected void _execute() throws Exception {
                     super._execute();
 
@@ -553,19 +553,19 @@ public abstract class BasicGraphController extends AbstractGraphController
                     // the icon at this location.
                     NamedObj newObject = toplevel.getPort(portName);
                     Location location =
-			     (Location) newObject.getAttribute(locationName);
+                             (Location) newObject.getAttribute(locationName);
                     location.setLocation(point);
                 }
             };
             request.setUndoable(true);
-	    container.requestChange(request);
-	    try {
-		request.waitForCompletion();
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-		throw new GraphException(ex);
-	    }
-	}
+            container.requestChange(request);
+            try {
+                request.waitForCompletion();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new GraphException(ex);
+            }
+        }
 
         private IOPort _prototype;
     }
@@ -575,19 +575,19 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** Factory for context menus. */
     public static class SchematicContextMenuFactory
-	    extends PtolemyMenuFactory {
+            extends PtolemyMenuFactory {
 
         /** Create a new context menu factory associated with the
          *  specified controller.
          *  @param controller The controller.
          */
-	public SchematicContextMenuFactory(GraphController controller) {
-	    super(controller);
+        public SchematicContextMenuFactory(GraphController controller) {
+            super(controller);
             addMenuItemFactory(new MenuActionFactory(_configureAction));
-	}
+        }
 
-	protected NamedObj _getObjectFromFigure(Figure source) {
-	    return (NamedObj)getController().getGraphModel().getRoot();
-	}
+        protected NamedObj _getObjectFromFigure(Figure source) {
+            return (NamedObj)getController().getGraphModel().getRoot();
+        }
     }
 }

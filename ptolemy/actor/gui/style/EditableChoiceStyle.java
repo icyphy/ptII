@@ -72,7 +72,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
      *  Increment the version number of the workspace.
      */
     public EditableChoiceStyle() {
-	super();
+        super();
     }
 
     /** Construct an attribute with the specified container and name.
@@ -99,8 +99,8 @@ public class EditableChoiceStyle extends ChoiceStyle {
      *   has a value that cannot be edited using this style.
      */
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
-	super.addEntry(query);
-	// This method is only here for documentation.
+        super.addEntry(query);
+        // This method is only here for documentation.
     }
 
     /** Whether or not the combobox is editable. In this class the

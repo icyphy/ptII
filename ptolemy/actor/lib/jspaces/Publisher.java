@@ -90,7 +90,7 @@ public class Publisher extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	jspaceName = new Parameter(this, "jspaceName",
+            jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
@@ -137,10 +137,10 @@ public class Publisher extends Sink {
      *  or any remote exceptions.
      */
     public void preinitialize() throws IllegalActionException {
-	super.preinitialize();
-	String name = ((StringToken)jspaceName.getToken()).stringValue();
+        super.preinitialize();
+        String name = ((StringToken)jspaceName.getToken()).stringValue();
         _lookupThread = Thread.currentThread();
-	_space = SpaceFinder.getSpace(name);
+        _space = SpaceFinder.getSpace(name);
         _lookupThread = null;
 
         String entry = ((StringToken)entryName.getToken()).stringValue();
@@ -152,12 +152,12 @@ public class Publisher extends Sink {
                         tokenTemplate, null, 1000);
             } while (oldEntry != null);
         } catch (RemoteException ex) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + ex.getMessage());
-	} catch (TransactionException ex) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+        } catch (TransactionException ex) {
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + ex.getMessage());
-	} catch (InterruptedException ex) {
+        } catch (InterruptedException ex) {
             throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + ex.getMessage());
         } catch (net.jini.core.entry.UnusableEntryException ex) {
@@ -178,7 +178,7 @@ public class Publisher extends Sink {
      *  or any remote exceptions.
      */
     public void fire() throws IllegalActionException {
-	try {
+        try {
             if (input.hasToken(0)) {
                 Token token = input.get(0);
                 String name =
@@ -194,13 +194,13 @@ public class Publisher extends Sink {
                     _debug(getName(), "Publisher writes " + token);
                 }
             }
-	} catch (RemoteException re) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+        } catch (RemoteException re) {
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + re.getMessage());
-	} catch (TransactionException te) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+        } catch (TransactionException te) {
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + te.getMessage());
-	} catch (InterruptedException ie) {
+        } catch (InterruptedException ie) {
             throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + ie.getMessage());
         } catch (net.jini.core.entry.UnusableEntryException ue) {

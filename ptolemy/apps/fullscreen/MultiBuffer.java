@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -31,7 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.apps.fullscreen;
 
 
-import java.awt.DisplayMode;	// JDK1.4
+import java.awt.DisplayMode;        // JDK1.4
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -73,7 +73,7 @@ public class MultiBuffer {
     }
 
     /** Enter full screen mode on particular device using the best
-     *	display mode.
+     *        display mode.
      *  Usually, this method is called in a try block, and
      *  device.setFullScreenWindow(null) is called in the finally block.
      *
@@ -83,33 +83,33 @@ public class MultiBuffer {
      *  @return A Frame that can be used to display images.
      */
     public static Frame enterFullScreenMode(GraphicsDevice device,
-					    int numberOfBuffers) {
-	GraphicsEnvironment graphicsEnvironment =
-	    GraphicsEnvironment.getLocalGraphicsEnvironment();
+                                            int numberOfBuffers) {
+        GraphicsEnvironment graphicsEnvironment =
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-	//device = graphicsEnvironment.getDefaultScreenDevice();
+        //device = graphicsEnvironment.getDefaultScreenDevice();
 
-	GraphicsConfiguration gc = device.getDefaultConfiguration();
-	Rectangle graphicsConfigurationBounds =
-		gc.getBounds();
-	Frame mainFrame = new Frame(gc);
-	mainFrame.setUndecorated(true);
-	mainFrame.setIgnoreRepaint(true);
-	mainFrame.enableInputMethods(false);
-	device.setFullScreenWindow(mainFrame);
-	if (device.isDisplayChangeSupported()) {
-	    MultiBuffer.chooseBestDisplayMode(device);
-	}
-	mainFrame.setLocation(graphicsConfigurationBounds.x,
-			      graphicsConfigurationBounds.y);
+        GraphicsConfiguration gc = device.getDefaultConfiguration();
+        Rectangle graphicsConfigurationBounds =
+                gc.getBounds();
+        Frame mainFrame = new Frame(gc);
+        mainFrame.setUndecorated(true);
+        mainFrame.setIgnoreRepaint(true);
+        mainFrame.enableInputMethods(false);
+        device.setFullScreenWindow(mainFrame);
+        if (device.isDisplayChangeSupported()) {
+            MultiBuffer.chooseBestDisplayMode(device);
+        }
+        mainFrame.setLocation(graphicsConfigurationBounds.x,
+                              graphicsConfigurationBounds.y);
 
-	mainFrame.createBufferStrategy(numberOfBuffers);
+        mainFrame.createBufferStrategy(numberOfBuffers);
 
-	return mainFrame;
+        return mainFrame;
     }
 
     /** Enter full screen mode on the default device using the best
-     *	display mode.
+     *        display mode.
      *  Usually, this method is called in a try block, and
      *  device.setFullScreenWindow(null) is called in the finally block.
      *
@@ -118,10 +118,10 @@ public class MultiBuffer {
      *  @return A Frame that can be used to display images.
      */
     public static Frame enterFullScreenMode(int numberOfBuffers) {
-	GraphicsEnvironment graphicsEnvironment =
-	    GraphicsEnvironment.getLocalGraphicsEnvironment();
-	GraphicsDevice device = graphicsEnvironment.getDefaultScreenDevice();
-	return enterFullScreenMode(device, numberOfBuffers);
+        GraphicsEnvironment graphicsEnvironment =
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = graphicsEnvironment.getDefaultScreenDevice();
+        return enterFullScreenMode(device, numberOfBuffers);
     }
 
     /** Exit full screen mode in the defaultScreenDevice
@@ -129,15 +129,15 @@ public class MultiBuffer {
      *  enterFullScreenMode is called in a try block.
      */
     public static void exitFullScreenMode() {
-	GraphicsEnvironment graphicsEnvironment =
-	    GraphicsEnvironment.getLocalGraphicsEnvironment();
-	GraphicsDevice device = graphicsEnvironment.getDefaultScreenDevice();
-	// The GraphicsDevice.setFullScreenWindow() docs say:
-	// "When returning to windowed mode from an exclusive full-screen
-	// window, any display changes made by calling"
-	// <code>setDisplayMode</code> are automatically restored to their
-	// original state."
-	device.setFullScreenWindow(null);
+        GraphicsEnvironment graphicsEnvironment =
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = graphicsEnvironment.getDefaultScreenDevice();
+        // The GraphicsDevice.setFullScreenWindow() docs say:
+        // "When returning to windowed mode from an exclusive full-screen
+        // window, any display changes made by calling"
+        // <code>setDisplayMode</code> are automatically restored to their
+        // original state."
+        device.setFullScreenWindow(null);
     }
 
 
@@ -154,34 +154,34 @@ public class MultiBuffer {
      *  @see getBestDisplayMode(GraphicsDevice)
      */
     public static DisplayMode
-	getBestDisplayMode(GraphicsDevice device,
-			   DisplayMode[] bestDisplayModes) {
-	// FIXME java.awt.GraphicsConfigTemplate might be another solution?
-	// This method is based on a method from the Sun website.
+        getBestDisplayMode(GraphicsDevice device,
+                           DisplayMode[] bestDisplayModes) {
+        // FIXME java.awt.GraphicsConfigTemplate might be another solution?
+        // This method is based on a method from the Sun website.
 
         DisplayMode[] modes = device.getDisplayModes();
 
         for (int i = 0; i < bestDisplayModes.length; i++) {
             for (int j = 0; j < modes.length; j++) {
-		// One tricky aspect is that we do not check for different
-		// refresh rates here, since the refresh rate could be
-		// anything.
-		//System.out.println("MultiBuffer.getBestDisplayMode(): "
-		//		       + displayModeToString(modes[j]));
+                // One tricky aspect is that we do not check for different
+                // refresh rates here, since the refresh rate could be
+                // anything.
+                //System.out.println("MultiBuffer.getBestDisplayMode(): "
+                //                       + displayModeToString(modes[j]));
                 if (bestDisplayModes[i].getWidth() == modes[j].getWidth()
                    && bestDisplayModes[i].getHeight() == modes[j].getHeight()
                    && bestDisplayModes[i].getBitDepth()
-		    == modes[j].getBitDepth()
-		    ) {
-		    //System.out.println("MultiBuffer.getBestDisplayMode(): "
-		    //		       + "returning: "
-		    //		       + displayModeToString(modes[j]));
+                    == modes[j].getBitDepth()
+                    ) {
+                    //System.out.println("MultiBuffer.getBestDisplayMode(): "
+                    //                       + "returning: "
+                    //                       + displayModeToString(modes[j]));
 
-		    // Here, we return the modes[] value, which has
-		    // the refresh rate set.
+                    // Here, we return the modes[] value, which has
+                    // the refresh rate set.
                     return modes[j];
                 }
-	    }
+            }
         }
         return null;
     }
@@ -199,31 +199,31 @@ public class MultiBuffer {
      *  @see getBestDisplayMode(GraphicsDevice, DisplayMode[])
      */
     public static DisplayMode
-	getBestDisplayMode(GraphicsDevice device) {
-	return getBestDisplayMode(device, _BEST_DISPLAY_MODES);
+        getBestDisplayMode(GraphicsDevice device) {
+        return getBestDisplayMode(device, _BEST_DISPLAY_MODES);
     }
 
     /** Return the predefined array of best display modes */
     public static DisplayMode [] getBestDisplayModes() {
-	return _BEST_DISPLAY_MODES;
+        return _BEST_DISPLAY_MODES;
     }
 
     // Return a string representation of the DisplayMode.
     // This method is used for debugging.
     public static String displayModeToString(DisplayMode mode) {
 
-	return new String( mode.getWidth() + " x "
-			 + mode.getHeight() + ", "
-			 + (mode.getBitDepth()
-			    == DisplayMode.BIT_DEPTH_MULTI
-			    ? "BIT_DEPTH_MULTI"
-			    : (new Integer(mode.getBitDepth())).toString())
-			 + ", "
-			 + (mode.getRefreshRate()
-			    == DisplayMode.REFRESH_RATE_UNKNOWN
-			    ? "REFRESH_RATE_UNKNOWN"
-			    : (new Integer(mode.getRefreshRate())).toString())
-			  );
+        return new String( mode.getWidth() + " x "
+                         + mode.getHeight() + ", "
+                         + (mode.getBitDepth()
+                            == DisplayMode.BIT_DEPTH_MULTI
+                            ? "BIT_DEPTH_MULTI"
+                            : (new Integer(mode.getBitDepth())).toString())
+                         + ", "
+                         + (mode.getRefreshRate()
+                            == DisplayMode.REFRESH_RATE_UNKNOWN
+                            ? "REFRESH_RATE_UNKNOWN"
+                            : (new Integer(mode.getRefreshRate())).toString())
+                          );
     }
 
     ///////////////////////////////////////////////////////////////////

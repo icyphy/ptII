@@ -84,11 +84,11 @@ public class ArrayToSequence extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// Set type constraints.
-	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-	ArrayType inputType = (ArrayType)input.getType();
-	InequalityTerm elementTerm = inputType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        // Set type constraints.
+        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        ArrayType inputType = (ArrayType)input.getType();
+        InequalityTerm elementTerm = inputType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
 
         // Set parameters.
         arrayLength = new Parameter(this, "arrayLength");
@@ -153,7 +153,7 @@ public class ArrayToSequence extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         ArrayToSequence newObject = (ArrayToSequence)(super.clone(workspace));
 
         // set the type constraints
@@ -168,18 +168,18 @@ public class ArrayToSequence extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	ArrayToken token = (ArrayToken)input.get(0);
-	int rate = ((IntToken)arrayLength.getToken()).intValue();
-	boolean enforce = ((BooleanToken)enforceArrayLength.getToken())
+        ArrayToken token = (ArrayToken)input.get(0);
+        int rate = ((IntToken)arrayLength.getToken()).intValue();
+        boolean enforce = ((BooleanToken)enforceArrayLength.getToken())
             .booleanValue();
-	if (enforce && token.length() != rate) {
-	    throw new IllegalActionException(this, "The " +
+        if (enforce && token.length() != rate) {
+            throw new IllegalActionException(this, "The " +
                     "number of elements in the input ArrayToken (" +
                     token.length() + ") is not the same as the arrayLength " +
                     "parameter (" + rate + ").");
-	}
+        }
 
-	Token[] elements = token.arrayValue();
+        Token[] elements = token.arrayValue();
         output.send(0, elements, elements.length);
     }
 
@@ -188,8 +188,8 @@ public class ArrayToSequence extends SDFTransformer {
      *  @return A list of inequalities.
      */
     public List typeConstraintList() {
-	// Override the base class implementation to not use the default
-	// constraints.
-	return output.typeConstraintList();
+        // Override the base class implementation to not use the default
+        // constraints.
+        return output.typeConstraintList();
     }
 }

@@ -166,7 +166,7 @@ class CSpec
   /* NFA Machine. */
     CNfa m_nfa_start; /* Start state of NFA machine. */
     Vector m_nfa_states; /* Vector of states, with index
-				 corresponding to label. */
+                                 corresponding to label. */
 
     Vector m_state_rules[]; /* An array of Vectors of Integers.
                                The ith Vector represents the lexical state
@@ -419,22 +419,22 @@ class CEmit
      OutputStream outstream
      )
       throws java.io.IOException
-	{
-	  set(spec,outstream);
+        {
+          set(spec,outstream);
 
-	  if (CUtility.DEBUG)
-	    {
-	      CUtility.cuassert(null != m_spec);
-	      CUtility.cuassert(null != m_outstream);
-	    }*/
+          if (CUtility.DEBUG)
+            {
+              CUtility.cuassert(null != m_spec);
+              CUtility.cuassert(null != m_outstream);
+            }*/
 
-	  /*m_outstream.writeBytes("import java.lang.String;\n");
-	  m_outstream.writeBytes("import java.lang.System;\n");
-	  m_outstream.writeBytes("import java.io.BufferedReader;\n");
-	  m_outstream.writeBytes("import java.io.InputStream;\n");*/
-	/*
-	  reset();
-	}*/
+          /*m_outstream.writeBytes("import java.lang.String;\n");
+          m_outstream.writeBytes("import java.lang.System;\n");
+          m_outstream.writeBytes("import java.io.BufferedReader;\n");
+          m_outstream.writeBytes("import java.io.InputStream;\n");*/
+        /*
+          reset();
+        }*/
 
   /***************************************************************
     Function: print_details
@@ -1011,37 +1011,37 @@ class CEmit
 
         m_outstream.writeBytes("      int res[][] = new int[size1][size2];\n");
         m_outstream.writeBytes("      for (int i= 0; i < size1; i++)\n");
-        m_outstream.writeBytes("	for (int j= 0; j < size2; j++)\n");
-        m_outstream.writeBytes("	  {\n");
-        m_outstream.writeBytes("	    if (sequenceLength == 0) \n");
-        m_outstream.writeBytes("	      {	\n");
-        m_outstream.writeBytes("		commaIndex = st.indexOf(',');\n");
-        m_outstream.writeBytes("		if (commaIndex == -1)\n");
-        m_outstream.writeBytes("		  workString = st;\n");
-        m_outstream.writeBytes("		else\n");
-        m_outstream.writeBytes("		  workString = st.substring(0, commaIndex);\n");
-        m_outstream.writeBytes("		st = st.substring(commaIndex+1);\n");
-        m_outstream.writeBytes("		colonIndex = workString.indexOf(':');\n");
-        m_outstream.writeBytes("		if (colonIndex == -1)\n");
-        m_outstream.writeBytes("		  {\n");
-        m_outstream.writeBytes("		    res[i][j] = Integer.parseInt(workString);\n");
-        m_outstream.writeBytes("		  }\n");
-        m_outstream.writeBytes("		else \n");
-        m_outstream.writeBytes("		  {\n");
-        m_outstream.writeBytes("		    lengthString = workString.substring(colonIndex+1);  \n");
-        m_outstream.writeBytes("		    sequenceLength = Integer.parseInt(lengthString);\n");
-        m_outstream.writeBytes("		    workString = workString.substring(0,colonIndex);\n");
-        m_outstream.writeBytes("		    sequenceInteger = Integer.parseInt(workString);\n");
-        m_outstream.writeBytes("		    res[i][j] = sequenceInteger;\n");
-        m_outstream.writeBytes("		    sequenceLength--;\n");
-        m_outstream.writeBytes("		  }\n");
-        m_outstream.writeBytes("	      }\n");
-        m_outstream.writeBytes("	    else \n");
-        m_outstream.writeBytes("	      {\n");
-        m_outstream.writeBytes("		res[i][j] = sequenceInteger;\n");
-        m_outstream.writeBytes("		sequenceLength--;\n");
-        m_outstream.writeBytes("	      }\n");
-        m_outstream.writeBytes("	  }\n");
+        m_outstream.writeBytes("        for (int j= 0; j < size2; j++)\n");
+        m_outstream.writeBytes("          {\n");
+        m_outstream.writeBytes("            if (sequenceLength == 0) \n");
+        m_outstream.writeBytes("              {        \n");
+        m_outstream.writeBytes("                commaIndex = st.indexOf(',');\n");
+        m_outstream.writeBytes("                if (commaIndex == -1)\n");
+        m_outstream.writeBytes("                  workString = st;\n");
+        m_outstream.writeBytes("                else\n");
+        m_outstream.writeBytes("                  workString = st.substring(0, commaIndex);\n");
+        m_outstream.writeBytes("                st = st.substring(commaIndex+1);\n");
+        m_outstream.writeBytes("                colonIndex = workString.indexOf(':');\n");
+        m_outstream.writeBytes("                if (colonIndex == -1)\n");
+        m_outstream.writeBytes("                  {\n");
+        m_outstream.writeBytes("                    res[i][j] = Integer.parseInt(workString);\n");
+        m_outstream.writeBytes("                  }\n");
+        m_outstream.writeBytes("                else \n");
+        m_outstream.writeBytes("                  {\n");
+        m_outstream.writeBytes("                    lengthString = workString.substring(colonIndex+1);  \n");
+        m_outstream.writeBytes("                    sequenceLength = Integer.parseInt(lengthString);\n");
+        m_outstream.writeBytes("                    workString = workString.substring(0,colonIndex);\n");
+        m_outstream.writeBytes("                    sequenceInteger = Integer.parseInt(workString);\n");
+        m_outstream.writeBytes("                    res[i][j] = sequenceInteger;\n");
+        m_outstream.writeBytes("                    sequenceLength--;\n");
+        m_outstream.writeBytes("                  }\n");
+        m_outstream.writeBytes("              }\n");
+        m_outstream.writeBytes("            else \n");
+        m_outstream.writeBytes("              {\n");
+        m_outstream.writeBytes("                res[i][j] = sequenceInteger;\n");
+        m_outstream.writeBytes("                sequenceLength--;\n");
+        m_outstream.writeBytes("              }\n");
+        m_outstream.writeBytes("          }\n");
         m_outstream.writeBytes("      return res;\n");
         m_outstream.writeBytes("    }\n");
 
@@ -4488,7 +4488,7 @@ class CError
         "Syntax error.",
         "Missing brace at start of lexical action.",
         "Special character dash - in character class [...] must\n"
-	+ "\tbe preceded by start-of-range character."
+        + "\tbe preceded by start-of-range character."
     };
 
     /********************************************************
@@ -4620,9 +4620,9 @@ class CNfa
     CNfa m_next;  /* Next state (or null if none). */
 
     CNfa m_next2;  /* Another state with type == EPSILON
-			   and null if not used.
-			   The NFA construction should result in two
-			   outgoing edges only if both are EPSILON edges. */
+                           and null if not used.
+                           The NFA construction should result in two
+                           outgoing edges only if both are EPSILON edges. */
 
     CAccept m_accept;  /* Set to null if nonaccepting state. */
     int m_anchor;  /* Says if and where pattern is anchored. */
@@ -4719,8 +4719,8 @@ class CLexGen
     private CInput m_input; /* Input buffer class. */
 
     private Hashtable m_tokens; /* Hashtable that maps characters to their
-				 corresponding lexical code for
-				 the internal lexical analyzer. */
+                                 corresponding lexical code for
+                                 the internal lexical analyzer. */
     private CSpec m_spec; /* Spec class holds information
                              about the generated lexer. */
     private boolean m_init_flag; /* Flag set to true only upon
@@ -4728,10 +4728,10 @@ class CLexGen
 
     private CMakeNfa m_makeNfa; /* NFA machine generator module. */
     private CNfa2Dfa m_nfa2dfa; /* NFA to DFA machine (transition table)
-				 conversion module. */
+                                 conversion module. */
     private CMinimize m_minimize; /* Transition table compressor. */
     private CEmit m_emit; /* Output module that emits source code
-			   into the generated lexer file. */
+                           into the generated lexer file. */
 
 
   /********************************************************
@@ -4774,7 +4774,7 @@ class CLexGen
         /* Successful initialization flag. */
         m_init_flag = false;
 
-	/* Open input stream. */
+        /* Open input stream. */
         m_instream = new FileInputStream(filename);
         if (null == m_instream)
             {
@@ -4824,7 +4824,7 @@ class CLexGen
 
         m_emit = new CEmit();
 
-	/* Successful initialization flag. */
+        /* Successful initialization flag. */
         m_init_flag = true;
     }
 
@@ -6088,7 +6088,7 @@ class CLexGen
                                             {
                                                 if (m_input.getLine())
                                                     {
-				/* EOF found. */
+                                /* EOF found. */
                                                         CError.parse_error(CError.E_EOF,m_input.m_line_number);
                                                         return states;
                                                     }
@@ -7333,7 +7333,7 @@ class CLexGen
 }
 
 /*
- * @(#)BitSet.java	1.12 95/12/01
+ * @(#)BitSet.java        1.12 95/12/01
  *
  * Revision: 10/21/96
  * Modified by Elliot Joel Berk (ejberk@princeton.edu), for the purposes
@@ -7361,7 +7361,7 @@ class CLexGen
  * A set of bits. The set automatically grows as more bits are
  * needed.
  *
- * @version 	1.12, 01 Dec 1995
+ * @version         1.12, 01 Dec 1995
  * @since Ptolemy II 1.0
  * @author Arthur van Hoff, revised by Elliot Joel Berk
  */
@@ -7374,7 +7374,7 @@ final class JavaLexBitSet implements Cloneable {
      * Creates an empty set.
      */
     public JavaLexBitSet() {
-	this(1<<BITS);
+        this(1<<BITS);
     }
 
     /**
@@ -7382,18 +7382,18 @@ final class JavaLexBitSet implements Cloneable {
      * @param nbits the size of the set
      */
     public JavaLexBitSet(int nbits) {
-	bits = new long[nbits2size(nbits)];
+        bits = new long[nbits2size(nbits)];
     }
 
     private int nbits2size (int nbits) {
-	return ((nbits >> BITS) + 1);
+        return ((nbits >> BITS) + 1);
     }
 
     private void resize(int nbits) {
-	int newsize = Math.max(bits.length, nbits2size(nbits));
-	long newbits[] = new long[newsize];
-	System.arraycopy(bits, 0, newbits, 0, bits.length);
-	bits = newbits;
+        int newsize = Math.max(bits.length, nbits2size(nbits));
+        long newbits[] = new long[newsize];
+        System.arraycopy(bits, 0, newbits, 0, bits.length);
+        bits = newbits;
     }
 
     /**
@@ -7401,11 +7401,11 @@ final class JavaLexBitSet implements Cloneable {
      * @param bit the bit to be set
      */
     public void set(int bit) {
-	int n = bit>>BITS;
-	if (n >= bits.length) {
-	    resize(bit);
-	}
-	bits[n] |= (1L << (bit & MASK));
+        int n = bit>>BITS;
+        if (n >= bits.length) {
+            resize(bit);
+        }
+        bits[n] |= (1L << (bit & MASK));
     }
 
     /**
@@ -7413,11 +7413,11 @@ final class JavaLexBitSet implements Cloneable {
      * @param bit the bit to be cleared
      */
     public void clear(int bit) {
-	int n = bit>>BITS;
-	if (n >= bits.length) {
-	    resize(bit);
-	}
-	bits[n] &= ~(1L << (bit & MASK));
+        int n = bit>>BITS;
+        if (n >= bits.length) {
+            resize(bit);
+        }
+        bits[n] &= ~(1L << (bit & MASK));
     }
 
     /**
@@ -7425,8 +7425,8 @@ final class JavaLexBitSet implements Cloneable {
      * @param bit the bit to be gotten
      */
     public boolean get(int bit) {
-	int n = bit>>BITS;
-	return (n < bits.length) ?
+        int n = bit>>BITS;
+        return (n < bits.length) ?
             ((bits[n] & (1L << (bit & MASK))) != 0) :
             false;
     }
@@ -7436,13 +7436,13 @@ final class JavaLexBitSet implements Cloneable {
      * @param set the bit set to be ANDed with
      */
     public void and(JavaLexBitSet set) {
-	int n = Math.min(bits.length, set.bits.length);
-	for (int i = n ; i-- > 0 ; ) {
-	    bits[i] &= set.bits[i];
-	}
-	for (; n < bits.length ; n++) {
-	    bits[n] = 0;
-	}
+        int n = Math.min(bits.length, set.bits.length);
+        for (int i = n ; i-- > 0 ; ) {
+            bits[i] &= set.bits[i];
+        }
+        for (; n < bits.length ; n++) {
+            bits[n] = 0;
+        }
     }
 
     /**
@@ -7450,9 +7450,9 @@ final class JavaLexBitSet implements Cloneable {
      * @param set the bit set to be ORed with
      */
     public void or(JavaLexBitSet set) {
-	for (int i = Math.min(bits.length, set.bits.length) ; i-- > 0 ;) {
-	    bits[i] |= set.bits[i];
-	}
+        for (int i = Math.min(bits.length, set.bits.length) ; i-- > 0 ;) {
+            bits[i] |= set.bits[i];
+        }
     }
 
     /**
@@ -7460,27 +7460,27 @@ final class JavaLexBitSet implements Cloneable {
      * @param set the bit set to be XORed with
      */
     public void xor(JavaLexBitSet set) {
-	for (int i = Math.min(bits.length, set.bits.length) ; i-- > 0 ;) {
-	    bits[i] ^= set.bits[i];
-	}
+        for (int i = Math.min(bits.length, set.bits.length) ; i-- > 0 ;) {
+            bits[i] ^= set.bits[i];
+        }
     }
 
     /**
      * Gets the hashcode.
      */
     public int hashCode() {
-	long h = 1234;
-	for (int i = bits.length; --i >= 0; ) {
-	    h ^= bits[i] * i;
-	}
-	return (int)((h >> 32) ^ h);
+        long h = 1234;
+        for (int i = bits.length; --i >= 0; ) {
+            h ^= bits[i] * i;
+        }
+        return (int)((h >> 32) ^ h);
     }
 
     /**
      * Calculates and returns the set's size
      */
     public int size() {
-	return bits.length << BITS;
+        return bits.length << BITS;
     }
 
     /**
@@ -7489,62 +7489,62 @@ final class JavaLexBitSet implements Cloneable {
      * @return true if the objects are the same; false otherwise.
      */
     public boolean equals(Object obj) {
-	if ((obj != null) && (obj instanceof JavaLexBitSet)) {
-	    JavaLexBitSet set = (JavaLexBitSet)obj;
+        if ((obj != null) && (obj instanceof JavaLexBitSet)) {
+            JavaLexBitSet set = (JavaLexBitSet)obj;
 
-	    int n = Math.min(bits.length, set.bits.length);
-	    for (int i = n ; i-- > 0 ;) {
-		if (bits[i] != set.bits[i]) {
-		    return false;
-		}
-	    }
-	    if (bits.length > n) {
-		for (int i = bits.length ; i-- > n ;) {
-		    if (bits[i] != 0) {
-			return false;
-		    }
-		}
-	    } else if (set.bits.length > n) {
-		for (int i = set.bits.length ; i-- > n ;) {
-		    if (set.bits[i] != 0) {
-			return false;
-		    }
-		}
-	    }
-	    return true;
-	}
-	return false;
+            int n = Math.min(bits.length, set.bits.length);
+            for (int i = n ; i-- > 0 ;) {
+                if (bits[i] != set.bits[i]) {
+                    return false;
+                }
+            }
+            if (bits.length > n) {
+                for (int i = bits.length ; i-- > n ;) {
+                    if (bits[i] != 0) {
+                        return false;
+                    }
+                }
+            } else if (set.bits.length > n) {
+                for (int i = set.bits.length ; i-- > n ;) {
+                    if (set.bits[i] != 0) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
      * Clones the JavaLexBitSet.
      */
     public Object clone() {
-	try {
-	    JavaLexBitSet set = (JavaLexBitSet)super.clone();
-	    set.bits = new long[bits.length];
-	    System.arraycopy(bits, 0, set.bits, 0, bits.length);
-	    return set;
-	} catch (CloneNotSupportedException e) {
-	    // this shouldn't happen, since we are Cloneable
-	    throw new InternalError();
-	}
+        try {
+            JavaLexBitSet set = (JavaLexBitSet)super.clone();
+            set.bits = new long[bits.length];
+            System.arraycopy(bits, 0, set.bits, 0, bits.length);
+            return set;
+        } catch (CloneNotSupportedException e) {
+            // this shouldn't happen, since we are Cloneable
+            throw new InternalError();
+        }
     }
 
     /**
      * Converts the JavaLexBitSet to a String.
      */
     public String toString() {
-	String str = "";
-	for (int i = 0 ; i < (bits.length << BITS) ; i++) {
-	    if (get(i)) {
-		if (str.length() > 0) {
-		    str += ", ";
-		}
-		str = str + i;
-	    }
-	}
-	return "{" + str + "}";
+        String str = "";
+        for (int i = 0 ; i < (bits.length << BITS) ; i++) {
+            if (get(i)) {
+                if (str.length() > 0) {
+                    str += ", ";
+                }
+                str = str + i;
+            }
+        }
+        return "{" + str + "}";
     }
 }
 

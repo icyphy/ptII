@@ -50,29 +50,29 @@ public class DirectedGraphToDotty extends GraphToDotty {
      */
     public String convert(Object graph, String ename) {
         DirectedGraph g = (DirectedGraph)graph;
-	int count=0;
-	HashMap hm=new HashMap();
-	StringBuffer sb = new StringBuffer();
-	sb.append("//Dotfile created by HashMutableToDotty\r\n");
-	sb.append("digraph "+ename+" {\r\n");
-	sb.append("\t// Vertices\r\n");
-	for(Iterator nodes = g.iterator();nodes.hasNext();) {
-	    Object source = nodes.next();
-	    String name="v" + count++;
-	    sb.append("\t\""+name+"\" [label=\""
-		      +convertSpecialsToEscapes(source.toString())
-		      +"\"];\r\n");
-	    hm.put(source, name);
-	}
-	sb.append("\t// Edges\r\n");
-	for (Iterator nodes=g.iterator(); nodes.hasNext();){
-	    Object source = nodes.next();
-	    for(Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
-		Object dest= succs.next();
-		sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\";\r\n");
-	    }
-	}
-	sb.append("}\r\n");
-	return sb.toString();
+        int count=0;
+        HashMap hm=new HashMap();
+        StringBuffer sb = new StringBuffer();
+        sb.append("//Dotfile created by HashMutableToDotty\r\n");
+        sb.append("digraph "+ename+" {\r\n");
+        sb.append("\t// Vertices\r\n");
+        for(Iterator nodes = g.iterator();nodes.hasNext();) {
+            Object source = nodes.next();
+            String name="v" + count++;
+            sb.append("\t\""+name+"\" [label=\""
+                      +convertSpecialsToEscapes(source.toString())
+                      +"\"];\r\n");
+            hm.put(source, name);
+        }
+        sb.append("\t// Edges\r\n");
+        for (Iterator nodes=g.iterator(); nodes.hasNext();){
+            Object source = nodes.next();
+            for(Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
+                Object dest= succs.next();
+                sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\";\r\n");
+            }
+        }
+        sb.append("}\r\n");
+        return sb.toString();
     }
 }

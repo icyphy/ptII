@@ -44,40 +44,40 @@ public class BinaryMux {
 
     /*
     public BinaryMux(Node t, Node f, Node c, String name) {
-	_trueNode = t;
-	_falseNode = f;
-	_conditionNode = c;
-	_name = name;
+        _trueNode = t;
+        _falseNode = f;
+        _conditionNode = c;
+        _name = name;
     }
     */
     public BinaryMux(String name) {
-	_name = name;
+        _name = name;
     }
 
     public static Node getNode(DirectedGraph g, Node muxnode, String weight) {
-	Node n=null;
-	for (Iterator i=g.inputEdges(muxnode).iterator();i.hasNext();) {
-	    Edge e = (Edge) i.next();
-	    if (e.hasWeight() &&
-		((String) e.getWeight()).equals(weight)) {
-		n = e.source();
-	    }
-	}
-	return n;
+        Node n=null;
+        for (Iterator i=g.inputEdges(muxnode).iterator();i.hasNext();) {
+            Edge e = (Edge) i.next();
+            if (e.hasWeight() &&
+                ((String) e.getWeight()).equals(weight)) {
+                n = e.source();
+            }
+        }
+        return n;
     }
 
     public static Node getConditionNode(DirectedGraph g, Node muxnode) {
-	return getNode(g,muxnode,CONDITION_LABEL);
+        return getNode(g,muxnode,CONDITION_LABEL);
     }
     public static Node getTrueNode(DirectedGraph g, Node muxnode) {
-	return getNode(g,muxnode,TRUE_LABEL);
+        return getNode(g,muxnode,TRUE_LABEL);
     }
     public static Node getFalseNode(DirectedGraph g, Node muxnode) {
-	return getNode(g,muxnode,FALSE_LABEL);
+        return getNode(g,muxnode,FALSE_LABEL);
     }
 
     public String toString() {
-	return "mux_"+_name;
+        return "mux_"+_name;
     }
 
     public static final String TRUE_LABEL="true";

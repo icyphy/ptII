@@ -137,7 +137,7 @@ public class ValueIcon extends XMLIcon {
      *  @return A figure representing a bullet.
      */
     protected Figure _createDefaultBackgroundFigure() {
-	return new BasicEllipse(-10, -6, 6, 6, Color.black, 1);
+        return new BasicEllipse(-10, -6, 6, 6, Color.black, 1);
     }
 
     ///////////////////////////////////////////////////////////////////

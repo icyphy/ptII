@@ -72,25 +72,25 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
     /** Return true if this operation represents a boolean AND operation.
      */
     public boolean isBitwiseAnd() {
-    	return (_lexicalToken.kind == PtParserConstants.AND);
+            return (_lexicalToken.kind == PtParserConstants.AND);
     }
 
     /** Return true if this operation represents a boolean OR operation.
      */
     public boolean isBitwiseOr() {
-    	return (_lexicalToken.kind == PtParserConstants.OR);
+            return (_lexicalToken.kind == PtParserConstants.OR);
     }
 
     /** Return true if this operation represents a boolean XOR operation.
      */
     public boolean isBitwiseXor() {
-    	return (_lexicalToken.kind == PtParserConstants.XOR);
+            return (_lexicalToken.kind == PtParserConstants.XOR);
     }
 
     /** Return the token that represents the operation of this node.
      */
     public Token getOperator() {
-  	return _lexicalToken;
+          return _lexicalToken;
     }
 
     protected Token _lexicalToken = null;

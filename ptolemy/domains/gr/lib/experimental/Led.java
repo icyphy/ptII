@@ -98,21 +98,21 @@ public class Led extends Box3D {
         /*
         if (_transparency > 0.0f) {
             TransparencyAttributes feature1 = new TransparencyAttributes();
-		    feature1.setTransparencyMode(feature1.BLENDED);
-		    feature1.setTransparency(_transparency);
-		    _appearance.setTransparencyAttributes(feature1);
+                    feature1.setTransparencyMode(feature1.BLENDED);
+                    feature1.setTransparency(_transparency);
+                    _appearance.setTransparencyAttributes(feature1);
 
-		    // Set up the polygon attributes
-		    PolygonAttributes feature2 = new PolygonAttributes();
-		    feature2.setCullFace(feature2.CULL_NONE);
-		    _appearance.setPolygonAttributes(feature2);
+                    // Set up the polygon attributes
+                    PolygonAttributes feature2 = new PolygonAttributes();
+                    feature2.setCullFace(feature2.CULL_NONE);
+                    _appearance.setPolygonAttributes(feature2);
         }*/
         /*
         if (_wireframeMode) {
             PolygonAttributes feature1 = new PolygonAttributes();
-		    feature1.setPolygonMode(feature1.POLYGON_LINE);
-		    feature1.setCullFace(feature1.CULL_NONE);
-		    _appearance.setPolygonAttributes(feature1);
+                    feature1.setPolygonMode(feature1.POLYGON_LINE);
+                    feature1.setCullFace(feature1.CULL_NONE);
+                    _appearance.setPolygonAttributes(feature1);
         }*/
 
         //_material.setEmissiveColor(0.0f,0.9f,0.0f);

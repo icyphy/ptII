@@ -49,46 +49,46 @@ public class Arc {
     /** Return the head of this link.   This will be the icon of a state.
      */
     public Object getHead() {
-	return _head;
+        return _head;
     }
 
     /** Return the relation that this link represents.  This should always
      *  be an instance of Transition.
      */
     public ComponentRelation getRelation() {
-	return _relation;
+        return _relation;
     }
 
     /** Return the tail of this link.   This will be the icon of a state.
      */
     public Object getTail() {
-	return _tail;
+        return _tail;
     }
 
     /** Set the head of this link.  This will be the icon of a state.
      */
     public void setHead(Object head) {
-	_head = head;
+        _head = head;
     }
 
     /** Set the relation that this link represents.  This should always
      *  be an instance of Transition.
      */
     public void setRelation(ComponentRelation relation) {
-	_relation = relation;
+        _relation = relation;
     }
 
     /** Set the tail of this link.  This will be the icon of a state.
      */
     public void setTail(Object tail) {
-	_tail = tail;
+        _tail = tail;
     }
 
     /** Return a string representation of this link.
      */
     public String toString() {
-	return "Arc("
-	    + _head + ", "
+        return "Arc("
+            + _head + ", "
                 + _tail + ", "
                     + _relation + ")";
     }

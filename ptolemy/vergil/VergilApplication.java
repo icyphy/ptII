@@ -107,7 +107,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public VergilApplication(String args[]) throws Exception {
-	super(args);
+        super(args);
         // Create register an error handler with the parser so that
         // MoML errors are tolerated more than the default.
         _parser.setErrorHandler(new VergilErrorHandler());
@@ -121,31 +121,31 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(final String args[]) {
-	// FIXME: Java superstition dictates that if you want something
-	// to work, you should invoke it in event thread.  Otherwise,
-	// weird things happens at the user interface level.  This
+        // FIXME: Java superstition dictates that if you want something
+        // to work, you should invoke it in event thread.  Otherwise,
+        // weird things happens at the user interface level.  This
         // seems to prevent occasional errors rending HTML under Web Start.
-	try {
+        try {
             // NOTE: This is truly unfortunate... It would be nice
             // if this could be run inside a PtolemyThread, since
             // getting read access the workspace is much more efficient
             // in PtolemyThread.
-	    SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-			try {
-			    new VergilApplication(args);
-			} catch (Throwable throwable) {
+            SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        try {
+                            new VergilApplication(args);
+                        } catch (Throwable throwable) {
                             // If we get an Error or and Exception while
                             // configuring, we will end up here.
-			    _errorAndExit("Command failed", args, throwable);
-			}
-		    }
- 		});
+                            _errorAndExit("Command failed", args, throwable);
+                        }
+                    }
+                 });
         } catch (Throwable throwable2) {
-	    // We are not likely to get here, but just to be safe
-	    // we try to print the error message and display it in a
-	    // graphical widget.
-	    _errorAndExit("Command failed", args, throwable2);
+            // We are not likely to get here, but just to be safe
+            // we try to print the error message and display it in a
+            // graphical widget.
+            _errorAndExit("Command failed", args, throwable2);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -176,7 +176,7 @@ public class VergilApplication extends MoMLApplication {
             return;
         }
 
-	// If we have a jar URL, convert spaces to %20
+        // If we have a jar URL, convert spaces to %20
         URL fileURL =  JNLPUtilities.canonicalizeJarURL(file.toURL());
 
         String identifier = fileURL.toExternalForm();
@@ -241,7 +241,7 @@ public class VergilApplication extends MoMLApplication {
 
         if (_configurationURL == null) {
             _configurationURL =
-		specToURL("ptolemy/configs/full/configuration.xml");
+                specToURL("ptolemy/configs/full/configuration.xml");
         }
         Configuration configuration = null;
         try {
@@ -256,16 +256,16 @@ public class VergilApplication extends MoMLApplication {
         // Use StringUtilities.getProperty() so we get the proper
         // canonical path
 
-	// FIXME: If the name is something like
-	// "vergilUserLibrary.xml" then when we save an actor in the
-	// library and then save the window that comes up the name of
-	// entity gets set to vergilUserLibrary instead of the value
-	// of VERGIL_USER_LIBRARY_NAME.  This causes problems when we
-	// try to save another file.  The name of the entity gets
-	// changed by the saveAs code.
+        // FIXME: If the name is something like
+        // "vergilUserLibrary.xml" then when we save an actor in the
+        // library and then save the window that comes up the name of
+        // entity gets set to vergilUserLibrary instead of the value
+        // of VERGIL_USER_LIBRARY_NAME.  This causes problems when we
+        // try to save another file.  The name of the entity gets
+        // changed by the saveAs code.
 
         String libraryName = StringUtilities.preferencesDirectory()
-	    + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
+            + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
         System.out.print("Opening user library " + libraryName + "...");
         File file = new File(libraryName);
         if(!file.isFile() || !file.exists()) {
@@ -306,11 +306,11 @@ public class VergilApplication extends MoMLApplication {
         }
         // FIXME: This code is Dog slow for some reason.
         URL inURL = specToURL("ptolemy/configs/"
-			      + _configurationSubdirectory
-			      + "/welcomeWindow.xml");
+                              + _configurationSubdirectory
+                              + "/welcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
-	_parser.parse(inURL, inURL.openStream());
+        _parser.parse(inURL, inURL.openStream());
 
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
 
@@ -382,7 +382,7 @@ public class VergilApplication extends MoMLApplication {
         try {
             // Look for configuration directories in ptolemy/configs
             // This will likely fail if ptolemy/configs is in a jar file
-	    // We use a URI here so that we cause call File(URI).
+            // We use a URI here so that we cause call File(URI).
             URI configurationURI =
                 new URI(specToURL("ptolemy/configs").toExternalForm());
             File configurationDirectory = new File(configurationURI);
@@ -412,8 +412,8 @@ public class VergilApplication extends MoMLApplication {
                         // tools.
                         if (!configurationDirectories[i]
                                 .getName().equals("jxta")) {
-			    URL specificationURL =
-				specToURL(configurationFileName);
+                            URL specificationURL =
+                                specToURL(configurationFileName);
                             Configuration configuration =
                                 _readConfiguration(specificationURL);
                             if (configuration != null
@@ -513,37 +513,37 @@ public class VergilApplication extends MoMLApplication {
     // are using JNI, then we might get a java.lang.UnsatistifiedLineError,
     // which is an Error, not and Exception.
     private static void _errorAndExit(String message,
-				      String [] args, Throwable throwable) {
-	StringBuffer argsBuffer =
-	    new StringBuffer("Command failed");
+                                      String [] args, Throwable throwable) {
+        StringBuffer argsBuffer =
+            new StringBuffer("Command failed");
 
-	if (args.length > 0) {
-	    argsBuffer.append("\nArguments: " + args[0]);
-	    for(int i = 1; i < args.length; i++) {
-		argsBuffer.append(" " + args[i]);
-	    }
-	    argsBuffer.append("\n");
-	}
+        if (args.length > 0) {
+            argsBuffer.append("\nArguments: " + args[0]);
+            for(int i = 1; i < args.length; i++) {
+                argsBuffer.append(" " + args[i]);
+            }
+            argsBuffer.append("\n");
+        }
 
-	// First, print out the stack trace so that
-	// if the next step fails the user has
-	// a chance of seeing the message.
-	System.out.println(argsBuffer.toString());
-	throwable.printStackTrace();
+        // First, print out the stack trace so that
+        // if the next step fails the user has
+        // a chance of seeing the message.
+        System.out.println(argsBuffer.toString());
+        throwable.printStackTrace();
 
-	// Display the error message in a stack trace
-	// If there are problems with the configuration,
-	// then there is a chance that we have not
-	// registered the GraphicalMessageHandler yet
-	// so we do so now so that we are sure
-	// the user can see the message.
-	// One way to test this is to run vergil -conf foo
+        // Display the error message in a stack trace
+        // If there are problems with the configuration,
+        // then there is a chance that we have not
+        // registered the GraphicalMessageHandler yet
+        // so we do so now so that we are sure
+        // the user can see the message.
+        // One way to test this is to run vergil -conf foo
 
-	MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
-	MessageHandler.error(argsBuffer.toString(), throwable);
+        MessageHandler.error(argsBuffer.toString(), throwable);
 
-	System.exit(0);
+        System.exit(0);
     }
 
     ///////////////////////////////////////////////////////////////////

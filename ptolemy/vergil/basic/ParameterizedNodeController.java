@@ -74,13 +74,13 @@ public class ParameterizedNodeController extends NamedObjController {
      *  @param controller The associated graph controller.
      */
     public ParameterizedNodeController(GraphController controller) {
-	super(controller);
+        super(controller);
 
         // Add a menu creator.
-	_menuCreator = new MenuCreator(null);
+        _menuCreator = new MenuCreator(null);
         // FIXME: Why doesn't getNodeInteractor() return a NodeInteractor?
         NodeInteractor interactor = (NodeInteractor)getNodeInteractor();
-	interactor.addInteractor(_menuCreator);
+        interactor.addInteractor(_menuCreator);
 
         // The contents of the menu is determined by the associated
         // menu factory, which is a protected member of this class.
@@ -103,8 +103,8 @@ public class ParameterizedNodeController extends NamedObjController {
         interactor.setDragInteractor(interactor.getDragInteractor());
 
         // Set the selection model to allow this to be independently selected.
-	SelectionModel sm = controller.getSelectionModel();
-	interactor.setSelectionModel(sm);
+        SelectionModel sm = controller.getSelectionModel();
+        interactor.setSelectionModel(sm);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -129,7 +129,7 @@ public class GiottoReceiver extends AbstractReceiver {
      *  @exception NoRoomException Not thrown in this base class.
      */
     public void put(Token token) throws NoRoomException {
-	_nextToken = token;
+        _nextToken = token;
     }
 
     /** Get the contained and available token, i.e., get the last
@@ -144,15 +144,15 @@ public class GiottoReceiver extends AbstractReceiver {
                     "Attempt to get data from an empty receiver.");
         }
         Token buffer =  _token;
-	_token = null;
-	return buffer;
+        _token = null;
+        return buffer;
     }
 
     /** Reset the receiver by removing all tokens from the receiver.
      */
     public void reset() {
         _token = null;
-	_nextToken = null;
+        _nextToken = null;
     }
 
     /** Update the receiver by making the last token that has been

@@ -165,7 +165,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         VariableRecursiveLattice newObject
             = (VariableRecursiveLattice)(super.clone(workspace));
 

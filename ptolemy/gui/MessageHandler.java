@@ -94,15 +94,15 @@ public class MessageHandler {
      *  "Throwable".
      */
     public static String shortDescription(Throwable throwable) {
-	String throwableType = null;
-	if (throwable instanceof Exception) {
-	    throwableType = "Exception";
-	} else if (throwable instanceof Error) {
-	    throwableType = "Error";
-	} else {
-	    throwableType = "Throwable";
-	}
-	return throwableType;
+        String throwableType = null;
+        if (throwable instanceof Exception) {
+            throwableType = "Exception";
+        } else if (throwable instanceof Error) {
+            throwableType = "Error";
+        } else {
+            throwableType = "Throwable";
+        }
+        return throwableType;
     }
 
     /** Return the message handler instance that is used by the static
@@ -191,8 +191,8 @@ public class MessageHandler {
      */
     protected void _error(String info, Throwable throwable) {
         if (throwable instanceof CancelException) {
-	    return;
-	}
+            return;
+        }
         System.err.println(info);
         throwable.printStackTrace();
     }

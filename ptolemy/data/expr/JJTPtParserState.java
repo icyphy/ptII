@@ -6,8 +6,8 @@ class JJTPtParserState {
     private java.util.Stack nodes;
     private java.util.Stack marks;
 
-    private int sp;		// number of nodes on stack
-    private int mk;		// current mark
+    private int sp;                // number of nodes on stack
+    private int mk;                // current mark
     private boolean node_created;
 
     JJTPtParserState() {

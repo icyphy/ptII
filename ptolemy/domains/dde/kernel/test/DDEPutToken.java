@@ -73,41 +73,41 @@ public class DDEPutToken extends DDEPut {
     /**
      */
     public void fire() throws IllegalActionException {
-	int cnt = 0;
-	Token token = new Token();
-	while (cnt < _numTokens) {
-	    Receiver[][] rcvrs = outputPort.getRemoteReceivers();
-	    for ( int i = 0; i < rcvrs.length; i++ ) {
-		for ( int j = 0; j < rcvrs[i].length; j++ ) {
-		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+        int cnt = 0;
+        Token token = new Token();
+        while (cnt < _numTokens) {
+            Receiver[][] rcvrs = outputPort.getRemoteReceivers();
+            for ( int i = 0; i < rcvrs.length; i++ ) {
+                for ( int j = 0; j < rcvrs[i].length; j++ ) {
+                    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
                     if ( _oneArg ) {
                         rcvr.put( _tokens[cnt] );
                     } else {
-		        rcvr.put( _tokens[cnt], _times[cnt] );
+                        rcvr.put( _tokens[cnt], _times[cnt] );
                     }
-		}
-	    }
-	    cnt++;
-	}
+                }
+            }
+            cnt++;
+        }
     }
 
     /**
      */
     public boolean postfire() {
-	return false;
+        return false;
     }
 
     /**
      */
     public void setOneArgPut(boolean oneArg) {
-	_oneArg = oneArg;
+        _oneArg = oneArg;
     }
 
     /**
      */
     public void setToken(Token token, double time, int cntr) {
-	_tokens[cntr] = token;
-	_times[cntr] = time;
+        _tokens[cntr] = token;
+        _times[cntr] = time;
     }
 
     ///////////////////////////////////////////////////////////////////

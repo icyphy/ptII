@@ -72,20 +72,20 @@ public class SDFTestZeroRate2 extends Transformer {
     public SDFTestZeroRate2(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	input2 = new TypedIOPort(this, "input2", true, false);
-	output2 = new TypedIOPort(this, "output2", false, true);
+        input2 = new TypedIOPort(this, "input2", true, false);
+        output2 = new TypedIOPort(this, "output2", false, true);
 
-	value = new Parameter(this, "value", new IntToken(1));
-	input_rate = new Parameter(this, "input_rate", new IntToken(1));
-	output_rate = new Parameter(this, "output_rate", new IntToken(1));
-	input2_rate = new Parameter(this, "input2_rate", new IntToken(1));
-	output2_rate = new Parameter(this, "output2_rate", new IntToken(1));
+        value = new Parameter(this, "value", new IntToken(1));
+        input_rate = new Parameter(this, "input_rate", new IntToken(1));
+        output_rate = new Parameter(this, "output_rate", new IntToken(1));
+        input2_rate = new Parameter(this, "input2_rate", new IntToken(1));
+        output2_rate = new Parameter(this, "output2_rate", new IntToken(1));
 
-	input_tokenConsumptionRate =
+        input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("input_rate");
 
-	input2_tokenConsumptionRate =
+        input2_tokenConsumptionRate =
             new Parameter(input2, "tokenConsumptionRate");
         input2_tokenConsumptionRate.setExpression("input2_rate");
 
@@ -97,9 +97,9 @@ public class SDFTestZeroRate2 extends Transformer {
             new Parameter(output2, "tokenProductionRate");
         output2_tokenProductionRate.setExpression("output2_rate");
 
-	// Set the type constraint.
-	output.setTypeAtLeast(value);
-	output2.setTypeAtLeast(value);
+        // Set the type constraint.
+        output.setTypeAtLeast(value);
+        output2.setTypeAtLeast(value);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,11 +157,11 @@ public class SDFTestZeroRate2 extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         SDFTestZeroRate2 newObject = (SDFTestZeroRate2)super.clone(workspace);
-	// Set the type constraint.
-	newObject.output.setTypeAtLeast(newObject.value);
-       	newObject.output2.setTypeAtLeast(newObject.value);
+        // Set the type constraint.
+        newObject.output.setTypeAtLeast(newObject.value);
+               newObject.output2.setTypeAtLeast(newObject.value);
         return newObject;
     }
 
@@ -170,22 +170,22 @@ public class SDFTestZeroRate2 extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	for (int i = 0; i < ((IntToken)input_rate.getToken()).intValue();
+        for (int i = 0; i < ((IntToken)input_rate.getToken()).intValue();
              i++) {
             input.get(0);
-	}
-	for (int i = 0; i < ((IntToken)input2_rate.getToken()).intValue();
+        }
+        for (int i = 0; i < ((IntToken)input2_rate.getToken()).intValue();
              i++) {
             input2.get(0);
-	}
-	for (int i = 0; i < ((IntToken)output_rate.getToken()).intValue();
+        }
+        for (int i = 0; i < ((IntToken)output_rate.getToken()).intValue();
              i++) {
             output.send(0, value.getToken());
-	}
-	for (int i = 0; i < ((IntToken)output2_rate.getToken()).intValue();
+        }
+        for (int i = 0; i < ((IntToken)output2_rate.getToken()).intValue();
              i++) {
             output2.send(0, value.getToken());
-	}
+        }
     }
 
     /**
@@ -194,24 +194,24 @@ public class SDFTestZeroRate2 extends Transformer {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
-		// debug sdf schedules:
-	SDFDirector dir = (SDFDirector)getDirector();
-	SDFScheduler scheduler = (SDFScheduler)dir.getScheduler();
-	// For debugging the SDF scheduler...
+        super.initialize();
+                // debug sdf schedules:
+        SDFDirector dir = (SDFDirector)getDirector();
+        SDFScheduler scheduler = (SDFScheduler)dir.getScheduler();
+        // For debugging the SDF scheduler...
         //StreamListener sa = new StreamListener();
         //scheduler.addDebugListener(sa);
-	//
+        //
 
 
-	// Get the SDF Director's scheduler.
-        //	Scheduler s = dir.getScheduler();
-	//Iterator allActors = s.getSchedule().actorIterator();
-	//while (allActors.hasNext()) {
-	//    Actor actor = (Actor)allActors.next();
-	//    String schedActName = ((Nameable)actor).getName();
-	//    System.out.println("Actor in scheduler: " + schedActName);
-	//}
+        // Get the SDF Director's scheduler.
+        //        Scheduler s = dir.getScheduler();
+        //Iterator allActors = s.getSchedule().actorIterator();
+        //while (allActors.hasNext()) {
+        //    Actor actor = (Actor)allActors.next();
+        //    String schedActName = ((Nameable)actor).getName();
+        //    System.out.println("Actor in scheduler: " + schedActName);
+        //}
 
     }
 

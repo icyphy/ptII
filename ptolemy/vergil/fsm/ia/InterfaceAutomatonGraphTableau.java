@@ -96,17 +96,17 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      */
     public void createGraphFrame(
             CompositeEntity model, LibraryAttribute defaultLibrary) {
-	InterfaceAutomatonGraphFrame frame =
+        InterfaceAutomatonGraphFrame frame =
                 new InterfaceAutomatonGraphFrame(model, this, defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
         }
-	frame.setBackground(BACKGROUND_COLOR);
-	frame.pack();
-	frame.centerOnScreen();
-	frame.setVisible(true);
+        frame.setBackground(BACKGROUND_COLOR);
+        frame.pack();
+        frame.centerOnScreen();
+        frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,51 +116,51 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create an factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name of the entity.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create an factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name of the entity.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
-	/** Create a tableau in the default workspace with no name for the
-	 *  given Effigy.  The tableau will created with a new unique name
-	 *  in the given model proxy.  If this factory cannot create a tableau
-	 *  for the given proxy (perhaps because the proxy is not of the
-	 *  appropriate subclass) then return null.
-	 *  @param proxy The model proxy.
-	 *  @return A new InterfaceAutomatonGraphTableau, if the proxy is a
-	 *  PtolemyEffigy that references an InterfaceAutomaton or null
-	 *  otherwise.
-	 *  @exception Exception If an exception occurs when creating the
-	 *  tableau.
-	 */
-	public Tableau createTableau(Effigy proxy) throws Exception {
-	    if (!(proxy instanceof PtolemyEffigy))
-		return null;
-	    PtolemyEffigy effigy = (PtolemyEffigy)proxy;
-	    if (effigy.getModel() instanceof InterfaceAutomaton) {
+        /** Create a tableau in the default workspace with no name for the
+         *  given Effigy.  The tableau will created with a new unique name
+         *  in the given model proxy.  If this factory cannot create a tableau
+         *  for the given proxy (perhaps because the proxy is not of the
+         *  appropriate subclass) then return null.
+         *  @param proxy The model proxy.
+         *  @return A new InterfaceAutomatonGraphTableau, if the proxy is a
+         *  PtolemyEffigy that references an InterfaceAutomaton or null
+         *  otherwise.
+         *  @exception Exception If an exception occurs when creating the
+         *  tableau.
+         */
+        public Tableau createTableau(Effigy proxy) throws Exception {
+            if (!(proxy instanceof PtolemyEffigy))
+                return null;
+            PtolemyEffigy effigy = (PtolemyEffigy)proxy;
+            if (effigy.getModel() instanceof InterfaceAutomaton) {
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute)getAttribute(
                         "_library", LibraryAttribute.class);
 
-		InterfaceAutomatonGraphTableau tableau =
-		        new InterfaceAutomatonGraphTableau(
+                InterfaceAutomatonGraphTableau tableau =
+                        new InterfaceAutomatonGraphTableau(
                         (PtolemyEffigy)proxy,
                         proxy.uniqueName("tableau"),
                         library);
-		return tableau;
-	    } else {
-		return null;
-	    }
-	}
+                return tableau;
+            } else {
+                return null;
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

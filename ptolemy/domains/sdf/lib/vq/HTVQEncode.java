@@ -201,16 +201,16 @@ public class HTVQEncode extends Transformer {
      */
     public void fire() throws IllegalActionException {
         int j;
-	_blocks = input.get(0, _blockCount);
+        _blocks = input.get(0, _blockCount);
 
         for (j = 0; j < _blockCount; j++) {
             _codewords[j] = new IntToken(
                     _encode(IntegerMatrixMath.fromMatrixToArray(
                             ((IntMatrixToken)_blocks[j]).intMatrix()),
                             _blockWidth * _blockHeight));
-	}
+        }
 
-	output.send(0, _codewords, _blockCount);
+        output.send(0, _codewords, _blockCount);
     }
 
     /**
@@ -230,7 +230,7 @@ public class HTVQEncode extends Transformer {
         _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
 
         _codewords =  new IntToken[_blockCount];
-	_blocks = new ptolemy.data.Token[_blockCount];
+        _blocks = new ptolemy.data.Token[_blockCount];
 
         String filename = ((StringToken)codeBook.getToken()).stringValue();
         try {
@@ -295,12 +295,12 @@ public class HTVQEncode extends Transformer {
     private int _encode(int p[], int length) {
         int[][] p5, p4, p3, p2, p1, p0;
         int numberOfStages;
-	int stage = 0;
+        int stage = 0;
         int ip;
 
         numberOfStages = _stages(length);
 
-	if (numberOfStages > 4) {
+        if (numberOfStages > 4) {
             throw new RuntimeException(
                     "Number of stages = " + numberOfStages + ", which is "
                     + "greater than 4");
@@ -312,7 +312,7 @@ public class HTVQEncode extends Transformer {
         p1 = ipbuf_encodep1;
         p0 = ipbuf_encodep2;
 
-	switch(numberOfStages) {
+        switch(numberOfStages) {
         case 4:
             // System.arraycopy is faster for large vectors
             System.arraycopy(p, 0, p5[0], 0, 8);
@@ -346,8 +346,8 @@ public class HTVQEncode extends Transformer {
             p1[0][0] = p[0];
             p1[0][1] = p[1];
             break;
-	}
-	switch(numberOfStages) {
+        }
+        switch(numberOfStages) {
         case 4:
             //XSIZE = 8, YSIZE = 4
             ip = ((p5[0][0] & 255) << 8) + (p5[0][1] & 255);
@@ -433,7 +433,7 @@ public class HTVQEncode extends Transformer {
             ip = ((p1[0][1] & 255) << 8) + (p1[0][0] & 255);
             p0[0][0] = _lookupTable[stage][ip];
             stage++;
-  	}
+          }
 
         return p0[0][0];
     }

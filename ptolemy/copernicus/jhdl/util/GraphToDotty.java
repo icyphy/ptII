@@ -40,19 +40,19 @@ public abstract class GraphToDotty {
 
     //public abstract String convert(Object g, String ename);
     public String convert(Object g, String ename) {
-	return null;
+        return null;
     }
 
     /**
      * Print a .dot file header
      **/
     public static String header(String creatorName, String graphName) {
-	StringBuffer sb = new StringBuffer();
-	sb.append("//Dotfile created by " + creatorName + "\r\n");
-	sb.append("digraph " + graphName + " {\r\n");
-	sb.append("\tsize=\"8,11\"\r\n");
-	sb.append("\t// Vertices\r\n");
-	return sb.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append("//Dotfile created by " + creatorName + "\r\n");
+        sb.append("digraph " + graphName + " {\r\n");
+        sb.append("\tsize=\"8,11\"\r\n");
+        sb.append("\t// Vertices\r\n");
+        return sb.toString();
     }
 
     /**
@@ -62,80 +62,80 @@ public abstract class GraphToDotty {
      * Courtesy of Nathan Kitchen
      */
     public static String convertSpecialsToEscapes(String str) {
-	StringBuffer strBuf = new StringBuffer();
-	for (int i = 0; i < str.length(); i++) {
-	    char c = str.charAt(i);
-	    switch (c) {
-	    case '\n':
-		strBuf.append("\\n");
-		break;
-	    case '\t':
-		strBuf.append("\\t");
-		break;
-  	    case '\r':
-		// determine use of \r based on current MYEOL value
-		if (MYEOL.equals("\r\n"))
-		    strBuf.append("\\r");
-  		break;
-	    case '\"':
-		strBuf.append("\\\"");
-		break;
-	    case '\'':
-		strBuf.append("\\\'");
-		break;
-	    case '\b':
-		strBuf.append("\\b");
-		break;
-	    case '\f':
-		strBuf.append("\\f");
-		break;
-	    case '\\':
-		strBuf.append("\\\\");
-		break;
-	    default:
-		strBuf.append(c);
-	    }
-	}
-	return strBuf.toString();
+        StringBuffer strBuf = new StringBuffer();
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            switch (c) {
+            case '\n':
+                strBuf.append("\\n");
+                break;
+            case '\t':
+                strBuf.append("\\t");
+                break;
+              case '\r':
+                // determine use of \r based on current MYEOL value
+                if (MYEOL.equals("\r\n"))
+                    strBuf.append("\\r");
+                  break;
+            case '\"':
+                strBuf.append("\\\"");
+                break;
+            case '\'':
+                strBuf.append("\\\'");
+                break;
+            case '\b':
+                strBuf.append("\\b");
+                break;
+            case '\f':
+                strBuf.append("\\f");
+                break;
+            case '\\':
+                strBuf.append("\\\\");
+                break;
+            default:
+                strBuf.append(c);
+            }
+        }
+        return strBuf.toString();
     }
 
     public static String validFileName(String basename) {
-	byte bbytes[] = basename.getBytes();
-        //	byte nbytes[] = new byte[bbytes.length];
-	if (!((bbytes[0] >= 'a' && bbytes[0] <= 'z') ||
-	      (bbytes[0] >= 'A' && bbytes[0] <= 'Z')))
-	    bbytes[0] = 'A';
+        byte bbytes[] = basename.getBytes();
+        //        byte nbytes[] = new byte[bbytes.length];
+        if (!((bbytes[0] >= 'a' && bbytes[0] <= 'z') ||
+              (bbytes[0] >= 'A' && bbytes[0] <= 'Z')))
+            bbytes[0] = 'A';
         // Colons are valid in DOS filenames...
-        /*	for (int i=0;i<bbytes.length;i++) {
-	    switch(bbytes[i]) {
-	    case ':':
-		nbytes[i] = '_';
-		break;
-	    default:
-		nbytes[i] = bbytes[i];
-		break;
-	    }
+        /*        for (int i=0;i<bbytes.length;i++) {
+            switch(bbytes[i]) {
+            case ':':
+                nbytes[i] = '_';
+                break;
+            default:
+                nbytes[i] = bbytes[i];
+                break;
+            }
                 }*/
-	return new String(bbytes);
+        return new String(bbytes);
     }
 
     public void writeDotFile(String basename, Object graph) {
-	writeDotFile(null,basename,graph);
+        writeDotFile(null,basename,graph);
     }
 
     public void writeDotFile(
             String dirName, String basename, Object graph) {
-	String filename = validFileName(basename) + ".dot";
-	if (dirName != null) {
-	    filename = dirName + "/" + filename;
-	}
-	System.out.println("Writing " + filename);
-	try {
-	    FileWriter dotFile = new FileWriter(filename);
-	    dotFile.write(convert(graph, basename));
-	    dotFile.close();
-	} catch (IOException e){
-	    System.out.println(e);
-	}
+        String filename = validFileName(basename) + ".dot";
+        if (dirName != null) {
+            filename = dirName + "/" + filename;
+        }
+        System.out.println("Writing " + filename);
+        try {
+            FileWriter dotFile = new FileWriter(filename);
+            dotFile.write(convert(graph, basename));
+            dotFile.close();
+        } catch (IOException e){
+            System.out.println(e);
+        }
     }
 }

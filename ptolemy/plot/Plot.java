@@ -1367,32 +1367,32 @@ public class Plot extends PlotBox {
                 return true;
             } else if (lcLine.startsWith("lines:")) {
                 if (_sawFirstDataSet) {
-		    // Backward compatbility with xgraph here.
-		    // If we see some data sets, then they are drawn
-		    // with lines, if we then see a Lines: off
-		    // the current dataset and succeeding datasets
-		    // will be drawn without lines.
+                    // Backward compatbility with xgraph here.
+                    // If we see some data sets, then they are drawn
+                    // with lines, if we then see a Lines: off
+                    // the current dataset and succeeding datasets
+                    // will be drawn without lines.
 
-		    // For each of the existing datasets, if
-		    // it fmt.connectedUseDefault is true, then
-		    // set fmt.connectedUseDefault to false and set
-		    // the value of fmt.connected
-		    Enumeration formats = _formats.elements();
-		    while (formats.hasMoreElements()) {
-			Format format = (Format) formats.nextElement();
-			if (format.connectedUseDefault) {
-			    format.connectedUseDefault = false;
-			    format.connected = _connected;
-			}
-		    }
+                    // For each of the existing datasets, if
+                    // it fmt.connectedUseDefault is true, then
+                    // set fmt.connectedUseDefault to false and set
+                    // the value of fmt.connected
+                    Enumeration formats = _formats.elements();
+                    while (formats.hasMoreElements()) {
+                        Format format = (Format) formats.nextElement();
+                        if (format.connectedUseDefault) {
+                            format.connectedUseDefault = false;
+                            format.connected = _connected;
+                        }
+                    }
 
-		}
+                }
 
-		if (lcLine.indexOf("off", 6) >= 0) {
-		    setConnected(false);
-		} else {
-		    setConnected(true);
-		}
+                if (lcLine.indexOf("off", 6) >= 0) {
+                    setConnected(false);
+                } else {
+                    setConnected(true);
+                }
                 return true;
             } else if (lcLine.startsWith("impulses:")) {
                 // If we have not yet seen a dataset, then this is interpreted
@@ -1661,7 +1661,7 @@ public class Plot extends PlotBox {
                 ! _reuseDatasets) {
             // We did not set a DataSet line, but
             // we did get called with -<digit> args and
-	    // we did not see reusedatasets: yes
+            // we did not see reusedatasets: yes
             _sawFirstDataSet = true;
             _currentdataset++;
         }
@@ -1934,14 +1934,14 @@ public class Plot extends PlotBox {
             int dataset, int index) {
         if (_pointsPersistence > 0 || _xPersistence > 0.0) {
             // To allow erasing to work by just redrawing the points.
-	    if (_background == null) {
-		// java.awt.Component.setBackground(color) says that
-		// if the color "parameter is null then this component
-		// will inherit the  background color of its parent."
-		graphics.setXORMode(getBackground());
-	    } else {
-		graphics.setXORMode(_background);
-	    }
+            if (_background == null) {
+                // java.awt.Component.setBackground(color) says that
+                // if the color "parameter is null then this component
+                // will inherit the  background color of its parent."
+                graphics.setXORMode(getBackground());
+            } else {
+                graphics.setXORMode(_background);
+            }
         }
         // Set the color
         if (_usecolor) {
@@ -2016,11 +2016,11 @@ public class Plot extends PlotBox {
             // Set the color
             if (_pointsPersistence > 0 || _xPersistence > 0.0) {
                 // To allow erasing to work by just redrawing the points.
-		if (_background == null) {
-		    graphics.setXORMode(getBackground());
-		} else {
-		    graphics.setXORMode(_background);
-		}
+                if (_background == null) {
+                    graphics.setXORMode(getBackground());
+                } else {
+                    graphics.setXORMode(_background);
+                }
             }
             if (_usecolor) {
                 int color = dataset % _colors.length;

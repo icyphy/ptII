@@ -50,27 +50,27 @@ import soot.*;
 public class ActorDataFlowAnalysis {
 
     public ActorDataFlowAnalysis(Entity entity, SootClass theClass)
-	throws IllegalActionException {
+        throws IllegalActionException {
 
-	DirectedGraph prefire_graph = _analyzeMethod(theClass,"prefire");
-	DirectedGraph fire_graph = _analyzeMethod(theClass,"fire");
-	DirectedGraph postfire_graph = _analyzeMethod(theClass,"postfire");
+        DirectedGraph prefire_graph = _analyzeMethod(theClass,"prefire");
+        DirectedGraph fire_graph = _analyzeMethod(theClass,"fire");
+        DirectedGraph postfire_graph = _analyzeMethod(theClass,"postfire");
 
     }
 
     /**
      **/
     protected DirectedGraph _analyzeMethod(SootClass theClass,
-					   String methodName)
-	throws IllegalActionException
+                                           String methodName)
+        throws IllegalActionException
     {
 
-	SootMethod method = theClass.getMethodByName(methodName);
-	return new IntervalBlockDirectedGraph(method);
+        SootMethod method = theClass.getMethodByName(methodName);
+        return new IntervalBlockDirectedGraph(method);
     }
 
     public static void main(String args[]) {
-	SootMethod method = ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
+        SootMethod method = ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
     }
 
 }

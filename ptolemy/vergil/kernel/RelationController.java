@@ -67,8 +67,8 @@ public class RelationController extends ParameterizedNodeController {
      *  @param controller The associated graph controller.
      */
     public RelationController(GraphController controller) {
-	super(controller);
-	setNodeRenderer(new RelationRenderer());
+        super(controller);
+        setNodeRenderer(new RelationRenderer());
 
         // Add to the context menu.
         _menuFactory.addMenuItemFactory(
@@ -82,26 +82,26 @@ public class RelationController extends ParameterizedNodeController {
      *  looks like a black diamond.
      */
     public class RelationRenderer implements NodeRenderer {
-	public Figure render(Object n) {
-	    double h = 12.0;
-	    double w = 12.0;
+        public Figure render(Object n) {
+            double h = 12.0;
+            double w = 12.0;
 
-	    Polygon2D.Double polygon = new Polygon2D.Double();
-	    polygon.moveTo(w/2, 0);
-	    polygon.lineTo(0, h/2);
-	    polygon.lineTo(-w/2, 0);
-	    polygon.lineTo(0, -h/2);
-	    polygon.closePath();
-	    Figure figure = new BasicFigure(polygon, Color.black);
-	    if (n != null) {
-		Vertex vertex = (Vertex)n;
-		Relation relation = (Relation) vertex.getContainer();
+            Polygon2D.Double polygon = new Polygon2D.Double();
+            polygon.moveTo(w/2, 0);
+            polygon.lineTo(0, h/2);
+            polygon.lineTo(-w/2, 0);
+            polygon.lineTo(0, -h/2);
+            polygon.closePath();
+            Figure figure = new BasicFigure(polygon, Color.black);
+            if (n != null) {
+                Vertex vertex = (Vertex)n;
+                Relation relation = (Relation) vertex.getContainer();
                 ActorGraphModel model =
                     (ActorGraphModel)getController().getGraphModel();
                 figure.setToolTipText(relation.getName(
                         model.getPtolemyModel()));
-	    }
-	    return figure;
-	}
+            }
+            return figure;
+        }
     }
 }

@@ -68,11 +68,11 @@ public class TestSink extends AtomicActor{
      */
     public void fire() throws IllegalActionException {
         Token data;
-	while (true) {
-	    data = _input.get(0);
+        while (true) {
+            data = _input.get(0);
             _list.append(((IntToken)data).intValue());
-	    //System.out.println("Sink discarded "+data.intValue());
-	}
+            //System.out.println("Sink discarded "+data.intValue());
+        }
     }
 
     public static String getData() {

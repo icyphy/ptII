@@ -48,88 +48,88 @@ and SoundWriter by performing soft clipping on an input sound file.
  */
 public class ReaderProcessWriter {
     public static void main(String[] args) {
-	// Set this to "true" to turn on debugging information.
-	boolean _debug = true;
-	// URL path to the input sound file.
-	String sourceURL = "file:/tmp/voice.wav";
-	// File name of the output file to create.
-	String writeFile = "output2.wav";
-	// Internal buffer size for live (real-time) playback.
-	int outBufferSize = 4096;
-	// Amount of data to read or write from/to the internal buffer
-	// at a time. This should be set smaller than the internal buffer
-	// size.
-	int getSamplesSize = 256;
-	try {
-	    // Construct a SoundReader object that is used to read
-	    // sound samples from an audio file.
-	    SoundReader soundReader =
-		new SoundReader(sourceURL, getSamplesSize);
-	    // The sample rate to playback at, in Hz.
-	    // Set the playback sample rate to the sample rate of the
-	    // input sound file.
-	    float sampleRate = soundReader.getSampleRate();
-	    if (_debug) {
-		System.out.println("Sample rate of the input file is " +
-				   sampleRate + " Hz.");
-	    }
-	    // Number of bits per sample.
-	    int bitsPerSample = soundReader.getBitsPerSample();
-	    if (_debug) {
-		System.out.println("Bits per sample for the input file is " +
-				   bitsPerSample);
-	    }
-	    // 1 for mono, 2 for stereo, etc.
-	    int channels = soundReader.getChannels();
-	     if (_debug) {
-		System.out.println("Number of channels for the input file is " +
-				   channels);
-	    }
-	    int putSamplesSize = getSamplesSize;
-	    // Construct a sound writer object that is used to write
-	    // audio samples to a sound file.
-	    SoundWriter soundWriter = new SoundWriter(writeFile, sampleRate,
-							    bitsPerSample,
-							    channels,
-							    putSamplesSize);
-
-	    double[][] capturedSamplesArray =
-		new double[channels][getSamplesSize];
-	    boolean done = false;
-	    // The main loop.
-	    while (!done) {
-		// Read in some audio samples.
-		capturedSamplesArray = soundReader.getSamples();
-		if (_debug) {
-		    System.out.println("Read some samples...");
-		}
-		if (capturedSamplesArray == null) {
-		    // reached end of file.
-		    done = true;
-		    System.out.println("Reached end of file.");
-		} else {
-		    // Do some simple processing on the
-		    // captured audio.
-		    for (int j=0; j< channels; j++) {
-			for (int i=0; i< getSamplesSize; i++) {
-			    //  ********** INSERT PROCESSING CODE HERE ****
-
-			    // Perform soft clipping using the arc tangent.
-			    capturedSamplesArray[j][i] =
-				java.lang.Math.atan(capturedSamplesArray[j][i])*0.6;
-			}
-		    }
-		    // Write the processed audio samples.
-		    soundWriter.putSamples(capturedSamplesArray);
-		}
+        // Set this to "true" to turn on debugging information.
+        boolean _debug = true;
+        // URL path to the input sound file.
+        String sourceURL = "file:/tmp/voice.wav";
+        // File name of the output file to create.
+        String writeFile = "output2.wav";
+        // Internal buffer size for live (real-time) playback.
+        int outBufferSize = 4096;
+        // Amount of data to read or write from/to the internal buffer
+        // at a time. This should be set smaller than the internal buffer
+        // size.
+        int getSamplesSize = 256;
+        try {
+            // Construct a SoundReader object that is used to read
+            // sound samples from an audio file.
+            SoundReader soundReader =
+                new SoundReader(sourceURL, getSamplesSize);
+            // The sample rate to playback at, in Hz.
+            // Set the playback sample rate to the sample rate of the
+            // input sound file.
+            float sampleRate = soundReader.getSampleRate();
+            if (_debug) {
+                System.out.println("Sample rate of the input file is " +
+                                   sampleRate + " Hz.");
             }
-	    // Close the input sound file, because we are done with it.
-	    soundReader.closeFile();
-	    // Close the output sound file, because we are done with it.
-	    soundWriter.closeFile();
-	} catch (Exception ex) {
-	    System.err.println(ex);
-	}
-	System.out.println("Done.");
+            // Number of bits per sample.
+            int bitsPerSample = soundReader.getBitsPerSample();
+            if (_debug) {
+                System.out.println("Bits per sample for the input file is " +
+                                   bitsPerSample);
+            }
+            // 1 for mono, 2 for stereo, etc.
+            int channels = soundReader.getChannels();
+             if (_debug) {
+                System.out.println("Number of channels for the input file is " +
+                                   channels);
+            }
+            int putSamplesSize = getSamplesSize;
+            // Construct a sound writer object that is used to write
+            // audio samples to a sound file.
+            SoundWriter soundWriter = new SoundWriter(writeFile, sampleRate,
+                                                            bitsPerSample,
+                                                            channels,
+                                                            putSamplesSize);
+
+            double[][] capturedSamplesArray =
+                new double[channels][getSamplesSize];
+            boolean done = false;
+            // The main loop.
+            while (!done) {
+                // Read in some audio samples.
+                capturedSamplesArray = soundReader.getSamples();
+                if (_debug) {
+                    System.out.println("Read some samples...");
+                }
+                if (capturedSamplesArray == null) {
+                    // reached end of file.
+                    done = true;
+                    System.out.println("Reached end of file.");
+                } else {
+                    // Do some simple processing on the
+                    // captured audio.
+                    for (int j=0; j< channels; j++) {
+                        for (int i=0; i< getSamplesSize; i++) {
+                            //  ********** INSERT PROCESSING CODE HERE ****
+
+                            // Perform soft clipping using the arc tangent.
+                            capturedSamplesArray[j][i] =
+                                java.lang.Math.atan(capturedSamplesArray[j][i])*0.6;
+                        }
+                    }
+                    // Write the processed audio samples.
+                    soundWriter.putSamples(capturedSamplesArray);
+                }
+            }
+            // Close the input sound file, because we are done with it.
+            soundReader.closeFile();
+            // Close the output sound file, because we are done with it.
+            soundWriter.closeFile();
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+        System.out.println("Done.");
     }
 }

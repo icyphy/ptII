@@ -71,12 +71,12 @@ public class Repeat extends SDFTransformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	// parameters
-	numberOfTimes = new Parameter(this, "numberOfTimes", new IntToken(2));
-	numberOfTimes.setTypeEquals(BaseType.INT);
+        // parameters
+        numberOfTimes = new Parameter(this, "numberOfTimes", new IntToken(2));
+        numberOfTimes.setTypeEquals(BaseType.INT);
 
-	blockSize = new Parameter(this, "blockSize", new IntToken(1));
-	blockSize.setTypeEquals(BaseType.INT);
+        blockSize = new Parameter(this, "blockSize", new IntToken(1));
+        blockSize.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,10 +140,10 @@ public class Repeat extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
-	int count = ((IntToken)blockSize.getToken()).intValue();
-	Token[] inputBlock = input.get(0, count);
-	for (int i = 0; i < repetitions; i += 1) {
+        int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
+        int count = ((IntToken)blockSize.getToken()).intValue();
+        Token[] inputBlock = input.get(0, count);
+        for (int i = 0; i < repetitions; i += 1) {
             output.send(0, inputBlock, count);
         }
     }
@@ -159,7 +159,7 @@ public class Repeat extends SDFTransformer {
      */
     public boolean prefire() throws IllegalActionException {
         int length = ((IntToken)blockSize.getToken()).intValue();
-	boolean result = input.hasToken(0, length);
+        boolean result = input.hasToken(0, length);
         if (_debugging) {
             _debug("Called prefire(), which returns " + result + ".");
         }

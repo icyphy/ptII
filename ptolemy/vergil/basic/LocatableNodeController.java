@@ -66,7 +66,7 @@ is used to update the location of the node as the figure moves.
 public class LocatableNodeController extends BasicNodeController {
 
     public LocatableNodeController(GraphController controller) {
-	super(controller);
+        super(controller);
         NodeInteractor nodeInteractor = (NodeInteractor) getNodeInteractor();
         nodeInteractor.setDragInteractor(new LocatableNodeDragInteractor(this));
     }
@@ -82,7 +82,7 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public Figure drawNode(Object node) {
         Figure nf = super.drawNode(node);
-	locateFigure(node);
+        locateFigure(node);
         return nf;
     }
 
@@ -120,10 +120,10 @@ public class LocatableNodeController extends BasicNodeController {
      *  @param node The object to locate.
      */
     public void locateFigure(Object node) {
-	Figure nf = getController().getFigure(node);
-	if (hasLocation(node)) {
-	    double[] location = getLocation(node);
-	    CanvasUtilities.translateTo(nf, location[0], location[1]);
+        Figure nf = getController().getFigure(node);
+        if (hasLocation(node)) {
+            double[] location = getLocation(node);
+            CanvasUtilities.translateTo(nf, location[0], location[1]);
         }
     }
 
@@ -138,7 +138,7 @@ public class LocatableNodeController extends BasicNodeController {
             throw new RuntimeException("The location " + location +
                     " is not valid");
         }
-	if (node instanceof Locatable) {
+        if (node instanceof Locatable) {
             ((Locatable)node).setLocation(location);
         } else throw new RuntimeException("The node " + node +
                 "cannot have a desired location");

@@ -102,8 +102,8 @@ public class IconEditor {
     public static void main(String argv[])
             throws NameDuplicationException, IllegalActionException {
         AppContext context = new BasicFrame("Icon Editor", false);
-	// Make a new instance of the IconEditor class.
-	IconEditor iconEditor = new IconEditor(context);
+        // Make a new instance of the IconEditor class.
+        IconEditor iconEditor = new IconEditor(context);
     }
 
     /**
@@ -120,205 +120,205 @@ public class IconEditor {
     public IconEditor(AppContext context, XMLIcon icon) {
         // First point the local context and icon to the ones being
         // passed in.
-	_context = context;
-	_icon = icon;
+        _context = context;
+        _icon = icon;
 
-	_editorPane = new IconEditorPane(icon);
-	_context.getContentPane().add("Center", _editorPane);
+        _editorPane = new IconEditorPane(icon);
+        _context.getContentPane().add("Center", _editorPane);
 
-	// Register the delete keyboard key press from the user and
-	// listen for it.
-	GUIUtilities.addHotKey(_editorPane, deletionListener,
+        // Register the delete keyboard key press from the user and
+        // listen for it.
+        GUIUtilities.addHotKey(_editorPane, deletionListener,
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 
-	// Cut, Copy, and Paste keyboard shortcuts are registered.
-	GUIUtilities.addHotKey(_editorPane, cutAction,
+        // Cut, Copy, and Paste keyboard shortcuts are registered.
+        GUIUtilities.addHotKey(_editorPane, cutAction,
                 KeyStroke.getKeyStroke(KeyEvent.VK_X, 2));
 
-	GUIUtilities.addHotKey(_editorPane, copyAction,
+        GUIUtilities.addHotKey(_editorPane, copyAction,
                 KeyStroke.getKeyStroke(KeyEvent.VK_C, 2));
 
-	GUIUtilities.addHotKey(_editorPane, pasteAction,
+        GUIUtilities.addHotKey(_editorPane, pasteAction,
                 KeyStroke.getKeyStroke(KeyEvent.VK_V, 2));
 
-	// New, Open, Save, and Print keyboard shortcuts are registered.
-	GUIUtilities.addHotKey(_editorPane, newIconAction,
+        // New, Open, Save, and Print keyboard shortcuts are registered.
+        GUIUtilities.addHotKey(_editorPane, newIconAction,
                 KeyStroke.getKeyStroke(KeyEvent.VK_N, 2));
 
-	GUIUtilities.addHotKey(_editorPane, openIconAction,
+        GUIUtilities.addHotKey(_editorPane, openIconAction,
                 KeyStroke.getKeyStroke(KeyEvent.VK_O, 2));
 
-	GUIUtilities.addHotKey(_editorPane, saveIconAction,
+        GUIUtilities.addHotKey(_editorPane, saveIconAction,
                 KeyStroke.getKeyStroke(KeyEvent.VK_S, 2));
 
-	GUIUtilities.addHotKey(_editorPane, printIconAction,
+        GUIUtilities.addHotKey(_editorPane, printIconAction,
                 KeyStroke.getKeyStroke(KeyEvent.VK_P, 2));
 
-	_editorPane.setRequestFocusEnabled(true);
+        _editorPane.setRequestFocusEnabled(true);
 
-	// Make a toolbar for the different colors and shapes and
-	// add it to the main _context frame.  Also, make another
-	// toolbar for the different thicknesses and add that to the
-	// main _context frame.
-	JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
-	_context.getContentPane().add("North", toolBar);
+        // Make a toolbar for the different colors and shapes and
+        // add it to the main _context frame.  Also, make another
+        // toolbar for the different thicknesses and add that to the
+        // main _context frame.
+        JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
+        _context.getContentPane().add("North", toolBar);
 
-	// When you exit the program, here is what happens.
-	_context.setExitAction(exitIconAction);
+        // When you exit the program, here is what happens.
+        _context.setExitAction(exitIconAction);
 
-	// Create a menu bar and put it into the main context window.
-	_menuBar = new JMenuBar();
-	_context.setJMenuBar(_menuBar);
+        // Create a menu bar and put it into the main context window.
+        _menuBar = new JMenuBar();
+        _context.setJMenuBar(_menuBar);
 
-	// Create a "File" menu.
+        // Create a "File" menu.
         _menuFile = new JMenu("File");
-	_menuFile.setMnemonic('F');
-	_menuEdit = new JMenu("Edit");
-	_menuEdit.setMnemonic('E');
-	_menuHelp = new JMenu("Help");
-	_menuHelp.setMnemonic('H');
+        _menuFile.setMnemonic('F');
+        _menuEdit = new JMenu("Edit");
+        _menuEdit.setMnemonic('E');
+        _menuHelp = new JMenu("Help");
+        _menuHelp.setMnemonic('H');
 
-	// Add the file, edit, and help menus to the menu bar.
-	_menuBar.add(_menuFile);
-	_menuBar.add(_menuEdit);
-	_menuBar.add(_menuHelp);
+        // Add the file, edit, and help menus to the menu bar.
+        _menuBar.add(_menuFile);
+        _menuBar.add(_menuEdit);
+        _menuBar.add(_menuHelp);
 
-	// Add "New", "Open", "Save", "Save As", "Print", and "Exit"
-	// to the "File" menu.
-	GUIUtilities.addMenuItem(_menuFile, newIconAction, 'N',
+        // Add "New", "Open", "Save", "Save As", "Print", and "Exit"
+        // to the "File" menu.
+        GUIUtilities.addMenuItem(_menuFile, newIconAction, 'N',
                 "Create a new icon and discard this one");
-	GUIUtilities.addMenuItem(_menuFile, openIconAction, 'O',
+        GUIUtilities.addMenuItem(_menuFile, openIconAction, 'O',
                 "Open an icon from a file");
-	GUIUtilities.addMenuItem(_menuFile, saveIconAction, 'S',
+        GUIUtilities.addMenuItem(_menuFile, saveIconAction, 'S',
                 "Save this icon");
-	GUIUtilities.addMenuItem(_menuFile, saveIconAsAction, 'A',
+        GUIUtilities.addMenuItem(_menuFile, saveIconAsAction, 'A',
                 "Save as ...");
-	GUIUtilities.addMenuItem(_menuFile, printIconAction, 'P',
+        GUIUtilities.addMenuItem(_menuFile, printIconAction, 'P',
                 "Print this icon");
-	GUIUtilities.addMenuItem(_menuFile, exitIconAction, 'E',
+        GUIUtilities.addMenuItem(_menuFile, exitIconAction, 'E',
                 "Close the " + _context.getTitle() +
                 " window");
 
-	// Add "Cut", "Copy", and "Paste" functions to the edit menu.
-	GUIUtilities.addMenuItem(_menuEdit, cutAction, 'C',
+        // Add "Cut", "Copy", and "Paste" functions to the edit menu.
+        GUIUtilities.addMenuItem(_menuEdit, cutAction, 'C',
                 "Cut the selected shape");
-	GUIUtilities.addMenuItem(_menuEdit, copyAction, 'O',
+        GUIUtilities.addMenuItem(_menuEdit, copyAction, 'O',
                 "Copy the selected shape");
-	GUIUtilities.addMenuItem(_menuEdit, pasteAction, 'P',
+        GUIUtilities.addMenuItem(_menuEdit, pasteAction, 'P',
                 "Paste the shape previously cut or copied");
 
-	// Add "About" to the help menu.
-	GUIUtilities.addMenuItem(_menuHelp, helpAction, 'A',
+        // Add "About" to the help menu.
+        GUIUtilities.addMenuItem(_menuHelp, helpAction, 'A',
                 "About the Icon Editor");
 
-	// Set up the buttons for the multiple toolbars.  These buttons
-	// are instantiated with gif image files and these files must be
-	// located in a sub-directory from this one named "gifs".
+        // Set up the buttons for the multiple toolbars.  These buttons
+        // are instantiated with gif image files and these files must be
+        // located in a sub-directory from this one named "gifs".
 
-	URL Rectangle = getClass().getResource("gifs/rect.gif");
-	URL Line = getClass().getResource("gifs/line.gif");
-	URL Quad = getClass().getResource("gifs/quad.gif");
-	URL Cubic = getClass().getResource("gifs/cubic.gif");
-	URL Circle = getClass().getResource("gifs/circle.gif");
-	URL Ellipse = getClass().getResource("gifs/ellipse.gif");
-	URL Fill = getClass().getResource("gifs/fill.gif");
-	URL Stroke = getClass().getResource("gifs/stroke.gif");
-	URL More = getClass().getResource("gifs/more.gif");
-	URL thickness1 = getClass().getResource("gifs/thickness1.gif");
-	URL thickness2 = getClass().getResource("gifs/thickness2.gif");
-	URL thickness3 = getClass().getResource("gifs/thickness3.gif");
-	URL thickness4 = getClass().getResource("gifs/thickness4.gif");
-	URL thickness5 = getClass().getResource("gifs/thickness5.gif");
-	URL thinner = getClass().getResource("gifs/thinner.gif");
-	URL thicker = getClass().getResource("gifs/thicker.gif");
+        URL Rectangle = getClass().getResource("gifs/rect.gif");
+        URL Line = getClass().getResource("gifs/line.gif");
+        URL Quad = getClass().getResource("gifs/quad.gif");
+        URL Cubic = getClass().getResource("gifs/cubic.gif");
+        URL Circle = getClass().getResource("gifs/circle.gif");
+        URL Ellipse = getClass().getResource("gifs/ellipse.gif");
+        URL Fill = getClass().getResource("gifs/fill.gif");
+        URL Stroke = getClass().getResource("gifs/stroke.gif");
+        URL More = getClass().getResource("gifs/more.gif");
+        URL thickness1 = getClass().getResource("gifs/thickness1.gif");
+        URL thickness2 = getClass().getResource("gifs/thickness2.gif");
+        URL thickness3 = getClass().getResource("gifs/thickness3.gif");
+        URL thickness4 = getClass().getResource("gifs/thickness4.gif");
+        URL thickness5 = getClass().getResource("gifs/thickness5.gif");
+        URL thinner = getClass().getResource("gifs/thinner.gif");
+        URL thicker = getClass().getResource("gifs/thicker.gif");
 
-	// Now that I have the names of all the gif files,
-	// add them to the appropriate tool bars with the appropriate
-	// actions.
-	GUIUtilities.addToolBarButton(toolBar, rectangleAction,
+        // Now that I have the names of all the gif files,
+        // add them to the appropriate tool bars with the appropriate
+        // actions.
+        GUIUtilities.addToolBarButton(toolBar, rectangleAction,
                 "Rectangle", new ImageIcon(Rectangle));
-	GUIUtilities.addToolBarButton(toolBar, lineAction,
+        GUIUtilities.addToolBarButton(toolBar, lineAction,
                 "Straight Line", new ImageIcon(Line));
-	GUIUtilities.addToolBarButton(toolBar, quadraticAction,
+        GUIUtilities.addToolBarButton(toolBar, quadraticAction,
                 "Quadratic Curve", new ImageIcon(Quad));
-	GUIUtilities.addToolBarButton(toolBar, cubicAction,
+        GUIUtilities.addToolBarButton(toolBar, cubicAction,
                 "Cubic Curve", new ImageIcon(Cubic));
-	GUIUtilities.addToolBarButton(toolBar, circleAction,
+        GUIUtilities.addToolBarButton(toolBar, circleAction,
                 "Circle", new ImageIcon(Circle));
-	GUIUtilities.addToolBarButton(toolBar, ellipseAction,
+        GUIUtilities.addToolBarButton(toolBar, ellipseAction,
                 "Ellipse", new ImageIcon(Ellipse));
 
-	// Now I add the pull-down menus for the colors of the outline and
-	// fill of the shapes and the thickness of the outline.
-	BasicComboBoxRenderer renderer = new BasicComboBoxRenderer();
-	renderer.setPreferredSize(new Dimension(27, 27));
+        // Now I add the pull-down menus for the colors of the outline and
+        // fill of the shapes and the thickness of the outline.
+        BasicComboBoxRenderer renderer = new BasicComboBoxRenderer();
+        renderer.setPreferredSize(new Dimension(27, 27));
 
-	_fillComboBox = new JComboBox();
-	_outlineComboBox = new JComboBox();
-	_thicknessComboBox = new JComboBox();
+        _fillComboBox = new JComboBox();
+        _outlineComboBox = new JComboBox();
+        _thicknessComboBox = new JComboBox();
 
-	_fillComboBox.setRenderer(renderer);
-	_outlineComboBox.setRenderer(renderer);
-	_thicknessComboBox.setRenderer(renderer);
+        _fillComboBox.setRenderer(renderer);
+        _outlineComboBox.setRenderer(renderer);
+        _thicknessComboBox.setRenderer(renderer);
 
-	toolBar.add(_fillComboBox);
-	toolBar.add(_outlineComboBox);
-	toolBar.add(_thicknessComboBox);
+        toolBar.add(_fillComboBox);
+        toolBar.add(_outlineComboBox);
+        toolBar.add(_thicknessComboBox);
 
-	// And I need to fill up the thickness pull-down menu
-	// with the appropriate images.
-	_thicknessComboBox.addItem(new ImageIcon(thickness1));
-	_thicknessComboBox.addItem(new ImageIcon(thickness2));
-	_thicknessComboBox.addItem(new ImageIcon(thickness3));
-	_thicknessComboBox.addItem(new ImageIcon(thickness4));
-	_thicknessComboBox.addItem(new ImageIcon(thickness5));
+        // And I need to fill up the thickness pull-down menu
+        // with the appropriate images.
+        _thicknessComboBox.addItem(new ImageIcon(thickness1));
+        _thicknessComboBox.addItem(new ImageIcon(thickness2));
+        _thicknessComboBox.addItem(new ImageIcon(thickness3));
+        _thicknessComboBox.addItem(new ImageIcon(thickness4));
+        _thicknessComboBox.addItem(new ImageIcon(thickness5));
 
-	// Similarly for the outline color pull-down menu.
-	for (int i = 0; i < _colors.length; i++) {
-	    Icon bicon = new BlockIcon(_colors[i]);
-	    _outlineComboBox.addItem(bicon);
-	    _fillComboBox.addItem(bicon);
-	}
-	// The last entry is for "more colors"
-	_outlineComboBox.addItem(new ImageIcon(More));
-	_fillComboBox.addItem(new ImageIcon(More));
+        // Similarly for the outline color pull-down menu.
+        for (int i = 0; i < _colors.length; i++) {
+            Icon bicon = new BlockIcon(_colors[i]);
+            _outlineComboBox.addItem(bicon);
+            _fillComboBox.addItem(bicon);
+        }
+        // The last entry is for "more colors"
+        _outlineComboBox.addItem(new ImageIcon(More));
+        _fillComboBox.addItem(new ImageIcon(More));
 
-	// A pull-down menu needs a tool tip and an associated
-	// action.
-	_outlineComboBox.setToolTipText
+        // A pull-down menu needs a tool tip and an associated
+        // action.
+        _outlineComboBox.setToolTipText
             ("Choose a color to be the outline color of the selected shape(s)");
-	_outlineComboBox.addActionListener(outlineAction);
-	_outlinePaint = _colors[_outlineComboBox.getSelectedIndex()];
-	_fillComboBox.setToolTipText
+        _outlineComboBox.addActionListener(outlineAction);
+        _outlinePaint = _colors[_outlineComboBox.getSelectedIndex()];
+        _fillComboBox.setToolTipText
             ("Choose a color to be the fill color of the selected shape(s)");
-	_fillComboBox.addActionListener(fillAction);
-	_fillPaint = _colors[_fillComboBox.getSelectedIndex()];
-	_thicknessComboBox.setToolTipText
+        _fillComboBox.addActionListener(fillAction);
+        _fillPaint = _colors[_fillComboBox.getSelectedIndex()];
+        _thicknessComboBox.setToolTipText
             ("Choose a thickness for the outline(s) of the selected shape(s)");
-	_thicknessComboBox.addActionListener(thicknessAction);
+        _thicknessComboBox.addActionListener(thicknessAction);
 
-	// In addition to the thickness pull-down menu, there is also
-	// an option to increment or decrement the thickness of a shape's
-	// outline.  Here are the buttons associated with those functions.
-	GUIUtilities.addToolBarButton
+        // In addition to the thickness pull-down menu, there is also
+        // an option to increment or decrement the thickness of a shape's
+        // outline.  Here are the buttons associated with those functions.
+        GUIUtilities.addToolBarButton
             (toolBar, thinnerAction,
                     "Thinner Outline(s) for the Selected Shape(s)",
                     new ImageIcon(thinner));
-	GUIUtilities.addToolBarButton
+        GUIUtilities.addToolBarButton
             (toolBar, thickerAction,
                     "Thicker Outline(s) for the Selected Shape(s)",
                     new ImageIcon(thicker));
 
 
-	// Set-up the possible file extensions for opening and saving icons.
-	_filter.addExtension(FILE_FORMAT_EXTENSION);
-	_filter.setDescription(FILE_FORMAT_EXTENSION + " extension only.");
-	_fileChooser.setFileFilter(_filter);
+        // Set-up the possible file extensions for opening and saving icons.
+        _filter.addExtension(FILE_FORMAT_EXTENSION);
+        _filter.setDescription(FILE_FORMAT_EXTENSION + " extension only.");
+        _fileChooser.setFileFilter(_filter);
 
 
-	// Sets the size of the main window in pixels.
-	_context.setSize(WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL);
-	showEditorDialog();
+        // Sets the size of the main window in pixels.
+        _context.setSize(WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL);
+        showEditorDialog();
 
     }
 
@@ -577,7 +577,7 @@ public class IconEditor {
                 if (_changingFill) {
                     _fillPaint = thisColor;
                     _editorPane.setFillPaint(thisColor);
-                    // FIXME	_fillComboBox.setSelectedIndex(-1);
+                    // FIXME        _fillComboBox.setSelectedIndex(-1);
                 } else {
                     _outlinePaint = thisColor;
                     _editorPane.setFillPaint(thisColor);
@@ -640,7 +640,7 @@ public class IconEditor {
                     //System.out.println("You have cancelled your open file choice");
                 } else {
                     //System.out.println("You have chosen to open this file: " +
-                    //		    _fileChooser.getSelectedFile().getName());
+                    //                    _fileChooser.getSelectedFile().getName());
                     _editorPane.clear();
                     //FIXME: Here is where I would import an xml file to this
                     //canvas.
@@ -666,7 +666,7 @@ public class IconEditor {
                     //                     save choice.");
                 } else {
                     //System.out.println("You chose to save this file: " +
-                    //		    _fileChooser.getSelectedFile().getName());
+                    //                    _fileChooser.getSelectedFile().getName());
                 }
             }
         };
@@ -734,23 +734,23 @@ public class IconEditor {
         };
 
     public class BlockIcon implements Icon {
-	BlockIcon(Color c) {
-	    _color = c;
-	}
-	public int getIconWidth() {
-	    return 25;
-	}
-	public int getIconHeight() {
-	    return 25;
-	}
-	public void paintIcon(Component c,
+        BlockIcon(Color c) {
+            _color = c;
+        }
+        public int getIconWidth() {
+            return 25;
+        }
+        public int getIconHeight() {
+            return 25;
+        }
+        public void paintIcon(Component c,
                 Graphics g,
                 int x,
                 int y) {
-	    g.setColor(_color);
-	    g.fillRect(x, y, getIconHeight(), getIconWidth());
-       	}
-	private Color _color;
+            g.setColor(_color);
+            g.fillRect(x, y, getIconHeight(), getIconWidth());
+               }
+        private Color _color;
     }
 
     // Listen for the delete key from the keyboard.  When the delete key is

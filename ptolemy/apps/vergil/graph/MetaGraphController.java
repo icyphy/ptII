@@ -25,10 +25,10 @@ import ptolemy.kernel.*;
  * controller objects, each associated with particular kind of node.
  * Edges are similarly managed by an edge controller object.
  *
- * @author 	John Reekie (johnr@eecs.berkeley.edu)
- * @author 	Michael Shilman (michaels@eecs.berkeley.edu)
- * @author 	Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version	$Revision$
+ * @author         John Reekie (johnr@eecs.berkeley.edu)
+ * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @version        $Revision$
  * @rating      Red
  */
 public class MetaGraphController extends CompositeEntity
@@ -90,8 +90,8 @@ public class MetaGraphController extends CompositeEntity
      * valid site on the node's figure.
      */
     public void addEdge(Object edge, Object node,
-			int end, double x, double y) {
-	getEdgeController(edge).addEdge(edge, node, end, x, y);
+                        int end, double x, double y) {
+        getEdgeController(edge).addEdge(edge, node, end, x, y);
     }
 
     /** Add an edge to this graph between the given tail and head
@@ -99,13 +99,13 @@ public class MetaGraphController extends CompositeEntity
      * @return the new edge.
      */
     public void addEdge(Object edge, Object tail, Object head) {
-	getEdgeController(edge).addEdge(edge, tail, head);
+        getEdgeController(edge).addEdge(edge, tail, head);
     }
 
     /**
      */
     public void addGraphViewListener(GraphViewListener l) {
-	_graphViewListenerList.add(l);
+        _graphViewListenerList.add(l);
     }
 
     /**
@@ -155,7 +155,7 @@ public class MetaGraphController extends CompositeEntity
      */
     public void clearEdge(Object edge) {
         EdgeController ec = getEdgeController(edge);
-	ec.clearEdge(edge);
+        ec.clearEdge(edge);
     }
 
     /**
@@ -163,7 +163,7 @@ public class MetaGraphController extends CompositeEntity
      */
     public void clearNode(Object node) {
         NodeController nc = getNodeController(node);
-	nc.clearNode(node);
+        nc.clearNode(node);
     }
 
     /**
@@ -175,7 +175,7 @@ public class MetaGraphController extends CompositeEntity
     public Figure drawEdge(Object edge) {
         EdgeController ec = getEdgeController(edge);
         Figure f = ec.drawEdge(edge);
-	return f;
+        return f;
     }
 
     /**
@@ -188,7 +188,7 @@ public class MetaGraphController extends CompositeEntity
     public Figure drawNode(Object node) {
         NodeController nc = getNodeController(node);
         Figure f = nc.drawNode(node);
-	return f;
+        return f;
     }
 
     /**
@@ -201,8 +201,8 @@ public class MetaGraphController extends CompositeEntity
      */
     public Figure drawNode(Object node, Object parent) {
         NodeController nc = getNodeController(node);
-	Figure f = nc.drawNode(node, parent);
-	return f;
+        Figure f = nc.drawNode(node, parent);
+        return f;
     }
 
     /**
@@ -256,13 +256,13 @@ public class MetaGraphController extends CompositeEntity
      * edge and delegate to that edge controller.
      */
     public void removeEdge(Object edge) {
-	getEdgeController(edge).removeEdge(edge);
+        getEdgeController(edge).removeEdge(edge);
     }
 
     /** Remove the given view listener.
      */
     public void removeGraphViewListener(GraphViewListener l) {
-	_graphViewListenerList.remove(l);
+        _graphViewListenerList.remove(l);
     }
 
     /**
@@ -270,7 +270,7 @@ public class MetaGraphController extends CompositeEntity
      * node and delegate to that node controller.
      */
     public void removeNode(Object node) {
-	getNodeController(node).removeNode(node);
+        getNodeController(node).removeNode(node);
     }
 
     /**
@@ -280,81 +280,81 @@ public class MetaGraphController extends CompositeEntity
      */
     public void rerender () {
 
-	// FIXME: it would be nice to be able to do this without all
-	// stupid business with the selection model.
-	List selectedEdges = new LinkedList();
-	List selectedNodes = new LinkedList();
+        // FIXME: it would be nice to be able to do this without all
+        // stupid business with the selection model.
+        List selectedEdges = new LinkedList();
+        List selectedNodes = new LinkedList();
 
-	// Remove any old objects that no longer exist in the model
-	Iterator figures = (new HashSet(_map.values())).iterator();
-	while(figures.hasNext()) {
-	    Figure figure = (Figure)figures.next();
-	    Object object = figure.getUserObject();
+        // Remove any old objects that no longer exist in the model
+        Iterator figures = (new HashSet(_map.values())).iterator();
+        while(figures.hasNext()) {
+            Figure figure = (Figure)figures.next();
+            Object object = figure.getUserObject();
 
-	    if(_model.isNode(object)) {
-		if(!GraphUtilities.isContainedNode(object,
-						   _model.getRoot(),
-						   _model)) {
-		    if(_selectionModel.containsSelection(figure)) {
-			_selectionModel.removeSelection(figure);
-		    }
-		    clearNode(object);
-		}
-	    } else if(_model.isEdge(object)) {
-		if(!GraphUtilities.isPartiallyContainedEdge(object,
-							    _model.getRoot(),
-							    _model)) {
-		    if(_selectionModel.containsSelection(figure)) {
-			_selectionModel.removeSelection(figure);
-		    }
-		    clearEdge(object);
-		}
-	    }
-	}
+            if(_model.isNode(object)) {
+                if(!GraphUtilities.isContainedNode(object,
+                                                   _model.getRoot(),
+                                                   _model)) {
+                    if(_selectionModel.containsSelection(figure)) {
+                        _selectionModel.removeSelection(figure);
+                    }
+                    clearNode(object);
+                }
+            } else if(_model.isEdge(object)) {
+                if(!GraphUtilities.isPartiallyContainedEdge(object,
+                                                            _model.getRoot(),
+                                                            _model)) {
+                    if(_selectionModel.containsSelection(figure)) {
+                        _selectionModel.removeSelection(figure);
+                    }
+                    clearEdge(object);
+                }
+            }
+        }
 
-	// Save the selected edges.
-	Iterator edges = GraphUtilities.totallyContainedEdges(
+        // Save the selected edges.
+        Iterator edges = GraphUtilities.totallyContainedEdges(
                 _model.getRoot(), _model);
         while(edges.hasNext()) {
             Object edge = edges.next();
-	    Figure oldFigure = getFigure(edge);
-	    boolean selected = _selectionModel.containsSelection(oldFigure);
-	    if(selected) {
-		selectedEdges.add(edge);
-	    }
-	}
-	// Save the selected nodes.
+            Figure oldFigure = getFigure(edge);
+            boolean selected = _selectionModel.containsSelection(oldFigure);
+            if(selected) {
+                selectedEdges.add(edge);
+            }
+        }
+        // Save the selected nodes.
         Iterator nodes = _model.nodes(_model.getRoot());
         while(nodes.hasNext()) {
             Object node = nodes.next();
-	    Figure oldFigure = getFigure(node);
-	    boolean selected = _selectionModel.containsSelection(oldFigure);
-	    if(selected) {
-		selectedNodes.add(node);
-	    }
+            Figure oldFigure = getFigure(node);
+            boolean selected = _selectionModel.containsSelection(oldFigure);
+            if(selected) {
+                selectedNodes.add(node);
+            }
         }
-	// Clear all the selections (note that there may be selected objects
-	// which no longer exist!)
-	_selectionModel.clearSelection();
+        // Clear all the selections (note that there may be selected objects
+        // which no longer exist!)
+        _selectionModel.clearSelection();
 
-	// draw the nodes.
-	nodes = _model.nodes(_model.getRoot());
+        // draw the nodes.
+        nodes = _model.nodes(_model.getRoot());
         while(nodes.hasNext()) {
             Object node = nodes.next();
             drawNode(node);
-	    if(selectedNodes.contains(node)) {
-		_selectionModel.addSelection(getFigure(node));
-	    }
-	}
-	// draw the edges that are connected to any of the above nodes.
+            if(selectedNodes.contains(node)) {
+                _selectionModel.addSelection(getFigure(node));
+            }
+        }
+        // draw the edges that are connected to any of the above nodes.
         edges = GraphUtilities.partiallyContainedEdges(
                 _model.getRoot(), _model);
         while(edges.hasNext()) {
             Object edge = edges.next();
             drawEdge(edge);
-	    if(selectedEdges.contains(edge)) {
-		_selectionModel.addSelection(getFigure(edge));
-	    }
+            if(selectedEdges.contains(edge)) {
+                _selectionModel.addSelection(getFigure(edge));
+            }
         }
     }
 
@@ -364,19 +364,19 @@ public class MetaGraphController extends CompositeEntity
      * way that the rendering should change.
      */
     public void rerenderEdge (Object edge) {
-	// FIXME this is way overkill.
-	rerender();
-	/*
-	Figure oldFigure = getFigure(edge);
-	boolean selected = _selectionModel.containsSelection(oldFigure);
-	if(selected) {
-	    _selectionModel.removeSelection(oldFigure);
-	}
+        // FIXME this is way overkill.
+        rerender();
+        /*
+        Figure oldFigure = getFigure(edge);
+        boolean selected = _selectionModel.containsSelection(oldFigure);
+        if(selected) {
+            _selectionModel.removeSelection(oldFigure);
+        }
         clearEdge(edge);
         Figure newFigure = drawEdge(edge);
-    	if(selected)
-	    _selectionModel.addSelection(newFigure);
-	*/
+            if(selected)
+            _selectionModel.addSelection(newFigure);
+        */
     }
 
     /**
@@ -385,32 +385,32 @@ public class MetaGraphController extends CompositeEntity
      * changed in such a way that the rendering should change.
      */
     public void rerenderNode (Object node) {
-	// FIXME this is way overkill.
-	rerender();
-	/*
-	Figure oldFigure = getFigure(node);
-	boolean selected = _selectionModel.containsSelection(oldFigure);
-	if(selected) {
-	    _selectionModel.removeSelection(oldFigure);
-	}
+        // FIXME this is way overkill.
+        rerender();
+        /*
+        Figure oldFigure = getFigure(node);
+        boolean selected = _selectionModel.containsSelection(oldFigure);
+        if(selected) {
+            _selectionModel.removeSelection(oldFigure);
+        }
         Point2D center;
         if(oldFigure != null) {
             center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
             clearNode(node);
         } else {
-	    // no previous figure.  which means that we are probably
-	    // rendering for the first time.
+            // no previous figure.  which means that we are probably
+            // rendering for the first time.
             center = null; //FIXME: layout?
         }
         Figure newFigure = drawNode(node);
-	if(center != null) {
-	    // place the new figure where the old one was.
-	    CanvasUtilities.translateTo(newFigure,
-					center.getX(), center.getY());
-	}
-	if(selected)
-	    _selectionModel.addSelection(newFigure);
-	*/
+        if(center != null) {
+            // place the new figure where the old one was.
+            CanvasUtilities.translateTo(newFigure,
+                                        center.getX(), center.getY());
+        }
+        if(selected)
+            _selectionModel.addSelection(newFigure);
+        */
     }
 
     /**
@@ -420,8 +420,8 @@ public class MetaGraphController extends CompositeEntity
      */
     public void setGraphModel(GraphModel model) {
         Iterator i;
-	// FIXME we shouldn't have to cast this.
-	FigureLayer layer = getGraphPane().getForegroundLayer();
+        // FIXME we shouldn't have to cast this.
+        FigureLayer layer = getGraphPane().getForegroundLayer();
         if(_localListener == null) {
             _localListener = new GraphChangeListener();
         }
@@ -445,7 +445,7 @@ public class MetaGraphController extends CompositeEntity
 
         if(_model != null) {
             _model.addGraphListener(_localListener);
-	    Object root = _model.getRoot();
+            Object root = _model.getRoot();
             GraphEvent evt = new GraphEvent(new Object(), GraphEvent.STRUCTURE_CHANGED, root);
             _localListener.structureChanged(evt);
         }
@@ -489,9 +489,9 @@ public class MetaGraphController extends CompositeEntity
      * an edge controller.
      */
     public void dispatch(GraphViewEvent e) {
-	for(Iterator i = _graphViewListenerList.iterator(); i.hasNext(); ) {
-	    GraphViewListener l = (GraphViewListener)i.next();
-	    switch(e.getID()) {
+        for(Iterator i = _graphViewListenerList.iterator(); i.hasNext(); ) {
+            GraphViewListener l = (GraphViewListener)i.next();
+            switch(e.getID()) {
             case GraphViewEvent.NODE_MOVED:
                 l.nodeMoved(e);
                 break;
@@ -504,8 +504,8 @@ public class MetaGraphController extends CompositeEntity
             case GraphViewEvent.EDGE_DRAWN:
                 l.edgeDrawn(e);
                 break;
-	    }
-	}
+            }
+        }
     }
 
     /**
@@ -551,7 +551,7 @@ public class MetaGraphController extends CompositeEntity
         public void edgeTailChanged(GraphEvent e) {
             if(e.getSource() != MetaGraphController.this) {
                 rerenderEdge(e.getTarget());
-	    }
+            }
         }
 
         /**
@@ -562,7 +562,7 @@ public class MetaGraphController extends CompositeEntity
         public void nodeAdded(GraphEvent e) {
             if(e.getSource() != MetaGraphController.this) {
                 drawNode(e.getTarget());
-	    }
+            }
         }
 
         /**
@@ -575,7 +575,7 @@ public class MetaGraphController extends CompositeEntity
             if(e.getSource() != MetaGraphController.this) {
                 //Remove the figure from the view
                 clearNode(e.getTarget());
-	    }
+            }
         }
 
         /**
@@ -586,8 +586,8 @@ public class MetaGraphController extends CompositeEntity
          */
         public void structureChanged(GraphEvent e) {
             if(e.getSource() != MetaGraphController.this) {
-    		rerender();
-		/* Object root = e.getTarget();
+                    rerender();
+                /* Object root = e.getTarget();
 
                 //FIXME - this could be optimized--
                 //        we may not need to rerender every
@@ -597,11 +597,11 @@ public class MetaGraphController extends CompositeEntity
                     rerenderNode(i.next());
                 }
                 for(Iterator i = GraphUtilities.localEdges(root, _model);
-		    i.hasNext(); ) {
+                    i.hasNext(); ) {
                     rerenderEdge(i.next());
                 }
-		*/
-	    }
+                */
+            }
         }
     }
 }

@@ -107,11 +107,11 @@ public class TransitionController extends BasicEdgeController {
      *  @param controller The associated graph controller.
      */
     public TransitionController(final GraphController controller) {
-	super(controller);
-	SelectionModel sm = controller.getSelectionModel();
-	SelectionInteractor interactor =
+        super(controller);
+        SelectionModel sm = controller.getSelectionModel();
+        SelectionInteractor interactor =
             (SelectionInteractor) getEdgeInteractor();
-	interactor.setSelectionModel(sm);
+        interactor.setSelectionModel(sm);
 
         // Create and set up the manipulator for connectors.
         // This overrides the manipulator created by the base class.
@@ -124,12 +124,12 @@ public class TransitionController extends BasicEdgeController {
         MouseFilter handleFilter = new MouseFilter(1, 0, 0);
         manipulator.setHandleFilter(handleFilter);
 
-	ConnectorTarget ct = new LinkTarget();
-	setConnectorTarget(ct);
-	setEdgeRenderer(new LinkRenderer());
+        ConnectorTarget ct = new LinkTarget();
+        setConnectorTarget(ct);
+        setEdgeRenderer(new LinkRenderer());
 
-	_menuCreator = new MenuCreator(null);
-	interactor.addInteractor(_menuCreator);
+        _menuCreator = new MenuCreator(null);
+        interactor.addInteractor(_menuCreator);
 
         // The contents of the menu is determined by the associated
         // menu factory, which is a protected member of this class.
@@ -147,12 +147,12 @@ public class TransitionController extends BasicEdgeController {
 
         interactor.addInteractor(doubleClickInteractor);
 
-	if (_configuration != null) {
+        if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,12 +164,12 @@ public class TransitionController extends BasicEdgeController {
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
-	if (_configuration != null) {
+        if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -211,36 +211,36 @@ public class TransitionController extends BasicEdgeController {
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
             FSMGraphModel model =
-		(FSMGraphModel) getController().getGraphModel();
+                (FSMGraphModel) getController().getGraphModel();
 
-	    switch (evt.getEnd()) {
-	    case ConnectorEvent.HEAD_END:
-		model.getArcModel().setHead(edge, node);
-		break;
-	    case ConnectorEvent.TAIL_END:
-		model.getArcModel().setTail(edge, node);
-		break;
-	    case ConnectorEvent.MIDPOINT:
-		break;
-	    default:
-		throw new IllegalStateException(
+            switch (evt.getEnd()) {
+            case ConnectorEvent.HEAD_END:
+                model.getArcModel().setHead(edge, node);
+                break;
+            case ConnectorEvent.TAIL_END:
+                model.getArcModel().setTail(edge, node);
+                break;
+            case ConnectorEvent.MIDPOINT:
+                break;
+            default:
+                throw new IllegalStateException(
                         "Cannot handle both ends of an edge being dragged.");
-	    }
-	    // Make the arc rerender itself so that geometry is preserved
-	    Arc arc = (Arc) edge;
-	    Transition transition = (Transition)arc.getRelation();
-	    if (transition != null && c instanceof ArcConnector) {
-		double angle = ((ArcConnector)c).getAngle();
-		double gamma = ((ArcConnector)c).getGamma();
-		// Set the new exitAngle and gamma parameter values based
-		// on the current arc.
-		String moml = "<group><property name=\"exitAngle\" value=\""
-		    + angle + "\"/>" +
-		    "<property name=\"gamma\" value=\"" + gamma + "\"/></group>";
-		MoMLChangeRequest request = new MoMLChangeRequest(
-								  this, transition, moml);
-		transition.requestChange(request);
-	    }
+            }
+            // Make the arc rerender itself so that geometry is preserved
+            Arc arc = (Arc) edge;
+            Transition transition = (Transition)arc.getRelation();
+            if (transition != null && c instanceof ArcConnector) {
+                double angle = ((ArcConnector)c).getAngle();
+                double gamma = ((ArcConnector)c).getGamma();
+                // Set the new exitAngle and gamma parameter values based
+                // on the current arc.
+                String moml = "<group><property name=\"exitAngle\" value=\""
+                    + angle + "\"/>" +
+                    "<property name=\"gamma\" value=\"" + gamma + "\"/></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(
+                                                                  this, transition, moml);
+                transition.requestChange(request);
+            }
             // rerender the edge.  This is necessary for several reasons.
             // First, the edge is only associated with a relation after it
             // is fully connected.  Second, edges that aren't
@@ -252,7 +252,7 @@ public class TransitionController extends BasicEdgeController {
 
     public class LinkRenderer implements EdgeRenderer {
 
-	/** Render a visual representation of the given edge. */
+        /** Render a visual representation of the given edge. */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector c = new ArcConnector(tailSite, headSite);
             c.setHeadEnd(new Arrowhead());
@@ -260,8 +260,8 @@ public class TransitionController extends BasicEdgeController {
             c.setUserObject(edge);
             Arc arc = (Arc) edge;
             Transition transition = (Transition)arc.getRelation();
-	    if (transition != null) {
-		c.setToolTipText(transition.getName());
+            if (transition != null) {
+                c.setToolTipText(transition.getName());
                 String labelStr = transition.getLabel();
                 try {
                     double exitAngle = ((DoubleToken)(transition.exitAngle
@@ -287,7 +287,7 @@ public class TransitionController extends BasicEdgeController {
                     }
                     c.setAngle(exitAngle);
 
-		    // Set the gamma angle
+                    // Set the gamma angle
                     double gamma = ((DoubleToken)(transition.gamma
                             .getToken())).doubleValue();
                     c.setGamma(gamma);
@@ -311,14 +311,14 @@ public class TransitionController extends BasicEdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-   	    if (object instanceof Locatable) {
+               if (object instanceof Locatable) {
                 Locatable location = (Locatable)object;
                 if (location.getContainer() instanceof Entity)
                     return true;
                 else
                     return false;
             }
-	    return false;
+            return false;
         }
 
         public boolean acceptTail(Connector c, Figure f) {
@@ -331,22 +331,22 @@ public class TransitionController extends BasicEdgeController {
      *  will report an error with a fairly cryptic message.
      */
     private class LookInsideAction extends FigureAction {
-	public LookInsideAction() {
-	    super("Look Inside (Ctrl+L)");
+        public LookInsideAction() {
+            super("Look Inside (Ctrl+L)");
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
-	    putValue(GUIUtilities.ACCELERATOR_KEY,
+            putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
-	}
-	public void actionPerformed(ActionEvent e) {
+        }
+        public void actionPerformed(ActionEvent e) {
 
             if (_configuration == null) {
                 MessageHandler.error(
                         "Cannot look inside without a configuration.");
                 return;
             }
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
+            super.actionPerformed(e);
+            NamedObj target = getTarget();
             // If the target is not an instance of
             // State or Transition, do nothing.
             try {
@@ -367,6 +367,6 @@ public class TransitionController extends BasicEdgeController {
             } catch (Exception ex) {
                 MessageHandler.error("Look inside failed: ", ex);
             }
-	}
+        }
     }
 }

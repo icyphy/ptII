@@ -87,7 +87,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public PNQueueReceiver() {
         super();
-	_boundaryDetector = new BoundaryDetector(this);
+        _boundaryDetector = new BoundaryDetector(this);
     }
 
     /** Construct an empty receiver with the specified container.
@@ -97,7 +97,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public PNQueueReceiver(IOPort container) throws IllegalActionException {
         super(container);
-	_boundaryDetector = new BoundaryDetector(this);
+        _boundaryDetector = new BoundaryDetector(this);
     }
 
 
@@ -117,7 +117,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             _otherBranch = branch;
         } else {
             PNDirector director = ((PNDirector)((Actor)
-        	    (getContainer().getContainer())).getExecutiveDirector());
+                    (getContainer().getContainer())).getExecutiveDirector());
             director._actorBlocked(this);
             _otherBranch = branch;
         }
@@ -134,7 +134,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             PNDirector director = ((PNDirector)((Actor)
-        	    (getContainer().getContainer())).getExecutiveDirector());
+                    (getContainer().getContainer())).getExecutiveDirector());
             director._actorUnBlocked(this);
 
         }
@@ -169,8 +169,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return The oldest Token read from the queue
      */
     public Token get(Branch branch) {
-	Workspace workspace = getContainer().workspace();
-	PNDirector director = ((PNDirector)
+        Workspace workspace = getContainer().workspace();
+        PNDirector director = ((PNDirector)
                 ((Actor)(getContainer().getContainer()))
                 .getExecutiveDirector());
         Token result = null;
@@ -205,7 +205,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return True.
      */
     public boolean hasRoom() {
-	return true;
+        return true;
     }
 
     /** Return true, since a channel in the Kahn process networks
@@ -213,7 +213,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return True.
      */
     public boolean hasRoom(int tokens) {
-	return true;
+        return true;
     }
 
     /** Return true, since a call to the get() method of the receiver will
@@ -221,7 +221,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return True.
      */
     public boolean hasToken() {
-	return true;
+        return true;
     }
 
     /** Return true, since a call to the get() method of the receiver will
@@ -244,7 +244,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundary() {
-	return _boundaryDetector.isConnectedToBoundary();
+        return _boundaryDetector.isConnectedToBoundary();
     }
 
     /** Return true if this receiver is connected to the inside of a
@@ -259,7 +259,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() {
-	return _boundaryDetector.isConnectedToBoundaryInside();
+        return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
     /** Return true if this receiver is connected to the outside of a
@@ -274,7 +274,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() {
-	return _boundaryDetector.isConnectedToBoundaryOutside();
+        return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
     /** This class serves as an example of a ConsumerReceiver and
@@ -284,7 +284,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         if ( isConnectedToBoundary() ) {
             return true;
         }
-    	return false;
+            return false;
     }
 
     /** Return true if this receiver is contained on the inside of a
@@ -299,7 +299,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isInsideBoundary() {
-	return _boundaryDetector.isInsideBoundary();
+        return _boundaryDetector.isInsideBoundary();
     }
 
     /** Return true if this receiver is contained on the outside of a
@@ -314,7 +314,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @see BoundaryDetector
      */
     public boolean isOutsideBoundary() {
-	return _boundaryDetector.isOutsideBoundary();
+        return _boundaryDetector.isOutsideBoundary();
     }
 
     /** This class serves as an example of a ProducerReceiver and
@@ -324,7 +324,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
-    	return false;
+            return false;
     }
 
     /** Return a true or false to indicate whether there is a read block
@@ -333,7 +333,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  receiver or not.
      */
     public synchronized boolean isReadBlocked() {
-	return _readBlocked;
+        return _readBlocked;
     }
 
     /** Return a true or false to indicate whether there is a write block
@@ -342,7 +342,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  receiver or not.
      */
     public synchronized boolean isWriteBlocked() {
-	return _writeBlocked;
+        return _writeBlocked;
     }
 
     /** Put a token on the queue contained in this receiver.
@@ -374,8 +374,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param token The token to be put in the receiver.
      */
     public void put(Token token, Branch branch) {
-	Workspace workspace = getContainer().workspace();
-	PNDirector director = (PNDirector)
+        Workspace workspace = getContainer().workspace();
+        PNDirector director = (PNDirector)
             ((Actor)(getContainer().getContainer())).getExecutiveDirector();
         synchronized(this) {
             // if (!super.hasRoom()) {
@@ -411,10 +411,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Reset the state variables in the receiver.
      */
     public void reset() {
-	_readBlocked = false;
-	_writeBlocked = false;
-	_terminate = false;
-	_boundaryDetector.reset();
+        _readBlocked = false;
+        _writeBlocked = false;
+        _terminate = false;
+        _boundaryDetector.reset();
     }
 
     /** Set a state flag indicating that there is a process blocked while
@@ -423,7 +423,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  read, false otherwise.
      */
     public synchronized void setReadPending(boolean readPending) {
-	_readBlocked = readPending;
+        _readBlocked = readPending;
     }
 
     /** Set a state flag indicating that there is a process blocked
@@ -432,7 +432,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  a write, false otherwise.
      */
     public synchronized void setWritePending(boolean writePending) {
-	_writeBlocked = writePending;
+        _writeBlocked = writePending;
     }
 
     /** Set a flag in the receiver to indicate the onset of termination.
@@ -440,8 +440,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  on the receiver or is trying to read from or write to it.
      */
     public synchronized void requestFinish() {
-	_terminate = true;
-	notifyAll();
+        _terminate = true;
+        notifyAll();
     }
 
 

@@ -134,8 +134,8 @@ public class MoMLViewerApplet extends MoMLApplet {
      */
     protected NamedObj _createModel(Workspace workspace)
             throws Exception {
-	// Do not filter out graphical classes.
-	return _createModel(workspace, false);
+        // Do not filter out graphical classes.
+        return _createModel(workspace, false);
     }
 
     /** Override the base class to create a schematic view instead of

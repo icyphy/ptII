@@ -76,7 +76,7 @@ public class InterpretedWriter extends SceneTransformer {
     /** Construct a new transformer
      */
     private InterpretedWriter(CompositeActor model) {
-	_model = model;
+        _model = model;
     }
 
     /** Return an instance of this transformer that will operate on
@@ -101,7 +101,7 @@ public class InterpretedWriter extends SceneTransformer {
      *  <p>For example, if the model is called MyModel, and
      *  this phase is called with:
      *  <pre>
-     *	-p wjtp.interpretedWriter targetPackage:foo.bar
+     *        -p wjtp.interpretedWriter targetPackage:foo.bar
      *  </pre>
      *  Then we will create the directory $PTII/foo/bar/MyModel and
      *  place MyModel.xml in that directory.
@@ -114,41 +114,41 @@ public class InterpretedWriter extends SceneTransformer {
      */
     protected void internalTransform(String phaseName, Map options)
     {
-	// FIXME: Perhaps AppletWriter should call this transformer?
+        // FIXME: Perhaps AppletWriter should call this transformer?
 
         System.out.println("InterpretedWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
-	_outputDirectory = Options.getString(options, "outDir");
+        _outputDirectory = Options.getString(options, "outDir");
 
-	// If the targetPackage is foo.bar, and the model is Bif,
-	// the we will do mkdir $PTII/foo/bar/Bif/
-	_targetPackage = Options.getString(options, "targetPackage");
+        // If the targetPackage is foo.bar, and the model is Bif,
+        // the we will do mkdir $PTII/foo/bar/Bif/
+        _targetPackage = Options.getString(options, "targetPackage");
 
-	_sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
+        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
-	// Create the directory where we will create the files.
-	File outDirFile = new File(_outputDirectory);
-	if (outDirFile.isDirectory()) {
-	    System.out.println(" Warning: '" + outDirFile
+        // Create the directory where we will create the files.
+        File outDirFile = new File(_outputDirectory);
+        if (outDirFile.isDirectory()) {
+            System.out.println(" Warning: '" + outDirFile
                     + "' already exists.");
-	}
-	outDirFile.mkdirs();
+        }
+        outDirFile.mkdirs();
 
-	// Generate the .xml file.
-	String modelFileName =
-	    _outputDirectory + "/" + _sanitizedModelName + ".xml";
-	System.out.println("InterpretedWriter: about to write '"
-			   + modelFileName + "'");
-	try {
-	    Writer modelFileWriter =
-		new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFileName)));
-	    _model.exportMoML(modelFileWriter);
-	    modelFileWriter.close();
-	} catch (IOException ex) {
-	    throw new InternalErrorException("Problem writing '"
+        // Generate the .xml file.
+        String modelFileName =
+            _outputDirectory + "/" + _sanitizedModelName + ".xml";
+        System.out.println("InterpretedWriter: about to write '"
+                           + modelFileName + "'");
+        try {
+            Writer modelFileWriter =
+                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFileName)));
+            _model.exportMoML(modelFileWriter);
+            modelFileWriter.close();
+        } catch (IOException ex) {
+            throw new InternalErrorException("Problem writing '"
                     + modelFileName + "': " + ex);
-	}
+        }
     }
 
 

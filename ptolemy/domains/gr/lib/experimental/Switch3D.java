@@ -64,7 +64,7 @@ public class Switch3D extends GRTransform {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-    	sceneGraphOut.setMultiport(true);
+            sceneGraphOut.setMultiport(true);
 
         select = new TypedIOPort(this, "select");
         select.setInput(true);
@@ -88,7 +88,7 @@ public class Switch3D extends GRTransform {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Switch3D newObject = (Switch3D) super.clone(workspace);
         newObject.select = (TypedIOPort) newObject.getPort("select");
         return newObject;

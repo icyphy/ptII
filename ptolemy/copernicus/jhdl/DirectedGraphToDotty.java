@@ -48,7 +48,7 @@ public class DirectedGraphToDotty {
      * Return a string which contains the DirectedGraph in dotty form
      */
     public static String convert(DirectedGraph g){
-	return convert(g, "NoTitle");
+        return convert(g, "NoTitle");
     }
 
     /**
@@ -56,30 +56,30 @@ public class DirectedGraphToDotty {
      * @param ename Title of the graph
      */
     public static String convert(DirectedGraph g, String ename){
-	int count=0;
-	HashMap hm=new HashMap();
-	StringBuffer sb = new StringBuffer();
-	sb.append("//Dotfile created by HashMutableToDotty\r\n");
-	sb.append("digraph "+ename+" {\r\n");
-	sb.append("\t// Vertices\r\n");
-	for(Iterator nodes = g.iterator();nodes.hasNext();) {
-	    Object source = nodes.next();
-	    String name="v" + count++;
-	    sb.append("\t\""+name+"\" [label=\""
-		      +convertSpecialsToEscapes(source.toString())
-		      +"\"];\r\n");
-	    hm.put(source, name);
-	}
-	sb.append("\t// Edges\r\n");
-	for (Iterator nodes=g.iterator(); nodes.hasNext();){
-	    Object source = nodes.next();
-	    for(Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
-		Object dest= succs.next();
-		sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\";\r\n");
-	    }
-	}
-	sb.append("}\r\n");
-	return sb.toString();
+        int count=0;
+        HashMap hm=new HashMap();
+        StringBuffer sb = new StringBuffer();
+        sb.append("//Dotfile created by HashMutableToDotty\r\n");
+        sb.append("digraph "+ename+" {\r\n");
+        sb.append("\t// Vertices\r\n");
+        for(Iterator nodes = g.iterator();nodes.hasNext();) {
+            Object source = nodes.next();
+            String name="v" + count++;
+            sb.append("\t\""+name+"\" [label=\""
+                      +convertSpecialsToEscapes(source.toString())
+                      +"\"];\r\n");
+            hm.put(source, name);
+        }
+        sb.append("\t// Edges\r\n");
+        for (Iterator nodes=g.iterator(); nodes.hasNext();){
+            Object source = nodes.next();
+            for(Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
+                Object dest= succs.next();
+                sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\";\r\n");
+            }
+        }
+        sb.append("}\r\n");
+        return sb.toString();
     }
 
     /**
@@ -89,39 +89,39 @@ public class DirectedGraphToDotty {
      * Courtesy of Nathan Kitchen
      */
     public static String convertSpecialsToEscapes(String str) {
-	StringBuffer strBuf = new StringBuffer();
-	for (int i = 0; i < str.length(); i++) {
-	    char c = str.charAt(i);
-	    switch (c) {
-	    case '\n':
-		strBuf.append("\\n");
-		break;
-	    case '\t':
-		strBuf.append("\\t");
-		break;
-	    case '\r':
-		strBuf.append("\\r");
-		break;
-	    case '\"':
-		strBuf.append("\\\"");
-		break;
-	    case '\'':
-		strBuf.append("\\\'");
-		break;
-	    case '\b':
-		strBuf.append("\\b");
-		break;
-	    case '\f':
-		strBuf.append("\\f");
-		break;
-	    case '\\':
-		strBuf.append("\\\\");
-		break;
-	    default:
-		strBuf.append(c);
-	    }
-	}
-	return strBuf.toString();
+        StringBuffer strBuf = new StringBuffer();
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            switch (c) {
+            case '\n':
+                strBuf.append("\\n");
+                break;
+            case '\t':
+                strBuf.append("\\t");
+                break;
+            case '\r':
+                strBuf.append("\\r");
+                break;
+            case '\"':
+                strBuf.append("\\\"");
+                break;
+            case '\'':
+                strBuf.append("\\\'");
+                break;
+            case '\b':
+                strBuf.append("\\b");
+                break;
+            case '\f':
+                strBuf.append("\\f");
+                break;
+            case '\\':
+                strBuf.append("\\\\");
+                break;
+            default:
+                strBuf.append(c);
+            }
+        }
+        return strBuf.toString();
     }
 
 }

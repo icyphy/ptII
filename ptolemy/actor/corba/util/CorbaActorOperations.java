@@ -10,8 +10,8 @@ package ptolemy.actor.corba.util;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 public interface CorbaActorOperations
 {
 

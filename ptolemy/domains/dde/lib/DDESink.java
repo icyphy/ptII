@@ -113,15 +113,15 @@ public class DDESink extends TypedAtomicActor {
                 return;
             }
         }
-	Receiver[][] receivers = input.getReceivers();
-	for ( int i = 0; i < receivers.length; i++ ) {
-	    for ( int j = 0; j < receivers[i].length; j++ ) {
-		DDEReceiver receiver = (DDEReceiver)receivers[i][j];
+        Receiver[][] receivers = input.getReceivers();
+        for ( int i = 0; i < receivers.length; i++ ) {
+            for ( int j = 0; j < receivers[i].length; j++ ) {
+                DDEReceiver receiver = (DDEReceiver)receivers[i][j];
                 if ( !_continue ) {
                     return;
                 } else if ( receiver.hasToken() ) {
-		    receiver.get();
-		}
+                    receiver.get();
+                }
             }
         }
     }
@@ -133,7 +133,7 @@ public class DDESink extends TypedAtomicActor {
      * @see #fire
      */
     public boolean postfire() throws IllegalActionException {
-    	return _continue;
+            return _continue;
     }
 
     ///////////////////////////////////////////////////////////////////

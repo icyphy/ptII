@@ -10,7 +10,7 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* Exception for unknow port when accessing a remote port/
-	 */
+         */
 abstract public class CorbaUnknownPortExceptionHelper
 {
   private static String  _id = "IDL:RemoteManagerUtil/CorbaUnknownPortException:1.0";

@@ -48,7 +48,7 @@ public class TestDebugEvent implements DebugEvent {
      * Create a new firing event with the given source, actor, and type.
      */
     public TestDebugEvent(NamedObj source) {
-	_source = source;
+        _source = source;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -58,14 +58,14 @@ public class TestDebugEvent implements DebugEvent {
      * Return the director that activated this event.
      */
     public NamedObj getSource() {
-	return _source;
+        return _source;
     }
 
     /**
      * Return the the name of the source
      */
     public String toString() {
-	return _source.toString();
+        return _source.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

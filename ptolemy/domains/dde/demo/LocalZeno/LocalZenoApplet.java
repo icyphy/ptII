@@ -83,7 +83,7 @@ public class LocalZenoApplet extends PtolemyApplet {
      *  hasn't yet been displayed.
      */
     public void start() {
-   	_doLayout(_graph, _jgraph.getGraphPane());
+           _doLayout(_graph, _jgraph.getGraphPane());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,8 +94,8 @@ public class LocalZenoApplet extends PtolemyApplet {
      *  but it will do for now...
      */
     protected MutableGraphModel _constructDivaGraph() {
-	BasicGraphModel model = new BasicGraphModel();
-	Object root = model.getRoot();
+        BasicGraphModel model = new BasicGraphModel();
+        Object root = model.getRoot();
 
         // Objects, with user object set to the actor
         Object n1 = model.createNode(_clock);
@@ -133,47 +133,47 @@ public class LocalZenoApplet extends PtolemyApplet {
         _nodeMap.put(_rcvr2, n9);
 
         // Edges
-	Object e;
+        Object e;
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n1);
-	model.setEdgeHead(this, e, n2);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n1);
+        model.setEdgeHead(this, e, n2);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n2);
-	model.setEdgeHead(this, e, n3);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n2);
+        model.setEdgeHead(this, e, n3);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n4);
-	model.setEdgeHead(this, e, n2);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n4);
+        model.setEdgeHead(this, e, n2);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n3);
-	model.setEdgeHead(this, e, n4);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n3);
+        model.setEdgeHead(this, e, n4);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n3);
-	model.setEdgeHead(this, e, n5);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n3);
+        model.setEdgeHead(this, e, n5);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n1);
-	model.setEdgeHead(this, e, n6);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n1);
+        model.setEdgeHead(this, e, n6);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n7);
-	model.setEdgeHead(this, e, n8);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n7);
+        model.setEdgeHead(this, e, n8);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n6);
-	model.setEdgeHead(this, e, n7);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n6);
+        model.setEdgeHead(this, e, n7);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n7);
-	model.setEdgeHead(this, e, n9);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n7);
+        model.setEdgeHead(this, e, n9);
 
-	e = model.createEdge(null);
-	model.setEdgeTail(this, e, n8);
-	model.setEdgeHead(this, e, n6);
+        e = model.createEdge(null);
+        model.setEdgeTail(this, e, n8);
+        model.setEdgeHead(this, e, n6);
 
         return model;
     }
@@ -251,15 +251,15 @@ public class LocalZenoApplet extends PtolemyApplet {
         // Create control panels.
         super._createView();
 
-	// Panel for controls and plotter
-	JPanel topPanel = new JPanel();
-	topPanel.setSize( new Dimension(600, 200) );
+        // Panel for controls and plotter
+        JPanel topPanel = new JPanel();
+        topPanel.setSize( new Dimension(600, 200) );
         topPanel.setBackground(null);
 
-	_plotPanel = new JPanel();
-	_plotPanel.setSize( new Dimension(600, 200) );
+        _plotPanel = new JPanel();
+        _plotPanel.setSize( new Dimension(600, 200) );
         _plotPanel.setBackground(getBackground());
-	topPanel.add( _plotPanel );
+        topPanel.add( _plotPanel );
 
         _upperPlotter.place( _plotPanel );
         _upperPlotter.plot.setTitle("Upper Branch");
@@ -275,55 +275,55 @@ public class LocalZenoApplet extends PtolemyApplet {
         _lowerPlotter.plot.setSize(200, 150);
         _lowerPlotter.plot.addLegend(0, "Time");
 
-	getContentPane().add( topPanel );
+        getContentPane().add( topPanel );
 
-	_divaPanel = new JPanel( new BorderLayout() );
-	_divaPanel.setSize( new Dimension(600, 400) );
-	_divaPanel.setBackground( null );
-	getContentPane().add( _divaPanel );
+        _divaPanel = new JPanel( new BorderLayout() );
+        _divaPanel.setSize( new Dimension(600, 400) );
+        _divaPanel.setBackground( null );
+        getContentPane().add( _divaPanel );
 
         _graph = _constructDivaGraph();
-	final MutableGraphModel finalGraphModel = _graph;
-	// display the graph.
-	final GraphController gc = new LocalZenoGraphController();
-	final GraphPane gp = new GraphPane(gc, _graph);
-	_jgraph = new JGraph(gp);
-	_divaPanel.add(_jgraph );
+        final MutableGraphModel finalGraphModel = _graph;
+        // display the graph.
+        final GraphController gc = new LocalZenoGraphController();
+        final GraphPane gp = new GraphPane(gc, _graph);
+        _jgraph = new JGraph(gp);
+        _divaPanel.add(_jgraph );
 
         StateListener listener =
                 new StateListener((GraphPane)_jgraph.getCanvasPane());
-	_join1.addDebugListener(listener);
-	_join2.addDebugListener(listener);
-	_fork1.addDebugListener(listener);
-	_fork2.addDebugListener(listener);
-	_fBack1.addDebugListener(listener);
-	_fBack2.addDebugListener(listener);
-	_rcvr1.addDebugListener(listener);
-	_rcvr2.addDebugListener(listener);
-	_clock.addDebugListener(listener);
+        _join1.addDebugListener(listener);
+        _join2.addDebugListener(listener);
+        _fork1.addDebugListener(listener);
+        _fork2.addDebugListener(listener);
+        _fBack1.addDebugListener(listener);
+        _fBack2.addDebugListener(listener);
+        _rcvr1.addDebugListener(listener);
+        _rcvr2.addDebugListener(listener);
+        _clock.addDebugListener(listener);
     }
 
     /** Layout the graph again.
      */
     protected void _doLayout(GraphModel graph, GraphPane gp) {
         // Do the layout
-	try {
-	    final GraphModel layoutGraph = graph;
-	    final GraphController gc = gp.getGraphController();
-	    final GraphPane pane = gp;
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    // Layout is a bit stupid
-		    LayoutTarget target = new BasicLayoutTarget(gc);
-		    LevelLayout staticLayout = new LevelLayout(target);
-		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-		    staticLayout.layout(layoutGraph.getRoot());
-		    pane.repaint();
-		}
-	    });
-	} catch (Exception e) {
-	    System.out.println(e);
-	}
+        try {
+            final GraphModel layoutGraph = graph;
+            final GraphController gc = gp.getGraphController();
+            final GraphPane pane = gp;
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    // Layout is a bit stupid
+                    LayoutTarget target = new BasicLayoutTarget(gc);
+                    LevelLayout staticLayout = new LevelLayout(target);
+                    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+                    staticLayout.layout(layoutGraph.getRoot());
+                    pane.repaint();
+                }
+            });
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -370,46 +370,46 @@ public class LocalZenoApplet extends PtolemyApplet {
     //// LayoutListener
 
     private class LayoutListener implements ActionListener {
-	public void actionPerformed(ActionEvent evt) {
-	    final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
-	    final GraphModel g = _graph;
-	    _doLayout(g, gp);
-	}
+        public void actionPerformed(ActionEvent evt) {
+            final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
+            final GraphModel g = _graph;
+            _doLayout(g, gp);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     //// LocalZenoGraphController
     public class LocalZenoGraphController extends BasicGraphController {
-	private SelectionDragger _selectionDragger;
-	/**
-	 * Create a new basic controller with default
-	 * node and edge interactors.
-	 */
-	public LocalZenoGraphController() {
-	    // The interactors attached to nodes and edges
-	    setNodeController(new BasicNodeController(this));
-	    setEdgeController(new BasicEdgeController(this));
-	    getNodeController().setNodeRenderer(new ThreadRenderer(this));
-	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
-	}
+        private SelectionDragger _selectionDragger;
+        /**
+         * Create a new basic controller with default
+         * node and edge interactors.
+         */
+        public LocalZenoGraphController() {
+            // The interactors attached to nodes and edges
+            setNodeController(new BasicNodeController(this));
+            setEdgeController(new BasicEdgeController(this));
+            getNodeController().setNodeRenderer(new ThreadRenderer(this));
+            getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
+        }
 
-	/**
-	 * Initialize all interaction on the graph pane. This method
-	 * is called by the setGraphPane() method of the superclass.
-	 * This initialization cannot be done in the constructor because
-	 * the controller does not yet have a reference to its pane
-	 * at that time.
-	 */
-	protected void initializeInteraction() {
-	    GraphPane pane = getGraphPane();
+        /**
+         * Initialize all interaction on the graph pane. This method
+         * is called by the setGraphPane() method of the superclass.
+         * This initialization cannot be done in the constructor because
+         * the controller does not yet have a reference to its pane
+         * at that time.
+         */
+        protected void initializeInteraction() {
+            GraphPane pane = getGraphPane();
 
-	    // Create and set up the selection dragger
-	    _selectionDragger = new SelectionDragger(pane);
-	    _selectionDragger.addSelectionInteractor(
+            // Create and set up the selection dragger
+            _selectionDragger = new SelectionDragger(pane);
+            _selectionDragger.addSelectionInteractor(
                     (SelectionInteractor)getEdgeController().getEdgeInteractor());
-	    _selectionDragger.addSelectionInteractor(
+            _selectionDragger.addSelectionInteractor(
                     (SelectionInteractor)getNodeController().getNodeInteractor());
-	}
+        }
     }
 
 
@@ -454,17 +454,17 @@ public class LocalZenoApplet extends PtolemyApplet {
             _graphPane = pane;
         }
 
-	/** Ignore messages.
-	 */
-	public void message(String message) {
-	}
+        /** Ignore messages.
+         */
+        public void message(String message) {
+        }
 
         /** React to the given event.
          */
         public void event(DebugEvent debugEvent) {
-	    // only trap ExecEvents.
-	    if (!(debugEvent instanceof ExecEvent)) return;
-	    ExecEvent event = (ExecEvent) debugEvent;
+            // only trap ExecEvents.
+            if (!(debugEvent instanceof ExecEvent)) return;
+            ExecEvent event = (ExecEvent) debugEvent;
             final ExecEvent.ExecEventType state = event.getState();
             NamedObj actor = event.getSource();
 
@@ -480,19 +480,19 @@ public class LocalZenoApplet extends PtolemyApplet {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
                         if (state == ExecEvent.WAITING)
-			    figure.setFillPaint(Color.yellow);
-			else if (state == ExecEvent.ACCESSING)
+                            figure.setFillPaint(Color.yellow);
+                        else if (state == ExecEvent.ACCESSING)
                             figure.setFillPaint(Color.green);
-			else if (state == ExecEvent.BLOCKED)
+                        else if (state == ExecEvent.BLOCKED)
                             figure.setFillPaint(Color.red);
-			else
+                        else
                             System.err.println("Unknown state: " + state);
                     }
                 });
             }
             catch (Exception e) {
-		e.printStackTrace();
-	    }
+                e.printStackTrace();
+            }
         }
     }
 
@@ -508,36 +508,36 @@ public class LocalZenoApplet extends PtolemyApplet {
          */
         private double _size = 40;
 
-	/** The graph controller
-	 */
-	private GraphController _controller;
+        /** The graph controller
+         */
+        private GraphController _controller;
 
-	public ThreadRenderer(GraphController controller) {
-	    _controller = controller;
-	}
+        public ThreadRenderer(GraphController controller) {
+            _controller = controller;
+        }
 
         /**
          * Return the rendered visual representation of this node.
          */
         public Figure render(Object n) {
             ComponentEntity actor = (ComponentEntity)
-		_controller.getGraphModel().getSemanticObject(n);
+                _controller.getGraphModel().getSemanticObject(n);
 
             boolean isEllipse =
                 actor instanceof ListenWire
                 || actor instanceof ListenFork
-		|| actor instanceof ListenClock
-		|| actor instanceof ListenSink
+                || actor instanceof ListenClock
+                || actor instanceof ListenSink
                 || actor instanceof ListenFeedBackDelay;
 
 
             BasicFigure f;
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);
-		f.setFillPaint(Color.blue);
+                f.setFillPaint(Color.blue);
             } else {
                 f = new BasicRectangle(0, 0, _size, _size);
-		f.setFillPaint(Color.pink);
+                f.setFillPaint(Color.pink);
             }
             String label = actor.getName();
             LabelWrapper w = new LabelWrapper(f, label);

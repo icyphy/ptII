@@ -83,10 +83,10 @@ public class Chopstick extends CSPActor {
         rightOut = new TypedIOPort(this, "rightOut", false, true);
         rightIn = new TypedIOPort(this, "rightIn", true, false);
 
-	leftIn.setTypeEquals(BaseType.GENERAL);
-	rightIn.setTypeEquals(BaseType.GENERAL);
-	leftOut.setTypeEquals(BaseType.INT);
-	rightOut.setTypeEquals(BaseType.INT);
+        leftIn.setTypeEquals(BaseType.GENERAL);
+        rightIn.setTypeEquals(BaseType.GENERAL);
+        leftOut.setTypeEquals(BaseType.INT);
+        rightOut.setTypeEquals(BaseType.INT);
     }
 
     /** Construct a Chopstick in the specified container with the specified
@@ -113,10 +113,10 @@ public class Chopstick extends CSPActor {
         rightOut = new TypedIOPort(this, "rightOut", false, true);
         rightIn = new TypedIOPort(this, "rightIn", true, false);
 
-	leftIn.setTypeEquals(BaseType.GENERAL);
-	rightIn.setTypeEquals(BaseType.GENERAL);
-	leftOut.setTypeEquals(BaseType.INT);
-	rightOut.setTypeEquals(BaseType.INT);
+        leftIn.setTypeEquals(BaseType.GENERAL);
+        rightIn.setTypeEquals(BaseType.GENERAL);
+        leftOut.setTypeEquals(BaseType.INT);
+        rightOut.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////

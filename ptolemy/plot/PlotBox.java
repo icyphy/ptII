@@ -503,14 +503,14 @@ public class PlotBox extends JPanel implements Printable {
         Graphics2D graphics = bufferedImage.createGraphics();
         graphics.addRenderingHints(_defaultImageRenderingHints());
         if ( !transparent ) {
-            graphics.setColor(Color.white);	// set the background color
+            graphics.setColor(Color.white);        // set the background color
             graphics.fill(rectangle);
         }
         _drawPlot(graphics, false , rectangle);
         return bufferedImage;
     }
 
-    /**	Draw this plot onto the provided image.
+    /**        Draw this plot onto the provided image.
      *  This method does not paint the background, so the plot is
      *  transparent.  The plot fills the image, and is rendered
      *  using anti-aliasing.  This method can be used to overlay
@@ -1125,10 +1125,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_printButton == null) {
             // Load the image by using the absolute path to the gif.
-	    // Using a relative location should work, but it does not.
+            // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-	    // For more information, see
-	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
+            // For more information, see
+            // file:///C|/jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource("/ptolemy/plot/img/print.gif");
             if (img != null) {
                 ImageIcon printIcon = new ImageIcon(img);
@@ -1139,8 +1139,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _printButton = new JButton("P");
             }
-	    // FIXME: If we failed to get an image, then the letter "P"
-	    // Is not likely to fit into a 20x20 button.
+            // FIXME: If we failed to get an image, then the letter "P"
+            // Is not likely to fit into a 20x20 button.
             _printButton.setPreferredSize(new Dimension(20, 20));
             _printButton.setToolTipText("Print the plot.");
             _printButton.addActionListener(new ButtonListener());
@@ -1150,10 +1150,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_resetButton == null) {
             // Load the image by using the absolute path to the gif.
-	    // Using a relative location should work, but it does not.
+            // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-	    // For more information, see
-	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
+            // For more information, see
+            // file:///C|/jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource("/ptolemy/plot/img/reset.gif");
             if (img != null) {
                 ImageIcon resetIcon = new ImageIcon(img);
@@ -1164,8 +1164,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _resetButton = new JButton("R");
             }
-	    // FIXME: If we failed to get an image, then the letter "R"
-	    // Is not likely to fit into a 20x20 button.
+            // FIXME: If we failed to get an image, then the letter "R"
+            // Is not likely to fit into a 20x20 button.
             _resetButton.setPreferredSize(new Dimension(20, 20));
             _resetButton.setToolTipText(
                     "Reset X and Y ranges to their original values");
@@ -1176,10 +1176,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_formatButton == null) {
             // Load the image by using the absolute path to the gif.
-	    // Using a relative location should work, but it does not.
+            // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-	    // For more information, see
-	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
+            // For more information, see
+            // file:///C|/jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource("/ptolemy/plot/img/format.gif");
             if (img != null) {
                 ImageIcon formatIcon = new ImageIcon(img);
@@ -1190,8 +1190,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _formatButton = new JButton("S");
             }
-	    // FIXME: If we failed to get an image, then the letter "S"
-	    // Is not likely to fit into a 20x20 button.
+            // FIXME: If we failed to get an image, then the letter "S"
+            // Is not likely to fit into a 20x20 button.
             _formatButton.setPreferredSize(new Dimension(20, 20));
             _formatButton.setToolTipText(
                     "Set the plot format");
@@ -1202,10 +1202,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_fillButton == null) {
             // Load the image by using the absolute path to the gif.
-	    // Using a relative location should work, but it does not.
+            // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-	    // For more information, see
-	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
+            // For more information, see
+            // file:///C|/jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource("/ptolemy/plot/img/fill.gif");
             if (img != null) {
                 ImageIcon fillIcon = new ImageIcon(img);
@@ -1216,8 +1216,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _fillButton = new JButton("F");
             }
-	    // FIXME: If we failed to get an image, then the letter "F"
-	    // Is not likely to fit into a 20x20 button.
+            // FIXME: If we failed to get an image, then the letter "F"
+            // Is not likely to fit into a 20x20 button.
             _fillButton.setPreferredSize(new Dimension(20, 20));
             _fillButton.setToolTipText(
                     "Rescale the plot to fit the data");
@@ -1707,7 +1707,7 @@ public class PlotBox extends JPanel implements Printable {
         // for labeling ticks and the height of the window.
         Font previousFont = graphics.getFont();
         graphics.setFont(_labelFont);
-        graphics.setColor(_foreground);	// foreground color not set here  --Rob.
+        graphics.setColor(_foreground);        // foreground color not set here  --Rob.
         int labelheight = _labelFontMetrics.getHeight();
         int halflabelheight = labelheight/2;
 
@@ -2386,7 +2386,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param padding The padding multiple.
      */
     protected void _setPadding(double padding) {
-	_padding = padding;
+        _padding = padding;
     }
 
     /** Write plot information to the specified output stream in the
@@ -3071,15 +3071,15 @@ public class PlotBox extends JPanel implements Printable {
             max += 1.0;
         }
 
-	//if (_xRangeGiven) {
+        //if (_xRangeGiven) {
         // The user specified the range, so don't pad.
-	//    _xMin = min;
-	//    _xMax = max;
-	//} else {
+        //    _xMin = min;
+        //    _xMax = max;
+        //} else {
         // Pad slightly so that we don't plot points on the axes.
         _xMin = min - ((max - min) * _padding);
         _xMax = max + ((max - min) * _padding);
-	//}
+        //}
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_xMin), Math.abs(_xMax));
@@ -3116,15 +3116,15 @@ public class PlotBox extends JPanel implements Printable {
             min -= 0.1;
             max += 0.1;
         }
-	//if (_yRangeGiven) {
+        //if (_yRangeGiven) {
         // The user specified the range, so don't pad.
-	//    _yMin = min;
-	//    _yMax = max;
-	//} else {
+        //    _yMin = min;
+        //    _yMax = max;
+        //} else {
         // Pad slightly so that we don't plot points on the axes.
         _yMin = min - ((max - min) * _padding);
         _yMax = max + ((max - min) * _padding);
-	//}
+        //}
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_yMin), Math.abs(_yMax));
@@ -3452,7 +3452,7 @@ public class PlotBox extends JPanel implements Printable {
     "<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu.\n"
     + "   See http://ptolemy.eecs.berkeley.edu/java/ptplot -->\n"
     + "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | \n"
-    + "	noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
+    + "        noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
     + " yLog | yRange | yTicks)*>\n"
     + "  <!ELEMENT barGraph EMPTY>\n"
     + "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"

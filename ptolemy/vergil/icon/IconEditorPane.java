@@ -93,36 +93,36 @@ public class IconEditorPane extends JCanvas {
      * Create a new icon editor acting on the given icon.
      */
     public IconEditorPane(XMLIcon icon) {
-	_icon = icon;
+        _icon = icon;
 
         // Instantiate the color chooser for the color button.
         _colorChooser = new JColorChooser();
 
-  	_pane =(GraphicsPane) this.getCanvasPane();
-	_layer = _pane.getForegroundLayer();
-	_layer.setPickHalo(MOUSE_SENSITIVITY);
+          _pane =(GraphicsPane) this.getCanvasPane();
+        _layer = _pane.getForegroundLayer();
+        _layer.setPickHalo(MOUSE_SENSITIVITY);
 
-	// I have to make the figures "drag-able".
-	_interactor1.addInteractor(new DragInteractor());
-	_interactor2.addInteractor(new DragInteractor());
-	_interactor3.addInteractor(new DragInteractor());
+        // I have to make the figures "drag-able".
+        _interactor1.addInteractor(new DragInteractor());
+        _interactor2.addInteractor(new DragInteractor());
+        _interactor3.addInteractor(new DragInteractor());
 
-	// When they are selected, put grab handles on them.
-	_interactor1.setPrototypeDecorator(new PathManipulator());
-	_interactor2.setPrototypeDecorator(new BoundsManipulator());
-	_interactor3.setPrototypeDecorator(new CircleManipulator());
+        // When they are selected, put grab handles on them.
+        _interactor1.setPrototypeDecorator(new PathManipulator());
+        _interactor2.setPrototypeDecorator(new BoundsManipulator());
+        _interactor3.setPrototypeDecorator(new CircleManipulator());
 
-	// This next part allows the user to select multiple figures
-	// with the mouse by dragging a rectangle box around the figures
-	// the user wishes to be selected.
-	_selectionDragger = new SelectionDragger(_pane);
-	_selectionDragger.addSelectionInteractor(_interactor1);
-	_selectionDragger.addSelectionInteractor(_interactor2);
-	_selectionDragger.addSelectionInteractor(_interactor3);
+        // This next part allows the user to select multiple figures
+        // with the mouse by dragging a rectangle box around the figures
+        // the user wishes to be selected.
+        _selectionDragger = new SelectionDragger(_pane);
+        _selectionDragger.addSelectionInteractor(_interactor1);
+        _selectionDragger.addSelectionInteractor(_interactor2);
+        _selectionDragger.addSelectionInteractor(_interactor3);
 
-	// Begin with the elements specified in the icon passed into
-	// the constructor.
-	addXMLIcon(icon);
+        // Begin with the elements specified in the icon passed into
+        // the constructor.
+        addXMLIcon(icon);
     }
 
     //         StringBufferInputStream xml_stream = null;
@@ -229,33 +229,33 @@ public class IconEditorPane extends JCanvas {
     /////////////////      Public Methods               /////////////////
 
     public void addFigure(VersatileFigure figure) {
-	// Get the shape of this figure.
-	Shape shape = figure.getShape();
+        // Get the shape of this figure.
+        Shape shape = figure.getShape();
 
-	// Now assign an appropriate interactor for the shape.
-	if (shape instanceof RectangularShape) {
-	    figure.setInteractor(_interactor2);
-	} else if (shape instanceof Ellipse2D) {
-	    figure.setInteractor(_interactor3);
-	} else if (shape instanceof GeneralPath) {
-	    figure.setInteractor(_interactor1);
-	} else if (shape instanceof Line2D) {
-	    figure.setInteractor(_interactor1);
-	} else if (shape instanceof QuadCurve2D) {
-	    figure.setInteractor(_interactor1);
-	} else if (shape instanceof CubicCurve2D) {
-	    figure.setInteractor(_interactor1);
-	} else if (shape instanceof Polygon2D) {
-	    figure.setInteractor(_interactor2);
-	} else {
-	    throw new RuntimeException("unknown shape: " + shape);
-	}
+        // Now assign an appropriate interactor for the shape.
+        if (shape instanceof RectangularShape) {
+            figure.setInteractor(_interactor2);
+        } else if (shape instanceof Ellipse2D) {
+            figure.setInteractor(_interactor3);
+        } else if (shape instanceof GeneralPath) {
+            figure.setInteractor(_interactor1);
+        } else if (shape instanceof Line2D) {
+            figure.setInteractor(_interactor1);
+        } else if (shape instanceof QuadCurve2D) {
+            figure.setInteractor(_interactor1);
+        } else if (shape instanceof CubicCurve2D) {
+            figure.setInteractor(_interactor1);
+        } else if (shape instanceof Polygon2D) {
+            figure.setInteractor(_interactor2);
+        } else {
+            throw new RuntimeException("unknown shape: " + shape);
+        }
 
-	// Finally, add the figure to the figure layer.
-	_layer.add(figure);
+        // Finally, add the figure to the figure layer.
+        _layer.add(figure);
 
-	_selectionDragger.clearSelection();
-	_selectionDragger.expandSelection(_interactor2, _currentFigure);
+        _selectionDragger.clearSelection();
+        _selectionDragger.expandSelection(_interactor2, _currentFigure);
     }
 
     /** I need to setup the icon that was passed in, possibly from
@@ -272,14 +272,14 @@ public class IconEditorPane extends JCanvas {
         // First get an enumeration over all the elements in the icon.
         Iterator i = my_icon.paintedList().paintedObjects.iterator();
 
-	// And as long as the icon has more elements...
-	while (i.hasNext()) {
+        // And as long as the icon has more elements...
+        while (i.hasNext()) {
             // Create a new figure represented by this graphic element.
-	    VersatileFigure figure =
-		new VersatileFigure((PaintedObject)i.next());
+            VersatileFigure figure =
+                new VersatileFigure((PaintedObject)i.next());
 
-	    addFigure(figure);
-	}
+            addFigure(figure);
+        }
     }
 
     /**
@@ -288,7 +288,7 @@ public class IconEditorPane extends JCanvas {
      */
     public void clear() {
         _m.clearSelection();
-	_layer.clear();
+        _layer.clear();
         _icon.paintedList().paintedObjects.clear();
     }
 
@@ -296,20 +296,20 @@ public class IconEditorPane extends JCanvas {
      * Beep if something goes wrong.
      */
     public void copy(Clipboard clipboard) {
-	Iterator iter = _m.getSelection();
-	Vector v = new Vector();
-	if (iter.hasNext()) {
-	    while (iter.hasNext()) {
-		_currentFigure = (VersatileFigure)iter.next();
-		v.add(_currentFigure);
-	    }
-	    SimpleSelection s = new SimpleSelection(v, dataFlavor);
+        Iterator iter = _m.getSelection();
+        Vector v = new Vector();
+        if (iter.hasNext()) {
+            while (iter.hasNext()) {
+                _currentFigure = (VersatileFigure)iter.next();
+                v.add(_currentFigure);
+            }
+            SimpleSelection s = new SimpleSelection(v, dataFlavor);
 
-	    clipboard.setContents(s, s);
+            clipboard.setContents(s, s);
 
-	} else {
-	    getToolkit().beep();
-	}
+        } else {
+            getToolkit().beep();
+        }
     }
 
     /**
@@ -317,40 +317,40 @@ public class IconEditorPane extends JCanvas {
      * the currently selected item from the canvas.
      */
     public void cut(Clipboard clipboard) {
-	Iterator iter = _m.getSelection();
-	Vector vector = new Vector();
-	if (iter.hasNext()) {
-	    while (iter.hasNext()) {
-		_currentFigure =(VersatileFigure) iter.next();
-		iter.remove();
-		_m.removeSelection(_currentFigure);
-		_layer.remove(_currentFigure);
-		vector.add(_currentFigure);
-	    }
-	    SimpleSelection s = new SimpleSelection(vector,
+        Iterator iter = _m.getSelection();
+        Vector vector = new Vector();
+        if (iter.hasNext()) {
+            while (iter.hasNext()) {
+                _currentFigure =(VersatileFigure) iter.next();
+                iter.remove();
+                _m.removeSelection(_currentFigure);
+                _layer.remove(_currentFigure);
+                vector.add(_currentFigure);
+            }
+            SimpleSelection s = new SimpleSelection(vector,
                     dataFlavor);
-	    clipboard.setContents(s, s);
-	} else {
-	    getToolkit().beep();
-	}
+            clipboard.setContents(s, s);
+        } else {
+            getToolkit().beep();
+        }
     }
 
     /**
      * Delete the currently selected figures.
      */
     public void delete() {
-	Iterator iter = _m.getSelection();
-	VersatileFigure v = null;
-	if (iter.hasNext()) {
-	    while (iter.hasNext()) {
-		v =(VersatileFigure) iter.next();
-		iter.remove();
-		_m.removeSelection(v);
-		_layer.remove(v);
-	    }
-	} else {
-	    getToolkit().beep();
-	}
+        Iterator iter = _m.getSelection();
+        VersatileFigure v = null;
+        if (iter.hasNext()) {
+            while (iter.hasNext()) {
+                v =(VersatileFigure) iter.next();
+                iter.remove();
+                _m.removeSelection(v);
+                _layer.remove(v);
+            }
+        } else {
+            getToolkit().beep();
+        }
     }
 
     /**
@@ -359,18 +359,18 @@ public class IconEditorPane extends JCanvas {
      * then return null.
      */
     public Paint getFillPaint() {
-	Paint paint = null;
+        Paint paint = null;
         Iterator iter = _m.getSelection();
-	while (iter.hasNext()) {
-	    VersatileFigure v =(VersatileFigure) iter.next();
-	    if (paint == null) {
-		paint = v.getFillPaint();
-	    } else {
-		if (paint != v.getFillPaint())
-		    return null;
-	    }
-	}
-	return paint;
+        while (iter.hasNext()) {
+            VersatileFigure v =(VersatileFigure) iter.next();
+            if (paint == null) {
+                paint = v.getFillPaint();
+            } else {
+                if (paint != v.getFillPaint())
+                    return null;
+            }
+        }
+        return paint;
     }
 
     /**
@@ -379,18 +379,18 @@ public class IconEditorPane extends JCanvas {
      * then return null.
      */
     public float getThickness() {
-	float thickness = 0.0f;
+        float thickness = 0.0f;
         Iterator iter = _m.getSelection();
-	while (iter.hasNext()) {
-	    VersatileFigure v =(VersatileFigure) iter.next();
-	    if (thickness == 0.0f) {
-		thickness = v.getLineWidth();
-	    } else {
-		if (thickness != v.getLineWidth());
+        while (iter.hasNext()) {
+            VersatileFigure v =(VersatileFigure) iter.next();
+            if (thickness == 0.0f) {
+                thickness = v.getLineWidth();
+            } else {
+                if (thickness != v.getLineWidth());
                 return 0.0f;
-	    }
-	}
-	return thickness;
+            }
+        }
+        return thickness;
     }
 
     /**
@@ -399,18 +399,18 @@ public class IconEditorPane extends JCanvas {
      * then return null.
      */
     public Paint getOutlinePaint() {
-	Paint paint = null;
+        Paint paint = null;
         Iterator iter = _m.getSelection();
-	while (iter.hasNext()) {
-	    VersatileFigure v =(VersatileFigure) iter.next();
-	    if (paint == null) {
-		paint = v.getStrokePaint();
-	    } else {
-		if (paint != v.getStrokePaint())
-		    return null;
-	    }
-	}
-	return paint;
+        while (iter.hasNext()) {
+            VersatileFigure v =(VersatileFigure) iter.next();
+            if (paint == null) {
+                paint = v.getStrokePaint();
+            } else {
+                if (paint != v.getStrokePaint())
+                    return null;
+            }
+        }
+        return paint;
     }
 
     /**
@@ -427,54 +427,54 @@ public class IconEditorPane extends JCanvas {
      * If something goes wrong, beep.
      */
     public void paste(Clipboard clipboard) {
-	// clear the current selection
-	_m.clearSelection();
+        // clear the current selection
+        _m.clearSelection();
 
-	Transferable t = clipboard.getContents(this);
-	if (t == null) {
-	    getToolkit().beep();
-	    return;
-	}
+        Transferable t = clipboard.getContents(this);
+        if (t == null) {
+            getToolkit().beep();
+            return;
+        }
 
-	try {
-	    Vector v = (Vector)t.getTransferData(dataFlavor);
-	    Enumeration enum = v.elements();
-	    if (enum.hasMoreElements()) {
-		while (enum.hasMoreElements()) {
-		    VersatileFigure vf = (VersatileFigure)enum.nextElement();
-		    VersatileFigure vf2 = (VersatileFigure)vf.clone();
-		    _layer.add(vf2);
-		    if (vf2.getInteractor() instanceof SelectionInteractor) {
-			_selectionDragger.expandSelection
-			    ((SelectionInteractor)vf2.getInteractor(), vf2);
-		    }
-		}
-	    } else {
-		getToolkit().beep();
-	    }
-	}
-	catch(Exception ex) {
-	    getToolkit().beep();
-	}
+        try {
+            Vector v = (Vector)t.getTransferData(dataFlavor);
+            Enumeration enum = v.elements();
+            if (enum.hasMoreElements()) {
+                while (enum.hasMoreElements()) {
+                    VersatileFigure vf = (VersatileFigure)enum.nextElement();
+                    VersatileFigure vf2 = (VersatileFigure)vf.clone();
+                    _layer.add(vf2);
+                    if (vf2.getInteractor() instanceof SelectionInteractor) {
+                        _selectionDragger.expandSelection
+                            ((SelectionInteractor)vf2.getInteractor(), vf2);
+                    }
+                }
+            } else {
+                getToolkit().beep();
+            }
+        }
+        catch(Exception ex) {
+            getToolkit().beep();
+        }
     }
 
     /**
      * Print this pane.
      */
     public void print() {
-	PrinterJob job = PrinterJob.getPrinterJob();
-	job.setPrintable(this);
-	_selectionDragger.clearSelection();
-	if (job.printDialog()) {
-	    try {
-	        job.print();
-	    }
-	    catch(Exception ex) {
-	        JOptionPane.showMessageDialog(this,
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPrintable(this);
+        _selectionDragger.clearSelection();
+        if (job.printDialog()) {
+            try {
+                job.print();
+            }
+            catch(Exception ex) {
+                JOptionPane.showMessageDialog(this,
                         "Printing failed:\n" + ex.toString(),
                         "Print Error", JOptionPane.WARNING_MESSAGE);
-	    }
-	}
+            }
+        }
     }
 
     /**
@@ -484,14 +484,14 @@ public class IconEditorPane extends JCanvas {
      */
     public void setFillPaint(Paint c) {
         Iterator iter = _m.getSelection();
-	if (iter.hasNext()) {
-	    while (iter.hasNext()) {
-	        VersatileFigure v =(VersatileFigure) iter.next();
-		v.setFillPaint(c);
-	    }
-	} else {
-	    getToolkit().beep();
-	}
+        if (iter.hasNext()) {
+            while (iter.hasNext()) {
+                VersatileFigure v =(VersatileFigure) iter.next();
+                v.setFillPaint(c);
+            }
+        } else {
+            getToolkit().beep();
+        }
     }
 
     /**
@@ -500,15 +500,15 @@ public class IconEditorPane extends JCanvas {
      */
     public void setThickness(float newThickness) {
         _outlineThickness = newThickness;
-	Iterator iter = _m.getSelection();
-	if (iter.hasNext()) {
-	    while (iter.hasNext()) {
-	        VersatileFigure v = (VersatileFigure)iter.next();
-		v.setLineWidth(newThickness);
-	    }
-	} else {
-	    getToolkit().beep();
-	}
+        Iterator iter = _m.getSelection();
+        if (iter.hasNext()) {
+            while (iter.hasNext()) {
+                VersatileFigure v = (VersatileFigure)iter.next();
+                v.setLineWidth(newThickness);
+            }
+        } else {
+            getToolkit().beep();
+        }
     }
 
     /**
@@ -517,14 +517,14 @@ public class IconEditorPane extends JCanvas {
      */
     public void setOutlinePaint(Paint c) {
         Iterator iter = _m.getSelection();
-	if (iter.hasNext()) {
-	    while (iter.hasNext()) {
-	        VersatileFigure v =(VersatileFigure) iter.next();
-		v.setStrokePaint(c);
-	    }
-	} else {
-	    getToolkit().beep();
-	}
+        if (iter.hasNext()) {
+            while (iter.hasNext()) {
+                VersatileFigure v =(VersatileFigure) iter.next();
+                v.setStrokePaint(c);
+            }
+        } else {
+            getToolkit().beep();
+        }
     }
 }
 

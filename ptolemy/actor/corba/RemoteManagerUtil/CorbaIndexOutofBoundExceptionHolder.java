@@ -9,7 +9,7 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* Exception for channel indeces.
-	 */
+         */
 public final class CorbaIndexOutofBoundExceptionHolder implements org.omg.CORBA.portable.Streamable
 {
   public ptolemy.actor.corba.RemoteManagerUtil.CorbaIndexOutofBoundException value = null;

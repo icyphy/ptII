@@ -69,7 +69,7 @@ public class DDEThread extends ProcessThread {
     public DDEThread(Actor actor, ProcessDirector director)
             throws IllegalActionException {
         super(actor, director);
-	_timeKeeper = new TimeKeeper(actor);
+        _timeKeeper = new TimeKeeper(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ public class DDEThread extends ProcessThread {
      *  controls.
      */
     public TimeKeeper getTimeKeeper() {
-	return _timeKeeper;
+        return _timeKeeper;
     }
 
     /** Notify output-connected actors that the actor controlled
@@ -94,31 +94,31 @@ public class DDEThread extends ProcessThread {
      */
     public synchronized void noticeOfTermination() {
         Actor actor = (Actor)getActor();
-	Iterator outputPorts = actor.outputPortList().iterator();
-	double endTime = PrioritizedTimedQueue.INACTIVE;
-	if ( outputPorts != null ) {
-	    while ( outputPorts.hasNext() ) {
-	        IOPort port = (IOPort)outputPorts.next();
+        Iterator outputPorts = actor.outputPortList().iterator();
+        double endTime = PrioritizedTimedQueue.INACTIVE;
+        if ( outputPorts != null ) {
+            while ( outputPorts.hasNext() ) {
+                IOPort port = (IOPort)outputPorts.next();
                 Receiver receivers[][] =
                     (Receiver[][])port.getRemoteReceivers();
                 if ( receivers == null ) {
-	            break;
-	        }
+                    break;
+                }
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
-			try {
-			    if ( ((DDEReceiver)receivers[i][j]).getReceiverTime()
-				    != endTime ) {
-				((DDEReceiver) receivers[i][j]).put(null,
-                                	endTime);
-			    }
-			} catch( TerminateProcessException e ) {
-			    // Do nothing since we are ending
-			}
-		    }
+                        try {
+                            if ( ((DDEReceiver)receivers[i][j]).getReceiverTime()
+                                    != endTime ) {
+                                ((DDEReceiver) receivers[i][j]).put(null,
+                                        endTime);
+                            }
+                        } catch( TerminateProcessException e ) {
+                            // Do nothing since we are ending
+                        }
+                    }
                 }
             }
-	}
+        }
     }
 
     /** Start this thread and initialize the time keeper to a future
@@ -133,17 +133,17 @@ public class DDEThread extends ProcessThread {
      *  would be more appropriately named <I>continueAt()</I>.
      */
     public void start() {
-	Actor actor = getActor();
-	DDEDirector director = (DDEDirector)actor.getDirector();
-	Hashtable table = director._getInitialTimeTable();
-	if ( table != null ) {
-	    Double dTime = (Double)table.get(actor);
-	    if ( dTime != null ) {
-		double time = dTime.doubleValue();
-		_timeKeeper.setCurrentTime( time );
-	    }
-	}
-	super.start();
+        Actor actor = getActor();
+        DDEDirector director = (DDEDirector)actor.getDirector();
+        Hashtable table = director._getInitialTimeTable();
+        if ( table != null ) {
+            Double dTime = (Double)table.get(actor);
+            if ( dTime != null ) {
+                double time = dTime.doubleValue();
+                _timeKeeper.setCurrentTime( time );
+            }
+        }
+        super.start();
     }
 
     /** End the execution of the actor under the control of this
@@ -154,8 +154,8 @@ public class DDEThread extends ProcessThread {
      *  thread.
      */
     public void wrapup() throws IllegalActionException {
-	noticeOfTermination();
-	super.wrapup();
+        noticeOfTermination();
+        super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////

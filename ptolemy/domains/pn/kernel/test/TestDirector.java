@@ -79,24 +79,24 @@ public class TestDirector extends AtomicActor {
      *  This method is synchronized both on this class and the inner class
      */
     public synchronized void fire() throws IllegalActionException {
-	int i = 0;
-	for (i = 0; i < 2; i++) {
-	    output.broadcast(new IntToken(i));
-	    profile += "broadcast new token " + i + "\n";
-	}
-	for (i = 0; i < 2; i++) {
-	    int ans = ((IntToken)input.get(0)).intValue();
-	    profile += "received new token " + ans + "\n";
-	}
-	try {
-	    ((CompositeActor)getContainer()).workspace().getReadAccess();
+        int i = 0;
+        for (i = 0; i < 2; i++) {
+            output.broadcast(new IntToken(i));
+            profile += "broadcast new token " + i + "\n";
+        }
+        for (i = 0; i < 2; i++) {
+            int ans = ((IntToken)input.get(0)).intValue();
+            profile += "received new token " + ans + "\n";
+        }
+        try {
+            ((CompositeActor)getContainer()).workspace().getReadAccess();
             // an actor should not call director.wrapup()
-	    //((PNDirector)getDirector()).wrapup();
-	} finally {
-	    ((CompositeActor)getContainer()).workspace().doneReading();
-	}
-	output.broadcast(new IntToken(i));
-	profile += "broadcast new token " + i + "\n";
+            //((PNDirector)getDirector()).wrapup();
+        } finally {
+            ((CompositeActor)getContainer()).workspace().doneReading();
+        }
+        output.broadcast(new IntToken(i));
+        profile += "broadcast new token " + i + "\n";
     }
 
     /** Return a profile which contains the various actions performed by this

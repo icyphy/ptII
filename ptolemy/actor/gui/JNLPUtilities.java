@@ -79,25 +79,25 @@ public class JNLPUtilities {
      *  @exception java.net.MalformedURLException If new URL() throws it.
      */
     public static URL canonicalizeJarURL(URL possibleJarURL)
-	throws java.net.MalformedURLException {
-	// This method is needed so that under Web Start we are always
-	// referring to files like intro.htm with the same URL.
-	// The reason is that the Web Start under Windows is likely
-	// to be in c:/Documents and Settings/username
-	// so we want to always refer to the files with the same URL
-	// so as to avoid duplicate windows
+        throws java.net.MalformedURLException {
+        // This method is needed so that under Web Start we are always
+        // referring to files like intro.htm with the same URL.
+        // The reason is that the Web Start under Windows is likely
+        // to be in c:/Documents and Settings/username
+        // so we want to always refer to the files with the same URL
+        // so as to avoid duplicate windows
 
-	if (possibleJarURL.toExternalForm().startsWith("jar:")) {
-	    // FIXME: Could it be that we only want to convert spaces before
-	    // the '!/' string?
-	    URL jarURL =
-		new URL(StringUtilities
-			.substitute(possibleJarURL.toExternalForm(),
-				    " ", "%20"));
-	    // FIXME: should we check to see if the jarURL exists here?
-	    return jarURL;
-	}
-	return possibleJarURL;
+        if (possibleJarURL.toExternalForm().startsWith("jar:")) {
+            // FIXME: Could it be that we only want to convert spaces before
+            // the '!/' string?
+            URL jarURL =
+                new URL(StringUtilities
+                        .substitute(possibleJarURL.toExternalForm(),
+                                    " ", "%20"));
+            // FIXME: should we check to see if the jarURL exists here?
+            return jarURL;
+        }
+        return possibleJarURL;
     }
 
     /** Return true if we are running under WebStart */

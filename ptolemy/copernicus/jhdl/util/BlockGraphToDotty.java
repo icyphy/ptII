@@ -23,10 +23,10 @@ public class BlockGraphToDotty extends GraphToDotty {
     public String convert(Object graph, String ename){
         BlockGraph g = (BlockGraph)graph;
 
-	//Code copied from buildMapForBlock() in Block.java
-	//Method is private so I couldn't get at it without
-	//just copying it over...  :-/
-	Map m = new HashMap();
+        //Code copied from buildMapForBlock() in Block.java
+        //Method is private so I couldn't get at it without
+        //just copying it over...  :-/
+        Map m = new HashMap();
         List basicBlocks = g.getBlocks();
         Iterator it = basicBlocks.iterator();
         while(it.hasNext()) {
@@ -34,43 +34,43 @@ public class BlockGraphToDotty extends GraphToDotty {
             m.put(currentBlock.getHead(),  "Block " + (new Integer(currentBlock.getIndexInMethod()).toString()));
         }
 
-	int count=0;
-	HashMap hm=new HashMap();
-	StringBuffer sb = new StringBuffer();
-	sb.append("//Dotfile created by HashMutableToDotty\r\n");
-	sb.append("digraph "+ename+" {\r\n");
-	sb.append("\t// Vertices\r\n");
-	for(Iterator nodes = g.iterator();nodes.hasNext();) {
-	    Block source = (Block)nodes.next();
-	    String name="v" + count++;
-	    sb.append("\t\""+name+"\" [label=\""
-		      +convertSpecialsToEscapes(source.toString(m))
-		      +"\"];"+MYEOL);
-	    hm.put(source, name);
-	}
-	sb.append("\t// Edges\r\n");
-	for (Iterator nodes=g.iterator(); nodes.hasNext();){
-	    Block source = (Block)nodes.next();
-	    boolean endsWithIf = source.getTail() instanceof IfStmt;
+        int count=0;
+        HashMap hm=new HashMap();
+        StringBuffer sb = new StringBuffer();
+        sb.append("//Dotfile created by HashMutableToDotty\r\n");
+        sb.append("digraph "+ename+" {\r\n");
+        sb.append("\t// Vertices\r\n");
+        for(Iterator nodes = g.iterator();nodes.hasNext();) {
+            Block source = (Block)nodes.next();
+            String name="v" + count++;
+            sb.append("\t\""+name+"\" [label=\""
+                      +convertSpecialsToEscapes(source.toString(m))
+                      +"\"];"+MYEOL);
+            hm.put(source, name);
+        }
+        sb.append("\t// Edges\r\n");
+        for (Iterator nodes=g.iterator(); nodes.hasNext();){
+            Block source = (Block)nodes.next();
+            boolean endsWithIf = source.getTail() instanceof IfStmt;
 
-	    //System.err.println(source.toShortString());
+            //System.err.println(source.toShortString());
 
-	    for(Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
-		Block dest= (Block)succs.next();
-		sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
-		if (endsWithIf){
-		    sb.append(" [\"label\"=");
-		    if (((IfStmt)source.getTail()).getTargetBox().getUnit() == dest.getHead()){
-			sb.append("\"true\"");
-		    } else {
-			sb.append("\"false\"");
-		    }
-		    sb.append("]");
-		}
-		sb.append(";"+MYEOL);
-	    }
-	}
-	sb.append("}\r\n");
-	return sb.toString();
+            for(Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
+                Block dest= (Block)succs.next();
+                sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
+                if (endsWithIf){
+                    sb.append(" [\"label\"=");
+                    if (((IfStmt)source.getTail()).getTargetBox().getUnit() == dest.getHead()){
+                        sb.append("\"true\"");
+                    } else {
+                        sb.append("\"false\"");
+                    }
+                    sb.append("]");
+                }
+                sb.append(";"+MYEOL);
+            }
+        }
+        sb.append("}\r\n");
+        return sb.toString();
     }
 }

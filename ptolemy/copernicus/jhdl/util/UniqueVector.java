@@ -49,21 +49,21 @@ public class UniqueVector extends Vector {
     public UniqueVector() { super(); }
     public UniqueVector(int i) { super(i); }
     public UniqueVector(Collection c) {
-	super(c.size());
-	addAll(c);
+        super(c.size());
+        addAll(c);
     }
 
     public boolean add(Object o) {
-	if (!contains(o))
-	    super.add(o);
-	return true;
+        if (!contains(o))
+            super.add(o);
+        return true;
     }
 
     public boolean addAll(Collection c) {
-	if (c!= null)
-	    for (Iterator i=c.iterator();i.hasNext();)
-		add(i.next());
-	return true;
+        if (c!= null)
+            for (Iterator i=c.iterator();i.hasNext();)
+                add(i.next());
+        return true;
     }
 
 }

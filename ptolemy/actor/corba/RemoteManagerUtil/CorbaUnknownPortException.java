@@ -10,7 +10,7 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* Exception for unknow port when accessing a remote port/
-	 */
+         */
 public final class CorbaUnknownPortException extends org.omg.CORBA.UserException
 {
   public String portName = null;

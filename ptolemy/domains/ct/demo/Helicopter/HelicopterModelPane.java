@@ -99,7 +99,7 @@ public class HelicopterModelPane extends ModelPane {
     protected void _createPlaceable(CompositeActor model) {
         if (_displays != null) {
             remove(_displays);
-	    _displays = null;
+            _displays = null;
         }
         // place the placeable objects in the model
         _displays = new JPanel();

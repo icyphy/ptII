@@ -86,8 +86,8 @@ public class MatrixToSequence extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	input.setTokenConsumptionRate(1);
-	output.setTokenProductionRate(1);
+        input.setTokenConsumptionRate(1);
+        output.setTokenProductionRate(1);
 
         input.setTypeAtMost(BaseType.MATRIX);
         output.setTypeAtLeast(new FunctionTerm(input));
@@ -183,21 +183,21 @@ public class MatrixToSequence extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (!input.hasToken(0)) return;
-	MatrixToken token = (MatrixToken)input.get(0);
+        MatrixToken token = (MatrixToken)input.get(0);
         int actualRowCount = token.getRowCount();
         int actualColumnCount = token.getColumnCount();
-	boolean enforce = ((BooleanToken)enforceMatrixSize.getToken())
+        boolean enforce = ((BooleanToken)enforceMatrixSize.getToken())
                 .booleanValue();
-	if (enforce) {
+        if (enforce) {
             int rowsValue = ((IntToken)rows.getToken()).intValue();
             int columnsValue = ((IntToken)columns.getToken()).intValue();
             if (actualRowCount != rowsValue
                     || actualColumnCount != columnsValue) {
-	        throw new IllegalActionException(this,
+                throw new IllegalActionException(this,
                         "The input matrix size does not"
                         + " match what the actor requires.");
             }
-	}
+        }
         for (int i = 0; i < actualRowCount; i++) {
             for (int j = 0; j < actualColumnCount; j++) {
                 output.send(0, token.getElementAsToken(i, j));

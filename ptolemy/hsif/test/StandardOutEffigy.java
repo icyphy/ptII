@@ -113,20 +113,20 @@ public class StandardOutEffigy extends Effigy {
             BufferedReader reader = null;
 
             try {
-		InputStream inputStream = null;
-		try {
-		    inputStream = in.openStream();
-		} catch (NullPointerException npe) {
-		    throw new IOException("Failed to open '" + in
-					  + "', base: '" + base
-					  + "' : openStream() threw a "
-					  + "NullPointerException");
-		}
+                InputStream inputStream = null;
+                try {
+                    inputStream = in.openStream();
+                } catch (NullPointerException npe) {
+                    throw new IOException("Failed to open '" + in
+                                          + "', base: '" + base
+                                          + "' : openStream() threw a "
+                                          + "NullPointerException");
+                }
                 reader = new BufferedReader(
                         new InputStreamReader(inputStream));
-		// openStream throws an IOException, not a
-		// FileNotFoundException
-	    } catch (IOException ex) {
+                // openStream throws an IOException, not a
+                // FileNotFoundException
+            } catch (IOException ex) {
                 try {
                     // If we are running under WebStart, and try
                     // view source on a .html file that is not in

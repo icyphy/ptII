@@ -286,29 +286,29 @@ public class CommandLineTemplate {
 
     // copied from Manager.
     public static String timeAndMemory(long startTime) {
-	Runtime runtime = Runtime.getRuntime();
-	long totalMemory = runtime.totalMemory()/1024;
-	long freeMemory = runtime.freeMemory()/1024;
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory()/1024;
+        long freeMemory = runtime.freeMemory()/1024;
         return timeAndMemory(startTime, totalMemory, freeMemory);
     }
 
     public static String timeAndMemory(long startTime,
             long totalMemory, long freeMemory) {
-	StringBuffer buffer = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
         timeAndMemory(startTime, totalMemory, freeMemory, buffer);
         return buffer.toString();
     }
 
     public static void timeAndMemory(long startTime,
             long totalMemory, long freeMemory, StringBuffer buffer) {
-	Runtime runtime = Runtime.getRuntime();
-	buffer.append(System.currentTimeMillis() - startTime);
-	buffer.append(" ms. Memory: ");
-	buffer.append(totalMemory);
+        Runtime runtime = Runtime.getRuntime();
+        buffer.append(System.currentTimeMillis() - startTime);
+        buffer.append(" ms. Memory: ");
+        buffer.append(totalMemory);
         buffer.append("K Free: ");
         buffer.append(freeMemory);
         buffer.append("K (");
-	buffer.append(Math.round( (((double)freeMemory)/((double)totalMemory))
+        buffer.append(Math.round( (((double)freeMemory)/((double)totalMemory))
                               * 100.0));
         buffer.append("%)");
     }

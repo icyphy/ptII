@@ -118,17 +118,17 @@ public class GeneratorTableau extends Tableau {
      */
     public GeneratorTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
         NamedObj model = container.getModel();
 
         if (model instanceof CompositeEntity) {
             GeneratorFrame frame = new GeneratorFrame(
                     (CompositeEntity)model, this);
-	    setFrame(frame);
+            setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
         } else {
             throw
-		new IllegalActionException(model,
+                new IllegalActionException(model,
                         "Can only generate code for "
                         + "instances of CompositeEntity.");
         }
@@ -150,35 +150,35 @@ public class GeneratorTableau extends Tableau {
      */
     public class GeneratorFrame extends PtolemyFrame {
 
-	/** Construct a frame to control code generation for
+        /** Construct a frame to control code generation for
          *  the specified Ptolemy II model.
-	 *  After constructing this, it is necessary
-	 *  to call setVisible(true) to make the frame appear.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.
-	 *  @param model The model to put in this frame, or null if none.
+         *  @param model The model to put in this frame, or null if none.
          *  @param tableau The tableau responsible for this frame.
          *  @exception IllegalActionException If the model rejects the
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
-	 */
-	public GeneratorFrame(final CompositeEntity model, Tableau tableau)
+         */
+        public GeneratorFrame(final CompositeEntity model, Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
-	    super(model, tableau);
+            super(model, tableau);
 
-	    // If the model has been modified, then save it.  When we
-	    // run codegen, we often run a separate java process and
-	    // read a .xml file so that xml file should be updated.
-	    if( isModified()) {
+            // If the model has been modified, then save it.  When we
+            // run codegen, we often run a separate java process and
+            // read a .xml file so that xml file should be updated.
+            if( isModified()) {
                 _save();
-	    }
+            }
 
-	    if (getEffigy() == null
+            if (getEffigy() == null
                 || getEffigy().uri == null
-		|| getEffigy().uri.getURI() == null) {
-		// If the user does File -> New -> GraphEditor,
-		// View -> Code Generator, then we might end up
-		// dealing with an Effigy that has a null url.
+                || getEffigy().uri.getURI() == null) {
+                // If the user does File -> New -> GraphEditor,
+                // View -> Code Generator, then we might end up
+                // dealing with an Effigy that has a null url.
                 // FIXME: This should work, but TableauFrame._saveAs()
                 // calls effigy.setContainer(null), which means
                 // that getEffigy() returns null
@@ -186,14 +186,14 @@ public class GeneratorTableau extends Tableau {
                         "Could not get the Effigy or read the URL of this "
                         + "model.  Because of a bug, you may need to try "
                         + "invoking the code generator again.");
-	    }
+            }
 
             // Caveats panel.
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(
                     BorderFactory.createEmptyBorder(5, 0, 0, 0));
             caveatsPanel.setLayout(new BoxLayout(caveatsPanel,
-						 BoxLayout.X_AXIS));
+                                                 BoxLayout.X_AXIS));
             JTextArea messageArea = new JTextArea(
                     "NOTE: This is a highly preliminary "
                     + "code generator facility, with many "
@@ -201,8 +201,8 @@ public class GeneratorTableau extends Tableau {
                     + "a concept demonstration.", 2, 10);
             messageArea.setEditable(false);
             messageArea.setBorder(BorderFactory.createEtchedBorder());
-	    messageArea.setLineWrap(true);
-	    messageArea.setWrapStyleWord(true);
+            messageArea.setLineWrap(true);
+            messageArea.setWrapStyleWord(true);
             caveatsPanel.add(messageArea);
 
             JButton moreInfoButton = new JButton("More Info");
@@ -235,8 +235,8 @@ public class GeneratorTableau extends Tableau {
             // Button panel first.
             JButton parametersButton = new JButton("Parameters");
             parametersButton
-		.setToolTipText("Sanity check the Parameters and then "
-				+ "display a summary.");
+                .setToolTipText("Sanity check the Parameters and then "
+                                + "display a summary.");
             buttonPanel.add(parametersButton);
 
             JButton goButton = new JButton("Generate");
@@ -252,7 +252,7 @@ public class GeneratorTableau extends Tableau {
             buttonPanel.add(clearButton);
 
             buttonPanel.setMaximumSize(new Dimension(500, 50));
-	    left.add(buttonPanel);
+            left.add(buttonPanel);
 
             // Next, put in a panel to configure the code generator.
             // If the model contains an attribute with tableau
@@ -266,8 +266,8 @@ public class GeneratorTableau extends Tableau {
                         model, Copernicus.GENERATOR_NAME);
             }
 
-	    // Update the modelPath parameter with the path to the model
-	    attribute.sanityCheckAndUpdateParameters(
+            // Update the modelPath parameter with the path to the model
+            attribute.sanityCheckAndUpdateParameters(
                     getEffigy().uri.getURI().toString());
 
             Configurer configurer = new Configurer(attribute);
@@ -275,246 +275,246 @@ public class GeneratorTableau extends Tableau {
 
             JPanel controlPanel = new JPanel();
             controlPanel.add(configurer);
-	    JScrollPane scrollPane =
-		new JScrollPane(controlPanel);
+            JScrollPane scrollPane =
+                new JScrollPane(controlPanel);
 
-	    left.add(scrollPane, BorderLayout.CENTER);
+            left.add(scrollPane, BorderLayout.CENTER);
 
-	    // Create a JTextAreaExec without Start and Cancel buttons.
-	    final JTextAreaExec exec =
-	    new JTextAreaExec("Code Generator Commands", false);
+            // Create a JTextAreaExec without Start and Cancel buttons.
+            final JTextAreaExec exec =
+            new JTextAreaExec("Code Generator Commands", false);
 
-	    JSplitPane splitPane =
-		new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-			       left, exec);
-	    splitPane.setOneTouchExpandable(true);
+            JSplitPane splitPane =
+                new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                               left, exec);
+            splitPane.setOneTouchExpandable(true);
 
-	    // Adjust the divider so that the control panel does not
-	    // have a horizontal scrollbar.
-	    Dimension preferred = left.getPreferredSize();
-	    splitPane.setDividerLocation((int)(preferred.width + 20));
+            // Adjust the divider so that the control panel does not
+            // have a horizontal scrollbar.
+            Dimension preferred = left.getPreferredSize();
+            splitPane.setDividerLocation((int)(preferred.width + 20));
 
             getContentPane().add(splitPane, BorderLayout.CENTER);
 
-	    // ActionListeners for the buttons
+            // ActionListeners for the buttons
             parametersButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-			try {
-			    options.sanityCheckAndUpdateParameters(null);
-			} catch (Exception ex) {
-			    exec.appendJTextArea(ex.toString());
-			}
-			exec.appendJTextArea(options.toString());
-		    }
-		});
+                        try {
+                            options.sanityCheckAndUpdateParameters(null);
+                        } catch (Exception ex) {
+                            exec.appendJTextArea(ex.toString());
+                        }
+                        exec.appendJTextArea(options.toString());
+                    }
+                });
 
             stopButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-			exec.cancel();
+                        exec.cancel();
                     }
                 });
 
             clearButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-			exec.clear();
+                        exec.clear();
                     }
                 });
 
             goButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
-			    // True if we should run jode, jad or javap.
-			    boolean decompile = false;
-			    boolean compile =
-				((BooleanToken)
-				 ((Parameter)options.getAttribute("compile"))
-				 .getToken())
-				.booleanValue();
-			    boolean show =
-				((BooleanToken)
-				 ((Parameter)options.getAttribute("show"))
-				 .getToken())
-				.booleanValue();
-			    boolean run =
-				((BooleanToken)
-				 ((Parameter)options.getAttribute("run"))
-				 .getToken())
-				.booleanValue();
+                            // True if we should run jode, jad or javap.
+                            boolean decompile = false;
+                            boolean compile =
+                                ((BooleanToken)
+                                 ((Parameter)options.getAttribute("compile"))
+                                 .getToken())
+                                .booleanValue();
+                            boolean show =
+                                ((BooleanToken)
+                                 ((Parameter)options.getAttribute("show"))
+                                 .getToken())
+                                .booleanValue();
+                            boolean run =
+                                ((BooleanToken)
+                                 ((Parameter)options.getAttribute("run"))
+                                 .getToken())
+                                .booleanValue();
 
-			    // The code generator to run.  The value of this
-			    // parameter should name a subdirectory of
-			    // ptolemy/copernnicus such as "java" or "shallow".
-			    String codeGenerator =
-				getStringToken(options, "codeGenerator");
+                            // The code generator to run.  The value of this
+                            // parameter should name a subdirectory of
+                            // ptolemy/copernnicus such as "java" or "shallow".
+                            String codeGenerator =
+                                getStringToken(options, "codeGenerator");
 
-			    // Convert "java" to java.
-			    //codeGenerator =
-			    //	codeGenerator.substring(1, codeGenerator
-			    //				.length() - 1);
+                            // Convert "java" to java.
+                            //codeGenerator =
+                            //        codeGenerator.substring(1, codeGenerator
+                            //                                .length() - 1);
 
-			    String targetPath =
-				getStringToken(options, "targetPath");
+                            String targetPath =
+                                getStringToken(options, "targetPath");
 
-			    String ptIIUserDirectory =
-				getStringToken(options, "ptIIUserDirectory");
+                            String ptIIUserDirectory =
+                                getStringToken(options, "ptIIUserDirectory");
 
-			    //targetPath =
-				//targetPath.substring(1, targetPath
-			    // .length() - 1);
+                            //targetPath =
+                                //targetPath.substring(1, targetPath
+                            // .length() - 1);
 
-			    // Check that we will be able to write
-			    File directory = new File(ptIIUserDirectory, targetPath);
-			    if (!directory.isDirectory()) {
-				throw new IllegalActionException(model,
-						 "Not a directory: "
-						 + ptIIUserDirectory + "/"
-						 + targetPath
-						 + "\n.Try hitting the "
-						 + "Parameters button to "
-						 + "create the directory.");
-			    }
-			    if (!directory.canWrite()) {
-				throw new IllegalActionException(model,
-						 "Can't write: "
-						 + ptIIUserDirectory + "/" + targetPath);
-			    }
+                            // Check that we will be able to write
+                            File directory = new File(ptIIUserDirectory, targetPath);
+                            if (!directory.isDirectory()) {
+                                throw new IllegalActionException(model,
+                                                 "Not a directory: "
+                                                 + ptIIUserDirectory + "/"
+                                                 + targetPath
+                                                 + "\n.Try hitting the "
+                                                 + "Parameters button to "
+                                                 + "create the directory.");
+                            }
+                            if (!directory.canWrite()) {
+                                throw new IllegalActionException(model,
+                                                 "Can't write: "
+                                                 + ptIIUserDirectory + "/" + targetPath);
+                            }
 
-			    // Commands that we will eventually execute,
-			    // depending on compile, show and run.
-			    List execCommands = new LinkedList();
+                            // Commands that we will eventually execute,
+                            // depending on compile, show and run.
+                            List execCommands = new LinkedList();
 
-			    // Commands that are generated by Copernicus
-			    // that may or not be executed.  For example,
-			    // we may end up not compile, but using an
-			    // earlier compilation and running.
-			    List commands = null;
+                            // Commands that are generated by Copernicus
+                            // that may or not be executed.  For example,
+                            // we may end up not compile, but using an
+                            // earlier compilation and running.
+                            List commands = null;
 
-			    if (codeGenerator.equals("applet")) {
-				// Soot is a memory pig, so we run
-				// it in a separate process.
-				try {
-				    commands =
-					_generateCodeGeneratorCommands(model,
-								       options,
-								       "applet"
-								       );
-				} catch (Exception ex) {
-				    throw new IllegalActionException(model, ex, null);
-				}
-			    } else if (codeGenerator.equals("c")
-				       && compile) {
-				exec.updateStatusBar("Starting c "
+                            if (codeGenerator.equals("applet")) {
+                                // Soot is a memory pig, so we run
+                                // it in a separate process.
+                                try {
+                                    commands =
+                                        _generateCodeGeneratorCommands(model,
+                                                                       options,
+                                                                       "applet"
+                                                                       );
+                                } catch (Exception ex) {
+                                    throw new IllegalActionException(model, ex, null);
+                                }
+                            } else if (codeGenerator.equals("c")
+                                       && compile) {
+                                exec.updateStatusBar("Starting c "
                                         + "code generation");
-				// FIXME: How come the status bar
-				// does not get updated?
-				ptolemy.copernicus.c
-				    .Main.generate((CompositeActor)model,
+                                // FIXME: How come the status bar
+                                // does not get updated?
+                                ptolemy.copernicus.c
+                                    .Main.generate((CompositeActor)model,
                                             targetPath);
-				exec.updateStatusBar("C Code generation "
+                                exec.updateStatusBar("C Code generation "
                                         + "complete.");
-				decompile = true;
+                                decompile = true;
 
-			    } else if (codeGenerator.equals("java")) {
-				// Soot is a memory pig, so we run
-				// it in a separate process.
-				try {
-				    commands =
-					_generateCodeGeneratorCommands(model,
-								       options,
-								       "java");
+                            } else if (codeGenerator.equals("java")) {
+                                // Soot is a memory pig, so we run
+                                // it in a separate process.
+                                try {
+                                    commands =
+                                        _generateCodeGeneratorCommands(model,
+                                                                       options,
+                                                                       "java");
                                     decompile = true;
-				} catch (Exception ex) {
-				    throw new IllegalActionException(model,
-								     ex, null);
-				}
-			    } else if (codeGenerator.equals("interpreted")) {
-				// Soot is a memory pig, so we run
-				// it in a separate process.
-				try {
-				    commands =
-					_generateCodeGeneratorCommands(model,
-								       options,
-								       "interpreted"
-								       );
-				} catch (Exception ex) {
-				    throw new IllegalActionException(model, ex, null);
-				}
-			    } else if (codeGenerator.equals("jhdl")
-				       && compile) {
-				exec.updateStatusBar("Starting jhdl "
+                                } catch (Exception ex) {
+                                    throw new IllegalActionException(model,
+                                                                     ex, null);
+                                }
+                            } else if (codeGenerator.equals("interpreted")) {
+                                // Soot is a memory pig, so we run
+                                // it in a separate process.
+                                try {
+                                    commands =
+                                        _generateCodeGeneratorCommands(model,
+                                                                       options,
+                                                                       "interpreted"
+                                                                       );
+                                } catch (Exception ex) {
+                                    throw new IllegalActionException(model, ex, null);
+                                }
+                            } else if (codeGenerator.equals("jhdl")
+                                       && compile) {
+                                exec.updateStatusBar("Starting jhdl "
                                         + "code generation");
-				// FIXME: How come the status bar
-				// does not get updated?
-				ptolemy.copernicus.jhdl
-				    .Main.generate((CompositeActor)model,
+                                // FIXME: How come the status bar
+                                // does not get updated?
+                                ptolemy.copernicus.jhdl
+                                    .Main.generate((CompositeActor)model,
                                             targetPath);
-				exec.updateStatusBar("JHDL Code generation "
+                                exec.updateStatusBar("JHDL Code generation "
                                         + "complete.");
 
 
-			    } else if (codeGenerator.equals("shallow")) {
-				// Soot is a memory pig, so we run
-				// it in a separate process.
-				try {
-				    commands =
-					_generateCodeGeneratorCommands(model,
-								       options,
-							              "shallow"
-								       );
-				} catch (Exception ex) {
-				    throw new IllegalActionException(model,
-								     ex, null);
-				}
-				decompile = true;
-			    } else {
-				throw new IllegalActionException(model,
-					 "Don't know about '"
-					 + codeGenerator + "'.  Try 'java'");
-			    }
+                            } else if (codeGenerator.equals("shallow")) {
+                                // Soot is a memory pig, so we run
+                                // it in a separate process.
+                                try {
+                                    commands =
+                                        _generateCodeGeneratorCommands(model,
+                                                                       options,
+                                                                      "shallow"
+                                                                       );
+                                } catch (Exception ex) {
+                                    throw new IllegalActionException(model,
+                                                                     ex, null);
+                                }
+                                decompile = true;
+                            } else {
+                                throw new IllegalActionException(model,
+                                         "Don't know about '"
+                                         + codeGenerator + "'.  Try 'java'");
+                            }
 
 
-			    if (compile && commands != null) {
-				execCommands.add(commands.get(0));
-			    }
+                            if (compile && commands != null) {
+                                execCommands.add(commands.get(0));
+                            }
 
-			    if (show && decompile) {
-				String targetPackage =
-				    getStringToken(options, "targetPackage");
+                            if (show && decompile) {
+                                String targetPackage =
+                                    getStringToken(options, "targetPackage");
 
-				//targetPackage =
-				//    targetPackage.substring(1, targetPackage
-				// .length() - 1);
+                                //targetPackage =
+                                //    targetPackage.substring(1, targetPackage
+                                // .length() - 1);
 
-				String className = targetPackage;
-				if (codeGenerator.equals("java")) {
-				    className = className + ".Main";
-				} else {
-				    if (className.length() > 0
+                                String className = targetPackage;
+                                if (codeGenerator.equals("java")) {
+                                    className = className + ".Main";
+                                } else {
+                                    if (className.length() > 0
                                         && ! className.endsWith(".") ) {
-					className = className + '.'
-					    + "CG" + model.getName();
-				    } else {
-					className = "CG" + model.getName();
-				    }
-				}
+                                        className = className + '.'
+                                            + "CG" + model.getName();
+                                    } else {
+                                        className = "CG" + model.getName();
+                                    }
+                                }
 
-				String classPath =
-				    getStringToken(options, "classPath");
+                                String classPath =
+                                    getStringToken(options, "classPath");
 
-				execCommands.add("javap "
+                                execCommands.add("javap "
                                         + "-classpath \""
-					+ classPath
+                                        + classPath
                                         + "\" "
                                         + className);
-			    }
+                            }
 
                             if (run && commands != null) {
-				execCommands.add(commands.get(1));
+                                execCommands.add(commands.get(1));
                             }
 
                             if (execCommands.size() > 0) {
-				exec.setCommands(execCommands);
-				exec.start();
+                                exec.setCommands(execCommands);
+                                exec.start();
                             }
                         } catch (Exception ex) {
                             MessageHandler.error("Code generation failed.",
@@ -522,43 +522,43 @@ public class GeneratorTableau extends Tableau {
                         }
                     }
                 });
-	}
+        }
     }
 
     /** A factory that creates a control panel for code generation.
      */
     public static class Factory extends TableauFactory {
 
-	/** Create an factory with the given name and container.
-	 *  @param container The container entity.
-	 *  @param name The name of the entity.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create an factory with the given name and container.
+         *  @param container The container entity.
+         *  @param name The name of the entity.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** Create a new instance of GeneratorTableau in the specified
+        /** Create a new instance of GeneratorTableau in the specified
          *  effigy. If the specified effigy is not an
          *  instance of PtolemyEffigy, then do not create a tableau
          *  and return null. It is the responsibility of callers of
          *  this method to check the return value and call show().
          *
-	 *  @param effigy The model effigy.
-	 *  @return A new control panel tableau if the effigy is
+         *  @param effigy The model effigy.
+         *  @return A new control panel tableau if the effigy is
          *    a PtolemyEffigy, or null otherwise.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof PtolemyEffigy) {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
                 GeneratorTableau tableau =
                     (GeneratorTableau)effigy.getEntity("generatorTableau");
@@ -566,13 +566,13 @@ public class GeneratorTableau extends Tableau {
                     tableau = new GeneratorTableau(
                             (PtolemyEffigy)effigy, "generatorTableau");
                 }
-		// Don't call show() here, it is called for us in
-		// TableauFrame.ViewMenuListener.actionPerformed()
+                // Don't call show() here, it is called for us in
+                // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 
     // Return a List consisting of the command string that will
@@ -586,70 +586,70 @@ public class GeneratorTableau extends Tableau {
     // the generator we are running.  Usually, something like
     // "applet" or "java" or "shallow".
     private List _generateCodeGeneratorCommands(CompositeEntity model,
-	    GeneratorAttribute generatorAttribute,
+            GeneratorAttribute generatorAttribute,
             String copernicusSubdirectory)
             throws IllegalArgumentException, IllegalActionException,
-		   InternalErrorException, NameDuplicationException {
+                   InternalErrorException, NameDuplicationException {
 
-	generatorAttribute.sanityCheckAndUpdateParameters(null);
+        generatorAttribute.sanityCheckAndUpdateParameters(null);
 
-	Parameter codeGenerator =
-	    (Parameter)generatorAttribute.getAttribute("codeGenerator");
-	codeGenerator.setExpression("\"" + copernicusSubdirectory + "\"");
+        Parameter codeGenerator =
+            (Parameter)generatorAttribute.getAttribute("codeGenerator");
+        codeGenerator.setExpression("\"" + copernicusSubdirectory + "\"");
 
-	List results = new LinkedList();
-	try {
+        List results = new LinkedList();
+        try {
             // Write out the GeneratorAttribute so that we can read it in
             // when generating a makefile.
             String generatorAttributeFileName =
             Copernicus.exportMoMLToTemporaryFile(generatorAttribute);
 
-	    Parameter generatorAttributeFileNameParameter =
-		(Parameter) generatorAttribute
-		.getAttribute("_generatorAttributeFileName");
+            Parameter generatorAttributeFileNameParameter =
+                (Parameter) generatorAttribute
+                .getAttribute("_generatorAttributeFileName");
 
-	    if (generatorAttributeFileNameParameter == null) {
-		// Add the name of the file that contains the
-		// GeneratorAttribute so that we can use it when substituting
-		// while running commandToCompile() and commandToRun();
-		new Parameter(generatorAttribute,
+            if (generatorAttributeFileNameParameter == null) {
+                // Add the name of the file that contains the
+                // GeneratorAttribute so that we can use it when substituting
+                // while running commandToCompile() and commandToRun();
+                new Parameter(generatorAttribute,
                     "_generatorAttributeFileName",
                     new StringToken(generatorAttributeFileName));
-	    } else {
-		// Already have a Parameter by that name, so we
-		// set its value.
-		generatorAttributeFileNameParameter
-		    .setExpression("\"" + generatorAttributeFileName + "\"");
-	    }
+            } else {
+                // Already have a Parameter by that name, so we
+                // set its value.
+                generatorAttributeFileNameParameter
+                    .setExpression("\"" + generatorAttributeFileName + "\"");
+            }
 
-	    results.add(Copernicus.commandToCompile(generatorAttribute));
-	    results.add(Copernicus.commandToRun(generatorAttribute));
-	} catch (Exception ex) {
-	    throw new InternalErrorException(model, ex,
-					     "Failed to generate "
-					     + "command strings");
-	}
-	return results;
+            results.add(Copernicus.commandToCompile(generatorAttribute));
+            results.add(Copernicus.commandToRun(generatorAttribute));
+        } catch (Exception ex) {
+            throw new InternalErrorException(model, ex,
+                                             "Failed to generate "
+                                             + "command strings");
+        }
+        return results;
     }
 
     // Get a StringToken by name, throw IllegalActionException if
     // a StringToken by that name cannot be found.
     private String getStringToken(Attribute attribute, String tokenName)
-	throws IllegalActionException {
-	try {
-	    // getToken() could throw ptolemy.data.expr.TokenMgrError,
-	    // which is an Error, not an Exception.
-	    return ((StringToken)
-		    ((Variable)attribute
-		     .getAttribute(tokenName))
-		    .getToken()).stringValue();
-	} catch (Throwable throwable) {
-	    throw new IllegalActionException(attribute, throwable,
-					     "Could not find an attribute "
-					     + "named '"
-					     + tokenName + "' in "
-					     + attribute);
-	}
+        throws IllegalActionException {
+        try {
+            // getToken() could throw ptolemy.data.expr.TokenMgrError,
+            // which is an Error, not an Exception.
+            return ((StringToken)
+                    ((Variable)attribute
+                     .getAttribute(tokenName))
+                    .getToken()).stringValue();
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(attribute, throwable,
+                                             "Could not find an attribute "
+                                             + "named '"
+                                             + tokenName + "' in "
+                                             + attribute);
+        }
     }
 
 }

@@ -68,22 +68,22 @@ public class JTextAreaExec extends JPanel {
      *  should be  made visible.
      */
     public JTextAreaExec(String name, boolean showButtons) {
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-	_jTextArea = new JTextArea("", 20, 100);
-	_jTextArea.setEditable(false);
-	JScrollPane jScrollPane = new JScrollPane(_jTextArea);
-	add(jScrollPane);
+        _jTextArea = new JTextArea("", 20, 100);
+        _jTextArea.setEditable(false);
+        JScrollPane jScrollPane = new JScrollPane(_jTextArea);
+        add(jScrollPane);
 
         setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.black),
                 name));
 
-	_progressBar = new JProgressBar();
+        _progressBar = new JProgressBar();
 
         _startButton = new JButton("Start");
         _startButton.addActionListener(_startListener);
-	_enableStartButton();
+        _enableStartButton();
 
         _cancelButton = new JButton("Cancel");
         _cancelButton.addActionListener(_interruptListener);
@@ -93,21 +93,21 @@ public class JTextAreaExec extends JPanel {
         _clearButton.addActionListener(_clearListener);
         _clearButton.setEnabled(true);
 
-	Border spaceBelow = BorderFactory.createEmptyBorder(0, 0, 5, 0);
+        Border spaceBelow = BorderFactory.createEmptyBorder(0, 0, 5, 0);
 
-	if (showButtons) {
-	    JComponent buttonBox = new JPanel();
-	    buttonBox.add(_startButton);
-	    buttonBox.add(_cancelButton);
-	    buttonBox.add(_clearButton);
+        if (showButtons) {
+            JComponent buttonBox = new JPanel();
+            buttonBox.add(_startButton);
+            buttonBox.add(_cancelButton);
+            buttonBox.add(_clearButton);
 
-	    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	    add(buttonBox);
-	    buttonBox.setBorder(spaceBelow);
-	    _statusBar = new JLabel("Click Start to begin", JLabel.CENTER);
-	} else {
-	    _statusBar = new JLabel("", JLabel.CENTER);
-	}
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            add(buttonBox);
+            buttonBox.setBorder(spaceBelow);
+            _statusBar = new JLabel("Click Start to begin", JLabel.CENTER);
+        } else {
+            _statusBar = new JLabel("", JLabel.CENTER);
+        }
 
         add(_progressBar);
         add(_statusBar);
@@ -155,25 +155,25 @@ public class JTextAreaExec extends JPanel {
     /** Main method used for testing.
      *  To run a simple test, use:
      *  <pre>
-     *	java -classpath $PTII ptolemy.gui.JTextAreaExec
+     *        java -classpath $PTII ptolemy.gui.JTextAreaExec
      *  </pre>
      */
     public static void main(String [] args) {
         JFrame jFrame = new JFrame("JTextAreaExec Example");
         WindowListener windowListener = new WindowAdapter() {
-		public void windowClosing(WindowEvent e) {System.exit(0);}
+                public void windowClosing(WindowEvent e) {System.exit(0);}
             };
         jFrame.addWindowListener(windowListener);
 
-	List execCommands = new LinkedList();
-	execCommands.add("date");
-	execCommands.add("sleep 5");
-	execCommands.add("date");
-	execCommands.add("javac");
+        List execCommands = new LinkedList();
+        execCommands.add("date");
+        execCommands.add("sleep 5");
+        execCommands.add("date");
+        execCommands.add("javac");
 
         final JTextAreaExec exec =
-	    new JTextAreaExec("JTextAreaExec Tester", true);
-	exec.setCommands(execCommands);
+            new JTextAreaExec("JTextAreaExec Tester", true);
+        exec.setCommands(execCommands);
         jFrame.getContentPane().add(exec);
         jFrame.pack();
         jFrame.show();
@@ -200,23 +200,23 @@ public class JTextAreaExec extends JPanel {
     /** Set the list of commands. */
     public void setCommands(List commands) {
         _commands = commands;
-	_enableStartButton();
+        _enableStartButton();
     }
 
     /** Start running the commands. */
     public void start() {
-	_startButton.doClick();
+        _startButton.doClick();
     }
 
     /** Update the status area with the text message.*/
     public void updateStatusBar(final String text) {
-	Runnable doUpdateStatusBar = new Runnable() {
-		public void run() {
-		    _statusBar.setText(text);
-		    _jTextArea.append(text + '\n');
-		}
-	    };
-	SwingUtilities.invokeLater(doUpdateStatusBar);
+        Runnable doUpdateStatusBar = new Runnable() {
+                public void run() {
+                    _statusBar.setText(text);
+                    _jTextArea.append(text + '\n');
+                }
+            };
+        SwingUtilities.invokeLater(doUpdateStatusBar);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -224,11 +224,11 @@ public class JTextAreaExec extends JPanel {
 
     // Enable the Start button if there are any commands in the list.
     private void _enableStartButton() {
-	if (_commands != null && _commands.size() > 0) {
-	    _startButton.setEnabled(true);
-	} else {
-	    _startButton.setEnabled(false);
-	}
+        if (_commands != null && _commands.size() > 0) {
+            _startButton.setEnabled(true);
+        } else {
+            _startButton.setEnabled(false);
+        }
     }
 
     // Execute the commands in the list.  Update the JTextArea with
@@ -237,29 +237,29 @@ public class JTextAreaExec extends JPanel {
     private Object _executeCommands() {
         try {
             Runtime runtime = Runtime.getRuntime();
-	    try {
+            try {
 
                 if (_process != null) _process.destroy();
-		_progressBar.setMaximum(_commands.size());
-		int commandCount = 0;
+                _progressBar.setMaximum(_commands.size());
+                int commandCount = 0;
                 Iterator commands = _commands.iterator();
                 while (commands.hasNext()) {
-		    _updateProgressBar(++commandCount);
-		    if (Thread.interrupted()) {
-			throw new InterruptedException();
-		    }
+                    _updateProgressBar(++commandCount);
+                    if (Thread.interrupted()) {
+                        throw new InterruptedException();
+                    }
 
                     // Preprocess by removing lines that begin with '#'
                     // and converting substrings that begin and end
                     // with double quotes into one array element.
-		    final String [] commandTokens =
+                    final String [] commandTokens =
                         StringUtilities
                         .tokenizeForExec((String)commands.next());
 
                     appendJTextArea("About to execute:\n");
                     StringBuffer statusCommand = new StringBuffer();
                     for (int i = 0; i < commandTokens.length; i++) {
-                        appendJTextArea("	" + commandTokens[i]);
+                        appendJTextArea("        " + commandTokens[i]);
 
                         // Accumulate the first 50 chars for use in
                         // the status buffer.
@@ -279,40 +279,40 @@ public class JTextAreaExec extends JPanel {
 
                     _process = runtime.exec(commandTokens);
 
-		    // Set up a Thread to read in any error messages
-		    _StreamReaderThread errorGobbler = new
-			_StreamReaderThread(_process.getErrorStream(),
+                    // Set up a Thread to read in any error messages
+                    _StreamReaderThread errorGobbler = new
+                        _StreamReaderThread(_process.getErrorStream(),
                                 "ERROR", this);
 
-		    // Set up a Thread to read in any output messages
-		    _StreamReaderThread outputGobbler = new
-			_StreamReaderThread(_process.getInputStream(),
+                    // Set up a Thread to read in any output messages
+                    _StreamReaderThread outputGobbler = new
+                        _StreamReaderThread(_process.getInputStream(),
                                 "OUTPUT", this);
 
-		    // Start up the Threads
-		    errorGobbler.start();
-		    outputGobbler.start();
+                    // Start up the Threads
+                    errorGobbler.start();
+                    outputGobbler.start();
 
 
-		    try {
-			int processReturnCode = _process.waitFor();
-			synchronized(this) {
-			    _process = null;
-			}
-			if (processReturnCode != 0) break;
-		    } catch (InterruptedException interrupted) {
-			appendJTextArea("InterruptedException: "
+                    try {
+                        int processReturnCode = _process.waitFor();
+                        synchronized(this) {
+                            _process = null;
+                        }
+                        if (processReturnCode != 0) break;
+                    } catch (InterruptedException interrupted) {
+                        appendJTextArea("InterruptedException: "
                                 + interrupted);
-			throw interrupted;
-	    	    }
+                        throw interrupted;
+                        }
                 }
-		appendJTextArea("All Done.");
-	    } catch (final IOException io) {
-		appendJTextArea("IOException: " + io);
+                appendJTextArea("All Done.");
+            } catch (final IOException io) {
+                appendJTextArea("IOException: " + io);
             }
         }
         catch (InterruptedException e) {
-	    _process.destroy();
+            _process.destroy();
             _updateProgressBar(0);
             return "Interrupted";  // SwingWorker.get() returns this
         }
@@ -397,35 +397,35 @@ public class JTextAreaExec extends JPanel {
     // JTextArea.
     private class _StreamReaderThread extends Thread {
 
-	_StreamReaderThread(InputStream inputStream, String streamType,
+        _StreamReaderThread(InputStream inputStream, String streamType,
                 JTextAreaExec jTextAreaExec) {
-	    _inputStream = inputStream;
-	    _streamType = streamType;
-	    _jTextAreaExec = jTextAreaExec;
-	}
+            _inputStream = inputStream;
+            _streamType = streamType;
+            _jTextAreaExec = jTextAreaExec;
+        }
 
-	// Read lines from the _inputStream and output them to the
-	// JTextArea.
-	public void run() {
-	    try {
-		InputStreamReader inputStreamReader =
-		    new InputStreamReader(_inputStream);
+        // Read lines from the _inputStream and output them to the
+        // JTextArea.
+        public void run() {
+            try {
+                InputStreamReader inputStreamReader =
+                    new InputStreamReader(_inputStream);
                 BufferedReader bufferedReader =
                     new BufferedReader(inputStreamReader);
                 String line = null;
                 while ( (line = bufferedReader.readLine()) != null)
                     _jTextAreaExec.appendJTextArea(/*_streamType + ">" +*/ line);
-	    } catch (IOException ioe) {
-		_jTextAreaExec.appendJTextArea("IOException: " + ioe);
-	    }
-	}
+            } catch (IOException ioe) {
+                _jTextAreaExec.appendJTextArea("IOException: " + ioe);
+            }
+        }
 
-	// Stream to read from.
-	private InputStream _inputStream;
-	// Description of the Stream that we print, usually "OUTPUT" or "ERROR"
-	private String _streamType;
-	// JTextArea to update
-	private JTextAreaExec _jTextAreaExec;
+        // Stream to read from.
+        private InputStream _inputStream;
+        // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
+        private String _streamType;
+        // JTextArea to update
+        private JTextAreaExec _jTextAreaExec;
     }
 
     ///////////////////////////////////////////////////////////////////

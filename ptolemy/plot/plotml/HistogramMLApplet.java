@@ -56,7 +56,7 @@ public class HistogramMLApplet extends PlotMLApplet {
      */
     public String getAppletInfo() {
         return "HistogramMLApplet " + PlotBox.PTPLOT_RELEASE +
-	    ": A histogram plotter.\n" +
+            ": A histogram plotter.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu.\n" +
             "($Id$)";
     }

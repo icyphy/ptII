@@ -88,14 +88,14 @@ public class ListenSink extends DDESink {
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
-	_debug( new ExecEvent( this, ExecEvent.WAITING ) );
-	try {
-	    Thread.sleep(100);
-	} catch(InterruptedException e) {
+        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+        try {
+            Thread.sleep(100);
+        } catch(InterruptedException e) {
             throw new IllegalActionException(this, "InternalError "
                     + "exception during a sleeping thread.");
-	}
-	return super.postfire();
+        }
+        return super.postfire();
     }
 
     /** Generate an ExecEvent with a state value of 1, cause the
@@ -108,14 +108,14 @@ public class ListenSink extends DDESink {
      *  with the thread activity of this method.
      */
     public boolean prefire() throws IllegalActionException {
-	_debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
-	try {
-	    Thread.sleep(100);
-	} catch(InterruptedException e) {
+        _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
+        try {
+            Thread.sleep(100);
+        } catch(InterruptedException e) {
             throw new IllegalActionException(this, "InternalError "
                     + "exception during a sleeping thread.");
-	}
-	return super.prefire();
+        }
+        return super.prefire();
     }
 
     /** Generate an ExecEvent with a state value of 3. Invoke the
@@ -124,7 +124,7 @@ public class ListenSink extends DDESink {
      *  the execution of the wrapup method of this actor's superclass.
      */
     public void wrapup() throws IllegalActionException {
-	_debug( new ExecEvent( this, ExecEvent.BLOCKED) );
-	super.wrapup();
+        _debug( new ExecEvent( this, ExecEvent.BLOCKED) );
+        super.wrapup();
     }
 }

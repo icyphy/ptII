@@ -81,10 +81,10 @@ public class RefinementPort extends TypedIOPort {
      */
     public boolean isTypeAcceptable() {
         if (numInsideLinks() == 0) {
-	    return true;
-	} else {
-	    return super.isTypeAcceptable();
-	}
+            return true;
+        } else {
+            return super.isTypeAcceptable();
+        }
     }
 
     /** Override the base class so that if the port is being removed

@@ -219,8 +219,8 @@ public class VergilErrorHandler implements ErrorHandler {
             String info) {
         // FIXME: Eventually, the dialog should
         // be able to email us a bug report.
-	// FIXME: The user should be able to click on the links and
-	// jump to the line in the offending text.
+        // FIXME: The user should be able to click on the links and
+        // jump to the line in the offending text.
 
         // Show the stack trace in a scrollable text area.
 
@@ -247,18 +247,18 @@ public class VergilErrorHandler implements ErrorHandler {
         message[1] = scrollPane;
 
         Object[] options = null ;
-	if (skippingEnabled) {
-	    options = new Object [] {"Skip element",
-				     "Skip remaining errors", "Cancel"};
-	} else {
-	    if (skipElement) {
-		options = new Object [] {"Skip element", "Cancel"};
-	    } else {
-		options = new Object [] {"Cancel"};
-	    }
-	}
+        if (skippingEnabled) {
+            options = new Object [] {"Skip element",
+                                     "Skip remaining errors", "Cancel"};
+        } else {
+            if (skipElement) {
+                options = new Object [] {"Skip element", "Cancel"};
+            } else {
+                options = new Object [] {"Cancel"};
+            }
+        }
         // Show the MODAL dialog
-	int selected = JOptionPane.showOptionDialog(context,
+        int selected = JOptionPane.showOptionDialog(context,
                 message,
                 "Stack trace",
                 JOptionPane.YES_NO_OPTION,
@@ -266,14 +266,14 @@ public class VergilErrorHandler implements ErrorHandler {
                 null,
                 options,
                 options[0]);
-	if (selected == options.length - 1 ) {
-	    // The last button is the Cancel button.
-	    return CANCEL;
-	}
-	if (skippingEnabled && selected == 1) {
-	    _skipping = true;
-	}
-	return CONTINUE;
+        if (selected == options.length - 1 ) {
+            // The last button is the Cancel button.
+            return CANCEL;
+        }
+        if (skippingEnabled && selected == 1) {
+            _skipping = true;
+        }
+        return CONTINUE;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -51,8 +51,8 @@ import ptolemy.kernel.*;
 
 /**
  *
- * @author 	Steve Neuendorffer
- * @version	$Revision$
+ * @author         Steve Neuendorffer
+ * @version        $Revision$
  * @rating      Red
  */
 public class MetaNodeController extends CompositeEntity
@@ -84,11 +84,11 @@ public class MetaNodeController extends CompositeEntity
      * on the new node.
      */
     public void addNode(Object node) {
-	// FIXME this may cause a classcast exception.
+        // FIXME this may cause a classcast exception.
         MutableGraphModel model =
-	    (MutableGraphModel)getController().getGraphModel();
-	model.addNode(getController(), node, model.getRoot());
-	drawNode(node);
+            (MutableGraphModel)getController().getGraphModel();
+        model.addNode(getController(), node, model.getRoot());
+        drawNode(node);
     }
 
     /** Add the node to this graph editor and render it
@@ -96,10 +96,10 @@ public class MetaNodeController extends CompositeEntity
      */
     public void addNode(Object node, double x, double y) {
         MutableGraphModel model =
-	    (MutableGraphModel) getController().getGraphModel();
-	model.addNode(getController(), node, model.getRoot());
-	Figure nf = drawNode(node);
-	CanvasUtilities.translateTo(nf, x, y);
+            (MutableGraphModel) getController().getGraphModel();
+        model.addNode(getController(), node, model.getRoot());
+        Figure nf = drawNode(node);
+        CanvasUtilities.translateTo(nf, x, y);
     }
 
     /**
@@ -108,9 +108,9 @@ public class MetaNodeController extends CompositeEntity
      */
     public void addNode(Object node, Object parent) {
         MutableGraphModel model =
-	    (MutableGraphModel) getController().getGraphModel();
-	model.addNode(getController(), node, parent);
-	drawNode(node, parent);
+            (MutableGraphModel) getController().getGraphModel();
+        model.addNode(getController(), node, parent);
+        drawNode(node, parent);
     }
 
     /**
@@ -119,35 +119,35 @@ public class MetaNodeController extends CompositeEntity
      */
     public void addNode(Object node, Object parent, double x, double y) {
         MutableGraphModel model =
-	    (MutableGraphModel) getController().getGraphModel();
-	model.addNode(getController(), node, parent);
-	Figure nf = drawNode(node, parent);
-	CanvasUtilities.translateTo(nf, x, y);
+            (MutableGraphModel) getController().getGraphModel();
+        model.addNode(getController(), node, parent);
+        Figure nf = drawNode(node, parent);
+        CanvasUtilities.translateTo(nf, x, y);
     }
 
     /**
      * Remove the figure for the given node.
      */
     public void clearNode(Object node) {
-	GraphModel model = getController().getGraphModel();
-	for(Iterator i = model.outEdges(node); i.hasNext(); ) {
+        GraphModel model = getController().getGraphModel();
+        for(Iterator i = model.outEdges(node); i.hasNext(); ) {
             Object edge = i.next();
-	    getController().clearEdge(edge);
+            getController().clearEdge(edge);
         }
         for(Iterator i = model.inEdges(node); i.hasNext(); ) {
             Object edge = i.next();
-	    getController().clearEdge(edge);
+            getController().clearEdge(edge);
         }
         Figure f = getController().getFigure(node);
         if(f != null) {
-	    CanvasComponent container = f.getParent();
-	    f.setUserObject(null);
+            CanvasComponent container = f.getParent();
+            f.setUserObject(null);
             getController().setFigure(node, null);
             if(container instanceof FigureLayer) {
-		((FigureLayer)container).remove(f);
-	    } else if(container instanceof CompositeFigure) {
-		((CompositeFigure)container).remove(f);
-	    }
+                ((FigureLayer)container).remove(f);
+            } else if(container instanceof CompositeFigure) {
+                ((CompositeFigure)container).remove(f);
+            }
         }
     }
 
@@ -157,35 +157,35 @@ public class MetaNodeController extends CompositeEntity
      * infer the new location of the figure from the old.
      */
     public Figure drawNode(Object node) {
-	Figure oldFigure = getController().getFigure(node);
+        Figure oldFigure = getController().getFigure(node);
 
-	// Infer the location for the new node.
-	Point2D center;
+        // Infer the location for the new node.
+        Point2D center;
         if(oldFigure != null) {
             center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
             clearNode(node);
         } else {
-	    // no previous figure.  which means that we are probably
-	    // rendering for the first time.
+            // no previous figure.  which means that we are probably
+            // rendering for the first time.
             center = null; //FIXME: layout?
         }
 
-	Figure newFigure = _renderNode(node);
+        Figure newFigure = _renderNode(node);
         System.out.println("renderedFigure = " + newFigure);
         getController().getGraphPane().getForegroundLayer().add(newFigure);
 
-	// Now draw the contained nodes, letting them go where they want to.
-	_drawChildren(node);
+        // Now draw the contained nodes, letting them go where they want to.
+        _drawChildren(node);
 
-	if(center != null) {
-	    // place the new figure where the old one was, if there
-	    // was an old figure.
-	    CanvasUtilities.translateTo(newFigure,
-					center.getX(), center.getY());
-	}
+        if(center != null) {
+            // place the new figure where the old one was, if there
+            // was an old figure.
+            CanvasUtilities.translateTo(newFigure,
+                                        center.getX(), center.getY());
+        }
 
-	getController().dispatch(new GraphViewEvent(this,
-	    GraphViewEvent.NODE_DRAWN, node));
+        getController().dispatch(new GraphViewEvent(this,
+            GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -196,16 +196,16 @@ public class MetaNodeController extends CompositeEntity
      * in the controller's graph pane.
      */
     public Figure drawNode(Object node, Object parent) {
-	// FIXME what if node was previously rendered?
-	Figure newFigure = _renderNode(node);
-	CompositeFigure cf = (CompositeFigure)getController().getFigure(parent);
+        // FIXME what if node was previously rendered?
+        Figure newFigure = _renderNode(node);
+        CompositeFigure cf = (CompositeFigure)getController().getFigure(parent);
         cf.add(newFigure);
 
-	// Now draw the contained nodes, letting them go where they want to.
-	_drawChildren(node);
+        // Now draw the contained nodes, letting them go where they want to.
+        _drawChildren(node);
 
-	getController().dispatch(new GraphViewEvent(this,
-			     GraphViewEvent.NODE_DRAWN, node));
+        getController().dispatch(new GraphViewEvent(this,
+                             GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -214,7 +214,7 @@ public class MetaNodeController extends CompositeEntity
      * Return the graph controller containing this controller.
      */
     public GraphController getController() {
-	return (GraphController)getContainer();
+        return (GraphController)getContainer();
     }
 
     /**
@@ -251,30 +251,30 @@ public class MetaNodeController extends CompositeEntity
         GraphPane pane = getController().getGraphPane();
 
         // Create and set up the selection dragger
-	_selectionDragger = new SelectionDragger(pane);
-	_selectionDragger.addSelectionInteractor(
-	    (NodeInteractor)getNodeInteractor());
+        _selectionDragger = new SelectionDragger(pane);
+        _selectionDragger.addSelectionInteractor(
+            (NodeInteractor)getNodeInteractor());
     }
 
     /**
      * Remove the node.
      */
     public void removeNode(Object node) {
-	// FIXME why isn't this symmetric with addNode?
+        // FIXME why isn't this symmetric with addNode?
         MutableGraphModel model =
-	    (MutableGraphModel) getController().getGraphModel();
-	// clearing the nodes is responsible for clearing any edges that are
-	// connected
-	if(model.isComposite(node)) {
-	    for(Iterator i = model.nodes(node); i.hasNext(); ) {
-		Object insideNode = i.next();
-		getController().clearNode(insideNode);
-	    }
-	}
-	clearNode(node);
-	// we assume that the model will remove any edges that are connected.
-	model.removeNode(getController(), node);
-	getController().getGraphPane().repaint();
+            (MutableGraphModel) getController().getGraphModel();
+        // clearing the nodes is responsible for clearing any edges that are
+        // connected
+        if(model.isComposite(node)) {
+            for(Iterator i = model.nodes(node); i.hasNext(); ) {
+                Object insideNode = i.next();
+                getController().clearNode(insideNode);
+            }
+        }
+        clearNode(node);
+        // we assume that the model will remove any edges that are connected.
+        model.removeNode(getController(), node);
+        getController().getGraphPane().repaint();
      }
 
     /**
@@ -326,21 +326,21 @@ public class MetaNodeController extends CompositeEntity
         newFigure.setInteractor(getNodeInteractor());
         newFigure.setUserObject(node);
         getController().setFigure(node, newFigure);
-	return newFigure;
+        return newFigure;
     }
 
     /**
      * Draw the children of the given node.
      */
     protected void _drawChildren(Object node) {
-	GraphModel model = getController().getGraphModel();
-	if(model.isComposite(node)) {
-	    Iterator children = model.nodes(node);
-	    while(children.hasNext()) {
-		Object child = children.next();
-		getController().drawNode(child, node);
-	    }
-	}
+        GraphModel model = getController().getGraphModel();
+        if(model.isComposite(node)) {
+            Iterator children = model.nodes(node);
+            while(children.hasNext()) {
+                Object child = children.next();
+                getController().drawNode(child, node);
+            }
+        }
     }
 }
 

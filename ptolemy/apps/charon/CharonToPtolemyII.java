@@ -60,15 +60,15 @@ public class CharonToPtolemyII {
      */
 
     public static void main (String[] args) {
-	_processCommandArgs (args);
-	try {
-	  charonProcessor = new CharonProcessor(_inputFileName, _outputFileName);
-	  charonProcessor.process();
-	  System.exit(0);
-	} catch (IllegalActionException e) {
-	  System.err.println ("Error in IO operations: " + e.getMessage ());
-	  System.exit(1);
-	}
+        _processCommandArgs (args);
+        try {
+          charonProcessor = new CharonProcessor(_inputFileName, _outputFileName);
+          charonProcessor.process();
+          System.exit(0);
+        } catch (IllegalActionException e) {
+          System.err.println ("Error in IO operations: " + e.getMessage ());
+          System.exit(1);
+        }
     }
 
 
@@ -84,7 +84,7 @@ public class CharonToPtolemyII {
     /** Print helpful usage message. */
     private static void _usage () {
       System.err.println ("Usage: java CharonToPtolemyII [input-file]\n" +
-			  "	  the 'input-file' should end with '.cn'\n");
+                          "          the 'input-file' should end with '.cn'\n");
       System.exit(0);
     }
 
@@ -94,15 +94,15 @@ public class CharonToPtolemyII {
 
     private static void _processCommandArgs(String[] args) {
       if (args.length != 1) {
-	_usage();
+        _usage();
       } else {
-      	String arg = args[0];
-	int dotPosition = arg.indexOf(".cn");
+              String arg = args[0];
+        int dotPosition = arg.indexOf(".cn");
 
-	if (dotPosition == -1) _usage();
+        if (dotPosition == -1) _usage();
 
-	_inputFileName = arg;
-	_outputFileName = arg.substring(0, dotPosition) + ".xml";
+        _inputFileName = arg;
+        _outputFileName = arg.substring(0, dotPosition) + ".xml";
       }
     }
 

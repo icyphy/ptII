@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -81,18 +81,18 @@ public class GraphicsDevices extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
         Token array[] = new Token[graphicsDevices.length];
-	for(int i = 0; i < graphicsDevices.length; i++) {
-	    array[i] = new ObjectToken(graphicsDevices[i]);
-	}
-	output.send(0, new ArrayToken(array));
+        for(int i = 0; i < graphicsDevices.length; i++) {
+            array[i] = new ObjectToken(graphicsDevices[i]);
+        }
+        output.send(0, new ArrayToken(array));
     }
 
     /** Get the graphics devices.
      */
     public void initialize() throws IllegalActionException {
-	GraphicsEnvironment graphicsEnvironment =
-	    GraphicsEnvironment.getLocalGraphicsEnvironment();
-	graphicsDevices = graphicsEnvironment.getScreenDevices();
+        GraphicsEnvironment graphicsEnvironment =
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        graphicsDevices = graphicsEnvironment.getScreenDevices();
     }
 
     ///////////////////////////////////////////////////////////////////

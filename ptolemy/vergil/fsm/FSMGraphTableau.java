@@ -87,7 +87,7 @@ public class FSMGraphTableau extends Tableau {
             throw new IllegalActionException(this,
                     "Cannot edit a model that is not an FSMActor.");
         }
-	createGraphFrame((FSMActor)model, defaultLibrary);
+        createGraphFrame((FSMActor)model, defaultLibrary);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,16 +115,16 @@ public class FSMGraphTableau extends Tableau {
     public void createGraphFrame(
             CompositeEntity model, LibraryAttribute defaultLibrary) {
 
-	FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
+        FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
         }
-	frame.setBackground(BACKGROUND_COLOR);
-	frame.pack();
-	frame.centerOnScreen();
-	frame.setVisible(true);
+        frame.setBackground(BACKGROUND_COLOR);
+        frame.pack();
+        frame.centerOnScreen();
+        frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,47 +134,47 @@ public class FSMGraphTableau extends Tableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create an factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name of the entity.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create an factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name of the entity.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
-	/** Create an instance of FSMGraphTableau for the specified effigy,
+        /** Create an instance of FSMGraphTableau for the specified effigy,
          *  if it is an effigy for an instance of FSMActor.
-	 *  @param effigy The effigy for an FSMActor.
-	 *  @return A new FSMGraphTableau, if the effigy is a PtolemyEffigy
-	 *   that references an FSMActor, or null otherwise.
-	 *  @exception Exception If an exception occurs when creating the
-	 *   tableau.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (!(effigy instanceof PtolemyEffigy)) {
-		return null;
+         *  @param effigy The effigy for an FSMActor.
+         *  @return A new FSMGraphTableau, if the effigy is a PtolemyEffigy
+         *   that references an FSMActor, or null otherwise.
+         *  @exception Exception If an exception occurs when creating the
+         *   tableau.
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (!(effigy instanceof PtolemyEffigy)) {
+                return null;
             }
             NamedObj model = ((PtolemyEffigy)effigy).getModel();
-	    if (model instanceof FSMActor) {
+            if (model instanceof FSMActor) {
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute)getAttribute(
                         "_library", LibraryAttribute.class);
 
-		FSMGraphTableau tableau =
-		        new FSMGraphTableau((PtolemyEffigy)effigy,
+                FSMGraphTableau tableau =
+                        new FSMGraphTableau((PtolemyEffigy)effigy,
                         effigy.uniqueName("tableau"),
                         library);
-		return tableau;
-	    } else {
-		return null;
-	    }
-	}
+                return tableau;
+            } else {
+                return null;
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

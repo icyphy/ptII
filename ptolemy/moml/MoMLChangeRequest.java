@@ -95,7 +95,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @param request The mutation request in MoML.
      */
     public MoMLChangeRequest(Object originator, String request) {
-	this(originator, null, request, null);
+        this(originator, null, request, null);
     }
 
     /** Construct a mutation request to be executed in the specified context.
@@ -115,7 +115,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      */
     public MoMLChangeRequest(
             Object originator, NamedObj context, String request) {
-	this(originator, context, request, null);
+        this(originator, context, request, null);
     }
 
     /** Construct a mutation request to be executed in the specified context.
@@ -140,7 +140,7 @@ public class MoMLChangeRequest extends ChangeRequest {
             Object originator, NamedObj context, String request, URL base) {
         super(originator, request);
         _context = context;
-	_base = base;
+        _base = base;
     }
 
     ///////////////////////////////////////////////////////////////////

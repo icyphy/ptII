@@ -91,10 +91,10 @@ public class PitchSlider extends JFrame {
         JLabel sliderLabel = new JLabel("Pitch Scale Factor", JLabel.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-	NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setMaximumFractionDigits(3);
-	textField = new DecimalField(1, 10, numberFormat);
-	sliderModel = new ConverterRangeModel();
+        textField = new DecimalField(1, 10, numberFormat);
+        sliderModel = new ConverterRangeModel();
         textField.setValue(0.001*sliderModel.getDoubleValue());
         textField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -105,7 +105,7 @@ public class PitchSlider extends JFrame {
 
         JSlider pitchSlider = new JSlider(sliderModel);
         pitchSlider.addChangeListener(new SliderListener());
-	sliderModel.addChangeListener(new ChangeListener() {
+        sliderModel.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 //textField.setValue(sliderModel.getDoubleValue());
                 textField.setValue(0.001*sliderModel.getDoubleValue());
@@ -164,23 +164,23 @@ public class PitchSlider extends JFrame {
 
 
     public static void main(String[] args) {
-	double sampRate;
+        double sampRate;
         PitchSlider pitchSlider = new PitchSlider("PitchSlider");
         pitchSlider.pack();
         pitchSlider.setVisible(true);
-	System.out.println("");
-	System.out.println("PitchSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
-	System.out.println("");
-	System.out.println("Usage: java PitchSlider <sample rate>");
-	System.out.println("<sample rate> is optional.");
-	System.out.println("");
+        System.out.println("");
+        System.out.println("PitchSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
+        System.out.println("");
+        System.out.println("Usage: java PitchSlider <sample rate>");
+        System.out.println("<sample rate> is optional.");
+        System.out.println("");
 
-	if (args.length == 1) {
-	    // Optional argument is the sampling rate.
-	    sampRate = (new Double(args[0])).doubleValue();
-	} else {
-	    sampRate = 22050;
-	}
+        if (args.length == 1) {
+            // Optional argument is the sampling rate.
+            sampRate = (new Double(args[0])).doubleValue();
+        } else {
+            sampRate = 22050;
+        }
         pitchSlider.startPitchShifting(sampRate);
     }
 }

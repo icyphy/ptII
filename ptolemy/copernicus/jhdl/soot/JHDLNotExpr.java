@@ -57,15 +57,15 @@ public class JHDLNotExpr implements UnopExpr {
 
     /*
     public JHDLNotExpr(CompoundBooleanExpression op) {
-	super(Jimple.v().newConditionExprBox(op));
+        super(Jimple.v().newConditionExprBox(op));
     }
 
     public JHDLNotExpr(Value op) {
-	super(Jimple.v().newImmediateBox(op));
+        super(Jimple.v().newImmediateBox(op));
     }
     */
     public JHDLNotExpr(Value op) {
-	this.op = op;
+        this.op = op;
     }
 
     public Value getOp() { return op; }
@@ -74,7 +74,7 @@ public class JHDLNotExpr implements UnopExpr {
     public java.util.List getUseBoxes() { return null; }
 
     public Object clone() {
-	return new JHDLNotExpr(Jimple.cloneIfNecessary(getOp()));
+        return new JHDLNotExpr(Jimple.cloneIfNecessary(getOp()));
     }
     /** Compares the specified object with this one for structural equality. */
     public boolean equivTo(Object o)

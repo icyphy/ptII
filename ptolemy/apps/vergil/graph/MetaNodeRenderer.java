@@ -41,7 +41,7 @@ public class MetaNodeRenderer extends TypedCompositeActor
     public MetaNodeRenderer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    	output = new TypedIOPort(this, "output", false, true);
+            output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(FigureToken.TYPE);
     }
 
@@ -56,7 +56,7 @@ public class MetaNodeRenderer extends TypedCompositeActor
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         MetaNodeRenderer newObject = (MetaNodeRenderer)super.clone(workspace);
         newObject.output = (TypedIOPort)newObject.getPort("output");
         return newObject;

@@ -58,7 +58,7 @@ public class SpaceCleaner {
 
             IndexEntry allIndex = new IndexEntry();
 
-	    while (true) {
+            while (true) {
                 IndexEntry index =
                     (IndexEntry)space.takeIfExists(
                             allIndex, null, Long.MAX_VALUE);

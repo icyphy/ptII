@@ -107,20 +107,20 @@ public class DoubleFork extends TypedAtomicActor {
      *  the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
-	Token token = null;
-	Receiver[][] inputReceivers = input.getReceivers();
-	if ( inputReceivers.length == 0 ) {
-	    _continueIterations = false;
-	}
-	for ( int i = 0; i < inputReceivers.length; i++ ) {
-	    for ( int j = 0; j < inputReceivers[i].length; j++ ) {
-		DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
-		if ( inputReceiver.hasToken() ) {
-		    token = inputReceiver.get();
-		    output1.broadcast(token);
-		}
-	    }
-	}
+        Token token = null;
+        Receiver[][] inputReceivers = input.getReceivers();
+        if ( inputReceivers.length == 0 ) {
+            _continueIterations = false;
+        }
+        for ( int i = 0; i < inputReceivers.length; i++ ) {
+            for ( int j = 0; j < inputReceivers[i].length; j++ ) {
+                DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
+                if ( inputReceiver.hasToken() ) {
+                    token = inputReceiver.get();
+                    output1.broadcast(token);
+                }
+            }
+        }
     }
 
     /** Return true if this actor will allow subsequent iterations to
@@ -129,7 +129,7 @@ public class DoubleFork extends TypedAtomicActor {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-	return _continueIterations;
+        return _continueIterations;
     }
 
     ///////////////////////////////////////////////////////////////////

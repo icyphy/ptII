@@ -74,7 +74,7 @@ actionPerformed() method.
 public class FigureAction extends AbstractAction {
 
     public FigureAction(String name) {
-	super(name);
+        super(name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,54 +87,54 @@ public class FigureAction extends AbstractAction {
      *  @param e The event.
      */
     public void actionPerformed(ActionEvent e) {
-	Object source = e.getSource();
+        Object source = e.getSource();
         Component parent = null;
-	if (source instanceof LayerEvent) {
-	    _sourceType = CANVAS_TYPE;
-	    // Action activated using an ActionInteractor.
-	    LayerEvent event = (LayerEvent) source;
-	    CanvasLayer layer = event.getLayerSource();
-	    GraphPane pane = (GraphPane)layer.getCanvasPane();
-	    GraphController controller = pane.getGraphController();
-	    GraphModel model = controller.getGraphModel();
+        if (source instanceof LayerEvent) {
+            _sourceType = CANVAS_TYPE;
+            // Action activated using an ActionInteractor.
+            LayerEvent event = (LayerEvent) source;
+            CanvasLayer layer = event.getLayerSource();
+            GraphPane pane = (GraphPane)layer.getCanvasPane();
+            GraphController controller = pane.getGraphController();
+            GraphModel model = controller.getGraphModel();
 
-	    Figure figure = (Figure) event.getFigureSource();
-	    // Set the target.
-	    if (figure == null) {
-		_target = (NamedObj) model.getRoot();
-	    } else {
-		Object object = figure.getUserObject();
-		_target = (NamedObj) model.getSemanticObject(object);
-	    }
+            Figure figure = (Figure) event.getFigureSource();
+            // Set the target.
+            if (figure == null) {
+                _target = (NamedObj) model.getRoot();
+            } else {
+                Object object = figure.getUserObject();
+                _target = (NamedObj) model.getSemanticObject(object);
+            }
 
             // Set the position.
-	    _x = event.getX();
-	    _y = event.getY();
+            _x = event.getX();
+            _y = event.getY();
 
             // Set the parent.
             CanvasPane canvasPane = layer.getCanvasPane();
             parent = canvasPane.getCanvas();
 
-	} else if (source instanceof JMenuItem) {
-	    // Action activated using a context menu.
-	    JMenuItem item = (JMenuItem) source;
-	    if (item.getParent() instanceof JContextMenu) {
-		_sourceType = CONTEXTMENU_TYPE;
-		JContextMenu menu = (JContextMenu)item.getParent();
+        } else if (source instanceof JMenuItem) {
+            // Action activated using a context menu.
+            JMenuItem item = (JMenuItem) source;
+            if (item.getParent() instanceof JContextMenu) {
+                _sourceType = CONTEXTMENU_TYPE;
+                JContextMenu menu = (JContextMenu)item.getParent();
                 parent = menu.getInvoker();
-		_target = (NamedObj) menu.getTarget();
-		_x = item.getX();
-		_y = item.getY();
-	    } else {
-		// Not implicit location.. should there be?
-		_sourceType = MENUBAR_TYPE;
-	    }
-	} else if (source instanceof JButton) {
-	    // presumably we are in a toolbar...
-	    _sourceType = TOOLBAR_TYPE;
-	    _target = null;
+                _target = (NamedObj) menu.getTarget();
+                _x = item.getX();
+                _y = item.getY();
+            } else {
+                // Not implicit location.. should there be?
+                _sourceType = MENUBAR_TYPE;
+            }
+        } else if (source instanceof JButton) {
+            // presumably we are in a toolbar...
+            _sourceType = TOOLBAR_TYPE;
+            _target = null;
             parent = ((Component)source).getParent();
-	} else if (source instanceof JGraph) {
+        } else if (source instanceof JGraph) {
             // This is an absurdly convoluted way to get the info we need.
             // But there seems to be no other way.
             // This is an architectural flaw in vergil.
@@ -154,7 +154,7 @@ public class FigureAction extends AbstractAction {
                     currentFigure = currentFigure.getParent();
                 }
             } else {
-		_target = (NamedObj) model.getRoot();
+                _target = (NamedObj) model.getRoot();
             }
             _sourceType = HOTKEY_TYPE;
 
@@ -165,13 +165,13 @@ public class FigureAction extends AbstractAction {
             // Set the parent.
             CanvasPane canvasPane = layer.getCanvasPane();
             parent = canvasPane.getCanvas();
-	} else {
-	    _sourceType = null;
-	    _target = null;
+        } else {
+            _sourceType = null;
+            _target = null;
             parent = null;
             _x = 0;
             _y = 0;
-	}
+        }
         if (parent != null) {
             while (parent.getParent() != null) {
                 parent = parent.getParent();
@@ -192,7 +192,7 @@ public class FigureAction extends AbstractAction {
      *  @return The source type of this action.
      */
     public SourceType getSourceType() {
-	return _sourceType;
+        return _sourceType;
     }
 
     /** Return the frame responsible for triggering this action,
@@ -203,7 +203,7 @@ public class FigureAction extends AbstractAction {
      *  @return The frame that triggered this action.
      */
     public Frame getFrame() {
-	return _frame;
+        return _frame;
     }
 
     /** Return the target Ptolemy II object for this action,
@@ -214,7 +214,7 @@ public class FigureAction extends AbstractAction {
      *  @return The frame that triggered this action.
      */
     public NamedObj getTarget() {
-	return _target;
+        return _target;
     }
 
     /** Return the horizontal position of the action, or 0 if this
@@ -224,7 +224,7 @@ public class FigureAction extends AbstractAction {
      *  @return The x position of the action.
      */
     public int getX() {
-	return _x;
+        return _x;
     }
 
     /** Return the vertical position of the action, or 0 if this
@@ -234,7 +234,7 @@ public class FigureAction extends AbstractAction {
      *  @return The y position of the action.
      */
     public int getY() {
-	return _y;
+        return _y;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -264,14 +264,14 @@ public class FigureAction extends AbstractAction {
     ////                         inner classes                     ////
 
     public static class SourceType {
-	private SourceType(String name) {
-	    _name = name;
-	}
+        private SourceType(String name) {
+            _name = name;
+        }
 
-	public String getName() {
-	    return _name;
-	}
-	private String _name;
+        public String getName() {
+            return _name;
+        }
+        private String _name;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -67,7 +67,7 @@ public class MoMLAttribute extends Attribute {
      *  @param workspace The workspace that will list the attribute.
      */
     public MoMLAttribute(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the specified container and name.

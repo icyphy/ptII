@@ -79,7 +79,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
                 + "style=\"fill:blue\"/>"
                 + "<text x=\"-40\" y=\"-5\" "
@@ -117,13 +117,13 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
     ////                         public methods                    ////
     public void event(String actorName, double time, int scheduleEvent) {
         try {
-	    if (scheduleEvent == -1) {
+            if (scheduleEvent == -1) {
                 if (plot != null) {
                     plot.clear(true);
                     _taskMap.clear();
                     _taskState.clear();
                 }
-	    } else {
+            } else {
                 if (_taskMap != null) {
                     Object taskID = _taskMap.get(actorName);
                     int id;
@@ -142,10 +142,10 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                     _taskState.set(id, new Integer(scheduleEvent));
                 }
             }
-	} catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("event: Ignoring " + e);
             e.printStackTrace();
-	}
+        }
     }
 
 

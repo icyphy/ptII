@@ -73,8 +73,8 @@ public class CSPSieve extends CSPActor {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
 
-	input.setTypeEquals(BaseType.GENERAL);
-	output.setTypeEquals(BaseType.GENERAL);
+        input.setTypeEquals(BaseType.GENERAL);
+        output.setTypeEquals(BaseType.GENERAL);
     }
 
 
@@ -103,30 +103,30 @@ public class CSPSieve extends CSPActor {
         boolean isLargestPrime = true;
         int lastSeen = 0;
         int limit = 100;
-	while (true) {
-	    //System.out.println("Sieve getting data");
-	    data = input.get(0);
+        while (true) {
+            //System.out.println("Sieve getting data");
+            data = input.get(0);
             lastSeen = ((IntToken)data).intValue();
-	    //System.out.println("Sieve got data:" + data.toString());
-	    if (lastSeen % _prime != 0) {
-		// is it the next prime?
-		if (isLargestPrime) {
+            //System.out.println("Sieve got data:" + data.toString());
+            if (lastSeen % _prime != 0) {
+                // is it the next prime?
+                if (isLargestPrime) {
                     // yes - make and queue the topologyChange
-		    /* JFIXME
+                    /* JFIXME
                        TopologyChangeRequest t = _makeChangeRequest(lastSeen);
                        getDirector().queueTopologyChangeRequest(t);
                        //System.out.println(getName() +
                        //     ":Queued TopologyChange");
-		    */
-		    _waitForDeadlock();
+                    */
+                    _waitForDeadlock();
                     //System.out.println(getName() +": change succeeded?");
-		    isLargestPrime = false;
-		}
-		else {
-		    output.send(0, data);
+                    isLargestPrime = false;
                 }
-	    }
-	}
+                else {
+                    output.send(0, data);
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

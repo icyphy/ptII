@@ -1017,7 +1017,7 @@ public class DEDirector extends Director {
                                 _eventQueue.wait();
                             } catch (InterruptedException e) {
                                 // If the wait is interrupted,
-				// then stop waiting.
+                                // then stop waiting.
                                 break;
                             } catch (Exception e) {
                                 if (_debugging) {
@@ -1345,10 +1345,10 @@ public class DEDirector extends Director {
         // get all the contained actors.
         Iterator actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
-	    // 'add' replaced with 'addNodeWeight' since the former
-	    // has been deprecated.  The change here should have no
-	    // effect since .add had already been defined as a call
-	    // to .addNodeWeight -winthrop
+            // 'add' replaced with 'addNodeWeight' since the former
+            // has been deprecated.  The change here should have no
+            // effect since .add had already been defined as a call
+            // to .addNodeWeight -winthrop
             dag.addNodeWeight(actors.next());
         }
 
@@ -1403,9 +1403,9 @@ public class DEDirector extends Director {
                         }
                         // create an arc from this actor to the successor.
                         if (dag.containsNodeWeight(destination)) {
-			    // 'contains' replaced with 'containsNodeWeight'
-			    // Should not affect function since former has
-			    // already been defined in Graph.java as latter.
+                            // 'contains' replaced with 'containsNodeWeight'
+                            // Should not affect function since former has
+                            // already been defined in Graph.java as latter.
                             dag.addEdge(actor, destination);
                         } else {
                             // This happens if there is a

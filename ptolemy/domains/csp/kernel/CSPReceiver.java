@@ -68,8 +68,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Construct a CSPReceiver with no container.
      */
     public CSPReceiver() {
-	super();
-	_boundaryDetector = new BoundaryDetector(this);
+        super();
+        _boundaryDetector = new BoundaryDetector(this);
     }
 
     /** Construct a CSPReceiver with the specified container.
@@ -78,8 +78,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   contained by the proposed container.
      */
     public CSPReceiver(IOPort container) throws IllegalActionException {
-     	super(container);
-	_boundaryDetector = new BoundaryDetector(this);
+             super(container);
+        _boundaryDetector = new BoundaryDetector(this);
     }
 
 
@@ -139,14 +139,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
 
-        	_checkFlags();
+                _checkFlags();
                 prepareToBlock(branch);
                 // _getDirector()._actorBlocked(this);
                 blocked = true;
                 while (_isGetWaiting()) {
                     _checkFlagsAndWait();
                 }
-        	_checkFlags();
+                _checkFlags();
 
                 // FIXME: This is a race condition that could
                 // lead to a deadlock false alarm. This should
@@ -194,7 +194,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return True.
      */
     public boolean hasRoom(int tokens) {
-	return true;
+        return true;
     }
 
     /** Return true. This method returns true in all cases
@@ -245,7 +245,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() {
-	return _boundaryDetector.isConnectedToBoundaryInside();
+        return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
     /** Return true if this receiver is connected to the outside of a
@@ -260,7 +260,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() {
-	return _boundaryDetector.isConnectedToBoundaryOutside();
+        return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
     /** This class serves as an example of a ConsumerReceiver and
@@ -270,7 +270,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         if ( isConnectedToBoundary() ) {
             return true;
         }
-    	return false;
+            return false;
     }
 
     /** Return true if this receiver is contained on the inside of a
@@ -306,7 +306,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
-    	return false;
+            return false;
     }
 
     /** Return a true or false to indicate whether there is a read block
@@ -315,7 +315,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  receiver or not.
      */
     public synchronized boolean isReadBlocked() {
-	return _readBlocked;
+        return _readBlocked;
     }
 
     /** Return a true or false to indicate whether there is a write block
@@ -324,7 +324,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  receiver or not.
      */
     public synchronized boolean isWriteBlocked() {
-	return _writeBlocked;
+        return _writeBlocked;
     }
 
     /**
@@ -396,14 +396,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
 
-        	_checkFlags();
+                _checkFlags();
                 prepareToBlock(branch);
                 // _getDirector()._actorBlocked(this);
                 blocked = true;
                 while (_isPutWaiting()) {
                     _checkFlagsAndWait();
                 }
-        	_checkFlags();
+                _checkFlags();
 
                 // FIXME: This is a race condition that could
                 // lead to a deadlock false alarm. This should
@@ -446,13 +446,13 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Reset local flags.
      */
     public void reset() {
-	_getWaiting = false;
-	_putWaiting = false;
-	_conditionalReceiveWaiting = false;
+        _getWaiting = false;
+        _putWaiting = false;
+        _conditionalReceiveWaiting = false;
         _conditionalSendWaiting = false;
-	_rendezvousComplete = false;
-	_modelFinished = false;
-	_boundaryDetector.reset();
+        _rendezvousComplete = false;
+        _modelFinished = false;
+        _boundaryDetector.reset();
     }
 
     /**
@@ -559,7 +559,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     protected synchronized void _setConditionalSend(boolean v,
             ConditionalBranchController p) {
         _conditionalSendWaiting = v;
-	_otherController = p;
+        _otherController = p;
     }
 
     /** Set a flag so that a ConditionalSend branch knows whether or
@@ -575,7 +575,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     protected synchronized void _setConditionalReceive(boolean v,
             ConditionalBranchController p) {
         _conditionalReceiveWaiting = v;
-	_otherController = p;
+        _otherController = p;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -606,18 +606,18 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     private CSPDirector _getDirector() {
         try {
             Actor container = (Actor)getContainer().getContainer();
-	    if (container instanceof CompositeActor) {
-		return  (CSPDirector)container.getExecutiveDirector();
-	    } else {
-		return  (CSPDirector)container.getDirector();
-	    }
+            if (container instanceof CompositeActor) {
+                return  (CSPDirector)container.getExecutiveDirector();
+            } else {
+                return  (CSPDirector)container.getDirector();
+            }
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
-	    throw new TerminateProcessException("CSPReceiver: trying to " +
+            throw new TerminateProcessException("CSPReceiver: trying to " +
                     " rendezvous with a receiver with no " +
                     "director => terminate.");
-	}
+        }
     }
 
     /*  Flag indicating the state of the rendezvous. It returns false if

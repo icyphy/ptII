@@ -66,7 +66,7 @@ public class VersatileFigure extends AbstractFigure
      */
     public VersatileFigure (PaintedObject paintedObject) {
         super ();
-	_paintedObject = paintedObject;
+        _paintedObject = paintedObject;
     }
     /** Create a new figure with the given shape. The figure, by
      *  default, has a unit-width continuous black outline and no fill.
@@ -106,11 +106,11 @@ public class VersatileFigure extends AbstractFigure
      */
     public Rectangle2D getBounds () {
         if (_paintedObject != null) {
-	    return _paintedObject.getBounds ();
-	}
-	else {
-	    return null;
-	}
+            return _paintedObject.getBounds ();
+        }
+        else {
+            return null;
+        }
     }
 
     /** Get the color composition operator of this figure.
@@ -120,40 +120,40 @@ public class VersatileFigure extends AbstractFigure
     }
 
     /** Get the fill paint pattern of this figure if this figure
-     *	represents a shape with a fill paint pattern, otherwise
-     *	return null.
+     *        represents a shape with a fill paint pattern, otherwise
+     *        return null.
      */
     public Paint getFillPaint () {
         if (_paintedObject instanceof PaintedShape) {
-	    return ((PaintedShape) _paintedObject).fillPaint;
-	}
-	else if (_paintedObject instanceof PaintedString) {
-	    return ((PaintedString) _paintedObject).getFillPaint ();
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    return null;
-	}
-	else {
-	    return null;
-	}
+            return ((PaintedShape) _paintedObject).fillPaint;
+        }
+        else if (_paintedObject instanceof PaintedString) {
+            return ((PaintedString) _paintedObject).getFillPaint ();
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            return null;
+        }
+        else {
+            return null;
+        }
     }
 
     /** Get the line width of this figure.
      */
     public float getLineWidth () {
         if (_paintedObject instanceof PaintedString) {
-	    Integer integer = new Integer (((PaintedString) _paintedObject).getSize ());
-	    return integer.floatValue ();
-	}
-	else if (_paintedObject instanceof PaintedShape) {
-	    return ((PaintedShape) _paintedObject).getLineWidth ();
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    return ((PaintedPath) _paintedObject).getLineWidth ();
-	}
-	else {
-	    return -1.0f;
-	}
+            Integer integer = new Integer (((PaintedString) _paintedObject).getSize ());
+            return integer.floatValue ();
+        }
+        else if (_paintedObject instanceof PaintedShape) {
+            return ((PaintedShape) _paintedObject).getLineWidth ();
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            return ((PaintedPath) _paintedObject).getLineWidth ();
+        }
+        else {
+            return -1.0f;
+        }
     }
 
     /** Get the painted object of this figure.
@@ -168,17 +168,17 @@ public class VersatileFigure extends AbstractFigure
      */
     public Shape getShape () {
         if (_paintedObject instanceof PaintedString) {
-	    return ((PaintedString) _paintedObject).getShape ();
-	}
-	else if (_paintedObject instanceof PaintedShape) {
-	    return ((PaintedShape) _paintedObject).shape;
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    return ((PaintedPath) _paintedObject).shape;
-	}
-	else {
-	    return null;
-	}
+            return ((PaintedString) _paintedObject).getShape ();
+        }
+        else if (_paintedObject instanceof PaintedShape) {
+            return ((PaintedShape) _paintedObject).shape;
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            return ((PaintedPath) _paintedObject).shape;
+        }
+        else {
+            return null;
+        }
     }
 
     /** Get the stroke of this figure if it is a painted shape
@@ -186,17 +186,17 @@ public class VersatileFigure extends AbstractFigure
      */
     public Stroke getStroke () {
         if (_paintedObject instanceof PaintedShape) {
-	    return ((PaintedShape) _paintedObject).getStroke ();
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    return ((PaintedPath) _paintedObject).getStroke ();
-	}
-	else if (_paintedObject instanceof PaintedString) {
-	    return null;
-	}
-	else {
-	    return null;
-	}
+            return ((PaintedShape) _paintedObject).getStroke ();
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            return ((PaintedPath) _paintedObject).getStroke ();
+        }
+        else if (_paintedObject instanceof PaintedString) {
+            return null;
+        }
+        else {
+            return null;
+        }
     }
 
     /** Get the stroke paint pattern of this figure if it is a
@@ -204,17 +204,17 @@ public class VersatileFigure extends AbstractFigure
      */
     public Paint getStrokePaint () {
         if (_paintedObject instanceof PaintedShape) {
-	    return ((PaintedShape) _paintedObject).strokePaint;
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    return ((PaintedPath) _paintedObject).strokePaint;
-	}
-	else if (_paintedObject instanceof PaintedString) {
-	    return null;
-	}
-	else {
-	    return null;
-	}
+            return ((PaintedShape) _paintedObject).strokePaint;
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            return ((PaintedPath) _paintedObject).strokePaint;
+        }
+        else if (_paintedObject instanceof PaintedString) {
+            return null;
+        }
+        else {
+            return null;
+        }
     }
 
     /** Test if this figure intersects the given rectangle. If there
@@ -231,17 +231,17 @@ public class VersatileFigure extends AbstractFigure
             return false;
         }
         if (_paintedObject instanceof PaintedShape) {
-	    return ((PaintedShape) _paintedObject).hit (r);
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    return ((PaintedPath) _paintedObject).hit (r);
-	}
-	else if (_paintedObject instanceof PaintedString) {
-	    return false;
-	}
-	else {
-	    return false;
-	}
+            return ((PaintedShape) _paintedObject).hit (r);
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            return ((PaintedPath) _paintedObject).hit (r);
+        }
+        else if (_paintedObject instanceof PaintedString) {
+            return false;
+        }
+        else {
+            return false;
+        }
     }
 
     /** Paint the figure. The figure is redrawn with the current
@@ -254,9 +254,9 @@ public class VersatileFigure extends AbstractFigure
         if (_composite != null) {
             g.setComposite (_composite);
         }
-	if (_paintedObject != null) {
-	    _paintedObject.paint (g);
-	}
+        if (_paintedObject != null) {
+            _paintedObject.paint (g);
+        }
     }
 
     /** Set the color composition operator of this figure. If the
@@ -275,16 +275,16 @@ public class VersatileFigure extends AbstractFigure
      */
     public void setFillPaint (Paint p) {
         if (_paintedObject instanceof PaintedShape) {
-	    ((PaintedShape) _paintedObject).fillPaint = p;
-	}
-	else if (_paintedObject instanceof PaintedString) {
-	    ((PaintedString) _paintedObject).setFillPaint (p);
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	}
-	else {
-	}
-	repaint ();
+            ((PaintedShape) _paintedObject).fillPaint = p;
+        }
+        else if (_paintedObject instanceof PaintedString) {
+            ((PaintedString) _paintedObject).setFillPaint (p);
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+        }
+        else {
+        }
+        repaint ();
     }
 
     /** Set the line width of this figure. If the width is zero,
@@ -315,15 +315,15 @@ public class VersatileFigure extends AbstractFigure
     public void setShape (Shape s) {
         repaint ();
         if (_paintedObject instanceof PaintedString) {
-	}
-	else if (_paintedObject instanceof PaintedShape) {
-	    ((PaintedShape) _paintedObject).shape = s;
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    ((PaintedPath) _paintedObject).shape = s;
-	}
-	else {
-	}
+        }
+        else if (_paintedObject instanceof PaintedShape) {
+            ((PaintedShape) _paintedObject).shape = s;
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            ((PaintedPath) _paintedObject).shape = s;
+        }
+        else {
+        }
         repaint ();
     }
 
@@ -333,15 +333,15 @@ public class VersatileFigure extends AbstractFigure
     public void setStroke (Stroke s) {
         repaint ();
         if (_paintedObject instanceof PaintedShape) {
-	    ((PaintedShape) _paintedObject).stroke = s;
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    ((PaintedPath) _paintedObject).stroke = s;
-	}
-	else if (_paintedObject instanceof PaintedString) {
-	}
-	else {
-	}
+            ((PaintedShape) _paintedObject).stroke = s;
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            ((PaintedPath) _paintedObject).stroke = s;
+        }
+        else if (_paintedObject instanceof PaintedString) {
+        }
+        else {
+        }
         repaint ();
     }
 
@@ -351,16 +351,16 @@ public class VersatileFigure extends AbstractFigure
     public void setStrokePaint (Paint p) {
         repaint ();
         if (_paintedObject instanceof PaintedShape) {
-	    ((PaintedShape) _paintedObject).strokePaint = p;
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    ((PaintedPath) _paintedObject).strokePaint = p;
-	}
-	else if (_paintedObject instanceof PaintedString) {
-	}
-	else {
-	}
-	repaint ();
+            ((PaintedShape) _paintedObject).strokePaint = p;
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            ((PaintedPath) _paintedObject).strokePaint = p;
+        }
+        else if (_paintedObject instanceof PaintedString) {
+        }
+        else {
+        }
+        repaint ();
     }
 
     /** Transform the figure with the supplied transform. This can be
@@ -377,20 +377,20 @@ public class VersatileFigure extends AbstractFigure
     public void transform (AffineTransform at) {
         repaint ();
         if (_paintedObject instanceof PaintedString) {
-	}
-	else if (_paintedObject instanceof PaintedShape) {
-	    ((PaintedShape) _paintedObject).shape
-	        = ShapeUtilities.transformModify
-	        (((PaintedShape) _paintedObject).shape, at);
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    ((PaintedPath) _paintedObject).shape
-	        = ShapeUtilities.transformModify
-	        (((PaintedPath) _paintedObject).shape, at);
-	}
-	else {
-	}
-	repaint ();
+        }
+        else if (_paintedObject instanceof PaintedShape) {
+            ((PaintedShape) _paintedObject).shape
+                = ShapeUtilities.transformModify
+                (((PaintedShape) _paintedObject).shape, at);
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            ((PaintedPath) _paintedObject).shape
+                = ShapeUtilities.transformModify
+                (((PaintedPath) _paintedObject).shape, at);
+        }
+        else {
+        }
+        repaint ();
     }
 
     /**
@@ -405,36 +405,36 @@ public class VersatileFigure extends AbstractFigure
      * If this is a painted string, do nothing.
      */
     public void translate (double x, double y) {
-	repaint ();
+        repaint ();
         if (_paintedObject instanceof PaintedString) {
-	}
-	else if (_paintedObject instanceof PaintedShape) {
-	    ((PaintedShape) _paintedObject).shape
-	        = ShapeUtilities.translateModify
-	        (((PaintedShape) _paintedObject).shape, x, y);
-	}
-	else if (_paintedObject instanceof PaintedPath) {
-	    ((PaintedPath) _paintedObject).shape
-	        = ShapeUtilities.translateModify
-	        (((PaintedPath) _paintedObject).shape, x, y);
-	}
-	else {
-	}
-	repaint ();
+        }
+        else if (_paintedObject instanceof PaintedShape) {
+            ((PaintedShape) _paintedObject).shape
+                = ShapeUtilities.translateModify
+                (((PaintedShape) _paintedObject).shape, x, y);
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            ((PaintedPath) _paintedObject).shape
+                = ShapeUtilities.translateModify
+                (((PaintedPath) _paintedObject).shape, x, y);
+        }
+        else {
+        }
+        repaint ();
     }
 
     /** Clone this Figure.
      */
     public Object clone() {
-	Shape cloneShape = ShapeUtilities.cloneShape(getShape());
+        Shape cloneShape = ShapeUtilities.cloneShape(getShape());
         PaintedObject object =
-	    new PaintedShape(cloneShape, getFillPaint(),
+            new PaintedShape(cloneShape, getFillPaint(),
                     getLineWidth(), getStrokePaint());
-	VersatileFigure clone = new VersatileFigure(object);
-	clone.setStroke(getStroke());
-	clone.setComposite(getComposite());
-	clone.setInteractor(getInteractor());
-	return clone;
+        VersatileFigure clone = new VersatileFigure(object);
+        clone.setStroke(getStroke());
+        clone.setComposite(getComposite());
+        clone.setInteractor(getInteractor());
+        return clone;
     }
 
 }

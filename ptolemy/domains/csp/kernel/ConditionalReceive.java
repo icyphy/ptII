@@ -185,7 +185,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     // Should never happen that a get or a ConditionalReceive
                     // is already at the receiver.
                     throw new InvalidStateException(
-			    ((Nameable)controller.getParent()).getName() +
+                            ((Nameable)controller.getParent()).getName() +
                             ": ConditionalReceive branch trying to " +
                             " rendezvous with a receiver that already " +
                             " has a get or a ConditionalReceive waiting.");
@@ -237,7 +237,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected boolean _arriveAfterConditionalSend(CSPReceiver receiver,
-	    ConditionalBranchController controller)
+            ConditionalBranchController controller)
             throws InterruptedException {
         if (controller._isBranchFirst(getID())) {
             // receive side ok, need to check that send

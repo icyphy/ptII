@@ -67,7 +67,7 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public SDFIOPort() {
         super();
-	_initialize();
+        _initialize();
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -79,7 +79,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  @param workspace The workspace that will list the port.
      */
     public SDFIOPort(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         _initialize();
     }
 
@@ -97,8 +97,8 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public SDFIOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
-	_initialize();
+        super(container, name);
+        _initialize();
     }
 
     /** Construct an SDFIOPort with a container and a name that is
@@ -120,7 +120,7 @@ public final class SDFIOPort extends TypedIOPort {
             boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
         this(container, name);
-	setInput(isInput);
+        setInput(isInput);
         setOutput(isOutput);
     }
 
@@ -166,7 +166,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  the tokenConsumptionRate Parameter.
      */
     public int getTokenConsumptionRate() throws IllegalActionException {
-	return ((IntToken)tokenConsumptionRate.getToken()).intValue();
+        return ((IntToken)tokenConsumptionRate.getToken()).intValue();
     }
 
     /** Get the number of tokens that are produced
@@ -176,7 +176,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  the tokenInitProduction parameter.
      */
     public int getTokenInitProduction() throws IllegalActionException {
-	return ((IntToken)tokenInitProduction.getToken()).intValue();
+        return ((IntToken)tokenInitProduction.getToken()).intValue();
     }
 
     /** Get the number of tokens that are produced
@@ -186,7 +186,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  the tokenProductionRate parameter.
      */
     public int getTokenProductionRate() throws IllegalActionException {
-	return ((IntToken)tokenProductionRate.getToken()).intValue();
+        return ((IntToken)tokenProductionRate.getToken()).intValue();
     }
 
     /**
@@ -197,17 +197,17 @@ public final class SDFIOPort extends TypedIOPort {
      * rate to be 0.
      */
     public void setInput(boolean isInput) {
-	super.setInput(isInput);
-	try {
-	    if (isInput) {
-		tokenConsumptionRate.setToken(new IntToken(1));
-	    } else {
-		tokenConsumptionRate.setToken(new IntToken(0));
-	    }
-	} catch (Exception e) {
-	    // This should never happen
-	    throw new InternalErrorException(e.getMessage());
-	}
+        super.setInput(isInput);
+        try {
+            if (isInput) {
+                tokenConsumptionRate.setToken(new IntToken(1));
+            } else {
+                tokenConsumptionRate.setToken(new IntToken(0));
+            }
+        } catch (Exception e) {
+            // This should never happen
+            throw new InternalErrorException(e.getMessage());
+        }
     }
 
     /**
@@ -218,18 +218,18 @@ public final class SDFIOPort extends TypedIOPort {
      * rate to be 0.
      */
     public void setOutput(boolean isOutput) {
-	super.setOutput(isOutput);
-	try {
-	    if (isOutput) {
-		tokenProductionRate.setToken(new IntToken(1));
-	    } else {
-		tokenProductionRate.setToken(new IntToken(0));
-		tokenInitProduction.setToken(new IntToken(0));
-	    }
-	} catch (Exception e) {
-	    // This should never happen.
-	    throw new InternalErrorException(e.getMessage());
-	}
+        super.setOutput(isOutput);
+        try {
+            if (isOutput) {
+                tokenProductionRate.setToken(new IntToken(1));
+            } else {
+                tokenProductionRate.setToken(new IntToken(0));
+                tokenInitProduction.setToken(new IntToken(0));
+            }
+        } catch (Exception e) {
+            // This should never happen.
+            throw new InternalErrorException(e.getMessage());
+        }
     }
 
     /** Set the number of tokens that are consumed
@@ -245,7 +245,7 @@ public final class SDFIOPort extends TypedIOPort {
                 "Rate must be >= 0");
         if (!isInput()) throw new IllegalActionException(this, "Port " +
                 "is not an input port.");
-	tokenConsumptionRate.setToken(new IntToken(rate));
+        tokenConsumptionRate.setToken(new IntToken(rate));
     }
 
     /** Set the number of tokens that are produced
@@ -261,7 +261,7 @@ public final class SDFIOPort extends TypedIOPort {
                 "Count must be >= 0");
         if (!isOutput()) throw new IllegalActionException(this, "Port " +
                 "is not an Output Port.");
-	tokenInitProduction.setToken(new IntToken(count));
+        tokenInitProduction.setToken(new IntToken(count));
     }
 
     /** Set the number of tokens that are produced
@@ -278,7 +278,7 @@ public final class SDFIOPort extends TypedIOPort {
                 "Rate must be >= 0");
         if (!isOutput()) throw new IllegalActionException(this, "Port " +
                 "is not an Output Port.");
-	tokenProductionRate.setToken(new IntToken(rate));
+        tokenProductionRate.setToken(new IntToken(rate));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -288,17 +288,17 @@ public final class SDFIOPort extends TypedIOPort {
      * Initialize local data members.
      */
     private void _initialize() {
-	try {
-	    tokenConsumptionRate = new Parameter(this, "tokenConsumptionRate",
+        try {
+            tokenConsumptionRate = new Parameter(this, "tokenConsumptionRate",
                     new IntToken(0));
-	    tokenInitProduction = new Parameter(this, "tokenInitProduction",
+            tokenInitProduction = new Parameter(this, "tokenInitProduction",
                     new IntToken(0));
-	    tokenProductionRate = new Parameter(this, "tokenProductionRate",
+            tokenProductionRate = new Parameter(this, "tokenProductionRate",
                     new IntToken(0));
-	}
-	catch (Exception e) {
-	    // This should never happen.
-	    throw new InternalErrorException(e.getMessage());
-	}
+        }
+        catch (Exception e) {
+            // This should never happen.
+            throw new InternalErrorException(e.getMessage());
+        }
     }
 }

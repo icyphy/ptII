@@ -174,13 +174,13 @@ public class ImageSequence extends Source {
                 _debug("file = " + fileName + "\n");
 
                 if (fileName != null) {
-		    URL dataurl = getClass().getClassLoader()
-			.getResource(fileName);
-		    if (dataurl == null) {
-			throw new FileNotFoundException("Failed to find '"
-							+ fileName + "' as "
-							+ "a resource");
-		    }
+                    URL dataurl = getClass().getClassLoader()
+                        .getResource(fileName);
+                    if (dataurl == null) {
+                        throw new FileNotFoundException("Failed to find '"
+                                                        + fileName + "' as "
+                                                        + "a resource");
+                    }
                     source = dataurl.openStream();
                 }
 

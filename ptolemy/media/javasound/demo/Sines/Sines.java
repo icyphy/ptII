@@ -44,71 +44,71 @@ import ptolemy.media.javasound.*;
  */
 public class Sines {
     public static void main(String[] args) {
-	// Create a sound capture object that captures audio
-	// from the computer's audio input port (mic or
-	// line-in).
+        // Create a sound capture object that captures audio
+        // from the computer's audio input port (mic or
+        // line-in).
 
-	// The pitch of the signal to synthesize.
-	double fundamental_Hz = 220;
+        // The pitch of the signal to synthesize.
+        double fundamental_Hz = 220;
 
-	float sampleRate = 44100; // in Hz
-	int sampleSizeInBits = 16;
-	int channels = 2; // stereo.
-	int outBufferSize = 4096; // Internal buffer size for playback.
+        float sampleRate = 44100; // in Hz
+        int sampleSizeInBits = 16;
+        int channels = 2; // stereo.
+        int outBufferSize = 4096; // Internal buffer size for playback.
 
-	// Amount of data to read or write from/to the internal buffer
-	// at a time. This should be set smaller than the internal buffer
-	// size!
-	int getSamplesSize = 25;
+        // Amount of data to read or write from/to the internal buffer
+        // at a time. This should be set smaller than the internal buffer
+        // size!
+        int getSamplesSize = 25;
 
-	int putSamplesSize = getSamplesSize;
+        int putSamplesSize = getSamplesSize;
 
-	// Construct a sound playback object that plays audio
-	//through the computer's speaker.
-	SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
+        // Construct a sound playback object that plays audio
+        //through the computer's speaker.
+        SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
                 sampleSizeInBits,
                 channels,
                 outBufferSize,
                 putSamplesSize);
 
-	// Initialize and begin real-time capture and playback.
-	try{
-	    soundPlayback.startPlayback();
-	} catch (Exception ex) {
-	    System.err.println(ex);
-	}
+        // Initialize and begin real-time capture and playback.
+        try{
+            soundPlayback.startPlayback();
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
 
-	double[][] samplesArray =
-	    new double[channels][getSamplesSize];
-	double[] samples = new double[channels];
+        double[][] samplesArray =
+            new double[channels][getSamplesSize];
+        double[] samples = new double[channels];
 
-	try{
-	    // Loop forever.
-	    while (true) {
+        try{
+            // Loop forever.
+            while (true) {
 
-		// Do some simple processing on the
-		// captured audio.
-		for (int j=0; j< channels; j++) {
-		    for (int i=0; i< getSamplesSize; i++) {
-			//  ********** INSERT PROCESSING CODE HERE ****
+                // Do some simple processing on the
+                // captured audio.
+                for (int j=0; j< channels; j++) {
+                    for (int i=0; i< getSamplesSize; i++) {
+                        //  ********** INSERT PROCESSING CODE HERE ****
 
-			// Generate a harmonic signal.
-			samplesArray[j][i] =
-			    java.lang.Math.sin(fundamental_Hz*2*java.lang.Math.PI*samples[j])*0.4 +
-			    java.lang.Math.sin(2*fundamental_Hz*2*java.lang.Math.PI*samples[j])*0.3 +
-			    java.lang.Math.sin(3*fundamental_Hz*2*java.lang.Math.PI*samples[j])*0.25 +
-			    java.lang.Math.sin(4*fundamental_Hz*2*java.lang.Math.PI*samples[j])*0.2;
-			// Increment time.
-			samples[j] = samples[j] + 1.0/sampleRate;
-		    }
-		}
+                        // Generate a harmonic signal.
+                        samplesArray[j][i] =
+                            java.lang.Math.sin(fundamental_Hz*2*java.lang.Math.PI*samples[j])*0.4 +
+                            java.lang.Math.sin(2*fundamental_Hz*2*java.lang.Math.PI*samples[j])*0.3 +
+                            java.lang.Math.sin(3*fundamental_Hz*2*java.lang.Math.PI*samples[j])*0.25 +
+                            java.lang.Math.sin(4*fundamental_Hz*2*java.lang.Math.PI*samples[j])*0.2;
+                        // Increment time.
+                        samples[j] = samples[j] + 1.0/sampleRate;
+                    }
+                }
 
-		// Play the processed audio samples.
-		soundPlayback.putSamples(samplesArray);
+                // Play the processed audio samples.
+                soundPlayback.putSamples(samplesArray);
             }
-	} catch (Exception ex) {
-	    System.err.println(ex);
-	}
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
     }
 
 }

@@ -412,31 +412,31 @@ public class CommandLineTransformer extends SceneTransformer {
 
         int iterationLimit = Options.getInt(options, "iterations");
 
-	if (iterationLimit == _iterationsDefault) {
-	    try {
-		Director director = _model.getDirector();
-		if (director != null) {
-		    Attribute attribute =
-			director.getAttribute("iterations");
-		    if (attribute instanceof Variable) {
-			IntToken token = (IntToken)((Variable)attribute).getToken();
-			iterationLimit = token.intValue();
-			System.out.println("CommandLineTransformer"
+        if (iterationLimit == _iterationsDefault) {
+            try {
+                Director director = _model.getDirector();
+                if (director != null) {
+                    Attribute attribute =
+                        director.getAttribute("iterations");
+                    if (attribute instanceof Variable) {
+                        IntToken token = (IntToken)((Variable)attribute).getToken();
+                        iterationLimit = token.intValue();
+                        System.out.println("CommandLineTransformer"
                                 + "_insertIterateCalls(): "
                                 + "iterationLimit was the default,"
                                 + " read director.iterations, "
                                 + "value is now "
                                 + iterationLimit);
-		    }
-		}
-	    } catch (Exception e) {
-		System.out.println("CommandLineTransformer"
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("CommandLineTransformer"
                         + "_insertIterateCalls(): "
                         + "Could not read director.iterations "
                         + "defaulting to " + _iterationsDefault
                         + ": " + e);
-	    }
-	}
+            }
+        }
 
         Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
         body.getLocals().add(postfireReturnsLocal);

@@ -49,9 +49,9 @@ import java.util.*;
 public class SootBlockDirectedGraph extends DirectedGraph {
 
     public SootBlockDirectedGraph(Block block) {
-	super();
-	_block = block;
-	_valueMap = new ValueMap(this);
+        super();
+        _block = block;
+        _valueMap = new ValueMap(this);
     }
 
     public ValueMap getValueMap() { return _valueMap; }
@@ -63,8 +63,8 @@ public class SootBlockDirectedGraph extends DirectedGraph {
     protected Block _block;
 
     public static void main(String args[]) {
-	SootBlockDirectedGraph graphs[] =
-	    ControlSootDFGBuilder.createDataFlowGraphs(args,true);
+        SootBlockDirectedGraph graphs[] =
+            ControlSootDFGBuilder.createDataFlowGraphs(args,true);
     }
 
 }

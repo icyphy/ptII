@@ -61,11 +61,11 @@ we create these wrapper classes that call the appropriate main class.
 public class PtinySandboxApplication extends MenuApplication {
     public static void main(final String [] args) {
 
-	// Since we are running in a sandbox, we do not set the
-	// securityManager to null
+        // Since we are running in a sandbox, we do not set the
+        // securityManager to null
 
         //System.setSecurityManager(null);
 
-	MenuApplication.main(args);
+        MenuApplication.main(args);
     }
 }

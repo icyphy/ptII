@@ -78,7 +78,7 @@ public class DDEActor extends TypedAtomicActor {
      * @param workspace The workspace for this DDEActor.
      */
     public DDEActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a DDEActor with the specified container and name.
@@ -106,7 +106,7 @@ public class DDEActor extends TypedAtomicActor {
      *  consumed by this actor.
      */
     public TypedIOPort getLastPort() {
-	return _lastPort;
+        return _lastPort;
     }
 
     /** Return a non-NullToken from the receiver that has the minimum,
@@ -123,12 +123,12 @@ public class DDEActor extends TypedAtomicActor {
         Token token = _getNextInput();
         if ( token instanceof NullToken ) {
             return getNextToken();
-	}
+        }
         return token;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   package friendly methods		   ////
+    ////                   package friendly methods                   ////
 
     /** Return a token from the receiver that has the minimum
      *  receiver time of all receivers contained by this actor.
@@ -152,10 +152,10 @@ public class DDEActor extends TypedAtomicActor {
      * @see ptolemy.domains.dde.kernel.DDEThread
      */
     Token _getNextInput() throws IllegalActionException {
-	String calleeName = getName();
-	Thread thread = Thread.currentThread();
-	if ( thread instanceof DDEThread ) {
-	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+        String calleeName = getName();
+        Thread thread = Thread.currentThread();
+        if ( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
             DDEReceiver lowestReceiver =
                 (DDEReceiver)timeKeeper.getFirstReceiver();
 
@@ -165,10 +165,10 @@ public class DDEActor extends TypedAtomicActor {
             } else {
                 return _getNextInput();
             }
-	} else {
-	    throw new IllegalActionException(this, "Illegal attempt "
-	            + "to execute a DDEActor by a non-DDEThread.");
-	}
+        } else {
+            throw new IllegalActionException(this, "Illegal attempt "
+                    + "to execute a DDEActor by a non-DDEThread.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

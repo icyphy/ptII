@@ -112,14 +112,14 @@ public class TimeAdvance extends DDEActor {
      *  the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
-	DoubleToken token = ((DoubleToken)outputValue.getToken());
-	Receiver[][] inputReceivers = input.getReceivers();
-	if ( inputReceivers.length == 0 ) {
-	    _continueIterations = false;
-	}
+        DoubleToken token = ((DoubleToken)outputValue.getToken());
+        Receiver[][] inputReceivers = input.getReceivers();
+        if ( inputReceivers.length == 0 ) {
+            _continueIterations = false;
+        }
 
-	getNextToken();
-	output.broadcast(token);
+        getNextToken();
+        output.broadcast(token);
     }
 
     /** Return true if this actor will allow subsequent iterations to
@@ -128,7 +128,7 @@ public class TimeAdvance extends DDEActor {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-	return _continueIterations;
+        return _continueIterations;
     }
 
     ///////////////////////////////////////////////////////////////////

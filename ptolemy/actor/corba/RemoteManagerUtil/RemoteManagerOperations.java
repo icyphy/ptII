@@ -10,66 +10,66 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 public interface RemoteManagerOperations
 {
 
   /* Mirror the execute() method of Ptolemy II
-		 * manager interface.
-		 * @exception CorbaIllegalActionException If the
-		 *   method is an illegal action of the actor.
-		 */
+                 * manager interface.
+                 * @exception CorbaIllegalActionException If the
+                 *   method is an illegal action of the actor.
+                 */
   void execute () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException;
 
   /* Mirror the initialize() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   void initialize () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException;
 
   /* Mirror the pause() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   void pause () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException;
 
   /* Mirror the resume() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   void resume () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException;
 
   /* Mirror the startRun() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   void startRun () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException;
 
   /* Mirror the stop() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   void stop () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException;
 
   /* Mirror the terminate() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   void terminate () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException;
 
   /* Mirror the terminate() method of Ptolemy II
-  		 * remoteManager interface.
-		 * @exception CorbaIllegalActionException If the
-		 *  query of parameter is not supported by the actor.
-		 * @exception CorbaUnknowParamException If the parameter
-		 *  name is not known by the actor.
-		 */
+                   * remoteManager interface.
+                 * @exception CorbaIllegalActionException If the
+                 *  query of parameter is not supported by the actor.
+                 * @exception CorbaUnknowParamException If the parameter
+                 *  name is not known by the actor.
+                 */
   void changeModel (String model) throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException, ptolemy.actor.corba.RemoteManagerUtil.CorbaUnknownParamException;
 } // interface RemoteManagerOperations

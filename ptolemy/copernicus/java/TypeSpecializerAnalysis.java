@@ -855,7 +855,7 @@ public class TypeSpecializerAnalysis {
 
         public String toString() {
             return "{ConstantTerm: value = " + _type + ", associated object = " +
-		_object + "}";
+                _object + "}";
         }
 
         public void unfixValue() { }
@@ -879,20 +879,20 @@ public class TypeSpecializerAnalysis {
 
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
-	    	InequalityTerm[] result = new InequalityTerm[1];
-	    	result[0] = this;
-	    	return result;
-	    }
-	    return (new InequalityTerm[0]);
+                    InequalityTerm[] result = new InequalityTerm[1];
+                    result[0] = this;
+                    return result;
+            }
+            return (new InequalityTerm[0]);
         }
 
         public void initialize(Object e) throws IllegalActionException {
             if (_declaredType == ptolemy.data.type.BaseType.UNKNOWN) {
-		_currentType = (ptolemy.data.type.Type)e;
-	    } else {
-		// _declaredType is a StructuredType
-		((ptolemy.data.type.StructuredType)_currentType).initialize((ptolemy.data.type.Type) e);
-	    }
+                _currentType = (ptolemy.data.type.Type)e;
+            } else {
+                // _declaredType is a StructuredType
+                ((ptolemy.data.type.StructuredType)_currentType).initialize((ptolemy.data.type.Type) e);
+            }
         }
 
         // Variable terms are settable
@@ -904,26 +904,26 @@ public class TypeSpecializerAnalysis {
 
         public void setValue(Object e) throws IllegalActionException {
             //   System.out.println("setting value of " + toString() + " to " + e);
-	    if (!_declaredType.isSubstitutionInstance((ptolemy.data.type.Type)e)) {
-	    	throw new RuntimeException("VariableTerm.setValue: "
-		        + "Cannot update the type of " + this + " to the "
-			+ "new type."
+            if (!_declaredType.isSubstitutionInstance((ptolemy.data.type.Type)e)) {
+                    throw new RuntimeException("VariableTerm.setValue: "
+                        + "Cannot update the type of " + this + " to the "
+                        + "new type."
                         + ", Variable type: " + _declaredType.toString()
-			+ ", New type: " + e.toString());
-	    }
+                        + ", New type: " + e.toString());
+            }
 
-	    if (_declaredType == ptolemy.data.type.BaseType.UNKNOWN) {
-		_currentType = (ptolemy.data.type.Type)e;//((ptolemy.data.type.Type)e).clone();
-	    } else {
-		// _declaredType is a StructuredType
-		((ptolemy.data.type.StructuredType)_currentType).updateType((ptolemy.data.type.StructuredType)e);
-	    }
+            if (_declaredType == ptolemy.data.type.BaseType.UNKNOWN) {
+                _currentType = (ptolemy.data.type.Type)e;//((ptolemy.data.type.Type)e).clone();
+            } else {
+                // _declaredType is a StructuredType
+                ((ptolemy.data.type.StructuredType)_currentType).updateType((ptolemy.data.type.StructuredType)e);
+            }
         }
 
         public String toString() {
             return "{VariableTerm: value = " + _currentType + ", depth = " +
                 PtolemyUtilities.getTypeDepth(_currentType) + ", associated object = " +
-		_object + "}";
+                _object + "}";
         }
 
         public void unfixValue() { _fixed = false; }

@@ -85,7 +85,7 @@ public class StreamToMatrix extends Transformer {
     /** If the argument is the dimension parameter, update the
      *  the row and column values.
      *  @exception IllegalActionException if no an integer value can
-     *	be obtained from the dimension parameter.
+     *        be obtained from the dimension parameter.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -121,9 +121,9 @@ public class StreamToMatrix extends Transformer {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
+        super.initialize();
 
-	// Get the correct value from the parameters
+        // Get the correct value from the parameters
         _rows = ((IntToken)dimension.getToken()).intValue();
         _columns = ((IntToken)dimension.getToken()).intValue();
 

@@ -220,7 +220,7 @@ public class VQDecode extends Transformer {
                             intTemp, rows, columns);
                 }
 
-		// skip over the lookup tables.
+                // skip over the lookup tables.
 
                 temp = new byte[65536];
                 // read in the lookup table.

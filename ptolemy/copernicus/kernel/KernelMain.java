@@ -66,22 +66,22 @@ looks like:
 <pre>
 public class Main extends KernelMain {
     public Main(String [] args) {
-	super(args[0]);
+        super(args[0]);
     }
 
     public static void main(String[] args)
-	throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
 
-	Main main = new Main(args);
+        Main main = new Main(args);
 
-	// Parse the model, initialize it and create instance classes
-	// for the actors.
-	main.initialize();
+        // Parse the model, initialize it and create instance classes
+        // for the actors.
+        main.initialize();
 
-	// Add Transforms to the Scene.
-	main.addTransforms();
+        // Add Transforms to the Scene.
+        main.addTransforms();
 
-	main.generateCode(args);
+        main.generateCode(args);
     }
 }
 </pre>
@@ -100,33 +100,33 @@ public class KernelMain {
      *  "ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom".
      */
     public KernelMain(String momlClassName) {
-	_momlClassName = momlClassName;
+        _momlClassName = momlClassName;
         _parser = new MoMLParser();
 
-	// Handle Backward Compatibility.
-	_parser.addMoMLFilters(BackwardCompatibility.allFilters());
+        // Handle Backward Compatibility.
+        _parser.addMoMLFilters(BackwardCompatibility.allFilters());
 
-	// Filter out any graphical classes and the GeneratorAttribute
-	// itself.  If we don't filter out GeneratorAttribute, then
-	// we get quite a few attributes in the generated code, which
-	// causes problems at runtime because sometimes the parameters
-	// are out of order, so there are dependency issues, or,
-	// in the case of the applet generator, the parameters depend
-	// on the value of Java system properties like ptolemy.ptII.directory
-	// which is not accessible because of security concerns.
-	RemoveGraphicalClasses removeGraphicalClasses =
-	    new RemoveGraphicalClasses();
+        // Filter out any graphical classes and the GeneratorAttribute
+        // itself.  If we don't filter out GeneratorAttribute, then
+        // we get quite a few attributes in the generated code, which
+        // causes problems at runtime because sometimes the parameters
+        // are out of order, so there are dependency issues, or,
+        // in the case of the applet generator, the parameters depend
+        // on the value of Java system properties like ptolemy.ptII.directory
+        // which is not accessible because of security concerns.
+        RemoveGraphicalClasses removeGraphicalClasses =
+            new RemoveGraphicalClasses();
 
-	// FIXME: Not sure why this is necessary, but it helps
-	// when generating an applet for moml/demo/spectrum.xml
-	removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
+        // FIXME: Not sure why this is necessary, but it helps
+        // when generating an applet for moml/demo/spectrum.xml
+        removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
 
-	removeGraphicalClasses
-	    .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
+        removeGraphicalClasses
+            .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
-	removeGraphicalClasses
-	    .put("ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
-	_parser.addMoMLFilter(removeGraphicalClasses);
+        removeGraphicalClasses
+            .put("ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
+        _parser.addMoMLFilter(removeGraphicalClasses);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,11 +138,11 @@ public class KernelMain {
     public void addTransforms() {
 
         // A Hack to ignore the class we specify on the command
-	// line. This is a soot problem that requires this hack.
-	// We will provide soot with java.lang.Object as its
-	// only application class in Main. The first transformation
-	// will ignore all application classes (i.e. set them to
-	// library classes)
+        // line. This is a soot problem that requires this hack.
+        // We will provide soot with java.lang.Object as its
+        // only application class in Main. The first transformation
+        // will ignore all application classes (i.e. set them to
+        // library classes)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.hack",
                 new _IgnoreAllApplicationClasses(), ""));
     }
@@ -161,18 +161,18 @@ public class KernelMain {
         // this class so that we don't actually generate code for it.
         args[0] = "java.lang.Object";
 
-	// Rather than calling soot.Main.main() here directly, which
-	// spawns a separate thread, we run this in the same thread
+        // Rather than calling soot.Main.main() here directly, which
+        // spawns a separate thread, we run this in the same thread
         //soot.Main.main(args);
-	soot.Main.setReservedNames();
-	soot.Main.setCmdLineArgs(args);
-	soot.Main main = new soot.Main();
-	soot.ConsoleCompilationListener consoleCompilationListener =
-	    new soot.ConsoleCompilationListener();
-	soot.Main.addCompilationListener(consoleCompilationListener);
-	// Thread thread = new Thread(main);
-	// thread.start();
-	main.run();
+        soot.Main.setReservedNames();
+        soot.Main.setCmdLineArgs(args);
+        soot.Main main = new soot.Main();
+        soot.ConsoleCompilationListener consoleCompilationListener =
+            new soot.ConsoleCompilationListener();
+        soot.Main.addCompilationListener(consoleCompilationListener);
+        // Thread thread = new Thread(main);
+        // thread.start();
+        main.run();
 
         // Reset the state of the manager.  We haven't actually done
         // anything, but the state of the manager must be reset.
@@ -191,40 +191,40 @@ public class KernelMain {
      */
     public void initialize(CompositeActor toplevel)
             throws IllegalActionException, NameDuplicationException {
-	_toplevel = toplevel;
+        _toplevel = toplevel;
 
-	// If the name of the model is the empty string, change it to
-	// the basename of the file.
-	if (_toplevel.getName().length() == 0) {
-	    String baseName = (new File(_momlClassName)).getName();
-	    if (baseName.lastIndexOf('.') != -1) {
-		baseName = baseName.substring(0,
+        // If the name of the model is the empty string, change it to
+        // the basename of the file.
+        if (_toplevel.getName().length() == 0) {
+            String baseName = (new File(_momlClassName)).getName();
+            if (baseName.lastIndexOf('.') != -1) {
+                baseName = baseName.substring(0,
                         baseName.lastIndexOf('.'));
-	    }
-	    _toplevel.setName(baseName);
-	}
+            }
+            _toplevel.setName(baseName);
+        }
 
-	// Make the name follow Java initializer naming conventions.
-	_toplevel.setName(StringUtilities.sanitizeName(_toplevel.getName()));
+        // Make the name follow Java initializer naming conventions.
+        _toplevel.setName(StringUtilities.sanitizeName(_toplevel.getName()));
 
 
         // Temporary hack because cloning doesn't properly clone
         // type constraints.  In some ways, it would make sense
-	// to do this in readInModel(), where we already have a MoMLParser
-	// object, but we want to be sure the type constraints are cloned
-	// if we are passed in a model directly without running readInModel().
+        // to do this in readInModel(), where we already have a MoMLParser
+        // object, but we want to be sure the type constraints are cloned
+        // if we are passed in a model directly without running readInModel().
         CompositeActor modelClass = null;
-	try {
-	    modelClass = (CompositeActor)
+        try {
+            modelClass = (CompositeActor)
                 _parser.searchForClass(_momlClassName,
                         _toplevel.getMoMLInfo().source);
-	} catch (XmlException xml) {
+        } catch (XmlException xml) {
             throw new
                 IllegalActionException("Failed to find class '"
                         + _momlClassName + "' in '"
                         + _toplevel.getMoMLInfo().source
                         + "': " + xml);
-	}
+        }
 
         if (modelClass != null) {
             _toplevel = modelClass;
@@ -258,20 +258,20 @@ public class KernelMain {
      */
     public static void generate(CompositeActor toplevel, String directoryName)
             throws IllegalActionException, NameDuplicationException {
-	// FIXME: This name is awfully close to generateCode(), yet
-	// this method is a superset of the generateCode functionality.
-	String [] args = {
-	    toplevel.getName(),
-	    "-d", directoryName,
-	    "-p", "wjtp.at", "targetPackage:ptolemy.copernicus.java.test.cg",
-	    "-p" ,"wjtp.mt", "targetPackage:ptolemy.copernicus.java.test.cg",
-	    "-p" ,"wjtp.umr", "disabled"
-	};
+        // FIXME: This name is awfully close to generateCode(), yet
+        // this method is a superset of the generateCode functionality.
+        String [] args = {
+            toplevel.getName(),
+            "-d", directoryName,
+            "-p", "wjtp.at", "targetPackage:ptolemy.copernicus.java.test.cg",
+            "-p" ,"wjtp.mt", "targetPackage:ptolemy.copernicus.java.test.cg",
+            "-p" ,"wjtp.umr", "disabled"
+        };
 
-	KernelMain main = new KernelMain(args[0]);
-	main.initialize(toplevel);
-	main.addTransforms();
-	main.generateCode(args);
+        KernelMain main = new KernelMain(args[0]);
+        main.initialize(toplevel);
+        main.addTransforms();
+        main.generateCode(args);
     }
 
     /** Sample main() method that parses a MoML class, initializes
@@ -299,11 +299,11 @@ public class KernelMain {
      */
     public static void main(String[] args)
             throws IllegalActionException, NameDuplicationException {
-	KernelMain kernelMain = new KernelMain(args[0]);
-	CompositeActor toplevel = kernelMain.readInModel(args[0]);
-	kernelMain.initialize(toplevel);
-	kernelMain.addTransforms();
-	kernelMain.generateCode(args);
+        KernelMain kernelMain = new KernelMain(args[0]);
+        CompositeActor toplevel = kernelMain.readInModel(args[0]);
+        kernelMain.initialize(toplevel);
+        kernelMain.addTransforms();
+        kernelMain.generateCode(args);
     }
 
     /** Read in a MoML class, either as a top level model or
@@ -326,59 +326,59 @@ public class KernelMain {
     public CompositeActor readInModel(String momlClassName)
             throws IllegalActionException, NameDuplicationException {
 
-	// readInModel() is a separate method so that we can read
-	// in the model and then get its name so that we can
-	// determine the name of the class that will be generated.
+        // readInModel() is a separate method so that we can read
+        // in the model and then get its name so that we can
+        // determine the name of the class that will be generated.
 
         // Call the MOML parser on the test file to generate a Ptolemy II
         // model.
-	_momlClassName = momlClassName;
-       	CompositeActor toplevel = null;
-	// First, try it as a top level model
-	String source = "<entity name=\"ToplevelModel\""
-	    + " class=\"" + momlClassName + "\"/>\n";
+        _momlClassName = momlClassName;
+               CompositeActor toplevel = null;
+        // First, try it as a top level model
+        String source = "<entity name=\"ToplevelModel\""
+            + " class=\"" + momlClassName + "\"/>\n";
         try {
             toplevel = (CompositeActor)_parser.parse(source);
 
         } catch (Exception exception) {
-	    StringBuffer errorMessage = new StringBuffer();
-	    errorMessage.append("\n  1. Failed to parse '" + momlClassName
+            StringBuffer errorMessage = new StringBuffer();
+            errorMessage.append("\n  1. Failed to parse '" + momlClassName
                     + "' as a top level model in\n"
                     + source + "\n  Exception was:\n-------\n  "
                     + exception + "\n-------\n");
-	    try {
-		// Then try it as an xml file
-		toplevel = (CompositeActor)_parser.parseFile(momlClassName);
-	    } catch (Exception exceptionTwo) {
-		errorMessage.append("  2. Failed to parse '" + momlClassName
+            try {
+                // Then try it as an xml file
+                toplevel = (CompositeActor)_parser.parseFile(momlClassName);
+            } catch (Exception exceptionTwo) {
+                errorMessage.append("  2. Failed to parse '" + momlClassName
                         + "' as an xml file:\n  "
                         + exceptionTwo + "\n");
-		try {
-		    URL momlURL = new URL(momlClassName);
-		    try {
-			// Then try it as a URL file
-			toplevel = (CompositeActor)_parser.parse(null,
+                try {
+                    URL momlURL = new URL(momlClassName);
+                    try {
+                        // Then try it as a URL file
+                        toplevel = (CompositeActor)_parser.parse(null,
                                 momlURL);
-		    } catch (Exception exceptionThree) {
-			errorMessage.append("  3. Failed to parse '"
+                    } catch (Exception exceptionThree) {
+                        errorMessage.append("  3. Failed to parse '"
                                 + momlClassName
                                 + "' as a URL '"
                                 + momlURL + "':\n  "
                                 + exceptionThree + "\n");
-			throw new IllegalActionException(null, exceptionThree,
+                        throw new IllegalActionException(null, exceptionThree,
                                 errorMessage.toString());
 
-		    }
-		} catch (MalformedURLException malformed) {
-		    throw new IllegalActionException(errorMessage + ": "
+                    }
+                } catch (MalformedURLException malformed) {
+                    throw new IllegalActionException(errorMessage + ": "
                             + malformed);
-		}
-	    }
-	    if (toplevel == null) {
-		throw new IllegalActionException(errorMessage.toString());
-	    }
+                }
+            }
+            if (toplevel == null) {
+                throw new IllegalActionException(errorMessage.toString());
+            }
         }
-	return toplevel;
+        return toplevel;
     }
 
 
@@ -408,7 +408,7 @@ public class KernelMain {
     ////                         inner classes                     ////
 
     public static class _IgnoreAllApplicationClasses
-	extends SceneTransformer {
+        extends SceneTransformer {
         /** Transform the Scene according to the information specified
          *  in the model for this transform.
          *  @param phaseName The phase this transform is operating under.

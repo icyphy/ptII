@@ -60,7 +60,7 @@ public class NamedObjController extends LocatableNodeController {
      *  @param controller The associated graph controller.
      */
     public NamedObjController(GraphController controller) {
-	super(controller);
+        super(controller);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,15 +93,15 @@ public class NamedObjController extends LocatableNodeController {
      *  derived classes.
      */
     protected class GetDocumentationAction extends FigureAction {
-	public GetDocumentationAction() {
-	    super("Get Documentation");
-	}
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
-	    String className = target.getClass().getName();
-	    String docName = "doc.codeDoc." + className;
-	    try {
+        public GetDocumentationAction() {
+            super("Get Documentation");
+        }
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            NamedObj target = getTarget();
+            String className = target.getClass().getName();
+            String docName = "doc.codeDoc." + className;
+            try {
                 URL toRead = getClass().getClassLoader().getResource(
                         docName.replace('.', '/') + ".html");
                 if (toRead != null) {
@@ -126,6 +126,6 @@ public class NamedObjController extends LocatableNodeController {
                        + "\nTry Running \"make\" in ptII/doc."
                        + "\nor installing the documentation component.", ex);
             }
-	}
+        }
     };
 }

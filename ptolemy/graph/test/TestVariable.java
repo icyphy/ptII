@@ -56,7 +56,7 @@ public class TestVariable implements InequalityTerm {
      *  @param value A String
      */
     public TestVariable(String value) {
-	_value = value;
+        _value = value;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -65,14 +65,14 @@ public class TestVariable implements InequalityTerm {
     /** Disallow the value of this term to be set.
      */
     public void fixValue() {
-	_valueFixed = true;
+        _valueFixed = true;
     }
 
     /** Return the string value.
      *  @return A String
      */
     public Object getAssociatedObject() {
-	return _value;
+        return _value;
     }
 
     /** Return the information of this term. The information is a
@@ -87,7 +87,7 @@ public class TestVariable implements InequalityTerm {
      *  @return a String
      */
     public Object getValue() {
-	return _value;
+        return _value;
     }
 
     /** Return an array of size one. The element of the array is
@@ -95,13 +95,13 @@ public class TestVariable implements InequalityTerm {
      *  @return an array of InequalityTerms
      */
     public InequalityTerm[] getVariables() {
-	if (isSettable()) {
-	    InequalityTerm[] variable = new InequalityTerm[1];
-	    variable[0] = this;
-	    return variable;
-	} else {
-	    return new InequalityTerm[0];
-	}
+        if (isSettable()) {
+            InequalityTerm[] variable = new InequalityTerm[1];
+            variable[0] = this;
+            return variable;
+        } else {
+            return new InequalityTerm[0];
+        }
     }
 
     /** Set the value of this variable to the specified String.
@@ -110,19 +110,19 @@ public class TestVariable implements InequalityTerm {
      */
     public void initialize(Object e)
             throws IllegalActionException {
-	if (isSettable()) {
-	    _value = (String)e;
-	} else {
-	    throw new IllegalActionException("TestVariable.initialize: " +
+        if (isSettable()) {
+            _value = (String)e;
+        } else {
+            throw new IllegalActionException("TestVariable.initialize: " +
                     "This term is not settable.");
-	}
+        }
     }
 
     /** Return true.
      *  @return true
      */
     public boolean isSettable() {
-	return !_valueFixed;
+        return !_valueFixed;
     }
 
     /** Check whether the current value of this term is acceptable,
@@ -139,11 +139,11 @@ public class TestVariable implements InequalityTerm {
      *  @param A String
      */
     public void setName(String name) {
-	if (name != null) {
-	    _name = name;
-	} else {
-	    _name = "";
-	}
+        if (name != null) {
+            _name = name;
+        } else {
+            _name = "";
+        }
     }
 
     /** Set the value of this variable to the specified String.
@@ -152,12 +152,12 @@ public class TestVariable implements InequalityTerm {
      */
     public void setValue(Object e)
             throws IllegalActionException {
-	if (isSettable()) {
-	    _value = (String)e;
-	} else {
-	    throw new IllegalActionException("TestVariable.isSettable: " +
+        if (isSettable()) {
+            _value = (String)e;
+        } else {
+            throw new IllegalActionException("TestVariable.isSettable: " +
                     "value is not settable.");
-	}
+        }
     }
 
 
@@ -171,7 +171,7 @@ public class TestVariable implements InequalityTerm {
     /** Allow the value of this term to be changed.
      */
     public void unfixValue() {
-	_valueFixed = false;
+        _valueFixed = false;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -9,7 +9,7 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* Exception for illegal value when passing data.
-	 */
+         */
 public final class CorbaIllegalValueExceptionHolder implements org.omg.CORBA.portable.Streamable
 {
   public ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalValueException value = null;

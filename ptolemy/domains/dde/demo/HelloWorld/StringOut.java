@@ -64,15 +64,15 @@ public abstract class StringOut extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	output = new TypedIOPort( this, "output", false, true );
-	output.setTypeEquals(BaseType.STRING);
-	input = new TypedIOPort( this, "input", true, false );
-	input.setTypeEquals(BaseType.STRING);
+        output = new TypedIOPort( this, "output", false, true );
+        output.setTypeEquals(BaseType.STRING);
+        input = new TypedIOPort( this, "input", true, false );
+        input.setTypeEquals(BaseType.STRING);
 
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables		   ////
+    ////                         public variables                   ////
 
     public TypedIOPort output;
     public TypedIOPort input;
@@ -103,15 +103,15 @@ public abstract class StringOut extends TypedAtomicActor {
      *  when checking token availability in the input port.
      */
     public void fire() throws IllegalActionException {
-	if ( input.hasToken(0) ) {
-	    input.get(0);
-	    String string = (String)_contents.get( _cntr );
-	    output.broadcast( new StringToken(string) );
-	    _cntr++;
-	    if ( _cntr == _contents.size() ) {
-		_cntr = 0;
-	    }
-	}
+        if ( input.hasToken(0) ) {
+            input.get(0);
+            String string = (String)_contents.get( _cntr );
+            output.broadcast( new StringToken(string) );
+            _cntr++;
+            if ( _cntr == _contents.size() ) {
+                _cntr = 0;
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

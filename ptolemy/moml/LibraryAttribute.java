@@ -83,7 +83,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
      *  @param workspace The workspace that will list the attribute.
      */
     public LibraryAttribute(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the given container and name.
@@ -101,7 +101,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
      */
     public LibraryAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -78,14 +78,14 @@ public class SequenceToArray extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// default tokenConsumptionRate is 1.
-	input.setTokenConsumptionRate(1);
+        // default tokenConsumptionRate is 1.
+        input.setTokenConsumptionRate(1);
 
-	// tokenProductionRate is 1.
-	output.setTokenProductionRate(1);
+        // tokenProductionRate is 1.
+        output.setTokenProductionRate(1);
 
-	// set the output type to be an ArrayType.
-	output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        // set the output type to be an ArrayType.
+        output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // Set parameters.
         arrayLength = new Parameter(this, "arrayLength");
@@ -139,7 +139,7 @@ public class SequenceToArray extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         int length = ((IntToken)arrayLength.getToken()).intValue();
-	Token[] valueArray = input.get(0, length);
+        Token[] valueArray = input.get(0, length);
 
         output.send(0, new ArrayToken(valueArray));
     }
@@ -170,12 +170,12 @@ public class SequenceToArray extends SDFTransformer {
      *  @return A list of inequalities.
      */
     public List typeConstraintList() {
-	ArrayType outArrType = (ArrayType)output.getType();
-	InequalityTerm elementTerm = outArrType.getElementTypeTerm();
-	Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
+        ArrayType outArrType = (ArrayType)output.getType();
+        InequalityTerm elementTerm = outArrType.getElementTypeTerm();
+        Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 
-	List result = new LinkedList();
-	result.add(ineq);
-	return result;
+        List result = new LinkedList();
+        result.add(ineq);
+        return result;
     }
 }

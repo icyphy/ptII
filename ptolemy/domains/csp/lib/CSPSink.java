@@ -63,10 +63,10 @@ public class CSPSink extends AtomicActor {
      *   with instantiation of the tokenLimit parameter.
      */
     public CSPSink() throws IllegalActionException,
-    	    NameDuplicationException {
+                NameDuplicationException {
         super();
         tokenLimit = new Parameter( this, "tokenLimit",
-        	(new IntToken(-1)) );
+                (new IntToken(-1)) );
     }
 
     /** Construct a CSPSink with the specified container and the
@@ -88,7 +88,7 @@ public class CSPSink extends AtomicActor {
         super(container, name);
         input = new IOPort(this, "input", true, false);
         tokenLimit = new Parameter( this, "tokenLimit",
-        	(new IntToken(limit)) );
+                (new IntToken(limit)) );
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -74,26 +74,26 @@ public class PtolemyTransferable implements Transferable {
      * then do not add it again.
      */
     public void addObject(NamedObj object) {
-	if (!_objectList.contains(object)) {
-	    _objectList.add(object);
-	}
+        if (!_objectList.contains(object)) {
+            _objectList.add(object);
+        }
     }
 
     /**
      * Return the data flavors that this transferable supports.
      */
     public synchronized DataFlavor[] getTransferDataFlavors() {
-	return _flavors;
+        return _flavors;
     }
 
     /**
      * Return true if the given data flavor is supported.
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
-	int i;
-	for (i = 0; i < _flavors.length; i++)
-	    if (_flavors[i].equals(flavor)) return true;
-	return false;
+        int i;
+        for (i = 0; i < _flavors.length; i++)
+            if (_flavors[i].equals(flavor)) return true;
+        return false;
     }
 
     /**
@@ -112,17 +112,17 @@ public class PtolemyTransferable implements Transferable {
      */
     public Object getTransferData(DataFlavor flavor)
             throws UnsupportedFlavorException, IOException {
-	if (flavor.equals(DataFlavor.plainTextFlavor)) {
-	    // plain text flavor is deprecated, but everybody still
-	    // implements it.  The problem is that all the implementations
-	    // differ from the docs.  *sigh*
-	    return new StringReader(_getMoML());
-	} else if (flavor.equals(namedObjFlavor)) {
-	    return _objectList.iterator();
-	} else if (flavor.equals(DataFlavor.stringFlavor)) {
-	    return _getMoML();
-	}
-	throw new UnsupportedFlavorException(flavor);
+        if (flavor.equals(DataFlavor.plainTextFlavor)) {
+            // plain text flavor is deprecated, but everybody still
+            // implements it.  The problem is that all the implementations
+            // differ from the docs.  *sigh*
+            return new StringReader(_getMoML());
+        } else if (flavor.equals(namedObjFlavor)) {
+            return _objectList.iterator();
+        } else if (flavor.equals(DataFlavor.stringFlavor)) {
+            return _getMoML();
+        }
+        throw new UnsupportedFlavorException(flavor);
     }
 
     /**
@@ -130,9 +130,9 @@ public class PtolemyTransferable implements Transferable {
      * If the object does not exist in the transferable, then do nothing.
      */
     public void removeObject(NamedObj object) {
-	if (_objectList.contains(object)) {
-	    _objectList.remove(object);
-	}
+        if (_objectList.contains(object)) {
+            _objectList.remove(object);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,15 +149,15 @@ public class PtolemyTransferable implements Transferable {
     // Return a string with a moml description of all the objects in the list.
     public String _getMoML() throws IOException {
         StringWriter buffer = new StringWriter();
-	buffer.write("<group>\n");
+        buffer.write("<group>\n");
         Iterator elements =
             Collections.unmodifiableList(_objectList).iterator();
         while (elements.hasNext()) {
             NamedObj element = (NamedObj) elements.next();
-	    // first level to avoid obnoxiousness with toplevel translations.
-	    element.exportMoML(buffer, 1);
+            // first level to avoid obnoxiousness with toplevel translations.
+            element.exportMoML(buffer, 1);
         }
-	buffer.write("</group>\n");
+        buffer.write("</group>\n");
         return buffer.toString();
     }
 
@@ -166,9 +166,9 @@ public class PtolemyTransferable implements Transferable {
 
     // The flavors that this node can return.
     private final DataFlavor[] _flavors = {
-	DataFlavor.plainTextFlavor,
-	DataFlavor.stringFlavor,
-	namedObjFlavor,
+        DataFlavor.plainTextFlavor,
+        DataFlavor.stringFlavor,
+        namedObjFlavor,
     };
 
     //The object contained by this transferable.

@@ -118,14 +118,14 @@ public class UtilityFunctions {
             double raw = _random.nextGaussian();
             result[i] = new DoubleToken((raw*standardDeviation) + mean);
         }
-	try {
+        try {
             return new ArrayToken(result);
-	} catch (IllegalActionException illegalAction) {
-	    // This should not happen since result should not be null.
-	    throw new InternalErrorException("UtilityFunction.gaussian: "
-		    + "Cannot create the array that contains "
-		    + "Gaussian random numbers.");
-	}
+        } catch (IllegalActionException illegalAction) {
+            // This should not happen since result should not be null.
+            throw new InternalErrorException("UtilityFunction.gaussian: "
+                    + "Cannot create the array that contains "
+                    + "Gaussian random numbers.");
+        }
     }
 
     /** Return a matrix of Gaussian random numbers.
@@ -145,14 +145,14 @@ public class UtilityFunctions {
                 result[i][j] = (raw*standardDeviation) + mean;
             }
         }
-	try {
+        try {
             return new DoubleMatrixToken(result);
-	} catch (IllegalActionException illegalAction) {
-	    // This should not happen since result should not be null.
-	    throw new InternalErrorException("UtilityFunction.gaussian: "
-		    + "Cannot create the DoubleMatrixToken that contains "
-		    + "Gaussian random numbers.");
-	}
+        } catch (IllegalActionException illegalAction) {
+            // This should not happen since result should not be null.
+            throw new InternalErrorException("UtilityFunction.gaussian: "
+                    + "Cannot create the DoubleMatrixToken that contains "
+                    + "Gaussian random numbers.");
+        }
     }
 
     /** Find a file or directory. If the file does not exist as is, then
@@ -200,7 +200,7 @@ public class UtilityFunctions {
      *  @see #totalMemory()
      */
     public static LongToken freeMemory() {
-	return new LongToken(Runtime.getRuntime().freeMemory());
+        return new LongToken(Runtime.getRuntime().freeMemory());
     }
 
     /** Get the specified property from the environment. An empty string
@@ -276,50 +276,50 @@ public class UtilityFunctions {
                     }
                 }
             }
-	    String libraryWithSuffix =
+            String libraryWithSuffix =
                 library + "." + sharedLibrarySuffix;
 
-	    String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
+            String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
 
-	    if (libraryPath.equals(libraryWithSuffix)) {
-		// UnsatisfiedLinkError does not have a (String, Throwable)
-		// constructor, so we call initCause().
+            if (libraryPath.equals(libraryWithSuffix)) {
+                // UnsatisfiedLinkError does not have a (String, Throwable)
+                // constructor, so we call initCause().
 
-		String userDir = "<<user.dir unknown>>";
-		try {
-		    userDir = System.getProperty("user.dir");
-		} catch (Throwable throwable) {
-		    // Ignore.
-		}
+                String userDir = "<<user.dir unknown>>";
+                try {
+                    userDir = System.getProperty("user.dir");
+                } catch (Throwable throwable) {
+                    // Ignore.
+                }
 
-		String userHome = "<<user.home unknown>>";
-		try {
-		    userHome = System.getProperty("user.home");
-		} catch (Throwable throwable) {
-		    // Ignore.
-		}
+                String userHome = "<<user.home unknown>>";
+                try {
+                    userHome = System.getProperty("user.home");
+                } catch (Throwable throwable) {
+                    // Ignore.
+                }
 
-		String classpath = "<<classpath unknown>>";
-		try {
-		    classpath = System.getProperty("java.class.path");
-		} catch (Throwable throwable) {
-		    // Ignore.
-		}
-		Error error =
-		    new UnsatisfiedLinkError("Did not find '"+ library
-					     + "' in path, searched "
-					     + "user.home (" + userDir
-					     + ") user.dir (" + userHome
-					     + ") and the classpath for '"
-					     + libraryPath + "', but that "
-					     + "was not found either.\n"
-					     + "classpath was: "
-					     + classpath);
-		error.initCause(ex);
-		throw error;
-	    }
+                String classpath = "<<classpath unknown>>";
+                try {
+                    classpath = System.getProperty("java.class.path");
+                } catch (Throwable throwable) {
+                    // Ignore.
+                }
+                Error error =
+                    new UnsatisfiedLinkError("Did not find '"+ library
+                                             + "' in path, searched "
+                                             + "user.home (" + userDir
+                                             + ") user.dir (" + userHome
+                                             + ") and the classpath for '"
+                                             + libraryPath + "', but that "
+                                             + "was not found either.\n"
+                                             + "classpath was: "
+                                             + classpath);
+                error.initCause(ex);
+                throw error;
+            }
 
-	    // System.loadLibrary() does not handle pathnames with separators.
+            // System.loadLibrary() does not handle pathnames with separators.
 
             // If we get to here and load a library that includes references
             // to libraries not in the PATH or LD_LIBRARY_PATH, then we will
@@ -448,14 +448,14 @@ public class UtilityFunctions {
         for (int i = 0; i < length; i++) {
             result[i] = new DoubleToken(Math.random());
         }
-	try {
+        try {
             return new ArrayToken(result);
-	} catch (IllegalActionException illegalAction) {
-	    // This should not happen since result should not be null.
-	    throw new InternalErrorException("UtilityFunction.random: "
-		    + "Cannot create the array that contains "
-		    + "random numbers.");
-	}
+        } catch (IllegalActionException illegalAction) {
+            // This should not happen since result should not be null.
+            throw new InternalErrorException("UtilityFunction.random: "
+                    + "Cannot create the array that contains "
+                    + "random numbers.");
+        }
     }
 
     /** Return a matrix of IID random numbers with value greater than
@@ -471,14 +471,14 @@ public class UtilityFunctions {
                 result[i][j] = Math.random();
             }
         }
-	try {
+        try {
             return new DoubleMatrixToken(result);
-	} catch (IllegalActionException illegalAction) {
-	    // This should not happen since result should not be null.
-	    throw new InternalErrorException("UtilityFunction.random: "
-		    + "Cannot create the DoubleMatrixToken that contains "
-		    + "random numbers.");
-	}
+        } catch (IllegalActionException illegalAction) {
+            // This should not happen since result should not be null.
+            throw new InternalErrorException("UtilityFunction.random: "
+                    + "Cannot create the DoubleMatrixToken that contains "
+                    + "random numbers.");
+        }
     }
 
     /** Get the string text contained in the specified file. The argument
@@ -664,19 +664,19 @@ public class UtilityFunctions {
             result[i] = element;
         }
 
-	ArrayToken arrayToken;
-	try {
-	    arrayToken = new ArrayToken(result);
-	} catch (IllegalActionException illegalAction) {
-	    // This should not happen since the elements of the array always
-	    // have the same type.
-	    throw new InternalErrorException("UtilityFunctions.repeat: "
+        ArrayToken arrayToken;
+        try {
+            arrayToken = new ArrayToken(result);
+        } catch (IllegalActionException illegalAction) {
+            // This should not happen since the elements of the array always
+            // have the same type.
+            throw new InternalErrorException("UtilityFunctions.repeat: "
                     + "Cannot construct ArrayToken. "
                     + illegalAction.getMessage());
-	} catch (IllegalArgumentException illegalArgument) {
-	    // This should not happen since the elements of the array always
-	    // have the same type.
-	    throw new InternalErrorException("UtilityFunctions.repeat: "
+        } catch (IllegalArgumentException illegalArgument) {
+            // This should not happen since the elements of the array always
+            // have the same type.
+            throw new InternalErrorException("UtilityFunctions.repeat: "
                     + "Cannot construct ArrayToken. "
                     + illegalArgument.getMessage());
         }
@@ -684,12 +684,12 @@ public class UtilityFunctions {
     }
 
     /** Return the approximate number of bytes used by current objects
-     *	and available for future object allocation.
+     *        and available for future object allocation.
      *  @return The total number of bytes used by the JVM.
      *  @see #freeMemory()
      */
     public static LongToken totalMemory() {
-	return new LongToken(Runtime.getRuntime().totalMemory());
+        return new LongToken(Runtime.getRuntime().totalMemory());
     }
 
     /** Return a double zero matrix with the given number of rows and columns.
@@ -697,10 +697,10 @@ public class UtilityFunctions {
      */
     public static DoubleMatrixToken zeroMatrix(int rows, int columns) {
         double[][] mtr = new double[rows][columns];
-	DoubleMatrixToken result = null;
-	try {
+        DoubleMatrixToken result = null;
+        try {
             result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
-	} catch (IllegalActionException ex) {
+        } catch (IllegalActionException ex) {
             throw new InternalErrorException("UtilityFunctions.zeroMatrix: "
                     + "Cannot create DoubleMatrixToken. "
                     + ex.getMessage());

@@ -52,17 +52,17 @@ import soot.jimple.Jimple;
 public class CompoundAndExpression extends AbstractCompoundExpression {
 
     public CompoundAndExpression(Value op1, Value op2) {
-	super(op1,op2);
+        super(op1,op2);
     }
     public final String getSymbol() { return " && "; }
     public Object clone() {
-	return new CompoundAndExpression( Jimple.cloneIfNecessary(getOp1()),
-					  Jimple.cloneIfNecessary(getOp2()));
+        return new CompoundAndExpression( Jimple.cloneIfNecessary(getOp1()),
+                                          Jimple.cloneIfNecessary(getOp2()));
 
     }
     public CompoundBooleanExpression invert() throws IllegalActionException {
-	// Apply demorgan's theorem
-	return new CompoundOrExpression( invertValue(getOp1()),
-					 invertValue(getOp2()) );
+        // Apply demorgan's theorem
+        return new CompoundOrExpression( invertValue(getOp1()),
+                                         invertValue(getOp2()) );
     }
 }

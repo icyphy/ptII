@@ -103,7 +103,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>"
                 + "<text x=\"-40\" y=\"-5\" "
@@ -111,8 +111,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                 + "Double click to\ngenerate code.</text></svg>");
 
         initialParametersURL =
-	    new Parameter(this, "initialParametersURL",
-			  new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
+            new Parameter(this, "initialParametersURL",
+                          new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,62 +140,62 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  accordingly.
      */
     public void initialize()
-	throws IllegalActionException, NameDuplicationException {
-	if (_initialized) {
-	    return;
-	}
+        throws IllegalActionException, NameDuplicationException {
+        if (_initialized) {
+            return;
+        }
 
-	if (initialParametersURL == null) {
-	    throw new IllegalActionException(this, "initialParametersURL "
-					     + "parameter was null?");
-	}
+        if (initialParametersURL == null) {
+            throw new IllegalActionException(this, "initialParametersURL "
+                                             + "parameter was null?");
+        }
 
-	// Read in the initialParameters file.
-	URL initialParameters =
-	    getClass().getClassLoader()
-	    .getResource(((StringToken)initialParametersURL.getToken())
-			 .stringValue());
-	if (initialParameters == null) {
-	    throw new IllegalActionException(this, "Failed to find the "
-					     + "value of the "
-					     + "initialParametersURL: '"
-					     + initialParametersURL
-					     .getExpression()
-					     + "'");
-	}
+        // Read in the initialParameters file.
+        URL initialParameters =
+            getClass().getClassLoader()
+            .getResource(((StringToken)initialParametersURL.getToken())
+                         .stringValue());
+        if (initialParameters == null) {
+            throw new IllegalActionException(this, "Failed to find the "
+                                             + "value of the "
+                                             + "initialParametersURL: '"
+                                             + initialParametersURL
+                                             .getExpression()
+                                             + "'");
+        }
 
 
-	try {
-	    BufferedReader inputReader = new BufferedReader(
+        try {
+            BufferedReader inputReader = new BufferedReader(
                                           new InputStreamReader(
                                           initialParameters.openStream()));
 
-	    String inputLine;
-	    StringBuffer buffer = new StringBuffer();
-	    while ((inputLine = inputReader.readLine()) != null) {
-		buffer.append(inputLine + "\n" );
-	    }
-	    inputReader.close();
-	    addChangeListener(this);
-  	    try {
-  		requestChange(new MoMLChangeRequest(this, this,
-  						buffer.toString()));
-  	    } catch (Exception ex) {
-  		throw new IllegalActionException(this, ex, "Failed to parse "
-  						 + buffer.toString());
-  	    }
-	} catch (Exception ex) {
-	    throw new IllegalActionException(this, ex, "Failed to parse '"
-					     + initialParametersURL
-					     .getExpression()
-					     + "'");
-	}
-	// We sanity check after modelPath has had a chance to be
-	// set so that we avoid calling the parser on the initial default
-	// file that we are not going to use anyway.
- 	//sanityCheckAndUpdateParameters();
+            String inputLine;
+            StringBuffer buffer = new StringBuffer();
+            while ((inputLine = inputReader.readLine()) != null) {
+                buffer.append(inputLine + "\n" );
+            }
+            inputReader.close();
+            addChangeListener(this);
+              try {
+                  requestChange(new MoMLChangeRequest(this, this,
+                                                  buffer.toString()));
+              } catch (Exception ex) {
+                  throw new IllegalActionException(this, ex, "Failed to parse "
+                                                   + buffer.toString());
+              }
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Failed to parse '"
+                                             + initialParametersURL
+                                             .getExpression()
+                                             + "'");
+        }
+        // We sanity check after modelPath has had a chance to be
+        // set so that we avoid calling the parser on the initial default
+        // file that we are not going to use anyway.
+         //sanityCheckAndUpdateParameters();
 
-	_initialized = true;
+        _initialized = true;
     }
 
 
@@ -208,55 +208,55 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  otherwise, return null.
      */
     public static String lookupClassAsResource(String necessaryClass) {
-	String necessaryResource =
-	    StringUtilities.substitute(necessaryClass, ".", "/")
-	    + ".class";
+        String necessaryResource =
+            StringUtilities.substitute(necessaryClass, ".", "/")
+            + ".class";
 
-	URL necessaryURL = Thread.currentThread()
-	    .getContextClassLoader().getResource(necessaryResource);
+        URL necessaryURL = Thread.currentThread()
+            .getContextClassLoader().getResource(necessaryResource);
 
-	if (necessaryURL != null) {
-	    String resourceResults = necessaryURL.getFile();
+        if (necessaryURL != null) {
+            String resourceResults = necessaryURL.getFile();
 
-	    // Strip off the file:/ and the necessaryResource.
-	    if (resourceResults.startsWith("file:/")) {
-		resourceResults = resourceResults.substring(6);
-	    }
+            // Strip off the file:/ and the necessaryResource.
+            if (resourceResults.startsWith("file:/")) {
+                resourceResults = resourceResults.substring(6);
+            }
 
-	    // Strip off the name of the resource we were looking for
-	    // so that we are left with the directory or jar file
-	    // it is in
-	    resourceResults =
-		resourceResults.substring(0,resourceResults.length()-
-					  necessaryResource.length());
-	    // Strip off the file:/
-	    if (resourceResults.startsWith("file:/")) {
-		resourceResults = resourceResults.substring(6);
-	    }
+            // Strip off the name of the resource we were looking for
+            // so that we are left with the directory or jar file
+            // it is in
+            resourceResults =
+                resourceResults.substring(0,resourceResults.length()-
+                                          necessaryResource.length());
+            // Strip off the file:/
+            if (resourceResults.startsWith("file:/")) {
+                resourceResults = resourceResults.substring(6);
+            }
 
-	    // Strip off the trailing !/
-	    if (resourceResults.endsWith("!/")) {
-		resourceResults =
-		    resourceResults.substring(0,
-					      resourceResults.length()-2);
-	    }
+            // Strip off the trailing !/
+            if (resourceResults.endsWith("!/")) {
+                resourceResults =
+                    resourceResults.substring(0,
+                                              resourceResults.length()-2);
+            }
 
-	    // Unfortunately, under Windows, URL.getFile() may
-	    // return things like /c:/ptII, so we create a new
-	    // File and get its path, which will return c:\ptII
-	    File resourceFile = new File(resourceResults);
+            // Unfortunately, under Windows, URL.getFile() may
+            // return things like /c:/ptII, so we create a new
+            // File and get its path, which will return c:\ptII
+            File resourceFile = new File(resourceResults);
 
-	    // Convert backslashes
-	    String sanitizedResourceName =
-		StringUtilities.substitute(resourceFile.getPath(),
-					   "\\", "/");
-	    return sanitizedResourceName;
-	}
-	return null;
+            // Convert backslashes
+            String sanitizedResourceName =
+                StringUtilities.substitute(resourceFile.getPath(),
+                                           "\\", "/");
+            return sanitizedResourceName;
+        }
+        return null;
     }
 
     /** If necessary, initialize this GeneratorAttribute and then
-     *	sanity check the parameters and update them as necessary.
+     *        sanity check the parameters and update them as necessary.
      *  The moml file named by the modelPathOrURL method parameter
      *  is read in and the Parameters that are determined by the
      *  model itself are checked.  Pathnames are also checked
@@ -266,170 +266,170 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  parameter is used.
      */
     public void sanityCheckAndUpdateParameters(String modelPathOrURL)
-	throws IllegalActionException, NameDuplicationException {
-	// If necessary, initialize.
-	if (!_initialized) {
-	    initialize();
-	}
+        throws IllegalActionException, NameDuplicationException {
+        // If necessary, initialize.
+        if (!_initialized) {
+            initialize();
+        }
 
-	if (modelPathOrURL == null)
-	    // Get the modelPath and update modelPath and model.
-	    modelPathOrURL =
-		((StringToken)
-		 ((Parameter)getAttribute("modelPath"))
-		 .getToken()).stringValue();
+        if (modelPathOrURL == null)
+            // Get the modelPath and update modelPath and model.
+            modelPathOrURL =
+                ((StringToken)
+                 ((Parameter)getAttribute("modelPath"))
+                 .getToken()).stringValue();
 
-	// Update the modelName and iterations Parameters.
-	updateModelAttributes(modelPathOrURL);
-
-
-	String ptII =
-	    ((StringToken)
-	     ((Parameter)getAttribute("ptII"))
-	     .getToken()).stringValue();
-
-	String ptIIUserDirectory =
-	    ((StringToken)
-	     ((Parameter)getAttribute("ptIIUserDirectory"))
-	     .getToken()).stringValue();
+        // Update the modelName and iterations Parameters.
+        updateModelAttributes(modelPathOrURL);
 
 
-	// Check that we will be able to write to the value of
-	// the ptIIUserDirectory Parameter, and that
+        String ptII =
+            ((StringToken)
+             ((Parameter)getAttribute("ptII"))
+             .getToken()).stringValue();
+
+        String ptIIUserDirectory =
+            ((StringToken)
+             ((Parameter)getAttribute("ptIIUserDirectory"))
+             .getToken()).stringValue();
+
+
+        // Check that we will be able to write to the value of
+        // the ptIIUserDirectory Parameter, and that
         // if we are running under Webstart, then ptIIUserDirectory
         // does not equal ptII.
-	File ptIIUserDirectoryFile = new File(ptIIUserDirectory);
-	if (!ptIIUserDirectoryFile.isDirectory()
-	    || !ptIIUserDirectoryFile.canWrite()
+        File ptIIUserDirectoryFile = new File(ptIIUserDirectory);
+        if (!ptIIUserDirectoryFile.isDirectory()
+            || !ptIIUserDirectoryFile.canWrite()
             || (JNLPUtilities.isRunningUnderWebStart()
                     && ptIIUserDirectory == ptII)) {
 
-	    // It would be nice to tell the user we are changing the
-	    // ptIIUserDirectory directory of the build.  Usually
-	    // ptIIUserDirectory is $PTII or ptolemy.ptII.dir
+            // It would be nice to tell the user we are changing the
+            // ptIIUserDirectory directory of the build.  Usually
+            // ptIIUserDirectory is $PTII or ptolemy.ptII.dir
 
-	    // Get user.dir and create a ptII/cg subdir if necessary
+            // Get user.dir and create a ptII/cg subdir if necessary
             String userDir =
-		StringUtilities.getProperty("user.dir");
-	    if (userDir != null) {
-		ptIIUserDirectoryFile =
-		    new File(userDir + "/ptII/cg");
-		if (!ptIIUserDirectoryFile.isDirectory()) {
-		    // No need to check the return value here,
-		    // we do it later anyway
-		    ptIIUserDirectoryFile.mkdirs();
-		}
-		if (!ptIIUserDirectoryFile.isDirectory()
-		    || !ptIIUserDirectoryFile.canWrite()) {
-		    throw new IllegalActionException("'" + ptIIUserDirectory
-						     + "' was not a "
-						     + "writable directory, "
-						     + "so we tried '"
-						     + ptIIUserDirectoryFile
-						     + "', but we failed to "
-						     + "make a writable"
-						     + "directory?");
-		} else {
-		    ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
-		    ((Parameter)getAttribute("ptIIUserDirectory"))
-			.setExpression("property(\"user.dir\") + "
-				       + "\"/ptII/cg\"");
-		}
-	    }
-	}
+                StringUtilities.getProperty("user.dir");
+            if (userDir != null) {
+                ptIIUserDirectoryFile =
+                    new File(userDir + "/ptII/cg");
+                if (!ptIIUserDirectoryFile.isDirectory()) {
+                    // No need to check the return value here,
+                    // we do it later anyway
+                    ptIIUserDirectoryFile.mkdirs();
+                }
+                if (!ptIIUserDirectoryFile.isDirectory()
+                    || !ptIIUserDirectoryFile.canWrite()) {
+                    throw new IllegalActionException("'" + ptIIUserDirectory
+                                                     + "' was not a "
+                                                     + "writable directory, "
+                                                     + "so we tried '"
+                                                     + ptIIUserDirectoryFile
+                                                     + "', but we failed to "
+                                                     + "make a writable"
+                                                     + "directory?");
+                } else {
+                    ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
+                    ((Parameter)getAttribute("ptIIUserDirectory"))
+                        .setExpression("property(\"user.dir\") + "
+                                       + "\"/ptII/cg\"");
+                }
+            }
+        }
 
 
-	String ptIIUserDirectoryAsURL;
-	try {
-	    ptIIUserDirectoryAsURL =
-		(new File(ptIIUserDirectory)).toURL().toString();
-	} catch (java.net.MalformedURLException ex) {
-	    ptIIUserDirectoryAsURL = ex.getMessage();
-	}
-	// Strip of the trailing /, it causes problems when
-	// we invoke the browser to view an applet.
-	if (ptIIUserDirectoryAsURL.endsWith("/")) {
-	    ptIIUserDirectoryAsURL =
-		ptIIUserDirectoryAsURL
-		.substring(0, ptIIUserDirectoryAsURL.length() - 1);
-	}
+        String ptIIUserDirectoryAsURL;
+        try {
+            ptIIUserDirectoryAsURL =
+                (new File(ptIIUserDirectory)).toURL().toString();
+        } catch (java.net.MalformedURLException ex) {
+            ptIIUserDirectoryAsURL = ex.getMessage();
+        }
+        // Strip of the trailing /, it causes problems when
+        // we invoke the browser to view an applet.
+        if (ptIIUserDirectoryAsURL.endsWith("/")) {
+            ptIIUserDirectoryAsURL =
+                ptIIUserDirectoryAsURL
+                .substring(0, ptIIUserDirectoryAsURL.length() - 1);
+        }
 
-	((Variable)getAttribute("ptIIUserDirectoryAsURL"))
-	    .setExpression("\"" +  ptIIUserDirectoryAsURL + "\"");
+        ((Variable)getAttribute("ptIIUserDirectoryAsURL"))
+            .setExpression("\"" +  ptIIUserDirectoryAsURL + "\"");
 
-	// targetPath depends on the value of targetPackage
-	// FIXME: Variables should be visible in the UI, but not editable.
-	String targetPackage =
-	    ((StringToken)
-	     ((Parameter)getAttribute("targetPackage"))
-	     .getToken()).stringValue();
+        // targetPath depends on the value of targetPackage
+        // FIXME: Variables should be visible in the UI, but not editable.
+        String targetPackage =
+            ((StringToken)
+             ((Parameter)getAttribute("targetPackage"))
+             .getToken()).stringValue();
 
-	String targetPath = StringUtilities.substitute(targetPackage,
-						       ".", "/");
+        String targetPath = StringUtilities.substitute(targetPackage,
+                                                       ".", "/");
 
-	((Variable)getAttribute("targetPath"))
-	     .setExpression("\"" + targetPath + "\"");
+        ((Variable)getAttribute("targetPath"))
+             .setExpression("\"" + targetPath + "\"");
 
-	// Check that ptIIUserDirectory + targetPath is writable.
-	// targetPath depends on ptIIUserDirectory, so we should mess with ptIIUserDirectory first.
+        // Check that ptIIUserDirectory + targetPath is writable.
+        // targetPath depends on ptIIUserDirectory, so we should mess with ptIIUserDirectory first.
 
-	File targetPathFile = new File(ptIIUserDirectory, targetPath);
-	if (!targetPathFile.isDirectory()
-	    || !targetPathFile.canWrite()) {
-	    // Make any directories
-	    if (!targetPathFile.mkdirs()) {
-		    throw new
-			IllegalActionException("'" + targetPathFile
-					       + "' was not a "
-					       + "writable directory, and "
-					       + "mkdirs() failed");
-	    }
-	}
+        File targetPathFile = new File(ptIIUserDirectory, targetPath);
+        if (!targetPathFile.isDirectory()
+            || !targetPathFile.canWrite()) {
+            // Make any directories
+            if (!targetPathFile.mkdirs()) {
+                    throw new
+                        IllegalActionException("'" + targetPathFile
+                                               + "' was not a "
+                                               + "writable directory, and "
+                                               + "mkdirs() failed");
+            }
+        }
 
-	_updateNecessaryClassPath();
+        _updateNecessaryClassPath();
 
     }
 
     /** Return a String representation of this object. */
     public String toString() {
-	// We use reflection here so that we don't have to edit
-	// this method every time we add a field.
-	StringBuffer results = new StringBuffer();
-	Iterator attributes = attributeList().iterator();
-	while(attributes.hasNext()) {
-	    Attribute attribute = (Attribute)attributes.next();
-	    if (attribute instanceof Parameter) {
-		StringBuffer value = new StringBuffer("\n Value:         ");
-		try {
-		    value.append(((Parameter)attribute).getToken());
-		} catch (Exception ex) {
-		    value.append(ex);
-		}
+        // We use reflection here so that we don't have to edit
+        // this method every time we add a field.
+        StringBuffer results = new StringBuffer();
+        Iterator attributes = attributeList().iterator();
+        while(attributes.hasNext()) {
+            Attribute attribute = (Attribute)attributes.next();
+            if (attribute instanceof Parameter) {
+                StringBuffer value = new StringBuffer("\n Value:         ");
+                try {
+                    value.append(((Parameter)attribute).getToken());
+                } catch (Exception ex) {
+                    value.append(ex);
+                }
 
-		results.append("Parameter:      " + attribute.getName()
-			       + "\n Expression:    "
-			       + ((Parameter)attribute).getExpression()
-			       + value.toString()
-			       );
-	    } else {
-		results.append("Attribute:      " + attribute.getName());
-	    }
+                results.append("Parameter:      " + attribute.getName()
+                               + "\n Expression:    "
+                               + ((Parameter)attribute).getExpression()
+                               + value.toString()
+                               );
+            } else {
+                results.append("Attribute:      " + attribute.getName());
+            }
             Attribute tooltipAttribute =
                 ((NamedObj)attribute).getAttribute("tooltip");
             if (tooltipAttribute != null
                     && tooltipAttribute instanceof Documentation) {
-		results.append("\n Documentation: "
-			       + ((Documentation)tooltipAttribute).getValue());
+                results.append("\n Documentation: "
+                               + ((Documentation)tooltipAttribute).getValue());
             } else {
                 String tip = Documentation.consolidate((NamedObj)attribute);
                 if (tip != null) {
                     results.append("\n Documentation: " + tip);
                 }
-	    }
-	    results.append("\n\n");
+            }
+            results.append("\n\n");
 
-	}
-	return results.toString();
+        }
+        return results.toString();
     }
 
     /** Update the modelPath, modelName and iterations parameters in
@@ -441,14 +441,14 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      */
     public void updateModelAttributes(String modelPathOrURL)
     throws IllegalActionException {
-	URL modelURL;
-	try {
-	    modelURL = MoMLApplication.specToURL(modelPathOrURL);
-	} catch (IOException ex) {
-	    throw new IllegalActionException(this, ex,
-					     "Failed to parse '"
-					     + modelPathOrURL + "'");
-	}
+        URL modelURL;
+        try {
+            modelURL = MoMLApplication.specToURL(modelPathOrURL);
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                                             "Failed to parse '"
+                                             + modelPathOrURL + "'");
+        }
 
         MoMLParser parser = new MoMLParser();
 
@@ -458,85 +458,85 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
         List oldFilters = parser.getMoMLFilters();
         parser.setMoMLFilters(null);
 
-	// Parse the model and get the name of the model.
-	try {
+        // Parse the model and get the name of the model.
+        try {
             // Handle Backward Compatibility.
             parser.addMoMLFilters(BackwardCompatibility.allFilters());
 
             // Filter out any graphical classes
-	    RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
-	    // FIXME: Not sure why this is necessary, but it helps
-	    // when generating an applet for moml/demo/spectrum.xml
-	    filter.put("ptolemy.kernel.util.Location", null);
-	    parser.addMoMLFilter(filter);
+            RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
+            // FIXME: Not sure why this is necessary, but it helps
+            // when generating an applet for moml/demo/spectrum.xml
+            filter.put("ptolemy.kernel.util.Location", null);
+            parser.addMoMLFilter(filter);
 
 
-	    NamedObj toplevel = null;
-	    try {
-		System.out.println("GeneratorAttribute: parsing " + modelURL);
-		toplevel = parser.parse(null, modelURL);
-		// FIXME: 1st arg of parse() could be $PTII as a URL.
-		modelPathOrURL = modelURL.toExternalForm();
-	    } catch (FileNotFoundException ex) {
-		try {
-		    // Might be under Web Start, try it this way.
-		    URL anotherURL =
-			JNLPUtilities.jarURLEntryResource(modelPathOrURL);
-		    if (anotherURL != null) {
-			toplevel = parser.parse(null, anotherURL);
-			modelPathOrURL = anotherURL.toExternalForm();
-		    } else {
-			throw new Exception("1. Failed to find '"
-					    + modelURL.toExternalForm()
-					    + "'\n"
-					    + "2. Failed to find '"
-					    + anotherURL
-					    + "'");
-		    }
-		} catch (Exception ex1) {
-		    throw new IllegalActionException(this, ex1,
-					"Failed to parse '"
-					+ modelPathOrURL + "'"
-					+ " Tried loading as a resource, too!"
-					);
-		}
-	    }
+            NamedObj toplevel = null;
+            try {
+                System.out.println("GeneratorAttribute: parsing " + modelURL);
+                toplevel = parser.parse(null, modelURL);
+                // FIXME: 1st arg of parse() could be $PTII as a URL.
+                modelPathOrURL = modelURL.toExternalForm();
+            } catch (FileNotFoundException ex) {
+                try {
+                    // Might be under Web Start, try it this way.
+                    URL anotherURL =
+                        JNLPUtilities.jarURLEntryResource(modelPathOrURL);
+                    if (anotherURL != null) {
+                        toplevel = parser.parse(null, anotherURL);
+                        modelPathOrURL = anotherURL.toExternalForm();
+                    } else {
+                        throw new Exception("1. Failed to find '"
+                                            + modelURL.toExternalForm()
+                                            + "'\n"
+                                            + "2. Failed to find '"
+                                            + anotherURL
+                                            + "'");
+                    }
+                } catch (Exception ex1) {
+                    throw new IllegalActionException(this, ex1,
+                                        "Failed to parse '"
+                                        + modelPathOrURL + "'"
+                                        + " Tried loading as a resource, too!"
+                                        );
+                }
+            }
 
-	    Parameter modelPath = (Parameter)getAttribute("modelPath");
-	    modelPath.setExpression("\"" + modelPathOrURL + "\"");
+            Parameter modelPath = (Parameter)getAttribute("modelPath");
+            modelPath.setExpression("\"" + modelPathOrURL + "\"");
 
-	    // Strip off the leading '.' and then sanitize.
-	    String modelNameValue =
-		StringUtilities
-		.sanitizeName(toplevel.getFullName().substring(1));
+            // Strip off the leading '.' and then sanitize.
+            String modelNameValue =
+                StringUtilities
+                .sanitizeName(toplevel.getFullName().substring(1));
 
-	    Parameter modelName = (Parameter)getAttribute("modelName");
-	    modelName.setExpression("\"" + modelNameValue + "\"");
+            Parameter modelName = (Parameter)getAttribute("modelName");
+            modelName.setExpression("\"" + modelNameValue + "\"");
 
-	    // Set the iterations parameter.
-	    CompositeActor compositeActor = (CompositeActor)toplevel;
-	    Director director = compositeActor.getDirector();
-	    // If we save a blank model, then there might not be a director.
-	    Parameter iterations = (Parameter)getAttribute("iterations");
-	    if (director == null) {
-		    iterations.setExpression("1000");
-	    } else {
-		Attribute directorIterations =
-		    director.getAttribute("iterations");
-		if (directorIterations != null) {
-		    Token iterationsToken =
-			((Parameter)directorIterations)
-			.getToken();
-		    iterations.setExpression(iterationsToken.toString());
-		} else {
-		    iterations.setExpression("1000");
-		}
-	    }
-	} catch (Exception ex) {
-	    throw new IllegalActionException(this, ex,
-					     "Failed to parse '"
-					     + modelPathOrURL + "'");
-	} finally {
+            // Set the iterations parameter.
+            CompositeActor compositeActor = (CompositeActor)toplevel;
+            Director director = compositeActor.getDirector();
+            // If we save a blank model, then there might not be a director.
+            Parameter iterations = (Parameter)getAttribute("iterations");
+            if (director == null) {
+                    iterations.setExpression("1000");
+            } else {
+                Attribute directorIterations =
+                    director.getAttribute("iterations");
+                if (directorIterations != null) {
+                    Token iterationsToken =
+                        ((Parameter)directorIterations)
+                        .getToken();
+                    iterations.setExpression(iterationsToken.toString());
+                } else {
+                    iterations.setExpression("1000");
+                }
+            }
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                                             "Failed to parse '"
+                                             + modelPathOrURL + "'");
+        } finally {
             parser.setMoMLFilters(oldFilters);
         }
     }
@@ -552,51 +552,51 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
     // separate jar files
     private void _updateNecessaryClassPath() throws IllegalActionException {
 
-	ArrayToken necessaryClassesToken =
-	    (ArrayToken)
-	     ((Parameter)getAttribute("necessaryClasses"))
-	     .getToken();
+        ArrayToken necessaryClassesToken =
+            (ArrayToken)
+             ((Parameter)getAttribute("necessaryClasses"))
+             .getToken();
 
 
-	List classPathList = new LinkedList();
-	for(int i = 0; i < necessaryClassesToken.length(); i++) {
-	    String necessaryClass =
-		((StringToken)necessaryClassesToken.getElement(i))
-		.stringValue();
+        List classPathList = new LinkedList();
+        for(int i = 0; i < necessaryClassesToken.length(); i++) {
+            String necessaryClass =
+                ((StringToken)necessaryClassesToken.getElement(i))
+                .stringValue();
 
-	    String sanitizedResourceName =
-		lookupClassAsResource(necessaryClass);
+            String sanitizedResourceName =
+                lookupClassAsResource(necessaryClass);
 
-	    if (sanitizedResourceName != null
-		&& !classPathList.contains(sanitizedResourceName)) {
-		classPathList.add(sanitizedResourceName);
-	    }
-	}
+            if (sanitizedResourceName != null
+                && !classPathList.contains(sanitizedResourceName)) {
+                classPathList.add(sanitizedResourceName);
+            }
+        }
 
-	// Convert the list of directories to a classpath with separators.
+        // Convert the list of directories to a classpath with separators.
 
-	// We could use property("path.separator") here, but if the user
-	// changes the classPathSeparator parameter, then we better use it.
-	String classPathSeparator =
-	    ((StringToken)
-	     ((Parameter)getAttribute("classPathSeparator"))
-	     .getToken()).stringValue();
+        // We could use property("path.separator") here, but if the user
+        // changes the classPathSeparator parameter, then we better use it.
+        String classPathSeparator =
+            ((StringToken)
+             ((Parameter)getAttribute("classPathSeparator"))
+             .getToken()).stringValue();
 
 
-	StringBuffer necessaryClassPath = new StringBuffer();
+        StringBuffer necessaryClassPath = new StringBuffer();
 
-	Iterator classPaths = classPathList.iterator();
-	while (classPaths.hasNext()) {
-	    if (necessaryClassPath.length() > 0) {
-		necessaryClassPath.append(classPathSeparator);
-	    }
-	    necessaryClassPath.append(classPaths.next());
+        Iterator classPaths = classPathList.iterator();
+        while (classPaths.hasNext()) {
+            if (necessaryClassPath.length() > 0) {
+                necessaryClassPath.append(classPathSeparator);
+            }
+            necessaryClassPath.append(classPaths.next());
 
-	}
+        }
 
-	((Parameter)getAttribute("necessaryClassPath"))
-	    .setExpression("\"" + necessaryClassPath.toString()
-			   + "\"");
+        ((Parameter)getAttribute("necessaryClassPath"))
+            .setExpression("\"" + necessaryClassPath.toString()
+                           + "\"");
     }
 
     ///////////////////////////////////////////////////////////////////

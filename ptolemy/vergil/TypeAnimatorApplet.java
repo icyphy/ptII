@@ -101,7 +101,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
-	    throws Exception {
+            throws Exception {
         _toplevel = super._createModel(workspace);
         if (_toplevel instanceof CompositeEntity) {
             CompositeEntity toplevel = (CompositeEntity)_toplevel;

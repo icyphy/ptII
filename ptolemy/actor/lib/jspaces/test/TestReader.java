@@ -61,7 +61,7 @@ public class TestReader {
                     "YHOO", "minimum", null);
             IndexEntry maximum = new IndexEntry(
                     "YHOO", "maximum", null);
-	    while (true) {
+            while (true) {
                 Thread.sleep(1000l);
                 IndexEntry min =
                     (IndexEntry)space.read(minimum, null, Long.MAX_VALUE);
@@ -75,7 +75,7 @@ public class TestReader {
                             "YHOO " + tok.doubleValue() +
                             " MAX: " + max.getPosition());
                 }
-	    }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

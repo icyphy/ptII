@@ -162,14 +162,14 @@ public abstract class SwingWorker {
      */
     private static class ThreadVar {
         ThreadVar(Thread thread) {
-	    _thread = thread;
-	}
+            _thread = thread;
+        }
         synchronized Thread get() {
-	    return _thread;
-	}
+            return _thread;
+        }
         synchronized void clear() {
-	    _thread = null;
-	}
+            _thread = null;
+        }
 
         private Thread _thread;
 

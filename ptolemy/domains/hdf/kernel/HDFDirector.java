@@ -102,7 +102,7 @@ public class HDFDirector extends SDFDirector {
     public HDFDirector()
             throws IllegalActionException, NameDuplicationException {
         super();
-	_init();
+        _init();
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -114,7 +114,7 @@ public class HDFDirector extends SDFDirector {
     public HDFDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
-	_init();
+        _init();
     }
 
     /** Construct a director in the given container with the given name.
@@ -135,7 +135,7 @@ public class HDFDirector extends SDFDirector {
     public HDFDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_init();
+        _init();
     }
 
     /** A parameter representing the size of the schedule cache to
@@ -258,86 +258,86 @@ public class HDFDirector extends SDFDirector {
      *   the schedule.
      */
     public Schedule getSchedule() throws IllegalActionException{
-	Scheduler scheduler =
-	    getScheduler();
-	Schedule schedule;
-	//return scheduler.getSchedule();
-	if (isScheduleValid()) {
-	    // This will return a the current schedule.
-	    schedule = scheduler.getSchedule();
-	} else {
-	    // The schedule is no longer valid, so check the schedule
-	    // cache.
-	    if (_inputPortList == null) {
-		_inputPortList = _getInputPortList();
-	    }
-	    if (_outputPortList == null) {
-		_outputPortList = _getOutputPortList();
-	    }
-	    Iterator inputPorts = _inputPortList.iterator();
-	    String rates = new String();
-	    while (inputPorts.hasNext()) {
-		IOPort inputPort = (IOPort)inputPorts.next();
-		int rate =
-		    SDFScheduler.getTokenConsumptionRate(inputPort);
-		rates = rates + String.valueOf(rate);
-	    }
-	    Iterator outputPorts = _outputPortList.iterator();
-	    while (outputPorts.hasNext()) {
-		IOPort outputPort = (IOPort)outputPorts.next();
-		int rate =
-		    SDFScheduler.getTokenProductionRate(outputPort);
-		rates = rates + String.valueOf(rate);
-	    }
-	    if (_debug_info) {
-		System.out.println("Port rates = " + rates);
-	    }
-	    String rateKey = rates;
-	    int cacheSize =
+        Scheduler scheduler =
+            getScheduler();
+        Schedule schedule;
+        //return scheduler.getSchedule();
+        if (isScheduleValid()) {
+            // This will return a the current schedule.
+            schedule = scheduler.getSchedule();
+        } else {
+            // The schedule is no longer valid, so check the schedule
+            // cache.
+            if (_inputPortList == null) {
+                _inputPortList = _getInputPortList();
+            }
+            if (_outputPortList == null) {
+                _outputPortList = _getOutputPortList();
+            }
+            Iterator inputPorts = _inputPortList.iterator();
+            String rates = new String();
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort)inputPorts.next();
+                int rate =
+                    SDFScheduler.getTokenConsumptionRate(inputPort);
+                rates = rates + String.valueOf(rate);
+            }
+            Iterator outputPorts = _outputPortList.iterator();
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)outputPorts.next();
+                int rate =
+                    SDFScheduler.getTokenProductionRate(outputPort);
+                rates = rates + String.valueOf(rate);
+            }
+            if (_debug_info) {
+                System.out.println("Port rates = " + rates);
+            }
+            String rateKey = rates;
+            int cacheSize =
                 ((IntToken)(scheduleCacheSize.getToken())).intValue();
-	    if (cacheSize != _cacheSize) {
-		// cache size has changed. reset the cache.
-		_scheduleCache = new HashMap();
-		_scheduleKeyList = new ArrayList(cacheSize);
-		_cacheSize = cacheSize;
-	    }
-	    if (_scheduleCache.containsKey(rateKey)) {
-		// cache hit.
-		if (_debug_info) {
-		    System.out.println(getName() +
+            if (cacheSize != _cacheSize) {
+                // cache size has changed. reset the cache.
+                _scheduleCache = new HashMap();
+                _scheduleKeyList = new ArrayList(cacheSize);
+                _cacheSize = cacheSize;
+            }
+            if (_scheduleCache.containsKey(rateKey)) {
+                // cache hit.
+                if (_debug_info) {
+                    System.out.println(getName() +
                             " : Cache hit!");
-		}
-		if (cacheSize > 0) {
-		    // Remove the key from its old position in
-		    // the list.
-		    _scheduleKeyList.remove(rateKey);
-		    // and add the key to head of list.
-		    _scheduleKeyList.add(0, rateKey);
-		}
-		schedule = (Schedule)_scheduleCache.get(rateKey);
-	    } else {
-		// cache miss.
-		if (_debug_info) {
-		    System.out.println(getName() +
+                }
+                if (cacheSize > 0) {
+                    // Remove the key from its old position in
+                    // the list.
+                    _scheduleKeyList.remove(rateKey);
+                    // and add the key to head of list.
+                    _scheduleKeyList.add(0, rateKey);
+                }
+                schedule = (Schedule)_scheduleCache.get(rateKey);
+            } else {
+                // cache miss.
+                if (_debug_info) {
+                    System.out.println(getName() +
                             " : Cache miss.");
-		}
-		if (cacheSize > 0) {
-		    while (_scheduleKeyList.size() >= cacheSize) {
-			// cache is  full.
-			// remove tail of list.
-			Object object = _scheduleKeyList.get(cacheSize - 1);
-			_scheduleKeyList.remove(cacheSize - 1);
-			_scheduleCache.remove(object);
-		    }
-		    // Add key to head of list.
-		    _scheduleKeyList.add(0, rateKey);
-		}
-		// Add key/schedule to the schedule map.
-		schedule = scheduler.getSchedule();
-		_scheduleCache.put(rateKey, schedule);
-	    }
-	}
-	return schedule;
+                }
+                if (cacheSize > 0) {
+                    while (_scheduleKeyList.size() >= cacheSize) {
+                        // cache is  full.
+                        // remove tail of list.
+                        Object object = _scheduleKeyList.get(cacheSize - 1);
+                        _scheduleKeyList.remove(cacheSize - 1);
+                        _scheduleCache.remove(object);
+                    }
+                    // Add key to head of list.
+                    _scheduleKeyList.add(0, rateKey);
+                }
+                // Add key/schedule to the schedule map.
+                schedule = scheduler.getSchedule();
+                _scheduleCache.put(rateKey, schedule);
+            }
+        }
+        return schedule;
     }
 
     /** Return the firing count of the specified actor in the schedule.
@@ -350,32 +350,32 @@ public class HDFDirector extends SDFDirector {
      */
     public int getFiringCount(Actor actor) throws IllegalActionException {
 
-	Schedule schedule = getSchedule();
-	Iterator firings = schedule.firingIterator();
-	int occurrence = 0;
-	while (firings.hasNext()) {
-	    Firing firing = (Firing)firings.next();
-	    Actor actorInSchedule = (Actor)(firing.getActor());
-	    String actorInScheduleName =
-		((Nameable)actorInSchedule).getName();
-	    String actorName = ((Nameable)actor).getName();
-	    if (actorInScheduleName.equals(actorName)) {
-		// Current actor in the static schedule is
-		// the HDF composite actor containing this FSM.
-		// Increment the occurrence count of this actor.
-		occurrence += firing.getIterationCount();
-	    }
+        Schedule schedule = getSchedule();
+        Iterator firings = schedule.firingIterator();
+        int occurrence = 0;
+        while (firings.hasNext()) {
+            Firing firing = (Firing)firings.next();
+            Actor actorInSchedule = (Actor)(firing.getActor());
+            String actorInScheduleName =
+                ((Nameable)actorInSchedule).getName();
+            String actorName = ((Nameable)actor).getName();
+            if (actorInScheduleName.equals(actorName)) {
+                // Current actor in the static schedule is
+                // the HDF composite actor containing this FSM.
+                // Increment the occurrence count of this actor.
+                occurrence += firing.getIterationCount();
+            }
 
-	    if (_debug_info) {
-		//System.out.println(getName() +
-		//" :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
-		//	   ((Nameable)actor).getName());
-		//System.out.println(getName() +
-		//" : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
-		//	   occurrence);
-	    }
-	}
-	return occurrence;
+            if (_debug_info) {
+                //System.out.println(getName() +
+                //" :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
+                //           ((Nameable)actor).getName());
+                //System.out.println(getName() +
+                //" : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
+                //           occurrence);
+            }
+        }
+        return occurrence;
     }
 
     /** Initialize the actors associated with this director, set the
@@ -394,8 +394,8 @@ public class HDFDirector extends SDFDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         SDFScheduler scheduler = (SDFScheduler)getScheduler();
-	int cacheSize =
-	    ((IntToken)(scheduleCacheSize.getToken())).intValue();
+        int cacheSize =
+            ((IntToken)(scheduleCacheSize.getToken())).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -419,13 +419,13 @@ public class HDFDirector extends SDFDirector {
                     e.getMessage());
         }
         try {
-	    int cacheSize = 100;
-	    _cacheSize = cacheSize;
-	    scheduleCacheSize
+            int cacheSize = 100;
+            _cacheSize = cacheSize;
+            scheduleCacheSize
                 = new Parameter(this,"scheduleCacheSize",new IntToken(cacheSize));
 
-	    _scheduleCache = new HashMap();
-	    _scheduleKeyList = new ArrayList(cacheSize);
+            _scheduleCache = new HashMap();
+            _scheduleKeyList = new ArrayList(cacheSize);
         }
         catch (Exception e) {
             throw new InternalErrorException(
@@ -440,8 +440,8 @@ public class HDFDirector extends SDFDirector {
      *  @return The list of input ports.
      */
     private List _getInputPortList() {
-	CompositeActor container =  (CompositeActor)getContainer();
-	List actors = container.deepEntityList();
+        CompositeActor container =  (CompositeActor)getContainer();
+        List actors = container.deepEntityList();
         Iterator actorIterator = actors.iterator();
         List inputPortList = new LinkedList();;
         List inputPortRateList = new LinkedList();
@@ -470,8 +470,8 @@ public class HDFDirector extends SDFDirector {
      *  @return The list of output ports.
      */
     private List _getOutputPortList() {
-	CompositeActor container =  (CompositeActor)getContainer();
-	List actors = container.deepEntityList();
+        CompositeActor container =  (CompositeActor)getContainer();
+        List actors = container.deepEntityList();
         Iterator actorIterator2 = actors.iterator();
         List outputPortList = new LinkedList();;
         List outputPortRateList = new LinkedList();

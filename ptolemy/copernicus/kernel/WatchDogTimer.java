@@ -84,7 +84,7 @@ public class WatchDogTimer extends SceneTransformer {
     /** Start up a watch dog timer that will call System.exit().
      *  Sample option arguments:
      *  <pre>
-     *	-p wjtp.watchDogTimer time:10000
+     *        -p wjtp.watchDogTimer time:10000
      *  </pre>
      *  means that exit will be called in 10,000 ms, or 10 seconds
      *
@@ -160,11 +160,11 @@ public class WatchDogTimer extends SceneTransformer {
                     }
                 }
             };
-	if (_timer == null) {
+        if (_timer == null) {
             // Create the timer as a Daemon.. This way it won't prevent
             // the compiler from exiting if an exception occurs.
-	    _timer = new Timer(true);
-	}
+            _timer = new Timer(true);
+        }
         _timer.schedule(doTimeToDie, timeToDie);
     }
 

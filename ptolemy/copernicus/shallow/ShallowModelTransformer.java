@@ -115,13 +115,13 @@ public class ShallowModelTransformer extends SceneTransformer {
         Local attributeLocal = Jimple.v().newLocal("attribute",
                 PtolemyUtilities.attributeType);
         body.getLocals().add(attributeLocal);
-	Local settableLocal = Jimple.v().newLocal("settable",
+        Local settableLocal = Jimple.v().newLocal("settable",
                 PtolemyUtilities.settableType);
-	body.getLocals().add(settableLocal);
+        body.getLocals().add(settableLocal);
 
         for (Iterator attributes = namedObj.attributeList().iterator();
              attributes.hasNext();) {
-	    Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute)attributes.next();
 
             // FIXME: This is horrible...  I guess we need an attribute for
             // persistence?
@@ -159,21 +159,21 @@ public class ShallowModelTransformer extends SceneTransformer {
 
             // Create a new field for the attribute, and initialize
             // it to the the attribute above.
-	    SootUtilities.createAndSetFieldFromLocal(body, local,
+            SootUtilities.createAndSetFieldFromLocal(body, local,
                     theClass, attributeType, fieldName);
             // If the attribute is settable, then set its
             // expression.
-	    if (attribute instanceof Settable) {
-		// cast to Settable.
-		body.getUnits().add(Jimple.v().newAssignStmt(
+            if (attribute instanceof Settable) {
+                // cast to Settable.
+                body.getUnits().add(Jimple.v().newAssignStmt(
                         settableLocal,
                         Jimple.v().newCastExpr(
                                 local,
                                 PtolemyUtilities.settableType)));
                 String expression = ((Settable)attribute).getExpression();
 
-		// call setExpression.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
+                // call setExpression.
+                body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newInterfaceInvokeExpr(
                                 settableLocal,
                                 PtolemyUtilities.setExpressionMethod,
@@ -183,12 +183,12 @@ public class ShallowModelTransformer extends SceneTransformer {
                         Jimple.v().newInterfaceInvokeExpr(
                                 settableLocal,
                                 PtolemyUtilities.validateMethod)));
-	    }
+            }
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
             createFieldsForAttributes(body, context, contextLocal,
                     attribute, local, theClass, createdSet);
-	}
+        }
     }
 
     public String getDefaultOptions() {
@@ -270,8 +270,8 @@ public class ShallowModelTransformer extends SceneTransformer {
         Chain units = body.getUnits();
         Local thisLocal = body.getThisLocal();
 
-	_entityLocalMap = new HashMap();
-	_portLocalMap = new HashMap();
+        _entityLocalMap = new HashMap();
+        _portLocalMap = new HashMap();
 
         // Now instantiate all the stuff inside the model.
         _composite(body, thisLocal, _model, thisLocal, _model, modelClass,
@@ -359,10 +359,10 @@ public class ShallowModelTransformer extends SceneTransformer {
                 RefType.v(PtolemyUtilities.entityClass));
         body.getLocals().add(entityLocal);
 
-	for (Iterator entities = composite.entityList().iterator();
+        for (Iterator entities = composite.entityList().iterator();
              entities.hasNext();) {
-	    Entity entity = (Entity)entities.next();
-	    System.out.println("ShallowModelTransformer: entity: " + entity);
+            Entity entity = (Entity)entities.next();
+            System.out.println("ShallowModelTransformer: entity: " + entity);
             Local local;
             if (createdSet.contains(entity.getFullName())) {
                 // Get a reference to the previously created entity.
@@ -398,7 +398,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                 }
             }
 
-	    _entityLocalMap.put(entity, local);
+            _entityLocalMap.put(entity, local);
 
             if (entity instanceof CompositeEntity) {
                 _composite(body, containerLocal, container, local,
@@ -412,7 +412,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                 createFieldsForAttributes(body, composite, thisLocal,
                         entity, local, modelClass, createdSet);
             }
-	}
+        }
     }
 
     // Create and set external ports.
@@ -425,12 +425,12 @@ public class ShallowModelTransformer extends SceneTransformer {
                 RefType.v("ptolemy.kernel.Port"));
         body.getLocals().add(tempPortLocal);
 
-	for (Iterator ports = entity.portList().iterator();
+        for (Iterator ports = entity.portList().iterator();
              ports.hasNext();) {
-	    Port port = (Port)ports.next();
-	    String className = port.getClass().getName();
+            Port port = (Port)ports.next();
+            String className = port.getClass().getName();
             String fieldName = getFieldNameForPort(port, container);
-	    Local portLocal;
+            Local portLocal;
 
             portLocal = Jimple.v().newLocal("port",
                     PtolemyUtilities.componentPortType);
@@ -488,42 +488,42 @@ public class ShallowModelTransformer extends SceneTransformer {
             }
 
             _portLocalMap.put(port, portLocal);
-	    SootUtilities.createAndSetFieldFromLocal(body,
+            SootUtilities.createAndSetFieldFromLocal(body,
                     portLocal, modelClass, PtolemyUtilities.componentPortType,
                     fieldName);
-	}
+        }
     }
 
     // Create and set links.
     private void _links(JimpleBody body, CompositeEntity composite) {
-	// To get the ordering right,
-	// we read the links from the ports, not from the relations.
-	// First, produce the inside links on contained ports.
+        // To get the ordering right,
+        // we read the links from the ports, not from the relations.
+        // First, produce the inside links on contained ports.
         for (Iterator ports = composite.portList().iterator();
              ports.hasNext();) {
-	    ComponentPort port = (ComponentPort)ports.next();
-	    Iterator relations = port.insideRelationList().iterator();
-	    int index = -1;
-	    while (relations.hasNext()) {
-		index++;
-		ComponentRelation relation
-		    = (ComponentRelation)relations.next();
-		if (relation == null) {
-		    // Gap in the links.  The next link has to use an
-		    // explicit index.
-		    continue;
-		}
-		Local portLocal = (Local)_portLocalMap.get(port);
-		Local relationLocal = (Local)_relationLocalMap.get(relation);
-		// call the _insertLink method with the current index.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
+            ComponentPort port = (ComponentPort)ports.next();
+            Iterator relations = port.insideRelationList().iterator();
+            int index = -1;
+            while (relations.hasNext()) {
+                index++;
+                ComponentRelation relation
+                    = (ComponentRelation)relations.next();
+                if (relation == null) {
+                    // Gap in the links.  The next link has to use an
+                    // explicit index.
+                    continue;
+                }
+                Local portLocal = (Local)_portLocalMap.get(port);
+                Local relationLocal = (Local)_relationLocalMap.get(relation);
+                // call the _insertLink method with the current index.
+                body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(portLocal,
                                 PtolemyUtilities.insertLinkMethod,
                                 IntConstant.v(index),
                                 relationLocal)));
 
-	    }
-	}
+            }
+        }
     }
 
     // Produce the links on ports contained by contained entities.
@@ -575,17 +575,17 @@ public class ShallowModelTransformer extends SceneTransformer {
     // Create and set relations.
     private void _relations(JimpleBody body, Local thisLocal,
             CompositeEntity composite) {
-	_relationLocalMap = new HashMap();
-	for (Iterator relations = composite.relationList().iterator();
+        _relationLocalMap = new HashMap();
+        for (Iterator relations = composite.relationList().iterator();
              relations.hasNext();) {
-	    Relation relation = (Relation)relations.next();
-	    String className = relation.getClass().getName();
-	    // Create a new local variable.
-	    Local local =
+            Relation relation = (Relation)relations.next();
+            String className = relation.getClass().getName();
+            // Create a new local variable.
+            Local local =
                 PtolemyUtilities.createNamedObjAndLocal(body, className,
                         thisLocal, relation.getName());
-	    _relationLocalMap.put(relation, local);
-	}
+            _relationLocalMap.put(relation, local);
+        }
     }
 
     // FIXME: duplicate with Actor transformer.

@@ -77,13 +77,13 @@ public class StockServer extends TypedCompositeActor {
     public StockServer() {
         super();
 
-	try {
-	    _init();
-	} catch (IllegalActionException iae) {
-	    throw new InternalErrorException(iae.getMessage());
-	} catch (NameDuplicationException nde) {
-	    throw new InternalErrorException(nde.getMessage());
-	}
+        try {
+            _init();
+        } catch (IllegalActionException iae) {
+            throw new InternalErrorException(iae.getMessage());
+        } catch (NameDuplicationException nde) {
+            throw new InternalErrorException(nde.getMessage());
+        }
     }
 
     /** Construct a StockServer in the specified workspace with no
@@ -91,15 +91,15 @@ public class StockServer extends TypedCompositeActor {
      *  @param workspace The workspace that will list the actor.
      */
     public StockServer(Workspace workspace) {
-	super(workspace);
+        super(workspace);
 
-	try {
-	    _init();
-	} catch (IllegalActionException iae) {
-	    throw new InternalErrorException(iae.getMessage());
-	} catch (NameDuplicationException nde) {
-	    throw new InternalErrorException(nde.getMessage());
-	}
+        try {
+            _init();
+        } catch (IllegalActionException iae) {
+            throw new InternalErrorException(iae.getMessage());
+        } catch (NameDuplicationException nde) {
+            throw new InternalErrorException(nde.getMessage());
+        }
     }
 
     /** Construct a StockServer with a name and a container.
@@ -140,44 +140,44 @@ public class StockServer extends TypedCompositeActor {
      *   throws it.
      */
     public void preinitialize() throws IllegalActionException {
-	try {
-	    removeAllEntities();
-	    removeAllRelations();
+        try {
+            removeAllEntities();
+            removeAllRelations();
 
-	    // create a Sleep that will be connected to all the
-	    // StockQuote actors so that the SDF graph is connected,
+            // create a Sleep that will be connected to all the
+            // StockQuote actors so that the SDF graph is connected,
             // and a real time delay
-	    Sleep sink = new Sleep(this, "sink");
+            Sleep sink = new Sleep(this, "sink");
             sink.sleepTime.setToken(new LongToken(30000));
 
-	    String allTickers = ((StringToken)tickers.getToken()).stringValue();
-	    StringTokenizer st = new StringTokenizer(allTickers);
-	    int numQuotes = 0;
-	    while (st.hasMoreTokens()) {
-	        String symbol = st.nextToken();
-	        StockQuote quote = new StockQuote(this, "quote" + numQuotes);
-	        Publisher publisher = new Publisher(this,
+            String allTickers = ((StringToken)tickers.getToken()).stringValue();
+            StringTokenizer st = new StringTokenizer(allTickers);
+            int numQuotes = 0;
+            while (st.hasMoreTokens()) {
+                String symbol = st.nextToken();
+                StockQuote quote = new StockQuote(this, "quote" + numQuotes);
+                Publisher publisher = new Publisher(this,
                         "publisher" + numQuotes);
-	        numQuotes++;
+                numQuotes++;
 
-	        TypedIORelation relation =
+                TypedIORelation relation =
                     (TypedIORelation)connect(quote.output, publisher.input);
-	        sink.input.link(relation);
+                sink.input.link(relation);
 
-	        StringToken symbolToken = new StringToken(symbol);
-	        quote.ticker.setToken(symbolToken);
-	        publisher.entryName.setToken(symbolToken);
+                StringToken symbolToken = new StringToken(symbol);
+                quote.ticker.setToken(symbolToken);
+                publisher.entryName.setToken(symbolToken);
 
-	        // lease quote in space for 1 min.
-	        publisher.leaseTime.setToken(new LongToken(60*1000));
-	    }
+                // lease quote in space for 1 min.
+                publisher.leaseTime.setToken(new LongToken(60*1000));
+            }
 
-	    //sink.input.tokenConsumptionRate.setToken(new IntToken(numQuotes));
-	    super.preinitialize();
+            //sink.input.tokenConsumptionRate.setToken(new IntToken(numQuotes));
+            super.preinitialize();
 
         } catch (NameDuplicationException nde) {
-	    throw new InternalErrorException(nde.getMessage());
-	}
+            throw new InternalErrorException(nde.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -189,38 +189,38 @@ public class StockServer extends TypedCompositeActor {
 
     // Initialize parameters and create director.
     private void _init()
-	    throws IllegalActionException, NameDuplicationException {
-	tickers = new Parameter(this, "tickers", new StringToken("YHOO"));
-	tickers.setTypeEquals(BaseType.STRING);
+            throws IllegalActionException, NameDuplicationException {
+        tickers = new Parameter(this, "tickers", new StringToken("YHOO"));
+        tickers.setTypeEquals(BaseType.STRING);
 
-	// create a SDF director and set its iteration to 0 (run forever).
-	SDFDirector director = new SDFDirector(this, "director");
-	director.iterations.setToken(new IntToken(0));
+        // create a SDF director and set its iteration to 0 (run forever).
+        SDFDirector director = new SDFDirector(this, "director");
+        director.iterations.setToken(new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
     private class DummySink extends TypedCompositeActor {
-	private DummySink(TypedCompositeActor container, String name)
-		throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	    input = new SDFIOPort(this, "input", true, false);
-	    input.setMultiport(true);
-	}
+        private DummySink(TypedCompositeActor container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            input = new SDFIOPort(this, "input", true, false);
+            input.setMultiport(true);
+        }
 
-	/** Read out all tokens in the input port and discard.
-	 */
-	public void fire() throws IllegalActionException {
-	    int width = input.getWidth();
-	    for (int i=0; i<width; i++) {
-		while (input.hasToken(i)) {
-		    Token token = input.get(i);
-		}
-	    }
-	}
+        /** Read out all tokens in the input port and discard.
+         */
+        public void fire() throws IllegalActionException {
+            int width = input.getWidth();
+            for (int i=0; i<width; i++) {
+                while (input.hasToken(i)) {
+                    Token token = input.get(i);
+                }
+            }
+        }
 
-	private SDFIOPort input;
+        private SDFIOPort input;
 
     }
 }

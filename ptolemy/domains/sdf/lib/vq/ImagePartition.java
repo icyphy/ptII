@@ -66,7 +66,7 @@ public class ImagePartition extends Transformer {
 
         super(container, name);
 
-	imageColumns =
+        imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
         imageColumns.setTypeEquals(BaseType.INT);
         imageRows =
@@ -149,7 +149,7 @@ public class ImagePartition extends Transformer {
      */
     public void fire() throws IllegalActionException {
         int i, j;
-	int x, y;
+        int x, y;
         int partitionNumber;
         IntMatrixToken message;
 

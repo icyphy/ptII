@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
@@ -64,7 +64,7 @@ public class Writer extends TypedAtomicActor{
     public Writer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input = new TypedIOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
 
     }
@@ -83,11 +83,11 @@ public class Writer extends TypedAtomicActor{
     ////                         public methods                    ////
 
     public boolean postfire() throws IllegalActionException {
-	if (input.hasToken(0)) {
-	    Token inputToken = input.get(0);
-	    System.out.println(inputToken.toString());
-	}
-	return super.postfire();
+        if (input.hasToken(0)) {
+            Token inputToken = input.get(0);
+            System.out.println(inputToken.toString());
+        }
+        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////

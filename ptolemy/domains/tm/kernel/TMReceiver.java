@@ -83,7 +83,7 @@ public class TMReceiver extends AbstractReceiver {
     /** Construct an empty TMReceiver with no container.
      */
     public TMReceiver() {
-	super();
+        super();
     }
 
     //FIXME: why doesn't this have the usual constructors
@@ -179,7 +179,7 @@ public class TMReceiver extends AbstractReceiver {
      *  @return True.
      */
     public final boolean hasRoom(int tokens) {
-	return true;
+        return true;
     }
 
     /** Return true if there is at least one token available to the

@@ -64,8 +64,8 @@ public class PtolemyMenuFactory implements MenuFactory {
     /** Create a new menu factory that contains no menu item factories.
      */
     public PtolemyMenuFactory(GraphController controller) {
-	_factoryList = new LinkedList();
-	_controller = controller;
+        _factoryList = new LinkedList();
+        _controller = controller;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,35 +75,35 @@ public class PtolemyMenuFactory implements MenuFactory {
      *  @param factory The menu item factory to add.
      */
     public void addMenuItemFactory(MenuItemFactory factory) {
-	_factoryList.add(factory);
+        _factoryList.add(factory);
     }
 
     /** Create an instance of the menu associated with this factory.
      *  @param figure The figure for which to create a context menu.
      */
     public JContextMenu create(Figure figure) {
-	NamedObj object = _getObjectFromFigure(figure);
-	if (object == null) return null;
-	JContextMenu menu = new JContextMenu(object, object.getFullName());
-	Iterator i = menuItemFactoryList().iterator();
-	while (i.hasNext()) {
-	    MenuItemFactory factory = (MenuItemFactory)i.next();
-	    factory.create(menu, object);
-	}
-	return menu;
+        NamedObj object = _getObjectFromFigure(figure);
+        if (object == null) return null;
+        JContextMenu menu = new JContextMenu(object, object.getFullName());
+        Iterator i = menuItemFactoryList().iterator();
+        while (i.hasNext()) {
+            MenuItemFactory factory = (MenuItemFactory)i.next();
+            factory.create(menu, object);
+        }
+        return menu;
     }
 
     /** Return the graph controller that created this menu factory.
      */
     public GraphController getController() {
-	return _controller;
+        return _controller;
     }
 
     /** Return the list of menu item factories.
      * @return An unmodifiable list.
      */
     public List menuItemFactoryList() {
-	return Collections.unmodifiableList(_factoryList);
+        return Collections.unmodifiableList(_factoryList);
     }
 
     /** Remove the given menu item factory from the factory list.
@@ -122,8 +122,8 @@ public class PtolemyMenuFactory implements MenuFactory {
      *  and you will have to override this function.
      */
     protected NamedObj _getObjectFromFigure(Figure figure) {
-	Object object = figure.getUserObject();
-	return (NamedObj)_controller.getGraphModel().getSemanticObject(object);
+        Object object = figure.getUserObject();
+        return (NamedObj)_controller.getGraphModel().getSemanticObject(object);
     }
 
     ///////////////////////////////////////////////////////////////////

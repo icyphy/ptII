@@ -96,7 +96,7 @@ public class AttributeValueIcon extends XMLIcon {
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-	_background = super.createBackgroundFigure();
+        _background = super.createBackgroundFigure();
         return _background;
     }
 

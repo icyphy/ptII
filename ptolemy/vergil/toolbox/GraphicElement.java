@@ -103,13 +103,13 @@ public class GraphicElement {
      * return a painted string containing "Error!".
      */
     public PaintedObject getPaintedObject() {
-	String type = getType();
-	String label = getLabel();
-	PaintedObject paintedObject =
-	    GraphicsParser.createPaintedObject(type, _attributes, label);
+        String type = getType();
+        String label = getLabel();
+        PaintedObject paintedObject =
+            GraphicsParser.createPaintedObject(type, _attributes, label);
 
-	if (paintedObject == null)
-	    return GraphicElement._errorObject;
+        if (paintedObject == null)
+            return GraphicElement._errorObject;
 
         return paintedObject;
     }
@@ -148,8 +148,8 @@ public class GraphicElement {
     public String toString() {
         String result = "{";
         result += getClass().getName() + " {" + _type + "}";
-	result += " attributes {";
-	Set attributeSet = attributeNameSet();
+        result += " attributes {";
+        Set attributeSet = attributeNameSet();
         Iterator names = attributeSet.iterator();
         while (names.hasNext()) {
             String p = (String) names.next();
@@ -166,9 +166,9 @@ public class GraphicElement {
      */
     public void exportMoML(Writer out, String prefix)
             throws IOException {
-	XmlElement element = new XmlElement(_type, _attributes);
-	element.setPCData(_label);
-	element.writeXML(out, prefix);
+        XmlElement element = new XmlElement(_type, _attributes);
+        element.setPCData(_label);
+        element.writeXML(out, prefix);
     }
 
     // The painted object that is returned if an error occurs.

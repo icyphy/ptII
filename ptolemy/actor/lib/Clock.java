@@ -124,7 +124,7 @@ public class Clock extends TimedSource {
      *   actor with this name.
      */
     public Clock(CompositeEntity container, String name)
-	throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         period = new Parameter(this, "period", new DoubleToken(2.0));
@@ -196,7 +196,7 @@ public class Clock extends TimedSource {
      *   nondecreasing and nonnegative.
      */
     public void attributeChanged(Attribute attribute)
-	throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == offsets) {
             ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
             _offsets = new double[offsetsValue.length()];
@@ -207,8 +207,8 @@ public class Clock extends TimedSource {
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
-						     "Value of offsets is not nondecreasing " +
-						     "and nonnegative.");
+                                                     "Value of offsets is not nondecreasing " +
+                                                     "and nonnegative.");
                 }
                 previous = _offsets[i];
             }
@@ -217,8 +217,8 @@ public class Clock extends TimedSource {
                 ((DoubleToken)period.getToken()).doubleValue();
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-						 "Period is required to be positive.  " +
-						 "Period given: " + periodValue);
+                                                 "Period is required to be positive.  " +
+                                                 "Period given: " + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -234,7 +234,7 @@ public class Clock extends TimedSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	throws CloneNotSupportedException {
+        throws CloneNotSupportedException {
         Clock newObject = (Clock)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
@@ -283,30 +283,30 @@ public class Clock extends TimedSource {
             // FIXME: why using while but not if?
             while (currentTime >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
 
-		// Phase boundary.  Change the current value.
-		_tentativeCurrentValue = _getValue(_tentativePhase);
+                // Phase boundary.  Change the current value.
+                _tentativeCurrentValue = _getValue(_tentativePhase);
 
-		// Increment to the next phase.
-		_tentativePhase++;
+                // Increment to the next phase.
+                _tentativePhase++;
 
-		if (_tentativePhase >= _offsets.length) {
-		    _tentativePhase = 0;
-		    // Schedule the first firing in the next period.
-		    _tentativeCycleStartTime += periodValue;
-		    // Indicate that the cycle count should increase.
-		    _tentativeCycleCountIncrement++;
-		}
+                if (_tentativePhase >= _offsets.length) {
+                    _tentativePhase = 0;
+                    // Schedule the first firing in the next period.
+                    _tentativeCycleStartTime += periodValue;
+                    // Indicate that the cycle count should increase.
+                    _tentativeCycleCountIncrement++;
+                }
 
-		if (_offsets[_tentativePhase] >= periodValue) {
-		    throw new IllegalActionException(this,
-						     "Offset number "
-						     + _tentativePhase
-						     + " with value "
-						     + _offsets[_tentativePhase]
-						     + " must be strictly less than the "
-						     + "period, which is "
-						     + periodValue);
-		}
+                if (_offsets[_tentativePhase] >= periodValue) {
+                    throw new IllegalActionException(this,
+                                                     "Offset number "
+                                                     + _tentativePhase
+                                                     + " with value "
+                                                     + _offsets[_tentativePhase]
+                                                     + " must be strictly less than the "
+                                                     + "period, which is "
+                                                     + periodValue);
+                }
 
                 // Schedule the next firing in this period.
                 // NOTE: In the TM domain, this may not occur if we have
@@ -321,8 +321,8 @@ public class Clock extends TimedSource {
         // change the output value to zero.
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
         if (cycleLimit > 0
-	    && currentTime
-	    >= _tentativeStartTime + cycleLimit * periodValue) {
+            && currentTime
+            >= _tentativeStartTime + cycleLimit * periodValue) {
             _tentativeCurrentValue = _tentativeCurrentValue.zero();
         }
 
@@ -395,13 +395,13 @@ public class Clock extends TimedSource {
         if (!_done && _tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
             getDirector().fireAt(this, _tentativeNextFiringTime);
             if (_debugging)_debug("Requesting firing at: "
-				  + _tentativeNextFiringTime + ".");
+                                  + _tentativeNextFiringTime + ".");
         }
         // This should be computed after the above so that a firing
         // gets requested for the tail end of the output pulses.
         _done = _done || (cycleLimit > 0
-			  && _cycleCount > cycleLimit
-			  && _phase == 0);
+                          && _cycleCount > cycleLimit
+                          && _phase == 0);
 
         if (_done) {
             _cycleCount = 0;
@@ -424,7 +424,7 @@ public class Clock extends TimedSource {
         ArrayToken val = (ArrayToken)(values.getToken());
         if (_offsets.length != val.length()) {
             throw new IllegalActionException(this,
-					     "Values and offsets vectors do not have the same length.");
+                                             "Values and offsets vectors do not have the same length.");
         }
         return super.prefire();
     }
@@ -450,7 +450,7 @@ public class Clock extends TimedSource {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _updateTentativeValues()
-	throws IllegalActionException {
+        throws IllegalActionException {
         _tentativeCycleStartTime = _cycleStartTime;
         _tentativeCurrentValue = _currentValue;
         _tentativePhase = _phase;
@@ -499,7 +499,7 @@ public class Clock extends TimedSource {
         ArrayToken val = (ArrayToken)(values.getToken());
         if (val == null || val.length() <= index) {
             throw new IllegalActionException(this,
-					     "Index out of range of the values parameter.");
+                                             "Index out of range of the values parameter.");
         }
         return val.getElement(index);
     }

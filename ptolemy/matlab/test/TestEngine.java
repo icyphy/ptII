@@ -64,7 +64,7 @@ public class TestEngine {
         eng.evalString(engineHandle, "clear");
         DoubleMatrixToken tx = new DoubleMatrixToken(new double[][]{{1,2,3}});
         System.out.println("\nNote: All data output is via "
-			   + "Token.toString() on tokens");
+                           + "Token.toString() on tokens");
         System.out.println("that are put/get from the matlab engineHandle.");
         System.out.println("\nCreate 1x3 double matrix x:");
         eng.put(engineHandle, "x", tx);
@@ -128,11 +128,11 @@ public class TestEngine {
         eng.evalString(engineHandle, "ta = [r,r,r;r,r,r];");
         t = eng.get(engineHandle, "ta");
         System.out.println("\nRead 2x3 struct ta into ArrayToken "
-			   + "of ArrayToken of RecordTokens:");
+                           + "of ArrayToken of RecordTokens:");
         System.out.println("ta = "+t.toString());
 
         System.out.println("\nCreate 1x3 cell array from ta, "
-			   +"an ArrayToken of RecordTokens:");
+                           +"an ArrayToken of RecordTokens:");
         RecordToken r1 = new RecordToken(new String[]{"a"},new Token[]
              {new ComplexMatrixToken(new Complex[][]{{new Complex(1.0,1.0),
                                                       new Complex(2.0,2.0)}})});

@@ -61,40 +61,40 @@ public class HSIFUtilities {
     }
 
     /**  Read in an HSIF file, transform it into MoML and write the output
-     *	 to a FileWriter.
+     *         to a FileWriter.
      *   @param input HSIF file to be read in.
      *   @param fileWriter A FileWriter that will write to the MoML
      *   file.
      *   @exception Exception if there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, FileWriter fileWriter)
-	throws Exception {
-	// This method takes a FileWriter so that the user can
-	// ensure that the FileWriter exists and is writable before going
-	// through the trouble of doing the conversion.
+        throws Exception {
+        // This method takes a FileWriter so that the user can
+        // ensure that the FileWriter exists and is writable before going
+        // through the trouble of doing the conversion.
 
         Document inputDocument = null;
-	try {
-	    inputDocument = XSLTUtilities.parse(input);
-	} catch (FileNotFoundException ex) {
-	    // Try it as a jar url
-	    try {
-		URL jarURL =
-		    JNLPUtilities.jarURLEntryResource(input);
-		if (jarURL == null) {
-		    throw new Exception("'" + input + "' was not a jar "
-					+ "URL, or was not found");
-		}
-	    inputDocument = XSLTUtilities.parse(jarURL.toString());
-	    } catch (Exception ex2) {
-		// FIXME: IOException does not take a cause argument
-		throw ex;
-	    }
-	}
+        try {
+            inputDocument = XSLTUtilities.parse(input);
+        } catch (FileNotFoundException ex) {
+            // Try it as a jar url
+            try {
+                URL jarURL =
+                    JNLPUtilities.jarURLEntryResource(input);
+                if (jarURL == null) {
+                    throw new Exception("'" + input + "' was not a jar "
+                                        + "URL, or was not found");
+                }
+            inputDocument = XSLTUtilities.parse(jarURL.toString());
+            } catch (Exception ex2) {
+                // FIXME: IOException does not take a cause argument
+                throw ex;
+            }
+        }
 
         List transforms = new LinkedList();
 
-	// The transform() method will look in the classpath.
+        // The transform() method will look in the classpath.
         transforms.add("ptolemy/hsif/xsl/GlobalVariablePreprocessor.xsl");
         transforms.add("ptolemy/hsif/xsl/SlimPreprocessor.xsl");
         transforms.add("ptolemy/hsif/xsl/LocalVariablePreprocessor.xsl");
@@ -104,24 +104,24 @@ public class HSIFUtilities {
         Document outputDocument =
             XSLTUtilities.transform(inputDocument, transforms);
 
-	fileWriter.write(XSLTUtilities.toString(outputDocument));
+        fileWriter.write(XSLTUtilities.toString(outputDocument));
 
-	// Let the caller close the fileWriter.
-	//fileWriter.close();
+        // Let the caller close the fileWriter.
+        //fileWriter.close();
     }
 
     /**  Read in an HSIF file, transform it into MoML and generate an output
-     *	 file.  Note that if the output file exists, then it is overwritten.
+     *         file.  Note that if the output file exists, then it is overwritten.
      *   @param input HSIF file to be read in
      *   @param output The MoMLFile to be generated.
      *   @exception Exception if there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, String output)
-	throws Exception {
-	// This method makes it much easier to test the conversion,
-	FileWriter fileWriter = new FileWriter(output);
-	HSIFToMoML(input, fileWriter);
-	fileWriter.close();
+        throws Exception {
+        // This method makes it much easier to test the conversion,
+        FileWriter fileWriter = new FileWriter(output);
+        HSIFToMoML(input, fileWriter);
+        fileWriter.close();
     }
 
     /** Convert the first argument from a HSIF file into a MoML file
@@ -135,13 +135,13 @@ public class HSIFUtilities {
      *  will read in SwimmingPool.xml and create SwimmingPool_moml.xml
      */
     public static void main(String [] args) throws Exception {
-	if (args.length != 2) {
-	    System.err.println("Usage: java -classpath $PTII "
-			       + "ptolemy.hsif.HSIFUtilities HSIFInputFile "
-			       + "MoMLOutputFile");
-	    System.exit(2);
-	} else {
-	    HSIFToMoML(args[0], args[1]);
-	}
+        if (args.length != 2) {
+            System.err.println("Usage: java -classpath $PTII "
+                               + "ptolemy.hsif.HSIFUtilities HSIFInputFile "
+                               + "MoMLOutputFile");
+            System.exit(2);
+        } else {
+            HSIFToMoML(args[0], args[1]);
+        }
     }
 }

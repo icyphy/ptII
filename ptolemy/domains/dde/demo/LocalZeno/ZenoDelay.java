@@ -66,7 +66,7 @@ public class ZenoDelay extends ListenFeedBackDelay {
      */
     public ZenoDelay(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a ZenoDelay actor with the specified container
@@ -95,15 +95,15 @@ public class ZenoDelay extends ListenFeedBackDelay {
      *  exceeded 50.0.
      */
     public double getDelay() throws IllegalActionException {
-	if ( _cntr < 1000 ) {
-	    if ( getDirector().getCurrentTime() < 50.0 ) {
-		return super.getDelay();
-	    } else {
-		_cntr++;
-		return 0.001;
-	    }
-	}
-	return super.getDelay();
+        if ( _cntr < 1000 ) {
+            if ( getDirector().getCurrentTime() < 50.0 ) {
+                return super.getDelay();
+            } else {
+                _cntr++;
+                return 0.001;
+            }
+        }
+        return super.getDelay();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -74,7 +74,7 @@ class TablePanel extends Panel {
                     origin.Y - tableR, tableR * 2, tableR * 2);
 
             for (int i = 0; i < 5; i++) {
-				// draw each philosopher.
+                                // draw each philosopher.
                 if (_philosophers[i].gotLeft && _philosophers[i].gotRight) {
 
                     g.fillOval(philsLoc[i].pos.X,

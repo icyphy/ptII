@@ -49,55 +49,55 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Predefined {
 
     private static final String[] _definedNames = {
-	"ptolemy.domains.sdf.lib.SampleDelay", "ptolemy.domains.sdf.lib.FIR"
+        "ptolemy.domains.sdf.lib.SampleDelay", "ptolemy.domains.sdf.lib.FIR"
     };
 
     public Predefined(){
-	_definedSet=new HashSet();
-	for (int i=0; i < _definedNames.length; i++){
-	    _definedSet.add(_definedNames[i]);
-	}
+        _definedSet=new HashSet();
+        for (int i=0; i < _definedNames.length; i++){
+            _definedSet.add(_definedNames[i]);
+        }
     }
 
     public boolean isDefined(Entity entity){
-	return _definedSet.contains(entity.getClass().getName());
+        return _definedSet.contains(entity.getClass().getName());
     }
 
     public void convertEntityToGraph(Entity entity, DirectedGraph graph)
-	throws IllegalActionException {
+        throws IllegalActionException {
 
-	if (!isDefined(entity))
-	    throw new IllegalActionException(entity+" not predefined");
+        if (!isDefined(entity))
+            throw new IllegalActionException(entity+" not predefined");
 
-	String name=entity.getClass().getName();
-	if (name.equals("ptolemy.domains.sdf.lib.SampleDelay"))
-	    graphSampleDelay(entity, graph);
-	else if (name.equals("ptolemy.domains.sdf.lib.FIR"))
-	    graphFIR(entity, graph);
+        String name=entity.getClass().getName();
+        if (name.equals("ptolemy.domains.sdf.lib.SampleDelay"))
+            graphSampleDelay(entity, graph);
+        else if (name.equals("ptolemy.domains.sdf.lib.FIR"))
+            graphFIR(entity, graph);
     }
 
     protected void graphSampleDelay(Entity entity, DirectedGraph graph){
-	Port input = entity.getPort("input");
-	Port output = entity.getPort("output");
-	//CircuitNode delay = new CircuitNode(entity);
-	//String delay="delay"+count++;
-	graph.addNodeWeight(input);
-	graph.addNodeWeight(output);
-	graph.addNodeWeight(entity);
-	graph.addEdge(input, entity);
-	graph.addEdge(entity, output);
+        Port input = entity.getPort("input");
+        Port output = entity.getPort("output");
+        //CircuitNode delay = new CircuitNode(entity);
+        //String delay="delay"+count++;
+        graph.addNodeWeight(input);
+        graph.addNodeWeight(output);
+        graph.addNodeWeight(entity);
+        graph.addEdge(input, entity);
+        graph.addEdge(entity, output);
     }
 
     protected void graphFIR(Entity entity, DirectedGraph graph){
-	Port input = entity.getPort("input");
-	Port output = entity.getPort("output");
-	//CircuitNode fir = new CircuitNode(entity);
-	//String fir="FIR"+count++;
-	graph.addNodeWeight(input);
-	graph.addNodeWeight(output);
-	graph.addNodeWeight(entity);
-	graph.addEdge(input, entity);
-	graph.addEdge(entity, output);
+        Port input = entity.getPort("input");
+        Port output = entity.getPort("output");
+        //CircuitNode fir = new CircuitNode(entity);
+        //String fir="FIR"+count++;
+        graph.addNodeWeight(input);
+        graph.addNodeWeight(output);
+        graph.addNodeWeight(entity);
+        graph.addEdge(input, entity);
+        graph.addEdge(entity, output);
     }
 
     private HashSet _definedSet;

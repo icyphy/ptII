@@ -128,26 +128,26 @@ public class SoundWriter {
             float sampleRate, int bitsPerSample,
             int channels,
             int putSamplesArraySize) {
-	_isAudioWriterActive = false;
-	this._fileName = fileName;
-	this._bitsPerSample = bitsPerSample;
-	this._sampleRate = sampleRate;
-	this._channels = channels;
-	this._productionRate = putSamplesArraySize;
-	_initializeAudio();
-	_isAudioWriterActive = true;
-	if (_debug) {
-	    System.out.println("SoundWriter: constructor : fileName = "
+        _isAudioWriterActive = false;
+        this._fileName = fileName;
+        this._bitsPerSample = bitsPerSample;
+        this._sampleRate = sampleRate;
+        this._channels = channels;
+        this._productionRate = putSamplesArraySize;
+        _initializeAudio();
+        _isAudioWriterActive = true;
+        if (_debug) {
+            System.out.println("SoundWriter: constructor : fileName = "
                     + fileName);
-	    System.out.println("SoundWriter: constructor : bitsPerSample = "
+            System.out.println("SoundWriter: constructor : bitsPerSample = "
                     + bitsPerSample);
-	    System.out.println("SoundWriter: constructor : sampleRate = "
+            System.out.println("SoundWriter: constructor : sampleRate = "
                     + sampleRate);
-	    System.out.println("SoundWriter: constructor : channels = "
+            System.out.println("SoundWriter: constructor : channels = "
                     + channels);
-	    System.out.println("SoundWriter: constructor : putSamplesArraySize = "
+            System.out.println("SoundWriter: constructor : putSamplesArraySize = "
                     + putSamplesArraySize);
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,23 +178,23 @@ public class SoundWriter {
      */
     public void putSamples(double[][] putSamplesArray) throws
             IllegalStateException {
-	if (_isAudioWriterActive == true) {
-	    // Convert array of double valued samples into
-	    // the proper byte array format.
-	    _data = _doubleArrayToByteArray(putSamplesArray,
+        if (_isAudioWriterActive == true) {
+            // Convert array of double valued samples into
+            // the proper byte array format.
+            _data = _doubleArrayToByteArray(putSamplesArray,
                     _bytesPerSample,
                     _channels);
-	    // Add new audio data to the file buffer array.
-	    for (int i = 0; i < _data.length; i++) {
-		_toFileBuffer.add(new Byte(_data[i]));
-	    }
+            // Add new audio data to the file buffer array.
+            for (int i = 0; i < _data.length; i++) {
+                _toFileBuffer.add(new Byte(_data[i]));
+            }
 
-	} else {
-	    throw new IllegalStateException("SoundWriter: " +
+        } else {
+            throw new IllegalStateException("SoundWriter: " +
                     "putSamples() was called while audio playback was" +
                     " inactive (startPlayback() was never called or " +
                     "stopPlayback has already been called).");
-	}
+        }
     }
 
 
@@ -211,22 +211,22 @@ public class SoundWriter {
      *   unsupported format.
      */
     public void closeFile() throws IOException {
-	// IMPLEMENTATION NOTE: It is probably better to open the
-	// file for writing in the constructor. putSamples() should
-	// probably write samples to the file on each invocation.
-	// closeFile() should only close the file. This would result in
-	// more efficient operation and reduced memory usage. There
-	// does not appear to be an easy way to do this in javasound,
-	// however. This is because in javasound, there is an
-	// AudioInputStream but no AudioOutputStream class.
-	if (_debug) {
-	    System.out.println("SoundWriter: stopPlayback(): invoked");
-	}
-	if (_isAudioWriterActive == true) {
-	    // Record data to sound file.
-	    _stopPlaybackToFile();
-	}
-	_isAudioWriterActive = false;
+        // IMPLEMENTATION NOTE: It is probably better to open the
+        // file for writing in the constructor. putSamples() should
+        // probably write samples to the file on each invocation.
+        // closeFile() should only close the file. This would result in
+        // more efficient operation and reduced memory usage. There
+        // does not appear to be an easy way to do this in javasound,
+        // however. This is because in javasound, there is an
+        // AudioInputStream but no AudioOutputStream class.
+        if (_debug) {
+            System.out.println("SoundWriter: stopPlayback(): invoked");
+        }
+        if (_isAudioWriterActive == true) {
+            // Record data to sound file.
+            _stopPlaybackToFile();
+        }
+        _isAudioWriterActive = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -236,14 +236,14 @@ public class SoundWriter {
      *  can be invoked.
      */
     private void _initializeAudio() {
-	// FIXME: Performance is not great when the incoming audio
-	// samples are being captured in real-time, possibly
-	// due to resizing of the ArrayList.
-	//
-	// Array to hold all data to be saved to file. Grows
-	// as new data are added (via putSamples()).
-	// Each element is a byte of audio data.
-	_toFileBuffer = new ArrayList();
+        // FIXME: Performance is not great when the incoming audio
+        // samples are being captured in real-time, possibly
+        // due to resizing of the ArrayList.
+        //
+        // Array to hold all data to be saved to file. Grows
+        // as new data are added (via putSamples()).
+        // Each element is a byte of audio data.
+        _toFileBuffer = new ArrayList();
 
         boolean signed = true;
         boolean bigEndian = true;
@@ -253,7 +253,7 @@ public class SoundWriter {
                 _channels, signed, bigEndian);
 
         _frameSizeInBytes = _playToFileFormat.getFrameSize();
-	_bytesPerSample = _bitsPerSample/8;
+        _bytesPerSample = _bitsPerSample/8;
     }
 
     /** Open a the file specified in the constructor for writing,
@@ -263,63 +263,63 @@ public class SoundWriter {
      *  no more calls to putSamples() are required.
      */
     private void _stopPlaybackToFile() throws IOException {
-	int size =  _toFileBuffer.size();
-	byte[] audioBytes = new byte[size];
-	for (int i = 0; i < size; i++) {
-	    Byte j = (Byte)_toFileBuffer.get(i);
-	    audioBytes[i] = j.byteValue();
-	}
-	ByteArrayInputStream byteInputArrayStream =
-	    new ByteArrayInputStream(audioBytes);
+        int size =  _toFileBuffer.size();
+        byte[] audioBytes = new byte[size];
+        for (int i = 0; i < size; i++) {
+            Byte j = (Byte)_toFileBuffer.get(i);
+            audioBytes[i] = j.byteValue();
+        }
+        ByteArrayInputStream byteInputArrayStream =
+            new ByteArrayInputStream(audioBytes);
 
-	AudioInputStream audioInputStream =
-	    new AudioInputStream(byteInputArrayStream,
+        AudioInputStream audioInputStream =
+            new AudioInputStream(byteInputArrayStream,
                     _playToFileFormat,
                     audioBytes.length /  _frameSizeInBytes);
 
-	outFile = new File(_fileName);
+        outFile = new File(_fileName);
 
-	try {
-	    StringTokenizer st = new StringTokenizer(_fileName, ".");
-	    // Do error checking:
-	    if (st.countTokens() != 2) {
-		throw new  IOException("Error: Incorrect " +
+        try {
+            StringTokenizer st = new StringTokenizer(_fileName, ".");
+            // Do error checking:
+            if (st.countTokens() != 2) {
+                throw new  IOException("Error: Incorrect " +
                         "file name format. " +
                         "Format: filename.extension");
-	    }
-	    st.nextToken(); // Advance to the file extension.
+            }
+            st.nextToken(); // Advance to the file extension.
 
-	    String fileExtension = st.nextToken();
+            String fileExtension = st.nextToken();
 
-	    if (fileExtension.equalsIgnoreCase("au")) {
-		// Save the file.
-		AudioSystem.write(audioInputStream,
+            if (fileExtension.equalsIgnoreCase("au")) {
+                // Save the file.
+                AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.AU, outFile);
-	    } else if (fileExtension.equalsIgnoreCase("aiff")) {
-		// Save the file.
-		AudioSystem.write(audioInputStream,
+            } else if (fileExtension.equalsIgnoreCase("aiff")) {
+                // Save the file.
+                AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.AIFF, outFile);
-	    } else if (fileExtension.equalsIgnoreCase("wave")) {
-		// Save the file.
-		AudioSystem.write(audioInputStream,
+            } else if (fileExtension.equalsIgnoreCase("wave")) {
+                // Save the file.
+                AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.WAVE, outFile);
-	    } else if (fileExtension.equalsIgnoreCase("wav")) {
-		// Save the file.
-		AudioSystem.write(audioInputStream,
+            } else if (fileExtension.equalsIgnoreCase("wav")) {
+                // Save the file.
+                AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.WAVE, outFile);
-	    } else if (fileExtension.equalsIgnoreCase("aifc")) {
-		// Save the file.
-		AudioSystem.write(audioInputStream,
+            } else if (fileExtension.equalsIgnoreCase("aifc")) {
+                // Save the file.
+                AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.AIFC, outFile);
-	    } else {
-		throw new  IOException("Error saving " +
-			"file: Unknown file format: " +
+            } else {
+                throw new  IOException("Error saving " +
+                        "file: Unknown file format: " +
                         fileExtension);
-	    }
-	} catch (IOException e) {
+            }
+        } catch (IOException e) {
             throw new IOException("SoundWriter: error saving" +
                     " file: " + e);
-	}
+        }
     }
 
     /* Convert a double array of audio samples into a byte array of
@@ -340,59 +340,59 @@ public class SoundWriter {
     private byte[] _doubleArrayToByteArray(double[][] doubleArray,
             int bytesPerSample, int channels) {
         // All channels had better have the same number
-	// of samples! This is not checked!
-	int lengthInSamples = doubleArray[0].length;
-	//double  maxSample = Math.pow(2, 8 * bytesPerSample - 1);
-	// Could use above line, but hopefully, code below will
-	// be faster.
-	double maxSample;
-	double maxDoubleValuedSample;
-	if (bytesPerSample == 2) {
-	    maxSample = 32768;
-	} else if (bytesPerSample == 1) {
-	    maxSample = 128;
-	} else if (bytesPerSample == 3) {
-	    maxSample = 8388608;
-	} else if (bytesPerSample == 4) {
-	    maxSample = 147483648e9;
-	} else {
-	    // Should not happen.
-	    maxSample = 0;
-	}
-	maxDoubleValuedSample = (maxSample - 2)/maxSample;
-	byte[] byteArray =
-	    new byte[lengthInSamples * bytesPerSample * channels];
-	byte[] b = new byte[bytesPerSample];
-	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
+        // of samples! This is not checked!
+        int lengthInSamples = doubleArray[0].length;
+        //double  maxSample = Math.pow(2, 8 * bytesPerSample - 1);
+        // Could use above line, but hopefully, code below will
+        // be faster.
+        double maxSample;
+        double maxDoubleValuedSample;
+        if (bytesPerSample == 2) {
+            maxSample = 32768;
+        } else if (bytesPerSample == 1) {
+            maxSample = 128;
+        } else if (bytesPerSample == 3) {
+            maxSample = 8388608;
+        } else if (bytesPerSample == 4) {
+            maxSample = 147483648e9;
+        } else {
+            // Should not happen.
+            maxSample = 0;
+        }
+        maxDoubleValuedSample = (maxSample - 2)/maxSample;
+        byte[] byteArray =
+            new byte[lengthInSamples * bytesPerSample * channels];
+        byte[] b = new byte[bytesPerSample];
+        for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
-	    int l;
-	    // For each channel,
-	    for (int currChannel = 0; currChannel < channels; currChannel++) {
-		// Perform clipping, if necessary.
-		if (doubleArray[currChannel][currSamp] >=
+            int l;
+            // For each channel,
+            for (int currChannel = 0; currChannel < channels; currChannel++) {
+                // Perform clipping, if necessary.
+                if (doubleArray[currChannel][currSamp] >=
                         maxDoubleValuedSample) {
-		    l = (int)maxSample - 2;
-		} else if (doubleArray[currChannel][currSamp] <=
+                    l = (int)maxSample - 2;
+                } else if (doubleArray[currChannel][currSamp] <=
                         -maxDoubleValuedSample) {
-		    l = (int)(-maxSample) + 2;
-		} else {
-		    // signed integer representation of current sample of the
-		    // current channel.
-		    l =
-			(int)(doubleArray[currChannel][currSamp] * maxSample);
-		}
-		// Create byte representation of current sample.
-		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
-		    b[bytesPerSample - i - 1] = (byte) l;
-		// Copy the byte representation of current sample to
-		// the linear signed pcm big endian formatted byte array.
-		for (int i = 0; i < bytesPerSample; i += 1) {
+                    l = (int)(-maxSample) + 2;
+                } else {
+                    // signed integer representation of current sample of the
+                    // current channel.
+                    l =
+                        (int)(doubleArray[currChannel][currSamp] * maxSample);
+                }
+                // Create byte representation of current sample.
+                for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
+                    b[bytesPerSample - i - 1] = (byte) l;
+                // Copy the byte representation of current sample to
+                // the linear signed pcm big endian formatted byte array.
+                for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[currSamp*bytesPerSample*channels +
                             bytesPerSample*currChannel + i] = b[i];
-		}
-	    }
-	}
-	return byteArray;
+                }
+            }
+        }
+        return byteArray;
     }
 
     ///////////////////////////////////////////////////////////////////

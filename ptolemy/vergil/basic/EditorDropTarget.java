@@ -140,27 +140,27 @@ public class EditorDropTarget extends DropTarget {
          */
         public void drop(DropTargetDropEvent dtde) {
 
-	    Iterator iterator = null;
+            Iterator iterator = null;
             if (dtde.isDataFlavorSupported(
                     PtolemyTransferable.namedObjFlavor)) {
-		try {
+                try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-		    iterator = (Iterator)dtde.getTransferable().getTransferData(
+                    iterator = (Iterator)dtde.getTransferable().getTransferData(
                             PtolemyTransferable.namedObjFlavor);
-		} catch(Exception e) {
-		    MessageHandler.error(
+                } catch(Exception e) {
+                    MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
                             + dtde,
                             e);
                     return;
-		}
+                }
             } else {
                 dtde.rejectDrop();
             }
 
             if (iterator == null) {
-		// Nothing to drop!
-		return;
+                // Nothing to drop!
+                return;
             }
 
             Point2D originalPoint = SnapConstraint.constrainPoint(
@@ -176,9 +176,9 @@ public class EditorDropTarget extends DropTarget {
                 return;
             }
 
-	    final GraphController controller = pane.getGraphController();
-	    GraphModel model = controller.getGraphModel();
-	    final CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            final GraphController controller = pane.getGraphController();
+            GraphModel model = controller.getGraphModel();
+            final CompositeEntity toplevel = (CompositeEntity)model.getRoot();
             NamedObj container =
                     MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
@@ -283,9 +283,9 @@ public class EditorDropTarget extends DropTarget {
                     request.setUndoable(true);
                     container.requestChange(request);
                 }
-	    }
-	    dtde.dropComplete(true); //success!
-	}
+            }
+            dtde.dropComplete(true); //success!
+        }
 
         /** Accept the event if the data is a known key.
          *  @param dtde The drop event.
@@ -302,13 +302,13 @@ public class EditorDropTarget extends DropTarget {
         // Note that this needs to be done after the change request
         // that creates the object has succeeded.
         private void _setLocation(String name,
-				  NamedObj newObject, Point2D point)
+                                  NamedObj newObject, Point2D point)
                 throws Exception {
             if (newObject == null) {
                 throw new InternalErrorException("Dropped object '"
-						 + name
-						 + "' not found after "
-						 + "change completed!");
+                                                 + name
+                                                 + "' not found after "
+                                                 + "change completed!");
             }
             // Constrain point to snap to grid.
             Point2D newPoint = SnapConstraint.constrainPoint(point);

@@ -167,9 +167,9 @@ public class TimedPNDirector extends PNDirector {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         TimedPNDirector newObject = (TimedPNDirector)super.clone(workspace);
-	newObject._eventQueue =
+        newObject._eventQueue =
             new CalendarQueue(new TimedEvent.TimeComparator());
-	newObject._delayBlockCount = 0;
+        newObject._delayBlockCount = 0;
         return newObject;
     }
 
@@ -186,10 +186,10 @@ public class TimedPNDirector extends PNDirector {
      */
     public synchronized void fireAt(Actor actor, double newFiringTime)
             throws IllegalActionException {
-	if (newFiringTime < getCurrentTime()) {
-	    throw new IllegalActionException(this, "The process wants to "
-		    + " get fired in the past!");
-	}
+        if (newFiringTime < getCurrentTime()) {
+            throw new IllegalActionException(this, "The process wants to "
+                    + " get fired in the past!");
+        }
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
         _informOfDelayBlock();
         try {
@@ -197,8 +197,8 @@ public class TimedPNDirector extends PNDirector {
                 wait();
             }
         } catch (InterruptedException e) {
-	    System.err.println(e.toString());
-	}
+            System.err.println(e.toString());
+        }
     }
 
     /** Set the current time of the model under this director.
@@ -208,12 +208,12 @@ public class TimedPNDirector extends PNDirector {
      */
     public void setCurrentTime(double newTime)
             throws IllegalActionException {
-	if (newTime < getCurrentTime()) {
-	    throw new IllegalActionException(this, "Attempt to set the "+
-		    "time to past.");
-	} else {
-	    super.setCurrentTime(newTime);
-	}
+        if (newTime < getCurrentTime()) {
+            throw new IllegalActionException(this, "Attempt to set the "+
+                    "time to past.");
+        } else {
+            super.setCurrentTime(newTime);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -225,12 +225,12 @@ public class TimedPNDirector extends PNDirector {
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-	if (_readBlockCount + _writeBlockCount + _delayBlockCount
-	        >= _getActiveActorsCount()) {
-	    return true;
-	} else {
-	    return false;
-	}
+        if (_readBlockCount + _writeBlockCount + _delayBlockCount
+                >= _getActiveActorsCount()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /** Increment by 1 the count of actors waiting for the time to advance.
@@ -239,15 +239,15 @@ public class TimedPNDirector extends PNDirector {
      *  thread of the same.
      */
     protected synchronized void _informOfDelayBlock() {
-	_delayBlockCount++;
-	notifyAll();
+        _delayBlockCount++;
+        notifyAll();
     }
 
     /** Decrease by 1 the count of processes blocked on a delay.
      */
     protected synchronized void _informOfDelayUnblock() {
-	_delayBlockCount--;
-	return;
+        _delayBlockCount--;
+        return;
     }
 
     /** Return false on detection of a real deadlock. Otherwise break the
@@ -261,37 +261,37 @@ public class TimedPNDirector extends PNDirector {
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveDeadlock()
-	    throws IllegalActionException {
-	if (_writeBlockCount != 0) {
-	    // Artificial deadlock based on write blocks.
+            throws IllegalActionException {
+        if (_writeBlockCount != 0) {
+            // Artificial deadlock based on write blocks.
             _incrementLowestWriteCapacityPort();
-	    return true;
+            return true;
         } else if (_delayBlockCount == 0) {
-	    // Real deadlock with no delayed processes.
-	    return false;
-	} else {
-	    // Artificial deadlock due to delayed processes.
-	    // Advance time to next possible time.
-	    synchronized(this) {
-		if (!_eventQueue.isEmpty()) {
-		    //Take the first time-blocked process from the queue.
-		    TimedEvent event = (TimedEvent)_eventQueue.take();
-		    //Advance time to the resumption time of this process.
-		    setCurrentTime(event.timeStamp);
-		    _informOfDelayUnblock();
-		} else {
-		    throw new InternalErrorException("Inconsistency"+
-			    " in number of actors blocked on delays count"+
-			    " and the entries in the CalendarQueue");
-		}
+            // Real deadlock with no delayed processes.
+            return false;
+        } else {
+            // Artificial deadlock due to delayed processes.
+            // Advance time to next possible time.
+            synchronized(this) {
+                if (!_eventQueue.isEmpty()) {
+                    //Take the first time-blocked process from the queue.
+                    TimedEvent event = (TimedEvent)_eventQueue.take();
+                    //Advance time to the resumption time of this process.
+                    setCurrentTime(event.timeStamp);
+                    _informOfDelayUnblock();
+                } else {
+                    throw new InternalErrorException("Inconsistency"+
+                            " in number of actors blocked on delays count"+
+                            " and the entries in the CalendarQueue");
+                }
 
-		//Remove any other process waiting to be resumed at the new
-		//advanced time (the new currentTime).
-		boolean sameTime = true;
-		while (sameTime) {
-		    //If queue is not empty, then determine the resumption
-		    //time of the next process.
-		    if (!_eventQueue.isEmpty()) {
+                //Remove any other process waiting to be resumed at the new
+                //advanced time (the new currentTime).
+                boolean sameTime = true;
+                while (sameTime) {
+                    //If queue is not empty, then determine the resumption
+                    //time of the next process.
+                    if (!_eventQueue.isEmpty()) {
                         //Remove the first process from the queue.
                         TimedEvent event = (TimedEvent)_eventQueue.take();
                         Actor actor = (Actor)event.contents;
@@ -308,14 +308,14 @@ public class TimedPNDirector extends PNDirector {
                             _eventQueue.put(new TimedEvent(newTime, actor));
                             sameTime = false;
                         }
-		    } else {
-			sameTime = false;
-		    }
-		}
-		//Wake up all delayed actors
-		notifyAll();
-	    }
-	}
+                    } else {
+                        sameTime = false;
+                    }
+                }
+                //Wake up all delayed actors
+                notifyAll();
+            }
+        }
         return true;
     }
 

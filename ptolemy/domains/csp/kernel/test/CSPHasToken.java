@@ -63,13 +63,13 @@ public class CSPHasToken extends CSPGet {
     /**
      */
     public void fire() throws IllegalActionException {
-	Receiver[][] rcvrs = (Receiver[][])inputPort.getReceivers();
-	CSPReceiver rcvr = null;
-	for ( int i = 0; i < rcvrs.length; i++ ) {
-	    for ( int j = 0; j < rcvrs[i].length; j++ ) {
-		rcvr = (CSPReceiver)rcvrs[i][j];
-	    }
-	}
+        Receiver[][] rcvrs = (Receiver[][])inputPort.getReceivers();
+        CSPReceiver rcvr = null;
+        for ( int i = 0; i < rcvrs.length; i++ ) {
+            for ( int j = 0; j < rcvrs[i].length; j++ ) {
+                rcvr = (CSPReceiver)rcvrs[i][j];
+            }
+        }
 
         Token token = rcvr.get();
         if ( token != null ) {
@@ -80,7 +80,7 @@ public class CSPHasToken extends CSPGet {
     /**
      */
     public boolean hasToken() {
-	return _hasToken;
+        return _hasToken;
     }
 
     ///////////////////////////////////////////////////////////////////

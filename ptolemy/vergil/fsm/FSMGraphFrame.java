@@ -84,7 +84,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
      *  @param tableau The tableau responsible for this frame.
      */
     public FSMGraphFrame(CompositeEntity entity, Tableau tableau) {
-	this(entity, tableau, null);
+        this(entity, tableau, null);
     }
 
     /** Construct a frame associated with the specified FSM model.
@@ -118,7 +118,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
      *  It is essential that _createGraphPane() be called before this.
      */
     protected void _addMenus() {
-	super._addMenus();
+        super._addMenus();
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
@@ -162,11 +162,11 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
-	_controller = new FSMGraphController();
+        _controller = new FSMGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
-	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
-	return new GraphPane(_controller, graphModel);
+        final FSMGraphModel graphModel = new FSMGraphModel(getModel());
+        return new GraphPane(_controller, graphModel);
     }
 
     ///////////////////////////////////////////////////////////////////

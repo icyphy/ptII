@@ -83,15 +83,15 @@ public class StateController extends AttributeController {
      *  @param access The access level.
      */
     public StateController(GraphController controller, Access access) {
-	super(controller, access);
-	setNodeRenderer(new StateRenderer());
+        super(controller, access);
+        setNodeRenderer(new StateRenderer());
 
-	if (_configuration != null) {
+        if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,12 +102,12 @@ public class StateController extends AttributeController {
      */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
-	if (_configuration != null) {
+        if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,22 +126,22 @@ public class StateController extends AttributeController {
      *  will report an error with a fairly cryptic message.
      */
     private class LookInsideAction extends FigureAction {
-	public LookInsideAction() {
-	    super("Look Inside (Ctrl+L)");
+        public LookInsideAction() {
+            super("Look Inside (Ctrl+L)");
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
-	    putValue(GUIUtilities.ACCELERATOR_KEY,
+            putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
-	}
-	public void actionPerformed(ActionEvent e) {
+        }
+        public void actionPerformed(ActionEvent e) {
 
             if (_configuration == null) {
                 MessageHandler.error(
                         "Cannot look inside without a configuration.");
                 return;
             }
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
+            super.actionPerformed(e);
+            NamedObj target = getTarget();
             // If the target is not an instance of State, do nothing.
             if (target instanceof State) {
                 try {
@@ -158,30 +158,30 @@ public class StateController extends AttributeController {
                     MessageHandler.error("Look inside failed: ", ex);
                 }
             }
-	}
+        }
     }
 
     /** Render the state as a circle.
      */
     public static class StateRenderer implements NodeRenderer {
-	public Figure render(Object n) {
-	    Locatable location = (Locatable)n;
-	    NamedObj object = (NamedObj) location.getContainer();
-	    EditorIcon icon;
+        public Figure render(Object n) {
+            Locatable location = (Locatable)n;
+            NamedObj object = (NamedObj) location.getContainer();
+            EditorIcon icon;
             try {
                 icon = (EditorIcon)object.getAttribute("_icon");
-		if (icon == null) {
-		    icon = new XMLIcon(object, "_icon");
-		}
-	    } catch (KernelException ex) {
-		throw new InternalErrorException("could not create icon " +
+                if (icon == null) {
+                    icon = new XMLIcon(object, "_icon");
+                }
+            } catch (KernelException ex) {
+                throw new InternalErrorException("could not create icon " +
                         "in " + object + " even " +
                         "though one did not exist");
-	    }
+            }
 
-	    Figure figure = icon.createFigure();
+            Figure figure = icon.createFigure();
             figure.setToolTipText(object.getName());
-	    return figure;
-	}
+            return figure;
+        }
     }
 }

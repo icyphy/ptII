@@ -85,14 +85,14 @@ public class ListenClock extends Clock {
      *  interruption while the calling thread sleeps.
      */
     public boolean prefire() throws IllegalActionException {
-	_debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
-	try {
-	    Thread.sleep(100);
-	} catch(InterruptedException e) {
+        _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
+        try {
+            Thread.sleep(100);
+        } catch(InterruptedException e) {
             throw new InternalErrorException( "Error with "
-            	    + "sleeping thread in prefire");
-	}
-	return super.prefire();
+                        + "sleeping thread in prefire");
+        }
+        return super.prefire();
     }
 
     /** Generate an ExecEvent with a state value of 2. Return the
@@ -105,14 +105,14 @@ public class ListenClock extends Clock {
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
-	_debug( new ExecEvent( this, ExecEvent.WAITING ) );
-	try {
-	    Thread.sleep(100);
-	} catch(InterruptedException e) {
+        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+        try {
+            Thread.sleep(100);
+        } catch(InterruptedException e) {
             throw new InternalErrorException( "Error with "
-            	    + "sleeping thread in postfire");
-	}
-	return super.postfire();
+                        + "sleeping thread in postfire");
+        }
+        return super.postfire();
     }
 
     /** Generate an ExecEvent with a state value of 3, cause the
@@ -123,7 +123,7 @@ public class ListenClock extends Clock {
      *  superclass.
      */
     public void wrapup() throws IllegalActionException {
-	_debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
-	super.wrapup();
+        _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
+        super.wrapup();
     }
 }

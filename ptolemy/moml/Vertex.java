@@ -72,8 +72,8 @@ public class Vertex extends Location {
      *  @param workspace The workspace that will list the attribute.
      */
     public Vertex(Workspace workspace) {
-	super(workspace);
-	getMoMLInfo().elementName = "vertex";
+        super(workspace);
+        getMoMLInfo().elementName = "vertex";
     }
 
     /** Construct an attribute with the given name and position.
@@ -87,7 +87,7 @@ public class Vertex extends Location {
     public Vertex(Relation container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	getMoMLInfo().elementName = "vertex";
+        getMoMLInfo().elementName = "vertex";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ public class Vertex extends Location {
      *  @param port The port to link.
      */
     public void addLinkedPort(Port port) {
-	if (_ports == null) {
+        if (_ports == null) {
             _ports = new LinkedList();
         }
         _ports.add(port);
@@ -155,7 +155,7 @@ public class Vertex extends Location {
      *  with a path to it.
      */
     public Vertex getLinkedVertex() {
-	return _linked;
+        return _linked;
     }
 
     /** Get the list of ports linked to this vertex.
@@ -171,7 +171,7 @@ public class Vertex extends Location {
      *  @param port The port to remove.
      */
     public void removeLinkedPort(Port port) {
-	if (_ports != null) {
+        if (_ports != null) {
             _ports.remove(port);
         }
     }
@@ -181,7 +181,7 @@ public class Vertex extends Location {
      *  @param vertex The vertex to link to this one.
      */
     public void setLinkedVertex(Vertex vertex) {
-	_linked = vertex;
+        _linked = vertex;
     }
 
     /** Get a description of the class, which is the class name and
@@ -189,7 +189,7 @@ public class Vertex extends Location {
      *  @return A string describing the object.
      */
     public String toString() {
-	// FIXME add linked ports.
+        // FIXME add linked ports.
         return super.toString();
     }
 
@@ -208,11 +208,11 @@ public class Vertex extends Location {
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-	super._exportMoMLContents(output, depth);
-	if (_linked != null) {
-	    output.write(_getIndentPrefix(depth));
-	    output.write("<pathTo=\"" + _linked.getName() + "\"/>\n");
-	}
+        super._exportMoMLContents(output, depth);
+        if (_linked != null) {
+            output.write(_getIndentPrefix(depth));
+            output.write("<pathTo=\"" + _linked.getName() + "\"/>\n");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
@@ -82,10 +82,10 @@ public class SampleDelay extends SDFTransformer {
 
         output.setTokenInitProduction(1);
 
-	// set type constraints.
-	ArrayType paramType = (ArrayType)initialOutputs.getType();
-	InequalityTerm elementTerm = paramType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        // set type constraints.
+        ArrayType paramType = (ArrayType)initialOutputs.getType();
+        InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
     }
 
@@ -123,7 +123,7 @@ public class SampleDelay extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         SampleDelay newObject = (SampleDelay)(super.clone(workspace));
 
         // set the type constraints

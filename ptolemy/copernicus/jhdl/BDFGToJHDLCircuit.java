@@ -72,37 +72,37 @@ import soot.*;
 public class BDFGToJHDLCircuit {
 
     public BDFGToJHDLCircuit(BlockDataFlowGraph bdfg, JHDLTestbench parent)
-	throws JHDLUnsupportedException {
-	_cell = new Logic(parent,"newcell");
-	_jtb = parent;
-	_bdfg = bdfg;
-	_processDFG();
+        throws JHDLUnsupportedException {
+        _cell = new Logic(parent,"newcell");
+        _jtb = parent;
+        _bdfg = bdfg;
+        _processDFG();
     }
 
     protected void _processDFG() throws JHDLUnsupportedException {
 
-	new ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty().writeDotFile("orig",_bdfg);
-	Collection outputNodes = _determineOutputNodes();
-	_trimNonReachableNodes(outputNodes);
-	new ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty().writeDotFile("reachable",_bdfg);
+        new ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty().writeDotFile("orig",_bdfg);
+        Collection outputNodes = _determineOutputNodes();
+        _trimNonReachableNodes(outputNodes);
+        new ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty().writeDotFile("reachable",_bdfg);
 
-	// Generate a topological order of nodes in this graph
-	// (this is a single basic block, so it should be acyclic)
-	Collection c;
-	try {
-	    c = _bdfg.topologicalSort(_bdfg.nodes());
-	} catch (IllegalActionException e) {
-	    throw new JHDLUnsupportedException(e.getMessage());
-	}
+        // Generate a topological order of nodes in this graph
+        // (this is a single basic block, so it should be acyclic)
+        Collection c;
+        try {
+            c = _bdfg.topologicalSort(_bdfg.nodes());
+        } catch (IllegalActionException e) {
+            throw new JHDLUnsupportedException(e.getMessage());
+        }
 
-	// create a hashmap between nodes (key) and wires (value)
-	_wireMap = new HashMap(_bdfg.nodeCount());
+        // create a hashmap between nodes (key) and wires (value)
+        _wireMap = new HashMap(_bdfg.nodeCount());
 
-	// sequence through the nodes in the graph in topological
-	// order.
-	for (Iterator i=c.iterator();i.hasNext();) {
-	    _processNode((Node) i.next());
-	}
+        // sequence through the nodes in the graph in topological
+        // order.
+        for (Iterator i=c.iterator();i.hasNext();) {
+            _processNode((Node) i.next());
+        }
 
     }
 
@@ -114,39 +114,39 @@ public class BDFGToJHDLCircuit {
      * return statement.
      **/
     protected Collection _determineOutputNodes()
-	throws JHDLUnsupportedException {
-	Vector v = new Vector(1);
-	// Find return statement node
-	Node returnNode = null;
-	for (Iterator i=_bdfg.nodes().iterator();
-	     i.hasNext() && (returnNode == null);) {
-	    Node n = (Node) i.next();
-	    if (n.getWeight() instanceof ReturnStmt)
-		returnNode = n;
-	}
-	v.add(returnNode);
-	if (returnNode==null)
-	    throw new JHDLUnsupportedException("No return statement in this basic block");
-	return v;
+        throws JHDLUnsupportedException {
+        Vector v = new Vector(1);
+        // Find return statement node
+        Node returnNode = null;
+        for (Iterator i=_bdfg.nodes().iterator();
+             i.hasNext() && (returnNode == null);) {
+            Node n = (Node) i.next();
+            if (n.getWeight() instanceof ReturnStmt)
+                returnNode = n;
+        }
+        v.add(returnNode);
+        if (returnNode==null)
+            throw new JHDLUnsupportedException("No return statement in this basic block");
+        return v;
     }
 
     protected void _trimNonReachableNodes(Collection outputNodes) {
 
-	Collection keepers = new Vector(_bdfg.nodeCount());
-	for (Iterator i=outputNodes.iterator();i.hasNext();) {
-	    Node output = (Node) i.next();
-	    Collection k=_bdfg.backwardReachableNodes(output);
-	    keepers.addAll(k);
-	    keepers.add(output);
-	}
-	Vector removeNodes=new Vector(_bdfg.nodeCount());
-	for (Iterator i=_bdfg.nodes().iterator();i.hasNext();) {
-	    Node n = (Node) i.next();
-	    if (!keepers.contains(n))
-		removeNodes.add(n);
-	}
-	for (Iterator i=removeNodes.iterator();i.hasNext();)
-	    _bdfg.removeNode( (Node) i.next() );
+        Collection keepers = new Vector(_bdfg.nodeCount());
+        for (Iterator i=outputNodes.iterator();i.hasNext();) {
+            Node output = (Node) i.next();
+            Collection k=_bdfg.backwardReachableNodes(output);
+            keepers.addAll(k);
+            keepers.add(output);
+        }
+        Vector removeNodes=new Vector(_bdfg.nodeCount());
+        for (Iterator i=_bdfg.nodes().iterator();i.hasNext();) {
+            Node n = (Node) i.next();
+            if (!keepers.contains(n))
+                removeNodes.add(n);
+        }
+        for (Iterator i=removeNodes.iterator();i.hasNext();)
+            _bdfg.removeNode( (Node) i.next() );
     }
 
     /**
@@ -154,386 +154,386 @@ public class BDFGToJHDLCircuit {
      **/
     protected void _processNode(Node node) throws JHDLUnsupportedException {
 
-	// Process Node
-	Object nweight = node.getWeight();
-	if (DEBUG) System.out.println("Node="+nweight.getClass().getName());
+        // Process Node
+        Object nweight = node.getWeight();
+        if (DEBUG) System.out.println("Node="+nweight.getClass().getName());
 
-	if (nweight instanceof ParameterRef) {
-	    _processParameterRef(node);
-	} else if (nweight instanceof Local) {
-	    _processLocal(node);
-	} else if (nweight instanceof Constant) {
-	    _processConstant(node);
-	} else if (nweight instanceof BinopExpr) {
-	    _processBinopExpr(node);
-	} else if (nweight instanceof UnopExpr) {
-	    _processUnopExpr(node);
-	} else if (nweight instanceof ReturnStmt) {
-	    _processReturnStmt(node);
-	} else if (nweight instanceof BinaryMux) {
-	    _processBinaryMux(node);
-	} else {
-	    _unsupportedOperation(nweight);
-	}
+        if (nweight instanceof ParameterRef) {
+            _processParameterRef(node);
+        } else if (nweight instanceof Local) {
+            _processLocal(node);
+        } else if (nweight instanceof Constant) {
+            _processConstant(node);
+        } else if (nweight instanceof BinopExpr) {
+            _processBinopExpr(node);
+        } else if (nweight instanceof UnopExpr) {
+            _processUnopExpr(node);
+        } else if (nweight instanceof ReturnStmt) {
+            _processReturnStmt(node);
+        } else if (nweight instanceof BinaryMux) {
+            _processBinaryMux(node);
+        } else {
+            _unsupportedOperation(nweight);
+        }
     }
 
     protected void _processParameterRef(Node node)
-	throws JHDLUnsupportedException {
-	ParameterRef pr = (ParameterRef) node.getWeight();
-	Type t = pr.getType();
-	// Currently only support IntType
-	int bits=0;
-	if (t instanceof IntType)
-	    bits = 32;
-	else if (t instanceof BooleanType)
-	    bits = 1;
-	else
-	    _unsupportedOperation(t);
-	int index = pr.getIndex();
-	// Create wire for parameter
-	Wire param = createPrimaryInput(new String("i"+index),bits);
-	_wireMap.put(node,param);
+        throws JHDLUnsupportedException {
+        ParameterRef pr = (ParameterRef) node.getWeight();
+        Type t = pr.getType();
+        // Currently only support IntType
+        int bits=0;
+        if (t instanceof IntType)
+            bits = 32;
+        else if (t instanceof BooleanType)
+            bits = 1;
+        else
+            _unsupportedOperation(t);
+        int index = pr.getIndex();
+        // Create wire for parameter
+        Wire param = createPrimaryInput(new String("i"+index),bits);
+        _wireMap.put(node,param);
     }
 
     protected void _processLocal(Node node) throws JHDLUnsupportedException {
 
-	// should have one input and one output. Just update the _wireMap
-	// TODO: I should use the local to provide some more naming
-	// information for the wire.
-	Collection c = _bdfg.inputEdges(node);
-	if (c.size() != 1) {
-	    _error("Unexpected input edges for node " + node);
-	}
-	Edge e = (Edge) c.iterator().next();
-	Wire w = _getWire(e.source());
-	_wireMap.put(node,w);
+        // should have one input and one output. Just update the _wireMap
+        // TODO: I should use the local to provide some more naming
+        // information for the wire.
+        Collection c = _bdfg.inputEdges(node);
+        if (c.size() != 1) {
+            _error("Unexpected input edges for node " + node);
+        }
+        Edge e = (Edge) c.iterator().next();
+        Wire w = _getWire(e.source());
+        _wireMap.put(node,w);
     }
 
     protected void _processConstant(Node node) throws JHDLUnsupportedException {
 
-	Object weight = node.getWeight();
-	if (weight instanceof IntConstant) {
-	    int value = ((IntConstant) weight).value;
-	    Wire w = _cell.constant(32,value);
-	    _wireMap.put(node,w);
-	} else
-	    _unsupportedOperation(weight);
+        Object weight = node.getWeight();
+        if (weight instanceof IntConstant) {
+            int value = ((IntConstant) weight).value;
+            Wire w = _cell.constant(32,value);
+            _wireMap.put(node,w);
+        } else
+            _unsupportedOperation(weight);
     }
 
     protected void _processBinopExpr(Node node)
-	throws JHDLUnsupportedException {
+        throws JHDLUnsupportedException {
 
-	// get two nodes coming into this op
-	Wire wire1=null;
-	Wire wire2=null;
-	for (Iterator ie=_bdfg.inputEdges(node).iterator();
-	     ie.hasNext();) {
-	    Edge e = (Edge) ie.next();
-	    if (!e.hasWeight())
-		_error("Missing weight on Edge " + e);
-	    Node source = e.source();
-	    Wire o = _getWire(source);
+        // get two nodes coming into this op
+        Wire wire1=null;
+        Wire wire2=null;
+        for (Iterator ie=_bdfg.inputEdges(node).iterator();
+             ie.hasNext();) {
+            Edge e = (Edge) ie.next();
+            if (!e.hasWeight())
+                _error("Missing weight on Edge " + e);
+            Node source = e.source();
+            Wire o = _getWire(source);
 
-	    String op = (String) e.getWeight();
-	    if (op.equals("op1")) {
-		wire1 = o;
-	    } else if (op.equals("op2")) {
-		wire2 = o;
-	    } else
-		_error("Bad edge weight on Edge " + e);
-	}
-	if (wire1==null || wire2==null)
-	    throw new JHDLUnsupportedException("Missing input wire");
+            String op = (String) e.getWeight();
+            if (op.equals("op1")) {
+                wire1 = o;
+            } else if (op.equals("op2")) {
+                wire2 = o;
+            } else
+                _error("Bad edge weight on Edge " + e);
+        }
+        if (wire1==null || wire2==null)
+            throw new JHDLUnsupportedException("Missing input wire");
 
-	Wire output=null;
-	Object nweight = node.getWeight();
-	if (nweight instanceof AddExpr) {
-	    // create adder
-	    output = _createAdder(wire1,wire2);
-	} else if (nweight instanceof SubExpr) {
-	    // create subtractor
-	    output = _createSubtractor(wire1,wire2);
-	} else if (nweight instanceof AndExpr) {
-	    output = _createAnd(wire1,wire2);
-	} else if (nweight instanceof OrExpr) {
-	    output = _createOr(wire1,wire2);
-	} else if (nweight instanceof XorExpr) {
-	    output = _createXor(wire1,wire2);
-	} else if (nweight instanceof ShlExpr) {
-	    _unsupportedOperation(nweight);
-	} else if (nweight instanceof ShrExpr) {
-	    _unsupportedOperation(nweight);
-	} else if (nweight instanceof UshrExpr) {
-	    _unsupportedOperation(nweight);
-	} else if (nweight instanceof RemExpr) {
-	    _unsupportedOperation(nweight);
-	} else if (nweight instanceof DivExpr) {
-	    _unsupportedOperation(nweight);
-	} else if (nweight instanceof MulExpr) {
-	    output = _createMultiplier(wire1,wire2);
-	} else if (nweight instanceof ConditionExpr) {
-	    output = _processConditionExpr(node,wire1,wire2);
-	} else
-	    _unsupportedOperation(nweight);
-	_wireMap.put(node,output);
+        Wire output=null;
+        Object nweight = node.getWeight();
+        if (nweight instanceof AddExpr) {
+            // create adder
+            output = _createAdder(wire1,wire2);
+        } else if (nweight instanceof SubExpr) {
+            // create subtractor
+            output = _createSubtractor(wire1,wire2);
+        } else if (nweight instanceof AndExpr) {
+            output = _createAnd(wire1,wire2);
+        } else if (nweight instanceof OrExpr) {
+            output = _createOr(wire1,wire2);
+        } else if (nweight instanceof XorExpr) {
+            output = _createXor(wire1,wire2);
+        } else if (nweight instanceof ShlExpr) {
+            _unsupportedOperation(nweight);
+        } else if (nweight instanceof ShrExpr) {
+            _unsupportedOperation(nweight);
+        } else if (nweight instanceof UshrExpr) {
+            _unsupportedOperation(nweight);
+        } else if (nweight instanceof RemExpr) {
+            _unsupportedOperation(nweight);
+        } else if (nweight instanceof DivExpr) {
+            _unsupportedOperation(nweight);
+        } else if (nweight instanceof MulExpr) {
+            output = _createMultiplier(wire1,wire2);
+        } else if (nweight instanceof ConditionExpr) {
+            output = _processConditionExpr(node,wire1,wire2);
+        } else
+            _unsupportedOperation(nweight);
+        _wireMap.put(node,output);
 
     }
 
     protected void _processUnopExpr(Node node)
-	throws JHDLUnsupportedException {
-	// get nodes coming into this op
-	Wire wire1=null;
-	Collection inEdges = _bdfg.inputEdges(node);
-	if (inEdges.size() != 1)
-	    _error("Illegal number of edges on unop node");
-	Edge e = (Edge) inEdges.iterator().next();
-	Node source = e.source();
-	wire1 = _getWire(source);
-	if (wire1 == null)
-	    throw new JHDLUnsupportedException("Missing wire");
+        throws JHDLUnsupportedException {
+        // get nodes coming into this op
+        Wire wire1=null;
+        Collection inEdges = _bdfg.inputEdges(node);
+        if (inEdges.size() != 1)
+            _error("Illegal number of edges on unop node");
+        Edge e = (Edge) inEdges.iterator().next();
+        Node source = e.source();
+        wire1 = _getWire(source);
+        if (wire1 == null)
+            throw new JHDLUnsupportedException("Missing wire");
 
-	Wire output=null;
-	Object nweight = node.getWeight();
+        Wire output=null;
+        Object nweight = node.getWeight();
 
-	if (nweight instanceof JHDLNotExpr) {
-	    output = _createNot(wire1);
-	} else
-	    _unsupportedOperation(nweight);
+        if (nweight instanceof JHDLNotExpr) {
+            output = _createNot(wire1);
+        } else
+            _unsupportedOperation(nweight);
 
-	_wireMap.put(node,output);
+        _wireMap.put(node,output);
     }
 
     protected Wire _processConditionExpr(Node node, Wire wire1,
-					 Wire wire2)
-	throws JHDLUnsupportedException {
+                                         Wire wire2)
+        throws JHDLUnsupportedException {
 
-	Object nweight = node.getWeight();
-	if (nweight instanceof CompoundBooleanExpression)
-	    return _processCompoundBooleanExpression(node,wire1,wire2);
-	else
-	    return _processSimpleConditionExpr(node,wire1,wire2);
+        Object nweight = node.getWeight();
+        if (nweight instanceof CompoundBooleanExpression)
+            return _processCompoundBooleanExpression(node,wire1,wire2);
+        else
+            return _processSimpleConditionExpr(node,wire1,wire2);
     }
 
     protected Wire _processCompoundBooleanExpression(Node node, Wire wire1,
-						     Wire wire2)
-	throws JHDLUnsupportedException {
+                                                     Wire wire2)
+        throws JHDLUnsupportedException {
 
-	Object nweight = node.getWeight();
-	if (nweight instanceof CompoundAndExpression) {
-	    return _createAnd(wire1,wire2);
-	} else if (nweight instanceof CompoundOrExpression) {
-	    return _createOr(wire1,wire2);
-	} else
-	    _unsupportedOperation(nweight);
-	return null;
+        Object nweight = node.getWeight();
+        if (nweight instanceof CompoundAndExpression) {
+            return _createAnd(wire1,wire2);
+        } else if (nweight instanceof CompoundOrExpression) {
+            return _createOr(wire1,wire2);
+        } else
+            _unsupportedOperation(nweight);
+        return null;
     }
 
     protected Wire _processSimpleConditionExpr(Node node, Wire wire1,
-					       Wire wire2)
-	throws JHDLUnsupportedException {
+                                               Wire wire2)
+        throws JHDLUnsupportedException {
 
-	// TODO: more agressive bitwidth analysis
-	int wireSize = wire1.getWidth() > wire2.getWidth() ?
-	    wire2.getWidth() : wire1.getWidth();
+        // TODO: more agressive bitwidth analysis
+        int wireSize = wire1.getWidth() > wire2.getWidth() ?
+            wire2.getWidth() : wire1.getWidth();
 
-	Wire newWire1 = wire1.range(wireSize-1,0);
-	Wire newWire2 = wire2.range(wireSize-1,0);
+        Wire newWire1 = wire1.range(wireSize-1,0);
+        Wire newWire2 = wire2.range(wireSize-1,0);
 
-	Object weight = node.getWeight();
-	Wire conditionTrue = _cell.wire(1);
+        Object weight = node.getWeight();
+        Wire conditionTrue = _cell.wire(1);
 
-	// LE, GE, GT, and LT are all performed with an adder
-	if (weight instanceof LeExpr ||
-	    weight instanceof GeExpr ||
-	    weight instanceof GtExpr ||
-	    weight instanceof LtExpr) {
+        // LE, GE, GT, and LT are all performed with an adder
+        if (weight instanceof LeExpr ||
+            weight instanceof GeExpr ||
+            weight instanceof GtExpr ||
+            weight instanceof LtExpr) {
 
-	    Wire notB = _cell.not(newWire2);
-	    Wire cin = _cell.wire(1);
-	    Wire sum = _cell.wire(32);
-	    Wire cout = _cell.wire(1);
-	    _cell.add_o(newWire1,newWire2,cin,sum,cout);
+            Wire notB = _cell.not(newWire2);
+            Wire cin = _cell.wire(1);
+            Wire sum = _cell.wire(32);
+            Wire cout = _cell.wire(1);
+            _cell.add_o(newWire1,newWire2,cin,sum,cout);
 
-	    if (weight instanceof LeExpr) {
-		// cin = 0, true = not cout
-		_cell.gnd_o(cin);
-		_cell.not_o(cout,conditionTrue);
-	    } else if (weight instanceof GeExpr) {
-		// cin = 1, true = cout
-		_cell.vcc_o(cin);
-		_cell.buf_o(cout,conditionTrue);
-	    } else if (weight instanceof LtExpr) {
-		// cin = 1, true = not cout
-		_cell.vcc_o(cin);
-		_cell.not_o(cout,conditionTrue);
-	    } else if (weight instanceof GtExpr) {
-		// cin = 0, true = cout
-		_cell.gnd_o(cin);
-		_cell.buf_o(cout,conditionTrue);
-	    }
+            if (weight instanceof LeExpr) {
+                // cin = 0, true = not cout
+                _cell.gnd_o(cin);
+                _cell.not_o(cout,conditionTrue);
+            } else if (weight instanceof GeExpr) {
+                // cin = 1, true = cout
+                _cell.vcc_o(cin);
+                _cell.buf_o(cout,conditionTrue);
+            } else if (weight instanceof LtExpr) {
+                // cin = 1, true = not cout
+                _cell.vcc_o(cin);
+                _cell.not_o(cout,conditionTrue);
+            } else if (weight instanceof GtExpr) {
+                // cin = 0, true = cout
+                _cell.gnd_o(cin);
+                _cell.buf_o(cout,conditionTrue);
+            }
 
-	} else if (weight instanceof EqExpr ||
-		   weight instanceof NeExpr) {
-	    // Need to build a better EQ and NE module (carry chain?)
-	    Wire equal = _cell.nor(_cell.xor(newWire1,newWire2));
-	    if (weight instanceof EqExpr)
-		_cell.buf_o(equal,conditionTrue);
-	    else
-		_cell.not_o(equal,conditionTrue);
-	} else
-	    _unsupportedOperation(weight);
-	return conditionTrue;
+        } else if (weight instanceof EqExpr ||
+                   weight instanceof NeExpr) {
+            // Need to build a better EQ and NE module (carry chain?)
+            Wire equal = _cell.nor(_cell.xor(newWire1,newWire2));
+            if (weight instanceof EqExpr)
+                _cell.buf_o(equal,conditionTrue);
+            else
+                _cell.not_o(equal,conditionTrue);
+        } else
+            _unsupportedOperation(weight);
+        return conditionTrue;
     }
 
     protected Wire _createAdder(Wire wire1, Wire wire2 ) {
-	return _cell.add(wire1,wire2);
+        return _cell.add(wire1,wire2);
     }
 
     protected Wire _createSubtractor(Wire wire1, Wire wire2 ) {
-	return _cell.sub(wire1,wire2);
+        return _cell.sub(wire1,wire2);
     }
 
     protected Wire _createMultiplier(Wire wire1, Wire wire2 ) {
-	Wire allbits = _cell.wire(64);
-	new arrayMult(_cell,       // parent
-		      wire1,       // x
-		      wire2,       // y
-		      null,        // clk_en
-		      allbits,     // pout
-		      true,        // signed
-		      0);          // pipedepth
-	Wire output = allbits.range(31,0);
-	return output;
+        Wire allbits = _cell.wire(64);
+        new arrayMult(_cell,       // parent
+                      wire1,       // x
+                      wire2,       // y
+                      null,        // clk_en
+                      allbits,     // pout
+                      true,        // signed
+                      0);          // pipedepth
+        Wire output = allbits.range(31,0);
+        return output;
     }
 
     protected Wire _createAnd(Wire wire1, Wire wire2 )
-	throws JHDLUnsupportedException {
-	if (wire1.getWidth() != wire2.getWidth())
-	    _error("Mismatched Bits for Binary operation");
-	return _cell.and(wire1,wire2);
+        throws JHDLUnsupportedException {
+        if (wire1.getWidth() != wire2.getWidth())
+            _error("Mismatched Bits for Binary operation");
+        return _cell.and(wire1,wire2);
     }
 
     protected Wire _createOr(Wire wire1, Wire wire2 )
-	throws JHDLUnsupportedException {
-	if (wire1.getWidth() != wire2.getWidth())
-	    _error("Mismatched Bits for Binary operation");
-	return _cell.or(wire1,wire2);
+        throws JHDLUnsupportedException {
+        if (wire1.getWidth() != wire2.getWidth())
+            _error("Mismatched Bits for Binary operation");
+        return _cell.or(wire1,wire2);
     }
 
     protected Wire _createXor(Wire wire1, Wire wire2 )
-	throws JHDLUnsupportedException {
-	if (wire1.getWidth() != wire2.getWidth())
-	    _error("Mismatched Bits for Binary operation");
-	return _cell.xor(wire1,wire2);
+        throws JHDLUnsupportedException {
+        if (wire1.getWidth() != wire2.getWidth())
+            _error("Mismatched Bits for Binary operation");
+        return _cell.xor(wire1,wire2);
     }
 
     protected Wire _createNot(Wire wire ) {
-	return _cell.not(wire);
+        return _cell.not(wire);
     }
 
     protected void _processReturnStmt(Node node)
-	throws JHDLUnsupportedException {
-	// Get input wire
-	Node predecessor=null;
-	for (Iterator ie=_bdfg.inputEdges(node).iterator();
-	     ie.hasNext();) {
-	    Edge e = (Edge) ie.next();
-	    if (predecessor != null)
-		_error("More than one predecessor for Node "+node);
-	    predecessor = e.source();
-	}
-	if (predecessor == null)
-	    _error("No predecessor for Node "+node);
-	Wire outputWire = (Wire) _wireMap.get(predecessor);
-	// create a primary output
-	createPrimaryOutput(outputWire);
+        throws JHDLUnsupportedException {
+        // Get input wire
+        Node predecessor=null;
+        for (Iterator ie=_bdfg.inputEdges(node).iterator();
+             ie.hasNext();) {
+            Edge e = (Edge) ie.next();
+            if (predecessor != null)
+                _error("More than one predecessor for Node "+node);
+            predecessor = e.source();
+        }
+        if (predecessor == null)
+            _error("No predecessor for Node "+node);
+        Wire outputWire = (Wire) _wireMap.get(predecessor);
+        // create a primary output
+        createPrimaryOutput(outputWire);
     }
 
     protected void _processBinaryMux(Node node)
-	throws JHDLUnsupportedException {
+        throws JHDLUnsupportedException {
 
-	BinaryMux w = (BinaryMux) node.getWeight();
+        BinaryMux w = (BinaryMux) node.getWeight();
 
-	Wire condition = _getWire(w.getConditionNode(_bdfg,node));
-	Wire trueNode = _getWire(w.getTrueNode(_bdfg,node));
-	Wire falseNode = _getWire(w.getFalseNode(_bdfg,node));
+        Wire condition = _getWire(w.getConditionNode(_bdfg,node));
+        Wire trueNode = _getWire(w.getTrueNode(_bdfg,node));
+        Wire falseNode = _getWire(w.getFalseNode(_bdfg,node));
 
-	Wire output = _cell.mux(falseNode,trueNode,condition);
-	_wireMap.put(node,output);
+        Wire output = _cell.mux(falseNode,trueNode,condition);
+        _wireMap.put(node,output);
     }
 
     protected Wire _getWire(Node node) throws JHDLUnsupportedException {
-	Object o = _wireMap.get(node);
-	if (o == null)
-	    _error("No wire for Node " + node);
-	return (Wire) o;
+        Object o = _wireMap.get(node);
+        if (o == null)
+            _error("No wire for Node " + node);
+        return (Wire) o;
     }
 
     public Wire createPrimaryInput(String name, int width) {
-	// 1. Create a new port
-	_cell.addPort( Cell.in(name,width) );
-	// 2. Create a new top-level testbench wire
-	Wire input = _jtb.addPrimaryInputWire(name,width);
-	// 3. Make connect call
-	Wire newwire = _cell.connect(name,input);
-	return newwire;
+        // 1. Create a new port
+        _cell.addPort( Cell.in(name,width) );
+        // 2. Create a new top-level testbench wire
+        Wire input = _jtb.addPrimaryInputWire(name,width);
+        // 3. Make connect call
+        Wire newwire = _cell.connect(name,input);
+        return newwire;
     }
 
     public void createPrimaryOutput(Wire w) {
-	String wire_name = w.getLeafName();
-	String w_name = Util.makeLegalJHDLIdentifier(wire_name);
-	int w_width = w.getWidth();
+        String wire_name = w.getLeafName();
+        String w_name = Util.makeLegalJHDLIdentifier(wire_name);
+        int w_width = w.getWidth();
 
-	// 1. Create a new port
-	_cell.addPort( Cell.out(w_name,w_width) );
-	// 2. Create a new top-level testbench wire
-	Wire output = _jtb.addPrimaryOutputWire(w_name,w_width);
-	// 3. Make connect call
-	Wire newwire = _cell.connect(w_name,output);
-	// 4. buf_o
-	_cell.buf_o(w,newwire);
+        // 1. Create a new port
+        _cell.addPort( Cell.out(w_name,w_width) );
+        // 2. Create a new top-level testbench wire
+        Wire output = _jtb.addPrimaryOutputWire(w_name,w_width);
+        // 3. Make connect call
+        Wire newwire = _cell.connect(w_name,output);
+        // 4. buf_o
+        _cell.buf_o(w,newwire);
     }
 
     public JHDLTestbench getTestbench() {
-	return _jtb;
+        return _jtb;
     }
     public Cell getCell() {
-	return _cell;
+        return _cell;
     }
 
     protected static void _error(String s)
-	throws JHDLUnsupportedException {
-	throw new JHDLUnsupportedException(s);
+        throws JHDLUnsupportedException {
+        throw new JHDLUnsupportedException(s);
     }
 
     protected static void _unsupportedOperation(Object o)
-	throws JHDLUnsupportedException {
-	throw new JHDLUnsupportedException("Object "+
-					   o.getClass().getName()+
-					   " not supported");
+        throws JHDLUnsupportedException {
+        throw new JHDLUnsupportedException("Object "+
+                                           o.getClass().getName()+
+                                           " not supported");
     }
 
 
     public static void main(String args[]) {
 
-	IntervalDFG idfg=null;
-	try {
-	    idfg = IntervalDFG.createIntervalDFG(args);
-	    new PtDirectedGraphToDotty().writeDotFile("merge",idfg);
-	    HWSystem hw = new HWSystem();
-	    JHDLTestbench jtb = new JHDLTestbench(hw);
-	    BDFGToJHDLCircuit c = new BDFGToJHDLCircuit(idfg,jtb);
-	    java.awt.Frame f = new SmartSchematicFrame(c.getCell());
-	    f.addWindowListener(new java.awt.event.WindowAdapter() {
-		    public void windowClosing(java.awt.event.WindowEvent e) {
-			System.exit(0);
-		    }
-		});
-	} catch (JHDLUnsupportedException e) {
-	    e.printStackTrace();
-	    System.err.println(e);
-	    System.exit(1);
-	}
+        IntervalDFG idfg=null;
+        try {
+            idfg = IntervalDFG.createIntervalDFG(args);
+            new PtDirectedGraphToDotty().writeDotFile("merge",idfg);
+            HWSystem hw = new HWSystem();
+            JHDLTestbench jtb = new JHDLTestbench(hw);
+            BDFGToJHDLCircuit c = new BDFGToJHDLCircuit(idfg,jtb);
+            java.awt.Frame f = new SmartSchematicFrame(c.getCell());
+            f.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+        } catch (JHDLUnsupportedException e) {
+            e.printStackTrace();
+            System.err.println(e);
+            System.exit(1);
+        }
 
 
     }

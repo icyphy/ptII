@@ -80,9 +80,9 @@ public class PrintString extends DDEActor {
         while ( true ) {
             token = (StringToken)getNextToken();
             time = getDirector().getCurrentTime();
-	    if ( token == null ) {
-		System.out.println("Null token in PrintString");
-	    }
+            if ( token == null ) {
+                System.out.println("Null token in PrintString");
+            }
             System.out.println("\t"+token.toString()+"\tTime is " + time);
         }
     }

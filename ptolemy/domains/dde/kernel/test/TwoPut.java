@@ -81,33 +81,33 @@ public class TwoPut extends TypedAtomicActor {
     /**
      */
     public void fire() throws IllegalActionException {
-	Token token = null;
-	Receiver[][] inRcvrs = input.getReceivers();
-	if ( inRcvrs.length == 0 ) {
-	    _continueIterations = false;
-	}
-	for ( int i = 0; i < inRcvrs.length; i++ ) {
-	    for ( int j = 0; j < inRcvrs[i].length; j++ ) {
-		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
-		if ( inRcvr.hasToken() ) {
-		    token = inRcvr.get();
+        Token token = null;
+        Receiver[][] inRcvrs = input.getReceivers();
+        if ( inRcvrs.length == 0 ) {
+            _continueIterations = false;
+        }
+        for ( int i = 0; i < inRcvrs.length; i++ ) {
+            for ( int j = 0; j < inRcvrs[i].length; j++ ) {
+                DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
+                if ( inRcvr.hasToken() ) {
+                    token = inRcvr.get();
                     Thread thread = Thread.currentThread();
-		    output1.broadcast(token);
-		}
-	    }
-	}
+                    output1.broadcast(token);
+                }
+            }
+        }
     }
 
     /**
      */
     public boolean postfire() throws IllegalActionException {
-	return _continueIterations;
+        return _continueIterations;
     }
 
     /**
      */
     public void setOutChan(int ch) throws IllegalActionException {
-	_outChannel = ch;
+        _outChannel = ch;
     }
 
     ///////////////////////////////////////////////////////////////////

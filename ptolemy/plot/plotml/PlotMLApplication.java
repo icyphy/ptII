@@ -124,7 +124,7 @@ public class PlotMLApplication extends PlotApplication {
                 "By: Edward A. Lee, eal@eecs.berkeley.edu " +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version " + PlotBox.PTPLOT_RELEASE +
-	        ", Build: $Id$\n\n"+
+                ", Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
                 "Copyright (c) 1997-2003, " +

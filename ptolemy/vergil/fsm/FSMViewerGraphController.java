@@ -200,11 +200,11 @@ public class FSMViewerGraphController extends RunnableGraphController {
      */
     protected void _createControllers() {
         super._createControllers();
-	_attributeController = new AttributeController(this,
+        _attributeController = new AttributeController(this,
                 AttributeController.PARTIAL);
-	_stateController = new StateController(this,
+        _stateController = new StateController(this,
                 AttributeController.PARTIAL);
-	_modalTransitionController = new ModalTransitionController(this);
+        _modalTransitionController = new ModalTransitionController(this);
         _transitionController = new TransitionController(this);
     }
 
@@ -226,16 +226,16 @@ public class FSMViewerGraphController extends RunnableGraphController {
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
-	_selectionDragger.addSelectionInteractor(
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_attributeController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_portController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_stateController.getNodeInteractor());
 
         // Transition controller is not a NamedObjController, so it has
         // to be done directly.
-	_selectionDragger.addSelectionInteractor(
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_transitionController.getEdgeInteractor());
 
         super.initializeInteraction();

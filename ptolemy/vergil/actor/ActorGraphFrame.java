@@ -86,7 +86,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      *  @param tableau The tableau responsible for this frame.
      */
     public ActorGraphFrame(CompositeEntity entity, Tableau tableau) {
-	this(entity, tableau, null);
+        this(entity, tableau, null);
     }
 
     /** Construct a frame associated with the specified Ptolemy II model.
@@ -120,7 +120,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      *  It is essential that _createGraphPane() be called before this.
      */
     protected void _addMenus() {
-	super._addMenus();
+        super._addMenus();
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
@@ -154,11 +154,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
-	_controller = new ActorEditorGraphController();
+        _controller = new ActorEditorGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
-	final ActorGraphModel graphModel = new ActorGraphModel(getModel());
-	return new GraphPane(_controller, graphModel);
+        final ActorGraphModel graphModel = new ActorGraphModel(getModel());
+        return new GraphPane(_controller, graphModel);
     }
 
     ///////////////////////////////////////////////////////////////////

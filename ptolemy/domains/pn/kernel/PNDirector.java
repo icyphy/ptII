@@ -193,7 +193,7 @@ public class PNDirector extends CompositeProcessDirector {
             throws CloneNotSupportedException {
         PNDirector newObject = (PNDirector)super.clone(workspace);
         newObject._readBlockCount = 0;
-	newObject._writeBlockCount = 0;
+        newObject._writeBlockCount = 0;
         newObject._writeBlockedQueues = new LinkedList();
         return newObject;
     }
@@ -208,11 +208,11 @@ public class PNDirector extends CompositeProcessDirector {
     public void initialize() throws IllegalActionException {
         // Initialize these counts BEFORE creating threads.
         _readBlockCount = 0;
-	_writeBlockCount = 0;
-	_writeBlockedQueues = new LinkedList();
+        _writeBlockCount = 0;
+        _writeBlockedQueues = new LinkedList();
         //processListeners is not initialized as we might want to continue
         //with the same listeners.
-	super.initialize();
+        super.initialize();
     }
 
     /** Return a new receiver compatible with this director. The receiver
@@ -225,15 +225,15 @@ public class PNDirector extends CompositeProcessDirector {
     public Receiver newReceiver() {
         PNQueueReceiver receiver =  new PNQueueReceiver();
         try {
-	    Parameter parameter =
+            Parameter parameter =
                 (Parameter)getAttribute("initialQueueCapacity");
-	    int capacity = ((IntToken)parameter.getToken()).intValue();
-	    receiver.setCapacity(capacity);
+            int capacity = ((IntToken)parameter.getToken()).intValue();
+            receiver.setCapacity(capacity);
         } catch (IllegalActionException ex) {
-	    throw new InternalErrorException(this, ex,
+            throw new InternalErrorException(this, ex,
                     "Size of queue should be 0, and capacity should be a "
                     + "non-negative number");
-	}
+        }
         return receiver;
     }
 
@@ -251,16 +251,16 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public boolean postfire() throws IllegalActionException {
         _notDone = super.postfire();
-	// If the container has input ports and there are active processes
-	// in the container, then the execution might restart on receiving
-	// additional data.
-	if (!((((CompositeActor)getContainer()).inputPortList()).isEmpty())
-		&& _getActiveActorsCount() != 0) {
+        // If the container has input ports and there are active processes
+        // in the container, then the execution might restart on receiving
+        // additional data.
+        if (!((((CompositeActor)getContainer()).inputPortList()).isEmpty())
+                && _getActiveActorsCount() != 0) {
             // Avoid returning false on detected deadlock.
-	    return !_stopRequested;
-	} else {
-	    return _notDone;
-	}
+            return !_stopRequested;
+        } else {
+            return _notDone;
+        }
     }
 
     /** Remove a process listener from this director.
@@ -290,34 +290,34 @@ public class PNDirector extends CompositeProcessDirector {
     protected void _incrementLowestWriteCapacityPort() {
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
-	Iterator receivers = _writeBlockedQueues.iterator();
+        Iterator receivers = _writeBlockedQueues.iterator();
         if ( !receivers.hasNext() ) {
             return;
         }
-	while (receivers.hasNext()) {
-	    PNQueueReceiver queue = (PNQueueReceiver)receivers.next();
-	    if (smallestCapacity == -1) {
-	        smallestCapacityQueue = queue;
-		smallestCapacity = queue.getCapacity();
-	    } else if (smallestCapacity > queue.getCapacity()) {
-	        smallestCapacityQueue = queue;
-	        smallestCapacity = queue.getCapacity();
-	    }
-	}
+        while (receivers.hasNext()) {
+            PNQueueReceiver queue = (PNQueueReceiver)receivers.next();
+            if (smallestCapacity == -1) {
+                smallestCapacityQueue = queue;
+                smallestCapacity = queue.getCapacity();
+            } else if (smallestCapacity > queue.getCapacity()) {
+                smallestCapacityQueue = queue;
+                smallestCapacity = queue.getCapacity();
+            }
+        }
         try {
             if (smallestCapacityQueue.getCapacity() <= 0) {
                 smallestCapacityQueue.setCapacity(1);
             } else {
-	        smallestCapacityQueue.setCapacity(
-			smallestCapacityQueue.getCapacity()*2);
+                smallestCapacityQueue.setCapacity(
+                        smallestCapacityQueue.getCapacity()*2);
             }
-	    _actorUnBlocked(smallestCapacityQueue);
-	    smallestCapacityQueue.setWritePending(false);
+            _actorUnBlocked(smallestCapacityQueue);
+            smallestCapacityQueue.setWritePending(false);
             synchronized(smallestCapacityQueue) {
                 smallestCapacityQueue.notifyAll();
             }
         } catch (IllegalActionException ex) {
-	    // Should not be thrown as this exception is thrown
+            // Should not be thrown as this exception is thrown
             // only if port is not an input port, checked above.
             throw new InternalErrorException(this, ex, "Perhaps port was not "
                     + "an input port");
@@ -333,11 +333,11 @@ public class PNDirector extends CompositeProcessDirector {
      */
     protected synchronized void _actorBlocked(ProcessReceiver receiver) {
         if ( receiver.isReadBlocked() ) {
-	    _readBlockCount++;
+            _readBlockCount++;
         }
         if ( receiver.isWriteBlocked() ) {
-	    _writeBlockedQueues.add(receiver);
-	    _writeBlockCount++;
+            _writeBlockedQueues.add(receiver);
+            _writeBlockCount++;
         }
         super._actorBlocked(receiver);
         notifyAll();
@@ -350,14 +350,14 @@ public class PNDirector extends CompositeProcessDirector {
      */
     protected synchronized void _actorUnBlocked(PNQueueReceiver receiver) {
         if ( receiver.isReadBlocked() ) {
-	    _readBlockCount--;
+            _readBlockCount--;
         }
         if ( receiver.isWriteBlocked() ) {
-	    _writeBlockCount--;
-	    _writeBlockedQueues.remove(receiver);
+            _writeBlockCount--;
+            _writeBlockedQueues.remove(receiver);
         }
         super._actorUnBlocked(receiver);
-	return;
+        return;
     }
 
     /** Resolve an artificial deadlock and return true. If the
@@ -383,23 +383,23 @@ public class PNDirector extends CompositeProcessDirector {
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
         if (_writeBlockCount == 0 && _readBlockCount > 0 ) {
             //            System.out.println("Real Deadlock");
-	    // There is a real deadlock.
-	    return false;
+            // There is a real deadlock.
+            return false;
         } else if ( _getActiveActorsCount() == 0 ) {
-	    // There is a real deadlock as no processes are active.
+            // There is a real deadlock as no processes are active.
             if (_debugging) {
                 _debug("Detected Deadlock");
             }
-	    return false;
+            return false;
         } else {
             //This is an artificial deadlock. Hence find the input port with
-	    //lowest capacity queue that is blocked on a write and increment
-	    //its capacity;
+            //lowest capacity queue that is blocked on a write and increment
+            //its capacity;
             if (_debugging) {
                 _debug("Artificial Deadlock - increasing queue capacity.");
             }
             _incrementLowestWriteCapacityPort();
-	    return true;
+            return true;
         }
     }
 

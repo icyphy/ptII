@@ -59,7 +59,7 @@ public class HierarchicalStateControllerFactory extends NodeControllerFactory {
      */
     public HierarchicalStateControllerFactory(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

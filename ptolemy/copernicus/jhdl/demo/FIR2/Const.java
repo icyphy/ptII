@@ -66,13 +66,13 @@ public class Const extends TypedAtomicActor {
     public Const(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	value = new Parameter(this, "value", new IntToken(1));
-    	output = new TypedIOPort(this, "output", false, true);
+            value = new Parameter(this, "value", new IntToken(1));
+            output = new TypedIOPort(this, "output", false, true);
 
-	// Set the type constraint.
-	output.setTypeAtLeast(value);
+        // Set the type constraint.
+        output.setTypeAtLeast(value);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" "
                 + "style=\"fill:white\"/>\n" +
@@ -102,10 +102,10 @@ public class Const extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Const newObject = (Const)super.clone(workspace);
-	// Set the type constraint.
-	newObject.output.setTypeAtLeast(newObject.value);
+        // Set the type constraint.
+        newObject.output.setTypeAtLeast(newObject.value);
         return newObject;
     }
 

@@ -124,20 +124,20 @@ public class CompositeEntityModel implements CompositeModel {
      *  @return The location of the object, or a new location if none.
      */
     protected Locatable _getLocation(NamedObj object) {
-	List locations = object.attributeList(Locatable.class);
-	if (locations.size() > 0) {
-	    return (Locatable)locations.get(0);
-	} else {
-	    try {
-		Locatable location = new Location(object, "_location");
-		return location;
-	    }
-	    catch (Exception e) {
-		throw new InternalErrorException("Failed to create " +
+        List locations = object.attributeList(Locatable.class);
+        if (locations.size() > 0) {
+            return (Locatable)locations.get(0);
+        } else {
+            try {
+                Locatable location = new Location(object, "_location");
+                return location;
+            }
+            catch (Exception e) {
+                throw new InternalErrorException("Failed to create " +
                         "location, even though one does not exist:" +
                         e.getMessage());
-	    }
-	}
+            }
+        }
     }
 
     /** Return a list of all the nodes in the graph corresponding to

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class JHDLUnsupportedException extends IllegalActionException {
 
     public JHDLUnsupportedException(String detail) {
-	super(detail);
+        super(detail);
     }
 
 }

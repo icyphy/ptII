@@ -83,7 +83,7 @@ public class CSPMultiSink extends CSPActor {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-	input.setTypeEquals(BaseType.GENERAL);
+        input.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

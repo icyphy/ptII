@@ -1519,7 +1519,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @return A string with zero or more spaces.
      */
     protected static String _getIndentPrefix(int level) {
-	return StringUtilities.getIndentPrefix(level);
+        return StringUtilities.getIndentPrefix(level);
     }
 
     /** Remove the given attribute.

@@ -65,9 +65,9 @@ public class IndexEntry implements Entry {
      *  @param token A Token.
      */
     public IndexEntry(String name, String type, Long position) {
-	this.name = name;
-	this.type = type;
-	this.position = position;
+        this.name = name;
+        this.type = type;
+        this.position = position;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,10 +93,10 @@ public class IndexEntry implements Entry {
      *  @return The position.
      */
     public long getPosition() {
-	if (position == null) {
-	    return 0;
-	}
-	return position.longValue();
+        if (position == null) {
+            return 0;
+        }
+        return position.longValue();
     }
 
     /** Increase the index position by 1. If the position is

@@ -67,7 +67,7 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      */
     public InterfaceAutomatonGraphFrame(
             CompositeEntity entity, Tableau tableau) {
-	this(entity, tableau, null);
+        this(entity, tableau, null);
     }
 
     /** Construct a frame associated with the specified model.
@@ -99,10 +99,10 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
-	_controller = new InterfaceAutomatonGraphController(_directory);
+        _controller = new InterfaceAutomatonGraphController(_directory);
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
-	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
-	return new GraphPane(_controller, graphModel);
+        final FSMGraphModel graphModel = new FSMGraphModel(getModel());
+        return new GraphPane(_controller, graphModel);
     }
 }

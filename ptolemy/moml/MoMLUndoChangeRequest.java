@@ -131,16 +131,16 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
     protected void _execute() throws Exception {
         // Check to see whether there is a parser...
         if (_context == null) {
-	    throw new InternalErrorException("_context == null "
-					     + " FIXME: We require a context "
-					     + "to carry out an undo. "
-					     + "If there is no context, then "
-					     + "there is no parser to carry "
-					     + "out an undo on."
-					     + "\n UndoChange was:\n"
-					     + getDescription()
-					     + "\n Source was:\n"
-					     + getSource());
+            throw new InternalErrorException("_context == null "
+                                             + " FIXME: We require a context "
+                                             + "to carry out an undo. "
+                                             + "If there is no context, then "
+                                             + "there is no parser to carry "
+                                             + "out an undo on."
+                                             + "\n UndoChange was:\n"
+                                             + getDescription()
+                                             + "\n Source was:\n"
+                                             + getSource());
         }
         // Get the parser to request an undo on...
         NamedObj toplevel = _context.toplevel();
@@ -151,7 +151,7 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
             // If there is a context, but no parser, then there is
             // nothing to undo.  This may or may not be a bug.
             return;
-            // 	    throw new InternalErrorException(_context, null,
+            //             throw new InternalErrorException(_context, null,
             //                     "There was no _parser attribute "
             //                     + "found. "
             //                     + "FIXME: Undo request on a "
@@ -176,13 +176,13 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
         _parser.reset();
 
          // NOTE: To see what is being parsed, uncomment the following:
-	/*
+        /*
         System.out.println("****** Executing Undo MoML change:");
         System.out.println(getDescription());
         if (_context != null) {
             System.out.println("------ in context " + _context.getFullName());
         }
-	*/
+        */
 
         try {
             // NOTE: the parser needs an entry point into the model to get the

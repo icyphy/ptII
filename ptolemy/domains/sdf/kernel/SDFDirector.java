@@ -298,38 +298,38 @@ public class SDFDirector extends StaticSchedulingDirector {
         super.prefire();
 
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-	Iterator inputPorts = container.inputPortList().iterator();
-	int inputCount = 0;
-	while (inputPorts.hasNext()) {
-	    IOPort inputPort = (IOPort) inputPorts.next();
+        Iterator inputPorts = container.inputPortList().iterator();
+        int inputCount = 0;
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
 
             // NOTE: If the port is a ParameterPort, then we should not
             // insist on there being an input.
             if (inputPort instanceof ParameterPort) continue;
 
-	    int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
-	    if (_debugging) {
+            int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
+            if (_debugging) {
                 _debug("checking input " + inputPort.getFullName());
                 _debug("Threshold = " + threshold);
             }
 
             // This used to bypass the port and go directly to the
             // receivers. Why?  EAL 7/25/02.
-	    for (int channel = 0; channel < inputPort.getWidth(); channel++) {
-		if (threshold > 0
+            for (int channel = 0; channel < inputPort.getWidth(); channel++) {
+                if (threshold > 0
                         && !inputPort.hasToken(channel, threshold)) {
-		    if (_debugging) {
+                    if (_debugging) {
                         _debug("Port " + inputPort.getFullName()
                                 + " does not have enough tokens: "
                                 + threshold
                                 + " Prefire returns false.");
                     }
                     return false;
-		}
-	    }
-	}
-	if (_debugging) _debug("Director prefire returns true." );
-	return true;
+                }
+            }
+        }
+        if (_debugging) _debug("Director prefire returns true." );
+        return true;
     }
 
     /** Preinitialize the actors associated with this director and
@@ -403,7 +403,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "input port.");
         }
         int rate = SDFScheduler.getTokenConsumptionRate(port);
-	boolean wasTransferred = false;
+        boolean wasTransferred = false;
         for (int i = 0; i < port.getWidth(); i++) {
             try {
                 if (i < port.getWidthInside()) {
@@ -436,7 +436,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 throw new InternalErrorException(this, ex, null);
             }
         }
-	return wasTransferred;
+        return wasTransferred;
     }
 
     /** Override the base class method to transfer enough tokens to
@@ -459,7 +459,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     + "is not an opaque input port.");
         }
         int rate = SDFScheduler.getTokenProductionRate(port);
-	boolean wasTransferred = false;
+        boolean wasTransferred = false;
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
                 for (int k = 0; k < rate; k++) {
@@ -482,7 +482,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 throw new InternalErrorException(this, ex, null);
             }
         }
-	return wasTransferred;
+        return wasTransferred;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -44,16 +44,16 @@ public class PitchShift {
      * Maybe need to add ringBuffSize because % does not like negative numbers?
      */
     public PitchShift(float sampleRate) {
-	_sampleRate = (int)sampleRate;
-	_pitchDetectorDelay = 2048;
+        _sampleRate = (int)sampleRate;
+        _pitchDetectorDelay = 2048;
 
-	OUTPUT_BUFFER_DELAY = (int)(2000*(float)_sampleRate/44100);
-	outputDelay = OUTPUT_BUFFER_DELAY;
-	ringBufSize = RING_BUFFER_SIZE;
-	///////////////////////////////////////////////
-	// Debug
-	//this.inputRingBufWritePos = 0;
-	////////////////////////////////////////////
+        OUTPUT_BUFFER_DELAY = (int)(2000*(float)_sampleRate/44100);
+        outputDelay = OUTPUT_BUFFER_DELAY;
+        ringBufSize = RING_BUFFER_SIZE;
+        ///////////////////////////////////////////////
+        // Debug
+        //this.inputRingBufWritePos = 0;
+        ////////////////////////////////////////////
             // This is delay from the pitch detector.
             _inputRingBufWritePos = 0;
             //////////////////////////////////////
@@ -90,42 +90,42 @@ public class PitchShift {
      */
     public double[] performPitchShift(double[] in, double[] pitchArray,
             double pitchScaleIn) {
-	minimumPitchSamps =(int)((1/minimumPitch)*_sampleRate);
-	int inputPitchInPtr = 0;
-	int curOutSamp = 0;
-	// Initialize input pos
-	int curInSamp = 0;
-	double[] out = new double[in.length];
-	// Temporary variables
-	int size = in.length;
-	double periodRatio;
-	double correctedPitchScale;
-	double correctedPitchIn;
-	double windowVal;  // Current value of window function.
+        minimumPitchSamps =(int)((1/minimumPitch)*_sampleRate);
+        int inputPitchInPtr = 0;
+        int curOutSamp = 0;
+        // Initialize input pos
+        int curInSamp = 0;
+        double[] out = new double[in.length];
+        // Temporary variables
+        int size = in.length;
+        double periodRatio;
+        double correctedPitchScale;
+        double correctedPitchIn;
+        double windowVal;  // Current value of window function.
 
-	/* Current position in OLA process relative to current synthesis
-	 * pitch marker.
-	 */
-	int olaIndex;
+        /* Current position in OLA process relative to current synthesis
+         * pitch marker.
+         */
+        int olaIndex;
 
-	int outLag; // Set to 1 if x->outputRingBufPitchMarkerPos
-	// lags x->inputRingBufWritePos, else set to zero.
+        int outLag; // Set to 1 if x->outputRingBufPitchMarkerPos
+        // lags x->inputRingBufWritePos, else set to zero.
 
-	/* This is a marker for the element half way around the cirucular
-	   buffer w.r.t. x->inputRingBufWritePos */
-	int inHalfAway;
+        /* This is a marker for the element half way around the cirucular
+           buffer w.r.t. x->inputRingBufWritePos */
+        int inHalfAway;
 
-	/* The main loop. This will iterate <MSP vector size> times for each
-	 *  call to this perform
-	 * method. */
-	while (size > 0) {
-	    // Write the current input sample into the input circular array.
-	    //inputRingBuf[inputRingBufWritePos] = in[curInSamp];
-	    // Add some delay, to compensate for the pitch detector.
-	    _inputRingBuf[(_inputRingBufWritePos+_pitchDetectorDelay) %
+        /* The main loop. This will iterate <MSP vector size> times for each
+         *  call to this perform
+         * method. */
+        while (size > 0) {
+            // Write the current input sample into the input circular array.
+            //inputRingBuf[inputRingBufWritePos] = in[curInSamp];
+            // Add some delay, to compensate for the pitch detector.
+            _inputRingBuf[(_inputRingBufWritePos+_pitchDetectorDelay) %
                     ringBufSize] = in[curInSamp];
 
-	    //////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////
                 //////////////////////////////////////////////////////
                 // Do all interesting processing here.
 
@@ -143,22 +143,22 @@ public class PitchShift {
                     inHalfAway = (_inputRingBufWritePos + ringBufSize/2) %
                         ringBufSize;
                     if (inHalfAway < (ringBufSize/2)) {
-	           	   	/* The zero element of the input buffer lies
-				   in (inptr, inHalfAway] */
+                                      /* The zero element of the input buffer lies
+                                   in (inptr, inHalfAway] */
                         if ((_outputRingBufPitchMarkerPos < inHalfAway) ||
                                 (_outputRingBufPitchMarkerPos >
                                         _inputRingBufWritePos))
-	           	   	// The current input element lags current
-				// synthesis pitch marker.
+                                      // The current input element lags current
+                                // synthesis pitch marker.
                             outLag = 0;
                     } else {
-	           	    	/* The zero element of the input buffer lies
-				   in (inHalfAway, inptr] */
+                                       /* The zero element of the input buffer lies
+                                   in (inHalfAway, inptr] */
                         if ((_outputRingBufPitchMarkerPos
                                 > _inputRingBufWritePos)
                                 && (_outputRingBufPitchMarkerPos
                                         < inHalfAway)) {
-				// The current input element lags current
+                                // The current input element lags current
                                 // synthesis pitch marker.
                             outLag = 0;
                         }
@@ -167,13 +167,13 @@ public class PitchShift {
                     while (outLag == 1) {
                         // Do an OLA
 
-	           	    	/* Update the synthesis pitch marker posistion
-				   (in the output buffer)/
+                                       /* Update the synthesis pitch marker posistion
+                                   (in the output buffer)/
                                 */
-	           	    	// Do error checking
+                                       // Do error checking
                         if ((pitchScaleIn <= 0.1) || (pitchScaleIn > 6.0) ||
                                 (isUnvoiced == 1)) {
-				// UhOh, out of range. Fix that.
+                                // UhOh, out of range. Fix that.
                             correctedPitchScale = 1.0;
                         } else {
                             correctedPitchScale = pitchScaleIn;
@@ -188,17 +188,17 @@ public class PitchShift {
                             ringBufSize;
 
 
-	           	    	/* Do an OLA (in the output buffer)
-				 * about the synthesis pitch
-				 * marker. Note that this
-				 * implementation differs slightly
-				 * from Lent's algorithm, in that 1
-				 * input signal is subtracted from the
-				 * current input pointer
-				 * position. This is done in order to
-				 * reduce latency and should not have
-				 * an audible impact, I think.
-				 */
+                                       /* Do an OLA (in the output buffer)
+                                 * about the synthesis pitch
+                                 * marker. Note that this
+                                 * implementation differs slightly
+                                 * from Lent's algorithm, in that 1
+                                 * input signal is subtracted from the
+                                 * current input pointer
+                                 * position. This is done in order to
+                                 * reduce latency and should not have
+                                 * an audible impact, I think.
+                                 */
                         for (olaIndex = -inputPeriodLength; olaIndex <=
                                  inputPeriodLength; ++olaIndex) {
 
@@ -213,13 +213,13 @@ public class PitchShift {
                                         - minimumPitchSamps +
                                         ringBufSize) % ringBufSize];
                         }
-	           	    	// Update loop condition variable.
+                                       // Update loop condition variable.
                         outLag = 1;
                         inHalfAway = (_inputRingBufWritePos + ringBufSize/2) %
                             ringBufSize;
                         if (inHalfAway < (ringBufSize/2)) {
-				/* The zero element of the input buffer lies in
-				 * (inptr, inHalfAway] */
+                                /* The zero element of the input buffer lies in
+                                 * (inptr, inHalfAway] */
                             if ((_outputRingBufPitchMarkerPos <
                                     inHalfAway) ||
                                     (_outputRingBufPitchMarkerPos >
@@ -228,8 +228,8 @@ public class PitchShift {
                                 // synthesis pitch marker.
                                 outLag = 0;
                         } else {
-				/* The zero element of the input buffer lies in
-				 * (inHalfAway, inptr] */
+                                /* The zero element of the input buffer lies in
+                                 * (inHalfAway, inptr] */
                             if ((_outputRingBufPitchMarkerPos >
                                     _inputRingBufWritePos) &&
                                     (_outputRingBufPitchMarkerPos <= inHalfAway)) {
@@ -287,9 +287,9 @@ public class PitchShift {
                     curOutSamp++;
                     inputPitchInPtr++;
                     size--;
-	}
+        }
 
-	return out;
+        return out;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -63,7 +63,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *  Increment the version number of the workspace.
      */
     public ParameterEditorStyle() {
-	super();
+        super();
     }
 
     /** Construct an attribute in the given workspace with an empty string
@@ -72,7 +72,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *  Increment the version number of the workspace.
      */
     public ParameterEditorStyle(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the specified container and name.

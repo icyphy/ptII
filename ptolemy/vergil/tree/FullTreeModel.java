@@ -64,7 +64,7 @@ public class FullTreeModel extends EntityTreeModel {
      *  @param root The root of the tree.
      */
     public FullTreeModel(CompositeEntity root) {
-	super(root);
+        super(root);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ public class FullTreeModel extends EntityTreeModel {
         List attributes = _attributes(parent);
 
         int index = attributes.indexOf(child);
-	if (index >= 0) {
+        if (index >= 0) {
             return index;
         } else {
             // Object is not an attribute.  See whether it's a port.
@@ -186,7 +186,7 @@ public class FullTreeModel extends EntityTreeModel {
      *  @return A list of attributes.
      */
     protected List _attributes(Object object) {
-	if (!(object instanceof NamedObj)) return _emptyList;
+        if (!(object instanceof NamedObj)) return _emptyList;
         return ((NamedObj)object).attributeList();
     }
 
@@ -196,7 +196,7 @@ public class FullTreeModel extends EntityTreeModel {
      *  @return A list of ports.
      */
     protected List _ports(Object object) {
-	if (!(object instanceof Entity)) return _emptyList;
+        if (!(object instanceof Entity)) return _emptyList;
         return ((Entity)object).portList();
     }
 
@@ -206,7 +206,7 @@ public class FullTreeModel extends EntityTreeModel {
      *  @return A list of relations.
      */
     protected List _relations(Object object) {
-	if (!(object instanceof CompositeEntity)) return _emptyList;
+        if (!(object instanceof CompositeEntity)) return _emptyList;
         return ((CompositeEntity)object).relationList();
     }
 

@@ -92,8 +92,8 @@ public class Main extends KernelMain {
      *  @exception IllegalActionException If the model cannot be parsed.
      */
     public Main(String [] args) throws IllegalActionException {
-	// args[0] contains the MoML class name.
-	super(args[0]);
+        // args[0] contains the MoML class name.
+        super(args[0]);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ public class Main extends KernelMain {
 
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
-	// -p wjtp.watchDog time:30000
+        // -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                                               WatchDogTimer.v()));
 
@@ -536,13 +536,13 @@ public class Main extends KernelMain {
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
-	super.addTransforms();
+        super.addTransforms();
         addStandardTransforms(_toplevel);
         // And write C!
        //  Scene.v().getPack("wjtp").add(
 //                 new Transform("wjtp.finalSnapshot", CWriter.v()));
 
-	// Generate the makefile files in outDir
+        // Generate the makefile files in outDir
         Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
                 MakefileWriter.v(_toplevel)));
 
@@ -562,7 +562,7 @@ public class Main extends KernelMain {
             Main main = new Main(args);
 
             // Parse the model.
-	    CompositeActor toplevel = main.readInModel(modelName);
+            CompositeActor toplevel = main.readInModel(modelName);
 
             // Create instance classes for the actors.
             main.initialize(toplevel);
@@ -580,11 +580,11 @@ public class Main extends KernelMain {
             // plotter fall in this category.
             System.exit(0);
         } catch (Exception ex) {
-	    System.err.println("Code generation of '" + modelName
+            System.err.println("Code generation of '" + modelName
                     + "' failed:");
             ex.printStackTrace(System.err);
             System.err.flush();
-	    System.exit(2);
+            System.exit(2);
         }
     }
 

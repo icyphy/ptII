@@ -10,7 +10,7 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* Exception for illegal value when passing data.
-	 */
+         */
 abstract public class CorbaIllegalValueExceptionHelper
 {
   private static String  _id = "IDL:RemoteManagerUtil/CorbaIllegalValueException:1.0";

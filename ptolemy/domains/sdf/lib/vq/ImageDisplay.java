@@ -101,9 +101,9 @@ public class ImageDisplay extends Sink implements Placeable {
             _frame = new _PictureFrame("ImageDisplay");
             _container = _frame.getContentPane();
         }
-	if (_frame != null) {
-	    _frame.setVisible(true);
-	}
+        if (_frame != null) {
+            _frame.setVisible(true);
+        }
     }
 
     /**
@@ -132,7 +132,7 @@ public class ImageDisplay extends Sink implements Placeable {
             _oldYSize = ySize;
             _RGBbuffer = new int[xSize * ySize];
 
-	    if (_picture != null)
+            if (_picture != null)
                 _container.remove(_picture);
 
             _picture = new Picture(xSize, ySize);
@@ -140,18 +140,18 @@ public class ImageDisplay extends Sink implements Placeable {
             _picture.setBackground(null);
             _container.add("Center", _picture);
             _container.validate();
-	    _container.invalidate();
+            _container.invalidate();
             _container.repaint();
-	    _container.doLayout();
-	    Container c = _container.getParent();
-	    while (c.getParent() != null) {
-		c.invalidate();
-		c.validate();
-		c = c.getParent();
-	    }
-	    if (_frame != null) {
-		_frame.pack();
-	    }
+            _container.doLayout();
+            Container c = _container.getParent();
+            while (c.getParent() != null) {
+                c.invalidate();
+                c.validate();
+                c = c.getParent();
+            }
+            if (_frame != null) {
+                _frame.pack();
+            }
         }
 
         // convert the B/W image to a packed RGB image.  This includes
@@ -182,11 +182,11 @@ public class ImageDisplay extends Sink implements Placeable {
 
     /** Set the background */
     public Color getBackground() {
-	return _container.getBackground();
+        return _container.getBackground();
     }
     /** Set the background */
     public void setBackground(Color background) {
-	_container.setBackground(background);
+        _container.setBackground(background);
     }
 
     /** Set the container that this actor should display data in.  If place
@@ -196,13 +196,13 @@ public class ImageDisplay extends Sink implements Placeable {
         _container = container;
         // FIXME: Need support for toolbar run.
         if (_container == null) return;
-	Container c = _container.getParent();
-	while (c.getParent() != null) {
-	    c = c.getParent();
-	}
-	if (c instanceof JFrame) {
-	    _frame = (JFrame)c;
-	}
+        Container c = _container.getParent();
+        while (c.getParent() != null) {
+            c = c.getParent();
+        }
+        if (c instanceof JFrame) {
+            _frame = (JFrame)c;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -216,7 +216,7 @@ public class ImageDisplay extends Sink implements Placeable {
             super(title);
             this.getContentPane().setLayout(new BorderLayout(15, 15));
             this.show();
-	    this.pack();
+            this.pack();
             this.validate();
         }
     }

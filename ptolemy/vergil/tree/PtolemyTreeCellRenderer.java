@@ -65,19 +65,19 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
             Object value, boolean selected, boolean expanded, boolean leaf,
             int row, boolean hasFocus) {
 
-	DefaultTreeCellRenderer component = (DefaultTreeCellRenderer)
-	    super.getTreeCellRendererComponent(tree, value,
+        DefaultTreeCellRenderer component = (DefaultTreeCellRenderer)
+            super.getTreeCellRendererComponent(tree, value,
                     selected, expanded, leaf, row, hasFocus);
-	if (value instanceof NamedObj) {
-	    NamedObj object = (NamedObj) value;
-	    // Fix the background colors because transparent
-	    // labels don't work quite right.
-	    if (!selected) {
-		component.setBackground(tree.getBackground());
-		component.setOpaque(true);
-	    } else {
-		component.setOpaque(false);
-	    }
+        if (value instanceof NamedObj) {
+            NamedObj object = (NamedObj) value;
+            // Fix the background colors because transparent
+            // labels don't work quite right.
+            if (!selected) {
+                component.setBackground(tree.getBackground());
+                component.setOpaque(true);
+            } else {
+                component.setOpaque(false);
+            }
 
             if (object instanceof Settable) {
                 StringBuffer buffer = new StringBuffer();
@@ -94,14 +94,14 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
             // because this will trigger evaluation, defeating deferred
             // evaluation.
             if (!(object instanceof EntityLibrary)) {
-		// Only if an object has an icon, an icon description, or
+                // Only if an object has an icon, an icon description, or
                 // a small icon description is it rendered in the tree.
                 List iconList = object.attributeList(EditorIcon.class);
-		if (iconList.size() > 0
+                if (iconList.size() > 0
                         || object.getAttribute("_iconDescription") != null
                         || object.getAttribute("_iconSmallDescription")
                         != null) {
-		    // NOTE: this code is similar to that in IconController,
+                    // NOTE: this code is similar to that in IconController,
                     // except that only the first EditorIcon encountered is
                     // used.
                     EditorIcon icon = null;
@@ -111,14 +111,14 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                         } else {
                             icon = (EditorIcon)iconList.iterator().next();
                         }
-		    } catch (KernelException ex) {
-			throw new InternalErrorException(
+                    } catch (KernelException ex) {
+                        throw new InternalErrorException(
                                 "could not create icon in " + object +
                                 " even though one did not previously exist.");
-		    }
-		    // Wow.. this is a confusing line of code.. :)
-		    component.setIcon(icon.createIcon());
-		}
+                    }
+                    // Wow.. this is a confusing line of code.. :)
+                    component.setIcon(icon.createIcon());
+                }
 
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
                 if (tooltipAttribute != null
@@ -135,6 +135,6 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 
             // FIXME: Create a special icon for libraries?
         }
-	return component;
+        return component;
     }
 }

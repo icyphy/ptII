@@ -76,20 +76,20 @@ public class Main extends KernelMain {
      *  @exception IllegalActionException If the model cannot be parsed.
      */
     public Main(String [] args) throws IllegalActionException {
-	// args[0] contains the MoML class name.
-	super(args[0]);
+        // args[0] contains the MoML class name.
+        super(args[0]);
     }
 
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
-	super.addTransforms();
+        super.addTransforms();
 
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
-	// -p wjtp.watchDog time:30000
+        // -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
-						    WatchDogTimer.v()));
+                                                    WatchDogTimer.v()));
 
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
@@ -109,7 +109,7 @@ public class Main extends KernelMain {
                         InlineDirectorTransformer.v(_toplevel)));
 
         // Add a command line interface (i.e. Main)
-	Scene.v().getPack("wjtp").add(
+        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(_toplevel)));
 
@@ -207,9 +207,9 @@ public class Main extends KernelMain {
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
-						    ClassWriter.v()));
+                                                    ClassWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
-						    JimpleWriter.v()));
+                                                    JimpleWriter.v()));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
@@ -262,20 +262,20 @@ public class Main extends KernelMain {
      *  model cannot be changed to a Java identifier String.
      */
     public static void main(String[] args)
-	throws IllegalActionException, NameDuplicationException {
-	Main main = new Main(args);
+        throws IllegalActionException, NameDuplicationException {
+        Main main = new Main(args);
 
-	// Parse the model.
-	CompositeActor toplevel = main.readInModel(args[0]);
+        // Parse the model.
+        CompositeActor toplevel = main.readInModel(args[0]);
 
-	// Create instance classes for the actors.
-	main.initialize(toplevel);
+        // Create instance classes for the actors.
+        main.initialize(toplevel);
 
-	// Add Transforms to the Scene.
-	main.addTransforms();
+        // Add Transforms to the Scene.
+        main.addTransforms();
 
-	// Generate Code
-	main.generateCode(args);
+        // Generate Code
+        main.generateCode(args);
     }
     /** Add transforms corresponding to the standard soot optimizations
      *  to the given pack.

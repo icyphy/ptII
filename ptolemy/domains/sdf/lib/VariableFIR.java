@@ -160,7 +160,7 @@ public class VariableFIR extends FIR {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         VariableFIR newObject = (VariableFIR)(super.clone(workspace));
 
         newObject.newTaps.setTypeSameAs(newObject.taps);

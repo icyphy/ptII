@@ -10,20 +10,20 @@ import ptolemy.kernel.util.Workspace;
 
 public class TutorialApplet1 extends TypedCompositeActor {
     public TutorialApplet1(Workspace workspace)
-	throws IllegalActionException, NameDuplicationException {
-	super(workspace);
+        throws IllegalActionException, NameDuplicationException {
+        super(workspace);
 
-	// Create the director.
-	DEDirector director = new DEDirector(this, "director");
-	setDirector(director);
-	director.stopTime.setExpression("10.0");
+        // Create the director.
+        DEDirector director = new DEDirector(this, "director");
+        setDirector(director);
+        director.stopTime.setExpression("10.0");
 
-	// Create two actors.
-	Clock clock = new Clock(this,"clock");
-	TimedPlotter plotter = new TimedPlotter(this,"plotter");
+        // Create two actors.
+        Clock clock = new Clock(this,"clock");
+        TimedPlotter plotter = new TimedPlotter(this,"plotter");
 
-	// Connect them.
-	connect(clock.output, plotter.input);
+        // Connect them.
+        connect(clock.output, plotter.input);
     }
 }
 

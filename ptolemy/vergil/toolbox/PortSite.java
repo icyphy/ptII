@@ -181,7 +181,7 @@ public class PortSite extends AbstractSite {
     }
 
     public String toString() {
-	return "BoundsSite[" + getX() + "," + getY() + "," + getNormal() + "]";
+        return "BoundsSite[" + getX() + "," + getY() + "," + getNormal() + "]";
     }
 
     ///////////////////////////////////////////////////////////////////

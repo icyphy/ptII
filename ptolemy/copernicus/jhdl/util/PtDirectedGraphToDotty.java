@@ -52,39 +52,39 @@ public class PtDirectedGraphToDotty  extends GraphToDotty {
      */
     public String convert(Object graph, String ename){
         DirectedGraph g = (DirectedGraph)graph;
-	int count=0;
-	HashMap hm=new HashMap();
-	StringBuffer sb = new StringBuffer();
-	sb.append(header("PtDirectedGraphToDotty",ename));
-	for(Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
-	    Node source = (Node)nodes.next();
-	    String name="v" + count++;
-	    sb.append("\t\""+name+"\"");
+        int count=0;
+        HashMap hm=new HashMap();
+        StringBuffer sb = new StringBuffer();
+        sb.append(header("PtDirectedGraphToDotty",ename));
+        for(Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
+            Node source = (Node)nodes.next();
+            String name="v" + count++;
+            sb.append("\t\""+name+"\"");
 
-	    if (source.hasWeight()){
-		sb.append(" [label=\""
-			  +convertSpecialsToEscapes(source.getWeight().toString())
-			  +"\"]");
-	    }
-	    sb.append(";\r\n");
-	    hm.put(source, name);
-	}
-	sb.append("\t// Edges\r\n");
-	for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
-	    Node source = (Node)nodes.next();
-	    for(Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
-		Edge edge= (Edge)succs.next();
-		Node dest= edge.sink();
-		sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
-		if (edge.hasWeight()){
-		    sb.append(" [label=\""+
-			      convertSpecialsToEscapes(edge.getWeight().toString())
-			      +"\"]");
-		}
-		sb.append(";\r\n");
-	    }
-	}
-	sb.append("}\r\n");
-	return sb.toString();
+            if (source.hasWeight()){
+                sb.append(" [label=\""
+                          +convertSpecialsToEscapes(source.getWeight().toString())
+                          +"\"]");
+            }
+            sb.append(";\r\n");
+            hm.put(source, name);
+        }
+        sb.append("\t// Edges\r\n");
+        for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
+            Node source = (Node)nodes.next();
+            for(Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
+                Edge edge= (Edge)succs.next();
+                Node dest= edge.sink();
+                sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
+                if (edge.hasWeight()){
+                    sb.append(" [label=\""+
+                              convertSpecialsToEscapes(edge.getWeight().toString())
+                              +"\"]");
+                }
+                sb.append(";\r\n");
+            }
+        }
+        sb.append("}\r\n");
+        return sb.toString();
     }
 }

@@ -58,7 +58,7 @@ public class FileChooserStyle extends ParameterEditorStyle {
      *  Increment the version number of the workspace.
      */
     public FileChooserStyle() {
-	super();
+        super();
     }
 
     /** Construct an attribute in the given workspace with an empty string
@@ -68,7 +68,7 @@ public class FileChooserStyle extends ParameterEditorStyle {
      */
     public FileChooserStyle(Workspace workspace) {
         // This constructor is needed for Shallow codegen to work.
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the specified container and name.

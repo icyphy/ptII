@@ -93,9 +93,9 @@ public class Picture extends Canvas {
             _imageSource.setAnimated(true);
             _image = createImage(_imageSource);
         }
-	if (_imageSource != null) {
-	    _imageSource.newPixels();
-	}
+        if (_imageSource != null) {
+            _imageSource.newPixels();
+        }
     }
 
     /** Paint this component.  If no pixels have been set, do nothing.
@@ -112,7 +112,7 @@ public class Picture extends Canvas {
      *  @exception IllegalArgumentException If the image size does not
      */
     public void setImage(Image image) throws IllegalArgumentException {
-	_image = image;
+        _image = image;
     }
 
     /** Specify the packed ARGB representation of the image.

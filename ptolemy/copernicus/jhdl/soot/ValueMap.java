@@ -78,8 +78,8 @@ public class ValueMap extends HashListMap {
      *
      **/
     public ValueMap(SootBlockDirectedGraph graph) {
-	super();
-	_graph = graph;
+        super();
+        _graph = graph;
     }
 
     /**
@@ -91,8 +91,8 @@ public class ValueMap extends HashListMap {
      * in the origional.
      **/
     public ValueMap(ValueMap vm) {
-	super(vm);
-	_graph = vm._graph;
+        super(vm);
+        _graph = vm._graph;
     }
 
     /**
@@ -100,7 +100,7 @@ public class ValueMap extends HashListMap {
      * copy is created by calling the copy constructor.
      **/
     public Object clone() {
-	return new ValueMap(this);
+        return new ValueMap(this);
     }
 
     /**
@@ -117,7 +117,7 @@ public class ValueMap extends HashListMap {
      * class.
      **/
     public Collection getValues() {
-	return keySet();
+        return keySet();
     }
 
     /**
@@ -128,13 +128,13 @@ public class ValueMap extends HashListMap {
      * them into a single Collection.
      **/
     public Collection getNodes() {
-	Vector nodes = new Vector (_graph.nodeCount());
-	Collection values = getValues();
-	for (Iterator i=values.iterator();i.hasNext();) {
-	    Value v = (Value) i.next();
-	    nodes.addAll(getNodes(v));
-	}
-	return nodes;
+        Vector nodes = new Vector (_graph.nodeCount());
+        Collection values = getValues();
+        for (Iterator i=values.iterator();i.hasNext();) {
+            Value v = (Value) i.next();
+            nodes.addAll(getNodes(v));
+        }
+        return nodes;
     }
 
     /**
@@ -147,7 +147,7 @@ public class ValueMap extends HashListMap {
      * Nodes.
      **/
     public Collection getNodes(Value v) {
-	return getList(v);
+        return getList(v);
     }
 
 
@@ -183,21 +183,21 @@ public class ValueMap extends HashListMap {
      *
      **/
     public Node addValueNode(Value v) {
-	Value nodeValue = v;
-	if (v instanceof InstanceFieldRef) {
-	    InstanceFieldRef ifr =
-		getMatchingInstanceFieldRef((InstanceFieldRef) v);
-	    if (ifr != null)
-		nodeValue = ifr;
-	}
-	Node n = _graph.addNodeWeight(nodeValue);
-	add(nodeValue,n);
+        Value nodeValue = v;
+        if (v instanceof InstanceFieldRef) {
+            InstanceFieldRef ifr =
+                getMatchingInstanceFieldRef((InstanceFieldRef) v);
+            if (ifr != null)
+                nodeValue = ifr;
+        }
+        Node n = _graph.addNodeWeight(nodeValue);
+        add(nodeValue,n);
 
-	if (DEBUG) System.out.print("ValueMap:Adding node="+n+" with weight "+
-				    nodeValue + " of type " +
-				    nodeValue.getClass().getName()
-				    +"\n");
-	return n;
+        if (DEBUG) System.out.print("ValueMap:Adding node="+n+" with weight "+
+                                    nodeValue + " of type " +
+                                    nodeValue.getClass().getName()
+                                    +"\n");
+        return n;
     }
 
     /**
@@ -207,12 +207,12 @@ public class ValueMap extends HashListMap {
      * type Value, this method will not add a Node and return a null.
      **/
     public Node addValueNode(Node n) {
-	if (n.hasWeight()) {
-	    Object o = n.getWeight();
-	    if (o instanceof Value)
-		return addValueNode((Value) n.getWeight());
-	}
-	return null;
+        if (n.hasWeight()) {
+            Object o = n.getWeight();
+            if (o instanceof Value)
+                return addValueNode((Value) n.getWeight());
+        }
+        return null;
     }
 
     /**
@@ -232,21 +232,21 @@ public class ValueMap extends HashListMap {
      **/
     public InstanceFieldRef getMatchingInstanceFieldRef(InstanceFieldRef ifr) {
 
-	// Iterate through all nodes in the graph and see if there
-	// is a matching InstanceFieldRef (i.e. same base and
-	// same field).
-	InstanceFieldRef dupIfr = null;
-//	for (Iterator i = _graph.nodes().iterator();i.hasNext();) {
-	for (Iterator i = getNodes().iterator();i.hasNext();) {
-	    Node n = (Node) i.next();
-	    if (n.getWeight() instanceof InstanceFieldRef) {
-		InstanceFieldRef t_ifr = (InstanceFieldRef) n.getWeight();
-		if (equalIFR(t_ifr, ifr) && ifr != t_ifr) {
-		    dupIfr = t_ifr;
-		}
-	    }
-	}
-	return dupIfr;
+        // Iterate through all nodes in the graph and see if there
+        // is a matching InstanceFieldRef (i.e. same base and
+        // same field).
+        InstanceFieldRef dupIfr = null;
+//        for (Iterator i = _graph.nodes().iterator();i.hasNext();) {
+        for (Iterator i = getNodes().iterator();i.hasNext();) {
+            Node n = (Node) i.next();
+            if (n.getWeight() instanceof InstanceFieldRef) {
+                InstanceFieldRef t_ifr = (InstanceFieldRef) n.getWeight();
+                if (equalIFR(t_ifr, ifr) && ifr != t_ifr) {
+                    dupIfr = t_ifr;
+                }
+            }
+        }
+        return dupIfr;
     }
 
     /**
@@ -261,9 +261,9 @@ public class ValueMap extends HashListMap {
     // TODO: This method may need to go in a different class (more
     // general than this class)
     public static boolean equalIFR(InstanceFieldRef ifr1,
-				   InstanceFieldRef ifr2) {
-	return ifr1.getBase().equals(ifr2.getBase()) &&
-	    ifr1.getField().equals(ifr2.getField());
+                                   InstanceFieldRef ifr2) {
+        return ifr1.getBase().equals(ifr2.getBase()) &&
+            ifr1.getField().equals(ifr2.getField());
     }
 
     /**
@@ -280,16 +280,16 @@ public class ValueMap extends HashListMap {
      * @see getMatchingInstanceFieldRef(InstanceFieldRef)
      **/
     public Node getValueNode(Value v) {
-	if (containsKey(v))
-	    return (Node) getLast(v);
-	if (v instanceof InstanceFieldRef) {
-	    InstanceFieldRef ifr =
-		getMatchingInstanceFieldRef((InstanceFieldRef) v);
-	    Node ifrNode = (Node) getLast(ifr);
-	    //add(v,n);
-	    return ifrNode;
-	}
-	return null;
+        if (containsKey(v))
+            return (Node) getLast(v);
+        if (v instanceof InstanceFieldRef) {
+            InstanceFieldRef ifr =
+                getMatchingInstanceFieldRef((InstanceFieldRef) v);
+            Node ifrNode = (Node) getLast(ifr);
+            //add(v,n);
+            return ifrNode;
+        }
+        return null;
     }
 
     /**
@@ -301,11 +301,11 @@ public class ValueMap extends HashListMap {
      * @see addValueNode(Value)
      **/
     public Node getOrAddValueNode(Value v) {
-	Node n = getValueNode(v);
-	if (n == null)
-	    return addValueNode(v);
-	else
-	    return n;
+        Node n = getValueNode(v);
+        if (n == null)
+            return addValueNode(v);
+        else
+            return n;
     }
 
     /**
@@ -314,9 +314,9 @@ public class ValueMap extends HashListMap {
      **/
     // TODO: Put this in a more generic Soot class?
     public boolean isVariableValue(Value v) {
-	if (v instanceof Local || v instanceof InstanceFieldRef)
-	    return true;
-	return false;
+        if (v instanceof Local || v instanceof InstanceFieldRef)
+            return true;
+        return false;
     }
 
     /**
@@ -326,14 +326,14 @@ public class ValueMap extends HashListMap {
      * @see isVariableValue(Value)
      **/
     public Collection getVariableValues() {
-	Collection values = getValues();
-	Vector variableValues = new Vector(values.size());
-	for (Iterator i = values.iterator();i.hasNext();) {
-	    Value v = (Value) i.next();
-	    if (isVariableValue(v))
-		variableValues.add(v);
-	}
-	return variableValues;
+        Collection values = getValues();
+        Vector variableValues = new Vector(values.size());
+        for (Iterator i = values.iterator();i.hasNext();) {
+            Value v = (Value) i.next();
+            if (isVariableValue(v))
+                variableValues.add(v);
+        }
+        return variableValues;
     }
 
     /**
@@ -352,28 +352,28 @@ public class ValueMap extends HashListMap {
      **/
     public boolean isAssigned(Node n) {
 
-	if (!n.hasWeight())
-	    return false;
+        if (!n.hasWeight())
+            return false;
 
-	Object o = n.getWeight();
-	if (!(o instanceof Value))
-	    return false;
+        Object o = n.getWeight();
+        if (!(o instanceof Value))
+            return false;
 
-	//Value v = (Value) n.getWeight();
-	Value v = (Value) o;
+        //Value v = (Value) n.getWeight();
+        Value v = (Value) o;
 
-	// See if the Value associated with the given Node
-	if (!containsKey(v))
-	    return false;
-	if (!isVariableValue(v))
-	    return false;
-	if (v instanceof Local &&
-	    _graph.inputEdgeCount(n) == 1)
-	    return true;
-	if (v instanceof InstanceFieldRef &&
-	    _graph.inputEdgeCount(n) == 2)
-	    return true;
-	return false;
+        // See if the Value associated with the given Node
+        if (!containsKey(v))
+            return false;
+        if (!isVariableValue(v))
+            return false;
+        if (v instanceof Local &&
+            _graph.inputEdgeCount(n) == 1)
+            return true;
+        if (v instanceof InstanceFieldRef &&
+            _graph.inputEdgeCount(n) == 2)
+            return true;
+        return false;
     }
 
     /**
@@ -384,39 +384,39 @@ public class ValueMap extends HashListMap {
      **/
     // TODO: rename method? getLastAssignedNodes?
     public Collection getAssignedNodes() {
-	Collection c = getAssignedValues();
-	Collection an = new Vector(c.size());
-	for (Iterator i=c.iterator();i.hasNext();) {
-	    Value v = (Value) i.next();
-	    Node n = getValueNode(v);
-	    an.add(n);
-	}
-	/*
-	  // This code will get all assigned nodes and not just
-	  // the most recently assigned nodes
-	Collection c = getNodes();
-	Collection an = new Vector(c.size());
-	for (Iterator i = c.iterator();i.hasNext();) {
-	    Node n = (Node) i.next();
-	    if (isAssigned(n))
-		an.add(n);
-	}
-	*/
-	return an;
+        Collection c = getAssignedValues();
+        Collection an = new Vector(c.size());
+        for (Iterator i=c.iterator();i.hasNext();) {
+            Value v = (Value) i.next();
+            Node n = getValueNode(v);
+            an.add(n);
+        }
+        /*
+          // This code will get all assigned nodes and not just
+          // the most recently assigned nodes
+        Collection c = getNodes();
+        Collection an = new Vector(c.size());
+        for (Iterator i = c.iterator();i.hasNext();) {
+            Node n = (Node) i.next();
+            if (isAssigned(n))
+                an.add(n);
+        }
+        */
+        return an;
     }
 
     public Collection getAssignedValues() {
-	Collection vs = getVariableValues();
-	Collection av = new UniqueVector(vs.size());
-	for (Iterator i = vs.iterator();i.hasNext();) {
-	    Value v = (Value) i.next();
-	    for (Iterator j = getNodes(v).iterator();j.hasNext();) {
-		Node n = (Node) j.next();
-		if (isAssigned(n))
-		    av.add(v);
-	    }
-	}
-	return av;
+        Collection vs = getVariableValues();
+        Collection av = new UniqueVector(vs.size());
+        for (Iterator i = vs.iterator();i.hasNext();) {
+            Value v = (Value) i.next();
+            for (Iterator j = getNodes(v).iterator();j.hasNext();) {
+                Node n = (Node) j.next();
+                if (isAssigned(n))
+                    av.add(v);
+            }
+        }
+        return av;
     }
 
 
@@ -433,24 +433,24 @@ public class ValueMap extends HashListMap {
      **/
     public void updateMap() {
 
-	// Clear all mappings
-	clear();
+        // Clear all mappings
+        clear();
 
-	// Iterate over all Nodes within the graph (in topological order)
-	List topologicalOrder = null;
-	try {
-	    topologicalOrder = _graph.topologicalSort(_graph.nodes());
-	} catch (GraphActionException e) {
-	}
+        // Iterate over all Nodes within the graph (in topological order)
+        List topologicalOrder = null;
+        try {
+            topologicalOrder = _graph.topologicalSort(_graph.nodes());
+        } catch (GraphActionException e) {
+        }
 
-	for (Iterator i = topologicalOrder.iterator(); i.hasNext(); ) {
-	    Node n = (Node) i.next();
-	    if (n.hasWeight()) {
-		Object o = n.getWeight();
-		if (o instanceof Value)
-		    add(o,n);
-	    }
-	}
+        for (Iterator i = topologicalOrder.iterator(); i.hasNext(); ) {
+            Node n = (Node) i.next();
+            if (n.hasWeight()) {
+                Object o = n.getWeight();
+                if (o instanceof Value)
+                    add(o,n);
+            }
+        }
     }
 
 
@@ -463,58 +463,58 @@ public class ValueMap extends HashListMap {
      **/
     public void mergeSerial(ValueMap successor) {
 
-	DirectedGraph succeedingGraph = successor.getGraph();
+        DirectedGraph succeedingGraph = successor.getGraph();
 
-	// temporary hashmap between old nodes & new.
-	// Used when connecting edges.
-	HashMap nodeMap = new HashMap();
+        // temporary hashmap between old nodes & new.
+        // Used when connecting edges.
+        HashMap nodeMap = new HashMap();
 
-	// Add all nodes from dfg to graph
-	for (Iterator i = succeedingGraph.nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();
-	    if (DEBUG) System.out.print("ValueMap:Merging node="+node+
-					" with weight "+
-					node.getWeight() + " of type " +
-					node.getWeight().getClass().getName()
-					+"\n");
-	    Object nodeWeight = node.getWeight();
-	    Node newNode = null;
-	    if (nodeWeight instanceof Value) {
-		// Some nodes don't have a Value weight (binary mux node)
-		Value nodeValue = (Value) nodeWeight;
+        // Add all nodes from dfg to graph
+        for (Iterator i = succeedingGraph.nodes().iterator(); i.hasNext();) {
+            Node node = (Node) i.next();
+            if (DEBUG) System.out.print("ValueMap:Merging node="+node+
+                                        " with weight "+
+                                        node.getWeight() + " of type " +
+                                        node.getWeight().getClass().getName()
+                                        +"\n");
+            Object nodeWeight = node.getWeight();
+            Node newNode = null;
+            if (nodeWeight instanceof Value) {
+                // Some nodes don't have a Value weight (binary mux node)
+                Value nodeValue = (Value) nodeWeight;
 
-		if (!successor.isAssigned(node)) {
-		    newNode = this.getValueNode(nodeValue);
-		}
-		if (newNode == null) {
-		    newNode = this.addValueNode(nodeValue);
-		}
-	    } else {
-		// create a new non-Value weighted Node
-		newNode = _graph.addNodeWeight(nodeWeight);
-	    }
-	    nodeMap.put(node,newNode);
-	}
+                if (!successor.isAssigned(node)) {
+                    newNode = this.getValueNode(nodeValue);
+                }
+                if (newNode == null) {
+                    newNode = this.addValueNode(nodeValue);
+                }
+            } else {
+                // create a new non-Value weighted Node
+                newNode = _graph.addNodeWeight(nodeWeight);
+            }
+            nodeMap.put(node,newNode);
+        }
 
-	// Iterate through all edges and add to graph
-	for (Iterator i = succeedingGraph.edges().iterator(); i.hasNext();) {
-	    Edge e = (Edge) i.next();
-	    Node src = e.source();
-	    if (nodeMap.containsKey(src))
-		src = (Node) nodeMap.get(src);
-	    Node snk = e.sink();
-	    if (nodeMap.containsKey(snk))
-		snk = (Node) nodeMap.get(snk);
+        // Iterate through all edges and add to graph
+        for (Iterator i = succeedingGraph.edges().iterator(); i.hasNext();) {
+            Edge e = (Edge) i.next();
+            Node src = e.source();
+            if (nodeMap.containsKey(src))
+                src = (Node) nodeMap.get(src);
+            Node snk = e.sink();
+            if (nodeMap.containsKey(snk))
+                snk = (Node) nodeMap.get(snk);
 
-	    // Check and see if the current graph already has an
-	    // edge between the two nodes. If not, add the edge.
-	    if (_graph.successorEdges(src,snk).size() == 0) {
-		if (e.hasWeight())
-		    _graph.addEdge(src,snk,e.getWeight());
-		else
-		    _graph.addEdge(src,snk);
-	    }
-	}
+            // Check and see if the current graph already has an
+            // edge between the two nodes. If not, add the edge.
+            if (_graph.successorEdges(src,snk).size() == 0) {
+                if (e.hasWeight())
+                    _graph.addEdge(src,snk,e.getWeight());
+                else
+                    _graph.addEdge(src,snk);
+            }
+        }
     }
 
     /**

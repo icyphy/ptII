@@ -214,7 +214,7 @@ public abstract class ScalarToken extends Token
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.SAME) {
             return _doBitwiseAnd(rightArgument);
-	} else if (typeInfo == CPO.HIGHER) {
+        } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                     getType().convert(rightArgument);
             try {
@@ -230,14 +230,14 @@ public abstract class ScalarToken extends Token
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException(
-			notSupportedMessage("bitwiseAnd",
+                        notSupportedMessage("bitwiseAnd",
                                 this, rightArgument));
-	    } else {
+            } else {
                 // This code uses the fact that bitwise AND is always
                 // commutative, there is no need to add a bitwiseAndReverse
                 // method.
                 return ((BitwiseOperationToken)rightArgument).bitwiseAnd(this);
-	    }
+            }
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseAnd",
@@ -270,7 +270,7 @@ public abstract class ScalarToken extends Token
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.SAME) {
             return _doBitwiseOr(rightArgument);
-	} else if (typeInfo == CPO.HIGHER) {
+        } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                     getType().convert(rightArgument);
             try {
@@ -286,14 +286,14 @@ public abstract class ScalarToken extends Token
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException(
-			notSupportedMessage("bitwiseOr",
+                        notSupportedMessage("bitwiseOr",
                                 this, rightArgument));
-	    } else {
+            } else {
                 // This code uses the fact that bitwise OR is always
                 // commutative, there is no need to add a bitwiseOrReverse
                 // method.
                 return ((BitwiseOperationToken)rightArgument).bitwiseOr(this);
-	    }
+            }
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseOr",
@@ -313,7 +313,7 @@ public abstract class ScalarToken extends Token
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.SAME) {
             return _doBitwiseXor(rightArgument);
-	} else if (typeInfo == CPO.HIGHER) {
+        } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                     getType().convert(rightArgument);
             try {
@@ -329,14 +329,14 @@ public abstract class ScalarToken extends Token
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException(
-			notSupportedMessage("bitwiseXor",
+                        notSupportedMessage("bitwiseXor",
                                 this, rightArgument));
-	    } else {
+            } else {
                 // This code uses the fact that bitwise XOR is always
                 // commutative, there is no need to add a bitwiseXorReverse
                 // method.
                 return ((BitwiseOperationToken)rightArgument).bitwiseXor(this);
-	    }
+            }
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseXor",
@@ -438,7 +438,7 @@ public abstract class ScalarToken extends Token
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("divideReverse",
-			this, leftArgument));
+                        this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             return ((ScalarToken)leftArgument)._doDivide(this);
@@ -447,7 +447,7 @@ public abstract class ScalarToken extends Token
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("divideReverse",
-		    this, leftArgument));
+                    this, leftArgument));
         }
     }
 
@@ -1376,7 +1376,7 @@ public abstract class ScalarToken extends Token
      *  @return A new Token containing the result.
      */
     private BitwiseOperationToken _doBitwiseAnd(Token rightArgument)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
@@ -1405,7 +1405,7 @@ public abstract class ScalarToken extends Token
      *  @return A new Token containing the result.
      */
     private BitwiseOperationToken _doBitwiseOr(Token rightArgument)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
@@ -1434,7 +1434,7 @@ public abstract class ScalarToken extends Token
      *  @return A new Token containing the result.
      */
     private BitwiseOperationToken _doBitwiseXor(Token rightArgument)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(

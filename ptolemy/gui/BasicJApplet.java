@@ -118,8 +118,8 @@ public class BasicJApplet extends JApplet {
      *  @param throwable The throwable that triggered the error.
      */
     public void report(Throwable throwable) {
-	report(MessageHandler.shortDescription(throwable)
-	       + " thrown by applet.", throwable);
+        report(MessageHandler.shortDescription(throwable)
+               + " thrown by applet.", throwable);
     }
 
     /** Report a message to the user.
@@ -127,7 +127,7 @@ public class BasicJApplet extends JApplet {
      *  @param message The message to report.
      */
     public void report(String message) {
-	showStatus(message);
+        showStatus(message);
     }
 
     /** Report an exception with an additional message.
@@ -138,9 +138,9 @@ public class BasicJApplet extends JApplet {
      *  @param throwable The throwable that triggered the error.
      */
     public void report(String message, Throwable throwable) {
-	// In JDK1.3.1, we can't copy the contents of the window that the
-	// applet pops up, so be sure to print the stack trace to stderr.
-	throwable.printStackTrace();
+        // In JDK1.3.1, we can't copy the contents of the window that the
+        // applet pops up, so be sure to print the stack trace to stderr.
+        throwable.printStackTrace();
         MessageHandler.error(message, throwable);
         showStatus("exception occurred.");
     }

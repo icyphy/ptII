@@ -175,46 +175,46 @@ public class GiottoScheduler extends Scheduler {
         CompositeActor compositeActor =
             (CompositeActor) (director.getContainer());
         List actorList = compositeActor.deepEntityList();
-	int actorCount = actorList.size();
+        int actorCount = actorList.size();
 
-	int[] frequencyArray = new int[actorCount];
-	int[] intervalArray = new int[actorCount];
-	int[] iterateArray = new int[actorCount];
+        int[] frequencyArray = new int[actorCount];
+        int[] intervalArray = new int[actorCount];
+        int[] iterateArray = new int[actorCount];
 
-	ListIterator actorListIterator = actorList.listIterator();
+        ListIterator actorListIterator = actorList.listIterator();
 
-	int i = 0;
-	while (actorListIterator.hasNext()) {
-	    Actor actor = (Actor) actorListIterator.next();
-	    iterateArray[i] = frequencyArray[i] = getFrequency(actor);
-	    i++;
-	}
+        int i = 0;
+        while (actorListIterator.hasNext()) {
+            Actor actor = (Actor) actorListIterator.next();
+            iterateArray[i] = frequencyArray[i] = getFrequency(actor);
+            i++;
+        }
 
-	_lcm = _lcm(frequencyArray);
-	_gcd = _gcd(frequencyArray);
+        _lcm = _lcm(frequencyArray);
+        _gcd = _gcd(frequencyArray);
         if (_debugging) {
             _debug("LCM of frequencies is " + _lcm);
             _debug("GCD of frequencies is " + _gcd);
         }
 
-	for (i = 0; i < actorCount; i++) {
+        for (i = 0; i < actorCount; i++) {
             intervalArray[i] = _lcm / frequencyArray[i];
             //System.out.println("The " + i + " actor has frequency " + frequencyArray[i] + " ----> " + intervalArray[i]);
-	}
+        }
 
-	// Compute schedule
-	// based on the frequencyArray and the actorList
+        // Compute schedule
+        // based on the frequencyArray and the actorList
 
 
-	Schedule schedule = new Schedule();
+        Schedule schedule = new Schedule();
 
-	for (  _giottoSchedulerTime = 0; _giottoSchedulerTime < _lcm; ) {
-	    Schedule fireAtSameTimeSchedule = new Schedule();
-	    actorListIterator = actorList.listIterator();
-	    for (i = 0; i < actorCount; i++ ) {
-		Actor actor = (Actor) actorListIterator.next();
+        for (  _giottoSchedulerTime = 0; _giottoSchedulerTime < _lcm; ) {
+            Schedule fireAtSameTimeSchedule = new Schedule();
+            actorListIterator = actorList.listIterator();
+            for (i = 0; i < actorCount; i++ ) {
+                Actor actor = (Actor) actorListIterator.next();
 
-		if ( ((_giottoSchedulerTime % intervalArray[i]) == 0)
+                if ( ((_giottoSchedulerTime % intervalArray[i]) == 0)
                         &&
                         (iterateArray[i] > 0)
                      )
@@ -224,15 +224,15 @@ public class GiottoScheduler extends Scheduler {
                         fireAtSameTimeSchedule.add(firing);
 
                     }
-	    }
+            }
 
-	    _giottoSchedulerTime += _gcd;
-	    // there may be several null schedule in schedule...
-	    // and the time step is period / _lcm
-	    //System.out.println("the size of fireAtSameTimeSchedule is " + fireAtSameTimeSchedule.size());
-	    schedule.add(fireAtSameTimeSchedule);
-	}
-	//System.out.println("the size of schedule is " + schedule.size());
+            _giottoSchedulerTime += _gcd;
+            // there may be several null schedule in schedule...
+            // and the time step is period / _lcm
+            //System.out.println("the size of fireAtSameTimeSchedule is " + fireAtSameTimeSchedule.size());
+            schedule.add(fireAtSameTimeSchedule);
+        }
+        //System.out.println("the size of schedule is " + schedule.size());
         return schedule;
     }
 
@@ -332,36 +332,36 @@ public class GiottoScheduler extends Scheduler {
 
     private class GiottoActorComparator implements Comparator {
 
-	///////////////////////////////////////////////////////////////////
-	////                         public methods                    ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
 
-	/** Compare two actors based on their <I>frequency</I> parameter.
-	 *  The frequency of an actor that does not have a <I>frequency</I>
+        /** Compare two actors based on their <I>frequency</I> parameter.
+         *  The frequency of an actor that does not have a <I>frequency</I>
          *  parameter is _DEFAULT_GIOTTO_FREQUENCY.
-	 *
-	 *  @param actor1 The first actor to be compared.
-	 *  @param actor2 The second actor to be compared.
-	 *  @return -1 if the frequency of the first actor is strictly less
-	 *   than that of the second actor, 0 if the frequencies are equal,
-	 *   1 otherwise.
-	 *  @exception ClassCastException If an argument is null or not an
-	 *   instance of Actor.
-	 */
-	public int compare(Object actor1, Object actor2) {
-	    if (actor1 != null && actor1 instanceof Actor &&
+         *
+         *  @param actor1 The first actor to be compared.
+         *  @param actor2 The second actor to be compared.
+         *  @return -1 if the frequency of the first actor is strictly less
+         *   than that of the second actor, 0 if the frequencies are equal,
+         *   1 otherwise.
+         *  @exception ClassCastException If an argument is null or not an
+         *   instance of Actor.
+         */
+        public int compare(Object actor1, Object actor2) {
+            if (actor1 != null && actor1 instanceof Actor &&
                     actor2 != null && actor2 instanceof Actor) {
 
-		if (getFrequency((Actor)actor1)
-		        < getFrequency((Actor)actor2))
-		    return -1;
-		else if (getFrequency((Actor)actor1)
-			== getFrequency((Actor)actor2))
-		    return 0;
-		else
-		    return 1;
-	    } else
-		throw new ClassCastException();
-	}
+                if (getFrequency((Actor)actor1)
+                        < getFrequency((Actor)actor2))
+                    return -1;
+                else if (getFrequency((Actor)actor1)
+                        == getFrequency((Actor)actor2))
+                    return 0;
+                else
+                    return 1;
+            } else
+                throw new ClassCastException();
+        }
     }
 
 }

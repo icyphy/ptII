@@ -69,36 +69,36 @@ public class PrintThreads {
      * which is a descendant of the root ThreadGroup.
      */
     public static ThreadGroup rootThreadGroup() {
-	ThreadGroup parent, rootGroup;
+        ThreadGroup parent, rootGroup;
 
-	parent = Thread.currentThread().getThreadGroup();
-	do {
+        parent = Thread.currentThread().getThreadGroup();
+        do {
             rootGroup = parent;
             parent = parent.getParent();
         } while (parent != null);
 
-	return rootGroup;
+        return rootGroup;
     }
 
     /** Return a String containing all the ThreadGroups in the JVM
      *  that are descendents of the root ThreadGroup.
      */
     public static void allThreadGroups() {
-	ThreadGroup rootGroup = rootThreadGroup();
+        ThreadGroup rootGroup = rootThreadGroup();
 
-	System.out.println("ThreadGroups: "
+        System.out.println("ThreadGroups: "
                 + (rootGroup.activeGroupCount() + 1));
 
-	System.out.println(rootGroup.toString());
-	ThreadGroup threadGroups[]
-	    = new ThreadGroup[rootGroup.activeGroupCount()];
-	rootGroup.enumerate(threadGroups);
+        System.out.println(rootGroup.toString());
+        ThreadGroup threadGroups[]
+            = new ThreadGroup[rootGroup.activeGroupCount()];
+        rootGroup.enumerate(threadGroups);
 
-	String lineSeparator = _getLineSeparator();
-	String results = new String();
-	for (int i = 0; i < threadGroups.length; i++) {
-	    results += threadGroups[i].toString() + lineSeparator;
-	}
+        String lineSeparator = _getLineSeparator();
+        String results = new String();
+        for (int i = 0; i < threadGroups.length; i++) {
+            results += threadGroups[i].toString() + lineSeparator;
+        }
     }
 
     /** Return a string containing all the threads in the JVM
@@ -106,18 +106,18 @@ public class PrintThreads {
      * root ThreadGroup.
      */
     public static String allThreads() {
-	ThreadGroup rootGroup = null;
-	try {
-	    rootGroup = rootThreadGroup();
-	} catch (Exception e) {
-	    // If we are in an applet, then rootThreadGroup() might
-	    // throw a security exception
-	    rootGroup = Thread.currentThread().getThreadGroup();
-	}
+        ThreadGroup rootGroup = null;
+        try {
+            rootGroup = rootThreadGroup();
+        } catch (Exception e) {
+            // If we are in an applet, then rootThreadGroup() might
+            // throw a security exception
+            rootGroup = Thread.currentThread().getThreadGroup();
+        }
 
-	String lineSeparator = _getLineSeparator();
-	String results =
-	    new String("Threads: " + rootGroup.activeCount() + lineSeparator
+        String lineSeparator = _getLineSeparator();
+        String results =
+            new String("Threads: " + rootGroup.activeCount() + lineSeparator
                     + "Current Thread (*) "
                     + (SwingUtilities.isEventDispatchThread() ?
                             "_is_" : "_is not_")
@@ -128,21 +128,21 @@ public class PrintThreads {
         rootGroup.enumerate(threads);
 
         for (int i = 0; i < threads.length; i++ ) {
-	    Thread thread = threads[i];
-	    results += toThreadDescription(thread) + lineSeparator;
-	}
-	return results;
+            Thread thread = threads[i];
+            results += toThreadDescription(thread) + lineSeparator;
+        }
+        return results;
     }
 
     public static void dumpAllThreadsStacks() {
-	ThreadGroup rootGroup = null;
-	try {
-	    rootGroup = rootThreadGroup();
-	} catch (Exception e) {
-	    // If we are in an applet, then rootThreadGroup() might
-	    // throw a security exception
-	    rootGroup = Thread.currentThread().getThreadGroup();
-	}
+        ThreadGroup rootGroup = null;
+        try {
+            rootGroup = rootThreadGroup();
+        } catch (Exception e) {
+            // If we are in an applet, then rootThreadGroup() might
+            // throw a security exception
+            rootGroup = Thread.currentThread().getThreadGroup();
+        }
 
         Thread threads[] = new Thread[rootGroup.activeCount()];
         rootGroup.enumerate(threads);
@@ -151,11 +151,11 @@ public class PrintThreads {
                 + threads);
 
         for (int i = 0; i < threads.length; i++ ) {
-	    Thread thread = threads[i];
+            Thread thread = threads[i];
             // Dump the stack to stdout
             System.out.println(toThreadDescription(thread));
             threads[i].dumpStack();
-	}
+        }
         System.out.println("To get a stack trace for each thread:");
         System.out.println(" Under Unix, try 'kill -3 pid', "
                 + "where pid is the process id from ps");
@@ -167,36 +167,36 @@ public class PrintThreads {
      * We could use Thread.toString(), but that is hard to read.
      */
     public static String toThreadDescription(Thread thread) {
-	String name = "Unnamed thread";
-	String group = "Unnamed group";
-	try {
-	    if (thread == null) {
-		return new String("PrintThreads.toThreadDescription(): " +
+        String name = "Unnamed thread";
+        String group = "Unnamed group";
+        try {
+            if (thread == null) {
+                return new String("PrintThreads.toThreadDescription(): " +
                         "thread argument == null\n   " +
                         "This can happen if the thread was " +
                         "killed while PrintThreads was called");
-	    }
-	    if (thread.getName() != null) {
-		name = thread.getName();
-	    }
-	    if ((thread.getThreadGroup() != null)
+            }
+            if (thread.getName() != null) {
+                name = thread.getName();
+            }
+            if ((thread.getThreadGroup() != null)
                     && (thread.getThreadGroup().getName() != null)) {
-		group = thread.getThreadGroup().getName();
-	    }
+                group = thread.getThreadGroup().getName();
+            }
 
-	    return _stringFormat(name, 35) + " " +
-		_stringFormat(group, 20) + " "  +
+            return _stringFormat(name, 35) + " " +
+                _stringFormat(group, 20) + " "  +
                 _stringFormat(Integer.toString(thread.getPriority()), 3) +
                 " " +
                 _stringFormat(new Boolean(thread.isDaemon()).toString(), 6) +
                 " " +
                 _stringFormat(new Boolean(thread.isAlive()).toString(), 5) +
                 (Thread.currentThread().equals(thread) ? " *": "  ");
-	} catch (Exception e) {
-	    return _stringFormat(name, 35) + " " +
-		_stringFormat(group, 20) + " "  +
-		"PrintThread.toThreadDescription(): Bad State!: " + e;
-	}
+        } catch (Exception e) {
+            return _stringFormat(name, 35) + " " +
+                _stringFormat(group, 20) + " "  +
+                "PrintThread.toThreadDescription(): Bad State!: " + e;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -207,40 +207,40 @@ public class PrintThreads {
      * the strings maintained by the dispString property of this class
      */
     private final static String _getHeader() {
-	return _stringFormat("Name", 35)
-	    + " " + _stringFormat("Group", 20) + " Pri Daemon Alive Curr";
+        return _stringFormat("Name", 35)
+            + " " + _stringFormat("Group", 20) + " Pri Daemon Alive Curr";
     }
 
     /* Return the line separator.  If we are in an applet return \n */
     private final static String _getLineSeparator() {
-	String results =  new String("\n");
-	try {
-	    results = System.getProperty("line.separator");
-	} catch (Exception e) {
-	    // getProperty() will throw an exception if we are
-	    // running in an applet, in which case we default to "\n".
-	}
-	return results;
+        String results =  new String("\n");
+        try {
+            results = System.getProperty("line.separator");
+        } catch (Exception e) {
+            // getProperty() will throw an exception if we are
+            // running in an applet, in which case we default to "\n".
+        }
+        return results;
     }
 
     /* Pads inputString out with spaces to width length.
      */
     private final static String _stringFormat(String inputString, int length) {
-	if (inputString == null)
-	    inputString = " ";
+        if (inputString == null)
+            inputString = " ";
 
-	// Pad string out to constant width
-	int stringLength = inputString.length();
+        // Pad string out to constant width
+        int stringLength = inputString.length();
 
-	if (stringLength < length) {
-	    for (int i = 0; i < length - stringLength; i++) {
-		inputString = inputString + " ";
-	    }
-	}
-	else if (inputString.length() > length) {
-	    inputString = inputString.substring(0, length);
-	}
-	return inputString;
+        if (stringLength < length) {
+            for (int i = 0; i < length - stringLength; i++) {
+                inputString = inputString + " ";
+            }
+        }
+        else if (inputString.length() > length) {
+            inputString = inputString.substring(0, length);
+        }
+        return inputString;
     }
 }
 

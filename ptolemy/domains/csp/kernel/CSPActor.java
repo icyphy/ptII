@@ -151,8 +151,8 @@ public class CSPActor extends TypedAtomicActor
     public CSPActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_conditionalBranchController =
-	    new ConditionalBranchController(this);
+        _conditionalBranchController =
+            new ConditionalBranchController(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -187,8 +187,8 @@ public class CSPActor extends TypedAtomicActor
         CSPActor newObject = (CSPActor)super.clone(workspace);
         newObject._delayed = false;
         newObject._conditionalBranchController =
-	    new ConditionalBranchController(newObject);
-	return newObject;
+            new ConditionalBranchController(newObject);
+        return newObject;
     }
 
     /** Delay this actor. The actor resumes executing when the
@@ -205,25 +205,25 @@ public class CSPActor extends TypedAtomicActor
     public void delay(double delta) throws IllegalActionException {
         try {
             synchronized(_internalLock) {
-	        if (delta == 0.0) {
-		    return;
-		} else if (delta < 0.0) {
-		    throw new IllegalActionException(this,
+                if (delta == 0.0) {
+                    return;
+                } else if (delta < 0.0) {
+                    throw new IllegalActionException(this,
                             "delay() called with a negative argument: "
                             + delta);
-		} else {
-		    _delayed = true;
-		    ((CSPDirector)getDirector())._actorDelayed(delta, this);
-		    while (_delayed) {
-		        _internalLock.wait();
-		    }
+                } else {
+                    _delayed = true;
+                    ((CSPDirector)getDirector())._actorDelayed(delta, this);
+                    while (_delayed) {
+                        _internalLock.wait();
+                    }
                     if (_cancelDelay) {
                         // Throwing this exception is really not
                         // not necessary for a "well" written actor.
                         throw new TerminateProcessException("delay cancelled");
                     }
-		}
-	    }
+                }
+            }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException("CSPActor interrupted " +
                     "while delayed." );
@@ -233,7 +233,7 @@ public class CSPActor extends TypedAtomicActor
     /** Return the conditional branch control of this actor.
      */
     public ConditionalBranchController getConditionalBranchController() {
-	return _conditionalBranchController;
+        return _conditionalBranchController;
     }
 
     /** Initialize the state of the actor.
@@ -259,7 +259,7 @@ public class CSPActor extends TypedAtomicActor
      */
     public void terminate() {
         synchronized(_internalLock) {
-	    _conditionalBranchController.terminate();
+            _conditionalBranchController.terminate();
         }
     }
 
@@ -305,14 +305,14 @@ public class CSPActor extends TypedAtomicActor
      */
     protected void _waitForDeadlock() {
         try {
-	    synchronized(_internalLock) {
-	        _delayed = true;
-		((CSPDirector)getDirector())._actorDelayed(0.0, this);
-		while (_delayed) {
-		    _internalLock.wait();
-		}
-	    }
-	} catch (InterruptedException ex) {
+            synchronized(_internalLock) {
+                _delayed = true;
+                ((CSPDirector)getDirector())._actorDelayed(0.0, this);
+                while (_delayed) {
+                    _internalLock.wait();
+                }
+            }
+        } catch (InterruptedException ex) {
             throw new TerminateProcessException("CSPActor interrupted " +
                     "while waiting for deadlock." );
         }

@@ -121,7 +121,7 @@ public class PetriNetActor extends TypedCompositeActor  {
      *  @param workspace The workspace that will list the actor.
      */
     public PetriNetActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         getMoMLInfo().className =
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
@@ -199,7 +199,7 @@ public class PetriNetActor extends TypedCompositeActor  {
             if (componentActor instanceof TypedCompositeActor) {
                 TypedCompositeActor transitionComponent
                     = (TypedCompositeActor) componentActor;
-		if (director.isTransitionReady(transitionComponent)) {
+                if (director.isTransitionReady(transitionComponent)) {
                     return true;
                 }
             }

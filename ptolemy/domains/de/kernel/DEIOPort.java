@@ -81,7 +81,7 @@ public class DEIOPort extends TypedIOPort {
      *  @param workspace The workspace that will list the port.
      */
     public DEIOPort(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a DEIOPort with the specified container and name
@@ -98,7 +98,7 @@ public class DEIOPort extends TypedIOPort {
      */
     public DEIOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     /** Construct a DEIOPort with the specified container and name that is
@@ -200,7 +200,7 @@ public class DEIOPort extends TypedIOPort {
             throws CloneNotSupportedException {
         DEIOPort newObject = (DEIOPort)super.clone(workspace);
         newObject._delayToSet = new HashSet();
-	return newObject;
+        return newObject;
     }
 
     /** Add the specified port to the set of output ports that

@@ -160,7 +160,7 @@ public class VariableLattice extends Lattice {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         VariableLattice newObject = (VariableLattice)(super.clone(workspace));
 
         newObject.newCoefficients.setTypeSameAs(

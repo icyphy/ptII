@@ -123,21 +123,21 @@ public class FIR extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
-	// Set type constraints.
-//  	ArrayType paramType = (ArrayType)taps.getType();
-//  	InequalityTerm elementTerm = paramType.getElementTypeTerm();
-//  	output.setTypeAtLeast(elementTerm);
+        // Set type constraints.
+//          ArrayType paramType = (ArrayType)taps.getType();
+//          InequalityTerm elementTerm = paramType.getElementTypeTerm();
+//          output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
 
-	_taps0 = new FixToken(0.023428499999999998, 16, 2);
-	_taps1 = new FixToken(0.05305302, 16, 2);
-	_taps2 = new FixToken(0.1391898, 16, 2);
+        _taps0 = new FixToken(0.023428499999999998, 16, 2);
+        _taps1 = new FixToken(0.05305302, 16, 2);
+        _taps2 = new FixToken(0.1391898, 16, 2);
 
-	_zero = _taps0.zero();
+        _zero = _taps0.zero();
 
-	_data0 = _zero;
-	_data1 = _zero;
-	_data2 = _zero;
+        _data0 = _zero;
+        _data1 = _zero;
+        _data2 = _zero;
 
     }
 
@@ -238,7 +238,7 @@ public class FIR extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         FIR newObject = (FIR)(super.clone(workspace));
 
         // Set the type constraints.
@@ -252,18 +252,18 @@ public class FIR extends TypedAtomicActor {
     // FIXME: State update should occur in postfire.
 
 //      public void fire() throws IllegalActionException {
-//  	int a,b,c,d;
+//          int a,b,c,d;
 
-//  	a=3;
-//  	b=a*4;
+//          a=3;
+//          b=a*4;
 
-//  	a=2;
-//  	c=a+5;
-//  	d=b-c;
+//          a=2;
+//          c=a+5;
+//          d=b-c;
 
-//  	if (d > 8){
-//  	    d=a*a;
-//  	}
+//          if (d > 8){
+//              d=a*a;
+//          }
 //      }
 
     /** Consume the inputs and produce the outputs of the FIR filter.
@@ -279,121 +279,121 @@ public class FIR extends TypedAtomicActor {
 
         // Transfer _decimationValue inputs to _data[]
         //for (int inC = 1; inC <= 1; inC++) {
-	if (--_mostRecent < 0) _mostRecent = 2;
+        if (--_mostRecent < 0) _mostRecent = 2;
 
-	_data0=input.get(0);
+        _data0=input.get(0);
 
-//  	switch(_mostRecent){
-//  	case 0: _data0 = input.get(0); break;
-//  	case 1: _data1 = input.get(0); break;
-//  	case 2: _data2 = input.get(0);
-//  	}
+//          switch(_mostRecent){
+//          case 0: _data0 = input.get(0); break;
+//          case 1: _data1 = input.get(0); break;
+//          case 2: _data2 = input.get(0);
+//          }
 
-	//Until switch support is working, use a bunch of ifs (should be
-	//identical in the results, however
-//  	if (_mostRecent == 0){
-//  	    _data0 = input.get(0);
-//  	} else if (_mostRecent == 1){
-//  	    _data1 = input.get(0);
-//  	} else if (_mostRecent == 2){
-//  	    _data2 = input.get(0);
-//  	}
+        //Until switch support is working, use a bunch of ifs (should be
+        //identical in the results, however
+//          if (_mostRecent == 0){
+//              _data0 = input.get(0);
+//          } else if (_mostRecent == 1){
+//              _data1 = input.get(0);
+//          } else if (_mostRecent == 2){
+//              _data2 = input.get(0);
+//          }
 
-	//Can't support arrays yet
-	//_data[_mostRecent] = input.get(0);
-	//}
+        //Can't support arrays yet
+        //_data[_mostRecent] = input.get(0);
+        //}
 
         // Interpolate once for each input consumed
         //for (int inC = 1; inC <= 1; inC++) {
 
-	// Produce however many outputs are required
-	// for each input consumed
-	//while (phase < 1) {
-	_outToken = _zero;
+        // Produce however many outputs are required
+        // for each input consumed
+        //while (phase < 1) {
+        _outToken = _zero;
 
                 // Compute the inner product.
-//  	for (int i = 0; i < _phaseLength; i++) {
-//  	    int tapsIndex = i;
+//          for (int i = 0; i < _phaseLength; i++) {
+//              int tapsIndex = i;
 
-//  	    int dataIndex =
-//  		(_mostRecent + i)%(_data.length);
+//              int dataIndex =
+//                  (_mostRecent + i)%(_data.length);
 
-//  	    if (tapsIndex < _taps.length) {
-//  		_tapItem = _taps[tapsIndex];
-//  		_dataItem = _data[dataIndex];
-//  		_dataItem = _tapItem.multiply( _dataItem );
-//  		_outToken = _outToken.add( _dataItem );
-//  	    }
-//  	    // else assume tap is zero, so do nothing.
-//  	}
+//              if (tapsIndex < _taps.length) {
+//                  _tapItem = _taps[tapsIndex];
+//                  _dataItem = _data[dataIndex];
+//                  _dataItem = _tapItem.multiply( _dataItem );
+//                  _outToken = _outToken.add( _dataItem );
+//              }
+//              // else assume tap is zero, so do nothing.
+//          }
 
-	//// Manual unrolling of above FOR loop
-	int tapsIndex = 0;
+        //// Manual unrolling of above FOR loop
+        int tapsIndex = 0;
 
-	int dataIndex = (_mostRecent + 0)%(3);
+        int dataIndex = (_mostRecent + 0)%(3);
 
-	if (tapsIndex < 3) {
-	    _tapItem = _taps0;
-	    //Man, I need to find a way to get arrays working...
-	    //_dataItem = _data[dataIndex];
+        if (tapsIndex < 3) {
+            _tapItem = _taps0;
+            //Man, I need to find a way to get arrays working...
+            //_dataItem = _data[dataIndex];
 
-	    if (dataIndex == 0){
-		_dataItem = _data0;
-	    } else if (dataIndex == 1){
-		_dataItem = _data1;
-	    } else if (dataIndex == 2){
-		_dataItem = _data2;
-	    }
+            if (dataIndex == 0){
+                _dataItem = _data0;
+            } else if (dataIndex == 1){
+                _dataItem = _data1;
+            } else if (dataIndex == 2){
+                _dataItem = _data2;
+            }
 
-	    _dataItem = _tapItem.multiply( _dataItem );
-	    _outToken = _outToken.add( _dataItem );
-	}
+            _dataItem = _tapItem.multiply( _dataItem );
+            _outToken = _outToken.add( _dataItem );
+        }
 
-//  	tapsIndex = 1;
+//          tapsIndex = 1;
 
-//  	dataIndex = (_mostRecent + 1)%(3);
+//          dataIndex = (_mostRecent + 1)%(3);
 
-//  	if (tapsIndex < 3) {
-//  	    _tapItem = _taps1;
+//          if (tapsIndex < 3) {
+//              _tapItem = _taps1;
 
-//  	    //Man, I need to find a way to get arrays working...
-//  	    //_dataItem = _data[dataIndex];
+//              //Man, I need to find a way to get arrays working...
+//              //_dataItem = _data[dataIndex];
 
-//  	    if (dataIndex == 0){
-//  		_dataItem = _data0;
-//  	    } else if (dataIndex == 1){
-//  		_dataItem = _data1;
-//  	    } else if (dataIndex == 2){
-//  		_dataItem = _data2;
-//  	    }
+//              if (dataIndex == 0){
+//                  _dataItem = _data0;
+//              } else if (dataIndex == 1){
+//                  _dataItem = _data1;
+//              } else if (dataIndex == 2){
+//                  _dataItem = _data2;
+//              }
 
-//  	    _dataItem = _tapItem.multiply( _dataItem );
-//  	    _outToken = _outToken.add( _dataItem );
-//  	}
+//              _dataItem = _tapItem.multiply( _dataItem );
+//              _outToken = _outToken.add( _dataItem );
+//          }
 
-//  	tapsIndex = 2;
+//          tapsIndex = 2;
 
-//  	dataIndex = (_mostRecent + 2)%(3);
+//          dataIndex = (_mostRecent + 2)%(3);
 
-//  	if (tapsIndex < 3) {
-//  	    _tapItem = _taps2;
+//          if (tapsIndex < 3) {
+//              _tapItem = _taps2;
 
-//  	    //Man, I need to find a way to get arrays working...
-//  	    //_dataItem = _data[dataIndex];
+//              //Man, I need to find a way to get arrays working...
+//              //_dataItem = _data[dataIndex];
 
-//  	    if (dataIndex == 0){
-//  		_dataItem = _data0;
-//  	    } else if (dataIndex == 1){
-//  		_dataItem = _data1;
-//  	    } else if (dataIndex == 2){
-//  		_dataItem = _data2;
-//  	    }
+//              if (dataIndex == 0){
+//                  _dataItem = _data0;
+//              } else if (dataIndex == 1){
+//                  _dataItem = _data1;
+//              } else if (dataIndex == 2){
+//                  _dataItem = _data2;
+//              }
 
-//  	    _dataItem = _tapItem.multiply( _dataItem );
-//  	    _outToken = _outToken.add( _dataItem );
-//  	}
+//              _dataItem = _tapItem.multiply( _dataItem );
+//              _outToken = _outToken.add( _dataItem );
+//          }
 
-	output.send(0, _outToken);
+        output.send(0, _outToken);
     }
 
 
@@ -423,8 +423,8 @@ public class FIR extends TypedAtomicActor {
         super.initialize();
         // Must be sure to throw away the old data buffer.
         _data0 = _zero;
-	_data1 = _zero;
-	_data2 = _zero;
+        _data1 = _zero;
+        _data2 = _zero;
         //_reinitializeNeeded = true;
     }
 
@@ -440,7 +440,7 @@ public class FIR extends TypedAtomicActor {
 //  //          }
 
 //          //_phaseLength = (int)(_taps.length / _interpolationValue);
-//  	_phaseLength = _taps.length;
+//          _phaseLength = _taps.length;
 
 //          //if ((_taps.length % _interpolationValue) != 0) _phaseLength++;
 

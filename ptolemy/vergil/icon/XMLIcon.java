@@ -135,10 +135,10 @@ public class XMLIcon extends EditorIcon implements ValueListener {
      *  @return A new Swing Icon.
      */
     public javax.swing.Icon createIcon() {
-	// In this class, we cache the rendered icon, since creating icons from
-	// figures is expensive.
+        // In this class, we cache the rendered icon, since creating icons from
+        // figures is expensive.
         if (_iconCache != null) {
-	    return _iconCache;
+            return _iconCache;
         }
         // No cached object, so rerender the icon.
         // Get the description.
@@ -182,8 +182,8 @@ public class XMLIcon extends EditorIcon implements ValueListener {
             return super.createIcon();
         }
         // NOTE: The size is hardwired here.  Should it be?
-	_iconCache = new FigureIcon(figure, 20, 15);
-	return _iconCache;
+        _iconCache = new FigureIcon(figure, 20, 15);
+        return _iconCache;
     }
 
     /** Return the painted list contained by this icon.
@@ -239,8 +239,8 @@ public class XMLIcon extends EditorIcon implements ValueListener {
             result += super._description(detail, indent, 0);
         else
             result += super._description(detail, indent, 1);
-	result += " graphics {\n";
-	result += "FIXME";
+        result += " graphics {\n";
+        result += "FIXME";
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 

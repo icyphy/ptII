@@ -65,7 +65,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *  Increment the version number of the workspace.
      */
     public CheckBoxStyle() {
-	super();
+        super();
     }
 
     /** Construct an attribute in the given workspace with an empty string
@@ -75,7 +75,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      */
     public CheckBoxStyle(Workspace workspace) {
         // This constructor is needed for Shallow codegen to work.
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the specified container and name.
@@ -102,16 +102,16 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      */
     public boolean acceptable(Settable param) {
         if (!(param instanceof Parameter)) return false;
-	try {
-	    Token current = ((Parameter)param).getToken();
-	    if (current instanceof BooleanToken) {
-		return true;
-	    } else {
-		return false;
-	    }
-	} catch (IllegalActionException ex) {
-	    return false;
-	}
+        try {
+            Token current = ((Parameter)param).getToken();
+            if (current instanceof BooleanToken) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IllegalActionException ex) {
+            return false;
+        }
     }
 
     /** Create a new check box entry in the given query associated with the
@@ -137,7 +137,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
                     + "used for boolean-valued parameters");
         }
         query.addCheckBox(name, name, ((BooleanToken)current).booleanValue());
-	query.attachParameter(param, name);
+        query.attachParameter(param, name);
     }
 
     /** Override the base class to check that the container is

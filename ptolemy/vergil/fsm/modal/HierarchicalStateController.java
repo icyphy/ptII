@@ -91,7 +91,7 @@ public class HierarchicalStateController extends StateController {
      */
     public HierarchicalStateController(
             GraphController controller, Access access) {
-	super(controller, access);
+        super(controller, access);
 
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new AddRefinementAction()));
@@ -105,12 +105,12 @@ public class HierarchicalStateController extends StateController {
     /** An action to add a new refinement.
      */
     private class AddRefinementAction extends FigureAction {
-	public AddRefinementAction() {
-	    super("Add Refinement");
-	}
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
+        public AddRefinementAction() {
+            super("Add Refinement");
+        }
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            NamedObj target = getTarget();
             if (!(target instanceof State)) {
                 MessageHandler.error("Can only add refinements to states.");
                 return;
@@ -287,17 +287,17 @@ public class HierarchicalStateController extends StateController {
                     }
                 };
             container.requestChange(change);
-	}
+        }
     }
 
     /** Action to remove refinements. */
     private class RemoveRefinementAction extends FigureAction {
-	public RemoveRefinementAction() {
-	    super("Remove Refinement");
-	}
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
+        public RemoveRefinementAction() {
+            super("Remove Refinement");
+        }
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            NamedObj target = getTarget();
             if (!(target instanceof State)) {
                 MessageHandler.error(
                         "Can only remove refinements from states.");
@@ -420,6 +420,6 @@ public class HierarchicalStateController extends StateController {
             MoMLChangeRequest change = new MoMLChangeRequest(
                     this, container, moml);
             container.requestChange(change);
-	}
+        }
     }
 }

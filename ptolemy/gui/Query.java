@@ -103,9 +103,9 @@ public class Query extends JPanel {
         _constraints = new GridBagConstraints();
         _constraints.fill = GridBagConstraints.HORIZONTAL;
 
-	// If the next line is commented out, then the PtolemyApplet
-	// model parameters will have an entry that is less than one
-	// character wide unless the window is made to be fairly large.
+        // If the next line is commented out, then the PtolemyApplet
+        // model parameters will have an entry that is less than one
+        // character wide unless the window is made to be fairly large.
         _constraints.weightx = 1.0;
         _constraints.anchor = GridBagConstraints.NORTHWEST;
         _entryPanel.setLayout(_grid);
@@ -140,7 +140,7 @@ public class Query extends JPanel {
         _messageArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         _messageScrollPane = new JScrollPane(_messageArea);
-	_messageScrollPane.setVerticalScrollBarPolicy(
+        _messageScrollPane.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         // Get rid of the border.
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -193,7 +193,7 @@ public class Query extends JPanel {
      */
     public void addChoice(String name, String label,
             String[] values, String defaultChoice) {
-	addChoice(name, label, values, defaultChoice, false);
+        addChoice(name, label, values, defaultChoice, false);
     }
 
     /** Create a choice menu.
@@ -231,7 +231,7 @@ public class Query extends JPanel {
         // least in the current version of swing, JLabel.setText() does
         // not work.
         JTextArea displayField = new JTextArea(theValue, 1, 10);
-	displayField.setEditable(false);
+        displayField.setEditable(false);
         displayField.setBackground(_background);
         _addPair(name, lbl, displayField, displayField);
     }
@@ -251,7 +251,7 @@ public class Query extends JPanel {
             File startingDirectory) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
-	QueryFileChooser fileChooser = new QueryFileChooser(
+        QueryFileChooser fileChooser = new QueryFileChooser(
                 name, defaultName, base, startingDirectory);
         _addPair(name, lbl, fileChooser, fileChooser);
     }
@@ -992,7 +992,7 @@ public class Query extends JPanel {
         }
         if (result instanceof JSlider) {
             JSlider theSlider = (JSlider)result;
-	    // Set the new slider position.
+            // Set the new slider position.
             theSlider.setValue(value);
         } else {
             throw new IllegalArgumentException("Item named \"" +

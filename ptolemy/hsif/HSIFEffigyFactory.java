@@ -110,7 +110,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
      *   is malformed in some way.
      */
     public Effigy createEffigy(CompositeEntity container, URL base, URL input)
-	    throws Exception {
+            throws Exception {
         if (_inCreateEffigy) {
             return null;
         }
@@ -127,96 +127,96 @@ public class HSIFEffigyFactory extends EffigyFactory {
             try {
                 _inCreateEffigy = true;
 
-		// We need to operate on urls here in case we
-		// are operating under Web Start and the model
-		// is a JAR URL that starts with jar:file:
+                // We need to operate on urls here in case we
+                // are operating under Web Start and the model
+                // is a JAR URL that starts with jar:file:
 
-		// Generate a MoML file with a name 'xxx_moml.xml'
-		String inputFileName = input.toString();
-		// The directory and base name
-		String inputDirectoryBaseName = inputFileName;
+                // Generate a MoML file with a name 'xxx_moml.xml'
+                String inputFileName = input.toString();
+                // The directory and base name
+                String inputDirectoryBaseName = inputFileName;
 
-		int index = inputFileName.lastIndexOf(".");
-		if (index >= 0) {
-		    inputDirectoryBaseName = inputFileName.substring(0, index);
-		}
+                int index = inputFileName.lastIndexOf(".");
+                if (index >= 0) {
+                    inputDirectoryBaseName = inputFileName.substring(0, index);
+                }
                 String temporaryOutputFileName =
-		    inputDirectoryBaseName + "_moml.xml";
+                    inputDirectoryBaseName + "_moml.xml";
 
 
-		// Try to open the output file before we go through
-		// the trouble of ding the conversion.
-		FileWriter outputFileWriter = null;
-		try {
-		    outputFileWriter = new FileWriter(temporaryOutputFileName);
-		} catch (IOException ex) {
-		    // Try to open up a temporary file.
-		    // If we are running under Web Start, then
-		    // temporaryOutputFileName is likely a jar url, and
-		    // it cannot be written to
-		    String baseName = inputDirectoryBaseName;
-		    // Under Windows, the separator will always be a /
-		    // because we converted a URL to a string.
-		    index = inputDirectoryBaseName.lastIndexOf("/");
-		    if (index > 0) {
-			baseName = inputDirectoryBaseName
-			    .substring(index,
-				       inputDirectoryBaseName.length());
-		    }
+                // Try to open the output file before we go through
+                // the trouble of ding the conversion.
+                FileWriter outputFileWriter = null;
+                try {
+                    outputFileWriter = new FileWriter(temporaryOutputFileName);
+                } catch (IOException ex) {
+                    // Try to open up a temporary file.
+                    // If we are running under Web Start, then
+                    // temporaryOutputFileName is likely a jar url, and
+                    // it cannot be written to
+                    String baseName = inputDirectoryBaseName;
+                    // Under Windows, the separator will always be a /
+                    // because we converted a URL to a string.
+                    index = inputDirectoryBaseName.lastIndexOf("/");
+                    if (index > 0) {
+                        baseName = inputDirectoryBaseName
+                            .substring(index,
+                                       inputDirectoryBaseName.length());
+                    }
 
-		    File temporaryOutputFile;
-		    try {
-			temporaryOutputFile =
-			    File.createTempFile(baseName, ".xml");
-		    } catch (IOException ex2) {
-			// JDK1.4.1_01 is so lame that it might not report
-			// what the problem was, instead it reports:
-			// "The filename, directory name, or volume label
-			// syntax is incorrect"
-			// FIXME: IOException does not take a cause argument?
-			throw new Exception("Could not create a temporary "
-					    + "file based on '" + baseName
-					    + "'", ex2);
-		    }
+                    File temporaryOutputFile;
+                    try {
+                        temporaryOutputFile =
+                            File.createTempFile(baseName, ".xml");
+                    } catch (IOException ex2) {
+                        // JDK1.4.1_01 is so lame that it might not report
+                        // what the problem was, instead it reports:
+                        // "The filename, directory name, or volume label
+                        // syntax is incorrect"
+                        // FIXME: IOException does not take a cause argument?
+                        throw new Exception("Could not create a temporary "
+                                            + "file based on '" + baseName
+                                            + "'", ex2);
+                    }
 
-		    // Save the new name of the file so we can
-		    // tell the user about it and open the resulting model.
-		    temporaryOutputFileName =
-			temporaryOutputFile.toString();
-		    try {
-			outputFileWriter = new FileWriter(temporaryOutputFile);
-		    } catch (IOException ex3) {
-			// FIXME: IOException does not take a cause argument?
-			throw new Exception("Could not open '"
-					    + temporaryOutputFile
-					    + "', also tried '"
-					    + temporaryOutputFileName
-					    + "' where the exception was:",
-					    ex);
-		    }
-		}
+                    // Save the new name of the file so we can
+                    // tell the user about it and open the resulting model.
+                    temporaryOutputFileName =
+                        temporaryOutputFile.toString();
+                    try {
+                        outputFileWriter = new FileWriter(temporaryOutputFile);
+                    } catch (IOException ex3) {
+                        // FIXME: IOException does not take a cause argument?
+                        throw new Exception("Could not open '"
+                                            + temporaryOutputFile
+                                            + "', also tried '"
+                                            + temporaryOutputFileName
+                                            + "' where the exception was:",
+                                            ex);
+                    }
+                }
 
-		System.out.print("Converting HSIFToMoML ('"
-				 + inputFileName + "' to '"
-				 + temporaryOutputFileName + "'");
+                System.out.print("Converting HSIFToMoML ('"
+                                 + inputFileName + "' to '"
+                                 + temporaryOutputFileName + "'");
 
-		// Read in from the URL so that Web Start works.
-		HSIFUtilities.HSIFToMoML(input.toString(),
-					 outputFileWriter);
-		outputFileWriter.close();
-		System.out.println(" Done");
+                // Read in from the URL so that Web Start works.
+                HSIFUtilities.HSIFToMoML(input.toString(),
+                                         outputFileWriter);
+                outputFileWriter.close();
+                System.out.println(" Done");
 
-		URL temporaryOutputURL =
-		    MoMLApplication.specToURL(temporaryOutputFileName);
+                URL temporaryOutputURL =
+                    MoMLApplication.specToURL(temporaryOutputFileName);
 
-		// Note that createEffigy might end up substituting %20
-		// for spaces.
-		Effigy effigy = ((EffigyFactory)getContainer())
-		    .createEffigy(container,
-				  temporaryOutputURL, temporaryOutputURL);
+                // Note that createEffigy might end up substituting %20
+                // for spaces.
+                Effigy effigy = ((EffigyFactory)getContainer())
+                    .createEffigy(container,
+                                  temporaryOutputURL, temporaryOutputURL);
 
-		effigy.identifier.setExpression(temporaryOutputURL.toString());
-		return effigy;
+                effigy.identifier.setExpression(temporaryOutputURL.toString());
+                return effigy;
            } finally {
                _inCreateEffigy = false;
            }
@@ -230,27 +230,27 @@ public class HSIFEffigyFactory extends EffigyFactory {
     // Return true if the input file is a HSIF file.
     private static boolean _isHSIF(URL inputURL) throws IOException {
 
-	InputStream inputStream = null;
-	try {
-	    inputStream = inputURL.openStream();
-	} catch (FileNotFoundException ex) {
-	    // Try it as a jar URL
-	    try {
-		URL jarURL =
-		    JNLPUtilities.jarURLEntryResource(inputURL.toString());
-		if (jarURL == null) {
-		    throw new Exception("'" + inputURL + "' was not a jar "
-					+ "URL, or was not found");
-		}
-		inputStream = jarURL.openStream();
-	    } catch (Exception ex2) {
-		// FIXME: IOException does not take a cause argument
-		throw ex;
-	    }
-	}
+        InputStream inputStream = null;
+        try {
+            inputStream = inputURL.openStream();
+        } catch (FileNotFoundException ex) {
+            // Try it as a jar URL
+            try {
+                URL jarURL =
+                    JNLPUtilities.jarURLEntryResource(inputURL.toString());
+                if (jarURL == null) {
+                    throw new Exception("'" + inputURL + "' was not a jar "
+                                        + "URL, or was not found");
+                }
+                inputStream = jarURL.openStream();
+            } catch (Exception ex2) {
+                // FIXME: IOException does not take a cause argument
+                throw ex;
+            }
+        }
 
         BufferedReader reader =
-	    new BufferedReader(new InputStreamReader(inputStream));
+            new BufferedReader(new InputStreamReader(inputStream));
 
         String inputLine;
 

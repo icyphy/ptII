@@ -57,7 +57,7 @@ and the name of the CORBA actor.
 public class NonlinearClient extends TypedCompositeActor {
 
     public NonlinearClient(Workspace workspace)
-	    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         super(workspace);
         setName( "NonlinearSystem");
@@ -71,7 +71,7 @@ public class NonlinearClient extends TypedCompositeActor {
 
         CTMultiSolverDirector director =
             new CTMultiSolverDirector(this, "CTMultiSolverDirector");
-	setDirector(director);
+        setDirector(director);
         director.stopTime.setExpression("stopTime");
         //director.addDebugListener(new StreamListener());
         Clock sqwv = new Clock(this, "SQWV");

@@ -61,133 +61,133 @@ import soot.toolkits.graph.Block;
 public class MergedControlFlowGraph extends DirectedGraph {
 
     public MergedControlFlowGraph(SootMethod method) throws IllegalActionException {
-	this(method.retrieveActiveBody());
+        this(method.retrieveActiveBody());
     }
 
     public MergedControlFlowGraph(Body body) throws IllegalActionException {
-	super();
+        super();
 
-	_bbgraph = new BriefBlockGraph(body);
-	_createGraph();
-	_controlFlowAnalysis();
+        _bbgraph = new BriefBlockGraph(body);
+        _createGraph();
+        _controlFlowAnalysis();
     }
 
 //      public DirectedGraph createDataFlowGraph() {
-//  	// 1. Create dataflow graph of each basic block
-//  	// 2. Determine hierarchical super block boundaries
-//  	// 3. Determine signal multiplexing
-//  	// 4. Combine dataflow graphs
+//          // 1. Create dataflow graph of each basic block
+//          // 2. Determine hierarchical super block boundaries
+//          // 3. Determine signal multiplexing
+//          // 4. Combine dataflow graphs
 
-//  	// Create dataflow of each basic block
-//  	List blockList = _bbgraph.getBlocks();
-//  	for (int blockNum=0;blockNum<blockList.size();blockNum++) {
-//  	    Block block=(Block)blockList.get(blockNum);
-//  	    BlockDataFlowGraph dataFlowGraph=null;
-//  	    try {
-//  		dataFlowGraph = new BlockDataFlowGraph(block);
-//  	    } catch(IllegalActionException e) {
-//  		System.err.println(e);
-//  	    }
-//  	}
-//  	return null;
+//          // Create dataflow of each basic block
+//          List blockList = _bbgraph.getBlocks();
+//          for (int blockNum=0;blockNum<blockList.size();blockNum++) {
+//              Block block=(Block)blockList.get(blockNum);
+//              BlockDataFlowGraph dataFlowGraph=null;
+//              try {
+//                  dataFlowGraph = new BlockDataFlowGraph(block);
+//              } catch(IllegalActionException e) {
+//                  System.err.println(e);
+//              }
+//          }
+//          return null;
 //      }
 
     /**
      * create the topology of the graph.
      **/
     protected void _createGraph() throws IllegalActionException {
-	Map blockToSuperBlockMap = new HashMap();
-	List blockList=_bbgraph.getBlocks();
+        Map blockToSuperBlockMap = new HashMap();
+        List blockList=_bbgraph.getBlocks();
 
-	// Create nodes
-	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
-	    Block block=(Block)blocks.next();
-	    RequiredBlockDataFlowGraph dfg = new RequiredBlockDataFlowGraph(block);
-	    SuperBlock sb = new SuperBlock(block,dfg);
-	    blockToSuperBlockMap.put(block, sb);
+        // Create nodes
+        for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
+            Block block=(Block)blocks.next();
+            RequiredBlockDataFlowGraph dfg = new RequiredBlockDataFlowGraph(block);
+            SuperBlock sb = new SuperBlock(block,dfg);
+            blockToSuperBlockMap.put(block, sb);
 
-	    //addNodeWeight(block);
-	    //addNodeWeight(dfg);
-	    addNodeWeight(sb);
-	}
+            //addNodeWeight(block);
+            //addNodeWeight(dfg);
+            addNodeWeight(sb);
+        }
 
-	// Create edges
-	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
-	    Block block=(Block)blocks.next();
-	    //Node nb = node(block);
-	    Node nb = node(blockToSuperBlockMap.get(block));
+        // Create edges
+        for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
+            Block block=(Block)blocks.next();
+            //Node nb = node(block);
+            Node nb = node(blockToSuperBlockMap.get(block));
 
-	    //Get successors to this block and add an edge
-	    //to graph for each one
-	    for (Iterator succs=block.getSuccs().iterator();
-		 succs.hasNext();){
-		Block succ=(Block)succs.next();
-		Node sb = node(blockToSuperBlockMap.get(succ));
-		addEdge(nb,sb);
-	    }
-	}
- 	if (!isAcyclic()) {
- 	    System.err.println(_toDotty.convert(this, "this"));
+            //Get successors to this block and add an edge
+            //to graph for each one
+            for (Iterator succs=block.getSuccs().iterator();
+                 succs.hasNext();){
+                Block succ=(Block)succs.next();
+                Node sb = node(blockToSuperBlockMap.get(succ));
+                addEdge(nb,sb);
+            }
+        }
+         if (!isAcyclic()) {
+             System.err.println(_toDotty.convert(this, "this"));
             System.out.println("Warning! Graph has feedback");
             //    throw new IllegalActionException("Feedback currently not supported");
- 	}
+         }
     }
 
     protected void _controlFlowAnalysis() throws IllegalActionException {
-	//Get a topological sort
-	Map nodeToLabel = new HashMap();
-	SuperBlock sorted[]=null;
+        //Get a topological sort
+        Map nodeToLabel = new HashMap();
+        SuperBlock sorted[]=null;
 
-	Object []temp=topologicalSort(nodes()).toArray();
-	sorted=new SuperBlock[temp.length];
-	for (int i=0; i < temp.length; i++){
-	    sorted[i]=(SuperBlock)((Node)temp[i]).getWeight();
-	}
+        Object []temp=topologicalSort(nodes()).toArray();
+        sorted=new SuperBlock[temp.length];
+        for (int i=0; i < temp.length; i++){
+            sorted[i]=(SuperBlock)((Node)temp[i]).getWeight();
+        }
 
-	for (int i=0; i < sorted.length; i++){
-	    sorted[i].combineLabels(this);
-	    for (Iterator succs = successors(node(sorted[i])).iterator();
-		 succs.hasNext();){
-		Node succ = (Node)succs.next();
+        for (int i=0; i < sorted.length; i++){
+            sorted[i].combineLabels(this);
+            for (Iterator succs = successors(node(sorted[i])).iterator();
+                 succs.hasNext();){
+                Node succ = (Node)succs.next();
 
-		sorted[i].propagateLabelsTo((SuperBlock)succ.getWeight());
-	    }
-	}
+                sorted[i].propagateLabelsTo((SuperBlock)succ.getWeight());
+            }
+        }
 
     }
 
     public static void main(String args[]) {
-	String classname =
-	    ptolemy.copernicus.jhdl.test.Test.DEFAULT_TESTCLASS;
-	String methodname =
-	    ptolemy.copernicus.jhdl.test.Test.DEFAULT_TESTMETHOD;
-	if (args.length > 0)
-	    classname = args[0];
-	if (args.length > 1)
-	    methodname = args[1];
+        String classname =
+            ptolemy.copernicus.jhdl.test.Test.DEFAULT_TESTCLASS;
+        String methodname =
+            ptolemy.copernicus.jhdl.test.Test.DEFAULT_TESTMETHOD;
+        if (args.length > 0)
+            classname = args[0];
+        if (args.length > 1)
+            methodname = args[1];
 
-	soot.SootClass testClass =
-	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
-	if (testClass == null) {
-	    System.err.println("Class "+classname+" not found");
-	    System.exit(1);
-	}
-	System.out.println("Loading class "+classname+" method "+methodname);
-	if (!testClass.declaresMethodByName(methodname)) {
-	    System.err.println("Method "+methodname+" not found");
-	    System.exit(1);
-	}
-	soot.SootMethod testMethod = testClass.getMethodByName(methodname);
-	soot.Body body = testMethod.retrieveActiveBody();
+        soot.SootClass testClass =
+            ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
+        if (testClass == null) {
+            System.err.println("Class "+classname+" not found");
+            System.exit(1);
+        }
+        System.out.println("Loading class "+classname+" method "+methodname);
+        if (!testClass.declaresMethodByName(methodname)) {
+            System.err.println("Method "+methodname+" not found");
+            System.exit(1);
+        }
+        soot.SootMethod testMethod = testClass.getMethodByName(methodname);
+        soot.Body body = testMethod.retrieveActiveBody();
 
-	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
+        BriefBlockGraph bbgraph = new BriefBlockGraph(body);
         _toDotty.writeDotFile(".", "bbgraph", bbgraph);
-	try {
-	    MergedControlFlowGraph bcfg = new MergedControlFlowGraph(body);
-	} catch (IllegalActionException e) {
-	    System.err.println(e);
-	    System.exit(1);
-	}
+        try {
+            MergedControlFlowGraph bcfg = new MergedControlFlowGraph(body);
+        } catch (IllegalActionException e) {
+            System.err.println(e);
+            System.exit(1);
+        }
     }
 
     private static ptolemy.copernicus.jhdl.util.BlockGraphToDotty _toDotty =

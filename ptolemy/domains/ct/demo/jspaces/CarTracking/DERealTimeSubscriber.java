@@ -81,7 +81,7 @@ public class DERealTimeSubscriber extends DEActor
     public DERealTimeSubscriber(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	jspaceName = new Parameter(this, "jspaceName",
+            jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 

@@ -108,7 +108,7 @@ public class PBODirector extends Director {
      */
     public PBODirector() {
         super();
-	_init();
+        _init();
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -118,7 +118,7 @@ public class PBODirector extends Director {
      */
     public PBODirector(Workspace workspace) {
         super(workspace);
-	_init();
+        _init();
     }
 
     /** Construct a director in the given container with the given name.
@@ -135,7 +135,7 @@ public class PBODirector extends Director {
     public PBODirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_init();
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -167,7 +167,7 @@ public class PBODirector extends Director {
             Actor actor = event.actor();
             double requestTime = event.time();
             // This is the time that the actor next wants to get fired.
-	    double nextRequestTime =
+            double nextRequestTime =
                 requestTime + _getExecutionPeriod(actor);
             double deadlineTime = requestTime + _getExecutionTime(actor);
             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
@@ -176,13 +176,13 @@ public class PBODirector extends Director {
             return;
         }
 
-	_debug("Starting iteration at " + getCurrentTime());
+        _debug("Starting iteration at " + getCurrentTime());
         PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.take();
         Actor executingActor = deadlineEvent.actor();
         // The time the actor expected to finish by.
         double executingTime = deadlineEvent.time();
         // The time the actor actually started executing.
-	double firingTime = getCurrentTime();
+        double firingTime = getCurrentTime();
         // The time the actor actually finished.
         double endFiringTime = getCurrentTime() +
             _getExecutionTime(executingActor);
@@ -195,7 +195,7 @@ public class PBODirector extends Director {
             PBOEvent event = (PBOEvent)_requestQueue.take();
             Actor actor = (Actor)event.actor();
             // This is the time that the actor next wants to get fired.
-	    double nextRequestTime =
+            double nextRequestTime =
                 requestTime + _getExecutionPeriod(actor);
             double deadlineTime = requestTime + _getExecutionTime(actor);
             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
@@ -206,30 +206,30 @@ public class PBODirector extends Director {
 
         // now fire the currently executing actor and update
         // time to reflect the amount of time spent.
-	boolean postfireReturns;
-	if(executingActor.prefire()) {
-	    _debug("Firing actor " + ((Entity) executingActor).getFullName() +
-		   " at " + firingTime);
-	    executingActor.fire();
+        boolean postfireReturns;
+        if(executingActor.prefire()) {
+            _debug("Firing actor " + ((Entity) executingActor).getFullName() +
+                   " at " + firingTime);
+            executingActor.fire();
 
             // This is the time when the actor finishes.
-	    setCurrentTime(endFiringTime);
-	    _debug("Postfiring actor at " + getCurrentTime());
-	    postfireReturns = executingActor.postfire();
-	    _debug("done firing");
+            setCurrentTime(endFiringTime);
+            _debug("Postfiring actor at " + getCurrentTime());
+            postfireReturns = executingActor.postfire();
+            _debug("done firing");
 
-	} else {
+        } else {
             _debug("Actor " + ((Entity) executingActor).getFullName() +
                     " is not ready to fire.");
         }
 
-	// reschedule this composite to handle the next process starting.
-	CompositeActor container = (CompositeActor)getContainer();
-	Director executive = container.getExecutiveDirector();
-	if(executive != null) {
-	    _debug("Rescheduling composite");
-	    executive.fireAt(container, getNextIterationTime());
-	}
+        // reschedule this composite to handle the next process starting.
+        CompositeActor container = (CompositeActor)getContainer();
+        Director executive = container.getExecutiveDirector();
+        if(executive != null) {
+            _debug("Rescheduling composite");
+            executive.fireAt(container, getNextIterationTime());
+        }
     }
 
     /** Schedule a firing of the given actor at the given time. It does
@@ -288,26 +288,26 @@ public class PBODirector extends Director {
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
+        super.initialize();
 
         _deadlineQueue.clear();
         _requestQueue.clear();
         //Initialize the queue of deadlines and next firings to
         // contain all the actors.
         CompositeActor container = (CompositeActor) getContainer();
-	if(container != null) {
-	    Iterator allActors = container.deepEntityList().iterator();
-	    while(allActors.hasNext()) {
-		Actor actor = (Actor) allActors.next();
+        if(container != null) {
+            Iterator allActors = container.deepEntityList().iterator();
+            while(allActors.hasNext()) {
+                Actor actor = (Actor) allActors.next();
                 _deadlineQueue.put(new PBOEvent(actor,
                         _getExecutionTime(actor)));
-    		_requestQueue.put(new PBOEvent(actor,
+                    _requestQueue.put(new PBOEvent(actor,
                         _getExecutionPeriod(actor)));
-	    }
-	} else {
-	    throw new IllegalActionException("Cannot fire this director " +
+            }
+        } else {
+            throw new IllegalActionException("Cannot fire this director " +
                     "without a container");
-	}
+        }
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -331,14 +331,14 @@ public class PBODirector extends Director {
      *  method of one of the associated actors throws it.
      */
     public boolean postfire() throws IllegalActionException {
-	_debug("postfiring");
+        _debug("postfiring");
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
-	double curtime = getCurrentTime();
-	_debug("CurrentTime = " + curtime);
-	if(curtime > stoptime)
-	    return false;
-	else
-	    return true;
+        double curtime = getCurrentTime();
+        _debug("CurrentTime = " + curtime);
+        if(curtime > stoptime)
+            return false;
+        else
+            return true;
     }
 
     /** Return true if the director is ready to fire. This method is
@@ -402,15 +402,15 @@ public class PBODirector extends Director {
      *  This is called from the constructors for this object.
      */
     private void _init() {
-	_requestQueue = new CalendarQueue(new PBOCQComparator());
-	_deadlineQueue = new CalendarQueue(new PBOCQComparator());
-	try {
-	    stopTime = new Parameter(this, "stopTime", new DoubleToken(10.0));
-	}
-	catch (Exception e) {
-	    // this should never happen
-	    throw new InternalErrorException(e.getMessage());
-	}
+        _requestQueue = new CalendarQueue(new PBOCQComparator());
+        _deadlineQueue = new CalendarQueue(new PBOCQComparator());
+        try {
+            stopTime = new Parameter(this, "stopTime", new DoubleToken(10.0));
+        }
+        catch (Exception e) {
+            // this should never happen
+            throw new InternalErrorException(e.getMessage());
+        }
 
         addDebugListener(new StreamListener());
     }
@@ -424,17 +424,17 @@ public class PBODirector extends Director {
      */
     private double _getExecutionPeriod(Actor a)
             throws IllegalActionException {
-	if(!(a instanceof Nameable))
-	    throw new IllegalActionException(
+        if(!(a instanceof Nameable))
+            throw new IllegalActionException(
                     "Cannot get the execution period for an actor that "
                     + "is not an entity");
         Parameter param =
-	    (Parameter)((ComponentEntity)a).getAttribute("executionPeriod");
-	if(param == null) {
-	    throw new IllegalActionException("Actor does not have a " +
-		"executionPeriod parameter");
-	}
-	return ((DoubleToken)param.getToken()).doubleValue();
+            (Parameter)((ComponentEntity)a).getAttribute("executionPeriod");
+        if(param == null) {
+            throw new IllegalActionException("Actor does not have a " +
+                "executionPeriod parameter");
+        }
+        return ((DoubleToken)param.getToken()).doubleValue();
     }
 
     /** Get the delay between the inputs and the outputs for a given actor.
@@ -448,17 +448,17 @@ public class PBODirector extends Director {
      */
     private double _getExecutionTime(Actor a)
             throws IllegalActionException {
-	if(!(a instanceof Nameable))
-	    throw new IllegalActionException(
+        if(!(a instanceof Nameable))
+            throw new IllegalActionException(
                     "Cannot get the executionTime for an actor that is not " +
                     "an entity.");
         Parameter param =
-	    (Parameter)((ComponentEntity)a).getAttribute("executionTime");
-	if(param == null) {
-	    throw new IllegalActionException("Actor does not have an " +
-		"executionTime parameter.");
-	}
-	return ((DoubleToken)param.getToken()).doubleValue();
+            (Parameter)((ComponentEntity)a).getAttribute("executionTime");
+        if(param == null) {
+            throw new IllegalActionException("Actor does not have an " +
+                "executionTime parameter.");
+        }
+        return ((DoubleToken)param.getToken()).doubleValue();
     }
 
     // The queue of times when actors will start, ordered by deadline times.
@@ -479,81 +479,81 @@ public class PBODirector extends Director {
     //
     private class PBOCQComparator implements CQComparator {
 
-	/** Compare the two argument for order. Return a negative integer,
-	 *  zero, or a positive integer if the first argument is less than,
-	 *  equal to, or greater than the second.
-	 *  Both arguments must be instances of PBOEvent or a
-	 *  ClassCastException will be thrown.  The compareTo() method
+        /** Compare the two argument for order. Return a negative integer,
+         *  zero, or a positive integer if the first argument is less than,
+         *  equal to, or greater than the second.
+         *  Both arguments must be instances of PBOEvent or a
+         *  ClassCastException will be thrown.  The compareTo() method
          *  of the first argument is used to do the comparison.
          *
-	 * @param object1 The first event.
-	 * @param object2 The second event.
-	 * @return A negative integer, zero, or a positive integer if the first
-	 *  argument is less than, equal to, or greater than the second.
-	 * @exception ClassCastException If one of the arguments is not
+         * @param object1 The first event.
+         * @param object2 The second event.
+         * @return A negative integer, zero, or a positive integer if the first
+         *  argument is less than, equal to, or greater than the second.
+         * @exception ClassCastException If one of the arguments is not
          *  an instance of PBOEvent.
-	 */
-	public final int compare(Object object1, Object object2) {
-	    return((PBOEvent) object1).compareTo(object2);
+         */
+        public final int compare(Object object1, Object object2) {
+            return((PBOEvent) object1).compareTo(object2);
         }
 
-	/** Given an event, return the virtual index of
-	 *  the bin that should contain the event.
-	 *  If the argument is not an instance of PBOEvent, then a
-	 *  ClassCastException will be thrown.  Only the time stamp
+        /** Given an event, return the virtual index of
+         *  the bin that should contain the event.
+         *  If the argument is not an instance of PBOEvent, then a
+         *  ClassCastException will be thrown.  Only the time stamp
          *  of the arguments is used.  The quantity returned is the
          *  quantized time stamp, i.e. the
          *  difference between the time stamp of the event and that of
          *  the zero reference, divided by the time stamp of the bin width.
-	 *  @param event The event.
-	 *  @return The index of the virtual bin containing the event.
-	 *  @exception ClassCastException If the argument is not
+         *  @param event The event.
+         *  @return The index of the virtual bin containing the event.
+         *  @exception ClassCastException If the argument is not
          *   an instance of PBOEvent.
-	 */
-	public final long getVirtualBinNumber(Object event) {
-	    return (long)((((PBOEvent) event).time()
+         */
+        public final long getVirtualBinNumber(Object event) {
+            return (long)((((PBOEvent) event).time()
                     - _zeroReference.time())/_binWidth.time());
-	}
+        }
 
-	/** Given an array of PBOEvent objects, set an appropriate bin
-	 *  width. This method assumes that the
+        /** Given an array of PBOEvent objects, set an appropriate bin
+         *  width. This method assumes that the
          *  entries provided are all different, and are in increasing order.
          *  Note, however, that the time stamps may not be increasing.
          *  It may instead be the receiver depth that is increasing,
          *  or the microsteps that are increasing.
          *  This method attempts to choose the bin width so that
-	 *  the average number of entries in a bin is one.
-	 *  If the argument is null or is an array with length less
+         *  the average number of entries in a bin is one.
+         *  If the argument is null or is an array with length less
          *  than two, set the bin width to the default, which is 1.0
-	 *  for this implementation.
-	 *
-	 *  @param entryArray An array of PBOEvent objects.
-	 *  @exception ClassCastException If an entry in the array is not
+         *  for this implementation.
+         *
+         *  @param entryArray An array of PBOEvent objects.
+         *  @exception ClassCastException If an entry in the array is not
          *   an instance of PBOEvent.
-	 */
-	public void setBinWidth(Object[] entryArray) {
+         */
+        public void setBinWidth(Object[] entryArray) {
 
-	    if ( entryArray == null || entryArray.length < 2) {
-		_zeroReference = new PBOEvent(null, 0.0);
+            if ( entryArray == null || entryArray.length < 2) {
+                _zeroReference = new PBOEvent(null, 0.0);
                 return;
-	    }
+            }
 
-	    double[] diff = new double[entryArray.length - 1];
+            double[] diff = new double[entryArray.length - 1];
 
-	    double average =
+            double average =
                 (((PBOEvent)entryArray[entryArray.length - 1]).time() -
                         ((PBOEvent)entryArray[0]).time()) /
                 (entryArray.length-1);
             double effectiveAverage = 0.0;
-	    int effectiveSamples = 0;
-	    for (int i = 0; i < entryArray.length - 1; ++i) {
-		diff[i] = ((PBOEvent)entryArray[i+1]).time() -
-		    ((PBOEvent)entryArray[i]).time();
+            int effectiveSamples = 0;
+            for (int i = 0; i < entryArray.length - 1; ++i) {
+                diff[i] = ((PBOEvent)entryArray[i+1]).time() -
+                    ((PBOEvent)entryArray[i]).time();
                 if (diff[i] < 2.0 * average) {
-		    effectiveSamples++;
-		    effectiveAverage += diff[i];
-		}
-	    }
+                    effectiveSamples++;
+                    effectiveAverage += diff[i];
+                }
+            }
 
             if (effectiveAverage == 0.0 || effectiveSamples == 0) {
                 // To avoid setting NaN or 0.0
@@ -561,9 +561,9 @@ public class PBODirector extends Director {
                 // we leave it unchanged instead.
                 return;
             }
-	    effectiveAverage /= (double)effectiveSamples;
+            effectiveAverage /= (double)effectiveSamples;
             _binWidth = new PBOEvent(null, 3.0 * effectiveAverage);
-	}
+        }
 
         /** Set the zero reference, to be used in calculating the virtual
          *  bin number. The argument should be a PBOEvent, otherwise a

@@ -68,9 +68,9 @@ public class SimpleAdd extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	input1 = new IntIOPort(this, "input1", true, false);
-	input2 = new IntIOPort(this, "input2", true, false);
-	output = new IntIOPort(this, "output", false, true);
+        input1 = new IntIOPort(this, "input1", true, false);
+        input2 = new IntIOPort(this, "input2", true, false);
+        output = new IntIOPort(this, "output", false, true);
 
     }
 
@@ -100,12 +100,12 @@ public class SimpleAdd extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         //output.send(0,input1.get(0).add(input2.get(0)));
 
-	int i1 = input1.getInt();
-	int i2 = input2.getInt();
+        int i1 = input1.getInt();
+        int i2 = input2.getInt();
 
-	int o = i1 + i2;
+        int o = i1 + i2;
 
-	output.sendInt(o);
+        output.sendInt(o);
     }
 
 

@@ -76,11 +76,11 @@ public class StockQuote extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	ticker = new Parameter(this, "ticker", new StringToken("YHOO"));
-	ticker.setTypeEquals(BaseType.STRING);
+        ticker = new Parameter(this, "ticker", new StringToken("YHOO"));
+        ticker.setTypeEquals(BaseType.STRING);
 
-	// set the type constraints.
-	output.setTypeEquals(BaseType.DOUBLE);
+        // set the type constraints.
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -100,55 +100,55 @@ public class StockQuote extends Source {
     public void fire() throws IllegalActionException {
         try {
             super.fire();
-	    String tickerString =
+            String tickerString =
                 ((StringToken)ticker.getToken()).stringValue();
-	    String spec = (_urlString + tickerString);
-	    URL url = new URL(spec);
-	    InputStream stream = url.openStream();
+            String spec = (_urlString + tickerString);
+            URL url = new URL(spec);
+            InputStream stream = url.openStream();
 
-	    // The part of the returned HTML file from Yahoo that contains
-	    // the stock quote has the form:
-	    //
-	    // <td nowrap align=left><a href="/q?s=FDX&d=t">FDX</a></td> ...
-	    // <td nowrap><b>49.06</b>
-	    //
-	    // or
-	    //
-	    // <td nowrap align=left><a href="/q?s=YHOO&d=t">YHOO</a></td> ...
-	    // <td nowrap><b>37 <sup>1</sup>/<sub>8</sub></b>
-	    //
-	    // To get the quote, a StreamTokenizer is used to extract each
-	    // line as a token, find the line that contains "/q?s=YHOO&d=t",
-	    // and extract number between <b> and </b>.
-	    // Note that the quote may be in either the decimal or fractional
-	    // form.
-	    // This code is fragile. If Yahoo changes the quote format, it
-	    // will break.
+            // The part of the returned HTML file from Yahoo that contains
+            // the stock quote has the form:
+            //
+            // <td nowrap align=left><a href="/q?s=FDX&d=t">FDX</a></td> ...
+            // <td nowrap><b>49.06</b>
+            //
+            // or
+            //
+            // <td nowrap align=left><a href="/q?s=YHOO&d=t">YHOO</a></td> ...
+            // <td nowrap><b>37 <sup>1</sup>/<sub>8</sub></b>
+            //
+            // To get the quote, a StreamTokenizer is used to extract each
+            // line as a token, find the line that contains "/q?s=YHOO&d=t",
+            // and extract number between <b> and </b>.
+            // Note that the quote may be in either the decimal or fractional
+            // form.
+            // This code is fragile. If Yahoo changes the quote format, it
+            // will break.
 
-	    Reader r = new BufferedReader(new InputStreamReader(stream));
-	    StreamTokenizer st = new StreamTokenizer(r);
-	    // set newline(10) to be the only white space.
-	    st.resetSyntax();
-	    st.whitespaceChars(10, 10);
-	    // every char from space(32) up is a word constituents.
-	    st.wordChars(32, 127);
+            Reader r = new BufferedReader(new InputStreamReader(stream));
+            StreamTokenizer st = new StreamTokenizer(r);
+            // set newline(10) to be the only white space.
+            st.resetSyntax();
+            st.whitespaceChars(10, 10);
+            // every char from space(32) up is a word constituents.
+            st.wordChars(32, 127);
 
-	    while (st.nextToken() != StreamTokenizer.TT_EOF
+            while (st.nextToken() != StreamTokenizer.TT_EOF
                     && st.sval != null) {
                 //System.out.println(st);
-		if (st.sval.indexOf("No such ticker symbol") != -1) {
-		    // bad ticker
-		    throw new IllegalActionException(this, "StockQuote.fire:"
+                if (st.sval.indexOf("No such ticker symbol") != -1) {
+                    // bad ticker
+                    throw new IllegalActionException(this, "StockQuote.fire:"
                             + " bad ticker: " + tickerString);
-		}
-		if (st.sval.startsWith(_matchString + tickerString)) {
-		    // found the line
-		    break;
-		}
-	    }
+                }
+                if (st.sval.startsWith(_matchString + tickerString)) {
+                    // found the line
+                    break;
+                }
+            }
 
             if (st.sval == null) {
-		    throw new IllegalActionException(this, "StockQuote.fire:"
+                    throw new IllegalActionException(this, "StockQuote.fire:"
                             + " Did not find tickerString: " + tickerString
                             + " in " + spec + ".\n"
                             + " Perhaps the format changed,"
@@ -156,35 +156,35 @@ public class StockQuote extends Source {
 
             }
 
-	    // st.sval contains the quote now.
-	    // the quote is between <b> and </b>
-	    int index1 = st.sval.indexOf("<b>");
-	    index1 += 3;
-	    // index1 is now the index of the first digit of the quote.
-	    int index2 = st.sval.indexOf("<", index1);
-	    String stringQuote = st.sval.substring(index1, index2);
+            // st.sval contains the quote now.
+            // the quote is between <b> and </b>
+            int index1 = st.sval.indexOf("<b>");
+            index1 += 3;
+            // index1 is now the index of the first digit of the quote.
+            int index2 = st.sval.indexOf("<", index1);
+            String stringQuote = st.sval.substring(index1, index2);
 
-	    // If the quote is in decimal, stringQuote contains the whole
-	    // quote string; If the quote is in fractional, stringQuote
-	    // may have a trailing white space.
-	    double price = (Double.valueOf(stringQuote)).doubleValue();
+            // If the quote is in decimal, stringQuote contains the whole
+            // quote string; If the quote is in fractional, stringQuote
+            // may have a trailing white space.
+            double price = (Double.valueOf(stringQuote)).doubleValue();
 
-	    int index = st.sval.indexOf("sup");
-	    if (index != -1) {
-		// price has fractional part.
-		double sup = _getNumber(st.sval, index+4);
-		index = st.sval.indexOf("sub");
-		double sub = _getNumber(st.sval, index+4);
+            int index = st.sval.indexOf("sup");
+            if (index != -1) {
+                // price has fractional part.
+                double sup = _getNumber(st.sval, index+4);
+                index = st.sval.indexOf("sub");
+                double sub = _getNumber(st.sval, index+4);
 
-		price += sup/sub;
-	    }
+                price += sup/sub;
+            }
             output.send(0, new DoubleToken(price));
 
         } catch (MalformedURLException mfurl) {
-	    throw new IllegalActionException(this, mfurl.getMessage());
-	} catch (IOException io) {
-	    throw new IllegalActionException(this, io.getMessage());
-	}
+            throw new IllegalActionException(this, mfurl.getMessage());
+        } catch (IOException io) {
+            throw new IllegalActionException(this, io.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -193,14 +193,14 @@ public class StockQuote extends Source {
     // Get the number in the string from the start index. Cast the
     // number to double before return.
     private double _getNumber(String str, int index) {
-	int num = 0;
-	char c = str.charAt(index);
-	while (Character.isDigit(c)) {
-	    num = num*10 + Character.digit(c, 10);
-	    index++;
-	    c=str.charAt(index);
-	}
-	return (double)num;
+        int num = 0;
+        char c = str.charAt(index);
+        while (Character.isDigit(c)) {
+            num = num*10 + Character.digit(c, 10);
+            index++;
+            c=str.charAt(index);
+        }
+        return (double)num;
     }
 
     ///////////////////////////////////////////////////////////////////

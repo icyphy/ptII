@@ -166,7 +166,7 @@ public class CSPDirector extends CompositeProcessDirector {
             throws CloneNotSupportedException {
         CSPDirector newObject = (CSPDirector)super.clone(workspace);
         // newObject._actorsBlocked = 0;
-	newObject._actorsDelayed = 0;
+        newObject._actorsDelayed = 0;
         newObject._delayedActorList = new LinkedList();
         return newObject;
     }
@@ -175,10 +175,10 @@ public class CSPDirector extends CompositeProcessDirector {
      * @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
-	// _actorsBlocked = 0;
+        // _actorsBlocked = 0;
         _actorsDelayed = 0;
         _delayedActorList = new LinkedList();
-	super.initialize();
+        super.initialize();
     }
 
     /** Return a new CSPReceiver compatible with this director.
@@ -221,9 +221,9 @@ public class CSPDirector extends CompositeProcessDirector {
             throws IllegalActionException {
         if (_actorsDelayed != 0) {
             throw new IllegalActionException("CSPDirector.setCurrentTime()"
-		    + " can only be called when no processes are delayed.");
+                    + " can only be called when no processes are delayed.");
         }
-	super.setCurrentTime(newTime);
+        super.setCurrentTime(newTime);
     }
 
     /** Override the base class to stop any actors that might be stalled
@@ -269,16 +269,16 @@ public class CSPDirector extends CompositeProcessDirector {
     protected synchronized void _actorDelayed(double delta, CSPActor actor)
             throws InvalidStateException {
         if (delta < 0.0) {
-	    throw new InvalidStateException(((Nameable)actor).getName() +
+            throw new InvalidStateException(((Nameable)actor).getName() +
                     ": delayed for negative time.");
-	} else {
-	    _actorsDelayed++;
-	    // Enter the actor and the time to wake it up into the
-	    // LinkedList of delayed actors.
-	    _registerDelayedActor( (getCurrentTime() + delta), actor);
-	    notifyAll();
-	    return;
-	}
+        } else {
+            _actorsDelayed++;
+            // Enter the actor and the time to wake it up into the
+            // LinkedList of delayed actors.
+            _registerDelayedActor( (getCurrentTime() + delta), actor);
+            notifyAll();
+            return;
+        }
     }
 
     /** An actor has unblocked, decrease the count of blocked actors.

@@ -82,7 +82,7 @@ public class EditablePlotMLApplet extends PlotMLApplet {
      */
     public String getAppletInfo() {
         return "EditablePlotDemo " + PlotBox.PTPLOT_RELEASE +
-	    ": Demo of EditablePlot.\n" +
+            ": Demo of EditablePlot.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
             "($Id$)";
     }

@@ -96,36 +96,36 @@ public class MetaGraphTableau extends Tableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
+            super(container, name);
             new MetaGraphController(this, "graphController");
-	}
+        }
 
-	/** Create a tableau in the default workspace with no name for the
-	 *  given Effigy.  The tableau will created with a new unique name
-	 *  in the given model effigy.  If this factory cannot create a tableau
-	 *  for the given effigy (perhaps because the effigy is not of the
-	 *  appropriate subclass) then return null.
+        /** Create a tableau in the default workspace with no name for the
+         *  given Effigy.  The tableau will created with a new unique name
+         *  in the given model effigy.  If this factory cannot create a tableau
+         *  for the given effigy (perhaps because the effigy is not of the
+         *  appropriate subclass) then return null.
          *  It is the responsibility of callers of this method to check the
          *  return value and call show().
-	 *
-	 *  @param effigy The model effigy.
-	 *  @return A new MetaGraphTableau, if the effigy is a
-	 *  PtolemyEffigy, or null otherwise.
-	 *  @exception Exception If an exception occurs when creating the
-	 *  tableau.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(effigy instanceof PtolemyEffigy) {
+         *
+         *  @param effigy The model effigy.
+         *  @return A new MetaGraphTableau, if the effigy is a
+         *  PtolemyEffigy, or null otherwise.
+         *  @exception Exception If an exception occurs when creating the
+         *  tableau.
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if(effigy instanceof PtolemyEffigy) {
                 MetaGraphTableau tableau =
                     (MetaGraphTableau)effigy.getEntity("Meta Tableau");
                 if (tableau == null) {
@@ -136,12 +136,12 @@ public class MetaGraphTableau extends Tableau {
                     getEntity("graphController");
                 ((MetaGraphController)controller.clone()).setContainer(tableau);
                 // Don't call show() here, it is called for us in
-		// TableauFrame.ViewMenuListener.actionPerformed()
+                // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 
     public static class MetaGraphFrame extends GraphFrame {

@@ -140,14 +140,14 @@ public class MoMLApplication {
         // We set the list of MoMLFilters to handle Backward Compatibility.
         _parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-	// 2/03: Moved the setMessageHandler() to before parseArgs() so
-	// that if we get an error in parseArgs() we will get a graphical
-	// stack trace.   Such an error could be caused by specifying a model
-	// as a command line argument and the model has an invalid parameter.
+        // 2/03: Moved the setMessageHandler() to before parseArgs() so
+        // that if we get an error in parseArgs() we will get a graphical
+        // stack trace.   Such an error could be caused by specifying a model
+        // as a command line argument and the model has an invalid parameter.
 
-	MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
-	_parseArgs(args);
+        _parseArgs(args);
 
         // Even if the user is set up for foreign locale, use the US locale.
         // This is because certain parts of Ptolemy (like the expression
@@ -212,38 +212,38 @@ public class MoMLApplication {
      *   a URL.
      */
     public static URL specToURL(String spec) throws IOException {
-	// FIXME: There is a bit of a design flaw here because
-	// we open a stream to the url (which is probably expensive)
-	// and then close it.  The reason for opening the stream
-	// is that we want to be sure that the URL is valid,
-	// and if it is not, we check the local file system
-	// and the classpath.
+        // FIXME: There is a bit of a design flaw here because
+        // we open a stream to the url (which is probably expensive)
+        // and then close it.  The reason for opening the stream
+        // is that we want to be sure that the URL is valid,
+        // and if it is not, we check the local file system
+        // and the classpath.
 
-	// One solution would be to have a method that returned a
-	// URLConnection because we can open a stream with a
-	// URLConnection and still get the original URL if necessary
-	URL specURL = null;
+        // One solution would be to have a method that returned a
+        // URLConnection because we can open a stream with a
+        // URLConnection and still get the original URL if necessary
+        URL specURL = null;
         try {
             // First argument is null because we are only
             // processing absolute URLs this way.  Relative
             // URLs are opened as ordinary files.
-	    specURL = new URL(null, spec);
+            specURL = new URL(null, spec);
 
-	    // Make sure that the specURL actually exists
-	    InputStream urlStream = specURL.openStream();
-	    urlStream.close();
-	    return specURL;
+            // Make sure that the specURL actually exists
+            InputStream urlStream = specURL.openStream();
+            urlStream.close();
+            return specURL;
         } catch (Exception ex) {
             try {
-		// Try as a regular file
+                // Try as a regular file
                 File file = new File(spec);
 
-		// Oddly, under Windows file.exists() might return even
-		// though the file does not exist if we changed user.dir.
-		// See
-		// http://forum.java.sun.com/thread.jsp?forum=31&thread=328939
-		// One hack is to convert to an absolute path first
-		File absoluteFile = file.getAbsoluteFile();
+                // Oddly, under Windows file.exists() might return even
+                // though the file does not exist if we changed user.dir.
+                // See
+                // http://forum.java.sun.com/thread.jsp?forum=31&thread=328939
+                // One hack is to convert to an absolute path first
+                File absoluteFile = file.getAbsoluteFile();
                 try {
                     if (!absoluteFile.exists()) {
                         throw new IOException("'" + absoluteFile
@@ -257,10 +257,10 @@ public class MoMLApplication {
                     exception.initCause(accessControl);
                     throw exception;
                 }
-		specURL = absoluteFile.getCanonicalFile().toURL();
+                specURL = absoluteFile.getCanonicalFile().toURL();
 
-		//InputStream urlStream = specURL.openStream();
-		//urlStream.close();
+                //InputStream urlStream = specURL.openStream();
+                //urlStream.close();
 
                 return specURL;
             } catch (Exception ex2) {
@@ -287,16 +287,16 @@ public class MoMLApplication {
                         throw new Exception("getResource(\"" + spec
                                 + "\") returned null.");
                     } else {
-			// If we have a jar URL, convert spaces to %20
-			// so as to avoid multiple windows with the
-			// same file.  Web Start needs this if the Web
-			// Start cache is in a directory that has
-			// spaces in the path, which is the default
-			// under Windows.
-			specURL = JNLPUtilities.canonicalizeJarURL(specURL);
-			// Verify that it can be opened
-			InputStream urlStream = specURL.openStream();
-			urlStream.close();
+                        // If we have a jar URL, convert spaces to %20
+                        // so as to avoid multiple windows with the
+                        // same file.  Web Start needs this if the Web
+                        // Start cache is in a directory that has
+                        // spaces in the path, which is the default
+                        // under Windows.
+                        specURL = JNLPUtilities.canonicalizeJarURL(specURL);
+                        // Verify that it can be opened
+                        InputStream urlStream = specURL.openStream();
+                        urlStream.close();
                         return specURL;
                     }
                 } catch (Exception ex3) {
@@ -593,12 +593,12 @@ public class MoMLApplication {
      *   if the contents of the URL is not a configuration.
      */
     protected Configuration _readConfiguration(URL specificationURL)
-	throws Exception {
+        throws Exception {
         _parser.reset();
 
-	Configuration toplevel =
-	    (Configuration) _parser.parse(specificationURL,
-					  specificationURL.openStream());
+        Configuration toplevel =
+            (Configuration) _parser.parse(specificationURL,
+                                          specificationURL.openStream());
 
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it

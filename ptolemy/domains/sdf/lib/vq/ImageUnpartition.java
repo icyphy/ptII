@@ -66,7 +66,7 @@ public class ImageUnpartition extends Transformer {
 
         super(container, name);
 
-	imageColumns =
+        imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
         imageColumns.setTypeEquals(BaseType.INT);
         imageRows =
@@ -147,7 +147,7 @@ public class ImageUnpartition extends Transformer {
      */
     public void fire() throws IllegalActionException {
         int i, j;
-	int x, y;
+        int x, y;
         int partitionNumber;
 
         Token _partitions[] = input.get(0, _partitionCount);

@@ -60,7 +60,7 @@ An applet that models a 2-D helicopter control system.
 public class Helicopter extends TypedCompositeActor {
 
     public Helicopter(Workspace workspace)
-	    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         // Creating the model.
         super(workspace);

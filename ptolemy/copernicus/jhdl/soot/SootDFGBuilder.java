@@ -50,84 +50,84 @@ import java.util.*;
 public class SootDFGBuilder extends SootASTVisitor {
 
     public SootDFGBuilder(SootBlockDirectedGraph g)
-	throws SootASTException {
-	_graph = g;
-	_valueMap = _graph.getValueMap();
-	processBlock(_graph.getBlock());
+        throws SootASTException {
+        _graph = g;
+        _valueMap = _graph.getValueMap();
+        processBlock(_graph.getBlock());
     }
 
     public static SootBlockDirectedGraph createGraph(Block block)
-	throws SootASTException {
+        throws SootASTException {
 
-	SootBlockDirectedGraph graph =
-	    new SootBlockDirectedGraph(block);
-	new SootDFGBuilder(graph);
-	return graph;
+        SootBlockDirectedGraph graph =
+            new SootBlockDirectedGraph(block);
+        new SootDFGBuilder(graph);
+        return graph;
     }
 
     public Stmt processDefinitionStmt(DefinitionStmt stmt,
-				      Value rightOp, Value leftOp) {
+                                      Value rightOp, Value leftOp) {
 
-	if (DEBUG) {
-	    System.out.println("Definition Statment "+stmt);
-	    System.out.println("\tRight Op="+rightOp);
-	    System.out.println("\tLeft Op="+leftOp);
-	}
+        if (DEBUG) {
+            System.out.println("Definition Statment "+stmt);
+            System.out.println("\tRight Op="+rightOp);
+            System.out.println("\tLeft Op="+leftOp);
+        }
 
-	Node rightNode = _valueMap.getValueNode(rightOp);
-	Node leftNode = _valueMap.getValueNode(leftOp);
+        Node rightNode = _valueMap.getValueNode(rightOp);
+        Node leftNode = _valueMap.getValueNode(leftOp);
 
-	// Add edge
-	_graph.addEdge(rightNode,leftNode);
+        // Add edge
+        _graph.addEdge(rightNode,leftNode);
 
-	return stmt;
+        return stmt;
     }
 
     public Value processValue(Value val, boolean left)
-	throws SootASTException {
+        throws SootASTException {
 
-	if (DEBUG) System.out.println("SootDFGBuilder:Value="+val);
+        if (DEBUG) System.out.println("SootDFGBuilder:Value="+val);
 
-	if (!left)
-	    _valueMap.getOrAddValueNode(val); // make sure it is added
-	else
-	    _valueMap.addValueNode(val);
+        if (!left)
+            _valueMap.getOrAddValueNode(val); // make sure it is added
+        else
+            _valueMap.addValueNode(val);
 
-	Value v = super.processValue(val,left);
-	return v;
+        Value v = super.processValue(val,left);
+        return v;
     }
 
     public Value processUnopExpr(UnopExpr expr, Value op) {
-	Node opNode = _valueMap.getValueNode(op);
-	Node exprNode = _valueMap.getValueNode(expr);
-	_graph.addEdge(opNode,exprNode);
-	return expr;
+        Node opNode = _valueMap.getValueNode(op);
+        Node exprNode = _valueMap.getValueNode(expr);
+        _graph.addEdge(opNode,exprNode);
+        return expr;
     }
 
     public Value processBinopExpr(BinopExpr expr, Value op1, Value op2) {
-	Node op1Node = _valueMap.getValueNode(op1);
-	Node op2Node = _valueMap.getValueNode(op2);
-	Node exprNode = _valueMap.getValueNode(expr);
-	_graph.addEdge(op1Node,exprNode,"op1");
-	_graph.addEdge(op2Node,exprNode,"op2");
-	return expr;
+        Node op1Node = _valueMap.getValueNode(op1);
+        Node op2Node = _valueMap.getValueNode(op2);
+        Node exprNode = _valueMap.getValueNode(expr);
+        _graph.addEdge(op1Node,exprNode,"op1");
+        _graph.addEdge(op2Node,exprNode,"op2");
+        return expr;
     }
 
     public Stmt processReturnVoidStmt(ReturnVoidStmt stmt) {
-	return stmt;
+        return stmt;
     }
     public Stmt processReturnStmt(ReturnStmt stmt, Value returnVal) {
-	Node returnedValue = _valueMap.getValueNode(returnVal);
-	// TODO: I need to mark the given Value with a "return" flag
-	Node returnNode = _graph.addNodeWeight(stmt);
-	_graph.addEdge(returnedValue,returnNode);
-	return stmt;
+        Node returnedValue = _valueMap.getValueNode(returnVal);
+        // TODO: I need to mark the given Value with a "return" flag
+        Node returnNode = _graph.addNodeWeight(stmt);
+        _graph.addEdge(returnedValue,returnNode);
+        return stmt;
     }
     public Stmt processInvokeStmt(InvokeStmt stmt, InvokeExpr ie) {
-	return stmt;
+        return stmt;
     }
     public Stmt processIfStmt(IfStmt stmt, ConditionExpr condition) {
-	return stmt;
+        return stmt;
     }
     public Stmt processGotoStmt(GotoStmt stmt) { return stmt; }
     public Stmt processTableSwitchStmt(TableSwitchStmt stmt) { return stmt; }
@@ -136,87 +136,87 @@ public class SootDFGBuilder extends SootASTVisitor {
     public Value processConstant(Constant c) { return c; }
 
     public Value processLocal(Local l, boolean left) {
-	return l;
+        return l;
     }
 
     public Value processCastExpr(CastExpr val, Value op) {
-	Node castNode = _valueMap.getValueNode(val);
-	Node opNode = _valueMap.getValueNode(op);
-	_graph.addEdge(opNode,castNode);
-	return val;
+        Node castNode = _valueMap.getValueNode(val);
+        Node opNode = _valueMap.getValueNode(op);
+        _graph.addEdge(opNode,castNode);
+        return val;
     }
 
     public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base,
-					 boolean left) {
+                                         boolean left) {
 
-	// Node that represents field-ref Base
-	Node baseNode = _valueMap.getValueNode(base);
-	// Node that represents ifr.
-	Node ifrNode = _valueMap.getValueNode(ifr);
+        // Node that represents field-ref Base
+        Node baseNode = _valueMap.getValueNode(base);
+        // Node that represents ifr.
+        Node ifrNode = _valueMap.getValueNode(ifr);
 
-	// Determine whether a base edge has been created
-	Edge baseEdge=null;
-	for (Iterator i=_graph.inputEdges(ifrNode).iterator();i.hasNext();) {
-	    Edge e = (Edge) i.next();
-	    if (e.hasWeight() && e.getWeight().equals(BASE_WEIGHT))
-		baseEdge = e;
-	}
-	if (baseEdge == null)
-	    _graph.addEdge(baseNode,ifrNode,BASE_WEIGHT);
+        // Determine whether a base edge has been created
+        Edge baseEdge=null;
+        for (Iterator i=_graph.inputEdges(ifrNode).iterator();i.hasNext();) {
+            Edge e = (Edge) i.next();
+            if (e.hasWeight() && e.getWeight().equals(BASE_WEIGHT))
+                baseEdge = e;
+        }
+        if (baseEdge == null)
+            _graph.addEdge(baseNode,ifrNode,BASE_WEIGHT);
 
- 	return ifr;
+         return ifr;
     }
 
     // Note: processVirtualInvokeExpr & processSpecialInvokeExpr use the
     // same code. Modify for code reuse.
     public Value processVirtualInvokeExpr(VirtualInvokeExpr ie,
-					  Value args[], Value base) {
-	Node invokeNode = _valueMap.getValueNode(ie);
-	Node baseNode = _valueMap.getValueNode(base);
-	for(int i = 0; i < args.length; i++) {
-	    Node argNode = _valueMap.getValueNode(args[i]);
-	    //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
-	    _graph.addEdge(argNode,invokeNode,"arg"+i);
-	}
-	_graph.addEdge(baseNode,invokeNode);
-	return ie;
+                                          Value args[], Value base) {
+        Node invokeNode = _valueMap.getValueNode(ie);
+        Node baseNode = _valueMap.getValueNode(base);
+        for(int i = 0; i < args.length; i++) {
+            Node argNode = _valueMap.getValueNode(args[i]);
+            //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
+            _graph.addEdge(argNode,invokeNode,"arg"+i);
+        }
+        _graph.addEdge(baseNode,invokeNode);
+        return ie;
     }
     public Value processSpecialInvokeExpr(SpecialInvokeExpr ie,
-					  Value args[], Value base) {
-	if (ie.getMethod().getName().equals("<init>"))
-	    return processConstructorInvokeExpr(ie,args,base);
-	return null;
-	/*
-	System.out.println("SpecialInvoke="+ie+" method="+ie.getMethod().getName());
-	Node invokeNode = _valueMap.getValueNode(ie);
-	Node baseNode = _valueMap.getValueNode(base);
-	for(int i = 0; i < args.length; i++) {
-	    Node argNode = _valueMap.getValueNode(args[i]);
-	    //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
-	    _graph.addEdge(argNode,invokeNode,"arg"+i);
-	}
-	_graph.addEdge(baseNode,invokeNode);
-	return ie;
-	*/
+                                          Value args[], Value base) {
+        if (ie.getMethod().getName().equals("<init>"))
+            return processConstructorInvokeExpr(ie,args,base);
+        return null;
+        /*
+        System.out.println("SpecialInvoke="+ie+" method="+ie.getMethod().getName());
+        Node invokeNode = _valueMap.getValueNode(ie);
+        Node baseNode = _valueMap.getValueNode(base);
+        for(int i = 0; i < args.length; i++) {
+            Node argNode = _valueMap.getValueNode(args[i]);
+            //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
+            _graph.addEdge(argNode,invokeNode,"arg"+i);
+        }
+        _graph.addEdge(baseNode,invokeNode);
+        return ie;
+        */
     }
     public Value processConstructorInvokeExpr(SpecialInvokeExpr ie,
-					  Value args[], Value base) {
-	System.out.println("ConstructorInvoke="+ie+" method="+ie.getMethod().getName());
-	Node invokeNode = _valueMap.getValueNode(ie);
-	Node baseNode = _valueMap.getValueNode(base);
-	for(int i = 0; i < args.length; i++) {
-	    Node argNode = _valueMap.getValueNode(args[i]);
-	    //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
-	    _graph.addEdge(argNode,invokeNode,"arg"+i);
-	}
+                                          Value args[], Value base) {
+        System.out.println("ConstructorInvoke="+ie+" method="+ie.getMethod().getName());
+        Node invokeNode = _valueMap.getValueNode(ie);
+        Node baseNode = _valueMap.getValueNode(base);
+        for(int i = 0; i < args.length; i++) {
+            Node argNode = _valueMap.getValueNode(args[i]);
+            //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
+            _graph.addEdge(argNode,invokeNode,"arg"+i);
+        }
 
-	_graph.addEdge(invokeNode, baseNode, "constructor");
-	return ie;
+        _graph.addEdge(invokeNode, baseNode, "constructor");
+        return ie;
 
     }
 
     public Value processNewExpr(NewExpr ifr) {
-  	return ifr;
+          return ifr;
     }
 
     /**
@@ -228,46 +228,46 @@ public class SootDFGBuilder extends SootASTVisitor {
      *
      **/
     public static SootBlockDirectedGraph[] createDataFlowGraphs(String args[],
-								boolean writeGraphs) {
+                                                                boolean writeGraphs) {
 
-	//SootASTVisitor.DEBUG = true;
-	Block blocks[] =
-	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
-	SootBlockDirectedGraph graphs[] =
-	    new SootBlockDirectedGraph[blocks.length];
+        //SootASTVisitor.DEBUG = true;
+        Block blocks[] =
+            ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
+        SootBlockDirectedGraph graphs[] =
+            new SootBlockDirectedGraph[blocks.length];
         PtDirectedGraphToDotty dgToDotty =
             new PtDirectedGraphToDotty();
         for (int i = 0 ; i < blocks.length; i++) {
-	    try {
-		graphs[i] = createGraph(blocks[i]);
+            try {
+                graphs[i] = createGraph(blocks[i]);
                 dgToDotty.writeDotFile(".", "bbgraph"+i, graphs[i]);
-	    } catch (SootASTException e) {
-		//System.err.println(e);
-		e.printStackTrace();
-		System.exit(1);
-	    }
-	}
-	return graphs;
+            } catch (SootASTException e) {
+                //System.err.println(e);
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+        return graphs;
     }
 
     public static void main(String args[]) {
-	SootASTVisitor.DEBUG = true;
-	Block blocks[] =
-	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
-	SootBlockDirectedGraph graphs[] =
-	    new SootBlockDirectedGraph[blocks.length];
-	PtDirectedGraphToDotty dgToDotty =
+        SootASTVisitor.DEBUG = true;
+        Block blocks[] =
+            ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
+        SootBlockDirectedGraph graphs[] =
+            new SootBlockDirectedGraph[blocks.length];
+        PtDirectedGraphToDotty dgToDotty =
             new PtDirectedGraphToDotty();
         for (int i = 0 ; i < blocks.length; i++) {
-	    try {
-		graphs[i] = createGraph(blocks[i]);
+            try {
+                graphs[i] = createGraph(blocks[i]);
                 dgToDotty.writeDotFile(".", "bgraph" + i, graphs[i]);
-	    } catch (SootASTException e) {
-		//System.err.println(e);
-		e.printStackTrace();
-		System.exit(1);
-	    }
-	}
+            } catch (SootASTException e) {
+                //System.err.println(e);
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
     }
 
     /**

@@ -314,17 +314,17 @@ public class SootUtilities {
     /** Copy a class */
     public static SootClass copyClass(SootClass oldClass,
             String newClassName) {
-	//System.out.println("SootClass.copyClass(" + oldClass + ", "
-	//		   + newClassName + ")");
+        //System.out.println("SootClass.copyClass(" + oldClass + ", "
+        //                   + newClassName + ")");
         // Create the new Class
         SootClass newClass = new SootClass(newClassName,
                 oldClass.getModifiers());
-	try {
-	    Scene.v().addClass(newClass);
+        try {
+            Scene.v().addClass(newClass);
         } catch (RuntimeException runtime) {
-	    throw new RuntimeException("Perhaps you are calling the same "
+            throw new RuntimeException("Perhaps you are calling the same "
                     + "transform twice?: " + runtime);
-	}
+        }
         // Set the Superclass.
         newClass.setSuperclass(oldClass.getSuperclass());
 

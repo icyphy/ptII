@@ -67,17 +67,17 @@ public class TreeTableau extends Tableau {
                     "Cannot have a tree view of a model that is "
                     + "not a CompositeEntity.");
         }
-	CompositeEntity entity = (CompositeEntity)model;
+        CompositeEntity entity = (CompositeEntity)model;
 
-	TreeFrame frame = new TreeFrame(entity);
-	frame.setBackground(BACKGROUND_COLOR);
-	setFrame(frame);
+        TreeFrame frame = new TreeFrame(entity);
+        frame.setBackground(BACKGROUND_COLOR);
+        setFrame(frame);
         // Give a reasonable default size.
         size.setExpression("300x500");
-	frame.setTableau(this);
-	frame.pack();
-	frame.centerOnScreen();
-	frame.setVisible(true);
+        frame.setTableau(this);
+        frame.pack();
+        frame.centerOnScreen();
+        frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,47 +98,47 @@ public class TreeTableau extends Tableau {
          *  composite entity.
          *  @param entity The composite entity to view as a tree.
          */
-	public TreeFrame(CompositeEntity entity) {
+        public TreeFrame(CompositeEntity entity) {
             super(entity);
-	    PTree pane = new PTree(new FullTreeModel(entity));
-	    getContentPane().add(new JScrollPane(pane), BorderLayout.CENTER);
-	}
+            PTree pane = new PTree(new FullTreeModel(entity));
+            getContentPane().add(new JScrollPane(pane), BorderLayout.CENTER);
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     protected methods                 ////
 
-	/** Write the model to the specified file.
-	 *  @param file The file to write to.
-	 *  @exception IOException If the write fails.
-	 */
-	protected void _writeFile(File file) throws IOException {
-	    java.io.FileWriter fout = new java.io.FileWriter(file);
-	    getModel().exportMoML(fout);
-	    fout.close();
-	}
+        /** Write the model to the specified file.
+         *  @param file The file to write to.
+         *  @exception IOException If the write fails.
+         */
+        protected void _writeFile(File file) throws IOException {
+            java.io.FileWriter fout = new java.io.FileWriter(file);
+            getModel().exportMoML(fout);
+            fout.close();
+        }
     }
 
     /** This is a factory that creates tree-view tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
 
-	/** Create an factory with the given name and container.
-	 *  @param container The container entity.
-	 *  @param name The name of the entity.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create an factory with the given name and container.
+         *  @param container The container entity.
+         *  @param name The name of the entity.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
 
-	/** If the effigy is an instance of PtolemyEffigy referencing
+        /** If the effigy is an instance of PtolemyEffigy referencing
          *  an instance of CompositeEntity, then create a TreeTableau
          *  contained by the effigy. The tableau will assigned the
          *  name "treeTableau".  If there is already such a tableau in
@@ -147,14 +147,14 @@ public class TreeTableau extends Tableau {
          *  referencing an instance of CompositeEntity, and there no
          *  pre-existing tableau named "treeTableau", then return
          *  null.  It is the responsibility of callers of this method
-	 *  to check the return value and call show().
-	 *
-	 *  @param effigy An effigy of a Ptolemy model.
-	 *  @return A new tree-view tableau, or null if the effigy is not
+         *  to check the return value and call show().
+         *
+         *  @param effigy An effigy of a Ptolemy model.
+         *  @return A new tree-view tableau, or null if the effigy is not
          *   that of a composite entity.
          *  @exception Exception If the effigy is a PtolemyEffigy, but
          *   construction of the tree view fails for some reason.  */
-	public Tableau createTableau(Effigy effigy) throws Exception {
+        public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a TreeTableau.
                 TreeTableau previous =
@@ -169,8 +169,8 @@ public class TreeTableau extends Tableau {
                         return new TreeTableau(ptEffigy, "treeTableau");
                     }
                 }
-	    }
+            }
             return null;
-	}
+        }
     }
 }

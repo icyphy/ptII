@@ -90,20 +90,20 @@ public class StreamExec {
     /** Main method used for testing.
      *  To run a simple test, use:
      *  <pre>
-     *	java -classpath $PTII ptolemy.gui.StreamExec
+     *        java -classpath $PTII ptolemy.gui.StreamExec
      *  </pre>
      */
     public static void main(String [] args) {
 
-	List execCommands = new LinkedList();
-	execCommands.add("date");
-	execCommands.add("sleep 5");
-	execCommands.add("date");
-	execCommands.add("javac");
+        List execCommands = new LinkedList();
+        execCommands.add("date");
+        execCommands.add("sleep 5");
+        execCommands.add("date");
+        execCommands.add("javac");
 
         final StreamExec exec =
-	    new StreamExec();
-	exec.setCommands(execCommands);
+            new StreamExec();
+        exec.setCommands(execCommands);
 
         exec.start();
     }
@@ -173,31 +173,31 @@ public class StreamExec {
     private String _executeCommands() {
         try {
             Runtime runtime = Runtime.getRuntime();
-	    try {
+            try {
 
                 if (_process != null){
                     _process.destroy();
                 }
                 _setProgressBarMaximum(_commands.size());
-		int commandCount = 0;
+                int commandCount = 0;
                 Iterator commands = _commands.iterator();
                 while (commands.hasNext()) {
-		    _updateProgressBar(++commandCount);
-		    if (Thread.interrupted()) {
-			throw new InterruptedException();
-		    }
+                    _updateProgressBar(++commandCount);
+                    if (Thread.interrupted()) {
+                        throw new InterruptedException();
+                    }
 
                     // Preprocess by removing lines that begin with '#'
                     // and converting substrings that begin and end
                     // with double quotes into one array element.
-		    final String [] commandTokens =
+                    final String [] commandTokens =
                         StringUtilities
                         .tokenizeForExec((String)commands.next());
 
                     stdout("About to execute:\n");
                     StringBuffer statusCommand = new StringBuffer();
                     for (int i = 0; i < commandTokens.length; i++) {
-                        stdout("	" + commandTokens[i]);
+                        stdout("        " + commandTokens[i]);
 
                         // Accumulate the first 50 chars for use in
                         // the status buffer.
@@ -217,39 +217,39 @@ public class StreamExec {
 
                     _process = runtime.exec(commandTokens);
 
-		    // Set up a Thread to read in any error messages
-		    _StreamReaderThread errorGobbler = new
-			_StreamReaderThread(_process.getErrorStream(),
+                    // Set up a Thread to read in any error messages
+                    _StreamReaderThread errorGobbler = new
+                        _StreamReaderThread(_process.getErrorStream(),
                                 "ERROR", this);
 
-		    // Set up a Thread to read in any output messages
-		    _StreamReaderThread outputGobbler = new
-			_StreamReaderThread(_process.getInputStream(),
+                    // Set up a Thread to read in any output messages
+                    _StreamReaderThread outputGobbler = new
+                        _StreamReaderThread(_process.getInputStream(),
                                 "OUTPUT", this);
 
-		    // Start up the Threads
-		    errorGobbler.start();
-		    outputGobbler.start();
+                    // Start up the Threads
+                    errorGobbler.start();
+                    outputGobbler.start();
 
 
-		    try {
-			int processReturnCode = _process.waitFor();
-			synchronized(this) {
-			    _process = null;
-			}
-			if (processReturnCode != 0) break;
-		    } catch (InterruptedException interrupted) {
-			stderr("InterruptedException: "
+                    try {
+                        int processReturnCode = _process.waitFor();
+                        synchronized(this) {
+                            _process = null;
+                        }
+                        if (processReturnCode != 0) break;
+                    } catch (InterruptedException interrupted) {
+                        stderr("InterruptedException: "
                                 + interrupted);
-			throw interrupted;
-	    	    }
+                        throw interrupted;
+                        }
                 }
-	    } catch (final IOException io) {
-		stderr("IOException: " + io);
+            } catch (final IOException io) {
+                stderr("IOException: " + io);
             }
         }
         catch (InterruptedException e) {
-	    _process.destroy();
+            _process.destroy();
             _updateProgressBar(0);
             return "Interrupted";  // SwingWorker.get() returns this
         }
@@ -263,35 +263,35 @@ public class StreamExec {
     // JTextArea.
     private class _StreamReaderThread extends Thread {
 
-	_StreamReaderThread(InputStream inputStream, String streamType,
+        _StreamReaderThread(InputStream inputStream, String streamType,
                 StreamExec streamExec) {
-	    _inputStream = inputStream;
-	    _streamType = streamType;
-	    _streamExec = streamExec;
-	}
+            _inputStream = inputStream;
+            _streamType = streamType;
+            _streamExec = streamExec;
+        }
 
-	// Read lines from the _inputStream and output them.
-	public void run() {
-	    try {
-		InputStreamReader inputStreamReader =
-		    new InputStreamReader(_inputStream);
+        // Read lines from the _inputStream and output them.
+        public void run() {
+            try {
+                InputStreamReader inputStreamReader =
+                    new InputStreamReader(_inputStream);
                 BufferedReader bufferedReader =
                     new BufferedReader(inputStreamReader);
                 String line = null;
                 while ( (line = bufferedReader.readLine()) != null) {
                     _streamExec.stdout(/*_streamType + ">" +*/ line);
                 }
-	    } catch (IOException ioe) {
-		_streamExec.stderr("IOException: " + ioe);
-	    }
-	}
+            } catch (IOException ioe) {
+                _streamExec.stderr("IOException: " + ioe);
+            }
+        }
 
-	// Stream to read from.
-	private InputStream _inputStream;
-	// Description of the Stream that we print, usually "OUTPUT" or "ERROR"
-	private String _streamType;
+        // Stream to read from.
+        private InputStream _inputStream;
+        // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
+        private String _streamType;
 
-	private StreamExec _streamExec;
+        private StreamExec _streamExec;
     }
 
     ///////////////////////////////////////////////////////////////////

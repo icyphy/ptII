@@ -10,8 +10,8 @@ package ptolemy.domains.ct.demo.Corba.util;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 abstract public class CorbaActorHelper
 {
   private static String  _id = "IDL:util/CorbaActor:1.0";

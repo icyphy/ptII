@@ -48,24 +48,24 @@ public class Mutate {
 
     public Mutate() throws IllegalActionException,
             NameDuplicationException {
-	_top = new TypedCompositeActor();
-	_top.setName("top");
-	manager = new Manager();
-	_director = new DEDirector();
-	_top.setDirector(_director);
-	_top.setManager(manager);
+        _top = new TypedCompositeActor();
+        _top.setName("top");
+        manager = new Manager();
+        _director = new DEDirector();
+        _top.setDirector(_director);
+        _top.setManager(manager);
 
-	_clock = new Clock(_top, "clock");
-	_clock.values.setExpression("[1.0]");
-	_clock.offsets.setExpression("[0.0]");
-	_clock.period.setExpression("1.0");
-	_rec = new Recorder(_top, "recorder");
-	_top.connect(_clock.output, _rec.input);
+        _clock = new Clock(_top, "clock");
+        _clock.values.setExpression("[1.0]");
+        _clock.offsets.setExpression("[0.0]");
+        _clock.period.setExpression("1.0");
+        _rec = new Recorder(_top, "recorder");
+        _top.connect(_clock.output, _rec.input);
     }
 
     public void insertClock() {
-	// Create an anonymous inner class
-	ChangeRequest change = new ChangeRequest(_top, "test2") {
+        // Create an anonymous inner class
+        ChangeRequest change = new ChangeRequest(_top, "test2") {
             public void _execute() throws IllegalActionException,
                     NameDuplicationException {
                 _clock.output.unlinkAll();

@@ -10,8 +10,8 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 abstract public class RemoteManagerHelper
 {
   private static String  _id = "IDL:RemoteManagerUtil/RemoteManager:1.0";

@@ -72,21 +72,21 @@ public class ImplicitSurface extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public ImplicitSurface(CompositeEntity container, String name)
-	throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
 
-	super(container, name);
+        super(container, name);
 
-	// Create and configure ports
-	x = new TypedIOPort(this, "x", true, false);
-	y = new TypedIOPort(this, "y", true, false);
-	heading = new TypedIOPort(this, "heading", true, false);
-	functionValue = new TypedIOPort(this, "functionValue", false, true);
+        // Create and configure ports
+        x = new TypedIOPort(this, "x", true, false);
+        y = new TypedIOPort(this, "y", true, false);
+        heading = new TypedIOPort(this, "heading", true, false);
+        functionValue = new TypedIOPort(this, "functionValue", false, true);
         dx = new TypedIOPort(this, "dx", false, true);
         dy = new TypedIOPort(this, "dy", false, true);
         dtheta = new TypedIOPort(this, "dz", false, true);
 
-	// Create and configure parameters
-	functionFile =
+        // Create and configure parameters
+        functionFile =
             new Parameter(this, "functionFile", new StringToken("plane.data"));
         dxFile =
             new Parameter(this, "dxFile", new StringToken("plane.data"));
@@ -147,7 +147,7 @@ public class ImplicitSurface extends TypedAtomicActor {
 
         /** Send values out of ports.
          */
- 	functionValue.send(0, new DoubleToken(f));
+         functionValue.send(0, new DoubleToken(f));
         dx.send(0, new DoubleToken(xGrad));
         dy.send(0, new DoubleToken(yGrad));
         dtheta.send(0, new DoubleToken(thetaGrad));
@@ -189,15 +189,15 @@ public class ImplicitSurface extends TypedAtomicActor {
         dyName = path.concat(dyName);
         dthetaName = path.concat(dthetaName);
 
-	try {
-	    _surfaceFunction = new ThreeDFunction(functionName);
+        try {
+            _surfaceFunction = new ThreeDFunction(functionName);
             _xGradientFunction = new ThreeDFunction(dxName);
             _yGradientFunction = new ThreeDFunction(dyName);
             _thetaGradientFunction = new ThreeDFunction(dthetaName);
-	}
-	catch (IllegalActionException a) {
-	    throw a;
-	}
+        }
+        catch (IllegalActionException a) {
+            throw a;
+        }
 
     }
 

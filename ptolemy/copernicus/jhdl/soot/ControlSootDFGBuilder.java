@@ -53,71 +53,71 @@ import java.util.*;
 public class ControlSootDFGBuilder extends SootDFGBuilder {
 
     public ControlSootDFGBuilder(SootBlockDirectedGraph g)
-	throws SootASTException {
-	super(g);
+        throws SootASTException {
+        super(g);
     }
 
     public static SootBlockDirectedGraph createGraph(Block block)
-	throws SootASTException {
+        throws SootASTException {
 
-	SootBlockDirectedGraph graph =
-	    new SootBlockDirectedGraph(block);
-	new ControlSootDFGBuilder(graph);
-	return graph;
+        SootBlockDirectedGraph graph =
+            new SootBlockDirectedGraph(block);
+        new ControlSootDFGBuilder(graph);
+        return graph;
     }
 
     public Value processConditionExpr(ConditionExpr ce)
-	throws SootASTException {
-	if (ce instanceof CompoundBooleanExpression)
-	    return processCompoundBooleanExpression((CompoundBooleanExpression) ce);
-	else
-	    return super.processConditionExpr(ce);
+        throws SootASTException {
+        if (ce instanceof CompoundBooleanExpression)
+            return processCompoundBooleanExpression((CompoundBooleanExpression) ce);
+        else
+            return super.processConditionExpr(ce);
     }
 
     public Value processConditionExpr(ConditionExpr ce, Value op1, Value op2) {
-	// connect Node associated with two ops
-	Node op1Node = _valueMap.getValueNode(op1);
-	Node op2Node = _valueMap.getValueNode(op2);
-	Node ceNode = _valueMap.getValueNode(ce);
-	System.out.println(op1Node + " " + op2Node + " " +ceNode);
-	_graph.addEdge(op1,ceNode);
-	_graph.addEdge(op2,ceNode);
-	return ce;
+        // connect Node associated with two ops
+        Node op1Node = _valueMap.getValueNode(op1);
+        Node op2Node = _valueMap.getValueNode(op2);
+        Node ceNode = _valueMap.getValueNode(ce);
+        System.out.println(op1Node + " " + op2Node + " " +ceNode);
+        _graph.addEdge(op1,ceNode);
+        _graph.addEdge(op2,ceNode);
+        return ce;
     }
 
     public Value processCompoundBooleanExpression(CompoundBooleanExpression ce)
-	throws SootASTException {
+        throws SootASTException {
 
-	Value op1 = ce.getOp1();
-	Value op2 = ce.getOp2();
-	Value cond1 = processConditionExpr((ConditionExpr) op1);
-	Value cond2 = processConditionExpr((ConditionExpr) op2);
-	return processCompoundBooleanExpression(ce,(ConditionExpr)cond1,
-						(ConditionExpr) cond2);
+        Value op1 = ce.getOp1();
+        Value op2 = ce.getOp2();
+        Value cond1 = processConditionExpr((ConditionExpr) op1);
+        Value cond2 = processConditionExpr((ConditionExpr) op2);
+        return processCompoundBooleanExpression(ce,(ConditionExpr)cond1,
+                                                (ConditionExpr) cond2);
     }
 
     public Value processCompoundBooleanExpression(CompoundBooleanExpression ce,
-						  ConditionExpr cond1,
-						  ConditionExpr cond2) {
-	return null;
+                                                  ConditionExpr cond1,
+                                                  ConditionExpr cond2) {
+        return null;
     }
 
     public Value processUnopExpr(UnopExpr expr, Value op) {
-	if (expr instanceof JHDLNotExpr)
-	    return processJHDLNotExpr((JHDLNotExpr) expr, op);
-	else
-	    return super.processUnopExpr(expr, op);
+        if (expr instanceof JHDLNotExpr)
+            return processJHDLNotExpr((JHDLNotExpr) expr, op);
+        else
+            return super.processUnopExpr(expr, op);
     }
 
     public Value processJHDLNotExpr(JHDLNotExpr expr, Value op) {
-	_graph.addEdge(_valueMap.getValueNode(op),
-			  _valueMap.getValueNode(expr));
-	return expr;
-	//return null;
+        _graph.addEdge(_valueMap.getValueNode(op),
+                          _valueMap.getValueNode(expr));
+        return expr;
+        //return null;
     }
 
     public static void main(String args[]) {
-	SootBlockDirectedGraph[] g = createDataFlowGraphs(args,true);
+        SootBlockDirectedGraph[] g = createDataFlowGraphs(args,true);
     }
 
 }

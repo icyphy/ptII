@@ -167,81 +167,81 @@ public class DECQEventQueue implements DEEventQueue {
     //
     private class DECQComparator implements CQComparator {
 
-	/** Compare the two argument for order. Return a negative integer,
-	 *  zero, or a positive integer if the first argument is less than,
-	 *  equal to, or greater than the second.
-	 *  Both arguments must be instances of DEEvent or a
-	 *  ClassCastException will be thrown.  The compareTo() method
+        /** Compare the two argument for order. Return a negative integer,
+         *  zero, or a positive integer if the first argument is less than,
+         *  equal to, or greater than the second.
+         *  Both arguments must be instances of DEEvent or a
+         *  ClassCastException will be thrown.  The compareTo() method
          *  of the first argument is used to do the comparison.
          *
-	 * @param object1 The first event.
-	 * @param object2 The second event.
-	 * @return A negative integer, zero, or a positive integer if the first
-	 *  argument is less than, equal to, or greater than the second.
-	 * @exception ClassCastException If one of the arguments is not
+         * @param object1 The first event.
+         * @param object2 The second event.
+         * @return A negative integer, zero, or a positive integer if the first
+         *  argument is less than, equal to, or greater than the second.
+         * @exception ClassCastException If one of the arguments is not
          *  an instance of DEEvent.
-	 */
-	public final int compare(Object object1, Object object2) {
-	    return((DEEvent) object1).compareTo(object2);
+         */
+        public final int compare(Object object1, Object object2) {
+            return((DEEvent) object1).compareTo(object2);
         }
 
-	/** Given an event, return the virtual index of
-	 *  the bin that should contain the event.
-	 *  If the argument is not an instance of DEEvent, then a
-	 *  ClassCastException will be thrown.  Only the time stamp
+        /** Given an event, return the virtual index of
+         *  the bin that should contain the event.
+         *  If the argument is not an instance of DEEvent, then a
+         *  ClassCastException will be thrown.  Only the time stamp
          *  of the arguments is used.  The quantity returned is the
          *  quantized time stamp, i.e. the
          *  difference between the time stamp of the event and that of
          *  the zero reference, divided by the time stamp of the bin width.
-	 *  @param event The event.
-	 *  @return The index of the virtual bin containing the event.
-	 *  @exception ClassCastException If the argument is not
+         *  @param event The event.
+         *  @return The index of the virtual bin containing the event.
+         *  @exception ClassCastException If the argument is not
          *   an instance of DEEvent.
-	 */
-	public final long getVirtualBinNumber(Object event) {
-	    return (long)((((DEEvent) event).timeStamp()
+         */
+        public final long getVirtualBinNumber(Object event) {
+            return (long)((((DEEvent) event).timeStamp()
                     - _zeroReference.timeStamp())/_binWidth.timeStamp());
-	}
+        }
 
-	/** Given an array of DEEvent objects, set an appropriate bin
-	 *  width. This method assumes that the
+        /** Given an array of DEEvent objects, set an appropriate bin
+         *  width. This method assumes that the
          *  entries provided are all different, and are in increasing order.
          *  Note, however, that the time stamps may not be increasing.
          *  It may instead be the receiver depth that is increasing,
          *  or the microsteps that are increasing.
          *  This method attempts to choose the bin width so that
-	 *  the average number of entries in a bin is one.
-	 *  If the argument is null or is an array with length less
+         *  the average number of entries in a bin is one.
+         *  If the argument is null or is an array with length less
          *  than two, set the bin width to the default, which is 1.0
-	 *  for this implementation.
-	 *
-	 *  @param entryArray An array of DEEvent objects.
-	 *  @exception ClassCastException If an entry in the array is not
+         *  for this implementation.
+         *
+         *  @param entryArray An array of DEEvent objects.
+         *  @exception ClassCastException If an entry in the array is not
          *   an instance of DEEvent.
-	 */
-	public void setBinWidth(Object[] entryArray) {
+         */
+        public void setBinWidth(Object[] entryArray) {
 
-	    if ( entryArray == null || entryArray.length < 2) {
-		_zeroReference = new DEEvent(null, 0.0, 0, 0);
+            if ( entryArray == null || entryArray.length < 2) {
+                _zeroReference = new DEEvent(null, 0.0, 0, 0);
                 return;
-	    }
+            }
 
-	    double[] diff = new double[entryArray.length - 1];
+            double[] diff = new double[entryArray.length - 1];
 
-	    double average =
+            double average =
                 (((DEEvent)entryArray[entryArray.length - 1]).timeStamp() -
                         ((DEEvent)entryArray[0]).timeStamp()) /
                 (entryArray.length-1);
             double effectiveAverage = 0.0;
-	    int effectiveSamples = 0;
-	    for (int i = 0; i < entryArray.length - 1; ++i) {
-		diff[i] = ((DEEvent)entryArray[i+1]).timeStamp() -
-		    ((DEEvent)entryArray[i]).timeStamp();
+            int effectiveSamples = 0;
+            for (int i = 0; i < entryArray.length - 1; ++i) {
+                diff[i] = ((DEEvent)entryArray[i+1]).timeStamp() -
+                    ((DEEvent)entryArray[i]).timeStamp();
                 if (diff[i] < 2.0 * average) {
-		    effectiveSamples++;
-		    effectiveAverage += diff[i];
-		}
-	    }
+                    effectiveSamples++;
+                    effectiveAverage += diff[i];
+                }
+            }
 
             if (effectiveAverage == 0.0 || effectiveSamples == 0) {
                 // To avoid setting NaN or 0.0
@@ -249,9 +249,9 @@ public class DECQEventQueue implements DEEventQueue {
                 // we leave it unchanged instead.
                 return;
             }
-	    effectiveAverage /= (double)effectiveSamples;
+            effectiveAverage /= (double)effectiveSamples;
             _binWidth = new DEEvent(null, 3.0 * effectiveAverage, 0, 0);
-	}
+        }
 
         /** Set the zero reference, to be used in calculating the virtual
          *  bin number. The argument should be a DEEvent, otherwise a

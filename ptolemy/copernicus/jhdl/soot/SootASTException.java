@@ -46,7 +46,7 @@ SootASTVisitor class.
 public class SootASTException extends IllegalActionException {
 
     public SootASTException(String detail) {
-	super(detail);
+        super(detail);
     }
 
 }

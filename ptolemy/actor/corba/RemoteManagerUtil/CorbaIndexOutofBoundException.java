@@ -10,7 +10,7 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* Exception for channel indeces.
-	 */
+         */
 public final class CorbaIndexOutofBoundException extends org.omg.CORBA.UserException
 {
   public short index = (short)0;

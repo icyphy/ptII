@@ -53,7 +53,7 @@ public class Link {
      *  in a relation.
      */
     public Object getHead() {
-	return _head;
+        return _head;
     }
 
     /** Return the relation that this link represents.  If the link goes
@@ -62,41 +62,41 @@ public class Link {
      *  relation will be the container of the vertex.
      */
     public ComponentRelation getRelation() {
-	return _relation;
+        return _relation;
     }
 
     /** Return the tail of this link.   This may be a port, or a vertex
      *  in a relation.
      */
     public Object getTail() {
-	return _tail;
+        return _tail;
     }
 
     /** Set the head of this link.   This may be a port, or a vertex
      *  in a relation.
      */
     public void setHead(Object head) {
-	_head = head;
+        _head = head;
     }
 
     /** Set the relation for this link.
      */
     public void setRelation(ComponentRelation relation) {
-	_relation = relation;
+        _relation = relation;
     }
 
     /** Set the tail of this link.   This may be a port, or a vertex
      *  in a relation.
      */
     public void setTail(Object tail) {
-	_tail = tail;
+        _tail = tail;
     }
 
     /** Return a string representation of this link.
      */
     public String toString() {
-	return "Link("
-	    + _head + ", "
+        return "Link("
+            + _head + ", "
                 + _tail + ", "
                     + _relation + ")";
     }

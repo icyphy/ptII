@@ -47,7 +47,7 @@ public class PBOReceiver extends AbstractReceiver {
     /** Construct an empty PBOReceiver with no container.
      */
     public PBOReceiver() {
-	super();
+        super();
     }
 
     /** Construct an empty PBOReceiver with the specified container.
@@ -66,10 +66,10 @@ public class PBOReceiver extends AbstractReceiver {
      *  @return A token.
      */
     public Token get() throws NoTokenException {
-	if(_token == null) {
-	    throw new NoTokenException(getContainer(),
+        if(_token == null) {
+            throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty PBOReceiver");
-	}
+        }
         return _token;
     }
 

@@ -72,7 +72,7 @@ public class ClassWriter extends SceneTransformer {
      *           JimpleWriter.v()));
      *  </pre>
      *  Sample option arguments:
-     *	<code>-p wjtp.snapshot1 outDir:jimple1</code>
+     *        <code>-p wjtp.snapshot1 outDir:jimple1</code>
      *
      *  @see JimpleWriter
      *  @param phaseName The name of the phase, for example

@@ -222,33 +222,33 @@ public class PDFDirector extends Director {
         _postfirereturns = true;
 
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-	Iterator inputPorts = container.inputPortList().iterator();
-	int inputCount = 0;
-	while(inputPorts.hasNext()) {
-	    IOPort inputPort = (IOPort) inputPorts.next();
-	    int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
-	    if (_debugging) {
+        Iterator inputPorts = container.inputPortList().iterator();
+        int inputCount = 0;
+        while(inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
+            if (_debugging) {
                 _debug("checking input " + inputPort.getFullName());
                 _debug("Threshold = " + threshold);
             }
-	    Receiver receivers[][] = inputPort.getReceivers();
+            Receiver receivers[][] = inputPort.getReceivers();
 
-	    int channel;
-	    for(channel = 0; channel < inputPort.getWidth(); channel++) {
-		if(!receivers[channel][0].hasToken(threshold)) {
-		    if(_debugging) {
+            int channel;
+            for(channel = 0; channel < inputPort.getWidth(); channel++) {
+                if(!receivers[channel][0].hasToken(threshold)) {
+                    if(_debugging) {
                         _debug("Channel " + channel +
                                 " does not have enough tokens." +
                                 " Prefire returns false on " +
                                 container.getFullName());
                     }
                     return false;
-		}
-	    }
-	}
-	if(_debugging) _debug("Prefire returns true on " +
+                }
+            }
+        }
+        if(_debugging) _debug("Prefire returns true on " +
                 container.getFullName());
-	return true;
+        return true;
     }
 
     /** Preinitialize the actors associated with this director and
@@ -298,8 +298,8 @@ public class PDFDirector extends Director {
         boolean trans = false;
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
-	    int rate = SDFScheduler.getTokenConsumptionRate(port);
-	    for(int k = 0; k < rate; k++) {
+            int rate = SDFScheduler.getTokenConsumptionRate(port);
+            for(int k = 0; k < rate; k++) {
                 try {
                     ptolemy.data.Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
@@ -361,7 +361,7 @@ public class PDFDirector extends Director {
                             " Receivers");
                     for (int j = 0; j < insiderecs[i].length; j++) {
                         System.out.println("checking hasToken number" + j);
-			while (insiderecs[i][j].hasToken()) {
+                        while (insiderecs[i][j].hasToken()) {
                             try {
                                 System.out.println("transferring");
                                 ptolemy.data.Token t = insiderecs[i][j].get();

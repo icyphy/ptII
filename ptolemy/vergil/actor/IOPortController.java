@@ -101,19 +101,19 @@ public class IOPortController extends AttributeController {
      *  @param access The access level.
      */
     public IOPortController(GraphController controller, Access access) {
-	super(controller, access);
-	setNodeRenderer(new EntityPortRenderer());
+        super(controller, access);
+        setNodeRenderer(new EntityPortRenderer());
 
         // "Listen to Actor"
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new ListenToPortAction()));
 
-	// Ports of entities do not use a selection interactor with
-	// the same selection model as the rest of the first level figures.
-	// If this were allowed, then the port would be able to be deleted.
-	CompositeInteractor interactor = new CompositeInteractor();
- 	setNodeInteractor(interactor);
-	interactor.addInteractor(_menuCreator);
+        // Ports of entities do not use a selection interactor with
+        // the same selection model as the rest of the first level figures.
+        // If this were allowed, then the port would be able to be deleted.
+        CompositeInteractor interactor = new CompositeInteractor();
+         setNodeInteractor(interactor);
+        interactor.addInteractor(_menuCreator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,18 +123,18 @@ public class IOPortController extends AttributeController {
      *  rendered hollow, while single ports are rendered filled.
      */
     public class EntityPortRenderer implements NodeRenderer {
-	public Figure render(Object n) {
-	    final Port port = (Port)n;
+        public Figure render(Object n) {
+            final Port port = (Port)n;
 
             // If the port has an attribute called "_hide", then
             // do not render it.
             if (port.getAttribute("_hide") != null) return null;
 
-	    Polygon2D.Double polygon = new Polygon2D.Double();
-	    polygon.moveTo(-4, 4);
-	    polygon.lineTo(4, 0);
-	    polygon.lineTo(-4, -4);
-	    polygon.closePath();
+            Polygon2D.Double polygon = new Polygon2D.Double();
+            polygon.moveTo(-4, 4);
+            polygon.lineTo(4, 0);
+            polygon.lineTo(-4, -4);
+            polygon.closePath();
             Color fill;
             float lineWidth = (float)1.5;
             if (port instanceof ParameterPort) {
@@ -149,45 +149,45 @@ public class IOPortController extends AttributeController {
             ActorGraphModel model =
                 (ActorGraphModel)getController().getGraphModel();
 
-	    // Wrap the figure in a TerminalFigure to set the direction that
-	    // connectors exit the port.  Note that this direction is the
-	    // same direction that is used to layout the port in the
-	    // Entity Controller.
+            // Wrap the figure in a TerminalFigure to set the direction that
+            // connectors exit the port.  Note that this direction is the
+            // same direction that is used to layout the port in the
+            // Entity Controller.
             StringAttribute cardinal = (StringAttribute)port.getAttribute("_cardinal");
 
-	    int direction;
+            int direction;
 
-// 	    if (!(port instanceof IOPort)) {
-// 		direction = SwingUtilities.SOUTH;
-// 	    } else if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
-// 		direction = SwingUtilities.SOUTH;
-// 	    } else if (((IOPort)port).isInput()) {
-// 		direction = SwingUtilities.WEST;
-// 	    } else if (((IOPort)port).isOutput()) {
-// 		direction = SwingUtilities.EAST;
-// 	    } else {
-// 		// should never happen
-// 		direction = SwingUtilities.SOUTH;
-// 	    }
+//             if (!(port instanceof IOPort)) {
+//                 direction = SwingUtilities.SOUTH;
+//             } else if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
+//                 direction = SwingUtilities.SOUTH;
+//             } else if (((IOPort)port).isInput()) {
+//                 direction = SwingUtilities.WEST;
+//             } else if (((IOPort)port).isOutput()) {
+//                 direction = SwingUtilities.EAST;
+//             } else {
+//                 // should never happen
+//                 direction = SwingUtilities.SOUTH;
+//             }
 
           if ( cardinal == null && port instanceof IOPort )
           {
              if(((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
-		   direction = SwingUtilities.SOUTH;
+                   direction = SwingUtilities.SOUTH;
                AffineTransform transform = new AffineTransform();
                transform.setToRotation( Math.toRadians( -90 ));
                polygon.transform( transform );
-	       } else if(((IOPort)port).isInput()) {
-		   direction = SwingUtilities.WEST;
-	       } else if(((IOPort)port).isOutput()) {
-		   direction = SwingUtilities.EAST;
-	       } else {
-		   // should never happen
-		   direction = SwingUtilities.SOUTH;
+               } else if(((IOPort)port).isInput()) {
+                   direction = SwingUtilities.WEST;
+               } else if(((IOPort)port).isOutput()) {
+                   direction = SwingUtilities.EAST;
+               } else {
+                   // should never happen
+                   direction = SwingUtilities.SOUTH;
                AffineTransform transform = new AffineTransform();
                transform.setToRotation( Math.toRadians( -90 ) );
                polygon.transform( transform );
-	       }
+               }
           }
           else if ( port instanceof IOPort )
           {
@@ -249,13 +249,13 @@ public class IOPortController extends AttributeController {
           }
           else
           {
-	   	   direction = SwingUtilities.SOUTH;
+                      direction = SwingUtilities.SOUTH;
                AffineTransform transform = new AffineTransform();
                transform.setToRotation( Math.toRadians( 90 ) );
                polygon.transform( transform );
-	    }
+            }
 
-	    Figure figure = new BasicFigure(polygon, fill, (float)1.5) {
+            Figure figure = new BasicFigure(polygon, fill, (float)1.5) {
                 // Override this because we want to show the type.
                 // It doesn't work to set it once because the type
                 // has not been resolved, and anyway, it may change.
@@ -274,13 +274,13 @@ public class IOPortController extends AttributeController {
             // tooltip at all.
 
             figure.setToolTipText(port.getName());
-	    double normal = CanvasUtilities.getNormal(direction);
-	    Site tsite = new PerimeterSite(figure, 0);
-	    tsite.setNormal(normal);
-	    tsite = new FixedNormalSite(tsite);
-	    figure = new TerminalFigure(figure, tsite);
-	    return figure;
-	}
+            double normal = CanvasUtilities.getNormal(direction);
+            Site tsite = new PerimeterSite(figure, 0);
+            tsite.setNormal(normal);
+            tsite = new FixedNormalSite(tsite);
+            figure = new TerminalFigure(figure, tsite);
+            return figure;
+        }
     }
 
     // An action to listen to debug messages of the port.

@@ -130,10 +130,10 @@ public class LMSAdaptive extends FIR {
         initialTaps.setTypeEquals(tapTypes);
         initialTaps.setExpression("{1.0, 0.0, 0.0, 0.0}");
 
-	// set type constraints.
-	error.setTypeSameAs(input);
+        // set type constraints.
+        error.setTypeSameAs(input);
 
-	tapValues.setTypeSameAs(taps);
+        tapValues.setTypeSameAs(taps);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -193,12 +193,12 @@ public class LMSAdaptive extends FIR {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         LMSAdaptive newObject = (LMSAdaptive)(super.clone(workspace));
 
         // set the type constraints
         newObject.error.setTypeSameAs(newObject.input);
-	newObject.tapValues.setTypeSameAs(newObject.taps);
+        newObject.tapValues.setTypeSameAs(newObject.taps);
         return newObject;
     }
 

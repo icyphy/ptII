@@ -147,7 +147,7 @@ public class CharonProcessor {
 //      System.out.println("    blockString size: " + agentBlockString.length());
       if (agentBlockString != "") {
         agent = new Agent(agentBlockString);
-	agentsList.add(0, agent);
+        agentsList.add(0, agent);
       } else {
         break;
       }
@@ -162,7 +162,7 @@ public class CharonProcessor {
 //      System.out.println("    blockString size: " + modeBlockString.length());
       if (modeBlockString != "") {
         mode = new Agent(modeBlockString);
-	modesList.add(0, mode);
+        modesList.add(0, mode);
       } else {
         break;
       }
@@ -177,7 +177,7 @@ public class CharonProcessor {
    * counter is decreased by 1. When counter meets 0, the whole block is read.
    */
   private String _readBlock(String blockName, String leftDelimiter, String rightDelimiter, StreamTokenizer input)
-	throws IllegalActionException {
+        throws IllegalActionException {
 
 //    System.out.println("reading block: " + blockName);
     StreamTokenizer st = input;
@@ -193,54 +193,54 @@ public class CharonProcessor {
 
     do {
       try {
-	st.nextToken ();
+        st.nextToken ();
       } catch (IOException e) {
-	throw new IllegalActionException ("File error!");
+        throw new IllegalActionException ("File error!");
       }
 
       switch (st.ttype) {
-	case StreamTokenizer.TT_EOL:
-	  break;
+        case StreamTokenizer.TT_EOL:
+          break;
 
-	case StreamTokenizer.TT_EOF:
+        case StreamTokenizer.TT_EOF:
           if (_counter != 0) throw new IllegalActionException ("Not a good Charon file!");
-	  return blockString;
+          return blockString;
 
-	case StreamTokenizer.TT_WORD:
+        case StreamTokenizer.TT_WORD:
 
-	  line = st.sval.trim();
+          line = st.sval.trim();
 
-	  // ignore comments
-	  if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*"))
-	    break;
+          // ignore comments
+          if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*"))
+            break;
 
-	  // limitation:
-	  // the content of two blocks must not appear in the same line.
+          // limitation:
+          // the content of two blocks must not appear in the same line.
 
-	  if ((line.indexOf("=") == -1) && line.startsWith(blockName) && firstLine) {
+          if ((line.indexOf("=") == -1) && line.startsWith(blockName) && firstLine) {
 //System.out.println("  Beginning to read block: " + line);
-	    blockString += line + "\n";
-	    break;
-	  }
+            blockString += line + "\n";
+            break;
+          }
 
-	  // since the first line does not contain the delimiters
-	  if (blockString.length() != 0) firstLine = false;
+          // since the first line does not contain the delimiters
+          if (blockString.length() != 0) firstLine = false;
 
-	  if (!line.startsWith(blockName) && firstLine) {
-	    break;
-	  }
+          if (!line.startsWith(blockName) && firstLine) {
+            break;
+          }
 
-	  if (!firstLine) {
+          if (!firstLine) {
 //System.out.println("  reading one line: " + line);
-	    blockString += line + "\n";
-	    _leftDelimiterChecker(line, leftDelimiter);
-	    _rightDelimiterChecker(line, rightDelimiter);
-	  }
+            blockString += line + "\n";
+            _leftDelimiterChecker(line, leftDelimiter);
+            _rightDelimiterChecker(line, rightDelimiter);
+          }
 
-	  break;
+          break;
 
-	default:
-	  //throw new IllegalActionException ("Unexpected input character: " + st.ttype);
+        default:
+          //throw new IllegalActionException ("Unexpected input character: " + st.ttype);
       }
     } while (_counter != 0 || firstLine);
 
@@ -255,8 +255,8 @@ public class CharonProcessor {
     do {
       delimiterIndex = line.indexOf(delimiter, (delimiterIndex));
       if (delimiterIndex != -1) {
-	_counter++;
-	delimiterIndex++;
+        _counter++;
+        delimiterIndex++;
       }
     } while (delimiterIndex != -1 && delimiterIndex < line.length());
   }
@@ -268,8 +268,8 @@ public class CharonProcessor {
     do {
       delimiterIndex = line.indexOf(delimiter, (delimiterIndex));
       if (delimiterIndex != -1) {
-	_counter--;
-	delimiterIndex++;
+        _counter--;
+        delimiterIndex++;
       }
     } while (delimiterIndex != -1 && delimiterIndex < line.length());
   }

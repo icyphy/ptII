@@ -60,10 +60,10 @@ public class CSPCondGet extends CSPGet {
         _truth = new boolean[receiverCount];
         _winningBranch = new boolean[receiverCount];
 
-	for ( int i = 0; i < receiverCount; i++ ) {
-	    _winningBranch[i] = false;
-	    _truth[i] = false;
-	}
+        for ( int i = 0; i < receiverCount; i++ ) {
+            _winningBranch[i] = false;
+            _truth[i] = false;
+        }
 
     }
 
@@ -73,41 +73,41 @@ public class CSPCondGet extends CSPGet {
     /**
      */
     public void fire() throws IllegalActionException {
-	int numReceivers = 0;
+        int numReceivers = 0;
         Receiver[][] rcvrs = inputPort.getReceivers();
-	for ( int i = 0; i < rcvrs.length; i++ ) {
-	    for ( int j = 0; j < rcvrs[i].length; j++ ) {
-		numReceivers++;
+        for ( int i = 0; i < rcvrs.length; i++ ) {
+            for ( int j = 0; j < rcvrs[i].length; j++ ) {
+                numReceivers++;
             }
-	}
-
-	if ( _receiverCount != numReceivers ) {
-	    throw new IllegalActionException(getName()+": Error in the number"
-		    + " of receivers. Be sure constructor is properly"
-		    + " instantiated.");
-	}
-
-	ConditionalBranch[] brchs = new ConditionalBranch[numReceivers];
-
-	for ( int i = 0; i < numReceivers; i++ ) {
-	    brchs[i] = new ConditionalReceive(_truth[i], inputPort, i, i);
         }
 
-	int winner = chooseBranch(brchs);
+        if ( _receiverCount != numReceivers ) {
+            throw new IllegalActionException(getName()+": Error in the number"
+                    + " of receivers. Be sure constructor is properly"
+                    + " instantiated.");
+        }
 
-	_winningBranch[winner] = true;
+        ConditionalBranch[] brchs = new ConditionalBranch[numReceivers];
+
+        for ( int i = 0; i < numReceivers; i++ ) {
+            brchs[i] = new ConditionalReceive(_truth[i], inputPort, i, i);
+        }
+
+        int winner = chooseBranch(brchs);
+
+        _winningBranch[winner] = true;
     }
 
     /**
      */
     public boolean isWinner(int index) {
-	return _winningBranch[index];
+        return _winningBranch[index];
     }
 
     /**
      */
     public void setTruth(int index, boolean val) {
-	_truth[index] = val;
+        _truth[index] = val;
     }
 
     ///////////////////////////////////////////////////////////////////

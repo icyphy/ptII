@@ -154,33 +154,33 @@ public class StickyMasses extends TypedCompositeActor {
         ctrlTr0.preemptive.setExpression("false");
 
         // Actions on Tr0, setting integrator initial states.
-	ctrlTr0.setActions.setExpression(
-	        "Separate.P1.initialState = 0.0; "
-		+ "Separate.V1.initialState = 0.0; "
-		+ "Separate.P2.initialState = 3.0; "
-		+ "Separate.V2.initialState = 0.0");
-	ctrlTr0.reset.setExpression("true");
+        ctrlTr0.setActions.setExpression(
+                "Separate.P1.initialState = 0.0; "
+                + "Separate.V1.initialState = 0.0; "
+                + "Separate.P2.initialState = 3.0; "
+                + "Separate.V2.initialState = 0.0");
+        ctrlTr0.reset.setExpression("true");
 
         Transition ctrlTr1 = new Transition(ctrl, "Tr1");
         ctrlInc.outgoingPort.link(ctrlTr1);
         ctrlDec.incomingPort.link(ctrlTr1);
         ctrlTr1.setGuardExpression("touched_isPresent");
-	ctrlTr1.setActions.setExpression(
+        ctrlTr1.setActions.setExpression(
                 "Together.P1.initialState = P1; "
-		+ "Together.V1.initialState = (V1+V2)/2.0; "
-		+ "Together.STI.initialState = 10.0");
-	ctrlTr1.reset.setExpression("true");
+                + "Together.V1.initialState = (V1+V2)/2.0; "
+                + "Together.STI.initialState = 10.0");
+        ctrlTr1.reset.setExpression("true");
 
         Transition ctrlTr2 = new Transition(ctrl, "Tr2");
         ctrlDec.outgoingPort.link(ctrlTr2);
         ctrlInc.incomingPort.link(ctrlTr2);
         ctrlTr2.setGuardExpression("F > STI || F < -STI");
-	ctrlTr2.setActions.setExpression(
-		"Separate.P1.initialState = P1; "
-		+ "Separate.P2.initialState = P1; "
-		+ "Separate.V1.initialState = V1; "
-		+ "Separate.V2.initialState = V1");
-	ctrlTr2.reset.setExpression("true");
+        ctrlTr2.setActions.setExpression(
+                "Separate.P1.initialState = P1; "
+                + "Separate.P2.initialState = P1; "
+                + "Separate.V1.initialState = V1; "
+                + "Separate.V2.initialState = V1");
+        ctrlTr2.reset.setExpression("true");
 
         // the hybrid system director
         HSDirector hsdir = new HSDirector(hs, "HSDirector");

@@ -61,7 +61,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      *  Increment the version number of the workspace.
      */
     public NotEditableLineStyle() {
-	super();
+        super();
     }
 
     /** Construct an attribute in the given workspace with an empty string
@@ -71,7 +71,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      */
     public NotEditableLineStyle(Workspace workspace) {
         // This constructor is needed for Shallow codegen to work.
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the specified container and name.
@@ -96,7 +96,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      *  @return True.
      */
     public boolean acceptable(Settable param) {
-	return true;
+        return true;
     }
 
     /** Create a new type-in line

@@ -58,56 +58,56 @@ public class ThreeDFunction {
      *     is generated during file i/o.
      */
     public ThreeDFunction(String fileName) throws IllegalActionException {
-	int xPoints, yPoints, thetaPoints;
+        int xPoints, yPoints, thetaPoints;
         double xSpan, ySpan, thetaSpan;
-	double dimension;
+        double dimension;
 
-	try {
-	    BufferedReader in =
-		new BufferedReader(new FileReader(fileName));
+        try {
+            BufferedReader in =
+                new BufferedReader(new FileReader(fileName));
 
             /** Read the dimension of the state space and ignore it,
              * since we know it's value is 3.
              */
-	    dimension = _readDouble(in);
+            dimension = _readDouble(in);
 
-	    //Read x grid information.
-	    _xLowerBound = _readDouble(in);
-	    _xStepSize = _readDouble(in);
-	    _xUpperBound = _readDouble(in);
+            //Read x grid information.
+            _xLowerBound = _readDouble(in);
+            _xStepSize = _readDouble(in);
+            _xUpperBound = _readDouble(in);
 
-	    //Read y grid information.
-	    _yLowerBound = _readDouble(in);
-	    _yStepSize = _readDouble(in);
-	    _yUpperBound = _readDouble(in);
+            //Read y grid information.
+            _yLowerBound = _readDouble(in);
+            _yStepSize = _readDouble(in);
+            _yUpperBound = _readDouble(in);
 
-	    //Read theta grid information.
-	    _thetaLowerBound = _readDouble(in);
-	    _thetaStepSize = _readDouble(in);
-	    _thetaUpperBound = _readDouble(in);
+            //Read theta grid information.
+            _thetaLowerBound = _readDouble(in);
+            _thetaStepSize = _readDouble(in);
+            _thetaUpperBound = _readDouble(in);
 
-	    //Initialize the values array;
+            //Initialize the values array;
             xSpan = _xUpperBound - _xLowerBound;
             ySpan = _yUpperBound - _yLowerBound;
             thetaSpan = _thetaUpperBound - _thetaLowerBound;
-	    xPoints = (int)Math.round(xSpan / _xStepSize) + 1;
-	    yPoints = (int)Math.round(ySpan / _yStepSize) + 1;
-	    thetaPoints = (int)Math.round(thetaSpan / _thetaStepSize) + 1;
-	    _values = new double[xPoints][yPoints][thetaPoints];
+            xPoints = (int)Math.round(xSpan / _xStepSize) + 1;
+            yPoints = (int)Math.round(ySpan / _yStepSize) + 1;
+            thetaPoints = (int)Math.round(thetaSpan / _thetaStepSize) + 1;
+            _values = new double[xPoints][yPoints][thetaPoints];
 
-	    /** Fill in the values array with values, sorted in
+            /** Fill in the values array with values, sorted in
              *lexicographical order.
              */
-	    for (int x = 0; x < xPoints; x++) {
-		for (int y = 0; y < yPoints; y++) {
-		    for (int theta = 0; theta < thetaPoints; theta++) {
-			_values[theta][y][x] = _readDouble(in);
-		    }
-		}
-	    }
+            for (int x = 0; x < xPoints; x++) {
+                for (int y = 0; y < yPoints; y++) {
+                    for (int theta = 0; theta < thetaPoints; theta++) {
+                        _values[theta][y][x] = _readDouble(in);
+                    }
+                }
+            }
 
-	    //Close the file.
-	    in.close();
+            //Close the file.
+            in.close();
 
             /** Calculate the error tolerances, using a value within
              * 0.0001 of the step size.
@@ -118,19 +118,19 @@ public class ThreeDFunction {
             double y = -1.0;
             double theta = 0.01;
 
-	}
+        }
         catch (FileNotFoundException f) {
-	    throw new IllegalActionException(f.getMessage());
-	}
-	catch (IOException i) {
+            throw new IllegalActionException(f.getMessage());
+        }
+        catch (IOException i) {
             throw new IllegalActionException(i.getMessage());
-	}
-	catch (NumberFormatException n) {
-	    throw new IllegalActionException(n.getMessage());
-	}
-	catch (NoSuchElementException e) {
-	    throw new IllegalActionException(e.getMessage());
-	}
+        }
+        catch (NumberFormatException n) {
+            throw new IllegalActionException(n.getMessage());
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,7 +142,7 @@ public class ThreeDFunction {
     public double getValue(double x, double y, double theta) {
         double[] thisPoint = new double[] {x, y, theta};
         double[][] gridPoints = _nearestGridPoints(x, y, theta);
-	if (_inRange(gridPoints)) {
+        if (_inRange(gridPoints)) {
             return _linInterp(thisPoint, gridPoints);
         }
         else {
@@ -178,20 +178,20 @@ public class ThreeDFunction {
      *  If no next line exists, it returns null,
      **/
     private double _readDouble(BufferedReader reader) throws IOException {
-	String line;
-	String token;
-	if (_tokenizer.hasMoreTokens()) {
-	    return (new Double(_tokenizer.nextToken())).doubleValue();
-	}
-	else {
-	    try {
-		_tokenizer = new StringTokenizer(reader.readLine());
-		return _readDouble(reader);
-	    }
-	    catch (IOException i) {
-		throw i;
-	    }
-	}
+        String line;
+        String token;
+        if (_tokenizer.hasMoreTokens()) {
+            return (new Double(_tokenizer.nextToken())).doubleValue();
+        }
+        else {
+            try {
+                _tokenizer = new StringTokenizer(reader.readLine());
+                return _readDouble(reader);
+            }
+            catch (IOException i) {
+                throw i;
+            }
+        }
     }
 
     /** Uses linear interpolation to give the value of the input point
@@ -259,16 +259,16 @@ public class ThreeDFunction {
      */
 
     private double[][] _nearestGridPoints(double x, double y, double theta) {
- 	double xRem, yRem, thetaRem;
+         double xRem, yRem, thetaRem;
         double[] xPoints, yPoints, thetaPoints;
         double[][] output;
 
         /** Calculates the nearest gridpoint with lesser or equal
          * value.
          */
-	xRem = (x - _xLowerBound) % _xStepSize;
-	yRem = (y - _yLowerBound) % _yStepSize;
-	thetaRem = (theta - _thetaLowerBound) % _thetaStepSize;
+        xRem = (x - _xLowerBound) % _xStepSize;
+        yRem = (y - _yLowerBound) % _yStepSize;
+        thetaRem = (theta - _thetaLowerBound) % _thetaStepSize;
 
         /** Calculate the x point or points.
          */
@@ -333,11 +333,11 @@ public class ThreeDFunction {
      * errors caused by binary representations of decimal number.
      */
     private int[] _getIndices(double x, double y, double theta) {
-	int[] indices = new int[3];
-	indices[0] = (int)Math.round((x - _xLowerBound) / _xStepSize);
-	indices[1] = (int)Math.round((y - _yLowerBound) / _yStepSize);
-	indices[2] =
-	    (int)Math.round((theta - _thetaLowerBound) / _thetaStepSize);
+        int[] indices = new int[3];
+        indices[0] = (int)Math.round((x - _xLowerBound) / _xStepSize);
+        indices[1] = (int)Math.round((y - _yLowerBound) / _yStepSize);
+        indices[2] =
+            (int)Math.round((theta - _thetaLowerBound) / _thetaStepSize);
         return indices;
     }
 

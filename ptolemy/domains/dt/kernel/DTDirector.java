@@ -194,7 +194,7 @@ public class DTDirector extends SDFDirector {
      */
     public DTDirector()
             throws IllegalActionException, NameDuplicationException {
-    	super();
+            super();
         _init();
     }
 
@@ -473,11 +473,11 @@ public class DTDirector extends SDFDirector {
 
             Parameter param =
                 (Parameter) currentPort.getAttribute("tokenConsumptionRate");
-    	    if ((param != null)&&(currentPort.isInput())) {
+                if ((param != null)&&(currentPort.isInput())) {
                 rate = ((IntToken)param.getToken()).intValue();
                 if (rate > 1) dtActor._shouldGenerateInitialTokens = true;
             }
-    	}
+            }
         _debugViewActorTable();
 
         // This portion generates the initial tokens for actors with
@@ -724,7 +724,7 @@ public class DTDirector extends SDFDirector {
             throw new IllegalActionException(
                     "internal DT error: actor with zero firing count");
         }
-    	return repeats;
+            return repeats;
     }
 
 
@@ -957,7 +957,7 @@ public class DTDirector extends SDFDirector {
                             receiver = (DTReceiver) insideReceivers[i][j];
                             receiver.overrideHasToken = true;
                         }
-            	    }
+                        }
                     _debug("******* nonfractional fire ratio "
                             + ratio + " don't transferOutputs");
                     _shouldTransferOutputs.put(port, Boolean.FALSE);
@@ -1025,14 +1025,14 @@ public class DTDirector extends SDFDirector {
      */
     private void _debugViewAttributesList(NamedObj object)
     {
-    	List list = object.attributeList();
-    	Iterator listIterator = list.iterator();
+            List list = object.attributeList();
+            Iterator listIterator = list.iterator();
 
-    	_debug("attribute List:");
-    	while (listIterator.hasNext()) {
-    	    Attribute attribute = (Attribute) listIterator.next();
-    	    _debug(attribute.toString());
-    	}
+            _debug("attribute List:");
+            while (listIterator.hasNext()) {
+                Attribute attribute = (Attribute) listIterator.next();
+                _debug(attribute.toString());
+            }
     }
 
     /** For debugging purposes.  Display the list of output ports in the
@@ -1062,13 +1062,13 @@ public class DTDirector extends SDFDirector {
     private void _debugViewEntityList(CompositeEntity object) {
 
         List list = object.entityList();
-    	Iterator listIterator = list.iterator();
+            Iterator listIterator = list.iterator();
 
-    	_debug("entity List:");
-    	while (listIterator.hasNext()) {
-    	    Entity entity = (Entity) listIterator.next();
-    	    _debug(entity.toString());
-    	}
+            _debug("entity List:");
+            while (listIterator.hasNext()) {
+                Entity entity = (Entity) listIterator.next();
+                _debug(entity.toString());
+            }
     }
 
     /** For debugging purposes.  Display the list of inside receivers
@@ -1078,12 +1078,12 @@ public class DTDirector extends SDFDirector {
             throws IllegalActionException {
         Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	for (int i = 0; i < port.getWidth(); i++) {
-    	    for (int j = 0; j < portReceivers[i].length; j++) {
-    	        _debug("  ->" + portReceivers[i][j]);
-    	        ((DTReceiver)portReceivers[i][j])._debugViewReceiverInfo();
-    	    }
-    	}
+            for (int i = 0; i < port.getWidth(); i++) {
+                for (int j = 0; j < portReceivers[i].length; j++) {
+                    _debug("  ->" + portReceivers[i][j]);
+                    ((DTReceiver)portReceivers[i][j])._debugViewReceiverInfo();
+                }
+            }
     }
 
 
@@ -1093,11 +1093,11 @@ public class DTDirector extends SDFDirector {
     private void _debugViewPortRemoteReceivers(IOPort port) {
         Receiver[][] remoteReceivers = port.getRemoteReceivers();
 
-    	for (int i = 0; i < port.getWidth(); i++) {
-    	    for (int j = 0; j<remoteReceivers[i].length; j++) {
-    	        _debug("  -->" + remoteReceivers[i][j]);
-    	    }
-    	}
+            for (int i = 0; i < port.getWidth(); i++) {
+                for (int j = 0; j<remoteReceivers[i].length; j++) {
+                    _debug("  -->" + remoteReceivers[i][j]);
+                }
+            }
     }
 
     /** For debugging purposes.  Display the list of contained receivers
@@ -1176,7 +1176,7 @@ public class DTDirector extends SDFDirector {
         int rate;
         Parameter param
             = (Parameter) ioPort.getAttribute("tokenConsumptionRate");
-    	if (param != null) {
+            if (param != null) {
             rate = ((IntToken)param.getToken()).intValue();
         } else rate = 1;
 
@@ -1222,12 +1222,12 @@ public class DTDirector extends SDFDirector {
             IOPort port = (IOPort) listIterator.next();
             Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	    for (int i = 0; i < port.getWidth(); i++) {
-    	        for (int j = 0; j < portReceivers[i].length; j++) {
+                for (int i = 0; i < port.getWidth(); i++) {
+                    for (int j = 0; j < portReceivers[i].length; j++) {
                     ((DTReceiver) portReceivers[i][j]).overrideHasToken =
                         false;
                 }
-    	    }
+                }
         }
     }
 
@@ -1244,12 +1244,12 @@ public class DTDirector extends SDFDirector {
             IOPort port = (IOPort) listIterator.next();
             Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	    for (int i = 0; i < port.getWidth(); i++) {
-    	        for (int j = 0; j < portReceivers[i].length; j++) {
+                for (int i = 0; i < port.getWidth(); i++) {
+                    for (int j = 0; j < portReceivers[i].length; j++) {
                     ((DTReceiver) portReceivers[i][j]).overrideHasToken =
                         true;
                 }
-    	    }
+                }
         }
     }
 
@@ -1278,15 +1278,15 @@ public class DTDirector extends SDFDirector {
      *    - set period value
      */
     private void _init() {
-    	try {
+            try {
             period = new Parameter(this, "period", new DoubleToken(1.0));
             _reset();
             iterations.setToken(new IntToken(0));
         } catch (Exception e) {
-    	    throw new InternalErrorException(
+                throw new InternalErrorException(
                     "unable to initialize DT Director:\n" +
                     e.getMessage());
-    	}
+            }
     }
 
     private void _reset() {
@@ -1355,19 +1355,19 @@ public class DTDirector extends SDFDirector {
 
     // Inner class to cache important variables for contained actors
     private class DTActor {
-    	private Actor    _actor;
-    	private double   _localTime;
-    	private int      _repeats;
+            private Actor    _actor;
+            private double   _localTime;
+            private int      _repeats;
         private boolean  _shouldGenerateInitialTokens;
 
-    	/* Construct the information on the contained Actor
-    	 * @param a The actor
-    	 */
-    	public DTActor(Actor actor) {
+            /* Construct the information on the contained Actor
+             * @param a The actor
+             */
+            public DTActor(Actor actor) {
             _actor = actor;
             _repeats = 0;
             _localTime = 0.0;
             _shouldGenerateInitialTokens = false;
-    	}
+            }
     }
 }

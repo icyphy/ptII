@@ -132,10 +132,10 @@ public class FIR extends SDFTransformer {
         taps.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         taps.setExpression("{1.0}");
 
-	// Set type constraints.
-	ArrayType paramType = (ArrayType)taps.getType();
-	InequalityTerm elementTerm = paramType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        // Set type constraints.
+        ArrayType paramType = (ArrayType)taps.getType();
+        InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
     }
 
@@ -230,7 +230,7 @@ public class FIR extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         FIR newObject = (FIR)(super.clone(workspace));
 
         // Set the type constraints.

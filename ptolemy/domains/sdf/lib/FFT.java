@@ -136,7 +136,7 @@ public class FFT extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	Token[] inTokenArray = input.get(0, _consumptionRate);
+        Token[] inTokenArray = input.get(0, _consumptionRate);
         for (int i = 0; i < _consumptionRate; i++) {
             _inComplexArray[i] = ((ComplexToken)inTokenArray[i]).complexValue();
         }
@@ -145,7 +145,7 @@ public class FFT extends SDFTransformer {
         for (int i = 0; i < _productionRate; i++) {
             _outTokenArray[i] = new ComplexToken(outComplexArray[i]);
         }
-	output.send(0, _outTokenArray, _productionRate);
+        output.send(0, _outTokenArray, _productionRate);
     }
 
     ///////////////////////////////////////////////////////////////////

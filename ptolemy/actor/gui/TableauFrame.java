@@ -824,8 +824,8 @@ public class TableauFrame extends Top {
                             factory.createTableau(tableauContainer);
                         tableau.show();
                     } catch (Throwable throwable) {
-			// Copernicus might throw a java.lang.Error if
-			// jhdl.Main cannot be resolved
+                        // Copernicus might throw a java.lang.Error if
+                        // jhdl.Main cannot be resolved
                         MessageHandler.error("Cannot create view", throwable);
                     }
                 }

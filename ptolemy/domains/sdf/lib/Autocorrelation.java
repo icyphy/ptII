@@ -131,20 +131,20 @@ public class Autocorrelation extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	numberOfInputs = new Parameter(this,
+        numberOfInputs = new Parameter(this,
                 "numberOfInputs", new IntToken(256));
-	numberOfLags = new Parameter(this,
+        numberOfLags = new Parameter(this,
                 "numberOfLags", new IntToken(64));
-	biased = new Parameter(this,
+        biased = new Parameter(this,
                 "biased", new BooleanToken(false));
-	symmetricOutput = new Parameter(this,
+        symmetricOutput = new Parameter(this,
                 "symmetricOutput", new BooleanToken(false));
 
         input.setTypeAtLeast(new FunctionTerm(input));
 
-	// Set the output type to be an ArrayType.
+        // Set the output type to be an ArrayType.
         // This is refined further by the typeConstraintList method.
-	output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         output.setMultiport(true);
 
         attributeChanged(numberOfInputs);
@@ -234,9 +234,9 @@ public class Autocorrelation extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Autocorrelation newObject = (Autocorrelation)super.clone(workspace);
-	newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
+        newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
         return newObject;
     }
 
@@ -262,7 +262,7 @@ public class Autocorrelation extends SDFTransformer {
             } else {
                 _outputs[i + _numberOfLags - notSymmetric ]
                     = sum.divide(new IntToken(_numberOfInputs - i));
-	    }
+            }
         }
         // Now fill in the first half, which by symmetry is just
         // identical to what was just produced.
@@ -297,12 +297,12 @@ public class Autocorrelation extends SDFTransformer {
         if (result == null) {
             result = new LinkedList();
         }
-	ArrayType outArrType = (ArrayType)output.getType();
-	InequalityTerm elementTerm = outArrType.getElementTypeTerm();
-	Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
+        ArrayType outArrType = (ArrayType)output.getType();
+        InequalityTerm elementTerm = outArrType.getElementTypeTerm();
+        Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 
-	result.add(ineq);
-	return result;
+        result.add(ineq);
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -323,45 +323,45 @@ public class Autocorrelation extends SDFTransformer {
     // or DoubleMatrix, respectively.
     private class FunctionTerm implements InequalityTerm {
 
-	// The constructor takes a port argument so that the clone()
-	// method can construct an instance of this class for the
-	// input port on the clone.
-	private FunctionTerm(TypedIOPort port) {
-	    _port = port;
-	}
+        // The constructor takes a port argument so that the clone()
+        // method can construct an instance of this class for the
+        // input port on the clone.
+        private FunctionTerm(TypedIOPort port) {
+            _port = port;
+        }
 
-	///////////////////////////////////////////////////////////////
-	////                       public inner methods            ////
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
 
-	/** Return null.
-	 *  @return null.
-	 */
-	public Object getAssociatedObject() {
-	    return null;
-	}
+        /** Return null.
+         *  @return null.
+         */
+        public Object getAssociatedObject() {
+            return null;
+        }
 
-	/** Return the function result.
-	 *  @return A Type.
-	 */
-	public Object getValue() {
-	    Type inputType = _port.getType();
-	    if (inputType == BaseType.INT) {
-	        return BaseType.DOUBLE;
+        /** Return the function result.
+         *  @return A Type.
+         */
+        public Object getValue() {
+            Type inputType = _port.getType();
+            if (inputType == BaseType.INT) {
+                return BaseType.DOUBLE;
             } else if (inputType == BaseType.INT_MATRIX) {
-	        return BaseType.DOUBLE_MATRIX;
-	    } else {
-	        return inputType;
-	    }
+                return BaseType.DOUBLE_MATRIX;
+            } else {
+                return inputType;
+            }
         }
 
         /** Return an one element array containing the InequalityTerm
-	 *  representing the type of the input port.
-	 *  @return An array of InequalityTerm.
+         *  representing the type of the input port.
+         *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    InequalityTerm[] variable = new InequalityTerm[1];
-	    variable[0] = _port.getTypeTerm();
-	    return variable;
+            InequalityTerm[] variable = new InequalityTerm[1];
+            variable[0] = _port.getTypeTerm();
+            return variable;
         }
 
         /** Throw an Exception.
@@ -369,8 +369,8 @@ public class Autocorrelation extends SDFTransformer {
          *  a function term.  Always thrown in this class.
          */
         public void initialize(Object e)
-		throws IllegalActionException {
-	    throw new IllegalActionException(Autocorrelation.this,
+                throws IllegalActionException {
+            throw new IllegalActionException(Autocorrelation.this,
                     "Autocorrelation$FunctionTerm." +
                     "initialize: Cannot initialize a function term.");
         }
@@ -379,7 +379,7 @@ public class Autocorrelation extends SDFTransformer {
          *  @return false.
          */
         public boolean isSettable() {
-	    return false;
+            return false;
         }
 
         /** Return true.
@@ -394,8 +394,8 @@ public class Autocorrelation extends SDFTransformer {
          *  Always thrown in this class.
          */
         public void setValue(Object e)
-		throws IllegalActionException {
-	    throw new IllegalActionException(Autocorrelation.this,
+                throws IllegalActionException {
+            throw new IllegalActionException(Autocorrelation.this,
                     "Autocorrelation$FunctionTerm.setValue: The type is not " +
                     "settable.");
         }
@@ -410,6 +410,6 @@ public class Autocorrelation extends SDFTransformer {
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
-	private TypedIOPort _port;
+        private TypedIOPort _port;
     }
 }

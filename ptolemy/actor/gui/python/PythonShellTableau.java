@@ -77,13 +77,13 @@ public class PythonShellTableau extends Tableau
      */
     public PythonShellTableau(PythonShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
-	PythonShellFrame frame = new PythonShellFrame(this);
-	setFrame(frame);
+        super(container, name);
+        PythonShellFrame frame = new PythonShellFrame(this);
+        setFrame(frame);
 
-	// FIXME: this would be a good place to read in init.py
-	//	_interpreter.execfile(ptolemy.data.expr.UtilityFunctions
-	//			      .findFile("ptolemy/actor/gui/python/init.py");
+        // FIXME: this would be a good place to read in init.py
+        //        _interpreter.execfile(ptolemy.data.expr.UtilityFunctions
+        //                              .findFile("ptolemy/actor/gui/python/init.py");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,12 +95,12 @@ public class PythonShellTableau extends Tableau
      *  @exception Exception If something goes wrong processing the command.
      */
     public String evaluateCommand(String command) throws Exception {
-	try {
-	    PyObject results = _interpreter.eval(command);
-	    return results.toString();
-	} catch (Throwable throwable) {
-	    return throwable.toString();
-	}
+        try {
+            PyObject results = _interpreter.eval(command);
+            return results.toString();
+        } catch (Throwable throwable) {
+            return throwable.toString();
+        }
     }
 
     /** Return true if the specified command is complete (ready
@@ -126,84 +126,84 @@ public class PythonShellTableau extends Tableau
      */
     public class PythonShellFrame extends TableauFrame {
 
-	/** Construct a frame to display the PythonShell window.
-	 *  After constructing this, it is necessary
-	 *  to call setVisible(true) to make the frame appear.
+        /** Construct a frame to display the PythonShell window.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.
-	 *  @param model The model to put in this frame, or null if none.
+         *  @param model The model to put in this frame, or null if none.
          *  @param tableau The tableau responsible for this frame.
          *  @exception IllegalActionException If the model rejects the
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
-	 */
-	public PythonShellFrame(Tableau tableau)
+         */
+        public PythonShellFrame(Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
-	    super(tableau);
+            super(tableau);
 
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
-	    ShellTextArea shellPanel = new ShellTextArea();
+            ShellTextArea shellPanel = new ShellTextArea();
             shellPanel.setInterpreter(PythonShellTableau.this);
-	    component.add(shellPanel);
+            component.add(shellPanel);
             getContentPane().add(component, BorderLayout.CENTER);
-	}
+        }
 
-	///////////////////////////////////////////////////////////////////
-	////                         protected methods                 ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         protected methods                 ////
 
-	protected void _help() {
-	    try {
-		URL doc = getClass().getClassLoader().getResource(
+        protected void _help() {
+            try {
+                URL doc = getClass().getClassLoader().getResource(
                         "ptolemy/actor/gui/python/help.htm");
-		getConfiguration().openModel(null, doc, doc.toExternalForm());
-	    } catch (Exception ex) {
-		System.out.println("PythonShellTableau._help(): " + ex);
-		_about();
-	    }
-	}
+                getConfiguration().openModel(null, doc, doc.toExternalForm());
+            } catch (Exception ex) {
+                System.out.println("PythonShellTableau._help(): " + ex);
+                _about();
+            }
+        }
     }
 
     /** A factory that creates a control panel to display a Tcl Shell
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** Create a new instance of PythonShellTableau in the specified
+        /** Create a new instance of PythonShellTableau in the specified
          *  effigy. It is the responsibility of callers of
          *  this method to check the return value and call show().
-	 *  @param effigy The model effigy.
-	 *  @return A new control panel tableau if the effigy is
+         *  @param effigy The model effigy.
+         *  @return A new control panel tableau if the effigy is
          *    a PtolemyEffigy, or null otherwise.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?
             if (effigy instanceof PythonShellEffigy) {
                 return new PythonShellTableau(
                         (PythonShellEffigy)effigy,
                         "PythonShellTableau");
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 }

@@ -104,8 +104,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @param composite The top-level composite entity for the model.
      */
     public ActorGraphModel(CompositeEntity composite) {
-	super(composite);
-	_linkSet = new HashSet();
+        super(composite);
+        _linkSet = new HashSet();
         _update();
     }
 
@@ -120,10 +120,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @exception GraphException If the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
-	if (!(getEdgeModel(edge) instanceof MutableEdgeModel)) return;
-	MutableEdgeModel model = (MutableEdgeModel)getEdgeModel(edge);
-	Object head = model.getHead(edge);
-	Object tail = model.getTail(edge);
+        if (!(getEdgeModel(edge) instanceof MutableEdgeModel)) return;
+        MutableEdgeModel model = (MutableEdgeModel)getEdgeModel(edge);
+        Object head = model.getHead(edge);
+        Object tail = model.getTail(edge);
         model.setTail(edge, null);
         model.setHead(edge, null);
         if (head != null) {
@@ -148,8 +148,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         // Note: the abstraction here is rather broken.  Ideally this
         // should look like getDeleteNodeMoML()
         if (!(getEdgeModel(edge) instanceof LinkModel)) return "";
-	LinkModel model = (LinkModel)getEdgeModel(edge);
-	return model.getDeleteEdgeMoML(edge);
+        LinkModel model = (LinkModel)getEdgeModel(edge);
+        return model.getDeleteEdgeMoML(edge);
     }
 
     /** Return a MoML String that will delete the given node from the
@@ -157,9 +157,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @return A valid MoML string.
      */
     public String getDeleteNodeMoML(Object node) {
-	if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return "";
-	NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
-	return model.getDeleteNodeMoML(node);
+        if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return "";
+        NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
+        return model.getDeleteNodeMoML(node);
     }
 
     /** Return the model for the given composite object.
@@ -175,8 +175,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         if (result == null
                 && composite instanceof Locatable
                 && ((Locatable)composite).getContainer() instanceof Entity) {
-	    return _iconModel;
-	}
+            return _iconModel;
+        }
         return result;
     }
 
@@ -187,11 +187,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *   Otherwise return null.
      */
     public EdgeModel getEdgeModel(Object edge) {
-	if (edge instanceof Link) {
-	    return _linkModel;
-	} else {
-	    return null;
-	}
+        if (edge instanceof Link) {
+            return _linkModel;
+        } else {
+            return null;
+        }
     }
 
     /** Return the model for edge objects that are instance of Link.
@@ -203,7 +203,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         // FIXME: This design makes it impossible to have different
         // models for different types of links.  This method should
         // be removed, and getEdgeModel() should be used instead.
-	return _linkModel;
+        return _linkModel;
     }
 
     /** Return the node model for the given object.  If the object is not
@@ -214,16 +214,16 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *   is none.
      */
     public NodeModel getNodeModel(Object node) {
-	if (node instanceof Port) {
-	    return _portModel;
-	} else if (node instanceof Vertex) {
-	    return _vertexModel;
-	} else if (node instanceof Locatable) {
-	    Object container = ((Locatable)node).getContainer();
-	    if (container instanceof Port) {
-		return _externalPortModel;
-	    } else if (container instanceof Entity) {
-		return _iconModel;
+        if (node instanceof Port) {
+            return _portModel;
+        } else if (node instanceof Vertex) {
+            return _vertexModel;
+        } else if (node instanceof Locatable) {
+            Object container = ((Locatable)node).getContainer();
+            if (container instanceof Port) {
+                return _externalPortModel;
+            } else if (container instanceof Entity) {
+                return _iconModel;
             }
         }
         return super.getNodeModel(node);
@@ -240,11 +240,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *   if the object is not recognized.
      */
     public Object getSemanticObject(Object element) {
-	if (element instanceof Vertex) {
-	    return ((Vertex)element).getContainer();
-	} else if (element instanceof Link) {
-	    return ((Link)element).getRelation();
-	}
+        if (element instanceof Vertex) {
+            return ((Vertex)element).getContainer();
+        } else if (element instanceof Link) {
+            return ((Link)element).getRelation();
+        }
         return super.getSemanticObject(element);
     }
 
@@ -255,8 +255,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @exception GraphException If the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
-	if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return;
-	NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
+        if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return;
+        NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
 
         model.removeNode(eventSource, node);
     }
@@ -269,16 +269,16 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     // The huge inner classes below should be factored out as
     // separate classes.  EAL
     public IconModel getIconModel() {
-	return _iconModel;
+        return _iconModel;
     }
     public PortModel getPortModel() {
-	return _portModel;
+        return _portModel;
     }
     public ExternalPortModel getExternalPortModel() {
-	return _externalPortModel;
+        return _externalPortModel;
     }
     public VertexModel getVertexModel() {
-	return _vertexModel;
+        return _vertexModel;
     }
     // End of FIXME.
 
@@ -295,11 +295,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      */
     protected boolean _update() {
 
-	// Go through all the links that currently exist, and remove
+        // Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
-	Iterator links = _linkSet.iterator();
-	while (links.hasNext()) {
- 	    Link link = (Link)links.next();
+        Iterator links = _linkSet.iterator();
+        while (links.hasNext()) {
+             Link link = (Link)links.next();
             Relation relation = link.getRelation();
             if (relation == null) continue;
             // Undo needs this: Check that the relation hasn't been removed
@@ -370,139 +370,139 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     private void _updateLinks(ComponentRelation relation) {
 
         List linkedPortList = relation.linkedPortList();
-	int allPortCount = linkedPortList.size();
+        int allPortCount = linkedPortList.size();
 
         //  System.out.println("updating links for relation " + relation.getFullName());
         // System.out.println("linkedPorts = " + linkedPortList);
-	// Go through all the links that currently exist, and remove ports
-	// from the linkedPortList that already have a Link object.
+        // Go through all the links that currently exist, and remove ports
+        // from the linkedPortList that already have a Link object.
         // Also remove links that link to ports which shouldn't be linked to.
-	// FIXME this could get expensive
-	Iterator links = new LinkedList(_linkSet).iterator();
-	while (links.hasNext()) {
-	    Link link = (Link)links.next();
+        // FIXME this could get expensive
+        Iterator links = new LinkedList(_linkSet).iterator();
+        while (links.hasNext()) {
+            Link link = (Link)links.next();
             // only consider links that are associated with this relation.
-	    if (link.getRelation() != relation) {
+            if (link.getRelation() != relation) {
                 continue;
             }
 
-      	    // remove any ports that this link is linked to.  We don't need
-	    // to manufacture those links.
-	    Object tail = link.getTail();
-	    Object tailObj = getSemanticObject(tail);
+                  // remove any ports that this link is linked to.  We don't need
+            // to manufacture those links.
+            Object tail = link.getTail();
+            Object tailObj = getSemanticObject(tail);
             if (tailObj != null && linkedPortList.contains(tailObj)) {
                 linkedPortList.remove(tailObj);
-	    } else if(tailObj != relation) {
+            } else if(tailObj != relation) {
                 //  System.out.println("removing link = " + link);
                 link.setHead(null);
                 link.setTail(null);
                 _linkSet.remove(link);
             }
 
-	    Object head = link.getHead();
-	    Object headObj = getSemanticObject(head);
+            Object head = link.getHead();
+            Object headObj = getSemanticObject(head);
             if (headObj != null && linkedPortList.contains(headObj)) {
                 linkedPortList.remove(headObj);
-	    } else if(headObj != relation) {
+            } else if(headObj != relation) {
                 // System.out.println("removing link = " + link);
                 link.setHead(null);
                 link.setTail(null);
                 _linkSet.remove(link);
             }
-	}
+        }
 
-	// Count the linked ports.
-	int unlinkedPortCount = linkedPortList.size();
+        // Count the linked ports.
+        int unlinkedPortCount = linkedPortList.size();
 
-	// If there are no links left to create, then just return.
-	if (unlinkedPortCount == 0) return;
+        // If there are no links left to create, then just return.
+        if (unlinkedPortCount == 0) return;
 
-	Iterator vertexes = relation.attributeList(Vertex.class).iterator();
-	// get the Root vertex.  This is where we will manufacture links.
-	Vertex rootVertex = null;
-	while (vertexes.hasNext()) {
-	    Vertex v = (Vertex)vertexes.next();
-	    if (v.getLinkedVertex() == null) {
-		rootVertex = v;
-	    }
-	}
+        Iterator vertexes = relation.attributeList(Vertex.class).iterator();
+        // get the Root vertex.  This is where we will manufacture links.
+        Vertex rootVertex = null;
+        while (vertexes.hasNext()) {
+            Vertex v = (Vertex)vertexes.next();
+            if (v.getLinkedVertex() == null) {
+                rootVertex = v;
+            }
+        }
 
-	// If there are no vertecies, and the relation has exactly
-	// two connections, neither of which has been made yet, then
-	// create a link without a vertex for the relation.
-	if (rootVertex == null && allPortCount == 2 && unlinkedPortCount == 2) {
-	    Port port1 = (Port)linkedPortList.get(0);
-	    Port port2 = (Port)linkedPortList.get(1);
-	    Object head = null;
-	    Object tail = null;
+        // If there are no vertecies, and the relation has exactly
+        // two connections, neither of which has been made yet, then
+        // create a link without a vertex for the relation.
+        if (rootVertex == null && allPortCount == 2 && unlinkedPortCount == 2) {
+            Port port1 = (Port)linkedPortList.get(0);
+            Port port2 = (Port)linkedPortList.get(1);
+            Object head = null;
+            Object tail = null;
 
-	    if (port1.getContainer().equals(getRoot())) {
-		head = _getLocation(port1);
-	    } else {
-		head = port1;
-	    }
+            if (port1.getContainer().equals(getRoot())) {
+                head = _getLocation(port1);
+            } else {
+                head = port1;
+            }
 
-	    if (port2.getContainer().equals(getRoot())) {
-		tail = _getLocation(port2);
-	    } else {
-		tail = port2;
-	    }
+            if (port2.getContainer().equals(getRoot())) {
+                tail = _getLocation(port2);
+            } else {
+                tail = port2;
+            }
 
-	    Link link;
-	    try {
-		link = new Link();
-		_linkSet.add(link);
-	    }
-	    catch (Exception e) {
-		throw new InternalErrorException("Failed to create " +
-		    "new link, even though one does not " +
-		    "already exist:" + e.getMessage());
-	    }
-	    link.setRelation(relation);
-	    link.setHead(head);
-	    link.setTail(tail);
-	} else {
-	    // A regular relation with a diamond.
-	    // Create a vertex if one is not found
-	    if (rootVertex == null) {
-		try {
-		    rootVertex = new Vertex(relation,
-					    relation.uniqueName("vertex"));
-		}
-		catch (Exception e) {
-		    throw new InternalErrorException(
-			"Failed to create " +
-			"new vertex, even though one does not " +
-			"already exist:" + e.getMessage());
-		}
-	    }
-	    // Connect all the links for that relation.
-	    Iterator ports = linkedPortList.iterator();
-	    while (ports.hasNext()) {
-		Port port = (Port)ports.next();
-		Object head = null;
-		if (port.getContainer().equals(getRoot())) {
-		    head = _getLocation(port);
-		} else {
-		    head = port;
-		}
+            Link link;
+            try {
+                link = new Link();
+                _linkSet.add(link);
+            }
+            catch (Exception e) {
+                throw new InternalErrorException("Failed to create " +
+                    "new link, even though one does not " +
+                    "already exist:" + e.getMessage());
+            }
+            link.setRelation(relation);
+            link.setHead(head);
+            link.setTail(tail);
+        } else {
+            // A regular relation with a diamond.
+            // Create a vertex if one is not found
+            if (rootVertex == null) {
+                try {
+                    rootVertex = new Vertex(relation,
+                                            relation.uniqueName("vertex"));
+                }
+                catch (Exception e) {
+                    throw new InternalErrorException(
+                        "Failed to create " +
+                        "new vertex, even though one does not " +
+                        "already exist:" + e.getMessage());
+                }
+            }
+            // Connect all the links for that relation.
+            Iterator ports = linkedPortList.iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                Object head = null;
+                if (port.getContainer().equals(getRoot())) {
+                    head = _getLocation(port);
+                } else {
+                    head = port;
+                }
 
-		Link link;
-		try {
-		    link = new Link();
-		    _linkSet.add(link);
-		}
-		catch (Exception e) {
-		    throw new InternalErrorException(
-			    "Failed to create " +
-			    "new link, even though one does not " +
-			    "already exist:" + e.getMessage());
-		}
-		link.setRelation(relation);
-		link.setHead(head);
-		link.setTail(rootVertex);
-	    }
-	}
+                Link link;
+                try {
+                    link = new Link();
+                    _linkSet.add(link);
+                }
+                catch (Exception e) {
+                    throw new InternalErrorException(
+                            "Failed to create " +
+                            "new link, even though one does not " +
+                            "already exist:" + e.getMessage());
+                }
+                link.setRelation(relation);
+                link.setHead(head);
+                link.setTail(rootVertex);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -530,13 +530,13 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-	    Locatable location = (Locatable)node;
-	    ComponentPort port = (ComponentPort)location.getContainer();
+            Locatable location = (Locatable)node;
+            ComponentPort port = (ComponentPort)location.getContainer();
 
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
-	    StringBuffer moml = new StringBuffer();
-	    moml.append("<deletePort name=\"" +
+            StringBuffer moml = new StringBuffer();
+            moml.append("<deletePort name=\"" +
                     port.getName(container) +
                     "\"/>\n");
             return moml.toString();
@@ -549,7 +549,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * @return The root of this graph model.
          */
         public Object getParent(Object node) {
-	    return ((Locatable)node).getContainer().getContainer();
+            return ((Locatable)node).getContainer().getContainer();
         }
 
         /**
@@ -559,79 +559,79 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * Then the iterator is constructed by
          * removing any links that do not have the given node as head.
          * @param node The node, which is assumed to be a port contained in
-	 * the root of this graph model.
-	 * @return An iterator of Link objects, all of which have
-	 * the given node as their head.
-	 */
-       	public Iterator inEdges(Object node) {
-	    Locatable location = (Locatable)node;
-	    ComponentPort port = (ComponentPort)location.getContainer();
-	    // make sure that the links to relations that we are connected to
-	    // are up to date.
+         * the root of this graph model.
+         * @return An iterator of Link objects, all of which have
+         * the given node as their head.
+         */
+               public Iterator inEdges(Object node) {
+            Locatable location = (Locatable)node;
+            ComponentPort port = (ComponentPort)location.getContainer();
+            // make sure that the links to relations that we are connected to
+            // are up to date.
 
-	    // Go through all the links, creating a list of
-	    // those we are connected to.
-	    List portLinkList = new LinkedList();
-	    Iterator links = _linkSet.iterator();
-	    while (links.hasNext()) {
-		Link link = (Link)links.next();
-		Object head = link.getHead();
-		if (head != null && head.equals(location)) {
-		    portLinkList.add(link);
-		}
-	    }
+            // Go through all the links, creating a list of
+            // those we are connected to.
+            List portLinkList = new LinkedList();
+            Iterator links = _linkSet.iterator();
+            while (links.hasNext()) {
+                Link link = (Link)links.next();
+                Object head = link.getHead();
+                if (head != null && head.equals(location)) {
+                    portLinkList.add(link);
+                }
+            }
 
-	    return portLinkList.iterator();
-	}
+            return portLinkList.iterator();
+        }
 
-	/**
-	 * Return an iterator over the edges coming out of the given node.
-	 * This iterator is constructed by looping over all the relations
-	 * that the port is connected to, and ensuring that there is a link
-	 * object for every link.  Then the iterator is constructed by
-	 * removing any links that do not have the given node as tail.
-	 * @param node The node, which is assumed to be a port contained in
-	 * the root of this graph model.
-	 * @return An iterator of Link objects, all of which have their
-	 * tail as the given node.
-	 */
-	public Iterator outEdges(Object node) {
-	    Locatable location = (Locatable)node;
-	    ComponentPort port = (ComponentPort)location.getContainer();
-	    // make sure that the links to relations that we are connected to
-	    // are up to date.
+        /**
+         * Return an iterator over the edges coming out of the given node.
+         * This iterator is constructed by looping over all the relations
+         * that the port is connected to, and ensuring that there is a link
+         * object for every link.  Then the iterator is constructed by
+         * removing any links that do not have the given node as tail.
+         * @param node The node, which is assumed to be a port contained in
+         * the root of this graph model.
+         * @return An iterator of Link objects, all of which have their
+         * tail as the given node.
+         */
+        public Iterator outEdges(Object node) {
+            Locatable location = (Locatable)node;
+            ComponentPort port = (ComponentPort)location.getContainer();
+            // make sure that the links to relations that we are connected to
+            // are up to date.
 
-	    // Go through all the links, creating a list of
-	    // those we are connected to.
-	    List portLinkList = new LinkedList();
-	    Iterator links = _linkSet.iterator();
-	    while (links.hasNext()) {
-		Link link = (Link)links.next();
-		Object tail = link.getTail();
-		if (tail != null && tail.equals(location)) {
-		    portLinkList.add(link);
-		}
-	    }
+            // Go through all the links, creating a list of
+            // those we are connected to.
+            List portLinkList = new LinkedList();
+            Iterator links = _linkSet.iterator();
+            while (links.hasNext()) {
+                Link link = (Link)links.next();
+                Object tail = link.getTail();
+                if (tail != null && tail.equals(location)) {
+                    portLinkList.add(link);
+                }
+            }
 
-	    return portLinkList.iterator();
-	}
+            return portLinkList.iterator();
+        }
 
-	/** Remove the given edge from the model
-	 */
-	public void removeNode(final Object eventSource, Object node) {
-	    Locatable location = (Locatable)node;
-	    ComponentPort port = (ComponentPort)location.getContainer();
+        /** Remove the given edge from the model
+         */
+        public void removeNode(final Object eventSource, Object node) {
+            Locatable location = (Locatable)node;
+            ComponentPort port = (ComponentPort)location.getContainer();
 
             NamedObj container = _getChangeRequestParent(port);
 
-	    StringBuffer moml = new StringBuffer();
-	    moml.append("<deletePort name=\"" +
+            StringBuffer moml = new StringBuffer();
+            moml.append("<deletePort name=\"" +
                     port.getName(container) +
                     "\"/>\n");
 
             // Note: The source is NOT the graph model.
-	    MoMLChangeRequest request =
-		new MoMLChangeRequest(this,
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(this,
                         container,
                         moml.toString());
             request.setUndoable(true);
@@ -648,7 +648,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
 
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
@@ -657,48 +657,48 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             return moml;
         }
 
-	/**
-	 * Return the number of nodes contained in
-	 * this graph or composite node.
-	 * @param composite The composite, which is assumed to be an icon.
-	 * @return The number of ports contained in the container of the icon.
-	 */
+        /**
+         * Return the number of nodes contained in
+         * this graph or composite node.
+         * @param composite The composite, which is assumed to be an icon.
+         * @return The number of ports contained in the container of the icon.
+         */
         public int getNodeCount(Object composite) {
             Locatable location = (Locatable) composite;
             return ((ComponentEntity)location.getContainer()).portList().size();
         }
 
-	/**
-	 * Return the graph parent of the given node.
-	 * @param node The node, which is assumed to be an icon.
-	 * @return The container of the Icon's container, which should be
-	 * the root of the graph.
-	 */
-	public Object getParent(Object node) {
-	    return ((Locatable)node).getContainer().getContainer();
-	}
+        /**
+         * Return the graph parent of the given node.
+         * @param node The node, which is assumed to be an icon.
+         * @return The container of the Icon's container, which should be
+         * the root of the graph.
+         */
+        public Object getParent(Object node) {
+            return ((Locatable)node).getContainer().getContainer();
+        }
 
-	/**
-	 * Return an iterator over the edges coming into the given node.
-	 * @param node The node, which is assumed to be an icon.
-	 * @return A NullIterator, since no edges are attached to icons.
-	 */
-	public Iterator inEdges(Object node) {
-	    return new NullIterator();
-	}
+        /**
+         * Return an iterator over the edges coming into the given node.
+         * @param node The node, which is assumed to be an icon.
+         * @return A NullIterator, since no edges are attached to icons.
+         */
+        public Iterator inEdges(Object node) {
+            return new NullIterator();
+        }
 
-	/**
-	 * Provide an iterator over the nodes in the
-	 * given graph or composite node. The nodes are ports, so if the
+        /**
+         * Provide an iterator over the nodes in the
+         * given graph or composite node. The nodes are ports, so if the
          * container of the node is not an entity, then an empty iterator
          * is returned.  This iterator
-	 * does not necessarily support removal operations.
-	 * @param composite The composite, which is assumed to be an icon.
-	 * @return An iterator over the ports contained in the container
-	 * of the icon.
-	 */
-	public Iterator nodes(Object composite) {
-	    Locatable location = (Locatable) composite;
+         * does not necessarily support removal operations.
+         * @param composite The composite, which is assumed to be an icon.
+         * @return An iterator over the ports contained in the container
+         * of the icon.
+         */
+        public Iterator nodes(Object composite) {
+            Locatable location = (Locatable) composite;
             Nameable container = location.getContainer();
             if (container instanceof ComponentEntity) {
                 ComponentEntity entity = (ComponentEntity)container;
@@ -706,30 +706,30 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             } else {
                 return new NullIterator();
             }
-	}
+        }
 
-	/**
-	 * Return an iterator over the edges coming out of the given node.
-	 * @param node The node, which is assumed to be an icon.
-	 * @return A NullIterator, since no edges are attached to icons.
-	 */
-	public Iterator outEdges(Object node) {
-	    return new NullIterator();
-	}
+        /**
+         * Return an iterator over the edges coming out of the given node.
+         * @param node The node, which is assumed to be an icon.
+         * @return A NullIterator, since no edges are attached to icons.
+         */
+        public Iterator outEdges(Object node) {
+            return new NullIterator();
+        }
 
-	/** Remove the given node from the model.  The node is assumed
-	 *  to be an icon.
-	 */
-	public void removeNode(final Object eventSource, Object node) {
-	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+        /** Remove the given node from the model.  The node is assumed
+         *  to be an icon.
+         */
+        public void removeNode(final Object eventSource, Object node) {
+            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
             String elementName = null;
             if (deleteObj instanceof ComponentEntity) {
                 // Object is an entity.
                 elementName = "deleteEntity";
             } else {
-		throw new InternalErrorException(
-		    "Attempt to remove a node that is not an Entity. " +
-		    "node = " + node);
+                throw new InternalErrorException(
+                    "Attempt to remove a node that is not an Entity. " +
+                    "node = " + node);
             }
 
             // Make the request in the context of the container.
@@ -746,37 +746,37 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                    this, container, moml);
             request.setUndoable(true);
             container.requestChange(request);
-	}
+        }
     }
 
     /** The model for links that connect two ports, or a port and a vertex.
      */
     public class LinkModel implements MutableEdgeModel {
 
-	/** Return true if the head of the given edge can be attached to the
-	 *  given node.
-	 *  @param edge The edge to attach, which is assumed to be a link.
-	 *  @param node The node to attach to.
-	 *  @return True if the node is a port or a vertex, or a location
-	 *  representing a port.
-	 */
-	public boolean acceptHead(Object edge, Object node) {
-	    if (node instanceof Port ||
-		node instanceof Vertex ||
-		(node instanceof Locatable &&
-		 ((Locatable)node).getContainer() instanceof Port)) {
-		return true;
-	    } else
-		return false;
-	}
+        /** Return true if the head of the given edge can be attached to the
+         *  given node.
+         *  @param edge The edge to attach, which is assumed to be a link.
+         *  @param node The node to attach to.
+         *  @return True if the node is a port or a vertex, or a location
+         *  representing a port.
+         */
+        public boolean acceptHead(Object edge, Object node) {
+            if (node instanceof Port ||
+                node instanceof Vertex ||
+                (node instanceof Locatable &&
+                 ((Locatable)node).getContainer() instanceof Port)) {
+                return true;
+            } else
+                return false;
+        }
 
-	/** Return true if the tail of the given edge can be attached to the
-	 *  given node.
-	 *  @param edge The edge to attach, which is assumed to be a link.
-	 *  @param node The node to attach to.
-	 *  @return True if the node is a port or a vertex, or a location
-	 *  representing a port.
-	 */
+        /** Return true if the tail of the given edge can be attached to the
+         *  given node.
+         *  @param edge The edge to attach, which is assumed to be a link.
+         *  @param node The node to attach to.
+         *  @return True if the node is a port or a vertex, or a location
+         *  representing a port.
+         */
         public boolean acceptTail(Object edge, Object node) {
             if (node instanceof Port ||
                     node instanceof Vertex ||
@@ -792,12 +792,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteEdgeMoML(Object edge) {
-	    final Link link = (Link)edge;
-	    NamedObj linkHead = (NamedObj)link.getHead();
+            final Link link = (Link)edge;
+            NamedObj linkHead = (NamedObj)link.getHead();
             NamedObj linkTail = (NamedObj)link.getTail();
-	    Relation linkRelation = (Relation)link.getRelation();
-	    // This moml is parsed to execute the change
-	    StringBuffer moml = new StringBuffer();
+            Relation linkRelation = (Relation)link.getRelation();
+            // This moml is parsed to execute the change
+            StringBuffer moml = new StringBuffer();
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
             CompositeEntity container =
@@ -813,114 +813,114 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         }
 
         /** Return the head node of the given edge.
-	 *  @param edge The edge, which is assumed to be a link.
-	 *  @return The node that is the head of the specified edge.
-	 */
+         *  @param edge The edge, which is assumed to be a link.
+         *  @return The node that is the head of the specified edge.
+         */
         public Object getHead(Object edge) {
             return ((Link)edge).getHead();
         }
 
-	/** Return the tail node of the specified edge.
-	 *  @param edge The edge, which is assumed to be a link.
-	 *  @return The node that is the tail of the specified edge.
-	 */
-	public Object getTail(Object edge) {
-	    return ((Link)edge).getTail();
-	}
+        /** Return the tail node of the specified edge.
+         *  @param edge The edge, which is assumed to be a link.
+         *  @return The node that is the tail of the specified edge.
+         */
+        public Object getTail(Object edge) {
+            return ((Link)edge).getTail();
+        }
 
-	/** Return true if this edge is directed.
-	 *  In this model, none of edges
-	 *  are directed, so this always returns false.
-	 *  @param edge The edge, which is assumed to be a link.
-	 *  @return False.
-	 */
-	public boolean isDirected(Object edge) {
-	    return false;
-	}
+        /** Return true if this edge is directed.
+         *  In this model, none of edges
+         *  are directed, so this always returns false.
+         *  @param edge The edge, which is assumed to be a link.
+         *  @return False.
+         */
+        public boolean isDirected(Object edge) {
+            return false;
+        }
 
-	/** Append moml to the given buffer that disconnects a link with the
-	 *  given head, tail, and relation. Names in the returned moml will be
+        /** Append moml to the given buffer that disconnects a link with the
+         *  given head, tail, and relation. Names in the returned moml will be
          *  relative to the given container.
-	 */
-	private void _unlinkMoML(
+         */
+        private void _unlinkMoML(
                 NamedObj container,
                 StringBuffer moml,
                 NamedObj linkHead,
                 NamedObj linkTail,
                 Relation relation) throws Exception {
             // If the link is already connected, then create a bit of MoML
-	    // to unlink the link.
- 	    if (linkHead != null && linkTail != null) {
-		NamedObj head = (NamedObj)getSemanticObject(linkHead);
-		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
-	        if (head instanceof ComponentPort &&
-		   tail instanceof ComponentPort) {
-		    ComponentPort headPort = (ComponentPort)head;
-		    ComponentPort tailPort = (ComponentPort)tail;
-		    // Unlinking two ports with an anonymous relation.
-		    moml.append("<unlink port=\"" +
-				headPort.getName(container) +
-				"\" relation=\"" +
-				relation.getName(container) +
-				"\"/>\n");
-		    moml.append("<unlink port=\"" +
-				tailPort.getName(container) +
-				"\" relation=\"" +
-				relation.getName(container) +
-				"\"/>\n");
-		    moml.append("<deleteRelation name=\"" +
-				relation.getName(container) +
-				"\"/>\n");
-		} else if (head instanceof ComponentPort &&
-			  linkTail instanceof Vertex) {
-		    // Unlinking a port from an existing relation.
-		    moml.append("<unlink port=\"" +
-				head.getName(container) +
-				"\" relation=\"" +
-				tail.getName(container) +
-				"\"/>\n");
-		} else if (tail instanceof ComponentPort &&
-			  linkHead instanceof Vertex) {
-		    // Unlinking a port from an existing relation.
-		    moml.append("<unlink port=\"" +
-				tail.getName(container) +
-				"\" relation=\"" +
-				head.getName(container) +
-				"\"/>\n");
-		} else {
-		    throw new RuntimeException(
-		        "Unlink failed: " +
-			"Head = " + head + ", Tail = " + tail);
+            // to unlink the link.
+             if (linkHead != null && linkTail != null) {
+                NamedObj head = (NamedObj)getSemanticObject(linkHead);
+                NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+                if (head instanceof ComponentPort &&
+                   tail instanceof ComponentPort) {
+                    ComponentPort headPort = (ComponentPort)head;
+                    ComponentPort tailPort = (ComponentPort)tail;
+                    // Unlinking two ports with an anonymous relation.
+                    moml.append("<unlink port=\"" +
+                                headPort.getName(container) +
+                                "\" relation=\"" +
+                                relation.getName(container) +
+                                "\"/>\n");
+                    moml.append("<unlink port=\"" +
+                                tailPort.getName(container) +
+                                "\" relation=\"" +
+                                relation.getName(container) +
+                                "\"/>\n");
+                    moml.append("<deleteRelation name=\"" +
+                                relation.getName(container) +
+                                "\"/>\n");
+                } else if (head instanceof ComponentPort &&
+                          linkTail instanceof Vertex) {
+                    // Unlinking a port from an existing relation.
+                    moml.append("<unlink port=\"" +
+                                head.getName(container) +
+                                "\" relation=\"" +
+                                tail.getName(container) +
+                                "\"/>\n");
+                } else if (tail instanceof ComponentPort &&
+                          linkHead instanceof Vertex) {
+                    // Unlinking a port from an existing relation.
+                    moml.append("<unlink port=\"" +
+                                tail.getName(container) +
+                                "\" relation=\"" +
+                                head.getName(container) +
+                                "\"/>\n");
+                } else {
+                    throw new RuntimeException(
+                        "Unlink failed: " +
+                        "Head = " + head + ", Tail = " + tail);
                 }
-	    } else {
-		// No unlinking to do.
-	    }
-	}
+            } else {
+                // No unlinking to do.
+            }
+        }
 
-	/** Append moml to the given buffer that connects a link with the
-	 *  given head, tail, and relation.  Names in the returned moml will be
+        /** Append moml to the given buffer that connects a link with the
+         *  given head, tail, and relation.  Names in the returned moml will be
          *  relative to the given container.  This may require adding an
-	 *  anonymous relation to the ptolemy model.
+         *  anonymous relation to the ptolemy model.
          *  If no relation need be added, then
-	 *  null is returned.
-	 */
-	private String _linkMoML(
+         *  null is returned.
+         */
+        private String _linkMoML(
                 NamedObj container,
                 StringBuffer moml,
                 StringBuffer failmoml,
                 NamedObj linkHead,
                 NamedObj linkTail) throws Exception {
-	    if (linkHead != null && linkTail != null) {
-		NamedObj head = (NamedObj)getSemanticObject(linkHead);
-		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
-	        if (head instanceof ComponentPort &&
-		   tail instanceof ComponentPort) {
-		    ComponentPort headPort = (ComponentPort)head;
-		    ComponentPort tailPort = (ComponentPort)tail;
+            if (linkHead != null && linkTail != null) {
+                NamedObj head = (NamedObj)getSemanticObject(linkHead);
+                NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+                if (head instanceof ComponentPort &&
+                   tail instanceof ComponentPort) {
+                    ComponentPort headPort = (ComponentPort)head;
+                    ComponentPort tailPort = (ComponentPort)tail;
                     CompositeEntity ptolemyModel = getPtolemyModel();
-		    // Linking two ports with a new relation.
-		    String relationName =
-			ptolemyModel.uniqueName("relation");
+                    // Linking two ports with a new relation.
+                    String relationName =
+                        ptolemyModel.uniqueName("relation");
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
                     if (ptolemyModel != container) {
@@ -931,28 +931,28 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         failmoml.append(contextString);
                     }
                     // Note that we use no class so that we use the container's
-		    // factory method when this gets parsed
+                    // factory method when this gets parsed
                     moml.append("<relation name=\"" + relationName + "\"/>\n");
-		    moml.append("<link port=\"" +
+                    moml.append("<link port=\"" +
                             headPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
-		    moml.append("<link port=\"" +
+                    moml.append("<link port=\"" +
                             tailPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 
-		    // Record moml so that we can blow away these
-		    // links in case we can't create them
+                    // Record moml so that we can blow away these
+                    // links in case we can't create them
                     failmoml.append("<unlink port=\"" +
                             headPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
-		    failmoml.append("<unlink port=\"" +
+                    failmoml.append("<unlink port=\"" +
                             tailPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
-		    failmoml.append("<deleteRelation name=\"" +
+                    failmoml.append("<deleteRelation name=\"" +
                             relationName + "\"/>\n");
                     // close the context
                     if (ptolemyModel != container) {
@@ -967,68 +967,68 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     } else {
                         return relationName;
                     }
-		} else if (head instanceof ComponentPort &&
-			  linkTail instanceof Vertex) {
-		    // Linking a port to an existing relation.
-		    moml.append("<link port=\"" +
-				head.getName(container) +
-				"\" relation=\"" +
-				tail.getName(container) +
-				"\"/>\n");
-		    return tail.getName(container);
-		} else if (tail instanceof ComponentPort &&
-			  linkHead instanceof Vertex) {
-		    // Linking a port to an existing relation.
-		    moml.append("<link port=\"" +
-				tail.getName(container) +
-				"\" relation=\"" +
-				head.getName(container) +
-				"\"/>\n");
-		    return head.getName(container);
-		} else {
-		    throw new RuntimeException(
-		        "Link failed: " +
-			"Head = " + head + ", Tail = " + tail);
-		}
-	    } else {
-		// No Linking to do.
-		return null;
-	    }
-	}
+                } else if (head instanceof ComponentPort &&
+                          linkTail instanceof Vertex) {
+                    // Linking a port to an existing relation.
+                    moml.append("<link port=\"" +
+                                head.getName(container) +
+                                "\" relation=\"" +
+                                tail.getName(container) +
+                                "\"/>\n");
+                    return tail.getName(container);
+                } else if (tail instanceof ComponentPort &&
+                          linkHead instanceof Vertex) {
+                    // Linking a port to an existing relation.
+                    moml.append("<link port=\"" +
+                                tail.getName(container) +
+                                "\" relation=\"" +
+                                head.getName(container) +
+                                "\"/>\n");
+                    return head.getName(container);
+                } else {
+                    throw new RuntimeException(
+                        "Link failed: " +
+                        "Head = " + head + ", Tail = " + tail);
+                }
+            } else {
+                // No Linking to do.
+                return null;
+            }
+        }
 
-	/** Connect the given edge to the given head node.
-	 *  This class queues a new change request with the ptolemy model
-	 *  to make this modification.
-	 *  @param edge The edge, which is assumed to be a link.
-	 *  @param newLinkhead The new head for the edge, which is assumed to
-	 *  be a location representing a port, a port or a vertex.	 */
-	public void setHead(final Object edge, final Object newLinkHead) {
-	    final Link link = (Link)edge;
-	    final NamedObj linkHead = (NamedObj)link.getHead();
-	    final NamedObj linkTail = (NamedObj)link.getTail();
-	    Relation linkRelation = (Relation)link.getRelation();
-	    // This moml is parsed to execute the change
-	    final StringBuffer moml = new StringBuffer();
+        /** Connect the given edge to the given head node.
+         *  This class queues a new change request with the ptolemy model
+         *  to make this modification.
+         *  @param edge The edge, which is assumed to be a link.
+         *  @param newLinkhead The new head for the edge, which is assumed to
+         *  be a location representing a port, a port or a vertex.         */
+        public void setHead(final Object edge, final Object newLinkHead) {
+            final Link link = (Link)edge;
+            final NamedObj linkHead = (NamedObj)link.getHead();
+            final NamedObj linkTail = (NamedObj)link.getTail();
+            Relation linkRelation = (Relation)link.getRelation();
+            // This moml is parsed to execute the change
+            final StringBuffer moml = new StringBuffer();
             // This moml is parsed in case the change fails.
-	    final StringBuffer failmoml = new StringBuffer();
-	    moml.append("<group>\n");
-	    failmoml.append("<group>\n");
+            final StringBuffer failmoml = new StringBuffer();
+            moml.append("<group>\n");
+            failmoml.append("<group>\n");
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
             final CompositeEntity container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
-	    String relationName = "";
+            String relationName = "";
 
-	    try {
-		// create moml to unlink any existing.
-		_unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
+            try {
+                // create moml to unlink any existing.
+                _unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
 
-		// create moml to make the new links.
-		relationName =
-		    _linkMoML(container, moml, failmoml,
-			      (NamedObj)newLinkHead, linkTail);
-	    } catch (Exception ex) {
+                // create moml to make the new links.
+                relationName =
+                    _linkMoML(container, moml, failmoml,
+                              (NamedObj)newLinkHead, linkTail);
+            } catch (Exception ex) {
                 // The link is bad... remove it.
                 _linkSet.remove(link);
                 link.setHead(null);
@@ -1036,12 +1036,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 dispatchGraphEvent(new GraphEvent(
                         ActorGraphModel.this,
                         GraphEvent.STRUCTURE_CHANGED, getRoot()));
-	    }
+            }
 
-	    moml.append("</group>\n");
-	    failmoml.append("</group>\n");
+            moml.append("</group>\n");
+            failmoml.append("</group>\n");
 
-	    final String relationNameToAdd = relationName;
+            final String relationNameToAdd = relationName;
 
             // Here the source IS the graph model, because we need to
             // handle the event dispatch specially:  An event is only
@@ -1049,16 +1049,16 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // This rather obnoxious hack is here because edge creation
             // is tricky and we can't rerender the edge while we are dragging
             // it.
-	    MoMLChangeRequest request =
-		new MoMLChangeRequest(ActorGraphModel.this,
-				      container,
-				      moml.toString()) {
-		    protected void _execute() throws Exception {
-			super._execute();
-			link.setHead(newLinkHead);
-			if (relationNameToAdd != null) {
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(ActorGraphModel.this,
+                                      container,
+                                      moml.toString()) {
+                    protected void _execute() throws Exception {
+                        super._execute();
+                        link.setHead(newLinkHead);
+                        if (relationNameToAdd != null) {
                             ComponentRelation relation =
-			    (ComponentRelation)container.getRelation(
+                            (ComponentRelation)container.getRelation(
                                     relationNameToAdd);
                             if (relation == null)
                             throw new InternalErrorException(
@@ -1066,15 +1066,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                                     + relationNameToAdd
                                     + " in context "
                                     + container);
-      			    link.setRelation(relation);
-			} else {
-			    link.setRelation(null);
-			}
-		    }
-		};
+                                  link.setRelation(relation);
+                        } else {
+                            link.setRelation(null);
+                        }
+                    }
+                };
 
-	    // Handle what happens if the mutation fails.
-	    request.addChangeListener(new LinkChangeListener(link,
+            // Handle what happens if the mutation fails.
+            request.addChangeListener(new LinkChangeListener(link,
                     container,
                     failmoml));
 
@@ -1082,42 +1082,42 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             container.requestChange(request);
         }
 
-	/** Connect the given edge to the given tail node.
-	 *  This class queues a new change request with the ptolemy model
-	 *  to make this modification.
-	 *  @param edge The edge, which is assumed to be a link.
-	 *  @param newLinkTail The new tail for the edge, which is
-	 *  assumed to be a location representing a port, a port or a
-	 *  vertex.
-	 */
-	public void setTail(final Object edge, final Object newLinkTail) {
-	    final Link link = (Link)edge;
-	    final NamedObj linkHead = (NamedObj)link.getHead();
-	    final NamedObj linkTail = (NamedObj)link.getTail();
-	    Relation linkRelation = (Relation)link.getRelation();
-	    // This moml is parsed to execute the change
-	    final StringBuffer moml = new StringBuffer();
-	    // This moml is parsed in case the change fails.
-	    final StringBuffer failmoml = new StringBuffer();
-	    moml.append("<group>\n");
-	    failmoml.append("<group>\n");
+        /** Connect the given edge to the given tail node.
+         *  This class queues a new change request with the ptolemy model
+         *  to make this modification.
+         *  @param edge The edge, which is assumed to be a link.
+         *  @param newLinkTail The new tail for the edge, which is
+         *  assumed to be a location representing a port, a port or a
+         *  vertex.
+         */
+        public void setTail(final Object edge, final Object newLinkTail) {
+            final Link link = (Link)edge;
+            final NamedObj linkHead = (NamedObj)link.getHead();
+            final NamedObj linkTail = (NamedObj)link.getTail();
+            Relation linkRelation = (Relation)link.getRelation();
+            // This moml is parsed to execute the change
+            final StringBuffer moml = new StringBuffer();
+            // This moml is parsed in case the change fails.
+            final StringBuffer failmoml = new StringBuffer();
+            moml.append("<group>\n");
+            failmoml.append("<group>\n");
 
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
             final CompositeEntity container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
-	    String relationName = "";
+            String relationName = "";
 
-	    try {
-		// create moml to unlink any existing.
-		_unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
+            try {
+                // create moml to unlink any existing.
+                _unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
 
-		// create moml to make the new links.
-		relationName =
-		    _linkMoML(container, moml, failmoml,
-			      linkHead, (NamedObj)newLinkTail);
-	    } catch (Exception ex) {
+                // create moml to make the new links.
+                relationName =
+                    _linkMoML(container, moml, failmoml,
+                              linkHead, (NamedObj)newLinkTail);
+            } catch (Exception ex) {
                 // The link is bad... remove it.
                 _linkSet.remove(link);
                 link.setHead(null);
@@ -1125,12 +1125,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 dispatchGraphEvent(new GraphEvent(
                         ActorGraphModel.this,
                         GraphEvent.STRUCTURE_CHANGED, getRoot()));
-	    }
+            }
 
-	    moml.append("</group>\n");
-	    failmoml.append("</group>\n");
+            moml.append("</group>\n");
+            failmoml.append("</group>\n");
 
-	    final String relationNameToAdd = relationName;
+            final String relationNameToAdd = relationName;
 
             // Here the source IS the graph model, because we need to
             // handle the event dispatch specially:  An event is only
@@ -1138,14 +1138,14 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // This rather obnoxious hack is here because edge creation
             // is tricky and we can't rerender the edge while we are dragging
             // it.
-	    MoMLChangeRequest request =
-		new MoMLChangeRequest(ActorGraphModel.this,
-				      container,
-				      moml.toString()) {
-		   protected void _execute() throws Exception {
-		       super._execute();
-		       link.setTail(newLinkTail);
-		       if (relationNameToAdd != null) {
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(ActorGraphModel.this,
+                                      container,
+                                      moml.toString()) {
+                   protected void _execute() throws Exception {
+                       super._execute();
+                       link.setTail(newLinkTail);
+                       if (relationNameToAdd != null) {
                            ComponentRelation relation =
                            (ComponentRelation)container.getRelation(
                                    relationNameToAdd);
@@ -1156,20 +1156,20 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                                    + " in context "
                                    + container);
                            link.setRelation(relation);
-		       } else {
-			   link.setRelation(null);
-		       }
-		   }
-	       };
+                       } else {
+                           link.setRelation(null);
+                       }
+                   }
+               };
 
-	    // Handle what happens if the mutation fails.
-	    request.addChangeListener(new LinkChangeListener(link,
+            // Handle what happens if the mutation fails.
+            request.addChangeListener(new LinkChangeListener(link,
                     container,
                     failmoml));
 
-	    request.setUndoable(true);
-	    container.requestChange(request);
-	}
+            request.setUndoable(true);
+            container.requestChange(request);
+        }
 
         /** This change listener is responsible for dispatching graph events
          *  when an edge is moved.  It works the same for heads and tails.
@@ -1238,7 +1238,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
 
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
@@ -1247,104 +1247,104 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             return moml;
         }
 
-	/**
-	 * Return the graph parent of the given node.
-	 * @param node The node, which is assumed to be a port.
-	 * @return The (presumably unique) icon contained in the port's
-	 * container.
-	 */
-	public Object getParent(Object node) {
-	    ComponentPort port = (ComponentPort)node;
-	    Entity entity = (Entity)port.getContainer();
-	    if (entity == null) return null;
-	    List locationList = entity.attributeList(Locatable.class);
-	    if (locationList.size() > 0) {
-		return locationList.get(0);
-	    } else {
-		throw new InternalErrorException(
-		    "Found an entity that does not contain an icon.");
-	    }
-	}
+        /**
+         * Return the graph parent of the given node.
+         * @param node The node, which is assumed to be a port.
+         * @return The (presumably unique) icon contained in the port's
+         * container.
+         */
+        public Object getParent(Object node) {
+            ComponentPort port = (ComponentPort)node;
+            Entity entity = (Entity)port.getContainer();
+            if (entity == null) return null;
+            List locationList = entity.attributeList(Locatable.class);
+            if (locationList.size() > 0) {
+                return locationList.get(0);
+            } else {
+                throw new InternalErrorException(
+                    "Found an entity that does not contain an icon.");
+            }
+        }
 
-	/**
-	 * Return an iterator over the edges coming into the given node.
-	 * This method first ensures that there is a link
-	 * object for every link.  Then the iterator is constructed by
-	 * removing any links that do not have the given node as head.
-	 * @param node The node, which is assumed to be a port contained in
-	 * the root of this graph model.
-	 * @return An iterator of Link objects, all of which have their
-	 * head as the given node.
-	 */
-       	public Iterator inEdges(Object node) {
-	    ComponentPort port = (ComponentPort)node;
+        /**
+         * Return an iterator over the edges coming into the given node.
+         * This method first ensures that there is a link
+         * object for every link.  Then the iterator is constructed by
+         * removing any links that do not have the given node as head.
+         * @param node The node, which is assumed to be a port contained in
+         * the root of this graph model.
+         * @return An iterator of Link objects, all of which have their
+         * head as the given node.
+         */
+               public Iterator inEdges(Object node) {
+            ComponentPort port = (ComponentPort)node;
 
-	    // Go through all the links, creating a list of
-	    // those we are connected to.
-	    List portLinkList = new LinkedList();
-	    Iterator links = _linkSet.iterator();
-	    while (links.hasNext()) {
-		Link link = (Link)links.next();
-		Object head = link.getHead();
-		if (head != null && head.equals(port)) {
-		    portLinkList.add(link);
-		}
-	    }
-	    return portLinkList.iterator();
-	}
+            // Go through all the links, creating a list of
+            // those we are connected to.
+            List portLinkList = new LinkedList();
+            Iterator links = _linkSet.iterator();
+            while (links.hasNext()) {
+                Link link = (Link)links.next();
+                Object head = link.getHead();
+                if (head != null && head.equals(port)) {
+                    portLinkList.add(link);
+                }
+            }
+            return portLinkList.iterator();
+        }
 
-	/**
-	 * Return an iterator over the edges coming out of the given node.
-	 * This iterator is constructed by looping over all the relations
-	 * that the port is connected to, and ensuring that there is a link
-	 * object for every link.  Then the iterator is constructed by
-	 * removing any links that do not have the given node as tail.
-	 * @param node The node, which is assumed to be a port contained in
-	 * the root of this graph model.
-	 * @return An iterator of Link objects, all of which have their
-	 * tail as the given node.
-	 */
-	public Iterator outEdges(Object node) {
-	    ComponentPort port = (ComponentPort)node;
+        /**
+         * Return an iterator over the edges coming out of the given node.
+         * This iterator is constructed by looping over all the relations
+         * that the port is connected to, and ensuring that there is a link
+         * object for every link.  Then the iterator is constructed by
+         * removing any links that do not have the given node as tail.
+         * @param node The node, which is assumed to be a port contained in
+         * the root of this graph model.
+         * @return An iterator of Link objects, all of which have their
+         * tail as the given node.
+         */
+        public Iterator outEdges(Object node) {
+            ComponentPort port = (ComponentPort)node;
 
-	    // Go through all the links, creating a list of
-	    // those we are connected to.
-	    List portLinkList = new LinkedList();
-	    Iterator links = _linkSet.iterator();
-	    while (links.hasNext()) {
-		Link link = (Link)links.next();
-		Object tail = link.getTail();
-		if (tail != null && tail.equals(port)) {
-		    portLinkList.add(link);
-		}
-	    }
-	    return portLinkList.iterator();
-	}
+            // Go through all the links, creating a list of
+            // those we are connected to.
+            List portLinkList = new LinkedList();
+            Iterator links = _linkSet.iterator();
+            while (links.hasNext()) {
+                Link link = (Link)links.next();
+                Object tail = link.getTail();
+                if (tail != null && tail.equals(port)) {
+                    portLinkList.add(link);
+                }
+            }
+            return portLinkList.iterator();
+        }
 
-	/** Remove the given node from the model.  The node is assumed
-	 *  to be a port.
-	 *  This class queues a new change request with the ptolemy model
-	 *  to make this modification.
-	 */
-	public void removeNode(final Object eventSource, Object node) {
-	    ComponentPort port = (ComponentPort)node;
+        /** Remove the given node from the model.  The node is assumed
+         *  to be a port.
+         *  This class queues a new change request with the ptolemy model
+         *  to make this modification.
+         */
+        public void removeNode(final Object eventSource, Object node) {
+            ComponentPort port = (ComponentPort)node;
 
             NamedObj container = _getChangeRequestParent(port);
 
-	    // Delete the port.
-	    StringBuffer moml = new StringBuffer();
-	    moml.append("<deletePort name=\"" +
+            // Delete the port.
+            StringBuffer moml = new StringBuffer();
+            moml.append("<deletePort name=\"" +
                     port.getName(container) +
                     "\"/>\n");
 
             // Note: The source is NOT the graph model.
-	    MoMLChangeRequest request =
-		new MoMLChangeRequest(this,
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(this,
                         container,
                         moml.toString());
-	    request.setUndoable(true);
-	    container.requestChange(request);
-	}
+            request.setUndoable(true);
+            container.requestChange(request);
+        }
     }
 
     /** The model for vertexes that are contained within the relations of the
@@ -1356,7 +1356,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-	    ComponentRelation deleteObj =
+            ComponentRelation deleteObj =
                 (ComponentRelation)((Vertex)node).getContainer();
 
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
@@ -1366,100 +1366,100 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             return moml;
         }
 
-	/**
-	 * Return the graph parent of the given node.
-	 * @param node The node, which is assumed to be a Vertex.
-	 * @return The container of the vertex's container, which is
-	 * presumably the root of the graph model.
-	 */
-	public Object getParent(Object node) {
+        /**
+         * Return the graph parent of the given node.
+         * @param node The node, which is assumed to be a Vertex.
+         * @return The container of the vertex's container, which is
+         * presumably the root of the graph model.
+         */
+        public Object getParent(Object node) {
             // Undo: If we use automatic layout, then we need to check to
             // see if the container is null here.
             if (((Vertex)node).getContainer() == null) {
                 return null;
             }
-	    return ((Vertex)node).getContainer().getContainer();
-	}
+            return ((Vertex)node).getContainer().getContainer();
+        }
 
-	/**
-	 * Return an iterator over the edges coming into the given node.
-	 * This method ensures that there is a link object for
-	 * every link to the relation contained by the vertex.
-	 * Then the iterator is constructed by
-	 * removing any links that do not have the given node as head.
-	 * @param node The node, which is assumed to be a vertex contained in
-	 * a relation.
-	 * @return An iterator of Link objects, all of which have their
-	 * head as the given node.
-	 */
-       	public Iterator inEdges(Object node) {
-	    Vertex vertex = (Vertex) node;
+        /**
+         * Return an iterator over the edges coming into the given node.
+         * This method ensures that there is a link object for
+         * every link to the relation contained by the vertex.
+         * Then the iterator is constructed by
+         * removing any links that do not have the given node as head.
+         * @param node The node, which is assumed to be a vertex contained in
+         * a relation.
+         * @return An iterator of Link objects, all of which have their
+         * head as the given node.
+         */
+               public Iterator inEdges(Object node) {
+            Vertex vertex = (Vertex) node;
 
-	    // Go through all the links, creating a list of
-	    // those we are connected to.
-	    List vertexLinkList = new LinkedList();
-	    Iterator links = _linkSet.iterator();
-	    while (links.hasNext()) {
-		Link link = (Link)links.next();
-		Object head = link.getHead();
-		if (head != null && head.equals(vertex)) {
-		    vertexLinkList.add(link);
-		}
-	    }
-	    return vertexLinkList.iterator();
-	}
+            // Go through all the links, creating a list of
+            // those we are connected to.
+            List vertexLinkList = new LinkedList();
+            Iterator links = _linkSet.iterator();
+            while (links.hasNext()) {
+                Link link = (Link)links.next();
+                Object head = link.getHead();
+                if (head != null && head.equals(vertex)) {
+                    vertexLinkList.add(link);
+                }
+            }
+            return vertexLinkList.iterator();
+        }
 
-	/**
-	 * Return an iterator over the edges coming into the given node.
-	 * This method ensures that there is a link object for
-	 * every link to the relation contained by the vertex.
-	 * Then the iterator is constructed by
-	 * removing any links that do not have the given node as head.
-	 * @param node The node, which is assumed to be a vertex contained in
-	 * a relation.
-	 * @return An iterator of Link objects, all of which have their
-	 * tail as the given node.
-	 */
-	public Iterator outEdges(Object node) {
-	    Vertex vertex = (Vertex) node;
+        /**
+         * Return an iterator over the edges coming into the given node.
+         * This method ensures that there is a link object for
+         * every link to the relation contained by the vertex.
+         * Then the iterator is constructed by
+         * removing any links that do not have the given node as head.
+         * @param node The node, which is assumed to be a vertex contained in
+         * a relation.
+         * @return An iterator of Link objects, all of which have their
+         * tail as the given node.
+         */
+        public Iterator outEdges(Object node) {
+            Vertex vertex = (Vertex) node;
 
-	    // Go through all the links, creating a list of
-	    // those we are connected to.
-	    List vertexLinkList = new LinkedList();
-	    Iterator links = _linkSet.iterator();
-	    while (links.hasNext()) {
-		Link link = (Link)links.next();
-		Object tail = link.getTail();
-		if (tail != null && tail.equals(vertex)) {
-		    vertexLinkList.add(link);
-		}
-	    }
-	    return vertexLinkList.iterator();
-	}
+            // Go through all the links, creating a list of
+            // those we are connected to.
+            List vertexLinkList = new LinkedList();
+            Iterator links = _linkSet.iterator();
+            while (links.hasNext()) {
+                Link link = (Link)links.next();
+                Object tail = link.getTail();
+                if (tail != null && tail.equals(vertex)) {
+                    vertexLinkList.add(link);
+                }
+            }
+            return vertexLinkList.iterator();
+        }
 
-	/** Remove the given node from the model.  The node is assumed
-	 *  to be a vertex contained by a relation.
-	 *  This class queues a new change request with the ptolemy model
-	 *  to make this modification.
-	 */
-	public void removeNode(final Object eventSource, Object node) {
-	    ComponentRelation relation =
-		(ComponentRelation)((Vertex)node).getContainer();
+        /** Remove the given node from the model.  The node is assumed
+         *  to be a vertex contained by a relation.
+         *  This class queues a new change request with the ptolemy model
+         *  to make this modification.
+         */
+        public void removeNode(final Object eventSource, Object node) {
+            ComponentRelation relation =
+                (ComponentRelation)((Vertex)node).getContainer();
 
             NamedObj container = _getChangeRequestParent(relation);
 
-	    // Delete the relation.
-	    StringBuffer moml = new StringBuffer();
-	    moml.append("<deleteRelation name=\"" +
-			relation.getName(container) +
-			"\"/>\n");
+            // Delete the relation.
+            StringBuffer moml = new StringBuffer();
+            moml.append("<deleteRelation name=\"" +
+                        relation.getName(container) +
+                        "\"/>\n");
 
             // Note: The source is NOT the graph mode.
-	    MoMLChangeRequest request =
-		new MoMLChangeRequest(this,
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(this,
                         container, moml.toString());
-       	    request.setUndoable(true);
-       	    container.requestChange(request);
-	}
+                   request.setUndoable(true);
+                   container.requestChange(request);
+        }
     }
 }

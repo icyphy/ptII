@@ -87,7 +87,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
         public GeneratorTableauEditorFactory(NamedObj _container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(_container, name);
-	}
+        }
         /** Create an editor for configuring the specified object with the
          *  specified parent window.
          *  @param object The object to configure.

@@ -76,7 +76,7 @@ public class DEReceiver extends AbstractReceiver {
     /** Construct an empty DEReceiver with no container.
      */
     public DEReceiver() {
-	super();
+        super();
     }
 
     /** Construct an empty DEReceiver with the specified container.
@@ -180,7 +180,7 @@ public class DEReceiver extends AbstractReceiver {
      *  the put() method will not result in an exception.
      */
     public boolean hasRoom(int tokens) {
-	return true;
+        return true;
     }
 
     /** Return true if there are tokens available to the get() method.

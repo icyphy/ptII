@@ -191,7 +191,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
         }
 
         // Superclass cannot provide a controller. Use defaults.
-	if (object instanceof Vertex) {
+        if (object instanceof Vertex) {
             return _relationController;
         } else if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
@@ -237,14 +237,14 @@ public class ActorViewerGraphController extends RunnableGraphController {
      */
     protected void _createControllers() {
         super._createControllers();
-	_attributeController = new AttributeController(this,
+        _attributeController = new AttributeController(this,
                  AttributeController.PARTIAL);
-	_entityController = new ActorController(this,
+        _entityController = new ActorController(this,
                  AttributeController.PARTIAL);
-	_entityPortController = new IOPortController(this,
+        _entityPortController = new IOPortController(this,
                  AttributeController.PARTIAL);
-	_relationController = new RelationController(this);
-	_linkController = new LinkController(this);
+        _relationController = new RelationController(this);
+        _linkController = new LinkController(this);
     }
 
     /** Initialize all interaction on the graph pane. This method
@@ -273,7 +273,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
         // Link controller is not a NamedObjController, so it has
         // to be done directly.
-	_selectionDragger.addSelectionInteractor(
+        _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_linkController.getEdgeInteractor());
 
         super.initializeInteraction();

@@ -58,22 +58,22 @@ public class TestTypeListener implements TypeListener {
      *  @return A String including the type change information.
      */
     public String getMessage() {
-	String temp = new String(_message);
-	_message = "no type change";
-	return temp;
+        String temp = new String(_message);
+        _message = "no type change";
+        return temp;
     }
 
     /** Notify that the type of a port is changed.
      *  @param event The type change event.
      */
     public void typeChanged(TypeEvent event) {
-	_message = event.getSource().getFullName() + "/";
+        _message = event.getSource().getFullName() + "/";
 
-	Type oldtype = event.getOldType();
-	_message += oldtype.toString() + "/";
+        Type oldtype = event.getOldType();
+        _message += oldtype.toString() + "/";
 
-	Type newtype = event.getNewType();
-	_message += newtype.toString();
+        Type newtype = event.getNewType();
+        _message += newtype.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

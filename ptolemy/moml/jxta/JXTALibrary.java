@@ -311,11 +311,11 @@ public class JXTALibrary extends EntityLibrary
                     is.read(buff);
 
                     Class cls = classLoader.myDefineClass(null, buff, 0, len);
-		    try {
-			_saveClass(cls, buff);
-	 	    } catch (IOException ex) {
-			ex.printStackTrace();
-		    }
+                    try {
+                        _saveClass(cls, buff);
+                     } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                     String clsName = cls.getName();
                     if (cls != null) {
                         System.out.println("created class object " + clsName);
@@ -719,19 +719,19 @@ public class JXTALibrary extends EntityLibrary
 
     private void _saveClass(Class cls, byte[] buf) throws IOException {
     String clsName = cls.getName();
-	char fileSeparator = System.getProperty("file.separator").charAt(0);
+        char fileSeparator = System.getProperty("file.separator").charAt(0);
     String pathName = clsName.replace('.', fileSeparator);
-	String pathDir = pathName.substring(0, pathName.lastIndexOf(fileSeparator));
-	//String rootPath = System.getProperty("ptolemy.ptII.dir", ".");
+        String pathDir = pathName.substring(0, pathName.lastIndexOf(fileSeparator));
+        //String rootPath = System.getProperty("ptolemy.ptII.dir", ".");
     String rootPath = System.getProperty("user.dir");
-	File destDir = new File(rootPath + fileSeparator + pathDir);
-	if (!destDir.exists()) {
+        File destDir = new File(rootPath + fileSeparator + pathDir);
+        if (!destDir.exists()) {
             destDir.mkdirs();
-	}
-	File clsFile = new File(destDir, pathName.substring(pathName.lastIndexOf(fileSeparator) + 1, pathName.length()) + ".class");
-	FileOutputStream output = new FileOutputStream(clsFile);
-	output.write(buf);
-	output.close();
+        }
+        File clsFile = new File(destDir, pathName.substring(pathName.lastIndexOf(fileSeparator) + 1, pathName.length()) + ".class");
+        FileOutputStream output = new FileOutputStream(clsFile);
+        output.write(buf);
+        output.close();
     }
 
     ///////////////////////////////////////////////////////////////////

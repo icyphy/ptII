@@ -73,7 +73,7 @@ public class GetInfo {
             automata[i] = (InterfaceAutomaton)parser.parse(url, url);
             automata[i].addPorts();
 
-	    System.out.println("\n" + automata[i].getInfo() + "\n");
+            System.out.println("\n" + automata[i].getInfo() + "\n");
         }
     }
 

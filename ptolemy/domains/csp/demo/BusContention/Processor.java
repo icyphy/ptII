@@ -167,21 +167,21 @@ public class Processor extends CSPActor {
         requestOutput.broadcast(iToken);
 
         // State 2
-	try {
-	    Thread.sleep(300);
-	} catch( InterruptedException e ) {
+        try {
+            Thread.sleep(300);
+        } catch( InterruptedException e ) {
             throw new TerminateProcessException(this, "Terminated");
-	}
+        }
         BooleanToken bToken = (BooleanToken)requestInput.get(0);
 
         if ( bToken.booleanValue() ) {
             // State 3
             _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
-	    try {
-	        Thread.sleep(300);
-	    } catch( InterruptedException e ) {
+            try {
+                Thread.sleep(300);
+            } catch( InterruptedException e ) {
                 throw new TerminateProcessException(this, "Terminated");
-	    }
+            }
             if ( read ) {
                 memoryInput.get(0);
             }
@@ -192,13 +192,13 @@ public class Processor extends CSPActor {
             return;
         } else {
             // State 4
-	    _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
-	    try {
-	        Thread.sleep(300);
-	    } catch( InterruptedException e ) {
+            _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
+            try {
+                Thread.sleep(300);
+            } catch( InterruptedException e ) {
                 throw new TerminateProcessException(this, "Terminated");
-	    }
-	}
+            }
+        }
 
         accessMemory(read);
     }

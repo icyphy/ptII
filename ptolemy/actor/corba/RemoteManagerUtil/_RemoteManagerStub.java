@@ -10,17 +10,17 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 public class _RemoteManagerStub extends org.omg.CORBA.portable.ObjectImpl implements ptolemy.actor.corba.RemoteManagerUtil.RemoteManager
 {
 
 
   /* Mirror the execute() method of Ptolemy II
-		 * manager interface.
-		 * @exception CorbaIllegalActionException If the
-		 *   method is an illegal action of the actor.
-		 */
+                 * manager interface.
+                 * @exception CorbaIllegalActionException If the
+                 *   method is an illegal action of the actor.
+                 */
   public void execute () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;
@@ -43,10 +43,10 @@ public class _RemoteManagerStub extends org.omg.CORBA.portable.ObjectImpl implem
 
 
   /* Mirror the initialize() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void initialize () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;
@@ -69,10 +69,10 @@ public class _RemoteManagerStub extends org.omg.CORBA.portable.ObjectImpl implem
 
 
   /* Mirror the pause() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void pause () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;
@@ -95,10 +95,10 @@ public class _RemoteManagerStub extends org.omg.CORBA.portable.ObjectImpl implem
 
 
   /* Mirror the resume() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void resume () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;
@@ -121,10 +121,10 @@ public class _RemoteManagerStub extends org.omg.CORBA.portable.ObjectImpl implem
 
 
   /* Mirror the startRun() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void startRun () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;
@@ -147,10 +147,10 @@ public class _RemoteManagerStub extends org.omg.CORBA.portable.ObjectImpl implem
 
 
   /* Mirror the stop() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void stop () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;
@@ -173,10 +173,10 @@ public class _RemoteManagerStub extends org.omg.CORBA.portable.ObjectImpl implem
 
 
   /* Mirror the terminate() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void terminate () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;
@@ -199,12 +199,12 @@ public class _RemoteManagerStub extends org.omg.CORBA.portable.ObjectImpl implem
 
 
   /* Mirror the terminate() method of Ptolemy II
-  		 * remoteManager interface.
-		 * @exception CorbaIllegalActionException If the
-		 *  query of parameter is not supported by the actor.
-		 * @exception CorbaUnknowParamException If the parameter
-		 *  name is not known by the actor.
-		 */
+                   * remoteManager interface.
+                 * @exception CorbaIllegalActionException If the
+                 *  query of parameter is not supported by the actor.
+                 * @exception CorbaUnknowParamException If the parameter
+                 *  name is not known by the actor.
+                 */
   public void changeModel (String model) throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException, ptolemy.actor.corba.RemoteManagerUtil.CorbaUnknownParamException
   {
     org.omg.CORBA.portable.InputStream $in = null;

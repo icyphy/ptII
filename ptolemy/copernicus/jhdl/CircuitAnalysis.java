@@ -85,48 +85,48 @@ public class CircuitAnalysis {
      */
     public CircuitAnalysis(Entity entity, SootClass theClass)
     throws IllegalActionException {
-	DirectedGraph graph = new DirectedGraph();
+        DirectedGraph graph = new DirectedGraph();
         _graph = graph;
 
         System.out.println("className = " + entity.getClass().getName());
 
-	//Handle cases that have been predefined and don't need analyzing
-	//  	if (_pd.isDefined(entity)){
-	//  	  try {
-	//  	    _pd.convertEntityToGraph(entity, graph);
-	//  	  } catch (IllegalActionException e){
-	//  	    System.out.println("Error in CircuitAnalysis: "+e);
-	//  	  }
-	//  	  return;
-	//  	}
+        //Handle cases that have been predefined and don't need analyzing
+        //          if (_pd.isDefined(entity)){
+        //            try {
+        //              _pd.convertEntityToGraph(entity, graph);
+        //            } catch (IllegalActionException e){
+        //              System.out.println("Error in CircuitAnalysis: "+e);
+        //            }
+        //            return;
+        //          }
 
         // Analyze the bodies of the appropriate methods for things that
         // are not sample delays.
         _requiredNodeMap = new HashMap();
 
-	DirectedGraph prefire_graph=null;
-	DirectedGraph fire_graph=null;
-	DirectedGraph postfire_graph=null;
+        DirectedGraph prefire_graph=null;
+        DirectedGraph fire_graph=null;
+        DirectedGraph postfire_graph=null;
 
         if(theClass.declaresMethodByName("prefire")) {
             prefire_graph =
-		_analyzeMethod(theClass.getMethodByName("prefire"));
+                _analyzeMethod(theClass.getMethodByName("prefire"));
 //              _analyze(prefire_graph, theClass.getMethodByName("prefire"));
         }
         if(theClass.declaresMethodByName("fire")) {
-	    fire_graph =
-		_analyzeMethod(theClass.getMethodByName("fire"));
+            fire_graph =
+                _analyzeMethod(theClass.getMethodByName("fire"));
 //              _analyze(fire_graph, theClass.getMethodByName("fire"));
         }
         if(theClass.declaresMethodByName("postfire")) {
-	    postfire_graph =
-		_analyzeMethod(theClass.getMethodByName("postfire"));
+            postfire_graph =
+                _analyzeMethod(theClass.getMethodByName("postfire"));
 //              _analyze(postfire_graph, theClass.getMethodByName("postfire"));
         }
 
-//  	_appendGraph(graph, prefire_graph);
-//  	_appendGraph(graph, fire_graph);
-//  	_appendGraph(graph, postfire_graph);
+//          _appendGraph(graph, prefire_graph);
+//          _appendGraph(graph, fire_graph);
+//          _appendGraph(graph, postfire_graph);
 
         // get rid of non-essential nodes of
 //          boolean changed = true;
@@ -151,28 +151,28 @@ public class CircuitAnalysis {
 
 
 
-	SynthesisToDotty toDotty = new SynthesisToDotty();
+        SynthesisToDotty toDotty = new SynthesisToDotty();
         toDotty.writeDotFile(".", GraphToDotty.validFileName(entity.getName()),
-				      fire_graph);
+                                      fire_graph);
 
 
 
 
-	/* This isn't ready yet.. this should act on graphs at each node,
-	   not the top-level control flow graph
+        /* This isn't ready yet.. this should act on graphs at each node,
+           not the top-level control flow graph
         // Go though and eliminate unnecessary nodes.  These are nodes
         // that are not the names of output ports and have no targets,
         // or locals
         Set removeSet = new HashSet();
 
-	// find removable nodes and add new edges between removed
-	// nodes predecessors and successors
+        // find removable nodes and add new edges between removed
+        // nodes predecessors and successors
         for(Iterator nodes = graph.nodes().iterator();
             nodes.hasNext();) {
             Node node = (Node)nodes.next();
             if(node.getWeight() instanceof Local ||
-	       node.getWeight() instanceof SootField ||
-	       !requiredNodeSet.contains(node)) {
+               node.getWeight() instanceof SootField ||
+               !requiredNodeSet.contains(node)) {
                 // Then remove the node.
                 for(Iterator preds = graph.predecessors(node).iterator();
                     preds.hasNext();) {
@@ -205,7 +205,7 @@ public class CircuitAnalysis {
             }
             graph.removeNode(node);
         }
-	*/
+        */
         //System.out.println("Filtered graph:\r\n" + graph + "\r\n");
     }
 
@@ -214,104 +214,104 @@ public class CircuitAnalysis {
     }
 
     public Inliner getInliner(){
-	return new Inliner() {
-		protected boolean shouldInline(SootMethod sootMethod){
-		    String name=sootMethod.getName();
+        return new Inliner() {
+                protected boolean shouldInline(SootMethod sootMethod){
+                    String name=sootMethod.getName();
 
-		    return false;
+                    return false;
 
-		    //  	  //Don't inline get() or send() methods on ports.  They are
-		    //  	  //handled separately
-		    //  	  //if (name.equals("get") || name.equals("send")){
-		    //  	    //FIXME - this code should check to make sure this
-		    //  	    //method is declared by a Port class
-		    //  	    if (isClass("ptolemy.kernel.Port", sootMethod.getDeclaringClass())){
-		    //  	      return false;
-		    //  	    }
-		    //  	    //}
-		    //  	  //Don't inline Token's methods, as they are mostly just
-		    //  	  //arithmetic methods, such as add(), multiply(), etc.
-		    //  	  if (isClass("ptolemy.data.Token", sootMethod.getDeclaringClass())){
-		    //  	    return false;
-		    //  	  }
-		    //  	  return true;
-		}
+                    //            //Don't inline get() or send() methods on ports.  They are
+                    //            //handled separately
+                    //            //if (name.equals("get") || name.equals("send")){
+                    //              //FIXME - this code should check to make sure this
+                    //              //method is declared by a Port class
+                    //              if (isClass("ptolemy.kernel.Port", sootMethod.getDeclaringClass())){
+                    //                return false;
+                    //              }
+                    //              //}
+                    //            //Don't inline Token's methods, as they are mostly just
+                    //            //arithmetic methods, such as add(), multiply(), etc.
+                    //            if (isClass("ptolemy.data.Token", sootMethod.getDeclaringClass())){
+                    //              return false;
+                    //            }
+                    //            return true;
+                }
 
-		protected boolean isClass(String name, SootClass sc){
+                protected boolean isClass(String name, SootClass sc){
 
-		    if (name.equals(sc.getName()))
-			return true;
+                    if (name.equals(sc.getName()))
+                        return true;
 
-		    while (sc.hasSuperclass()){
-			sc=sc.getSuperclass();
-			if (name.equals(sc.getName()))
-			    return true;
-		    }
+                    while (sc.hasSuperclass()){
+                        sc=sc.getSuperclass();
+                        if (name.equals(sc.getName()))
+                            return true;
+                    }
 
-		    return false;
-		}
-	    };
+                    return false;
+                }
+            };
     }
 
 
     public static void main(String args[]) {
-	TypedCompositeActor system = new TypedCompositeActor();
-	try {
-	  ptolemy.domains.sdf.kernel.SDFDirector sdfd = new
-	    ptolemy.domains.sdf.kernel.SDFDirector(system,"director");
-	  ptolemy.copernicus.jhdl.demo.FIR2.FIR f =
-	    new ptolemy.copernicus.jhdl.demo.FIR2.FIR(system,"fir");
-	  SootClass entityClass =
-	    Scene.v().loadClassAndSupport("ptolemy.copernicus.jhdl.demo.FIR2.FIR");
-	  entityClass.setApplicationClass();
-	  if (entityClass == null) {
-	    System.err.println("Err - cannot find class");
-	    System.exit(1);
-	  } else
-	    new CircuitAnalysis(f,entityClass);
-	} catch (ptolemy.kernel.util.KernelException e) {
-	  System.err.println(e);
-	}
+        TypedCompositeActor system = new TypedCompositeActor();
+        try {
+          ptolemy.domains.sdf.kernel.SDFDirector sdfd = new
+            ptolemy.domains.sdf.kernel.SDFDirector(system,"director");
+          ptolemy.copernicus.jhdl.demo.FIR2.FIR f =
+            new ptolemy.copernicus.jhdl.demo.FIR2.FIR(system,"fir");
+          SootClass entityClass =
+            Scene.v().loadClassAndSupport("ptolemy.copernicus.jhdl.demo.FIR2.FIR");
+          entityClass.setApplicationClass();
+          if (entityClass == null) {
+            System.err.println("Err - cannot find class");
+            System.exit(1);
+          } else
+            new CircuitAnalysis(f,entityClass);
+        } catch (ptolemy.kernel.util.KernelException e) {
+          System.err.println(e);
+        }
     }
 
     /**
      **/
     protected DirectedGraph _analyzeMethod(SootMethod method)
-	throws IllegalActionException {
+        throws IllegalActionException {
         Body body = method.retrieveActiveBody();
-  	DirectedGraph mcfg = new MergedControlFlowGraph(body);
-	mcfg = _extractDataFlow(mcfg);
+          DirectedGraph mcfg = new MergedControlFlowGraph(body);
+        mcfg = _extractDataFlow(mcfg);
 
-	return mcfg;
+        return mcfg;
     }
 
     protected DirectedGraph _extractDataFlow(DirectedGraph graph){
 
-	//Make the requiredNodeMap from each graph's requiredNodeSet
-	Map requiredNodeMap = new HashMap();
-	for (Iterator i=graph.nodes().iterator(); i.hasNext();){
-	    GraphNode gn = (GraphNode)((Node)i.next()).getWeight();
-	    if (gn instanceof SuperBlock){
-		SuperBlock sb = (SuperBlock)gn;
-		RequiredBlockDataFlowGraph bdfg = (RequiredBlockDataFlowGraph)sb.getGraph();
-  		for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
-  		    requiredNodeMap.put(j.next(), sb);
-  		}
-	    }
-	}
+        //Make the requiredNodeMap from each graph's requiredNodeSet
+        Map requiredNodeMap = new HashMap();
+        for (Iterator i=graph.nodes().iterator(); i.hasNext();){
+            GraphNode gn = (GraphNode)((Node)i.next()).getWeight();
+            if (gn instanceof SuperBlock){
+                SuperBlock sb = (SuperBlock)gn;
+                RequiredBlockDataFlowGraph bdfg = (RequiredBlockDataFlowGraph)sb.getGraph();
+                  for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
+                      requiredNodeMap.put(j.next(), sb);
+                  }
+            }
+        }
 
-	DirectedGraph dg=new DirectedGraph();
+        DirectedGraph dg=new DirectedGraph();
 
-	Set keys=requiredNodeMap.keySet();
-	for (Iterator i=keys.iterator(); i.hasNext(); ){
-	    Object requiredValue=i.next();
-	    GraphNode gn=(GraphNode)requiredNodeMap.get(requiredValue);
-	    System.out.println("extracting: "+requiredValue+" block: "+gn);
-	    //DirectedGraph dg=new DirectedGraph();
-	    gn.createDataFlow(dg, requiredValue);
-	}
+        Set keys=requiredNodeMap.keySet();
+        for (Iterator i=keys.iterator(); i.hasNext(); ){
+            Object requiredValue=i.next();
+            GraphNode gn=(GraphNode)requiredNodeMap.get(requiredValue);
+            System.out.println("extracting: "+requiredValue+" block: "+gn);
+            //DirectedGraph dg=new DirectedGraph();
+            gn.createDataFlow(dg, requiredValue);
+        }
 
-	return dg;
+        return dg;
 
     }
 
@@ -327,46 +327,46 @@ public class CircuitAnalysis {
      **/
     protected void _appendGraph(DirectedGraph graph, DirectedGraph append){
 
-	Collection sinks = graph.sinkNodes();
-	Collection sources = append.sourceNodes();
+        Collection sinks = graph.sinkNodes();
+        Collection sources = append.sourceNodes();
 
-	// add nodes to new graph
-	for (Iterator i=append.nodes().iterator(); i.hasNext();){
-	    Node node=(Node)i.next();
-	    graph.addNode(node);
-	}
+        // add nodes to new graph
+        for (Iterator i=append.nodes().iterator(); i.hasNext();){
+            Node node=(Node)i.next();
+            graph.addNode(node);
+        }
 
-	// add edges to new graph
-	for (Iterator i=append.edges().iterator(); i.hasNext();){
-	    graph.addEdge((Edge)i.next());
-	}
+        // add edges to new graph
+        for (Iterator i=append.edges().iterator(); i.hasNext();){
+            graph.addEdge((Edge)i.next());
+        }
 
-	for (Iterator i=sinks.iterator(); i.hasNext(); ){
-	    Node first=(Node)i.next();
-	    for (Iterator j=sources.iterator(); j.hasNext(); ){
-		Node second=(Node)j.next();
-		graph.addEdge(first, second);
-	    }
-	}
+        for (Iterator i=sinks.iterator(); i.hasNext(); ){
+            Node first=(Node)i.next();
+            for (Iterator j=sources.iterator(); j.hasNext(); ){
+                Node second=(Node)j.next();
+                graph.addEdge(first, second);
+            }
+        }
 
     }
 
     protected ptolemy.data.type.Type _getPortType(Port port)
-	throws RuntimeException {
-	ptolemy.data.type.Type t=null;
-	try {
-	    TypedIOPort tport=(TypedIOPort)port;
-	    t=tport.getType();
-	} catch (ClassCastException e){
-	    throw new RuntimeException("Must have ports that are TypedIOPorts");
-	}
-	if (t.equals(BaseType.FIX) || t.equals(BaseType.INT) ||
-	    t.equals(BaseType.LONG) /*|| t.equals(BaseType.UNSIGNED_BYTE)*/ ||
-	    t.equals(BaseType.BOOLEAN) ) {
-	    return t;
-	} else {
-	    throw new RuntimeException("Unsupported port type "+t+" in port "+port);
-	}
+        throws RuntimeException {
+        ptolemy.data.type.Type t=null;
+        try {
+            TypedIOPort tport=(TypedIOPort)port;
+            t=tport.getType();
+        } catch (ClassCastException e){
+            throw new RuntimeException("Must have ports that are TypedIOPorts");
+        }
+        if (t.equals(BaseType.FIX) || t.equals(BaseType.INT) ||
+            t.equals(BaseType.LONG) /*|| t.equals(BaseType.UNSIGNED_BYTE)*/ ||
+            t.equals(BaseType.BOOLEAN) ) {
+            return t;
+        } else {
+            throw new RuntimeException("Unsupported port type "+t+" in port "+port);
+        }
     }
 
     private DirectedGraph _graph;
@@ -377,16 +377,16 @@ public class CircuitAnalysis {
 
 class PermissiveBlockDataFlowGraph extends BlockDataFlowGraph {
     public PermissiveBlockDataFlowGraph(Block block)
-	throws ptolemy.copernicus.jhdl.util.JHDLUnsupportedException {
-	super(block);
+        throws ptolemy.copernicus.jhdl.util.JHDLUnsupportedException {
+        super(block);
     }
     protected Node _processValue(Value v) {
-	Node newnode=null;
-	try {
-	    newnode = super._processValue(v);
-	} catch (ptolemy.copernicus.jhdl.util.JHDLUnsupportedException e) {
-	    newnode = _getOrCreateNode(v);
-	}
-	return newnode;
+        Node newnode=null;
+        try {
+            newnode = super._processValue(v);
+        } catch (ptolemy.copernicus.jhdl.util.JHDLUnsupportedException e) {
+            newnode = _getOrCreateNode(v);
+        }
+        return newnode;
     }
 }

@@ -71,7 +71,7 @@ public class DDEGet extends TypedAtomicActor {
     /**
      */
     public boolean postfire() throws IllegalActionException {
-	return false;
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////

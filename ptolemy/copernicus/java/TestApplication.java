@@ -71,10 +71,10 @@ public class TestApplication implements ChangeListener {
         // and the list of filters is static, so we reset it each time
         // so as to avoid adding filters every time we run an auto test.
 
-	// We set the list of MoMLFilters to handle Backward Compatibility.
+        // We set the list of MoMLFilters to handle Backward Compatibility.
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-	// Filter out any graphical classes.
+        // Filter out any graphical classes.
         // We should filter out graphical classes or the
         // treeShakeWithoutCodegen rule will fail when we run it on
         // actor/lib/test/auto/ComplexDivide.
@@ -194,11 +194,11 @@ public class TestApplication implements ChangeListener {
         // We can't throw and Exception here because this method in
         // the base class does not throw Exception.
 
-	// In JDK1.4, we can construct exceptions from exceptions, but
-	// not in JDK1.3.1
+        // In JDK1.4, we can construct exceptions from exceptions, but
+        // not in JDK1.3.1
         //throw new RuntimeException(exception);
 
-	throw new RuntimeException(exception.toString());
+        throw new RuntimeException(exception.toString());
     }
 
     /** Create an instance of a single model and run it

@@ -80,127 +80,127 @@ import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 public class DirectedAcyclicCFG extends DirectedGraph {
 
     DirectedAcyclicCFG(SootMethod method) throws IllegalActionException {
-	this(method.retrieveActiveBody());
+        this(method.retrieveActiveBody());
     }
 
     DirectedAcyclicCFG(Body body) throws IllegalActionException {
-	this(new BriefBlockGraph(body));
+        this(new BriefBlockGraph(body));
     }
 
     DirectedAcyclicCFG(BriefBlockGraph bbg) throws IllegalActionException {
-	super();
-	_createGraph(bbg);
+        super();
+        _createGraph(bbg);
     }
 
     /**
      * Return the source Node of the CFG.
      **/
     public Node source() {
-	return _source;
+        return _source;
     }
 
     /**
      * Return the sink Node of the CFG.
      **/
     public Node sink() {
-	return _sink;
+        return _sink;
     }
 
     /**
      * create the topology of the graph.
      **/
     protected void _createGraph(BriefBlockGraph bbg)
-	throws IllegalActionException {
+        throws IllegalActionException {
 
-	// Save Body
-	_bbgraph = bbg;
+        // Save Body
+        _bbgraph = bbg;
 
-	// create copy of graph
-	List blockList=_bbgraph.getBlocks();
+        // create copy of graph
+        List blockList=_bbgraph.getBlocks();
 
-	// Add one Node for each Block in the graph. The
-	// weight of the Node is the corresponding Block.
-	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
-	    Block block=(Block)blocks.next();
-	    addNodeWeight(block);
-	}
+        // Add one Node for each Block in the graph. The
+        // weight of the Node is the corresponding Block.
+        for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
+            Block block=(Block)blocks.next();
+            addNodeWeight(block);
+        }
 
-	// Copy edges. Iterate through each Node in the graph and
-	// copy edges to its successors.
-	//
-	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
-	    Block block=(Block)blocks.next();
-	    Node nb = node(block);
+        // Copy edges. Iterate through each Node in the graph and
+        // copy edges to its successors.
+        //
+        for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
+            Block block=(Block)blocks.next();
+            Node nb = node(block);
 
-	    List succs = block.getSuccs();
-	    //Get successors to this block and add an edge to graph for
-	    //each one.
-	    for (Iterator successors=succs.iterator(); successors.hasNext();){
-		Block succ=(Block)successors.next();
-		addEdge(nb,node(succ));
-	    }
-	}
+            List succs = block.getSuccs();
+            //Get successors to this block and add an edge to graph for
+            //each one.
+            for (Iterator successors=succs.iterator(); successors.hasNext();){
+                Block succ=(Block)successors.next();
+                addEdge(nb,node(succ));
+            }
+        }
 
-	// Identify single source and single sink
-	Collection sources = sourceNodes();
-	if (sources.size() == 0)
-	    throw new IllegalActionException("There is no source Node");
-	if (sources.size() > 1)
-	    throw new IllegalActionException("There are more than one source nodes");
-	_source = (Node) sources.iterator().next();
+        // Identify single source and single sink
+        Collection sources = sourceNodes();
+        if (sources.size() == 0)
+            throw new IllegalActionException("There is no source Node");
+        if (sources.size() > 1)
+            throw new IllegalActionException("There are more than one source nodes");
+        _source = (Node) sources.iterator().next();
 
-	// Identify sink
-	Collection sinks = sinkNodes();
-	if (sinks.size() == 0)
-	    throw new IllegalActionException("There are no sinks");
-	if (sinks.size() == 1) {
-	    _sink = (Node) sinks.iterator().next();
-	} else {
-	    _sink = addNodeWeight("sink");
-	    for (Iterator i=sinks.iterator();i.hasNext();) {
-		Node n = (Node) i.next();
-		addEdge(n,_sink);
-	    }
-	}
+        // Identify sink
+        Collection sinks = sinkNodes();
+        if (sinks.size() == 0)
+            throw new IllegalActionException("There are no sinks");
+        if (sinks.size() == 1) {
+            _sink = (Node) sinks.iterator().next();
+        } else {
+            _sink = addNodeWeight("sink");
+            for (Iterator i=sinks.iterator();i.hasNext();) {
+                Node n = (Node) i.next();
+                addEdge(n,_sink);
+            }
+        }
     }
 
     public String nodeString(Node n) {
-	if (n.hasWeight()) {
-	    Object o = n.getWeight();
-	    if (o instanceof Block) {
-		return "B" + ((Block) o).getIndexInMethod();
-	    } else if (o instanceof String) {
-		return (String) o;
-	    }
-	    return o.getClass().getName() + " " +o.toString();
-	}
-	return "";
+        if (n.hasWeight()) {
+            Object o = n.getWeight();
+            if (o instanceof Block) {
+                return "B" + ((Block) o).getIndexInMethod();
+            } else if (o instanceof String) {
+                return (String) o;
+            }
+            return o.getClass().getName() + " " +o.toString();
+        }
+        return "";
     }
 
     public static DirectedAcyclicCFG _main(String args[]) {
-	soot.SootMethod testMethod =
-	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
-	DirectedAcyclicCFG _cfg=null;
-	try {
-	    ConditionalControlCompactor.compact(testMethod);
-	    soot.Body body = testMethod.retrieveActiveBody();
-	    BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	    BlockGraphToDotty toDotty = new BlockGraphToDotty();
+        soot.SootMethod testMethod =
+            ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
+        DirectedAcyclicCFG _cfg=null;
+        try {
+            ConditionalControlCompactor.compact(testMethod);
+            soot.Body body = testMethod.retrieveActiveBody();
+            BriefBlockGraph bbgraph = new BriefBlockGraph(body);
+            BlockGraphToDotty toDotty = new BlockGraphToDotty();
             toDotty.writeDotFile(".", "bbgraph", bbgraph);
-	    _cfg = new DirectedAcyclicCFG(bbgraph);
+            _cfg = new DirectedAcyclicCFG(bbgraph);
 
             PtDirectedGraphToDotty dgToDotty =
                 new PtDirectedGraphToDotty();
             dgToDotty.writeDotFile(".", testMethod.getName(), _cfg);
-	} catch (IllegalActionException e) {
-	    System.err.println(e);
-	    System.exit(1);
-	}
-	return _cfg;
+        } catch (IllegalActionException e) {
+            System.err.println(e);
+            System.exit(1);
+        }
+        return _cfg;
     }
 
     public static void main(String args[]) {
-	_main(args);
+        _main(args);
     }
 
     /**

@@ -82,15 +82,15 @@ public class DelayLine extends SDFTransformer {
         initialValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialValues.setExpression("{0, 0, 0, 0}");
 
-	// default tokenConsumptionRate is 1.
-	input.setTokenConsumptionRate(1);
+        // default tokenConsumptionRate is 1.
+        input.setTokenConsumptionRate(1);
 
-	// tokenProductionRate is 1.
-	output.setTokenProductionRate(1);
+        // tokenProductionRate is 1.
+        output.setTokenProductionRate(1);
 
-	// set the output type to be an ArrayType, and input type to
+        // set the output type to be an ArrayType, and input type to
         // be the corresponding token type.
-	output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -169,19 +169,19 @@ public class DelayLine extends SDFTransformer {
      *  @return A list of inequalities.
      */
     public List typeConstraintList() {
-	List result = new LinkedList();
+        List result = new LinkedList();
 
-	ArrayType outArrType = (ArrayType)output.getType();
-	InequalityTerm outputTerm = outArrType.getElementTypeTerm();
-	ArrayType valuesArrType = (ArrayType)initialValues.getType();
-	InequalityTerm valuesTerm = valuesArrType.getElementTypeTerm();
+        ArrayType outArrType = (ArrayType)output.getType();
+        InequalityTerm outputTerm = outArrType.getElementTypeTerm();
+        ArrayType valuesArrType = (ArrayType)initialValues.getType();
+        InequalityTerm valuesTerm = valuesArrType.getElementTypeTerm();
 
-	Inequality ineq1 = new Inequality(input.getTypeTerm(), outputTerm);
-	Inequality ineq2 = new Inequality(outputTerm, valuesTerm);
+        Inequality ineq1 = new Inequality(input.getTypeTerm(), outputTerm);
+        Inequality ineq2 = new Inequality(outputTerm, valuesTerm);
 
-	result.add(ineq1);
-	result.add(ineq2);
-	return result;
+        result.add(ineq1);
+        result.add(ineq2);
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

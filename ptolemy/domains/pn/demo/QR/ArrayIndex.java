@@ -51,7 +51,7 @@ public class ArrayIndex {
 
     /** Construct an ArrayIndex object. */
     public ArrayIndex() {
-	super();
+        super();
     }
 
     /** Create a key for an 1 dimensional index reference. This key is
@@ -60,8 +60,8 @@ public class ArrayIndex {
         @return a key representing the index vector.
     */
     public String atKey(int i_1 ) {
-	String key =  "(" + i_1 + ")";
-	return key;
+        String key =  "(" + i_1 + ")";
+        return key;
     }
 
     /** Create a key for an 2 dimensional index reference. This key is
@@ -71,8 +71,8 @@ public class ArrayIndex {
         @return a key representing the index vector.
     */
     public String atKey(int i_1, int i_2 ) {
-	String key =  "(" + i_1 + "," + i_2 + ")";
-	return key;
+        String key =  "(" + i_1 + "," + i_2 + ")";
+        return key;
     }
 
     /** Create a key for an 3 dimensional index reference. This key is
@@ -83,8 +83,8 @@ public class ArrayIndex {
         @return a key representing the index vector.
     */
     public String atKey(int i_1, int i_2, int i_3 ) {
-	String key =  "(" + i_1 + "," + i_2 + "," + i_3 +  ")";
-	return key;
+        String key =  "(" + i_1 + "," + i_2 + "," + i_3 +  ")";
+        return key;
     }
 
     /** Create a key for an 4 dimensional index reference. This key is
@@ -96,9 +96,9 @@ public class ArrayIndex {
         @return a key representing the index vector.
     */
     public String atKey(int i_1, int i_2, int i_3, int i_4 ) {
-	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
-	    +")";
-	return key;
+        String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
+            +")";
+        return key;
     }
 
     /** Create a key for an 5 dimensional index reference. This key is
@@ -111,9 +111,9 @@ public class ArrayIndex {
         @return a key representing the index vector.
     */
     public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5 ) {
-	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
-	    + "," + i_5 + ")";
-	return key;
+        String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
+            + "," + i_5 + ")";
+        return key;
     }
 
     /** Create a key for an 6 dimensional index reference. This key is
@@ -128,9 +128,9 @@ public class ArrayIndex {
     */
     public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5,
             int i_6 ) {
-	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
-	    + "," + i_5 + "," + i_6  + ")";
-	return key;
+        String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
+            + "," + i_5 + "," + i_6  + ")";
+        return key;
     }
 
     /** Retrieve a value from the associate array using the supplied key.
@@ -138,11 +138,11 @@ public class ArrayIndex {
         @return the stored value.
     */
     public double retrieve(String aKey ) {
-	Double value = (Double) _map.get( aKey );
-	if ( value == null ) {
-	    throw new Error(" --- NULL Value retrieved for key " + aKey );
-	}
-	return value.doubleValue();
+        Double value = (Double) _map.get( aKey );
+        if ( value == null ) {
+            throw new Error(" --- NULL Value retrieved for key " + aKey );
+        }
+        return value.doubleValue();
     }
 
     /** Store a data value at a particular location given by the key string.
@@ -150,7 +150,7 @@ public class ArrayIndex {
         @param aKey the key.
     */
     public void store(double aValue, String aKey) {
-	_map.put( aKey, new Double(aValue) );
+        _map.put( aKey, new Double(aValue) );
     }
 
     /** Read in a matrix with a given name and store it into a
@@ -163,23 +163,23 @@ public class ArrayIndex {
      *  @param file The filename.
      */
     public void ReadMatrix(String filename ) {
-	if ( filename == "U_1000x16" ) {
-	    for (int i = 0; i < 500; i++) {
-		for (int j = 0; j < 16; j++) {
-		    String key = atKey(i+1, j+1);
-		    _map.put(key, new Double( x_0.sourcematrix_0[i][j] ));
-		}
-	    }
-	} else {
-	    // CREATE matrix Zeros64x64
-	    for (int i = 0; i < 64; i++) {
-		for (int j = 0; j < 64; j++) {
-		    String key = atKey(i, j);
+        if ( filename == "U_1000x16" ) {
+            for (int i = 0; i < 500; i++) {
+                for (int j = 0; j < 16; j++) {
+                    String key = atKey(i+1, j+1);
+                    _map.put(key, new Double( x_0.sourcematrix_0[i][j] ));
+                }
+            }
+        } else {
+            // CREATE matrix Zeros64x64
+            for (int i = 0; i < 64; i++) {
+                for (int j = 0; j < 64; j++) {
+                    String key = atKey(i, j);
                     _map.put(key, new Double( 0.0 ));
-		}
-	    }
+                }
+            }
 
-	}
+        }
     }
 
     /** Write the matrix stored in the associate array with a given

@@ -91,11 +91,11 @@ public class LinkController extends BasicEdgeController {
      *  @param controller The associated graph controller.
      */
     public LinkController(final GraphController controller) {
-	super(controller);
-	SelectionModel sm = controller.getSelectionModel();
-	SelectionInteractor interactor =
+        super(controller);
+        SelectionModel sm = controller.getSelectionModel();
+        SelectionInteractor interactor =
             (SelectionInteractor) getEdgeInteractor();
-	interactor.setSelectionModel(sm);
+        interactor.setSelectionModel(sm);
 
         // Create and set up the manipulator for connectors
         ConnectorManipulator manipulator = new ConnectorManipulator();
@@ -107,12 +107,12 @@ public class LinkController extends BasicEdgeController {
         MouseFilter handleFilter = new MouseFilter(1, 0, 0);
         manipulator.setHandleFilter(handleFilter);
 
-	ConnectorTarget ct = new LinkTarget();
-	setConnectorTarget(ct);
-	setEdgeRenderer(new LinkRenderer());
+        ConnectorTarget ct = new LinkTarget();
+        setConnectorTarget(ct);
+        setEdgeRenderer(new LinkRenderer());
 
-	_menuCreator = new MenuCreator(null);
-	interactor.addInteractor(_menuCreator);
+        _menuCreator = new MenuCreator(null);
+        interactor.addInteractor(_menuCreator);
 
         // The contents of the menu is determined by the associated
         // menu factory, which is a protected member of this class.
@@ -164,37 +164,37 @@ public class LinkController extends BasicEdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-	    if (object instanceof Port) return super.acceptHead(c, f);
-	    if (object instanceof Vertex) return super.acceptHead(c, f);
-	    if (object instanceof Locatable &&
+            if (object instanceof Port) return super.acceptHead(c, f);
+            if (object instanceof Vertex) return super.acceptHead(c, f);
+            if (object instanceof Locatable &&
                     ((Locatable)object).getContainer() instanceof Port)
-		return super.acceptHead(c, f);
-	    return false;
+                return super.acceptHead(c, f);
+            return false;
         }
 
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
-	    if (object instanceof Port) return super.acceptTail(c, f);
-	    if (object instanceof Vertex) return super.acceptTail(c, f);
-	    if (object instanceof Locatable &&
+            if (object instanceof Port) return super.acceptTail(c, f);
+            if (object instanceof Vertex) return super.acceptTail(c, f);
+            if (object instanceof Locatable &&
                     ((Locatable)object).getContainer() instanceof Port)
-		return super.acceptHead(c, f);
-	    return false;
+                return super.acceptHead(c, f);
+            return false;
         }
 
         public Site getHeadSite(Figure f, double x, double y) {
             if (f instanceof Terminal) {
-		Site site = ((Terminal)f).getConnectSite();
-		return site;
+                Site site = ((Terminal)f).getConnectSite();
+                return site;
             } else {
                 return super.getHeadSite(f, x, y);
             }
         }
-	// Tail sites are the same as head sites.
+        // Tail sites are the same as head sites.
     }
 
     public static class LinkRenderer implements EdgeRenderer {
-	/**
+        /**
          * Render a visual representation of the given edge.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
@@ -205,11 +205,11 @@ public class LinkController extends BasicEdgeController {
             // parallel curves look bad.
             c.setBendRadius(20);
 
-	    Link link = (Link)edge;
-	    Relation relation = link.getRelation();
-	    if (relation != null) {
-		c.setToolTipText(relation.getName());
-	    }
+            Link link = (Link)edge;
+            Relation relation = link.getRelation();
+            if (relation != null) {
+                c.setToolTipText(relation.getName());
+            }
             return c;
         }
     }
@@ -227,18 +227,18 @@ public class LinkController extends BasicEdgeController {
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
             ActorGraphModel model =
-		(ActorGraphModel) getController().getGraphModel();
-	    switch (evt.getEnd()) {
-	    case ConnectorEvent.HEAD_END:
-		model.getLinkModel().setHead(edge, node);
-		break;
-	    case ConnectorEvent.TAIL_END:
-		model.getLinkModel().setTail(edge, node);
-		break;
-	    default:
-		throw new IllegalStateException(
+                (ActorGraphModel) getController().getGraphModel();
+            switch (evt.getEnd()) {
+            case ConnectorEvent.HEAD_END:
+                model.getLinkModel().setHead(edge, node);
+                break;
+            case ConnectorEvent.TAIL_END:
+                model.getLinkModel().setTail(edge, node);
+                break;
+            default:
+                throw new IllegalStateException(
                         "Cannot handle both ends of an edge being dragged.");
-	    }
+            }
         }
     }
 }

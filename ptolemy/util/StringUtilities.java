@@ -76,11 +76,11 @@ public class StringUtilities {
         if (longName == null) {
             return "<Unnamed>";
         }
-	if (longName.length() < 80) {
-	    return longName;
-	}
-	return longName.substring(0,37) + ". . ."
-	    + longName.substring(longName.length() - 38);
+        if (longName.length() < 80) {
+            return longName;
+        }
+        return longName.substring(0,37) + ". . ."
+            + longName.substring(longName.length() - 38);
     }
 
 
@@ -113,9 +113,9 @@ public class StringUtilities {
      *  @return A string with zero or more spaces.
      */
     public static String getIndentPrefix(int level) {
-	if (level <= 0) {
-	    return "";
-	}
+        if (level <= 0) {
+            return "";
+        }
         StringBuffer result = new StringBuffer("");
         for (int i = 0; i < level; i++) {
             result.append("    ");
@@ -131,21 +131,21 @@ public class StringUtilities {
      *  @see #PREFERENCES_DIRECTORY
      */
     public static String preferencesDirectory() throws IOException {
-	String preferencesDirectoryName =
-	    StringUtilities.getProperty("user.home")
+        String preferencesDirectoryName =
+            StringUtilities.getProperty("user.home")
             + StringUtilities.getProperty("file.separator")
-	    + StringUtilities.PREFERENCES_DIRECTORY
+            + StringUtilities.PREFERENCES_DIRECTORY
             + StringUtilities.getProperty("file.separator");
         File preferencesDirectory = new File(preferencesDirectoryName);
-	if (!preferencesDirectory.isDirectory()) {
-	    if (preferencesDirectory.mkdirs() == false) {
-		throw new IOException("Could not create user preferences "
-				      + "directory '"
-				      + preferencesDirectoryName + "'");
+        if (!preferencesDirectory.isDirectory()) {
+            if (preferencesDirectory.mkdirs() == false) {
+                throw new IOException("Could not create user preferences "
+                                      + "directory '"
+                                      + preferencesDirectoryName + "'");
 
-	    }
-	}
-	return preferencesDirectoryName;
+            }
+        }
+        return preferencesDirectoryName;
     }
 
     /** Get the specified property from the environment. An empty string
@@ -176,18 +176,18 @@ public class StringUtilities {
      *  @return A String containing the string value of the property.
      */
     public static String getProperty(String propertyName) {
-	// NOTE: getProperty() will probably fail in applets, which
-	// is why this is in a try block.
-	String property = null;
-	try {
-	    property = System.getProperty(propertyName);
+        // NOTE: getProperty() will probably fail in applets, which
+        // is why this is in a try block.
+        String property = null;
+        try {
+            property = System.getProperty(propertyName);
         } catch (SecurityException security) {
-	    if (!propertyName.equals("ptolemy.ptII.dir")) {
-		throw new RuntimeException("Could not find '"
+            if (!propertyName.equals("ptolemy.ptII.dir")) {
+                throw new RuntimeException("Could not find '"
                         + propertyName + "' System property", security);
-	    }
-	}
-	if (propertyName.equals("user.dir")) {
+            }
+        }
+        if (propertyName.equals("user.dir")) {
             try {
                 File userDirFile = new File(property);
                 return userDirFile.getCanonicalPath();
@@ -195,10 +195,10 @@ public class StringUtilities {
                 return property;
             }
         }
-	if (property != null) {
-	    return property;
-	}
-	if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
+        if (property != null) {
+            return property;
+        }
+        if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
             // Return $PTII as a URL.  For example, if $PTII was c:\ptII,
             // then return file:/c:/ptII/
             File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
@@ -215,74 +215,74 @@ public class StringUtilities {
             }
         }
 
-	if (propertyName.equals("ptolemy.ptII.dir")) {
-	    String namedObjPath = "ptolemy/kernel/util/NamedObj.class";
-	    String home = null;
-	    // PTII variable was not set
-	    URL namedObjURL =
-		Thread.currentThread().getContextClassLoader()
-		.getResource(namedObjPath);
+        if (propertyName.equals("ptolemy.ptII.dir")) {
+            String namedObjPath = "ptolemy/kernel/util/NamedObj.class";
+            String home = null;
+            // PTII variable was not set
+            URL namedObjURL =
+                Thread.currentThread().getContextClassLoader()
+                .getResource(namedObjPath);
 
-	    if (namedObjURL != null) {
-		String namedObjFileName = namedObjURL.getFile().toString();
-		// FIXME: How do we get from a URL to a pathname?
-		if (namedObjFileName.startsWith("file:")) {
-		    // We get rid of either file:/ or file:\
-		    namedObjFileName = namedObjFileName.substring(6);
-		}
-		String abnormalHome = namedObjFileName.substring(0,
-						  namedObjFileName.length()
-						  - namedObjPath.length());
+            if (namedObjURL != null) {
+                String namedObjFileName = namedObjURL.getFile().toString();
+                // FIXME: How do we get from a URL to a pathname?
+                if (namedObjFileName.startsWith("file:")) {
+                    // We get rid of either file:/ or file:\
+                    namedObjFileName = namedObjFileName.substring(6);
+                }
+                String abnormalHome = namedObjFileName.substring(0,
+                                                  namedObjFileName.length()
+                                                  - namedObjPath.length());
 
-		// abnormalHome will have values like: "/C:/ptII/"
-		// which cause no end of trouble, so we construct a File
-		// and call toString().
+                // abnormalHome will have values like: "/C:/ptII/"
+                // which cause no end of trouble, so we construct a File
+                // and call toString().
 
-		home = (new File(abnormalHome)).toString();
+                home = (new File(abnormalHome)).toString();
 
-		// If we are running under Web Start, then strip off
-		// the trailing "!"
-		if (home.endsWith("!")) {
-		    home =
-			home.substring(0, home.length() - 1);
-		}
+                // If we are running under Web Start, then strip off
+                // the trailing "!"
+                if (home.endsWith("!")) {
+                    home =
+                        home.substring(0, home.length() - 1);
+                }
 
-		// Web Start
-		String ptsupportJarName = File.separator + "DMptolemy"
-		    + File.separator + "RMptsupport.jar";
-		if (home.endsWith(ptsupportJarName)) {
-		    home =
-			home.substring(0, home.length()
-				       - ptsupportJarName.length());
-		}
+                // Web Start
+                String ptsupportJarName = File.separator + "DMptolemy"
+                    + File.separator + "RMptsupport.jar";
+                if (home.endsWith(ptsupportJarName)) {
+                    home =
+                        home.substring(0, home.length()
+                                       - ptsupportJarName.length());
+                }
 
-		ptsupportJarName = File.separator + "ptolemy"
-		    + File.separator + "ptsupport.jar";
-		if (home.endsWith(ptsupportJarName)) {
-		    home =
-			home.substring(0, home.length()
-				       - ptsupportJarName.length());
-		}
-	    }
+                ptsupportJarName = File.separator + "ptolemy"
+                    + File.separator + "ptsupport.jar";
+                if (home.endsWith(ptsupportJarName)) {
+                    home =
+                        home.substring(0, home.length()
+                                       - ptsupportJarName.length());
+                }
+            }
 
-	    if (home == null) {
-		throw new RuntimeException(
- 		    "Could not find "
-		    + "'ptolemy.ptII.dir'"
-		    + " property.  Also tried loading '"
-		    + namedObjPath + "' as a resource and working from that. "
-		    + "Vergil should be "
-	            + "invoked with -Dptolemy.ptII.dir"
-		    + "=\"$PTII\"");
-	    }
-	    System.setProperty("ptolemy.ptII.dir", home);
-	    return home;
+            if (home == null) {
+                throw new RuntimeException(
+                     "Could not find "
+                    + "'ptolemy.ptII.dir'"
+                    + " property.  Also tried loading '"
+                    + namedObjPath + "' as a resource and working from that. "
+                    + "Vergil should be "
+                    + "invoked with -Dptolemy.ptII.dir"
+                    + "=\"$PTII\"");
+            }
+            System.setProperty("ptolemy.ptII.dir", home);
+            return home;
         }
-	if (property == null) {
-	    return "";
-	}
+        if (property == null) {
+            return "";
+        }
 
-	return property;
+        return property;
     }
 
     /** Sanitize a String so that it can be used as a Java identifier.
@@ -308,15 +308,15 @@ public class StringUtilities {
      *  @return A String that follows the Java identifier rules.
      */
     public static String sanitizeName(String name) {
-	char [] nameArray = name.toCharArray();
-       	for (int i = 0; i < nameArray.length; i++) {
-	    if (!Character.isJavaIdentifierPart(nameArray[i])) {
-		nameArray[i] = '_';
-	    }
-	}
-      	if (!Character.isJavaIdentifierStart(nameArray[0])) {
+        char [] nameArray = name.toCharArray();
+               for (int i = 0; i < nameArray.length; i++) {
+            if (!Character.isJavaIdentifierPart(nameArray[i])) {
+                nameArray[i] = '_';
+            }
+        }
+              if (!Character.isJavaIdentifierStart(nameArray[0])) {
             return "_" + new String(nameArray);
-	} else {
+        } else {
             return new String(nameArray);
         }
     }
@@ -335,11 +335,11 @@ public class StringUtilities {
         if (longName == null) {
             return "<Unnamed>";
         }
-	if (longName.length() < 80) {
-	    return longName;
-	}
+        if (longName.length() < 80) {
+            return longName;
+        }
 
-	StringBuffer results = new StringBuffer();
+        StringBuffer results = new StringBuffer();
 
         // The third argument is true, which means return the delimiters
         // as part of the tokens.
@@ -353,7 +353,7 @@ public class StringUtilities {
             }
             results.append(token.substring(i));
         }
-	return results.toString();
+        return results.toString();
     }
 
     /** Replace all occurrences of <i>old</i> in the specified
@@ -404,80 +404,80 @@ public class StringUtilities {
         // commands);
 
         // Parse the command into tokens
-	List commandList = new LinkedList();
+        List commandList = new LinkedList();
 
-	StreamTokenizer streamTokenizer =
-	    new StreamTokenizer(new StringReader(inputString));
+        StreamTokenizer streamTokenizer =
+            new StreamTokenizer(new StringReader(inputString));
 
         // We reset the syntax so that we don't convert to numbers,
         // otherwise, if PTII is "d:\\tmp\\ptII\ 2.0", then
         // we have no end of problems.
         streamTokenizer.resetSyntax();
         streamTokenizer.whitespaceChars(0 , 32);
-	streamTokenizer.wordChars(33, 127);
+        streamTokenizer.wordChars(33, 127);
 
-	// We can't use quoteChar here because it does backslash
-	// substitution, so "c:\ptII" ends up as "c:ptII"
-	// Substituting forward slashes for backward slashes seems like
-	// overkill.
-	// streamTokenizer.quoteChar('"');
-	streamTokenizer.ordinaryChar('"');
+        // We can't use quoteChar here because it does backslash
+        // substitution, so "c:\ptII" ends up as "c:ptII"
+        // Substituting forward slashes for backward slashes seems like
+        // overkill.
+        // streamTokenizer.quoteChar('"');
+        streamTokenizer.ordinaryChar('"');
 
         streamTokenizer.eolIsSignificant(true);
 
-	streamTokenizer.commentChar('#');
+        streamTokenizer.commentChar('#');
 
-	// Current token
-	String token = "";
+        // Current token
+        String token = "";
 
-	// Single character token, usually a -
-	String singleToken = "";
+        // Single character token, usually a -
+        String singleToken = "";
 
-	// Set to true if we are inside a double quoted String.
-	boolean inDoubleQuotedString = false;
+        // Set to true if we are inside a double quoted String.
+        boolean inDoubleQuotedString = false;
 
-	while (streamTokenizer.nextToken()
-	       != StreamTokenizer.TT_EOF) {
-	    switch (streamTokenizer.ttype) {
-	    case StreamTokenizer.TT_WORD:
-		if (inDoubleQuotedString) {
-		    if( token.length() > 0 ) {
-			token += " ";
-		    }
-		    token += singleToken + streamTokenizer.sval;
-		} else {
-		    token = singleToken + streamTokenizer.sval;
-		    commandList.add(token);
-		}
-		singleToken = "";
-		break;
-	    case StreamTokenizer.TT_NUMBER:
+        while (streamTokenizer.nextToken()
+               != StreamTokenizer.TT_EOF) {
+            switch (streamTokenizer.ttype) {
+            case StreamTokenizer.TT_WORD:
+                if (inDoubleQuotedString) {
+                    if( token.length() > 0 ) {
+                        token += " ";
+                    }
+                    token += singleToken + streamTokenizer.sval;
+                } else {
+                    token = singleToken + streamTokenizer.sval;
+                    commandList.add(token);
+                }
+                singleToken = "";
+                break;
+            case StreamTokenizer.TT_NUMBER:
                 throw new RuntimeException("Internal error: Found TT_NUMBER: '"
                         + streamTokenizer.nval + "'.  We should not be "
                         + "tokenizing numbers");
-		//break;
-	    case StreamTokenizer.TT_EOL:
-		break;
-	    case StreamTokenizer.TT_EOF:
-		break;
-	    default:
-		singleToken =
-		    (new Character((char)streamTokenizer.ttype)).toString();
-		if (singleToken.equals("\"")) {
-		    if (inDoubleQuotedString) {
-			commandList.add(token);
-		    }
-		    inDoubleQuotedString = ! inDoubleQuotedString;
-		    singleToken = "";
-		    token = "";
-		}
-		break;
-	    }
+                //break;
+            case StreamTokenizer.TT_EOL:
+                break;
+            case StreamTokenizer.TT_EOF:
+                break;
+            default:
+                singleToken =
+                    (new Character((char)streamTokenizer.ttype)).toString();
+                if (singleToken.equals("\"")) {
+                    if (inDoubleQuotedString) {
+                        commandList.add(token);
+                    }
+                    inDoubleQuotedString = ! inDoubleQuotedString;
+                    singleToken = "";
+                    token = "";
+                }
+                break;
+            }
 
         }
 
         return
-	    (String [])commandList.toArray(new String[commandList.size()]);
+            (String [])commandList.toArray(new String[commandList.size()]);
     }
 
 

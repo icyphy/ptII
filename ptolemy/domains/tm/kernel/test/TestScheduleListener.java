@@ -55,7 +55,7 @@ public class TestScheduleListener implements ScheduleListener {
     public String getEvents() {
         String results = _events.toString();
         _events = new StringBuffer("");
-	return results;
+        return results;
     }
 
     /** React to the given scheduling event.

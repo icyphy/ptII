@@ -544,7 +544,7 @@ public class PtolemyUtilities {
             units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                     Jimple.v().newStaticFieldRef(fixTypeField)),
                     insertPoint);
-	    return typeLocal;
+            return typeLocal;
         }
         throw new RuntimeException("Unidentified type class = " +
                 type.getClass().getName());

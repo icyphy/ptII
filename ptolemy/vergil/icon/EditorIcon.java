@@ -107,7 +107,7 @@ public class EditorIcon extends Attribute {
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-	return _createDefaultBackgroundFigure();
+        return _createDefaultBackgroundFigure();
     }
 
     /** Create a new Diva figure that visually represents this icon.
@@ -124,8 +124,8 @@ public class EditorIcon extends Attribute {
      *   and a label.
      */
     public Figure createFigure() {
-	Figure background = createBackgroundFigure();
-	Rectangle2D backBounds = background.getBounds();
+        Figure background = createBackgroundFigure();
+        Rectangle2D backBounds = background.getBounds();
         Figure figure = new CompositeFigure(background);
         NamedObj container = (NamedObj)getContainer();
         // Create the label, unless this is a visible attribute,
@@ -152,7 +152,7 @@ public class EditorIcon extends Attribute {
                 }
             }
         }
-	return figure;
+        return figure;
     }
 
     /** Create a new Swing icon.  In this base class, this icon is created
@@ -163,15 +163,15 @@ public class EditorIcon extends Attribute {
      *  @return A new Swing Icon.
      */
     public javax.swing.Icon createIcon() {
-	// In this class, we cache the rendered icon, since creating icons from
-	// figures is expensive.
+        // In this class, we cache the rendered icon, since creating icons from
+        // figures is expensive.
         if (_iconCache != null) {
-	    return _iconCache;
+            return _iconCache;
         }
         // No cached object, so rerender the icon.
-	Figure figure = createBackgroundFigure();
-	_iconCache = new FigureIcon(figure, 20, 15);
-	return _iconCache;
+        Figure figure = createBackgroundFigure();
+        _iconCache = new FigureIcon(figure, 20, 15);
+        return _iconCache;
     }
 
     /** Write a MoML description of this object, which in this case is
@@ -196,7 +196,7 @@ public class EditorIcon extends Attribute {
      */
     protected Figure _createDefaultBackgroundFigure() {
         // NOTE: center at the origin.
-	return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
+        return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
     }
 
     /** Recreate the figure.  Call this to cause createIcon() to call

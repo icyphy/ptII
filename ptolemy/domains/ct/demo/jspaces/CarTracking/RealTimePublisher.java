@@ -85,7 +85,7 @@ public class RealTimePublisher extends Sink
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	jspaceName = new Parameter(this, "jspaceName",
+            jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
@@ -118,9 +118,9 @@ public class RealTimePublisher extends Sink
      *  and the maximum index is the current serial number.
      */
     public void preinitialize() throws IllegalActionException {
-	super.preinitialize();
-	String name = ((StringToken)jspaceName.getToken()).stringValue();
-	_space = SpaceFinder.getSpace(name);
+        super.preinitialize();
+        String name = ((StringToken)jspaceName.getToken()).stringValue();
+        _space = SpaceFinder.getSpace(name);
         String entryname = ((StringToken)entryName.getToken()).stringValue();
         TokenEntry tokenTemplate = new TokenEntry(name, null, null);
         try {
@@ -130,12 +130,12 @@ public class RealTimePublisher extends Sink
                         tokenTemplate, null, 1000);
             } while (oldEntry != null);
         } catch (RemoteException re) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + re.getMessage());
-	} catch (TransactionException te) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+        } catch (TransactionException te) {
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + te.getMessage());
-	} catch (InterruptedException ie) {
+        } catch (InterruptedException ie) {
             throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + ie.getMessage());
         } catch (net.jini.core.entry.UnusableEntryException ue) {

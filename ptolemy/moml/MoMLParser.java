@@ -192,7 +192,7 @@ public class MoMLParser extends HandlerBase {
      *  @param workspace The workspace into which to place entities.
      */
     public MoMLParser(Workspace workspace) {
-	super();
+        super();
         if (workspace == null) {
             // NOTE: Workspace has no name, to ensure that full names
             // of enties conform to MoML standard of starting with a
@@ -211,8 +211,8 @@ public class MoMLParser extends HandlerBase {
      *  or null if the the bootstrap class loader is to be used.
      */
     public MoMLParser(Workspace workspace, ClassLoader loader) {
-	this(workspace);
-	_classLoader = loader;
+        this(workspace);
+        _classLoader = loader;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -228,9 +228,9 @@ public class MoMLParser extends HandlerBase {
      *  @see #setMoMLFilters(List filterList)
      */
     public void addMoMLFilter(MoMLFilter filter) {
-	if (_filterList == null) {
-	    _filterList = new LinkedList();
-	}
+        if (_filterList == null) {
+            _filterList = new LinkedList();
+        }
         _filterList.add(filter);
     }
 
@@ -245,9 +245,9 @@ public class MoMLParser extends HandlerBase {
      *  @see #setMoMLFilters(List filterList)
      */
     public void addMoMLFilters(List filterList) {
-	if (_filterList == null) {
-	    _filterList = new LinkedList();
-	}
+        if (_filterList == null) {
+            _filterList = new LinkedList();
+        }
         _filterList.addAll(filterList);
     }
 
@@ -338,31 +338,31 @@ public class MoMLParser extends HandlerBase {
         // Filters can filter out graphical classes, or change
         // the names of ports to handle backward compatibility.
         if (_filterList != null) {
-	    Iterator filters = _filterList.iterator();
-	    String filteredValue = value;
-	    while (filters.hasNext()) {
-		MoMLFilter filter = (MoMLFilter)filters.next();
-		filteredValue =
-		    filter.filterAttributeValue(_current, name,
+            Iterator filters = _filterList.iterator();
+            String filteredValue = value;
+            while (filters.hasNext()) {
+                MoMLFilter filter = (MoMLFilter)filters.next();
+                filteredValue =
+                    filter.filterAttributeValue(_current, name,
                             filteredValue);
-	    }
+            }
 
-	    // Sometimes the value we pass in is null, so we only
-	    // want to skip if filterAttributeValue returns null
-	    // when passed a non-null value.
-	    if (value != null && filteredValue == null) {
-		// If attribute() found an element to skip, then
-		// the first time we startElement(), we do not
-		// want to increment _skipElement again in
-		// startElement() because we already did it in
-		// attribute().
-		_skipElementIsNew = true;
-		_skipElementName = _parser.getCurrentElement();
-		// Is there ever a case when _skipElement would not
-		// be 0 here?  I'm not sure . . .
-		_skipElement++;
-	    }
-	    value = filteredValue;
+            // Sometimes the value we pass in is null, so we only
+            // want to skip if filterAttributeValue returns null
+            // when passed a non-null value.
+            if (value != null && filteredValue == null) {
+                // If attribute() found an element to skip, then
+                // the first time we startElement(), we do not
+                // want to increment _skipElement again in
+                // startElement() because we already did it in
+                // attribute().
+                _skipElementIsNew = true;
+                _skipElementName = _parser.getCurrentElement();
+                // Is there ever a case when _skipElement would not
+                // be 0 here?  I'm not sure . . .
+                _skipElement++;
+            }
+            value = filteredValue;
         }
 
         // NOTE: value may be null if attribute default is #IMPLIED.
@@ -516,19 +516,19 @@ public class MoMLParser extends HandlerBase {
 
         // Apply MoMLFilters here.
         if (_filterList != null) {
-	    Iterator filters = _filterList.iterator();
-	    String filteredElementName = elementName;
-	    while (filters.hasNext()) {
-		MoMLFilter filter = (MoMLFilter)filters.next();
-		filteredElementName =
-		    filter.filterEndElement(_current, filteredElementName);
-	    }
+            Iterator filters = _filterList.iterator();
+            String filteredElementName = elementName;
+            while (filters.hasNext()) {
+                MoMLFilter filter = (MoMLFilter)filters.next();
+                filteredElementName =
+                    filter.filterEndElement(_current, filteredElementName);
+            }
 
-	    elementName = filteredElementName;
-	    if (elementName == null) {
-		return;
-	    }
-	}
+            elementName = filteredElementName;
+            if (elementName == null) {
+                return;
+            }
+        }
 
         if (_skipElement <= 0) {
             // If we are not skipping an element, then adjust the
@@ -576,7 +576,7 @@ public class MoMLParser extends HandlerBase {
             }
         }
 
-	if ( _skipRendition ) {
+        if ( _skipRendition ) {
             if (elementName.equals("rendition")) {
                 _skipRendition = false;
             }
@@ -586,7 +586,7 @@ public class MoMLParser extends HandlerBase {
                 // close the skipping.
                 _skipElement--;
             }
-	} else if (elementName.equals("configure")) {
+        } else if (elementName.equals("configure")) {
             try {
                 ((Configurable)_current).configure(
                         _base, _configureSource, _currentCharData.toString());
@@ -724,13 +724,13 @@ public class MoMLParser extends HandlerBase {
      */
     public void error(String message, String systemID,
             int line, int column) throws XmlException {
-	String currentExternalEntity = "";
-	try {
-	    // Error message methods should be very careful to handle
-	    // exceptions while trying to provide the user with information
-	    currentExternalEntity = _currentExternalEntity();
-	} catch (java.util.EmptyStackException emptyStack) {
-	}
+        String currentExternalEntity = "";
+        try {
+            // Error message methods should be very careful to handle
+            // exceptions while trying to provide the user with information
+            currentExternalEntity = _currentExternalEntity();
+        } catch (java.util.EmptyStackException emptyStack) {
+        }
 
         throw new XmlException(message, currentExternalEntity, line, column);
     }
@@ -837,13 +837,13 @@ public class MoMLParser extends HandlerBase {
                     xmlFileWasNull = true;
                     _xmlFile = new URL(base.toExternalForm());
                 }
-            	try {
+                    try {
                     _parser.parse(base.toExternalForm(), null, buffered);
-            	} finally {
+                    } finally {
                     if (xmlFileWasNull) {
                         _xmlFile = null;
                     }
-            	}
+                    }
             }
         } catch (CancelException ex) {
             // Parse operation cancelled.
@@ -890,14 +890,14 @@ public class MoMLParser extends HandlerBase {
     public NamedObj parse(String text) throws Exception {
         URL base = null;
         // Use the current working directory as a base.
-	String cwd = StringUtilities.getProperty("user.dir");
-	if (cwd != null) {
+        String cwd = StringUtilities.getProperty("user.dir");
+        if (cwd != null) {
             // We have to append a trailing / here for this to
             // work under Solaris.
-	    base = new URL("file", null, cwd + "/");
-	}
+            base = new URL("file", null, cwd + "/");
+        }
 
-	return parse(base, new StringReader(text));
+        return parse(base, new StringReader(text));
     }
 
     /** Parse the given string, which contains MoML, using the specified
@@ -938,12 +938,12 @@ public class MoMLParser extends HandlerBase {
     public NamedObj parseFile(String filename) throws Exception {
         URL base = null;
         // Use the current working directory as a base.
-	String cwd = StringUtilities.getProperty("user.dir");
-	if (cwd != null) {
+        String cwd = StringUtilities.getProperty("user.dir");
+        if (cwd != null) {
             // We have to append a trailing / here for this to
             // work under Solaris.
-	    base = new URL("file", null, cwd + "/");
-	}
+            base = new URL("file", null, cwd + "/");
+        }
 
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
@@ -1024,12 +1024,12 @@ public class MoMLParser extends HandlerBase {
         _current = null;
         _docNesting = 0;
         _externalEntities = new Stack();
-	_modified = false;
+        _modified = false;
         _namespace = _DEFAULT_NAMESPACE;
         _namespaces = new Stack();
         _namespaceTranslations = new Stack();
         _skipRendition = false;
-	_skipElementIsNew = false;
+        _skipElementIsNew = false;
         _skipElement = 0;
         _toplevel = null;
         // Reset undo specific members
@@ -1159,7 +1159,7 @@ public class MoMLParser extends HandlerBase {
      *  @see MoMLFilter
      */
     public static void setModified(boolean modified) {
-	_modified = modified;
+        _modified = modified;
     }
 
     /** Set the top-level entity.  This can be used to associate this
@@ -1236,8 +1236,8 @@ public class MoMLParser extends HandlerBase {
                     return;
                 }
             }
-	    if (_skipRendition) {
-		return;
+            if (_skipRendition) {
+                return;
             }
 
             // Handle the undo aspect of the parsing if enabled
@@ -1257,19 +1257,19 @@ public class MoMLParser extends HandlerBase {
 
             if (_skipElement > 0) {
                 if (elementName.equals(_skipElementName)) {
-		    // If attribute() found an element to skip, then
-		    // the first time we startElement(), we do not
-		    // want to increment _skipElement again in
-		    // startElement() because we already did it in
-		    // attribute().
-		    if (_skipElementIsNew) {
-			// After this, _skipElement no longer new.
-			_skipElementIsNew = false;
-		    } else {
-			// Nested element name.  Have to count so we properly
-			// close the skipping.
-			_skipElement++;
-		    }
+                    // If attribute() found an element to skip, then
+                    // the first time we startElement(), we do not
+                    // want to increment _skipElement again in
+                    // startElement() because we already did it in
+                    // attribute().
+                    if (_skipElementIsNew) {
+                        // After this, _skipElement no longer new.
+                        _skipElementIsNew = false;
+                    } else {
+                        // Nested element name.  Have to count so we properly
+                        // close the skipping.
+                        _skipElement++;
+                    }
                 }
                 return;
             }
@@ -1564,35 +1564,35 @@ public class MoMLParser extends HandlerBase {
                 String source = (String)_attributes.get("source");
                 _checkForNull(source, "No source for element \"input\"");
 
-		boolean skip = false;
-		if ( inputFileNamesToSkip != null) {
-		    // If inputFileNamesToSkip contains a string
-		    // that matches the end of source, then skip
-		    // parsing the source file.  We use this for testing
-		    // configurations that have optional parts like
-		    // Matlab or javacomm.
-		    Iterator inputFileNames = inputFileNamesToSkip.iterator();
-		    while(inputFileNames.hasNext()) {
-			String inputFileName = (String)inputFileNames.next();
-			if (source.endsWith(inputFileName)) {
-			    skip = true;
-			    break;
-			}
-		    }
-		}
+                boolean skip = false;
+                if ( inputFileNamesToSkip != null) {
+                    // If inputFileNamesToSkip contains a string
+                    // that matches the end of source, then skip
+                    // parsing the source file.  We use this for testing
+                    // configurations that have optional parts like
+                    // Matlab or javacomm.
+                    Iterator inputFileNames = inputFileNamesToSkip.iterator();
+                    while(inputFileNames.hasNext()) {
+                        String inputFileName = (String)inputFileNames.next();
+                        if (source.endsWith(inputFileName)) {
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
 
-		if (!skip) {
-		    // NOTE: The base attribute has been deprecated.  Ignore.
+                if (!skip) {
+                    // NOTE: The base attribute has been deprecated.  Ignore.
 
-		    // Read external file in the current context, but with
-		    // a new parser.
-		    MoMLParser newParser =
-			new MoMLParser(_workspace, _classLoader);
+                    // Read external file in the current context, but with
+                    // a new parser.
+                    MoMLParser newParser =
+                        new MoMLParser(_workspace, _classLoader);
 
-		    newParser.setContext(_current);
-		    newParser._propagating = _propagating;
-		    _parse(newParser, _base, source);
-		}
+                    newParser.setContext(_current);
+                    newParser._propagating = _propagating;
+                    _parse(newParser, _base, source);
+                }
             } else if (elementName.equals("link")) {
                 String portName = (String)_attributes.get("port");
                 _checkForNull(portName, "No port for element \"link\"");
@@ -1945,23 +1945,23 @@ public class MoMLParser extends HandlerBase {
                             _current.getAttribute(propertyName);
                     Class newClass = null;
                     if (className != null) {
-			try {
-			    newClass =
-				Class.forName(className, true, _classLoader);
-			} catch (NoClassDefFoundError ex) {
-			    throw new XmlException("Failed to find class '"
+                        try {
+                            newClass =
+                                Class.forName(className, true, _classLoader);
+                        } catch (NoClassDefFoundError ex) {
+                            throw new XmlException("Failed to find class '"
                                     + className + "'",
                                     _currentExternalEntity(),
                                     _parser.getLineNumber(),
                                     _parser.getColumnNumber(), ex);
-			} catch (SecurityException ex) {
+                        } catch (SecurityException ex) {
                             // An applet might throw this.
-			    throw new XmlException("Failed to find class '"
+                            throw new XmlException("Failed to find class '"
                                     + className + "'",
                                     _currentExternalEntity(),
                                     _parser.getLineNumber(),
                                     _parser.getColumnNumber(), ex);
-			}
+                        }
                     }
 
                     // If there is a previous property with this name
@@ -2648,16 +2648,16 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: Java sometimes throws ClassNotFoundException
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
-		    try {
-			reference = _attemptToFindMoMLClass(className, source);
-		    } catch (Exception ex2) {
-			// If we are running inside an applet, then
-			// we may end up getting a SecurityException,
-			// so we want to be sure to not throw away ex2
-			throw new IllegalActionException(null, ex2,
+                    try {
+                        reference = _attemptToFindMoMLClass(className, source);
+                    } catch (Exception ex2) {
+                        // If we are running inside an applet, then
+                        // we may end up getting a SecurityException,
+                        // so we want to be sure to not throw away ex2
+                        throw new IllegalActionException(null, ex2,
                                 "Cannot find class: "
                                 + className);
-		    }
+                    }
                 } catch (Error error) {
                     // Java might throw a ClassFormatError, but
                     // we usually get and XmlException
@@ -2699,31 +2699,31 @@ public class MoMLParser extends HandlerBase {
                     errorMessage.append(className + ": \n "
                             + error.toString() + "\n");
 
-		    try {
-			reference = _attemptToFindMoMLClass(className, source);
-		    } catch (XmlException ex2) {
-			throw new Exception(
+                    try {
+                        reference = _attemptToFindMoMLClass(className, source);
+                    } catch (XmlException ex2) {
+                        throw new Exception(
                                 "-- "
                                 + errorMessage.toString()
                                 + className
                                 + ": XmlException:\n"
                                 + ex2.getMessage());
-		    } catch (ClassFormatError ex3) {
-			throw new Exception(
+                    } catch (ClassFormatError ex3) {
+                        throw new Exception(
                                 "-- :"
                                 + errorMessage.toString()
                                 + className
                                 + ": ClassFormatError: "
                                 + "found invalid Java class file.\n"
                                 + ex3.getMessage());
-		    } catch (Exception ex4) {
-			throw new Exception(
+                    } catch (Exception ex4) {
+                        throw new Exception(
                                 "-- "
                                 + errorMessage.toString()
                                 + className
                                 + ": Exception:\n"
                                 + ex4.getMessage());
-		    }
+                    }
                 }
             }
         }
@@ -2846,7 +2846,7 @@ public class MoMLParser extends HandlerBase {
             // file.  .moml files are obsolete, and we should probably
             // not bother searching for them at all.
             classAsFile = className.replace('.', '/') + ".xml";
-	    // RIM uses .moml files, so leave them in.
+            // RIM uses .moml files, so leave them in.
             altClassAsFile = className.replace('.', '/') + ".moml";
         } else {
             // Source is given.
@@ -2869,13 +2869,13 @@ public class MoMLParser extends HandlerBase {
                     classAsFile = altClassAsFile;
                 } catch (Exception ex3) {
                     // Cannot find class definition.
-		    // Unfortunately exception chaining does not work here
-		    // since we really want to know what ex2 and ex3
-		    // both were.
+                    // Unfortunately exception chaining does not work here
+                    // since we really want to know what ex2 and ex3
+                    // both were.
                     throw new XmlException("Could not find '"
-			    + classAsFile + "' or '"
-			    + altClassAsFile + "' using base '"
- 			    + _base + "': " ,
+                            + classAsFile + "' or '"
+                            + altClassAsFile + "' using base '"
+                             + _base + "': " ,
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber(), ex2);
@@ -2961,12 +2961,12 @@ public class MoMLParser extends HandlerBase {
         }
         // If we get here, then there is no matching constructor.
 
-	// Generate a StringBuffer containing what we were looking for.
-	StringBuffer argumentBuffer = new StringBuffer();
-	for (int i = 0; i < arguments.length; i++) {
-	    argumentBuffer.append(arguments[i].getClass() + " = \""
+        // Generate a StringBuffer containing what we were looking for.
+        StringBuffer argumentBuffer = new StringBuffer();
+        for (int i = 0; i < arguments.length; i++) {
+            argumentBuffer.append(arguments[i].getClass() + " = \""
                     + arguments[i].toString() + "\" " );
-	}
+        }
 
         throw new XmlException("Cannot find a suitable constructor ("
                 + arguments.length + " args) ( "
@@ -3350,18 +3350,18 @@ public class MoMLParser extends HandlerBase {
                         xmlFile.toString() .substring(0,
                                 xmlFile.toString().lastIndexOf("/"));
 
-		    if (_base == null
+                    if (_base == null
                             || !xmlFileBase.startsWith(_base.toString())) {
-			MessageHandler.warning("Security concern:\n"
+                        MessageHandler.warning("Security concern:\n"
                                 + "About to look for MoML from the "
                                 + "net at address:\n"
                                 + xmlFile.toExternalForm()
                                 + "\nOK to proceed?");
-		    }
+                    }
 
-		    // If we get to here, the the user did not hit cancel,
-		    // so we cache the file
-		    _approvedRemoteXmlFiles.add(xmlFile);
+                    // If we get to here, the the user did not hit cancel,
+                    // so we cache the file
+                    _approvedRemoteXmlFiles.add(xmlFile);
                 }
             }
             input = xmlFile.openStream();

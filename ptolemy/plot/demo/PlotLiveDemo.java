@@ -86,24 +86,24 @@ public class PlotLiveDemo extends PlotLive {
     }
 
     /** Run the demo as an application.
-     *	This is very useful for debugging.  The command to run would be
+     *        This is very useful for debugging.  The command to run would be
      * java -classpath $PTII ptolemy.plot.demo.PlotLiveDemo
      */
     public static void main(String args[]) {
-	final PlotLiveDemo plotLiveDemo = new PlotLiveDemo();
-	System.runFinalizersOnExit(true);
-	JFrame frame = new JFrame("PlotLiveDemo");
-	frame.addWindowListener(new WindowAdapter() {
-	    public void windowClosing(WindowEvent event) {
-		plotLiveDemo.stop();
-		System.exit(0);
-	    }
-	});
-	frame.getContentPane().add("Center", plotLiveDemo);
-	frame.show();
-	plotLiveDemo.setButtons(true);
-	plotLiveDemo.start();
-	frame.pack();
+        final PlotLiveDemo plotLiveDemo = new PlotLiveDemo();
+        System.runFinalizersOnExit(true);
+        JFrame frame = new JFrame("PlotLiveDemo");
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                plotLiveDemo.stop();
+                System.exit(0);
+            }
+        });
+        frame.getContentPane().add("Center", plotLiveDemo);
+        frame.show();
+        plotLiveDemo.setButtons(true);
+        plotLiveDemo.start();
+        frame.pack();
     }
 
 

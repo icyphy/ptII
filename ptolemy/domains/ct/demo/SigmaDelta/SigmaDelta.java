@@ -81,7 +81,7 @@ Berkeley, Fall 1997
 public class SigmaDelta extends TypedCompositeActor {
 
      public SigmaDelta(Workspace workspace)
-	    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
          // Creating the model.
          super(workspace);

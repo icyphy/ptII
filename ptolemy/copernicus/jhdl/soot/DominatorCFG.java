@@ -73,53 +73,53 @@ import soot.toolkits.graph.Block;
 public class DominatorCFG extends DirectedAcyclicCFG {
 
     DominatorCFG(SootMethod method) throws IllegalActionException {
-	super(method);
-	_init();
+        super(method);
+        _init();
     }
 
     DominatorCFG(Body body) throws IllegalActionException {
-	super(body);
-	_init();
+        super(body);
+        _init();
     }
 
     DominatorCFG(BriefBlockGraph bbg) throws IllegalActionException {
-	super(bbg);
-	_init();
+        super(bbg);
+        _init();
     }
 
     /*
     public void update() throws IllegalActionException {
-	super.update();
-	_init();
+        super.update();
+        _init();
     }
     */
 
     public boolean dominates(Node d, Node n) {
-	return _dominators.dominates(d,n);
+        return _dominators.dominates(d,n);
     }
 
     public Node getImmediatePostDominator(Node n) {
-	return _postDominators.getImmediateDominator(n);
+        return _postDominators.getImmediateDominator(n);
     }
 
     public Node getImmediateDominator(Node n) {
-	return _dominators.getImmediateDominator(n);
+        return _dominators.getImmediateDominator(n);
     }
 
     public String toString() {
-	StringBuffer sb = new StringBuffer();
-	sb.append("Dominators\n"+_dominators);
-	sb.append("Post Dominators\n"+_postDominators);
-	sb.append("Immediate Dominators\n"+
-		  _dominators.immediateDominatorsString());
-	sb.append("Immediate Post Dominators\n"+
-		  _postDominators.immediateDominatorsString());
-	return sb.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append("Dominators\n"+_dominators);
+        sb.append("Post Dominators\n"+_postDominators);
+        sb.append("Immediate Dominators\n"+
+                  _dominators.immediateDominatorsString());
+        sb.append("Immediate Post Dominators\n"+
+                  _postDominators.immediateDominatorsString());
+        return sb.toString();
     }
 
     protected void _init() throws IllegalActionException {
-	_dominators = new DominatorHashMap(this);
-	_postDominators = new DominatorHashMap(this,true);
+        _dominators = new DominatorHashMap(this);
+        _postDominators = new DominatorHashMap(this,true);
     }
 
     /**
@@ -143,36 +143,36 @@ public class DominatorCFG extends DirectedAcyclicCFG {
      * @see DominatorCFG#createDominatorCFG(String[],boolean)
      **/
     public static DominatorCFG createDominatorCFG(String args[],
-						  boolean writeGraphs) {
-	soot.SootMethod testMethod =
-	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
-	DominatorCFG _cfg=null;
-	try {
-	    ConditionalControlCompactor.compact(testMethod);
-	    BooleanNotCompactor.compact(testMethod);
-	    soot.Body body = testMethod.retrieveActiveBody();
-	    BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	    /*
-	    if (writeGraphs) {
-		ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
-		BlockDataFlowGraph graphs[] =
-		    BlockDataFlowGraph.getBlockDataFlowGraphs(args);
-	    }
-	    */
-	    _cfg = new DominatorCFG(bbgraph);
-	    if (writeGraphs) {
-		PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+                                                  boolean writeGraphs) {
+        soot.SootMethod testMethod =
+            ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
+        DominatorCFG _cfg=null;
+        try {
+            ConditionalControlCompactor.compact(testMethod);
+            BooleanNotCompactor.compact(testMethod);
+            soot.Body body = testMethod.retrieveActiveBody();
+            BriefBlockGraph bbgraph = new BriefBlockGraph(body);
+            /*
+            if (writeGraphs) {
+                ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
+                BlockDataFlowGraph graphs[] =
+                    BlockDataFlowGraph.getBlockDataFlowGraphs(args);
+            }
+            */
+            _cfg = new DominatorCFG(bbgraph);
+            if (writeGraphs) {
+                PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
                 toDotty.writeDotFile(".", testMethod.getName(),_cfg);
             }
-	} catch (IllegalActionException e) {
-	    System.err.println(e);
-	    System.exit(1);
-	}
-	return _cfg;
+        } catch (IllegalActionException e) {
+            System.err.println(e);
+            System.exit(1);
+        }
+        return _cfg;
     }
 
     public static void main(String args[]) {
-	DominatorCFG dcfg = createDominatorCFG(args,true);
+        DominatorCFG dcfg = createDominatorCFG(args,true);
     }
 
     protected DominatorHashMap _dominators;

@@ -322,7 +322,7 @@ public class FIFOQueue implements Cloneable {
 
         if (_historyCapacity != 0) {
             if (_historyCapacity == _historyList.size()) {
-            	_historyList.removeFirst();
+                    _historyList.removeFirst();
             }
             _historyList.addLast(resultObject);
         }

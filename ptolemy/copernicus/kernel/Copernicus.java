@@ -129,21 +129,21 @@ public class Copernicus {
      *  @exception Exception If command line arguments have problems.
      */
     public Copernicus(String args[]) throws Exception {
-	NamedObj namedObj = new NamedObj();
-	_generatorAttribute =
-	    new GeneratorAttribute(namedObj, GENERATOR_NAME);
-	_generatorAttribute.initialize();
+        NamedObj namedObj = new NamedObj();
+        _generatorAttribute =
+            new GeneratorAttribute(namedObj, GENERATOR_NAME);
+        _generatorAttribute.initialize();
 
-	// _parseArgs() will set the modelPath Parameter
-	_parseArgs(args);
+        // _parseArgs() will set the modelPath Parameter
+        _parseArgs(args);
 
-	// Parse the file named by the modelPath Parameter and update
-	// parameters
+        // Parse the file named by the modelPath Parameter and update
+        // parameters
         _generatorAttribute.sanityCheckAndUpdateParameters(null);
 
-	if (_verbose) {
-	    System.out.println(_generatorAttribute.toString());
-	}
+        if (_verbose) {
+            System.out.println(_generatorAttribute.toString());
+        }
 
         // Save the _generatorAttribute in a temporary file and then
         // add an attribute to _generatorAttribute that lists the
@@ -189,14 +189,14 @@ public class Copernicus {
      *  @return The command to create the generated code.
      */
     public static String commandToCompile(GeneratorAttribute
-					  generatorAttribute)
-	throws Exception {
-	String compileCommandTemplateFile =
-	    ((StringToken)
-	      ((Parameter)generatorAttribute
-	       .getAttribute("compileCommandTemplateFile"))
-	     .getToken()).stringValue();
-	return substitute(compileCommandTemplateFile, generatorAttribute);
+                                          generatorAttribute)
+        throws Exception {
+        String compileCommandTemplateFile =
+            ((StringToken)
+              ((Parameter)generatorAttribute
+               .getAttribute("compileCommandTemplateFile"))
+             .getToken()).stringValue();
+        return substitute(compileCommandTemplateFile, generatorAttribute);
     }
 
     /** Return the command to run the generated code.
@@ -211,50 +211,50 @@ public class Copernicus {
      *  @return The command to run the generated code.
      */
     public static String commandToRun(GeneratorAttribute generatorAttribute)
-	throws Exception {
-	String runCommandTemplateFile =
-	    ((StringToken)
-	      ((Parameter)generatorAttribute
-	       .getAttribute("runCommandTemplateFile"))
-	     .getToken()).stringValue();
-	return substitute(runCommandTemplateFile, generatorAttribute);
+        throws Exception {
+        String runCommandTemplateFile =
+            ((StringToken)
+              ((Parameter)generatorAttribute
+               .getAttribute("runCommandTemplateFile"))
+             .getToken()).stringValue();
+        return substitute(runCommandTemplateFile, generatorAttribute);
     }
 
     /** Possibly create the generated code and run it.
-     *	What actually happens depends on the values of the <i>compile</i>
+     *        What actually happens depends on the values of the <i>compile</i>
      *  and <i>run</i> parameters in <i>generatorAttribute<i>
      *  @param generatorAttribute The GeneratorAttribute that contains
      *  the parameters that determine the commands to create and run
      *  the generated code.
      */
     public static void compileAndRun(GeneratorAttribute generatorAttribute)
-	throws Exception {
-	int exitValue = 1;
-	if (((BooleanToken)
-	     ((Parameter)generatorAttribute
-	       .getAttribute("compile"))
-	     .getToken()).booleanValue()) {
-	    String command = commandToCompile(generatorAttribute);
-	    exitValue = executeCommand(command);
-	    if (exitValue != 0) {
-		throw new Exception("Problem executing command. "
-				    + "Return value was: " + exitValue
-				    + ". Command was:\n" + command);
-	    }
-	}
+        throws Exception {
+        int exitValue = 1;
+        if (((BooleanToken)
+             ((Parameter)generatorAttribute
+               .getAttribute("compile"))
+             .getToken()).booleanValue()) {
+            String command = commandToCompile(generatorAttribute);
+            exitValue = executeCommand(command);
+            if (exitValue != 0) {
+                throw new Exception("Problem executing command. "
+                                    + "Return value was: " + exitValue
+                                    + ". Command was:\n" + command);
+            }
+        }
 
-	if (((BooleanToken)
-	     ((Parameter)generatorAttribute
-	       .getAttribute("run"))
-	     .getToken()).booleanValue()) {
-	    String command = commandToRun(generatorAttribute);
-	    exitValue = executeCommand(command);
-	    if (exitValue != 0) {
-		throw new Exception("Problem executing command. "
-				    + "Return value was: " + exitValue
-				    + ". Command was:\n" + command);
-	    }
-	}
+        if (((BooleanToken)
+             ((Parameter)generatorAttribute
+               .getAttribute("run"))
+             .getToken()).booleanValue()) {
+            String command = commandToRun(generatorAttribute);
+            exitValue = executeCommand(command);
+            if (exitValue != 0) {
+                throw new Exception("Problem executing command. "
+                                    + "Return value was: " + exitValue
+                                    + ". Command was:\n" + command);
+            }
+        }
     }
 
     /** Execute a command in a subshell, and print out the results
@@ -268,70 +268,70 @@ public class Copernicus {
      */
     public static int executeCommand(String command) throws Exception {
 
-	if (command == null || command.length() == 0 ) {
-	    System.out.println("Warning, null or 0 length command string "
-			       + "passed to Copernicus.executeCommand()");
-	    return 0;
-	}
+        if (command == null || command.length() == 0 ) {
+            System.out.println("Warning, null or 0 length command string "
+                               + "passed to Copernicus.executeCommand()");
+            return 0;
+        }
 
-	String [] commands = StringUtilities.tokenizeForExec(command);
+        String [] commands = StringUtilities.tokenizeForExec(command);
 
-	if (commands.length == 0) {
-	    System.out.println("Warning, command was parsed to 0 tokens, "
-			         + "perhaps the command string was empty or "
-				 + "consisted only of comments?\n"
-				 + "command string was '" + command + "'");
-	    return 0;
-	}
+        if (commands.length == 0) {
+            System.out.println("Warning, command was parsed to 0 tokens, "
+                                 + "perhaps the command string was empty or "
+                                 + "consisted only of comments?\n"
+                                 + "command string was '" + command + "'");
+            return 0;
+        }
         System.out.println("About to execute:\n ");
-	for (int i = 0; i < (commands.length - 1); i++) {
-            System.out.println("	\"" + commands[i] + "\" \\");
-	}
+        for (int i = 0; i < (commands.length - 1); i++) {
+            System.out.println("        \"" + commands[i] + "\" \\");
+        }
 
         if (commands.length > 0) {
-            System.out.println("	\"" + commands[commands.length - 1]
+            System.out.println("        \"" + commands[commands.length - 1]
                     + "\"");
         }
         System.out.flush();
 
-	// 0 indicates normal execution
-	int processReturnCode = 1;
-     	try {
+        // 0 indicates normal execution
+        int processReturnCode = 1;
+             try {
             // This code is similar to tcl.lang.ExecCmd, so if you
             // make changes here, please take a look at ExecCmd and
             // see if it needs updating.
 
-	    Process process = Runtime.getRuntime().exec(commands);
+            Process process = Runtime.getRuntime().exec(commands);
 
-	    // Set up a Thread to read in any error messages
-	    _StreamReaderThread errorGobbler = new
-		_StreamReaderThread(process.getErrorStream(), System.err);
+            // Set up a Thread to read in any error messages
+            _StreamReaderThread errorGobbler = new
+                _StreamReaderThread(process.getErrorStream(), System.err);
 
-	    // Set up a Thread to read in any output messages
-	    _StreamReaderThread outputGobbler = new
-		_StreamReaderThread(process.getInputStream(), System.out);
+            // Set up a Thread to read in any output messages
+            _StreamReaderThread outputGobbler = new
+                _StreamReaderThread(process.getInputStream(), System.out);
 
-	    // Start up the Threads
-	    errorGobbler.start();
-	    outputGobbler.start();
-	    try {
-		processReturnCode = process.waitFor();
+            // Start up the Threads
+            errorGobbler.start();
+            outputGobbler.start();
+            try {
+                processReturnCode = process.waitFor();
                 errorGobbler.join();
                 outputGobbler.join();
-		synchronized (_lock) {
-		    process = null;
-		}
-	    } catch (InterruptedException interrupted) {
-		System.out.println("InterruptedException: "
-				   + interrupted);
-		throw interrupted;
-	    }
-	    System.out.println("All Done.");
-	} catch (final IOException io) {
+                synchronized (_lock) {
+                    process = null;
+                }
+            } catch (InterruptedException interrupted) {
+                System.out.println("InterruptedException: "
+                                   + interrupted);
+                throw interrupted;
+            }
+            System.out.println("All Done.");
+        } catch (final IOException io) {
             System.out.flush();
-	    System.err.println("IOException: " + io);
-	}
-	return processReturnCode;
+            System.err.println("IOException: " + io);
+        }
+        return processReturnCode;
     }
 
     /** Export the MoML of the namedObj argument to a temporary file.
@@ -353,10 +353,10 @@ public class Copernicus {
         writer.write(footer, 0, footer.length());
         writer.close();
 
-	// Substitute backslashes here because setting a parameter to include
-	// backslashes causes problems.
+        // Substitute backslashes here because setting a parameter to include
+        // backslashes causes problems.
         return
-	    StringUtilities.substitute(temporaryFile.toString(), "\\", "/");
+            StringUtilities.substitute(temporaryFile.toString(), "\\", "/");
     }
 
     /** Create a new instance of this application, passing it the
@@ -364,8 +364,8 @@ public class Copernicus {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
-	try {
-	    new Copernicus(args);
+        try {
+            new Copernicus(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
@@ -386,12 +386,12 @@ public class Copernicus {
      */
     public static HashMap newMap(NamedObj namedObj)
             throws IllegalActionException {
-	HashMap substituteMap = new HashMap();
-	Iterator attributes = namedObj.attributeList().iterator();
-	while(attributes.hasNext()) {
-	    Attribute attribute = (Attribute)attributes.next();
-	    if (attribute instanceof Variable) {
-		Variable variable = (Variable)attribute;
+        HashMap substituteMap = new HashMap();
+        Iterator attributes = namedObj.attributeList().iterator();
+        while(attributes.hasNext()) {
+            Attribute attribute = (Attribute)attributes.next();
+            if (attribute instanceof Variable) {
+                Variable variable = (Variable)attribute;
                 // If getToken() fails, make sure that you are calling
                 // setExpression with a string that has double quotes.
                 String value = variable.getToken().toString();
@@ -401,13 +401,13 @@ public class Copernicus {
                 }
                 substituteMap.put("@" + variable.getName() + "@",
                         value);
-	    }
-	}
+            }
+        }
 
 //         System.out.println("The map for " + namedObj +":");
-// 	Iterator keys = substituteMap.keySet().iterator();
-// 	while (keys.hasNext()) {
-// 	    String key = (String)keys.next();
+//         Iterator keys = substituteMap.keySet().iterator();
+//         while (keys.hasNext()) {
+//             String key = (String)keys.next();
 //             System.out.println(key + "\t" + (String)substituteMap.get(key));
 //         }
 
@@ -425,21 +425,21 @@ public class Copernicus {
     public static BufferedReader openAsFileOrURL(String inputFileName)
             throws FileNotFoundException, IOException {
         BufferedReader inputFile;
-	try {
-	    inputFile =
-		new BufferedReader(new FileReader(inputFileName));
-	} catch (IOException ex) {
-	    // Try it as a resource
-	    URL inputFileURL =
-		Thread.currentThread().getContextClassLoader()
-		.getResource(inputFileName);
-	    if (inputFileURL == null) {
-		throw ex;
-	    }
-	    inputFile =
-		new BufferedReader(new InputStreamReader(inputFileURL
-							 .openStream()));
-	}
+        try {
+            inputFile =
+                new BufferedReader(new FileReader(inputFileName));
+        } catch (IOException ex) {
+            // Try it as a resource
+            URL inputFileURL =
+                Thread.currentThread().getContextClassLoader()
+                .getResource(inputFileName);
+            if (inputFileURL == null) {
+                throw ex;
+            }
+            inputFile =
+                new BufferedReader(new InputStreamReader(inputFileURL
+                                                         .openStream()));
+        }
         return inputFile;
     }
 
@@ -457,20 +457,20 @@ public class Copernicus {
     public static String substitute(String input,
             Map substituteMap) {
 
-	// At first glance it would appear that we could use StringTokenizer
-	// however, the token is really the String @codeBase@, not
-	// the @ character.  StringTokenizer has problems with
-	// "@codebase", which reports as having one token, but
-	// should not be substituted since it is not "@codebase@"
+        // At first glance it would appear that we could use StringTokenizer
+        // however, the token is really the String @codeBase@, not
+        // the @ character.  StringTokenizer has problems with
+        // "@codebase", which reports as having one token, but
+        // should not be substituted since it is not "@codebase@"
 
-	Iterator keys = substituteMap.keySet().iterator();
+        Iterator keys = substituteMap.keySet().iterator();
 
-	while (keys.hasNext()) {
-	    String key = (String)keys.next();
-	    input = StringUtilities.substitute(input, key,
-					       (String)substituteMap.get(key));
-	}
-	return input;
+        while (keys.hasNext()) {
+            String key = (String)keys.next();
+            input = StringUtilities.substitute(input, key,
+                                               (String)substituteMap.get(key));
+        }
+        return input;
     }
 
     /** Read in the contents of inputFileName, and for each Parameter
@@ -484,45 +484,45 @@ public class Copernicus {
      *  @return The contents of inputFileName after doing the substitutions
      */
     public static String substitute(String inputFileName,
-				    NamedObj namedObj)
-	throws FileNotFoundException, IOException {
+                                    NamedObj namedObj)
+        throws FileNotFoundException, IOException {
 
         Map substituteMap;
         try {
             substituteMap = newMap(namedObj);
         } catch (IllegalActionException ex) {
-	    // IOException does not have a constructor that takes a
-	    // cause argument.
-	    IOException exception = new IOException("Problem generating a "
-						    + "substitution map for "
-						    + namedObj.getName());
-	    exception.initCause(ex);
-	    throw exception;
+            // IOException does not have a constructor that takes a
+            // cause argument.
+            IOException exception = new IOException("Problem generating a "
+                                                    + "substitution map for "
+                                                    + namedObj.getName());
+            exception.initCause(ex);
+            throw exception;
         }
-	URL inputFileURL =
-	    Thread.currentThread().getContextClassLoader()
-	    .getResource(inputFileName);
-	if (inputFileURL == null) {
-	    throw new FileNotFoundException("Failed to find '"
-					    + inputFileName
-					    + "' as a resource");
-	}
-	BufferedReader inputReader =
-	    new BufferedReader(new InputStreamReader(inputFileURL
-						     .openStream()));
-	String inputLine;
-	StringBuffer output = new StringBuffer();
+        URL inputFileURL =
+            Thread.currentThread().getContextClassLoader()
+            .getResource(inputFileName);
+        if (inputFileURL == null) {
+            throw new FileNotFoundException("Failed to find '"
+                                            + inputFileName
+                                            + "' as a resource");
+        }
+        BufferedReader inputReader =
+            new BufferedReader(new InputStreamReader(inputFileURL
+                                                     .openStream()));
+        String inputLine;
+        StringBuffer output = new StringBuffer();
         String lineSeparator = System.getProperty("line.separator");
-	while ( (inputLine = inputReader.readLine()) != null) {
+        while ( (inputLine = inputReader.readLine()) != null) {
             output.append(substitute(inputLine + lineSeparator,
                     substituteMap));
- 	}
-	inputReader.close();
-	return output.toString();
+         }
+        inputReader.close();
+        return output.toString();
     }
 
     /** Read in the contents of inputFile, and replace each matching
-     *	String key found in substituteMap with the corresponding String value
+     *        String key found in substituteMap with the corresponding String value
      *  and write the results to outputFileName.
      *  @param inputFile A BufferedReader that refers to the file to be
      *  read in.
@@ -535,18 +535,18 @@ public class Copernicus {
             Map substituteMap,
             String outputFileName)
             throws FileNotFoundException, IOException {
-	PrintWriter outputFile =
-	    new PrintWriter(new BufferedWriter(new FileWriter(outputFileName)));
-	String inputLine;
-	while ( (inputLine = inputFile.readLine()) != null) {
-	    outputFile.println(substitute(inputLine, substituteMap));
- 	}
-	inputFile.close();
-	outputFile.close();
+        PrintWriter outputFile =
+            new PrintWriter(new BufferedWriter(new FileWriter(outputFileName)));
+        String inputLine;
+        while ( (inputLine = inputFile.readLine()) != null) {
+            outputFile.println(substitute(inputLine, substituteMap));
+         }
+        inputFile.close();
+        outputFile.close();
     }
 
     /** Read in the contents of inputFileName, and replace each matching
-     *	String key found in substituteMap with the corresponding String value
+     *        String key found in substituteMap with the corresponding String value
      *  and write the results to outputFileName.
      *  @param inputFileName  The name of the file to read from.
      *  @param substituteMap The Map of String keys like "@codeBase@"
@@ -558,7 +558,7 @@ public class Copernicus {
             Map substituteMap,
             String outputFileName)
             throws FileNotFoundException, IOException {
-	BufferedReader inputFile = openAsFileOrURL(inputFileName);
+        BufferedReader inputFile = openAsFileOrURL(inputFileName);
         substitute(inputFile, substituteMap, outputFileName);
     }
 
@@ -584,7 +584,7 @@ public class Copernicus {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-verbose")) {
-	    _verbose = true;
+            _verbose = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version "
                     + VersionAttribute.CURRENT_VERSION.getExpression()
@@ -594,11 +594,11 @@ public class Copernicus {
         } else if (arg.equals("")) {
             // Ignore blank argument.
         } else if (!arg.startsWith("-")) {
-	    // Assume the argument is a file name or URL.
-	    _generatorAttribute.updateModelAttributes(arg);
-	} else {
-	    // Argument not recognized.
-	    return false;
+            // Assume the argument is a file name or URL.
+            _generatorAttribute.updateModelAttributes(arg);
+        } else {
+            // Argument not recognized.
+            return false;
         }
         return true;
     }
@@ -638,16 +638,16 @@ public class Copernicus {
 
             boolean match = false;
 
-	    Attribute attribute = _generatorAttribute.getAttribute(name);
-	    if (attribute instanceof Settable) {
-		match = true;
-		((Settable)attribute).setExpression(value);
-		if (attribute instanceof Variable) {
-		    // Force evaluation so that listeners
-		    // are notified.
-		    ((Variable)attribute).getToken();
-		}
-	    }
+            Attribute attribute = _generatorAttribute.getAttribute(name);
+            if (attribute instanceof Settable) {
+                match = true;
+                ((Settable)attribute).setExpression(value);
+                if (attribute instanceof Variable) {
+                    // Force evaluation so that listeners
+                    // are notified.
+                    ((Variable)attribute).getToken();
+                }
+            }
 
             if (!match) {
                 // Unrecognized option.
@@ -662,14 +662,14 @@ public class Copernicus {
 
     /** Return a string containing all the Parameters */
     private static String _help() {
-	NamedObj namedObj = new NamedObj();
-	try {
-	    GeneratorAttribute generatorAttribute =
-		new GeneratorAttribute(namedObj, "_helpGeneratorAttribute");
-	    return generatorAttribute.toString();
-	} catch (Exception ex) {
-	    return ex.toString();
-	}
+        NamedObj namedObj = new NamedObj();
+        try {
+            GeneratorAttribute generatorAttribute =
+                new GeneratorAttribute(namedObj, "_helpGeneratorAttribute");
+            return generatorAttribute.toString();
+        } catch (Exception ex) {
+            return ex.toString();
+        }
     }
 
     /** Return a string containing the usage */
@@ -708,7 +708,7 @@ public class Copernicus {
     protected String _commandFlags[] = {
         "-help",
         "-test",
-	"-verbose",
+        "-verbose",
         "-version",
     };
 
@@ -719,7 +719,7 @@ public class Copernicus {
 
     /** The form of the command line. */
     protected String _commandTemplate =
-	"copernicus [options . . .] [relative xml filename]\n"
+        "copernicus [options . . .] [relative xml filename]\n"
     + "This command used to generate code from a model."
     + "This command is very complex, see $PTII/doc/codegen.htm for details\n\n"
     + "This command does command line argument substitution by reading\n"
@@ -757,32 +757,32 @@ public class Copernicus {
     // to another stream
     private static class _StreamReaderThread extends Thread {
 
-	_StreamReaderThread(InputStream inputStream, PrintStream stream) {
-	    _inputStream = inputStream;
-	    _stream = stream;
-	}
+        _StreamReaderThread(InputStream inputStream, PrintStream stream) {
+            _inputStream = inputStream;
+            _stream = stream;
+        }
 
-	// Read lines from the _inputStream and output them to the
-	// _stream
-	public void run() {
-	    try {
-		InputStreamReader inputStreamReader =
-		    new InputStreamReader(_inputStream);
+        // Read lines from the _inputStream and output them to the
+        // _stream
+        public void run() {
+            try {
+                InputStreamReader inputStreamReader =
+                    new InputStreamReader(_inputStream);
                 BufferedReader bufferedReader =
                     new BufferedReader(inputStreamReader);
                 String line = null;
                 while ( (line = bufferedReader.readLine()) != null)
-		    _stream.println(line);
-	    } catch (IOException ioe) {
+                    _stream.println(line);
+            } catch (IOException ioe) {
                 System.out.flush();
-		System.err.println("IOException: " + ioe);
-	    }
-	}
+                System.err.println("IOException: " + ioe);
+            }
+        }
 
-	// Stream to read from.
-	private InputStream _inputStream;
-	// Stream to write to. Usually System.out or System.err
-	private PrintStream _stream;
+        // Stream to read from.
+        private InputStream _inputStream;
+        // Stream to write to. Usually System.out or System.err
+        private PrintStream _stream;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -188,9 +188,9 @@ public class ND_3 extends TypedAtomicActor {
     ////                         private methods                   ////
 
     private void _Vectorize(double arg0, double arg1) {
-	_argOut2 = -1*Math.atan2(arg1, arg0);
-	_argOut0 = Math.cos(_argOut2) * arg0   -   Math.sin(_argOut2) * arg1;
-	_argOut1 = 0.0;
+        _argOut2 = -1*Math.atan2(arg1, arg0);
+        _argOut0 = Math.cos(_argOut2) * arg0   -   Math.sin(_argOut2) * arg1;
+        _argOut1 = 0.0;
     }
 
     ///////////////////////////////////////////////////////////////////

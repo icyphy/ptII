@@ -60,9 +60,9 @@ public class TokenEntry implements Entry {
      *  @param token A Token.
      */
     public TokenEntry(String name, Long serialnumber, Token token) {
-	this.name = name;
-	this.serialNumber = serialnumber;
-	this.token = token;
+        this.name = name;
+        this.serialNumber = serialnumber;
+        this.token = token;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,22 +89,22 @@ public class TokenEntry implements Entry {
      *  @return the serial number.
      */
     public long getSerialNumber() {
-	if (serialNumber == null) {
-	    return 0;
-	}
-	return serialNumber.longValue();
+        if (serialNumber == null) {
+            return 0;
+        }
+        return serialNumber.longValue();
     }
 
     /** Increase the serial number by 1. If the serialNumberObj is
      *  null, change it to contain 1.
      */
     public void increaseSerialNumber() {
-	if (serialNumber == null) {
-	    serialNumber = new Long(1);
-	} else {
-	    long val = serialNumber.longValue();
-	    serialNumber = new Long(val+1);
-	}
+        if (serialNumber == null) {
+            serialNumber = new Long(1);
+        } else {
+            long val = serialNumber.longValue();
+            serialNumber = new Long(val+1);
+        }
     }
 }
 

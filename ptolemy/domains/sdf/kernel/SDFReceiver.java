@@ -83,7 +83,7 @@ public class SDFReceiver extends AbstractReceiver {
      */
     public SDFReceiver(IOPort container) throws IllegalActionException {
         super(container);
-	_queue = new ArrayFIFOQueue();
+        _queue = new ArrayFIFOQueue();
     }
 
     /** Construct an empty receiver with the specified container and size.
@@ -95,7 +95,7 @@ public class SDFReceiver extends AbstractReceiver {
     public SDFReceiver(IOPort container, int size)
             throws IllegalActionException {
         super(container);
-	_queue = new ArrayFIFOQueue(size);
+        _queue = new ArrayFIFOQueue(size);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -162,14 +162,14 @@ public class SDFReceiver extends AbstractReceiver {
      *   tokens.
      */
     public Token[] getArray(int count) {
-	// Check if we need to reallocate the cached
-	// token array.
-	if (_tokenArray == null || count > _tokenArray.length) {
-	    // Reallocate token array.
-	    _tokenArray = new Token[count];
-	}
-	_queue.takeArray(_tokenArray, count);
-	return _tokenArray;
+        // Check if we need to reallocate the cached
+        // token array.
+        if (_tokenArray == null || count > _tokenArray.length) {
+            // Reallocate token array.
+            _tokenArray = new Token[count];
+        }
+        _queue.takeArray(_tokenArray, count);
+        return _tokenArray;
     }
 
     /** Return the capacity, or INFINITE_CAPACITY if it is unbounded.
@@ -211,16 +211,16 @@ public class SDFReceiver extends AbstractReceiver {
      *   declared explicitly by the caller.
      */
     public boolean hasRoom(int tokens) throws IllegalArgumentException {
-	if (tokens < 1) {
-	    throw new IllegalArgumentException("The argument "
+        if (tokens < 1) {
+            throw new IllegalArgumentException("The argument "
                     + "must not be negative. It was: " + tokens);
-	}
+        }
         if (_queue.getCapacity() == INFINITE_CAPACITY) {
-	    // Queue has infinite capacity, so it can accept any
-	    // finite number of tokens.
-	    return true;
-	}
-	return (_queue.size() + tokens) <= _queue.getCapacity();
+            // Queue has infinite capacity, so it can accept any
+            // finite number of tokens.
+            return true;
+        }
+        return (_queue.size() + tokens) <= _queue.getCapacity();
     }
 
     /** Return true if get() will succeed in returning a token.
@@ -241,8 +241,8 @@ public class SDFReceiver extends AbstractReceiver {
      *   declared explicitly by the caller.
      */
     public boolean hasToken(int tokens) throws IllegalArgumentException {
-	if (tokens < 0) {
-	    throw new IllegalArgumentException("The argument "
+        if (tokens < 0) {
+            throw new IllegalArgumentException("The argument "
                     + "must not be negative. It was: " + tokens);
         }
         return _queue.size() >= tokens;
@@ -308,7 +308,7 @@ public class SDFReceiver extends AbstractReceiver {
         // Note: There has been a suggestion that this method also be
         // able to take an offset.  When we figure out how to use this,
         // we should implement it.
-	if (!_queue.putArray(token, count)) {
+        if (!_queue.putArray(token, count)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
         }

@@ -65,10 +65,10 @@ public class Accum extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	input = new TypedIOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.INT);
 
-	output = new TypedIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
     }
 

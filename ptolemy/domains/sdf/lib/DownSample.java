@@ -142,7 +142,7 @@ public class DownSample extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         int factorValue = ((IntToken)factor.getToken()).intValue();
-	Token[] valueArray = input.get(0, factorValue);
+        Token[] valueArray = input.get(0, factorValue);
 
         int phaseValue = ((IntToken)phase.getToken()).intValue();
         if (phaseValue >= factorValue) {

@@ -185,7 +185,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     // Should never happen that a put or a ConditionalSend
                     // is already at the receiver.
                     throw new InvalidStateException(
-			    ((Nameable)controller.getParent()).getName() +
+                            ((Nameable)controller.getParent()).getName() +
                             ": ConditionalSend branch trying to rendezvous " +
                             "with a receiver that already has a put or a " +
                             "ConditionalSend waiting.");
@@ -268,7 +268,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveAfterGet(CSPReceiver receiver,
-	    ConditionalBranchController controller)
+            ConditionalBranchController controller)
             throws InterruptedException {
         // CASE 1: a get is already waiting
         // A get cannot disappear, so once enter this
@@ -281,9 +281,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 controller._branchSucceeded(getID());
                 return;
             } else {
-        	getController()._branchBlocked(this.getReceiver());
-        	getReceiver()._checkFlagsAndWait();
-        	getController()._branchUnblocked(this.getReceiver());
+                getController()._branchBlocked(this.getReceiver());
+                getReceiver()._checkFlagsAndWait();
+                getController()._branchUnblocked(this.getReceiver());
             }
             if (!isAlive()) {
                 controller._branchFailed(getID());
@@ -299,7 +299,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveFirst(CSPReceiver receiver,
-	    ConditionalBranchController controller)
+            ConditionalBranchController controller)
             throws InterruptedException {
         // CASE 3: ConditionalSend got here before a get or a
         // ConditionalReceive. Once enter this part of main

@@ -218,8 +218,8 @@ public class ND_4 extends TypedAtomicActor {
 
     private void _Rotate(double arg0, double arg1, double arg2) {
         _argOut0 = Math.cos(arg2) * arg0   -   Math.sin(arg2) * arg1;
-	_argOut1 = Math.sin(arg2) * arg0   +   Math.cos(arg2) * arg1;
-	_argOut2 = arg2;
+        _argOut1 = Math.sin(arg2) * arg0   +   Math.cos(arg2) * arg1;
+        _argOut2 = arg2;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -72,7 +72,7 @@ public class IndexedPublisher extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	jspaceName = new Parameter(this, "jspaceName",
+            jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
@@ -122,10 +122,10 @@ public class IndexedPublisher extends Sink {
      *  and the maximum index is the current serial number.
      */
     public void preinitialize() throws IllegalActionException {
-	super.preinitialize();
-	String name = ((StringToken)jspaceName.getToken()).stringValue();
-	_space = SpaceFinder.getSpace(name);
-	_currentSerialNumber =
+        super.preinitialize();
+        String name = ((StringToken)jspaceName.getToken()).stringValue();
+        _space = SpaceFinder.getSpace(name);
+        _currentSerialNumber =
             ((LongToken)startingSerialNumber.getToken()).longValue();
         String entryname = ((StringToken)entryName.getToken()).stringValue();
         try {
@@ -136,12 +136,12 @@ public class IndexedPublisher extends Sink {
                     entryname, "maximum", new Long(_currentSerialNumber-1));
             _space.write(maximum, null, Lease.FOREVER);
         } catch (RemoteException re) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + re.getMessage());
-	} catch (TransactionException te) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+        } catch (TransactionException te) {
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + te.getMessage());
-	}
+        }
         System.out.println("Finish initialization.");
     }
 
@@ -151,9 +151,9 @@ public class IndexedPublisher extends Sink {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
-	try {
-	    String name = ((StringToken)entryName.getToken()).stringValue();
-	    long time = ((LongToken)leaseTime.getToken()).longValue();
+        try {
+            String name = ((StringToken)entryName.getToken()).stringValue();
+            long time = ((LongToken)leaseTime.getToken()).longValue();
             IndexEntry maxtemp = new IndexEntry(
                     name, "maximum", null);
             // FIXME: This may introduce deadlock if maximum is lost
@@ -175,13 +175,13 @@ public class IndexedPublisher extends Sink {
             }
             _space.write(maximum, null, Lease.FOREVER);
             _currentSerialNumber = serialnumber;
-	} catch (RemoteException re) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+        } catch (RemoteException re) {
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + re.getMessage());
-	} catch (TransactionException te) {
-	    throw new IllegalActionException(this, "Cannot write into " +
+        } catch (TransactionException te) {
+            throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + te.getMessage());
-	} catch (InterruptedException ie) {
+        } catch (InterruptedException ie) {
             throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + ie.getMessage());
         } catch (net.jini.core.entry.UnusableEntryException ue) {

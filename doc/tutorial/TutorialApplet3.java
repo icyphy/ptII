@@ -11,8 +11,8 @@ import ptolemy.kernel.util.Workspace;
 
 public class TutorialApplet3 extends TypedCompositeActor {
     public TutorialApplet3(Workspace workspace)
-	throws IllegalActionException, NameDuplicationException {
-	super(workspace);
+        throws IllegalActionException, NameDuplicationException {
+        super(workspace);
 
         // Create model parameters
         Parameter stopTime = new Parameter(this, "stopTime");
@@ -22,19 +22,19 @@ public class TutorialApplet3 extends TypedCompositeActor {
         stopTime.setExpression("10.0");
         clockPeriod.setExpression("2.0");
 
-	// Create the director.
-	DEDirector director = new DEDirector(this, "director");
-	setDirector(director);
+        // Create the director.
+        DEDirector director = new DEDirector(this, "director");
+        setDirector(director);
 
-	// Create two actors.
-	Clock clock = new Clock(this,"clock");
-	TimedPlotter plotter = new TimedPlotter(this,"plotter");
+        // Create two actors.
+        Clock clock = new Clock(this,"clock");
+        TimedPlotter plotter = new TimedPlotter(this,"plotter");
 
         // Set the user controlled parameters.
-	director.stopTime.setExpression("stopTime");
+        director.stopTime.setExpression("stopTime");
         clock.period.setExpression("clockPeriod");
 
-	// Connect them.
-	connect(clock.output, plotter.input);
+        // Connect them.
+        connect(clock.output, plotter.input);
     }
 }

@@ -57,8 +57,8 @@ public class LiveSoundEvent {
      *   LiveSoundEvent.BITS_PER_SAMPLE.
      */
     public LiveSoundEvent(int parameter) {
-	// FIXME: Should check that the value is parameter is legal.
-	_parameter = parameter;
+        // FIXME: Should check that the value is parameter is legal.
+        _parameter = parameter;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -216,14 +216,14 @@ public class Image3D extends GRPickActor {
 
     private static final float[] verts = {
     // front face
-	 1.0f, -1.0f,  1.0f,
-	 1.0f,  1.0f,  1.0f,
-	-1.0f,  1.0f,  1.0f,
-	-1.0f, -1.0f,  1.0f
+         1.0f, -1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f
     };
 
     private static final Vector3f[] normals = {
-	new Vector3f( 0.0f,  0.0f,  1.0f),	// front face
+        new Vector3f( 0.0f,  0.0f,  1.0f),        // front face
     };
 
 

@@ -77,11 +77,11 @@ public class SequenceToMatrix extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// default tokenConsumptionRate is 1.
-	input.setTokenConsumptionRate(1);
+        // default tokenConsumptionRate is 1.
+        input.setTokenConsumptionRate(1);
 
-	// tokenProductionRate is 1.
-	output.setTokenProductionRate(1);
+        // tokenProductionRate is 1.
+        output.setTokenProductionRate(1);
 
         output.setTypeAtLeast(new FunctionTerm(input));
 
@@ -166,7 +166,7 @@ public class SequenceToMatrix extends SDFTransformer {
         int rowsValue = ((IntToken)rows.getToken()).intValue();
         int columnsValue = ((IntToken)columns.getToken()).intValue();
         int length = rowsValue * columnsValue;
-	Token[] valueArray = input.get(0, length);
+        Token[] valueArray = input.get(0, length);
 
         // Use reflection, to avoid having to have a case statement
         // on the type.

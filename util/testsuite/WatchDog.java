@@ -101,11 +101,11 @@ public class WatchDog {
                     }
                 }
             };
-	if (_timer == null) {
+        if (_timer == null) {
             // Create the timer as a Daemon.. This way it won't prevent
             // the compiler from exiting if an exception occurs.
-	    _timer = new Timer(true);
-	}
+            _timer = new Timer(true);
+        }
         _timer.schedule(doTimeToDie, timeToDie);
     }
 

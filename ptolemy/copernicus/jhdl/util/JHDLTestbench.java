@@ -52,25 +52,25 @@ import ptolemy.kernel.util.IllegalActionException;
 public class JHDLTestbench extends Logic implements TestBench{
 
     public JHDLTestbench(HWSystem parent) {
-	this(parent,"JHDLTestBench");
+        this(parent,"JHDLTestBench");
     }
 
     public JHDLTestbench(HWSystem parent, String name) {
-	super(parent,name);
-	_inputWires = new Vector();
-	_outputWires = new Vector();
+        super(parent,name);
+        _inputWires = new Vector();
+        _outputWires = new Vector();
     }
 
     public Wire addPrimaryInputWire(String name, int bits) {
-	Wire w = wire(bits,name);
-	_inputWires.add(w);
-	return w;
+        Wire w = wire(bits,name);
+        _inputWires.add(w);
+        return w;
     }
 
     public Wire addPrimaryOutputWire(String name, int bits) {
-	Wire w = wire(bits,name);
-	_outputWires.add(w);
-	return w;
+        Wire w = wire(bits,name);
+        _outputWires.add(w);
+        return w;
     }
 
     protected Vector _inputWires;

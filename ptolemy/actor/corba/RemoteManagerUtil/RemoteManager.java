@@ -10,8 +10,8 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* A CORBA compatible interface that implements the execution
-	 * methods of Ptolemy II.
-	 */
+         * methods of Ptolemy II.
+         */
 public interface RemoteManager extends RemoteManagerOperations, org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity
 {
 } // interface RemoteManager

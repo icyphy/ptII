@@ -94,8 +94,8 @@ public class ExternalIOPortController extends AttributeController {
      *  @param access The access level.
      */
     public ExternalIOPortController(GraphController controller, Access access) {
-	super(controller, access);
-	setNodeRenderer(new PortRenderer());
+        super(controller, access);
+        setNodeRenderer(new PortRenderer());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -170,89 +170,89 @@ public class ExternalIOPortController extends AttributeController {
          *  @param n An instance of Locatable or one of the objects
          *   _GENERIC_INPUT, _GENERIC_OUTPUT, or _GENERIC_INOUT.
          */
-	public Figure render(Object n) {
-	    Polygon2D.Double polygon = new Polygon2D.Double();
+        public Figure render(Object n) {
+            Polygon2D.Double polygon = new Polygon2D.Double();
 
-	    Figure figure;
-	    // Wrap the figure in a TerminalFigure to set the direction that
-	    // connectors exit the port.  Note that this direction is the
-	    // OPPOSITE direction that is used to layout the port in the
-	    // Entity Controller.
-	    int direction;
-	    Locatable location = (Location)n;
-	    if (location != null) {
-		final Port port = (Port)location.getContainer();
+            Figure figure;
+            // Wrap the figure in a TerminalFigure to set the direction that
+            // connectors exit the port.  Note that this direction is the
+            // OPPOSITE direction that is used to layout the port in the
+            // Entity Controller.
+            int direction;
+            Locatable location = (Location)n;
+            if (location != null) {
+                final Port port = (Port)location.getContainer();
 
-		Color fill;
-		if (port instanceof IOPort) {
-		    IOPort ioport = (IOPort)port;
-		    polygon.moveTo(0, 5);
-		    polygon.lineTo(0, 10);
-		    if (ioport.isOutput()) {
-			polygon.lineTo(6, 5);
-			polygon.lineTo(14, 5);
-			polygon.lineTo(14, -5);
-			polygon.lineTo(6, -5);
-		    } else {
-			polygon.lineTo(12, 0);
-		    }
-		    polygon.lineTo(0, -10);
-		    if (ioport.isInput()) {
-			polygon.lineTo(0, -5);
-			polygon.lineTo(-6, -5);
-			polygon.lineTo(-6, 5);
-		    }
+                Color fill;
+                if (port instanceof IOPort) {
+                    IOPort ioport = (IOPort)port;
+                    polygon.moveTo(0, 5);
+                    polygon.lineTo(0, 10);
+                    if (ioport.isOutput()) {
+                        polygon.lineTo(6, 5);
+                        polygon.lineTo(14, 5);
+                        polygon.lineTo(14, -5);
+                        polygon.lineTo(6, -5);
+                    } else {
+                        polygon.lineTo(12, 0);
+                    }
+                    polygon.lineTo(0, -10);
+                    if (ioport.isInput()) {
+                        polygon.lineTo(0, -5);
+                        polygon.lineTo(-6, -5);
+                        polygon.lineTo(-6, 5);
+                    }
 
-		    polygon.closePath();
+                    polygon.closePath();
 
-		    if (ioport instanceof ParameterPort) {
+                    if (ioport instanceof ParameterPort) {
                         // It would be better to couple these to the
                         // parameters by position, but this is impossible
                         // in diva, so we assign a special color.
-			fill = Color.lightGray;
+                        fill = Color.lightGray;
                     } else if (ioport.isMultiport()) {
-			fill = Color.white;
-		    } else {
-			fill = Color.black;
-		    }
-		} else {
-		    polygon.moveTo(-6, 6);
-		    polygon.lineTo(0, 6);
-		    polygon.lineTo(8, 0);
-		    polygon.lineTo(0, -6);
-		    polygon.lineTo(-6, -6);
-		    polygon.closePath();
-		    fill = Color.black;
-		}
-		figure = new BasicFigure(polygon, fill, (float)1.5);
+                        fill = Color.white;
+                    } else {
+                        fill = Color.black;
+                    }
+                } else {
+                    polygon.moveTo(-6, 6);
+                    polygon.lineTo(0, 6);
+                    polygon.lineTo(8, 0);
+                    polygon.lineTo(0, -6);
+                    polygon.lineTo(-6, -6);
+                    polygon.closePath();
+                    fill = Color.black;
+                }
+                figure = new BasicFigure(polygon, fill, (float)1.5);
 
-		if (!(port instanceof IOPort)) {
-		    direction = SwingUtilities.NORTH;
-		} else {
-		    IOPort ioport = (IOPort)port;
+                if (!(port instanceof IOPort)) {
+                    direction = SwingUtilities.NORTH;
+                } else {
+                    IOPort ioport = (IOPort)port;
 
-		    if (ioport.isInput() &&
+                    if (ioport.isInput() &&
                             ioport.isOutput()) {
                         direction = SwingUtilities.NORTH;
-		    } else if (ioport.isInput()) {
-			direction = SwingUtilities.EAST;
-		    } else if (ioport.isOutput()) {
-			direction = SwingUtilities.WEST;
-		    } else {
-			// should never happen
-			direction = SwingUtilities.NORTH;
-		    }
-		}
-		double normal = CanvasUtilities.getNormal(direction);
-		Site tsite = new PerimeterSite(figure, 0);
-		tsite.setNormal(normal);
-		tsite = new FixedNormalSite(tsite);
+                    } else if (ioport.isInput()) {
+                        direction = SwingUtilities.EAST;
+                    } else if (ioport.isOutput()) {
+                        direction = SwingUtilities.WEST;
+                    } else {
+                        // should never happen
+                        direction = SwingUtilities.NORTH;
+                    }
+                }
+                double normal = CanvasUtilities.getNormal(direction);
+                Site tsite = new PerimeterSite(figure, 0);
+                tsite.setNormal(normal);
+                tsite = new FixedNormalSite(tsite);
                 String name = port.getName();
                 if (name != null && !name.equals("")
                         && !(port instanceof ParameterPort)) {
                     figure = new NameWrapper(figure, port.getName());
                 }
-		figure = new TerminalFigure(figure, tsite)  {
+                figure = new TerminalFigure(figure, tsite)  {
                     // Override this because the tooltip may change over time.
                     // I.e., the port may change from being an input or
                     // output, etc.
@@ -275,18 +275,18 @@ public class ExternalIOPortController extends AttributeController {
                 };
                 // Have to do this as well or awt will not render a tooltip.
                 figure.setToolTipText(port.getName());
-	    } else {
-		polygon.moveTo(0, 0);
-		polygon.lineTo(0, 10);
-		polygon.lineTo(12, 0);
-		polygon.lineTo(0, -10);
-		polygon.closePath();
+            } else {
+                polygon.moveTo(0, 0);
+                polygon.lineTo(0, 10);
+                polygon.lineTo(12, 0);
+                polygon.lineTo(0, -10);
+                polygon.closePath();
 
-		figure = new BasicFigure(polygon, Color.black);
+                figure = new BasicFigure(polygon, Color.black);
                 figure.setToolTipText("Unknown port");
-	    }
-	    return figure;
-	}
+            }
+            return figure;
+        }
     }
 
     // Class for the name of the port.

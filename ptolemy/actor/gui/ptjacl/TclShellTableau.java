@@ -78,30 +78,30 @@ public class TclShellTableau extends Tableau
      */
     public TclShellTableau(TclShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
-	TclShellFrame frame = new TclShellFrame(this);
-	setFrame(frame);
+        super(container, name);
+        TclShellFrame frame = new TclShellFrame(this);
+        setFrame(frame);
 
-	try {
+        try {
 
-	    //
-	    _tclInterp.setVar("panelShell",
+            //
+            _tclInterp.setVar("panelShell",
                     ReflectObject.newInstance(_tclInterp,
                     ShellTextArea.class,
                     frame._shellTextArea), 0);
-	    _tclInterp.eval("proc puts {s} {"
+            _tclInterp.eval("proc puts {s} {"
                     + "global panelShell; "
                     + "$panelShell appendJTextArea $s\\n}");
-	    // FIXME: what about user initializations in ~/.tclrc?
+            // FIXME: what about user initializations in ~/.tclrc?
 
-	    // Source Ptolemy specific initializations.
-	    _tclInterp.eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
-	} catch (TclException ex) {
-	    throw new IllegalActionException(this, ex,
-					     "Could not initialize the "
-					     + "tcl interpreter:\n"
-					     + _tclInterp.getResult().toString());
-	}
+            // Source Ptolemy specific initializations.
+            _tclInterp.eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
+        } catch (TclException ex) {
+            throw new IllegalActionException(this, ex,
+                                             "Could not initialize the "
+                                             + "tcl interpreter:\n"
+                                             + _tclInterp.getResult().toString());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,12 +113,12 @@ public class TclShellTableau extends Tableau
      *  @exception Exception If something goes wrong processing the command.
      */
     public String evaluateCommand(String command) throws Exception {
-	try {
-	    _tclInterp.eval(command);
-	    return _tclInterp.getResult().toString();
-	} catch (TclException ex) {
-	    return _tclInterp.getVar("errorInfo", null,0).toString();
-	}
+        try {
+            _tclInterp.eval(command);
+            return _tclInterp.getResult().toString();
+        } catch (TclException ex) {
+            return _tclInterp.getVar("errorInfo", null,0).toString();
+        }
     }
 
     /** Return true if the specified command is complete (ready
@@ -127,7 +127,7 @@ public class TclShellTableau extends Tableau
      *  @return True if the command is complete.
      */
     public boolean isCommandComplete(String command) {
-	return _tclInterp.commandComplete(command);
+        return _tclInterp.commandComplete(command);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -145,86 +145,86 @@ public class TclShellTableau extends Tableau
      */
     public class TclShellFrame extends TableauFrame {
 
-	/** Construct a frame to display the TclShell window.
-	 *  After constructing this, it is necessary
-	 *  to call setVisible(true) to make the frame appear.
+        /** Construct a frame to display the TclShell window.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.
-	 *  @param model The model to put in this frame, or null if none.
+         *  @param model The model to put in this frame, or null if none.
          *  @param tableau The tableau responsible for this frame.
          *  @exception IllegalActionException If the model rejects the
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
-	 */
-	public TclShellFrame(Tableau tableau)
+         */
+        public TclShellFrame(Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
-	    super(tableau);
+            super(tableau);
 
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
-	    _shellTextArea = new ShellTextArea();
+            _shellTextArea = new ShellTextArea();
             _shellTextArea.setInterpreter(TclShellTableau.this);
-	    _shellTextArea.mainPrompt = "% ";
-	    component.add(_shellTextArea);
+            _shellTextArea.mainPrompt = "% ";
+            component.add(_shellTextArea);
             getContentPane().add(component, BorderLayout.CENTER);
-	}
+        }
 
-	///////////////////////////////////////////////////////////////////
-	////                         protected methods                 ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         protected methods                 ////
 
-	protected void _help() {
-	    try {
-		URL doc = getClass().getClassLoader().getResource(
+        protected void _help() {
+            try {
+                URL doc = getClass().getClassLoader().getResource(
                         "ptolemy/actor/gui/ptjacl/help.htm");
-		getConfiguration().openModel(null, doc, doc.toExternalForm());
-	    } catch (Exception ex) {
-		System.out.println("TclShellTableau._help(): " + ex);
-		_about();
-	    }
-	}
-	public ShellTextArea _shellTextArea;
+                getConfiguration().openModel(null, doc, doc.toExternalForm());
+            } catch (Exception ex) {
+                System.out.println("TclShellTableau._help(): " + ex);
+                _about();
+            }
+        }
+        public ShellTextArea _shellTextArea;
     }
 
     /** A factory that creates a control panel to display a Tcl Shell
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** Create a new instance of TclShellTableau in the specified
+        /** Create a new instance of TclShellTableau in the specified
          *  effigy. It is the responsibility of callers of
          *  this method to check the return value and call show().
-	 *  @param effigy The model effigy.
-	 *  @return A new control panel tableau if the effigy is
+         *  @param effigy The model effigy.
+         *  @return A new control panel tableau if the effigy is
          *    a PtolemyEffigy, or null otherwise.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?
             if (effigy instanceof TclShellEffigy) {
                 return new TclShellTableau(
                         (TclShellEffigy)effigy,
                         "TclShellTableau");
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 }

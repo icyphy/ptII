@@ -129,12 +129,12 @@ public class ActorController extends AttributeController {
                      new MenuActionFactory(new SetIconAction()));
         }
 
-	if (_configuration != null) {
+        if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
-	}
+        }
 
         // NOTE: This requires that the configuration be non null, or it
         // will report an error.
@@ -198,17 +198,17 @@ public class ActorController extends AttributeController {
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         if (_portDialogFactory != null) {
-	    _portDialogFactory.setConfiguration(configuration);
+            _portDialogFactory.setConfiguration(configuration);
         }
         if (_listenToActorAction != null) {
             _listenToActorAction.setConfiguration(_configuration);
         }
-	if (_configuration != null) {
+        if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -249,22 +249,22 @@ public class ActorController extends AttributeController {
         /** Layout the ports of the specified node.
          *  @param node The node, which is assumed to be an entity.
          */
-	public void layout(Object node) {
+        public void layout(Object node) {
             GraphModel model = getController().getGraphModel();
             // System.out.println("layout = " + node);
             //        new Exception().printStackTrace();
             Iterator nodes = model.nodes(node);
-	    Vector westPorts = new Vector ();
-	    Vector eastPorts = new Vector ();
-	    Vector southPorts = new Vector ();
+            Vector westPorts = new Vector ();
+            Vector eastPorts = new Vector ();
+            Vector southPorts = new Vector ();
             Vector northPorts = new Vector ();
-	    int westPortCount = 0;
-	    int eastPortCount = 0;
-	    int southPortCount = 0;
+            int westPortCount = 0;
+            int eastPortCount = 0;
+            int southPortCount = 0;
             int northPortCount = 0;
 
-	    while(nodes.hasNext()) {
-		Port port = (Port) nodes.next();
+            while(nodes.hasNext()) {
+                Port port = (Port) nodes.next();
                 StringAttribute cardinal = (StringAttribute)port.getAttribute("_cardinal");
                 StringAttribute ordinal  = (StringAttribute)port.getAttribute("_ordinal");
 
@@ -314,23 +314,23 @@ public class ActorController extends AttributeController {
                         }
                     }
                 }
-	    }
-	    CompositeFigure figure =
-		(CompositeFigure)getLayoutTarget().getVisualObject(node);
+            }
+            CompositeFigure figure =
+                (CompositeFigure)getLayoutTarget().getVisualObject(node);
 
             _reOrderPorts( westPorts );
-	    _placePortFigures(figure, westPorts, westPortCount,
+            _placePortFigures(figure, westPorts, westPortCount,
                     SwingConstants.WEST);
             _reOrderPorts( eastPorts );
-	    _placePortFigures(figure, eastPorts, eastPortCount,
+            _placePortFigures(figure, eastPorts, eastPortCount,
                     SwingConstants.EAST);
             _reOrderPorts( southPorts );
-	    _placePortFigures(figure, southPorts, southPortCount,
+            _placePortFigures(figure, southPorts, southPortCount,
                     SwingConstants.SOUTH);
             _reOrderPorts( northPorts );
-	    _placePortFigures(figure, northPorts, northPortCount,
+            _placePortFigures(figure, northPorts, northPortCount,
                     SwingConstants.NORTH);
-	}
+        }
 
         // FIXME: Old pre-cardinal direction layout
 //         public void layout(Object node) {
@@ -572,7 +572,7 @@ public class ActorController extends AttributeController {
             super("Look Inside (Ctrl+L)");
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
-	    putValue(GUIUtilities.ACCELERATOR_KEY,
+            putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
         }
 
@@ -641,9 +641,9 @@ public class ActorController extends AttributeController {
          */
         public void actionPerformed(ActionEvent e) {
             // Figure out what entity.
-	    super.actionPerformed(e);
-	    NamedObj object = getTarget();
-	    if(object instanceof Entity) {
+            super.actionPerformed(e);
+            NamedObj object = getTarget();
+            if(object instanceof Entity) {
                 Entity entity = (Entity)object;
                 BasicGraphFrame.saveComponentInLibrary(_configuration, entity);
             }

@@ -111,10 +111,10 @@ public class ModelServer implements QueryHandler{
 
     public void startJxta(String ior) {
         _configDir = System.getProperty(_CONFIG_DIR);
-		if (_configDir == null) {
-			_configDir = System.getProperty("user.dir");
-			System.setProperty(_CONFIG_DIR, _configDir);
-		}
+                if (_configDir == null) {
+                        _configDir = System.getProperty("user.dir");
+                        System.setProperty(_CONFIG_DIR, _configDir);
+                }
             /*PropertyConfigurator.configure(System.getProperties());
             String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
             //String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
@@ -135,61 +135,61 @@ public class ModelServer implements QueryHandler{
             try {
                netPeerGroup = PeerGroupFactory.newNetPeerGroup();
             } catch (PeerGroupException ex) {
-			System.out.println("Error: cannot locate net peer group.\n"
-					+ ex.getMessage());
+                        System.out.println("Error: cannot locate net peer group.\n"
+                                        + ex.getMessage());
             }
 
-		// load the peer group adv for actor exchange
-		String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
-		if (groupAdvFileName == null) {
-			System.out.println("Error: property undefined - GroupAdvFileName.\n");
-		}
-		PeerGroupAdvertisement groupAdv = null;
-		try {
-			groupAdv = (PeerGroupAdvertisement)
-					AdvertisementFactory.newAdvertisement(
-							XML_MIME_TYPE,
-							new FileInputStream(_configDir + "/" + groupAdvFileName));
-		} catch (FileNotFoundException ex) {
-			System.out.println("Error: cannot find group adv file.\n"
-					+ ex.getMessage());
-		} catch (IOException ex) {
-			System.out.println("Error: reading group adv file.\n"
-					+ ex.getMessage());
-		}
+                // load the peer group adv for actor exchange
+                String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
+                if (groupAdvFileName == null) {
+                        System.out.println("Error: property undefined - GroupAdvFileName.\n");
+                }
+                PeerGroupAdvertisement groupAdv = null;
+                try {
+                        groupAdv = (PeerGroupAdvertisement)
+                                        AdvertisementFactory.newAdvertisement(
+                                                        XML_MIME_TYPE,
+                                                        new FileInputStream(_configDir + "/" + groupAdvFileName));
+                } catch (FileNotFoundException ex) {
+                        System.out.println("Error: cannot find group adv file.\n"
+                                        + ex.getMessage());
+                } catch (IOException ex) {
+                        System.out.println("Error: reading group adv file.\n"
+                                        + ex.getMessage());
+                }
                 System.out.println("peer groupAdv: " + groupAdvFileName);
                 System.out.println("success before instantiate peer group");
-		System.out.println("created peer group adv from file " + groupAdv);
-		// instantiate the peer group for actor exchange
-		try {
-			_group = netPeerGroup.newGroup(groupAdv);
-		} catch (PeerGroupException ex) {
-			System.out.println("Error: cannot instantiate peer group.\n"
-					+ ex.getMessage());
-			ex.printStackTrace();
-		}
-		System.out.println("new peer group created...");
+                System.out.println("created peer group adv from file " + groupAdv);
+                // instantiate the peer group for actor exchange
+                try {
+                        _group = netPeerGroup.newGroup(groupAdv);
+                } catch (PeerGroupException ex) {
+                        System.out.println("Error: cannot instantiate peer group.\n"
+                                        + ex.getMessage());
+                        ex.printStackTrace();
+                }
+                System.out.println("new peer group created...");
 
-		// join the peer group for actor exchange
-		// no authentication is done here
-		// modeled after JoinDemo from JXTA Examples
-		StructuredDocument identityInfo = null;
-		try {
-			AuthenticationCredential authCred =
-					new AuthenticationCredential(_group, null, identityInfo);
-			MembershipService membershipService = _group.getMembershipService();
-			_authenticator = membershipService.apply(authCred);
-			if (_authenticator.isReadyForJoin()) {
-				_credential = membershipService.join(_authenticator);
-				System.out.println("Info: join group successful.");
-				_credential.getDocument(XML_MIME_TYPE).sendToStream(System.out);
-			} else {
-				System.out.println("Error: unable to join group.");
-			}
-		} catch (Exception ex) {
-			System.out.println("Error: failure in authentication.\n"
-					+ ex.getMessage());
-		}
+                // join the peer group for actor exchange
+                // no authentication is done here
+                // modeled after JoinDemo from JXTA Examples
+                StructuredDocument identityInfo = null;
+                try {
+                        AuthenticationCredential authCred =
+                                        new AuthenticationCredential(_group, null, identityInfo);
+                        MembershipService membershipService = _group.getMembershipService();
+                        _authenticator = membershipService.apply(authCred);
+                        if (_authenticator.isReadyForJoin()) {
+                                _credential = membershipService.join(_authenticator);
+                                System.out.println("Info: join group successful.");
+                                _credential.getDocument(XML_MIME_TYPE).sendToStream(System.out);
+                        } else {
+                                System.out.println("Error: unable to join group.");
+                        }
+                } catch (Exception ex) {
+                        System.out.println("Error: failure in authentication.\n"
+                                        + ex.getMessage());
+                }
 
         _resolverService = _group.getResolverService();
         // register this as a query handler
@@ -203,19 +203,19 @@ public class ModelServer implements QueryHandler{
         queryTextBuffer = queryTextBuffer.append(ior);
         //queryTextBuffer = queryTextBuffer.append("</CorbaActorResponse>\n");
         _actorQueryResponse = new ResolverResponse(
-						_ACTOR_QUERY_HANDLER_NAME,
-						null, 0, queryTextBuffer.toString());
+                                                _ACTOR_QUERY_HANDLER_NAME,
+                                                null, 0, queryTextBuffer.toString());
     }
 
     /**
-	 * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
-	 */
-	public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-		throws
+         * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
+         */
+        public ResolverResponseMsg processQuery(ResolverQueryMsg query)
+                throws
             NoResponseException,
             ResendQueryException,
             DiscardQueryException,
-			IOException {
+                        IOException {
         String qry = query.getQuery();
         if(qry.startsWith("<CorbaActorQuery>")) {
 
@@ -229,15 +229,15 @@ public class ModelServer implements QueryHandler{
         else {
             return null; }
 
-	}
+        }
 
-	/**
-	 * @see net.jxta.resolver.QueryHandler#processResponse(ResolverResponseMsg)
-	 */
-	public void processResponse(ResolverResponseMsg response) {
+        /**
+         * @see net.jxta.resolver.QueryHandler#processResponse(ResolverResponseMsg)
+         */
+        public void processResponse(ResolverResponseMsg response) {
         String rp = response.getResponse();
         System.out.println("get response message.");
-	}
+        }
 
      ///////////////////////////////////////////////////////////////////
      ////                         private members                   ////

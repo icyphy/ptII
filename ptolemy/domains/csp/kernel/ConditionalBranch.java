@@ -121,13 +121,13 @@ public abstract class ConditionalBranch {
         Nameable tmp = port.getContainer();
         if (!(tmp instanceof ConditionalBranchActor)) {
             throw new IllegalActionException(port,
-		    "A conditional branch can only be created" +
-		    "with a port contained by ConditionalBranchActor");
+                    "A conditional branch can only be created" +
+                    "with a port contained by ConditionalBranchActor");
         }
         _branchID = branchID;
         _guard = guard;
         _controller =
-	    ((ConditionalBranchActor)tmp).getConditionalBranchController();
+            ((ConditionalBranchActor)tmp).getConditionalBranchController();
     }
 
     ///////////////////////////////////////////////////////////////////

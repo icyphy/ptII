@@ -274,11 +274,11 @@ public final class ArrayFIFOQueue implements Cloneable {
             _queueSize++;
             return true;
         } else {
-	    if (_queueMaxCapacity == INFINITE_CAPACITY) {
+            if (_queueMaxCapacity == INFINITE_CAPACITY) {
                 _resizeArray(_queueArray.length * 2);
-		return put(element);
-	    } else
-		return false;
+                return put(element);
+            } else
+                return false;
         }
     }
 
@@ -289,8 +289,8 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean putArray(Object element[]) {
-	int count = element.length;
-	return putArray(element, count);
+        int count = element.length;
+        return putArray(element, count);
     }
 
     /** Put an array of objects in the queue and return true if this will not
@@ -326,16 +326,16 @@ public final class ArrayFIFOQueue implements Cloneable {
             }
             return true;
         } else {
-	    if (_queueMaxCapacity == INFINITE_CAPACITY) {
-		try {
-		    _resizeArray(_queueArray.length * 2);
-		}
-		catch (Exception e) {
-		    e.printStackTrace();
-		}
-		return putArray(element, count);
-	    } else
-		return false;
+            if (_queueMaxCapacity == INFINITE_CAPACITY) {
+                try {
+                    _resizeArray(_queueArray.length * 2);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return putArray(element, count);
+            } else
+                return false;
         }
     }
 
@@ -353,17 +353,17 @@ public final class ArrayFIFOQueue implements Cloneable {
             _queueMaxCapacity = INFINITE_CAPACITY;
             return;
         }
-	if (capacity < -1) {
-	    throw new IllegalActionException(_container,
+        if (capacity < -1) {
+            throw new IllegalActionException(_container,
                     "Queue Capacity cannot be negative");
         }
 
-	if (size() > capacity) {
+        if (size() > capacity) {
             throw new IllegalActionException(_container, "Queue contains " +
                     "more elements than the proposed capacity.");
         }
         _queueMaxCapacity = capacity;
- 	_resizeArray(capacity);
+         _resizeArray(capacity);
     }
 
     /** Set the container of the queue. The container is only used
@@ -455,7 +455,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     public void takeArray(Object objects[]) throws NoSuchElementException {
         int count = objects.length;
-	takeArray(objects, count);
+        takeArray(objects, count);
     }
 
     /** Remove the count oldest objects from the queue and return them.
@@ -538,24 +538,24 @@ public final class ArrayFIFOQueue implements Cloneable {
      *   is illegal. .
      */
     private void _resizeArray(int newSize) {
-	if (newSize < 0) {
-	    throw new InternalErrorException(
+        if (newSize < 0) {
+            throw new InternalErrorException(
                     "Buffer size of " + newSize +
                     " is not greater than zero.");
         }
 
-	if (size() > newSize) {
+        if (size() > newSize) {
             throw new InternalErrorException("Queue contains " +
                     "more elements than the proposed array size.");
         }
 
-	if ((_queueMaxCapacity != INFINITE_CAPACITY)&&
+        if ((_queueMaxCapacity != INFINITE_CAPACITY)&&
                 (newSize > _queueMaxCapacity)) {
-	    throw new InternalErrorException("The proposed" +
+            throw new InternalErrorException("The proposed" +
                     " array size exceeds the maximum declared queue size.");
-	}
+        }
 
-	Object newArray[] = new Object[newSize];
+        Object newArray[] = new Object[newSize];
         if ((_queueFront < _queueBack) || isFull()) {
             System.arraycopy(_queueArray, _queueBack,
                     newArray, 0, _queueArray.length - _queueBack);

@@ -72,8 +72,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
     /** Create a new interactor contained within the given controller.
      */
     public LocatableNodeDragInteractor(LocatableNodeController controller) {
-	super(controller.getController());
-	_controller = controller;
+        super(controller.getController());
+        _controller = controller;
 
         Point2D origin = new Point(0,0);
         // NOTE: The quadrant constraint is not needed anymore with

@@ -89,8 +89,8 @@ public class Main extends KernelMain {
      *  @exception IllegalActionException If the model cannot be parsed.
      */
     public Main(String [] args) throws IllegalActionException {
-	// args[0] contains the MoML class name.
-	super(args[0]);
+        // args[0] contains the MoML class name.
+        super(args[0]);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,15 +99,15 @@ public class Main extends KernelMain {
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
-	super.addTransforms();
+        super.addTransforms();
 
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
-	// -p wjtp.watchDog time:30000
+        // -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                 WatchDogTimer.v()));
 
-	// Generate the makefile files in outDir
+        // Generate the makefile files in outDir
         Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
                 MakefileWriter.v(_toplevel)));
 
@@ -140,21 +140,21 @@ public class Main extends KernelMain {
 
         long startTime = System.currentTimeMillis();
 
-	Main main = new Main(args);
+        Main main = new Main(args);
 
-	// Parse the model.
-	CompositeActor toplevel = main.readInModel(args[0]);
+        // Parse the model.
+        CompositeActor toplevel = main.readInModel(args[0]);
 
-	// Create instance classes for the actors.
-	main.initialize(toplevel);
+        // Create instance classes for the actors.
+        main.initialize(toplevel);
 
-	// Add Transforms to the Scene.
-	main.addTransforms();
+        // Add Transforms to the Scene.
+        main.addTransforms();
 
-	main.generateCode(args);
+        main.generateCode(args);
 
         // Print out memory usage info
-	System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
+        System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
 
         WatchDogTimer.v().cancel();
 

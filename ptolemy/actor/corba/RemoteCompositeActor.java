@@ -96,7 +96,7 @@ public class RemoteCompositeActor extends CompositeActor {
      * @param workspace The workspace that will list the actor.
      */
     public RemoteCompositeActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create a RemoteCompositeActor with a name and a container. The
@@ -146,11 +146,11 @@ public class RemoteCompositeActor extends CompositeActor {
             throws CloneNotSupportedException {
         RemoteCompositeActor newObject =
             (RemoteCompositeActor)super.clone(workspace);
-	if( getDirector() != getExecutiveDirector() ) {
-	    if( getDirector() != null ) {
-	        newObject._hasLocalDirector = true;
-	    }
-	}
+        if( getDirector() != getExecutiveDirector() ) {
+            if( getDirector() != null ) {
+                newObject._hasLocalDirector = true;
+            }
+        }
 
         return newObject;
     }
@@ -273,7 +273,7 @@ public class RemoteCompositeActor extends CompositeActor {
      */
     public void setDirector(Director director)
             throws IllegalActionException, NameDuplicationException {
-    	super.setDirector(director);
+            super.setDirector(director);
         _hasLocalDirector = true;
     }
 

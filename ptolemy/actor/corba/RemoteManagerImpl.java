@@ -69,45 +69,45 @@ public class RemoteManagerImpl extends _RemoteManagerImplBase implements ChangeL
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 /* Mirror the execute() method of Ptolemy II
-		 * manager interface.
-		 * @exception CorbaIllegalActionException If the
-		 *   method is an illegal action of the actor.
-		 */
+                 * manager interface.
+                 * @exception CorbaIllegalActionException If the
+                 *   method is an illegal action of the actor.
+                 */
   public void execute () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException{
     }
 
   /* Mirror the initialize() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void initialize () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
  {
   }
 
   /* Mirror the pause() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void pause () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
   }
 
   /* Mirror the resume() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void resume () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
           {
   }
 
   /* Mirror the startRun() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void startRun () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException{
       if (!_executing && manager != null ) {
       try {
@@ -122,10 +122,10 @@ public class RemoteManagerImpl extends _RemoteManagerImplBase implements ChangeL
   }
 
   /* Mirror the stop() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void stop () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException
   {
       if (_executing && manager != null ) {
@@ -135,20 +135,20 @@ public class RemoteManagerImpl extends _RemoteManagerImplBase implements ChangeL
       }
   }
   /* Mirror the terminate() method of Ptolemy II
-  		 * manager interface.
-  		 * @exception CorbaIllegalActionException If the
-  		 *   method is an illegal action of the actor.
-  		 */
+                   * manager interface.
+                   * @exception CorbaIllegalActionException If the
+                   *   method is an illegal action of the actor.
+                   */
   public void terminate () throws ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException {
   }
 
   /* Mirror the terminate() method of Ptolemy II
-  		 * remoteManager interface.
-		 * @exception CorbaIllegalActionException If the
-		 *  query of parameter is not supported by the actor.
-		 * @exception CorbaUnknowParamException If the parameter
-		 *  name is not known by the actor.
-		 */
+                   * remoteManager interface.
+                 * @exception CorbaIllegalActionException If the
+                 *  query of parameter is not supported by the actor.
+                 * @exception CorbaUnknowParamException If the parameter
+                 *  name is not known by the actor.
+                 */
   public void changeModel (String model) throws
           ptolemy.actor.corba.RemoteManagerUtil.CorbaIllegalActionException,
           ptolemy.actor.corba.RemoteManagerUtil.CorbaUnknownParamException
@@ -208,12 +208,11 @@ public class RemoteManagerImpl extends _RemoteManagerImplBase implements ChangeL
         // We can't throw and Exception here because this method in
         // the base class does not throw Exception.
 
-	// In JDK1.4, we can construct exceptions from exceptions, but
-	// not in JDK1.3.1
+        // In JDK1.4, we can construct exceptions from exceptions, but
+        // not in JDK1.3.1
         //throw new RuntimeException(exception);
 
-	throw new RuntimeException(exception.toString());
+        throw new RuntimeException(exception.toString());
     }
   private CompositeActor _model;
   private boolean _executing = false;
-}

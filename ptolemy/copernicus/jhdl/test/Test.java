@@ -64,7 +64,7 @@ public class Test {
      * used for all testing of JHDL code generation files.
      **/
     public static final String DEFAULT_TESTCLASS =
-	"ptolemy.copernicus.jhdl.test.test1";
+        "ptolemy.copernicus.jhdl.test.test1";
 
     /**
      * This static String constant specifies the default method name
@@ -77,9 +77,9 @@ public class Test {
      * the given fully-qualified String class name.
      **/
     public static SootClass getApplicationClass(String classname) {
-	SootClass entityClass = Scene.v().loadClassAndSupport(classname);
-	entityClass.setApplicationClass();
-	return entityClass;
+        SootClass entityClass = Scene.v().loadClassAndSupport(classname);
+        entityClass.setApplicationClass();
+        return entityClass;
     }
 
     /**
@@ -103,26 +103,26 @@ public class Test {
      * @see Test#getApplicationClass(String)
      **/
     public static soot.SootMethod getSootMethod(String args[]) {
-	String classname = DEFAULT_TESTCLASS;
-	String methodname = DEFAULT_TESTMETHOD;
-	if (args.length > 0)
-	    classname = args[0];
-	if (args.length > 1)
-	    methodname = args[1];
+        String classname = DEFAULT_TESTCLASS;
+        String methodname = DEFAULT_TESTMETHOD;
+        if (args.length > 0)
+            classname = args[0];
+        if (args.length > 1)
+            methodname = args[1];
 
-	soot.SootClass testClass =
-	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
-	if (testClass == null) {
-	    System.err.println("Class "+classname+" not found");
-	    System.exit(1);
-	}
-	System.out.println("Loading class "+classname+" method "+methodname);
-	if (!testClass.declaresMethodByName(methodname)) {
-	    System.err.println("Method "+methodname+" not found");
-	    System.exit(1);
-	}
+        soot.SootClass testClass =
+            ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
+        if (testClass == null) {
+            System.err.println("Class "+classname+" not found");
+            System.exit(1);
+        }
+        System.out.println("Loading class "+classname+" method "+methodname);
+        if (!testClass.declaresMethodByName(methodname)) {
+            System.err.println("Method "+methodname+" not found");
+            System.exit(1);
+        }
 
-	return testClass.getMethodByName(methodname);
+        return testClass.getMethodByName(methodname);
     }
 
     /**
@@ -132,8 +132,8 @@ public class Test {
      * @see Test#getSootMethod(String[])
      **/
     public static soot.Body getSootBody(String args[]) {
-	soot.SootMethod testMethod = getSootMethod(args);
-	return testMethod.retrieveActiveBody();
+        soot.SootMethod testMethod = getSootMethod(args);
+        return testMethod.retrieveActiveBody();
     }
 
     /**
@@ -148,14 +148,14 @@ public class Test {
      **/
     public static Block[] getMethodBlocks(String args[]) {
 
-	soot.SootMethod testMethod = getSootMethod(args);
-	soot.Body body = testMethod.retrieveActiveBody();
+        soot.SootMethod testMethod = getSootMethod(args);
+        soot.Body body = testMethod.retrieveActiveBody();
 
-	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	//BlockGraphToDotty.writeDotFile("cfg",bbgraph);
-	List l = bbgraph.getBlocks();
-	Block[] b = new Block[l.size()];
-	return (Block[]) l.toArray(b);
+        BriefBlockGraph bbgraph = new BriefBlockGraph(body);
+        //BlockGraphToDotty.writeDotFile("cfg",bbgraph);
+        List l = bbgraph.getBlocks();
+        Block[] b = new Block[l.size()];
+        return (Block[]) l.toArray(b);
     }
 
 }

@@ -70,7 +70,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  Increment the version number of the workspace.
      */
     public ChoiceStyle() {
-	super();
+        super();
     }
 
     /** Construct an attribute in the given workspace with an empty string
@@ -80,7 +80,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      */
     public ChoiceStyle(Workspace workspace) {
         // This constructor is needed for Shallow codegen to work.
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an attribute with the specified container and name.
@@ -106,7 +106,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *   choices.
      */
     public boolean acceptable(Settable param) {
-	return !attributeList(Settable.class).isEmpty();
+        return !attributeList(Settable.class).isEmpty();
     }
 
     /** Create a new uneditable
@@ -120,16 +120,16 @@ public class ChoiceStyle extends ParameterEditorStyle {
      */
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         String name = getContainer().getName();
-	List paramList = attributeList(Settable.class);
+        List paramList = attributeList(Settable.class);
         Settable choices[]
             = (Settable [])paramList.toArray(
                     new Settable[paramList.size()]);
-	String values[] = new String[choices.length];
-	for (int i = 0; i < choices.length; i++) {
-	    values[i] = choices[i].getExpression();
-	}
+        String values[] = new String[choices.length];
+        for (int i = 0; i < choices.length; i++) {
+            values[i] = choices[i].getExpression();
+        }
         Settable container = (Settable)getContainer();
-       	String defaultChoice = container.getExpression();
+               String defaultChoice = container.getExpression();
         query.addChoice(name, name, values, defaultChoice, _isEditable);
         query.attachParameter(container, name);
     }

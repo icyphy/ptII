@@ -161,7 +161,7 @@ public class SaberSubsystem extends TypedAtomicActor
             _debug(getFullName() + "perform dc analysis");
             _ps.println("dc (dcep " + _startpt);
             _ps.println("di "+_startpt);
-	    _ps.println();
+            _ps.println();
             _ps.println("bye");
             while (true){
                 try {

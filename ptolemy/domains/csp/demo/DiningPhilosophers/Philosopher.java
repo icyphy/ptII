@@ -104,10 +104,10 @@ public class Philosopher extends CSPActor {
         rightIn = new TypedIOPort(this, "rightIn", true, false);
         rightOut = new TypedIOPort(this, "rightOut", false, true);
 
-	leftIn.setTypeEquals(BaseType.GENERAL);
-	rightIn.setTypeEquals(BaseType.GENERAL);
-	leftOut.setTypeEquals(BaseType.INT);
-	rightOut.setTypeEquals(BaseType.INT);
+        leftIn.setTypeEquals(BaseType.GENERAL);
+        rightIn.setTypeEquals(BaseType.GENERAL);
+        leftOut.setTypeEquals(BaseType.INT);
+        rightOut.setTypeEquals(BaseType.INT);
 
         eating = new Parameter(this, "eatingRate");
         eating.setExpression("1.0");

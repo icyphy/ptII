@@ -63,7 +63,7 @@ public class ModalController extends FSMActor {
      *  @param workspace The workspace that will list the actor.
      */
     public ModalController(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a modal controller with a name and a container.

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -54,17 +54,17 @@ public class ShellTextArea extends JPanel {
     /** Create a new instance.
      */
     public ShellTextArea () {
-	// Graphics
-	super(new BorderLayout());
-	_jTextArea = new JTextArea("", 20, 80);
-	JScrollPane jScrollPane = new JScrollPane(_jTextArea);
-	add(jScrollPane);
+        // Graphics
+        super(new BorderLayout());
+        _jTextArea = new JTextArea("", 20, 80);
+        JScrollPane jScrollPane = new JScrollPane(_jTextArea);
+        add(jScrollPane);
 
-	setBorder(BorderFactory.createTitledBorder(BorderFactory
+        setBorder(BorderFactory.createTitledBorder(BorderFactory
                 .createLineBorder(Color.black), ""));
 
-	// Event handling
-	_jTextArea.addKeyListener(new ShellKeyListener());
+        // Event handling
+        _jTextArea.addKeyListener(new ShellKeyListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,8 +75,8 @@ public class ShellTextArea extends JPanel {
      *  the TextArea until the peer has been created.
      */
     public void addNotify () {
-	super.addNotify();
-	appendJTextArea(mainPrompt);
+        super.addNotify();
+        appendJTextArea(mainPrompt);
     }
 
     /** Append the specified text to the JTextArea and
@@ -86,16 +86,16 @@ public class ShellTextArea extends JPanel {
     public void appendJTextArea(final String text) {
         Runnable doAppendJTextArea = new Runnable() {
             public void run() {
-		_jTextArea.append(text);
-		// Scroll down as we generate text.
-		_jTextArea.setCaretPosition(_jTextArea.getText().length());
+                _jTextArea.append(text);
+                // Scroll down as we generate text.
+                _jTextArea.setCaretPosition(_jTextArea.getText().length());
             }
         };
         SwingUtilities.invokeLater(doAppendJTextArea);
-	// FIXME: There could be problems here with _promptCursor being
-	// updated before the JTextArea is actually updated.
+        // FIXME: There could be problems here with _promptCursor being
+        // updated before the JTextArea is actually updated.
         // Should this be inside the Runnable?
-	_promptCursor += text.length();
+        _promptCursor += text.length();
     }
 
     /** Get the interpreter that has been registered with setInterpreter().
@@ -108,7 +108,7 @@ public class ShellTextArea extends JPanel {
 
     /** Main method used for testing. To run a simple test, use:
      *  <pre>
-     *	java -classpath $PTII ptolemy.gui.ShellTextArea
+     *        java -classpath $PTII ptolemy.gui.ShellTextArea
      *  </pre>
      */
     public static void main(String [] args) {
@@ -131,7 +131,7 @@ public class ShellTextArea extends JPanel {
             final int end) {
         Runnable doReplaceRangeJTextArea = new Runnable() {
             public void run() {
-		_jTextArea.replaceRange(text, start, end);
+                _jTextArea.replaceRange(text, start, end);
             }
         };
         SwingUtilities.invokeLater(doReplaceRangeJTextArea);
@@ -163,16 +163,16 @@ public class ShellTextArea extends JPanel {
     // Evaluate the command so far, if possible, printing
     // a continuation prompt if not.
     private void _evalCommand () {
-	String newtext = _jTextArea.getText().substring(_promptCursor);
-	_promptCursor += newtext.length();
-	if (_commandBuffer.length() > 0) {
-	    _commandBuffer.append("\n");
-	}
-	_commandBuffer.append(newtext);
-	String command = _commandBuffer.toString();
+        String newtext = _jTextArea.getText().substring(_promptCursor);
+        _promptCursor += newtext.length();
+        if (_commandBuffer.length() > 0) {
+            _commandBuffer.append("\n");
+        }
+        _commandBuffer.append(newtext);
+        String command = _commandBuffer.toString();
 
-	if (_interpreter == null) {
-	    appendJTextArea("\n" + mainPrompt);
+        if (_interpreter == null) {
+            appendJTextArea("\n" + mainPrompt);
         } else {
             if (_interpreter.isCommandComplete(command)) {
                 // Process it
@@ -235,11 +235,11 @@ public class ShellTextArea extends JPanel {
 
     // Update the command history.
     private void _updateHistory (String command) {
-	_historyCursor = 0;
-	if (_historyCommands.size() == historyLength) {
-	    _historyCommands.removeElementAt(0);
-	}
-	_historyCommands.addElement(command);
+        _historyCursor = 0;
+        if (_historyCommands.size() == historyLength) {
+            _historyCommands.removeElementAt(0);
+        }
+        _historyCommands.addElement(command);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -10,7 +10,7 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 
 
 /* Exception for channel indeces.
-	 */
+         */
 abstract public class CorbaIndexOutofBoundExceptionHelper
 {
   private static String  _id = "IDL:RemoteManagerUtil/CorbaIndexOutofBoundException:1.0";

@@ -58,9 +58,9 @@ we create these wrapper classes that call the appropriate main class.
 */
 public class FullApplication extends MenuApplication {
     public static void main(final String [] args) {
-	// See the class comment of MenuApplication
-	// about why we set the security manager to null.
+        // See the class comment of MenuApplication
+        // about why we set the security manager to null.
         System.setSecurityManager(null);
-	MenuApplication.main(args);
+        MenuApplication.main(args);
     }
 }

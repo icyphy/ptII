@@ -91,7 +91,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         PeriodicTrigger newObject = (PeriodicTrigger)super.clone(workspace);
         try {
             newObject.period.setTypeEquals(BaseType.LONG);

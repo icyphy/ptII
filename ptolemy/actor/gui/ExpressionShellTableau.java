@@ -71,9 +71,9 @@ public class ExpressionShellTableau extends Tableau
      */
     public ExpressionShellTableau(ExpressionShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
-	ExpressionShellFrame frame = new ExpressionShellFrame(this);
-	setFrame(frame);
+        super(container, name);
+        ExpressionShellFrame frame = new ExpressionShellFrame(this);
+        setFrame(frame);
 
         // Ensure that there is a context in which to evaluate expressions.
         NamedObj model = ((ExpressionShellEffigy)getContainer()).getModel();
@@ -120,83 +120,83 @@ public class ExpressionShellTableau extends Tableau
      */
     public class ExpressionShellFrame extends TableauFrame {
 
-	/** Construct a frame to display the ExpressionShell window.
-	 *  After constructing this, it is necessary
-	 *  to call setVisible(true) to make the frame appear.
+        /** Construct a frame to display the ExpressionShell window.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.
          *  @param tableau The tableau responsible for this frame.
          *  @exception IllegalActionException If the model rejects the
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
-	 */
-	public ExpressionShellFrame(Tableau tableau)
+         */
+        public ExpressionShellFrame(Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
-	    super(tableau);
+            super(tableau);
 
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
-	    ShellTextArea shellPanel = new ShellTextArea();
+            ShellTextArea shellPanel = new ShellTextArea();
             shellPanel.setInterpreter(ExpressionShellTableau.this);
-	    component.add(shellPanel);
+            component.add(shellPanel);
             getContentPane().add(component, BorderLayout.CENTER);
-	}
+        }
 
-	///////////////////////////////////////////////////////////////////
-	////                         protected methods                 ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         protected methods                 ////
 
-	protected void _help() {
-	    try {
-		URL doc = getClass().getClassLoader().getResource(
+        protected void _help() {
+            try {
+                URL doc = getClass().getClassLoader().getResource(
                         "doc/expressions.htm");
-		getConfiguration().openModel(null, doc, doc.toExternalForm());
-	    } catch (Exception ex) {
-		System.out.println("ExpressionShellTableau._help(): " + ex);
-		_about();
-	    }
-	}
+                getConfiguration().openModel(null, doc, doc.toExternalForm());
+            } catch (Exception ex) {
+                System.out.println("ExpressionShellTableau._help(): " + ex);
+                _about();
+            }
+        }
     }
 
     /** A factory that creates a control panel to display a Tcl Shell
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** Create a new instance of ExpressionShellTableau in the specified
+        /** Create a new instance of ExpressionShellTableau in the specified
          *  effigy. It is the responsibility of callers of
          *  this method to check the return value and call show().
-	 *  @param effigy The model effigy.
-	 *  @return A new control panel tableau if the effigy is
+         *  @param effigy The model effigy.
+         *  @return A new control panel tableau if the effigy is
          *    a PtolemyEffigy, or null otherwise.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?
             if (effigy instanceof ExpressionShellEffigy) {
                 return new ExpressionShellTableau(
                         (ExpressionShellEffigy)effigy,
                         "ExpressionShellTableau");
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 }

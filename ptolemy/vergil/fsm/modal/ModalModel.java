@@ -124,7 +124,7 @@ public class ModalModel extends TypedCompositeActor
      */
     public ModalModel(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
-	super(workspace);
+        super(workspace);
         _init();
     }
 
@@ -156,7 +156,7 @@ public class ModalModel extends TypedCompositeActor
 
     /** React to a change of the _director or other property. */
     public void attributeChanged(Attribute attribute)
-	throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute.getName().equals("directorClass")) {
             FSMDirector director = (FSMDirector)getDirector();
             Class newDirectorClass = null;
@@ -409,7 +409,7 @@ public class ModalModel extends TypedCompositeActor
         new ModalTableauFactory(this, "_tableauFactory");
 
         // Create a more reasonable default icon.
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                 "height=\"40\" style=\"fill:red\"/>\n" +
                 "<rect x=\"-28\" y=\"-18\" width=\"56\" " +

@@ -74,83 +74,83 @@ public class Inliner {
      * @param should be a Jimple body, not Grimp or Baf
      */
     public void inline(Body body) {
-	Scene.v().setActiveHierarchy(new Hierarchy());
-	SootMethod caller = body.getMethod();
-	JimpleBody jimpleBody;
-	try {
-	    jimpleBody = (JimpleBody) body;
-	} catch (ClassCastException cce) {
-	    return;
-	} // end of try-catch
+        Scene.v().setActiveHierarchy(new Hierarchy());
+        SootMethod caller = body.getMethod();
+        JimpleBody jimpleBody;
+        try {
+            jimpleBody = (JimpleBody) body;
+        } catch (ClassCastException cce) {
+            return;
+        } // end of try-catch
 
-	boolean changed = false;
+        boolean changed = false;
 
-	Chain stmtChain = body.getUnits();
-	Stmt stmt = (Stmt) stmtChain.getFirst();
-	Stmt prevStmt = null;
-	Stmt lastStmt = (Stmt) stmtChain.getLast();
-	while (true) {
-	    //        System.out.println("InvokeStmt: " + stmt + "? " + (stmt instanceof
-	    //  							 InvokeStmt));
-	    SootMethod callee = null;
-	    if (stmt instanceof InvokeStmt) {
-		callee = ((InvokeExpr) ((InvokeStmt) stmt).getInvokeExpr())
-		    .getMethod();
-	    } // end of if
-	    else {
-		List useBoxes = stmt.getUseBoxes();
-		Iterator useBoxItr = useBoxes.iterator();
-		while (useBoxItr.hasNext()) {
-		    ValueBox valBox = (ValueBox) useBoxItr.next();
-		    Value val = valBox.getValue();
-		    if (val instanceof InvokeExpr) {
-			callee = ((InvokeExpr) val).getMethod();
-		    } // end of if ()
-		} // end of while ()
-	    } // end of else
-	    if (callee != null) {
-		//System.out.print("Inline: " + callee + "? ");
-		if (shouldInline(callee)) {
-		    //System.out.println("Y");
+        Chain stmtChain = body.getUnits();
+        Stmt stmt = (Stmt) stmtChain.getFirst();
+        Stmt prevStmt = null;
+        Stmt lastStmt = (Stmt) stmtChain.getLast();
+        while (true) {
+            //        System.out.println("InvokeStmt: " + stmt + "? " + (stmt instanceof
+            //                                                           InvokeStmt));
+            SootMethod callee = null;
+            if (stmt instanceof InvokeStmt) {
+                callee = ((InvokeExpr) ((InvokeStmt) stmt).getInvokeExpr())
+                    .getMethod();
+            } // end of if
+            else {
+                List useBoxes = stmt.getUseBoxes();
+                Iterator useBoxItr = useBoxes.iterator();
+                while (useBoxItr.hasNext()) {
+                    ValueBox valBox = (ValueBox) useBoxItr.next();
+                    Value val = valBox.getValue();
+                    if (val instanceof InvokeExpr) {
+                        callee = ((InvokeExpr) val).getMethod();
+                    } // end of if ()
+                } // end of while ()
+            } // end of else
+            if (callee != null) {
+                //System.out.print("Inline: " + callee + "? ");
+                if (shouldInline(callee)) {
+                    //System.out.println("Y");
 
-		    if (! callee.hasActiveBody()) {
-			Body activeBody = callee.retrieveActiveBody();
-			if (! (activeBody instanceof JimpleBody)) {
-			    String msg = "Active body of method " + callee.getName() +
-				" is not a Jimple body; cannot continue.";
-			    throw new RuntimeException(msg);
-			} // end of if ()
-		    } // end of if ()
+                    if (! callee.hasActiveBody()) {
+                        Body activeBody = callee.retrieveActiveBody();
+                        if (! (activeBody instanceof JimpleBody)) {
+                            String msg = "Active body of method " + callee.getName() +
+                                " is not a Jimple body; cannot continue.";
+                            throw new RuntimeException(msg);
+                        } // end of if ()
+                    } // end of if ()
 
-		    SiteInliner.inlineSite(callee, stmt, caller);
-		    if (prevStmt == null) {
-			stmt = (Stmt) stmtChain.getFirst();
-		    } // end of if ()
-		    else {
-			stmt = prevStmt;
-		    } // end of else
-		} // end of if ()
-		else {
-		    //System.out.println("N");
-		} // end of else
-	    } // end of if ()
+                    SiteInliner.inlineSite(callee, stmt, caller);
+                    if (prevStmt == null) {
+                        stmt = (Stmt) stmtChain.getFirst();
+                    } // end of if ()
+                    else {
+                        stmt = prevStmt;
+                    } // end of else
+                } // end of if ()
+                else {
+                    //System.out.println("N");
+                } // end of else
+            } // end of if ()
 
-	    if (stmt == lastStmt) {
-		break;
-	    } // end of if ()
-	    prevStmt = stmt;
-	    stmt = (Stmt) stmtChain.getSuccOf(stmt);
-	} // end of while ()
+            if (stmt == lastStmt) {
+                break;
+            } // end of if ()
+            prevStmt = stmt;
+            stmt = (Stmt) stmtChain.getSuccOf(stmt);
+        } // end of while ()
 
-	// Inlining methods may have created some unnecessary goto statements.
-	// Remove them
-	UnconditionalBranchFolder.v().transform(body);
+        // Inlining methods may have created some unnecessary goto statements.
+        // Remove them
+        UnconditionalBranchFolder.v().transform(body);
     }
 
     /**
      * Indicates whether <code>sootMethod</code> should be inlined
      */
     protected boolean shouldInline(SootMethod sootMethod) {
-	return false;
+        return false;
     }
 }

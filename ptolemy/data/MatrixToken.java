@@ -628,25 +628,25 @@ public abstract class MatrixToken extends Token {
     public final Token modulo(Token rightArgument)
             throws IllegalActionException {
 
-	/*
-	// If the rightArgument is a complex token, throw an error
-	// message as modulo can't be operated.
-	if(rightArgument instanceof ComplexToken)
-	    throw new IllegalActionException(
-	            notSupportedMessage("modulo", this, rightArgument));
-	*/
+        /*
+        // If the rightArgument is a complex token, throw an error
+        // message as modulo can't be operated.
+        if(rightArgument instanceof ComplexToken)
+            throw new IllegalActionException(
+                    notSupportedMessage("modulo", this, rightArgument));
+        */
 
         // Get the corresponding element type for this matrix type,
         // and try a scalar operation.
         Type elementType = getElementType();
 
-	/*
-	// If this is a complex array, throw an error message as modulo
-	// can't be performed on it
-	if(elementType == BaseType.COMPLEX)
-	    throw new IllegalActionException(
-	            notSupportedMessage("modulo", this, rightArgument));
-	*/
+        /*
+        // If this is a complex array, throw an error message as modulo
+        // can't be performed on it
+        if(elementType == BaseType.COMPLEX)
+            throw new IllegalActionException(
+                    notSupportedMessage("modulo", this, rightArgument));
+        */
 
         int typeInfo = TypeLattice.compare(elementType, rightArgument);
         if (typeInfo == CPO.SAME) {
@@ -690,7 +690,7 @@ public abstract class MatrixToken extends Token {
         }
         throw new IllegalActionException(
                 notSupportedMessage("modulo",
-		this, rightArgument));
+                this, rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token

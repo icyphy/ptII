@@ -49,13 +49,13 @@ public class PtolemyListCellRenderer extends DefaultListCellRenderer {
             JList list, Object value, int index,
             boolean isSelected, boolean cellHasFocus) {
 
-	DefaultListCellRenderer component = (DefaultListCellRenderer)
-	    super.getListCellRendererComponent(list, value,
+        DefaultListCellRenderer component = (DefaultListCellRenderer)
+            super.getListCellRendererComponent(list, value,
                     index, isSelected, cellHasFocus);
-	if (value instanceof NamedObj) {
-	    NamedObj object = (NamedObj) value;
-	    component.setText(object.getName());
-	}
-	return component;
+        if (value instanceof NamedObj) {
+            NamedObj object = (NamedObj) value;
+            component.setText(object.getName());
+        }
+        return component;
     }
 }
