@@ -10,7 +10,12 @@
 
 <H2>The changes between ptplot5.2 and ptplot5.2p1</H2>
 <menu>
-Peter N. Steinmetz: Added getXAutoRange(), getYAutoRange(),
+<li>Christopher Hylands: reuseDatasets in a PlotML file was 
+being ignored. Added PlotBox.getLegendDataset(),
+Plot.getReuseDatasets().  Plot.addLegend() and PlotMLParser.startElement()
+now check the value of reuseDatasets and acts accordingly.
+(bug reported by Balazs Mezodi)
+<li>Peter N. Steinmetz: Added getXAutoRange(), getYAutoRange(),
 getColors(), setColors(), getPlotRectangle(), setPlotRectangle()
 setPlotRectangle():
 "... allow[s] user specification of the rectangle 
