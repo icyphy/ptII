@@ -96,8 +96,7 @@ public class Writer extends Sink {
             _writer.flush();
             return super.postfire();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "attributeChanged(" + attribute + ") failed");
+            throw new IllegalActionException(this, ex, "postfire() failed");
         }
     }
 
