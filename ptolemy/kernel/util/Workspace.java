@@ -446,7 +446,7 @@ public final class Workspace implements Nameable, Serializable {
 
         // probably need to wait for write access
         // first increment this to make the record not empty, so as to
-        // prevent the recrod from being deleted from the _readerRecords
+        // prevent the record from being deleted from the _readerRecords
         // table by other threads
         record.failedWriteAttempts++;
 
@@ -632,9 +632,12 @@ public final class Workspace implements Nameable, Serializable {
     // Return the AccessRecord object for the current thread.
     // If the flag createNew is true and the current thread does not
     // have an access record, then create a new one and return it.
-    private final AccessRecord _getAccessRecord(Thread current, boolean createNew) {
+    private final AccessRecord _getAccessRecord(Thread current,
+            boolean createNew) {
 
-        //System.out.println("-- look up access record for " + current.getName());
+        //System.out.println("-- look up access record for "
+        //   + current.getName());
+
         AccessRecord record = (AccessRecord)_readerRecords.get(current);
 
         if (record == null) {

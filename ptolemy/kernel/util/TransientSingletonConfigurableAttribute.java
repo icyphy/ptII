@@ -60,7 +60,7 @@ public class TransientSingletonConfigurableAttribute
     // this with another icon, the natural way to do it is to create
     // an instance of SingletonConfigurableAttribute in the MoML
     // data that goes in the library.  However, when the MoML parser
-    // reads this MoML, it finds a pre-existing atttribute that is
+    // reads this MoML, it finds a pre-existing attribute that is
     // an instance of TransientSingletonConfigurableAttribute.
     // If that is also an instance of SingletonConfigurableAttribute,
     // then the MoML parser will not replace the attribute.

@@ -55,7 +55,7 @@ After being created, an inherited object, which is called "heritage,"
 might be modified in some (visible) way. For example, it might have parameter
 values that are changed and hence need to be explicitly recorded if
 the object is exported, say, to a persistent file format.
-Such a changed object is refered to as "modified heritage."
+Such a changed object is referred to as "modified heritage."
 
 @author Edward A. Lee
 @version $Id$
@@ -145,16 +145,17 @@ public interface Heritable extends Nameable {
      */
     public void setInherited(boolean classElement);
 
-    /** Specify whether this object has been modified.  This has an effect
-     *  only if setInherited() has been called with a true argument.
-     *  In that case, if this method is called with argument true, then this
-     *  object will export MoML despite the fact that it is an inherited object.
-     *  I.e., call this with true to specify that this inherited object has been
-     *  modified. To reverse the effect of this call, call it again with
-     *  false argument.
+    /** Specify whether this object has been modified.  This has an
+     *  effect only if setInherited() has been called with a true
+     *  argument.  In that case, if this method is called with
+     *  argument true, then this object will export MoML despite the
+     *  fact that it is an inherited object.  I.e., call this with
+     *  true to specify that this inherited object has been
+     *  modified. To reverse the effect of this call, call it again
+     *  with false argument.
      *  @param modified True to mark modified.
      *  @see #setInherited(boolean)
-     *  @see #isModifedHeritage()
+     *  @see #isModifiedHeritage()
      */
     public void setModifiedHeritage(boolean modified);
 }

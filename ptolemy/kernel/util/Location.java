@@ -321,7 +321,7 @@ public class Location extends SingletonAttribute
             location[1] = 0.0;
         } else {
             // Parse the specification: a comma specified list of doubles,
-            // optionally surrounded by square or curley brackets.
+            // optionally surrounded by square or curly brackets.
             StringTokenizer tokenizer =
                 new StringTokenizer(_expression, ",[]{}");
             location = new double[tokenizer.countTokens()];

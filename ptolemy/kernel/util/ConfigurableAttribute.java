@@ -144,18 +144,6 @@ public class ConfigurableAttribute
         return _base;
     }
 
-    /** Return the the result of calling value().
-     *  @return The value, or a description of the exception if one is thrown.
-     *  @see #value()
-     */
-    public String getExpression() {
-        try {
-            return value();
-        } catch (Exception ex) {
-            return ex.toString();
-        }
-    }
-
     /** Return the source specified in the most recent call to the
      *  configure() method, or null if none.
      *  @return A URL specifying an external source for configure
@@ -171,6 +159,18 @@ public class ConfigurableAttribute
      */
     public String getConfigureText() {
         return _configureText;
+    }
+
+    /** Return the the result of calling value().
+     *  @return The value, or a description of the exception if one is thrown.
+     *  @see #value()
+     */
+    public String getExpression() {
+        try {
+            return value();
+        } catch (Exception ex) {
+            return ex.toString();
+        }
     }
 
     /** Get the visibility of this attribute, as set by setVisibility().

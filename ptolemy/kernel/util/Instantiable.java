@@ -72,6 +72,25 @@ public interface Instantiable extends Heritable {
      */
     public Instantiable getParent();
 
+    /** Instantiate an instance by cloning this prototype and making any
+     *  changes that are required in the clone.
+     *  @param container The container for the instance.
+     *  @param name The name for the clone.
+     *  @return A new instance of the same class that implements
+     *   this Instantiable interface.
+     *  @exception CloneNotSupportedException If this prototype
+     *   cannot be cloned.
+     *  @exception IllegalActionException If this object is not a
+     *  class definition.
+     *   or the proposed container is not acceptable.
+     *  @exception NameDuplicationException If the name collides with
+     *   an object already in the container.
+     *  @see #isClassDefinition()
+     */
+    public Instantiable instantiate(NamedObj container, String name)
+            throws CloneNotSupportedException,
+            IllegalActionException, NameDuplicationException;
+
     /** Return true if this object is a class definition, which means that
      *  it can be instantiated.
      *  @return True if this object is a class definition.
@@ -101,22 +120,4 @@ public interface Instantiable extends Heritable {
      *  @exception IllegalActionException If the parent is not acceptable.
      */
     public void setParent(Instantiable parent) throws IllegalActionException;
-
-    /** Instantiate an instance by cloning this prototype and making any
-     *  changes that are required in the clone.
-     *  @param container The container for the instance.
-     *  @param name The name for the clone.
-     *  @return A new instance of the same class that implements
-     *   this Instantiable interface.
-     *  @exception CloneNotSupportedException If this prototype
-     *   cannot be cloned.
-     *  @exception IllegalActionException If this object is not a class definition
-     *   or the proposed container is not acceptable.
-     *  @exception NameDuplicationException If the name collides with
-     *   an object already in the container.
-     *  @see #isClassDefinition()
-     */
-    public Instantiable instantiate(NamedObj container, String name)
-            throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException;
 }

@@ -180,7 +180,8 @@ public class KernelException extends Exception {
                         KernelException.getFullName((Nameable)object));
             } else {
                 prefixBuffer.append(
-                        "<Object of class " + object.getClass().getName() + ">");
+                        "<Object of class " + object.getClass().getName()
+                        + ">");
             }
             if (objectIterator.hasNext()) {
                 prefixBuffer.append(", ");

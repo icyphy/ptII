@@ -58,8 +58,8 @@ import ptolemy.util.StringUtilities;
 //// NamedObj
 /**
 This is a base class for almost all Ptolemy II objects.
-This class supports a naming scheme, change requests, a peristent
-file format (MoML), a mutual execlusion mechanism for models (the
+This class supports a naming scheme, change requests, a persistent
+file format (MoML), a mutual exclusion mechanism for models (the
 workspace), and a hierarchical class mechanism with inheritance.
 Instances of this class can also be parameterized by making this
 instance the container of instances of the Attribute class.
@@ -679,7 +679,7 @@ public class NamedObj implements
      *  This method is final to ensure that
      *  derived classes only override the three-argument method to change
      *  the MoML description.
-     *  If the ojbect is not persistent, or if there is no MoML description,
+     *  If the object is not persistent, or if there is no MoML description,
      *  or if this object is a class instance, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
@@ -723,8 +723,9 @@ public class NamedObj implements
      *  method _exportMoMLContents() if they need to only change which
      *  contents are described.
      *  <p>
-     *  If this ojbect is not persistent, or if there is no MoML description
-     *  of this object, or if this object is a class instance, then write nothing.
+     *  If this object is not persistent, or if there is no MoML
+     *  description of this object, or if this object is a class
+     *  instance, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
@@ -949,7 +950,7 @@ public class NamedObj implements
      *  protected method _getHeritageList() to return an
      *  object of the appropriate type.
      *  @return A list of instances of of the same class as
-     *   this object.  In this base class, the list is emtpy.
+     *   this object.  In this base class, the list is empty.
      *  @see #isModifiedHeritage()
      *  @see #getShadowedHeritageList()
      */
@@ -1111,6 +1112,15 @@ public class NamedObj implements
         return false;
     }
 
+    /** Return true if setDeferringChangeRequests() has been called
+     *  to specify that change requests should be deferred.
+     *  @return True if change requests are being deferred.
+     *  @see #setDeferringChangeRequests(boolean)
+     */
+    public boolean isDeferringChangeRequests() {
+        return _deferChangeRequests;
+    }
+
     /** Return true if this object is an inherited object.  An object
      *  is inherited it is created in its container as a side effect
      *  of the creation of a similar object in some other container.
@@ -1131,15 +1141,6 @@ public class NamedObj implements
     public final boolean isInherited() {
         // NOTE: New method added. EAL 12/03
         return _isInherited;
-    }
-
-    /** Return true if setDeferringChangeRequests() has been called
-     *  to specify that change requests should be deferred.
-     *  @return True if change requests are being deferred.
-     *  @see #setDeferringChangeRequests(boolean)
-     */
-    public boolean isDeferringChangeRequests() {
-        return _deferChangeRequests;
     }
 
     /** Return true if this object is an inherited object that has been
@@ -1189,7 +1190,8 @@ public class NamedObj implements
                 if (_changeListeners != null) {
                     ListIterator listeners = _changeListeners.listIterator();
                     while (listeners.hasNext()) {
-                        WeakReference reference = (WeakReference)listeners.next();
+                        WeakReference reference =
+                            (WeakReference)listeners.next();
                         if (reference.get() == listener) {
                             listeners.remove();
                         } else if (reference.get() == null) {
@@ -1260,18 +1262,6 @@ public class NamedObj implements
         }
     }
 
-    /** Set whether this object is an inherited object.  If an object
-     *  is an inherited object, then it exports no MoML (unless it is
-     *  changed) and cannot have its name or container changed.
-     *  By default, instances of NamedObj are not inherited objects.
-     *  @param inherited True to mark this object as an inherited object.
-     *  @see #isInherited()
-     */
-    public final void setInherited(boolean inherited) {
-        _isInherited = inherited;
-        _modifiedHeritage = false;
-    }
-
     /** Set the MoML class name.  This is either the
      *  class of which this object is an instance, or if this
      *  object is itself a class, then the class that it extends.
@@ -1314,6 +1304,18 @@ public class NamedObj implements
         }
     }
 
+    /** Set whether this object is an inherited object.  If an object
+     *  is an inherited object, then it exports no MoML (unless it is
+     *  changed) and cannot have its name or container changed.
+     *  By default, instances of NamedObj are not inherited objects.
+     *  @param inherited True to mark this object as an inherited object.
+     *  @see #isInherited()
+     */
+    public final void setInherited(boolean inherited) {
+        _isInherited = inherited;
+        _modifiedHeritage = false;
+    }
+
     /** Set the model error handler.
      *  @param handler The error handler, or null to specify no handler.
      *  @see #getModelErrorHandler()
@@ -1322,13 +1324,14 @@ public class NamedObj implements
         _modelErrorHandler = handler;
     }
 
-    /** Specify whether this object has been modified,.  This has an effect
-     *  only if setInherited() has been called with a true argument.
-     *  In that case, if this method is called with argument true, then this
-     *  object will export MoML despite the fact that it is an inherited object.
-     *  I.e., call this with true to specify that this inherited object has been
-     *  modified. To reverse the effect of this call, call it again with
-     *  false argument.
+    /** Specify whether this object has been modified.  This has an
+     *  effect only if setInherited() has been called with a true
+     *  argument.  In that case, if this method is called with
+     *  argument true, then this object will export MoML despite the
+     *  fact that it is an inherited object.  I.e., call this with
+     *  true to specify that this inherited object has been
+     *  modified. To reverse the effect of this call, call it again
+     *  with false argument.
      *  @param modified True to mark modified.
      *  @see #setInherited(boolean)
      *  @see #isModifiedHeritage()
@@ -1846,8 +1849,8 @@ public class NamedObj implements
      *  @exception InternalErrorException If the object does not exist
      *   or has the wrong class. Not thrown in this base class.
      */
-    protected NamedObj _getHeritageObject(String relativeName, NamedObj container)
-            throws InternalErrorException {
+    protected NamedObj _getHeritageObject(String relativeName,
+            NamedObj container) throws InternalErrorException {
         return null;
     }
 
@@ -1930,7 +1933,7 @@ public class NamedObj implements
             }
         }
         if (length < string.length()) {
-            // Some stipping occurred.
+            // Some stripping occurred.
             char[] result = new char[length];
             System.arraycopy(chars, 0, result, 0, length);
             return new String(result);
@@ -2060,7 +2063,7 @@ public class NamedObj implements
             LinkedList result = new LinkedList();
 
             // We may have visited this container already, in
-            // which case the propogation has occurred already.
+            // which case the propagation has occurred already.
             // It should not occur again because the first occurrence
             // would have been from an object that propagated to
             // this occurrence. A similar propagation will occur
@@ -2162,7 +2165,7 @@ public class NamedObj implements
      */
     private static Workspace _DEFAULT_WORKSPACE = new Workspace();
 
-    /** Flag indicating that we should not immedidately
+    /** Flag indicating that we should not immediately
      *  execute a change request.
      */
     private transient boolean _deferChangeRequests = false;

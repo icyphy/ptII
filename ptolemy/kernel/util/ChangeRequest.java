@@ -113,7 +113,7 @@ public abstract class ChangeRequest {
      *  If the change failed because an exception was thrown, and the
      *  exception was not reported to any global listeners, then
      *  we throw an InternalErrorException because it is a bug to
-     *  not have a listeneter in this case.
+     *  not have a listener in this case.
      *  <p>
      *  This method should be called exactly once, by the object that
      *  the change request was queued with.  Attempting to call this

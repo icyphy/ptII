@@ -107,7 +107,7 @@ public interface Exportable extends Nameable {
      *  indenting of the output, but may also be used to indicate
      *  to an implementor whether this object is being exported
      *  as part of the export of its container (in which case
-     *  depth > 0), or this object is being exported independentyly
+     *  depth > 0), or this object is being exported independently
      *  of its container (depth == 0). If there is no MoML description,
      *  or if the object is not persistent, or if an implementor
      *  has some other reason that the object has no persistent
@@ -125,7 +125,7 @@ public interface Exportable extends Nameable {
      *  indenting of the output, but may also be used to indicate
      *  to an implementor whether this object is being exported
      *  as part of the export of its container (in which case
-     *  depth > 0), or this object is being exported independentyly
+     *  depth > 0), or this object is being exported independently
      *  of its container (depth == 0). If there is no MoML description,
      *  or if the object is not persistent, or if an implementor
      *  has some other reason that the object has no persistent
