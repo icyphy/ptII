@@ -56,45 +56,45 @@ public class FSMTransition extends ComponentRelation {
     ////                         private variables                 ////
 
     /** @serial List trigger event and trigger condition. */
-    VariableList _trigger = null;
+    protected VariableList _trigger = null;
 
     /** @serial Trigger event variable. */
-    Variable _te;
+    protected Variable _te;
 
     /** @serial Trigger condition variable. */
-    Variable _tc;
+    protected Variable _tc;
 
     /** @serial List trigger actions. */
-    VariableList _actions = null;
+    protected VariableList _actions = null;
 
     /** @serial List local variable updates. */
-    VariableList _localVarUpdates = null;
+    protected VariableList _localVarUpdates = null;
 
     /** @serial If true, this transition is preemptive. */
-    boolean _preemptive = false;
+    protected boolean _preemptive = false;
 
     /** @serial If true, the destination state's subsystem will be initialized
      * each time this transition is taken.
      */
-    boolean _initEntry = false;
+    protected boolean _initEntry = false;
 
     /** @serial Source state. */
-    FSMState _source = null;
+    protected FSMState _source = null;
 
     /** @serial Destination state. */
-    FSMState _dest = null;
+    protected FSMState _dest = null;
 
     /** @serial Version of source/dest states. */
-    long _stateVersion = -1;
+    protected long _stateVersion = -1;
 
     /** @serial Trigger event set. */
-    boolean _teSet = false;
+    protected boolean _teSet = false;
 
     /** @serial Trigger condition set. */
-    boolean _tcSet = false;
+    protected boolean _tcSet = false;
 
     /** @serial List of transition actions. */
-    LinkedList _transActions = null;
+    protected LinkedList _transActions = null;
 
     public void addTransitionAction(TransitionAction act) {
         if (act == null) {
