@@ -94,9 +94,8 @@ public class HysteresisApplet extends SDFApplet {
             AddSubtract add = new AddSubtract(_toplevel, "add");
 
             // Create and configure hystplotter
-            SequencePlotter hystplotter = new SequencePlotter(_toplevel, "plot1");
-
-
+            SequencePlotter hystplotter =
+                new SequencePlotter(_toplevel, "plot1");
 
             // Place the hystplotter in the applet in such a way that it fills
             // the available space.
