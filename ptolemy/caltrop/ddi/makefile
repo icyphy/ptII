@@ -79,6 +79,9 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSALLJAR) \
+	CSPTokenReader.class \
+	'CSPTokenReader$$DataChannelID.class' \
+	CSPTokenWriter.class \
 	'SDF$$1.class' \
 	'SDF$$ActionRateSignature.class'
 
