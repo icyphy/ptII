@@ -61,6 +61,7 @@ ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.java
 ptolemy/copernicus/java/test/runSnapShot.stats
 ptolemy/copernicus/shallow/ptolemy.giotto
 ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock
+ptolemy/domains/ct/demo/Agilent
 ptolemy/domains/ct/demo/Saber
 ptolemy/domains/ct/demo/Corba
 ptolemy/domains/ct/demo/SigmaDelta/DEStatistics.java
