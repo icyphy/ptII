@@ -12,7 +12,6 @@
 <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
 <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
 </entity>
-        <input source="ptolemy/domains/sdf/lib/security/security.xml"/>
       </group>
     ?>
   </configure>
