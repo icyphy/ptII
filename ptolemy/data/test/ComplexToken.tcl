@@ -488,7 +488,7 @@ test ComplexToken-11.0 {Test hashCode} {
     set t2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c2]
     set c3 [java::new {ptolemy.math.Complex double double} 1.0 2.0]
     set t3 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c3]
-    list [$t1 hashCode] [$t2 hashCode] [$f hashCode]
+    list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
 } {9 9 2}
 
 ######################################################################
