@@ -56,7 +56,7 @@ public class Context {
     ////                         public methods                    ////
 
     /** Add an include file to the set of include files in the context.
-     *  File name delimeters (double quotes or angle brackets), and the .h
+     *  File name delimiters (double quotes or angle brackets), and the .h
      *  suffix, must be included in the argument.
      *  @param fileName The name of the include file.
      */
@@ -117,7 +117,7 @@ public class Context {
     /** Return an Iterator over the set of include files in the context.
      *  Each element in the Iterator is a String representing an include
      *  file name.
-     *  Each such file name includes appropriate file name delimeters
+     *  Each such file name includes appropriate file name delimiters
      *  (double quotes or angle brackets), and the .h suffix.
      *  @return The Iterator.
      */
