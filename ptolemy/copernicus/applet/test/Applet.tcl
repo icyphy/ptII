@@ -52,7 +52,9 @@ proc autoAppletCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	if { [string last FileWriter2.xml $file] != -1 \
 		|| [string last ReadFile2.xml $file] != -1 } {
-		next
+	    // Skip known failures
+	    puts "Skipping Known Failure: $file"
+	    continue
 	}
 	puts "---- testing $file"
 	test "Auto" "Automatic test in file $file" {
@@ -64,18 +66,23 @@ proc autoAppletCG {autoDirectory} {
     }
 }
 
-# Generate code for all the xml files in subdirectories
+# Generate code all the demos where a demo model has the name 
+# demo/Foo/Foo.xml thus avoiding running scripts like demo/Foo/xxx.xml
 proc autoAppletDemoCG {autoDirectory} {
     set i 0
-    foreach file [glob $autoDirectory/*/demo/*/*.xml] {
-	puts "---- testing $file"
-	incr i
-	test "Auto-$i" "Automatic test in file $file" {
-	    set elapsedTime [time {sootCodeGeneration $file Applet 1000}]
-	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
-	    list {}
-	} {{}}
-	java::call System gc
+    foreach directory [glob $autoDirectory/*/demo/*] {
+	set base [file tail $directory]
+	set file [file join $directory $base.xml]
+	if [ file exists $file ] {
+	    incr i
+	    puts "---- $i testing $file"
+	    test "Auto-$i" "Automatic test in file $file" {
+	        set elapsedTime [time {sootCodeGeneration $file Applet 1000}]
+	        puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
+	        list {}
+	    } {{}}
+	    java::call System gc
+       }
     }
 }
 
@@ -83,6 +90,7 @@ proc autoAppletDemoCG {autoDirectory} {
 ####
 #
 
+autoAppletDemoCG [file join $relativePathToPTII ptolemy domains]
 
 #test Applet-1.1 {Compile and run the Orthocomm test} {
 #    set result [sootAppletCodeGeneration \
@@ -118,10 +126,8 @@ test Applet-1.3 {Compile and run the MathFunction test, which tends to hang} {
 } {{}}
 
 
-# Generate applets for all the demos
-# Note that this currently fails in the nightly build if the demo
-# has a Display Actor
-#autoAppletDemoCG [file join $relativePathToPTII ptolemy domains]
+# Generate applets for all the domain demos
+autoAppletDemoCG [file join $relativePathToPTII ptolemy domains]
 
 
 # Now try to generate code for all the tests in the auto directories.
