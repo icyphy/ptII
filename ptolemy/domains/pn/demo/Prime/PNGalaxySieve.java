@@ -74,10 +74,11 @@ public class PNGalaxySieve extends AtomicActor {
 		if (islargestprime) {
 		    //System.out.println("Making mutations");
 		    // yes - make the mutation for it
-		    TopologyChangeRequest m = makeMutation(((IntToken)data).intValue());
-		    PNDirector director = (PNDirector)getDirector();
+		    ChangeRequest m = 
+                        makeMutation(((IntToken)data).intValue());
+		    BasePNDirector director = (BasePNDirector)getDirector();
 		    // Queue the new mutation
-		    director.queueTopologyChangeRequest(m);
+		    director.requestChange(m);
 		    //System.out.println("Queued mutation");
 		    islargestprime = false;
 		}
@@ -102,32 +103,24 @@ public class PNGalaxySieve extends AtomicActor {
 
     /** Create and return a new mutation object that adds a new sieve.
      */
-    private TopologyChangeRequest makeMutation(final int value) {
-        TopologyChangeRequest request = new TopologyChangeRequest(this) {
+    private ChangeRequest makeMutation(final int value) {
+        ChangeRequest request = new ChangeRequest(this, "") {
 
-            public void constructEventQueue() {
+            public void execute() {
                 //System.out.println("TopologyRequest event q being constructed!");
 
                 // remember this
-		CompositeActor galaxy = null;
 		LinkedList listofrels = new LinkedList();
-                PNGalaxySieve newSieve = null;
-                Relation newRelation = null;
-		Relation newin = null;
-		Relation newout = null;
-                IOPort input = null;
-                IOPort output = null;
-                IOPort outport = null;
-		IOPort galin = null;
-		IOPort galout = null;
 
                 CompositeActor container =  (CompositeActor)getContainer();
                 try {
-		    galaxy = new CompositeActor(container, value+"_gal");
-		    galin = (IOPort)galaxy.newPort(value+"_in");
-		    galout = (IOPort)galaxy.newPort(value+"_out");
+		    CompositeActor galaxy = 
+                        new CompositeActor(container, value+"_gal");
+		    IOPort galin = (IOPort)galaxy.newPort(value+"_in");
+		    IOPort galout = (IOPort)galaxy.newPort(value+"_out");
 		    
-                    newSieve = new PNGalaxySieve(galaxy, value + "_sieve");
+                    PNGalaxySieve newSieve = 
+                        new PNGalaxySieve(galaxy, value + "_sieve");
                     newSieve.setParam("prime", Integer.toString(value));
 
 		    //relations = _output.linkedRelations();
@@ -143,16 +136,16 @@ public class PNGalaxySieve extends AtomicActor {
 			_output.unlink(relation);
 			//Connect PLotter again
 			galout.link(relation);
-			//outport = (IOPort)newSieve.getPort("output");
-			//outport.link(relation);
-			//Connect newsieve
 		    }
-		    outport = (IOPort)newSieve.getPort("output");
-		    newout = galaxy.connect(galout, outport, value+"outgal");
-		    input = (IOPort)newSieve.getPort("input");
-		    newin = galaxy.connect(input, galin, value+"ingal");
+		    IOPort outport = (IOPort)newSieve.getPort("output");
+		    Relation newout = 
+                        galaxy.connect(galout, outport, value+"outgal");
+		    IOPort input = (IOPort)newSieve.getPort("input");
+		    Relation newin = 
+                        galaxy.connect(input, galin, value+"ingal");
 		    //_output = new PNOutPort(PNSieve.this, "output");
-		    newRelation = container.connect(galin, _output, value+"_queue");
+		    Relation newRelation = 
+                        container.connect(galin, _output, value+"_queue");
                 } catch (NameDuplicationException ex) {
                     throw new InvalidStateException("Cannot create " +
                             "new sieve.");
@@ -161,26 +154,26 @@ public class PNGalaxySieve extends AtomicActor {
                             "new sieve.");
                 }
 
-		queueEntityAddedEvent(container, galaxy);
-		queuePortAddedEvent(galaxy, galin);
-		queuePortAddedEvent(galaxy, galout);
-                queueEntityAddedEvent(galaxy, newSieve);
-		Enumeration relations = listofrels.elements();
-                while (relations.hasMoreElements()) {
-		    Relation relation = (Relation)relations.nextElement();
-                    queuePortUnlinkedEvent(relation, _output);
-                    queuePortLinkedEvent(relation, galout);
-                }
-		queueRelationAddedEvent(galaxy, (ComponentRelation)newin);
-		queueRelationAddedEvent(galaxy, (ComponentRelation)newout);
-		queuePortLinkedEvent(newout, galout);
-		queuePortLinkedEvent(newout, outport);
-		queuePortLinkedEvent(newin, input);
-		queuePortLinkedEvent(newin, galin);
-                //FIXME: This cast should not be required. Mention it to johnr
-                queueRelationAddedEvent(container, (ComponentRelation)newRelation);
-                queuePortLinkedEvent(newRelation, _output);
-                queuePortLinkedEvent(newRelation, galin);
+		// queueEntityAddedEvent(container, galaxy);
+// 		queuePortAddedEvent(galaxy, galin);
+// 		queuePortAddedEvent(galaxy, galout);
+//                 queueEntityAddedEvent(galaxy, newSieve);
+// 		Enumeration relations = listofrels.elements();
+//                 while (relations.hasMoreElements()) {
+// 		    Relation relation = (Relation)relations.nextElement();
+//                     queuePortUnlinkedEvent(relation, _output);
+//                     queuePortLinkedEvent(relation, galout);
+//                 }
+// 		queueRelationAddedEvent(galaxy, (ComponentRelation)newin);
+// 		queueRelationAddedEvent(galaxy, (ComponentRelation)newout);
+// 		queuePortLinkedEvent(newout, galout);
+// 		queuePortLinkedEvent(newout, outport);
+// 		queuePortLinkedEvent(newin, input);
+// 		queuePortLinkedEvent(newin, galin);
+//                 //FIXME: This cast should not be required. Mention it to johnr
+//                 queueRelationAddedEvent(container, (ComponentRelation)newRelation);
+//                 queuePortLinkedEvent(newRelation, _output);
+//                 queuePortLinkedEvent(newRelation, galin);
             }
         };
         return request;

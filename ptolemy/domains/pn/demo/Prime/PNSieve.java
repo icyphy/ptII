@@ -74,12 +74,12 @@ public class PNSieve extends AtomicActor {
 		// is it the next prime?
 		if (islargestprime) {
 		    // yes - make the mutation for it
-		    TopologyChangeRequest m = makeMutation(value);
+		    ChangeRequest m = makeMutation(value);
                     System.out.println("Discovered next prime - It is " + 
                             value);
 		    BasePNDirector director = (BasePNDirector)getDirector();
 		    // Queue the new mutation
-		    director.queueTopologyChangeRequest(m);
+		    director.requestChange(m);
 		    //System.out.println("Queued mutation");
 		    islargestprime = false;
 		} else {
@@ -106,25 +106,27 @@ public class PNSieve extends AtomicActor {
 
     /** Create and return a new mutation object that adds a new sieve.
      */
-    private TopologyChangeRequest makeMutation(final int value) {
-        TopologyChangeRequest request = new TopologyChangeRequest(this) {
-
-            public void constructEventQueue() {
+    private ChangeRequest makeMutation(final int value) {
+        ChangeRequest request = new ChangeRequest(this, "Creating a new " +
+                                                  "sieve") {
+            public void execute() {
                 CompositeActor container =  (CompositeActor)getContainer();
                 try {
                     PNSieve newSieve = 
                             new PNSieve(container, value + "_sieve");
-                    queueEntityAddedEvent(container, newSieve);
+                    //queueEntityAddedEvent(container, newSieve);
                     Parameter prim = (Parameter)newSieve.getAttribute("prime");
                     prim.setToken(new IntToken(value));
                     Enumeration relations = output.linkedRelations();
 		    if (relations.hasMoreElements()) {
 			Relation relation = (Relation)relations.nextElement();
 			//Disconnected
-                        queuePortUnlinkedEvent(relation, output);
+                        // queuePortUnlinkedEvent(relation, output);
+                        output.unlink(relation);
 			//Connect PLotter again
 			IOPort outport = (IOPort)newSieve.getPort("output");
-                        queuePortLinkedEvent(relation, outport);
+                        //queuePortLinkedEvent(relation, outport);
+                        outport.link(relation);
 		    }
 		    IOPort inp = (IOPort)newSieve.getPort("input");
 		    IORelation newRelation = 
@@ -132,10 +134,13 @@ public class PNSieve extends AtomicActor {
                     //newRelation.setName(value+"_queue");
                     //FIXME: This cast should not be required. 
                     //Mention it to johnr
-                    queueRelationAddedEvent(container, 
-                            (ComponentRelation)newRelation);
-                    queuePortLinkedEvent(newRelation, output);
-                    queuePortLinkedEvent(newRelation, inp);
+                    //queueRelationAddedEvent(container, 
+                    //(ComponentRelation)newRelation);
+                    
+                    //queuePortLinkedEvent(newRelation, output);
+                    output.link(newRelation);
+                    //queuePortLinkedEvent(newRelation, inp);
+                    inp.link(newRelation);
 
                 } catch (NameDuplicationException ex) {
                     throw new InvalidStateException("Cannot create " +
