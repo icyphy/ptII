@@ -1002,15 +1002,6 @@ public abstract class ScalarToken extends Token
                 _unitCategoryExponents, token._unitCategoryExponents);
     }
 
-    /** Return a copy of the unit category exponents array. If this
-     *  token does not have a unit, return null;
-     *  @return An int array that is a copy of the unit category
-     *  exponents of this token.
-     */
-    protected int[] _copyOfCategoryExponents() {
-        return UnitUtilities.copyUnitsArray(_unitCategoryExponents);
-    }
-
     /** Return true if the units of this token are the same as that of the
      *  argument token. If both tokens do not have units, return true.
      *  @param scalarToken A scalar token.
@@ -1060,6 +1051,15 @@ public abstract class ScalarToken extends Token
      */
     protected abstract ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException;
+
+    /** Return a copy of the unit category exponents array. If this
+     *  token does not have a unit, return null;
+     *  @return An int array that is a copy of the unit category
+     *  exponents of this token.
+     */
+    protected int[] _copyOfCategoryExponents() {
+        return UnitUtilities.copyUnitsArray(_unitCategoryExponents);
+    }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token.  It is guaraunteed
