@@ -124,7 +124,7 @@ public class DDESourceActor extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     public DDEIOPort _reinvokeInPort;
     public DDEIOPort _reinvokeOutPort;

@@ -375,7 +375,7 @@ public class VariableList extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /*  Notify the dependent variables that the argument has been
      *  added to this variable list.
@@ -412,7 +412,7 @@ public class VariableList extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** If false, the variables in this list will not notify their
      *  dependents of changes in value.

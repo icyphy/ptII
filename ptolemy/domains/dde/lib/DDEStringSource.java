@@ -117,7 +117,7 @@ public abstract class DDEStringSource extends DDESourceActor {
     ////                        private methods			   ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private DDEIOPort _output;
     private LinkedList _contents;

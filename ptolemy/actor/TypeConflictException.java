@@ -88,7 +88,7 @@ public class TypeConflictException extends KernelException {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
+    ////                         public methods                    ////
 
     /** Return an Enumeration of Typeables where type conflicts
      *  occurred. The ports are those specified in the Enumeration
@@ -100,7 +100,7 @@ public class TypeConflictException extends KernelException {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // Create a string listing all the Typeables in _typeables and
     // their types. Each Typeable takes one line, and each line starts

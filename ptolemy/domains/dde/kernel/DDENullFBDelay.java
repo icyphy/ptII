@@ -177,7 +177,7 @@ public class DDENullFBDelay extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // FIXME: I need to use parameters here.
     private double _delay = 4.0;

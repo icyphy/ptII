@@ -77,8 +77,8 @@ public class Processor extends CSPActor {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -232,8 +232,8 @@ public class Processor extends CSPActor {
         _topGraphic = bcg;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private TypedIOPort _requestIn;
     private TypedIOPort _requestOut;

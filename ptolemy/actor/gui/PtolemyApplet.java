@@ -199,8 +199,8 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Concatenate two parameter info string arrays and return the result.
      *  This is provided to make it easy for derived classes to override
@@ -265,8 +265,8 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
 	_manager.finish();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** The workspace that the applet is built in. Each applet has
      *  it own workspace.
@@ -279,8 +279,8 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     /** The top-level composite actor, created in the init() method. */
     protected TypedCompositeActor _toplevel;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /*  The background color as set by the "background" applet parameter.
      *  This is protected so that derived classes can find out what the
@@ -294,8 +294,8 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     private Button _stopButton;
     private Manager.State _previousState;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {

@@ -63,8 +63,8 @@ public class CSPMultiSource extends CSPActor {
         output.setTypeEquals(IntToken.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void fire() {
         try {
@@ -130,8 +130,8 @@ public class CSPMultiSource extends CSPActor {
 
     public TypedIOPort output;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Array storing the number of times each brach rendezvoused.
     private int[] _branchCount;

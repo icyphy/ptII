@@ -161,8 +161,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         setToken(t);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** The run method has roughly three parts: (1) when there is already
      *  a get waiting, (2) when there is a ConditionalReceive waiting, and
@@ -222,8 +222,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * @param parent The csp actor that contains this conditional

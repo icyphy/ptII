@@ -141,7 +141,7 @@ public class DEGain extends TypedAtomicActor {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public variables                 ////
+    ////                         public variables                  ////
 
 
     // the ports.

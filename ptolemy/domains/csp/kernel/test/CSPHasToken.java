@@ -56,8 +56,8 @@ public class CSPHasToken extends CSPGet {
         super(cont, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -82,8 +82,8 @@ public class CSPHasToken extends CSPGet {
 	return _hasToken;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private boolean _hasToken = false;
 

@@ -68,7 +68,7 @@ public class DDEInPunctuation extends DDEPunctuation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private TypedIOPort _input;
 

@@ -126,7 +126,7 @@ public class BusContentionApplet extends PtolemyApplet {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     BusContentionApplication _demo;
 }

@@ -56,8 +56,8 @@ public class CSPHasRoom extends CSPPut {
         super(cont, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -82,8 +82,8 @@ public class CSPHasRoom extends CSPPut {
 	return _hasRoom;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private boolean _hasRoom = false;
 

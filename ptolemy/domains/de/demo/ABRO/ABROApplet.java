@@ -55,8 +55,8 @@ public class ABROApplet extends Applet {
 
     public static final boolean DEBUG = true;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Initialize the applet.
      */
@@ -174,8 +174,8 @@ public class ABROApplet extends Applet {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The thread that runs the simulation.
     private boolean _isSimulationRunning;
@@ -195,12 +195,12 @@ public class ABROApplet extends Applet {
     private Label _currentTimeLabel;
     private boolean _isSimulationPaused = false;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                              ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     // Show simulation progress.
     private class CurrentTimeThread extends Thread {

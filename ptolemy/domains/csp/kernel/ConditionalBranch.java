@@ -124,8 +124,8 @@ public abstract class ConditionalBranch {
         _parent = (CSPActor)tmp;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Returns the guard for this guarded communication statement.
      *  If it is true the branch is said to be enabled.
@@ -179,7 +179,7 @@ public abstract class ConditionalBranch {
         return _alive;
     }
 
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                      package friendly methods                  ////
 
     /** Set a flag indicating this branch should fail.
@@ -207,8 +207,8 @@ public abstract class ConditionalBranch {
         _token = token;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Called by subclasses to wait. Register with the containing actor
      *  that a conditional branch has blocked and then wait to be notified.
@@ -225,8 +225,8 @@ public abstract class ConditionalBranch {
         getParent()._branchUnblocked();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The identification number of this branch (according to its parent)
     private int _branchID;

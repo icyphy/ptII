@@ -215,8 +215,8 @@ public class DEHistogram extends DEActor {
     public TypedIOPort input;
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Given a double value, figure out which bin it should end up into.
     // The current implementation does this by performing an integer divide

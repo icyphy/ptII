@@ -66,8 +66,8 @@ public class CSPSource extends AtomicActor {
         _value = initValue;
         output = new IOPort(this, "output", false, true);
     }
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void fire() {
         try {
@@ -91,8 +91,8 @@ public class CSPSource extends AtomicActor {
         return false;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     public IOPort output;
     private int _tokenLimit = -1;

@@ -109,8 +109,8 @@ public class Philosopher extends CSPActor {
         _thinking.setExpression("1.0");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Executes the code in this actor. This actor randomly chooses
      *  whether to grab the chopstick to the left or right of it first.
@@ -219,8 +219,8 @@ public class Philosopher extends CSPActor {
     public boolean waitingLeft = false;
     public boolean waitingRight = false;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private TypedIOPort leftIn;
     private TypedIOPort leftOut;

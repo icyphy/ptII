@@ -121,8 +121,8 @@ public class Server extends CSPActor {
 	_input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Executes the code in this actor. This actor waits for a
      *  customer to arrive, then delays for a random time,
@@ -160,8 +160,8 @@ public class Server extends CSPActor {
         return false;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The input port for this actor.
     private TypedIOPort _input;

@@ -77,8 +77,8 @@ public class Controller extends CSPActor {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -236,8 +236,8 @@ public class Controller extends CSPActor {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     private TypedIOPort _requestIn;
     private TypedIOPort _requestOut;

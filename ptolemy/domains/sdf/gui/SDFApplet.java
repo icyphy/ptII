@@ -111,8 +111,8 @@ public class SDFApplet extends PtolemyApplet {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Create run controls in a panel and return that panel.
      *  The argument controls how many buttons are

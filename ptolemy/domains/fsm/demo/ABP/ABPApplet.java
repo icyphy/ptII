@@ -55,8 +55,8 @@ An applet that uses Ptolemy II DE domain.
 */
 public class ABPApplet extends Applet {
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Initialize the applet.
      */
@@ -521,15 +521,15 @@ public class ABPApplet extends Applet {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     public static final boolean DEBUG = true;
     public static final String TIME_OUT = "2.5";
     public static final String RESET = "-1.0";
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
 
     /** @serial The thread that runs the simulation. */
@@ -573,8 +573,8 @@ public class ABPApplet extends Applet {
     private Parameter _bdRate;
 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                              ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     // Show simulation progress.
     private class CurrentTimeThread extends Thread {

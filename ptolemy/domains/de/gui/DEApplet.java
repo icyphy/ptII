@@ -103,8 +103,8 @@ public class DEApplet extends PtolemyApplet {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** In addition to creating the buttons provided by the base class,
      *  if the stop time has not been specified by the applet parameter

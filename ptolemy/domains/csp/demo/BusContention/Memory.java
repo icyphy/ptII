@@ -68,8 +68,8 @@ public class Memory extends CSPActor {
         _strValue = "initialValue";
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -141,8 +141,8 @@ public class Memory extends CSPActor {
         return _strValue;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     private TypedIOPort _input;
     private TypedIOPort _output;

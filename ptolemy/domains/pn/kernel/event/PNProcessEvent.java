@@ -72,7 +72,7 @@ public class PNProcessEvent {
         _exception = exception;
     }
 
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                    public methods                   /////
 
     /** Return the actor corresponding to the process that generated the event.
@@ -141,7 +141,7 @@ public class PNProcessEvent {
         return result;
     }
 
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                   public variables                  /////
     public static final int BLOCKED_ON_DELAY = 111;
     public static final int BLOCKED_ON_MUTATION = 112;
@@ -158,7 +158,7 @@ public class PNProcessEvent {
     public static final int PROCESS_RUNNING = 370;
 
 
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                   private variables                 /////
 
     private Actor _actor = null;

@@ -218,8 +218,8 @@ public class DEPlot extends DEActor {
         return _yMax;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Process input tokens that are instances of DoubleToken.
      *

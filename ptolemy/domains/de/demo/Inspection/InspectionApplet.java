@@ -179,8 +179,8 @@ public class InspectionApplet extends DEApplet {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Execute the model.  This overrides the base class to read the
      *  values in the query box first and set parameters.
@@ -196,8 +196,8 @@ public class InspectionApplet extends DEApplet {
         super._go();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Query _query;
     private DEPoisson _bus;

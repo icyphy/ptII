@@ -351,8 +351,8 @@ public class SignalProcessing {
         private final double _fzcOverFourExcess, _oneMinusFZCOverFourExcess;
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return true if the first argument is close to the second (within
      *  epsilon, where epsilon is a static public variable of this class).
@@ -1275,8 +1275,8 @@ public class SignalProcessing {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** A small number (= 1.0e-9). This number is used by algorithms to
      *  detect whether a double is close to zero.
@@ -1394,8 +1394,8 @@ public class SignalProcessing {
     /** The number of window types that can be generated. */
     public static final int WINDOW_TYPES = 6;
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         private methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Check that the order of a transform is between 0 and 31, inclusive.
     // Throw an exception otherwise.
@@ -1641,7 +1641,7 @@ public class SignalProcessing {
         _FFCTGenLimit = Math.max(_FFCTGenLimit, limit);
     }
 
-    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                         ////
 
     // Tables needed for the FFCT algorithm. We assume no one will attempt

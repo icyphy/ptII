@@ -117,8 +117,8 @@ public class Chopstick extends CSPActor {
 	rightOut.setTypeEquals(IntToken.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Executes the code in this actor. This actor uses a CDO
      *  construct when it is waiting to be used by either of the
@@ -166,8 +166,8 @@ public class Chopstick extends CSPActor {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         private variables                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private TypedIOPort leftIn;
     private TypedIOPort leftOut;

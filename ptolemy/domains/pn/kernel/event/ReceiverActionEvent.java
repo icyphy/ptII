@@ -81,7 +81,7 @@ public class ReceiverActionEvent {
         return _capacity;
     }
 
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                   private variables                 /////
 
     private PNQueueReceiver _receiver;

@@ -61,8 +61,8 @@ public class DDEGetToken extends DDEGet {
 	 _rcvrTimes = new double[_numTokens];
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -120,8 +120,8 @@ public class DDEGetToken extends DDEGet {
 	System.out.println("DDEGetToken() ends with cnt = "+cnt);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _numTokens;
     private Token[] _tokens = null;

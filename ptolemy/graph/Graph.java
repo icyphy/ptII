@@ -267,7 +267,7 @@ public class Graph {
     protected ArrayList _graph;
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private variables                ////
+    ////                         private variables                 ////
 
     // number of edges in this graph
     private int _edgeCount = 0;

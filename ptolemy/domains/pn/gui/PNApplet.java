@@ -113,8 +113,8 @@ public class PNApplet extends PtolemyApplet {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** In addition to creating the buttons provided by the base class,
      *  if the number of iterations has not been specified, then create
@@ -210,8 +210,8 @@ public class PNApplet extends PtolemyApplet {
         return;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** The top-level composite actor, created in the init() method. */
     protected CompositeActor _toplevel;
@@ -233,8 +233,8 @@ public class PNApplet extends PtolemyApplet {
     /** True if the current simulation is running */
     protected boolean _isSimulationRunning = false;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Button _goButton;
 

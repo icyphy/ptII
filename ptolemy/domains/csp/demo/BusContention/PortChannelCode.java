@@ -55,8 +55,8 @@ public class PortChannelCode {
         _code = code;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -76,8 +76,8 @@ public class PortChannelCode {
         return _port;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     private IOPort _port;
     private int _channel;

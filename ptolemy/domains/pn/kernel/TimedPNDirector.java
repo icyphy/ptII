@@ -337,7 +337,7 @@ public class TimedPNDirector extends BasePNDirector {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire() or are
@@ -535,7 +535,7 @@ public class TimedPNDirector extends BasePNDirector {
     //     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The priority queue that stores the list of processes waiting for time
      *  to advance. These processes are sorted by the time they want to resume
@@ -545,7 +545,7 @@ public class TimedPNDirector extends BasePNDirector {
 	    new CalendarQueue(new DoubleCQComparator());
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
 
     /** The number of time-blocked processes. */

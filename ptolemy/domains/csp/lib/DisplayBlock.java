@@ -75,7 +75,7 @@ public class DisplayBlock extends Canvas {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
 
 }

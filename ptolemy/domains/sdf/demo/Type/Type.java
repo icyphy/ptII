@@ -172,7 +172,7 @@ public class Type extends SDFApplet {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     private void _addListeners()
 	    throws NameDuplicationException, IllegalActionException {
@@ -535,7 +535,7 @@ public class Type extends SDFApplet {
     private TraceModel.Element _currentElement[];
 
     ///////////////////////////////////////////////////////////////////
-    ////                       inner class                         ////
+    ////                         inner class                       ////
 
     private class SchematicPanel extends Panel {
 

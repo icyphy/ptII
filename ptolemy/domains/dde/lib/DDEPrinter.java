@@ -59,7 +59,7 @@ public class DDEPrinter extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                         public variables                  ////
 
     public TypedIOPort input;
 
@@ -83,6 +83,6 @@ public class DDEPrinter extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
 }

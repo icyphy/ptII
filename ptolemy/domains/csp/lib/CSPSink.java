@@ -57,8 +57,8 @@ public class CSPSink extends AtomicActor {
         input = new IOPort(this, "input", true, false);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void fire() {
         int count = 0;

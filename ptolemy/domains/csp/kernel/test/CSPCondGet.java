@@ -66,8 +66,8 @@ public class CSPCondGet extends CSPGet {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -109,8 +109,8 @@ public class CSPCondGet extends CSPGet {
 	_truth[index] = val;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _receiverCount;
     private boolean[] _truth;

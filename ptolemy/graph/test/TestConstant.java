@@ -123,7 +123,7 @@ public class TestConstant implements InequalityTerm {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private String _name = "";
     private String _value = null;

@@ -159,8 +159,8 @@ public class CSPActor extends TypedAtomicActor {
         super(container, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Determine which branch succeeds with a rendezvous. This method is
      *  central to nondeterministic rendezvous. It is passed in an array
@@ -374,8 +374,8 @@ public class CSPActor extends TypedAtomicActor {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Called by ConditionalSend and ConditionalReceive to check if
      *  the calling branch is the first branch to be ready to rendezvous.
@@ -534,8 +534,8 @@ public class CSPActor extends TypedAtomicActor {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /* Resets the internal state controlling the execution of a conditional
      * branching construct (CIF or CDO). It is only called by chooseBranch()
@@ -554,8 +554,8 @@ public class CSPActor extends TypedAtomicActor {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Flag indicating whether this actor is currently registered
     // as blocked while in the midst of a CDO or CIF.

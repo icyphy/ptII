@@ -242,7 +242,7 @@ public class InequalitySolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // Add the InequalityTerms in the specified array as keys and the
     // index as value to _Clist.  The InequalityTerms are variables

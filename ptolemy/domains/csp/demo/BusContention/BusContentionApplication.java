@@ -425,7 +425,7 @@ public class BusContentionApplication implements ActionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // The mapping from Ptolemy actors to graph nodes
     private HashMap _nodeMap;
@@ -460,7 +460,7 @@ public class BusContentionApplication implements ActionListener {
     ////                         inner classes                     ////
 
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// StateListener
     /**
      * StateListener is an inner class that listens to state
@@ -523,7 +523,7 @@ public class BusContentionApplication implements ActionListener {
     }
 
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// ThreadRenderer
 
     /**
@@ -563,7 +563,7 @@ public class BusContentionApplication implements ActionListener {
         }
     }
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// LocalEdgeRenderer
 
     /**

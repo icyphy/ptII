@@ -128,8 +128,8 @@ public class PtolemyThread extends Thread {
     public PtolemyThread(ThreadGroup group, String name) {
         super(group, name);
     }
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the read depth field.
      * @return The read depth field.

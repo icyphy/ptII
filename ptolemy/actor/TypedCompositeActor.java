@@ -425,7 +425,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // so we do not override it.
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // Check types from a source port to a group of destination ports,
     // assuming the source port is connected to all the ports in the

@@ -238,7 +238,7 @@ public class BusContentionGraphic extends Frame {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     /*
       // The help message window that is popped up

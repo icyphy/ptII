@@ -252,8 +252,8 @@ public class DEIOPort extends TypedIOPort {
         return _triggerList.elements();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // List of ports with lower priority than this one.
     // I.e., events at this port should be triggered before those at ports

@@ -89,8 +89,8 @@ public class Complex implements Cloneable, Serializable {
     // argument because instances of this class are immutable.  There
     // is never a need to make another instance with the same value.
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                          public methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return a new complex number with value equal to the sum
      *  of this complex number and the argument.
@@ -555,8 +555,8 @@ public class Complex implements Cloneable, Serializable {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                       public variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** The real part. This is a "blank final," which means that it
      *  can only be set in the constructor.

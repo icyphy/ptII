@@ -642,8 +642,8 @@ public class DEDirector extends Director {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Put a "pure event" into the event queue with the specified time stamp
      *  and depth. The depth is used to prioritize events that have equal
@@ -732,7 +732,7 @@ public class DEDirector extends Director {
         return false;
     }
 
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
             ////                         private methods                        ////
 
             // Dequeue the next event from the event queue, advance time to its

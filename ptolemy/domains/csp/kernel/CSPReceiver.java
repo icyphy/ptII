@@ -67,8 +67,8 @@ public class CSPReceiver implements ProcessReceiver {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Retrieve a Token from the receiver by rendezvous. This method
      *  does not return until the rendezvous has been completed.
@@ -255,8 +255,8 @@ public class CSPReceiver implements ProcessReceiver {
         _container = parent;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** This method wraps the wait() call between checks on the state
      *  of the receiver. The flags checked are whether the receiver
@@ -361,8 +361,8 @@ public class CSPReceiver implements ProcessReceiver {
 	_otherParent = p;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /* Check the flags controlling the state of the receiver and
      * hence the actor process trying to rendezvous with it. If the
@@ -474,8 +474,8 @@ public class CSPReceiver implements ProcessReceiver {
         _rendezvousComplete = value;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Container.
     private IOPort _container = null;

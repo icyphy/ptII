@@ -56,7 +56,7 @@ public class TimedSource extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                         public variables                  ////
 
     public TypedIOPort output;
 
@@ -78,7 +78,7 @@ public class TimedSource extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private double _interval = 1.0;
 

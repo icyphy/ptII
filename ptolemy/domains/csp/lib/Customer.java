@@ -125,8 +125,8 @@ public class Customer extends CSPActor {
         _output.setTypeEquals(IntToken.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Executes the code in this actor. This actor delays for a
      *  random time, representing the customer inter-arrival times,
@@ -166,8 +166,8 @@ public class Customer extends CSPActor {
 	return false;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The rate at which customers arrive. It parameterizes an
     // exponential distribution.

@@ -68,8 +68,8 @@ public class FlowThru extends TypedAtomicActor {
 	 input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -136,8 +136,8 @@ public class FlowThru extends TypedAtomicActor {
 	_outChannel = ch;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort output;
     public TypedIOPort input;

@@ -67,8 +67,8 @@ public class CSPCondPut extends CSPPutToken {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -112,8 +112,8 @@ public class CSPCondPut extends CSPPutToken {
 	_truth[index] = val;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _receiverCount;
     private boolean[] _truth;

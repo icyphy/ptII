@@ -617,7 +617,7 @@ public class ProcessDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     // Flag for determining when an iteration completes
     protected boolean _notdone = true;

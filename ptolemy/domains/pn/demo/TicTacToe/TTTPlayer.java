@@ -230,7 +230,7 @@ public class TTTPlayer extends AtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
     int _row = -1;
     int _col = -1;
 }

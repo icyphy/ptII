@@ -66,8 +66,8 @@ public class ContentionAlarm extends CSPActor {
         _output.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -123,8 +123,8 @@ public class ContentionAlarm extends CSPActor {
         _listeners.removeOneOf(listener);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     private TypedIOPort _input;
     private TypedIOPort _output;

@@ -321,7 +321,7 @@ public class BasePNDirector extends ProcessDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Decrease by 1 the count of active processes under the control of this
      *  director. Also check whether this results in the model arriving at a
@@ -588,7 +588,7 @@ public class BasePNDirector extends ProcessDirector {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     //The variables are initialized at declaration, despite having an
     //initialize() method so that the tests can be run.
@@ -608,7 +608,7 @@ public class BasePNDirector extends ProcessDirector {
     protected LinkedList _writeblockedQueues = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private LinkedList _processlisteners = new LinkedList();
 }

@@ -66,8 +66,8 @@ public class DDEPutToken extends DDEPut {
 	 _times = new double[_numTokens];
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -113,8 +113,8 @@ public class DDEPutToken extends DDEPut {
 	_times[cntr] = time;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _numTokens;
     private int _pauseCnt = -1;

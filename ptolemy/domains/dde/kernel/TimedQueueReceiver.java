@@ -92,7 +92,7 @@ public class TimedQueueReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                         public variables                  ////
 
     // This time value indicates that the receiver is no longer active.
     public static final double INACTIVE = -2.0;

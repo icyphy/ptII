@@ -74,8 +74,8 @@ public class DDEGetNToken extends DDEGet {
 	 }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -126,8 +126,8 @@ public class DDEGetNToken extends DDEGet {
 	}
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _numTokens;
     private Token[] _tokens = null;

@@ -143,7 +143,7 @@ public class SDFScheduler extends Scheduler {
     protected static String _DEFAULT_SCHEDULER_NAME = "SDFScheduler";
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Count the number of inputports in the Actor that must be
      *  fulfilled before the actor can fire.  Ports that are connected

@@ -191,7 +191,7 @@ public class DDEActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private double _currentTime = 0.0;
     private TypedIOPort _lastPort = null;

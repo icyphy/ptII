@@ -129,8 +129,8 @@ public class CSPBuffer extends CSPActor {
         _input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Executes the code in this actor. This actor uses a CDO
      *  construct so that it is always able to receive or send a

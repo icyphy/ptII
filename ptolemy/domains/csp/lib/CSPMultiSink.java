@@ -61,8 +61,8 @@ public class CSPMultiSink extends CSPActor {
         input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void fire() {
         try {
@@ -127,8 +127,8 @@ public class CSPMultiSink extends CSPActor {
 
     public TypedIOPort input;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Array storing the number of times each brach rendezvoused.
     private int[] _branchCount;

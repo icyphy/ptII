@@ -59,8 +59,8 @@ public class CSPPutToken extends CSPPut {
         _tokens = new Token[_numTokens];
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -79,8 +79,8 @@ public class CSPPutToken extends CSPPut {
 	_tokens[cntr] = token;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _numTokens;
     private int _pauseCnt = -1;

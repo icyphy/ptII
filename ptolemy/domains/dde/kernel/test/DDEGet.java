@@ -63,8 +63,8 @@ public class DDEGet extends TypedAtomicActor {
 	 inputPort.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -72,8 +72,8 @@ public class DDEGet extends TypedAtomicActor {
 	return false;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort inputPort;
 }

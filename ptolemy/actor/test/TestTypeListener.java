@@ -84,7 +84,7 @@ public class TestTypeListener implements TypeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private String _message = "";
 }

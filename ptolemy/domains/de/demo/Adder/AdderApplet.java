@@ -56,8 +56,8 @@ public class AdderApplet extends Applet implements Runnable {
 
     public static final boolean DEBUG = false;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Initialize the applet.
      */
@@ -260,8 +260,8 @@ public class AdderApplet extends Applet implements Runnable {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The thread that runs the simulation.
     private Thread simulationThread;
@@ -285,8 +285,8 @@ public class AdderApplet extends Applet implements Runnable {
     private Parameter _valueOfA;
     private Parameter _valueOfB;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Given a string of the form "x1 x2 x3 x4 ..." where xi's are double
     // values, return an array of double.
@@ -315,8 +315,8 @@ public class AdderApplet extends Applet implements Runnable {
         return retVal;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                              ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     // Show simulation progress.
     private class CurrentTimeThread extends Thread {

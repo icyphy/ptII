@@ -74,8 +74,8 @@ public class EPSGraphics extends PtolemyGraphics {
         _buffer.append("%%LanguageLevel: 2\n");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void clearRect(int x, int y, int width, int height) {
     }
@@ -376,8 +376,8 @@ public class EPSGraphics extends PtolemyGraphics {
     public void translate(int x, int y) {
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Convert the screen coordinate system to that of postscript.
     private Point _convert(int x, int y) {
@@ -422,8 +422,8 @@ public class EPSGraphics extends PtolemyGraphics {
                 green + " " + blue +"\n");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Color _currentColor = Color.black;
     private Font _currentFont;

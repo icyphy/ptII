@@ -357,7 +357,7 @@ public class DDEDirector extends ProcessDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Check to see if the actors governed by this director are
      *  deadlocked. Return true in the affirmative and false
@@ -455,10 +455,10 @@ public class DDEDirector extends ProcessDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     private double _completionTime = -5.0;
     private int _readBlocks = 0;

@@ -188,8 +188,8 @@ public class Picture extends Canvas {
         paint(g);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _width, _height;
     private int[] _pix;

@@ -498,7 +498,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // Return the convert() Method for the resolved type of this port.
     private Method _getConvertMethod() {

@@ -160,8 +160,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** The run method has roughly three parts: (1) where there is already
      *  a put waiting, (2) where there is a ConditionalSend waiting, and
@@ -217,8 +217,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Encounter a conditionalsend that is already waiting on this
      *  conditionalreceive. Since this conditionalreceive arrived second,

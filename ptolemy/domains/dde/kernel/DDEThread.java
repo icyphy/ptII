@@ -163,7 +163,7 @@ public class DDEThread extends ProcessThread {
     ////                   package friendly methods		   ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private TimeKeeper _timeKeeper = null;
 

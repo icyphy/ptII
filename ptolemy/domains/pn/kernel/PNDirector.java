@@ -280,7 +280,7 @@ public class PNDirector extends BasePNDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire() or are
@@ -371,7 +371,7 @@ public class PNDirector extends BasePNDirector {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     //This flag is set to true when mutations are pending
     private boolean _mutationsRequested = false;

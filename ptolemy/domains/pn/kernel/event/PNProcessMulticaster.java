@@ -100,7 +100,7 @@ public class PNProcessMulticaster implements PNProcessListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     // FIXME: use ArrayList when we port to JDK1.2
     private LinkedList _listeners = new LinkedList();

@@ -436,8 +436,8 @@ public class RLEDiva extends PNApplet implements Runnable {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** In addition to creating the buttons provided by the base class,
      *  if the number of iterations has not been specified, then create

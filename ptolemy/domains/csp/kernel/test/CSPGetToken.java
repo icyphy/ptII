@@ -59,8 +59,8 @@ public class CSPGetToken extends CSPGet {
         _tokens = new Token[_numTokens];
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -78,8 +78,8 @@ public class CSPGetToken extends CSPGet {
 	}
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _numTokens;
     private Token[] _tokens = null;

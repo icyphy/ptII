@@ -50,8 +50,8 @@ public class DefaultExecutionListener implements ExecutionListener {
     public DefaultExecutionListener() {
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Report an execution failure.
      */

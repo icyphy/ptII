@@ -171,7 +171,7 @@ public class Audio {
         input.readFully(audio[0]);
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                      public members                         ////
 
     /** The file type identifier, 0x2E736E64 or '.snd' in ASCII. */
@@ -198,8 +198,8 @@ public class Audio {
     /** Audio data, by channel. */
     public byte[][] audio;
 
-    /////////////////////////////////////////////////////////////////////
-    ////                      public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Convert an integer linear representation of an audio sample
      *  into a mu-255 companded representation.  Mu law is the standard
@@ -450,7 +450,7 @@ public class Audio {
         obj.write(output);
     }
 
-    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                         ////
 
     // The following are used for mu-law conversion.

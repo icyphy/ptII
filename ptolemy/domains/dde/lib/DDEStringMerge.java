@@ -92,7 +92,7 @@ public class DDEStringMerge extends DDEActor {
     ////                        private methods			   ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private DDEIOPort _stringOutput;
     private DDEIOPort _nullOutput;

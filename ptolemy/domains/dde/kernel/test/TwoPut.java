@@ -72,8 +72,8 @@ public class TwoPut extends TypedAtomicActor {
 	 input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      */
@@ -123,8 +123,8 @@ public class TwoPut extends TypedAtomicActor {
 	_outChannel = ch;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort out1;
     public TypedIOPort out2;

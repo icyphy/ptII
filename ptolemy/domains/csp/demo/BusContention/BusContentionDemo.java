@@ -182,7 +182,7 @@ public class BusContentionDemo {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private Workspace _workSpc;
     private TypedCompositeActor _topLevelActor;
