@@ -344,12 +344,15 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		doc/design/usingVergil \
 		lib/hsif \
 		lib/jni.jar \
+		lib/cachedir \
 		lib/chic.jar \
+		lib/colt.jar \
 		lib/jasminclasses.jar \
 		lib/java_cup.jar \
 		lib/jython.jar \
 		lib/mapss.jar \
 		lib/ptCal.jar \
+		lib/saxon.jar
 		lib/sootclasses.jar \
 		lib/synthesis.jar \
 		mk/ptII.mk \
