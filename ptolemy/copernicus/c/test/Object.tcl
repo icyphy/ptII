@@ -66,7 +66,6 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
     regsub ".java" $javaFile "_i.h"    iFile
     regsub ".java" $javaFile ".o"      oFile
     regsub ".java" $javaFile ".make"   makeFile 
-    regsub ".java" $javaFile ".mk"     mkFile
     regsub ".java" $javaFile ".exe"    exeFile
     regsub ".java" $javaFile "_main.c" mainCFile
     regsub ".java" $javaFile "_main.o" mainOFile

@@ -79,7 +79,6 @@ proc generateC {className {commandLineArgs {}}} {
     regsub ".java" $javaFile "_i.h"    iFile
     regsub ".java" $javaFile ".o"      oFile
     regsub ".java" $javaFile ".make"   makeFile
-    regsub ".java" $javaFile ".mk"     mkFile
     regsub ".java" $javaFile ".exe"    exeFile
     regsub ".java" $javaFile "_main.c" mainCFile
     regsub ".java" $javaFile "_main.o" mainOFile
@@ -112,18 +111,14 @@ proc generateC {className {commandLineArgs {}}} {
     # Generate the code.
     generateCExec java -Xmx600m -classpath $classpath ptolemy.copernicus.c.JavaToC \
         $classpath -lib $lib -gcDir $gcDir $className
-
-   
-    generateCExec  make depend -s -f $makeFile
-    # This creates the .mk file.
     
     #exec -stderrok [generateCExec make -s -f $mkFile] 1>$outputDir/out.txt 2>$outputDir/err.txt
     set error ""
-    catch {generateCExec make -s -f $mkFile} error
+    catch {generateCExec make -s -f $makeFile} error
     
     # Move all generated files to the output directory.
     file rename -force $cFile $mainCFile $oFile $mainOFile $hFile \
-	    $iFile $makeFile $mkFile $classFile $outputDir
+	    $iFile $makeFile $classFile $outputDir
     
     # exefile may not have been created due to compilation errors.
     if [file exists $exeFile] {
@@ -151,7 +146,6 @@ proc generateC {className {commandLineArgs {}}} {
     #else
     return $error
 }
-
 
 
 # Pass the args to 'exec -stderrok' and return the results.

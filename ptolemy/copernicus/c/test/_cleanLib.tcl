@@ -61,7 +61,7 @@ test _cleanLib-1.1 {Clean all files from previous run} {
     if {[file exist $cache]} {
         file delete -force $cache
     }
-    # Remove aall runtime/*.o files.
+    # Remove all runtime/*.o files.
     foreach fileName {[glob ../runtime/*.o]} {
         if ([file readable $fileName]) {
             exec rm $fileName

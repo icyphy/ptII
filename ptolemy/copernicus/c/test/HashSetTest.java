@@ -69,7 +69,9 @@ public class HashSetTest{
         System.out.println("\nGenerating and populating a HashSet ...");
         HashSet set = new HashSet();
         set.add("1");
+        System.out.println(set);
         set.add("2");
+        System.out.println(set);
         set.add("3");
         set.add("1"); // This is a duplicate, so no effect expected.
 
@@ -94,9 +96,13 @@ public class HashSetTest{
 
         System.out.println("\nChecking HashSet.remove() ...");
         // Check removal of an element in the set.
+        System.out.println(set.size());
+        System.out.println(set);
         set.remove("2");
+        System.out.println(set);
         System.out.println(set.size());
         set.remove("1729"); // Not present in set.
+        System.out.println(set);
         System.out.println(set.size());
 
         // Initialize with a collection.
