@@ -94,6 +94,8 @@ ptolemy/domains/sdf/demo/FixPointSystem
 ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
 ptolemy/domains/sdf/test/pitchshift
+ptolemy/hsif/SwimmingPool_moml.xml
+ptolemy/hsif/Thermostat_moml.xml
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
 ptolemy/math/filter
