@@ -86,7 +86,7 @@ preemptive ones can.
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 101, 962, 590}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 101, 962, 597}}">
     </property>
     <entity name="Sampler1" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -717,7 +717,7 @@ preemptive ones can.
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0186959820802, 0.0674351496585, 0.1282686115691, 0.1793817485609, 0.2022729456765, 0.187844837254, 0.1410174054391, 0.0783682882748, 0.0228295878204, -0.0044686261527, 0.0063372373585, 0.0517047251503, 0.1148791091129, 0.1730392324, 0.2052617128987, 0.1994076332809, 0.1569853734918, 0.0931450357871, 0.0306868061956, -0.0066328554535, -0.0050194073044, 0.0352348997623, 0.099682988525, 0.164405852042, 0.2061662791569}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0186959817792, 0.0674351493463, 0.1282686114647, 0.1793817488502, 0.202272946322, 0.1878448380322, 0.1410174060064, 0.0783682882788, 0.0228295870934, -0.0044686274259, 0.006337235917, 0.0517047241569, 0.114879109063, 0.1730392334951, 0.2052617149311, 0.199407635464, 0.156985374979, 0.0931450359386, 0.0306868047902, -0.0066328580282, -0.0050194101952, 0.0352348976164, 0.0996829881348, 0.1644058536789, 0.2061662824032}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -733,7 +733,7 @@ preemptive ones can.
         </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0184390578882, 0.0626354421935, 0.1074889513095, 0.1284277556962, 0.1148437391804, 0.0753871071176, 0.0325372509631, 0.009860388821, 0.0190674804132, 0.0540030484959, 0.0946402868516, 0.1185428842988, 0.113233586204, 0.0826345365572, 0.0443658072819, 0.0196409443487, 0.0215200873666, 0.0480376336309, 0.0838109768597, 0.1089516138854, 0.1100820168079, 0.0874146288248, 0.0541842508819, 0.0289503403087, 0.0252419394169}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.018439057611, 0.0626354420288, 0.1074889514864, 0.1284277562502, 0.1148437397614, 0.0753871072892, 0.0325372504604, 0.009860387761, 0.0190674794664, 0.0540030482598, 0.0946402875648, 0.118542885625, 0.1132335874194, 0.0826345369256, 0.0443658064636, 0.0196409427304, 0.0215200858385, 0.0480376330552, 0.0838109776361, 0.1089516156577, 0.110082018637, 0.0874146296725, 0.0541842501552, 0.0289503383708, 0.0252419372969}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -780,9 +780,13 @@ preemptive ones can.
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="480.0, 75.0">
+        </vertex>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="485.0, 295.0">
+        </vertex>
     </relation>
     <link port="Sampler1.input" relation="relation9"/>
     <link port="Sampler1.output" relation="relation"/>
@@ -809,9 +813,9 @@ preemptive ones can.
     <link port="Sampler2.input" relation="Copy1:relation9"/>
     <link port="Sampler2.output" relation="relation11"/>
     <link port="Sampler.input" relation="relation9"/>
-    <link port="Sampler.output" relation="relation6"/>
+    <link port="Sampler.output" relation="relation8"/>
     <link port="Sampler3.input" relation="Copy1:relation9"/>
-    <link port="Sampler3.output" relation="relation7"/>
-    <link port="NonStrictTest.input" relation="relation6"/>
-    <link port="NonStrictTest2.input" relation="relation7"/>
+    <link port="Sampler3.output" relation="relation12"/>
+    <link port="NonStrictTest.input" relation="relation8"/>
+    <link port="NonStrictTest2.input" relation="relation12"/>
 </entity>
