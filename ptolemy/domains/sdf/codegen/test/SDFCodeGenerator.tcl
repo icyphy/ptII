@@ -44,42 +44,57 @@ if {[info procs enumToObjects] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-######################################################################
-####
-#
-test SDFCodeGenerator-2.1 {Constructor tests} {
-    if {[expr { ![file exists "RampSystem.class"] || \
-	    [file mtime "RampSystem.class"] < \
-	    [file mtime "RampSystem.java"] } ] } {
-	puts "Running make RampSystem.class"
-	exec make RampSystem.class
+proc cg_generate {systemClass} {
+    global PTII
+    if {[expr { ![file exists "$systemClass.class"] || \
+	    [file mtime "$systemClass.class"] < \
+	    [file mtime "$systemClass.java"] } ] } {
+	puts "Running make $systemClass.class"
+	exec make $systemClass.class
     }
-    puts "Removing [file join $PTII cg RampSystem]"
-    file delete -force [file join $PTII cg RampSystem]
+    puts "Removing [file join $PTII cg $systemClass]"
+    file delete -force [file join $PTII cg $systemClass]
 
     set args [java::new {String[]} {8} [list \
-	    "-class" "ptolemy.domains.sdf.codegen.test.RampSystem" \
-	    "-iterations" "50" \
+	    "-class" "ptolemy.domains.sdf.codegen.test.$systemClass" \
+	    "-iterations" "10" \
 	    "-outdir" $PTII \
-	    "-outpkg" "cg.RampSystem" \
+	    "-outpkg" "cg.$systemClass" \
 	    ]]
     puts [$args getrange]
     set sdfCodeGenerator \
 	    [java::new ptolemy.domains.sdf.codegen.SDFCodeGenerator]
     $sdfCodeGenerator processArgs $args
     $sdfCodeGenerator generateCode
-} {}
+
+    set results {}
+    set currentDirectory [pwd]
+    cd $PTII/cg/$systemClass
+    exec javac -classpath ../.. CG_Main.java
+    set result [exec java -classpath ../.. cg.$systemClass.CG_Main]
+    cd $currentDirectory
+    return $result
+}
 
 ######################################################################
 ####
 #
-test SDFCodeGenerator-2.2 {Compile and run the ramp test} {
-    # Note uses setup from SDFCodeGenerator-1.1
-    set results {}
-    set currentDirectory [pwd]
-    cd $PTII/cg/RampSystem
-    exec javac -classpath ../.. CG_Main.java
-    set result [exec java -classpath ../.. cg.RampSystem.CG_Main]
-    cd $currentDirectory
-    lrange $result 0 49
-} {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49}
+test SDFCodeGenerator-2.1 {Compile and run the RampSystem test} {
+    set result [cg_generate RampSystem]
+    lrange $result 0 9
+} {2 4 6 8 10 12 14 16 18 20}
+
+test SDFCodeGenerator-3.1 {Compile and run the RampArraySystem test} {
+    set result [cg_generate RampArraySystem]
+    lrange $result 0 9
+} {{0.0, 0.1} {1.0, 2.0} {2.0, 4.0} {3.0, 6.0} {4.0, 8.0} {5.0, 10.0} {6.0, 12.0} {7.0, 14.0} {8.0, 16.0} {9.0, 18.0}}
+
+test SDFCodeGenerator-4.1 {Compile and run the IntDoubleSystem test} {
+    set result [cg_generate IntDoubleSystem]
+    lrange $result 0 9
+} {1 1 1 1 1 1 1 1 1 1}
+
+test SDFCodeGenerator-5.1 {Compile and run the DotProductSystem test} {
+    set result [cg_generate DotProductSystem]
+    lrange $result 0 9
+} {0 1 2 3 4 5 6 7 8 9}  {Known Failure: Dot Product does not work yet} 

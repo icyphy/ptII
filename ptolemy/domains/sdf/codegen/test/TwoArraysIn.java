@@ -78,8 +78,9 @@ public class TwoArraysIn extends TypedAtomicActor {
         input1.setTypeEquals(ArrayType.DOUBLE_ARRAY_TYPE);
         input2.setTypeEquals(ArrayType.DOUBLE_ARRAY_TYPE);
         
-        output.setTypeEquals(BaseType.DOUBLE);
 	*/
+        output.setTypeEquals(BaseType.DOUBLE);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,16 +103,36 @@ public class TwoArraysIn extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read an ArrayToken from each of the input ports, and output the 
-     *  dot product.
+    /** Read an ArrayToken from one port and output the first element.
      *  @exception IllegalActionException If there is no director, if 
      *  the input arrays have unequal widths, or if the input arrays
      *  have no elements..
      */
     public void fire() throws IllegalActionException {
-        ArrayToken array1 = (ArrayToken) input1.get(0);
-        //Token token1 = array1.getElement(0);
-        output.broadcast(array1);
+	// This works:
+        //ArrayToken array1 = (ArrayToken) input1.get(0);
+        ////Token token1 = array1.getElement(0);
+        //output.broadcast(array1);
+
+	// This works too!
+        //ArrayToken array2 = (ArrayToken) input2.get(0);
+        //Token token2 = array2.getElement(0);
+        //output.broadcast(array2);
+
+	// If we change the output to a double, the following
+	// produces 0.0 (c:/tmp/e)
+        //ArrayToken array2 = (ArrayToken) input2.get(0);
+        //Token token2 = array2.getElement(0);
+        //output.broadcast(token2);
+
+	// This works if the output is double (c:/tmp/f)
+        //ArrayToken array2 = (ArrayToken) input2.get(0);
+        //Token token2 = array2.getElement(0);
+        //output.broadcast(array2.getElement(0));
+
+        ArrayToken array2 = (ArrayToken) input2.get(0);
+        DoubleToken token2 = (DoubleToken)array2.getElement(0);
+        output.broadcast(token2);
     }
 
     /** If both of the input ports have at least one token, return

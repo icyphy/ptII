@@ -51,14 +51,14 @@ public class RampSystem extends TypedCompositeActor {
 
         try {
             setDirector(new SDFDirector(this, "director"));
-            //Const ramp = new Const(this, "ramp");
             Ramp ramp = new Ramp(this, "ramp");
+            ramp.init.setExpression("2");
+            ramp.step.setExpression("2");
             FileWriter fileWriter = new FileWriter(this, "fileWriter");
             connect(ramp.output, fileWriter.input);
 
             // A hack to get code generation to work
-            fileWriter.input.setTypeEquals(BaseType.INT);
-
+            //fileWriter.input.setTypeEquals(BaseType.INT);
         } catch (NameDuplicationException e) {
             throw new RuntimeException(e.toString());
         }

@@ -47,6 +47,8 @@ TCL_SRCS = \
 
 JSRCS = \
 	DotProductSystem.java \
+	IntDouble.java \
+	IntDoubleSystem.java \
 	RampArraySystem.java \
 	RampSystem.java \
 	TwoArraysIn.java \
@@ -93,15 +95,26 @@ depend:
 	@echo "no dependencies in this directory"
 
 demo:
-	make RampSystem RampArraySystem DotProductSystem
+	make IntDoubleSystem RampSystem RampArraySystem DotProductSystem
 
 # Directory to create code generation files in
 CGROOT=$(ROOT)
 
+# Int input, double output
+IntDoubleSystem: IntDoubleSystem.mk
+	make -f IntDoubleSystem.mk
+IntDoubleSystem.mk: jclass
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.domains.sdf.codegen.test.IntDoubleSystem \
+	-makefileOnly \
+	-iterations 10 \
+	-outdir $(CGROOT)
+
 # Generate code for a simple Ramp->FileWriter demo
 RampSystem: RampSystem.mk
 	make -f RampSystem.mk
-RampSystem.mk:
+RampSystem.mk: jclass
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.codegen.test.RampSystem \
@@ -113,7 +126,7 @@ RampSystem.mk:
 # array tokens
 RampArraySystem: RampArraySystem.mk
 	make -f RampArraySystem.mk
-RampArraySystem.mk:
+RampArraySystem.mk: jclass
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.codegen.test.RampArraySystem \
@@ -122,9 +135,9 @@ RampArraySystem.mk:
 	-outdir $(CGROOT)
 
 # Generate code for a trivial TwoArraysIn demo - much faster for testing
-TwoArraysInSystem: jclass TwoArraysInSystem.mk
+TwoArraysInSystem: TwoArraysInSystem.mk
 	make -f TwoArraysInSystem.mk
-TwoArraysInSystem.mk:
+TwoArraysInSystem.mk: jclass
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.codegen.test.TwoArraysInSystem \
@@ -135,7 +148,7 @@ TwoArraysInSystem.mk:
 # Generate code for a trivial dotproduct demo - much faster for testing
 DotProductSystem: DotProductSystem.mk
 	make -f DotProductSystem.mk
-DotProductSystem.mk:
+DotProductSystem.mk: jclass
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.codegen.test.DotProductSystem \

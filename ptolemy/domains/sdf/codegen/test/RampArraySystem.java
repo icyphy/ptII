@@ -51,8 +51,6 @@ public class RampArraySystem extends TypedCompositeActor {
 
         try {
             setDirector(new SDFDirector(this, "director"));
-	    //_recorderListener = new RecorderListener();
-            //Const ramp = new Const(this, "ramp");
             Ramp ramp = new Ramp(this, "ramp");
             ramp.init.setExpression("{0.0,0.1}");
             ramp.step.setExpression("{1,2}");
@@ -65,12 +63,4 @@ public class RampArraySystem extends TypedCompositeActor {
             throw new RuntimeException(e.toString());
         }
     }
-    /*
-    public boolean postfire() throws IllegalActionException {
-	boolean returnValue = super.postfire();
-	System.out.println(_recorderListener.getMessages());
-	return returnValue;
-    }
-    private RecorderListener _recorderListener = null;
-    */
 }
