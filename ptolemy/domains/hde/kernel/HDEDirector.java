@@ -173,7 +173,7 @@ The Delay actor in the DE library behaves this way.
 @author Lukito Muliadi, Edward A. Lee, Jie Liu, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0
-@see DEReceiver
+@see ptolemy.domains.de.kernel.DEReceiver
 @see ptolemy.actor.util.CalendarQueue
 */
 

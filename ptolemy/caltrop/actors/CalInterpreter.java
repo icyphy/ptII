@@ -93,7 +93,7 @@ import caltrop.interpreter.environment.SingleClassEnvironment;
 @version $Id$
 @since Ptolemy II 3.1
 @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
-@see Context
+@see caltrop.interpreter.Context
 @see PtolemyPlatform
 */
 public class CalInterpreter extends TypedAtomicActor {

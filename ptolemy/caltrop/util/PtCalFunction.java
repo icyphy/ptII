@@ -83,7 +83,7 @@ public class PtCalFunction implements FunctionToken.Function {
      * Return Function object wrapped by this object.
      *
      * @return The Funtion object.
-     * @see Function
+     * @see caltrop.interpreter.Function
      */
     public Function getFunction() {
         return _function;
