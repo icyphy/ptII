@@ -1013,25 +1013,33 @@ public class SDFScheduler extends Scheduler {
             int consumptionRate = 0;
             int productionRate = 0;
             int initProduction = 0;
-            if(connectedports.hasNext()) {
+            List connectedInputPortList = new LinkedList();
+            List connectedOutputPortList = new LinkedList();
+            while(connectedports.hasNext()) {
                 IOPort cport = (IOPort) connectedports.next();
+                if(cport.isInput()) {
+                    connectedInputPortList.add(cport);
+                }
+                if(cport.isOutput()) {
+                    connectedOutputPortList.add(cport);
+                }
+            }
+            // First set the consumption rate, using the 
+            // connected input ports.
+            Iterator inputPorts = connectedInputPortList.iterator();
+            if(inputPorts.hasNext()) {
+                IOPort cport = (IOPort) inputPorts.next();
                 Entity cactor = (Entity) cport.getContainer();
                 consumptionRate = _getFiringCount(cactor) *
                     getTokenConsumptionRate(cport);
-                productionRate = _getFiringCount(cactor) *
-                    getTokenProductionRate(cport);
-                initProduction = _getFiringCount(cactor) *
-                    getTokenInitProduction(cport);
                 if (_debugging) {
-                    _debug("CPort " + cport.getName());
+                    _debug("ConnectedInputPort " + cport.getName());
                     _debug("consumptionRate = " + consumptionRate);
-                    _debug("productionRate = " + productionRate);
-                    _debug("initProduction = " + initProduction);
                 }
             }
             // All the ports connected to this port must have the same rate
-            while(connectedports.hasNext()) {
-                IOPort cport = (IOPort) connectedports.next();
+            while(inputPorts.hasNext()) {
+                IOPort cport = (IOPort) inputPorts.next();
                 Entity cactor = (Entity) cport.getContainer();
                 int crate = _getFiringCount(cactor) *
                     getTokenConsumptionRate(cport);
@@ -1041,6 +1049,28 @@ public class SDFScheduler extends Scheduler {
                         " which does not match the computed aggregate rate " +
                         "of " + port.getName() + " of " + consumptionRate +
                         "!");
+            }
+
+            // Now set the production and initproduction rates, using the 
+            // connected output ports.
+            Iterator outputPorts = connectedOutputPortList.iterator();
+            if(outputPorts.hasNext()) {
+                IOPort cport = (IOPort) outputPorts.next();
+                Entity cactor = (Entity) cport.getContainer();
+                productionRate = _getFiringCount(cactor) *
+                    getTokenProductionRate(cport);
+                initProduction = _getFiringCount(cactor) *
+                    getTokenInitProduction(cport);
+                if (_debugging) {
+                    _debug("ConnectedInputPort " + cport.getName());
+                    _debug("productionRate = " + productionRate);
+                    _debug("initProduction = " + initProduction);
+                }
+            }
+            // All the ports connected to this port must have the same rate
+            while(outputPorts.hasNext()) {
+                IOPort cport = (IOPort) outputPorts.next();
+                Entity cactor = (Entity) cport.getContainer();
                 int prate = _getFiringCount(cactor) *
                     getTokenProductionRate(cport);
                 if(prate != productionRate) throw new NotSchedulableException(
