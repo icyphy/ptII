@@ -41,6 +41,7 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
+import ptolemy.data.Token;
 import ptolemy.data.ImageToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -145,8 +146,15 @@ public class ImageDisplay extends Sink implements Placeable {
         }
         if (input.hasToken(0)) {
             //ObjectToken objectToken = (ObjectToken) input.get(0);
-            ImageToken imageToken = (ImageToken) input.get(0);
-
+            Token token = input.get(0);
+            ImageToken imageToken;
+            try {
+                imageToken = (ImageToken) token;
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(this, ex, 
+                        "Failed to cast " + token.getClass()
+                        + " to an ImageToken.\nToken was: " + token);
+            }                        
             // If there is no place to display, we can return after
             // consuming the input token.
             if (_container == null) return;
