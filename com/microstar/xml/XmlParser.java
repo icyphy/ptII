@@ -3624,7 +3624,10 @@ public class XmlParser {
 				// Throw an EOFException if there
 				// is nothing else to pop.
     if (inputStack.isEmpty()) {
-      throw new EOFException();
+      throw new EOFException("XML parser input stack was empty, "
+			     + "end of file or xml fragment reached. "
+			     + "Perhaps there is a missing '>' "
+			     + "or a comment is unterminated by '->'?");
     } else {
       String s;
       input = (Object[])inputStack.pop();
