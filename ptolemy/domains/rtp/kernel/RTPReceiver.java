@@ -36,6 +36,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.Branch;
+import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -109,12 +110,16 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     public void reset() {
         _token = null;
+        _terminate = false;
     }
 
     public void requestFinish() {
-        // How to finish?
+        // This implementation is borrowed from PN.
+        // Set a flag.
+        _terminate = true;
         synchronized(_lock) {
-            _token = new Token();
+            // wake up any thread waiting to read from
+            // this receiver
             _lock.notifyAll();
         }
     }
@@ -141,6 +146,8 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  there is a new token be put into the receiver.
      *  @return A token.
      *  @exception NoTokenException Not thrown in this base class
+     *  @exception TerminateProcessException If the director has requested
+     *   the execution to stop.
      */
     public Token get() throws NoTokenException {
         Token t;
@@ -150,6 +157,10 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
                     _lock.wait();
                 } catch (InterruptedException ex) {
                     // Ignore, keep waiting.
+                }
+                if (_terminate) {
+                    throw new
+                            TerminateProcessException("RTPReceiver stopped.");
                 }
             }
             t = _token;
@@ -191,8 +202,14 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  reads on the token.
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this base class.
+     *  @exception TerminateProcessException If the director has requested
+     *   the execution to stop.
      */
     public void put(Token token) throws NoRoomException {
+        if (_terminate) {
+            throw new
+                    TerminateProcessException("RTPReceiver stopped.");
+        }
         synchronized (_lock) {
             _token = token;
             _lock.notifyAll();
@@ -207,6 +224,9 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     // The lock object.
     private Lock _lock = new Lock();
+
+    // If true, then the director wants to stop executing the model.
+    private boolean _terminate = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Class                        ////

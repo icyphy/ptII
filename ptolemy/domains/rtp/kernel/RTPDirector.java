@@ -194,6 +194,13 @@ public class RTPDirector extends ProcessDirector {
         return false;
     }
 
+    public void wrapup() throws IllegalActionException {
+        stop();
+        synchronized (this) {
+            notifyAll();
+        }
+        super.wrapup();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
