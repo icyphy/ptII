@@ -35,10 +35,12 @@ import java.awt.Frame;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -53,7 +55,6 @@ import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -67,6 +68,21 @@ import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoCEmachineFrameworkGenerator
+
+/* The Giotto Code Generator has been changed from the earlier generator
+ * implemented by Haiyang and Steve in the following respects :-
+ * 
+ * 1. _getTypeString has been modified to actually return the tye
+ *    instead of Token_Port. Also, the type returned has been 
+ *    modified to fit the giotto compiler restrictions, namely the 
+ *    exclusion of the data_type * format. Instead, a new data type
+ *    is created and used in the giotto code, and defined in f_code.h
+ * 
+ *  2. Any and all unconnected ports are ignored. This includes :
+ *   a. Removal of its mention in the output drivers
+ *   b. Removal of its mention in task (...) output (...)
+ *   c. Removal of driver code for tasks without inputs
+ */
 /**
    This attribute is a visible attribute that when configured (by double
    clicking on it or by invoking Configure in the context menu) it generates
@@ -77,7 +93,7 @@ import ptolemy.util.StringUtilities;
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
+   @Pt.AcceptedRating Red (vkris)
 */
 
 public class GiottoCEmachineFrameworkGenerator extends Attribute {
@@ -107,6 +123,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////             Giotto Code Generation Functions              ////
+    ///////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -166,11 +183,50 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
     /** Return the correct Giotto type string for the given port.
      */
-    private static String _getTypeString(IOPort port) {
-        return "Token_port";//ort.getType().toString();
+    private static String _getTypeString(TypedIOPort port) {
+        String type = port.getType().toString();
+        StringBuffer retval;
+        retval = new StringBuffer();
+        switch(type.charAt(0)) {
+            case '{':
+             retval.append(type.substring(1,type.length()-1) + "array");
+             intarray = true;
+             break;
+             default:
+             retval.append(type);
+             break;
+        }
+        return retval.toString();//"Token_port";
     }
 
-    /** Topology analysis and initialization.
+    /** Return the correct Giotto initial value string for the given port.
+     */
+    private static String _getInitialValueString(TypedIOPort port)
+        throws IllegalActionException {
+        String retVal = "";
+        Parameter initVal = (Parameter)port.getAttribute("_init");
+        if(initVal != null) {
+            retVal = initVal.getToken().toString();
+        }
+        return retVal;
+    }
+
+    /** Return the value of the parameter "_length" for the given port.
+     */
+    private static String _getArrayLength(TypedIOPort port)
+        throws IllegalActionException {
+        String retVal = "";
+        Parameter initVal = (Parameter)port.getAttribute("_length");
+        if(initVal != null) {
+            retVal = initVal.getToken().toString();
+        }
+        else {
+            retVal = "1"; // If no length parameter is given, assume an array length of 1
+        }
+        return retVal;
+    }
+
+        /** Topology analysis and initialization.
      *
      * @ return True if in giotto domain, False if in other domains.
      */
@@ -182,7 +238,6 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             throw new IllegalActionException(model, director,
                     "Director of model is not a GiottoDirector.");
         }
-
         return true;
     }
 
@@ -199,23 +254,22 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         Iterator inPorts = model.inputPortList().iterator();
         while (inPorts.hasNext()) {
             TypedIOPort port = (TypedIOPort)inPorts.next();
-            // FIXME: Assuming ports are either
-            // input or output and not both.
-            // FIXME: May want the driver name
-            // specified by a port parameter.
-            // FIXME: Use a real type.
-            String portID = port.getName();
-            String portTypeID = _getTypeString(port);
-            String actuatorDriverName = port.getName() + "_device_driver";
-            _checkGiottoID(portID);
-            codeString +=  "  "
-                + portTypeID
-                + " "
-                + portID
-                + " uses "
-                + actuatorDriverName
-                + ";"
-                + _endLine;
+            if (port.getWidthInside() > 0) {
+                // FIXME: Assuming ports are either
+                // input or output and not both.
+                String portID = port.getName();
+                String portTypeID = _getTypeString(port);
+                String actuatorDriverName = port.getName() + "_device_driver";
+                _checkGiottoID(portID);
+                codeString +=  "  "
+                    + portTypeID
+                    + " "
+                    + portID
+                    + " uses "
+                    + actuatorDriverName
+                    + ";"
+                    + _endLine;
+            }
         }
 
         return codeString;
@@ -236,23 +290,24 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         Iterator outPorts = model.outputPortList().iterator();
         while (outPorts.hasNext()) {
             TypedIOPort port = (TypedIOPort)outPorts.next();
-            // FIXME: Assuming ports are either
-            // input or output and not both.
-            // FIXME: May want the driver name
-            // specified by a port parameter.
-            // FIXME: Use a real type.
-            String portID = port.getName();
-            String portTypeID = _getTypeString(port);
-            String actuatorDriverName = port.getName() + "_device_driver";
-            _checkGiottoID(portID);
-            codeString +=  "  "
-                + portTypeID
-                + " "
-                + portID
-                + " uses "
-                + actuatorDriverName
-                + ";"
-                + _endLine;
+            if (port.getWidthInside() > 0) {
+                // FIXME: Assuming ports are either
+                // input or output and not both.
+                // FIXME: May want the driver name
+                // specified by a port parameter.
+                String portID = port.getName();
+                String portTypeID = _getTypeString(port);
+                String actuatorDriverName = port.getName() + "_device_driver";
+                _checkGiottoID(portID);
+                codeString +=  "  "
+                    + portTypeID
+                    + " "
+                    + portID
+                    + " uses "
+                    + actuatorDriverName
+                    + ";"
+                    + _endLine;
+            }
         }
 
         return codeString;
@@ -277,18 +332,21 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             Iterator outPorts = actor.outputPortList().iterator();
             while (outPorts.hasNext()) {
                 TypedIOPort port = (TypedIOPort)outPorts.next();
-                String portID = StringUtilities.sanitizeName(
-                        port.getName(model));
-                String portTypeID = _getTypeString(port);
-                String portInitialValue = "CGinit_" + portID;
-                _checkGiottoID(portID);
-                codeString +=  "  "
-                    + portTypeID
-                    + " "
-                    + portID
-                    + " := " + portInitialValue
-                    + ";"
-                    + _endLine;
+                // Ignore unconnected ports
+                if (port.getWidth()>0) {
+                    String portID = StringUtilities.sanitizeName(
+                            port.getName(model));
+                    String portTypeID = _getTypeString(port);
+                    String portInitialValue = "CGinit_" + portID;
+                    _checkGiottoID(portID);
+                    codeString +=  "  "
+                        + portTypeID
+                        + " "
+                        + portID
+                        + " := " + portInitialValue
+                        + ";"
+                        + _endLine;
+                }
             }
         }
 
@@ -317,19 +375,22 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         String inputPorts = "";
         for (Iterator inPorts = actor.inputPortList().iterator();
              inPorts.hasNext();) {
-            if (first) {
-                first = false;
-            } else {
-                inputPorts += ",";
-                codeString += ",";
-            }
             TypedIOPort port = (TypedIOPort)inPorts.next();
-            String portID = StringUtilities.sanitizeName(
-                    port.getName(model));
-            String portTypeID = _getTypeString(port);
-
-            codeString += portTypeID + " " + portID;
-            inputPorts += portID;
+            // Ignore unconnected ports
+            if (port.getWidth()>0) {
+                if (first) {
+                    first = false;
+                } else {
+                    inputPorts += ",";
+                    codeString += ",";
+                }
+                String portID = StringUtilities.sanitizeName(
+                        port.getName(model));
+                String portTypeID = _getTypeString(port);
+    
+                codeString += portTypeID + " " + portID;
+                inputPorts += portID;
+            }
         }
 
         codeString += ")" + _endLine;
@@ -340,17 +401,20 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         String outputPorts = "";
         for (Iterator outPorts = actor.outputPortList().iterator();
              outPorts.hasNext();) {
-            if (first) {
-                first = false;
-            } else {
-                codeString += ",";
-                outputPorts += ",";
-            }
-            TypedIOPort port = (TypedIOPort)outPorts.next();
-            String portID = StringUtilities.sanitizeName(
-                    port.getName(model));
-            codeString += portID;
-            outputPorts += portID;
+             TypedIOPort port = (TypedIOPort)outPorts.next();
+             // Ignore unconnected ports
+             if (port.getWidth()>0) {
+                if (first) {
+                    first = false;
+                } else {
+                    codeString += ",";
+                    outputPorts += ",";
+                }
+                String portID = StringUtilities.sanitizeName(
+                        port.getName(model));
+                codeString += portID;
+                outputPorts += portID;
+             }
         }
         codeString += ")" + _endLine;
         codeString +=  "        state ("
@@ -409,12 +473,10 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
         driverParas = "";
         actorName = "";
+//TODO
+// TODO
 
         actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
-
-        codeString += "driver "
-            + actorName
-            + "_driver (";
 
         Map driverIOMap = new LinkedHashMap();
         for (Iterator inPorts = actor.inputPortList().iterator();
@@ -442,6 +504,10 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             }
         }
 
+        codeString += "driver "
+            + actorName
+            + "_driver (";
+
         codeString += driverParas
             + ")"
             + _endLine;
@@ -450,33 +516,43 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         boolean first = true;
         for (Iterator inPorts = actor.inputPortList().iterator();
              inPorts.hasNext();) {
-            if (first) {
-                first = false;
-            } else {
-                codeString += ",";
-            }
-            TypedIOPort port = (TypedIOPort)inPorts.next();
-            String portID = StringUtilities.sanitizeName(
-                    port.getName(model));
-            String portTypeID = _getTypeString(port);
-            codeString += portTypeID + " " + portID;
+           TypedIOPort port = (TypedIOPort)inPorts.next();
+           // Ignore unconnected ports
+           if (port.getWidth()>0) {
+               if (first) {
+                    first = false;
+                } else {
+                    codeString += ",";
+                }
+                String portID = StringUtilities.sanitizeName(
+                        port.getName(model));
+                String portTypeID = _getTypeString(port);
+                codeString += portTypeID + " " + portID;
+           }
         }
         codeString += ")" + _endLine;
         codeString +=  "{"
             + _endLine;
-
-        for (Iterator sourceNames = driverIOMap.keySet().iterator();
-             sourceNames.hasNext();) {
+        codeString +=
+            "          if constant_true() then " + actorName + "_inputdriver( ";
+   
+            first = true;
+            for (Iterator sourceNames = driverIOMap.keySet().iterator();
+                 sourceNames.hasNext();) {
+                if(first) {
+                    first = false;
+                }
+                else {
+                    codeString += ", ";
+            }
             String sourceName = (String) sourceNames.next();
             String destName = (String) driverIOMap.get(sourceName);
-            codeString +=
-                "          if constant_true() then copy_Token_port( "
-                + sourceName + ", " + destName
-                + ")"
-                + _endLine;
+            codeString += sourceName + ", " + destName;
         }
-        codeString +=  "}"
-            + _endLine;
+        codeString += ")"
+        + _endLine
+        +  "}"
+        + _endLine;
 
         return codeString;
     }
@@ -506,47 +582,50 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
              outPorts.hasNext();) {
             String driverParas = "";
             TypedIOPort port = (TypedIOPort)outPorts.next();
-            String portTypeID = _getTypeString(port);
-            String portID = StringUtilities.sanitizeName(port.
-                    getName());
-            codeString += "driver "
-                + portID
-                + "_driver (";
-
-            Iterator portConnected = port.insidePortList().iterator();
-            while (portConnected.hasNext()) {
-                IOPort outPort = (IOPort)portConnected.next();
-                String sanitizedPortName = StringUtilities.sanitizeName(
-                        outPort.getName(model));
-                if (outPort.isOutput()) {
-                    if (driverParas.length()==0) {
-                        driverParas +=  sanitizedPortName;
-                    } else {
-                        driverParas += ", " + sanitizedPortName;
+            // Ignore unconnected ports
+            if (port.getWidth()>0) {
+                String portTypeID = _getTypeString(port);
+                String portID = StringUtilities.sanitizeName(port.
+                        getName());
+                codeString += "driver "
+                    + portID
+                    + "_driver (";
+    
+                Iterator portConnected = port.insidePortList().iterator();
+                while (portConnected.hasNext()) {
+                    IOPort outPort = (IOPort)portConnected.next();
+                    String sanitizedPortName = StringUtilities.sanitizeName(
+                            outPort.getName(model));
+                    if (outPort.isOutput()) {
+                        if (driverParas.length()==0) {
+                            driverParas +=  sanitizedPortName;
+                        } else {
+                            driverParas += ", " + sanitizedPortName;
+                        }
                     }
                 }
+                codeString += driverParas
+                    + ")"
+                    + _endLine;
+                codeString +=  "        output ("
+                    + portTypeID
+                    + " "
+                    + portID
+                    + "_output)"
+                    + _endLine;
+                codeString +=  "{"
+                    + _endLine;
+                codeString +=  "  if c_true() then "
+                    + portID
+                    + "_input_driver( "
+                    + driverParas
+                    + ", "
+                    + portID
+                    + "_output)"
+                    + _endLine;
+                codeString +=  "}"
+                    + _endLine;
             }
-            codeString += driverParas
-                + ")"
-                + _endLine;
-            codeString +=  "        output ("
-                + portTypeID
-                + " "
-                + portID
-                + "_output)"
-                + _endLine;
-            codeString +=  "{"
-                + _endLine;
-            codeString +=  "  if c_true() then "
-                + portID
-                + "_input_driver( "
-                + driverParas
-                + ", "
-                + portID
-                + "_output)"
-                + _endLine;
-            codeString +=  "}"
-                + _endLine;
         }
 
         return codeString;
@@ -581,38 +660,41 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         while (outPorts.hasNext()) {
             outputName = "";
             TypedIOPort port = (TypedIOPort)outPorts.next();
-            outputName = StringUtilities.sanitizeName(port.
-                    getName(model));
-            if (port.insidePortList().size() != 0) {
-                Iterator portConnected = port.
-                    insidePortList().iterator();
-                while (portConnected.hasNext()) {
-                    TypedIOPort outPort =
-                        (TypedIOPort) portConnected.next();
-                    if (!outPort.isOutput()) {
-                        continue;
-                    }
-                    Nameable actor = outPort.getContainer();
-                    if (actor instanceof Actor) {
-                        Parameter actorFreqPara = (Parameter)
-                            ((NamedObj)actor).
-                            getAttribute("frequency");
-                        if (actorFreqPara == null) {
-                            actorFreq = 1;
-                        } else {
-                            actorFreq = ((IntToken) actorFreqPara.
-                                    getToken()).intValue();
+            // Ignore unconnected ports
+            if (port.getWidth()>0) {
+                outputName = StringUtilities.sanitizeName(port.
+                        getName(model));
+                if (port.insidePortList().size() != 0) {
+                    Iterator portConnected = port.
+                        insidePortList().iterator();
+                    while (portConnected.hasNext()) {
+                        TypedIOPort outPort =
+                            (TypedIOPort) portConnected.next();
+                        if (!outPort.isOutput()) {
+                            continue;
                         }
+                        Nameable actor = outPort.getContainer();
+                        if (actor instanceof Actor) {
+                            Parameter actorFreqPara = (Parameter)
+                                ((NamedObj)actor).
+                                getAttribute("frequency");
+                            if (actorFreqPara == null) {
+                                actorFreq = 1;
+                            } else {
+                                actorFreq = ((IntToken) actorFreqPara.
+                                        getToken()).intValue();
+                            }
+                        }
+    
+                        codeString +=  "    actfreq "
+                            + actorFreq
+                            + " do "
+                            + outputName
+                            + " ("
+                            + outputName
+                            + "_driver);"
+                            + _endLine;
                     }
-
-                    codeString +=  "    actfreq "
-                        + actorFreq
-                        + " do "
-                        + outputName
-                        + " ("
-                        + outputName
-                        + "_driver);"
-                        + _endLine;
                 }
             }
         }
@@ -652,22 +734,24 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
     }
 
-    /** Return true if the given actor has at least one input port, which
+    /** Return true if the given actor has at least one conneted input port, which
      *  requires it to have an input driver.
      */
     private static boolean _needsInputDriver(Actor actor) {
-        if (actor.inputPortList().size() <= 0) {
-            return false;
-        } else {
-            return true;
+        boolean retVal = false;
+        Iterator inPorts = actor.inputPortList().iterator();
+        while (inPorts.hasNext() && !retVal) {
+            TypedIOPort port = (TypedIOPort)inPorts.next();
+            if (port.getWidth()>0) {
+                retVal = true;
+            }
         }
+        return retVal;
     }
-
-
-    private static String _endLine = "\n";
 
     ///////////////////////////////////////////////////////////////////
     ////            Framework Code Generation Functions            ////
+    ///////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -680,9 +764,10 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     public static void writeFrameworkCode(TypedCompositeActor model)
                     throws IllegalActionException, NameDuplicationException {
 
-        /** The directory into which to write the code.
-         */
-        String directoryName = "$PTII/domains/giotto/kernel/"+StringUtilities.sanitizeName(model.getName())+"/c_functionality/fcode/";
+        dataTypes = new HashSet(); // Creating a set of all the unique types used
+
+        // TODO: Get the ptolemy installation directory
+        String directoryName = "ptolemy/domains/giotto/kernel/"+StringUtilities.sanitizeName(model.getName())+"/c_functionality/fcode/";
         File directory;
             
         File outDirFile = new File(directoryName);
@@ -690,13 +775,16 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             outDirFile.mkdirs();
         }
 
-        // FIXME: We just overwrite the file.
-        File writeFile = new File(directoryName, "f_code.c");
-        // FIXME: Check whether the file exists?  How to manage overwriting?
+        File writeCFile = new File(directoryName, "f_code.c");
+        File writeHFile = new File(directoryName, "f_code.h");
         try {
-            FileWriter writer = new FileWriter(writeFile);
-            writer.write(_generateFrameworkImplementationCode(model));
-            writer.close();
+            FileWriter Cwriter = new FileWriter(writeCFile);
+            Cwriter.write(_generateFrameworkImplementationCode(model));
+            Cwriter.close();
+
+            FileWriter Hwriter = new FileWriter(writeHFile);
+            Hwriter.write(_generateFrameworkHeaderCode(model));
+            Hwriter.close();
         } catch (IOException e) {
             throw new IllegalActionException(model, e,
                     "Failed to open file for writing.");
@@ -704,13 +792,46 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                       private methods                     ////
 
-    private static String _generateFrameworkImplementationCode(TypedCompositeActor model) {
-        return "foo";
+    /** Generate Framework Implementation C code for the given model.
+     *  @return The Framework Implementation C code.
+     */
+    /** Generate code for the C file f_code.c.
+     *  This function generates function implementation for a couple of
+     * legacy emachine implementations, and the output driver initialization
+     * code as well as the input driver code.
+     *  @return The output code.
+     */
+    private static String _generateFrameworkImplementationCode(TypedCompositeActor model)
+        throws IllegalActionException {
+        String codeString = "";
+        
+        codeString += copyrightString;
+        codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
+        codeString += "\n#include \"f_code.h\"" + _endLine;
+        codeString += "#include <stdlib.h>" + _endLine;
+        codeString += "\n// Legacy Emachine code" + _endLine;
+        codeString += "void giotto_timer_enable_code(e_machine_type e_machine_func, int relative_time) {" + _endLine;
+        codeString += "}" + _endLine;
+        codeString += "\nint giotto_timer_save_code(void) {" + _endLine;
+        codeString += _tabChar + "return get_logical_time();" + _endLine;
+        codeString += "}" + _endLine;
+        codeString += "\nunsigned giotto_timer_trigger_code(int initial_time, int relative_time) {" + _endLine;
+        codeString += _tabChar + "return (get_logical_time() == (initial_time + relative_time) % get_logical_time_overflow());" + _endLine;
+        codeString += "}" + _endLine;
+        codeString += "\ninline unsigned constant_true( void ) {" + _endLine;
+        codeString += _tabChar + "return ( (unsigned)1 );" + _endLine;
+        codeString += "}" + _endLine + _endLine;
+        
+        codeString += _outputInitializationCode(model);
+        codeString += _driversImplementationCode(model);
+        
+        return codeString;
     }
-    /** Generate Framework C code for the given model.
-     *  @return The Framework C code.
+    
+    /** Generate Initialization code for the output drivers.
+     *  @return The initialization code.
      */
     /** Generate code for the output ports.
      *  In Giotto, the situation that one port has several inputs
@@ -721,9 +842,8 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     private static String _outputInitializationCode(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString =  "";
+        String codeString = "// Output Drivers Initialization Code" + _endLine + _endLine;
 
-        codeString += "output" + _endLine;
 
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
@@ -731,25 +851,30 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             Iterator outPorts = actor.outputPortList().iterator();
             while (outPorts.hasNext()) {
                 TypedIOPort port = (TypedIOPort)outPorts.next();
-                String portID = StringUtilities.sanitizeName(
-                        port.getName(model));
-                String portTypeID = _getTypeString(port);
-                String portInitialValue = "CGinit_" + portID;
-                _checkGiottoID(portID);
-                codeString +=  "  "
-                    + portTypeID
-                    + " "
-                    + portID
-                    + " := " + portInitialValue
-                    + ";"
-                    + _endLine;
+                // Ignore unconnected ports
+                if (port.getWidth()>0) {
+                    String portID = StringUtilities.sanitizeName(
+                            port.getName(model));
+                    String portTypeID = _getTypeString(port);
+                    dataTypes.add(portTypeID);
+
+                    String portInitialValueFunction = "CGinit_" + portID;
+                    String portInitialValue = _getInitialValueString(port);
+                    _checkGiottoID(portID);
+                    codeString += "inline void"
+                        + " "
+                        + portInitialValueFunction
+                        + "(" + portTypeID + " *p" + portID + ") {" + _endLine
+                        + _tabChar + "*p" + portID + " = " + portInitialValue + ";" + _endLine
+                        + "}" + _endLine + _endLine;
+                }
             }
         }
 
         return codeString;
     }
 
-    /** Generate code for the drivers.
+    /** Generate implementation code for the drivers.
      *  The order of ports in model has effect
      *  on the order of driver input parameters
      *  @return The drivers code.
@@ -757,69 +882,196 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     private static String _driversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
 
+        return _outputDriversImplementationCode(model)
+             + _inputDriversImplementationCode(model);
+    }
+    
+    /** Generate code which will copy the output local
+     *  data to the global data. This has to generate
+     *  one function for each data type present.
+     * @param model
+     * @return The generated copy functions
+     * @throws IllegalActionException
+     */
+    private static String _outputDriversImplementationCode(TypedCompositeActor model)
+            throws IllegalActionException {
+                
         String codeString = "";
-        Actor actor;
+        
+        codeString += "// Output drivers to copy values from the local to the global stage"
+                    + _endLine;
+        Iterator dataType = dataTypes.iterator();
+        while(dataType.hasNext()) {
+            String type = (String)dataType.next();
+            codeString += "inline void"
+                        + " copy_"
+                        + type
+                        + " ("
+                        + type + " *src, "
+                        + type + " *dst) {"
+                        + _endLine
+                        + _tabChar + "*dst = *src;"
+                        + _endLine + "}"
+                        + _endLine + _endLine;
+        }
+        
+        return codeString;
+    }
 
+    private static String _inputDriversImplementationCode(TypedCompositeActor model)
+            throws IllegalActionException {
+             
+        String codeString;
+        String varDeclString = "";
+        String arrayInitString = ""; // Contains the initial assignment of the input driver variables to the 
+                                     // statically allocated array variables
+        String assgtStmtString = "";
+        Actor actor;
+        String actorName;
+
+        codeString = "// Input Drivers for all the Tasks requiring one" + _endLine
+                   + "// These functions make an assumption in the case of arrays" + _endLine
+                   + "// - that the output array has been allocated already and" + _endLine
+                   + "//   that there are valid values present in the allocated memory" + _endLine
+                   + "// - The input array is allocated by the driver. Therefore the" + _endLine
+                   + "//   corresponding task should assume the memory present." + _endLine + _endLine;
+                   
         // generate "Driver functions" for common actors.
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
             actor = (Actor) actors.next();
-            codeString += _driverCode(model, actor);
-        }
-
-        // Generate driver functions for toplevel output ports.
-        // FIXME: the giotto director should do some checking to
-        // avoid several outputs of actors connect to the same output port?
-        for (Iterator outPorts = model.outputPortList().iterator();
-             outPorts.hasNext();) {
-            String driverParas = "";
-            TypedIOPort port = (TypedIOPort)outPorts.next();
-            String portTypeID = _getTypeString(port);
-            String portID = StringUtilities.sanitizeName(port.
-                    getName());
-            codeString += "driver "
-                + portID
-                + "_driver (";
-
-            Iterator portConnected = port.insidePortList().iterator();
-            while (portConnected.hasNext()) {
-                IOPort outPort = (IOPort)portConnected.next();
-                String sanitizedPortName = StringUtilities.sanitizeName(
-                        outPort.getName(model));
-                if (outPort.isOutput()) {
-                    if (driverParas.length()==0) {
-                        driverParas +=  sanitizedPortName;
-                    } else {
-                        driverParas += ", " + sanitizedPortName;
-                    }
-                }
+            if (!_needsInputDriver(actor)) {
+                continue;
             }
-            codeString += driverParas
-                + ")"
-                + _endLine;
-            codeString +=  "        output ("
-                + portTypeID
-                + " "
-                + portID
-                + "_output)"
-                + _endLine;
-            codeString +=  "{"
-                + _endLine;
-            codeString +=  "  if c_true() then "
-                + portID
-                + "_input_driver( "
-                + driverParas
-                + ", "
-                + portID
-                + "_output)"
-                + _endLine;
-            codeString +=  "}"
-                + _endLine;
+
+            actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
+            boolean firstParameter = true;
+            
+            codeString += "inline void " + actorName + "_inputdriver( ";
+            
+            Map driverIOMap = new LinkedHashMap();
+            for (Iterator inPorts = actor.inputPortList().iterator();
+                 inPorts.hasNext();) {
+                TypedIOPort inPort = (TypedIOPort) inPorts.next();
+                String sanitizedPortName =
+                    StringUtilities.sanitizeName(
+                            inPort.getName(model));
+                String inPortType = _getTypeString(inPort);
+
+                List sourcePortList = inPort.sourcePortList();
+                if (sourcePortList.size() > 1) {
+                    throw new IllegalActionException(inPort, "Input port " +
+                            "cannot receive data from multiple sources in Giotto.");
+                }
+                TypedIOPort port = (TypedIOPort)inPort.sourcePortList().get(0);
+                String sanitizedPortName2 = StringUtilities.sanitizeName(
+                        port.getName(model));
+                String portType = _getTypeString(port);
+                if (firstParameter) {
+                    firstParameter = false;
+                }
+                else {
+                    codeString += ", ";
+                }
+                codeString += portType + " " + sanitizedPortName2
+                           + ", " + _getTypeString(inPort) + " " + sanitizedPortName;
+                
+                     // Allocate memory for the arrays
+                     if (portType.endsWith("array")) {
+                         if (varDeclString.length() == 0) { // First time an array has been found
+                             varDeclString += _tabChar + "int i;" + _endLine;
+                         }
+                         String arrayLength = _getArrayLength(port);
+                         varDeclString += _tabChar + "static "
+                                         + portType.substring(0,portType.length() - 5/* Length of "array" */)
+                                         + "[" + arrayLength + "] "
+                                         + "array" + sanitizedPortName2 + ";" + _endLine;
+                    
+                         arrayInitString += _tabChar + "" + sanitizedPortName + " = "
+                                             + "array" + sanitizedPortName2 + ";" + _endLine;
+
+                         assgtStmtString += _tabChar + "for( i=0 ; i<" + arrayLength + " ; i++ ) {" + _endLine
+                                          + _tabChar + _tabChar + sanitizedPortName + "[i] = " + sanitizedPortName2 + "[i];" + _endLine
+                                          + _tabChar + "}" + _endLine;
+                     }
+                     else {
+                         assgtStmtString += _tabChar + "*" + sanitizedPortName
+                                          + " = *" + sanitizedPortName2 + ";" + _endLine;
+                     }
+            }
+            codeString += ") {" + _endLine;
+            codeString += varDeclString + _endLine
+                        + arrayInitString + _endLine // Include static variable allocations
+                        + assgtStmtString;
+            codeString += "}" + _endLine;
         }
 
+        // TODO : Generate driver code for the actuators.
         return codeString;
     }
+    
+    /** Generate code for the H file f_code.h.
+     *  This function generates the function and variable declarations for
+     *  the implementation in f_code.c
+     *  @return The output code.
+     */
+    private static String _generateFrameworkHeaderCode(TypedCompositeActor model)
+        throws IllegalActionException {
+        String codeString = "";
+        
+        codeString += copyrightString;
+        codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
+        codeString += "\n#include \"f_code.h\"" + _endLine;
+        codeString += "#include <stdlib.h>" + _endLine;
+        codeString += "\n// Legacy Emachine code" + _endLine;
+        codeString += "void giotto_timer_enable_code(e_machine_type e_machine_func, int relative_time) {" + _endLine;
+        codeString += "}" + _endLine;
+        codeString += "\nint giotto_timer_save_code(void) {" + _endLine;
+        codeString += _tabChar + "return get_logical_time();" + _endLine;
+        codeString += "}" + _endLine;
+        codeString += "\nunsigned giotto_timer_trigger_code(int initial_time, int relative_time) {" + _endLine;
+        codeString += _tabChar + "return (get_logical_time() == (initial_time + relative_time) % get_logical_time_overflow());" + _endLine;
+        codeString += "}" + _endLine;
+        codeString += "\ninline unsigned constant_true( void ) {" + _endLine;
+        codeString += _tabChar + "return ( (unsigned)1 );" + _endLine;
+        codeString += "}" + _endLine + _endLine;
+        
+        return codeString;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
+    private static boolean intarray = false;
+    private static Set dataTypes;
+    private static String _endLine = "\n";
+    private static String _tabChar = "\t";
+
+    private static String copyrightString = "/*" + _endLine + _endLine+
+" Copyright (c) 2001 The Regents of the University of California." + _endLine +
+" All rights reserved." + _endLine +
+" Permission is hereby granted, without written agreement and without" + _endLine +
+" license or royalty fees, to use, copy, modify, and distribute this" + _endLine +
+" software and its documentation for any purpose, provided that the above" + _endLine +
+" copyright notice and the following two paragraphs appear in all copies" + _endLine +
+" of this software." + _endLine +
+"" + _endLine +
+" IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY" + _endLine +
+" FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES" + _endLine +
+" ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF" + _endLine +
+" THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF" + _endLine +
+" SUCH DAMAGE." + _endLine +
+"" + _endLine +
+" THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES," + _endLine +
+" INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF" + _endLine +
+" MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE" + _endLine +
+" PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF" + _endLine +
+" CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES," + _endLine +
+" ENHANCEMENTS, OR MODIFICATIONS." + _endLine +
+"" + _endLine +
+"*/" + _endLine;
+ 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -860,6 +1112,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                 // corresponding files.
                 writeFrameworkCode(model);
 
+                // Generate the Giotto Code
                 TextEffigy codeEffigy = TextEffigy.newTextEffigy(
                         configuration.getDirectory(),
                         generateCode(model));
