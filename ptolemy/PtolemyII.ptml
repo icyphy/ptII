@@ -1,0 +1,29 @@
+<!-- The PtolemyII domain configuration file -->
+<!-- Do not edit. Do not add SCCS keywords. -->
+
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE ptolemyicon SYSTEM "ptolemyicon.dtd">
+
+<domainlibrary name="Dataflow" version="1.0">
+    <actorpackage name="domain polymorphic" package="ptolemy.lib"/>
+
+    <domain name="Static Dataflow">
+	<actorpackage name="SDF default" package="ptolemy.domains.sdf.lib"/>
+	<actorpackage name="VQ" package="ptolemy.domains.sdf.lib.VQ"/>
+	<actorpackage name="local working" package="local.domains.sdf.lib"/>
+
+	<director name="Multirate"
+		class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+	<director name="Discrete Timed"
+		class="ptolemy.domains.sdf.kernel.DTDirector"/>
+	<director name="Remote Director for LBL's supercomputer"
+		class="lbl.SDFAlphaFarmDirector"/>
+    </domain>
+
+    <domain name="Continuous Time">
+	<actorpackage name="CT default" package="ptolemy.domains.ct.lib"/>
+	<director name="Runge-Kutta"
+		class="ptolemy.domains.ct.kernel.CTRKDirector"/>
+    </domain>
+
+</domainlibrary>
