@@ -169,7 +169,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  SDF directors should invoke this method once during preinitialize.
      */
     public void declareRateDependency() throws IllegalActionException {
-        // FIXME: implement
+        // Not necessary, since rates are declared symbolically.
     }
 
     /** Return a string representation of the buffer sizes of the relations
