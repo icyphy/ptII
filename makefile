@@ -80,11 +80,9 @@ configure: configure.in
 	#done;
 
 distclean:
-	rm -f mk/ptII.mk config.log config.status config.cache
 	$(MAKE) realclean
-	#for dir in $(subdirs) ; do \
-	#	(cd $$dir; $(MAKE) $@) \
-	#done;
+	# Remove mk/ptII.mk after running in the subdirs
+	rm -f mk/ptII.mk config.log config.status config.cache
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
