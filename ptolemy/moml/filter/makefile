@@ -52,6 +52,7 @@ JSRCS = \
 	AddIcon.java \
 	BackwardCompatibility.java \
 	ClassChanges.java \
+	GRColorChanges.java \
 	HideAnnotationNames.java \
 	MultiportToSinglePort.java \
 	ParameterNameChanges.java \
