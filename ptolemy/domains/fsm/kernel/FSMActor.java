@@ -76,6 +76,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMActor
@@ -333,34 +334,36 @@ public class FSMActor extends CompositeEntity
      *  and the edges are the relations between ports. The graph shows 
      *  the dependencies between the input and output ports. If there is
      *  a path between a pair, input and output, they are dependent. 
-     *  Otherwise, they are independent.
+     *  Otherwise, they are independent. 
+     *  @return A FunctionDependency object of an FSM actor.
      */
     public FunctionDependency getFunctionDependencies() {
         if (_functionDependency == null) {
             try{
                 TypedActor[] refinements = _currentState.getRefinement();
-                //FIXME: we assume there is only one refinement.
-                // If there are many refinements, we choose the first one.
-                if (refinements == null) {
-                    return null; 
-                }
-                if (refinements.length > 0) {
-                    _functionDependency = refinements[0].getFunctionDependencies();
-                } else {
+                if (refinements == null || refinements.length < 1) {
                     //FIXME: what to do if no refinement?
-                    //The dependency relation between the actions associated
-                    //with transitions and downstream receivers is too complicated,
-                    //and I want to exclude the output actions. 
-                    _functionDependency = null;
+                    //As long as there is a finite number of transition enabled
+                    //at the same time (iteration), the output and input are
+                    //not dependent. Otherwise, it is a Zeno behavior, which
+                    //is beyond the problem-solving ability of FunctionDependency
+                    //analysis.
+                    _functionDependency = 
+                        new FunctionDependencyOfFSMActor(this); 
+                } else {
+                    //Throw an exception that in order to use refinements, 
+                    //a modal model has to be used.
+                    MessageHandler.error("FSMActor does not " +
+                        "contain refinements, use ModalModel instead.");
                 }
             } catch (IllegalActionException e) {
-               // dealing with the exception 
-               // FIXME: how? make this method throw the exception?
+               // FIXME: how to deal the IllegalActionException possibly
+               // thrown by the getRefinement method?
                // Similar things happen in the _getEntities method 
                // in FunctionDependencyOfModalModel
+               MessageHandler.error("Invalid refinements.", e);
             }
        }
-        //_functionDependency.validate();
         return _functionDependency;
     }
 

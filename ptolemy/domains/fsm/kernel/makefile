@@ -56,6 +56,7 @@ JSRCS = \
 	CommitActionsAttribute.java \
 	FSMActor.java \
 	FSMDirector.java \
+	FunctionDependencyOfFSMActor.java \
 	HSDirector.java \
 	InterfaceAutomaton.java \
 	InterfaceAutomatonTransition.java \
