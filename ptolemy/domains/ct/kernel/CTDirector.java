@@ -316,13 +316,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 throw new IllegalActionException(this,
                         "Cannot set a negative time resolution.");
             }
-            _timeResolution = value;
+            setTimeResolution(value);
             TotallyOrderedSet table = getBreakPoints();
             // Change the breakpoint table comparator if it is created.
             if (table != null) {
                 FuzzyDoubleComparator comparator =
                     (FuzzyDoubleComparator) table.getComparator();
-                comparator.setThreshold(_timeResolution);
+                comparator.setThreshold(getTimeResolution());
             }
         } else if (attribute == maxIterations) {
             int value = ((IntToken)maxIterations.getToken()).intValue();
@@ -543,15 +543,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _suggestedNextStepSize;
     }
 
-    /** Return the time resolution such that two time stamps within this
-     *  resolution are considered identical. This method is final
-     *  for performance reason.
-     *  @return The time resolution.
-     */
-    public final double getTimeResolution() {
-        return _timeResolution;
-    }
-
     /** Return the value resolution, used for testing if an implicit method
      *  has reached the fixed point. Two values that are differed less than
      *  this accuracy are considered identical in the fixed point
@@ -669,7 +660,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             breakpoints.clear();
         } else {
             _breakPoints = new TotallyOrderedSet(
-                    new FuzzyDoubleComparator(_timeResolution));
+                    new FuzzyDoubleComparator(getTimeResolution()));
         }
         super.preinitialize();
     }
@@ -731,7 +722,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _currentStepSize = stepsize;
     }
 
-    /** Set the current time of the model under this director.
+    /** Set a new value to the current time of the model, where the new
+     *  time can be earlier than the current time to support rollback.
      *  This overrides the setCurrentTime() in the Director base class.
      *  It is OK that the new time is less than the current time
      *  in the director, since CT sometimes needs roll-back.
@@ -826,7 +818,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             _maxIterations = 20;
             _errorTolerance = 1e-4;
             _valueResolution = 1e-6;
-            _timeResolution = 1e-10;
 
             startTime = new Parameter(
                     this, "startTime", new DoubleToken(0.0));
@@ -853,7 +844,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     new DoubleToken(_valueResolution));
             valueResolution.setTypeEquals(BaseType.DOUBLE);
             timeResolution = new Parameter(this, "timeResolution",
-                    new DoubleToken(_timeResolution));
+                    new DoubleToken(getTimeResolution()));
             timeResolution.setTypeEquals(BaseType.DOUBLE);
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime");
@@ -979,7 +970,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     private int _maxIterations;
     private double _errorTolerance;
     private double _valueResolution;
-    private double _timeResolution;
 
     // The real starting time in term of system millisecond counts.
     private long _timeBase;
