@@ -47,6 +47,9 @@ set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
 $dir setScheduler $scheduler
 $dir setScheduleValid false
 
+set listener [java::new ptolemy.domains.sdf.lib.testlistener]
+$manager registerExecutionListener $listener
+
 # Build the system
 set ramp [java::new ptolemy.domains.sdf.lib.SDFRamp $sys Ramp]
 set delay [java::new ptolemy.domains.sdf.lib.SDFDelay $sys Delay]
@@ -70,8 +73,8 @@ set r1 [$sys connect $rampOut $delayIn R1]
 set r2 [$sys connect $delayOut $printIn R2]
 
 set debug ptolemy.debug.Debug
-#set debugger [java::new ptolemy.debug.DebugListener]
-#java::call $debug register $debugger
+set debugger [java::new ptolemy.debug.DebugListener]
+java::call $debug register $debugger
 
 # Run it
 $manager go 5
