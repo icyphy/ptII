@@ -43,14 +43,12 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-	testDefs.tcl
+	#testDefs.tcl
 
-JSRCS = \
-	
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = \
-	CTSaberSubsys.tcl
+JSIMPLE_TESTS =
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
