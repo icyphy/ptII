@@ -48,6 +48,8 @@ public class PlotLiveDemo extends PlotLive {
      * <code>run()</code> method while live plotting is enabled.
      */
     public synchronized void addPoints() {
+        if (_debug >8 ) System.out.println("PlotLiveDemo: addPoints");
+
         // You could plot multiple points at a time here
         // for faster response, but in our case, we really need
         // to slow down the response for visual aesthetics.
@@ -68,15 +70,6 @@ public class PlotLiveDemo extends PlotLive {
         } catch (InterruptedException e) {}
     }
 
-    /**
-     * Return a string describing this applet.
-     */
-    public String getAppletInfo() {
-        return "PlotLiveDemo 1.0: Demo of PlotLive.\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-            "($Id$)";
-    }
-
     /** 
      * Define static properties of the plot, such as the title and
      * axis labels.  This also calls the base class
@@ -89,6 +82,7 @@ public class PlotLiveDemo extends PlotLive {
      * stop buttons to control the plot.
      */
     public void init () {
+        if (_debug >8 ) System.out.println("PlotLiveDemo: init");
         setTitle("Live Plot Demo");
         setYRange(-1,1);
         setXRange(-1,1);
@@ -98,13 +92,35 @@ public class PlotLiveDemo extends PlotLive {
         
         // Give the user direct control over starting and stopping.
         makeButtons();
-        
+
         super.init();
+
+        
+
     }
+
+   /**
+    * Run as an application.
+    */
+    public static void main(String args[]) {
+         PlotLiveDemo pld;
+         Frame f=new Frame("PlotLiveDemo");
+         f.setLayout(new BorderLayout());
+         f.setBackground(Color.lightGray);
+         f.resize(400,400);
+         pld= new PlotLiveDemo();
+         f.add("Center",pld);
+         f.pack();
+         f.show();
+
+         pld.resize(400,400);
+         pld.init();
+         pld.start();
+     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
-    
+
     private boolean _first = true;
     private double _count = 0.0;
 }
