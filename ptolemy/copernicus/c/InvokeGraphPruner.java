@@ -401,7 +401,7 @@ public class InvokeGraphPruner {
         _done(node);
     }
 
-    /** Performs the apropriate operations for the discovery of a new
+    /** Performs the appropriate operations for the discovery of a new
      * field.
      * @param field The field.
      */
