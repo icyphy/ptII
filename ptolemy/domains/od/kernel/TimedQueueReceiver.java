@@ -1,4 +1,4 @@
-/* A FIFO queue for storing tokens with time stamps.
+/* A FIFO queue-based receiver for storing tokens with time stamps. 
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -190,7 +190,6 @@ public class TimedQueueReceiver implements Receiver {
      *  FIXME: Check for completion time here instead of ODReceiver.put()
      */
     public void put(Token token, double time) {
-        // System.out.println("Call to TimedQueueReceiver.put()");
         // System.out.println("Previous queue size = " + getSize() );
         Event event;
         ODIOPort port = (ODIOPort)getContainer();
