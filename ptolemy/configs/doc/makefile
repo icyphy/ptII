@@ -53,12 +53,17 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
 
+# HTML Files that are derived from other HTML files.
+DERIVED_FILES = \
+	demosPtiny.htm \
+	completeDemosPtiny.htm
+
 OTHER_FILES_TO_BE_JARED = \
+	$(DERIVED_FILES) \
 	basicHelp.htm \
 	completeDemos.htm \
 	copyright.htm \
 	demos.htm \
-	demosPtiny.htm \
 	docs.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
@@ -75,7 +80,7 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass demosPtiny.htm
+all: jclass $(DERIVED_FILES)
 	@echo "nothing need be done for make all in this directory"
 
 install: all jars
@@ -86,8 +91,13 @@ install: all jars
 demosPtiny.htm: demos.htm
 	awk -f $(ROOT)/doc/javahtml.awk $< > $@  
 
+completeDemosPtiny.htm: completeDemos.htm
+	awk -f $(ROOT)/doc/javahtml.awk $< > $@  
+
+update: $(DERIVED_FILES)
+	cvs commit -m "Master files changed" $(DERIVED_FILES)
+	rm -f doc.jar
+	$(MAKE) doc.jar
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
