@@ -1,4 +1,4 @@
-o# Tests for the TypedAtomicActor class
+# Tests for the TypedAtomicActor class
 #
 # @Author: Edward A. Lee, Yuhong Xiong
 #
