@@ -35,7 +35,7 @@ package ptolemy.data.expr;
 /**
 Interface for all classes that want to be notified when a Parameter changes.
 
-@author  nsmyth
+@author  Neil Smyth
 @version $Id$
 @see Parameter
 
@@ -45,13 +45,9 @@ public interface ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */
-    public void reEvaluate();
+    /** When a Parameter changes value, this method is invoked on 
+     *  all ParameterListeners registered with it.
+     **/
+    public void evaluate();
 
 }
