@@ -135,7 +135,7 @@ public class Render extends PlotBox {
                     setTitle("Sample image");
 
                     // Create the stripes in data form (arrays).
-                    int[] stripe1 = new int[10];
+                    int[] stripe1 = new int[100];
                     int colorValue = _HIGHCOLOR;
                     for (int i = 0; i < stripe1.length; i++) {
                         stripe1[i] = colorValue;
@@ -146,16 +146,13 @@ public class Render extends PlotBox {
                         }
                     }
 
-		    //		    System.out.println("_ulx = " + _ulx);
-		    //		    System.out.println("_uly = " + _uly);
-		    //		    System.out.println("_lrx = " + _lrx);
-		    //		    System.out.println("_lry = " + _lry);
-                    
-                    int[] stripe2 = new int[10];
+                    int[] stripe2 = new int[100];
                     System.arraycopy(stripe1, 0, stripe2, 1,
                                      stripe2.length - 1);
                     stripe2[0] = _LOWCOLOR;
                     
+		    // Reset the data structure.
+		    _imageData = new LinkedList();
 
                     // Add the stripes to the data structure.
                     for (int i = 1; i <= 50; i++) {
@@ -165,9 +162,10 @@ public class Render extends PlotBox {
 
 		    setXIncrement(0.05);
 		    setXOffset(0.0);
-		    setYIncrement(400.0);
+		    setYIncrement(40.0);
 		    setYOffset(0.0);
 
+		    // These variables are set to make the fill mechanism work.
 		    _xTop = _imageData.size() * getXIncrement();
 		    _xBottom = getXOffset();
 		    _yTop = ((int[])_imageData.getFirst()).length *
@@ -196,7 +194,7 @@ public class Render extends PlotBox {
 
     /** Set the colormap.
      *  The user needs to give a 3-by-256 integer array as a colormap.
-     *  @param colormap The new colormap used to render images.
+     *  @param colormap The colormap used to render images.
      */
     public synchronized void setColormap(int[][] colormap){
         _colormap = colormap;
@@ -296,7 +294,7 @@ public class Render extends PlotBox {
 	else if (x <= _lrx - 1 && x + width > _lrx - 1) {
 	    retrn[0] = x;
 	    retrn[1] = _lrx - x;
-	} // if the patch is outside of both the left and right borders
+	} // if the patch is outside of either the left or right border
 	else {
 	    retrn[0] = _NOTVISIBLE;
 	}
@@ -326,19 +324,19 @@ public class Render extends PlotBox {
 	else if (y <= _lry - 1 && y + height > _lry - 1) {
 	    retrn[0] = y;
 	    retrn[1] = _lry - y;
-	} // if the patch is outside of both the top and bottom borders
+	} // if the patch is outside of either the top or bottom border
 	else {
 	    retrn[0] = _NOTVISIBLE;
 	}
-
 	return retrn;
     }
-    /** Draw the specified stripe.
+
+    /** Draw a stripe.
      *  @param graphics The graphics context.
      *  @param stripe The stripe to be drawn.
-     *  @param x The x coordinate in pixels of the left edge of the rectangle
+     *  @param x The x coordinate in pixels of the left edge of the stripe
      *  to be drawn.
-     *  @param width The width of the rectangle to be drawn.
+     *  @param width The width of the stripe to be drawn.
      */
      private void _drawStripe(Graphics graphics, int[] stripe,
                               double x, double width) {
@@ -423,53 +421,45 @@ public class Render extends PlotBox {
 
 
     /** The colormap used in rendering the image.
-    */
+     */
     private int[][] _colormap = new int[3][256];
 
-    /** The given height of the stripes in units of the y axis.
-    */
-    // I set _height to 2.2 for testing only.  This should be set by the
-    // application.
-    // private double _height = _yhighgiven - _ylowgiven;
-
-    // I discovered that _height is already used in PlotBox.  I'm waiting on
-    // this (commenting it out) to see what i need to do.
-
     /** A test color value from 0 through 255.
-    */
+     */
     private static final int _HIGHCOLOR = 225;
 
-    /** Stores the image data to be rendered. */
+    /** Stores the image data to be rendered.
+     */
     private LinkedList _imageData = new LinkedList();
 
     /** A test color value from 0 through 255.
-    */
+     */
     private static final int _LOWCOLOR = 175;
 
     /** The flag indicating whether the patch to be drawn is visible.
      */
     private static final int _NOTVISIBLE = -999;
 
-    /** @serial Set by _drawPlot(), and reset by clear(). */
+    /** Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
 
     /** The increment in units of the x-axis of each stripe along the x-axis.
-     * Each stripe will be _xIncrement wide.
+     *  Each stripe will be _xIncrement wide.
      */
     private double _xIncrement = 0.0;
 
     /** The starting point of the x-axis.  The x-axis will start counting from
-     * _xOffset.
+     *  _xOffset.
      */
     private double _xOffset = 0.0;
 
     /** The increment in units of the y-axis of each patch within the stripe.
-     * Each patch will be _yIncrement tall.
+     *  Each patch will be _yIncrement tall.
      */
     private double _yIncrement = 0.0;
 
     /** The starting point of the y-axis.  The y-axis will start counting from
-     * _yOffset.
+     *  _yOffset.
      */
     private double _yOffset = 0.0;
 }
