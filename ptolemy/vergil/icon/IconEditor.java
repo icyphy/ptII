@@ -16,6 +16,7 @@ import diva.util.java2d.PaintedPath;
 import diva.util.java2d.PaintedString;
 import diva.util.java2d.PaintedList;
 import diva.util.java2d.PaintedObject;
+import diva.util.java2d.Polygon2D;
 
 import diva.canvas.JCanvas;
 import diva.canvas.GraphicsPane;
@@ -27,8 +28,9 @@ import diva.canvas.interactor.PathManipulator;
 import diva.canvas.interactor.BoundsManipulator;
 import diva.canvas.interactor.CircleManipulator;
 import diva.canvas.interactor.BasicSelectionModel;
-import diva.canvas.toolbox.PaintedFigure;
-import diva.canvas.toolbox.BasicFigure;
+//import diva.canvas.toolbox.PaintedFigure;
+//import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.VersatileFigure;
 
 // Java imports.
 import javax.swing.AbstractAction;
@@ -323,20 +325,27 @@ public class IconEditor {
         Enumeration enum = icon.graphicElements ();
 	while (enum.hasMoreElements ()) {
 	    GraphicElement nextGraphic = (GraphicElement) enum.nextElement ();
-	    PaintedFigure paintedFigure = new PaintedFigure ();
-	    paintedFigure.add(nextGraphic.getPaintedObject ());
-	    Shape nextShape = paintedFigure.getShape ();
-	    System.out.println("nextShape = " + nextShape);
+	    VersatileFigure versatileFigure = new VersatileFigure 
+	        (nextGraphic.getPaintedObject());
+	    Shape nextShape = versatileFigure.getShape ();
+	    System.out.println("the next shape is = " + nextShape);
 	    if (nextShape instanceof Rectangle2D.Double) {
-	        paintedFigure.setInteractor (_interactor2);
+	        System.out.println("interactor 2 for it");
+	        versatileFigure.setInteractor (_interactor2);
 	    }
-	    else if (nextShape instanceof Ellipse2D.Double) {
-	        paintedFigure.setInteractor (_interactor3);
+	    else if (nextShape instanceof Ellipse2D) {
+	        System.out.println("interactor 3 for it");
+	        versatileFigure.setInteractor (_interactor3);
 	    }
 	    else if (nextShape instanceof GeneralPath) {
-	        paintedFigure.setInteractor (_interactor1);
+	        System.out.println("interactor 1 for it");
+	        versatileFigure.setInteractor (_interactor1);
 	    }
-	    _layer.add (paintedFigure);
+	    else if (nextShape instanceof Polygon2D) {
+	        System.out.println("interactor 2 for it");
+		versatileFigure.setInteractor (_interactor2);
+	    }
+	    _layer.add (versatileFigure);
 	}
 
     }
@@ -404,13 +413,13 @@ public class IconEditor {
     private SelectionInteractor _interactor3 = new SelectionInteractor (_m);
   
     // This is the current shape, line thickness, and paint color.
-    private Figure _currentFigure = null;
+    private VersatileFigure _currentFigure = null;
     private float _outlineThickness = 1.0f;
     private Paint _strokeColor = new Color (0, 170, 170);
 
     // Here is the figure kept in memory for the "cut" or 
     // "pasted" figure.
-    private Figure _cutOrCopiedFigure = null;
+    private VersatileFigure _cutOrCopiedFigure = null;
 
     // Window objects
     private GraphicsPane _pane;
@@ -453,7 +462,7 @@ public class IconEditor {
     // When the rectangle button is pressed.
     Action rectangleAction = new AbstractAction ("Rectangle") {
         public void actionPerformed (ActionEvent e) {
-	    _currentFigure = new BasicFigure 
+	    _currentFigure = new VersatileFigure 
 	        (new PaintedShape (new Rectangle2D.Double
 				   (8.0, 10.0, 20.0, 20.0), 
 				   _outlineThickness, _strokeColor));
@@ -465,7 +474,7 @@ public class IconEditor {
     // When the straight line button is pressed.
     Action lineAction = new AbstractAction ("Line") {
         public void actionPerformed (ActionEvent e) {
-	    _currentFigure = new BasicFigure 
+	    _currentFigure = new VersatileFigure 
 	        (new PaintedShape (new Line2D.Double
 				   (45.0, 10.0, 65.0, 30.0), 
 				   _outlineThickness, _strokeColor));
@@ -477,7 +486,7 @@ public class IconEditor {
     // When the quadratic curve button is pressed.
     Action quadraticAction = new AbstractAction ("Quadratic Curve") {
         public void actionPerformed (ActionEvent e) {
-	    _currentFigure = new BasicFigure 
+	    _currentFigure = new VersatileFigure 
 	        (new PaintedShape (new QuadCurve2D.Double
 				   (77.0, 10.0, 87.0, 20.0, 97.0, 30.0), 
 				   _outlineThickness, _strokeColor));
@@ -489,7 +498,7 @@ public class IconEditor {
     // When the cubic curve button is pressed.
     Action cubicAction = new AbstractAction ("Cubic Curve") {
         public void actionPerformed (ActionEvent e) {
-	    _currentFigure = new BasicFigure 
+	    _currentFigure = new VersatileFigure 
 	        (new PaintedShape (new CubicCurve2D.Double
 				   (110.0, 10.0, 117.0, 17.0, 
 				    123.0, 23.0, 130.0, 30.0),
@@ -502,7 +511,7 @@ public class IconEditor {
     // When the circle button is pressed.
     Action circleAction = new AbstractAction ("Circle") {
         public void actionPerformed (ActionEvent e) {
-	    _currentFigure = new BasicFigure 
+	    _currentFigure = new VersatileFigure 
 	        (new PaintedShape (new Ellipse2D.Double
 				   (148.0, 10.0, 20.0, 20.0), 
 				   _outlineThickness, _strokeColor)); 
@@ -514,7 +523,7 @@ public class IconEditor {
     // When the ellipse button is pressed.
     Action ellipseAction = new AbstractAction ("Ellipse") {
         public void actionPerformed (ActionEvent e) {
-	    _currentFigure = new BasicFigure 
+	    _currentFigure = new VersatileFigure 
 	        (new PaintedShape (new Ellipse2D.Double
 				   (183.0, 10.0, 20.0, 30.0), 
 				   _outlineThickness, _strokeColor)); 
@@ -526,24 +535,9 @@ public class IconEditor {
     // When the fill shape button is pressed.
     Action fillAction = new AbstractAction ("Fill") {
         public void actionPerformed (ActionEvent e) {
-	    Figure figure = (Figure) _m.getFirstSelection ();
-	    if (figure != null) {
-	        if (figure instanceof PaintedFigure) {
-		    PaintedList paintedList = ((PaintedFigure) figure).getPaintedList ();
-		    ArrayList paintedObjects = paintedList.paintedObjects;
-		    PaintedObject paintedObject = (PaintedObject) paintedObjects.get (0);
-		    if (paintedObject instanceof PaintedString) {
-		        ((PaintedString) paintedObject).setFillPaint (_strokeColor);
-			((PaintedFigure) figure).repaint();
-		    }
-		    else if (paintedObject instanceof PaintedShape) {
-		        ((PaintedShape) paintedObject).fillPaint = _strokeColor;
-			((PaintedFigure) figure).repaint();
-		    }
-		}
-		else {
-		    ((BasicFigure) figure).setFillPaint (_strokeColor);
-		}
+	    VersatileFigure versatileFigure = (VersatileFigure) _m.getFirstSelection ();
+	    if (versatileFigure != null) {
+	        versatileFigure.setFillPaint (_strokeColor);
 	    }
 	}
     };
@@ -551,20 +545,9 @@ public class IconEditor {
     // When the paint outline button is pressed.
     Action strokeAction = new AbstractAction ("Stroke") {
         public void actionPerformed (ActionEvent e) {
-	    Figure figure = (Figure) _m.getFirstSelection ();
-	    if (figure != null) {
-	        if (figure instanceof PaintedFigure) {
-		    PaintedList paintedList = ((PaintedFigure) figure).getPaintedList ();
-		    ArrayList paintedObjects = paintedList.paintedObjects;
-		    PaintedObject paintedObject = (PaintedObject) paintedObjects.get (0);
-		    if (paintedObject instanceof PaintedShape) {
-		        ((PaintedShape) paintedObject).strokePaint = _strokeColor;
-			((PaintedFigure) figure).repaint();
-		    }
-		}
-		else {
-		    ((BasicFigure) figure).setStrokePaint (_strokeColor);
-		}
+	    VersatileFigure versatileFigure = (VersatileFigure) _m.getFirstSelection ();
+	    if (versatileFigure != null) {
+	        versatileFigure.setStrokePaint (_strokeColor);
 	    }
 	}
     };
@@ -634,8 +617,8 @@ public class IconEditor {
     Action cutAction = new AbstractAction ("Cut    CTRL+X") {
         public void actionPerformed (ActionEvent e) {
 
-	    _currentFigure = (Figure) _m.getFirstSelection ();
-	    _m.clearSelection();
+	    _currentFigure = (VersatileFigure) _m.getFirstSelection ();
+	    _m.clearSelection ();
 	    if (_currentFigure != null) {
 	        _layer.remove (_currentFigure);
 	    }
@@ -646,7 +629,7 @@ public class IconEditor {
     // When you click copy in the edit menu of the menubar.
     Action copyAction = new AbstractAction ("Copy   CTRL+C") {
         public void actionPerformed (ActionEvent e) {
-	    _currentFigure = (Figure) _m.getFirstSelection ();
+	    _currentFigure = (VersatileFigure) _m.getFirstSelection ();
 	    changeCutOrCopiedFigure (true);
 	}
     };
@@ -750,10 +733,10 @@ public class IconEditor {
 
     ActionListener deletionListener = new ActionListener () {
         public void actionPerformed (ActionEvent evt) {
-	    Figure figure = (Figure) _m.getFirstSelection ();
-	    if (figure != null) {
+	    VersatileFigure versatileFigure = (VersatileFigure) _m.getFirstSelection ();
+	    if (versatileFigure != null) {
 	        _m.clearSelection ();
-		_layer.remove (figure);
+		_layer.remove (versatileFigure);
 	    }
 	}
     };
@@ -767,28 +750,9 @@ public class IconEditor {
 
     private void changeThickness (float newThickness) {
         _outlineThickness = newThickness;
-	Figure figure = (Figure) _m.getFirstSelection ();
-	if (figure != null) {
-	    if (figure instanceof PaintedFigure) {
-	        PaintedList paintedList = ((PaintedFigure) figure).getPaintedList ();
-		ArrayList paintedObjects = paintedList.paintedObjects;
-	        PaintedObject paintedObject = (PaintedObject) paintedObjects.get (0);
-	        if (paintedObject instanceof PaintedString) {
-		    ((PaintedString) paintedObject).setSize (Math.round (newThickness + 5.0f));
-		    ((PaintedFigure) figure).repaint();
-		}
-		else if (paintedObject instanceof PaintedShape) {
-		    ((PaintedShape) paintedObject).setLineWidth (newThickness);
-		    ((PaintedFigure) figure).repaint();
-		}
-		else {
-		    ((PaintedPath) paintedObject).setLineWidth (newThickness);
-		    ((PaintedFigure) figure).repaint();
-		}
-	    }
-	    else {
-	        ((BasicFigure) figure).setLineWidth (_outlineThickness);
-	    }
+	VersatileFigure versatileFigure = (VersatileFigure) _m.getFirstSelection ();
+	if (versatileFigure != null) {
+	    versatileFigure.setLineWidth(newThickness);
 	}
     }
 
@@ -805,6 +769,14 @@ public class IconEditor {
 	    if (newCopy) {
 	        _cutOrCopiedFigure = _currentFigure;
 	    }
+	    _cutOrCopiedFigure = new VersatileFigure
+	        (_cutOrCopiedFigure);
+	}
+	_cutOrCopiedFigure.setInteractor (_currentFigure.getInteractor ());
+    }
+	    
+	    /*
+
 	    if (_currentFigure instanceof PaintedFigure) {
 	        PaintedList paintedList = ((PaintedFigure) _currentFigure).getPaintedList ();
 		ArrayList paintedObjects = paintedList.paintedObjects;
@@ -854,5 +826,7 @@ public class IconEditor {
 	    _cutOrCopiedFigure.setInteractor (_currentFigure.getInteractor ());
 	}
     }
+
+	    */
 }
 
