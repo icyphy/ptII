@@ -48,10 +48,27 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	Anon.java \
+	ArrayLength.java \
+	CharTest.java \
+	ClassAccess.java \
+	ExceptionTest.java \
 	FindExtraImportsVisitorTest.java \
+	ForTest.java \
+	IFace.java \
+	InnerClass.java \
+	InnerIFace.java \
+	OneFM.java \
+	OneField.java \
 	ReflectTest.java \
 	ReflectTestFields.java \
-	ReflectTestInterface.java
+	ReflectTestInterface.java \
+	Simple.java \
+	Simple2.java \
+	Switch.java \
+	TestSuper.java \
+	UseFields.java \
+	UseMethods.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

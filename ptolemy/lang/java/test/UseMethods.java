@@ -66,6 +66,6 @@ public class UseMethods {
 
         return o;
     }
-
+}
 
     
