@@ -418,6 +418,63 @@ public class Query extends JPanel {
         }
     }
 
+    /** Set the displayed text of an item that has been added using
+     *  addLine.
+     *  @param name The name of the entry.
+     *  @param value The string to display.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry is not a
+     *   display.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     */
+    public void setLine(String name, String value) {
+        Object result = _entries.get(name);
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+            name + " \" in the query box.");
+        }
+        if (result instanceof JTextField) {
+            JTextField line = (JTextField)result;
+            line.setText(value);
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+            name + "\" is not a line, and hence cannot be set using "
+            + "setLine().");
+        }
+    }
+
+
+    /** Set the position of an item that has been added using
+     *  addSlider.
+     *  @param name The name of the entry.
+     *  @param value The value to set the slider position.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry is not a
+     *   slider.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     */
+    public void setSlider(String name, int value) {
+        Object result = _entries.get(name);
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+            name + " \" in the query box.");
+        }
+        if (result instanceof JSlider) {
+            JSlider theSlider = (JSlider)result;
+	    // Set the new slider position.
+            theSlider.setValue(value);
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+            name + "\" is not a slider, and hence cannot be set using "
+            + "setSlider().");
+        }
+    }
+
+
     /** Specify the preferred width to be used for entry boxes created
      *  in using addLine().  If this is called multiple times, then
      *  only the largest value specified actually affects the layout.
