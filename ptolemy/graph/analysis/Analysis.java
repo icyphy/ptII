@@ -28,7 +28,15 @@ import ptolemy.graph.Graph;
 
 //////////////////////////////////////////////////////////////////////////
 //// Analysis
-/** A base class for analyses on graphs.
+/** A base class for analyses on graphs. To faciliate demand-driven
+and incremental recomputation of analyses, analysis results are cached
+internally (see {@link #_cachedResult()}), and are recomputed only
+when the graph has changed since the last request (via {@link #result()})
+for the analysis result. The internally-cached result (<em>cached result</em>)
+of an analysis is directly accessible only by derived classes; however,
+its status can be queried with the {@link #obsolete()} method to determine
+if a subsequent invocation of {@link #result()} will trigger recomputation
+of the analysis.
 
 @author Shuvra S. Bhattacharyya and Mingyung Ko
 @version $Id$
@@ -136,11 +144,15 @@ public class Analysis {
          return "";
     }
 
-    /** Test whether or not the graph has changed since the last
-     *  time the analysis was performed (i.e., since
-     *  the most recent invocation of {@link #registerComputation()}).
-     *  @return True if the graph has changed since the last time
-     *  the analysis was performed.
+    /** Test whether or not the cached result of the analysis is 
+     *  obsolete relative to the associated graph. In other words, test if the 
+     *  graph has changed 
+     *  since the last time the analysis was performed (i.e., since
+     *  the most recent invocation of {@link #result()}). If the cached
+     *  result is obsolete, then a subsequent invocation of {@link #result}
+     *  will trigger recomputation of the analysis.
+     *  @return True if the cached result is obsolete relative to the
+     *  associated graph. 
      */
     public boolean obsolete() {
         return _lastComputation < graph().changeCount();
@@ -176,7 +188,7 @@ public class Analysis {
     ////                       protected methods                   ////
 
     /** Perform the graph analysis and return the resulting value.
-     *  Upon entry, {@link #_cachedResult} contains the result of the
+     *  Upon entry, {@link #_cachedResult()} provides the result of the
      *  previous invocation of the analysis; this value can be
      *  used, for example, to facilitate incremental analyses.
      *  This method just returns null, and will typically be overridden
@@ -186,7 +198,7 @@ public class Analysis {
         return null;
     }
 
-    /** Convert the cached result ({@link _cachedResult}) to a form that is 
+    /** Convert the cached result ({@link #_cachedResult()}) to a form that is 
      *  suitable for the client to access (via {@link #result()}). 
      *  This base class method just returns a reference to the cached result.
      *  However, it may be appropriate for derived classes to override this
@@ -200,16 +212,19 @@ public class Analysis {
      *  across successive invocations of the analysis.
      */
     protected Object _convertResult() {
-        return _cachedResult;
+        return _cachedResult();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
-    /** The result of the most recent computation of the analysis (without
+    /** The result of the most recent computation of the analysis,
+     *  as determined by {@link #_compute()}, and without
      *  conversion by {@link #_convertResult()}.
      */
-    protected Object _cachedResult = null;
+    protected final Object _cachedResult() {
+        return _cachedResult;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -234,6 +249,10 @@ public class Analysis {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The result of the most recent computation of the analysis, as determined
+    // by _compute(), and without conversion by _convertResult().
+    private Object _cachedResult = null;
 
     // The graph that this analysis is associated with.
     private Graph _graph;

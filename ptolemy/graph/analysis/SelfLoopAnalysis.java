@@ -92,7 +92,7 @@ public class SelfLoopAnalysis extends Analysis {
     }
 
     protected Object _convertResult() {
-        return Collections.unmodifiableList((List)_cachedResult);
+        return Collections.unmodifiableList((List)_cachedResult());
     }
 
 }
