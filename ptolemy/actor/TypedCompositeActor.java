@@ -181,9 +181,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
-            throw new InternalErrorException(
-                    "TypedCompositeActor.newPort: Internal error: " +
-		    ex.getMessage());
+            throw new InternalErrorException(this, ex, null);
         } finally {
             workspace().doneWriting();
         }
@@ -208,9 +206,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
-            throw new InternalErrorException(
-                    "TypedCompositeActor.newRelation: Internal error: "
-                    + ex.getMessage());
+            throw new InternalErrorException(this, ex, null);
         } finally {
             workspace().doneWriting();
         }
@@ -292,11 +288,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         "Type conflicts occurred in " + topLevel.getFullName()
                         + " on the following inequalities:");
 	    }
-        } catch (IllegalActionException illegalAction) {
+        } catch (IllegalActionException ex) {
 	    // This should not happen. The exception means that
 	    // _checkDeclaredType or typeConstraintList is called on a
 	    // transparent actor.
-	    throw new InternalErrorException(illegalAction.getMessage());
+	    throw new InternalErrorException(this, ex, null);
 	}
     }
 

@@ -698,9 +698,8 @@ public class TypedIOPort extends IOPort implements Typeable {
             try {
                 _declaredType = (Type)type.clone();
             } catch (CloneNotSupportedException cloneNotSupported) {
-                throw new InternalErrorException(
-                        "TypedIOPort.setTypeEquals: Cannot clone type" +
-                        cloneNotSupported.getMessage());
+                throw new InternalErrorException(this, cloneNotSupported,
+                        "TypedIOPort.setTypeEquals: Cannot clone type");
             }
 
             // Note: we are careful here to set the type before notifying
@@ -788,9 +787,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
-                    throw new InternalErrorException(
-                            "TypedIOPort.transferInputs: Internal error: " +
-                            ex.getMessage());
+                    throw new InternalErrorException(this, ex, null);
                 }
             }
         }
