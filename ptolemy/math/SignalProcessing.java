@@ -592,7 +592,7 @@ public final class SignalProcessing {
                 }
                 for (int i = j; i < size; i = i+2*le) {
                     int k = i+le;
-                    Complex temp = Complex.add(x[i], [k]);
+                    Complex temp = Complex.add(x[i], x[k]);
                     x[k].subtract(x[i]);
                     x[k].negate();
                     x[k].multiply(wptr);
