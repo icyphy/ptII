@@ -95,39 +95,28 @@ install: all
 depend:
 	@echo "no dependencies in this directory"
 
-demo: deepDemo
-deepDemo: compileDeepDemo runDeepDemo
+demo: compileDemo runDemo
+timeDemo: compileDemo timeOrthoCommDemo
 
+# OrthogonalCom - There is no .xml file for this model
+MODEL =			OrthogonalCom
+SOURCECLASS =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
 
-# Orthocom
-SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
-MODEL = OrthogonalCom
-SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+# Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
+#  make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/CommDistDiscard.xml MODEL=CommDistDiscard compileDemo runDemo 
+# To run on ArrayAppend:
+#  make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDemo runDemo
 
-# Other tests
-#make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/CommDistDiscard.xml MODEL=CommDistDiscard compileDeepDemo 
-#make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
-
-
-TARGETPATH =	ptolemy/copernicus/java/cg/$(MODEL)
-
-# Dump the .class files for each model in a separate directory
-# so as to make debugging easier
-TARGETPACKAGE = ptolemy.copernicus.java.cg.$(MODEL)
+# Location where we create code that we are generating
+TARGETPACKAGE = 	ptolemy.copernicus.java.cg.$(MODEL)
+TARGETPATH =		ptolemy/copernicus/java/cg/$(MODEL)
 
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
 
-# jad is a Java disassembler we use for debugging
-# See http://www.geocities.com/SiliconValley/Bridge/8617/jad.html
-JAD=jad
-
-# Package that jad creates classes in
-JADTARGETPACKAGE =	$(TARGETPACKAGE).jad
-
-# Path to directory where jad creates classes
-JADTARGETPATH =		$(ROOT)/$(TARGETPATH)/jad
-JADTARGET=		$(ROOT)/$(TARGETPATH)
-
+# Package that the decompiler creates classes in
+DECOMPILERTARGETPACKAGE =	$(TARGETPACKAGE)
+# Directory that the decompiler creates classes in
+DECOMPILERTARGETPATH =		$(ROOT)/$(TARGETPATH)
 
 JVM_SIZE = -Xmx256m
 
@@ -140,7 +129,7 @@ WATCH_DOG_TIMEOUT =     150000
 # Number of Iterations to run the generated code for.
 ITERATIONS =		50000
 ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
-compileDeepDemo: $(JCLASS)
+compileDemo: $(JCLASS)
 	@echo "generate deep code for $(SOURCECLASS)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
@@ -193,13 +182,19 @@ runSnapshots:
 		-Xfuture -classpath "$(CLASSPATH)" \
 		$(TARGETPACKAGE).Main | tail -1 
 
-runDeepDemo:
+runDemo:
 	@echo "Run the deep model"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	$(TARGETPACKAGE).Main 
 
-runStaticDeepDemo:
+timeOrthoCommDemo:
+	@echo "Time the model for $(ITERATIONS) iterations"
+	$(JAVA) \
+	-Xfuture -classpath "$(CLASSPATH)" \
+	$(TARGETPACKAGE).Main  | tail
+
+runStaticDemo:
 	@echo "Run the deep model static"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
@@ -211,7 +206,7 @@ runStaticDeepDemo:
 JADTARGETCLASS =		Main
 
 # Generate a .java file from a class file and recompile it
-recompileDeepDemo:
+recompileDemo:
 	@echo "Convert .class file back to .java file, compile it, run it"
 	$(JAD) -o -d $(JADTARGETPATH) $(JADTARGET)/$(JADTARGETCLASS)
 	sed 's/$(TARGETPACKAGE)/$(JADTARGETPACKAGE)/' \

@@ -70,43 +70,38 @@ all: jclass
 
 install: all $(PTPACKAGE).jar
 
-demo: shallowDemo
-shallowDemo: compileShallowDemo runOrthoCommDemo timeOrthoCommDemo
+demo: compileDemo runOrthoCommDemo timeOrthoCommDemo
 
 # OrthogonalCom - There is no .xml file for this model
-MODEL = OrthogonalCom
-SOURCECLASS = ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+MODEL =			OrthogonalCom
+SOURCECLASS =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
 
-# Usually, we run shallow code gen on OrthogonalCom, but
-# if the lines below are uncommented, and we run 
-#   make compileShallowDemo runShallowDemo
-# then we run on the IIR test model.  To run the demo without editing this
-# file, use:
-#   make compileShallowDemo runShallowDemo MODEL=IIR SOURCECLASS=../../../ptolemy/actor/lib/test/auto/IIR.xml	
-#
-#MODEL = IIR
-#SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/$(MODEL).xml
+# Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
+#   make MODEL=IIR SOURCECLASS=../../../ptolemy/actor/lib/test/auto/IIR.xml compileDemo runDemo 
+# To run on ArrayAppend:
+#   make MODEL=ArrayAppend SOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml compileDemo runDemo 
 
-
+# Location where we create code that we are generating
 TARGETPACKAGE = 	ptolemy.copernicus.shallow.cg.$(MODEL)
 TARGETPATH =		ptolemy/copernicus/shallow/cg/$(MODEL)
 
-JADTARGETPACKAGE =	ptolemy.copernicus.shallow.cg.jad
-JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/shallow/cg/jad
+# Package that the decompiler creates classes in
+DECOMPILERTARGETPACKAGE =	$(TARGETPACKAGE)
+# Directory that the decompiler creates classes in
+DECOMPILERTARGETPATH =		$(ROOT)/$(TARGETPATH)
 
-
-JVM_SIZE = -Xmx256m
+JVM_SIZE = 		-Xmx256m
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make SOOT_USER_ARGS=-h
 SOOT_USER_ARGS =
 
 # Time that we should let code generation run before exiting in ms.
-WATCH_DOG_TIMEOUT = 100000
+WATCH_DOG_TIMEOUT = 	100000
 
-# The tests and the UI use the compileShallowDemo rule, so if you
+# The tests and the UI use the compileDemo rule, so if you
 # change this rule, be sure to run make tests
-compileShallowDemo: $(JCLASS)
+compileDemo: $(JCLASS)
 	@echo "generate shallow code for '$(SOURCECLASS)'"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
@@ -155,18 +150,18 @@ runShallowDemo:
 JAD=jad
 
 # Generate a .java file from a class file and recompile it
-recompileShallowDemo:
+recompileDemo:
 	@echo "Convert .class file back to .java file, compile it, run it"
-	$(JAD) -o -d $(JADTARGETPATH) $(ROOT)/$(TARGETPATH)/CG$(MODEL)
-	sed 's/$(TARGETPACKAGE)/$(JADTARGETPACKAGE)/' \
-		$(JADTARGETPATH)/CG$(MODEL).jad > \
-		$(JADTARGETPATH)/CG$(MODEL).jad2
-	sh test/jad2java $(JADTARGETPATH)/CG$(MODEL).jad2 \
-		> $(JADTARGETPATH)/CG$(MODEL).java
-	$(JAVAC) -classpath $(ROOT) $(JADTARGETPATH)/CG$(MODEL).java
+	$(JAD) -o -d $(DECOMPILERTARGETPATH) $(ROOT)/$(TARGETPATH)/CG$(MODEL)
+	sed 's/$(TARGETPACKAGE)/$(DECOMPILERTARGETPACKAGE)/' \
+		$(DECOMPILERTARGETPATH)/CG$(MODEL).jad > \
+		$(DECOMPILERTARGETPATH)/CG$(MODEL).jad2
+	sh test/jad2java $(DECOMPILERTARGETPATH)/CG$(MODEL).jad2 \
+		> $(DECOMPILERTARGETPATH)/CG$(MODEL).java
+	$(JAVAC) -classpath $(ROOT) $(DECOMPILERTARGETPATH)/CG$(MODEL).java
 	$(JAVA) -Xfuture -classpath "$(ROOT)" \
 		ptolemy.actor.gui.CompositeActorApplication \
-		-class $(JADTARGETPACKAGE).CG$(MODEL)
+		-class $(DECOMPILERTARGETPACKAGE).CG$(MODEL)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
