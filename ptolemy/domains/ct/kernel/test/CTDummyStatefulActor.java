@@ -38,9 +38,8 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyStatefulActor
 /** 
-Description of the class
-@author  youname
-@version %W%	%G%
+@author Jie Liu
+@version $Id$
 */
 public class CTDummyStatefulActor extends CTActor
         implements CTStatefulActor {
