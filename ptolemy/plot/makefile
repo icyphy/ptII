@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm
-PTVERSION =	5.1p2
+PTVERSION =	5.1p3
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
@@ -302,7 +302,7 @@ fixtmpdist:
 	echo "For more information, see ptolemy/plot/doc/index.htm" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "Installer notes " >> $(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Installer notes:" >> $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "If you are using the auto installer, then note that" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "under Windows, the Ptplot programs will be added to" >> \
@@ -337,6 +337,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "/usr/local/ptplot${PTVERSION} to their Java CLASSPATH." >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "To build under Solaris:" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "set the PTII variable to this directory " >> \

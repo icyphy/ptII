@@ -1385,7 +1385,7 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public static final String PTPLOT_RELEASE = "5.1p2";
+    public static final String PTPLOT_RELEASE = "5.1p3";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
