@@ -2660,7 +2660,7 @@ test MoMLParser-13.4 {test with weird configure text containing escaped tags wit
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="utilities" extends="ptolemy.moml.EntityLibrary">
-        <configure><?moml
+        <configure>
             <group>
                 <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
@@ -2669,7 +2669,7 @@ test MoMLParser-13.4 {test with weird configure text containing escaped tags wit
                     </property>
                 </entity>
             </group>
-        ?></configure>
+        </configure>
     </class>
 </entity>
 } {ptolemy.data.expr.Parameter {.top.utilities.actor.ParamWithEscapedValue} "hello"}}

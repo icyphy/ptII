@@ -76,7 +76,7 @@ test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="lib" class="ptolemy.moml.EntityLibrary">
-        <configure><?moml
+        <configure>
             <group>
                 <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
@@ -85,7 +85,7 @@ test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
                 <entity name="b" class="ptolemy.actor.AtomicActor">
                 </entity>
             </group>
-        ?></configure>
+        </configure>
     </entity>
 </entity>
 }
@@ -115,7 +115,7 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.moml.EntityLibrary">
-    <configure><?moml
+    <configure>
         <group>
             <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
             </property>
@@ -124,6 +124,6 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
             <entity name="b" class="ptolemy.actor.AtomicActor">
             </entity>
         </group>
-    ?></configure>
+    </configure>
 </entity>
 }
