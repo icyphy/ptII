@@ -116,9 +116,6 @@ we can predict in advance that no write access will be needed.
 
 public final class Workspace implements Nameable, Serializable {
 
-    private static final boolean DEBUG = false;
-    private static final boolean DEBUG1 = false;
-
     /** Create a workspace with an empty string as its name.
      */
     public Workspace() {
@@ -235,9 +232,6 @@ public final class Workspace implements Nameable, Serializable {
         // (lmuliadi).
 
         if (current instanceof PtolemyThread) {
-            if (DEBUG) {
-                System.out.println("PtolemyThread calling doneReading");
-            }
             // The current thread is a PtolemyThread.
             PtolemyThread ptThread = (PtolemyThread)current;
             if (ptThread.readDepth == 0) {
@@ -256,9 +250,6 @@ public final class Workspace implements Nameable, Serializable {
                 }
             }
         } else {
-            if (DEBUG) {
-                System.out.println("Thread calling doneReading");
-            }
             // The current thread is not a PtolemyThread.
             ReadDepth depth = (ReadDepth)_readers.get(current);
             //System.out.println("Thread returning a read access");
@@ -361,9 +352,6 @@ public final class Workspace implements Nameable, Serializable {
             Thread current = Thread.currentThread();
 
             if (current instanceof PtolemyThread) {
-                if (DEBUG) {
-                    System.out.println("PtolemyThread calling getReadAccess");
-                }
                 // If the current thread is an instance of PtolemyThread,
                 // then use the readDepth field of it.
                 PtolemyThread ptThread = (PtolemyThread)current;
@@ -380,9 +368,6 @@ public final class Workspace implements Nameable, Serializable {
                     }
                 }
             } else {
-                if (DEBUG) {
-                    System.out.println("Thread calling getReadAccess");
-                }
                 // The current thread is not an instance of PtolemyThread.
                 ReadDepth depth = (ReadDepth)_readers.get(current);
                 if (depth != null) {
@@ -401,7 +386,6 @@ public final class Workspace implements Nameable, Serializable {
                             // (lmuliadi)
                             depth = new ReadDepth();
                             _readers.put(current, depth);
-                            //System.out.println("Getting a new Read access ----");
                         }
                         depth.incr();
                         //System.out.println("Incrementing read access");
@@ -456,7 +440,7 @@ public final class Workspace implements Nameable, Serializable {
             }
             if ( _writer == null) {
                 // there are no writers.  Are there any readers?
-                if (_readers.isEmpty() && _numPtReaders==0) {
+                if (_readers.isEmpty() && _numPtReaders == 0) {
                     // No readers
 
                     _writer = current;
@@ -469,10 +453,6 @@ public final class Workspace implements Nameable, Serializable {
 
                 if (current instanceof PtolemyThread) {
                     // current thread is a PtolemyThread.
-                    if (DEBUG) {
-                        System.out.println("PtolemyThread calling " +
-                                "getWriteAccess");
-                    }
                     PtolemyThread ptThread = (PtolemyThread)current;
                     if (_numPtReaders == 1
                             && _readers.size() == 0
@@ -485,10 +465,6 @@ public final class Workspace implements Nameable, Serializable {
                     }
                 } else {
                     // current thread is not a PtolemyThread.
-                    if (DEBUG) {
-                        System.out.println("Thread calling " +
-                                "getWriteAccess");
-                    }
                     if (_readers.size() == 1 &&
                             _numPtReaders == 0 &&
                             _readers.get(current) != null) {
@@ -497,54 +473,8 @@ public final class Workspace implements Nameable, Serializable {
                         return;
                     }
                 }
-
-
-                /*
-
-                  if (_readers.size() == 1 && _readers.get(current) != null) {
-                  if (DEBUG) {
-                  System.out.println("Thread calling " +
-                  "getWriteAccess");
-                  }
-                  // Sole reader is this thread.
-
-                  _writer = current;
-
-                  _writeDepth = 1;
-                  return;
-                  }
-
-                  if (current instanceof PtolemyThread) {
-                  if (DEBUG) {
-                  System.out.println("PtolemyThread calling " +
-                  "getWriteAccess");
-                  }
-                  PtolemyThread ptThread = (PtolemyThread)current;
-                  if (_numPtReaders==1 && ptThread.readDepth > 0) {
-                  // Sole reader is this thread.
-
-                  _writer = current;
-
-                  _writeDepth = 1;
-                  return;
-                  }
-                  }
-
-
-                */
-
             }
 	    try {
-                if (DEBUG1) {
-                    System.out.println(Thread.currentThread().getName() +
-                            ": cannot get write access yet, calling wait().");
-                    Enumeration reads = _readers.keys();
-                    while (reads.hasMoreElements()) {
-                        Thread thread = (Thread)reads.nextElement();
-                        ReadDepth r = (ReadDepth)_readers.get(thread);
-                        System.out.println(thread.getName() + ": " + r._count);
-                    }
-                }
 		wait();
 	    } catch (InterruptedException e) {
 		System.err.println(e.toString());
