@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1998-2000 The Regents of the University of California.
+# @Copyright (c) 2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/dt
 
-DIRS =		kernel doc
+DIRS =		kernel
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -54,7 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel doc
+MISC_FILES =	kernel
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
