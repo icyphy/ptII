@@ -51,7 +51,7 @@ package ptolemy.math;
  * @version @(#)MatrixMath.java	1.2   1/21/98
  */
 
-public final class MatrixMath {
+public class MatrixMath {
 
     // Private constructor prevents construction of this class.
     private MatrixMath() {}
@@ -285,7 +285,9 @@ public final class MatrixMath {
 
         double[][] Ai = allocCopy(A);
 
-        // We depend on each of the elements being initialized to 0.0
+        System.out.println(toString(Ai));
+
+        // We depend on each of the elements being initialized to 0
         int[] pivotFlag = new int[n];
         int[] swapCol = new int[n];
         int[] swapRow = new int[n];
@@ -314,7 +316,7 @@ public final class MatrixMath {
             // swap rows to make this diagonal the biggest absolute pivot
             if (irow != icol) {
                 for (int col = 0; col < n; col++) {
-                    double temp = Ai[irow][icol];
+                    double temp = Ai[irow][col];
                     Ai[irow][col] = Ai[icol][col];
                     Ai[icol][col] = temp;
                 }
@@ -330,7 +332,7 @@ public final class MatrixMath {
             }
 
             // divide the row by the pivot
-            double pivotInverse = 1.0 / A[icol][icol];
+            double pivotInverse = 1.0 / Ai[icol][icol];
             Ai[icol][icol] = 1.0; // pivot = 1 to avoid round off
             for (int col = 0; col < n; col++) {
                 Ai[icol][col] *= pivotInverse;
@@ -647,7 +649,7 @@ public final class MatrixMath {
      *  2 matrices, that are of the same size, are all within a constant range,
      *  [-R, R], where R is the allowed error. The specified absolute
      *  difference must be non-negative.
-     *  More concisely, abs(M1[i,j] - M2[i,j]) must be within [R, R,
+     *  More concisely, abs(M1[i,j] - M2[i,j]) must be within [R, R]
      *  for 0<=i<m and 0<=j<n where M1 and M2 are both m x n matrices.
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
