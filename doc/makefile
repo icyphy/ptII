@@ -362,6 +362,17 @@ codeDoc.jar:
 	"$(JAR)" -cvf $@ -C $(ROOT) doc/codeDoc
 
 
+# Build with all common packages
+all_packages:
+	$(MAKE) \
+	  PTCOMM_PACKAGES=ptolemy.actor.lib.io.comm \
+	  "PTGR_PACKAGES=ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" \
+	  PTJAI_PACKAGES=ptolemy.actor.lib.jai \
+	  PTJMF_PACKAGES=ptolemy.actor.lib.jmf \
+	  PTJOYSTICK_PACKAGES=ptolemy.actor.lib.joystick \
+	  PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime \
+	  PTX10_PACKAGES=ptolemy.actor.lib.x10 codeDoc/tree.html
+
 # Vergil gets special versions of the html files because the JDK1.3 Java
 # HTML viewer is not very functional.
 vergil_docs: $(VERGIL_DOCS)
