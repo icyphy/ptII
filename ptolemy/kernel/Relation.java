@@ -48,7 +48,7 @@ do have port references. Relations come in two types as follows:
 @version $Id$
 @see pt.kernel.Particle
 */
-public class Relation extends NamedObj {
+public class Relation extends Node {
     /** 
      */	
     public Relation() {
