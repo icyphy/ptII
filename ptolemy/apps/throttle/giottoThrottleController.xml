@@ -1,7 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="giottoThrottleControllerRefined" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" encoding="UTF-8"?><entity name="giottoThrottleControllerRefined" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 620]">
@@ -9,7 +6,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[200, 218]">
     </property>
     <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
-        <property name="initialParametersURL" class="ptolemy.data.expr.StringParameter" value="&quot;ptolemy/copernicus/kernel/Generator.xml&quot;">
+        <property name="initialParametersURL" class="ptolemy.data.expr.StringParameter" value="&#34;ptolemy/copernicus/kernel/Generator.xml&#34;">
         </property>
         <property name="codeGenerator" class="ptolemy.kernel.util.StringAttribute" value="deep">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -44,10 +41,10 @@
         <property name="directory" class="ptolemy.kernel.util.StringAttribute" value="d:\ptII\ptolemy\apps\throttle">
             <doc name="tooltip">Directory into which to put generated code.</doc>
         </property>
-        <property name="compileOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;d:/ptII;.&quot;">
+        <property name="compileOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &#34;d:/ptII;.&#34;">
             <doc name="tooltip">Options to pass to the compiler.</doc>
         </property>
-        <property name="runOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;d:/ptII;.&quot;">
+        <property name="runOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &#34;d:/ptII;.&#34;">
             <doc name="tooltip">Options to use when executing the code.</doc>
         </property>
         <property name="packageName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.apps.throttle">
@@ -75,23 +72,23 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&#34;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
                 </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                 </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&#34;">
                 </property>
             </property>
         </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
                 </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                 </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&#34;">
                 </property>
             </property>
         </property>
@@ -972,11 +969,7 @@ implemented in a single Giotto task.</text></svg></configure>
                     <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
                         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="driver">
                         </property>
-                        <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                            <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
-  </configure>
-                        </property>
+                        <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
                         <property name="annotation" class="ptolemy.kernel.util.Attribute">
                             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                             </property>
@@ -3944,6 +3937,7 @@ interpolated using zero-order-hold.</text></svg></configure>
                     <property name="multiport"/>
                 </port>
             </entity>
+
             <entity name="Ax_21" class="ptolemy.actor.lib.MultiplyDivide">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 354.5">
                 </property>
