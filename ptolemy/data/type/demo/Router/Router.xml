@@ -65,7 +65,7 @@ Rayleigh distribution.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 572}}">
     </property>
     <entity name="Record Assembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 240.0">
@@ -242,7 +242,7 @@ Rayleigh distribution.</text>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="As Received">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 270, 290, 227}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 225.0">
         </property>
@@ -258,7 +258,7 @@ Rayleigh distribution.</text>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Resequenced">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={671, 270, 290, 227}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 325.0">
         </property>
