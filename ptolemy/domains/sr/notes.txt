@@ -1,20 +1,19 @@
 
 To Do:
 
-run ptolemy classic SR
-add, update, and correct comments
+review comments for correctness
 FIXMEs
 
-are tests running?
+verify that sr tests are running in the nightly build
 
-add SRDirector and sr.lib to vergil library
+add SRDirector and srentities to vergil library
 
-move clone functionality from TAA to NamedObj and Entity
 SR in SR (to make the inner actor strict, use an inner director)
 FSM composite actor in SR
-global resets, UI activity, reflex game, examples by sedwards
-
 embed SR in DT for timed SR
+
+global resets, UI activity, reflex game, examples by sedwards
+run ptolemy classic SR
 
 find second reader
 
