@@ -45,6 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
@@ -484,14 +485,19 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Create receivers and input variables for the input ports of this
-     *  actor. Set current state to the initial state. Throw an
-     *  IllegalActionException if this actor does not contain a state with
+     *  actor, and validate attributes. Set current state to the initial
+     *  state. Throw an exception if this actor does not contain a state with
      *  name specified by the <i>initialStateName</i> attribute.
      *  @exception IllegalActionException If this actor does not contain a
      *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void preinitialize() throws IllegalActionException {
         _createReceivers();
+        Iterator attributes = attributeList(Settable.class).iterator();
+        while(attributes.hasNext()) {
+            Settable attribute = (Settable)attributes.next();
+            attribute.validate();
+        }
         _createInputVariables();
         _gotoInitialState();
     }
