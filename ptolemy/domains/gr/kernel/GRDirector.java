@@ -664,7 +664,7 @@ public class GRDirector extends StaticSchedulingDirector {
 	try {
 	    // If Java3D is not present, then this class is usually
 	    // the class that is reported as missing
-	    Class java3dClass = Class.forName("javax/vecmath/Tuple3f");
+	    Class java3dClass = Class.forName("javax.vecmath.Tuple3f");
 	} catch (Exception ex) {
 	    throw new InternalErrorException(this, ex,
 	        "The GR domain requires that Java 3D be installed.\n" +
