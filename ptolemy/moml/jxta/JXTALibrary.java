@@ -506,7 +506,6 @@ public class JXTALibrary extends EntityLibrary
             }
         }
         System.out.println("can't construct a new actor instance.");
-        StringBuffer argumentBuffer = new StringBuffer();
         throw new Exception("Cannot find a suitable constructor for"
                 + newClass.getName());
 
@@ -726,10 +725,10 @@ public class JXTALibrary extends EntityLibrary
     ////                         private variables                 ////
 
     private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
-    private String _actorListFileName;
+
     private ResolverQueryMsg _actorQueryMessage;
     private ResolverResponseMsg _actorQueryResponse = null;
-    private Timer _actorQueryTimer;
+
     private Authenticator _authenticator;
     private CompositeEntity _cachedLib;
     private String _configDir;
@@ -741,12 +740,11 @@ public class JXTALibrary extends EntityLibrary
     private static final String _DISCOVERED_ACTORS = "discoveredActors.xml";
     private PeerGroup _group;
     private PeerGroupAdvertisement _groupAdv;
-    private InputPipe _inputPipe;
+
     private PeerGroup _netPeerGroup;
     private OutputPipe _outputPipe;
-    private Timer _peerDiscoveryTimer;
+
     private ResolverQueryMsg _pipeAdvMessage;
-    private String _pipeAdvString;
     private PipeService _pipeSvc;
     private Properties _properties;
     private PipeAdvertisement _ptPipeAdv;
