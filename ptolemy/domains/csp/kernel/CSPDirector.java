@@ -297,6 +297,33 @@ public class CSPDirector extends ProcessDirector {
         _actorsBlocked--;
     }
 
+    /** Determine if all of the threads containing actors controlled
+     *  by this director have stopped due to a call of stopFire() or
+     *  because they are blocked or delayed.
+     * @return True if all active threads containing actors controlled
+     *  by this thread have stopped; otherwise return false.
+     */
+    protected synchronized boolean _areAllThreadsStopped() {
+	long threadsStopped = _getStoppedProcessesCount();
+	long actorsActive = _getActiveActorsCount();
+
+	// All threads are stopped due to stopFire()
+	if( threadsStopped != 0 && threadsStopped >= actorsActive ) {
+	    return true; 
+	} 
+
+	// Some threads are stopped due to stopFire() while others
+	// are blocked waiting to read or write data.
+	if( threadsStopped + _actorsBlocked + _actorsDelayed 
+		    >= actorsActive ) {
+	    if( threadsStopped != 0 ) {
+	        return true; 
+	    }
+	}
+
+	return false;
+    }
+
     /** Determines how the director responds when a deadlock is
      *  detected. It is where nearly all the control for the
      *  model at this level in the hierarchy is located.
