@@ -774,7 +774,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    moml.append("<group>\n");
 	    failmoml.append("<group>\n");
             // Make the request in the context of the container.
-            final NamedObj container = getChangeRequestParent(getToplevel());
+            final CompositeEntity container = 
+                (CompositeEntity)getChangeRequestParent(getToplevel());
 
 	    String relationName = "";
 
@@ -803,14 +804,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	    ChangeRequest request =
 		new MoMLChangeRequest(PtolemyGraphModel.this,
-				      getToplevel(),
+				      container,
 				      moml.toString()) {
 		    protected void _execute() throws Exception {
 			super._execute();
 			link.setHead(newLinkHead);
 			if(relationNameToAdd != null) {
                             ComponentRelation relation =
-			    (ComponentRelation)getToplevel().getRelation(relationNameToAdd);
+			    (ComponentRelation)container.getRelation(
+                                    relationNameToAdd);
 			    link.setRelation(relation);
 			} else {
 			    link.setRelation(null);
@@ -833,7 +835,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
                     ChangeRequest changeRequest =
 			new MoMLChangeRequest(PtolemyGraphModel.this,
-					      getToplevel(),
+					      container,
 					      failmoml.toString());
 		    container.requestChange(changeRequest);
 		}
@@ -873,7 +875,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    failmoml.append("<group>\n");
 
             // Make the request in the context of the container.
-            final NamedObj container = getChangeRequestParent(getToplevel());
+            final CompositeEntity container = 
+                (CompositeEntity)getChangeRequestParent(getToplevel());
 
 	    String relationName = "";
 
@@ -902,13 +905,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
  
 	    ChangeRequest request =
 		new MoMLChangeRequest(PtolemyGraphModel.this,
-				      getToplevel(),
+				      container,
 				      moml.toString()) {
 		   protected void _execute() throws Exception {
 		       super._execute();
 		       link.setTail(newLinkTail);
 		       if(relationNameToAdd != null) {
-			    link.setRelation(getToplevel().getRelation(relationNameToAdd));
+			    link.setRelation(container.getRelation(relationNameToAdd));
 		       } else {
 			   link.setRelation(null);
 		       }
@@ -930,7 +933,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     // called request or we get a compile error.
 		    ChangeRequest changeRequest =
 			new MoMLChangeRequest(PtolemyGraphModel.this,
-					      getToplevel(),
+					      container,
 					      failmoml.toString());
 		    container.requestChange(changeRequest);
 		}
@@ -1284,7 +1287,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                        protected methods                  ////
 
     /** Update the graph model.  This is called whenever a change request is 
      *  executed.  In this class the internal set of link objects is 
