@@ -91,6 +91,9 @@ OPTIONAL_FILES = \
 	'MoMLViewerApplet$$ObjectContextMenuFactory.class' \
 	'MoMLViewerApplet$$PortContextMenuFactory$$PortDescriptionFactory.class' \
 	'MoMLViewerApplet$$PortContextMenuFactory.class' \
+	'MoMLViewerApplet$$StateContextMenuFactory.class' \
+	'MoMLViewerApplet$$TransitionContextMenuFactory.class' \
+	'TypeAnimatorApplet$$PortTypeListener.class' \
 	'VergilApplication$$1.class' \
 	'VergilApplication$$2.class' \
 	'VergilApplication$$3.class' \
@@ -98,6 +101,7 @@ OPTIONAL_FILES = \
 	'VergilApplication$$ClassReloadingService.class' \
 	'VergilApplication$$MouseFocusMover.class' \
 	'VergilApplication$$TitleChanger.class'
+
 
 
 JCLASS = $(JSRCS:%.java=%.class)

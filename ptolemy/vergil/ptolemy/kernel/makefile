@@ -122,6 +122,7 @@ OPTIONAL_FILES = \
 	'PtolemyGraphModel$$ExternalPortModel.class' \
 	'PtolemyGraphModel$$IconModel.class' \
 	'PtolemyGraphModel$$LinkModel.class' \
+	'PtolemyGraphModel$$LinkModel$$LinkChangeListener.class' \
 	'PtolemyGraphModel$$PortModel.class' \
 	'PtolemyGraphModel$$RemoveableNodeModel.class' \
 	'PtolemyGraphModel$$ToplevelModel.class' \
