@@ -41,7 +41,7 @@ import java.util.LinkedList;
 /** Static functions for manipulating lists of children of a TreeNode.
 In general, a list may contain TreeNodes or other lists.
 
-@author Jeff Tsay
+@author Jeff Tsay and Shuvra S. Bhattacharyya 
 @version $Id$
  */
 public class TNLManip {
@@ -223,6 +223,10 @@ public class TNLManip {
                 } else {
                     retList.add(returnValue);
                 }
+
+                // FIXME: In the case of a null return value, should
+                // NullValue.instance be set as the property value?             
+                node.setProperty(node.RETURN_VALUE_AS_ELEMENT_KEY, returnValue);
 
             } else if (object instanceof List) {
                 returnValue = traverseList(visitor, args, (List)object);
