@@ -134,7 +134,7 @@ import java.applet.Applet;
  * arbitrary numbers as supported by the Double parser in Java.
  *
  * @author: Edward A. Lee
- * @version: $Id$
+ * @version: @(#)Plot.java	1.11 09/11/97
  */
 public class Plot extends PlotBox {
 
@@ -225,6 +225,13 @@ public class Plot extends PlotBox {
      */
     public String getAppletInfo() {
         return "Plot 1.0: A flexible data plotter. By: Edward A. Lee, eal@eecs.berkeley.edu";
+    }
+
+    /**
+     * Return the maximum number of datasets
+     */
+    public int getMaxDataSets() {
+        return _MAX_DATASETS;
     }
 
     /**
@@ -510,7 +517,7 @@ public class Plot extends PlotBox {
 			    String datasetstring;
 			    printedDataSet = true;
 			    if (datasets[0] == null) {
-				setNumSets(2);
+				//setNumSets(2);
 				addLegend(currentdataset, "Set " +
 					  currentdataset++); 
 			    } else {
@@ -561,6 +568,7 @@ public class Plot extends PlotBox {
      */
     protected boolean drawPoint(int dataset, int xpos, int ypos,
 				boolean connected, boolean clip) {
+                                    
         // Points are only distinguished up to 10 data sets.
         dataset %= 10;
         if (_pointsPersistence > 0) {
@@ -772,6 +780,7 @@ public class Plot extends PlotBox {
                  graphics.drawLine(xpos, ypos, prevx, prevy);
              }
         }
+
         _prevx[dataset] = xstart;
         _prevy[dataset] = ystart;
         graphics.setColor(Color.black);
@@ -795,7 +804,7 @@ public class Plot extends PlotBox {
     // interpretation.
     protected int marks;
     
-    protected int numsets = 1;
+    protected int numsets = _MAX_DATASETS;
 
     //////////////////////////////////////////////////////////////////////////
     ////                       private methods                            ////
@@ -827,4 +836,5 @@ public class Plot extends PlotBox {
     
     // Information about the previously plotted point.
     private int _prevx[], _prevy[];
+    private static final int _MAX_DATASETS = 63; // Maximum number of _datasets
 }
