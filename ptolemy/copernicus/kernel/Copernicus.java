@@ -485,8 +485,12 @@ public class Copernicus {
         try {
             substituteMap = newMap(namedObj);
         } catch (IllegalActionException ex) {
-            throw new IOException("Problem with "
-                    + namedObj.getName());
+	    // IOException does not have a constructor that takes a 
+	    // cause argument.
+	    IOException exception = new IOException("Problem with "
+						    + namedObj.getName());
+	    exception.initCause(ex);
+	    throw exception;
         }
 	URL inputFileURL =
 	    Thread.currentThread().getContextClassLoader()
