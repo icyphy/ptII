@@ -635,7 +635,7 @@ public class SRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the scheduler is unable to be
      *       created.
      */
-    protected Scheduler _instantiateScheduler(String className)
+    private Scheduler _instantiateScheduler(String className)
             throws IllegalActionException {
         Scheduler newScheduler;
         _debug("instantiating scheduler..." + className);
