@@ -44,6 +44,9 @@ import ptolemy.plot.plotml.HistogramMLParser;
 import java.awt.Container;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
 A histogram plotter.  This plotter contains an instance of the Histogram
@@ -118,19 +121,22 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         if (histogram != null) {
             HistogramMLParser parser = new HistogramMLParser(histogram);
             parser.parse(base, in);
-            _configureBase = null;
-            _configureIn = null;
+            in.close();
         } else {
             // Defer until histogram has been placed.
-            _configureBase = base;
-            _configureIn = in;
+            if (_configureBases == null) {
+                _configureBases = new LinkedList();
+                _configureInputs = new LinkedList();
+            }
+            _configureBases.add(base);
+            _configureInputs.add(in);
         }
     }
 
     /** If the histogram has not already been created, create it using
      *  place().
-     *  If configuration specified by a call to configure() has not yet
-     *  been processed, process it.
+     *  If configurations specified by a call to configure() have not yet
+     *  been processed, process them.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -155,8 +161,8 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      *  using its add() method.
      *  <p>
      *  If configure() has been called (prior to the plot getting created),
-     *  then the configuration that it specified has been deferred. That
-     *  configuration is performed at this time.
+     *  then the configurations that it specified have been deferred. Those
+     *  configurations are performed at this time.
      *
      *  @param container The container into which to place the histogram.
      */
@@ -176,13 +182,21 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
                 histogram.setBackground(_container.getBackground());
             }
         }
-        // If configure() has been deferred, implement it now.
-        if (_configureIn != null) {
-            try {
-                configure(_configureBase, _configureIn);
-            } catch (Exception ex) {
-                getManager().notifyListenersOfException(ex);
+        // If configurations have been deferred, implement them now.
+        if (_configureInputs != null) {
+            Iterator inputs = _configureInputs.iterator();
+            Iterator bases = _configureBases.iterator();
+            while(inputs.hasNext()) {
+                InputStream in = (InputStream)inputs.next();
+                URL base = (URL)bases.next();
+                try {
+                    configure(base, in);
+                } catch (Exception ex) {
+                    getManager().notifyListenersOfException(ex);
+                }
             }
+            _configureInputs = null;
+            _configureBases = null;
         }
     }
 
@@ -221,7 +235,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
     /** Container into which this histogram should be placed */
     private transient Container _container;
 
-    // The base and input stream given to the configure() method.
-    private URL _configureBase = null;
-    private InputStream _configureIn = null;
+    // The bases and input streams given to the configure() method.
+    private List _configureBases = null;
+    private List _configureInputs = null;
 }

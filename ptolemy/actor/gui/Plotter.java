@@ -35,6 +35,9 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -149,18 +152,21 @@ public class Plotter extends TypedAtomicActor
         if (plot != null) {
             PlotMLParser parser = new PlotMLParser(plot);
             parser.parse(base, in);
-            _configureBase = null;
-            _configureIn = null;
+            in.close();
         } else {
             // Defer until plot has been placed.
-            _configureBase = base;
-            _configureIn = in;
+            if (_configureBases == null) {
+                _configureBases = new LinkedList();
+                _configureInputs = new LinkedList();
+            }
+            _configureBases.add(base);
+            _configureInputs.add(in);
         }
     }
 
     /** If the plot has not already been created, create it.
-     *  If configuration specified by a call to configure() has not yet
-     *  been processed, process it.
+     *  If configurations specified by a call to configure() have not yet
+     *  been processed, process them.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -180,8 +186,8 @@ public class Plotter extends TypedAtomicActor
     }
 
     /** Specify the container into which this plot should be placed.
-     *  This method needs to be called before the first call to initialize()
-     *  or configure(). Otherwise, the plot will be placed in its own frame.
+     *  This method needs to be called before the first call to initialize().
+     *  Otherwise, the plot will be placed in its own frame.
      *  The plot is also placed in its own frame if this method
      *  is called with a null argument.  The size of the plot,
      *  unfortunately, cannot be effectively determined from the size
@@ -192,8 +198,8 @@ public class Plotter extends TypedAtomicActor
      *  (unless it is null).
      *  <p>
      *  If configure() has been called (prior to the plot getting created),
-     *  then the configuration that it specified has been deferred. That
-     *  configuration is performed at this time.
+     *  then the configurations that it specified have been deferred. Those
+     *  configurations are performed at this time.
      *
      *  @param container The container into which to place the plot.
      */
@@ -216,13 +222,21 @@ public class Plotter extends TypedAtomicActor
                 plot.setBackground(_container.getBackground());
             }
         }
-        // If configure() has been deferred, implement it now.
-        if (_configureIn != null) {
-            try {
-                configure(_configureBase, _configureIn);
-            } catch (Exception ex) {
-                getManager().notifyListenersOfException(ex);
+        // If configurations have been deferred, implement them now.
+        if (_configureInputs != null) {
+            Iterator inputs = _configureInputs.iterator();
+            Iterator bases = _configureBases.iterator();
+            while(inputs.hasNext()) {
+                InputStream in = (InputStream)inputs.next();
+                URL base = (URL)bases.next();
+                try {
+                    configure(base, in);
+                } catch (Exception ex) {
+                    getManager().notifyListenersOfException(ex);
+                }
             }
+            _configureInputs = null;
+            _configureBases = null;
         }
     }
 
@@ -254,7 +268,7 @@ public class Plotter extends TypedAtomicActor
     // Frame into which plot is placed, if any.
     private transient PlotFrame _frame;
 
-    // The base and input stream given to the configure() method.
-    private URL _configureBase = null;
-    private InputStream _configureIn = null;
+    // The bases and input streams given to the configure() method.
+    private List _configureBases = null;
+    private List _configureInputs = null;
 }
