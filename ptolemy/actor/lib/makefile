@@ -66,11 +66,15 @@ JSRCS = \
 	AddSubtract.java \
 	AbsoluteValue.java \
 	ArrayAppend.java \
+	ArrayElement.java \
+	ArrayExtract.java \
 	Average.java \
 	Bernoulli.java \
+	BooleanExpression.java \
 	Clock.java \
 	Commutator.java \
 	Const.java \
+	Counter.java \
 	CurrentTime.java \
 	DB.java \
 	Discard.java \
@@ -81,6 +85,7 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
+	LevinsonDurbin.java \
 	MathFunction.java \
 	MaxIndex.java \
 	Maximum.java \
@@ -119,11 +124,10 @@ JSRCS = \
 	Writer.java
 
 OTHER_FILES_TO_BE_JARED = \
-	Sinewave.xml \
-	PowerEstimate.xml \
 	flowcontrol.xml \
 	math.xml \
 	signalprocessing.xml \
+	Sinewave.xml \
 	sinks.xml \
 	sources.xml
 
@@ -139,7 +143,6 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	javasound \
-	jspaces \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class'
 
