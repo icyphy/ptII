@@ -46,6 +46,42 @@ import cern.jet.random.Beta;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+   <p> This actor instantiates a 
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Beta.html">cern.jet.random.Beta</a> object with
+    alpha and beta both set to 2.0.
+
+    A definition of NegativeBinomial by Wolfgang Hoschek can be found at
+    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)"<code>http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)</code></a>:
+<blockquote>
+<h3>
+beta</h3>
+<pre>public static double <b>beta</b>(double&nbsp;a,
+                          double&nbsp;b,
+                          double&nbsp;x)</pre>
+<dl>
+
+<dd>Returns the area from zero to <tt>x</tt> under the beta density
+ function.
+ <pre>                          x
+            -             -
+           | (a+b)       | |  a-1      b-1
+ P(x)  =  ----------     |   t    (1-t)    dt
+           -     -     | |
+          | (a) | (b)   -
+                         0
+ </pre>
+ This function is identical to the incomplete beta
+ integral function <tt>Gamma.incompleteBeta(a, b, x)</tt>.
+
+ The complemented function is
+
+ <tt>1 - P(1-x)  =  Gamma.incompleteBeta( b, a, x )</tt>;</dd>
+</blockquote>
+   The above description of beta() is
+   <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
+
+
+
    @author David Bauer and Kostas Oikonomou
    @version $Id$
    @since Ptolemy II 4.1

@@ -47,6 +47,41 @@ import cern.jet.random.Binomial;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+   <p> This actor instantiates a 
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Binomial.html">cern.jet.random.Binomial</a> object with
+    n, the number of trials (also known as the sample size) set to 1 
+    and p, the probability of success, set to 0.5.
+
+    A definition of Binomial by Wolfgang Hoschek can be found at
+    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#binomial(int,%20int,%20double)"><code>http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#binomial(int,%20int,%20double)</code></a>:
+<blockquote>
+<h3>
+binomial</h3>
+<pre>public static double <b>binomial</b>(int&nbsp;k,
+                              int&nbsp;n,
+                              double&nbsp;p)</pre>
+
+<dl>
+<dd>Returns the sum of the terms <tt>0</tt> through <tt>k</tt> of the Binomial
+ probability density.
+ <pre>   k
+   --  ( n )   j      n-j
+   &gt;   (   )  p  (1-p)
+   --  ( j )
+  j=0
+ </pre>
+ The terms are not summed directly; instead the incomplete
+ beta integral is employed, according to the formula
+ <p>
+ <tt>y = binomial( k, n, p ) = Gamma.incompleteBeta( n-k, k+1, 1-p )</tt>.
+ </p><p>
+
+ All arguments must be positive,</p></dd><dd><dl>
+<dt><b>Parameters:</b></dt><dd><code>k</code> - end term.</dd><dd><code>n</code> - the number of trials.</dd><dd><code>p</code> - the probability of success (must be in <tt>(0.0,1.0)</tt>).</dd>
+</blockquote>
+   The above description of binomial() is
+   <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
+
    @author David Bauer and Kostas Oikonomou
    @version $Id$
    @since Ptolemy II 4.1
