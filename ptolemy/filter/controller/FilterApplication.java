@@ -49,7 +49,7 @@ import ptolemy.filter.view.FilterView;
  <p>
 
  @author: William Wu
- @version: %W%	%G%
+ @version $Id$
  @date: 10/29/98
  */ 
  

@@ -36,7 +36,7 @@ package ptolemy.domains.dfm.data;
  the string value, use stringValue().
  <p>
 @author  William Wu
-@version $id$
+@version $Id$
 */
 
 public class DFMStringToken extends DFMToken {

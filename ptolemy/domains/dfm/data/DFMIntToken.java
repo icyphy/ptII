@@ -36,7 +36,7 @@ package ptolemy.domains.dfm.data;
  the int value, use intValue().
  <p>
 @author  William Wu
-@version $id$
+@version $Id$
 */
 public class DFMIntToken extends DFMToken {
 

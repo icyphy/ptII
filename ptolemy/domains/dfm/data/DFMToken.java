@@ -49,7 +49,7 @@ import ptolemy.data.Token;
   <p>    
 
  @author  William Wu (wbwu@eecs.berkeley.edu)
- @version $id$
+ @version $Id$
  @see ptolemy.data.Token
 */
 

@@ -42,7 +42,7 @@ import javax.swing.SwingConstants;
  * This tutorial illustrates how to use Icons.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class IconDemo {
 

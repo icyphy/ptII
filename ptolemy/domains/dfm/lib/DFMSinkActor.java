@@ -35,7 +35,7 @@
 /** 
 Description of the class
 @author  youname
-@version %W%	%G%
+@version $Id$
 */
 public class DFMSinkActor {
     /** Constructor

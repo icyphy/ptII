@@ -42,7 +42,7 @@ import java.awt.event.*;
   choice widgets that allow user to select the IIR filter.
   <p>
   @author: William Wu (wbwu@eecs.berkeley.edu)
-  @version: %W%   %G%
+  @version $Id$
   @date: 3/2/98
  */
 

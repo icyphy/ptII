@@ -38,7 +38,7 @@ import ptolemy.kernel.util.*;
 /** 
  A double source actor that fires a double token.
 @author William Wu 
-@version %W%	%G%
+@version $Id$
 */
 public class DFMDoubleSourceActor extends DFMActor {
     /** Constructor

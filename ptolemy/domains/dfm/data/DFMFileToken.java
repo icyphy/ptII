@@ -38,7 +38,7 @@ import java.io.*;
  the file value, use fileValue().
  <p>
 @author  William Wu
-@version $id$
+@version $Id$
 */
 
 public class DFMFileToken extends DFMToken {

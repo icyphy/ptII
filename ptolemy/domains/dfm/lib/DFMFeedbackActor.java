@@ -48,7 +48,7 @@ import ptolemy.actor.*;
  iteration only.  Also do use SelectInput with the FeedBack actor for . 
  <p>
 @author William Wu  
-@version $id$
+@version $Id$
 */
 
 public class DFMFeedbackActor extends DFMActor {

@@ -35,7 +35,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Mudit Goel  (mudit@eecs.berkeley.edu)
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class ThreadDemo {

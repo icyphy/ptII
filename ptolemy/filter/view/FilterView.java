@@ -47,7 +47,7 @@ import java.applet.*;
   request observable specifically for those.
 
   @author: William Wu (wbwu@eecs.berkeley.edu)
-  @version: %W%    %G%
+  @version $Id$
   @date: 3/2/98
  */
 

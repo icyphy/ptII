@@ -36,7 +36,7 @@ import ptolemy.math.Complex;
   conjugate of each other.
   <p>
   @author: William Wu (wbwu@eecs.berkeley.edu)
-  @version: $id$
+  @version $Id$
   @date: 11/21/98
 */
 

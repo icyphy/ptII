@@ -54,7 +54,7 @@ import java.awt.event.*;
   _crossref.
   <p>
   @author: William Wu (wbwu@eecs.berkeley.edu)
-  @version: %W% %G%
+  @version $Id$
   @date: 3/2/98
  */
 

@@ -43,7 +43,7 @@ import java.util.Enumeration;
 
 
 @author John S. Davis II
-@version %W%	%G%
+@version $Id$
 */
 public class DDEPrintString extends DDEActor {
 

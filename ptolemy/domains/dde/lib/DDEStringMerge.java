@@ -41,7 +41,7 @@ import ptolemy.data.*;
 
 
 @author John S. Davis II
-@version %W%	%G%
+@version $Id$
 */
 public class DDEStringMerge extends DDEActor {
 

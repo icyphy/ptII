@@ -37,7 +37,7 @@ import java.applet.Applet;
 /**
  *
  * @author John S. Davis II (davisj@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class BusContentionApplet extends PtolemyApplet {

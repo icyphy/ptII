@@ -42,7 +42,7 @@ import ptolemy.filter.filtermodel.FilterObj;
   User can save the these info by press the save button on top of the panel.
   <p>
   @author William Wu (wbwu@eecs.berkeley.edu)
-  @version: $id$
+  @version $Id$
  */
 public class TransFunctView extends FilterView implements ActionListener, ItemListener {
 

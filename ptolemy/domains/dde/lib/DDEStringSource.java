@@ -42,7 +42,7 @@ import collections.LinkedList;
 
 
 @author John S. Davis II
-@version %W%	%G%
+@version $Id$
 */
 public abstract class DDEStringSource extends DDESourceActor {
 

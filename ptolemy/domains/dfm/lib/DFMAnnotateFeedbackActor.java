@@ -44,7 +44,7 @@ import ptolemy.actor.*;
  in this actor, that initial value is fired during initialization of the system.
  <p>
 @author William Wu  
-@version $id$
+@version $Id$
 */
 
 public class DFMAnnotateFeedbackActor extends DFMFeedbackActor {

@@ -36,7 +36,7 @@ package ptolemy.domains.dfm.data;
  the double array value, use doubleArrayValue().
  <p>
 @author  William Wu
-@version $id$
+@version $Id$
 */
 public class DFMDoubleArrayToken extends DFMToken {
 

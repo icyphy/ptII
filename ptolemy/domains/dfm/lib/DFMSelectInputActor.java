@@ -42,7 +42,7 @@ import ptolemy.kernel.util.*;
  "New" tag, then the more primary one (input1) will be selected.  
   
 @author  William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$
+@version $Id$
 */
 
 public class DFMSelectInputActor extends DFMActor {

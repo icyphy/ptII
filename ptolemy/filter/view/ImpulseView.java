@@ -44,7 +44,7 @@ import java.awt.*;
   class, so later on this class can be modified to design FIR filter.
 
   @author: William Wu (wbwu@eecs.berkeley.edu)
-  @version: %W% %G%
+  @version $Id$
   @date: 3/2/98
  */
 

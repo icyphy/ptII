@@ -45,7 +45,7 @@ import java.util.*;
   token tag on the output token. <p>
 
 @author  William Wu (wbwu@eecs.berkeley.edu)
-@version: $id$
+@version $Id$
 @data: 11/28/98
 */
 

@@ -51,7 +51,7 @@ import java.awt.*;
    allowed to be drag around.
    <p>
    @author: William Wu (wbwu@eecs.berkeley.edu)
-   @version: %W% %G%
+   @version $Id$
    @date: 3/2/98
  */
 

@@ -63,7 +63,7 @@ import ptolemy.math.filter.*;
   <p>
 
   @author: William Wu
-  @version: %W% %G%
+  @version $Id$
   @date: 3/2/98
  */
 

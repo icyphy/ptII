@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
  *
  * @author John S. Davis II (davisj@eecs.berkeley.edu)
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class BusContentionApplication implements ActionListener {

@@ -41,7 +41,7 @@ import java.applet.*;
 /** 
  Facet for DFMSimple.
 @author  William Wu (wbwu@eecs.berkeley.edu) 
-@version $id$
+@version $Id$
 */
 
 public class facetImage extends Panel implements MouseListener{

@@ -36,7 +36,7 @@ package ptolemy.domains.dfm.data;
  the double value, use doubleValue().
  <p>
 @author  William Wu
-@version $id$
+@version $Id$
 */
 public class DFMDoubleToken extends DFMToken {
 

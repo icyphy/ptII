@@ -38,7 +38,7 @@ import ptolemy.math.Complex;
  the complex array value, use complexArrayValue().
  <p>
 @author  William Wu
-@version $id$
+@version $Id$
 */
 public class DFMComplexArrayToken extends DFMToken {
 
