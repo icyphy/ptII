@@ -58,7 +58,7 @@ import ptolemy.actor.lib.*;
 import ptolemy.actor.util.*;
 // import ptolemy.domains.sdf.kernel.*;
 // import ptolemy.domains.sdf.lib.*;
-// import ptolemy.plot.*;
+import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeApplet
@@ -503,7 +503,11 @@ public class TypeApplet extends SDFApplet {
 
         // Add code to extend the trace
 
-        ///FIXME
+
+	// add execution listener for type conflict
+	MyTypeConflictListener conflictListener =
+		new MyTypeConflictListener();
+	_manager.addExecutionListener(conflictListener);
     }
 
     private void _buildType2String() {
@@ -971,6 +975,49 @@ public class TypeApplet extends SDFApplet {
               _currentElement[id] = element;
             
         }
+    }
+
+    /** Execution listener for type conflict.
+     */
+    public class MyTypeConflictListener implements ExecutionListener {
+	/** pop up a message.
+	 */
+	public void executionError(ExecutionEvent event) {
+	    Exception ex = event.getException();
+	    if (ex instanceof TypeConflictException) {
+		Message msg = new Message(ex.getMessage());
+	    }
+	}
+
+	/** do nothing.
+         */
+	public void executionFinished(ExecutionEvent event) {
+	}
+
+	/** do nothing.
+         */
+	public void executionIterationStarted(ExecutionEvent event) {
+	}
+
+	/** do nothing.
+         */
+	public void executionPaused(ExecutionEvent event) {
+	}
+
+	/** do nothing.
+         */
+	public void executionResumed(ExecutionEvent event) {
+	}
+
+	/** do nothing.
+         */
+	public void executionStarted(ExecutionEvent event) {
+	}
+
+	/** do nothing.
+         */
+	public void executionTerminated(ExecutionEvent event) {
+	}
     }
 }
 
