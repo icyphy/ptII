@@ -38,6 +38,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -130,7 +131,13 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
     public Time getModelTime() {
         double currentTime = (double) (System.currentTimeMillis()
                 - _realStartTime);
-        return new Time(this, currentTime);
+        try {
+			return new Time(this, currentTime);
+		} catch (IllegalActionException e) {
+            // If the time resolution of the director is invalid,
+            // it should have been caught before this.
+            throw new InternalErrorException(e);
+		}
     }
 
     /** Calculate the current schedule, if necessary, and iterate
@@ -252,7 +259,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
                 new LongToken(10000));
         executionDuration.setTypeEquals(BaseType.LONG);
 
-        timePrecisionInDigits.setVisibility(Settable.FULL);
+        timeResolution.setVisibility(Settable.FULL);
 
         //addDebugListener(new StreamListener());
     }

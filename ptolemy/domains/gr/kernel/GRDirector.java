@@ -321,7 +321,13 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return The maximum value for type double.
      */
     public Time getModelNextIterationTime() {
-        return new Time(this, Double.POSITIVE_INFINITY);
+        try {
+			return new Time(this, Double.POSITIVE_INFINITY);
+		} catch (IllegalActionException e) {
+            // If the time resolution of the director is invalid,
+            // it should have been caught before this.
+            throw new InternalErrorException(e);
+		}
     }
 
     /** Initialize all the actors associated with this director. Perform

@@ -114,7 +114,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     public TimedPNDirector()
             throws IllegalActionException, NameDuplicationException {
         super();
-        timePrecisionInDigits.setVisibility(Settable.FULL);
+        timeResolution.setVisibility(Settable.FULL);
     }
 
     /**Construct a director in the  workspace with an empty name.
@@ -128,7 +128,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     public TimedPNDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        timePrecisionInDigits.setVisibility(Settable.FULL);
+        timeResolution.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the given container with the given name.
@@ -149,7 +149,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     public TimedPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        timePrecisionInDigits.setVisibility(Settable.FULL);
+        timeResolution.setVisibility(Settable.FULL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -169,8 +169,14 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedPNDirector newObject = (TimedPNDirector) super.clone(workspace);
-        newObject._eventQueue = new CalendarQueue(new TimedEvent.TimeComparator(
-                                                          this));
+        try {
+			newObject._eventQueue = new CalendarQueue(
+			        new TimedEvent.TimeComparator(this));
+		} catch (IllegalActionException e) {
+            // If the time resolution of the director is invalid,
+            // it should have been caught before this.
+            throw new InternalErrorException(e);
+		}
         newObject._delayBlockCount = 0;
         return newObject;
     }

@@ -118,9 +118,9 @@ test PNDirector-5.2.1 {cover debug basic block} {
 } {{Invoking preinitialize():  .E0.A1
 Invoking preinitialize():  .E0.A2
 Finished preinitialize().
------ Setting current time to 0.0000000000
+----- Setting current time to 0.0
 Called initialize().
-Invoking initialize()}}
+Invoking initialize():  .E0.A1}}
 
 ######################################################################
 ####

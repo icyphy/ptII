@@ -889,7 +889,7 @@ public class TMDirector extends Director implements TimedDirector {
                     "synchronizeToRealTime", new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
-            timePrecisionInDigits.setVisibility(Settable.FULL);
+            timeResolution.setVisibility(Settable.FULL);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName()
                     + "fail to initialize parameters.");
