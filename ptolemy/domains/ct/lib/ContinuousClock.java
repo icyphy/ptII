@@ -371,7 +371,7 @@ public class ContinuousClock extends TimedSource {
 
         output.send(0, _tentativeCurrentValue);
         if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
- }
+    }
 
     /** Schedule the first firing and initialize local variables.
      *  @exception IllegalActionException If the parent class throws it,
