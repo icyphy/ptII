@@ -69,6 +69,8 @@ public class StreamToMatrix extends Transformer {
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
         dimension = new Parameter(this, "Dimension", new IntToken( 6 ));
 
+        attributeChanged( dimension );
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,12 +86,13 @@ public class StreamToMatrix extends Transformer {
     ////                         public methods                    ////
 
     /** If the argument is the meanTime parameter, check that it is
-     *  positive.
+      *  positive.
      *  @exception IllegalActionException If the meanTime value is
      *   not positive.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+            System.out.println(" ---- Attribute Changed For Dimension ");
         if (attribute == dimension) {
             System.out.println(" ---- Attribute Changed For Dimension ");
             _rows = ((IntToken)dimension.getToken()).intValue();
@@ -99,6 +102,20 @@ public class StreamToMatrix extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the parameters of the new actor.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        StreamToMatrix newobj = (StreamToMatrix)super.clone(ws);
+        newobj.dimension = (Parameter)newobj.getAttribute("dimension");
+        return newobj;
     }
 
     /** Reads one block of data from file and writes it to output port.
