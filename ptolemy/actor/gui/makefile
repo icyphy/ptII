@@ -139,7 +139,6 @@ JSRCS = \
 	TokenEffigy.java \
 	TokenTableau.java \
 	TokenEffigy.java \
-	TypeCellEditor.java \
 	UnitConstraintsDialog.java \
 	UnitSolverDialog.java \
 	WindowPropertiesAttribute.java
