@@ -104,6 +104,7 @@ PTII_TOPDIR=	.cshrc \
 		makefile \
 		mk \
 		ptolemy \
+		thales \
 		util \
 		vergil.jnlp.in \
 		vergilDSP.jnlp.in \
