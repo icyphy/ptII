@@ -396,12 +396,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         super.setContainer(container);
         // Change NewFSMDirector to FSMDirector after the current FSMDirector
         // phases off.
-        if ((director != null) && (director instanceof NewFSMDirector)) {
-            FSMActor controller = ((NewFSMDirector)director).getController();
-            if (controller == this) {
-                ((NewFSMDirector)director).setController(null);
-            }
-        }
+        //if ((director != null) && (director instanceof NewFSMDirector)) {
+        //    FSMActor controller = ((NewFSMDirector)director).getController();
+        //    if (controller == this) {
+        //        ((NewFSMDirector)director).setController(null);
+        //    }
+        //}
     }
 
     /** Set the initial state. When this actor is initialized or reset,
