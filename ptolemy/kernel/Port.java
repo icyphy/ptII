@@ -333,12 +333,12 @@ public class Port extends NamedObj {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-            ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////////
+    ////                         private variables                     ////
 
-            // The list of relations for this port.
-            // This member is protected to allow access from derived classes only.
-            private CrossRefList _relationsList;
+    // The list of relations for this port.
+    // This member is protected to allow access from derived classes only.
+    private CrossRefList _relationsList;
 
     // The entity that contains this port.
     private Entity _container;
