@@ -26,6 +26,8 @@
 */
 
 package ptolemy.data;
+import ptolemy.kernel.util.*;
+import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
@@ -33,10 +35,24 @@ import ptolemy.math.Complex;
 /**
 A token that contains a 2-D double array.
 
+FIXME: Except add() and addR(), other arithmetics operations are
+not implemented yet. Those methods will be added after the corresponding
+operations are added to the math package.
+
 @author Yuhong Xiong
 @version $Id$
 */
 public class DoubleMatrixToken extends MatrixToken {
+
+    /** Construct an DoubleMatrixToken with a one by one array. The
+     *  only element in the array has value 0.0
+     */
+    public DoubleMatrixToken() {
+	_numRows = 1;
+	_numColumns = 1;
+	_value = new double[1][1];
+	_value[0][0] = 0.0;
+    }
 
     /** Construct a DoubleMatrixToken with the specified 2-D array.
      *  This method makes a copy of the array and stores the copy, 
@@ -69,6 +85,95 @@ public class DoubleMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. The type of the specified token 
+     *  must be such that either it can be converted to the type
+     *  of this token, or the type of this token can be converted
+     *  to the type of the specified token, without loss of 
+     *  information. The type of the returned token is one of the
+     *  above two types that allows lossless conversion from the other.
+     *  If the specified token is a matrix, its demension must be the
+     *  same as this token.
+     *  @param t The token to add to this token.
+     *  @return A new token.
+     *  @exception IllegalActionException If the specified token is
+     *   not of a type that can be added to this token in a lossless
+     *   fashion.
+     */
+    public Token add(Token t)
+	    throws IllegalActionException {
+
+	int compare = TypeCPO.compare(this, t);
+	if (compare == CPO.INCOMPARABLE) {
+	    String msg = "add method not supported between " +
+			 this.getClass().getName() + " and " +
+			 t.getClass().getName();
+	    throw new IllegalActionException(msg);
+	} else if (compare == CPO.LOWER) {
+	    return t.addR(this);
+	} else {
+	    // type of the specified token <= IntMatrixToken
+	    double[][] result = null;
+
+	    if (t instanceof ScalarToken) {
+		double scalar = ((ScalarToken)t).doubleValue();
+		result = new double[_numRows][_numColumns];
+		for (int i = 0; i < _numRows; i++) {
+		    for (int j = 0; j < _numColumns; j++) {
+			result[i][j] = scalar + _value[i][j];
+		    }
+		}
+	    } else {
+		// the specified token is not a scalar.
+	        if (t instanceof MatrixToken) {
+	    	    if (((MatrixToken)t).numRows() != _numRows ||
+		        ((MatrixToken)t).numColumns() != _numColumns) {
+		    	throw new IllegalActionException("Cannot add two " +
+				"matrices with different dimension.");
+	    	    }
+
+		    if (t instanceof DoubleMatrixToken) {
+		    	result = ((DoubleMatrixToken)t).doubleMatrix();
+		    } else {
+		        DoubleMatrixToken tem =
+				(DoubleMatrixToken)this.convert(t);
+			result = tem.doubleMatrix();
+		    }
+		    for (int i = 0; i < _numRows; i++) {
+			for (int j = 0; j < _numColumns; j++) {
+			    result[i][j] += _value[i][j];
+			}
+		    }
+		} else {
+		    // FIXME: what if the specified token is user defined?
+		}
+	    }
+	    return new DoubleMatrixToken(result);
+	}
+    }
+
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. The type of the specified token should
+     *  be lower than DoubleMatrixToken.
+     *  @param t The token to be added to this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the type of the specified
+     *   token is not lower than DoubleMatrixToken; or if the specified
+     *   token is not of a type that can be added to this token in a
+     *   lossless fashion.
+     */
+    public Token addR(Token t)
+	    throws IllegalActionException {
+	int compare = TypeCPO.compare(this, t);
+	if (! (compare == CPO.HIGHER)) {
+	    throw new IllegalActionException("The type of the specified "
+		+ "token " + t.getClass().getName() + " is not lower than "
+		+ getClass().getName());
+	}
+	// add is commutative on integer matrix.
+	return add(t);
+    }
+
     /** Return the content of this token as a 2-D Complex array.
      *  @return A 2-D Complex matrix
      */
@@ -80,6 +185,67 @@ public class DoubleMatrixToken extends MatrixToken {
 	    }
 	}
 	return array;
+    }
+
+    /** Convert the specified token to an instance of DoubleMatrixToken.
+     *  @param t The token to be converted to DoubleMatrixToken.
+     *  @return A DoubleMatrixToken
+     *  @exception IllegalActionException If the conversion cannot
+     *   be carried out in a lossless fashion.
+     */
+    public Token convert(Token t)
+	    throws IllegalActionException {
+	int compare = TypeCPO.compare(this, t);
+	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+	    throw new IllegalActionException("cannot convert from token " +
+		"type " + t.getClass().getName() + " to " +
+		getClass().getName());
+	}
+
+	if (t instanceof DoubleMatrixToken) {
+	    return t;
+	} else {
+	    try {
+	        compare = TypeCPO.compare(Class.forName("DoubleToken"),
+				          t.getClass());
+	        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+		    DoubleToken tem = null;
+		    if (t instanceof DoubleToken) {
+		        tem = (DoubleToken)t;
+		    } else {
+		        tem = (DoubleToken)(new DoubleToken()).convert(t);
+		    }
+
+		    double[][] result = new double[1][1];
+		    result[0][0] = tem.doubleValue();
+		    return new DoubleMatrixToken(result);
+	        } else {
+		    // type of specified token not below double.
+	    	    compare = TypeCPO.compare(Class.forName("IntMatrixToken"),
+				 	      t.getClass());
+	    	    if (compare == CPO.SAME || compare == CPO.HIGHER) {
+	    	        IntMatrixToken tem = null;
+	    	        if (t instanceof IntMatrixToken) {
+			    tem = (IntMatrixToken)t;
+	    	        } else {
+			    IntMatrixToken instance = new IntMatrixToken();
+	    		    tem = (IntMatrixToken)instance.convert(t);
+	    	        }
+	    	        double[][] result = tem.doubleMatrix();
+	    	        return new DoubleMatrixToken(result);
+		    } else {
+		        // should not get here: type of specified token is not
+		        // <= double, int matrix.
+		        throw new InternalErrorException("The specified " +
+			    "token is <= double matrix but not <= " +
+			    "double or int matrix.");
+		    }
+		}
+	    } catch (ClassNotFoundException ex) {
+		throw new InternalErrorException("cannot create instance " +
+		    "of DoubleToken or IntMatrixToken.");
+	    }
+	}
     }
 
     /** Return the content in the token as a 2-D double array.
@@ -97,10 +263,81 @@ public class DoubleMatrixToken extends MatrixToken {
 	return array;
     }
 
-    // Return the content of this token as a 2-D Fix array.
-    //
-    // FIXME: finish this method after the Complex class is implemented.
-    // public Fix[][] fixMatrix();
+    /** Test if the content of this token equals that of the specified
+     *  token. These two tokens are equal only if the specified token
+     *  is also a matrix token with the same dimension, and all the
+     *  corresponding elements of the arrays are equal, and lossless
+     *  conversion is possible from either this token to the specified
+     *  one, or vice versa.
+     *  @param t The token with which to test equality.
+     *  @return A booleanToken containing the result.
+     *  @exception IllegalActionException If the specified token is
+     *   not a matrix token; or lossless conversion is not possible.
+     */
+    public BooleanToken equals(Token t)
+	    throws IllegalActionException {
+	int compare = TypeCPO.compare(this, t);
+	if ( !(t instanceof MatrixToken) ||
+	     compare == CPO.INCOMPARABLE) {
+	    throw new IllegalActionException("Cannot check equality " +
+		"between " + this.getClass().getName() + " and " +
+		t.getClass().getName());
+	}
+
+	if ( ((MatrixToken)t).numRows() != _numRows ||
+	     ((MatrixToken)t).numColumns() != _numColumns) {
+	    return new BooleanToken(false);
+	}
+
+	if (compare == CPO.LOWER) {
+	    return t.equals(this);
+	} else {
+	    // type of specified token <= DoubleMatrixToken
+	    DoubleMatrixToken tem = null;
+	    if (t instanceof DoubleMatrixToken) {
+		tem = (DoubleMatrixToken)t;
+	    } else {
+		tem = (DoubleMatrixToken)convert(t);
+	    }
+	    double[][] array = tem.doubleMatrix();
+
+	    for (int i = 0; i < _numRows; i++) {
+		for (int j = 0; j < _numColumns; j++) {
+		    if (_value[i][j] != array[i][j]) {
+			return new BooleanToken(false);
+		    }
+		}
+	    }
+	    return new BooleanToken(true);
+	}
+    }
+
+    /** Return the element of the contained array at the specified
+     *  row and column.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return The double at the specified array entry.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the corresponding range
+     *   of the index of the contained array.
+     */
+    public double getElementAt(int row, int column) {
+        return _value[row][column];
+    }
+
+    /** Return a copy of the contained 2-D array.
+     *  It is safe for the caller to modify the returned array.
+     *  @return A 2-D integer array.
+     */
+    public double[][] getWritableCopy() {
+        double[][] result = new double[_numRows][_numColumns];
+        for (int i = 0; i < _numRows; i++) {
+            for (int j = 0; j < _numColumns; j++) {
+                result[i][j] = _value[i][j];
+            }
+        }
+        return result;
+    }
 
     /** Return the number of columns in the matrix.
      *  @return An integer.

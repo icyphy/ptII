@@ -36,13 +36,23 @@ import ptolemy.math.Complex;
 A token that contains a 2-D integer array.
 
 FIXME: Except add() and addR(), other arithmetics operations are
-not supported. Those methods will be added after the corresponding
+not implemented yet. Those methods will be added after the corresponding
 operations are added to the math package.
 
 @author Yuhong Xiong
 @version $Id$
 */
 public class IntMatrixToken extends MatrixToken {
+
+    /** Construct an IntMatrixToken with a one by one array. The
+     *  only element in the array has value 0.
+     */
+    public IntMatrixToken() {
+	_numRows = 1;
+	_numColumns = 1;
+	_value = new int[1][1];
+	_value[0][0] = 0;
+    }
 
     /** Construct an IntMatrixToken with the specified 2-D array.
      *  This method makes a copy of the array and stores the
@@ -81,15 +91,14 @@ public class IntMatrixToken extends MatrixToken {
      *  of this token, or the type of this token can be converted
      *  to the type of the specified token, without loss of 
      *  information. The type of the returned token is one of the
-     *  above two types that allows lossles conversion from the other.
+     *  above two types that allows lossless conversion from the other.
      *  If the specified token is a matrix, its demension must be the
      *  same as this token.
      *  @param t The token to add to this token.
      *  @return A new token.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be added to this token in a lossless
-     *   fashion; or the dimension of the specified token does not
-     *   agree with this token.
+     *   fashion.
      */
     public Token add(Token t)
 	    throws IllegalActionException {
@@ -148,7 +157,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @param t The token to be added to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than IntMatrixToken.
+     *   token is not lower than IntMatrixToken; or if the specified
+     *   token is not of a type that can be added to this token in a
+     *   lossless fashion.
      */
     public Token addR(Token t)
 	    throws IllegalActionException {
@@ -221,11 +232,13 @@ public class IntMatrixToken extends MatrixToken {
     /** Test if the content of this token equals that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the arrays are equal.
+     *  corresponding elements of the arrays are equal, and lossless 
+     *  conversion is possible from either this token to the specified
+     *  one, or vice versa.
      *  @param t The token with which to test equality.
      *  @return A booleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not of a matrix token.
+     *   not a matrix token, or lossless conversion is not possible.
      */
     public BooleanToken equals(Token t)
 	    throws IllegalActionException {
@@ -269,7 +282,7 @@ public class IntMatrixToken extends MatrixToken {
      *  row and column.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
-     *  @return The element at the specified array entry.
+     *  @return The integer at the specified array entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the corresponding range
      *   of the index of the contained array.
