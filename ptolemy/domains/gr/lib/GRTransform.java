@@ -53,7 +53,7 @@ accumulated or reset during firing.
 
 @author C. Fong
 */
-public class GRTransform extends GRActor {
+abstract public class GRTransform extends GRActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
