@@ -197,8 +197,10 @@ public class SigmaDeltaApplet extends Applet {
             CTGain gain3 = new CTGain(ctsub, "Gain3");
 
             CTPlot ctPlot = new CTPlot(ctsub, "CTPlot", ctPanel);
+
             String[] ctLegends = {"Position","Input","Control"};
             ctPlot.setLegend(ctLegends);
+
             CTPeriodicalSampler sampler = 
                 new CTPeriodicalSampler(ctsub, "Sample");
             
