@@ -61,7 +61,7 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// DeadObjectEliminator
 /**
-A transformer that removes unnecessary object creations.  If 
+A transformer that removes unnecessary object creations.  If
 an attribute, type or token is created, but never used anywhere, then
 it can be safely removed.  This is possible because types and tokens are
 immutable, and we know that the attribute constructor will not have
@@ -78,25 +78,25 @@ public class DeadObjectEliminator extends BodyTransformer {
 
     /* Return the instance of this transformer.
      */
-    public static DeadObjectEliminator v() { 
-        return instance; 
-    }
-    
-    public String getDefaultOptions() {
-        return ""; 
-    }
-    
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions(); 
+    public static DeadObjectEliminator v() {
+        return instance;
     }
 
-    protected void internalTransform(Body body, 
+    public String getDefaultOptions() {
+        return "";
+    }
+
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions();
+    }
+
+    protected void internalTransform(Body body,
             String phaseName, Map options) {
         _removeDeadObjectCreation(body, PtolemyUtilities.tokenClass);
         _removeDeadObjectCreation(body, PtolemyUtilities.typeClass);
         _removeDeadObjectCreation(body, PtolemyUtilities.attributeClass);
     }
-    
+
     /** Remove any creations of objects of the given class, or
      *  subclasses that are not directly used in the given body.  Note
      *  that this is not, technically a safe thing to do, since object
@@ -133,7 +133,7 @@ public class DeadObjectEliminator extends BodyTransformer {
                             defs.hasNext();) {
                             Unit defUnit = (Unit)defs.next();
                             if (defUnit instanceof DefinitionStmt) {
-                                // If we are keeping a definition, then 
+                                // If we are keeping a definition, then
                                 // set the definition to be null.
                                 ((DefinitionStmt)defUnit).getRightOpBox().
                                     setValue(NullConstant.v());

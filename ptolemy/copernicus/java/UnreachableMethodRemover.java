@@ -56,7 +56,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 //// UnreachableMethodRemover
 /**
 A transformer that removes methods that are not reachable.  Note that
-this is a fairly braindead implementation.  Specifically, 
+this is a fairly braindead implementation.  Specifically,
 it does not attempt any
 Variable Type Analysis to reduce what methods may be called.  However,
 for the purposes of code generation, we will have already done most
@@ -78,16 +78,16 @@ public class UnreachableMethodRemover extends SceneTransformer {
 
     /* Return the instance of this transformer.
      */
-    public static UnreachableMethodRemover v() { 
-        return instance; 
+    public static UnreachableMethodRemover v() {
+        return instance;
     }
-    
+
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
-    
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug"; 
+
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -99,12 +99,12 @@ public class UnreachableMethodRemover extends SceneTransformer {
         // Construct the graph of all method invocations, so we know what
         // method contains each invocation and what method(s) can be
         // targeted by that invocation.
-        InvokeGraph invokeGraph = 
+        InvokeGraph invokeGraph =
             ClassHierarchyAnalysis.newInvokeGraph();
 
         // Construct the graph of methods that are directly reachable
         // from any method.
-        MethodCallGraph methodCallGraph = 
+        MethodCallGraph methodCallGraph =
             (MethodCallGraph)invokeGraph.newMethodGraph();
 
         // Compute the transitive closure of the method call graph,
@@ -116,12 +116,12 @@ public class UnreachableMethodRemover extends SceneTransformer {
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
             i.hasNext();) {
             SootClass theClass = (SootClass)i.next();
-            
+
             // Loop through all the methods...
             for (Iterator methods = theClass.getMethods().snapshotIterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                
+
                 // And remove any methods that aren't reachable.
                 if (!reachableMethodSet.contains(method)) {
                     if (debug) System.out.println("removing method " + method);

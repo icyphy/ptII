@@ -83,7 +83,7 @@ public class TestApplication implements ChangeListener {
         toplevel.addChangeListener(this);
 
         // First, we gc and then print the memory stats
-        // BTW to get more info about gc, 
+        // BTW to get more info about gc,
         // use java -verbose:gc . . .
         System.gc();
         Thread.sleep(1000);

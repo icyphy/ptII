@@ -65,17 +65,17 @@ constructed at a particular statement.
 public class TokenConstructorAnalysis {
     public TokenConstructorAnalysis(JimpleBody body, LocalDefs localDefs) {
         _constructorToValue = new HashMap();
-      
+
         for (Iterator units = body.getUnits().iterator();
                 units.hasNext();) {
             Stmt unit = (Stmt)units.next();
-            if (unit.containsInvokeExpr() && 
+            if (unit.containsInvokeExpr() &&
                     unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
-                InstanceInvokeExpr invokeExpr = 
+                InstanceInvokeExpr invokeExpr =
                     (InstanceInvokeExpr)unit.getInvokeExpr();
                 SootMethod invokedMethod = invokeExpr.getMethod();
                 // If we invoke a Token class initializer
-                if (invokedMethod.getName().equals("<init>") && 
+                if (invokedMethod.getName().equals("<init>") &&
                         SootUtilities.isSubtypeOf(
                                 invokeExpr.getBase().getType(),
                                 RefType.v(PtolemyUtilities.tokenClass))) {
@@ -87,7 +87,7 @@ public class TokenConstructorAnalysis {
                         continue;
                     }
 
-                    Token token = 
+                    Token token =
                         _evaluateInitializer(invokeExpr, invokedMethod);
                     if (token != null) {
                         _constructorToValue.put(constructor, token);
@@ -96,13 +96,13 @@ public class TokenConstructorAnalysis {
             }
         }
     }
-    
+
     /** Return the invocation that creates an object with the given name.
      */
     public Token getConstructedTokenValue(Stmt tokenConstructor) {
         return (Token)_constructorToValue.get(tokenConstructor);
     }
-    
+
     private Token _evaluateInitializer(InvokeExpr invokeExpr,
             SootMethod invokedMethod) {
         Value[] argValues = (Value[])

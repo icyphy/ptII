@@ -83,16 +83,16 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
      *  properly initialized so that resolved types and other static
      *  properties of the model can be inspected.
      */
-    public static NamedObjEqualityEliminator v(CompositeActor model) { 
+    public static NamedObjEqualityEliminator v(CompositeActor model) {
         return new NamedObjEqualityEliminator(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug"; 
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -109,9 +109,9 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
             Entity entity = (Entity)entities.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
-            SootClass entityClass = 
+            SootClass entityClass =
                         Scene.v().loadClassAndSupport(className);
-            
+
             for (Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
@@ -119,19 +119,19 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
             }
         }
     }
-    
-    private static boolean _eliminateComparisons(SootClass theClass, 
+
+    private static boolean _eliminateComparisons(SootClass theClass,
             SootMethod method, Entity entity, boolean debug) {
         boolean doneSomething = false;
         if (debug) System.out.println("Removing object comparisons in " +
                 method);
-        
+
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-        
+
         for (Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
@@ -139,7 +139,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
-                
+
                 if (value instanceof BinopExpr) {
                     BinopExpr binop = (BinopExpr)value;
                     Value left = binop.getOp1();
@@ -161,16 +161,16 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                                    PtolemyUtilities.namedObjClass) &&
                                 SootUtilities.derivesFrom(rightClass,
                                         PtolemyUtilities.namedObjClass)) {
-                            try {  
+                            try {
                                 NamedObj leftObject =
                                     getNamedObjValue(method,(Local)left,
                                             stmt, localDefs, localUses);
-                                NamedObj rightObject = 
+                                NamedObj rightObject =
                                     getNamedObjValue(method, (Local)right,
                                             stmt, localDefs, localUses);
-                                System.out.println("leftObject = " + leftObject); 
+                                System.out.println("leftObject = " + leftObject);
                                 System.out.println("rightObject = " + rightObject);
-                                
+
                                 if (leftObject == rightObject) {
                                     binop.getOp1Box().setValue(
                                             IntConstant.v(0));
@@ -183,7 +183,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                                             IntConstant.v(1));
                                 }
                             } catch (Exception ex) {
-                                // Ignore... We cannot determine the 
+                                // Ignore... We cannot determine the
                                 // value of the object.
                             }
                         }
@@ -193,7 +193,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
         }
 
         return doneSomething;
-    }            
+    }
 
     /** Attempt to determine the constant value of the given local,
      *  which is assumed to have a named object type.  Walk backwards
@@ -201,19 +201,19 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
      *  defined and try to symbolically evaluate the value of the
      *  variable. If the value can be determined, then return it,
      *  otherwise throw an exception
-     */ 
-    public static NamedObj getNamedObjValue(SootMethod method, Local local, 
+     */
+    public static NamedObj getNamedObjValue(SootMethod method, Local local,
             Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if (value instanceof Local) {
-                return getNamedObjValue(method, 
+                return getNamedObjValue(method,
                         (Local)value,
                         stmt, localDefs, localUses);
             } else if (value instanceof CastExpr) {
-                return getNamedObjValue(method, 
+                return getNamedObjValue(method,
                         (Local)((CastExpr)value).getOp(),
                         stmt, localDefs, localUses);
             } else if (value instanceof FieldRef) {
@@ -234,10 +234,10 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                 while (pairs.hasNext()) {
                     UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
                     if (pair.getUnit() instanceof DefinitionStmt) {
-                        DefinitionStmt useStmt = 
+                        DefinitionStmt useStmt =
                             (DefinitionStmt)pair.getUnit();
                         if (useStmt.getLeftOp() instanceof FieldRef) {
-                             SootField field = 
+                             SootField field =
                                  ((FieldRef)useStmt.getLeftOp()).getField();
                              ValueTag tag = (ValueTag)field.getTag("_CGValue");
                              if (tag == null) {
@@ -250,13 +250,13 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                     }
                 }
                 throw new RuntimeException("Could not determine the " +
-                        " static value of" + local + " in " + method); 
+                        " static value of" + local + " in " + method);
             } else if (value instanceof NullConstant) {
-                // If we get to an assignment from null, then the 
+                // If we get to an assignment from null, then the
                 // attribute statically evaluates to null.
                 return null;
             } else {
-                throw new RuntimeException("Unknown type of value: " 
+                throw new RuntimeException("Unknown type of value: "
                         + value + " in " + method);
             }
         } else {
@@ -268,7 +268,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
             throw new RuntimeException(string);
         }
     }
-    
+
     private CompositeActor _model;
 }
 

@@ -58,8 +58,8 @@ import java.util.*;
 /**
 An analysis that establishes a correspondence between each constructor
 of a named object and the location in the transformed code where that
-object is created.  This information is used to create fields with the 
-appropriate naming convention for 
+object is created.  This information is used to create fields with the
+appropriate naming convention for
 named objects that are constructed, but don't have an appropriate field.
 
 @author Stephen Neuendorffer
@@ -70,16 +70,16 @@ public class NamedObjConstructorAnalysis {
     public NamedObjConstructorAnalysis(JimpleBody body) {
         CompleteUnitGraph g = new CompleteUnitGraph(body);
         MustAliasAnalysis analysis = new MustAliasAnalysis(g);
-        
+
         Local thisLocal = body.getThisLocal();
 
         _newExprToConstructor = new HashMap();
         for (Iterator units = body.getUnits().iterator();
                 units.hasNext();) {
             Stmt unit = (Stmt)units.next();
-            if (unit.containsInvokeExpr() && 
+            if (unit.containsInvokeExpr() &&
                     unit.getInvokeExpr() instanceof NewExpr) {
-                _newExprToConstructor.put(unit.getInvokeExpr(), 
+                _newExprToConstructor.put(unit.getInvokeExpr(),
                         unit);
             }
         }
@@ -87,17 +87,17 @@ public class NamedObjConstructorAnalysis {
         _constructorToContainerConstructor = new HashMap();
         _constructorToName = new HashMap();
         _nameToConstructor = new HashMap();
-      
+
         for (Iterator units = body.getUnits().iterator();
                 units.hasNext();) {
             Stmt unit = (Stmt)units.next();
-            if (unit.containsInvokeExpr() && 
+            if (unit.containsInvokeExpr() &&
                     unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
-                InstanceInvokeExpr invokeExpr = 
+                InstanceInvokeExpr invokeExpr =
                     (InstanceInvokeExpr)unit.getInvokeExpr();
                 SootMethod invokedMethod = invokeExpr.getMethod();
                 // If we invoke a container, name constructor.
-                if (invokedMethod.getName().equals("<init>") && 
+                if (invokedMethod.getName().equals("<init>") &&
                         invokedMethod.getParameterCount() >= 2 &&
                         !analysis.getAliasesOfBefore((Local)invokeExpr.getBase(), unit).contains(thisLocal)
                         && SootUtilities.isSubtypeOf(
@@ -111,7 +111,7 @@ public class NamedObjConstructorAnalysis {
                             (Local)invokeExpr.getBase(), thisLocal, unit, analysis);
                     Unit containerConstructor = _findConstructor(
                             (Local)invokeExpr.getArg(0), thisLocal, unit, analysis);
-                    
+
                     // Save the container.
                     _constructorToContainerConstructor.put(constructor, containerConstructor);
 
@@ -119,7 +119,7 @@ public class NamedObjConstructorAnalysis {
                     Value nameValue = invokeExpr.getArg(1);
                     System.out.println("attribute name =" + nameValue);
                     if (Evaluator.isValueConstantValued(nameValue)) {
-                        StringConstant nameConstant = 
+                        StringConstant nameConstant =
                             (StringConstant)
                             Evaluator.getConstantValueOf(nameValue);
                         String name = nameConstant.value;
@@ -133,12 +133,12 @@ public class NamedObjConstructorAnalysis {
                     System.out.println("found setName " + unit);
                     Unit constructor = _findConstructor(
                             (Local)invokeExpr.getBase(), thisLocal, unit, analysis);
-                    
+
                     // Save the name.
                     Value nameValue = invokeExpr.getArg(0);
                     //System.out.println("attribute name =" + nameValue);
                     if (Evaluator.isValueConstantValued(nameValue)) {
-                        StringConstant nameConstant = 
+                        StringConstant nameConstant =
                             (StringConstant)
                             Evaluator.getConstantValueOf(nameValue);
                         String name = nameConstant.value;
@@ -146,16 +146,16 @@ public class NamedObjConstructorAnalysis {
                     } else {
                         String string = "Argument to setName call cannot be statically evaluated";
                         throw new RuntimeException(string);
-                    
+
                     }
-                
+
                 } else if (invokedMethod.getName().equals("setContainer")) {
                     System.out.println("found setContainer " + unit);
                     Unit constructor = _findConstructor(
                             (Local)invokeExpr.getBase(), thisLocal, unit, analysis);
                     Unit containerConstructor = _findConstructor(
                             (Local)invokeExpr.getArg(0), thisLocal, unit, analysis);
-                    
+
                     // Save the container.
                     _constructorToContainerConstructor.put(constructor, containerConstructor);
                 }
@@ -172,18 +172,18 @@ public class NamedObjConstructorAnalysis {
             _nameToConstructor.put(fullName, constructor);
         }
     }
-    
+
     /** Return the invocation that creates an object with the given name.
      */
     public Unit getConstructor(String name) {
         return (Unit)_nameToConstructor.get(name);
     }
-    
+
     private String _getFullName(Unit constructor) {
         if (_constructorToContainerConstructor.get(constructor) == null) {
             return (String)_constructorToName.get(constructor);
         } else {
-            String containerName = 
+            String containerName =
                 _getFullName((Unit)_constructorToContainerConstructor.get(constructor));
             return containerName + "." + (String)_constructorToName.get(constructor);
         }

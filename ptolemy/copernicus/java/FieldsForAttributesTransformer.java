@@ -69,7 +69,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 A transformer that is responsible for replacing references to attributes.
 Any calls to the getAttribute() method are replaced with a field reference to
 the field of the appropriate class that points to the correct attribute.
-Any calls to the getDirector() method are replaced with null.  
+Any calls to the getDirector() method are replaced with null.
 
 @author Stephen Neuendorffer
 @version $Id$
@@ -87,15 +87,15 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
      *  properly initialized so that resolved types and other static
      *  properties of the model can be inspected.
      */
-    public static FieldsForAttributesTransformer v(CompositeActor model) { 
+    public static FieldsForAttributesTransformer v(CompositeActor model) {
         return new FieldsForAttributesTransformer(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
+    public String getDeclaredOptions() {
         return super.getDeclaredOptions() + " targetPackage";
     }
 
@@ -106,21 +106,21 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
         Map attributeToFieldMap = new HashMap();
         Map classToObjectMap = new HashMap();
-      
+
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
-        //   _getAttributeFields(ModelTransformer.getModelClass(), _model, 
+        //   _getAttributeFields(ModelTransformer.getModelClass(), _model,
         //        _model, attributeToFieldMap);
         classToObjectMap.put(ModelTransformer.getModelClass(), _model);
-       
+
         // Loop over all the actor instance classes and get the
         // attribute fields.
         for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
-            String className = 
+            String className =
                 ActorTransformer.getInstanceClassName(entity, options);
-            SootClass entityClass = 
+            SootClass entityClass =
                 Scene.v().loadClassAndSupport(className);
             _getAttributeFields(entityClass, entity, entity,
                     attributeToFieldMap);
@@ -130,7 +130,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 Port port = (Port)ports.next();
                 _getAttributeFields(entityClass, entity, port,
                         attributeToFieldMap);
-            }           
+            }
             classToObjectMap.put(entityClass, entity);
         }
 
@@ -138,11 +138,11 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
        for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
-            String className = 
+            String className =
                 ActorTransformer.getInstanceClassName(entity, options);
-            SootClass theClass = 
+            SootClass theClass =
                 Scene.v().loadClassAndSupport(className);
-       
+
             // Replace calls to getAttribute with field references.
             for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
@@ -177,16 +177,16 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                                 // statically evaluated.
                             Value nameValue = r.getArg(0);
                             if (Evaluator.isValueConstantValued(nameValue)) {
-                                StringConstant nameConstant = 
+                                StringConstant nameConstant =
                                     (StringConstant)
                                     Evaluator.getConstantValueOf(nameValue);
                                 String name = nameConstant.value;
-                                // perform type analysis to determine what the 
+                                // perform type analysis to determine what the
                                 // type of the base is.
-                                
+
                                 Local baseLocal = (Local)r.getBase();
                                 Value newFieldRef = _createAttributeField(
-                                        baseLocal, name, unit, localDefs, 
+                                        baseLocal, name, unit, localDefs,
                                         classToObjectMap, attributeToFieldMap);
                                 box.setValue(newFieldRef);
                             } else {
@@ -197,14 +197,14 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                         }
                     }
                 }
-            }            
+            }
         }
     }
 
     // Given a local variable that refers to a namedObj, and the name
     // of an attribute in that object, return a new field ref that
     // refers to that attribute.
-    private static FieldRef _createAttributeField(Local baseLocal, 
+    private static FieldRef _createAttributeField(Local baseLocal,
             String name, Unit unit, LocalDefs localDefs,
             Map classToObjectMap, Map attributeToFieldMap) {
         // FIXME: This is not enough.
@@ -226,19 +226,19 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             }
         } else {
             // Walk back and get the definition of the field.
-            DefinitionStmt definition = 
+            DefinitionStmt definition =
                 _getFieldDef(baseLocal, unit, localDefs);
             InstanceFieldRef fieldRef = (InstanceFieldRef)
                 definition.getRightOp();
             SootField baseField = fieldRef.getField();
             System.out.println("baseField = " + baseField);
             return _createAttributeField((Local)fieldRef.getBase(),
-                    baseField.getName() + "." + name, definition, 
+                    baseField.getName() + "." + name, definition,
                     localDefs, classToObjectMap, attributeToFieldMap);
             //baseField.getDeclaringClass().getFieldByName(
             //    baseField.getName() + "_" + name);
         }
-    }        
+    }
 
     /** Attempt to determine the constant value of the given local,
      *  which is assumed to have a variable type.  Walk backwards
@@ -246,8 +246,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
      *  defined and try to symbolically evaluate the value of the
      *  variable. If the value can be determined, then return it,
      *  otherwise return null.
-     */ 
-    private static DefinitionStmt _getFieldDef(Local local, 
+     */
+    private static DefinitionStmt _getFieldDef(Local local,
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if (definitionList.size() == 1) {
@@ -270,39 +270,39 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         }
         return null;
     }
-    
+
     // Populate the given map according to the fields representing the
-    // attributes of the given object that are expected 
+    // attributes of the given object that are expected
     // to exist in the given class
     private void _getAttributeFields(SootClass theClass, NamedObj container,
             NamedObj object, Map attributeToFieldMap) {
-       
+
         for (Iterator attributes =
                 object.attributeList().iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
-                    
+
             String fieldName = ModelTransformer.getFieldNameForAttribute(
                     attribute, container);
-            
+
             if (!theClass.declaresFieldByName(fieldName)) {
                 // FIXME: This should be an exception.
-                System.out.println("Class " + theClass 
+                System.out.println("Class " + theClass
                         + " does not declare field for attribute "
                         + attribute.getFullName());
                 continue;
             }
-            
+
             // retrieve the existing field.
-            SootField field = theClass.getFieldByName(fieldName);   
+            SootField field = theClass.getFieldByName(fieldName);
             // Make the field final and private.
-            field.setModifiers((field.getModifiers() & Modifier.STATIC) | 
+            field.setModifiers((field.getModifiers() & Modifier.STATIC) |
                     Modifier.FINAL | Modifier.PRIVATE);
 
             field.addTag(new ValueTag(attribute));
             attributeToFieldMap.put(attribute, field);
             // call recursively
-            _getAttributeFields(theClass, container, 
+            _getAttributeFields(theClass, container,
                     attribute, attributeToFieldMap);
         }
     }

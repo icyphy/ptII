@@ -111,13 +111,13 @@ public class CommandLineTemplate {
      */
     public void processArgs(String args[]) throws Exception {
         if (args != null) {
-           
+
             // start the models.
             Iterator models = _models.iterator();
             while (models.hasNext()) {
 
                 // First, we gc and then print the memory stats
-                // BTW to get more info about gc, 
+                // BTW to get more info about gc,
                 // use java -verbose:gc . . .
                 System.gc();
                 Thread.sleep(1000);
@@ -140,10 +140,10 @@ public class CommandLineTemplate {
                         ": Stats before execution:    "
                         + timeAndMemory(startTime,
                                 totalMemory1, freeMemory1));
-                
+
                 // Second, we run and print memory stats.
                 startRun(model);
-                
+
                 long totalMemory2 = runtime.totalMemory()/1024;
                 long freeMemory2 = runtime.freeMemory()/1024;
                 String standardStats = timeAndMemory(startTime,
@@ -250,11 +250,11 @@ public class CommandLineTemplate {
         if (hasPlaceable) {
             // The model has an entity that is Placeable, so create a frame.
             try {
-                // A model frame with no buttons... just place the 
+                // A model frame with no buttons... just place the
                 // placeable actors.
                 ModelFrame frame = new ModelFrame(model, null,
                         new ModelPane(model, ModelPane.HORIZONTAL, 0));
-                          
+
                 _openCount++;
                 frame.addWindowListener(new WindowAdapter() {
                     public void windowClosed(WindowEvent event) {
@@ -287,20 +287,20 @@ public class CommandLineTemplate {
             if (manager == null) {
                 model.setManager(new Manager(model.workspace(), "manager"));
                 manager = model.getManager();
-            }      
+            }
             model.workspace().setReadOnly(true);
             long startTime = System.currentTimeMillis();
             manager.startRun();
             System.out.println("Execution stats:");
             System.out.println(timeAndMemory(startTime));
-        
+
         } catch (IllegalActionException ex) {
             // Model is already running.  Ignore.
             System.out.println("Exception = " + ex);
             ex.printStackTrace();
         }
     }
-    
+
     // copied from Manager.
     public static String timeAndMemory(long startTime) {
 	Runtime runtime = Runtime.getRuntime();
@@ -352,7 +352,7 @@ public class CommandLineTemplate {
 
     /** The count of currently open windows. */
     protected int _openCount = 0;
-    
+
     /** Are we testing? */
     protected static boolean _test = false;
 

@@ -273,7 +273,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 	_portLocalMap = new HashMap();
 
         // Now instantiate all the stuff inside the model.
-        _composite(body, thisLocal, _model, thisLocal, _model, modelClass, 
+        _composite(body, thisLocal, _model, thisLocal, _model, modelClass,
                 new HashSet());
 
         units.add(Jimple.v().newReturnVoidStmt());
@@ -337,9 +337,9 @@ public class ShallowModelTransformer extends SceneTransformer {
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
                 composite, thisLocal, modelClass, createdSet);
-        _ports(body, containerLocal, container, 
+        _ports(body, containerLocal, container,
                 thisLocal, composite, modelClass, createdSet);
-        _entities(body, containerLocal, container, 
+        _entities(body, containerLocal, container,
                 thisLocal, composite, modelClass, createdSet);
 
         // handle the communication

@@ -127,7 +127,7 @@ public class ActorTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
 	System.out.println("ActorTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-     
+
         // Create an instance class for every actor.
         for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
@@ -146,12 +146,12 @@ public class ActorTransformer extends SceneTransformer {
             // add init stuff.  EntitySootClass handles this nicely, but
             // doesn't let us use copyClass.  Generally adding this init crap
             // is something we have to do a lot.  How do we handle it nicely?
-            // 
+            //
             //            SootClass newClass =
             //     SootUtilities.copyClass(entityClass, newClassName);
             //  newClass.setApplicationClass();
 
-            
+
             // create a class for the entity instance.
             EntitySootClass entityInstanceClass =
                 new EntitySootClass(entityClass, newClassName,
@@ -177,7 +177,7 @@ public class ActorTransformer extends SceneTransformer {
                 SootUtilities.foldClass(theClass);
                 superClass = theClass.getSuperclass();
             }
-            
+
             // Go through all the initialization code and removing any
             // parameter initialization code.
             // FIXME: This needs to look at all code that is reachable
@@ -192,7 +192,7 @@ public class ActorTransformer extends SceneTransformer {
                 ex.printStackTrace();
                 throw new RuntimeException(ex.getMessage());
             }
-            // Loop over all the constructors and add code to each one to 
+            // Loop over all the constructors and add code to each one to
             // populate the actor with parameter values, etc...
             /*     for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
@@ -200,9 +200,9 @@ public class ActorTransformer extends SceneTransformer {
                 if (!method.getName().equals("<init>")) {
                     continue;
                 }
-                
+
                 JimpleBody initBody = (JimpleBody)method.retrieveActiveBody();
-                NamedObjConstructorAnalysis analysis = new 
+                NamedObjConstructorAnalysis analysis = new
                     NamedObjConstructorAnalysis(initBody);
                 Local thisLocal = initBody.getThisLocal();
                 for (Iterator ports = entity.portList().iterator();
@@ -210,9 +210,9 @@ public class ActorTransformer extends SceneTransformer {
                     TypedIOPort port = (TypedIOPort)ports.next();
                     //FIXME WRONG!
                     _createFieldsForExistingAttributes(
-                            body, analysis, classEntity, thisLocal, 
+                            body, analysis, classEntity, thisLocal,
                             port, thisLocal, entityInstanceClass);
-            
+
                 }
                 }*/
 
@@ -223,7 +223,7 @@ public class ActorTransformer extends SceneTransformer {
             body.insertIdentityStmts();
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
-            
+
             // Create a set to keep track of which parameters have been
             // created and which we haven't.
             HashSet createdSet = new HashSet();
@@ -231,16 +231,16 @@ public class ActorTransformer extends SceneTransformer {
             ModelTransformer.updateCreatedSet(
                     _model.getFullName() + "." + entity.getName(),
                     classEntity, classEntity, createdSet);
-            
+
             // Insert code to initialize the settable
             // parameters of this instance and
             // create fields for attributes.
             ModelTransformer.createFieldsForAttributes(
-                    body, entity, thisLocal, 
+                    body, entity, thisLocal,
                     entity, thisLocal, entityInstanceClass, createdSet);
-            
+
             // Initialize the parameters of the class entity.
-            for (Iterator attributes = 
+            for (Iterator attributes =
                     entity.attributeList(Settable.class).iterator();
                 attributes.hasNext();) {
                 Settable settable = (Settable)attributes.next();
@@ -249,7 +249,7 @@ public class ActorTransformer extends SceneTransformer {
                 if (classSettable != null) {
                     try {
                         if (settable instanceof Variable) {
-                            
+
                             ((Variable)classSettable).setToken(
                                     ((Variable)settable).getToken());
                         } else {
@@ -261,8 +261,8 @@ public class ActorTransformer extends SceneTransformer {
                     }
                 }
             }
-    
-            // FIXME: this is very similar to other code in the 
+
+            // FIXME: this is very similar to other code in the
             // ModelTransformer.
             // Set the types of all the ports.
             Local portLocal = Jimple.v().newLocal("port",
@@ -298,12 +298,12 @@ public class ActorTransformer extends SceneTransformer {
 
                     // Create a new field for the attribute, and initialize
                     // it to the the attribute above.
-                    SootUtilities.createAndSetFieldFromLocal(body, local, 
+                    SootUtilities.createAndSetFieldFromLocal(body, local,
                             entityInstanceClass,
-                            PtolemyUtilities.portType, 
-                            ModelTransformer.getFieldNameForPort(port, 
+                            PtolemyUtilities.portType,
+                            ModelTransformer.getFieldNameForPort(port,
                                     entity));
-                    
+
 
                     if (port instanceof TypedIOPort) {
                         TypedIOPort ioport = (TypedIOPort)port;
@@ -333,7 +333,7 @@ public class ActorTransformer extends SceneTransformer {
 
                 // Create attributes for the port
                 ModelTransformer.createFieldsForAttributes(
-                        body, entity, thisLocal, 
+                        body, entity, thisLocal,
                         port, portLocal, entityInstanceClass, createdSet);
 
                 // Then cast to TypedIOPort
@@ -341,20 +341,20 @@ public class ActorTransformer extends SceneTransformer {
                         ioportLocal,
                         Jimple.v().newCastExpr(portLocal,
                                 PtolemyUtilities.ioportType)));
-                
+
                 // Create a new type.
                 Local typeLocal = PtolemyUtilities.buildConstantTypeLocal(
                         body,
                         body.getUnits().getLast(),
                         port.getType());
-                
+
                 // And call the setTypeEquals() method.
                 body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(
                                 ioportLocal,
-                                PtolemyUtilities.portSetTypeMethod, 
+                                PtolemyUtilities.portSetTypeMethod,
                                 typeLocal)));
-                
+
                 // Lastly, call connectionsChanged()
                 body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(
@@ -364,11 +364,11 @@ public class ActorTransformer extends SceneTransformer {
             }
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
-            
+
             // Remove super calls to the executable interface.
             // FIXME: This would be nice to do by inlining instead of
             // special casing.
-            _implementExecutableInterface(entityInstanceClass);            
+            _implementExecutableInterface(entityInstanceClass);
 
             // Reinitialize the hierarchy, since we've added classes.
             Scene.v().setActiveHierarchy(new Hierarchy());
@@ -384,7 +384,7 @@ public class ActorTransformer extends SceneTransformer {
     }
 
     public static String getInstanceClassName(Entity entity, Map options) {
-        // Note that we use sanitizeName because entity names can have 
+        // Note that we use sanitizeName because entity names can have
         // spaces, and append leading characters because entity names
         // can start with numbers.
         return Options.getString(options, "targetPackage")
@@ -411,7 +411,7 @@ public class ActorTransformer extends SceneTransformer {
                         SpecialInvokeExpr r = (SpecialInvokeExpr)value;
                         if (PtolemyUtilities.executableInterface.declaresMethod(
                                 r.getMethod().getSubSignature())) {
-                            boolean isNonVoidMethod = 
+                            boolean isNonVoidMethod =
                                 r.getMethod().getName().equals("prefire") ||
                                 r.getMethod().getName().equals("postfire");
                             if (isNonVoidMethod && unit instanceof AssignStmt) {
@@ -437,7 +437,7 @@ public class ActorTransformer extends SceneTransformer {
             JimpleBody body = Jimple.v().newBody(method);
             method.setActiveBody(body);
             body.insertIdentityStmts();
-            body.getUnits().add(Jimple.v().newReturnVoidStmt());            
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());
         }
          */
                 if (!theClass.declaresMethodByName("preinitialize")) {
@@ -517,9 +517,9 @@ public class ActorTransformer extends SceneTransformer {
                         SiteInliner.inlineSite(r.getMethod(), stmt, method);
                     }
 
-                    
+
                     // Inline other NamedObj methods here, too..
-                    
+
                 }
             }
         }
@@ -535,7 +535,7 @@ public class ActorTransformer extends SceneTransformer {
                 Stmt stmt = (Stmt)units.next();
                 if (stmt.containsInvokeExpr()) {
                     InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
-                    // This is steve...  This is steve gacking at the ugliest code 
+                    // This is steve...  This is steve gacking at the ugliest code
                     // he's written in a while.   See steve gack.
                     if (r.getMethod().getName().equals("attributeChanged") ||
                             r.getMethod().getName().equals("setExpression") ||

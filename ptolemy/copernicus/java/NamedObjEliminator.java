@@ -83,15 +83,15 @@ public class NamedObjEliminator extends SceneTransformer {
      *  properly initialized so that resolved types and other static
      *  properties of the model can be inspected.
      */
-    public static NamedObjEliminator v(CompositeActor model) { 
+    public static NamedObjEliminator v(CompositeActor model) {
         return new NamedObjEliminator(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
+    public String getDeclaredOptions() {
         return super.getDeclaredOptions() + " targetPackage";
     }
 
@@ -103,9 +103,9 @@ public class NamedObjEliminator extends SceneTransformer {
         List modifiedConstructorClassList = new LinkedList();
 
         // Loop over all the classes
-        for (Iterator i = Scene.v().getApplicationClasses().iterator(); 
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
             i.hasNext();) {
-                     
+
             SootClass theClass = (SootClass) i.next();
             if (SootUtilities.derivesFrom(theClass,
                        PtolemyUtilities.actorClass) ||
@@ -123,33 +123,33 @@ public class NamedObjEliminator extends SceneTransformer {
                 SootMethod method = theClass.getMethodByName("<init>");
                 method.setParameterTypes(new LinkedList());
                 modifiedConstructorClassList.add(theClass);
-                
+
                 // Dance so that indexes in the Scene are properly updated.
                 theClass.removeMethod(method);
                 theClass.addMethod(method);
-                
+
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                
+
                 for (Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                    
+
                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
                         boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
-                        
+
                         Value value = box.getValue();
                         Type type = value.getType();
-                        
+
                         // Fix super.<init> calls. constructor...
                         if (value instanceof SpecialInvokeExpr) {
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             if (expr.getBase().equals(body.getThisLocal()) &&
                                expr.getMethod().getName().equals("<init>")) {
-                                System.out.println("replacing constructor = " 
+                                System.out.println("replacing constructor = "
                                         + unit + " in method " + method);
-                                
+
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
                                                      (Local)expr.getBase(),
@@ -164,10 +164,10 @@ public class NamedObjEliminator extends SceneTransformer {
                             body.getUnits().swapWith(identityStmt,
                                     Jimple.v().newAssignStmt(
                                             identityStmt.getLeftOp(),
-                                            
+
                                             NullConstant.v()));
                         }
-                        
+
                     }
                 }
             }
@@ -176,9 +176,9 @@ public class NamedObjEliminator extends SceneTransformer {
         // Reset the hierarchy, since we've changed superclasses and such.
         Scene.v().setActiveHierarchy(new Hierarchy());
 
-        for (Iterator i = Scene.v().getApplicationClasses().iterator(); 
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
             i.hasNext();) {
-            
+
             SootClass theClass = (SootClass) i.next();
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
@@ -191,15 +191,15 @@ public class NamedObjEliminator extends SceneTransformer {
                 for (Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                    
+
                     // If any box is removable, then remove the statement.
                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
                         boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
-                        
+
                         Value value = box.getValue();
                         Type type = value.getType();
-                        
+
                         // If we're constructing one of our actor classes,
                         // then switch to the object constructor.
                         if (value instanceof SpecialInvokeExpr) {
@@ -207,9 +207,9 @@ public class NamedObjEliminator extends SceneTransformer {
                             SootClass declaringClass =
                                 expr.getMethod().getDeclaringClass();
                             if (modifiedConstructorClassList.contains(declaringClass)) {
-                                System.out.println("replacing constructor = " 
+                                System.out.println("replacing constructor = "
                                         + unit + " in method " + method);
-                                
+
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
                                                      (Local)expr.getBase(),
@@ -231,7 +231,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                 break;
                             }
                             // Inline namedObj methods on the
-                            // attribute.  
+                            // attribute.
                             // FIXME: This should do the
                             // whole traceback business to ensure that
                             // we are calling the methods on the
@@ -244,12 +244,12 @@ public class NamedObjEliminator extends SceneTransformer {
                                        PtolemyUtilities.getFullNameMethod.getSubSignature())) {
                                 box.setValue(StringConstant.v(
                                                      _model.getFullName()));
-                            } 
+                            }
                             if (expr.getMethod().getSubSignature().equals(
                                        PtolemyUtilities.getNameMethod.getSubSignature())) {
                                 box.setValue(StringConstant.v(
                                                      _model.getName()));
-                            } 
+                            }
                         }
                         // Remove other remaining method invocations.
                         // &&
@@ -259,7 +259,7 @@ public class NamedObjEliminator extends SceneTransformer {
                             InvokeExpr expr = (InvokeExpr)value;
                             SootClass methodClass =
                                 expr.getMethod().getDeclaringClass();
-                            if (SootUtilities.derivesFrom(methodClass, 
+                            if (SootUtilities.derivesFrom(methodClass,
                                        PtolemyUtilities.namedObjClass)) {
                                 System.out.println(
                                         "removing namedobj call = " + unit
@@ -272,30 +272,30 @@ public class NamedObjEliminator extends SceneTransformer {
                 }
             }
         }
-        for (Iterator i = Scene.v().getApplicationClasses().iterator(); 
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
                       i.hasNext();) {
-            
+
             SootClass theClass = (SootClass) i.next();
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                
+
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                    
+
                     // If any box is removable, then remove the statement.
                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
                         boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
-                        
+
                         Value value = box.getValue();
                         Type type = value.getType();
-                        
+
                         if (_isRemovableType(type)) {
                             //System.out.println("Unit with removable type: " + unit);
                             body.getUnits().remove(unit);
@@ -321,12 +321,12 @@ public class NamedObjEliminator extends SceneTransformer {
                         theClass.getFields().remove(field);
                     }
                 }
-            }            
+            }
         }
     }
-    
+
     // Return true if the type is one that should not appear in generated
-    // code.  This includes Attribute, Settable, Relation, Port, and their 
+    // code.  This includes Attribute, Settable, Relation, Port, and their
     // subclasses.
     private static boolean _isRemovableType(Type type) {
         if (type instanceof RefType) {

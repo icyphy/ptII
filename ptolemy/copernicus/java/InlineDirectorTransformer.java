@@ -86,7 +86,7 @@ import java.util.StringTokenizer;
 A transformer that inlines an SDF director.  This transformer synthesizes
 methods that properly implement the executable interface inside the class
 representing the model.  The resulting class includes code to properly
-initialize the instance classes for the actors and fire them in the 
+initialize the instance classes for the actors and fire them in the
 order of the SDF schedule.
 
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
@@ -120,17 +120,17 @@ public class InlineDirectorTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlineDirectorTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-        
+
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
         for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
-            String className = 
+            String className =
                 ActorTransformer.getInstanceClassName(entity, options);
-            SootClass theClass = 
+            SootClass theClass =
                 Scene.v().loadClassAndSupport(className);
-       
+
             // Loop over all the methods...
             for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
@@ -154,12 +154,12 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     }
                 }
             }
-        } 
-        
+        }
+
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
-      
+
         SootClass modelClass = ModelTransformer.getModelClass();
-        
+
         // Inline the director
         {
             // populate the preinitialize method
@@ -180,7 +180,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
-                String className = 
+                String className =
                     ActorTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod preinitializeMethod =
@@ -219,7 +219,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
-                String className = 
+                String className =
                     ActorTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod initializeMethod =
@@ -256,7 +256,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 schedule =
                     director.getScheduler().getSchedule().actorIterator();
             } catch (Exception ex) {
-                throw new KernelRuntimeException(ex, 
+                throw new KernelRuntimeException(ex,
                         "Failed to get schedule");
             }
             while (schedule.hasNext()) {
@@ -264,7 +264,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
-                String className = 
+                String className =
                     ActorTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod actorPrefireMethod =
@@ -316,7 +316,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
-                String className = 
+                String className =
                     ActorTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod wrapupMethod =
@@ -330,7 +330,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                                 wrapupMethod)));
             }
             units.add(Jimple.v().newReturnVoidStmt());
-        }  
+        }
         Scene.v().setActiveHierarchy(new Hierarchy());
     }
     private CompositeActor _model;

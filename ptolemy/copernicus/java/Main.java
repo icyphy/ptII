@@ -98,16 +98,16 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
 	super.addTransforms();
- 
+
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
 	// -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                 WatchDogTimer.v()));
-       
+
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
-        // so that we can 
+        // so that we can
         //      Scene.v().getPack("wjtp").add(new Transform("wjtp.ns",
         //         NameSanitizer.v(_toplevel)));
 
@@ -124,9 +124,9 @@ public class Main extends KernelMain {
 
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.idt", 
+                new Transform("wjtp.idt",
                         InlineDirectorTransformer.v(_toplevel)));
-                
+
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
@@ -158,7 +158,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
-                                
+
         // While we still have references to ports, use the
         // resolved types of the ports and run a typing
         // algorithm to specialize the types of domain
@@ -176,7 +176,7 @@ public class Main extends KernelMain {
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.cp",
-                        new TransformerAdapter(CopyPropagator.v())));      
+                        new TransformerAdapter(CopyPropagator.v())));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", ClassWriter.v()));
@@ -188,32 +188,32 @@ public class Main extends KernelMain {
         // parameter, replace the method call with the return value
         // of the method.  This is possible, since after
         // initialization attribute values are assumed not to
-        // change.  (Note: There are certain cases where this is 
-        // not true, i.e. the expression actor.  Those will be 
+        // change.  (Note: There are certain cases where this is
+        // not true, i.e. the expression actor.  Those will be
         // specially handled before this point, or we should detect
         // assignments to attributes and handle them differently.)
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.iat", 
+                new Transform("wjtp.iat",
                         InlineParameterTransformer.v(_toplevel)));
-        
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", ClassWriter.v()));
-        
+
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
         // created by inlining parameters), inline those calls.
-        // We do this before port transformation, since it 
+        // We do this before port transformation, since it
         // often allows us to statically determine the channels
         // of port reads and writes.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(_toplevel)));
 
-        // Set about removing references to ports.  
+        // Set about removing references to ports.
         // Anywhere where a method is called on a port, replace the
-        // method call with an inlined version of the method. 
+        // method call with an inlined version of the method.
         // Currently this only deals with SDF, and turns
         // all gets and puts into reads and writes from circular
         // buffers.
@@ -223,26 +223,26 @@ public class Main extends KernelMain {
 
         // This appears again because Inlining the parameters
         // also inlines calls to connectionsChanged, which by default
-        // calls getDirector...  This transformer removes 
+        // calls getDirector...  This transformer removes
         // these method calls.
         // FIXME: This should be done in a better way...
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffat",
                         FieldsForAttributesTransformer.v(_toplevel)));
-        
+
         // Deal with any more statically analyzeable token
         // references that were created.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(_toplevel)));
-     
+
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
-     
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
         Scene.v().getPack("wjtp").add(
@@ -257,7 +257,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-        
+
         // Remove tests of object equality that can be statically
         // determined.  The generated code ends up with a lot of
         // these that are really just dead code (usually from
@@ -278,7 +278,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.cie",
                         new TransformerAdapter(
                                 CastAndInstanceofEliminator.v())));
-       
+
         // Some cleanup.
         // Remove object creations that are now dead (i.e. aren't used
         // and have no side effects).  This currently only deals with
@@ -306,25 +306,25 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
 
-        // Remove unnecessary assignments using alias analysis. 
+        // Remove unnecessary assignments using alias analysis.
         // This catches assignments to fields which other assignments miss.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.aae",
                         new TransformerAdapter(
                                 AliasAssignmentEliminator.v())));
-        
+
         // Remove other useless getFoo() methods.
         // FIXME: This has bugs...
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.smr",
                         SideEffectFreeInvocationRemover.v()));
-       
+
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can
         // have access to the result.
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
-      
+
         // Remove references to named objects.
         /*Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
@@ -332,7 +332,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.noe",
           NamedObjEliminator.v(_toplevel)));*/
-        
+
         // We REALLY need to cleanup here or the code is not correct..
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
@@ -348,13 +348,13 @@ public class Main extends KernelMain {
         //        Scene.v().getPack("wjtp").add(
         //        new Transform("wjtp.ttn",
         //                TokenToNativeTransformer.v(_toplevel)));
- 
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));
-        
+
         //      _addStandardOptimizations(Scene.v().getPack("wjtp"));
-         
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",
                         WatchDogTimer.v(), "cancel:true"));
@@ -364,9 +364,9 @@ public class Main extends KernelMain {
      *  to the given pack.
      */
     private void _addStandardOptimizations(Pack pack) {
-        pack.add(new Transform("jop.cse", 
+        pack.add(new Transform("jop.cse",
                 new TransformerAdapter(CommonSubexpressionEliminator.v())));
-        pack.add(new Transform("jop.cp", 
+        pack.add(new Transform("jop.cp",
                 new TransformerAdapter(CopyPropagator.v())));
         pack.add(new Transform("jop.cpf",
                 new TransformerAdapter(ConstantPropagatorAndFolder.v())));
@@ -378,17 +378,17 @@ public class Main extends KernelMain {
                 new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf1",
                 new TransformerAdapter(UnconditionalBranchFolder.v())));
-        pack.add(new Transform("jop.uce2", 
+        pack.add(new Transform("jop.uce2",
                 new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf2",
                 new TransformerAdapter(UnconditionalBranchFolder.v())));
-        pack.add(new Transform("jop.ule", 
+        pack.add(new Transform("jop.ule",
                 new TransformerAdapter(UnusedLocalEliminator.v())));
     }
 
 
     /** Read in a MoML model, generate java files.
-     */ 
+     */
     public static void main(String[] args) {
         try {
             long startTime = System.currentTimeMillis();
@@ -403,14 +403,14 @@ public class Main extends KernelMain {
 
             // Add Transforms to the Scene.
             main.addTransforms();
-	    
-            main.generateCode(args); 
+
+            main.generateCode(args);
 
             // Print out memory usage info
             System.out.println(args[0] + " "
                     + ptolemy.actor.Manager.timeAndMemory(startTime));
         } catch (Exception ex) {
-	    System.err.println("Code generation of '" + args[0] 
+	    System.err.println("Code generation of '" + args[0]
 			       + "' failed:");
             ex.printStackTrace(System.err);
 	    System.exit(2);

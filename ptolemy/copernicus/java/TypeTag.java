@@ -42,20 +42,20 @@ local or field.  Often this information is redundant (for
 instance, in the case of a local defined as a DoubleToken, the
 type can only be BaseType.DOUBLE).  However, in many cases
 the ptolemy type contains more information than java type (for
-instance, in the case of ArrayType). 
+instance, in the case of ArrayType).
 
 @author Stephen Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0
 */
 public class TypeTag implements Tag {
-    
+
     /** Construct a new tag that refers to the given type.
      */
     public TypeTag(ptolemy.data.type.Type type) {
         _type = type;
     }
-                                 
+
     /** Return the name of the tag.
      */
     public String getName() {
@@ -68,7 +68,7 @@ public class TypeTag implements Tag {
         return _type;
     }
 
-    /** Returns the tag raw data. 
+    /** Returns the tag raw data.
      */
     public byte[] getValue() throws AttributeValueException {
         return new byte[0];

@@ -84,7 +84,7 @@ import java.util.Set;
 A transformer that creates a class to represent the model specified in
 the constructor.  This transformer creates new instances of the classes
 created by the ActorTransformer, along with the relations and links that
-are present in the model.  It also creates attributes and appropriate 
+are present in the model.  It also creates attributes and appropriate
 fields for any toplevel attributes of the model.
 
 @author Stephen Neuendorffer, Christopher Hylands
@@ -120,7 +120,7 @@ public class ModelTransformer extends SceneTransformer {
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForEntity(Entity entity, 
+    public static String getFieldNameForEntity(Entity entity,
             NamedObj context) {
         return StringUtilities.sanitizeName(entity.getName(context));
     }
@@ -143,7 +143,7 @@ public class ModelTransformer extends SceneTransformer {
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForRelation(Relation relation, 
+    public static String getFieldNameForRelation(Relation relation,
             NamedObj context) {
         return StringUtilities.sanitizeName(relation.getName(context));
     }
@@ -159,7 +159,7 @@ public class ModelTransformer extends SceneTransformer {
      *  given model.
      */
     public static String getModelClassName(CompositeActor model, Map options) {
-        // Note that we use sanitizeName because entity names can have 
+        // Note that we use sanitizeName because entity names can have
         // spaces, and append leading characters because entity names
         // can start with numbers.
         return Options.getString(options, "targetPackage")
@@ -195,13 +195,13 @@ public class ModelTransformer extends SceneTransformer {
 	_portLocalMap = new HashMap();
 
         // Now instantiate all the stuff inside the model.
-        _composite(body, thisLocal, _model, thisLocal, _model, 
+        _composite(body, thisLocal, _model, thisLocal, _model,
                 modelClass, new HashSet(), options);
 
         units.add(Jimple.v().newReturnVoidStmt());
 
         Scene.v().setActiveHierarchy(new Hierarchy());
-        
+
         _removeSuperExecutableMethods(modelClass);
 
         // Resolve name collisions.
@@ -217,18 +217,18 @@ public class ModelTransformer extends SceneTransformer {
 
     // Write the given composite.
     private void _composite(JimpleBody body, Local containerLocal,
-            CompositeEntity container, Local thisLocal, 
+            CompositeEntity container, Local thisLocal,
             CompositeEntity composite, EntitySootClass modelClass,
             HashSet createdSet, Map options) {
 
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
                 composite, thisLocal, modelClass, createdSet);
-        _ports(body, containerLocal, container, 
+        _ports(body, containerLocal, container,
                 thisLocal, composite, modelClass);
-        _entities(body, containerLocal, container, 
+        _entities(body, containerLocal, container,
                 thisLocal, composite, modelClass, createdSet, options);
- 
+
         // handle the communication
         _relations(body, thisLocal, composite, modelClass);
         _links(body, composite);
@@ -249,27 +249,27 @@ public class ModelTransformer extends SceneTransformer {
             clinitBody.getUnits().add(Jimple.v().newReturnVoidStmt());
         }
         Chain clinitUnits = clinitBody.getUnits();
-        
+
         // If we're doing deep (SDF) codegen, then create a
         // queue for every type of every channel of every relation.
         for (Iterator relations = composite.relationList().iterator();
             relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation)relations.next();
-            Parameter bufferSizeParameter = 
+            Parameter bufferSizeParameter =
                 (Parameter)relation.getAttribute("bufferSize");
             int bufferSize;
             try {
-                bufferSize = 
+                bufferSize =
                     ((IntToken)bufferSizeParameter.getToken()).intValue();
             } catch (Exception ex) {
-                System.out.println("No bufferSize parameter for " + 
+                System.out.println("No bufferSize parameter for " +
                         relation);
                 continue;
             }
-            
+
             // Determine the types that the relation is connected to.
             Map typeMap = new HashMap();
-            List destinationPortList = 
+            List destinationPortList =
                 relation.linkedDestinationPortList();
             for (Iterator destinationPorts = destinationPortList.iterator();
                 destinationPorts.hasNext();) {
@@ -277,19 +277,19 @@ public class ModelTransformer extends SceneTransformer {
                 ptolemy.data.type.Type type = port.getType();
                 typeMap.put(type.toString(), type);
             }
-            
+
             for (Iterator types = typeMap.keySet().iterator();
                 types.hasNext();) {
-                ptolemy.data.type.Type type = 
+                ptolemy.data.type.Type type =
                     (ptolemy.data.type.Type)typeMap.get(types.next());
                 BaseType tokenType =
                     PtolemyUtilities.getSootTypeForTokenType(type);
                 Type arrayType = ArrayType.v(tokenType, 1);
                 String fieldName = relation.getName() + "_bufferLocal";
-                Local arrayLocal = 
+                Local arrayLocal =
                     Jimple.v().newLocal(fieldName, arrayType);
                 clinitBody.getLocals().add(arrayLocal);
-                
+
                 for (int i = 0; i < relation.getWidth(); i++) {
                     SootField field = new SootField(
                             getBufferFieldName(relation, i, type),
@@ -297,20 +297,20 @@ public class ModelTransformer extends SceneTransformer {
                             Modifier.PUBLIC | Modifier.STATIC);
                     modelClass.addField(field);
                     // System.out.println("creating field = " + field);
-                    
+
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
-                    
+
                     // Create the new buffer
                     // Note: reverse order!
                     clinitUnits.addFirst(Jimple.v().newAssignStmt(
                             Jimple.v().newStaticFieldRef(field),
                             arrayLocal));
                     clinitUnits.addFirst(
-                            Jimple.v().newAssignStmt(arrayLocal, 
-                                    Jimple.v().newNewArrayExpr(tokenType, 
+                            Jimple.v().newAssignStmt(arrayLocal,
+                                    Jimple.v().newNewArrayExpr(tokenType,
                                             IntConstant.v(bufferSize))));
-                    
+
                 }
             }
         }
@@ -318,9 +318,9 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set attributes.
-    public static void createFieldsForAttributes(JimpleBody body, 
+    public static void createFieldsForAttributes(JimpleBody body,
             NamedObj context,
-            Local contextLocal, NamedObj namedObj, Local namedObjLocal, 
+            Local contextLocal, NamedObj namedObj, Local namedObjLocal,
             SootClass theClass, HashSet createdSet) {
         // A local that we will use to set the value of our
         // settable attributes.
@@ -339,9 +339,9 @@ public class ModelTransformer extends SceneTransformer {
         for (Iterator attributes = namedObj.attributeList().iterator();
 	    attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
- 
+
             // FIXME: This is horrible...  I guess we need an attribute for
-            // persistance? 
+            // persistance?
             if (attribute instanceof Variable &&
                     !(attribute instanceof Parameter)) {
                 continue;
@@ -351,7 +351,7 @@ public class ModelTransformer extends SceneTransformer {
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
             String fieldName = getFieldNameForAttribute(attribute, context);
-           
+
             Local local;
             if (createdSet.contains(attribute.getFullName())) {
                 //    System.out.println("already has " + attributeName);
@@ -369,7 +369,7 @@ public class ModelTransformer extends SceneTransformer {
                                     PtolemyUtilities.getAttributeMethod,
                                     StringConstant.v(attributeName))));
                 } else {
-                    System.out.println("Warning: " + theClass + " does " + 
+                    System.out.println("Warning: " + theClass + " does " +
                             "not declare a field " + fieldName);
                     // FIXME: Try to analyze the constructor to set
                     // the field.  This is nontrivial.
@@ -389,12 +389,12 @@ public class ModelTransformer extends SceneTransformer {
                         + attribute.getName(),
                         classAttribute, classAttribute, createdSet);
             }
-            
+
             // Create a new field for the attribute, and initialize
             // it to the the attribute above.
-            SootUtilities.createAndSetFieldFromLocal(body, local, 
+            SootUtilities.createAndSetFieldFromLocal(body, local,
                     theClass, attributeType, fieldName);
-            
+
             // If the attribute is settable, then set its
             // expression.
 	    if (attribute instanceof Settable) {
@@ -405,7 +405,7 @@ public class ModelTransformer extends SceneTransformer {
                                 local,
                                 PtolemyUtilities.settableType)));
                 String expression = ((Settable)attribute).getExpression();
-        
+
 		// call setExpression.
 		body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newInterfaceInvokeExpr(
@@ -420,14 +420,14 @@ public class ModelTransformer extends SceneTransformer {
 	    }
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
-            createFieldsForAttributes(body, context, contextLocal, 
+            createFieldsForAttributes(body, context, contextLocal,
                     attribute, local, theClass, createdSet);
 	}
     }
 
     // Create and set entities.
     private void _entities(JimpleBody body, Local containerLocal,
-            CompositeEntity container, Local thisLocal, 
+            CompositeEntity container, Local thisLocal,
             CompositeEntity composite, EntitySootClass modelClass,
             HashSet createdSet, Map options) {
         CompositeEntity classObject = (CompositeEntity)
@@ -444,7 +444,7 @@ public class ModelTransformer extends SceneTransformer {
             Local local;
             // If we are doing deep codegen, then use the actor
             // classes we created earlier.
-            String className = 
+            String className =
                 ActorTransformer.getInstanceClassName(entity, options);
             // Create a new local variable.  The name of the local is
             // determined automatically.  The name of the NamedObj is
@@ -452,41 +452,41 @@ public class ModelTransformer extends SceneTransformer {
             // a valid Java identifier.)
             local = PtolemyUtilities.createNamedObjAndLocal(body, className,
                     thisLocal, entity.getName());
-                         
+
             Entity classEntity = (Entity)_findDeferredInstance(entity);
-            
+
             if (!(entity instanceof CompositeEntity) ||
                     className.equals(entity.getMoMLInfo().className)) {
                 // If the entity is NOT a moml class....
                 // Then record the things inside the master as things
                 // that automagically get created when we construct the
-                // object.  Otherwise, we'll go through and create 
+                // object.  Otherwise, we'll go through and create
                 // them manually later.
                 updateCreatedSet(
                         composite.getFullName() + "." + entity.getName(),
                         classEntity, classEntity, createdSet);
             }
-           
- 
+
+
 	    _entityLocalMap.put(entity, local);
 
             if (entity instanceof CompositeEntity) {
-                _composite(body, containerLocal, container, local, 
-                        (CompositeEntity)entity, modelClass, createdSet, 
+                _composite(body, containerLocal, container, local,
+                        (CompositeEntity)entity, modelClass, createdSet,
                         options);
             } else {
                 _ports(body, thisLocal, composite, local, entity, modelClass);
-             
+
                 // If we are doing deep codegen, then we
                 // include a field for each actor.
                 // The name of the field is the sanitized version
                 // of the entity's name.
-                String entityFieldName = 
+                String entityFieldName =
                     getFieldNameForEntity(entity, container);
                 SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
                         RefType.v(className), entityFieldName);
-                
+
             }
 	}
     }
@@ -563,7 +563,7 @@ public class ModelTransformer extends SceneTransformer {
 
                                 }*/
 
-            
+
            //   // Set the type of the port if we need to.
 //              if (Options.getBoolean(options, "deep") &&
 //                      (port instanceof TypedIOPort)) {
@@ -583,14 +583,14 @@ public class ModelTransformer extends SceneTransformer {
 //                          Jimple.v().newVirtualInvokeExpr(ioportLocal,
 //                                  portSetTypeMethod, typeLocal)));
 //              }
-                    
+
             _portLocalMap.put(port, portLocal);
-	    SootUtilities.createAndSetFieldFromLocal(body, 
+	    SootUtilities.createAndSetFieldFromLocal(body,
                     portLocal, modelClass, PtolemyUtilities.portType,
                     fieldName);
 	}
     }
-  
+
     // Create and set links.
     private void _links(JimpleBody body, CompositeEntity composite) {
 	// To get the ordering right,
@@ -627,24 +627,24 @@ public class ModelTransformer extends SceneTransformer {
     // Note that we have to carefully handle transparent hierarchy.
     private void _linksOnPortsContainedByContainedEntities(
             JimpleBody body, CompositeEntity composite) {
-   
+
         for (Iterator entities = composite.deepEntityList().iterator();
             entities.hasNext();) {
             ComponentEntity entity =(ComponentEntity)entities.next();
             for (Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 ComponentPort port = (ComponentPort)ports.next();
-                
+
                 Local portLocal;
                 // If we already have a local reference to the port
                 if (_portLocalMap.keySet().contains(port)) {
                     // then just get the reference.
                     portLocal = (Local)_portLocalMap.get(port);
                 } else {
-                    throw new RuntimeException("Found a port: " + port + 
+                    throw new RuntimeException("Found a port: " + port +
                             " that does not have a local variable!");
                 }
-                
+
                 List connectedPortList = port.connectedPortList();
                 Iterator relations = port.linkedRelationList().iterator();
                 int index = -1;
@@ -654,7 +654,7 @@ public class ModelTransformer extends SceneTransformer {
                         = (ComponentRelation)relations.next();
                     if (relation == null) {
                         // Gap in the links.  The next link has to use an
-                        // explicit index.  
+                        // explicit index.
                         continue;
                     }
                     Local relationLocal = (Local)
@@ -678,7 +678,7 @@ public class ModelTransformer extends SceneTransformer {
                     // Call the _insertLink method with the current index.
                     body.getUnits().add(Jimple.v().newInvokeStmt(
                             Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.insertLinkMethod, 
+                                    PtolemyUtilities.insertLinkMethod,
                                     IntConstant.v(index),
                                     relationLocal)));
                 }
@@ -697,12 +697,12 @@ public class ModelTransformer extends SceneTransformer {
 	    String className = relation.getClass().getName();
             String fieldName = getFieldNameForRelation(relation, composite);
 	    // Create a new local variable.
-	    Local local = 
+	    Local local =
                 PtolemyUtilities.createNamedObjAndLocal(body, className,
                         thisLocal, relation.getName());
 	    _relationLocalMap.put(relation, local);
-            
-            SootUtilities.createAndSetFieldFromLocal(body, 
+
+            SootUtilities.createAndSetFieldFromLocal(body,
                     local, modelClass, PtolemyUtilities.relationType,
                     fieldName);
 	}
@@ -710,8 +710,8 @@ public class ModelTransformer extends SceneTransformer {
 
     // FIXME: duplicate with Actor transformer.
     private static void _removeSuperExecutableMethods(SootClass theClass) {
-        // Loop through all the methods 
-                        
+        // Loop through all the methods
+
         for (Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
@@ -765,9 +765,9 @@ public class ModelTransformer extends SceneTransformer {
                 } else {
                     deferredClass = info.className;
                 }
-                
+
                 // No moml class..  must have been a java class.
-                // FIXME: This sucks.  We should integrate with 
+                // FIXME: This sucks.  We should integrate with
                 // the classloader mechanism.
                 String objectType;
                 if (object instanceof Attribute) {
@@ -777,16 +777,16 @@ public class ModelTransformer extends SceneTransformer {
                 } else {
                     objectType = "entity";
                 }
-                Class theClass = Class.forName(deferredClass, 
+                Class theClass = Class.forName(deferredClass,
                         true, ClassLoader.getSystemClassLoader());
                 // System.out.println("reflecting " + theClass);
                 // OK..  try reflecting using a workspace constructor
                 _reflectionArguments[0] = _reflectionWorkspace;
-                Constructor[] constructors = 
+                Constructor[] constructors =
                     theClass.getConstructors();
                 for (int i = 0; i < constructors.length; i++) {
                     Constructor constructor = constructors[i];
-                    Class[] parameterTypes = 
+                    Class[] parameterTypes =
                         constructor.getParameterTypes();
                     if (parameterTypes.length != _reflectionArguments.length)
                         continue;
@@ -805,27 +805,27 @@ public class ModelTransformer extends SceneTransformer {
                         break;
                     }
                 }
-                
-                
+
+
                 //String source = "<" + objectType + " name=\""
                 //    + object.getName() + "\" class=\""
                 //    + deferredClass + "\"/>";
                 //deferredObject = parser.parse(source);
-                //System.out.println("class with workspace = " + 
+                //System.out.println("class with workspace = " +
                 //        deferredClass);
                 if (deferredObject == null) {
                     // Damn, no workspace constructor.  Let's
                     // try a container, name constructor.
-                    // It really would be nice if all of 
+                    // It really would be nice if all of
                     // our actors had workspace constructors,
                     // but version 1.0 only specified the
-                    // (container,name) constructor, and 
-                    // now we're stuck with it. 
+                    // (container,name) constructor, and
+                    // now we're stuck with it.
                     String source = "<entity name=\"parsedClone\""
                         + "class=\"ptolemy.kernel.CompositeEntity\">\n"
                         + "<" + objectType + " name=\""
                         + object.getName() + "\" class=\""
-                        + deferredClass + "\"/>\n" 
+                        + deferredClass + "\"/>\n"
                         + "</entity>";
                     _reflectionParser.reset();
                     CompositeEntity toplevel;
@@ -841,16 +841,16 @@ public class ModelTransformer extends SceneTransformer {
                                 + ex.getMessage());
                     }
                     if (object instanceof Attribute) {
-                        deferredObject = 
+                        deferredObject =
                             toplevel.getAttribute(object.getName());
                     } else if (object instanceof Port) {
-                        deferredObject = 
+                        deferredObject =
                             toplevel.getPort(object.getName());
                     } else {
-                        deferredObject = 
-                            toplevel.getEntity(object.getName()); 
+                        deferredObject =
+                            toplevel.getEntity(object.getName());
                     }
-                    //  System.out.println("class without workspace = " + 
+                    //  System.out.println("class without workspace = " +
                     //   deferredClass);
                 }
             }
@@ -864,7 +864,7 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Add the full names of all named objects contained in the given object
-    // to the given set, assuming that the object is contained within the 
+    // to the given set, assuming that the object is contained within the
     // given context.
     public static void updateCreatedSet(String prefix,
             NamedObj context, NamedObj object, HashSet set) {
@@ -903,7 +903,7 @@ public class ModelTransformer extends SceneTransformer {
             updateCreatedSet(prefix, context, attribute, set);
         }
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

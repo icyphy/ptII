@@ -141,7 +141,7 @@ public class CommandLineTransformer extends SceneTransformer {
         SootClass mainClass = SootUtilities.copyClass(applicationClass,
                 Options.getString(options, "targetPackage") + ".Main");
         mainClass.setApplicationClass();
-            
+
         // Tell the rest of soot that this is the interesting main method.
         Scene.v().setMainClass(mainClass);
 
@@ -150,24 +150,24 @@ public class CommandLineTransformer extends SceneTransformer {
 
         // Optimizations.
         // We know that we will never parse classes, so throw away that code.
-        SootUtilities.assertFinalField(mainClass, 
-                mainClass.getFieldByName("_expectingClass"), 
+        SootUtilities.assertFinalField(mainClass,
+                mainClass.getFieldByName("_expectingClass"),
                 IntConstant.v(0));
 
         // We know that we will never be testing, so throw away that code.
-        SootUtilities.assertFinalField(mainClass, 
-                mainClass.getFieldByName("_test"), 
+        SootUtilities.assertFinalField(mainClass,
+                mainClass.getFieldByName("_test"),
                 IntConstant.v(0));
 
         // We know that we have exactly one model, so create it.
         // The final field for the model.
-        SootField modelField = new SootField("_CGmodel", 
+        SootField modelField = new SootField("_CGmodel",
                 RefType.v(modelClass),
                 Modifier.PRIVATE | Modifier.FINAL);
         mainClass.addField(modelField);
 
 
-        // initialize the field by creating a model 
+        // initialize the field by creating a model
         // in all the <init> methods.
         for (Iterator methods = mainClass.getMethods().iterator();
             methods.hasNext();) {
@@ -209,10 +209,10 @@ public class CommandLineTransformer extends SceneTransformer {
         SootField modelsField = mainClass.getFieldByName("_models");
         SootUtilities.unrollIteratorInstances(mainClass,
                 modelsField, modelList);
- 
-        // Find calls to Manager.startRun() and replace it with 
+
+        // Find calls to Manager.startRun() and replace it with
         // iteration code.
-        // Note: It would be nice if we could inline the manager 
+        // Note: It would be nice if we could inline the manager
         // code and optimize it, but in this case, the amount of code
         // we would want to throw away is fairly large.  This
         // just seems simpler here.
@@ -234,7 +234,7 @@ public class CommandLineTransformer extends SceneTransformer {
                     boxes.hasNext();) {
                     ValueBox box = (ValueBox)boxes.next();
                     if (box.getValue() instanceof InstanceInvokeExpr) {
-                        InstanceInvokeExpr expr = 
+                        InstanceInvokeExpr expr =
                             (InstanceInvokeExpr)box.getValue();
                         if (expr.getMethod().equals(mainStartRunMethod)) {
                             // Replace the start run method call
@@ -244,9 +244,9 @@ public class CommandLineTransformer extends SceneTransformer {
                             // already exists somewhere...
                             Local modelLocal = Jimple.v().newLocal(
                                     "_CGTemp" +
-                                    modelField.getName(), 
+                                    modelField.getName(),
                                     modelField.getType());
-                            
+
                             body.getLocals().add(modelLocal);
                             body.getUnits().insertBefore(
                                     Jimple.v().newAssignStmt(
@@ -256,8 +256,8 @@ public class CommandLineTransformer extends SceneTransformer {
                                                     modelField)),
                                     unit);
 
-                            _insertIterateCalls(body, 
-                                    unit, 
+                            _insertIterateCalls(body,
+                                    unit,
                                     modelClass,
                                     modelLocal,
                                     options);
@@ -267,7 +267,7 @@ public class CommandLineTransformer extends SceneTransformer {
                 }
             }
         }
-       
+
         // inline calls to the startRun and stopRun method.
         SootMethod startRunMethod = mainClass.getMethodByName("startRun");
         SootUtilities.inlineCallsToMethod(startRunMethod, mainClass);
@@ -283,15 +283,15 @@ public class CommandLineTransformer extends SceneTransformer {
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
             TypeResolver.resolve(body, Scene.v());
         }
-                
+
         // unroll places where the model itself is looked at.
         // SootField modelsField = mainClass.getFieldByName("_models");
         // SootUtilities.unrollIteratorInstances(mainClass,
-        //        modelsField, modelList);      
-        
+        //        modelsField, modelList);
+
         // Take the instance of main, and convert it to be a static class.
         /*
-          // FIXME this is currently broken.  
+          // FIXME this is currently broken.
         {
             // First find the constructor statement.
             SootMethod mainMethod = mainClass.getMethodByName("main");
@@ -321,20 +321,20 @@ public class CommandLineTransformer extends SceneTransformer {
                             instanceof SpecialInvokeExpr) {
                         constructorStmt = (InvokeStmt)stmt;
                     }
-                    break;                            
+                    break;
                 }
 
                 // Now we actually have a creation of the main object,
                 // so create a class just for that instance.
-                SootClass staticMainClass = 
+                SootClass staticMainClass =
                     SootUtilities.createStaticClassForInstance(
-                            mainClass, body, newStmt, constructorStmt, 
+                            mainClass, body, newStmt, constructorStmt,
                             Options.getString(options, "targetPackage")
                             + ".StaticMain");
-                
+
                 // Remove the extra Main method that we created in
                 // doing this.
-                SootMethod staticMainMethod = 
+                SootMethod staticMainMethod =
                     staticMainClass.getMethodByName("main");
                 staticMainClass.removeMethod(staticMainMethod);
 
@@ -352,7 +352,7 @@ public class CommandLineTransformer extends SceneTransformer {
     }
 
     /** Default value for the iterations command line parameter
-     */	
+     */
     protected int _iterationsDefault = 50;
 
     private String _getFinalName(String dottedName) {
@@ -375,7 +375,7 @@ public class CommandLineTransformer extends SceneTransformer {
             SootClass modelClass, Local modelLocal, Map options) {
         System.out.println("modelClass = " + modelClass);
         Chain units = body.getUnits();
-        
+
         int iterationLimit = Options.getInt(options, "iterations");
 
 	if (iterationLimit == _iterationsDefault) {
@@ -389,7 +389,7 @@ public class CommandLineTransformer extends SceneTransformer {
 			iterationLimit = token.intValue();
 			System.out.println("CommandLineTransformer"
 					   + "_insertIterateCalls(): "
-					   + "iterationLimit was the default," 
+					   + "iterationLimit was the default,"
 					   + " read director.iterations, "
 					   + "value is now "
 					   + iterationLimit);
@@ -421,30 +421,30 @@ public class CommandLineTransformer extends SceneTransformer {
                         SootUtilities.searchForMethodByName(modelClass,
                                 "preinitialize"))),
                 unit);
-        
+
         // call initialize on the model
         units.insertBefore(Jimple.v().newInvokeStmt(
                 Jimple.v().newVirtualInvokeExpr(modelLocal,
                         SootUtilities.searchForMethodByName(modelClass,
                                 "initialize"))),
                 unit);
-        
+
         // A jump point for the start of the iteration.
         Stmt iterationStartStmt = Jimple.v().newNopStmt();
         // A jump point for the end of the iteration.
         // we don't actually insertBefore this until later in the sequence.
         Stmt iterationEndStmt = Jimple.v().newNopStmt();
-        
+
         units.insertBefore(iterationStartStmt,
                 unit);
-        
+
         // call fire on the model
         units.insertBefore(Jimple.v().newInvokeStmt(
                 Jimple.v().newVirtualInvokeExpr(modelLocal,
                         SootUtilities.searchForMethodByName(modelClass,
                                 "fire"))),
                 unit);
-        
+
         // If we need to keep track of the number of iterations, then...
         if (iterationLimit > 1) {
             // Increment the number of iterations.
@@ -464,11 +464,11 @@ public class CommandLineTransformer extends SceneTransformer {
             units.insertBefore(Jimple.v().newGotoStmt(iterationStartStmt),
                     unit);
         }
-        
+
         // insertBefore the jump point for the end of the iteration
         units.insertBefore(iterationEndStmt,
                 unit);
-        
+
         // call wrapup on the model
         units.insertBefore(Jimple.v().newInvokeStmt(
                 Jimple.v().newVirtualInvokeExpr(modelLocal,

@@ -67,7 +67,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 //// ExceptionEliminator
 /**
 Replace instances of Ptolemy exceptions with instances of plain old
-RuntimeException.  This transformation is primarily useful from a memory 
+RuntimeException.  This transformation is primarily useful from a memory
 standpoint, as it prevents the ptolemy kernel from being required in the
 generated code.
 
@@ -87,15 +87,15 @@ public class ExceptionEliminator extends SceneTransformer {
      *  properly initialized so that resolved types and other static
      *  properties of the model can be inspected.
      */
-    public static ExceptionEliminator v(CompositeActor model) { 
+    public static ExceptionEliminator v(CompositeActor model) {
         return new ExceptionEliminator(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
+    public String getDeclaredOptions() {
         return super.getDeclaredOptions() + " targetPackage";
     }
 
@@ -105,10 +105,10 @@ public class ExceptionEliminator extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         // Loop over all the classes
-      
-        for (Iterator i = Scene.v().getApplicationClasses().iterator(); 
+
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
             i.hasNext();) {
-            
+
             SootClass theClass = (SootClass) i.next();
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
@@ -121,12 +121,12 @@ public class ExceptionEliminator extends SceneTransformer {
                 for (Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                    
+
                     // If any box is removable, then remove the statement.
                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
                         boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
-                        
+
                         _replaceExceptions(box);
                     }
                 }
@@ -144,7 +144,7 @@ public class ExceptionEliminator extends SceneTransformer {
                   exceptionClass,
                   PtolemyUtilities.kernelRuntimeExceptionClass)) {
            return true;
-       } 
+       }
        return false;
     }
     // Replace any Ptolemy exception constructor
@@ -156,18 +156,18 @@ public class ExceptionEliminator extends SceneTransformer {
         // Fix kernel exceptions to be runtime exceptions.
         if (value instanceof NewExpr) {
             NewExpr expr = (NewExpr)value;
-            SootClass exceptionClass = 
+            SootClass exceptionClass =
                 expr.getBaseType().getSootClass();
             if (_isPtolemyException(exceptionClass)) {
                 expr.setBaseType(
                         RefType.v(PtolemyUtilities.runtimeExceptionClass));
-                
+
             }
         }
         // Fix the exception constructors.
         if (value instanceof SpecialInvokeExpr) {
             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-            SootClass exceptionClass = 
+            SootClass exceptionClass =
                 ((RefType)expr.getBase().getType())
                 .getSootClass();
             if (_isPtolemyException(exceptionClass)) {

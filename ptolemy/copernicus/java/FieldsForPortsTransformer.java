@@ -85,15 +85,15 @@ public class FieldsForPortsTransformer extends SceneTransformer {
      *  properly initialized so that resolved types and other static
      *  properties of the model can be inspected.
      */
-    public static FieldsForPortsTransformer v(CompositeActor model) { 
+    public static FieldsForPortsTransformer v(CompositeActor model) {
         return new FieldsForPortsTransformer(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
+    public String getDeclaredOptions() {
         return super.getDeclaredOptions() + " targetPackage";
     }
 
@@ -104,13 +104,13 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
         Map portToFieldMap = new HashMap();
         Map classToObjectMap = new HashMap();
-      
+
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
-        _getPortFields(ModelTransformer.getModelClass(), _model, 
+        _getPortFields(ModelTransformer.getModelClass(), _model,
                 _model, portToFieldMap);
         classToObjectMap.put(ModelTransformer.getModelClass(), _model);
-       
+
         // Loop over all the actor instance classes and get
         // fields for ports.
         for (Iterator i = _model.deepEntityList().iterator();
@@ -131,7 +131,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
             SootClass theClass = Scene.v().loadClassAndSupport(className);
-                  
+
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
@@ -139,7 +139,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-                CompleteUnitGraph unitGraph = 
+                CompleteUnitGraph unitGraph =
                     new CompleteUnitGraph(body);
                 // This will help us figure out where locals are defined.
                 SimpleLocalDefs localDefs =
@@ -162,18 +162,18 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                                 // statically evaluated.
                             Value nameValue = r.getArg(0);
                             if (Evaluator.isValueConstantValued(nameValue)) {
-                                StringConstant nameConstant = 
+                                StringConstant nameConstant =
                                     (StringConstant)
                                     Evaluator.getConstantValueOf(nameValue);
                                 String name = nameConstant.value;
-                                // perform type analysis to determine what the 
+                                // perform type analysis to determine what the
                                 // type of the base is.
-                                
+
                                 Local baseLocal = (Local)r.getBase();
                                 Value newFieldRef = _createPortField(
-                                        baseLocal, name, unit, localDefs, 
+                                        baseLocal, name, unit, localDefs,
                                         classToObjectMap, portToFieldMap);
-                                box.setValue(newFieldRef); 
+                                box.setValue(newFieldRef);
                             } else {
                                 String string = "Port cannot be " +
                                     "statically determined";
@@ -182,14 +182,14 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                         }
                     }
                 }
-            }            
+            }
         }
     }
 
     // Given a local variable that refers to an entity, and the name
     // of an port in that object, return a new field ref that
     // refers to that port.  If no reference is found, then return null.
-    private static Value _createPortField(Local baseLocal, 
+    private static Value _createPortField(Local baseLocal,
             String name, Unit unit, LocalDefs localDefs,
             Map classToObjectMap, Map portToFieldMap) {
         // FIXME: This is not enough.
@@ -209,19 +209,19 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             }
         } else {
             // Walk back and get the definition of the field.
-            DefinitionStmt definition = 
+            DefinitionStmt definition =
                 _getFieldDef(baseLocal, unit, localDefs);
             InstanceFieldRef fieldRef = (InstanceFieldRef)
                 definition.getRightOp();
             SootField baseField = fieldRef.getField();
             System.out.println("baseField = " + baseField);
-            SootField portField = 
+            SootField portField =
                 baseField.getDeclaringClass().getFieldByName(
                         baseField.getName() + "_" + name);
             return Jimple.v().newInstanceFieldRef(
                     baseLocal, portField);
         }
-    }        
+    }
 
 
     /** Attempt to determine the constant value of the given local,
@@ -230,8 +230,8 @@ public class FieldsForPortsTransformer extends SceneTransformer {
      *  defined and try to symbolically evaluate the value of the
      *  variable. If the value can be determined, then return it,
      *  otherwise return null.
-     */ 
-    private static DefinitionStmt _getFieldDef(Local local, 
+     */
+    private static DefinitionStmt _getFieldDef(Local local,
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if (definitionList.size() == 1) {
@@ -254,36 +254,36 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         }
         return null;
     }
-     
+
     // Populate the given map according to the fields representing the
-    // ports of the given object that are expected 
+    // ports of the given object that are expected
     // to exist in the given class
     private void _getPortFields(SootClass theClass, Entity container,
             Entity object, Map portToFieldMap) {
-      
+
         for (Iterator ports = object.portList().iterator();
             ports.hasNext();) {
             Port port = (Port)ports.next();
-                    
+
             String fieldName =
                 StringUtilities.sanitizeName(port.getName(container));
             SootField field;
             if (!theClass.declaresFieldByName(fieldName)) {
-                throw new RuntimeException("Class " + theClass 
+                throw new RuntimeException("Class " + theClass
                         + " does not declare field "
                         + fieldName + " for port "
                         + port.getFullName());
             } else {
                 // retrieve the existing field.
-                field = theClass.getFieldByName(fieldName);  
+                field = theClass.getFieldByName(fieldName);
                 // Make the field final and private.
-                field.setModifiers((field.getModifiers() & Modifier.STATIC) | 
+                field.setModifiers((field.getModifiers() & Modifier.STATIC) |
                         Modifier.FINAL | Modifier.PRIVATE);
             }
             field.addTag(new ValueTag(port));
             portToFieldMap.put(port, field);
             // FIXME: call recursively
-            // _getAttributeFields(theClass, container, 
+            // _getAttributeFields(theClass, container,
             //        attribute, attributeToFieldMap);
         }
     }

@@ -46,13 +46,13 @@ value can be statically determined.
 @since Ptolemy II 2.0
 */
 public class ValueTag implements Tag {
-    
+
     /** Construct a new tag that refers to the given object.
      */
     public ValueTag(Object object) {
         _object = object;
     }
-                                 
+
     /** Return the name of the tag.
      */
     public String getName() {
@@ -65,7 +65,7 @@ public class ValueTag implements Tag {
         return _object;
     }
 
-    /** Returns the tag raw data. 
+    /** Returns the tag raw data.
      */
     public byte[] getValue() throws AttributeValueException {
         return new byte[0];

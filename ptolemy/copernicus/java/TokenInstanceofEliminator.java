@@ -42,11 +42,11 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForAttributesTransformer
-/** 
+/**
 A transformer that removes unnecessary instanceof checks for tokens.
 This is similar to CastAndInstanceofEliminator, except here
-we use a stronger type inference algorithm that is aware of 
-Ptolemy token types.  
+we use a stronger type inference algorithm that is aware of
+Ptolemy token types.
 
 @author Stephen Neuendorffer
 @version $Id$
@@ -62,13 +62,13 @@ public class TokenInstanceofEliminator extends BodyTransformer
     public static TokenInstanceofEliminator v() { return instance; }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug"; 
+        return super.getDeclaredOptions() + " debug";
     }
-    
+
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
-             
+
         System.out.println("TokenInstanceofEliminator.internalTransform(" +
                 body.getMethod() + ", " + phaseName + ")");
 
@@ -76,15 +76,15 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
     }
- 
+
     public static void eliminateCastsAndInstanceOf(Body body,
             String phaseName, Set unsafeLocalSet, boolean debug) {
-        
+
         // Analyze the types of variables which refer to tokens.
-        TokenTypeAnalysis tokenTypes = 
+        TokenTypeAnalysis tokenTypes =
             new TokenTypeAnalysis(body.getMethod(),
                     new CompleteUnitGraph(body));
-        
+
          for (Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -92,9 +92,9 @@ public class TokenInstanceofEliminator extends BodyTransformer
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
-            
+
                 if (value instanceof InstanceOfExpr) {
-                    // If the operand of the expression is 
+                    // If the operand of the expression is
                     // declared to be of a type that implies
                     // the instanceof is true, then replace
                     // with true.
@@ -110,11 +110,11 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     ptolemy.data.type.Type type =
                         tokenTypes.getTypeOfBefore((Local)op, unit);
 
-                    Type opType = 
+                    Type opType =
                         PtolemyUtilities.getSootTypeForTokenType(type);
 
                     CastAndInstanceofEliminator.replaceInstanceofCheck(
-                            box, Scene.v().getActiveHierarchy(), 
+                            box, Scene.v().getActiveHierarchy(),
                             checkType, opType, debug);
                 }
             }

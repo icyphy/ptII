@@ -59,7 +59,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 
 /**
 A Transformer that is responsible for inlining the values of parameters.
-The values of the parameters are taken from the model specified for this 
+The values of the parameters are taken from the model specified for this
 transformer.
 */
 public class FieldOptimizationTransformer extends SceneTransformer {
@@ -73,15 +73,15 @@ public class FieldOptimizationTransformer extends SceneTransformer {
      *  The model is assumed to already have been properly initialized so that
      *  resolved types and other static properties of the model can be inspected.
      */
-    public static FieldOptimizationTransformer v(CompositeActor model) { 
+    public static FieldOptimizationTransformer v(CompositeActor model) {
         return new FieldOptimizationTransformer(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
+    public String getDeclaredOptions() {
         return super.getDeclaredOptions();
     }
 
@@ -93,36 +93,36 @@ public class FieldOptimizationTransformer extends SceneTransformer {
         SootClass stringClass =
             Scene.v().loadClassAndSupport("java.lang.String");
         Type stringType = RefType.v(stringClass);
-        SootClass objectClass = 
+        SootClass objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
         SootMethod toStringMethod =
             objectClass.getMethod("java.lang.String toString()");
-        SootClass namedObjClass = 
+        SootClass namedObjClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
         SootMethod getAttributeMethod = namedObjClass.getMethod(
                 "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
         SootMethod attributeChangedMethod = namedObjClass.getMethod(
                 "void attributeChanged(ptolemy.kernel.util.Attribute)");
 
-        SootClass attributeClass = 
+        SootClass attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
         Type attributeType = RefType.v(attributeClass);
-        SootClass settableClass = 
+        SootClass settableClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
         Type settableType = RefType.v(settableClass);
-        SootMethod getExpressionMethod = 
+        SootMethod getExpressionMethod =
             settableClass.getMethod("java.lang.String getExpression()");
-        SootMethod setExpressionMethod = 
+        SootMethod setExpressionMethod =
             settableClass.getMethod("void setExpression(java.lang.String)");
-        
-        SootClass tokenClass = 
+
+        SootClass tokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.Token");
         Type tokenType = RefType.v(tokenClass);
-        SootClass parameterClass = 
+        SootClass parameterClass =
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod = 
+        SootMethod getTokenMethod =
             parameterClass.getMethod("ptolemy.data.Token getToken()");
-        SootMethod setTokenMethod = 
+        SootMethod setTokenMethod =
             parameterClass.getMethod("void setToken(ptolemy.data.Token)");
 
         // Loop over all the actor instance classes.
@@ -132,7 +132,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
             String className = Options.getString(options, "targetPackage")
                 + "." + entity.getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
-                                              
+
             for (Iterator fields = entityClass.getFields().iterator();
                 fields.hasNext();) {
                 SootField field = (SootField)fields.next();

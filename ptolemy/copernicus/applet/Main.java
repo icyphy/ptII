@@ -44,7 +44,7 @@ import soot.toolkits.graph.*;
 //////////////////////////////////////////////////////////////////////////
 //// Main
 /**
-Read in a MoML model and generate a .html file 
+Read in a MoML model and generate a .html file
 that will run the model as an applet
 
 @author Christopher Hylands

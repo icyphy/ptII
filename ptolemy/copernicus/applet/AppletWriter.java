@@ -56,7 +56,7 @@ import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
 
-/** 
+/**
 A transformer that writes an applet version of a model.
 For a model called Foo, we generate Foo/makefile, Foo/Foo.xml,
 Foo/Foo.htm Foo/FooVergil.htm in the directory named by the
@@ -92,10 +92,10 @@ public class AppletWriter extends SceneTransformer {
 	    TEMPLATE_DIRECTORY_DEFAULT;
     }
 
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " targetPackage templateDirectory"; 
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " targetPackage templateDirectory";
     }
-    
+
     /** Given a string and a Map containing String key/value pairs,
      *  substitute any keys found in the input with the corresponding
      *  values.
@@ -124,7 +124,7 @@ public class AppletWriter extends SceneTransformer {
 					       (String)substituteMap.get(key));
 	}
 	return input;
-    }      
+    }
 
     /** Read in the contents of inputFileName, and replace each matching
      *	String key found in substituteMap with the corresponding String value.
@@ -161,7 +161,7 @@ public class AppletWriter extends SceneTransformer {
      *  place MyModel.xml, MyModel.htm, MyModelVergil.htm in that
      *  directory.
      *
-     *  @param phaseName The name of the phase, for example 
+     *  @param phaseName The name of the phase, for example
      *  <code>wjtp.appletWriter</code>.
      *  @param options The options Map.  This method uses the
      *  <code>targetPackage</code> option to specify package
@@ -202,14 +202,14 @@ public class AppletWriter extends SceneTransformer {
 	// _codeBase has one more level than _targetPackage.
 	StringBuffer buffer = new StringBuffer("../..");
         while (start != -1) {
-	    buffer.append("/.."); 
+	    buffer.append("/..");
             start = _targetPackage.indexOf('.', start + 1);
         }
 	_codeBase = buffer.toString();
 
 	// Determine the value of _domainJar, which is the
 	// path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
-	
+
 	System.out.println("AppletWriter: _model: " + _model);
 	Director director = _model.getDirector();
 	System.out.println("AppletWriter: director: " + director);
@@ -219,22 +219,22 @@ public class AppletWriter extends SceneTransformer {
 			       + "with '.kernel', it is :" + directorPackage);
 	}
 
-	String directorPackageDomain = 
-		directorPackage.substring(0, 
+	String directorPackageDomain =
+		directorPackage.substring(0,
 					  directorPackage.lastIndexOf(".")
 					  );
 
-	String directorDomain = 
+	String directorDomain =
 		directorPackageDomain.substring(directorPackageDomain
 						.lastIndexOf(".") + 1);
-	
+
 	_domainJar =
-	    StringUtilities.substitute(directorPackageDomain, ".", "/") 
+	    StringUtilities.substitute(directorPackageDomain, ".", "/")
 	    + "/" + directorDomain + ".jar";
 
 	_sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
-	_modelDirectory = _ptIIDirectory + "/" 
+	_modelDirectory = _ptIIDirectory + "/"
 	    + StringUtilities.substitute(_targetPackage, ".", "/")
 	    + "/" + _sanitizedModelName + "/";
 
@@ -297,7 +297,7 @@ public class AppletWriter extends SceneTransformer {
 		       _modelDirectory + _sanitizedModelName + "Vergil.htm");
 	} catch (IOException ex) {
 	    throw new InternalErrorException("Problem writing the makefile "
-					     + "or htm files: " + ex); 
+					     + "or htm files: " + ex);
 	}
 
     }
@@ -343,7 +343,7 @@ public class AppletWriter extends SceneTransformer {
     // Initial default for _templateDirectory;
     private final String TEMPLATE_DIRECTORY_DEFAULT =
 	"$PTII/ptolemy/copernicus/applet/";
-	
+
 
 }
 
