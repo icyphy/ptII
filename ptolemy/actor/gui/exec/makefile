@@ -75,11 +75,12 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "Run 'make demo' to see a demo"
 
 install: jclass jars
 
 demo:
-	$(ROOT)/bin/moml configuration.xml init.tcl
+	$(ROOT)/bin/moml configuration.xml init.sh
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

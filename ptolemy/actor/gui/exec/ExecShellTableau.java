@@ -29,8 +29,6 @@
 
 package ptolemy.actor.gui.exec;
 
-import tcl.lang.*;
-
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
@@ -40,18 +38,26 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
+import ptolemy.gui.StreamExec;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.util.StringUtilities;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Panel;
 import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import java.util.Enumeration;
+import java.util.List;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExecShellTableau
@@ -79,10 +85,15 @@ public class ExecShellTableau extends Tableau
     public ExecShellTableau(ExecShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-	ExecShellFrame frame = new ExecShellFrame(this);
-	setFrame(frame);
+	_frame = new ExecShellFrame(this);
+	setFrame(_frame);
 
-	// Here is a good place to do initialization
+	try {
+	    _interpreter = Runtime.getRuntime().exec("bash -i");
+	} catch (IOException ex) {
+	    throw new IllegalActionException(this, ex,
+					     "Failed to create Process");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,29 +105,47 @@ public class ExecShellTableau extends Tableau
      *  @exception Exception If something goes wrong processing the command.
      */
     public String evaluateCommand(String command) throws Exception {
-	try {
-	    _interpreter.eval(command);
-	    return _interpreter.getResult().toString();
-	} catch (TclException ex) {
-	    return _interpreter.getVar("errorInfo", null,0).toString();
-	}
+	_executeCommand(command);
+
+	// FIXME: this is _so_ wrong 
+	return "";
     }
 
     /** Return true if the specified command is complete (ready
      *  to be interpreted).
      *  @param command The command.
-     *  @return True if the command is complete.
+     *  @return True 
      */
     public boolean isCommandComplete(String command) {
-	return _interpreter.commandComplete(command);
+	return true;
     }
+
+    /** Append the text message to text area.
+     *  The output automatically gets a trailing newline appended.
+     */
+    public void stderr(/*final*/ String text) {
+	_frame._shellTextArea.appendJTextArea(text + "\n");
+   }
+
+    /** Append the text message to the text area.
+     *  The output automatically gets a trailing newline appended.
+     */
+    public void stdout(final String text) {
+	_frame._shellTextArea.appendJTextArea(text + "\n");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    public ExecShellFrame _frame;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The Exec interpreter
     // FIXME: Perhaps the interpreter should be in its own thread?
-    private Interp _interpreter = new Interp();
+    private Process _interpreter;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -208,4 +237,128 @@ public class ExecShellTableau extends Tableau
 	    }
 	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Execute the command.  Update the output with
+    // the command being run and the output.
+    private String _executeCommand(String command) {
+	if (command == null || command.length() == 0) {
+	    return "";
+	}
+        try {
+            Runtime runtime = Runtime.getRuntime();
+	    try {
+
+                //if (_process != null){
+                //    _process.destroy();
+                //}
+
+
+                    // Preprocess by removing lines that begin with '#'
+                    // and converting substrings that begin and end
+                    // with double quotes into one array element.
+		    final String [] commandTokens =
+                        StringUtilities
+                        .tokenizeForExec((String)command);
+
+                    //stdout("About to execute:\n");
+                    StringBuffer statusCommand = new StringBuffer();
+                    for (int i = 0; i < commandTokens.length; i++) {
+                        //stdout("	" + commandTokens[i]);
+
+                        // Accumulate the first 50 chars for use in
+                        // the status buffer.
+                        if (statusCommand.length() < 50) {
+                            if (statusCommand.length() > 0) {
+                                statusCommand.append(" ");
+                            }
+                            statusCommand.append(commandTokens[i]);
+                        }
+                    }
+
+                    if (statusCommand.length() >= 50) {
+                        statusCommand.append(" . . .");
+                    }
+                    //updateStatusBar("Executing: "
+                    //        + statusCommand.toString());
+
+                    _interpreter = runtime.exec(commandTokens);
+
+		    // Set up a Thread to read in any error messages
+		    _StreamReaderThread errorGobbler = new
+			_StreamReaderThread(_interpreter.getErrorStream(),
+                                "ERROR", this);
+
+		    // Set up a Thread to read in any output messages
+		    _StreamReaderThread outputGobbler = new
+			_StreamReaderThread(_interpreter.getInputStream(),
+                                "OUTPUT", this);
+
+		    // Start up the Threads
+		    errorGobbler.start();
+		    outputGobbler.start();
+
+
+		    try {
+			int processReturnCode = _interpreter.waitFor();
+			synchronized(this) {
+			    _interpreter = null;
+			}
+			//if (processReturnCode != 0) break;
+		    } catch (InterruptedException interrupted) {
+			stderr("InterruptedException: "
+                                + interrupted);
+			throw interrupted;
+	    	    }
+	    } catch (final IOException io) {
+		stderr("IOException: " + ptolemy.kernel.util.KernelException.stackTraceToString(io));
+            }
+	}
+        catch (InterruptedException e) {
+	    //_interpreter.destroy();
+            return "Interrupted";  // SwingWorker.get() returns this
+        }
+        return "All Done";         // or this
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // Private class that reads a stream in a thread and updates the
+    // JTextArea.
+    private class _StreamReaderThread extends Thread {
+
+	_StreamReaderThread(InputStream inputStream, String streamType,
+                ExecShellTableau execShellTableau) {
+	    _inputStream = inputStream;
+	    _streamType = streamType;
+	    _execShellTableau = execShellTableau;
+	}
+
+	// Read lines from the _inputStream and output them.
+	public void run() {
+	    try {
+		InputStreamReader inputStreamReader =
+		    new InputStreamReader(_inputStream);
+                BufferedReader bufferedReader =
+                    new BufferedReader(inputStreamReader);
+                String line = null;
+                while ( (line = bufferedReader.readLine()) != null) {
+                    _execShellTableau.stdout(/*_streamType + ">" +*/ line);
+                }
+	    } catch (IOException ioe) {
+		_execShellTableau.stderr("IOException: " + ioe);
+	    }
+	}
+
+	// Stream to read from.
+	private InputStream _inputStream;
+	// Description of the Stream that we print, usually "OUTPUT" or "ERROR"
+	private String _streamType;
+
+	private ExecShellTableau _execShellTableau;
+    }
+
 }
