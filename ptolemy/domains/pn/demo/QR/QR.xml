@@ -8,12 +8,11 @@
     </director>
 
     <property name="Antennas" class="ptolemy.data.expr.Parameter" value="6">
-        <doc>Number of Antenna's</doc>
-    </property>
-    <property name="Iterations" class="ptolemy.data.expr.Parameter" value="10">
-        <doc>The number of QR iterations.
-      </doc>
-    </property>
+	<doc>The number of Antennas from which data is read.</doc>
+	</property>
+    <property name="Updates" class="ptolemy.data.expr.Parameter" value="10">
+	<doc>The number of QR opdates to perform on the antenna data.</doc>
+	</property>
 
     <entity name="plot" class="ptolemy.actor.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
@@ -29,115 +28,105 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ND_6" class="ptolemy.domains.pn.demo.QR.ND_6">
+    <entity name="ND_1" class="ptolemy.domains.pn.demo.QR.ND_1">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="d" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <port name="out0" class="ptolemy.actor.TypedIOPort">
+        <port name="WP_2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="out1" class="ptolemy.actor.TypedIOPort">
+        <port name="WP_6" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
-    <entity name="ND_66" class="ptolemy.domains.pn.demo.QR.ND_66">
+    <entity name="ND_2" class="ptolemy.domains.pn.demo.QR.ND_2">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="d" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <port name="in0" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="in1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="in2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="in3" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="in4" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="in5" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="out0" class="ptolemy.actor.TypedIOPort">
+        <port name="WP_4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="out1" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="out2" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="out3" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="out4" class="ptolemy.actor.TypedIOPort">
+        <port name="WP_8" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
-    <entity name="ND_14" class="ptolemy.domains.pn.demo.QR.ND_14">
+    <entity name="ND_3" class="ptolemy.domains.pn.demo.QR.ND_3">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="d" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <port name="out0" class="ptolemy.actor.TypedIOPort">
+        <port name="RP_1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="RP_2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="RP_3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="RP_4" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="WP_1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="out1" class="ptolemy.actor.TypedIOPort">
+        <port name="WP_11" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="WP_10" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
-    <entity name="ND_36" class="ptolemy.domains.pn.demo.QR.ND_36">
+    <entity name="ND_4" class="ptolemy.domains.pn.demo.QR.ND_4">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="d" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <port name="in0" class="ptolemy.actor.TypedIOPort">
+        <port name="RP_5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="in1" class="ptolemy.actor.TypedIOPort">
+        <port name="RP_6" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="in2" class="ptolemy.actor.TypedIOPort">
+        <port name="RP_7" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="in3" class="ptolemy.actor.TypedIOPort">
+        <port name="RP_8" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="out0" class="ptolemy.actor.TypedIOPort">
+        <port name="RP_9" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="RP_10" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="WP_5" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="out1" class="ptolemy.actor.TypedIOPort">
+        <port name="WP_12" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="out2" class="ptolemy.actor.TypedIOPort">
+        <port name="WP_3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="WP_7" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="WP_9" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
-    <entity name="ND_86" class="ptolemy.domains.pn.demo.QR.ND_86">
+    <entity name="ND_5" class="ptolemy.domains.pn.demo.QR.ND_5">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="d" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <port name="in0" class="ptolemy.actor.TypedIOPort">
+        <port name="RP_11" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="in1" class="ptolemy.actor.TypedIOPort">
+        <port name="RP_12" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="out0" class="ptolemy.actor.TypedIOPort">
@@ -189,31 +178,31 @@
     <relation name="_R13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="plot.input" relation="_R12"/>
-    <link port="ND_6.out0" relation="_R0"/>
-    <link port="ND_6.out1" relation="_R1"/>
-    <link port="ND_66.in0" relation="_R7"/>
-    <link port="ND_66.in1" relation="_R1"/>
-    <link port="ND_66.in2" relation="_R10"/>
-    <link port="ND_66.in3" relation="_R3"/>
-    <link port="ND_66.in4" relation="_R11"/>
-    <link port="ND_66.in5" relation="_R6"/>
-    <link port="ND_66.out0" relation="_R7"/>
-    <link port="ND_66.out1" relation="_R8"/>
-    <link port="ND_66.out2" relation="_R9"/>
-    <link port="ND_66.out3" relation="_R10"/>
-    <link port="ND_66.out4" relation="_R11"/>
-    <link port="ND_14.out0" relation="_R2"/>
-    <link port="ND_14.out1" relation="_R3"/>
-    <link port="ND_36.in0" relation="_R4"/>
-    <link port="ND_36.in1" relation="_R0"/>
-    <link port="ND_36.in2" relation="_R9"/>
-    <link port="ND_36.in3" relation="_R2"/>
-    <link port="ND_36.out0" relation="_R4"/>
-    <link port="ND_36.out1" relation="_R5"/>
-    <link port="ND_36.out2" relation="_R6"/>
-    <link port="ND_86.in0" relation="_R5"/>
-    <link port="ND_86.in1" relation="_R8"/>
-    <link port="ND_86.out0" relation="_R12"/>
+    <link port="ND_1.WP_2" relation="_R0"/>
+    <link port="ND_1.WP_6" relation="_R1"/>
+    <link port="ND_2.WP_4" relation="_R2"/>
+    <link port="ND_2.WP_8" relation="_R3"/>
+    <link port="ND_3.RP_1" relation="_R4"/>
+    <link port="ND_3.RP_2" relation="_R0"/>
+    <link port="ND_3.RP_3" relation="_R9"/>
+    <link port="ND_3.RP_4" relation="_R2"/>
+    <link port="ND_3.WP_1" relation="_R4"/>
+    <link port="ND_3.WP_11" relation="_R5"/>
+    <link port="ND_3.WP_10" relation="_R6"/>
+    <link port="ND_4.RP_5" relation="_R7"/>
+    <link port="ND_4.RP_6" relation="_R1"/>
+    <link port="ND_4.RP_7" relation="_R10"/>
+    <link port="ND_4.RP_8" relation="_R3"/>
+    <link port="ND_4.RP_9" relation="_R11"/>
+    <link port="ND_4.RP_10" relation="_R6"/>
+    <link port="ND_4.WP_5" relation="_R7"/>
+    <link port="ND_4.WP_12" relation="_R8"/>
+    <link port="ND_4.WP_3" relation="_R9"/>
+    <link port="ND_4.WP_7" relation="_R10"/>
+    <link port="ND_4.WP_9" relation="_R11"/>
+    <link port="ND_5.RP_11" relation="_R5"/>
+    <link port="ND_5.RP_12" relation="_R8"/>
+    <link port="ND_5.out0" relation="_R12"/>
     <link port="StreamToMatrix.input" relation="_R12"/>
     <link port="StreamToMatrix.output" relation="_R13"/>
     <link port="MatrixViewer.input" relation="_R13"/>
