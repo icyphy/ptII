@@ -277,7 +277,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             String name = initialStateName.getExpression();
             if (name == null || name.trim().equals("")) {
                 throw new IllegalActionException(this,
-                        "No initial state has been specified.");
+                "No initial state has been specified.");
             }
             State st = (State)getEntity(name);
             if (st == null) {
@@ -321,13 +321,13 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return A list of input IOPort objects.
      */
     public List inputPortList() {
-        if (_inputPortsVersion != _workspace.getVersion()) {
+        if(_inputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 // Update the cache.
                 LinkedList inPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while (ports.hasNext()) {
+                while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if (p.isInput()) {
                         inPorts.add(p);
@@ -370,7 +370,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 	while (n++ < count && !_stopRequested) {
 	    if (prefire()) {
 		fire();
-		if (!postfire()) return STOP_ITERATING;
+		if(!postfire()) return STOP_ITERATING;
 	    } else {
                 return NOT_READY;
 	    }
@@ -443,14 +443,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return A list of output IOPort objects.
      */
     public List outputPortList() {
-        if (_outputPortsVersion != _workspace.getVersion()) {
+        if(_outputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 _cachedOutputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while (ports.hasNext()) {
+                while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
-                    if ( p.isOutput()) {
+                    if( p.isOutput()) {
                         _cachedOutputPorts.add(p);
                     }
                 }
@@ -669,6 +669,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     "FSMActor can only contain instances of Transition.");
         }
         super._addRelation(relation);
+        if (_debugging) relation.addDebugListener(new StreamListener());
     }
 
     /** Return the enabled transition among the given list of transitions
@@ -699,6 +700,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             }
         }
         if (result != null) {
+            if (_debugging) _debug("Enabled transition: "+result.getFullName());
             Iterator actions = result.choiceActionList().iterator();
             while (actions.hasNext()) {
                 Action action = (Action)actions.next();
@@ -742,11 +744,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             _debug(new StateEvent(this, _currentState));
         }
 	BooleanToken resetToken =
-            (BooleanToken)_lastChosenTransition.reset.getToken();
+	        (BooleanToken)_lastChosenTransition.reset.getToken();
 	if (resetToken.booleanValue()) {
 	    Actor[] actors = _currentState.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
+                    if (_debugging)
+                        _debug(getFullName()+" initialize refinement: "+
+                               ((NamedObj)actors[i]).getName());
                     actors[i].initialize();
                 }
             }
@@ -997,14 +1002,15 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 shadowVariables[channel][0].setToken(BooleanToken.TRUE);
                 Token token = port.get(channel);
                 if (_debugging) {
-                    _debug("--- ", port.getName(),
-                            " token value: ", token.toString());
+                    _debug("---", port.getName(),"("+channel+
+                            ") has ", token.toString());
                 }
                 shadowVariables[channel][1].setToken(token);
             } else {
                 shadowVariables[channel][0].setToken(BooleanToken.FALSE);
                 if (_debugging) {
-                    _debug("--- ", port.getName(), " has no token.");
+                    _debug("---", port.getName(), "("+channel+
+                           ") has no token.");
                 }
             }
         } else {
@@ -1072,7 +1078,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                         boolean linked = false;
 			for (int i = 0; i < actors.length; ++i) {
 			    Iterator outports =
-                                actors[i].outputPortList().iterator();
+                                    actors[i].outputPortList().iterator();
 			    while (outports.hasNext()) {
 				IOPort outport = (IOPort)outports.next();
 				linked = linked | outport.isLinked(relation);
