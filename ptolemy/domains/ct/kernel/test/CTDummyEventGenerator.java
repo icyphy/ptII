@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.ct.kernel.test;
@@ -61,24 +61,23 @@ public class CTDummyEventGenerator extends CTActor implements CTEventGenerator{
 
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** @serial The single-input port. */
+    public TypedIOPort input;
+
+    /** @serial The signal output port. */
+    public TypedIOPort output;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Dummy method. Do nothing.
-     */
+
+    /** Dummy method. Do nothing. */
      public void emitCurrentEvents(){
     }
 
-    /** Dummy method. Return false always.
-     */
+    /** Dummy method. Return false always. */
     public boolean hasCurrentEvent(){
         return false;
     }
-
-    /** The single-input port.
-     */
-    public TypedIOPort input;
-
-    /** The singal output port.
-     */
-    public TypedIOPort output;
-
 }

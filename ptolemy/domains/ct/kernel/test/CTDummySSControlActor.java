@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.ct.kernel.test;
@@ -81,12 +81,12 @@ public class CTDummySSControlActor extends CTActor
     public double refinedStepSize() {
         return 0.0;
     }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    /** The single-input port.
-     */
+    /** @serial The single-input port. */
     public TypedIOPort input;
 
-    /** The singal output port.
-     */
+    /** @serial The signal output port. */
     public TypedIOPort output;
 }

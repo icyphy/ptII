@@ -57,17 +57,12 @@ public class CTDummySISOActor extends CTActor{
         output.setTypeEquals(DoubleToken.class);
     }
 
-
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         public variables                  ////
 
-
-    /** The single-input port.
-     */
+    /** @serial The single-input port. */
     public TypedIOPort input;
 
-    /** The singal output port.
-     */
+    /** @serial The signal output port. */
     public TypedIOPort output;
-
 }

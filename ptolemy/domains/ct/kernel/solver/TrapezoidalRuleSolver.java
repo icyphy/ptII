@@ -259,7 +259,9 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // static name.
+    /** Name of this Solver. */
     private static final String _name="CT_Trapezoidal_Rule_Solver" ;
+
+    /** @serial True if all the votes are true. */
     private boolean _converge;
 }

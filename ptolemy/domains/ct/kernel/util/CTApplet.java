@@ -95,7 +95,7 @@ public class CTApplet extends PtolemyApplet {
     
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
-    /** The workspace. 
-     */
+
+    /** @serial The workspace. */
     protected Workspace _workspace;
 }

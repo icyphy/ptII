@@ -42,8 +42,6 @@ import ptolemy.data.*;
 Description of the class
 @author Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class BackwardEulerSolver extends FixedStepSolver
         implements ImplicitMethodSolver{
@@ -187,7 +185,9 @@ public class BackwardEulerSolver extends FixedStepSolver
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // static name.
+    /** Name of this Solver. */
     private static final String _name="CT_Backward_Euler_Solver" ;
+
+    /** @serial True if all the votes are true. */
     private boolean _converge;
 }

@@ -59,7 +59,6 @@ public class CTDummySink extends CTActor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** The single-input port.
-     */
+    /** @serial The single-input port. */
     public TypedIOPort input;
 }

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.ct.kernel.test;
@@ -59,16 +59,12 @@ public class CTDummyMISOActor extends CTActor{
         output.setTypeEquals(DoubleToken.class);
     }
 
-
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         public variables                  ////
 
-
-    /** The single-input port.
-     */
+    /** @serial The single-input port. */
     public TypedIOPort input;
 
-    /** The singal output port.
-     */
+    /** @serial The signal output port. */
     public TypedIOPort output;
 }

@@ -23,8 +23,8 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.ct.kernel.test;
@@ -59,17 +59,18 @@ public class CTDummyDynamicActor extends CTActor implements CTDynamicActor{
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    /** Dummy method. Do nothing.
-     */
-    public void emitTentativeOutputs() {
-    }
+    ////                         public variables                  ////
 
-    /** The single-input port.
-     */
+    /** @serial The single-input port. */
     public TypedIOPort input;
 
-    /** The singal output port.
-     */
+    /** @serial The signal output port. */
     public TypedIOPort output;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Dummy method. Do nothing. */
+    public void emitTentativeOutputs() {
+    }
 }

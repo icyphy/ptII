@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.ct.kernel.test;
@@ -56,9 +56,8 @@ public class CTDummySource extends CTActor{
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         public variables                  ////
 
-    /** The singal output port.
-     */
+    /** @serial The signal output port. */
     public TypedIOPort output;
 }
