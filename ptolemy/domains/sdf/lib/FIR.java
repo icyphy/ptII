@@ -260,6 +260,9 @@ public class FIR extends SDFAtomicActor {
 	_zero = tapstoken.getElementAsToken(0,0).zero();
     }
 
+    /** Initialize the taps of the FIR filter. 
+     *  @exception IllegalActionException If the parent class throws it.
+     */
     public void initialize() throws  IllegalActionException {
 	super.initialize();
 	
