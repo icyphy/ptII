@@ -35,6 +35,7 @@ import ptolemy.apps.fullscreen.Transform;
 
 
 import java.awt.AlphaComposite;
+import java.awt.BufferCapabilities;
 import java.awt.Color;
 import java.awt.DisplayMode;	// JDK1.4
 import java.awt.Frame;
@@ -125,9 +126,9 @@ public class MultiBufferTest {
 		    device.setDisplayMode(best);
 		}
 	    }
-	    //mainFrame.createBufferStrategy(numberOfBuffers);
 	    */
-
+	    //mainFrame.createBufferStrategy(numberOfBuffers);
+	    mainFrame.createBufferStrategy(2);
 	    Rectangle bounds = mainFrame.getBounds();
 	    System.out.println("Bounds: " + bounds.x + " " + bounds.y + " "
 			       + bounds.width + " " + bounds.height);
@@ -136,14 +137,26 @@ public class MultiBufferTest {
 	    //			  graphicsConfigurationBounds.y);
 
 
-	    //BufferStrategy bufferStrategy = mainFrame.getBufferStrategy();
+	    BufferStrategy bufferStrategy = mainFrame.getBufferStrategy();
+	    BufferCapabilities bufferCapabilities = 
+		bufferStrategy.getCapabilities();
+	    System.out.println("bufferStrategy.getCapabilities()"
+			       + bufferCapabilities
+			       + " getFlipContents():"
+			       + bufferCapabilities.getFlipContents()
+			       + " isFullScreenRequired:"
+			       + bufferCapabilities.isFullScreenRequired()
+			       + " isPageFlipping:"
+			       + bufferCapabilities.isPageFlipping()
+			       + " isMultiBufferAvailable:"
+			       + bufferCapabilities.isMultiBufferAvailable());
 
 	    for (int i = 0; i < numberOfBuffers; i++) {
-		//Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-		Graphics2D g = (Graphics2D) mainFrame.getGraphics();
+		Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+		//Graphics2D g = (Graphics2D) mainFrame.getGraphics();
 		System.out.println("buffer: " + i);
-		//if (!bufferStrategy.contentsLost()) {
-		if(true) {
+		if (!bufferStrategy.contentsLost()) {
+		    //if(true) {
 
 		    g.setColor(_COLORS[i]);
 		    System.out.println("after setColor");
@@ -153,7 +166,7 @@ public class MultiBufferTest {
 				       + bounds.width + " " + bounds.height);
 
 		    g.fillRect(bounds.x, bounds.y,
-			       bounds.width*2, bounds.height);
+			       bounds.width, bounds.height);
 		    String imageName =  ptIIDirectoryProperty
 			+ "/" + _IMAGES[i];
 		    System.out.println("Reading in " + imageName);
@@ -206,30 +219,43 @@ public class MultiBufferTest {
 		    		originalImageIcon.getImageObserver());
 		    */
 		    System.out.println("About to show");
-		    //bufferStrategy.show();
-		    mainFrame.show();
-	    for( float alpha = 0.01f; alpha < 0.99f; alpha += 0.05f) {
-		AlphaComposite ac =
-		    AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-					       alpha);
-		//g = (Graphics2D) bufferStrategy.getDrawGraphics();
-		System.out.println("alpha: " + alpha);
-
-		g.setComposite(ac);
+		    bufferStrategy.show();
+		    //mainFrame.show();
+		    g.dispose();
+		    // Fill in the other frame
+		    g = (Graphics2D) bufferStrategy.getDrawGraphics();
 		    g.setColor(_COLORS[i]);
+		    g.fillRect(bounds.x, bounds.y,
+			       bounds.width, bounds.height);
 		    g.drawImage(scaledImage, xOffset, yOffset,
 		    		width, height,
 		    		_COLORS[i],
 		    		originalImageIcon.getImageObserver());
-		    g.fillRect(bounds.x, bounds.y,
-			       bounds.width*2, bounds.height);
-
-		    //bufferStrategy.show();
-		    mainFrame.show();
-	    }
-		    //System.out.println("About to dispose");
+		    bufferStrategy.show();
+		    //mainFrame.show();
 		    g.dispose();
-	        }
+		    for( float alpha = 0.01f; alpha < 0.99f; alpha += 0.05f) {
+			AlphaComposite ac =
+			    AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					       alpha);
+			g = (Graphics2D) bufferStrategy.getDrawGraphics();
+			System.out.println("alpha: " + alpha);
+
+			g.setComposite(ac);
+			g.setColor(_COLORS[i]);
+			g.drawImage(scaledImage, xOffset, yOffset,
+				    width, height,
+				    _COLORS[i],
+				    originalImageIcon.getImageObserver());
+			g.fillRect(bounds.x, bounds.y,
+				   bounds.width, bounds.height);
+			bufferStrategy.show();
+			//mainFrame.show();
+		    g.dispose();
+		    }
+		    //System.out.println("About to dispose");
+
+		}
 		try {
 		    Thread.sleep((int)delay);
 		} catch (InterruptedException e) {}

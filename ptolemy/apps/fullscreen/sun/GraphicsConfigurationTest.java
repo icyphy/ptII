@@ -38,6 +38,18 @@ public class GraphicsConfigurationTest {
 				   + graphicsConfigurations[j].getBounds());
 		virtualBounds =
 		    virtualBounds.union(graphicsConfigurations[j].getBounds());
+	    BufferCapabilities bufferCapabilities = 
+		graphicsConfigurations[j].getBufferCapabilities();
+	    System.out.println("BufferCapabilities: "
+			       + bufferCapabilities
+			       + " getFlipContents:"
+			       + bufferCapabilities.getFlipContents()
+			       + " isFullScreenRequired:"
+			       + bufferCapabilities.isFullScreenRequired()
+			       + " isPageFlipping:"
+			       + bufferCapabilities.isPageFlipping()
+			       + " isMultiBufferAvailable:"
+			       + bufferCapabilities.isMultiBufferAvailable());
            }
 	}
     }
