@@ -247,68 +247,6 @@ public class KeyWriter extends Sink {
         }
     }
 
-    public X509Certificate getSelfCertificate (X500Name myname, long validity)
-    throws IllegalActionException {
-    {
-	X500Signer	issuer;
-	X509CertImpl	cert;
-	Date		firstDate, lastDate;
-
-	try {
-	    issuer = getSigner (myname);
-
-	    firstDate = new Date ();
-	    lastDate = new Date ();
-	    lastDate.setTime (lastDate.getTime () + validity * 1000);
-
-            CertificateValidity interval =
-                                   new CertificateValidity(firstDate,lastDate);
-
-            X509CertInfo info = new X509CertInfo();
-            // Add all mandatory attributes
-            info.set(X509CertInfo.VERSION,
-                     new CertificateVersion(CertificateVersion.V1));
-            info.set(X509CertInfo.SERIAL_NUMBER,
-                 new CertificateSerialNumber((int)(firstDate.getTime()/1000)));
-            AlgorithmId algID = issuer.getAlgorithmId();
-            info.set(X509CertInfo.ALGORITHM_ID,
-                     new CertificateAlgorithmId(algID));
-            info.set(X509CertInfo.SUBJECT, new CertificateSubjectName(myname));
-            info.set(X509CertInfo.KEY, new CertificateX509Key(publicKey));
-            info.set(X509CertInfo.VALIDITY, interval);
-            info.set(X509CertInfo.ISSUER,
-                     new CertificateIssuerName(issuer.getSigner()));
-
-	    cert = new X509CertImpl(info);
-	    cert.sign(privateKey, this.sigAlg);
-
-	    return (X509Certificate)cert;
-
-	} catch (Exception e) {
-             throw new IllegalActionException(this, ex,
-                     "Failed to create self signed certificate");
-	}
-    }
-
-    private X500Signer getSigner (X500Name me)
-    throws InvalidKeyException, NoSuchAlgorithmException
-    {
-	Signature	signature = Signature.getInstance(sigAlg);
-
-	// XXX should have a way to pass prng to the signature
-	// algorithm ... appropriate for DSS/DSA, not RSA
-
-	signature.initSign (privateKey);
-	return new X500Signer (signature, me);
-    }
-
-    private SecureRandom	prng;
-    private String		sigAlg;
-    private KeyPairGenerator	keyGen;
-    private PublicKey		publicKey;
-    private PrivateKey		privateKey;
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
