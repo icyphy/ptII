@@ -188,7 +188,7 @@ diststest:
 	)
 # Create a distribution and install it.
 # This rule is particular to our local installation
-JDESTDIR = /vol/ptolemy/pt0/ftp/pub/ptolemy/www/java
+JDESTDIR = /vol/ptolemy/pt0/ptweb/java
 installjdist:
 	$(MAKE) buildjdist
 	$(MAKE) updatewebsite
