@@ -134,7 +134,7 @@ test SDFReceiver-2.1a {Check clear} {
     set result2 [$receiver size]
     
     list $result1 $result2
-} {}
+} {2 0}
 
 test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in the queue} {
     set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
