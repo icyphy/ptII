@@ -276,3 +276,29 @@ test Parameter-7.0 {Check that dependency cycles are flagged as an error} {
 
     list $value1 $value2 $value3 $errmsg
 } {1.1 9.9 11 {java.lang.IllegalArgumentException: Found dependency loop in .parent.id1: id3}}
+#################################
+####
+# 
+test Parameter-8.0 {Check that previous dependencies are cleared when a new Token or expression is placed in the Parameter.} {
+    set e [java::new {ptolemy.kernel.Entity String} parent]
+    set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
+    $param1 setExpression "10"
+    $param1 evaluate
+
+    set param2 [java::new ptolemy.data.expr.Parameter $e id2 ]
+    $param2 setExpression "id1"
+
+    $param2 evaluate
+
+    # This should clear the previous dependence on param2
+    $param2 setExpression "20"
+    $param2 evaluate
+
+    # This should be ok as there is no dependency loop
+    $param1 setExpression "id2"
+    $param1 evaluate
+    
+    set value2 [[$param1 getToken] toString]
+    
+    list $value2
+} {ptolemy.data.IntToken(20)}
