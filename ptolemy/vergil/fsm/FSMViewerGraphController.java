@@ -89,6 +89,8 @@ public class FSMViewerGraphController extends RunnableGraphController {
         super.addToMenuAndToolbar(menu, toolbar);
         GUIUtilities.addHotKey(getFrame().getJGraph(),
                 _stateController._lookInsideAction);
+        GUIUtilities.addHotKey(getFrame().getJGraph(),
+                _transitionController._lookInsideAction);
     }
 
     /** React to an event by highlighting the new state.

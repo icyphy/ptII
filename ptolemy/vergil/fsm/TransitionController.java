@@ -55,18 +55,23 @@ import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
+import diva.gui.GUIUtilities;
 import diva.gui.toolbox.MenuCreator;
 import diva.gui.toolbox.MenuFactory;
+
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
@@ -76,10 +81,14 @@ import javax.swing.Action;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Paint;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransitionController
@@ -136,6 +145,13 @@ public class TransitionController extends BasicEdgeController {
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
         interactor.addInteractor(doubleClickInteractor);
+
+	if (_configuration != null) {
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_lookInsideAction));
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,6 +163,12 @@ public class TransitionController extends BasicEdgeController {
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
+	if (_configuration != null) {
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_lookInsideAction));
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,6 +181,8 @@ public class TransitionController extends BasicEdgeController {
     protected static ConfigureAction _configureAction = 
              new ConfigureAction("Configure (Ctrl-E)");
     
+    /** The action that handles look inside. */
+    protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
     /** The menu creator. */
     protected MenuCreator _menuCreator;
@@ -299,5 +323,46 @@ public class TransitionController extends BasicEdgeController {
         public boolean acceptTail(Connector c, Figure f) {
             return acceptHead(c, f);
         }
+    }
+
+    /** An action to look inside a transition at its refinement, if it has one.
+     *  NOTE: This requires that the configuration be non null, or it
+     *  will report an error with a fairly cryptic message.
+     */
+    private class LookInsideAction extends FigureAction {
+	public LookInsideAction() {
+	    super("Look Inside (Ctrl+L)");
+            // For some inexplicable reason, the I key doesn't work here.
+            // So we use L.
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+	}
+	public void actionPerformed(ActionEvent e) {
+
+            if (_configuration == null) {
+                MessageHandler.error(
+                        "Cannot look inside without a configuration.");
+                return;
+            }
+	    super.actionPerformed(e);
+	    NamedObj target = getTarget();
+            // If the target is not an instance of State, do nothing.
+            if (target instanceof Transition) {
+                try {
+                    TypedActor[] refinements
+                            = ((Transition)target).getRefinement();
+                    if (refinements != null && refinements.length > 0) {
+                        for (int i = 0; i < refinements.length; i++) {
+                            // Open each refinement.
+                            _configuration.openModel((NamedObj)refinements[i]);
+                        }
+                    } else {
+                        MessageHandler.error("Transition has no refinement.");
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Look inside failed: ", ex);
+                }
+            }
+	}
     }
 }
