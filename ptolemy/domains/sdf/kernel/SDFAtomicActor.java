@@ -33,7 +33,8 @@ package ptolemy.domains.sdf.kernel;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.*;import ptolemy.actor.*;
+import ptolemy.data.expr.*;
+import ptolemy.actor.*;
 
 import java.util.Enumeration;
 import collections.HashedMap;
