@@ -170,6 +170,10 @@ public abstract class ActorController extends AttributeController {
         // "Set Breakpoints"
         if (access == FULL) {
             // Add to the context menu.
+
+            // FIXME: does this work outside of SDF?  Should
+            // we check to see if the director is an SDF director?
+
             _breakpointDialogFactory = new BreakpointDialogFactory(
                     (BasicGraphController)getController());
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
