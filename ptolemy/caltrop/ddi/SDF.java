@@ -408,21 +408,26 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     /**
-     * Executes the selected action on the first {@link #fire() fire()} call. On successive calls,
-     * it rolls back previous
-     * state changes, selects a new action and executes it.
-     * <p>
-     * <b>Note: Is this correct behavior? What is the contract between the result of prefire() and successive
-     * calls to fire()?</b>
+     * Executes the selected action on the first {@link #fire()
+     * fire()} call. On successive calls, it rolls back previous state
+     * changes, selects a new action and executes it.
      *
-     * @throws IllegalActionException  If an error occures during the interpretation of the action.
+     * <p> <b>Note: Is this correct behavior? What is the contract
+     * between the result of prefire() and successive calls to
+     * fire()?</b>
+     *
+     * @throws IllegalActionException If an error occurs during the
+     * interpretation of the action.
      */
     public void fire() throws IllegalActionException {
         // FIXMELATER: state transition and potentially rollback
         try {
             if (_actorInterpreter.currentAction() == null) {
-                // This point is reached iff this is not the first fire() call of this iteration.
+
+                // This point is reached iff this is not the first fire()
+                // call of this iteration.
                 // Hence we could put rollback work here.
+
                 _selectAction();
             }
             if (_actorInterpreter.currentAction() != null) {
@@ -435,6 +440,7 @@ public class SDF extends AbstractDDI implements DDI {
             throw new IllegalActionException("Could not fire CAL actor '" + _actor.getName() + "': " + e.getMessage());
         }
     }
+
     /**
      * _selectAction picks an action for which the actor interpreter evaluates the guard to true. Note that this does
      * not necessarily mean that <em>all</em> preconditions for firing are satisfied---the amount of "prechecking"
@@ -442,7 +448,6 @@ public class SDF extends AbstractDDI implements DDI {
      *
      * @return The action number that was selected, a value <0 if no action was selected.
      */
-
     private int  _selectAction() {
         Action [] actions = _actor.getActions();
         for (int i = 0; i < actions.length; i++) {

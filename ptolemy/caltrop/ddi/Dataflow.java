@@ -111,7 +111,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      * between the result of prefire() and successive calls to
      * fire()?</b>
      *
-     * @throws IllegalActionException If an error occures during the
+     * @throws IllegalActionException If an error occurs during the
      * interpretation of the action.
 
      */
