@@ -396,6 +396,9 @@ public class SRDirector extends StaticSchedulingDirector {
                         _areAllInputsKnown(actor);
                     actor.fire();
 
+                    if (_actorsFired == null) _actorsFired = new HashSet();
+                    _actorsFired.add(actor);
+
                     // If all of the inputs of this actor are known, firing
                     // the actor again in this iteration is not necessary.
                     // The actor will not produce any more outputs because
@@ -404,7 +407,7 @@ public class SRDirector extends StaticSchedulingDirector {
                     // are actually absent.
                     if (allInputsKnownBeforeFiring) 
                         _sendAbsentToAllUnknownOutputsOf(actor);
-                }
+                    }
             } else {
                 _debug("    SRDirector is prefiring", _getNameOf(actor));
                 if (actor.prefire()) {
@@ -524,6 +527,7 @@ public class SRDirector extends StaticSchedulingDirector {
     private void _initFiring() {
         _postfireReturns = false;
         _actorsAllowedToFire = null;
+        _actorsFired = null;
 
         _cachedAllInputsKnown = null;
         _cachedAllOutputsKnown = null;
@@ -545,6 +549,10 @@ public class SRDirector extends StaticSchedulingDirector {
         // become available (the inputs might be, for example, cached and
         // used in a subsequent iteration.
         if (_isNonStrict(actor)) return false;
+
+        // Actors that have not fired in this iteration are not finished.
+        if (_actorsFired == null) return false;
+        if (!_actorsFired.contains(actor)) return false;
 
         return _areAllOutputsKnown(actor);
     }
@@ -660,6 +668,10 @@ public class SRDirector extends StaticSchedulingDirector {
     // on the given iteration.
     private HashSet _actorsAllowedToFire;
 
+    // The set of actors that have been fired once or more in the given 
+    // iteration.
+    private HashSet _actorsFired;
+
     // The set of actors that have all inputs known in the given iteration.
     private HashSet _cachedAllInputsKnown;
 
@@ -689,6 +701,7 @@ public class SRDirector extends StaticSchedulingDirector {
     // The name of an attribute that marks an actor as non strict.
     private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
 }
+
 
 
 
