@@ -61,15 +61,38 @@ public class DDEApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the value of the specified applet parameter. If the
+     *  specified parameter does not exist, then return null. Note
+     *  that the notion of parameter associated with this method
+     *  is equivalent to that which is returned by 
+     *  java.applet.Applet.getParameterInfo() and is distinct from 
+     *  that which is returned from java.applet.Applet.getParameter(). 
+     * @return String The value of the specified applet parameter;
+     *  returns null if the specified parameter does not exist.
+     */
+    public String getSingleParameter(String name) {
+	String params[][] = getParameterInfo();
+
+	for( int i = 0; i < params.length; i++ ) {
+	    if( params[i][0].equals(name) ) {
+		return params[i][1];
+	    }
+	}
+	return null;
+    }
+
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String newinfo[][] = {
-            {"stopTime", "", "when to stop"},
-            {"defaultStopTime", "100.0", "default value for when to stop"}
-        };
-        return _concatStringArrays(super.getParameterInfo(), newinfo);
+	if( _params == null ) {
+	    String newinfo[][] = {
+		{"stopTime", "", "when to stop"},
+		{"defaultStopTime", "100.0", "default value for when to stop"}
+	    };
+            _params = _concatStringArrays(super.getParameterInfo(), newinfo);
+	}
+        return _params;
     }
 
     /** Initialize the applet. After calling the base class init() method,
@@ -82,13 +105,13 @@ public class DDEApplet extends PtolemyApplet {
     public void init() {
         super.init();
 
-
         // Instantiate the director and process the 
 	// stopTime parameter.
         try {
 	    _director = new DDEDirector(_toplevel, "DDEDirector");
 
-            String stopSpec = getParameter("stopTime");
+            String stopSpec = getSingleParameter("stopTime");
+	    System.out.println("stopSpec = " + stopSpec);
             if (stopSpec != null) {
                 double stopTime = (new Double(stopSpec)).doubleValue();
                 _stopTimeGiven = true;
@@ -102,6 +125,31 @@ public class DDEApplet extends PtolemyApplet {
             report("Error in setting the director's " 
 		    + "stopTime parameter\n", ex);
         }
+    }
+
+    /** Set the value of the name applet parameter to the specified
+     *  value. If the name applet parameter does not exist, do 
+     *  nothing.
+     */
+    public void setSingleParameter(String name, String value) {
+	String params[][] = getParameterInfo();
+	if( params == null ) {
+	    return;
+	}
+
+	String newParams[][] = new String[params.length][3];
+	for( int i = 0; i < params.length; i++ ) {
+	    for( int j = 0; j < 3; j++ ) {
+		newParams[i][j] = params[i][j];
+	    }
+	    if( params[i][0].equals(name) ) {
+		newParams[i][1] = value;
+	    }
+	    System.out.println("param " +i+ ": " + newParams[i][0] + ", "
+		    + newParams[i][1] + ", " + newParams[i][2] + ".");
+	}
+
+	_params = newParams;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -119,17 +167,17 @@ public class DDEApplet extends PtolemyApplet {
      *  selection box should be displayed.
      * @return The panel containing the controls.
      */
-    protected Panel _createRunControls(int numbuttons, 
-	    boolean showStopTime) {
-        Panel panel = _createRunControls(numbuttons);
-        if (showStopTime ) {
-            // To keep the label and entry box together, put them
-            // in a new panel.
+    protected Panel _createRunControls(int numbuttons) {
+        Panel panel = super._createRunControls(numbuttons);
+
+        if( !_stopTimeGiven ) {
+            // To keep the label and entry box together, 
+            // put them in a new panel.
             Panel stopTimePanel = new Panel();
             stopTimePanel.add(new Label("Stop time:"));
 
             // Process the default iterations parameter.
-            String defaultStopSpec = getParameter("defaultStopTime");
+            String defaultStopSpec = getSingleParameter("defaultStopTime");
             if (defaultStopSpec == null) {
                 defaultStopSpec = "100.0";
             }
@@ -198,6 +246,14 @@ public class DDEApplet extends PtolemyApplet {
      *  there is none.
      */
     protected TextField _stopTimeBox;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    /** The applet parameters associated with this applet. These
+     *  parameters are returned by getParameterInfo().
+     */
+    private String[][] _params;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
