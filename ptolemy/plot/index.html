@@ -83,6 +83,42 @@ depend on the X window system.  We have provided a DOS batch file
 called <CODE>pxgraph.bat</CODE> that brings <CODE>pxgraph</CODE>
 capability to Windows platforms.
 
+
+ <P>The changes between ptplot1.0 and ptplot1.1:
+
+<MENU>
+
+<LI> In 1.1, PlotBox extends Panel.  In 1.0 PlotBox extended Applet.
+This makes it much easier to use Plot as an component in either an
+application or an applet that contains other components.
+
+
+<LI> The PlotApplet class is new in 1.1.  PlotApplet can be used 
+for applets that use the Plot class, or the PlotLive class.
+As a result, the html applet tags for the demos now use
+<CODE>code="ptplot.PlotApplet"</CODE>.
+Formerly, they used 
+<CODE>code="ptplot.Plot"</CODE>
+
+
+<LI> The directory structure has been reorganized so that
+the plot classes are in ptplot, and the demo classes are in
+<A HREF="demo"><CODE>ptplot/demo</CODE></A>.
+This means that the ptplot.zip does not contain the demo
+classes, which is better if anyone actually wants to _use_ the plotter
+instead of just running the demos.
+
+
+<LI> There is a <A HREF="demo/audio/PlayingWave.html">Playing Wave
+Applet</A> that uses real time audio.
+
+<LI> Edward Lee fixed a bar graph label bug reported by Marc Ellis.
+
+<LI> A few other minor bugs were fixed.  
+
+</MENU>
+
+
  <P>
  <hr>
 <A HREF="http://ptolemy.eecs.berkeley.edu/java">Up</A> to the Ptolemy Java Website -
