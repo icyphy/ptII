@@ -112,7 +112,7 @@ public class NonStrictLogicFunction extends LogicFunction
             }
         }
 
-        value = _nullifyIncompleteResults(value);
+        if (value != null) value = _nullifyIncompleteResults(value);
 
         if (value != null) {
             if (_negate) value = value.not();
