@@ -9,7 +9,9 @@ core
 *.exe
 */SCCS
 */RCS
+*/CVS
 OLD
+*/adm
 */junk/*
 */logs/*
 */tclIndex
