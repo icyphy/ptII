@@ -82,8 +82,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         ApplicationUtility.trace("acg : parsing " + filename);        
         
         PtolemyTypeVisitor typeVisitor = _factory.createPtolemyTypeVisitor(actorInfo);
-        PtolemyTypeIdentifier typeID = 
-         (PtolemyTypeIdentifier) typeVisitor.typePolicy().typeIdentifier();
+        PtolemyTypeIdentifier typeID = _factory.createPtolemyTypeIdentifier();
                 
         // make a list of the compile unit node and compile unit nodes that 
         // contain superclasses
