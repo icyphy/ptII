@@ -94,8 +94,9 @@ import ptolemy.kernel.util.Workspace;
    simulator is in the maintenance of the global event queue. By default, 
    this director uses the calendar queue as the global event queue. This is 
    an efficient algorithm with O(1) time complexity in both enqueue and dequeue 
-   operations. Sorting in the CalendarQueue class is done according to the 
-   order defined on the tags by the DEEvent class, which implements the 
+   operations. Sorting in the {@link #ptolemy.domains.de.kernel.CalendarQueue} 
+   class is done according to the order defined on the tags by the 
+   {@link #ptolemy.domains.de.kernel.DEEvent} class, which implements the 
    java.lang.Comparable interface.  
    <p> 
    The complexity of the calendar algorithm is sensitive to the length of the
@@ -112,7 +113,8 @@ import ptolemy.kernel.util.Workspace;
    to do topology sort to assign depths.  Such a loop can be broken by 
    inserting some special actors, such as the <i>TimedDelay</i> actor.
    If zero delay in the loop is truly required, then set the <i>delay</i> 
-   parameter of those actors to zero. The directed loops are based on the port 
+   parameter of those actors to zero. This zero-delay actor plays the same
+   role as that of delta delay in VHDL. The directed loops are based on the port 
    connections rather than the actor connections because the port connections 
    reflect the data dependencies more accurately. The information of port 
    connections are stored in a nonpersistent attribute 
@@ -132,7 +134,6 @@ import ptolemy.kernel.util.Workspace;
    and puts those events into their destination receivers. The actor(s) to 
    which these events are destined are the ones to be fired.  The depth of
    an event is the depth of the actor to which it is destined.
-   The depth of an actor is its position in a topological sort of the graph.
    The microstep is usually zero, but is incremented when a pure event
    is queued with time stamp equal to the current model time.
    <p>
@@ -287,8 +288,12 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public Parameter synchronizeToRealTime;
 
-    /** The number of digits of the fractional part of the model time.
-     *  The default value is 10, and the type is int.
+    /** The number of digits of the fractional part of the model time 
+     *  (in decimal format). This parameter defines the time resolution 
+     *  used by this director, which is 10<sup>-timeScale.
+     *  The default value of this parameter is 10, and the corresponding 
+     *  time resolution is 10<sup>-10. 
+     *  The data type for this parameter is int.
      */
     public Parameter timeScale;
 
@@ -346,6 +351,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  and fire one or more actors that have events at that time.
      *  If <i>synchronizeToRealTime</i> is true, then before firing,
      *  wait until real time matches or exceeds the time stamp of the event.
+     *  Note that the default unit for time is seconds. 
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
      *  until either it has no more input tokens at the current time, or
      *  its prefire() method returns false. If there are no events in the
@@ -359,7 +365,8 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public void fire() throws IllegalActionException {
 
-        // NOTE: This fire method does not call super.fire().
+        // NOTE: This fire method does not call super.fire() 
+        // because this method is very different from that of the super class.
 
         if (_debugging) {
             _debug("DE director fires at " + getModelTime());
@@ -368,8 +375,7 @@ public class DEDirector extends Director implements TimedDirector {
         // The big while loop.
         while (true) {
             // Find the next actor to be fired.
-            // FIXME: change the method name to _getNextActorToFire?
-            Actor actorToFire = _dequeueEvents();
+            Actor actorToFire = _getNextActorToFire();
             
             // Check whether the actor to fire is null.
             
@@ -389,11 +395,13 @@ public class DEDirector extends Director implements TimedDirector {
                     _noMoreActorsToFire = true;
                 } else { 
                     // Case 2: 
-                    // If this director belongs to an embedded model,
+                    // If this director belongs to an opaque composite model,
                     // the director may be invoked by an update of the 
                     // external parameter port of the embedded model. 
-                    // Therefore, no actors contained by the embedded model 
+                    // Therefore, no actors contained by the composite model 
                     // need to fire.
+                    // NOTE: There may still be events in the local event queue
+                    // of this director that are scheduled for the future. 
                     if (_debugging) {
                         _debug("No actor requests to be fired " +
                                 "at the current time.");
@@ -461,8 +469,9 @@ public class DEDirector extends Director implements TimedDirector {
                                    FiringEvent.AFTER_POSTFIRE));
                 } else {
                     // No debugging.
-                    // FIXME: this may not be true any more. Suppose 
-                    // the top level contains external ports.
+                    // If the actor to be fired does not have a container,
+                    // it may just be deleted. Put this actor to the 
+                    // list of disabled actors.
                     if (((Nameable)actorToFire).getContainer() == null) {
                         _disableActor(actorToFire);
                         break;
@@ -478,12 +487,8 @@ public class DEDirector extends Director implements TimedDirector {
                     }
                 }
 
-                // NOTE: The following part is where that DE director handles
-                // multiple events with the same tag. 
-                // Think about what it means in the SR semantics.
-
-                // Check the input ports of the actor see whether there
-                // are input data to process.
+                // Check all the input ports of the actor see whether there
+                // are more input data to process.
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort port = (IOPort)inputPorts.next();
@@ -531,7 +536,7 @@ public class DEDirector extends Director implements TimedDirector {
                         && next.timeStamp().compareTo(getModelTime()) < 0) {
                         throw new InternalErrorException(
                                 "The time stamp of the next event " 
-                                + next.timeStamp() + " can not be smaller than"
+                                + next.timeStamp() + " can not be less than"
                                 + " the current time " + getModelTime() + " !");
                     } else {
                         // The next event has a time stamp either as 
@@ -552,14 +557,12 @@ public class DEDirector extends Director implements TimedDirector {
         }
     }
 
-    /** Schedule an actor to be fired at the specified absolute time.
-     *  This method is only intended to be called from within main
-     *  simulation thread.  Actors that create their own asynchronous
-     *  threads should used the fireAtCurrentTime() method to schedule
-     *  firings.
+    /** Schedule an actor to be fired at the specified time.
+     *  This method is only intended to be called from within the main
+     *  simulation thread.  
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
-     *  @exception IllegalActionException IIf this method is called
+     *  @exception IllegalActionException If this method is called
      *  before the model is running.
      */
     public void fireAt(Actor actor, Time time)
@@ -574,7 +577,7 @@ public class DEDirector extends Director implements TimedDirector {
         // as short as possible. So, this pure event is not reported
         // to higher level in hierarchy. The postfire method of this
         // director is responsible to report the next nearest event
-        // in the future to higher level.
+        // in the future to the higher level.
 
         synchronized(_eventQueue) {
             _enqueueEvent(actor, time);
@@ -685,8 +688,7 @@ public class DEDirector extends Director implements TimedDirector {
         return _realStartTime;
     }
 
-    /** Return the start time parameter value. This method is final
-     *  for performance reason.
+    /** Return the start time parameter value. 
      *  <p>
      *  When the start time is too big, the double representation loses
      *  the specified time resolution. To avoid this loss, use the 
@@ -696,18 +698,19 @@ public class DEDirector extends Director implements TimedDirector {
      *  instead.
      */
     public final double getStartTime() {
+        // This method is final for performance reason.
         return getModelStartTime().getDoubleValue();
     }
 
-    /** Return the start time parameter value. This method is final
-     *  for performance reason.
+    /** Return the start time parameter value. 
      *  @return the start time.
      */
     public final Time getModelStartTime() {
+        // This method is final for performance reason.
         return _startTime;
     }
 
-    /** Return the stop time. This method is final for performance reason.
+    /** Return the stop time. 
      *  <p>
      *  When the stop time is too big, the double representation loses
      *  the specified time resolution. To avoid this loss, use the 
@@ -717,13 +720,15 @@ public class DEDirector extends Director implements TimedDirector {
      *  instead.
      */
     public final double getStopTime() {
+        // This method is final for performance reason.
         return getModelStopTime().getDoubleValue();
     }
 
-    /** Return the stop time. This method is final for performance reason.
+    /** Return the stop time. 
      *  @return the stop time.
      */
     public final Time getModelStopTime() {
+        // This method is final for performance reason.
         return _stopTime;
     }
 
@@ -735,8 +740,11 @@ public class DEDirector extends Director implements TimedDirector {
      *  The priorities (depths) of actors are calculated in this method.
      *  To be able to calculate the priorities, a function dependency 
      *  analysis is performed. If any delay-free loops are detected, 
-     *  an exception will be thrown. NOTE: The priorities are not calculated
-     *  in the preinitialize method because a model model does not specify its
+     *  an exception will be thrown. 
+     *  <p>
+     *  NOTE: The priorities are not calculated in the preinitialize method 
+     *  because hierarchical models may change their structures during the
+     *  preinitialize method. For example, a modal model does not specify its
      *  initial state till the end of its preinitialize method. 
      *  {@link #ptolemy.domains.fsm.kernel.FSMActor.preinitialize()}. 
      *  <p>
@@ -1040,319 +1048,6 @@ public class DEDirector extends Director implements TimedDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Dequeue the events from the event queue that have the smallest
-     *  time stamp and depth. Advance the model time to their
-     *  time stamp, and mark the destination actor for firing.
-     *  If the time stamp is greater than the stop time then return null.
-     *  If there are no events on the event queue, and _stopWhenQueueIsEmpty
-     *  flag is true (which is set to true by default) then return null,
-     *  which will have the effect of stopping the simulation.
-     *  If _stopWhenQueueIsEmpty is false and the queue is empty, then
-     *  stall the current thread by calling wait() on the _eventQueue
-     *  until there are events available.  If _synchronizeToRealTime
-     *  is true, then this method may suspend the calling thread using
-     *  Object.wait(long) to let elapsed real time catch up with the
-     *  current event.
-     *  @return The next actor to fire.
-     */
-    protected Actor _dequeueEvents() {
-        Actor actorToFire = null;
-        DEEvent currentEvent = null, nextEvent = null;
-
-        // If there is no event queue, then there is obviously no
-        // actor to fire. (preinitialize() has not been called).
-        if (_eventQueue == null) return null;
-
-        // Keep taking events out until there are no more events with the same
-        // time stamp or until the queue is empty, or until a stop is requested.
-        // LOOPLABEL::GetNextEvent
-        while (!_stopRequested) {
-            // Get the next event from the event queue.
-            if (_stopWhenQueueIsEmpty) {
-                if (_eventQueue.isEmpty()) {
-                    // If the event queue is empty, 
-                    // jump out of the loop: LOOPLABEL::GetNextEvent
-                    break;
-                }
-            }
-            
-            if (!_isTopLevel()) {
-                // If the directory is in an embedded model
-                if (_eventQueue.isEmpty()) {
-                    // NOTE: when could this happen?
-                    // The containsr of this director, an embedded model,  
-                    // may be invoked by an update of the 
-                    // parameter port of the model. Therefore, no 
-                    // actors inside this container need to fire.
-                    // jump out of the loop: LOOPLABEL::GetNextEvent
-                    break;
-                } else {
-                    nextEvent = (DEEvent)_eventQueue.get();
-                    // An embedded director should process events 
-                    // that only happen at the current time.
-                    // If the event is in the past, that is an error.
-                    if (!nextEvent.timeStamp().equals(Time.NEGATIVE_INFINITY) 
-                        &&
-                        nextEvent.timeStamp().compareTo(getModelTime()) < 0){
-                        //missed an event
-                        nextEvent = null;
-                        throw new InternalErrorException(
-                            "Fire: Missed an event: the next event time "
-                            + nextEvent.timeStamp() + " is earlier than the"
-                            + " current time " + getModelTime() + " !");
-                    }
-                    // If the event is in the future, it is ignored
-                    // and will be processed later.
-                    if (nextEvent.timeStamp().compareTo(getModelTime()) > 0) {
-                        //reset the next event
-                        nextEvent = null;
-                        // jump out of the loop: LOOPLABEL::GetNextEvent
-                        break;
-                    }
-                }
-            } else {
-                // If the director is at the top level
-
-                // If the event queue is empty, 
-                // a blocking read is performed on the queue.
-                // However, there are two conditions that the blocking 
-                // read is not performed, which are checked below.
-                if (_eventQueue.isEmpty()) {
-                    // The two conditions are:
-                    // 1. An actor to be fired has been found.
-                    // 2. There are no more events in the event queue,
-                    // and the current time is the stop time. 
-                    if (actorToFire != null || 
-                        (getModelTime() == getModelStopTime())) {
-                        // jump out of the loop: LOOPLABEL::GetNextEvent
-                        break;
-                    }
-                }
-                
-                // Otherwise, if the event queue is empty, 
-                // a blocking read is performed on the queue.
-                while (_eventQueue.isEmpty() && !_stopRequested) {
-                    if (_debugging) {
-                        _debug("Queue is empty. Waiting for input events.");
-                    }
-                    Thread.yield();
-                    synchronized(_eventQueue) {
-                        if (_eventQueue.isEmpty()) {
-                            try {
-                                // FIXME: If the manager gets a change request
-                                // during this wait, the change request will
-                                // not be executed until we emerge from this
-                                // wait.  This can lead to deadlock if the UI
-                                // waits for the change request to complete
-                                // (which it typically does).
-                                //_eventQueue.wait();
-                                workspace().wait(_eventQueue);
-                            } catch (InterruptedException e) {
-                                // If the wait is interrupted,
-                                // then stop waiting.
-                                break;
-                            } catch (Exception e) {
-                                if (_debugging) {
-                                    _debug(e.toString());
-                                }
-                            }
-                        }
-                    } // Close synchronized block
-                }// Close the blocking read while loop
-                
-                // To reach this point, either the event queue is not empty,
-                // or the _stopRequested is true. 
-                if (_eventQueue.isEmpty()) {
-                    // Stop is requested!
-                    // jump out of the loop: LOOPLABEL::GetNextEvent
-                    break;
-                } else {
-                    // At least one event is found in the event queue.
-                    nextEvent = (DEEvent)_eventQueue.get();
-                }
-            } 
-            // End of the different behaviors on getting the next event 
-            // between embedded and top-level directors.
-
-            // When this point is reached, the nextEvent can not be null.
-            if (nextEvent == null) {
-                throw new InternalErrorException("The event to be handled"
-                    + " can not be null!");
-            }
-            
-            // If the actorToFire is null, find the actor associated with
-            // the next event. Otherwise, check whether the event just found 
-            // goes to the same actor to be fired. 
-            if (actorToFire == null) {
-                // If the actorToFire is not set yet, 
-                // find the actor associated with the event just found,
-                // and update the current time with the event time.
-                Time currentTime;
-                // If not synchronized to the real time.
-                if (!_synchronizeToRealTime) {
-                    currentEvent = (DEEvent)_eventQueue.get();
-                    currentTime = currentEvent.timeStamp();
-                } else {
-                    // If synchronized to the real time.
-                    synchronized(_eventQueue) {
-                        while (true) {
-                            currentEvent = (DEEvent)_eventQueue.get();
-                            currentTime = currentEvent.timeStamp();
-                            long elapsedTime = System.currentTimeMillis()
-                                - _realStartTime;
-                            // NOTE: We assume that the elapsed time can be
-                            // safely cast to a double.  This means that
-                            // the DE domain has an upper limit on running
-                            // time of Double.MAX_VALUE milliseconds. 
-                            // NOTE: When synchronized to real time, time
-                            // resolution is millisecond, which is different
-                            // from the assumption that the smallest
-                            // time interval between any two events is the
-                            // minimum double value.
-                            double elapsedTimeInSeconds =
-                                ((double)elapsedTime)/1000.0;
-                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
-                                break;
-                            }
-                            long timeToWait = (long)(currentTime.subtract(
-                                elapsedTimeInSeconds).getDoubleValue() * 1000.0);
-                            if (timeToWait > 0) {
-                                if (_debugging) {
-                                    _debug("Waiting for real time to pass: "
-                                            + timeToWait);
-                                }
-                                //synchronized(_eventQueue) {
-                                try {
-                                    _eventQueue.wait(timeToWait);
-                                } catch (InterruptedException ex) {
-                                    // Continue executing.
-                                }
-                                //}
-                            }
-                        } // while
-                    } // sync
-                }
-
-                // Consume the event from the queue.  The event must be
-                // obtained here, since a new event could have been enqueued
-                // into the queue while the queue was waiting.
-                // FIXME: If the above situation can happen, will it be a bug?
-                // I suspect it will be extremely difficult to fully understand
-                // the consequences. 
-                synchronized(_eventQueue) {
-                    currentEvent = (DEEvent) _eventQueue.take();
-                    currentTime = currentEvent.timeStamp();
-                    actorToFire = currentEvent.actor();
-
-                    // Deal with a fireAtCurrentTime event.
-                    if (currentTime.equals(Time.NEGATIVE_INFINITY)) {
-                        currentTime = getModelTime();
-                    }
-
-                    // NOTE: The _enqueEvent method discard the events 
-                    // for disabled actors.
-                    if (_disabledActors != null &&
-                            _disabledActors.contains(actorToFire)) {
-                        // This actor has requested not to be fired again.
-                        if (_debugging) _debug("Skipping diabled actor: ",
-                                ((Nameable)actorToFire).getFullName());
-                        actorToFire = null;
-                        // start a new iteration of the loop: 
-                        // LOOPLABEL::GetNextEvent
-                        continue;
-                    }
-
-                    // Advance current time to event time.
-                    try {
-                        setModelTime(currentTime);
-                    } catch (IllegalActionException ex) {
-                        // Thrown if time moves backwards.
-                        throw new InternalErrorException(this, ex, null);
-                    }
-                }
-
-                _microstep = currentEvent.microstep();
-
-                // Exceeding stop time means the current time is strictly 
-                // bigger than the model stop time. 
-                if (currentTime.compareTo(getModelStopTime()) > 0) {
-                    if (_debugging) {
-                        _debug("Current time has passed the stop time.");
-                    }
-                    _exceedStopTime = true;
-                    return null;
-                }
-
-                // Transfer the event to the receiver and keep track
-                // of which receiver is filled.
-                DEReceiver receiver = (DEReceiver) currentEvent.receiver();
-
-                // If the receiver is null, then it's a 'pure event', 
-                // and there's no need to put events into that receiver.
-                if (receiver != null) {
-                    // Transfer the event to the receiver.
-                    if (_debugging) 
-                        _debug(getName(), " puts trigger event to",
-                            receiver.getContainer().getFullName());
-                    receiver._triggerEvent(currentEvent.token());
-                }
-            } else {
-                
-                // Already found an event and the actor to reacts to it.
-                // Check whether the newly found event has the same tag.
-                // If so, the destination actor should be the same, but check 
-                // anyway.
-
-                // NOTE: Simultaneous events are handled at the same
-                // iteration, which is one the key differences from the
-                // DEEDirector.
-                
-                // NOTE: A queue event to an actor may not have the 
-                // same depth of that actor because the dedicated depth 
-                // calculation process. When dequeuing events, 
-                // this difference has to be considered.
-                  
-                // NOTE: The above assumption will not always hold for 
-                // non-strict actors. In which case, we need to use the 
-                // DEEDirector.
-                boolean isPureEvent = (nextEvent.receiver() == null) 
-                    || (currentEvent.receiver() == null);
-                boolean theSameActor = nextEvent.actor().equals(
-                    currentEvent.actor());
-                
-                // The three conditions of the following predicate are:
-                // 1. A pure event that requests to fire the actor just fired
-                //      again 'as soon as possible'.
-                // 2. Two token events that go to same port of the same actor.
-                // 3. A pure event and a token event that go to the actor.
-                if (nextEvent.timeStamp().equals(Time.NEGATIVE_INFINITY) ||
-                     nextEvent.hasTheSameTagAndDepthAs(currentEvent) ||
-                     (nextEvent.hasTheSameTagAs(currentEvent) && isPureEvent 
-                             && theSameActor)){
-
-                    // Consume the event from the queue.
-                    _eventQueue.take();
-
-                    // Transfer the event into the receiver.
-                    DEReceiver receiver = (DEReceiver) nextEvent.receiver();
-                    // If receiver is null, then it's a 'pure event' and
-                    // there's no need to put event into receiver.
-                    if (receiver != null) {
-                        // Transfer the event to the receiver.
-                        receiver._triggerEvent(nextEvent.token());
-                    }
-                } else {
-                    // Next event has a future tag or different destination.
-                    break;
-                }
-            }
-        }// close the loop: LOOPLABEL::GetNextEvent
-        
-        // Note that the actor to be fired can be null.
-        return actorToFire;
-    }
-
-
     /** Disable the specified actor.  All events destined to this actor
      *  will be ignored. If the argument is null, then do nothing.
      *  @param actor The actor to disable.
@@ -1559,6 +1254,318 @@ public class DEDirector extends Director implements TimedDirector {
         }
         throw new IllegalActionException("Attempt to get depth actor " +
                 ((NamedObj)actor).getName() + " that was not sorted.");
+    }
+
+    /** Dequeue the events from the event queue that have the smallest
+     *  time stamp and depth and return their destination actor. 
+     *  Advance the model time to their time stamp.
+     *  If the time stamp is greater than the stop time then return null.
+     *  If there are no events on the event queue, and _stopWhenQueueIsEmpty
+     *  flag is true (which is set to true by default) then return null,
+     *  which will have the effect of stopping the simulation.
+     *  If _stopWhenQueueIsEmpty is false and the queue is empty, then
+     *  stall the current thread by calling wait() on the _eventQueue
+     *  until there are events available.  If _synchronizeToRealTime
+     *  is true, then this method may suspend the calling thread using
+     *  Object.wait(long) to let elapsed real time catch up with the
+     *  current event.
+     *  @return The next actor to fire.
+     */
+    protected Actor _getNextActorToFire() {
+        Actor actorToFire = null;
+        DEEvent currentEvent = null, nextEvent = null;
+
+        // If there is no event queue, then there is obviously no
+        // actor to fire. (preinitialize() has not been called).
+        if (_eventQueue == null) return null;
+
+        // Keep taking events out until there are no more events with the same
+        // time stamp or until the queue is empty, or until a stop is requested.
+        // LOOPLABEL::GetNextEvent
+        while (!_stopRequested) {
+            // Get the next event from the event queue.
+            if (_stopWhenQueueIsEmpty) {
+                if (_eventQueue.isEmpty()) {
+                    // If the event queue is empty, 
+                    // jump out of the loop: LOOPLABEL::GetNextEvent
+                    break;
+                }
+            }
+            
+            if (!_isTopLevel()) {
+                // If the directory is in an embedded model
+                if (_eventQueue.isEmpty()) {
+                    // NOTE: when could this happen?
+                    // The containsr of this director, an embedded model,  
+                    // may be invoked by an update of the 
+                    // parameter port of the model. Therefore, no 
+                    // actors inside this container need to fire.
+                    // jump out of the loop: LOOPLABEL::GetNextEvent
+                    break;
+                } else {
+                    nextEvent = (DEEvent)_eventQueue.get();
+                    // An embedded director should process events 
+                    // that only happen at the current time.
+                    // If the event is in the past, that is an error.
+                    if (!nextEvent.timeStamp().equals(Time.NEGATIVE_INFINITY) 
+                        &&
+                        nextEvent.timeStamp().compareTo(getModelTime()) < 0){
+                        //missed an event
+                        nextEvent = null;
+                        throw new InternalErrorException(
+                            "Fire: Missed an event: the next event time "
+                            + nextEvent.timeStamp() + " is earlier than the"
+                            + " current time " + getModelTime() + " !");
+                    }
+                    // If the event is in the future, it is ignored
+                    // and will be processed later.
+                    if (nextEvent.timeStamp().compareTo(getModelTime()) > 0) {
+                        //reset the next event
+                        nextEvent = null;
+                        // jump out of the loop: LOOPLABEL::GetNextEvent
+                        break;
+                    }
+                }
+            } else {
+                // If the director is at the top level
+
+                // If the event queue is empty, 
+                // a blocking read is performed on the queue.
+                // However, there are two conditions that the blocking 
+                // read is not performed, which are checked below.
+                if (_eventQueue.isEmpty()) {
+                    // The two conditions are:
+                    // 1. An actor to be fired has been found.
+                    // 2. There are no more events in the event queue,
+                    // and the current time is the stop time. 
+                    if (actorToFire != null || 
+                        (getModelTime() == getModelStopTime())) {
+                        // jump out of the loop: LOOPLABEL::GetNextEvent
+                        break;
+                    }
+                }
+                
+                // Otherwise, if the event queue is empty, 
+                // a blocking read is performed on the queue.
+                while (_eventQueue.isEmpty() && !_stopRequested) {
+                    if (_debugging) {
+                        _debug("Queue is empty. Waiting for input events.");
+                    }
+                    Thread.yield();
+                    synchronized(_eventQueue) {
+                        if (_eventQueue.isEmpty()) {
+                            try {
+                                // FIXME: If the manager gets a change request
+                                // during this wait, the change request will
+                                // not be executed until we emerge from this
+                                // wait.  This can lead to deadlock if the UI
+                                // waits for the change request to complete
+                                // (which it typically does).
+                                //_eventQueue.wait();
+                                workspace().wait(_eventQueue);
+                            } catch (InterruptedException e) {
+                                // If the wait is interrupted,
+                                // then stop waiting.
+                                break;
+                            } catch (Exception e) {
+                                if (_debugging) {
+                                    _debug(e.toString());
+                                }
+                            }
+                        }
+                    } // Close synchronized block
+                }// Close the blocking read while loop
+                
+                // To reach this point, either the event queue is not empty,
+                // or the _stopRequested is true. 
+                if (_eventQueue.isEmpty()) {
+                    // Stop is requested!
+                    // jump out of the loop: LOOPLABEL::GetNextEvent
+                    break;
+                } else {
+                    // At least one event is found in the event queue.
+                    nextEvent = (DEEvent)_eventQueue.get();
+                }
+            } 
+            // End of the different behaviors on getting the next event 
+            // between embedded and top-level directors.
+
+            // When this point is reached, the nextEvent can not be null.
+            if (nextEvent == null) {
+                throw new InternalErrorException("The event to be handled"
+                    + " can not be null!");
+            }
+            
+            // If the actorToFire is null, find the actor associated with
+            // the next event. Otherwise, check whether the event just found 
+            // goes to the same actor to be fired. 
+            if (actorToFire == null) {
+                // If the actorToFire is not set yet, 
+                // find the actor associated with the event just found,
+                // and update the current time with the event time.
+                Time currentTime;
+                // If not synchronized to the real time.
+                if (!_synchronizeToRealTime) {
+                    currentEvent = (DEEvent)_eventQueue.get();
+                    currentTime = currentEvent.timeStamp();
+                } else {
+                    // If synchronized to the real time.
+                    synchronized(_eventQueue) {
+                        while (true) {
+                            currentEvent = (DEEvent)_eventQueue.get();
+                            currentTime = currentEvent.timeStamp();
+                            long elapsedTime = System.currentTimeMillis()
+                                - _realStartTime;
+                            // NOTE: We assume that the elapsed time can be
+                            // safely cast to a double.  This means that
+                            // the DE domain has an upper limit on running
+                            // time of Double.MAX_VALUE milliseconds. 
+                            // NOTE: When synchronized to real time, time
+                            // resolution is millisecond, which is different
+                            // from the assumption that the smallest
+                            // time interval between any two events is the
+                            // minimum double value.
+                            double elapsedTimeInSeconds =
+                                ((double)elapsedTime)/1000.0;
+                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
+                                break;
+                            }
+                            long timeToWait = (long)(currentTime.subtract(
+                                elapsedTimeInSeconds).getDoubleValue() * 1000.0);
+                            if (timeToWait > 0) {
+                                if (_debugging) {
+                                    _debug("Waiting for real time to pass: "
+                                            + timeToWait);
+                                }
+                                //synchronized(_eventQueue) {
+                                try {
+                                    _eventQueue.wait(timeToWait);
+                                } catch (InterruptedException ex) {
+                                    // Continue executing.
+                                }
+                                //}
+                            }
+                        } // while
+                    } // sync
+                }
+
+                // Consume the event from the queue.  The event must be
+                // obtained here, since a new event could have been enqueued
+                // into the queue while the queue was waiting.
+                // FIXME: If the above situation happens, will it be a bug?
+                // I suspect it will be extremely difficult to fully understand
+                // the consequences. 
+                synchronized(_eventQueue) {
+                    currentEvent = (DEEvent) _eventQueue.take();
+                    currentTime = currentEvent.timeStamp();
+                    actorToFire = currentEvent.actor();
+
+                    // Deal with a fireAtCurrentTime event.
+                    if (currentTime.equals(Time.NEGATIVE_INFINITY)) {
+                        currentTime = getModelTime();
+                    }
+
+                    // NOTE: The _enqueEvent method discard the events 
+                    // for disabled actors.
+                    if (_disabledActors != null &&
+                            _disabledActors.contains(actorToFire)) {
+                        // This actor has requested not to be fired again.
+                        if (_debugging) _debug("Skipping diabled actor: ",
+                                ((Nameable)actorToFire).getFullName());
+                        actorToFire = null;
+                        // start a new iteration of the loop: 
+                        // LOOPLABEL::GetNextEvent
+                        continue;
+                    }
+
+                    // Advance current time to event time.
+                    try {
+                        setModelTime(currentTime);
+                    } catch (IllegalActionException ex) {
+                        // Thrown if time moves backwards.
+                        throw new InternalErrorException(this, ex, null);
+                    }
+                }
+
+                _microstep = currentEvent.microstep();
+
+                // Exceeding stop time means the current time is strictly 
+                // bigger than the model stop time. 
+                if (currentTime.compareTo(getModelStopTime()) > 0) {
+                    if (_debugging) {
+                        _debug("Current time has passed the stop time.");
+                    }
+                    _exceedStopTime = true;
+                    return null;
+                }
+
+                // Transfer the event to the receiver and keep track
+                // of which receiver is filled.
+                DEReceiver receiver = (DEReceiver) currentEvent.receiver();
+
+                // If the receiver is null, then it's a 'pure event', 
+                // and there's no need to put events into that receiver.
+                if (receiver != null) {
+                    // Transfer the event to the receiver.
+                    if (_debugging) 
+                        _debug(getName(), " puts trigger event to",
+                            receiver.getContainer().getFullName());
+                    receiver._triggerEvent(currentEvent.token());
+                }
+            } else {
+                
+                // Already found an event and the actor to reacts to it.
+                // Check whether the newly found event has the same tag.
+                // If so, the destination actor should be the same, but check 
+                // anyway.
+
+                // NOTE: Simultaneous events are handled at the same
+                // iteration, which is one the key differences from the
+                // DEEDirector.
+                
+                // NOTE: A queue event to an actor may not have the 
+                // same depth of that actor because the dedicated depth 
+                // calculation process. When dequeuing events, 
+                // this difference has to be considered.
+                  
+                // NOTE: The above assumption will not always hold for 
+                // non-strict actors. In which case, we need to use the 
+                // DEEDirector.
+                boolean isPureEvent = (nextEvent.receiver() == null) 
+                    || (currentEvent.receiver() == null);
+                boolean theSameActor = nextEvent.actor().equals(
+                    currentEvent.actor());
+                
+                // The three conditions of the following predicate are:
+                // 1. A pure event that requests to fire the actor just fired
+                //      again 'as soon as possible'.
+                // 2. Two token events that go to same port of the same actor.
+                // 3. A pure event and a token event that go to the actor.
+                if (nextEvent.timeStamp().equals(Time.NEGATIVE_INFINITY) ||
+                     nextEvent.hasTheSameTagAndDepthAs(currentEvent) ||
+                     (nextEvent.hasTheSameTagAs(currentEvent) && isPureEvent 
+                             && theSameActor)){
+
+                    // Consume the event from the queue.
+                    _eventQueue.take();
+
+                    // Transfer the event into the receiver.
+                    DEReceiver receiver = (DEReceiver) nextEvent.receiver();
+                    // If receiver is null, then it's a 'pure event' and
+                    // there's no need to put event into receiver.
+                    if (receiver != null) {
+                        // Transfer the event to the receiver.
+                        receiver._triggerEvent(nextEvent.token());
+                    }
+                } else {
+                    // Next event has a future tag or different destination.
+                    break;
+                }
+            }
+        }// close the loop: LOOPLABEL::GetNextEvent
+        
+        // Note that the actor to be fired can be null.
+        return actorToFire;
     }
 
     /** Override the default Director implementation, because in DE

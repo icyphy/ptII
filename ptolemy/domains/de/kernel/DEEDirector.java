@@ -129,6 +129,213 @@ public class DEEDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+
+    /** Put a pure event into the event queue with the specified time stamp.
+     *  A "pure event" is one with no token, used to request
+     *  a firing of the specified actor.
+     *  Note that the actor may have no new data at its input ports
+     *  when it is fired.
+     *  The depth for the queued event is equal to the depth of the actor.
+     *  A smaller depth corresponds to a higher priority.
+     *  The microstep for the queued event is equal to zero,
+     *  unless the time is equal to the current time.
+     *  If it is, then the event is queued with the current microstep
+     *  plus one.  If there is no event queue, then this method does
+     *  nothing.
+     *
+     *  @param actor The destination actor.
+     *  @param time The time stamp of the "pure event".
+     *  @exception IllegalActionException If the time argument is in the past.
+     */
+    protected void _enqueueEvent(Actor actor, Time time)
+            throws IllegalActionException {
+        if (_eventQueue == null) return;
+        int microstep = 0;
+        if (time.compareTo(getModelTime()) == 0) {
+            microstep = _microstep + 1;
+        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
+                time.compareTo(getModelTime()) < 0) {
+            throw new IllegalActionException((Nameable)actor,
+                    "Attempt to queue an event in the past:"
+                    + " Current time is " + getModelTime()
+                    + " while event time is " + time);
+        }
+        // FIXME: what depth for this pure event?
+        // If the actor has different depths because of
+        // multiple inputs?
+
+        //int depth = _getDepth(actor);
+        int depth = 0;
+        
+//        Iterator outputs = actor.outputPortList().iterator();
+//        while (outputs.hasNext()) {
+//            IOPort outPort = (IOPort) outputs.next();
+//            Receiver[][] receivers = outPort.getRemoteReceivers();
+//            for (int i = 0; i < receivers.length; i++) {
+//                // FIXME: For ParameterPort, it is possible that
+//                // the downstream receivers are null. It is a
+//                // unresolved issue about the semantics of Parameter
+//                // Port considering the lazy evaluation of variables.
+//                if (receivers[i] != null) {
+//                    for (int j = 0; j < receivers[i].length; j++) {
+//                        IOPort ioPort =
+//                            receivers[i][j].getContainer();
+//                        Actor successor = (Actor) ioPort.getContainer();
+//                        int successorDepth = _getDepth(successor);
+//                        if (successorDepth < depth) {
+//                            depth = successorDepth;
+//                        }
+//                    }
+//                }
+//            }            
+//        }
+
+        if (_debugging) _debug("FIXME: possible issues may arise here. "
+                + "enqueue a pure event: " 
+                + ((NamedObj)actor).getName()
+                + "time = " + time + " microstep = " + microstep + " depth = "
+                + depth);
+        _eventQueue.put(new DEEvent(actor, time, microstep, depth));
+    }
+
+    /** Put an event into the event queue with the specified destination
+     *  receiver, token, and time stamp. The depth of the event is the
+     *  depth of the actor that has the receiver.
+     *  A smaller depth corresponds
+     *  to a higher priority.  The microstep is always equal to zero,
+     *  unless the time argument is equal to the current time, in which
+     *  case, the microstep is equal to the current microstep (determined
+     *  by the last dequeue, or zero if there has been none). If there is
+     *  no event queue, then this method does nothing.
+     *
+     *  @param receiver The destination receiver.
+     *  @param token The token destined for that receiver.
+     *  @param time The time stamp of the event.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    protected void _enqueueEvent(DEReceiver receiver, Token token,
+            Time time) throws IllegalActionException {
+
+        if (_eventQueue == null) return;
+        int microstep = 0;
+
+        if (time.compareTo(getModelTime()) == 0) {
+            microstep = _microstep;
+        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
+                time.compareTo(getModelTime()) < 0) {
+            Nameable destination = receiver.getContainer();
+            throw new IllegalActionException(destination,
+                    "Attempt to queue an event in the past: "
+                    + " Current time is " + getModelTime()
+                    + " while event time is " + time);
+        }
+
+        IOPort destination = (IOPort)(receiver.getContainer());
+        int depth = _getDepth(destination);
+        if (_debugging) _debug("enqueue event: to",
+                receiver.getContainer().getFullName()
+                + " ("+token.toString()+") ",
+                "time = "+ time + " microstep = "+ microstep + " depth = "
+                + depth);
+        _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
+    }
+
+    /** Put an event into the event queue with the specified destination
+     *  receiver, and token.
+     *  The time stamp of the event is the
+     *  current time, but the microstep is one larger than the current
+     *  microstep. The depth is the depth of the actor.
+     *  This method is used by actors that declare that they
+     *  introduce delay, but where the value of the delay is zero.
+     *  If there is no event queue, then this method does nothing.
+     *
+     *  @param receiver The destination receiver.
+     *  @param token The token destined for that receiver.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    protected void _enqueueEvent(DEReceiver receiver, Token token)
+            throws IllegalActionException {
+
+        if (_eventQueue == null) return;
+
+        IOPort destination = (IOPort) receiver.getContainer();
+        int depth = _getDepth(destination);
+
+        if (_debugging) _debug("enqueue event: to",
+                receiver.getContainer().getFullName() + " ("+token.toString()+") ",
+                "time = "+ getModelTime() + " microstep = "+ (_microstep + 1) + " depth = "
+                + depth);
+        _eventQueue.put(new DEEvent(receiver, token,
+        getModelTime(), _microstep + 1, depth));
+    }
+
+    /** Return the depth of an ioPort.
+     *  @exception IllegalActionException If the actor is not accessible.
+     */
+    protected int _getDepth(IOPort ioPort) throws IllegalActionException {
+        if (_sortValid != workspace().getVersion()) {
+            _computeDepth();
+        }
+        Integer depth = (Integer)_portToDepth.get(ioPort);
+        if (depth != null) {
+            return depth.intValue();
+        }
+        throw new IllegalActionException("Attempt to get depth ioPort " +
+                ((NamedObj)ioPort).getName() + " that was not sorted.");
+    }
+
+    // Construct a directed graph with the nodes representing ioPorts and
+    // directed edges representing dependencies.  The directed graph
+    // is returned.
+    private DirectedAcyclicGraph _constructDirectedGraph()
+            throws IllegalActionException {
+        // Clear the graph
+        DirectedAcyclicGraph portsGraph = new DirectedAcyclicGraph();
+
+        Nameable container = getContainer();
+        // If the container is not composite actor,
+        // there are no actors.
+        if (!(container instanceof CompositeActor)) return portsGraph;
+        CompositeActor castContainer = (CompositeActor)container;
+
+        // Get the functionDependency attribute of the container of this
+        // director. If there is no such attribute, construct one.
+        FunctionDependencyOfCompositeActor functionDependency = 
+            (FunctionDependencyOfCompositeActor) 
+            castContainer.getFunctionDependency();
+
+        //        Since the functionDependency is synchronized to workspace,
+        //        there is no need to invalidate functionDependency here.
+        //        // The functionDependency attribute is used to construct
+        //        // the schedule. If the schedule needs recalculation,
+        //        // the functionDependency also needs recalculation.
+        //        functionDependency.invalidate();
+
+        // FIXME: The following may be a very costly test.
+        // -- from the comments of former implementation.
+        // If the port based data flow graph contains directed
+        // loops, the model is invalid. An IllegalActionException
+        // is thrown with the names of the actors in the loop.
+        Object[] cycleNodes = functionDependency.getCycleNodes();
+        if (cycleNodes.length != 0) {
+            StringBuffer names = new StringBuffer();
+            for (int i = 0; i < cycleNodes.length; i++) {
+                if (cycleNodes[i] instanceof Nameable) {
+                    if (i > 0) names.append(", ");
+                    names.append(((Nameable)cycleNodes[i])
+                            .getContainer().getFullName());
+                }
+            }
+            throw new IllegalActionException(this.getContainer(),
+                    "Found zero delay loop including: " + names.toString());
+        }
+
+        portsGraph = functionDependency.getDetailedDependencyGraph().
+            toDirectedAcyclicGraph();
+
+        return portsGraph;
+    }
+
     /** Dequeue the events from the event queue that have the smallest
      *  time stamp and depth. Advance the model time to their
      *  time stamp, and mark the destination actor for firing.
@@ -144,7 +351,7 @@ public class DEEDirector extends DEDirector {
      *  current event.
      *  @return The next actor to fire.
      */
-    protected Actor _dequeueEvents() {
+    protected Actor _getNextActorToFire() {
         Actor actorToFire = null;
         DEEvent currentEvent = null, nextEvent = null;
 
@@ -352,213 +559,6 @@ public class DEEDirector extends DEDirector {
             }
         } // Close while () loop
         return actorToFire;
-    }
-
-
-    /** Put a pure event into the event queue with the specified time stamp.
-     *  A "pure event" is one with no token, used to request
-     *  a firing of the specified actor.
-     *  Note that the actor may have no new data at its input ports
-     *  when it is fired.
-     *  The depth for the queued event is equal to the depth of the actor.
-     *  A smaller depth corresponds to a higher priority.
-     *  The microstep for the queued event is equal to zero,
-     *  unless the time is equal to the current time.
-     *  If it is, then the event is queued with the current microstep
-     *  plus one.  If there is no event queue, then this method does
-     *  nothing.
-     *
-     *  @param actor The destination actor.
-     *  @param time The time stamp of the "pure event".
-     *  @exception IllegalActionException If the time argument is in the past.
-     */
-    protected void _enqueueEvent(Actor actor, Time time)
-            throws IllegalActionException {
-        if (_eventQueue == null) return;
-        int microstep = 0;
-        if (time.compareTo(getModelTime()) == 0) {
-            microstep = _microstep + 1;
-        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
-                time.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException((Nameable)actor,
-                    "Attempt to queue an event in the past:"
-                    + " Current time is " + getModelTime()
-                    + " while event time is " + time);
-        }
-        // FIXME: what depth for this pure event?
-        // If the actor has different depths because of
-        // multiple inputs?
-
-        //int depth = _getDepth(actor);
-        int depth = 0;
-        
-//        Iterator outputs = actor.outputPortList().iterator();
-//        while (outputs.hasNext()) {
-//            IOPort outPort = (IOPort) outputs.next();
-//            Receiver[][] receivers = outPort.getRemoteReceivers();
-//            for (int i = 0; i < receivers.length; i++) {
-//                // FIXME: For ParameterPort, it is possible that
-//                // the downstream receivers are null. It is a
-//                // unresolved issue about the semantics of Parameter
-//                // Port considering the lazy evaluation of variables.
-//                if (receivers[i] != null) {
-//                    for (int j = 0; j < receivers[i].length; j++) {
-//                        IOPort ioPort =
-//                            receivers[i][j].getContainer();
-//                        Actor successor = (Actor) ioPort.getContainer();
-//                        int successorDepth = _getDepth(successor);
-//                        if (successorDepth < depth) {
-//                            depth = successorDepth;
-//                        }
-//                    }
-//                }
-//            }            
-//        }
-
-        if (_debugging) _debug("FIXME: possible issues may arise here. "
-                + "enqueue a pure event: " 
-                + ((NamedObj)actor).getName()
-                + "time = " + time + " microstep = " + microstep + " depth = "
-                + depth);
-        _eventQueue.put(new DEEvent(actor, time, microstep, depth));
-    }
-
-    /** Put an event into the event queue with the specified destination
-     *  receiver, token, and time stamp. The depth of the event is the
-     *  depth of the actor that has the receiver.
-     *  A smaller depth corresponds
-     *  to a higher priority.  The microstep is always equal to zero,
-     *  unless the time argument is equal to the current time, in which
-     *  case, the microstep is equal to the current microstep (determined
-     *  by the last dequeue, or zero if there has been none). If there is
-     *  no event queue, then this method does nothing.
-     *
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @param time The time stamp of the event.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    protected void _enqueueEvent(DEReceiver receiver, Token token,
-            Time time) throws IllegalActionException {
-
-        if (_eventQueue == null) return;
-        int microstep = 0;
-
-        if (time.compareTo(getModelTime()) == 0) {
-            microstep = _microstep;
-        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
-                time.compareTo(getModelTime()) < 0) {
-            Nameable destination = receiver.getContainer();
-            throw new IllegalActionException(destination,
-                    "Attempt to queue an event in the past: "
-                    + " Current time is " + getModelTime()
-                    + " while event time is " + time);
-        }
-
-        IOPort destination = (IOPort)(receiver.getContainer());
-        int depth = _getDepth(destination);
-        if (_debugging) _debug("enqueue event: to",
-                receiver.getContainer().getFullName()
-                + " ("+token.toString()+") ",
-                "time = "+ time + " microstep = "+ microstep + " depth = "
-                + depth);
-        _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
-    }
-
-    /** Put an event into the event queue with the specified destination
-     *  receiver, and token.
-     *  The time stamp of the event is the
-     *  current time, but the microstep is one larger than the current
-     *  microstep. The depth is the depth of the actor.
-     *  This method is used by actors that declare that they
-     *  introduce delay, but where the value of the delay is zero.
-     *  If there is no event queue, then this method does nothing.
-     *
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    protected void _enqueueEvent(DEReceiver receiver, Token token)
-            throws IllegalActionException {
-
-        if (_eventQueue == null) return;
-
-        IOPort destination = (IOPort) receiver.getContainer();
-        int depth = _getDepth(destination);
-
-        if (_debugging) _debug("enqueue event: to",
-                receiver.getContainer().getFullName() + " ("+token.toString()+") ",
-                "time = "+ getModelTime() + " microstep = "+ (_microstep + 1) + " depth = "
-                + depth);
-        _eventQueue.put(new DEEvent(receiver, token,
-        getModelTime(), _microstep + 1, depth));
-    }
-
-    /** Return the depth of an ioPort.
-     *  @exception IllegalActionException If the actor is not accessible.
-     */
-    protected int _getDepth(IOPort ioPort) throws IllegalActionException {
-        if (_sortValid != workspace().getVersion()) {
-            _computeDepth();
-        }
-        Integer depth = (Integer)_portToDepth.get(ioPort);
-        if (depth != null) {
-            return depth.intValue();
-        }
-        throw new IllegalActionException("Attempt to get depth ioPort " +
-                ((NamedObj)ioPort).getName() + " that was not sorted.");
-    }
-
-    // Construct a directed graph with the nodes representing ioPorts and
-    // directed edges representing dependencies.  The directed graph
-    // is returned.
-    private DirectedAcyclicGraph _constructDirectedGraph()
-            throws IllegalActionException {
-        // Clear the graph
-        DirectedAcyclicGraph portsGraph = new DirectedAcyclicGraph();
-
-        Nameable container = getContainer();
-        // If the container is not composite actor,
-        // there are no actors.
-        if (!(container instanceof CompositeActor)) return portsGraph;
-        CompositeActor castContainer = (CompositeActor)container;
-
-        // Get the functionDependency attribute of the container of this
-        // director. If there is no such attribute, construct one.
-        FunctionDependencyOfCompositeActor functionDependency = 
-            (FunctionDependencyOfCompositeActor) 
-            castContainer.getFunctionDependency();
-
-        //        Since the functionDependency is synchronized to workspace,
-        //        there is no need to invalidate functionDependency here.
-        //        // The functionDependency attribute is used to construct
-        //        // the schedule. If the schedule needs recalculation,
-        //        // the functionDependency also needs recalculation.
-        //        functionDependency.invalidate();
-
-        // FIXME: The following may be a very costly test.
-        // -- from the comments of former implementation.
-        // If the port based data flow graph contains directed
-        // loops, the model is invalid. An IllegalActionException
-        // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = functionDependency.getCycleNodes();
-        if (cycleNodes.length != 0) {
-            StringBuffer names = new StringBuffer();
-            for (int i = 0; i < cycleNodes.length; i++) {
-                if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) names.append(", ");
-                    names.append(((Nameable)cycleNodes[i])
-                            .getContainer().getFullName());
-                }
-            }
-            throw new IllegalActionException(this.getContainer(),
-                    "Found zero delay loop including: " + names.toString());
-        }
-
-        portsGraph = functionDependency.getDetailedDependencyGraph().
-            toDirectedAcyclicGraph();
-
-        return portsGraph;
     }
 
     // Perform topological sort on the directed graph and use the result
