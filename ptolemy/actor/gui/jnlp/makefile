@@ -61,7 +61,7 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = $(OTHER_JARS)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
