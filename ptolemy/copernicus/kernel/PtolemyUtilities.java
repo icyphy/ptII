@@ -1234,6 +1234,7 @@ public class PtolemyUtilities {
 
     public static SootClass runtimeExceptionClass;
     public static SootMethod runtimeExceptionConstructor;
+    public static SootMethod runtimeExceptionStringConstructor;
 
     // Soot class representing the ptolemy.data.ScalarToken class.
     public static SootClass scalarTokenClass;
@@ -1650,6 +1651,8 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("java.lang.Exception");
         runtimeExceptionConstructor =
             runtimeExceptionClass.getMethod("void <init>()");
+        runtimeExceptionStringConstructor =
+            runtimeExceptionClass.getMethod("void <init>(java.lang.String)");
 
         managerClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.Manager");
