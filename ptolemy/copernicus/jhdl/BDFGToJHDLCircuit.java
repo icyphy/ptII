@@ -56,36 +56,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.Node;
 import ptolemy.graph.Edge;
 
-import soot.jimple.EqExpr;
-import soot.jimple.GeExpr;
-import soot.jimple.GtExpr;
-import soot.jimple.LeExpr;
-import soot.jimple.LtExpr;
-import soot.jimple.NeExpr;
-import soot.jimple.ConditionExpr;
-import soot.jimple.ReturnStmt;
-import soot.jimple.ParameterRef;
-import soot.jimple.BinopExpr;
-import soot.jimple.UnopExpr;
-import soot.jimple.AddExpr;
-import soot.jimple.SubExpr;
-import soot.jimple.AndExpr;
-import soot.jimple.OrExpr;
-import soot.jimple.XorExpr;
-import soot.jimple.ShlExpr;
-import soot.jimple.ShrExpr;
-import soot.jimple.UshrExpr;
-import soot.jimple.RemExpr;
-import soot.jimple.DivExpr;
-import soot.jimple.MulExpr;
-import soot.toolkits.graph.Block;
-import soot.Value;
-import soot.Type;
-import soot.IntType;
-import soot.BooleanType;
-import soot.Local;
-import soot.jimple.Constant;
-import soot.jimple.IntConstant;
+import soot.jimple.*;
+import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircuitCreator

@@ -1,4 +1,4 @@
-/* 
+/* A directed acyclic graph representing the control flow of a method.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.

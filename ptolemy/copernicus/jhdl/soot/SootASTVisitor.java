@@ -1,4 +1,4 @@
-/*
+/* A Soot abstract syntax tree visitor.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -36,9 +36,21 @@ import ptolemy.copernicus.jhdl.util.*;
 
 import java.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// SootASTVisitor
 /**
+This class traverses the syntax tree of a Soot Jimple Block. This class
+will iterate over all Stmt Units within the Block and traverse the
+syntax of each Stmt. A unique method is available for each syntatic
+unit within the syntax tree. Leaf methods return a null to indicate
+that the corresponding syntax object has not been processed.
+
+Custom visitors of this class should extend the appropriate leaf
+methods and return a non-null object to indicate that the syntax
+object has been properly processed.
+
 @author Mike Wirthlin
-@version $$
+@version $Id$
 @since Ptolemy II 2.0
 */
 

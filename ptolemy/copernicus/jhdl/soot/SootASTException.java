@@ -1,4 +1,4 @@
-/* 
+/* A Soot abstract syntax tree exception.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -34,8 +34,9 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// SootASTException
 /**
- * 
- *
+This class is a custom Exception class for reporting errors within the
+Soot abstract syntax tree. This exception is generated in the 
+SootASTVisitor class.
 
 @author Mike Wirthlin
 @version $Id$

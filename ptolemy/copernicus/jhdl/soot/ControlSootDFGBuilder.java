@@ -106,27 +106,6 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
 	//return null;
     }
 
-    /*
-    public static List getBlocks(String args[]) {
-
-	soot.SootMethod testMethod = getSootMethod(args);
-
-	try {
-	    ConditionalControlCompactor.compact(testMethod);
-	    BooleanNotCompactor.compact(testMethod);
-	} catch(IllegalActionException e) {
-	    e.printStackTrace();
-	    System.exit(1);
-	}
-
-	soot.Body body = testMethod.retrieveActiveBody();
-	
-	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty.writeDotFile("cfg",bbgraph);
-	return bbgraph.getBlocks();
-    }
-    */
-
     public static SootBlockDirectedGraph[] getGraphs(String args[]) {
 	//SootASTVisitor.DEBUG = true;
 	Block blocks[] = getBlocks(args);
