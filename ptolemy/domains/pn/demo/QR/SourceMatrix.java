@@ -38,7 +38,7 @@ import java.lang.*;
 /**
 
 This class defines a large matrix containing 500 real measured data
-from an array of 16 antenna's. This matrix is used by the QR demo. 
+from an array of 16 antenna's. This matrix is used by the QR demo.
 Defining the Matrix in this way makes loading the matrix fast and
 allows for flexible interaction, as required by the QR demo that is
 parameterized.

@@ -47,14 +47,14 @@ public class ArrayIndex {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /** Construct an ArrayIndex object. */
     public ArrayIndex() {
 	super();
     }
 
     /** Create a key for an 1 dimensional index reference. This key is
-        used to store and retrieve values in the associate array. 
+        used to store and retrieve values in the associate array.
         @param in_1 an index value.
         @return a key representing the index vector.
     */
@@ -64,7 +64,7 @@ public class ArrayIndex {
     }
 
     /** Create a key for an 2 dimensional index reference. This key is
-        used to store and retrieve values in the associate array. 
+        used to store and retrieve values in the associate array.
         @param in_1 an index value.
         @param in_2 an index value.
         @return a key representing the index vector.
@@ -75,7 +75,7 @@ public class ArrayIndex {
     }
 
     /** Create a key for an 3 dimensional index reference. This key is
-        used to store and retrieve values in the associate array. 
+        used to store and retrieve values in the associate array.
         @param in_1 an index value.
         @param in_2 an index value.
         @param in_3 an index value.
@@ -87,7 +87,7 @@ public class ArrayIndex {
     }
 
     /** Create a key for an 4 dimensional index reference. This key is
-        used to store and retrieve values in the associate array. 
+        used to store and retrieve values in the associate array.
         @param in_1 an index value.
         @param in_2 an index value.
         @param in_3 an index value.
@@ -101,7 +101,7 @@ public class ArrayIndex {
     }
 
     /** Create a key for an 5 dimensional index reference. This key is
-        used to store and retrieve values in the associate array. 
+        used to store and retrieve values in the associate array.
         @param in_1 an index value.
         @param in_2 an index value.
         @param in_3 an index value.
@@ -114,9 +114,9 @@ public class ArrayIndex {
 	    + "," + i_5 + ")";
 	return key;
     }
-    
+
     /** Create a key for an 6 dimensional index reference. This key is
-        used to store and retrieve values in the associate array. 
+        used to store and retrieve values in the associate array.
         @param in_1 an index value.
         @param in_2 an index value.
         @param in_3 an index value.
@@ -135,7 +135,7 @@ public class ArrayIndex {
     /** Retrieve a value from the associate array using the supplied key.
         @param aKey the key.
         @return the stored value.
-        @throws Exception if value stored in the associative array does not 
+        @throws Exception if value stored in the associative array does not
         exits.
     */
     public double retrieve(String aKey ) {
@@ -146,7 +146,7 @@ public class ArrayIndex {
 	return value.doubleValue();
     }
 
-    /** Store a data value at a particular location given by the key string. 
+    /** Store a data value at a particular location given by the key string.
         @param aValue the value.
         @param aKey the key.
     */
@@ -200,5 +200,5 @@ public class ArrayIndex {
     /** Associative Array that is used to store and retrieve data. */
     private Map _map = new HashMap();
 
-    
+
 }
