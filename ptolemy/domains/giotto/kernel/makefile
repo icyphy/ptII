@@ -63,6 +63,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'GiottoCodeGenerator$$GiottoEditorFactory.class' \
 	'GenerateVisitor$$ClassField.class' \
 	'GenerateVisitor$$MethodSignature.class' \
 	'GiottoScheduler$$1.class' \
