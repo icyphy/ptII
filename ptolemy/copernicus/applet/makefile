@@ -125,7 +125,7 @@ compileDemo: $(JCLASS)
 		-codeGenerator   "applet" \
 		-compile	 true \
 		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
-		-modelPath       "$(MODELPATH)" \
+		-modelPath       $(MODELPATH) \
 		-run		 false \
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-targetPackage   "$(TARGETPACKAGE)" \
