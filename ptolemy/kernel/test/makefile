@@ -60,6 +60,8 @@ JSIMPLE_TESTS = \
 	NamedObj.tcl \
 	NamedObjList.tcl \
 	ParamList.tcl \
+	Port.tcl \
+	PortList.tcl \
 	Relation.tcl
 
 # Graphical Java tests that use Tcl.
