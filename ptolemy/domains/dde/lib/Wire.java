@@ -30,14 +30,19 @@
 
 package ptolemy.domains.dde.lib;
 
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.dde.kernel.DDEReceiver;
+import ptolemy.domains.dde.kernel.DDEThread;
+import ptolemy.domains.dde.kernel.TimeKeeper;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Wire
@@ -55,7 +60,7 @@ public class Wire extends TypedAtomicActor {
 
     /** Construct a Wire actor with the specified container
      *  and name.
-     * @param cont The TypedCompositeActor that contains this actor.
+     * @param container The TypedCompositeActor that contains this actor.
      * @param name The name of this actor.
      * @exception NameDuplicationException If the name of this actor
      *  duplicates that of a actor already contained by the container
@@ -63,9 +68,9 @@ public class Wire extends TypedAtomicActor {
      * @exception IllegalActionException If there are errors in
      *  instantiating and specifying the type of this actor's ports.
      */
-    public Wire(CompositeEntity cont, String name)
+    public Wire(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
+        super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
@@ -96,24 +101,26 @@ public class Wire extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
 	Token token = null;
-	Receiver[][] inRcvrs = input.getReceivers();
-	if( inRcvrs.length == 0 ) {
+	Receiver[][] inputReceivers = input.getReceivers();
+	if( inputReceivers.length == 0 ) {
 	    _continueIterations = false;
 	}
-	for( int i = 0; i < inRcvrs.length; i++ ) {
-	    for( int j = 0; j < inRcvrs[i].length; j++ ) {
-		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
-		if( inRcvr.hasToken() ) {
-		    token = inRcvr.get();
-		    Receiver[][] outRcvrs = output.getRemoteReceivers();
-		    for( int k = 0; k < outRcvrs.length; k++ ) {
-			for( int l = 0; l < outRcvrs[k].length; l++ ) {
-			    DDEReceiver outRcvr = (DDEReceiver)outRcvrs[k][l];
-			    Thread thr = Thread.currentThread();
-			    if( thr instanceof DDEThread ) {
-				TimeKeeper kpr =
-                                    ((DDEThread)thr).getTimeKeeper();
-			        outRcvr.put(token, kpr.getCurrentTime());
+	for( int i = 0; i < inputReceivers.length; i++ ) {
+	    for( int j = 0; j < inputReceivers[i].length; j++ ) {
+		DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
+		if( inputReceiver.hasToken() ) {
+		    token = inputReceiver.get();
+		    Receiver[][] outReceivers = output.getRemoteReceivers();
+		    for( int k = 0; k < outReceivers.length; k++ ) {
+			for( int l = 0; l < outReceivers[k].length; l++ ) {
+			    DDEReceiver outReceiver =
+                                (DDEReceiver)outReceivers[k][l];
+			    Thread thread = Thread.currentThread();
+			    if( thread instanceof DDEThread ) {
+				TimeKeeper timeKeeper =
+                                    ((DDEThread)thread).getTimeKeeper();
+			        outReceiver.put(token,
+                                        timeKeeper.getCurrentTime());
 			    }
 			}
 		    }

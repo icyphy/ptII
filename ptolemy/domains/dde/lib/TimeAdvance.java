@@ -30,16 +30,18 @@
 
 package ptolemy.domains.dde.lib;
 
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.dde.kernel.DDEActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeAdvance
@@ -60,7 +62,7 @@ public class TimeAdvance extends DDEActor {
 
     /** Construct a TimeAdvance actor with the specified container
      *  and name.
-     * @param cont The TypedCompositeActor that contains this actor.
+     * @param container The TypedCompositeActor that contains this actor.
      * @param name The name of this actor.
      * @exception NameDuplicationException If the name of this actor
      *  duplicates that of a actor already contained by the container
@@ -68,9 +70,9 @@ public class TimeAdvance extends DDEActor {
      * @exception IllegalActionException If there are errors in
      *  instantiating and specifying the type of this actor's ports.
      */
-    public TimeAdvance(CompositeEntity cont, String name)
+    public TimeAdvance(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
+        super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
@@ -110,8 +112,8 @@ public class TimeAdvance extends DDEActor {
      */
     public void fire() throws IllegalActionException {
 	DoubleToken token = ((DoubleToken)outputValue.getToken());
-	Receiver[][] inRcvrs = input.getReceivers();
-	if( inRcvrs.length == 0 ) {
+	Receiver[][] inputReceivers = input.getReceivers();
+	if( inputReceivers.length == 0 ) {
 	    _continueIterations = false;
 	}
 

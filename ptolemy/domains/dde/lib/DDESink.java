@@ -30,15 +30,19 @@
 
 package ptolemy.domains.dde.lib;
 
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.dde.kernel.DDEReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// DDESink
@@ -58,12 +62,12 @@ value 'k', then this actor will consume k tokens.
 public class DDESink extends TypedAtomicActor {
 
     /** Construct a DDESink with the specified container and name.
-     * @params cont The container of this actor.
-     * @params name The name of this actor.
+     * @param container The container of this actor.
+     * @param name The name of this actor.
      */
-    public DDESink(CompositeEntity cont, String name)
+    public DDESink(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
+        super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
@@ -99,23 +103,23 @@ public class DDESink extends TypedAtomicActor {
      *  accessing the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
-        int val = ((IntToken)numTokens.getToken()).intValue();
+        int value = ((IntToken)numTokens.getToken()).intValue();
 
-        if( val >= 0 ) {
-            _cnt++;
-            if( _cnt > val ) {
+        if( value >= 0 ) {
+            _count++;
+            if( _count > value ) {
                 _continue = false;
                 return;
             }
         }
-	Receiver[][] rcvrs = input.getReceivers();
-	for( int i = 0; i < rcvrs.length; i++ ) {
-	    for( int j = 0; j < rcvrs[i].length; j++ ) {
-		DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+	Receiver[][] receivers = input.getReceivers();
+	for( int i = 0; i < receivers.length; i++ ) {
+	    for( int j = 0; j < receivers[i].length; j++ ) {
+		DDEReceiver receiver = (DDEReceiver)receivers[i][j];
                 if( !_continue ) {
                     return;
-                } else if( rcvr.hasToken() ) {
-		    rcvr.get();
+                } else if( receiver.hasToken() ) {
+		    receiver.get();
 		}
             }
         }
@@ -124,8 +128,7 @@ public class DDESink extends TypedAtomicActor {
     /** Return true if this actor is enabled to proceed with additional
      *  iterations. Return false otherwise.
      * @return True if continued execution is enabled; false otherwise.
-     * @exception IllegalActionException Is not thrown but may be thrown
-     *  in derived classes.
+     * @exception IllegalActionException Not thrown in this base class.
      * @see #fire
      */
     public boolean postfire() throws IllegalActionException {
@@ -135,7 +138,7 @@ public class DDESink extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private int _cnt = 0;
+    private int _count = 0;
     private boolean _continue = true;
 
 }
