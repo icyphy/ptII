@@ -1,4 +1,4 @@
-/* This creates a Universe for PNDomain
+/* This creates an example implementing Sieve of Erasthenes
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -30,136 +30,37 @@ import pt.kernel.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// PNUniverse
+//// PNPrimeExample
 /** 
 This is currently a Universe containing some PNStars. This might not support
 hierarchy currently.
 @author  Mudit Goel
 @version $Id$
 */
-public class PNPrimeUniverse extends CompositeEntity {
-    /** Constructor
-     */	
-    public PNPrimeUniverse() {
-        super();
-    }
+public class PNPrimeExample {
 
-    /** Constructor
-     * @param workspace is the container of this Universe
-     */
-    public PNPrimeUniverse(Workspace workspace) {
-        super(workspace);
-    }
- 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
-
-    /** This sets the mode of execution of the current Universe in the 
-     *  following ways:
-     * @param mode This indicates which of the three supported modes of PN 
-     *  is to be used. The modes are :
-     *  mode = 0 : Bounded memory, if possible by Parks' method
-     *  mode = 1 : Unbounded memory. Increase queue capacity whenever needed
-     *                  to accomodate a write.
-     *  otherwise: Fixed queue capacities. Never increased.
-     */ 
-    public void setMode(int mode) {
-        _mode = mode;
-    }
-
-    /** Set the maximum number of cycles for execution
-     * @param count is the number of cycles
-     */
-    public void setNoCycles(int count) {
-        _count = count;
-    }
-
-    /** This returns the executive responsible for execution of the current
-     *  Universe.
-     * @return the Executive
-     */
-    public PNExecutive executive() {
-        return _myExecutive;
-    }
-
-    /** Creating a Universe
-     * @exception IllegalActionException is thrown by methods being called
-     * @exception NameDuplicationException is thrown my methods called
-     */
-    public void setup() throws IllegalStateException,
-	    IllegalActionException, NameDuplicationException { 
-
-        _myExecutive = new PNExecutive(this, "example");
-        _myExecutive.setMode(_mode);
-        _interleave = new PNInterleave(this, "interleave");
-        _interleave.initialize();
-        _interleave.setCycles(_count);
-        _alternate = new PNAlternate(this, "alternate");
-        _alternate.initialize();
-        _redirect0 = new PNRedirect(this, "redirect0");
-        _redirect0.initialize(0);
-        _redirect1 = new PNRedirect(this, "redirect1");
-        _redirect1.initialize(1);
-
-        //FIXME: Find a neat way of specifying the queue length of input port!!
-        //FIXME: Need a nice way of doing the following.
-        //Maybe a nice method that set all star parameters and links all ports
-        _queueX = new IORelation(this, "QX");
-        PNPort port = (PNPort)_interleave.getPort("output");
-        port.link(_queueX);
-        port = (PNPort)_alternate.getPort("input");
+    public static void main(String args[]) throws 
+            IllegalStateException, IllegalActionException, 
+            NameDuplicationException {
+        PNUniverse myUniverse = new PNUniverse();
+        myUniverse.setMode(Integer.parseInt(args[0]));
+        myUniverse.setNoCycles(Integer.parseInt(args[1]));
+        PNRamp ramp = new PNRamp(myUniverse, "ramp");
+        ramp.initialize(2);
+        ramp.setCycles(Integer.parseInt(args[1]));
+        PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
+        IORelation queue = new IORelation(myUniverse, "2_queue");
+        PNPort port = (PNPort)sieve.getPort("input");
+        port.link(queue);
+        port = (PNPort)ramp.getPort("output");
         port.getQueue().setCapacity(1);
-        port.link(_queueX);
+        port.link(queue);
 
-        _queueY = new IORelation(this, "QY");
-        port = (PNPort)_redirect0.getPort("output");
-        port.link(_queueY);
-        port = (PNPort)_interleave.getPort("input1");
-        port.getQueue().setCapacity(1);
-        port.link(_queueY);        
- 
-        _queueZ = new IORelation(this, "QZ");
-        port = (PNPort)_redirect1.getPort("output");
-        port.link(_queueZ);
-        port = (PNPort)_interleave.getPort("input2");
-        port.getQueue().setCapacity(1);
-        port.link(_queueZ);
-
-        _queueT1 = new IORelation(this, "QT1");
-        port = (PNPort)_alternate.getPort("output1");
-        port.link(_queueT1);
-        port = (PNPort)_redirect0.getPort("input");
-        port.getQueue().setCapacity(1);
-        port.link(_queueT1);
-
-        _queueT2 = new IORelation(this, "QT2");
-        port = (PNPort)_alternate.getPort("output2");
-        port.link(_queueT2);
-        port = (PNPort)_redirect1.getPort("input");
-        port.getQueue().setCapacity(1);
-        port.link(_queueT2);
-
-	//FIXME: Should I use connect() rather than all the above stuff??
-
-        _myExecutive.execute();
+        //FIXME: Should I use connect() rather than all the above stuff??
+        myUniverse.execute();
+        System.out.println("Bye World\n");
         return;
     }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
- 
-    private int _mode;
-    private int _count;
-    private PNExecutive _myExecutive;
-    private PNAlternate _alternate;
-    private PNInterleave _interleave;
-    private PNRedirect _redirect0;
-    private PNRedirect _redirect1;
-    private IORelation _queueX;
-    private IORelation _queueY;
-    private IORelation _queueZ;
-    private IORelation _queueT1;
-    private IORelation _queueT2;
 }
    
 

@@ -34,7 +34,7 @@ import java.util.NoSuchElementException;
 //// PNSieve
 /** 
 @author Mudit Goel
-@version $Id$G
+@version $Id$
 */
 public class PNSieve extends PNStar {
     /** Constructor
@@ -67,10 +67,13 @@ public class PNSieve extends PNStar {
      * @exception IllegalActionException is thrown if a port with a null
      *  name is passed
      */	
-    public void initialize()
+    public void initialize(int prime)
             throws NameDuplicationException, IllegalActionException {
         _input = newInPort(this, "input");
+        _output = null;
+        _prime = prime;
         super.initialize(this);
+        System.out.println("Next Prime is "+ _prime);
     }
     
     /** Reads one Token from it's input port and writes this token to 
@@ -78,6 +81,34 @@ public class PNSieve extends PNStar {
      *  port. 
      */
     public void run() {
+        IntToken data;
+        try {
+            while(true) {
+                data = (IntToken)readFrom(_input);
+                if (data.intValue()%_prime != 0) {
+                    /* is it the next prime? */
+                    if (_output == null) {
+                        /* yes - make the sieve for it */
+                        PNSieve newSieve = new PNSieve(getContainer(), data.intValue() + "_sieve");
+                        _output = new PNOutPort(this, "output");
+                        IORelation relation = new IORelation(getContainer(),
+                                data.intValue()+"_queue");
+                        _output.link(relation);
+                        PNPort inport = newSieve.getPort("_input");
+                        inport.link(relation);
+                        newSieve.initialize(data.intValue());
+                        Thread temp = new Thread(_processGroup, star);
+                        temp.start();
+                    } 
+                    else {
+                        writeTo(_output, data);
+                    }
+                }
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Terminating "+ this.getName());
+            return;
+        }
     }
     
     //////////////////////////////////////////////////////////////////////////
@@ -87,4 +118,7 @@ public class PNSieve extends PNStar {
     private PNInPort _input;
     /* The output port */
     private PNOutPort _output;
+    private int _prime;
 }
+
+
