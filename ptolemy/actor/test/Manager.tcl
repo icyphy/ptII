@@ -265,11 +265,12 @@ test Manager-10.0 {Test execution listener} {
 } {{preinitializing
 resolving types
 initializing
+processing mutations
 executing number 1
 wrapping up
 idle
 Completed execution with 2 iterations
-Manager.run(): Elapsed Time:xxx ms
+xxx ms
 } idle}
 
 ######################################################################
@@ -306,11 +307,12 @@ test Manager-10.1 {Test execution listener with one arg} {
 } {{preinitializing
 resolving types
 initializing
+processing mutations
 executing number 1
 wrapping up
 idle
 Completed execution with 2 iterations
-Manager.run(): Elapsed Time:xxx ms
+xxx ms
 Execution error.
 This exception is testing the execution listener
 ptolemy.actor.NoRoomException: This exception is testing the execution listener
