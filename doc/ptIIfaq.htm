@@ -453,6 +453,50 @@ for the nightly test suite.
   Use this method for running models as part of cron jobs etc.
   </dl>
 
+ <p>If you want to start Vergil by hand, the answer depends on which
+version of Ptolemy II you are using.
+
+ <p>If you downloaded the source files and compiled them, then the
+only jar file that might need to be included is diva.jar.  Releases 
+<B>after</B> Ptolemy II 3.0.2 include the diva source files,
+so in theory,
+<pre>
+java -classpath "$PTII" ptolemy.vergil.VergilApplication
+</pre>
+should work.
+ <p>Under Windows with Cygwin with Ptolemy II 3.0.2 and earlier, try:
+<pre>
+java -classpath "$PTII;$PTII/lib/diva.jar" ptolemy.vergil.VergilApplication
+</pre>
+
+ <p>If you have chose the Windows Installer, then the individual
+<CODE>.class</CODE> files have been placed in jar files
+
+Vergil uses the following jar files
+	<ul>
+	<li> <CODE>./ptolemy/ptsupport.jar</CODE>
+	<li> <CODE>./ptolemy/vergil/vergil.jar</CODE>
+	<li> <CODE>./ptolemy/lib/diva.jar</CODE>
+	<li> <CODE>./ptolemy/domains/domains.jar</CODE>
+	<li> <CODE>./ptolemy/copernicus/copernicus.jar</CODE>
+	</ul>
+The directory where Ptolemy II is installed should also be in the classpath.
+
+ <p>To start Vergil by hand in when the Ptolemy II was installed from
+the Windows installer, try starting up by cd'ing to where the release
+is installed and typing in the following (all on one line)
+
+ <!-- Split this into multiple lines so that the display does not
+have a horizontal scroll bar because of the length of the line. -->
+<pre>
+java -classpath ".;./ptolemy/ptsupport.jar;\
+./ptolemy/vergil/vergil.jar;./lib/diva.jar;\
+./ptolemy/copernicus/copernicus.jar;\
+./ptolemy/domains/domains.jar"\
+ ptolemy.vergil.VergilApplication
+</pre>
+
+
 <dt> <a name="reading data from files?"><b>4.2 How do I read data from a file?</b></a>
 <dd> 
 
