@@ -291,7 +291,7 @@ public class Query extends JPanel {
     public void addTextArea(String name, String label, String theValue) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
-        JTextArea textArea = new JTextArea(theValue, _heigth, _width);
+        JTextArea textArea = new JTextArea(theValue, _height, _width);
         textArea.setEditable(true);
         textArea.setBackground(Color.white);
         QueryScrollPane textPane = new QueryScrollPane(textArea);
@@ -597,13 +597,13 @@ public class Query extends JPanel {
         return _width;
     }
 
-    /** Get the preferred heigth to be used for entry boxes created
-     *  in using addText().  The preferred heigth is set using
-     *  setTextHeigth().
-     *  @return The preferred heigth.
+    /** Get the preferred height to be used for entry boxes created
+     *  in using addText().  The preferred height is set using
+     *  setTextHeight().
+     *  @return The preferred height.
      */
-    public int getTextHeigth() {
-        return _heigth;
+    public int getTextHeight() {
+        return _height;
     }
 
     /** Get the current value in the entry with the given name,
@@ -1017,13 +1017,13 @@ public class Query extends JPanel {
         _notifyListeners(name);
     }
 
-    /** Specify the preferred heigth to be used for entry boxes created
+    /** Specify the preferred height to be used for entry boxes created
      *  in using addLine().  If this is called multiple times, then
      *  it only affects subsequent calls.
-     *  @param characters The preferred heigth.
+     *  @param characters The preferred height.
      */
-    public void setTextHeigth(int characters) {
-        _heigth = characters;
+    public void setTextHeight(int characters) {
+        _height = characters;
     }
 
     /** Specify the preferred width to be used for entry boxes created
@@ -1068,8 +1068,8 @@ public class Query extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The default heigth of entries created with addText(). */
-    public static final int DEFAULT_ENTRY_HEIGTH = 10;
+    /** The default height of entries created with addText(). */
+    public static final int DEFAULT_ENTRY_HEIGHT = 10;
 
     /** The default width of entries created with addLine(). */
     public static final int DEFAULT_ENTRY_WIDTH = 20;
@@ -1103,17 +1103,25 @@ public class Query extends JPanel {
         _grid.setConstraints(widget, _constraints);
         _entryPanel.add(widget);
 
+        _entries.put(name, entry);
+        _labels.put(name, label);
+        _previous.put(name, getStringValue(name));
+
         // Add some slop to the width to take in to account
         // the width of the vertical scrollbar.
         Dimension preferredSize = _entryPanel.getPreferredSize();
         preferredSize.width += 25;
+
+        if (_entries.size() < 10) { 
+            // If we have less than 10 entries, set the preferred height
+            // to be the number of entries * the text height.
+            preferredSize.height = _entries.size() * getTextHeight() * 3;
+        } else {
+            preferredSize.height = 10 * getTextHeight();
+        }
         _entryScrollPane.setPreferredSize(preferredSize);
         // Call revalidate for the scrollbar.
         _entryPanel.revalidate();
-
-        _entries.put(name, entry);
-        _labels.put(name, label);
-        _previous.put(name, getStringValue(name));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1183,8 +1191,8 @@ public class Query extends JPanel {
     // A scroll pane that contains the _entryPanel.
     private JScrollPane _entryScrollPane;
 
-    // The heigth of the text boxes.
-    private int _heigth = DEFAULT_ENTRY_HEIGTH;
+    // The height of the text boxes.
+    private int _height = DEFAULT_ENTRY_HEIGHT;
 
     // The hashtable of labels in the query.
     private Map _labels = new HashMap();
