@@ -477,38 +477,45 @@ public abstract class ActorController extends AttributeController {
                 // NOTE: Showing rates only makes sense for IOPorts.
                 Attribute showRateAttribute = port.getAttribute("_showRate");
                 if (port instanceof IOPort &&
-                        showRateAttribute instanceof Variable &&
-                        ((Variable)showRateAttribute).getToken().equals(BooleanToken.TRUE)) {
-                    // Infer the rate.  See DFUtilities.
-                    String rateString = "";
-                    Variable rateParameter = null;
-                    if (((IOPort)port).isInput()) {
-                        rateParameter = 
-                            (Variable)port.getAttribute("tokenConsumptionRate");
-                        if (rateParameter == null) {
-                            String altName = "_tokenConsumptionRate";
-                            rateParameter = (Variable)port.getAttribute(altName);
-                        }
-                    } else if (((IOPort)port).isOutput()) {
-                        rateParameter = 
-                            (Variable)port.getAttribute("tokenProductionRate");
-                        if (rateParameter == null) {
-                            String altName = "_tokenProductionRate";
-                            rateParameter = (Variable)port.getAttribute(altName);
-                        }  
-                    } 
-                    if(rateParameter != null) {
-                        try {
-                            rateString = rateParameter.getToken().toString();
-                        } catch (KernelException ex) {
-                            // Ignore.
-                        }
+                        showRateAttribute instanceof Variable) {
+                    boolean showRate = false;
+                    try {
+                        showRate = ((Variable)showRateAttribute).getToken().equals(BooleanToken.TRUE);
+                    } catch (Exception ex) {
+                        // Ignore.
                     }
-                    LabelFigure labelFigure = 
-                        _createPortLabelFigure(rateString, 
-                                _portLabelFont, x, y, direction);
-                    labelFigure.setFillPaint(Color.BLUE);
-                    figure.add(labelFigure);
+                    if(showRate) {
+                        // Infer the rate.  See DFUtilities.
+                        String rateString = "";
+                        Variable rateParameter = null;
+                        if (((IOPort)port).isInput()) {
+                            rateParameter = 
+                                (Variable)port.getAttribute("tokenConsumptionRate");
+                            if (rateParameter == null) {
+                                String altName = "_tokenConsumptionRate";
+                                rateParameter = (Variable)port.getAttribute(altName);
+                            }
+                        } else if (((IOPort)port).isOutput()) {
+                            rateParameter = 
+                                (Variable)port.getAttribute("tokenProductionRate");
+                            if (rateParameter == null) {
+                                String altName = "_tokenProductionRate";
+                                rateParameter = (Variable)port.getAttribute(altName);
+                            }  
+                        } 
+                        if(rateParameter != null) {
+                            try {
+                                rateString = rateParameter.getToken().toString();
+                            } catch (KernelException ex) {
+                                // Ignore.
+                            }
+                        }
+                        LabelFigure labelFigure = 
+                            _createPortLabelFigure(rateString, 
+                                    _portLabelFont, x, y, direction);
+                        labelFigure.setFillPaint(Color.BLUE);
+                        figure.add(labelFigure);
+                    }
                 }
                 // If the port contains an attribute named "_showName",
                 // then render the name of the port as well. If the
