@@ -1,4 +1,4 @@
-/* An instance of FunctionDependencyOfModalModel describes the function 
+/* An instance of FunctionDependencyOfModalModel describes the function
 dependence information of a modal model.
 
  Copyright (c) 2003 The Regents of the University of California.
@@ -41,7 +41,7 @@ import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfModalModel
-/** An instance of FunctionDependencyOfModalModel describes the function 
+/** An instance of FunctionDependencyOfModalModel describes the function
 dependence information of a modal model.
 
 @see ptolemy.actor.FunctionDependencyOfCompositeActor
@@ -51,7 +51,7 @@ dependence information of a modal model.
 */
 public class FunctionDependencyOfModalModel extends FunctionDependencyOfCompositeActor {
 
-    /** Construct a FunctionDependency in the given container. 
+    /** Construct a FunctionDependency in the given container.
      *  @param container The container has this FunctionDependency object.
      */
     public FunctionDependencyOfModalModel(Actor container) {
@@ -61,14 +61,14 @@ public class FunctionDependencyOfModalModel extends FunctionDependencyOfComposit
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
 
-    /** Get a list of refinements of the current state for function 
-     *  dependency calculation.  
-     *  @return a list of refinements of the current state. 
+    /** Get a list of refinements of the current state for function
+     *  dependency calculation.
+     *  @return a list of refinements of the current state.
      */
     protected List _getEntities() {
         LinkedList entities = new LinkedList();
         try {
-            Actor[] actors = 
+            Actor[] actors =
                 ((ModalModel)_container).getController().
                     currentState().getRefinement();
             if (actors != null) {

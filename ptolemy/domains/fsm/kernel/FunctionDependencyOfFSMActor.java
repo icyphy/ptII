@@ -1,5 +1,5 @@
-/* An instance of FunctionDependencyOfFSMActor describes the function 
-dependency information of an FSM actor. 
+/* An instance of FunctionDependencyOfFSMActor describes the function
+dependency information of an FSM actor.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -39,11 +39,11 @@ import ptolemy.graph.DirectedGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
-/** An instance of FunctionDependencyOfFSMActor describes the function 
-dependence relation of an FSM actor. It contains a ports graph 
+/** An instance of FunctionDependencyOfFSMActor describes the function
+dependence relation of an FSM actor. It contains a ports graph
 including the container ports only.
 <p>
-For an FSM actor, all the input ports and output ports are independent. 
+For an FSM actor, all the input ports and output ports are independent.
 
 @see FunctionDependency
 @author Haiyang Zheng
@@ -52,7 +52,7 @@ For an FSM actor, all the input ports and output ports are independent.
 */
 public class FunctionDependencyOfFSMActor extends FunctionDependency {
 
-    /** Construct a FunctionDependencyOfFSMActor in the given container. 
+    /** Construct a FunctionDependencyOfFSMActor in the given container.
      *  @param container The container has this FunctionDependency object.
      */
     public FunctionDependencyOfFSMActor(Actor container) {
@@ -63,15 +63,15 @@ public class FunctionDependencyOfFSMActor extends FunctionDependency {
     ////                         public methods                    ////
 
     /** Construct a directed graph with the nodes representing input and
-     *  output ports, and directed edges representing dependencies.  
+     *  output ports, and directed edges representing dependencies.
      */
     protected void _constructDirectedGraph() {
 
         // get a new directed graph
         _directedGraph = new DirectedGraph();
-    
+
         // First, include all the ports as nodes in the graph.
-    
+
         // get all the inputs and outputs of the container
         Iterator inputs = _container.inputPortList().listIterator();
         while (inputs.hasNext()) {
