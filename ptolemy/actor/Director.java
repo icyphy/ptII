@@ -49,6 +49,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.ExtendedMath;
 import ptolemy.moml.SharedParameter;
+import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
 
@@ -215,12 +216,15 @@ public class Director extends Attribute implements Executable {
                     double lub = ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY 
                         * Math.pow(2.0, maximumGain);
                     String warningMessage = "The time resolution is reduced to "
-                        + newResolution + ". The maximum double value can " 
+                        + newResolution + ". The maximum double value that can " 
                         + "have this time resolution is also reduced to " + lub 
-                        + ".\n If this model contains some time value bigger " 
-                        + "than that, executiing this model will throw an " 
+                        + ".\n If this model contains some time value greater " 
+                        + "than that, executing this model will throw an " 
                         + "exception.";
-                    MessageHandler.message(warningMessage);
+                    try {
+                        MessageHandler.warning(warningMessage);
+                    } catch (CancelException exception) {
+                    }
                 }
                 _timeResolution = ((DoubleToken)timeResolution.getToken()).doubleValue();                
             }

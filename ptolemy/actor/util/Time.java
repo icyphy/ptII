@@ -247,10 +247,14 @@ public class Time implements Comparable {
             try {
                 quantizedValue = _doubleToMultiple(timeValue);
             } catch (IllegalActionException e) {
-                throw new ArithmeticException("Can not guarantee the specified " 
+                throw new ArithmeticException("Cannot guarantee the specified " 
                         + "time resolution " + _director.getTimeResolution() 
-                        + " for the time value " + timeValue + ". Try" 
-                        + " using a larger time resolution.");
+                        + " for the time value " + timeValue + ".\nTry " 
+                        + "choosing a greater time resolution "
+                        + "by configuring the timeResolution parameter of the " 
+                        + "director.\n" 
+                        + "Check the stack trace to see which actor or "
+                        + "parameter caused this exception.");
             }
             return new Time(_director, _timeValue.add(quantizedValue));
         }
@@ -604,8 +608,12 @@ public class Time implements Comparable {
         if (value > lub) {
             throw new IllegalActionException("The given time value " + value +
                     " exceeds the maximum allowed value " + lub + ".\n" +
-                    "The given time value does not match the time resolution " 
-                    + precision + ". Try choosing a bigger time resolution.");
+                    "The given time value is not fit for the time resolution " 
+                    + precision + ".\n Try choosing a greater time resolution " 
+                    + "by configuring the timeResolution parameter of the " 
+                    + "director.\n"
+                    + "Check the stack trace to see which actor or "
+                    + "parameter caused this exception.");
         }
         
 		return BigInteger.valueOf(Math.round(value/precision));
