@@ -82,7 +82,7 @@ public class StringUtilities {
         if (longName.length() < 80) {
             return longName;
         }
-        return longName.substring(0,37) + ". . ."
+        return longName.substring(0, 37) + ". . ."
             + longName.substring(longName.length() - 38);
     }
 
@@ -322,7 +322,8 @@ public class StringUtilities {
                         "Could not find "
                         + "'ptolemy.ptII.dir'"
                         + " property.  Also tried loading '"
-                        + namedObjPath + "' as a resource and working from that. "
+                        + namedObjPath
+                        + "' as a resource and working from that. "
                         + "Vergil should be "
                         + "invoked with -Dptolemy.ptII.dir"
                         + "=\"$PTII\"");
@@ -514,7 +515,6 @@ public class StringUtilities {
         // open the file relative to the classpath.
         // NOTE: Use the dummy variable constant set up in the constructor.
         if (name.startsWith(_CLASSPATH_VALUE)) {
-            System.out.println("StringUtilities: startsWith CLASS" + name);
             // Try relative to classpath.
             // The +1 is to skip over the delimitter after $CLASSPATH.
             String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
@@ -561,7 +561,6 @@ public class StringUtilities {
                             + "'");
                 }
             }
-            System.out.println("StringUtilities: " + name + " file.toURL()" + file.toURL());
             return file.toURL();
         } else {
             // Try relative to the base directory.
@@ -595,7 +594,6 @@ public class StringUtilities {
                     }
                 }
                 try {
-                    System.out.println("StringUtilities: " + name + " newURI.toURL()" + newURI.toURL());
                     return newURI.toURL();
                 } catch (IllegalArgumentException ex3) {
                     IOException io = new IOException(
@@ -611,7 +609,6 @@ public class StringUtilities {
             }
 
             // As a last resort, try an absolute URL.
-            System.out.println("StringUtilities: " + name + "last resort" + (new URL(name)).toString());
             return new URL(name);
         }
     }
@@ -699,7 +696,7 @@ public class StringUtilities {
      *
      *  @param inputString  The String to tokenize
      *  @return An array of substrings.
-     *  @exception IOException Thrown if StreamTokenizer.nextToken() throws it.
+     *  @exception IOException If StreamTokenizer.nextToken() throws it.
      */
     public static String [] tokenizeForExec(String inputString)
             throws IOException {

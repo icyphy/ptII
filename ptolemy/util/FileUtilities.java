@@ -64,7 +64,7 @@ public class FileUtilities {
      *  @param sourceURL The source URL
      *  @param destinationFile The destination File.
      *  @return true if the file was copied, false if the file was not
-     *  copied because the sourceURL and the destinationFile refer to the   
+     *  copied because the sourceURL and the destinationFile refer to the
      *  same file.
      *  @exception IOException If the source file is not the same as the
      *  destination file and the destination file does not exist.

@@ -130,7 +130,7 @@ public class ClassUtilities {
             // so that we are left with the directory or jar file
             // it is in
             resourceResults =
-                resourceResults.substring(0,resourceResults.length()-
+                resourceResults.substring(0, resourceResults.length()-
                         necessaryResource.length());
             // Strip off the file:/
             if (resourceResults.startsWith("file:/")) {

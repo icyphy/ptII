@@ -134,9 +134,9 @@ public class XSLTUtilities {
      *  The filename is passed to org.xml.sax.InputSource(String),
      *  so it may be a file name or a URL.
      *  @return the parsed document.
-     *  @exception ParserConfigurationException Thrown if there is a problem
+     *  @exception ParserConfigurationException If there is a problem
      *  creating the DocumentBuilder.
-     *  @exception IOException Thrown if the filename could not be parsed.
+     *  @exception IOException If the filename could not be parsed.
      */
     public static Document parse(String filename)
             throws ParserConfigurationException, IOException {
@@ -161,9 +161,9 @@ public class XSLTUtilities {
     /** Given a Document, generate a String.
      *  @param document The document to be converted to a string.
      *  @return A string representation of the Document.
-     *  @exception TransformerException Thrown if there is a
+     *  @exception TransformerException If there is a
      *  a problem creating a new Transformer or parser.
-     *  @exception IOException Thrown if there is a problem closing the output
+     *  @exception IOException If there is a problem closing the output
      *  stream.
      */
     public static String toString(Document document)
@@ -191,14 +191,64 @@ public class XSLTUtilities {
         }
     }
 
+    /** Apply a list of XSL files to an input string and write the output
+     *  to a FileWriter.
+     *  @param input HSIF file to be read in.
+     *  @param xslFileNames A list of Strings naming the
+     *  xsl files to be applied sequentially.
+     *  @param fileWriter A FileWriter that will write to the MoML
+     *  file.
+     *  @exception Exception If there is a problem with the transformation.
+     */
+    public static void transform(String input, List xslFileNames,
+            FileWriter fileWriter)
+            throws Exception {
+        // This method takes a FileWriter so that the user can
+        // ensure that the FileWriter exists and is writable before going
+        // through the trouble of doing the conversion.
+
+        Document inputDocument = null;
+        try {
+            inputDocument = XSLTUtilities.parse(input);
+        } catch (Exception ex) {
+            // net.sf.saxon.om.DocumentBuilderImpl.parse()
+            // can throw a javax.xml.transform.TransformerException
+            // which extends Exception, but has  IOException as a cause,
+            // so we must catch Exception here, not IOException. 
+
+            // Try it as a jar url
+            try {
+                URL jarURL =
+                    ClassUtilities.jarURLEntryResource(input);
+                if (jarURL == null) {
+                    throw new Exception("'" + input + "' was not a jar "
+                            + "URL, or was not found");
+                }
+                inputDocument = XSLTUtilities.parse(jarURL.toString());
+            } catch (Exception ex2) {
+                // FIXME: IOException does not take a cause argument
+                throw ex;
+            }
+        }
+
+        // The transform() method will look in the classpath.
+        Document outputDocument =
+            XSLTUtilities.transform(inputDocument, xslFileNames);
+
+        fileWriter.write(XSLTUtilities.toString(outputDocument));
+
+        // Let the caller close the fileWriter.
+        //fileWriter.close();
+    }
+
     /** Transform a document.
      *  @param inputDocument The Document to be transformed
      *  @param xslFileName The file name of the xsl file to be used.
      *  If the file cannot be found, then we look up the file in the classpath.
      *  @return a transformed document
-     *  @exception TransformerException Thrown if there is a
+     *  @exception TransformerException If there is a
      *  a problem with the transform.
-     *  @exception IOException Thrown if there is a problem
+     *  @exception IOException If there is a problem
      *  finding the transform file.
      */
     public static Document transform(Document inputDocument,
@@ -246,9 +296,9 @@ public class XSLTUtilities {
      *  @param xslFileNames A list of Strings naming the
      *  xsl files to be applied sequentially.
      *  @return a transformed document
-     *  @exception TransformerException Thrown if there is a
+     *  @exception TransformerException If there is a
      *  a problem creating a new Transformer or parser.
-     *  @exception IOException Thrown if there is a problem closing the output
+     *  @exception IOException If there is a problem closing the output
      *  stream.
      */
     public static Document transform(Document inputDocument,
@@ -266,13 +316,13 @@ public class XSLTUtilities {
      *  @param sourceFileName The name of the file to be read in and
      *  transformed.
      *  @param resultFileName The name of the file to be generated.
-     *  @exception IOException Thrown if the resultFileName file
+     *  @exception IOException If the resultFileName file
      *  cannot be found or if flushing the output stream throws it.
-     *  @exception TransformerException Thrown if there is a
+     *  @exception TransformerException If there is a
      *  a problem with the transform.
      * the transformation.
      */
-    public static void transform (String xsltFileName,
+    public static void transform(String xsltFileName,
             String sourceFileName,
             String resultFileName)
             throws IOException, TransformerException {
@@ -307,11 +357,11 @@ public class XSLTUtilities {
      *  file.
      *  @param xslFileNames A list of Strings naming the
      *  xsl files to be applied sequentially.
-     *  @exception ParserConfigurationException Thrown if there is a problem
+     *  @exception ParserConfigurationException If there is a problem
      *  creating the DocumentBuilder.
-     *  @exception TransformerException Thrown if there is a
+     *  @exception TransformerException If there is a
      *  a problem with the transform.
-     *  @exception exception Thrown if there is a problem
+     *  @exception exception If there is a problem
      *  finding a transform file or applying a transform.
      */
 
