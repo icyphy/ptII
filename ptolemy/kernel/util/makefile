@@ -106,8 +106,10 @@ OPTIONAL_FILES = \
 	'CrossRefList$$CrossRefEnumeration.class' \
 	'NamedList$$NamedListEnumeration.class' \
 	'NamedObj$$MoMLInfo.class' \
+	'NamedObj$$ContainedObjectsIterator.class' \
 	'Settable$$Visibility.class' \
 	'Workspace$$1.class' \
+	'Workspace$$AccessRecord.class' \
 	'Workspace$$ReadDepth.class' \
 	$(PTCLASSJAR)
 

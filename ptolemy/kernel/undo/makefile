@@ -66,6 +66,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'UndoStackAttribute$$1.class' \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)

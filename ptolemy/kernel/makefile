@@ -79,6 +79,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CompositeEntity$$ContainedObjectsIterator.class' \
+	'Entity$$ContainedObjectsIterator.class' \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR)
 

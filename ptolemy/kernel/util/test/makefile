@@ -110,7 +110,10 @@ OPTIONAL_FILES = \
 	'ChangeRequestTest$$3.class' \
 	'ChangeRequestTest$$4.class' \
 	'TestDE$$1.class' \
-	'TestDE$$2.class'
+	'TestDE$$2.class' \
+	'TestWorkspace4$$1.class' \
+	'TestWorkspace5$$1.class' \
+	'TestWorkspace6$$1.class'
 
 # Unfortunately, some of the tests require classes outside of
 # ptolemy/kernel and ptolemy/kernel/util.  This is not good
