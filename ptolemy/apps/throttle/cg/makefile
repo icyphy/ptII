@@ -74,14 +74,15 @@ install: jclass $(PTCLASSJAR)
 
 DEEP_DIR = $(ROOT)/ptolemy/copernicus/java
 THIS_DIR = $(ROOT)/$(ME)
-demo: Controller
+demo: sliding2
 
 Controller:
 	make -C $(DEEP_DIR) SOURCECLASS=$(THIS_DIR)/Controller.xml MODEL=Controller compileDemo runDemo
 
 
-sliding:
-	make -C $(DEEP_DIR) SOURCECLASS=$(THIS_DIR)/sliding.xml MODEL=sliding compileDemo runDemo
+sliding2:
+	@echo "Do deep codegen on sliding2.xml"
+	make -C $(DEEP_DIR) SOURCECLASS=$(THIS_DIR)/sliding2.xml MODEL=sliding2 compileDemo runDemo
 
 
 
