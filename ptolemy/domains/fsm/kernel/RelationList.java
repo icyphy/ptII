@@ -1,4 +1,5 @@
-/* A relationList contains the change of the relations.
+/* A RelationList object contains the information of the relations of a 
+guard expression.
 
 Copyright (c) 2003-2005 The Regents of the University of California.
 All rights reserved.
@@ -38,38 +39,37 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// RelationList
 
 /**
+   A RelationList object contains a list of relations of a guard expression.
+   It provides facilities to access the previous and current information of
+   each relation of a guard expression during its evaluation. The information 
+   includes relation type and the difference information. (See 
+   {@link ParseTreeEvaluatorForGuardExpression} for the detailed explanation 
+   of relation type and difference.) This attribute is non-persistent and will 
+   not be exported into MoML.
+   <p> 
+   This class is designed to be used with ParseTreeEvaluatorForGuardExpression.  
+   The common usage would be like:
+   <p>
+   <i>Construct a relation list for a transition with the first argument of the 
+   constructor as that transition.</i>
+   <pre>
+   _relationList = new RelationList(this, "relationList");
+   </pre>
+   <p>
+   <i>Associate the relation list with the an object of 
+   ParseTreeEvaluatorForGuardExpression</i>
+   <pre>
+   _parseTreeEvaluator = 
+       new ParseTreeEvaluatorForGuardExpression(_relationList);
+   </pre>
+   <p>
+   See {@link Transition} for the detailed usage.
 
-A RelationList contains a list of relations of a guard expression.  It
-provides facilities to access the previous and current information of
-each relation of a guard expression during its evaluation. The
-information includes type and difference information. (See
-ParseTreeEvaluatorForGuardExpression for detailed explanation of type
-and difference.) This attribute is non-persistent and will not be
-exported into MoML.
-
-<p> This class is designed to be used with
-ParseTreeEvaluatorForGuardExpression.  The common usage would be
-like:
-
-<p> <i>Construct a relation list for a transition with the first
-argument of the constructor is a transition.</i>
-<pre>
-_relationList = new RelationList(this, "relationList");
-</pre>
-
-<p> <i>Associate the relation list with the
-ParseTreeEvaluatorForGuardExpression</i>
-<pre>
-_parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
-</pre>
-
-@author Haiyang Zheng
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (hyzheng)
-@Pt.AcceptedRating Red (hyzheng)
-@see ParseTreeEvaluatorForGuardExpression
-@see ptolemy.domains.fsm.kernel.Transition
+   @author Haiyang Zheng
+   @version $Id$
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class RelationList extends Attribute {
     /** Construct a relation list with the given name contained by
@@ -78,7 +78,6 @@ public class RelationList extends Attribute {
      *  will use the workspace of the transition for synchronization
      *  and version counts. If the name argument is null, then the
      *  name is set to the empty string.
-     *  Increment the version of the workspace.
      *  This attribute is a non-persistent and it will not be exported
      *  into MoML file.
      *  @param transition The transition container.
@@ -113,7 +112,6 @@ public class RelationList extends Attribute {
      */
     public void clearRelationList() {
         ListIterator relations = _relationList.listIterator();
-
         while (relations.hasNext()) {
             ((RelationNode) relations.next()).clear();
         }
@@ -123,40 +121,39 @@ public class RelationList extends Attribute {
      */
     public void commitRelationValues() {
         ListIterator relations = _relationList.listIterator();
-
         while (relations.hasNext()) {
             ((RelationNode) relations.next()).commit();
         }
     }
 
-    /** Destroy the relation list by deleting all its elements.
+    /** Destroy the relation list by deleting all the contained elements.
      */
     public void destroy() {
         _relationList.clear();
     }
 
-    /** Return the previous difference of the relation which has the
+    /** Return the previous difference of the relation that has the
      *  maximum current difference.
-     *  @return The former distance of a relation.
+     *  @return The previous distance of a relation.
      */
     public double getPreviousMaximumDistance() {
         return ((RelationNode) _relationList.get(_maximumDifferenceIndex))
             .gePreviousDifference();
     }
 
-    /** Return true if there is some event caused by some relation
-     *  type change.
-     *  @return True If there is some event detected.
+    /** Return true if there exists an event caused by the type change of
+     *  any relation.
+     *  @return True If there exits an event.
      */
     public boolean hasEvent() {
         boolean result = false;
-        ListIterator relations = _relationList.listIterator();
 
+        ListIterator relations = _relationList.listIterator();
         while (relations.hasNext() && !result) {
             result = result || ((RelationNode) relations.next()).hasEvent();
         }
 
-        if (result && _debugging) {
+        if (result && _debugging && _verbose) {
             _debug("Detected event!");
         }
 
@@ -177,8 +174,8 @@ public class RelationList extends Attribute {
         return _relationList.size();
     }
 
-    /** Iterating the relation list and get the maximum current
-     *  difference of all the relations.
+    /** Return the maximum current difference of all the relations by iterating 
+     *  the relation list.
      *  @return maximumDistance The maximum current distance.
      */
     public double maximumDifference() {
@@ -188,29 +185,17 @@ public class RelationList extends Attribute {
         _maximumDifferenceIndex = 0;
 
         ListIterator relations = _relationList.listIterator();
-
         while (relations.hasNext()) {
             RelationNode relation = ((RelationNode) relations.next());
             difference = Math.abs(relation.getDifference());
-
             if (relation.typeChanged() && (difference > maxDifference)) {
                 maxDifference = difference;
                 _maximumDifferenceIndex = index;
             }
-
             index++;
         }
 
         return maxDifference;
-    }
-
-    /** Return the index of the relation with the maximum current
-     *  difference.
-     *  @return index The index of the relation with maximum current
-     *  distance.
-     */
-    public int maximumDifferenceIndex() {
-        return _maximumDifferenceIndex;
     }
 
     /** Update the relation in the relation list referred by the
@@ -222,8 +207,9 @@ public class RelationList extends Attribute {
      *  @param difference The current difference of the relation.
      */
     public void setRelation(int relationIndex, int type, double difference) {
-        RelationNode relationNode = (RelationNode) _relationList.get(relationIndex);
-        relationNode.setValue(type);
+        RelationNode relationNode = 
+            (RelationNode) _relationList.get(relationIndex);
+        relationNode.setType(type);
         relationNode.setDifference(difference);
     }
 
@@ -238,9 +224,9 @@ public class RelationList extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** An inner class relation node store the type and difference information
-     *  about a relation. It not only stores the current information but
-     *  also the former one.
+    /** An inner class relation node stores the type and difference information
+     *  of a relation. It not only stores the current information but
+     *  also the previous one.
      */
     private class RelationNode {
         /** Constructor to construct a relation node with given type and
@@ -248,7 +234,7 @@ public class RelationList extends Attribute {
          */
         public RelationNode(int type, double difference) {
             _currentType = type;
-            _formerType = type;
+            _previousType = type;
             _difference = difference;
             _previousDifference = difference;
         }
@@ -256,25 +242,21 @@ public class RelationList extends Attribute {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
-        /** Reset the relation node with setting the former type and difference
-         *  information to 0 and 0.0 respectively. Note that the type having
-         *  value as 0 indicating the former information is not valid.
+        /** Reset the relation node by setting the former type and difference
+         *  information to 0 and 0.0 respectively. Note that having the type 
+         *  value as 0 indicating the former information is invalid.
          */
         public void clear() {
-            _formerType = 0;
+            _previousType = 0;
             _previousDifference = 0.0;
         }
 
-        /** Update the relation node former type and difference information
+        /** Update the relation node previous type and difference information
          *  with the current information.
          */
         public void commit() {
-            _formerType = _currentType;
+            _previousType = _currentType;
             _previousDifference = _difference;
-        }
-
-        public int getCurrentValue() {
-            return _currentType;
         }
 
         public double getDifference() {
@@ -285,10 +267,6 @@ public class RelationList extends Attribute {
             return Math.abs(_previousDifference);
         }
 
-        public int getFormerValue() {
-            return _formerType;
-        }
-
         /** Return true, if the relation node has its type changed, and if the
          *  current type is equal/inequal or the current type changes from
          *  less_than to bigger_than or bigger_than to less_than. This is used
@@ -297,13 +275,13 @@ public class RelationList extends Attribute {
          */
         public boolean hasEvent() {
             if (typeChanged()) {
-                return ((_formerType * _currentType) == 20);
+                return ((_previousType * _currentType) == 20);
             }
 
             return false;
         }
 
-        public void setValue(int type) {
+        public void setType(int type) {
             _currentType = type;
         }
 
@@ -311,13 +289,13 @@ public class RelationList extends Attribute {
             _difference = difference;
         }
 
-        /** Return true if type changed and the former type
+        /** Return true if the type changed and the previous type
          *  information is valid.
-         *  @return True If the type changed and the former type
+         *  @return True If the type changed and the previous type
          *  information is valid.
          */
         public boolean typeChanged() {
-            return (_formerType != 0) && (_formerType != _currentType);
+            return (_previousType != 0) && (_previousType != _currentType);
         }
 
         ///////////////////////////////////////////////////////////////
@@ -326,8 +304,8 @@ public class RelationList extends Attribute {
         private double _difference;
         private double _previousDifference;
 
-        // the relations have five integer values with meanings:
+        // a relation has 5 possible types represented with 5 integer values:
         // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
-        private int _formerType;
+        private int _previousType;
     }
 }

@@ -1,4 +1,4 @@
-/* A visitor for parse trees of the expression language.
+/* A visitor for parse trees of the guard expressions.
 
 Copyright (c) 2003-2005 The Regents of the University of California
 All rights reserved.
@@ -48,53 +48,62 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ParseTreeEvaluatorForGuardExpression
 
 /**
-   A ParseTreeEvaluatorForGuardExpression contains a relation list which
-   is used to indicate the value change of the relations embedded in a
-   guard expression. It extends ParseTreeEvaluator. It is specially
-   designed for guard expressions associated with transitions of FSM. It
-   visits a parse tree and evaluates it into a token.
-
-   <p> The ParseTreeEvaluatorForGuardExpression has two operation modes:
-   construction and updat. During construction mode, the relation list
-   expands. During update mode, the relation list doesn't expand but has
-   its element updated.
-
-   <p> During the parse tree evaluation, if the visiting node is a leaf
+   This class extends the ParseTreeEvaluator class. It is specially
+   designed for guard expressions associated with transitions of FSM. An object
+   of this class is a visitor that visits a parse tree of a guard expression 
+   and evaluates it into a token. Meanwhile, this visitor stores the type and 
+   difference of all relations of the guard expression into a relation list. 
+   Here a relation means an expression that does not contain a logical operator. 
+   <p>
+   This visitor has two modes of operation: <i>construction</i> mode and 
+   <i>updat mode</i>. During the construction mode, this visotor constructs a 
+   relation list where each element of the list corresponds to a relation of
+   the guard expression. The order of the elements is fixed and it is the same 
+   as the order of the relations appear in the guard expression. If the guard
+   expression changes, the relation list will be reconstructed. During the 
+   update mode, the relation list gets updated only. The order of the elements
+   get updated is the same order the relations of the guard expression get 
+   eveluated. 
+   <p> 
+   When this visitor evaluates the parse tree, if the visiting node is a leaf
    node and the evaluated token is a boolean token, or the visiting node
-   is a relational node, the evaluator decides the 'difference' and
-   'relationType' of the node, and stores these information into the
-   relation list.
-
-   <p> The 'difference' of a node is calculated this way:
-
-   <p> For a leaf node evaluated as a boolean token, the difference is
-   0. For a relation node, (scalarLeft relationOperator scalarRight), the
-   difference is the absolute double value of (scalarLeft - scalarRight).
-
-   <p> The 'relationType' of a node has 5 different values with meaning:
+   is a relational node, the visiting node is treated as a relation. The visitor 
+   evaluates the 'difference' and 'relationType' of this relation, and stores 
+   the evaluation results into the corresponding element in the relation list.
+   <p> 
+   The 'difference' of a relation is calculated in the following way. 
+   For a leaf node evaluated as a boolean token, the difference is
+   0. This situatiion corresponds to the "true", or "false", or "x_isPresent" 
+   elements in a guard expression. For a relational node with the format 
+   (scalarLeft relationOperator scalarRight), the difference is the absolute 
+   double value of (scalarLeft - scalarRight).
+   <p> 
+   The 'relationType' of a relation has 5 different types:
    1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.  It
-   is calculated this way:
-
-   <p> For a leaf node evaluated as a boolean token, the relationType is
-   assigned according to the boolean value of the result token, 1 for
+   is calculated in the following way.
+   <p> 
+   For a leaf node evaluated as a boolean token, its relationType is
+   decided by the boolean value of the result boolean token: 1 for
    true and 2 for false.  For a relation node, (scalarLeft
    relationOperator scalarRight), the relationType depends on the
-   relationOperator. If the relationOperator is '==' or '!=', rhe
-   relationType can be 3 indicating the two scalars equal or not equal, 4
+   relationOperator. If the relationOperator is '==' or '!=', the
+   relationType can be 3 indicating the two scalars equal or not equal. 
+   FIXME:
+   4
    indicating the left scalar is less than the right one, and 5 to
-   indicate left scalar is bigger than the right one. For other kind of
-   relationOperators, the relationType is assigned according to the
-   boolean value of the relation, i.e., 1 for true and 2 for false.
-
-   <p> If the evaluator is in construction mode, the node information is
-   added into a relationList, if it is in update mode, the according
-   element of a relationList gets updated.
-
-   <p> Note, this evaluator does not use short-circuit evaluation on
-   logical nodes.
+   indicate left scalar is bigger than the right one. For the other kinds of
+   relation operators, the relationType is decided by the
+   boolean value of the evaluation result, i.e., 1 for true and 2 for false.
+   <p> 
+   If the evaluator is in the construction mode, the relation information is
+   added into the relation list, if it is in the update mode, the corresponding 
+   element of the relation List gets updated.
+   <p> 
+   Note, this evaluator does not use short-circuit evaluation on
+   logical nodes, meaning all nodes will be evaluated.
 
    @author Haiyang Zheng
-   @version $Id
+   @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
@@ -102,21 +111,16 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.expr.ParseTreeEvaluator
 */
 public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
-    /** Construct a parse tree evaluator for guard expression. The relation
-     *  list is used to store the information of the relation nodes and leaf
-     *  nodes with boolean tokens. If the relation list is empty, the evaluator
-     *  is in construction mode, otherwise, it is in update mode.
+    /** Construct a parse tree evaluator for a guard expression with the
+     *  given relation list of that guard expression and an error tolerance. 
+     *  The relation stores the information of the relation. After the parse
+     *  tree evaluator is created, it is always in construction mode.
      *  @param relationList The relation list.
      *  @param errorTolerance The errorTolerance.
      */
     public ParseTreeEvaluatorForGuardExpression(RelationList relationList,
             double errorTolerance) {
-        if (relationList.isEmpty()) {
-            _constructingRelationList = true;
-        } else {
-            _constructingRelationList = false;
-        }
-
+        _constructingRelationList = true;
         _relationList = relationList;
         _relationIndex = 0;
         _absentDiscreteVariables = new LinkedList();
@@ -161,31 +165,36 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitLeafNode throws the IllegalActionException.
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        // FIXME: based on the *_isPresent variable, we figure out
+        // NOTE: based on the *_isPresent variable, we figure out
         // the discrete variables and do not evaluate it when it is
         // not present.
-        // This is not the best solution, we should use the signalType
+        // FIXME: This is not the best solution, we should use the signalType
         // attribute to distinguish the signal types. Unfortunately, the
         // signalType is not passed along as the type system does.
-        // That is future work.
         String nodeName = node.getName();
-        String discreteVariableName = "";
 
+        // Check whether this leaf node contains a discrete variable.
+        // If there is a discrete variable, record its name as 
+        // the discreteVariableName.
+        String discreteVariableName = "";
         if (nodeName != null) {
             int variableNameEndIndex = nodeName.indexOf("_isPresent");
-
             if (variableNameEndIndex != -1) {
                 discreteVariableName = nodeName.substring(0,
                         variableNameEndIndex);
             }
         }
 
+        // Note usually the usage is "x_isPresent && x" or "x_isPresent"
+        // If we know that the nodeName is one of the absent discrete varialbes,
+        // such as x, we do not evaluate the "x" after the "&&". 
         if (_absentDiscreteVariables.contains(nodeName)) {
             // Set the result token to be false token
             // because the variable is discrete and has no value.
-            // Note usually the usage is "x_isPresent && x"
             _evaluatedChildToken = new BooleanToken(false);
 
+            // If the current mode of the evaluator is the construction mode, 
+            // add a relation node into the relation list.            
             if (_constructingRelationList) {
                 _relationList.addRelation(0, 0.0);
             }
@@ -193,7 +202,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // Only increment the relation index but do not update
             // the relation node.
             _relationIndex++;
-
+            // Round the _relationIndex.
             if (_relationIndex >= _relationList.length()) {
                 _relationIndex -= _relationList.length();
             }
@@ -203,23 +212,26 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         // evaluate the leaf node.
         super.visitLeafNode(node);
-
+        // Record the evaluation result.
         ptolemy.data.Token result = _evaluatedChildToken;
 
+        // Ignore the result that is not a boolean token, which may be a scalar.
         if (!(result instanceof BooleanToken)) {
             return;
         }
 
+        // If the result is a boolean token, calculate the relation type. 
+        // Meanwhile, if the nodeName is "x_isPresent", the discreteVariableName
+        // is "x", based on the evaluation reaults of the node, we add or remove
+        // the discrete variable from the list of absent discrete variables.
         if (((BooleanToken) result).booleanValue()) {
             _relationType = 1;
-
             if (_absentDiscreteVariables.contains(discreteVariableName)) {
                 // remove the discrete variable from the absent discrete variables list
                 _absentDiscreteVariables.remove(discreteVariableName);
             }
         } else {
             _relationType = 2;
-
             if (!_absentDiscreteVariables.contains(discreteVariableName)) {
                 // add the discrete variable into the absent discrete variables list
                 _absentDiscreteVariables.add(discreteVariableName);
@@ -235,7 +247,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         }
 
         _relationIndex++;
-
+        // Round the _relationIndex.
         if (_relationIndex >= _relationList.length()) {
             _relationIndex -= _relationList.length();
         }
@@ -253,10 +265,11 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             return;
         }
 
-        // Note that we do evaluate all of the children...
-        // We evaluate al the children in order until the final value is
+        // Note that we do evaluate all the children nodes...
+        // We evaluate ALL the children in order until the final value is
         // determined.
-        // FIXME: Discrete variables should be treated differently.
+        // This is the reason that we can not use the visitLogicalNode() method
+        // of the supr class directly.
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
@@ -312,6 +325,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         // Check whether the relation node has some absent discrete variables.
         // If yes, skip the node, otherwise, evaluate (visit) the node.
+        // For example, if we have "x_isPresent && x < 10.0", in the 
+        // visitLeafNode() method, we should know that x is either present or
+        // absent. If x is absent, we do not evaluate the "x < 10.0" part here.
         Set variablesOfNode = _variableCollector.collectFreeVariables(node);
         Iterator absentDiscreteVariables = _absentDiscreteVariables
             .listIterator();
@@ -353,14 +369,20 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         if ((operator.kind == PtParserConstants.EQUALS)
                 || (operator.kind == PtParserConstants.NOTEQUALS)) {
-            // If the operator is about equal or notEqual relations,
+            // If the operator is about equal or not-equal relations,
             if (operator.kind == PtParserConstants.EQUALS) {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance);
             } else {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance).not();
             }
 
-            // If the left and right tokens are scalars.
+            // If both the left and right tokens are scalars:
+            // The following code basically works as a level crossing detector
+            // that detects level crossing in both rising and falling 
+            // directions. 
+            // Note we can not two double values exactly equal, therefore, we 
+            // need an error tolerance. This is the only place ther error 
+            // tolerance is used. 
             if ((leftToken instanceof ScalarToken)
                     && (rightToken instanceof ScalarToken)) {
                 // handle the relations like x == 2.0
@@ -378,7 +400,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
                 _difference = difference.doubleValue();
             } else {
-                // handle the relations like x == true or x == "string"
+                // handle the relations like x == true, x == "str", or x!= false
                 if (((BooleanToken) result).booleanValue()) {
                     _relationType = 1;
                 } else {
@@ -388,7 +410,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 _difference = 0.0;
             }
         } else {
-            // If the operator is neither about equal nor notEqual relations.
+            // If the operator is neither about equal nor not-equal relations,
+            // both tokens must be scalar tokens.
             if (!((leftToken instanceof ScalarToken)
                         && (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException("The " + operator.image
