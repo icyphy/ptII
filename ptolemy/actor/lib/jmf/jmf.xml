@@ -13,9 +13,6 @@
 	<entity name="ColorFinder" class="ptolemy.actor.lib.jmf.ColorFinder">
 	</entity>
 	
-	<entity name="GreenFinder" class="ptolemy.actor.lib.jmf.GreenFinder">
-	</entity>
-
 	<entity name="PlaySound" class="ptolemy.actor.lib.jmf.PlaySound">
 	</entity>	
 

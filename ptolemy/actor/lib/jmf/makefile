@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	BufferToImageConversion.java \
 	ColorFinder.java\
-	GreenFinder.java\
 	JMFImageToken.java \
 	PlaySound.java \
 	VideoCamera.java
