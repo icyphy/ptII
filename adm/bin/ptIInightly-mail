@@ -14,6 +14,10 @@
 mailto=$1
 
 ADMDIR=/users/ptII/adm/
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
+    ADMDIR=/home/bldmastr/ptII/adm/
+fi
+
 # If you change the version number, then edit 
 # ptolemy/web/nightly/toc.htm
 # and ptII/adm/gen-xxx/makefile
@@ -30,7 +34,9 @@ echo "See http://www.gigascale.org/buildmaster" >> $mailmsg
 
 # The log of the build
 ptbuildlog=/users/ptII/logs/java`date  '+%m%d'`
-#ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
+    ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
+fi
 #(cd /users/ptII/logs; rm -f javalastnight; ln -s java`date  '+%m%d'` javalastnight)
 
 # Remove logs older than 45 days
