@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t, e), _notSupportedMessage()
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -51,7 +51,7 @@ i.e., to indicate that an event is present. To support this use, the
 toString() method returns the String "present".
 
 
-@author Neil Smyth, Yuhong Xiong, Edward A. Lee
+@author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands
 @version $Id$
 
 */
