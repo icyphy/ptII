@@ -51,7 +51,6 @@ number of edges in the graph.
 @version $Id$
 */
 
-// FIXME: this should be an abstract class.
 public class SelfLoopAnalysis extends Analysis {
 
     /** Construct a self-loop analysis for a given graph. 
