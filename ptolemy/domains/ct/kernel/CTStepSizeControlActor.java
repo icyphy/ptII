@@ -68,11 +68,11 @@ import ptolemy.actor.Actor;
    will leave default the step size at its initial value, and only deviate
    from these steps when there is a predictable breakpoint that does not
    coincide with one of these steps.
-   @author  Jie Liu
+   @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Green (yuhong)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public interface CTStepSizeControlActor extends Actor{
 
