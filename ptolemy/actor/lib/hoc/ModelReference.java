@@ -358,10 +358,15 @@ public class ModelReference extends TypedAtomicActor
         }
     }
 
-    /** Override the base class to ensure that private variables are reset to null.
-     *  @return A new instance of ModelReference.
+    /** Clone the actor into the specified workspace. This overrides the
+     *  base class to ensure that private variables are reset to null.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         ModelReference newActor = (ModelReference) super.clone(workspace);
         newActor._manager = null;
         newActor._model = null;
@@ -378,7 +383,8 @@ public class ModelReference extends TypedAtomicActor
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
         _throwable = throwable;
         _executing = false;
 

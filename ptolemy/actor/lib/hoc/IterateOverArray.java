@@ -264,6 +264,8 @@ public class IterateOverArray extends TypedCompositeActor
      *  UI or via MoML).
      *  @param name The name of the port to create.
      *  @return A new instance of IteratePort, an inner class.
+     *  @param NameDuplicationException If the container already has a port
+     *  with this name.
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -475,16 +477,24 @@ public class IterateOverArray extends TypedCompositeActor
                 }
 
                 protected void _execute() throws Exception {
-                    // NOTE: We defer the construction of the MoML change request
-                    // to here because only at this point can we be sure that the
-                    // change request that triggered this has completed.
+
+                    // NOTE: We defer the construction of the MoML
+                    // change request to here because only at this
+                    // point can we be sure that the change request
+                    // that triggered this has completed.
+
                     synchronized (this) {
-                        // Create and connect a matching inside port on contained entities.
-                        // NOTE: We assume this propagates to derived objects
-                        // because _addPort is called when MoML is parsed to add
-                        // a port to IterateOverArray. Even the IterateComposite
-                        // uses MoML to add this port, so this will result
-                        // in propagation.
+
+                        // Create and connect a matching inside port
+                        // on contained entities.
+
+                        // NOTE: We assume this propagates to derived
+                        // objects because _addPort is called when
+                        // MoML is parsed to add a port to
+                        // IterateOverArray. Even the IterateComposite
+                        // uses MoML to add this port, so this will
+                        // result in propagation.
+
                         try {
                             workspace().getWriteAccess();
                             _inAddPort = true;
@@ -859,6 +869,8 @@ public class IterateOverArray extends TypedCompositeActor
         /** Override the base class to return a specialized port.
          *  @param name The name of the port to create.
          *  @return A new instance of IteratePort, an inner class.
+         *  @param NameDuplicationException If the container already has a port
+         *  with this name.
          */
         public Port newPort(String name) throws NameDuplicationException {
             try {
@@ -876,8 +888,8 @@ public class IterateOverArray extends TypedCompositeActor
          *  @param port The TypedIOPort to add to this actor.
          *  @exception IllegalActionException If the port is not an instance of
          *   MirrorPort, or the port has no name.
-         *  @exception NameDuplicationException If the port name collides with a
-         *   name already in the actor.
+         *  @exception NameDuplicationException If the port name
+         *  collides with a name already in the actor.
          */
         protected void _addPort(final Port port)
                 throws IllegalActionException, NameDuplicationException {
@@ -1223,6 +1235,7 @@ public class IterateOverArray extends TypedCompositeActor
         /** Override the base class to convert the token to the element
          *  type rather than to the type of the port.
          *  @param token The token to convert.
+         *  @return The converted token.
          *  @exception IllegalActionException If the conversion is
          *   invalid.
          */

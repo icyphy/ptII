@@ -67,12 +67,12 @@ public class ModelUtilities {
 
     /**
      * This method takes a url specifying the model to be execute. The
-     * <i>args<i> argument is a record token that will be used to set
+     * <i>args</i> argument is a record token that will be used to set
      * corresponding attributes of the specified model by
      * naming match, (see _setAttribute() method). The results of
      * executing the model is returned back by setting the value of some
      * Attributes. In particular, only Attributes
-     * that have name matches the <i>resultLabels<i> are returned.
+     * that have name matches the <i>resultLabels</i> are returned.
      * The return result is a RecordToken which has the resultLabels as
      * its field.
      * @param url The Model url.
@@ -83,7 +83,8 @@ public class ModelUtilities {
      * or failed to execute the model.
      */
     public static synchronized RecordToken executeModel(URL url,
-            RecordToken args, String[] resultLabels) throws IllegalActionException {
+            RecordToken args, String[] resultLabels)
+            throws IllegalActionException {
         if (url != null) {
             MoMLParser parser = new MoMLParser();
             NamedObj model;

@@ -188,17 +188,18 @@ public class RunCompositeActor extends LifeCycleManager {
     ////                         public methods                    ////
 
     /** Run a complete execution of the contained model.  A complete
-     *  execution consists of invocation of super.initialize(), repeated
-     *  invocations of super.prefire(), super.fire(), and super.postfire(),
-     *  followed by super.wrapup().  The invocations of prefire(), fire(),
-     *  and postfire() are repeated until either the model indicates it
-     *  is not ready to execute (prefire() returns false), or it requests
-     *  a stop (postfire() returns false or stop() is called).
-     *  Before running the complete execution, this method calls the
-     *  director's transferInputs() method to read any available inputs.
-     *  After running the complete execution, it calls transferOutputs().
-     *  The subclass of this can set the <i>_isSubclassOfRunCompositeActor<i> to
-     *  be true to call the fire method of the superclass of this.
+     *  execution consists of invocation of super.initialize(),
+     *  repeated invocations of super.prefire(), super.fire(), and
+     *  super.postfire(), followed by super.wrapup().  The invocations
+     *  of prefire(), fire(), and postfire() are repeated until either
+     *  the model indicates it is not ready to execute (prefire()
+     *  returns false), or it requests a stop (postfire() returns
+     *  false or stop() is called).  Before running the complete
+     *  execution, this method calls the director's transferInputs()
+     *  method to read any available inputs.  After running the
+     *  complete execution, it calls transferOutputs().  The subclass
+     *  of this can set the <i>_isSubclassOfRunCompositeActor</i> to be
+     *  true to call the fire method of the superclass of this.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
@@ -211,10 +212,11 @@ public class RunCompositeActor extends LifeCycleManager {
         _executeInsideModel();
     }
 
-    /** Initialize this actor, which in this case, does nothing.
-     *  The initialization of the submodel is accomplished in fire().
-     *  The subclass of this can set the <i>_isSubclassOfRunCompositeActor<i> to
-     *  be true to call the initialize method of the superclass of this.
+    /** Initialize this actor, which in this case, does nothing.  The
+     *  initialization of the submodel is accomplished in fire().  The
+     *  subclass of this can set the
+     *  <i>_isSubclassOfRunCompositeActor</i> to be true to call the
+     *  initialize method of the superclass of this.
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
@@ -224,9 +226,10 @@ public class RunCompositeActor extends LifeCycleManager {
         }
     }
 
-    /** Return true, indicating that execution can continue.
-     *  The subclass of this can set the <i>_isSubclassOfRunCompositeActor<i> to
-     *  be true to call the postfire method of the superclass of this.
+    /** Return true, indicating that execution can continue.  The
+     *  subclass of this can set the
+     *  <i>_isSubclassOfRunCompositeActor</i> to be true to call the
+     *  postfire method of the superclass of this.
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */

@@ -64,6 +64,10 @@ public class ApplyFunction extends TypedAtomicActor {
      *  the name with setName(). If the workspace argument is null, then
      *  use the default workspace.
      *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public ApplyFunction(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {

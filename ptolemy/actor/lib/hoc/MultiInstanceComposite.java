@@ -116,6 +116,7 @@ import ptolemy.moml.MoMLChangeRequest;
 public class MultiInstanceComposite extends TypedCompositeActor {
     /** Construct a MultiInstanceComposite actor in the specified
      *  workspace with no container and an empty string as a name.
+     *  @param workspace The workspace of this object.
      */
     public MultiInstanceComposite(Workspace workspace) {
         super(workspace);

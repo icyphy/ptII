@@ -121,7 +121,7 @@ public class MobileModel extends TypedCompositeActor {
 
     /** The output port for the result after firing the inside model
      * upon the incoming data. Notice that the type is determined by
-     * the type of the <i>defaultValue<i> parameter.
+     * the type of the <i>defaultValue</i> parameter.
      */
     public TypedIOPort output;
 
@@ -297,7 +297,7 @@ public class MobileModel extends TypedCompositeActor {
     }
 
     /** preinitialize this actor. create the director as specified
-     *  by the <i>director<i> parameter.
+     *  by the <i>director</i> parameter.
      *  @exception IllegalActionException If can't create the director, or
      *  if the director's preinitialize() method throws it.
      */
@@ -414,8 +414,10 @@ public class MobileModel extends TypedCompositeActor {
         }
     }
 
-    /** Create the parameters and ports. This method is called by the constructors.
-     *  @exception IllegalActionException
+    /** Create the parameters and ports. This method is called by the
+     *  constructors.
+     *  @exception IllegalActionException If creating the parameters
+     *  and ports throws it.     
      */
     private void _init() throws IllegalActionException {
         try {

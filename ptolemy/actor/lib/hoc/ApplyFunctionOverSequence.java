@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ApplyFunctionOverSequence
 
-/**
+/** Apply a function over a sequence.
 
 @author Steve Neuendorffer
 @version $Id$
