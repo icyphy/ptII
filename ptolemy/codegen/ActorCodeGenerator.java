@@ -494,7 +494,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 		    (NameNode) StaticResolution.makeNameNode(_outputPackageName);
 		unitNode.setPkg(newPackageNameNode);
 	    } catch (ClassCastException classCast) {
-		System.err.println("_movePackage(): _outputPackageName = '" + _outputPackageName + "'");
+		System.err.println("ActorCodeGenerator._movePackage(): "
+				   + "_outputPackageName = '"
+				   + _outputPackageName + "'");
 		throw (ClassCastException)classCast.fillInStackTrace();
 	    }
 
