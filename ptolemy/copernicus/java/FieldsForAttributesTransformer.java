@@ -228,8 +228,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             } else {
                 // retrieve the existing field.
                 field = theClass.getFieldByName(fieldName);   
-                // Make the field final.
-                field.setModifiers(field.getModifiers() | Modifier.FINAL);
+                // Make the field final and private.
+                field.setModifiers((field.getModifiers() & Modifier.STATIC) | 
+                        Modifier.FINAL | Modifier.PRIVATE);
             }
             field.addTag(new ValueTag(
                     attribute));
