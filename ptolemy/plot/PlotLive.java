@@ -56,7 +56,7 @@ class to dynamically add points to the plot.  This method is called
 within a thread separate from the applet thread, so the zooming
 mechanism and buttons remain live.
 
-@author Edward A. Lee, Christopher Hylands
+@author Edward A. Lee, Christopher Hylands, Contributor: Jeff Lane
 @version $Id$
 @since Ptolemy II 0.2
  */
@@ -71,6 +71,10 @@ public abstract class PlotLive extends Plot implements Runnable {
      *  However, the plot will also be somewhat less responsive to user
      *  inputs such as zooming, filling, or stopping.  In the derived-class
      *  implementation, this method should probably be synchronized.
+     *
+     *  <p>Jeff Lane points out that if the derived class version of
+     *  addPoints() does not return quickly, and it seems like then you
+     *  may want to experiment with addPoints() to not being synchronized.
      */
     public abstract void addPoints();
 
