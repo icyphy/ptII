@@ -55,6 +55,9 @@ JSRCS = \
 	ChangeList.java \
 	ChangeListener.java \
 	ChangeRequest.java \
+	PlaceEntity.java \
+	PlacePort.java \
+	PlaceRelation.java \
 	StreamChangeListener.java
 
 EXTRA_SRCS =	$(JSRCS)
