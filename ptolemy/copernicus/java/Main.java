@@ -134,16 +134,22 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-        
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ffet",
-                        FieldsForEntitiesTransformer.v(_toplevel)));
-        
+       
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
                         new TransformerAdapter(TypeAssigner.v())));
+           
+//         Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.ffet",
+//                         FieldsForEntitiesTransformer.v(_toplevel)));
+        
+        // Infer the types of locals again, since replacing attributes
+        // depends on the types of fields
+//         Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.ta",
+//                         new TransformerAdapter(TypeAssigner.v())));
         
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
@@ -262,7 +268,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
-                         
+       
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
@@ -288,7 +294,7 @@ public class Main extends KernelMain {
 
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
-
+        
         // Remove Unreachable methods.  This happens BEFORE NamedObjElimination
         // so that we don't have to pick between multiple constructors, if
         // there are more than one.  I'm lazy and instead of trying to pick
@@ -342,22 +348,25 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-        /*         
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+              
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", ClassWriter.v()));
-        
+           
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(_toplevel)));
-        
+          
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ufr", 
                         UnusedFieldRemover.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.smr",
                         SideEffectFreeInvocationRemover.v()));
+        /*
+        
         // Remove references to named objects.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
@@ -367,6 +376,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
+       _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
    /*
         Scene.v().getPack("wjtp").add(
@@ -489,19 +499,16 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
          */
-        //    _addStandardOptimizations(Scene.v().getPack("wjtp"));
-         
+           
         // This snapshot should be last...
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot6",
-                        JimpleWriter.v()));
-        // And write C!
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.finalSnapshot", CWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));
-            
+     
+        // And write C!
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.finalSnapshot", CWriter.v()));
+             
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",
                         WatchDogTimer.v(), "cancel:true"));
