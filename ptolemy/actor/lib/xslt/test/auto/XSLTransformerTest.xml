@@ -4,30 +4,24 @@
 <entity name="XSLTransformerTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
-        </property>
-    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 139, 761, 463}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 354]">
     </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
+        </property>
+    </property>
     <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 230.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -50,29 +44,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 145.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="4.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 2.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 115.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -85,7 +57,7 @@
     <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
         <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="XmlQueryToMoml.xsl">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 230.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -95,15 +67,15 @@
         </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;&lt;entity name=\&quot;Const\&quot; class=\&quot;ptolemy.actor.lib.Const\&quot;/&gt;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;\&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;&lt;entity name=\&quot;Const\&quot; class=\&quot;ptolemy.actor.lib.Const\&quot;/&gt;\&quot;&quot;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 230.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -113,22 +85,56 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input.toString()">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 230.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="275.0, 260.0">
+        <vertex name="vertex1" value="140.0, 230.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <link port="StringToXML.input" relation="relation"/>
     <link port="StringToXML.output" relation="relation5"/>
     <link port="Const.output" relation="relation"/>
-    <link port="Const.trigger" relation="relation3"/>
-    <link port="Clock.output" relation="relation3"/>
     <link port="XSLTransformer.input" relation="relation5"/>
-    <link port="XSLTransformer.output" relation="relation2"/>
+    <link port="XSLTransformer.output" relation="relation3"/>
     <link port="Test2.input" relation="relation2"/>
+    <link port="Expression.output" relation="relation2"/>
+    <link port="Expression.input" relation="relation3"/>
 </entity>
