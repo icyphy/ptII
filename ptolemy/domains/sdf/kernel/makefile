@@ -39,7 +39,7 @@ include $(CONFIG)
 
 JFLAGS = 
 
-DIRS = 		test  #doc
+DIRS = 		#test  #doc
 
 CLASSPATH =	../../../..
 
