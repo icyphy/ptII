@@ -111,7 +111,6 @@ public class FIFOQueue implements Cloneable {
      *  This method is deprecated and calls elementList()
      *  @return An enumeration of objects.
      *  @deprecated Used elementList() instead.
-     *  @see collections.LinkedList#elements()
      */
     public Enumeration elements() {
         return Collections.enumeration( _queueList );
@@ -196,7 +195,6 @@ public class FIFOQueue implements Cloneable {
      *  deprecated and calls historyElementList().
      *  @return An enumeration of objects in the history.
      *  @deprecated Use historyElementList() instead.
-     *  @see collections.LinkedList#elements()
      */
     public Enumeration historyElements() {
         return Collections.enumeration( _historyList );
