@@ -74,7 +74,7 @@ import ptolemy.kernel.util.Workspace;
 */
 public class CTCompositeActor extends TypedCompositeActor
     implements CTDynamicActor, CTEventGenerator, CTStatefulActor,
-    CTStepSizeControlActor, CTWaveformGenerator {
+               CTStepSizeControlActor, CTWaveformGenerator {
 
     /** Construct a CTCompositeActor in the default workspace with
      *  no container and an empty string as its name. Add the actor

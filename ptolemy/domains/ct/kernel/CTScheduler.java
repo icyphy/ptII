@@ -267,7 +267,7 @@ public class CTScheduler extends Scheduler {
                 // executive directors, but its tested this way, so we
                 // leave it alone.
                 if ((actor.getExecutiveDirector() == pre.getExecutiveDirector())
-                    && !predecessors.contains(pre)) {
+                        && !predecessors.contains(pre)) {
                     predecessors.addLast(pre);
                 }
             }
@@ -314,8 +314,8 @@ public class CTScheduler extends Scheduler {
                 // executive directors, but its tested this way, so we
                 // leave it alone.
                 if ((actor.getExecutiveDirector() ==
-                    post.getExecutiveDirector())
-                    && !successors.contains(post)) {
+                            post.getExecutiveDirector())
+                        && !successors.contains(post)) {
                     successors.addLast(post);
                 }
             }
@@ -524,7 +524,7 @@ public class CTScheduler extends Scheduler {
                     }
                 }
             } else if ((a instanceof CompositeActor) &&
-                        !(a instanceof CTCompositeActor)) {
+                    !(a instanceof CTCompositeActor)) {
                 // This actor is an opaque composite actor but not a
                 // CT Composite actor.
                 // NOTE: For its output ports, we can tell the signal type
@@ -706,7 +706,7 @@ public class CTScheduler extends Scheduler {
         // Output the signal type resolution result to the debugger.
         if (_debugging) {
             _debug("Resolved signal types: {\n"
-                + _signalTypeMap.toString() + "}");
+                    + _signalTypeMap.toString() + "}");
         }
 
         // Now the signal types of all ports are resolved and stored in the
@@ -744,7 +744,7 @@ public class CTScheduler extends Scheduler {
         while (subsystems.hasNext()) {
             CompositeActor subsystem = (CompositeActor)subsystems.next();
             if (discreteActors.contains(subsystem) &&
-                continuousActors.contains(subsystem)) {
+                    continuousActors.contains(subsystem)) {
                 // NOTE:
                 // For a non-CT composite actor, it can not be a
                 // waveform generator or an event generator.
@@ -882,7 +882,7 @@ public class CTScheduler extends Scheduler {
                 // FIXME: is this necessary? get a two cascaded integrators
                 // as a test.
                 if ((dynamicActor instanceof CTCompositeActor) &&
-                    !stateTransitionActors.contains(dynamicActor)) {
+                        !stateTransitionActors.contains(dynamicActor)) {
                     stateTransitionActors.add(dynamicActor);
                 }
             }

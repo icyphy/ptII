@@ -116,7 +116,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @param container The container.
      *  @param name The name.
      *  @exception NameDuplicationException If the name is used by another
-        actor in the container.
+     actor in the container.
      *  @exception IllegalActionException If ports can not be created, or
      *  thrown by the super class.
      */
@@ -124,11 +124,11 @@ public class CTBaseIntegrator extends TypedAtomicActor
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-//      impulseInput = new TypedIOPort(this, "impulseInput", true, false);
-//      impulseInput.setTypeEquals(BaseType.DOUBLE);
-//      StringAttribute cardinality
-//            = new StringAttribute(impulseInput, "_cardinal");
-//      cardinality.setExpression("NORTH");
+        //      impulseInput = new TypedIOPort(this, "impulseInput", true, false);
+        //      impulseInput.setTypeEquals(BaseType.DOUBLE);
+        //      StringAttribute cardinality
+        //            = new StringAttribute(impulseInput, "_cardinal");
+        //      cardinality.setExpression("NORTH");
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -145,9 +145,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-//  /** The impulse input port. This is a single port of type double.
-//  */
-// public TypedIOPort impulseInput;
+    //  /** The impulse input port. This is a single port of type double.
+    //  */
+    // public TypedIOPort impulseInput;
 
     /** The input port. This is a single port of type double.
      */
@@ -311,7 +311,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
                     " no director available");
         } else if (!(dir instanceof CTGeneralDirector)) {
             throw new IllegalActionException("Integrators can only be " +
-                "used in CT models.");
+                    "used in CT models.");
         }
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
         if (solver == null) {

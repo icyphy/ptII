@@ -930,34 +930,34 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // NOTE: Time objects are not initialized here. They are initialized at
     // the end of the preinitialize method of this director.
     private void _initializeLocalVariables() throws IllegalActionException {
-       _errorTolerance = ((DoubleToken)errorTolerance.getToken()).doubleValue();
-       _initStepSize = ((DoubleToken)initStepSize.getToken()).doubleValue();
-       _maxIterations = ((IntToken)maxIterations.getToken()).intValue();
-       _maxStepSize = ((DoubleToken)maxStepSize.getToken()).doubleValue();
-       _minStepSize = ((DoubleToken)minStepSize.getToken()).doubleValue();
-       _valueResolution =
-           ((DoubleToken)valueResolution.getToken()).doubleValue();
+        _errorTolerance = ((DoubleToken)errorTolerance.getToken()).doubleValue();
+        _initStepSize = ((DoubleToken)initStepSize.getToken()).doubleValue();
+        _maxIterations = ((IntToken)maxIterations.getToken()).intValue();
+        _maxStepSize = ((DoubleToken)maxStepSize.getToken()).doubleValue();
+        _minStepSize = ((DoubleToken)minStepSize.getToken()).doubleValue();
+        _valueResolution =
+            ((DoubleToken)valueResolution.getToken()).doubleValue();
 
-       _currentSolver = null;
-       _prefiredActors = new HashSet();
-       _currentStepSize = _initStepSize;
-       _suggestedNextStepSize = _initStepSize;
+        _currentSolver = null;
+        _prefiredActors = new HashSet();
+        _currentStepSize = _initStepSize;
+        _suggestedNextStepSize = _initStepSize;
 
         // A simulation always starts with a discrete phase execution.
-       _discretePhase = true;
-       _executionPhase = CTExecutionPhase.UNKNOWN_PHASE;
+        _discretePhase = true;
+        _executionPhase = CTExecutionPhase.UNKNOWN_PHASE;
 
-       // clear the existing breakpoint table or
-       // create a breakpoint table if necessary
-       if (_debugging) {
-           _debug(getFullName(), "create/clear break point table.");
-       }
-       TotallyOrderedSet breakpoints = getBreakPoints();
-       if (breakpoints != null) {
-           breakpoints.clear();
-       } else {
-           _breakpoints = new TotallyOrderedSet(new GeneralComparator());
-       }
+        // clear the existing breakpoint table or
+        // create a breakpoint table if necessary
+        if (_debugging) {
+            _debug(getFullName(), "create/clear break point table.");
+        }
+        TotallyOrderedSet breakpoints = getBreakPoints();
+        if (breakpoints != null) {
+            breakpoints.clear();
+        } else {
+            _breakpoints = new TotallyOrderedSet(new GeneralComparator());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

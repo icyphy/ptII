@@ -155,32 +155,32 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         CTExecutionPhase executionPhase = getExecutionPhase();
 
         if (executionPhase
-            == CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE) {
+                == CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE) {
             super._iteratePurelyDiscreteActors(schedule);
         } else if (executionPhase
-            == CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE) {
+                == CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE) {
             getCurrentODESolver().fireDynamicActors();
         } else if (executionPhase
-            == CTExecutionPhase.FIRING_EVENT_GENERATORS_PHASE) {
+                == CTExecutionPhase.FIRING_EVENT_GENERATORS_PHASE) {
             super.fireEventGenerators();
         } else if (executionPhase
-            == CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE) {
+                == CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE) {
             getCurrentODESolver().fireStateTransitionActors();
             // There is not a seperate state for producing output,
             // because a CT subsystem needs to produce output
             // if it works as a state transition actor.
             super.produceOutput();
         } else if (executionPhase
-            == CTExecutionPhase.GENERATING_EVENTS_PHASE) {
+                == CTExecutionPhase.GENERATING_EVENTS_PHASE) {
             super._iterateEventGenerators(schedule);
         } else if (executionPhase
-            == CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
+                == CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
             super._iterateWaveformGenerators(schedule);
         }
-//        else if (executionPhase
-//            == CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE) {
-//            super.prefireDynamicActors();
-//        }
+        //        else if (executionPhase
+        //            == CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE) {
+        //            super.prefireDynamicActors();
+        //        }
     }
 
     /** Return the current integration step size, which is inherited from the
@@ -196,7 +196,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with " +
-                "a CTEmbeddedDirector must be used inside another CT model.");
+                    "a CTEmbeddedDirector must be used inside another CT model.");
         }
     }
 
@@ -212,7 +212,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with " +
-                "a CTEmbeddedDirector must be used inside another CT model.");
+                    "a CTEmbeddedDirector must be used inside another CT model.");
         }
     }
 
@@ -229,7 +229,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with " +
-                "a CTEmbeddedDirector must be used inside another CT model.");
+                    "a CTEmbeddedDirector must be used inside another CT model.");
         }
     }
 
@@ -245,7 +245,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with " +
-                "a CTEmbeddedDirector must be used inside another CT model.");
+                    "a CTEmbeddedDirector must be used inside another CT model.");
         }
     }
 
@@ -279,7 +279,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with " +
-            "a CTEmbeddedDirector must be used inside another CT model.");
+                    "a CTEmbeddedDirector must be used inside another CT model.");
         }
     }
 
@@ -353,7 +353,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             double nextStepSize = _predictNextStepSize();
             if (_debugging) {
                 _debug(getName(), "at " + getModelTime(),
-                    " predicts next step size as " + nextStepSize);
+                        " predicts next step size as " + nextStepSize);
             }
             return nextStepSize;
         } catch (IllegalActionException ex) {
@@ -427,10 +427,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public boolean postfire() throws IllegalActionException {
         if (getExecutionPhase()
-            == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
+                == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
             super.updateContinuousStates();
         } else if (getExecutionPhase()
-            == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
+                == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
             super.postfireEventGenerators();
         }
         return super.postfire();

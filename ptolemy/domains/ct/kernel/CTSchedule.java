@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
    <pre>
    CTSchedule schedule = scheduler.getSchedule();
    Iterator dynamicActorIterator =
-       schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
+   schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
    </pre>
 
    @author  Jie Liu, Haiayng Zheng

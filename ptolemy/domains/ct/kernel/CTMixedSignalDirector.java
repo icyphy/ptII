@@ -280,9 +280,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             if (_debugging) {
                 _debug("The current time of outside model is " + _outsideTime,
-                    " and its next iteration time is "
-                    + outsideNextIterationTime,
-                    "\nThe current time of this director is " + localTime);
+                        " and its next iteration time is "
+                        + outsideNextIterationTime,
+                        "\nThe current time of this director is " + localTime);
             }
 
             // Now, check the next iteration time.
@@ -311,8 +311,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 System.out.println("Whaaat on earth are UUUUUU doing");
                 if (_debugging) {
                     _debug(getName() + " rollback from: " +
-                        localTime + " to: " +_knownGoodTime +
-                        "due to outside time " +_outsideTime );
+                            localTime + " to: " +_knownGoodTime +
+                            "due to outside time " +_outsideTime );
                 }
                 // The local time is set backwards to a known good time.
                 _rollback();
@@ -335,7 +335,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // Now, the outside time must be equal to the local time.
             if (_debugging) {
                 _debug("The outside time is equal to the local time. " +
-                "Check whether there are outputs.");
+                        "Check whether there are outputs.");
             }
 
             // set the start time of the current iteration
@@ -349,13 +349,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             double aheadLength
                 = outsideNextIterationTime.subtract(_outsideTime).
-                    getDoubleValue();
+                getDoubleValue();
             if (_debugging) {
                 _debug(getName(),
-                    " local time = " + localTime,
-                    " Outside Time = " + _outsideTime,
-                    " NextIterationTime = " + outsideNextIterationTime +
-                    " Inferred run length = " + aheadLength);
+                        " local time = " + localTime,
+                        " Outside Time = " + _outsideTime,
+                        " NextIterationTime = " + outsideNextIterationTime +
+                        " Inferred run length = " + aheadLength);
             }
 
             if (aheadLength < timeResolution ) {
@@ -375,7 +375,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // Now it is safe to execute the continuous part.
             if (_debugging) {
                 _debug(getName(), "Iteration end time = " +
-                    getIterationEndTime(), " <-- end of prefire.");
+                        getIterationEndTime(), " <-- end of prefire.");
             }
             return true;
         } else {
@@ -404,7 +404,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             setCurrentStepSize(getSuggestedNextStepSize());
             if (_debugging) {
                 _debug("Catch up: ending..." +
-                    (localTime.add(getCurrentStepSize())));
+                        (localTime.add(getCurrentStepSize())));
             }
             _resolveInitialStates();
             if (_debugging) {
