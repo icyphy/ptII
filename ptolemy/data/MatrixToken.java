@@ -153,4 +153,23 @@ public abstract class MatrixToken extends Token {
 	throw new IllegalActionException("Right multiplicative identity " +
 		"not supported on " + getClass().getName() + " objects.");
     }
+
+    /** Return a String representing the value of this token.
+     *  The syntax is that understood by the parser in the data.expr
+     *  package.
+     */
+    public String stringValue() {
+        int rowCount = getRowCount();
+        int columnCount = getColumnCount();
+	String s = "[";
+	for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                s += getElementAsToken(i,j).stringValue();
+                if (j < columnCount - 1) s += ", ";
+            }
+            if (i < rowCount - 1) s += "; ";            
+        }
+	s += "]";
+	return s;
+    }
 }

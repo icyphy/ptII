@@ -239,7 +239,7 @@ public class Token {
      *  @exception IllegalActionException Not thrown in this base class,
      *  @return The String "present".
      */
-    public String stringValue() throws IllegalActionException {
+    public String stringValue() {
         return "present";
     }
 
