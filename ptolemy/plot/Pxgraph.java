@@ -94,7 +94,8 @@ the graph. <code>pxgraph</code> also presents four control buttons in
 the lower left corner of each window: <code>Exit</code>, 
 <code>Print</code>, <code>HTML</code> and <code>About</code>.
 <p>The <code>Exit</code> button will exit the process.  You can also
-type <code>Control-D</code> to exit.
+type <code>Control-D</code>, <code>Control-C</code> or <code>q</code>
+to exit.
 <p>The <code>Print</code> button brings up a print dialog window
 <p>The <code>About</code> button brings up a message about 
 <code>pxgraph</code>
@@ -460,9 +461,12 @@ public class Pxgraph extends Frame {
 	int keyflags = e.modifiers;
 	if (e.id == Event.KEY_PRESS) {
 	    char c = (char) e.key;
-	    if (c == '\004') {
-		// If we get a Control-D, then exit.
+	    switch (c) {
+	    case '\003':	// Control-C
+	    case '\004':	// Control-D
+	    case 'q':
 		System.exit(0);
+		break;
 	    }
 	}
 	return true;
