@@ -30,22 +30,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.Plot;
-
-import java.awt.Container;
 
 //////////////////////////////////////////////////////////////////////////
 //// BarGraph
@@ -71,7 +58,7 @@ The plot is always updated in the wrapup() method.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class BarGraph extends Plotter implements SequenceActor {
+public class BarGraph extends ArrayPlotter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -84,15 +71,6 @@ public class BarGraph extends Plotter implements SequenceActor {
     public BarGraph(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // Create the input port and make it a multiport.
-        input = new TypedIOPort(this, "input", true, false);
-        input.setMultiport(true);
-        input.setTypeEquals(BaseType.DOUBLE);
-        input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
-        iterationsPerUpdate = new Parameter(this, "iterationsPerUpdate");
-        iterationsPerUpdate.setExpression("1");
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
@@ -123,19 +101,6 @@ public class BarGraph extends Plotter implements SequenceActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Input port, which receives an array of doubles. */
-    public TypedIOPort input;
-
-    /** The number of iterations between updates of the display
-     *  on the screen.
-     *  This parameter has type IntToken, with default value 1.
-     *  Its value must be non-negative.
-     */
-    public Parameter iterationsPerUpdate;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the plot has not already been created, create it.
@@ -147,85 +112,8 @@ public class BarGraph extends Plotter implements SequenceActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _iteration = 0;
         // NOTE: We assume the superclass ensures this cast is safe.
         ((Plot)plot).setBars(true);
         ((Plot)plot).setConnected(false);
     }
-
-    /** Read at most one token from each input channel and plot it as
-     *  a function of the iteration number, scaled by <i>xUnit</i>.
-     *  The first point is plotted at the horizontal position given by
-     *  <i>xInit</i>. The increments on the position are given by
-     *  <i>xUnit</i>. The input data are plotted in postfire() to
-     *  ensure that the data have settled.
-     *  @exception IllegalActionException If there is no director,
-     *   or if the base class throws it.
-     *  @return True if it is OK to continue.
-     */
-    public boolean postfire() throws IllegalActionException {
-        int width = input.getWidth();
-        _offset = ((IntToken)startingDataset.getToken()).intValue();
-        if (_tokens == null || _tokens.length != width) {
-            _tokens = new ArrayToken[width];
-        }
-        for (int i = width - 1; i >= 0; i--) {
-            if (input.hasToken(i)) {
-                _tokens[i] = (ArrayToken)input.get(i);
-                if (_iteration == 0) {
-                    Token[] currentArray = _tokens[i].arrayValue();
-                    // NOTE: We assume the superclass ensures this cast is safe.
-                    ((Plot)plot).clear(i + _offset);
-                    for (int j = 0; j < currentArray.length; j++) {
-                        double currentValue =
-                            ((DoubleToken)currentArray[j]).doubleValue();
-                        ((Plot)plot).addPoint(
-                                i + _offset, j, currentValue, true);
-                    }
-                }
-            }
-        }
-        _iteration++;
-        if (_iteration == ((IntToken)iterationsPerUpdate
-                .getToken()).intValue()) {
-            _iteration = 0;
-        }
-        return super.postfire();
-    }
-
-    /** Update the plot with the most recently read data.
-     *  If the <i>fillOnWrapup</i> parameter is true, rescale the
-     *  plot so that all the data is visible.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        if (_tokens != null) {
-            for (int i = _tokens.length - 1; i >= 0; i--) {
-                if (_tokens[i] != null) {
-                    Token[] currentArray = _tokens[i].arrayValue();
-                    // NOTE: We assume the superclass ensures this cast is safe.
-                    ((Plot)plot).clear(i + _offset);
-                    for (int j = 0; j < currentArray.length; j++) {
-                        double currentValue =
-                            ((DoubleToken)currentArray[j]).doubleValue();
-                        ((Plot)plot).addPoint(
-                                i + _offset, j, currentValue, true);
-                    }
-                }
-            }
-        }
-        super.wrapup();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Iteration count, modulo the iterationsPerUpdate.
-    private int _iteration = 0;
-
-    // The value of the startingDataset parameter.
-    private int _offset;
-
-    // The most recently read tokens in the fire() method.
-    private ArrayToken[] _tokens;
 }

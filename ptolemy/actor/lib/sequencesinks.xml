@@ -6,6 +6,7 @@
     <?moml
       <group>
 <doc>Sinks for inputs that are sequences of tokens. </doc>
+<entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter"/>
 <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
 <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
 <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter"/>

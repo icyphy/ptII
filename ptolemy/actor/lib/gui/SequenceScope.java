@@ -31,10 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.gui;
 
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.Plot;
@@ -58,10 +56,18 @@ The horizontal increment between samples is given by the
 <i>xUnit</i> parameter. Its default value is 1.0. The horizontal value
 of the first sample is given by the <i>xInit</i> parameter.
 Its default value is 0.0. The input is of type DoubleToken.
+<p>
+Note that this actor uses XOR drawing mode, which is fast, but
+will produce sometimes very annoying artifacts. In particular,
+when lines or points overlap, they will erase each other (if they
+are from the same data set) or produce some other color (if
+they are from distinct data sets).  To avoid these artifacts,
+use ArrayPlotter.
 
 @author  Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
+@see ArrayPlotter
 */
 public class SequenceScope extends SequencePlotter {
 
