@@ -229,7 +229,7 @@ public class PlotBox extends Panel {
             _ylog = false;
             _grid = true;
             _usecolor = true;
-            
+
             // Private members next...
             _filespec = null;
             _xlabel = null;
@@ -502,15 +502,15 @@ public class PlotBox extends Panel {
                 }
             } else {
                 // Reading an ASCII file
-                
+
                 // NOTE: I tried to use exclusively the jdk 1.1 Reader classes,
                 // but they provide no support like DataInputStream, nor
-                // support for URL accesses.  So I use the older classes 
+                // support for URL accesses.  So I use the older classes
                 // here in a strange mixture.
-                
+
                 BufferedReader din = new BufferedReader(
                     new InputStreamReader(in));
-                
+
                 try {
                     String line = din.readLine();
                     while (line != null) {
@@ -535,10 +535,10 @@ public class PlotBox extends Panel {
      *  corner is specified by x and y, and the new size is specified by
      *  width and height. This overrides the base class method to make
      *  a record of the new size.
-     *  @param x The new x-coordinate of this component. 
-     *  @param y The new y-coordinate of this component. 
-     *  @param width The new width of this component. 
-     *  @param height The new height of this component. 
+     *  @param x The new x-coordinate of this component.
+     *  @param y The new y-coordinate of this component.
+     *  @param width The new width of this component.
+     *  @param height The new height of this component.
      */
     public void setBounds(int x, int y, int width, int height) {
         _width = width;
@@ -679,7 +679,7 @@ public class PlotBox extends Panel {
         _setXRange(min, max);
     }
 
-    /** Set the label for the Y (vertical) axis. 
+    /** Set the label for the Y (vertical) axis.
      *  @param label The label.
      */
     public void setYLabel (String label) {
@@ -943,7 +943,7 @@ public class PlotBox extends Panel {
         _xtickscale = width/(_xtickMax - _xtickMin);
 
         // Background for the plotting rectangle.
-        // Always use a white background because the dataset colors 
+        // Always use a white background because the dataset colors
         // were designed for a white background.
         graphics.setColor(Color.white);
         graphics.fillRect(_ulx, _uly, width, height);
@@ -2214,7 +2214,7 @@ public class PlotBox extends Panel {
 
     public class ZoomListener implements MouseListener {
         public void mouseClicked (MouseEvent event) {
-        } 
+        }
         public void mouseEntered(MouseEvent event) {
         }
         public void mouseExited(MouseEvent event) {
@@ -2230,7 +2230,7 @@ public class PlotBox extends Panel {
     public class DragListener implements MouseMotionListener {
         public void mouseDragged (MouseEvent event) {
             PlotBox.this._zoomBox(event.getX(), event.getY());
-        } 
+        }
         public void mouseMoved(MouseEvent event) {
         }
     }

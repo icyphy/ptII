@@ -295,7 +295,7 @@ public class Plot extends PlotBox {
         _prevy = new Vector();
         _marks = 0;
         _painted = false;
- 
+
         // Reset the private variables to their initial state.
         _pointsPersistence = 0;
         _sweepsPersistence = 0;
@@ -370,7 +370,7 @@ public class Plot extends PlotBox {
                     if (pt.y < _yBottom) _yBottom = pt.y;
                     if (pt.y > _yTop) _yTop = pt.y;
                 }
-            }                    
+            }
         }
         _xyInvalid = false;
         super.fillPlot();
@@ -724,7 +724,7 @@ public class Plot extends PlotBox {
         super.parseFile(filespec, documentBase);
     }
 
-    /** Split a string containing pxgraph-compatible command-line arguments 
+    /** Split a string containing pxgraph-compatible command-line arguments
      *  into an array and call parseArgs() on the array.  This is used
      *  in the rare circumstance that you want to control the format
      *  of a plot from an applet HTML file rather than in the plot data
@@ -850,7 +850,7 @@ public class Plot extends PlotBox {
             _firstinset = true;
             // Flag that we have not seen a DataSet line in this file.
             _sawfirstdataset = false;
-            
+
             DataInputStream in = new DataInputStream(
                 new BufferedInputStream(inputstream));
             int c;
@@ -858,9 +858,9 @@ public class Plot extends PlotBox {
             boolean byteSwapped = false;
             boolean connected = false;
             byte input[] = new byte[4];
-            
+
             if (_connected) connected = true;
-            
+
             switch (_endian) {
                 case _NATIVE_ENDIAN:
                 try {
@@ -878,7 +878,7 @@ public class Plot extends PlotBox {
                 throw new IOException("Internal Error: Don't know about '"+
                 _endian + "' style of endian");
             }
-            
+
             try {
                 c = in.readByte();
                 if ( c != 'd') {
@@ -890,7 +890,7 @@ public class Plot extends PlotBox {
                     // be able to write binary data directly
                     // (However, they could use Java's mechanisms for
                     // writing binary files).
-                    
+
                     // Read 3 more bytes, create the x float.
                     int bits = c;
                     bits = bits << 8;
@@ -899,13 +899,13 @@ public class Plot extends PlotBox {
                     bits += in.readByte();
                     bits = bits << 8;
                     bits += in.readByte();
-                    
+
                     x = Float.intBitsToFloat(bits);
                     y = in.readFloat();
                     connected = _addLegendIfNecessary(connected);
                     addPoint(_currentdataset, x, y, connected);
                     if (_connected) connected = true;
-                    
+
                     while (true) {
                         x = in.readFloat();
                         y = in.readFloat();
@@ -924,7 +924,7 @@ public class Plot extends PlotBox {
                         // e                             - End of a data set
                         // n <chars> \n                  - New set name, ends in \n
                         // m                             - Move to a point
-                        
+
                         switch (c) {
                         case 'd':
                             // Data point.
@@ -1703,7 +1703,7 @@ public class Plot extends PlotBox {
      */
     protected void _write(PrintWriter output) {
         super._write(output);
-        
+
         switch(_marks) {
         case 1:
             output.println("Marks: points");
@@ -1938,7 +1938,7 @@ public class Plot extends PlotBox {
             graphics.setPaintMode();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

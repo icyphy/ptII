@@ -42,7 +42,7 @@ import collections.LinkedList;
 A TypedAtomicActor is an AtomicActor whose ports have types.
 The typeConstraints() method returns the type constraints among
 the ports.  This base class provides a default implementation of this
-method, which should be suitable for most of the derived classes. 
+method, which should be suitable for most of the derived classes.
 The container is required to be an instance of TypedCompositeActor.
 Derived classes may further constrain the container by overriding
 setContainer(). The Ports of TypedAtomicActors are constrained to be

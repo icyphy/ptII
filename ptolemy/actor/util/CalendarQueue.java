@@ -33,26 +33,26 @@ import collections.*;
 //// CalendarQueue
 /**
 This class implements a fast priority queue. Entries are sorted ascendingly
-according to their sort-key. A dequeue operation will remove the entry 
-that has the smallest sort-key. As will be explained in the next paragraph, 
-this class can be used in many different applications, not just for the DE 
+according to their sort-key. A dequeue operation will remove the entry
+that has the smallest sort-key. As will be explained in the next paragraph,
+this class can be used in many different applications, not just for the DE
 domain.
 <p>
 For reusability, the sort-keys are only restricted to be instances of Object.
 A client needs to implement the CQComparator interface to define how the
 sort-keys are arranged in the queue. This implementation is then passed into
-the CalendarQueue's constructor and is immutable. Note that the CQComparator 
+the CalendarQueue's constructor and is immutable. Note that the CQComparator
 object can be shared among different independent queues, since it doesn't
 contain any state information.
 <p>
 Note: If the distribution of the number of entries in the queue
 is known in advance, it's possible to make further adjustment to the queue
 parameters. There are two additional arguments to specify in the second
-constructor, namely the minimum number of buckets and the threshold factor. 
-The first argument specifies the initial number of buckets and also serves 
-as lower bound on the number of buckets. The second specifies by what 
+constructor, namely the minimum number of buckets and the threshold factor.
+The first argument specifies the initial number of buckets and also serves
+as lower bound on the number of buckets. The second specifies by what
 factor the number of bucket will grow and shrink.
-FIXME: some guidelines on how to choose these parameters. 
+FIXME: some guidelines on how to choose these parameters.
 <p>
 Entries are enqueued using the put() method, and dequeued using the take()
 method. The take() method returns the entry associated with the
@@ -61,10 +61,10 @@ smallest key.
 CalendarQueue operates like a 'bag' collection. This simply means that an
 entry will be added into the queue even if it already exists in the queue.
 If a 'set' behavior is desired, one can derive from CalendarQueue and
-override the put() method. 
+override the put() method.
 <p>
 Associated with the take() method, we have getNextKey() and getPreviousKey().
-The first returns the current smallest sort-key, while the latter returns 
+The first returns the current smallest sort-key, while the latter returns
 the sort-key associated with the entry that was last dequeued using the
 take() method. For example, suppose the smallest-key entry is associated
 with value 'CC', and key 'S', then the sequence getNextKey(), take(), and
@@ -77,10 +77,10 @@ in the Ptolemy II DE domain, which doesn't require this functionality.
 <p>
 This implementation is based on:
 <ul>
-<li>Randy Brown, <i>CalendarQueues:A Fast Priority Queue Implementation for 
+<li>Randy Brown, <i>CalendarQueues:A Fast Priority Queue Implementation for
 the Simulation Event Set Problem</i>, Communications of the ACM, October 1988,
-Volume 31, Number 10. 
-<li>A. Banerjea and E. W. Knightly, <i>Ptolemy 0 implementation: 
+Volume 31, Number 10.
+<li>A. Banerjea and E. W. Knightly, <i>Ptolemy 0 implementation:
 CalendarQueue.cc</i>
 </ul>
 @author Lukito Muliadi
@@ -101,15 +101,15 @@ public class CalendarQueue {
         // field initialiation during the
         // declaration of variables
     }
-    
+
     /** Construct an empty queue with the specified CQComparator
      *  implementation, the minimum number of bucket, and the threshold factor.
      * @param comparator The CQComparator implementation.
      * @param minNumBucket The minimum number of bucket.
      * @param thresholdFactor The threshold factor.
      */
-    public CalendarQueue(CQComparator comparator, 
-            int minNumBucket, 
+    public CalendarQueue(CQComparator comparator,
+            int minNumBucket,
             int thresholdFactor) {
         this(comparator);
         _minNumBucket = minNumBucket;
@@ -136,7 +136,7 @@ public class CalendarQueue {
     /** Add one entry to the queue. An entry is specified by its key and
      *  its value. If the key is null, then an IllegalArgumentException
      *  is thrown.
-     *  <p>  
+     *  <p>
      *  The method returns true if the operation succeeded, and false
      *  otherwise. Since the CalendarQueue class adopts 'bag' behavior,
      *  it will always return true, unless there's an exception thrown.
@@ -144,7 +144,7 @@ public class CalendarQueue {
      *  Later, when need arises to have subclass of CalendarQueue that adopts
      * 'set' behavior, then the overridden put method should return false
      *  if the entry is already in the queue, and true otherwise.
-     *  
+     *
      * @param key The key of the entry to be put/added into the queue.
      * @param value The value of the entry to be put/added into the queue.
      * @return True is succeed, false otherwise.
@@ -208,10 +208,10 @@ public class CalendarQueue {
 
     /** Remove the smallest entry from the queue and return the value
      *  associated with that entry. If there are multiple smallest entries,
-     *  then FIFO behavior is implemented. Note that since values are 
+     *  then FIFO behavior is implemented. Note that since values are
      *  permitted to be null, this method could return null.
      *  <p>
-     *  If this method is called while the queue is empty, then an 
+     *  If this method is called while the queue is empty, then an
      *  IllegalAccessException is thrown.
      * @return The value associated with the smallest key.
      * @exception IllegalAccessException If invoked when the queue is empty.
@@ -327,7 +327,7 @@ public class CalendarQueue {
         // Resume search at that minimum bucket
         return (take());
     }
-    /** Return the key of the last object dequeued using take() method. 
+    /** Return the key of the last object dequeued using take() method.
      *  If the queue <i>was</i> empty when the last take() method was invoked,
      *  then throw an exception (Note that the last take() method would have
      *  also thrown an exception). If take() has never been called, then throw
@@ -335,13 +335,13 @@ public class CalendarQueue {
      *  NOTE: a typical application would call take() followed
      *  by getPreviousKey() to get the value and it's corresponding
      *  key, respectively.
-     *  
+     *
      * @return The sort key associated with the last entry dequeued by the
      *  take() method.
      * @exception IllegalAccessException If invoked when the queue is empty.
      */
     public Object getPreviousKey() throws IllegalAccessException {
-        // First check if _takenKey==null which means either the last take() 
+        // First check if _takenKey==null which means either the last take()
         // threw an exception or take() has never been called. If it is then
         // thrown an exception.
         if (_takenKey == null) {
@@ -351,7 +351,7 @@ public class CalendarQueue {
         return _takenKey;
     }
 
-    /** Return the key associated with the object that's at the head of the 
+    /** Return the key associated with the object that's at the head of the
      *  queue (i.e. the one that would be obtained on the next take).
      *  If the queue is empty, then an IllegalAccessException will be thrown.
      *
@@ -718,7 +718,7 @@ public class CalendarQueue {
     // _entryComparator: Comparator implementation for SortedLinkedList
     private EntryComparator _entryComparator;
 
-    // _takenKey: save the key corresponding to the entry removed by the 
+    // _takenKey: save the key corresponding to the entry removed by the
     //  take() method.
     private Object _takenKey = null;
 

@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -33,7 +33,7 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
@@ -42,30 +42,30 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
 ######################################################################
 ####
-# 
+#
 # test FIFOQueue-1.1 {Get class information} {
 #     # If anything changes, we want to know about it so we can write tests.
 #     set n [java::new ptolemy.actor.util.FIFOQueue]
 #     list [getJavaInfo $n]
 # } {{
 #   class:         ptolemy.actor.util.FIFOQueue
-#   fields:        
+#   fields:
 #   methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait capacity elements full {get int} getContainer history historyCapacity historySize {previous int} {put java.lang.Object} {setCapacity int} {setHistoryCapacity int} size take
 #   constructors:  ptolemy.actor.util.FIFOQueue {ptolemy.actor.util.FIFOQueue ptolemy.actor.Nameable} {ptolemy.actor.util.FIFOQueue ptolemy.actor.util.FIFOQueue}
 #   properties:    class historyCapacity capacity container {{}}
 #   superclass:    java.lang.Object
 # }}
-# 
+#
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-2.1 {Construct an empty queue and check defaults} {
     set queue [java::new ptolemy.actor.util.FIFOQueue]
     list [$queue capacity] \
@@ -79,7 +79,7 @@ test FIFOQueue-2.1 {Construct an empty queue and check defaults} {
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-2.2 {Construct an empty queue and attempt a get, previous, take} {
     set queue [java::new ptolemy.actor.util.FIFOQueue]
     catch { [$queue get 0] } msg1
@@ -89,7 +89,7 @@ test FIFOQueue-2.2 {Construct an empty queue and attempt a get, previous, take} 
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-2.3 {Construct an empty queue with a container} {
     set container [java::new ptolemy.kernel.util.NamedObj "parent"]
     set queue [java::new {ptolemy.actor.util.FIFOQueue ptolemy.kernel.util.Nameable} $container]
@@ -108,7 +108,7 @@ test FIFOQueue-2.3 {Construct an empty queue with a container} {
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-3.1 {Put data on a queue} {
     set queue [java::new ptolemy.actor.util.FIFOQueue]
     $queue put $n1
@@ -121,21 +121,21 @@ test FIFOQueue-3.1 {Put data on a queue} {
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-3.2 {Get individual items} {
     list [[$queue get 1] getName] [$queue size] [$queue full]
 } {n4 5 0}
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-3.3 {Take items} {
     list [[$queue take] getName] [_testEnums elements $queue]
 } {n1 {{n2 n3 n4 n5}}}
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-4.1 {Put data on a queue with bounded capacity} {
     set queue [java::new ptolemy.actor.util.FIFOQueue]
     $queue setCapacity 3
@@ -149,7 +149,7 @@ test FIFOQueue-4.1 {Put data on a queue with bounded capacity} {
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-4.2 {Take data off a queue with bounded capacity} {
     $queue take
     list \
@@ -159,7 +159,7 @@ test FIFOQueue-4.2 {Take data off a queue with bounded capacity} {
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-5.1 {Test history} {
     set queue [java::new ptolemy.actor.util.FIFOQueue]
     $queue setHistoryCapacity -1
@@ -176,7 +176,7 @@ test FIFOQueue-5.1 {Test history} {
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-5.2 {Test previous} {
     list \
             [[$queue previous 0] getName] \
@@ -186,7 +186,7 @@ test FIFOQueue-5.2 {Test previous} {
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-5.3 {Test previous with error} {
     catch {[$queue previous 3]} msg
     list $msg
@@ -194,7 +194,7 @@ test FIFOQueue-5.3 {Test previous with error} {
 
 ######################################################################
 ####
-# 
+#
 test FIFOQueue-6.1 {Test history with bounded capacity} {
     set queue [java::new ptolemy.actor.util.FIFOQueue]
     $queue setHistoryCapacity 2

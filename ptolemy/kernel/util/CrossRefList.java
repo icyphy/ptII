@@ -38,7 +38,7 @@ import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList
-/** 
+/**
 
 CrossRefList is a list that maintains pointers to other CrossRefLists.
 This class is meant to be used to keep track of links between Objects,
@@ -49,7 +49,7 @@ after the instance is constructed.)  CrossRefList enumerators and
 query methods do not return references to other CrossRefLists;
 instead, references to those CrossRefLists' containers (of type
 Object) are returned.
-<p> 
+<p>
 For efficiency, CrossRefList maintains a list of pairwise links
 between Objects (CrossRefs). That is, each member of a set of objects
 has a list of references to other members of the set, and each
@@ -60,7 +60,7 @@ ensures the symmetry of the references, and supports efficient removal
 of links.  Removing a reference in one list automatically updates N
 back-references in O(N) time, independent of the sizes of the
 cross-reference lists.
-<p> 
+<p>
 CrossRefList implements the Serializable interface but this has not
 been tested.
 
@@ -89,7 +89,7 @@ public final class CrossRefList implements Serializable  {
      *  new one has a new container.  This method synchronizes on the
      *  original list.  Note that this is not a true copy constructor.
      *  @param container The container of the object to be constructed.
-     *  @param originalList The model to copy.  
+     *  @param originalList The model to copy.
      *  @exception IllegalActionException If either argument is null.
      */
     public CrossRefList(Object container, CrossRefList originalList)
@@ -113,9 +113,9 @@ public final class CrossRefList implements Serializable  {
     ////                         public methods                    ////
 
     /** Return the first container linked to this list, or
-     *  null if the list is empty.  
-     *  Time complexity: O(1).  
-     *  @return The first entry, or null if there is none.  
+     *  null if the list is empty.
+     *  Time complexity: O(1).
+     *  @return The first entry, or null if there is none.
      */
     public synchronized Object first() {
         if (_headNode != null) {
@@ -131,7 +131,7 @@ public final class CrossRefList implements Serializable  {
      *  contains.  Note that an object may be enumerated more than
      *  once if more than one link to it has been established.
      *  Time complexity: O(1).
-     *  @return An enumeration of remote referenced objects.  
+     *  @return An enumeration of remote referenced objects.
      */
     public synchronized Enumeration getContainers() {
         return new CrossRefEnumeration();
@@ -195,7 +195,7 @@ public final class CrossRefList implements Serializable  {
      *  return.
      *  In the case of redundant links this deletes the first link
      *  to that container.
-     *  Time complexity: O(n).  
+     *  Time complexity: O(n).
      *  @param obj The object to delete.
      */
     public synchronized void unlink(Object obj) {
@@ -308,13 +308,13 @@ public final class CrossRefList implements Serializable  {
         private synchronized void _unlink() {
             ++_listVersion;
             // Removes this from enclosing CrossRefList.
-            if(_next != null) 
+            if(_next != null)
                 _next._previous = _previous; // Modify next.
-            else 
+            else
                 _lastNode = _previous;
-            if(_previous != null) 
+            if(_previous != null)
                 _previous._next = _next; // Modify previous.
-            else 
+            else
                 _headNode = _next;
             _size--; // Modify list.
         }

@@ -58,11 +58,11 @@ public class KernelException extends Exception {
     /** Constructs an Exception with a detail message that includes the
      *  names of the first two arguments plus the third argument string.
      *  If one or more of the parameters are null, then the detail
-     *  message is adjusted accordingly.  
+     *  message is adjusted accordingly.
      *  @param obj1 The first object.
      *  @param obj2 The second object.
      *  @param detail The message.
-     */ 
+     */
     public KernelException(Nameable obj1, Nameable obj2,
             String detail) {
         String obj1string = _getFullName(obj1);
@@ -146,7 +146,7 @@ public class KernelException extends Exception {
     protected void _setMessage(String msg) {
         if (msg == null) {
             _message = "";
-        } else { 
+        } else {
             _message = msg;
         }
     }

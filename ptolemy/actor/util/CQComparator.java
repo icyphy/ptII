@@ -40,7 +40,7 @@ two additional methods:
 <li> Object getBinWidth(Object[] keyArray)
 </ul>
 <p>
-An object implementing this interface can be shared among different 
+An object implementing this interface can be shared among different
 CalendarQueue instances, because it doesn't contain any state information.
 
 @author Lukito Muliadi
@@ -54,7 +54,7 @@ public interface CQComparator extends Comparator{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Given a key, a zero reference, and a bin width, return the index of 
+    /** Given a key, a zero reference, and a bin width, return the index of
      *  the bin containing the key.
      *  This operation is conceptually equivalent to:
      *  <i>(key-zeroReference) / binWidth</i>,
@@ -62,8 +62,8 @@ public interface CQComparator extends Comparator{
      *  <p>
      *  Classes that implement this interface will in general need to
      *  perform a downcast on the arguments (of type Object) to the
-     *  appropriate user defined classes. If the arguments are not of 
-     *  appropriate type, the implementation should throw a 
+     *  appropriate user defined classes. If the arguments are not of
+     *  appropriate type, the implementation should throw a
      *  ClassCastException.
      * @param key an object representing the sort key.
      * @param zeroReference an object representing the zero reference.

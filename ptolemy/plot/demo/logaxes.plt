@@ -12,7 +12,7 @@
 #YLog: on
 Marks: dots
 # We use scientific notation in a few places so we can test the code
-# that reads in numbers. 
+# that reads in numbers.
 1E-01 1.0E-03
 2.0E-01 0.002
 .3 3.0E-03
@@ -35,7 +35,7 @@ Marks: dots
 20 0.02
 100 0.1 1E-01 0.9
 200 0.2
-300 0.3 
+300 0.3
 400 0.4
 500 0.5 0.4 0.6
 600 0.6

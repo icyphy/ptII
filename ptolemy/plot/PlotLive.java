@@ -132,7 +132,7 @@ public abstract class PlotLive extends Plot implements Runnable {
         }
     }
 
-    /** If the argument is true, make a start, stop, and fill button 
+    /** If the argument is true, make a start, stop, and fill button
      *  visible at the upper right.  Otherwise, make the buttons invisible.
      *  NOTE: The buttons may infringe on the title space,
      *  if the title is long.  In an application, it is preferable to provide

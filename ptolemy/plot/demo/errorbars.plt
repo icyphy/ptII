@@ -6,7 +6,7 @@
 # limitation of liability, and disclaimer of warranty provisions.
 
 TitleText: A Plot using Error Bars
-DataSet: 
+DataSet:
 0,-4,-5,-3
 1,-3,-4,1
 2,-2

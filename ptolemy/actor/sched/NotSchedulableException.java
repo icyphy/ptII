@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -33,10 +33,10 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// NotSchedulableException
-/** 
+/**
 This is a special case of InvelidStateException that a CompositeActor
 is not schedulable by a certain scheduler. The exception has an
-Enumeration that contains the possiblly unschedulable actors in the 
+Enumeration that contains the possiblly unschedulable actors in the
 CompositeActor. The enumeration can be used by other algorithms
 to further schedule, or by UI to present to the user.
 @author Jie Liu
@@ -44,7 +44,7 @@ to further schedule, or by UI to present to the user.
 @see InvalidStateException
 */
 public class NotSchedulableException extends InvalidStateException {
-    
+
     /** Constructs an Exception with only a detail message.
      *  @param detail The message.
      */
@@ -73,7 +73,7 @@ public class NotSchedulableException extends InvalidStateException {
     }
 
     /** Constructs an Exception with a detail message that includes the
-     *  name of the first argument, the second argument string, and 
+     *  name of the first argument, the second argument string, and
      *  an Enumeration of unschedulable actors.
      *  @param obj The object.
      *  @param detail The message.

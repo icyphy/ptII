@@ -133,7 +133,7 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
     }
 
     /** Returns the resolved type of this object.  The type is represented
-     *  by an instance of a token of the correct type. 
+     *  by an instance of a token of the correct type.
      *  NOTE: The reason that the resolved type is represented by an
      *  instance of Token instead of an instance of Class is to be able to
      *  call the static convert() method of the Token class to

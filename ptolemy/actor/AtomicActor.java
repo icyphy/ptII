@@ -279,7 +279,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Override the base class to ensure that the proposed container
-     *  is an instance of CompositeActor or null. If it is, call the 
+     *  is an instance of CompositeActor or null. If it is, call the
      *  base class setContainer() method. A null argument will remove
      *  the actor from its container.
      *
@@ -302,7 +302,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Do nothing.  Derived classes override this method to define
-     *  operations to be performed excatly once at the end of a complete 
+     *  operations to be performed excatly once at the end of a complete
      *  execution of an application.  It typically closes
      *  files, displays final results, etc.
      *

@@ -243,8 +243,8 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Invoke one iteration.  In this base class, one iteration consists of 
-     *  exactly one invocation of prefire(), fire(), and postfire(), in that 
+    /** Invoke one iteration.  In this base class, one iteration consists of
+     *  exactly one invocation of prefire(), fire(), and postfire(), in that
      *  order. If prefire() return false, then fire() and postfire() are not
      *  invoked. In derived classes, there may be more than one invocation of
      *  fire(). This method is read-synchronized on the workspace.
@@ -418,10 +418,10 @@ public class Director extends NamedObj implements Executable {
             }
             Enumeration constraints =
                 ((TypedCompositeActor)container).typeConstraints();
- 
+
             InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
             solver.addInequalities(constraints);
- 
+
             // find the greatest solution (most general types)
             boolean resolved = solver.solve(false);
             if ( !resolved) {
@@ -662,7 +662,7 @@ public class Director extends NamedObj implements Executable {
             workspace().remove(this);
         }
     }
-        
+
     /** Make this director the executive director of the specified composite
      *  actor.  This method should not be called directly.  Instead, call
      *  setExecutiveDirector of the CompositeActor class (or a derived class).
@@ -674,7 +674,7 @@ public class Director extends NamedObj implements Executable {
             workspace().remove(this);
         }
     }
-        
+
     /** Perform all pending mutations and inform all registered listeners
      *  of the mutations.  Return true if any mutations were performed,
      *  and false otherwise.

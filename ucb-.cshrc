@@ -49,7 +49,7 @@ if ( "$PTARCH" =~ sol?* ) then
 
 	# Only include /usr/tools/bin in our path if we are running under
 	# Solaris otherwise the sun4 build will fail because
-	# /usr/tools/mathematica is Solaris 
+	# /usr/tools/mathematica is Solaris
 	set path = ($path /usr/tools/bin)
 endif
 

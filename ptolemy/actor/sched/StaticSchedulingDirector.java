@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -36,22 +36,22 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// StaticSchedulingDirector
-/** 
+/**
 A director that uses static scheduling to govern the execution of the
-CompositeActor it belongs to. 
+CompositeActor it belongs to.
 <p>
 A StaticSchedulingDirector contains a scheduler. By calling the schedule()
-method on the sceduler, the director can get an Enumeration of the 
-actors in the firing order. Then the director can use this Enumeration 
-to fire the actors in that order. 
-<p> 
-"Static" means that the firing sequence, once constructed, can be 
+method on the sceduler, the director can get an Enumeration of the
+actors in the firing order. Then the director can use this Enumeration
+to fire the actors in that order.
+<p>
+"Static" means that the firing sequence, once constructed, can be
 used during the execution repeatedly.
 So the returned schedule is locally cached, and can be reused when needed.
 A schedule is called "valid" if is can be used to correctly direct
 the execution of the CompositeActor.
 However, the schedule may become invalid when the CompositeActor mutates.
-A flag <code>_schedulevalid</code> can be set when such a mutation 
+A flag <code>_schedulevalid</code> can be set when such a mutation
 happens and the director must invoke the scheduler again to reschedule
 the CompositeActor.
 
@@ -115,7 +115,7 @@ public class StaticSchedulingDirector extends Director{
     }
 
     /** Return the scheduler responsible for scheduling the contained
-     *  actors. 
+     *  actors.
      *  This method is read-synchronized on the workspace.
      *
      *  @return The scheduler responsible for scheduling inside actors.
@@ -138,7 +138,7 @@ public class StaticSchedulingDirector extends Director{
      *  @exception IllegalActionException Not thrown in this base class,
      *   but derived classes may throw it if the scheduler is not compatible.
      */
-    public void setScheduler(Scheduler scheduler) 
+    public void setScheduler(Scheduler scheduler)
             throws IllegalActionException {
         try {
             workspace().getWriteAccess();
@@ -155,7 +155,7 @@ public class StaticSchedulingDirector extends Director{
 
     /** Validate/Devalidate the schedule. A true argument indicate that
      *  the current (cached) schedule is valid, and the director can use
-     *  it in the further execution. A false argument indicate that 
+     *  it in the further execution. A false argument indicate that
      *  the CompositeActor has been significantly change so that the
      *  cached schedule is no longer valid, and the director should
      *  invoke the scheduler again for a new schedule. This is a facad
@@ -166,7 +166,7 @@ public class StaticSchedulingDirector extends Director{
     public void setScheduleValid( boolean valid)
             throws IllegalActionException {
         if(_scheduler == null) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     " has no scheduler.");
         }
         _scheduler.setValid(valid);
@@ -179,12 +179,12 @@ public class StaticSchedulingDirector extends Director{
      */
     public boolean scheduleValid() throws IllegalActionException {
         if(_scheduler == null) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     " has no scheduler.");
         }
         return _scheduler.valid();
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

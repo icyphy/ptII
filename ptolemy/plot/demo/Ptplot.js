@@ -5,13 +5,13 @@
 //
 // @Copyright (c) 1997- The Regents of the University of California.
 // All rights reserved.
-// 
+//
 // Permission is hereby granted, without written agreement and without
 // license or royalty fees, to use, copy, modify, and distribute this
 // software and its documentation for any purpose, provided that the
 // above copyright notice and the following two paragraphs appear in all
 // copies of this software.
-// 
+//
 // IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 // FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -35,13 +35,13 @@
 //
 function ptplot(theform) {
     var width = theform.width.value;
-    var height = theform.height.value; 
+    var height = theform.height.value;
     var background = theform.background.value;
     var foreground = theform.foreground.value;
     var urlbase = theform.urlbase.value;
     fileObj = theform.fileSelection;
     var files = fileObj.options[fileObj.selectedIndex].text;
-    var pxgraphargs = theform.pxgraphargs.value; 
+    var pxgraphargs = theform.pxgraphargs.value;
     var displayargs = theform.displayargs.checked;
     var otherargs = "";
 
@@ -52,7 +52,7 @@ function ptplot(theform) {
     otherargs += ( theform.largepoints.checked ) ? "-P ": "";
     otherargs += ( theform.reversevideo.checked ) ? "-rv ": "";
     otherargs += ( theform.ticks.checked ) ? "-tk ": "";
-    otherargs += ( theform.title.value != "" ) ? 
+    otherargs += ( theform.title.value != "" ) ?
 	"-t '" + theform.title.value + "' " : "";
     otherargs += "-tf " +
         theform.titleFontFamily.options[
@@ -76,9 +76,9 @@ function ptplot(theform) {
                 theform.labelFontSize.selectedIndex].text +
         " ";
 
-    otherargs += ( theform.xaxis.value != "" ) ? 
+    otherargs += ( theform.xaxis.value != "" ) ?
 	"-x '" + theform.xaxis.value + "' " : "";
-    otherargs += ( theform.yaxis.value != "" ) ? 
+    otherargs += ( theform.yaxis.value != "" ) ?
 	"-y '" + theform.yaxis.value + "' " : "";
 
     if (urlbase != "" && files != "(NONE)") {

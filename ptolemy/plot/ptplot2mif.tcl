@@ -10,26 +10,26 @@ exec tclsh "$0" "$@"
 
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
@@ -41,8 +41,8 @@ exec tclsh "$0" "$@"
 proc readin { infile } {
     set fd [open $infile r]
     # sawPage is true if we've seen %%Page:
-    set sawPage 0 
-    # After we see '%%Page:', throw away a few lines 
+    set sawPage 0
+    # After we see '%%Page:', throw away a few lines
     # This gets rid of some of the annoying boxes that are
     # in the ptplot output
     set sawHeaderAfterPage 0
@@ -50,7 +50,7 @@ proc readin { infile } {
     while {[gets $fd line] >= 0} {
 	# puts "---> $line"
 	if [regexp {^%%Page:} $line] {
-	    set sawPage 1 
+	    set sawPage 1
 	} else {
 	    if { !$sawPage } {
 		if [regexp {/PageSize \[([^ ]*) ([^ ]*)\]} $line a x y] {
@@ -62,7 +62,7 @@ proc readin { infile } {
 	        if { ! $sawHeaderAfterPage } {
 		    if { "$line" == "255 255 255 SC" } {
 			set sawHeaderAfterPage 1
-		    } 
+		    }
 		}
 	        if { $sawHeaderAfterPage } {
 		    if [regexp {^%} $line] {
@@ -81,7 +81,7 @@ proc readin { infile } {
 			}
 			append pscript "$command $arglist"
 		    }
-		}	    
+		}
 	    }
 	}
     }
@@ -132,11 +132,11 @@ proc mifInit {} {
     puts "<PenWidth .5>[ObColor]"
     puts "<Fill 15>"
 }
- 
+
 ########################################################################
 #### mifColors
 # Print out color catalog
-# 
+#
 proc mifColors {colorlist} {
     puts "<ColorCatalog"
     for {set i 0} {$i < [llength $colorlist]} {incr i} {
@@ -149,14 +149,14 @@ proc mifColors {colorlist} {
 	puts "  <ColorBlack [expr {(([lindex $color 0] + [lindex $color 1] + \
 		[lindex $color 2])/3.0) / 255.0 * 100.0}]>"
 	puts " >"
-    } 
+    }
     puts ">"
 }
 
 ########################################################################
 #### mifEnd
 # End of the mif file.
-# 
+#
 proc mifEnd {} {
     puts "<Group <ID 1>>"
     flush stdout
@@ -177,7 +177,7 @@ proc debug {args} {
 proc parsePercent {line} {
     if [regexp {% Font\[([^,]*), ([^,]*), ([^,]*)]} $line a b c d] {
 	# Handle $Font directives
-	global currentFont currentFontSize currentFontBold No	
+	global currentFont currentFontSize currentFontBold No
 	debug "parsePercent '$line' b=$b c=$c d=$d"
 	set currentFont $b
 	# Note: use a font that is smaller by two points
@@ -238,7 +238,7 @@ proc AForAS {pen args} {
     puts " <ShapeRect [mapx [expr {$l - 0.5 * $w}]] \
 	[mapy [expr {$t + 0.5 * $h}]] \
 	[mapx $w] \
-	[mapx $h]>>" 
+	[mapx $h]>>"
 }
 
 # /DL {moveto lineto stroke} BD
@@ -289,7 +289,7 @@ proc PYF {args} {
 	puts " <Fill 7>"
     } else {
 	puts " <Fill 0>"
-    }	
+    }
     puts " <HeadCap Butt>"
     puts " <PenWidth .5>\n[ObColor]\n <DashedPattern <DashedStyle Solid>>"
     for {set i 1} {$i < [expr {[llength $args] -1}]} {incr i} {
@@ -307,7 +307,7 @@ proc PYS {args} {
 	puts " <Fill 0>"
     } else {
 	puts " <Fill 7>"
-    }	
+    }
     puts " <HeadCap Butt>"
     puts " <PenWidth .5>\n[ObColor]\n <DashedPattern <DashedStyle Solid>>"
     for {set i 1} {$i < [expr {[llength $args] -1}]} {incr i} {

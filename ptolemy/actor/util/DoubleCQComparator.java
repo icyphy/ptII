@@ -1,4 +1,4 @@
-/* A sample implementation of the CQComparator interface using 
+/* A sample implementation of the CQComparator interface using
    Double to represent sort key.
 
  Copyright (c) 1998 The Regents of the University of California.
@@ -72,17 +72,17 @@ public class DoubleCQComparator implements CQComparator {
         }
     }
 
-    /** Given a key, a zero reference, and a bin width, return the index of 
+    /** Given a key, a zero reference, and a bin width, return the index of
      *  the bin containing the key.
      *  <p>
-     *  If the arguments are not instances of Double, then a 
+     *  If the arguments are not instances of Double, then a
      *  ClassCastException will be thrown.
      *  @param key the key
      *  @param zeroReference the zero reference.
      *  @param binWidth the width of the bin
      *  @return The index of the bin containing the key, according to the
      *          zero reference, and the bin width.
-     *  @exception ClassCastException Arguments need to be instances of 
+     *  @exception ClassCastException Arguments need to be instances of
      *          Double.
      */
     public long getBinIndex(Object key, Object zeroReference, Object binWidth) {
@@ -94,7 +94,7 @@ public class DoubleCQComparator implements CQComparator {
     }
 
 
-    /** Given an array of Double objects, find the appropriate bin 
+    /** Given an array of Double objects, find the appropriate bin
      *  width. By 'appropriate', the bin width is chosen such that on average
      *  the number of entry in all non-empty bins is equal to one.
      *  If the argument is null, return the default bin width which is 1.0
@@ -118,7 +118,7 @@ public class DoubleCQComparator implements CQComparator {
 
         double average = 0;
         for (int i = 1; i < keyArray.length; ++i) {
-            diff[i-1] = ((Double)keyArray[i]).doubleValue() - 
+            diff[i-1] = ((Double)keyArray[i]).doubleValue() -
                 ((Double)keyArray[i-1]).doubleValue();
             average = average + diff[i-1];
         }
@@ -133,7 +133,7 @@ public class DoubleCQComparator implements CQComparator {
         }
         effAverage = effAverage / nEffSamples;
         return new Double(3.0 * effAverage);
-        
+
     }
 }
 

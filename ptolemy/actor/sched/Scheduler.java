@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -38,16 +38,16 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
-/** 
+/**
 A base class for schedulers. A scheduler schedules the execution order
-of the containees of a CompositeActor. 
+of the containees of a CompositeActor.
 <p>
 A scheduler has a reference to a StaticSchedulingDirector, and
 provides the schedule.
-The director will use this schedule to govern the execution of a 
-CompositeActor. 
+The director will use this schedule to govern the execution of a
+CompositeActor.
 <p>
-The schedule sequence, once constructed, is cached and reused in the 
+The schedule sequence, once constructed, is cached and reused in the
 next time if the schedule is still valid. The validation of a schedule
 is set by the <code>setValid()</code> method. If the current schedule
 is set to be not valid, the schedule() method will call the protected
@@ -57,7 +57,7 @@ classes.
 <p>
 Scheduler implements the MutationListener interface, and register itself
 as a MutationListener to the host director.  When a mutation occurs,
-the director will inform all the mutation listeners (including the 
+the director will inform all the mutation listeners (including the
 scheduler), and the scheduler will in
 validate the current schedule.
 
@@ -72,7 +72,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  "Basic Scheduler".
      * @see ptolemy.kernel.util.NamedObj
      * @return The scheduler
-     */	
+     */
     public Scheduler() {
         super(_staticname);
     }
@@ -90,7 +90,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     public Scheduler(Workspace ws) {
         super(ws, _staticname);
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -99,7 +99,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *
      *  @param composite The container of the entity.
      *  @param entity The actor being added to the composite.
-     */	
+     */
     public void addEntity(CompositeEntity composite, Entity entity) {
         setValid(false);
     }
@@ -109,7 +109,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *
      *  @param entity The entity getting a new port.
      *  @param port The new port.
-     */	
+     */
     public void addPort(Entity entity, Port port) {
         setValid(false);
     }
@@ -119,7 +119,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *
      *  @param composite The container getting a new relation.
      *  @param relation The new relation.
-     */	
+     */
     public void addRelation(CompositeEntity composite, Relation relation) {
         setValid(false);
     }
@@ -144,13 +144,13 @@ public class Scheduler extends NamedObj implements MutationListener{
 
     /** Return the description of the scheduler. In this base class,
      *  it returns the name and schedule (an Enumeration of the actors
-     *  returned by deepGetEntites()). 
+     *  returned by deepGetEntites()).
      *  FIXME: Implementation needed.
      */
-    
+
     /** Notify the scheduler that mutation is complete. Do nothing in the
      *  base class.
-     */	
+     */
     public void done() {}
 
     /** Return the container, which is the StaticSchedulingDirector
@@ -167,18 +167,18 @@ public class Scheduler extends NamedObj implements MutationListener{
      *
      *  @param relation The relation being linked.
      *  @param port The port being linked.
-     */	
+     */
     public void link(Relation relation, Port port) {
         setValid(false);
     }
 
-    /** Notify the scheduler that an entity has been removed from 
+    /** Notify the scheduler that an entity has been removed from
      *  a composite.
      *  This will invalidate the current schedule.
      *
      *  @param composite The container of the entity.
      *  @param entity The entity being removed.
-     */	
+     */
     public void removeEntity(CompositeEntity composite, Entity entity){
         setValid(false);
     }
@@ -188,7 +188,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *
      *  @param entity The container of the port.
      *  @param port The port being removed.
-     */	
+     */
     public void removePort(Entity entity, Port port){
         setValid(false);
     }
@@ -198,17 +198,17 @@ public class Scheduler extends NamedObj implements MutationListener{
      *
      *  @param entity The container of the relation.
      *  @param port The relation being removed.
-     */	
+     */
     public void removeRelation(CompositeEntity entity, Relation relation) {
         setValid(false);
     }
 
-    /** Return the scheduling sequence. If the cached version of the 
+    /** Return the scheduling sequence. If the cached version of the
      *  schedule is valid, return it directly. Otherwise call
      *  _schedule() to reconstruct. The validity of the current schedule
      *  is set by setValid() method.
-     *  If the scheduler has no container, or the container 
-     *  StaticSchedulingDirector has no container, throw an 
+     *  If the scheduler has no container, or the container
+     *  StaticSchedulingDirector has no container, throw an
      *  IllegalActionException.
      *  This method read synchronize the workspace.
      *
@@ -216,23 +216,23 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  in the firing order.
      * @exception IllegalActionException If the scheduler has no container
      *  (director), or the container has no container (CompositeActor).
-     * @exception NotSchedulableException If the _schedule() method 
+     * @exception NotSchedulableException If the _schedule() method
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
-     */	
-    public Enumeration schedule() throws 
+     */
+    public Enumeration schedule() throws
             IllegalActionException, NotSchedulableException {
         try {
             workspace().getReadAccess();
             StaticSchedulingDirector dir =
                 (StaticSchedulingDirector)getContainer();
             if( dir == null) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "is a dangling scheduler.");
             }
             CompositeActor ca = (CompositeActor)(dir.getContainer());
             if( ca == null) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "is a dangling scheduler.");
             }
             if(!valid()) {
@@ -244,16 +244,16 @@ public class Scheduler extends NamedObj implements MutationListener{
                     _cachedschedule.insertLast(newsche.nextElement());
                 }
             }
-            return _cachedschedule.elements(); 
+            return _cachedschedule.elements();
         } finally {
             workspace().doneReading();
         }
     }
 
     /** Validate/invalidate the current schedule by set the _valid member.
-     *  A <code>true</code> argument will indicate that the current 
+     *  A <code>true</code> argument will indicate that the current
      *  schedule is valid
-     *  and can be returned immediately when schedule() is called without 
+     *  and can be returned immediately when schedule() is called without
      *  running the scheduling algorithm. A <code>false</code> argument
      *  will invalidate it.
      *  @param true to set _valid flag to true.
@@ -267,7 +267,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *
      *  @param relation The relation being unlinked.
      *  @param port The port being unlinked.
-     */	
+     */
     public void unlink(Relation relation, Port port) {
         setValid(false);
     }
@@ -282,7 +282,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Make this scheduler the scheduler of the specified director, and 
+    /** Make this scheduler the scheduler of the specified director, and
      *  register itself as a mutation listener of the director.
      *  This method should not be called directly.  Instead, call
      *  setScheduler of the StaticSchedulingDirector class
@@ -303,14 +303,14 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  This method should not be called directly, rather the schedule()
      *  will call it when the schedule is not valid. So it is not
      *  synchronized on the workspace.
-     * 
+     *
      * @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      * @return An Enumeration of the deeply contained opaque entities
      *  in the firing order.
      * @exception NotSchedulableException If the CompositeActor is not
      *  schedulable. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
-     */	
+     */
     protected Enumeration _schedule() throws NotSchedulableException {
         StaticSchedulingDirector dir =
             (StaticSchedulingDirector)getContainer();
