@@ -31,7 +31,8 @@
 ME =		ptolemy/matlab/demo
 
 # Keep these alphabetical please.
-DIRS = 		MatlabExpression
+DIRS = 		MatlabCT \
+		MatlabExpression
 
 # Root of Ptolemy II directory
 ROOT =		../../..
