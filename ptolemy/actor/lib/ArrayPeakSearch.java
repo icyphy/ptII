@@ -66,9 +66,9 @@ This actor is based on Matlab code developed by John Signorotti of
 Southwest Research Institute.
 
 @author Edward A. Lee
-@version $ID: ArrauPeakSearch.java,v1.0 2003/07/09
+@version $Id$
+@since Ptolemy II 3.1
 */
-
 public class ArrayPeakSearch extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
