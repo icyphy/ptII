@@ -71,15 +71,11 @@ public final class CrossRefList implements Serializable  {
 
     /** Construct a list with the specified container.
      *  The container is immutable (it cannot be changed).
+     *  If the argument is null, then a null pointer exception will result
+     *  (eventually).
      *  @param container The container of the object to be constructed.
-     *  @exception IllegalActionException If the argument is null.
      */
-    public CrossRefList(Object container)
-            throws IllegalActionException {
-        if (container == null) {
-            throw new IllegalActionException(
-                    "Attempt to create CrossRefList with a null container.");
-        }
+    public CrossRefList(Object container) {
         _container = container;
     }
 
@@ -88,23 +84,23 @@ public final class CrossRefList implements Serializable  {
      *  new one has a new container.  This method synchronizes on the
      *  original list.  Note that this behaves like a copy constructor,
      *  except that the remote list is affected so that it will now point
-     *  back to both lists.
+     *  back to both lists.  If either argument is null, then a null
+     *  pointer exception will be thrown.
      *  @param container The container of the object to be constructed.
      *  @param originalList The model to copy.
-     *  @exception IllegalActionException If either argument is null.
      */
-    public CrossRefList(Object container, CrossRefList originalList)
-            throws IllegalActionException {
+    public CrossRefList(Object container, CrossRefList originalList) {
         this(container);
-        if (originalList == null) {
-            throw new IllegalActionException(
-                    "Attempt to copy a CrossRefList from a null model.");
-        }
         synchronized(originalList) {
             if(originalList.size() == 0) return; // List to copy is empty.
             for(CrossRef p = originalList._headNode; p != null; p = p._next) {
                 if(p._far._nearList() != null) {
-                    link(p._far._nearList());
+                    try {
+                        link(p._far._nearList());
+                    } catch (IllegalActionException ex) {
+                        // This should not be thrown.
+                        throw new InternalErrorException(ex.toString());
+                    }
                 }
             }
         }
