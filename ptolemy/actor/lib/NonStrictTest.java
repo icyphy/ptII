@@ -228,7 +228,7 @@ public class NonStrictTest extends Sink {
         if (input.getWidth() != 1) {
             throw new IllegalActionException(this,
                     "Width of input is " + input.getWidth()
-                    + "but NonStrictTest only supports a width of 1.");
+                    + " but NonStrictTest only supports a width of 1.");
         }
         boolean training = ((BooleanToken)trainingMode.getToken())
             .booleanValue();
@@ -286,6 +286,19 @@ public class NonStrictTest extends Sink {
                     + "Usually, this is an error indicating that "
                     + "starvation is occurring");
         }
+        _initialized = false;
+
+        if (!training
+                && _numberOfInputTokensSeen
+                < ((ArrayToken)(correctValues.getToken())).length()) {
+            throw new IllegalActionException(this,
+                    "The test produced only " + _numberOfInputTokensSeen
+                    + " tokens, yet the correctValues parameter was "
+                    + "expecting "
+                    + ((ArrayToken)(correctValues.getToken())).length()
+                    + " tokens.");
+        }
+
         // Note that wrapup() might get called by the manager before
         // we have any data...
         if (training && _trainingTokens != null &&
