@@ -24,7 +24,8 @@
                  class CDATA #IMPLIED>
 
 <!ELEMENT import EMPTY>
-<!ATTLIST import source CDATA #REQUIRED>
+<!ATTLIST import source CDATA #REQUIRED
+                 base CDATA #IMPLIED>
 
 <!ELEMENT link EMPTY>
 <!ATTLIST link port CDATA #REQUIRED
