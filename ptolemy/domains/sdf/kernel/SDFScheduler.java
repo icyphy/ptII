@@ -510,8 +510,8 @@ public class SDFScheduler extends Scheduler {
 
         // Schedule all the actors using the calculated firings.
         Schedule result =
-            _scheduleConnectedActors(minimumBufferSize,
-                    liveActorList, allActorList);
+            _scheduleConnectedActors(minimumBufferSize, externalRates,
+                    liveActorList, container, allActorList);
 
         if (_debugging) {
             _debug("Firing Vector:");
@@ -1055,6 +1055,9 @@ public class SDFScheduler extends Scheduler {
      *  representing the minimum size buffer necessary for the computed
      *  schedule.  The map will be populated during the execution of this
      *  method.
+     *  @param externalRates Map from external port to an Integer
+     *  representing the number of tokens produced or consumed from
+     *  that port during the course of an iteration.
      *  @param actorList The actors that need to be scheduled.
      *  @param allActorList All the actors, including those that do
      *  not need to be scheduled.  These actors will still me
@@ -1068,7 +1071,8 @@ public class SDFScheduler extends Scheduler {
      *  scheduled.
      */
     private Schedule _scheduleConnectedActors(Map minimumBufferSize,
-            LinkedList actorList, LinkedList allActorList)
+            Map externalRates, LinkedList actorList,
+            CompositeActor container, LinkedList allActorList)
             throws NotSchedulableException {
 
         // A linked list containing all the actors that have no inputs.
@@ -1108,8 +1112,34 @@ public class SDFScheduler extends Scheduler {
                         tokenCount[channel] = 0;
                     }
 		    waitingTokens.put(inputPort, tokenCount);
+                
                 }
             }
+
+            // Initiailize waitingTokens at
+            // all output ports of the model to zero.
+            for (Iterator outputPorts = container.outputPortList().iterator();
+                 outputPorts.hasNext();) {
+                IOPort outputPort = (IOPort) outputPorts.next();
+
+                // Compute the width of relations connected to the inside.
+                // Wouldn't it be nice if IOPort did this?
+                Iterator relations = outputPort.insideRelationList().iterator();
+                int portInsideWidth = 0;
+                while (relations.hasNext()) {
+                    IORelation relation = (IORelation)relations.next();
+                    portInsideWidth += relation.getWidth();
+                }
+
+                int[] tokenCount = new int[portInsideWidth];                
+                for (int channel = 0;
+                     channel < tokenCount.length;
+                     channel++) {
+                    tokenCount[channel] = 0;
+                }
+                waitingTokens.put(outputPort, tokenCount);
+            }
+
 
 	    // simulate the creation of initialization tokens (delays).
 	    for (Iterator actors = allActorList.iterator();
@@ -1135,17 +1165,17 @@ public class SDFScheduler extends Scheduler {
 		}
             }
 
-            // Simulate a large number of tokens created on each
+            // Simulate a number of tokens initially present on each
             // external input port.
-            StaticSchedulingDirector director =
-                (StaticSchedulingDirector)getContainer();
-            CompositeActor container = (CompositeActor)director.getContainer();
             for (Iterator inputPorts = container.inputPortList().iterator();
                  inputPorts.hasNext();) {
                 IOPort port = (IOPort)inputPorts.next();
+                int count = ((Integer)externalRates.get(port)).intValue();
                 _simulateExternalInputs(port,
+                        count,
                         actorList,
-                        waitingTokens);
+                        waitingTokens,
+                        minimumBufferSize);
             }
 
 	    // Fill readyToScheduleActorList with all the actors that have
@@ -1503,8 +1533,10 @@ public class SDFScheduler extends Scheduler {
      * is automatically fulfilled.
      */
     private void _simulateExternalInputs(IOPort port,
+            int count,
             LinkedList actorList,
-            Map waitingTokens)
+            Map waitingTokens,
+            Map minimumBufferSize)
             throws IllegalActionException {
 
 	Receiver[][] receivers = port.deepGetReceivers();
@@ -1514,44 +1546,74 @@ public class SDFScheduler extends Scheduler {
                     + port.getFullName());
             _debug("inside channels = " + receivers.length);
         }
-	int sourceChannel;
-	for (sourceChannel = 0;
-             sourceChannel < receivers.length;
-             sourceChannel++) {
-	    if (_debugging) {
-                _debug("destination receivers for channel "
-                        + sourceChannel + ": "
-                        + receivers[sourceChannel].length);
-            }
-	    int destinationReceiver;
-	    for (destinationReceiver = 0;
-                 destinationReceiver < receivers[sourceChannel].length;
-                 destinationReceiver++) {
-		IOPort connectedPort =
-		    (IOPort) receivers[sourceChannel][destinationReceiver].
-		    getContainer();
-		ComponentEntity connectedActor =
-		    (ComponentEntity) connectedPort.getContainer();
-		// Only proceed if the connected actor is something we are
-		// scheduling.  The most notable time when this will not be
-		// true is when a connection is made to the
-		// inside of an opaque port.
-		if (actorList.contains(connectedActor)) {
-		    int destinationChannel =
-			_getChannel(connectedPort,
-                                receivers[sourceChannel]
-                                [destinationReceiver]
-				    );
-		    int[] tokens = (int[]) waitingTokens.get(connectedPort);
-		    tokens[destinationChannel] = Integer.MAX_VALUE;
 
-                    if (_debugging) {
-                        _debug("Channel " + destinationChannel
-                                + " of " + connectedPort.getName());
+        int sourceChannel = 0;
+        Iterator relations = port.insideRelationList().iterator();
+        while (relations.hasNext()) {
+            IORelation relation = (IORelation) relations.next();
+            // A null link (supported since indexed links) might
+            // yield a null relation here.
+            // FIXME: tests for null links.
+            if (relation == null) {
+                continue;
+            }
+            
+            // The bufferSize for the current relation.  This is
+            // put back into the buffer at the end after (possibly)
+            // being updated.
+            Integer bufferSize = (Integer) minimumBufferSize.get(relation);
+            
+            int width = relation.getWidth();
+            // loop through all of the channels of that relation.
+            for (int i = 0; i < width; i++, sourceChannel++) {
+                if (_debugging) {
+                    _debug("destination receivers for relation "
+                            + relation.getName() + " channel "
+                            + sourceChannel + ": "
+                            + receivers[sourceChannel].length);
+                }
+                
+                for (int destinationIndex = 0;
+                     destinationIndex < receivers[sourceChannel].length;
+                     destinationIndex++) {
+                    IOPort connectedPort = (IOPort)
+                        receivers[sourceChannel][destinationIndex].
+                        getContainer();
+                    ComponentEntity connectedActor =
+                        (ComponentEntity) connectedPort.getContainer();
+                    // Only proceed if the connected actor is something we are
+                    // scheduling.  The most notable time when this will not be
+                    // true is when a connection is made to the
+                    // inside of an opaque port.
+                    if (actorList.contains(connectedActor)) {
+                        int destinationChannel =
+                            _getChannel(connectedPort,
+                                    receivers[sourceChannel]
+                                    [destinationIndex]
+                                        );
+                        int[] tokens = (int[]) waitingTokens.get(connectedPort);
+                        tokens[destinationChannel] = count;
+                        
+                        // Update the buffer size, if necessary.
+                        // if bufferSize is null, then ignore, since we don't
+                        // care about that relation.
+                        if (bufferSize != null &&
+                                tokens[destinationChannel] >
+                                bufferSize.intValue()) {
+                            bufferSize =
+                                new Integer(tokens[destinationChannel]);
+                        }
+                        
+                        if (_debugging) {
+                            _debug("Channel " + destinationChannel
+                                    + " of " + connectedPort.getName());
+                        }
                     }
-		}
-	    }
-	}
+                }
+            }
+            // update the map of buffer sizes.
+            minimumBufferSize.put(relation, bufferSize);
+        }
     }
 
     /** Simulate the consumption of tokens by the actor during execution of
@@ -1665,16 +1727,12 @@ public class SDFScheduler extends Scheduler {
                         getContainer();
                     ComponentEntity connectedActor =
                         (ComponentEntity) connectedPort.getContainer();
-                    // Only proceed if the connected actor is something we are
-                    // scheduling.  The most notable time when this will not be
-                    // true is when a connection is made to the
-                    // inside of an opaque port.
-                    if (actorList.contains(connectedActor)) {
-                        // The channel of the destination port that is
-                        // connected to sourceChannel.
-                        int destinationChannel = _getChannel(connectedPort,
-                                receivers[sourceChannel][destinationIndex]);
-
+                   
+                    // The channel of the destination port that is
+                    // connected to sourceChannel.
+                    int destinationChannel = _getChannel(connectedPort,
+                            receivers[sourceChannel][destinationIndex]);
+                    
                         // Increment the number of waiting tokens.
                         int[] tokens =
                             (int[]) waitingTokens.get(connectedPort);
@@ -1693,7 +1751,13 @@ public class SDFScheduler extends Scheduler {
                             _debug("Channel " + destinationChannel + " of " +
                                     connectedPort.getName());
                         }
-                        // Check and see if the connectedActor can be scheduled
+                        // Only proceed if the connected actor is something we are
+                        // scheduling.  The most notable time when this will not be
+                        // true is when a connection is made to the
+                        // inside of an opaque port.
+                        if (actorList.contains(connectedActor)) {
+                            
+                            // Check and see if the connectedActor can be scheduled
                         int inputCount = _countUnfulfilledInputs(
                                 (Actor)connectedActor,
                                 actorList,
