@@ -174,6 +174,7 @@ JSRCS = \
 	URLReader.java \
 	URLDirectoryReader.java \
 	VariableClock.java \
+	VariableSleep.java \
 	VectorAssembler.java \
 	VectorDisassembler.java \
 	WallClockTime.java \
