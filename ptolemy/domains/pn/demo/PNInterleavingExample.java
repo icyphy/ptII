@@ -46,7 +46,7 @@ class PNInterleavingExample {
     public static void main(String args[]) throws 
 	    IllegalStateException, IllegalActionException, 
             NameDuplicationException {
-	PNUniverse myUniverse = new PNUniverse();
+	PNCompositeActor myUniverse = new PNCompositeActor();
         myUniverse.setCycles(Integer.parseInt(args[0]));
         PNInterleave _interleave = new PNInterleave(myUniverse, "interleave");
         //myUniverse.getDirector().registerNewActor(_interleave);

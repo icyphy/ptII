@@ -46,7 +46,7 @@ public class PNPrimeExample {
     public static void main(String args[]) throws 
             IllegalStateException, IllegalActionException, 
             NameDuplicationException {
-        PNUniverse myUniverse = new PNUniverse();
+        PNCompositeActor myUniverse = new PNCompositeActor();
         myUniverse.setCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.setInitState(2);
