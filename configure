@@ -5144,7 +5144,7 @@ echo $ECHO_N "checking for Java Advanced Imaging (JAI) API... $ECHO_C" >&6
 echo "${ECHO_T}ok" >&6
        PTJAI_DIR=jai
        # PTJAI_PACKAGES is used in ptII/doc/makefile
-       PTJAI_PACKAGES=ptolemy.actor.lib/jai
+       PTJAI_PACKAGES=ptolemy.actor.lib.jai
     else
        { echo "$as_me:$LINENO: WARNING: '\"$JAVAC\" JAITest.java' failed.
     perhaps the Java Advanced Imaging API is not installed?
