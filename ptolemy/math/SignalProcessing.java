@@ -891,12 +891,12 @@ public class SignalProcessing {
     public static final double[] generateGaussianCurve(
             double standardDeviation, double extent, int length) {
         GaussianSampleGenerator generator
-               = new GaussianSampleGenerator(0.0, standardDeviation);
+            = new GaussianSampleGenerator(0.0, standardDeviation);
         return sampleWave(
-               length,
-               -extent*standardDeviation,
-               2.0*extent*standardDeviation/length,
-               generator);
+                length,
+                -extent*standardDeviation,
+                2.0*extent*standardDeviation/length,
+                generator);
     }
     
     /** Return a new array that is filled with samples of a Hamming
@@ -964,12 +964,12 @@ public class SignalProcessing {
     public static final double[] generatePolynomialCurve(
             double[] polynomial, double start, double step, int length) {
         PolynomialSampleGenerator generator
-               = new PolynomialSampleGenerator(polynomial, 1);
+            = new PolynomialSampleGenerator(polynomial, 1);
         return sampleWave(
-               length,
-               start,
-               step,
-               generator);
+                length,
+                start,
+                step,
+                generator);
     }
     
     /** Return an array containing a symmetric raised-cosine pulse.
@@ -998,13 +998,13 @@ public class SignalProcessing {
     public static final double[] generateRaisedCosinePulse(
             double excessBandwidth, double firstZeroCrossing, int length) {
         RaisedCosineSampleGenerator generator
-               = new RaisedCosineSampleGenerator(firstZeroCrossing,
-                       excessBandwidth);
+            = new RaisedCosineSampleGenerator(firstZeroCrossing,
+                    excessBandwidth);
         return sampleWave(
-               length,
-               -(length-1)/2.0,
-               1.0,
-               generator);        
+                length,
+                -(length-1)/2.0,
+                1.0,
+                generator);        
     }
 
     /** Return a new array that is filled with samples of a rectangular
@@ -1061,12 +1061,12 @@ public class SignalProcessing {
     public static final double[] generateSqrtRaisedCosinePulse(
             double excessBandwidth, double firstZeroCrossing, int length) {
         RaisedCosineSampleGenerator generator
-               = new RaisedCosineSampleGenerator(firstZeroCrossing, excessBandwidth);
+            = new RaisedCosineSampleGenerator(firstZeroCrossing, excessBandwidth);
         return sampleWave(
-               length,
-               -(length-1)/2.0,
-               1.0,
-               generator);        
+                length,
+                -(length-1)/2.0,
+                1.0,
+                generator);        
     }
     
     /** Return a new array that is filled with samples of a window of a

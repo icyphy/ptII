@@ -437,7 +437,7 @@ public class Engine {
     private native double[][]
     ptmatlabGetDoubleMatrix(long mxArray, int n, int m);
     private native int[][]
-	ptmatlabGetLogicalMatrix(long mxArray, int nRows, int nCols);
+    ptmatlabGetLogicalMatrix(long mxArray, int nRows, int nCols);
     private native String ptmatlabGetFieldNameByNumber(long mxArray, int k);
     private native long
     ptmatlabGetFieldByNumber(long mxArray, int k, int n, int m);
