@@ -665,7 +665,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/cgc \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/hde \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
