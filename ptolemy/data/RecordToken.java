@@ -90,10 +90,8 @@ public class RecordToken extends Token {
 
     /** Return a new token whose value is the field-wise addition of
      *  this token and the argument. The argument must be a RecordToken.
-     *  The result is a RecordToken whose label set is the intersection
-     *  of the label sets of this token and the argument. The type of
-     *  the result token is greater than or equal to the types of this
-     *  token and the argument.
+     *  The result is a RecordToken whose label set is the union
+     *  of the label sets of this token and the argument.
      *  @param token The token to add to this token.
      *  @return A new RecordToken.
      *  @exception IllegalActionException If the argument is not a
@@ -108,13 +106,13 @@ public class RecordToken extends Token {
 
         RecordToken recordToken = (RecordToken)token;
 
-        Set intersectionSet = new HashSet();
+        Set unionSet = new HashSet();
         Set myLabelSet = _fields.keySet();
         Set argLabelSet = recordToken._fields.keySet();
-        intersectionSet.addAll(myLabelSet);
-        intersectionSet.retainAll(argLabelSet);
+        unionSet.addAll(myLabelSet);
+        unionSet.addAll(argLabelSet);
 
-        Object[] labelsObjects = intersectionSet.toArray();
+        Object[] labelsObjects = unionSet.toArray();
         int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
@@ -122,7 +120,13 @@ public class RecordToken extends Token {
             labels[i] = (String)labelsObjects[i];
             Token value1 = this.get(labels[i]);
             Token value2 = recordToken.get(labels[i]);
-            values[i] = value1.add(value2);
+	    if (value1 == null) {
+	        values[i] = value2;
+	    } else if (value2 == null) {
+	        values[i] = value1;
+	    } else {
+                values[i] = value1.add(value2);
+	    }
         }
 
         return new RecordToken(labels, values);
