@@ -61,12 +61,12 @@ public class TwoPut extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         out1 = new TypedIOPort(this, "output1", false, true);
-	 out1.setMultiport(true);
-	 out1.setTypeEquals(Token.class);
-         out2 = new TypedIOPort(this, "output2", false, true);
-	 out2.setMultiport(true);
-	 out2.setTypeEquals(Token.class);
+         output1 = new TypedIOPort(this, "output1", false, true);
+	 output1.setMultiport(true);
+	 output1.setTypeEquals(Token.class);
+         output2 = new TypedIOPort(this, "output2", false, true);
+	 output2.setMultiport(true);
+	 output2.setTypeEquals(Token.class);
          input = new TypedIOPort(this, "input", true, false);
 	 input.setMultiport(true);
 	 input.setTypeEquals(Token.class);
@@ -92,7 +92,7 @@ public class TwoPut extends TypedAtomicActor {
 		System.out.println("TwoPut receiver["+i+"]["+j+"];");
 		if( inRcvr.hasToken() ) {
 		    token = inRcvr.get();
-		    out1.broadcast(token);
+		    output1.broadcast(token);
 		    /*
 		    Receiver[][] outRcvrs = output.getRemoteReceivers();
 		    for( int k = 0; k < outRcvrs.length; k++ ) {
@@ -126,8 +126,8 @@ public class TwoPut extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    public TypedIOPort out1;
-    public TypedIOPort out2;
+    public TypedIOPort output1;
+    public TypedIOPort output2;
     public TypedIOPort input;
     private int _outChannel = -1;
     private boolean _continueIterations = true;
