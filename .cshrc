@@ -1,5 +1,5 @@
 #! /bin/csh
-# sample Ptolemy II .cshrc 
+# sample Ptolemy II .cshrc
 # $Id$
 
 # By default, create files that are writable by only the user
