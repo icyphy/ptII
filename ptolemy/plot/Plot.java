@@ -191,7 +191,7 @@ This plotter has some <A NAME="ptplot limitations">limitations</a>:
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
 @since Ptolemy II 0.2
- */
+*/
 public class Plot extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
