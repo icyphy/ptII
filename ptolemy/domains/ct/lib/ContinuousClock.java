@@ -110,7 +110,9 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
      *  @exception IllegalActionException If output can not send value.
      */
     public void fire() throws IllegalActionException {
-
+        // Use the strategy pattern here so that derived classes can
+        // override how this is done.
+        _updateTentativeValues();
         output.send(0, _currentValue);
         if (_debugging)_debug("Output: " + _currentValue + " at " + 
             getDirector().getModelTime() + ".");
@@ -173,10 +175,6 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
         if (_debugging) {
             _debug("--- Postfiring at time " + currentTime + ".");
         }
-
-        // Use the strategy pattern here so that derived classes can
-        // override how this is done.
-        _updateTentativeValues();
 
         // Use Time.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
