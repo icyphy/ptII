@@ -65,7 +65,6 @@
 # GRAPHICAL_TESTS	Itcl tests that do require a graphical front end
 #
 # Scripts:
-# TYDOC		The Tycho Tydoc script, see $TYCHO/util/tydoc.
 # ITCLSH	The Itcl 'itclsh' binary 
 #
 # C and C++ Compiler variables:
@@ -212,81 +211,6 @@ makefiles: makefile
 		    fi ; \
 		done ; \
 	fi
-
-##############
-# Rules for Itcl/Tcl
-
-# Generate html files from itcl files, requires itclsh and tycho
-itcldocs: $(ITCL_SRCS) $(TCL_SRCS)
-	@if [ "$(TYDOC_DESC)" = "" ] ; then \
-		chmod a+x $(TYDOC); \
-		echo "$(TYDOC) -notestdir -d $(ITCL_SRCS) $(TCL_SRCS)"; \
-	 	$(TYDOC) -notestdir -d $(ITCL_SRCS) $(TCL_SRCS); \
-	else \
-		chmod a+x $(TYDOC); \
-		echo "$(TYDOC) -notestdir -d -t "$(TYDOC_DESC)" $(ITCL_SRCS) $(TCL_SRCS)"; \
-		$(TYDOC) -notestdir -d -t "$(TYDOC_DESC)" $(ITCL_SRCS) $(TCL_SRCS); \
-	fi
-	@if [ "x$(DIRS)" != "x" ]; then \
-		set $(DIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making $@ in $$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
-			) \
-		    fi ; \
-		done ; \
-	fi
-
-# Generate idoc files from itcl and java files, requires itclsh and tycho
-# Note that $(ROOT) here is relative to the tycho directory, not
-# the Ptolemy directory.
-IDOC=$(ROOT)/util/tydoc/idoc
-idocs: $(ITCL_SRCS) $(TCL_SRCS) $(JSRCS)
-	@if [ "$(TYDOC_DESC)" = "" ] ; then \
-		echo "$(IDOC) -d $(ITCL_SRCS) $(TCL_SRCS) $(JSRCS)"; \
-	 	$(IDOC) -d $(ITCL_SRCS) $(TCL_SRCS) $(JSRCS); \
-	else \
-		echo "$(IDOC) -d -t "$(TYDOC_DESC)" $(ITCL_SRCS) $(TCL_SRCS) $(JSRCS)"; \
-		$(IDOC) -d -t "$(TYDOC_DESC)" $(ITCL_SRCS) $(TCL_SRCS) $(JSRCS); \
-	fi
-
-# Create tclIndex from .tcl and .itcl files
-# This rule must be after the TCL_SRC and ITCL_SRC lines in the makefile
-# that includes this makefile.  tclIndex should depend on the makefile
-# in case we edit the makefile and move a tcl file to another location.
-# We print the errorInfo stack in case there is a missing close brace
-# in one of the tcl files.
-tclIndex: $(TCL_SRCS) $(ITCL_SRCS) makefile
-	@echo "Updating tclIndex"
-	rm -f $@
-	echo 'set auto_path [linsert $$auto_path 0 [info library] ]; if [catch {auto_mkindex . $(TCL_SRCS) $(ITCL_SRCS)} errMsg] {puts $$errorInfo}' | $(ITCLSH)
-
-##############
-# Rules for compiling
-
-# Rule for installing a C++ library
-$(LIBDIR)/$(LIBR):	$(LIBR) $(EXP)
-	rm -f $@
-	ln $(LIBR) $(LIBDIR)
-
-# Install debug versions, currently we just do a hard link
-$(LIBDIR)/$(LIBR_DEBUG):	$(LIBDIR)/$(LIBR)
-	rm -f $@
-	(cd $(LIBDIR); ln $(LIBR) $(LIBR_DEBUG))
-
-
-# Rule for compiling C++ files
-.cc.o:
-	$(CPLUSPLUS) $(CC_SHAREDFLAGS) $(GPPFLAGS) $(CCFLAGS) \
-	$(OTHERCCFLAGS) $(USER_CCFLAGS) \
-	-I$(VPATH) $(INCL) -c $<
-
-# Rule for compiling with cc
-.c.o:
-	$(CC) $(C_SHAREDFLAGS) $(CFLAGS) $(OTHERCFLAGS) $(USER_CFLAGS) \
-	$(C_INCL) -c $<
 
 ##############
 # Java rules
@@ -510,7 +434,7 @@ tests:: makefile
 # alltests.itcl is used to source all the tests
 alltests.itcl: makefile
 	rm -f $@
-	echo '# CAUTION: automatically generated file by a rule in tycommon.mk' > $@
+	echo '# CAUTION: automatically generated file by a rule in ptcommon.mk' > $@
 	echo '# This file will source the .itcl files list in the' >> $@
 	echo '# makefile SIMPLE_TESTS and GRAPHICAL_TESTS variables' >> $@ 
 	echo '# This file is different from all.itcl in that all.itcl' >> $@ 
@@ -540,7 +464,7 @@ alltests.itcl: makefile
 # alljtests.tcl is used to source all the tcl files that use Java
 alljtests.tcl: makefile
 	rm -f $@
-	echo '# CAUTION: automatically generated file by a rule in tycommon.mk' > $@
+	echo '# CAUTION: automatically generated file by a rule in ptcommon.mk' > $@
 	echo '# This file will source all the Tcl files that use Java. ' >> $@ 
 	echo '# This file will source the .itcl files list in the' >> $@
 	echo '# makefile SIMPLE_JTESTS and GRAPHICAL_JTESTS variables' >> $@ 
@@ -572,7 +496,7 @@ alljtests.tcl: makefile
 # all.itcl is used to source all the *.itcl files
 all.itcl: makefile
 	rm -f $@
-	echo '# CAUTION: automatically generated file by a rule in tycommon.mk' > $@
+	echo '# CAUTION: automatically generated file by a rule in ptcommon.mk' > $@
 	echo '# This file will source all the .itcl files in the current' >> $@
 	echo '# directory.  This file is different from alltest.itcl' >> $@ 
 	echo '# in that alltest.itcl will source only the itcl files' >> $@
