@@ -150,7 +150,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
             return loadedAST;
         }
 
-        Class myClass = ASTReflect.pathnameToClass(className);
+        Class myClass = ASTReflect.pathNameToClass(className);
         if (myClass != null) {
             //System.out.println("JavaParserManip.parseCanonicalClassName: " +
             //        "Calling ASTCompileUnitNode on " + 
