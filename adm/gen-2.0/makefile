@@ -585,7 +585,7 @@ remote1distnonjsall:
 			( cd $$x ; \
 			echo making tests  in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				tests
+				tests \
 			);  \
 		    fi ; \
 		done ; \
