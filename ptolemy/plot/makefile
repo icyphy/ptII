@@ -222,7 +222,7 @@ install: all $(PTCLASSZIP) jars \
 PtolemyGraphics.java: PtolemyGraphics1_1.java.in PtolemyGraphics1_2.java.in \
 				$(ROOT)/mk/ptII.mk
 	@case "$(JVERSION)" in \
-	1.2*) \
+	1.2*|1.3*) \
 	    echo "configure determined that java.version='$(JVERSION)'"; \
 	    echo " so we are running JDK1.2 or later."; \
 	    echo "Copying PtolemyGraphics1_2.java.in to PtolemyGraphics.java"; \
