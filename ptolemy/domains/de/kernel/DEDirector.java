@@ -143,10 +143,10 @@ import ptolemy.kernel.util.Workspace;
    If zero delay in the loop is truly required, then set the <i>delay</i>
    parameter of those actors to zero. This zero-delay actor plays the same
    role as that of delta delay in VHDL. Note that the detection of directed
-   loops are based on port connections rather than actor connections because
-   port connections reflect the data dependencies more accurately. The
-   information of port connections are stored in the nonpersistent attribute
-   <i>FunctionDependency</i>.
+   loops are based on port connections rather than data dependencies between
+   actors because port connections reflect the data dependencies more 
+   accurately. The information of port connections are stored in the 
+   nonpersistent attribute <i>FunctionDependency</i>.
    <p>
    An input port in a DE model contains an instance of DEReceiver.
    When a token is put into a DEReceiver, that receiver posts a trigger
