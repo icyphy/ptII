@@ -105,7 +105,7 @@ public class PlotApplication extends PlotFrame {
      *  @exception Exception Not thrown in this base class.
      */
     public PlotApplication() throws Exception {
-        this(null);
+        this(new String[0]);
     }
 
     /** Construct a plot with the specified command-line arguments.
@@ -152,6 +152,40 @@ public class PlotApplication extends PlotFrame {
         if (args == null || args.length == 0) {
             samplePlot();
         }
+        setVisible(true);
+    }
+
+    
+    /** Construct an application to view the given plot
+     *  @param plot The instance of Plot to display.
+     *  @exception Exception If command line arguments have problems.
+     */
+    public PlotApplication(PlotBox plot) {
+
+        // invoke the base class constructor and pass in the argument a Plot
+        // object. This makes sure that the plot field is an instance of
+        // Plot class.
+        super("PlotApplication", plot);
+
+        // Handle window closing by exiting the application.
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                // Strangely, calling _close() here sends javac into
+                // an infinite loop (in jdk 1.1.4).
+                //              _close();
+                System.exit(0);
+            }
+        });
+
+        // The Java look & feel is pretty lame, so we use the native
+        // look and feel of the platform we are running on.
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
+        }
+
         setVisible(true);
     }
 
