@@ -51,6 +51,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.DirectedGraph;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DebugListener;
@@ -1650,8 +1651,27 @@ public class DEDirector extends Director {
     // to set the depth for each actor. A new Hashtable is created each
     // time this method is called.
     private void _computeDepth() throws IllegalActionException {
-        DirectedAcyclicGraph dag = _constructDirectedGraph();
-        Object[] sort = (Object[]) dag.topologicalSort();
+        DirectedGraph dag = _constructDirectedGraph();
+        // The returned directed graph may contain cycle loops.
+        // Do the check in the following code.
+        Object[] cycleNodes = dag.cycleNodes();
+        if (cycleNodes.length != 0) {
+            StringBuffer names = new StringBuffer();
+            for (int i = 0; i < cycleNodes.length; i++) {
+                if (cycleNodes[i] instanceof Nameable) {
+                    if (i > 0) names.append(", ");
+                    names.append(((Nameable)cycleNodes[i]).getFullName());
+                }
+            }
+            throw new IllegalActionException(this.getContainer(),
+                    "Found zero delay loop including: " + names.toString()
+                    + "\n Model requires a TimedDelay in this " +
+                        "directed cycle.");
+        }
+        
+        // now we can safely cast the dag into an acyclic graph.
+        Object[] sort = 
+            (Object[]) ((DirectedAcyclicGraph)dag).topologicalSort();
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
