@@ -59,9 +59,12 @@ JSRCS = \
 	Icon.java \
 	IconLibrary.java \
 	PtolemySystem.java \
+	PTMLParser.java \
+	PTMLPrinter.java \
 	Schematic.java \
 	SchematicElement.java \
 	SchematicEntity.java \
+	SchematicParameter.java \
 	SchematicParser.java \
 	SchematicPort.java \
 	SchematicRelation.java \
