@@ -79,7 +79,13 @@ OTHER_FILES_TO_BE_JARED = \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
-	utilitiesLibrary.xml
+	utilitiesLibrary.xml \
+	utilityCompositeActor.xml \
+	utilityIntRangeParameter.xml
+	utilityModalModel.xml \
+	utilityParameter.xml \
+	utilityPortParameter.xml \
+	utilityRequireVersion.xml
 
 # Include these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
