@@ -38,7 +38,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.vergil.ptolemy.*;
-import ptolemy.vergil.form.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 
@@ -264,7 +263,8 @@ public class ViewerGraphController extends AbstractGraphController {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new FormFrameFactory());
+            // NOTE: Removed by EAL. I don't like this interface.
+	    // addMenuItemFactory(new FormFrameFactory());
 	    addMenuItemFactory(new PortDialogFactory());
 	}
 
