@@ -208,14 +208,11 @@ test SignalProcessing-5.6 {fft Complex, order 1, w/ larger array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 3, or a order 1 fft, the size should be 2
-    # FIXME: This test should return an order 1 fft, instead 
-    # the code throws an ArrayIndexOutOfBoundsException
     set ca1 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0]]
     set result [java::call ptolemy.math.SignalProcessing \
 	    {fft ptolemy.math.Complex[] int } $ca1 1]
     javaPrintArray $result
-} {{1.0 + 0.0i} {1.0 + 0.0i}} \
-	{KNOWN_FAILURE}
+} {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
 test SignalProcessing-5.7 {fft Complex, order 2, smaller array} {
