@@ -109,25 +109,16 @@ public class IntToken extends ScalarToken {
     //    }
 
     /** Used to convert Token types further down the type hierarchy to
-     *  the type of this Token
+     *  the type of this Token. No types below IntToken in lossless 
+     *  type hierarchy, so throw an exception if reach here.
      *  @param tok The token to be converted to a IntToken.
      *  @exception IllegalActionException Thrown if the conversion
      *  cannot be carried out in a lossless fashion.
      */
     static public IntToken convert(Token tok) throws IllegalActionException{
-        if (tok instanceof ByteToken) {
-            int result = ((ByteToken)tok).intValue();
-            return new IntToken(result);
-        } else {
-            try {
-                ByteToken res = ByteToken.convert(tok);
-                return convert(res);
-            } catch (Exception ex) {
-                String str = "cannot convert from token type: ";
-                str = str + tok.getClass().getName() + " to a ";
-                throw new IllegalActionException(str + "IntToken");
-            }
-        }
+        String str = "cannot convert from token type: ";
+        str = str + tok.getClass().getName() + " to a ";
+        throw new IllegalActionException(str + "IntToken");
     }
 
     /** Divide the value of this Token with the value of the argument Token.
@@ -349,7 +340,7 @@ public class IntToken extends ScalarToken {
         return new IntToken(result);
     }
     
-    /** Returns the multiplicativeive identity. 
+    /** Returns the multiplicative identity. 
      */
     public Token one() {
         return new IntToken(1);
