@@ -125,7 +125,9 @@ public class Ramp extends SequenceSource {
             throws IllegalActionException {
         if (attribute == init) {
             _stateToken = init.getToken();
-        } else super.attributeChanged(attribute);
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
