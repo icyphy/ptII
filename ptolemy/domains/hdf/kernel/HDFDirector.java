@@ -35,6 +35,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
@@ -44,6 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 import java.util.ArrayList;
@@ -446,7 +448,8 @@ public class HDFDirector extends SDFDirector {
     /** Initialize the object. In this case, we give the HDFDirector a
      *  default scheduler of the class HDFScheduler.
      */
-    private void _init() {
+    private void _init() 
+            throws IllegalActionException, NameDuplicationException {
         try {
             SDFScheduler scheduler =
                 new SDFScheduler(this, uniqueName("Scheduler"));
@@ -460,22 +463,17 @@ public class HDFDirector extends SDFDirector {
                     "Could not create Default Scheduler:\n" +
                     e.getMessage());
         }
-        try {
-            int cacheSize = 100;
-            _cacheSize = cacheSize;
-            scheduleCacheSize = new Parameter(this,
-                "scheduleCacheSize",new IntToken(cacheSize));
-
-            _scheduleCache = new HashMap();
-            _scheduleKeyList = new ArrayList(cacheSize);
-            _externalRatesCache = new TreeMap();
-            _externalRatesKeyList = new ArrayList(cacheSize);
-        }
-        catch (Exception e) {
-            throw new InternalErrorException(
-                    "Cannot create default iterations parameter:\n" +
-                    e.getMessage());
-        }
+        int cacheSize = 100;
+        _cacheSize = cacheSize;
+        scheduleCacheSize = new Parameter(this,
+                "scheduleCacheSize", new IntToken(cacheSize));
+        
+        _scheduleCache = new HashMap();
+        _scheduleKeyList = new ArrayList(cacheSize);
+        _externalRatesCache = new TreeMap();
+        _externalRatesKeyList = new ArrayList(cacheSize);
+        allowRateChanges.setToken(BooleanToken.TRUE);
+        allowRateChanges.setVisibility(Settable.EXPERT);
     }
 
     // Hash maps for the schedule cache.
