@@ -70,7 +70,8 @@ JSRCS = \
 	ParameterEvent.java \
 	ParameterListener.java \
 	UtilityFunctions.java \
-	Variable.java
+	Variable.java \
+	VariableList.java
 
 EXTRA_SRCS =	PtParser.jjt $(JSRCS)
 

@@ -193,6 +193,24 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
+    /** Temporarily added.
+     *  @param varList A list of variables to be added to scope.
+     */
+    public void addToScope(VariableList varList) {
+        if (varList == null) {
+            return;
+        }
+
+        Enumeration vars = varList.getVariables();
+        while (vars.hasMoreElements()) {
+            Object var = vars.nextElement();
+            if (var instanceof Variable) {
+                addToScope((Variable)var);
+            }
+        }
+	varList._addDependent(this);
+    }
+
     /** Add the variable specified by the argument to the scope of this 
      *  variable. If the variable bears the same name as one already in 
      *  the scope, then it will shadow the one in the scope.  
@@ -480,6 +498,24 @@ public class Variable extends Attribute implements Typeable {
         }
         _scopeVersion = -1;
         _destroyParseTree();
+    }
+
+    /** Temporarily added.
+     *  @param varList A list of variables to be removed from scope.
+     */
+    public void removeFromScope(VariableList varList) {
+        if (varList == null) {
+            return;
+        }
+
+        Enumeration vars = varList.getVariables();
+        while (vars.hasMoreElements()) {
+            Object var = vars.nextElement();
+            if (var instanceof Variable) {
+                removeFromScope((Variable)var);
+            }
+        }
+	varList._removeDependent(this);
     }
 
     /** Reset the current value of this variable to the first seen
