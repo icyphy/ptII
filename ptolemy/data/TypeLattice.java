@@ -145,7 +145,7 @@ public final class TypeLattice
     // construct the lattice of types.
     private static DirectedAcyclicGraph _setup() {
 
-        DirectedAcyclicGraph _lattice = new DirectedAcyclicGraph();
+        DirectedAcyclicGraph lattice = new DirectedAcyclicGraph();
 
         Class tGeneral = Token.class;
         Class tObject = ObjectToken.class;
@@ -168,58 +168,58 @@ public final class TypeLattice
 
 	Class tNaT = Void.TYPE;
 
-        _lattice.add(tGeneral);
-        _lattice.add(tObject);
+        lattice.add(tGeneral);
+        lattice.add(tObject);
 
-        _lattice.add(tString);
-        _lattice.add(tNumerical);
-        _lattice.add(tBooleanMatrix);
-        _lattice.add(tLongMatrix);
-        _lattice.add(tComplexMatrix);
-        _lattice.add(tDoubleMatrix);
-        _lattice.add(tIntMatrix);
-	_lattice.add(tBoolean);
-	_lattice.add(tScalar);
-	_lattice.add(tLong);
-	_lattice.add(tComplex);
-	_lattice.add(tDouble);
-	_lattice.add(tInt);
+        lattice.add(tString);
+        lattice.add(tNumerical);
+        lattice.add(tBooleanMatrix);
+        lattice.add(tLongMatrix);
+        lattice.add(tComplexMatrix);
+        lattice.add(tDoubleMatrix);
+        lattice.add(tIntMatrix);
+	lattice.add(tBoolean);
+	lattice.add(tScalar);
+	lattice.add(tLong);
+	lattice.add(tComplex);
+	lattice.add(tDouble);
+	lattice.add(tInt);
 
-	_lattice.add(tNaT);		// NaT
+	lattice.add(tNaT);		// NaT
 
-        _lattice.addEdge(tObject, tGeneral);
-        _lattice.addEdge(tNaT, tObject);
+        lattice.addEdge(tObject, tGeneral);
+        lattice.addEdge(tNaT, tObject);
 
-        _lattice.addEdge(tString, tGeneral);
-        _lattice.addEdge(tBooleanMatrix, tString);
-        _lattice.addEdge(tBoolean, tBooleanMatrix);
-        _lattice.addEdge(tNaT, tBoolean);
+        lattice.addEdge(tString, tGeneral);
+        lattice.addEdge(tBooleanMatrix, tString);
+        lattice.addEdge(tBoolean, tBooleanMatrix);
+        lattice.addEdge(tNaT, tBoolean);
 
-	_lattice.addEdge(tNumerical, tString);
-        _lattice.addEdge(tLongMatrix, tNumerical);
-        _lattice.addEdge(tComplexMatrix, tNumerical);
-        _lattice.addEdge(tDoubleMatrix, tComplexMatrix);
-        _lattice.addEdge(tIntMatrix, tLongMatrix);
-        _lattice.addEdge(tIntMatrix, tDoubleMatrix);
+	lattice.addEdge(tNumerical, tString);
+        lattice.addEdge(tLongMatrix, tNumerical);
+        lattice.addEdge(tComplexMatrix, tNumerical);
+        lattice.addEdge(tDoubleMatrix, tComplexMatrix);
+        lattice.addEdge(tIntMatrix, tLongMatrix);
+        lattice.addEdge(tIntMatrix, tDoubleMatrix);
 
-	_lattice.addEdge(tScalar, tNumerical);
-	_lattice.addEdge(tLong, tScalar);
-	_lattice.addEdge(tLong, tLongMatrix);
-	_lattice.addEdge(tComplex, tScalar);
-	_lattice.addEdge(tComplex, tComplexMatrix);
-	_lattice.addEdge(tDouble, tDoubleMatrix);
-	_lattice.addEdge(tDouble, tComplex);
-	_lattice.addEdge(tInt, tLong);
-	_lattice.addEdge(tInt, tIntMatrix);
-	_lattice.addEdge(tInt, tDouble);
+	lattice.addEdge(tScalar, tNumerical);
+	lattice.addEdge(tLong, tScalar);
+	lattice.addEdge(tLong, tLongMatrix);
+	lattice.addEdge(tComplex, tScalar);
+	lattice.addEdge(tComplex, tComplexMatrix);
+	lattice.addEdge(tDouble, tDoubleMatrix);
+	lattice.addEdge(tDouble, tComplex);
+	lattice.addEdge(tInt, tLong);
+	lattice.addEdge(tInt, tIntMatrix);
+	lattice.addEdge(tInt, tDouble);
 
-        _lattice.addEdge(tNaT, tInt);
+        lattice.addEdge(tNaT, tInt);
 
-	if ( !_lattice.isLattice()) {
+	if ( !lattice.isLattice()) {
 	    throw new InternalErrorException("TypeLattice: The type " +
 		"hierarchy is not a lattice.");
 	}
-	return _lattice;
+	return lattice;
     }
 
     ///////////////////////////////////////////////////////////////////
