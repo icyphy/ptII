@@ -146,6 +146,14 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         TypedIOPort newobj = (TypedIOPort)super.clone(ws);
+	// set _declaredType and _resolvedType
+	if (_declaredType instanceof StructuredType &&
+					!_declaredType.isConstant()) {
+	    newobj._declaredType =
+				 (Type)((StructuredType)_declaredType).clone();
+	    newobj._resolvedType = newobj._declaredType;
+	}
+
 	newobj._typeTerm = null;
 	newobj._typeListeners = new LinkedList();
 	newobj._constraints = new LinkedList();
