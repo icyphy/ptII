@@ -108,12 +108,12 @@ public class TimedQueueReceiver {
 	    */
 	    timeKeeper.setCurrentTime( event.getTime() );
 
-	    if( getSize() > 0 ) {
+	    if( _queue.size() > 0 ) {
 	        Event nextEvent = (Event)_queue.get(0);
 	        _rcvrTime = nextEvent.getTime();
             }
 
-	    // Call updateRcvrList() even if getSize()==0, so that
+	    // Call updateRcvrList() even if _queue.size()==0, so that
 	    // the triple is no longer in front.
 	    // RFIXME: RcvrTimeTriple triple;
 	    // RFIXME: triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
@@ -143,7 +143,7 @@ public class TimedQueueReceiver {
     /** Get the priority of this receiver.
      * @return Return the priority of this receiver.
      */
-    public synchronized int getPriority() {
+    public int getPriority() {
         return _priority;
     }
 
@@ -175,23 +175,6 @@ public class TimedQueueReceiver {
         return _sendingTimeKeeper;
     }
 
-    /** Get the queue size.
-     * @return Return the size of the queue.
-     * FIXME
-     */
-    private int getSize() {
-        return _queue.size();
-    }
-
-    /** Return the ODFThread that controls the actor that contains
-     *  this receiver.
-     * @return Return the ODFThread that controls the actor that
-     *  contains this receiver.
-     */
-    public ODFThread getThread() {
-	return _controllingThread;
-    }
-
     /** Return true if the number of tokens stored in the queue is
      *  less than the capacity of the queue. Return false otherwise.
      * @return boolean Return true if the queue is not full; return
@@ -208,19 +191,6 @@ public class TimedQueueReceiver {
      */
     public boolean hasToken() {
         return _queue.size() > 0;
-    }
-
-    /** Put a token on the queue and set the time stamp of the token to
-     *  the value of the _lastTime flag of this receiver. If the queue is
-     *  empty immediately prior to putting the token on the queue, then
-     *  set the _rcvrTime flag value to be equal to the _lastTime flag value.
-     *  If the queue is full, throw a NoRoomException. Update the
-     *  RcvrTimeTriple entry in the ODFThread which manages this receiver.
-     * @param token The token to put on the queue.
-     * @exception NoRoomException If the queue is full.
-     */
-    public void put(Token token) throws NoRoomException {
-        put( token, _lastTime );
     }
 
     /** Put a token on the queue with the specified time stamp and set
@@ -242,13 +212,12 @@ public class TimedQueueReceiver {
 		    " - Attempt to set current time in the past.");
 	}
         Event event;
-	// ODFThread thread = getThread();
 	TimeKeeper timeKeeper = getReceivingTimeKeeper();
         synchronized(this) {
             _lastTime = time;
             event = new Event(token, _lastTime);
 
-            if( getSize() == 0 ) {
+            if( _queue.size() == 0 ) {
                 // RFIXME: RcvrTimeTriple triple;
                 _rcvrTime = _lastTime;
                 // RFIXME: triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
@@ -275,22 +244,6 @@ public class TimedQueueReceiver {
      */
     public void setContainer(IOPort port) {
         _container = port;
-    }
-
-    /** Set the priority of this receiver.
-     * @param int The priority of this receiver.
-     */
-    public synchronized void setPriority(int priority) {
-        _priority = priority;
-    }
-
-    /** Set the ODFThread that controls the actor that contains
-     *  this receiver.
-     * @param thread The ODFThread that controls the actor that
-     *  contains this receiver.
-     */
-    public void setThread(ODFThread thread) {
-	_controllingThread = thread;
     }
 
     /** Set the time keeper that maintains time for the actor that
@@ -326,6 +279,13 @@ public class TimedQueueReceiver {
      */
     void setCompletionTime(double time) {
         _completionTime = time;
+    }
+
+    /** Set the priority of this receiver.
+     * @param int The priority of this receiver.
+     */
+    synchronized void setPriority(int priority) {
+        _priority = priority;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -368,7 +328,7 @@ public class TimedQueueReceiver {
     // where the specification of the destination receiver
     // may be considered redundant.
 
-    public class Event {
+    private class Event {
 
 	// Construct an Event with a token and time stamp.
 	public Event(Token token, double time) {
