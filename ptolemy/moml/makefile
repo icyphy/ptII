@@ -57,6 +57,7 @@ JSRCS =	Documentation.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLParser.java \
+	MoMLWriter.java \
 	ParserAttribute.java \
 	URLAttribute.java
 
