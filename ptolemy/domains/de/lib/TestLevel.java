@@ -31,6 +31,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,6 +58,29 @@ FALSE is sent otherwise.
 public class TestLevel extends TypedAtomicActor {
     /** Construct a DERamp star.
      *
+     * @param container The composite actor that this actor belongs too.
+     * @param name The name of this actor.
+     *
+     * @exception NameDuplicationException Other star already had this name
+     * @exception IllegalActionException internal problem
+     */
+    public TestLevel(TypedCompositeActor container, String name)
+            throws NameDuplicationException, IllegalActionException  {
+        super(container, name);
+        // create an output port
+        output = new TypedIOPort(this, "output", false, true);
+        output.setDeclaredType(DoubleToken.class);
+        // create an input port
+        input = new TypedIOPort(this, "input", true, false);
+        output.setDeclaredType(DoubleToken.class);
+        
+        _crossingsOnly = false;
+        _threshold = 0.0;
+        _paramTh = new Parameter(this, "Threshold", new DoubleToken(0.0));
+	_prev = _threshold;
+    }
+    /** Construct a DERamp star.
+     *
      * @param value The initial output event value.
      * @param step The step size by which to increase the output event values.
      * @param container The composite actor that this actor belongs too.
@@ -79,6 +103,8 @@ public class TestLevel extends TypedAtomicActor {
         // set the parameters
         _crossingsOnly = crossingsOnly;
         _threshold = threshold;
+        _paramTh = new Parameter(this, "Threshold", 
+                new DoubleToken(_threshold));
 	_prev = threshold;
     }
 
@@ -96,7 +122,7 @@ public class TestLevel extends TypedAtomicActor {
         double inputValue;
         inputValue = ((DoubleToken)(input.get(0))).doubleValue();
 
-
+        _threshold = ((DoubleToken)_paramTh.getToken()).doubleValue();
         // produce the output token.
 
 	if (_crossingsOnly) {
@@ -127,6 +153,7 @@ public class TestLevel extends TypedAtomicActor {
     private double _prev;
     private boolean _crossingsOnly;
     private double _threshold;
+    private Parameter _paramTh;
 
     // the ports.
     public TypedIOPort output;

@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.*;
-import java.util.Enumeration;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEFIRfilter
@@ -67,12 +67,12 @@ public class DEFIRfilter extends DEActor {
         taps2d[0]=taps;
          
         _taps = new Parameter(this, "taps", new DoubleMatrixToken(taps2d));
-
+        _paramDelay = new Parameter( this, "Delay", new DoubleToken(_delay));
         // create an output port
-        output = new TypedIOPort(this, "output", false, true);
+        output = new DEIOPort(this, "output", false, true);
         output.setDeclaredType(DoubleToken.class);
         // create an input port
-        input = new TypedIOPort(this, "input", true, false);
+        input = new DEIOPort(this, "input", true, false);
         input.setDeclaredType(DoubleToken.class);
     }
 
@@ -91,21 +91,32 @@ public class DEFIRfilter extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    
+    //FIXME: This is a hack
     public DEFIRfilter(TypedCompositeActor container, String name,
             String taps)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        StringTokenizer stokens = new StringTokenizer(taps);
+        int index = 0;
+        double[] dtaps = new double[stokens.countTokens()];
+        while(stokens.hasMoreTokens()) {
+            String valueToken = stokens.nextToken();
+            dtaps[index++] = (new Double(valueToken)).doubleValue();
+        }
         // set the parameters.
-        _taps = new Parameter(this, "taps");
-	_taps.setExpression(taps);
+        double[][] taps2d = new double[1][];
+        taps2d[0]=dtaps;
+         
+        _taps = new Parameter(this, "taps", new DoubleMatrixToken(taps2d));
+        _paramDelay = new Parameter( this, "Delay", new DoubleToken(_delay));
 
         // create an output port
-        output = new TypedIOPort(this, "output", false, true);
+        output = new DEIOPort(this, "output", false, true);
         output.setDeclaredType(DoubleToken.class);
         // create an input port
-        input = new TypedIOPort(this, "input", true, false);
+        input = new DEIOPort(this, "input", true, false);
         input.setDeclaredType(DoubleToken.class);
+        
     }
     
 
@@ -162,9 +173,9 @@ public class DEFIRfilter extends DEActor {
             for (int i = 0; i < numTaps; i++) {
                 sum = sum + _tapContents[i]*tapsToken.getElementAt(0, i);
             }
-
+            _delay = ((DoubleToken)_paramDelay.getToken()).doubleValue();
             // broadcast the output.
-            output.broadcast(new DoubleToken(sum));
+            output.broadcast((new DoubleToken(sum)), _delay);
 
 
         } else {
@@ -178,8 +189,8 @@ public class DEFIRfilter extends DEActor {
     ////                         private variables                 ////
 
     // the ports.
-    public TypedIOPort output;
-    public TypedIOPort input;    
+    public DEIOPort output;
+    public DEIOPort input;    
 
 
     ///////////////////////////////////////////////////////////////////
@@ -194,7 +205,10 @@ public class DEFIRfilter extends DEActor {
     // The content of the filter taps.
     private double[] _tapContents = new double[0];
 
-
+    // Parameter for delay
+    private Parameter _paramDelay;
+    // delay of the actor 
+    private double _delay = 0.0;
 
     
 }
