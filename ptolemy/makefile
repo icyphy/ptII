@@ -35,7 +35,7 @@
 #
 # doc directory should be last so we get files from version control before
 # updating the docs
-DIRS = kernel actors domains pitcl doc graph
+DIRS = kernel actors domains pitcl doc graph data
 
 # Root of Tycho directory
 ROOT =		../..
