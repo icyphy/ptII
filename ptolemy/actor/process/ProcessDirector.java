@@ -234,9 +234,8 @@ public class ProcessDirector extends Director {
 
     /** Start threads for all actors that have not had threads started
      *  already (this might include actors initialized since the last
-     *  invocation of prefire).
-     *  This starts the threads, corresponding to all the actors, that
-     *  were created in the initialize() method.
+     *  invocation of prefire). This starts the threads, corresponding 
+     *  to all the actors, that were created in the initialize() method.
      *  @return true Always returns true.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -363,8 +362,9 @@ public class ProcessDirector extends Director {
     }
 
     /** Request that execution of the current iteration stop. Call 
-     *  stopThread on each of the process threads that contain 
-     *  actors controlled by this director. This method is non-blocking.
+     *  stopThread on each of the process threads that contain actors 
+     *  controlled by this director and call stopFire on the actors 
+     *  that are contained by these threads. This method is non-blocking.
      *  After calling this method, the fire() method of this director
      *  is guaranteed to return in finite time.
      */
@@ -372,7 +372,10 @@ public class ProcessDirector extends Director {
  	Enumeration threads = _threadList.elements();
  	while( threads.hasMoreElements() ) {
  	    ProcessThread thread = (ProcessThread)threads.nextElement();
+
+	    // Call stopThread() on the threads first
  	    thread.stopThread();
+	    thread.getActor().stopFire();
  	}
     }
 
