@@ -159,7 +159,7 @@ compileDemo: $(JCLASS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
-simpleRunDemo:
+runDemo:
 	@echo "Run the deep model"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
