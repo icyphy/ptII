@@ -48,6 +48,8 @@
 <!ATTLIST entity name CDATA #REQUIRED
                  class CDATA #IMPLIED>
 
+<!ELEMENT group ANY>
+
 <!ELEMENT import EMPTY>
 <!ATTLIST import source CDATA #REQUIRED
                  base CDATA #IMPLIED>

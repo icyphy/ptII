@@ -54,9 +54,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.InstantiationException;
 import java.lang.IllegalAccessException;
 import java.lang.SecurityException;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -75,6 +77,59 @@ The class contains an instance of the Microstar &AElig;lfred XML
 parser and implements callback methods to interpret the parsed XML.
 The way to use this class is to call its parse() method.
 The returned value is top-level composite entity of the model.
+<p>
+For convenience, there are several forms of the parse method.
+Most of these take two arguments, a base, and some specification
+of the MoML to parse (a stream or the text itself).  The base is
+used to interpret relative URLs that might be present in the MoML.
+For example, the base might be the document base of an applet.
+An applet might use this class as follows:
+<pre>
+   MoMLParser parser = new MoMLParser();
+   URL docBase = getDocumentBase();
+   URL xmlFile = new URL(docBase, modelURL);
+   NamedObj toplevel = parser.parse(docBase, xmlFile);
+</pre>
+If the first argument to parse() is null, then it is assumed that
+all URLs in the MoML file are absolute.
+<p>
+It can be difficult to create an appropriate URL to give as a base,
+particularly if what you have is a file or file name
+in the directory that you want to use as a base.  The easiest
+technique is to use the toURL() method of the File class.
+Some of the URL constructors, for reasons we don't understand,
+create URLs that do not work.
+<p>
+The MoML code given to a parse() method may be a fragment,
+and does not need to include the "&lt;?xml ... &gt;" element nor
+the DOCTYPE specification.  However, if the DOCTYPE specification
+is not given, then the DTD will not be read.  The main consequence
+of this, given the parser we are using, is that default values
+for attributes will not be set.  This could cause errors.
+The parser itself is not a validating parser, however, so it
+makes very limited use of the DTD.  This may change in the future,
+so it is best to give the DOCTYPE element.
+<p>
+The parse() methods can be used for incremental parsing.  After
+creating an initial model using a call to parse(), further MoML
+fragments without top-level model or class elements can be evaluated
+to modify the model.  You can specify the context in which the
+MoML to be interepreted by calling setContext().  However, the
+XML parser limits each fragment to one element.  So there always has
+to be one top-level element.  If you wish to evaluate a group of
+MoML elements in some context, set the context and then place your
+MoML elements within a group element, as follows:
+<pre>
+    &lt;group&gt
+        ... sequence of MoML elements ...
+    &lt;/group&gt
+</pre>
+The group element is ignored, and just serves to aggregate the MoML
+elements.
+<p>
+The parse methods throw a variety of exceptions if the parsed
+data does not represent a valid MoML file or if the stream
+cannot be read for some reason.
 
 @author Edward A. Lee, Steve Neuendorffer, John Reekie
 @version $Id$
@@ -201,11 +256,8 @@ public class MoMLParser extends HandlerBase {
      */
     public void endElement(String elementName) throws Exception {
         if (elementName.equals("configure")) {
-            // NOTE: There doesn't appear to be any more direct way to
-            // do this in Java (!).
-            byte[] bytes = _currentCharData.toString().getBytes();
-            InputStream stream = new ByteArrayInputStream(bytes);
-            ((Configurable)_current).configure(_base, stream);
+            ((Configurable)_current).configure(
+                    _base, _configureSource, _currentCharData.toString());
         } else if (elementName.equals("doc")) {
             if (_currentDocName == null) {
                 _currentDocName = "_doc_";
@@ -271,28 +323,7 @@ public class MoMLParser extends HandlerBase {
     /** Parse the MoML file at the given URL, which may be a file
      *  on the local file system, using the specified base
      *  to expand any relative references within the MoML file.
-     *  That is, relative URLs are interpreted relative to the
-     *  first argument. For example, the base might be the document
-     *  base of an applet.  An applet might use
-     *  this method as follows:
-     *  <pre>
-     *     MoMLParser parser = new MoMLParser();
-     *     URL docBase = getDocumentBase();
-     *     URL xmlFile = new URL(docBase, modelURL);
-     *     NamedObj toplevel = parser.parse(docBase, xmlFile);
-     *  </pre>
-     *  If the first argument to parse() is null, then it is assumed that
-     *  all URLs in the MoML file are absolute.
-     *  <p>
-     *  It can be difficult to create an appropriate URL to pass as the
-     *  first argument, particularly if what you have a file or file name
-     *  in the directory that you want to use as a base.  The easiest
-     *  technique is to use the toURL() method of the File class.
-     *  Some of the URL constructors, for reasons we don't understand,
-     *  create URLs that do not work.
-     *  <p>
-     *  A variety of exceptions might be thrown if the parsed
-     *  data does not represent a valid MoML file.
+     *  This method uses parse(URL, InputStream).
      *  @param base The base URL for relative references, or null if
      *   not known.
      *  @param input The stream from which to read XML.
@@ -306,28 +337,7 @@ public class MoMLParser extends HandlerBase {
 
     /** Parse the given stream, using the specified url as the base
      *  to expand any external references within the MoML file.
-     *  That is, relative URLs are interpreted relative to the
-     *  first argument. For example, it might be the document
-     *  base of an applet.  For example, an applet might use
-     *  this method as follows:
-     *  <pre>
-     *     MoMLParser parser = new MoMLParser();
-     *     URL docBase = getDocumentBase();
-     *     URL xmlFile = new URL(docBase, modelURL);
-     *     NamedObj toplevel = parser.parse(docBase, xmlFile.openStream());
-     *  </pre>
-     *  If the first argument to parse() is null, then it is assumed that
-     *  all URLs in the MoML file are absolute.
-     *  <p>
-     *  It can be difficult to create an appropriate URL to pass as the
-     *  first argument, particularly if what you have a file or file name
-     *  in the directory that you want to use as a base.  The easiest
-     *  technique is to use the toURL() method of the File class.
-     *  Some of the URL constructors, for reasons we don't understand,
-     *  create URLs that do not work.
-     *  <p>
-     *  A variety of exceptions might be thrown if the parsed
-     *  data does not represent a valid MoML file.
+     *  This method uses parse(URL, Reader).
      *  @param base The base URL for relative references, or null if
      *   not known.
      *  @param input The stream from which to read XML.
@@ -336,23 +346,12 @@ public class MoMLParser extends HandlerBase {
      */
     public NamedObj parse(URL base, InputStream input)
             throws Exception {
-        _parser.setHandler(this);
-        _base = base;
-        if (base == null) {
-            _parser.parse(null, null, input, null);
-        } else {
-            _parser.parse(base.toExternalForm(), null, input, null);
-        }
-        return _toplevel;
+        return parse(base, new InputStreamReader(input));
     }
 
     /** Parse the given stream, using the specified url as the base
      *  to expand any external references within the MoML file.
-     *  That is, relative URLs are interpreted relative to the
-     *  first argument. For example, it might be the document
-     *  base of an applet.
-     *  A variety of exceptions might be thrown if the parsed
-     *  data does not represent a valid MoML file.
+     *  The reader is wrapped in a BufferedReader before being used.
      *  @param base The base URL for relative references, or null if
      *   not known.
      *  @param reader The reader from which to read XML.
@@ -362,34 +361,43 @@ public class MoMLParser extends HandlerBase {
     public NamedObj parse(URL base, Reader reader) throws Exception {
         _parser.setHandler(this);
         _base = base;
+        Reader buffered = new BufferedReader(reader);
         if (base == null) {
-            _parser.parse(null, null, reader);
+            _parser.parse(null, null, buffered);
         } else {
-            _parser.parse(base.toExternalForm(), null, reader);
+            _parser.parse(base.toExternalForm(), null, buffered);
         }
         return _toplevel;
     }
 
-    /** Parse the given string, which contains MoML
-     *  (it does not need to include the "&lt;?xml ... &gt;"
-     *  element nor the DOCTYPE specification).
-     *  The top-level element must be "model" or "class".
+    /** Parse the given string, which contains MoML.
      *  If there are external references in the MoML, they are interpreted
      *  relative to the current working directory.
-     *  A variety of exceptions might be thrown if the parsed
-     *  data does not represent valid MoML data.
-     *  @param input The string from which to read MoML.
+     *  @param text The string from which to read MoML.
      *  @return The top-level composite entity of the Ptolemy II model.
      *  @exception Exception If the parser fails.
      */
-    public NamedObj parse(String input) throws Exception {
+    public NamedObj parse(String text) throws Exception {
         URL base = null;
         // Use the current working directory as a base.
         String cwd = System.getProperty("user.dir");
         if (cwd != null) {
             base = new URL("file", null, cwd);
         }
-        return parse(base, new StringReader(input));
+        return parse(base, new StringReader(text));
+    }
+
+    /** Parse the given string, which contains MoML, using the specified
+     *  base to evaluate relative references.
+     *  This method uses parse(URL, Reader).
+     *  @param base The base URL for relative references, or null if
+     *   not known.
+     *  @param text The string from which to read MoML.
+     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @exception Exception If the parser fails.
+     */
+    public NamedObj parse(URL base, String text) throws Exception {
+        return parse(base, new StringReader(text));
     }
 
     /** Handle a processing instruction.  Processing instructions
@@ -441,9 +449,26 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
+    /** Set the context for parsing.  This can be used to associate this
+     *  parser with a pre-existing model, which can then be modified
+     *  via incremental parsing.  This calls reset() and sets the top-level
+     *  entity to the top-level of the specified object.
+     *  @param context The context for parsing.
+     */
+    public void setContext(NamedObj context) {
+        reset();
+        Nameable toplevel = context;
+        while (toplevel.getContainer() != null) {
+            toplevel = toplevel.getContainer();
+        }
+        _toplevel = (NamedObj)toplevel;
+        _current = context;
+    }
+
     /** Set the top-level entity.  This can be used to associate this
      *  parser with a pre-existing model, which can then be modified
-     *  via incremental parsing.
+     *  via incremental parsing.  This calls reset().
+     *  @param toplevel The top-level to associate with this parser.
      */
     public void setToplevel(NamedObj toplevel) {
         reset();
@@ -498,16 +523,11 @@ public class MoMLParser extends HandlerBase {
                 _current = newEntity;
 
             } else if (elementName.equals("configure")) {
-                String source = (String)_attributes.get("source");
                 _checkClass(_current, Configurable.class,
                         "Element \"configure\" found inside an element that "
                         + "does not implement Configurable. It is: "
                         + _current);
-                if (source != null) {
-                    URL xmlFile = new URL(_base, source);
-                    InputStream stream = xmlFile.openStream();
-                    ((Configurable)_current).configure(_base, stream);
-                }
+                _configureSource = (String)_attributes.get("source");
                 _currentCharData = new StringBuffer();
 
             } else if (elementName.equals("deleteEntity")) {
@@ -1120,7 +1140,7 @@ public class MoMLParser extends HandlerBase {
     /** The standard MoML DTD, represented as a string.  This is used
      *  to parse MoML data when a compatible PUBLIC DTD is specified.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc_\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc_\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT group ANY><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
@@ -1602,6 +1622,9 @@ public class MoMLParser extends HandlerBase {
 
     // The class loader that will be used to instantiate objects.
     private ClassLoader _classLoader = getClass().getClassLoader();
+
+    // The source attribute specified by the configure element.
+    private String _configureSource;
 
     // The stack of objects that contain the current one.
     private Stack _containers = new Stack();

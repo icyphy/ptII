@@ -51,7 +51,8 @@ JSRCS =
 JSIMPLE_TESTS = \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
-	MoMLUtilities.tcl
+	MoMLUtilities.tcl \
+	TypedActorLibrary.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

@@ -1604,3 +1604,31 @@ test MoMLParser-6.6 {Delete the gaps, having no effect.} {
     $manager execute
     enumToTokenValues [$recorder getRecord 0]
 } {3 2 1 0}
+
+#----------------------------------------------------------------------
+test MoMLParser-7.1 {Test setContext()} {
+    set incMomlBase "$header
+<model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
+</model>
+"
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
+            [$parser parse $incMomlBase]]
+    $parser parse {
+<model name=".top">
+   <entity name="a" class="ptolemy.kernel.CompositeEntity"/>
+</model>
+}
+    $parser setContext [$toplevel getEntity "a"]
+    $parser parse {<entity name="b" class="ptolemy.kernel.CompositeEntity"/>}
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <entity name="a" class="ptolemy.kernel.CompositeEntity">
+        <entity name="b" class="ptolemy.kernel.CompositeEntity">
+        </entity>
+    </entity>
+</model>
+}
