@@ -113,6 +113,12 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
         return "targetPackage";
     }
 
+    /** Return the field created that canonically points to the given port.
+     */
+    public static SootField getPortField(Port port) {
+        return (SootField)_portToFieldMap.get(port);
+    }
+
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldsForPortsTransformer.internalTransform("
@@ -158,9 +164,8 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
                 Value value = box.getValue();
                 if (value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                    // FIXME: string matching is probably not good enough.
                     if (r.getMethod().getSubSignature().equals(
-                            PtolemyUtilities.getPortMethod.getSubSignature())) {
+                                PtolemyUtilities.getPortMethod.getSubSignature())) {
                         if (_debug) {
                             System.out.println("replacing getPort in " + unit);
                         }
@@ -189,7 +194,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
                                 "statically determined";
                             throw new RuntimeException(string);
                         }
-                    }
+                    } 
                 }
             }
         }
@@ -360,7 +365,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
     private CompositeActor _model;
     private Map _options;
     private boolean _debug;
-    private Map _portToFieldMap;
+    private static Map _portToFieldMap;
     private Map _classToObjectMap;
 }
 

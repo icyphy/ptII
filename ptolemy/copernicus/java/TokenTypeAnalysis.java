@@ -43,6 +43,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.kernel.util.Attribute;
 import soot.Local;
 import soot.NullType;
@@ -314,6 +315,14 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                                 arrayType instanceof ArrayType) {
                             out.put(leftOp,
                                     ((ArrayType)arrayType).getElementType());
+                        }
+                    } else if (methodName.equals("getElementAsToken")) {
+                        ptolemy.data.type.Type matrixType =
+                            (ptolemy.data.type.Type)in.get(r.getBase());
+                        if (matrixType != null &&
+                                matrixType instanceof UnsizedMatrixType) {
+                            out.put(leftOp,
+                                    ((UnsizedMatrixType)matrixType).getElementType());
                         }
                     } else if (methodName.equals("absolute")) {
                         // Return the same as the input type, unless complex,

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.parameters.*;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -541,8 +542,18 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             } else if (r.getMethod().getName().equals("update")) {
                                 // FIXME: for PortParameters.
                                 body.getUnits().remove(stmt);
+                            } else if (r.getMethod().getSubSignature().equals(
+                                               PtolemyUtilities.portParameterGetPortMethod.getSubSignature())) {
+                                PortParameter parameter = 
+                                    (PortParameter)attribute;
+                                ParameterPort port = parameter.getPort();
+                                SootField field = 
+                                    FieldsForPortsTransformer.getPortField(
+                                            port);
+                                box.setValue(Jimple.v().newInstanceFieldRef(
+                                                     body.getThisLocal(), field));
                             } else if (r.getMethod().getName().equals("addChoice")) {
-                                // Removing...  does it matter?
+                                // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
                             } else if (r.getMethod().getName().equals("setStringMode")) {
                                 // Ignoring...  does it matter?

@@ -39,7 +39,10 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalitySolver;
 import ptolemy.graph.InequalityTerm;
@@ -626,6 +629,31 @@ public class TypeSpecializerAnalysis {
                     InequalityTerm returnTypeTerm = (InequalityTerm)
                         arrayType.getElementTypeTerm();
                     return returnTypeTerm;
+                } else if (methodName.equals("getElementAsToken")) {
+                    final InequalityTerm matrixTerm = baseTerm;
+                    InequalityTerm returnTypeTerm = (InequalityTerm)
+                        new MonotonicFunction() {
+                            public Object getValue() throws IllegalActionException {
+                                if(matrixTerm.getValue() instanceof UnsizedMatrixType) {
+                                    UnsizedMatrixType type = (UnsizedMatrixType) matrixTerm.getValue();
+                                    return type.getElementType();
+                                } else {
+                                    return BaseType.UNKNOWN;
+                                }
+                            }
+                            public InequalityTerm[] getVariables() {
+                                if(matrixTerm.isSettable()) {
+                                    InequalityTerm[] terms = 
+                                        new InequalityTerm[1];
+                                    terms[0] = matrixTerm;
+                                    return terms;
+                                } else {
+                                    return new InequalityTerm[0];
+                                }
+                            }
+                        };
+                    
+                    return returnTypeTerm;
                 } else if (methodName.equals("absolute")) {
                     // Return the same as the input type, unless
                     // complex, in which case, return double.  FIXME:
@@ -825,7 +853,7 @@ public class TypeSpecializerAnalysis {
 
     private static void _addInequality(boolean debug,
             InequalitySolver solver, InequalityTerm lesser, InequalityTerm greater) {
-        if (lesser != null && greater != null) {
+        if (lesser != null && greater != null && greater.isSettable()) {
             Inequality inequality = new Inequality(lesser, greater);
             if (debug) System.out.println("adding inequality = " + inequality);
             solver.addInequality(inequality);

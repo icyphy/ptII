@@ -65,7 +65,7 @@ import java.util.*;
 //// Main
 /**
    Read in a MoML model and generate Java classes for that model.
-
+   
    @author Stephen Neuendorffer, Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
@@ -120,7 +120,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.ta1",
                new TransformerAdapter(TypeAssigner.v()));
        addStandardOptimizations(pack, 1);
-       
+        
        if(_snapshots) {
            addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
                    "outDir:" + _outputDirectory + "/jimple1");
@@ -363,7 +363,7 @@ public class Main extends KernelMain {
        
        addTransform(pack, "wjtp.ttn",
                TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
-
+       
        addStandardOptimizations(pack, 4);
           
        addTransform(pack, "wjtp.ufr",

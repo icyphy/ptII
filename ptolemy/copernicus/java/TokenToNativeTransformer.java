@@ -267,7 +267,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 }
             }
  
-            //           updateTokenTypes(classList, depth, unsafeLocalSet, debug);
+            updateTokenTypes(classList, depth, unsafeLocalSet, debug);
            
             depth--;
         }
@@ -1115,7 +1115,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 // Hack for type of array type.
                 if(elementType != null && 
                         tokenField.getName().equals("_value")) {
-                    System.err.println("replacmentField = " + replacementField);
+                    //       System.err.println("replacmentField = " + replacementField);
                     replacementField.addTag(new TypeTag(elementType));
                 }
             }
