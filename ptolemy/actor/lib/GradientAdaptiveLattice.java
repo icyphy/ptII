@@ -1,6 +1,6 @@
 /* An IIR filter actor that uses a direct form II implementation.
 
- Copyright (c) 1998-2003 The Regents of the University of California and
+ Copyright (c) 2003 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -48,7 +48,6 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// GradientAdaptiveLattice
 /**
-
 An adaptive FIR filter with a lattice structure.  This class extends
 the base class to dynamically adapt the reflection coefficients to
 minimize the power of the output sequence.  The output reflection
@@ -59,7 +58,7 @@ coefficients.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class GradientAdaptiveLattice extends Lattice {
 
