@@ -1221,17 +1221,17 @@ public abstract class ScalarToken extends Token
             ScalarToken rightArgument, double epsilon)
             throws IllegalActionException;
 
-	/** Test for equality of the values of this token and the argument.
-	 *  This base class delegates to the equals() method.
-	 *  @param token The token to compare to this token.
-	 *  @return A token containing true if the value element of the first
-	 *   argument is equal to the value of this token.
-	 *  @exception IllegalActionException Not thrown in this base class.
-	 */
-	protected BooleanToken _isEqualTo(ScalarToken token)
-	        throws IllegalActionException {
-		return BooleanToken.getInstance(equals(token));
-	}
+    /** Test for equality of the values of this token and the argument.
+     *  This base class delegates to the equals() method.
+     *  @param token The token to compare to this token.
+     *  @return A token containing true if the value element of the first
+     *   argument is equal to the value of this token.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected BooleanToken _isEqualTo(ScalarToken token)
+	throws IllegalActionException {
+	return BooleanToken.getInstance(equals(token));
+    }
 
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is guaranteed by the caller that the type and
