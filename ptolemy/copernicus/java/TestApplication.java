@@ -75,7 +75,10 @@ public class TestApplication implements ChangeListener {
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
 	// Filter out any graphical classes.
-        //parser.addMoMLFilter(new RemoveGraphicalClasses());
+        // We should filter out graphical classes or the
+        // treeShakeWithoutCodegen rule will fail when we run it on
+        // actor/lib/test/auto/ComplexDivide.
+        parser.addMoMLFilter(new RemoveGraphicalClasses());
 
         //parser.setErrorHandler(new StreamErrorHandler());
 
