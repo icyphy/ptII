@@ -60,10 +60,13 @@ public class CSPManager extends CSPActor {
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          
-         requestOut = new IOPort(this, "requestOut", false, true);
-         requestIn = new IOPort(this, "requestIn", true, false);
-         contendOut = new IOPort(this, "contendOut", false, true);
-         contendIn = new IOPort(this, "contendIn", true, false);
+         _requestOut = new IOPort(this, "requestOut", false, true);
+         _requestIn = new IOPort(this, "requestIn", true, false);
+         _contendOut = new IOPort(this, "contendOut", false, true);
+         _contendIn = new IOPort(this, "contendIn", true, false);
+         
+         _requestOut.setMultiport(true);
+         _requestIn.setMultiport(true);
          
     }
          
@@ -88,23 +91,23 @@ public class CSPManager extends CSPActor {
                     new ConditionalBranch[_numRequestInChannels];
             for( int i=0; i<_numRequestInChannels; i++ ) {
                 reqBrchs[i] = new 
-                        ConditionalReceive(true, requestIn, i, i);
+                        ConditionalReceive(true, _requestIn, i, i);
             } 
             
             br = chooseBranch(reqBrchs);
             
             if( br != -1 ) {
-                IntToken token = (IntToken)requestIn.get(br);
+                IntToken token = (IntToken)_requestIn.get(br);
                 code = token.intValue(); 
                 _winningPortChannelCode = 
-                        new PortChannelCode(requestIn, br, code);
+                        new PortChannelCode(_requestIn, br, code);
             }
             
             
             //
             // State 2: Notify Contention Alarm of 1st Request
             //
-            contendOut.send(0, null);
+            _contendOut.send(0, null);
             
             
             //
@@ -115,26 +118,26 @@ public class CSPManager extends CSPActor {
             while( continueCDO ) {
                 reqBrchs = new ConditionalBranch[_numRequestInChannels+1];
                 for( int i=0; i<_numRequestInChannels; i++ ) {
-                    reqBrchs[i] = new ConditionalReceive(true, requestIn, i, i);
+                    reqBrchs[i] = new ConditionalReceive(true, _requestIn, i, i);
                 } 
                 int j = _numRequestInChannels;
-                reqBrchs[j] = new ConditionalReceive(true, contendIn, 0, j);
+                reqBrchs[j] = new ConditionalReceive(true, _contendIn, 0, j);
                 
                 br = chooseBranch(reqBrchs);
                 
                 
                 // Contention Occurred...and might happen again
                 if( br >= 0 || br < _numRequestInChannels ) {
-                    IntToken token = (IntToken)requestIn.get(br);
+                    IntToken token = (IntToken)_requestIn.get(br);
                     code = token.intValue(); 
                     if( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
                                 insertFirst(_winningPortChannelCode);
                         _winningPortChannelCode = 
-                                new PortChannelCode(requestIn, br, code);
+                                new PortChannelCode(_requestIn, br, code);
                     } else {
                         _losingPortChannelCodes.insertFirst( new 
-                            PortChannelCode(requestIn, br, code) );
+                            PortChannelCode(_requestIn, br, code) );
                     }
                     
                 }
@@ -144,7 +147,7 @@ public class CSPManager extends CSPActor {
                 
                     // Send Positive Ack
                     int ch =  _winningPortChannelCode.getChannel();
-                    requestOut.send(ch, posAck);
+                    _requestOut.send(ch, posAck);
                     
                     // Send Negative Ack
                     Enumeration enum = _losingPortChannelCodes.elements();
@@ -152,7 +155,7 @@ public class CSPManager extends CSPActor {
                     while( enum.hasMoreElements() ) {
                         pcc = (PortChannelCode)enum.nextElement();
                         ch = pcc.getChannel();
-                        requestOut.send(ch, negAck);
+                        _requestOut.send(ch, negAck);
                     }
                     
                     // Prepare to Wait for New Requests...enter state 1
@@ -182,10 +185,10 @@ public class CSPManager extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
-    public IOPort requestIn;
-    public IOPort requestOut;
-    public IOPort contendIn;
-    public IOPort contendOut;
+    private IOPort _requestIn;
+    private IOPort _requestOut;
+    private IOPort _contendIn;
+    private IOPort _contendOut;
     
     private int _numRequestInChannels;
     
