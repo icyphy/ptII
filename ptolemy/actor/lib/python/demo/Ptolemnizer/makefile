@@ -74,16 +74,16 @@ install: all $(PTCLASSJAR)
 demo: demo_applet demo_applet_vergil demo_ptolemy demo_vergil
 
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer PythonScale.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer Ptolemnizer.htm
 
 demo_applet_vergil:
-	CLASSPATH="$(CLASSPATH)" appletviewer PythonScaleVergil.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer PtolemnizerVergil.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PythonScale.xml
+	"$(PTII)/bin/ptolemy" Ptolemnizer.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PythonScale.xml
+	"$(PTII)/bin/vergil" Ptolemnizer.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
