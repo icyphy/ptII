@@ -85,12 +85,15 @@ public final class NamedList implements Cloneable, Serializable {
 
     /** Copy constructor.  Create a copy of the specified list, but
      *  with no container. This is useful to permit enumerations over
-     *  a list while the list continues to be modified.
+     *  a list while the list continues to be modified.  If the argument
+     *  list is null, then the resulting copy will be an empty named list.
      *  @param original The list to copy.
      */
     public NamedList(NamedList original) {
         super();
-        _namedList.addAll(original.elementList());
+        if(original != null) {
+            _namedList.addAll(original.elementList());
+        }
         _container = null;
     }
 
