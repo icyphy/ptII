@@ -60,6 +60,7 @@ JSRCS = \
 	UnitConstraints.java \
 	UnitEquation.java \
 	UnitExpr.java \
+	UnitInEquality.java \
 	UnitLibrary.java \
 	UnitPresentation.java \
 	UnitAttribute.java \
@@ -107,12 +108,15 @@ OPTIONAL_FILES = \
 	doc \
 	$(OPTIONAL_JSRCS) \
 	UParser.java \
+	'Solution$$1.class' \
+	'Solution$$Index.class' \
 	'Solver$$1.class' \
 	'Solver$$Index.class' \
 	'UParser$$1.class' \
 	'UParser$$JJCalls.class' \
 	'UParser$$LookaheadSuccess.class' \
 	'UnitLibrary$$UnitNameExprPair.class'
+
 
 JCLASS =  \
 	$(JSRCS:%.java=%.class) \
