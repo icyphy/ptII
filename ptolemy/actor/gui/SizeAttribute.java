@@ -83,6 +83,9 @@ public class SizeAttribute extends Parameter implements ComponentListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
+        // The class mechanism tends to suppress export of this attribute.
+        // Why?  We override that here.
+        setPersistent(true);
     }
 
     ///////////////////////////////////////////////////////////////////
