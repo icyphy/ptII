@@ -48,7 +48,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = JAIAffineTransform.java \
+JSRCS = DoubleMatrixToJAI.java \
+	JAIAffineTransform.java \
 	JAIBandCombine.java \
 	JAIBandSelect.java \
 	JAIBorder.java \
@@ -76,6 +77,7 @@ JSRCS = JAIAffineTransform.java \
 	JAIRotate.java \
 	JAIScale.java \
 	JAITIFFWriter.java \
+	JAIToDoubleMatrix.java \
 	JAITranslate.java \
 	JAITranspose.java
 

@@ -6,6 +6,8 @@
     <?moml
       <group>
         <doc>Java Advanced Imaging actors</doc>
+	<entity name="DoubleMatrixToJAI" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
+	</entity>
 	<entity name="JAIAffineTransform" class="ptolemy.actor.lib.jai.JAIAffineTransform">
 	  <property name="interpolationType">
 	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -238,6 +240,8 @@
 	  </property>
 	</entity>	
 	<entity name="JAITIFFWriter" class="ptolemy.actor.lib.jai.JAITIFFWriter">
+	</entity>
+	<entity name="JAIToDoubleMatrix" class="ptolemy.actor.lib.jai.JAIToDoubleMatrix">
 	</entity>
 	<entity name="JAITranslate" class="ptolemy.actor.lib.jai.JAITranslate">
 	  <property name="interpolationType">
