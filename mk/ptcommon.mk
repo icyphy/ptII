@@ -328,13 +328,28 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 	CLASSPATH="$(CLASSPATH)" netscape $(TESTHTML)
 
 # Build the jar file
+
+# Directory to unjar things in.
+# Be very careful here, we rely on relative paths
+PTJAR_TMPDIR =  ptjar_tmpdir
+
 # OTHER_FILES_TO_BE_JARED is used in ptolemy/vergil/lib/makefile
-jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR)
+# We need to use PTJAR_TMPDIR because not all directories
+# have OTHER_FILES_TO_BE_JARED set, so we need to copy
+# rather than refer to $(ME)/$(OTHER_FILES_TO_BE_JARED)
+jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR) \
+		$(OTHER_FILES_TO_BE_JARED)
 $(PTCLASSJAR): $(JSRCS) $(JCLASS)
-	(cd $(ROOT); rm -f $(ME)/$@; \
-		"$(JAR)" cf $(ME)/$@ \
-			$(OTHER_FILES_TO_BE_JARED) \
-			$(ME)/*.class)
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy any class files from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
+
 subjars:
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
@@ -351,17 +366,13 @@ subjars:
 # Jar file consisting of the jar file in the current dir
 # and any jar files listed in
 
-# Directory to unjar things in.
-# Be very careful here, we rely on relative paths
-PTJAR_TMPDIR =  ptjar_tmpdir
-
 alljars: $(PTCLASSALLJAR)
-$(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
+$(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp *.class $(PTJAR_TMPDIR)/$(ME)
+	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	for jar in $(PTCLASSALLJARS) ; do \
 		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); "$(JAR)" -xf ../$$jar); \
@@ -376,13 +387,13 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 # Occasionally, we need to build a second jar file that includes
 # a subset of all of the subjars included in PTCLASSALLJAR above.
 # ptolemy/ptsupport.jar is an example
-$(PTAUXALLJAR): $(PTAUXALLJARS)
+$(PTAUXALLJAR): $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	# Building Auxiliary jar file
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp *.class $(PTJAR_TMPDIR)/$(ME)
+	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	for jar in $^; do \
 		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
