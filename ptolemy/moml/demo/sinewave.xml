@@ -27,10 +27,14 @@
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
       <attribute name="step"
                  value="frequency*2*PI/samplingFrequency">
-     </attribute>
+      </attribute>
       <attribute name="init" value="phase"></attribute>
+      <port name="output"></port>
     </entity>
-    <entity name="sine" class="ptolemy.actor.lib.Sine"></entity>
+    <entity name="sine" class="ptolemy.actor.lib.Sine">
+      <port name="input"></port>
+      <port name="output"></port>
+    </entity>
 
     <!-- Define the ports. -->
     <port name="output" direction="output" class="ptolemy.actor.TypedIOPort">

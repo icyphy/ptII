@@ -13,15 +13,21 @@
   <entity name="carrier" class=".sinewave">
     <attribute name="samplingFrequency" value="2*PI"></attribute>
     <attribute name="frequency" value="PI*0.2"></attribute>
+    <port name="output"></port>
   </entity>
 
   <entity name="signal" class=".sinewave">
     <attribute name="samplingFrequency" value="2*PI"></attribute>
     <attribute name="frequency" value="PI*0.02"></attribute>
+    <port name="output"></port>
   </entity>
 
-  <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide"></entity>
+  <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide">
+    <port name="multiply"></port>
+    <port name="output"></port>
+  </entity>
   <entity name="display" class="ptolemy.actor.gui.SequencePlotter">
+    <port name="input"></port>
     <!-- Configure provided in both a referenced file and local data -->
     <configure source="plotConfigure.xml"><![CDATA[
       <?xml version="1.0" standalone="no"?>

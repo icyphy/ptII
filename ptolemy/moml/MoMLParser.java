@@ -364,16 +364,22 @@ public class MoMLParser extends HandlerBase {
                 Object attribute = (Attribute)
                         ((NamedObj)_current).getAttribute(attributeName);
 
+                String className = (String)_attributes.get("class");
+                Class newClass = null;
+                if (className != null) {
+                    newClass = Class.forName(className);
+                }
+
                 if (attribute == null) {
-                    String className = (String)_attributes.get("class");
-                    _checkForNull(className,
-                            "No class for element \"attribute\"");
+                    // No previously existing attribute with this name.
+                    _checkForNull(newClass,
+                            "Cannot create attribute without a class name.");
 
                     // Invoke the constructor.
                     Object[] arguments = new Object[2];
                     arguments[0] = _current;
                     arguments[1] = attributeName;
-                    attribute = _createInstance(className, arguments);
+                    attribute = _createInstance(newClass, arguments);
 
                     if (value != null) {
                         if (!(attribute instanceof Variable)) {
@@ -386,12 +392,21 @@ public class MoMLParser extends HandlerBase {
                         ((Variable)attribute).setExpression(value);
                     }
                 } else {
+                    // Previously existing attribute with this name.
+                    if (newClass != null) {
+                        // Check that it has the right class.
+                        _checkClass(attribute, newClass,
+                                "attribute named \"" + attributeName
+                                + "\" exists and is not an instance of "
+                                + className);
+                    }
                     // If value is null and the attribute already
                     // exists, then there is nothing to do.
                     if (value != null) {
                         _checkClass(attribute, Variable.class,
-                               "attribute element named \"" + attributeName
-                               + "\" is not an instance of Variable.");
+                               "attribute named \"" + attributeName
+                               + "\" is not an instance of Variable,"
+                               + " so its value cannot be set.");
                         ((Variable)attribute).setExpression(value);
                     }
                  }
@@ -433,6 +448,8 @@ public class MoMLParser extends HandlerBase {
                 _currentCharData = new StringBuffer();
 
             } else if (elementName.equals("director")) {
+                // NOTE: We do not check for a previously existing director.
+                // There is presumably no harm in just creating a new one.
                 String className = (String)_attributes.get("class");
                 _checkForNull(className, "No class for element \"director\"");
                 String dirName = (String)_attributes.get("name");
@@ -445,14 +462,14 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = _current;
                 arguments[1] = dirName;
                 _containers.push(_current);
-                _current = _createInstance(className, arguments);
+                Class newClass = Class.forName(className);
+                _current = _createInstance(newClass, arguments);
 
             } else if (elementName.equals("doc")) {
                 _currentCharData = new StringBuffer();
 
             } else if (elementName.equals("entity")) {
                 String className = (String)_attributes.get("class");
-                _checkForNull(className, "No class for element \"entity\"");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"entity\"");
                 _checkClass(_current, CompositeEntity.class,
@@ -544,56 +561,92 @@ public class MoMLParser extends HandlerBase {
 
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
-                _toplevel = (NamedObj)_createInstance(className, arguments);
+                Class newClass = Class.forName(className);
+                _toplevel = (NamedObj)_createInstance(newClass, arguments);
                 _toplevel.setName(modelName);
                 _toplevel.setMoMLElementName("model");
                 _current = _toplevel;
 
             } else if (elementName.equals("port")) {
                 String className = (String)_attributes.get("class");
-                _checkForNull(className, "No class for element \"port\"");
                 String portName = (String)_attributes.get("name");
                 _checkForNull(portName, "No name for element \"port\"");
 
-                _checkClass(_current, ComponentEntity.class,
+                _checkClass(_current, Entity.class,
                         "Element \"port\" found inside an element that "
-                        + "is not a ComponentEntity. It is: "
+                        + "is not an Entity. It is: "
                         + _current);
+                Entity container = (Entity)_current;
 
-                Object[] arguments = new Object[2];
-                arguments[0] = (ComponentEntity)_current;
-                arguments[1] = portName;
-                Port port = (Port)_createInstance(className, arguments);
-
+                Class newClass = null;
+                if (className != null) {
+                    newClass = Class.forName(className);
+                }
+                Port port = container.getPort(portName);
+                if (port != null) {
+                    if (newClass != null) {
+                        // Previously existing port with the specified name.
+                        _checkClass(port, newClass,
+                                "port named \"" + portName
+                                + "\" exists and is not an instance of "
+                                + className);
+                    }
+                } else {
+                    // No previously existing port with this name.
+                    _checkForNull(className, "No class for element \"port\"");
+                    Object[] arguments = new Object[2];
+                    arguments[0] = container;
+                    arguments[1] = portName;
+                    port = (Port)_createInstance(newClass, arguments);
+                }
                 _containers.push(_current);
                 _current = port;
 
                 if (port instanceof IOPort) {
                     String direction = (String)_attributes.get("direction");
-                    _checkForNull(direction,
-                            "No direction for element \"port\"");
-                    IOPort ioport = (IOPort)port;
-                    ioport.setOutput(direction.equals("output")
-                            || direction.equals("both"));
-                    ioport.setInput(direction.equals("input")
-                            || direction.equals("both"));                    
+                    if (direction != null) {
+                        IOPort ioport = (IOPort)port;
+                        ioport.setOutput(direction.equals("output")
+                                || direction.equals("both"));
+                        ioport.setInput(direction.equals("input")
+                                || direction.equals("both"));
+                    }
                 }
 
             } else if (elementName.equals("relation")) {
                 String className = (String)_attributes.get("class");
-                _checkForNull(className, "No class for element \"relation\"");
                 String relationName = (String)_attributes.get("name");
                 _checkForNull(relationName, "No name for element \"relation\"");
                 _checkClass(_current, CompositeEntity.class,
                         "Element \"relation\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
                         + _current);
-            
-                Object[] arguments = new Object[2];
-                arguments[0] = (CompositeEntity)_current;
-                arguments[1] = relationName;
-                _containers.push(_current);
-                _current = _createInstance(className, arguments);
+                CompositeEntity container = (CompositeEntity)_current;
+                Class newClass = null;
+                if (className != null) {
+                    newClass = Class.forName(className);
+                }
+                Relation relation = container.getRelation(relationName);
+                if (relation == null) {
+                    // No previous relation with this name.
+                    _checkForNull(newClass,
+                            "No class for element \"relation\"");
+                    Object[] arguments = new Object[2];
+                    arguments[0] = (CompositeEntity)_current;
+                    arguments[1] = relationName;
+                    _containers.push(_current);
+                    _current = _createInstance(newClass, arguments);
+                } else {
+                    // Previously existing relation with the specified name.
+                    if (newClass != null) {
+                        _checkClass(relation, newClass,
+                                "relation named \"" + relationName
+                                + "\" exists and is not an instance of "
+                                + className);
+                    }
+                    _containers.push(_current);
+                    _current = relation;
+                }
 
             } else if (elementName.equals("rendition")) {
                 String className = (String)_attributes.get("class");
@@ -609,7 +662,8 @@ public class MoMLParser extends HandlerBase {
                 arguments[1] = "_icon";
 
                 _containers.push(_current);
-                _current = _createInstance(className, arguments);
+                Class newClass = Class.forName(className);
+                _current = _createInstance(newClass, arguments);
 
             } else if (elementName.equals("vertex")) {
                 String vertexName = (String)_attributes.get("name");
@@ -704,8 +758,11 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-    // Create a new entity from the specified class name and give
-    // it the specified entity name.  If the class name matches
+    // Create a new entity from the specified class name, give
+    // it the specified entity name, and specify that its container
+    // is the current container object.  If the current container
+    // already contains an entity with the specified name and class,
+    // then return that entity.  If the class name matches
     // an entity that has been previously created (by an absolute
     // or relative name), then that entity is cloned.  Otherwise,
     // the class name is interpreted as a Java class name and we
@@ -715,20 +772,45 @@ public class MoMLParser extends HandlerBase {
     // a subclass of NamedObj, or a ClassCastException will be thrown.
     private NamedObj _createEntity(String className, String entityName)
                  throws Exception {
-        // First check to see if the class extends a named entity.
-        ComponentEntity reference = _searchForEntity(className);
+        CompositeEntity container = (CompositeEntity)_current;
+        ComponentEntity previous = null;
+        if (container != null) {
+            previous = container.getEntity(entityName);
+        }
+        Class newClass = null;
+        ComponentEntity reference = null;
+        if (className != null) {
+            reference = _searchForEntity(className);
+            if (reference == null) {
+                newClass = Class.forName(className);
+            }
+        }
+        if (previous != null) {
+            if (newClass != null) {
+                _checkClass(previous, newClass,
+                        "entity named \"" + entityName
+                        + "\" exists and is not an instance of "
+                        + className);
+            }
+            return previous;
+        }
+
+        // No previous entity.  Class name is required.
+        _checkForNull(className, "Cannot create entity without a class name.");
+
+        // Next check to see if the class extends a named entity.
         if (reference == null) {
             // Not a named entity. Invoke the class loader.
             if (_current != null) {
                 Object[] arguments = new Object[2];
                 arguments[0] = _current;
                 arguments[1] = entityName;
-                return (NamedObj)_createInstance(className, arguments);
+                return (NamedObj)_createInstance(newClass, arguments);
             } else {
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
                 NamedObj result =
-                        (NamedObj)_createInstance(className, arguments);
+                        (NamedObj)_createInstance(newClass, arguments);
                 result.setName(entityName);
                 return result;
             }
@@ -743,7 +825,7 @@ public class MoMLParser extends HandlerBase {
             newEntity.setName(entityName);
 
             // Set the container of the clone.
-            newEntity.setContainer((CompositeEntity)_current);
+            newEntity.setContainer(container);
             
             return newEntity;
         }
@@ -751,14 +833,13 @@ public class MoMLParser extends HandlerBase {
 
     // Create an instance of the specified class name by finding a
     // constructor that matches the specified arguments.
-    // @param className The name of the class.
+    // @param newClass The class.
     // @param arguments The constructor arguments.
     // @throws Exception If no matching constructor is found, or if
     //  invoking the constructor triggers an exception.
-    private Object _createInstance(String className, Object[] arguments)
+    private Object _createInstance(Class newClass, Object[] arguments)
             throws Exception {
-        Class attributeClass = Class.forName(className);
-        Constructor[] constructors = attributeClass.getConstructors();
+        Constructor[] constructors = newClass.getConstructors();
         for (int i = 0; i < constructors.length; i++) {
             Constructor constructor = constructors[i];
             Class[] parameterTypes = constructor.getParameterTypes();
@@ -775,7 +856,7 @@ public class MoMLParser extends HandlerBase {
             }
         }
         // If we get here, then there is no matching constructor.
-        throw new XmlException("Failed to construct " + className,
+        throw new XmlException("Failed to construct " + newClass.getName(),
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());

@@ -24,7 +24,7 @@
 <!ELEMENT entity (attribute | class | configure | doc |
                   director | entity | rendition | relation)*>
 <!ATTLIST entity name CDATA #REQUIRED
-                 class CDATA #REQUIRED>
+                 class CDATA #IMPLIED>
 
 <!ELEMENT import EMPTY>
 <!ATTLIST import source CDATA #REQUIRED>
@@ -41,12 +41,12 @@
 
 <!ELEMENT port (doc | configure)*>
 <!ATTLIST port name CDATA #REQUIRED
-               class CDATA #REQUIRED
-               direction (input | output | both) "both">
+               class CDATA #IMPLIED
+               direction (input | output | both) #IMPLIED>
 
 <!ELEMENT relation (vertex*)>
 <!ATTLIST relation name CDATA #REQUIRED
-                   class CDATA #REQUIRED>
+                   class CDATA #IMPLIED>
 
 <!ELEMENT rendition (configure | location)*>
 <!ATTLIST rendition class CDATA #REQUIRED>
