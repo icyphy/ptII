@@ -618,15 +618,13 @@ public class PlotBox extends Applet {
 		    // Perhaps this is a font size?
 		    try {
 			size = Integer.valueOf(stylename).intValue();
-		    } catch (NumberFormatException e) {
-		    }
+		    } catch (NumberFormatException e) {}
 		}
 	}
 	if (stoken.hasMoreTokens()) {
 	    try {
 		size = Integer.valueOf(stoken.nextToken()).intValue();
-	    } catch (NumberFormatException e) {
-	    }
+	    } catch (NumberFormatException e) {}
 	}
 	if (_debug > 7) System.out.println("PlotBox: getFontByName: "+
                                            fontname+" "+style+" "+size);
@@ -643,8 +641,7 @@ public class PlotBox extends Applet {
             //Color col = Color.decode(name);
 	    Color col = new Color(Integer.parseInt(name,16));
 	    return col;
-	} catch (NumberFormatException e) {
-	}
+	} catch (NumberFormatException e) {}
 	// FIXME: This is a poor excuse for a list of colors and values.
 	// We should use a hash table here.
 	// Note that Color decode() wants the values to start with 0x.
@@ -980,14 +977,20 @@ public class PlotBox extends Applet {
 		   // Just try to open it as a file.
 		   in = new DataInputStream(new FileInputStream(dataurl));
 	       } catch (FileNotFoundException me) {
-		   System.out.println("File not found: " + dataurl + " "+me);
+		   _errorMsg = new String [2];
+		   _errorMsg[0] = "Malformed URL: " + dataurl;
+		   _errorMsg[1] = e.getMessage();
 		   return;
 	       } catch (SecurityException me) {
-		   System.out.println("SecurityException: " + dataurl +" "+me);
+		   _errorMsg = new String [2];
+		   _errorMsg[0] = "Security Exception: " + dataurl;
+		   _errorMsg[1] = e.getMessage();
 		   return;
 	       }
 	   } catch (IOException ioe) {
-	       System.out.println("Failure opening URL: " + dataurl + " "+ioe);
+		   _errorMsg = new String [2];
+		   _errorMsg[0] = "Failure opening URL: " + dataurl;
+		   _errorMsg[1] = ioe.getMessage();
 	       return;
 	   }
 	}
@@ -1009,11 +1012,18 @@ public class PlotBox extends Applet {
 		}
 	    }
 	} catch (MalformedURLException e) {
-	    System.out.println("Malformed URL: " + dataurl + " "+ e);
+	    _errorMsg = new String [2];
+	    _errorMsg[0] = "Malformed URL: " + dataurl;
+	    _errorMsg[1] = e.getMessage();
+	    return;
 	} catch (IOException e) {
-	    System.out.println("Failure reading data: " + dataurl + " "+ e);
-	} catch (PlotDataException me) {
-	    System.out.println("Bad Plot Data: " + me);
+	    _errorMsg = new String [2];
+	    _errorMsg[0] = "Failure reading data: " + dataurl;
+	    _errorMsg[1] = e.getMessage();
+	} catch (PlotDataException e) {
+	    _errorMsg = new String [2];
+	    _errorMsg[0] = "Incorrectly formatted plot data in " + dataurl;
+	    _errorMsg[1] = e.getMessage();
 	} finally {
 	    try {
 		in.close();
