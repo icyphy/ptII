@@ -58,9 +58,11 @@ ptolemy/build.xml
 ptolemy/codegen
 ptolemy/filter/*
 ptolemy/filter
+ptolemy/chic
 ptolemy/com
 ptolemy/configs/test/vergilConfigurationNoMatlab.xml
 ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
+ptolemy/configs/visualnc
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
 ptolemy/copernicus/*/cg
@@ -88,6 +90,7 @@ ptolemy/domains/de/kernel/DETheadActor.java
 ptolemy/domains/dt/kernel/test/bugs
 ptolemy/domains/dt/kernel/test/chf
 ptolemy/domains/dfm
+ptolemy/domains/fairdf
 ptolemy/domains/fsm/demo/Hysteresis
 ptolemy/domains/generic
 ptolemy/domains/giotto/demo/Legiotto
@@ -95,9 +98,12 @@ ptolemy/domains/giotto/kernel/test/ptolemy.giotto
 ptolemy/domains/gr/lib/Loader3D.java
 ptolemy/domains/gr/lib/Loader3D.class
 ptolemy/domains/gr/lib/experimental
+ptolemy/domains/hdf
+ptolemy/domains/nc
 ptolemy/domains/odf
 ptolemy/domains/pbo
 ptolemy/domains/pdf
+ptolemy/domains/psdf
 ptolemy/domains/rtos
 ptolemy/domains/rtp
 ptolemy/domains/sc
@@ -110,6 +116,8 @@ ptolemy/domains/tm/runtime
 ptolemy/kernel/test/TestSerializable.data
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
+ptolemy/lib/cachedir
+ptolemy/lib/chic.jar
 ptolemy/math/filter
 ptolemy/matlab/ptmatlab.h
 ptolemy/media/AudioQueue.java
