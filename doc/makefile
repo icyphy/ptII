@@ -76,8 +76,7 @@ MISC_FILES =	$(DIRS) img tutorial
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	codeDoc uml
 
-ALLJSRCS = 		collections \
-			ptolemy.plot \
+ALLJSRCS =		ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
 			ptolemy.kernel \
@@ -124,8 +123,7 @@ all: suball codeDoc/tree.html
 install: all
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
-codeDoc/tree.html: 	../collections/*.java \
-			../ptolemy/plot/*.java \
+codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
 			../ptolemy/plot/plotml/*.java \
 			../ptolemy/kernel/*.java \
