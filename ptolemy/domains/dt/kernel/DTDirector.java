@@ -41,6 +41,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
@@ -63,6 +64,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -185,7 +187,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (chf)
    @Pt.AcceptedRating Yellow (vogel)
 */
-public class DTDirector extends SDFDirector {
+public class DTDirector extends SDFDirector implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -1160,6 +1162,7 @@ public class DTDirector extends SDFDirector {
             period = new Parameter(this, "period", new DoubleToken(1.0));
             _reset();
             iterations.setToken(new IntToken(0));
+            timePrecisionInDigits.setVisibility(Settable.FULL);
         } catch (Exception e) {
             throw new InternalErrorException(
                     "unable to initialize DT Director:\n" +
