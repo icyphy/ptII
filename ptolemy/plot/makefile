@@ -153,6 +153,10 @@ OPTIONAL_FILES = \
 	'Render$$1.class' \
 	'RenderApplication$$1.class'
 
+# Files to be removed by 'make clean'
+KRUFT = \
+	vergil.jnlp
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass
@@ -275,6 +279,10 @@ include $(ROOT)/mk/ptcommon.mk
 
 # Include rules necessary to build a distribution
 include $(ROOT)/mk/ptdist.mk
+
+# Java Network Launch Protocol aka Web Start
+ptplot.jnlp: ptplot.jnlp.in
+	sed 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' $< > $@
 
 PTTMPME= $(PTTMPDIR)/$(PTDIST)/$(ME)
 # Fix the temporary directory used when building a distribution

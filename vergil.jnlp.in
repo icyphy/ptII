@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- href is needed so that web start can cache the app and
+it will appear in the desktop icon
+-->
+<jnlp codebase="@PTII_LOCALURL@"
+      href="@PTII_LOCALURL@/vergil.jnlp"> 
+	<information>
+	  <title>Ptolemy II</title>
+	  <vendor>Ptolemy Project, UC Berkeley</vendor>
+	  <description">Simulation Environment</description>
+	  <description kind="tooltip">Simulation Environment</description>
+	  <icon href="ptplot32.gif"/>
+	  <homepage href="http://ptolemy.eecs.berkeley.edu/java/ptplot"/>
+	  <offline-allowed/>
+	</information>
+  <security> 
+      <all-permissions/> 
+  </security> 
+  <resources>
+    <j2se version="1.2+"/>
+    <jar href="ptolemy/vergil/vergil.jar"/>
+    <jar href="ptolemy/actor/gui/gui.jar"/>
+    <jar href="ptolemy/configs/doc/doc.jar"/>
+    <jar href="ptolemy/ptolemy.jar"/>
+    <jar href="doc/docConfig.jar"/>
+    <jar href="lib/diva.jar"/>
+  </resources>
+  <application-desc main-class="ptolemy.vergil.VergilApplication"/>
+</jnlp>

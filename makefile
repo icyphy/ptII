@@ -47,7 +47,8 @@ EXTRA_SRCS = \
 	README.txt \
 	copyright.txt \
 	configure.in \
-	configure
+	configure \
+	vergil.jnlp.in
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
@@ -73,7 +74,8 @@ OPTIONAL_FILES = \
 	vendors
 
 # Files to be removed by 'make clean'
-KRUFT =
+KRUFT = \
+	vergil.jnlp
 
 # Files to be removed by 'make distclean'
 DISTCLEAN_STUFF = \
@@ -114,6 +116,10 @@ configure: configure.in
 	@echo "you can try running 'touch configure' to work around"
 	@echo "this problem."
 	autoconf
+
+# Java Network Launch Protocol aka Web Start
+vergil.jnlp: vergil.jnlp.in
+	sed 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' $< > $@
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
