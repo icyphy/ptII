@@ -152,7 +152,7 @@ public class DEReceiver extends AbstractReceiver {
     public synchronized void put(Token token) {
         try {
             DEDirector dir = _getDirector();
-            dir._enqueueEvent(getContainer(), dir.getModelTime());
+            dir._enqueueTriggerEvent(getContainer());
             _tokens.add(token);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);

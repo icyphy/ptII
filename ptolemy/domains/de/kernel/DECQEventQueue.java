@@ -41,22 +41,26 @@ import ptolemy.kernel.util.InvalidStateException;
 
 /**
    A calendar queue implementation of the DE event queue.
-   This queue stores DE events in the order of their time stamps,
-   microsteps and depths of their destination actors. See {@link DEEventQueue}
+   This queue stores DE events in the order of their timestamps,
+   microsteps, and then depths of their destination actors. See {@link DEEventQueue}
    for more explanation of the order of DE events.
    <P>
    Its complexity is theoretically O(1) for both enqueue and dequeue
-   operations, assuming a reasonable distribution of time stamps. See
+   operations, assuming a reasonable distribution of timestamps. See
    {@link ptolemy.actor.util.CalendarQueue}.
 
    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class DECQEventQueue implements DEEventQueue {
 
+    // FIXME: do we need synchronized methods? Note that the DE director
+    // is the only one to enqueue and dequeue events, and its access to 
+    // event queue is synchronized already.
+    
     /** Construct an empty event queue.
      *  @param director The director that contains this event queue.
      */
@@ -119,7 +123,8 @@ public class DECQEventQueue implements DEEventQueue {
         return _cQueue.isEmpty();
     }
 
-    /** If the given DE event is not in the event queue, enqueue it
+    /** Put an event into the event queue.
+     *  If the given DE event is not in the event queue, enqueue it
      *  into the event queue and notify all threads
      *  that are stalled waiting for a DE event to be put in the queue.
      *  This method is synchronized since there

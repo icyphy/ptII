@@ -51,24 +51,28 @@ import ptolemy.kernel.util.NamedObj;
    an IO port of an actor. A DE event, whose destination is an actor, is
    called a <i>pure</i> event. A pure event does not have a destination IO
    port. A DE event, whose destination is an IO port, is called a
-   <i>trigger</i> event. Apparently, a trigger event has a destination actor.
+   <i>trigger</i> event. A trigger event has a destination actor, which is
+   the container of the destination IO port.
    <p>
    A DE event also has a depth, which is the topology information of its
    destinations. For a pure event, the depth is that of its destination actor.
-   For a trigger event, the depth is about its destination IO port. A larger
-   value of depth indicates a lower priority when simulator processes events
-   with the same tag.
+   For a trigger event, the depth is that of its destination IO port. A larger
+   value of depth indicates a lower priority when the simulator processes 
+   events with the same tag.
    <p>
    Two DE events can be compared to see which one happens first. The order
    is defined by the relationship between their time stamps, microsteps, and
    depths. See {@link DEEventQueue} for more details. DE events can be compared
-   by using the compareTo method.
+   by using the compareTo() method.
    <p>
+   This class is final to improve the simulation performance because new 
+   events get created and discarded through the whole simulation.   
+   
    @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public final class DEEvent implements Comparable {
 
@@ -115,7 +119,7 @@ public final class DEEvent implements Comparable {
      *  ClassCastException will be thrown.
      *
      *  @param event The event to compare against.
-     *  @return -1, 0, or 1, depends on the order of the events.
+     *  @return -1, 0, or 1, depending on the order of the events.
      *  @exception ClassCastException If the argument event is not an instance
      *  of DEEvent.
      */
@@ -124,17 +128,16 @@ public final class DEEvent implements Comparable {
     }
 
     /** Compare the tag and depth of this event with those of the argument
-     *  event for an order. Return -1, 0, or 1 if this event happens
+     *  event for the order. Return -1, 0, or 1 if this event happens
      *  earlier than, the same time as, or later than the argument event.
      *  <p>
-     *  Their time stamps are compared first. If the two timestamps
-     *  are not the same, their order defines the events'
-     *  order. Otherwise, the microsteps of events are compared for an
-     *  order, where the smaller microstep, the earlier the event. If
-     *  the events have the same microstep, their depths are
-     *  compared. The smaller depth, the earlier the event.  If the
-     *  two events have the same tags and depths, they happen at the
-     *  same time.
+     *  Their timestamps are compared first. If the two timestamps are not
+     *  the same, their order defines the events' order. Otherwise, the
+     *  microsteps of events are compared for the order, where an event with 
+     *  the smaller microstep happens earlier. If the events have the same 
+     *  microstep, their depths are compared. The event with a smaller depth
+     *  happens earlier. If the two events have the same tag and depth, then
+     *  they happen at the same time.
      *
      *  @param event The event to compare against.
      *  @return -1, 0, or 1, depends on the order of the events.
@@ -143,15 +146,15 @@ public final class DEEvent implements Comparable {
 
         if (timeStamp().compareTo(event.timeStamp()) > 0 ) {
             return 1;
-        } else if (timeStamp().compareTo(event.timeStamp()) < 0) {
+        } else if ( timeStamp().compareTo(event.timeStamp()) < 0) {
             return -1;
         } else if (microstep() > event.microstep()) {
             return 1;
-        } else if (microstep() < event.microstep()) {
+        } else if ( microstep() < event.microstep()) {
             return -1;
         } else if (depth() > event.depth()) {
             return 1;
-        } else if (depth() < event.depth()) {
+        } else if ( depth() < event.depth()) {
             return -1;
         } else {
             return 0;
@@ -177,9 +180,9 @@ public final class DEEvent implements Comparable {
         return hasTheSameTagAs(event) && (depth() == event.depth());
     }
 
-    /** Return true if this event has the same tag with the argument DE event.
+    /** Return true if this event has the same tag as the argument DE event.
      *  @param event The DE event to compare against.
-     *  @return True if this event has the same tag with the specified one.
+     *  @return True if this event has the same tag as the specified one.
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
         return (timeStamp().equals(event.timeStamp())) &&

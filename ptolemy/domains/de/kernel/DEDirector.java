@@ -1,4 +1,4 @@
-/* A DE domain director.
+/* The DE domain director.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -75,12 +75,12 @@ import ptolemy.kernel.util.Workspace;
    microstep. A timestamp indicates the model time when this event occurs. It
    is an object of the {@link ptolemy.actor.util.Time} class. A microstep is an
    integer which represents the index of the sequence of execution phases when
-   this director processing events with the same timestamp. Two tags are equal
+   this director processes events with the same timestamp. Two tags are equal
    if they have the same timestamp and microstep. If two events have the same
-   tag, they are called simultaneous.
+   tag, they are called simultaneous events.
    <p>
-   Microsteps can only be increased by calling the fireAt method. For example,
-   when an actor requests for firing itself again at the current model time, a
+   Microsteps can only be increased by calling the fireAt() method. For example,
+   when an actor requests to be fired again at the current model time, a
    new event with the same timestamp but a bigger microstep (incremented by 1)
    will be generated.
    <p>
@@ -105,35 +105,37 @@ import ptolemy.kernel.util.Workspace;
    {@link ptolemy.actor.util.CalendarQueue} class is done according to the
    order defined above.
    <p>
-   The complexity of the calendar algorithm is sensitive to the length of event
-   queue. When the size of an event queue becomes too long or changes very
-   often, the performance of simulation suffers from the penalties of queuing
+   The complexity of the calendar algorithm is sensitive to the length of the 
+   event queue. When the size of the event queue becomes too long or changes 
+   very often, the simulation performance suffers from the penalties of queuing
    and dequeuing events. A few mechanisms are implemented to reduce such
    penalties by keeping the event queue short. The first mechanism is to only
-   store the <i>trigger</i> events that happen at the current model time and
-   microstep and <i>pure</i> events in an event queue. See
+   store in the event queue <i>pure</i> events and the <i>trigger</i> events 
+   with the same timestamp and microstep as those of the director. See
    {@link DEEvent} for explanation of these two types of events. What is more,
-   no duplicate trigger events are allowed in an event queue. Another mechanism
-   is that in a hierarchical model, each levels keep a local event queue.
-   A lower level only reports the earliest event to its immediately upper level
+   no duplicate trigger events are allowed in the event queue. Another mechanism
+   is that in a hierarchical model, each level keeps a local event queue.
+   A lower level only reports the earliest event to its upper level
    to schedule a future firing. The last mechanism is to maintain a list which
    records all actors that are disabled. Any triggers sent to the actors in
-   the list are discarded.
+   this list are discarded.
    <p>
-   In the initialize method, depths of actors and IO ports are statically
-   analyzed and calculated. They are not calculated in the preinitialize method
-   because hierarchical models may change their structures during the
-   preinitialize method. For example, a modal model does not specify its
-   initial state (and its refinement) until the end of its preinitialize method.
-   See {@link ptolemy.domains.fsm.kernel.FSMActor}. In order to support
-   mutation, this director recalculates the depths at the beginning of next
+   In the initialize() method, depths of actors and IO ports are statically
+   analyzed and calculated. They are not calculated in the preinitialize() 
+   method because hierarchical models may change their structures during their
+   preinitialize() method. For example, a modal model does not specify its
+   initial state (and its refinement) until the end of its preinitialize() 
+   method. See {@link ptolemy.domains.fsm.kernel.FSMActor}. In order to support
+   mutation, this director recalculates the depths at the beginning of its next
    iteration.
    <p>
    There are two types of depths: one is associated with IO ports, which
    reflects the order of trigger events; the other one is associated with
    actors, which is for pure events. The relationship between the depths of IO
    ports and actors is that the depth of an actor is the smallest of the depths
-   of its IO ports.
+   of its IO ports. Pure events can only be produced by calling the fireAt()
+   method, and trigger events can only be produced by actors that produce 
+   outputs. See {@link ptolemy.domains.de.kernel.DEReceiver#put(Token)}.
    <p>
    Directed loops of IO ports with no delay are not permitted because it is
    impossible to do a topological sort to assign depths. Such a loop can be
@@ -155,24 +157,27 @@ import ptolemy.kernel.util.Workspace;
    whose tags are equal to the current tag of the director (also called the
    model tag). At the beginning of the fire() method, this director dequeues
    a subset of the earliest events (the ones with smallest timestamp, microstep,
-   and depth) from the global event queue, and invokes their corresponding
-   actor to iterate. This actor must consume tokens from its input port(s),
+   and depth) from the global event queue. These events have the same 
+   destination actor. Then, this director invokes that actor to iterate. 
+   This actor must consume tokens from its input port(s),
    and usually produces new events on its output port(s). These new events will
    be trigger the receiving actors to fire. It is important that the actor
    actually consumes tokens from its inputs, even if the tokens are solely
    used to trigger reactions. This is how polymorphic actors are used in the
    DE domain. The actor will be fired repeatedly until there are no more tokens
    in its input ports, or the actor returns false in its prefire() method. Then,
-   this director dequeues the earliest events until no more events have the
-   same tag with the model tag. After calling the postfire method, this director
-   finishes an iteration.
+   this director keeps dequeuing and processing the earliest events from the
+   event queue until no more events have the same tag as the model tag. 
+   After calling the postfire() method, this director finishes an iteration. 
+   This director is responsible to advance the model tag to perform another 
+   iteration.
    <p>
    A model starts from the time specified by <i>startTime</i>, which
    has default value 0.0. The stop time of the execution can be set
    using the <i>stopTime</i> parameter. The parameter has a default value
-   <i>Infinity</i>, which means the execution runs for ever.
+   <i>Infinity</i>, which means the execution runs forever.
    <P>
-   Execution of a DE model ends when the timestamp of the earliest events
+   Execution of a DE model ends when the timestamp of the earliest event
    exceeds the stop time. This stopping condition is checked inside
    the postfire() method of this director. By default, execution also ends
    when the global event queue becomes empty. Sometimes, the desired
@@ -182,13 +187,13 @@ import ptolemy.kernel.util.Workspace;
    execution when there are no more events, set the
    <i>stopWhenQueueIsEmpty</i> parameter to <code>false</code>.
    <p>
-   Parameters, <i>isCQAdaptive</i>, <i>minBinCount</i>, and
+   Parameters <i>isCQAdaptive</i>, <i>minBinCount</i>, and
    <i>binCountFactor</i>, are used to configure the calendar queue.
    Changes to these parameters are ignored when the model is running.
    <p>
    If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
    then the director will not process events until the real time elapsed
-   since the model started matches the time stamp of the event.
+   since the model started matches the timestamp of the event.
    This ensures that the director does not get ahead of real time. However,
    of course, this does not ensure that the director keeps up with real time.
    <p>
@@ -1012,9 +1017,10 @@ public class DEDirector extends Director implements TimedDirector {
         super.stopFire();
     }
 
-    // FIXME: Why we do not need an overridden transferOutputs method?
+    // FIXME: Why do we need an overridden transferOutputs method?
     // transfer all tokens at boundaries of hierarchies.
     // Do we need an overridden transferInputs method?
+    // TESTIT: Use the Repeat actor as either source or sink to test.
 
     /** Override the base class method to transfer all the available
      *  tokens at the boundary output port to outside.
@@ -1071,7 +1077,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @param actor The actor to be fired.
      *  @param time The timestamp of the event.
      *  @exception IllegalActionException If the time argument is less than
-     *  the current model time, or the depth of the actor can not be achieved,
+     *  the current model time, or the depth of the actor has not be calculated,
      *  or the new event can not be enqueued.
      */
     protected void _enqueueEvent(Actor actor, Time time)
@@ -1115,22 +1121,22 @@ public class DEDirector extends Director implements TimedDirector {
         _eventQueue.put(newEvent);
     }
 
-    /** Put a trigger event into the event queue with the specified timestamp.
+    /** Put a trigger event into the event queue. 
      *  <p>
-     *  The microstep of this event is always equal to that of the current
-     *  microstep of this director. The depth for the queued event is the
+     *  The trigger event has the same timestamp as that of the director.
+     *  The microstep of this event is always equal to the current microstep 
+     *  of this director. The depth for the queued event is the
      *  depth of the destination IO port.
      *  <p>
      *  If the event queue is not ready or the actor contains the destination
      *  port is disabled, do nothing.
      *
      *  @param ioPort The destination IO port.
-     *  @param time The timestamp of the event.
      *  @exception IllegalActionException If the time argument is not the
-     *  current time, or the depth of the given IO port can not be achieved,
+     *  current time, or the depth of the given IO port has not be calculated,
      *  or the new event can not be enqueued.
      */
-    protected void _enqueueEvent(IOPort ioPort, Time time)
+    protected void _enqueueTriggerEvent(IOPort ioPort)
             throws IllegalActionException {
 
         Actor actor = (Actor)ioPort.getContainer();
@@ -1140,28 +1146,18 @@ public class DEDirector extends Director implements TimedDirector {
             return;
         }
 
-        // Adjust the micro step.
-        int microstep = 0;
-        if (time.compareTo(getModelTime()) == 0) {
-            microstep = _microstep;
-        } else if (time.compareTo(getModelTime()) != 0) {
-            throw new IllegalActionException((Nameable)ioPort,
-                    "Attempt to queue an event not at the current time:"
-                    + " Current time is " + getModelTime()
-                    + " while event time is " + time);
-        }
-
         int depth = _getDepthOfIOPort(ioPort);
 
         if (_debugging) {
             _debug("enqueue a trigger event for ",
                     ((NamedObj)actor).getName(),
-                    "time = " + time + " microstep = " + microstep
+                    "time = " + getModelTime()+ " microstep = " + _microstep
                     + " depth = " + depth);
         }
 
         // Register this trigger event.
-        DEEvent newEvent = new DEEvent(ioPort, time, microstep, depth);
+        DEEvent newEvent = 
+            new DEEvent(ioPort, getModelTime(), _microstep, depth);
         _eventQueue.put(newEvent);
     }
 

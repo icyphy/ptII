@@ -39,14 +39,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DEActor
 
 /**
-   A base class for actors specific to the DE domain.  This class
-   implements both SequenceActor and TimedActor.
+   The base class for actors specific to the DE domain. This class
+   implements both SequenceActor and TimedActor. 
+   <p> 
+   A DE domain-specific actor, like the 
+   {@link ptolemy.domains.de.lib.TimedDelay} actor, needs to extend this
+   class. However, it does not mean only actors extending this class can
+   be used in the DE domain. For example, the {@link ptolemy.actor.lib.Clock}
+   actor can be used in DE domain.
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public abstract class DEActor extends TypedAtomicActor
     implements SequenceActor, TimedActor {
