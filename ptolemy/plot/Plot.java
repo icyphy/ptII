@@ -54,6 +54,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -1335,11 +1336,33 @@ public class Plot extends PlotBox {
                 _maxDataset = _currentdataset;
                 return true;
             } else if (lcLine.startsWith("lines:")) {
-                if (lcLine.indexOf("off", 6) >= 0) {
-                    setConnected(false);
-                } else {
-                    setConnected(true);
-                }
+                if (_sawFirstDataSet) {
+		    // Backward compatbility with xgraph here.
+		    // If we see some data sets, then they are drawn
+		    // with lines, if we then see a Lines: off
+		    // the current dataset and succeeding datasets
+		    // will be drawn without lines.  
+
+		    // For each of the existing datasets, if
+		    // it fmt.connectedUseDefault is true, then
+		    // set fmt.connectedUseDefault to false and set
+		    // the value of fmt.connected
+		    Enumeration formats = _formats.elements();
+		    while (formats.hasMoreElements()) {
+			Format format = (Format) formats.nextElement();
+			if (format.connectedUseDefault) {
+			    format.connectedUseDefault = false;
+			    format.connected = _connected;
+			}
+		    }
+
+		}		    
+
+		if (lcLine.indexOf("off", 6) >= 0) {
+		    setConnected(false);
+		} else {
+		    setConnected(true);
+		}
                 return true;
             } else if (lcLine.startsWith("impulses:")) {
                 // If we have not yet seen a dataset, then this is interpreted
