@@ -32,6 +32,10 @@ package ptolemy.plot.demo;
 
 import ptolemy.plot.*;
 
+import java.awt.Event;
+import java.awt.event.*;
+import javax.swing.JFrame;
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemo
 /**
@@ -78,6 +82,29 @@ public class PlotLiveDemo extends PlotLive {
             Thread.sleep(5);
         } catch (InterruptedException e) {}
     }
+
+    /** Run the demo as an application.
+     *	This is very useful for debugging.  The command to run would be 
+     * java -classpath $PTII ptolemy.plot.demo.PlotLiveDemo
+     */
+    public static void main(String args[]) {
+	final PlotLiveDemo plotLiveDemo = new PlotLiveDemo();
+	System.runFinalizersOnExit(true);
+	JFrame frame = new JFrame("PlotLiveDemo");
+	frame.addWindowListener(new WindowAdapter() {
+	    public void windowClosing(WindowEvent event) {
+		plotLiveDemo.stop();
+		System.exit(0);
+	    }
+	});
+	frame.getContentPane().add("Center", plotLiveDemo);
+	frame.show();
+	plotLiveDemo.init();
+	plotLiveDemo.start();
+	frame.pack();
+    }
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
