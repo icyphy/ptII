@@ -978,8 +978,16 @@ public class XmlParser {
 
 				// Read the attribute name.
     aname = readNmtoken(true).intern();
-    type = getAttributeDefaultValueType(name, aname);
+    // Fix by Zoltan Kemenczy for: 
+    // "attribute value normalization according to Section 3.3.3
+    // Attribute-Value Normalization of XML 1.0
+    // http://www.w3.org/TR/2000/REC-xml-20001006#AVNormalize). It
+    // says that escaped whitespace character references that are not
+    // #x20 (like the newline,#xa) should be preserved in the
+    // normalized value)"
 
+    //type = getAttributeDefaultValueType(name, aname);
+    type = getAttributeType(name, aname);
 				// Parse '='
     parseEq();
 
