@@ -146,8 +146,16 @@ public class Precision {
         integer part (n).  
         @param length The total number of bits.
         @param intBits Total number of integer bits.
-     */
-    public Precision(int length, int intBits) {
+        @exception IllegalArgumentException If the string supplied is
+        incorrect.
+    */
+    public Precision(int length, int intBits)  
+            throws IllegalArgumentException {
+	if (length <= 0 || intBits < 0 || intBits > length) {
+	    throw new IllegalArgumentException("Incorrect definition of " + 
+                    "Precision. Do not use negative values or have an " +
+                    "integer part larger than the total length ");
+	}
 	_length   = length;
 	_intBits  = intBits;
 	_fraction = length - intBits;
