@@ -40,27 +40,38 @@ import javax.sound.sampled.*;
 //// SoundCapture
 /**
 <h2>Overview</h2>
-A library supporting the capturing of audio. This class supports the
+A library supporting the capture of audio. This class supports the
 real-time capture of audio from the audio input port (mic or line-in)
-as well as the capture of audio from a sound file. Valid sound file
-formats are WAVE (.wav), AIFF (.aif,.aiff), AU (.au). Single channel
-(mono) and multichannel audio (stereo) are supported.
+as well as the capture of audio from a sound file. Single channel
+(mono) and multichannel audio (stereo) are supported. This class,
+along with SoundPlayback, intends to provide an easy to use interface 
+to Java Sound, Java's audio API.
 <p>
- Depending on available
+Depending on available audio
 system resorces, it may be possible to run an instance of this
 class and an instance of SoundPlayback concurrently. This allows
 for the concurrent capture, processing, and playback of audio data.
 <p>
 <h2>Usage</h2>
 Two constructors are provided. One constructor creates a sound capture
-object that captures from the line-in or microphone port. The
-other constructor creates a sound capture object that captures
-from a sound file.
+object that captures from the line-in or microphone port. If this 
+constructor is used, there will be a small
+delay between the time that the audio enters the microphone or
+line-in and the time that the corresponding audio samples are
+available via <i>getSamples</i>.
+This latency can be adjusted by setting the <i>bufferSize</i>
+constructor parameter. Another constructor creates a sound capture 
+object that captures audio from a sound file.
 <p>
 After calling the appropriate constructor, <i>startCapture()</i>
 must be called to initialize the audio system for capture.
 The <i>getSamples()</i> method should then be repeatedly
-called to obtain audio data in the form of sample values.
+invoked to obtain audio data in the form of a multidimensional
+array of audio sample values. For the case where
+audio is captured from the mic or line-ine, it is important to
+invoke <i>getSamples()</i> often enough to prevent overflow of
+the internal audio buffer. The size of the internal buffer is
+set in the contructor.
 Finally, after no more audio data is desired, <i>stopCapture()</i>
 should be called to free up audio system resources.
 <p>
@@ -82,17 +93,20 @@ public class SoundCapture {
 
     /** Construct a sound capture object. This constructor creates an
      *  object that captures audio from the computer's audio input
-     *  port (mic or line-in). Note that getSamples() should be
-     *  called often enough to prevent overflow of the internal audio
+     *  port (mic or line-in). If this constructor is used, then it
+     *  is important that getSamples() be
+     *  invoked often enough to prevent overflow of the internal audio
      *  input buffer.
-     *  @param sampleRate Sample rate in Hz. Must be in the range (8000
-     *  to 48000).
-     *  @param sampleSizeInBits Number of bits per sample (choices are
-     *  8 or 16).
+     *  @param sampleRate Sample rate in Hz. Must be in the range: 8000
+     *   to 48000.
+     *  @param sampleSizeInBits Number of bits per sample. Choices are
+     *   8 or 16.
      *  @param channels Number of audio channels. 1 for mono, 2 for
-     *  stereo.
+     *   stereo.
      *  @param bufferSize Requested size of the internal audio input
-     *   buffer in samples. This controls the latency. Ideally, the
+     *   buffer in samples. This controls the latency. A lower bound 
+     *   on the latency is given by (<i>bufferSize</i> / <i>sampleRate</i>) 
+     *   seconds. Ideally, the
      *   smallest value that gives acceptable performance (no overflow)
      *   should be used.
      *  @param getSamplesSize Size of the array returned by
@@ -128,12 +142,14 @@ public class SoundCapture {
     /** Construct a sound capture object. This constructor creates an
      *  object that captures audio from a sound file.
      *  @param isURL True means that a URL to a file is given. False means
-     *  that the file name specifies the location of the file on
-     *  the local filesystem.
+     *   that the file name specifies the location of the file on
+     *   the local filesystem.
      *  @param fileName The name of the file. This can be either a URL
-     *  file name or a local file sytem file name.
-     *  @param getSamplesSize Size of the array returned by
-     *   <i>getSamples()</i>.
+     *   file name or a local file sytem file name. Valid sound file
+     *   formats are WAVE (.wav), AIFF (.aif,.aiff), AU (.au). The file 
+     *   format is automatically determined from the file extension.
+     *  @param getSamplesSize The number of samples per channel
+     *   returned by <i>getSamples()</i>.
      */
     public SoundCapture(boolean isURL, String fileName,
 			int getSamplesSize) {
@@ -438,30 +454,7 @@ public class SoundCapture {
 					    (mathDotPow));
 	    }
         }
-
 	return doubleArray;
-	/*
-	int lengthInSamples = byteArray.length / bytesPerSample;
-	double[][] doubleArray = new double[channels][lengthInSamples];
-	double mathDotPow = Math.pow(2, 8 * bytesPerSample - 1);
-	byte[] b = new byte[bytesPerSample];
-
-	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-
-	    
-	    for (int i = 0; i < bytesPerSample; i += 1) {
-		// Assume we are dealing with big endian.
-		b[i] = byteArray[currSamp*bytesPerSample + i];
-	    }
-	    long result = (b[0] >> 7) ;
-	    for (int i = 0; i < bytesPerSample; i += 1)
-		result = (result << 8) + (b[i] & 0xff);
-	    doubleArray[0][currSamp] = ((double) result/
-                    (mathDotPow));
-        }
-
-	return doubleArray;
-	*/
     }
 
     ///////////////////////////////////////////////////////////////////

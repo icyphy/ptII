@@ -1,5 +1,5 @@
-/* A library supporting the playback of audio data and the creation of
-   sound files from audio samples.
+/* A library supporting the playback of audio data and the the 
+   writing of audio data to a sound file.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -40,21 +40,26 @@ import javax.sound.sampled.*;
 //// SoundPlayback
 /**
 <h2>Overview</h2>
-A library supporting the playback of audio. This class supports the
-real-time playback of audio to the speaker
-as well as the writing of audio to a sound file. Valid sound file
-formats are WAVE (.wav), AIFF (.aif,.aiff), AU (.au). Single channel
-(mono) and multichannel audio (stereo) are supported.
+A library supporting the real-time playback of audio and the writing 
+of audio data to a sound file. Single channel
+(mono) and multichannel audio (stereo) are supported. This class,
+along with SoundCapture, intends to provide an easy to use interface 
+to Java Sound, Java's audio API.
 <p>
 Depending on available
 system resorces, it may be possible to run an instance of this
-class and an instance of SoundPlayback concurrently. This allows
+class and an instance of SoundCapture concurrently. This allows
 for the concurrent capture, processing, and playback of audio data.
 <p>
 <h2>Usage</h2>
 Two constructors are provided. One constructor creates a sound playback
-object that sends audio data to the speaker. The other constructor
-creates a sound playback object the sends audio data to a sound
+object that sends audio data to the speaker. If this constructor is
+used, there will be a small
+delay between the time that the audio data is delivered to this
+object and the time that the corresponding audio is actually
+heard. This latency can be adjusted by setting the <i>bufferSize</i>
+constructor parameter.  Another constructor
+creates a sound playback object that sends audio data to a sound
 file.
 <p>
 After calling the appropriate constructor, <i>startPlayback()</i>
@@ -73,7 +78,6 @@ read or write native files. The .java.policy file must be
 modified to grant applets more privliiges.
 <p>
 Note: Requires Java 2 v1.3.0 RC1 or later.
-// FIXME: FILE FORMATS SUPPORTED?
 @author Brian K. Vogel
 @version $Id$
 @see ptolemy.media.javasound.SoundCapture
@@ -83,25 +87,28 @@ public class SoundPlayback {
 
     /** Construct a sound playback object. This constructor creates an
      *  object that plays audio through the computer's speaker. Note
-     *  that putSamples() should be
+     *  that when this constructor is used, putSamples() should be
      *  called often enough to prevent underflow of the internal audio
      *  input buffer.
-     *  @param sampleRate Sample rate in Hz. Must be in the range (8000
-     *  to 48000).
+     *  @param sampleRate Sample rate in Hz. Must be in the range: 8000
+     *  to 48000.
      *  @param sampleSizeInBits Number of bits per sample (valid choices are
      *  8 or 16).
-     *  @param channels Number of audio channels. FIXME: must be 1
-     *   for now.
+     *  @param channels Number of audio channels. 1 for mono, 2 for
+     *  stereo, etc.
      *  @param bufferSize Requested size of the internal audio input
-     *   buffer in samples. This controls the latency. Ideally, the
-     *   smallest value that gives acceptable performance (no overflow)
+     *   buffer in samples. This controls the latency (delay from
+     *   the time <i>putSamples()</i> is called until the audio is
+     *   acutally heard). A lower bound on the latency is given by 
+     *   (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
+     *   Ideally, the
+     *   smallest value that gives acceptable performance (no unerflow)
      *   should be used.
      *  @param putSamplesSize Size of the array parameter of
      *   <i>putSamples()</i>. For performance reasons, the size should
      *   be chosen smaller than <i>bufferSize</i>. Typical values
-     *   might be 1/2 to 1/16th of <i>bufferSize</i>.
+     *   are 1/2 to 1/16th of <i>bufferSize</i>.
      */
-    // FIXME: channels must be set = 1.
     public SoundPlayback(float sampleRate, int sampleSizeInBits,
 			int channels, int bufferSize,
 			int putSamplesSize) {
@@ -127,25 +134,26 @@ public class SoundPlayback {
     }
 
     /** Construct a sound playback object. This constructor creates an
-     *  object that plays audio to a sound file. To create a new
+     *  object that writes audio to a sound file. To create a new
      *  sound file, call the <i>startPlayback()</i> method.
      *  Thereafter, each call to <i>putSamples()</i> will add
      *  <i>putSamplesSize</i> many samples to the sound file. To
      *  close and save the sound file, call method <i>stopPlayback</i>.
      *  @param fileName The file name to create. If the file already
-     *  exists, overwrite it.
-     *  @param sampleRate Sample rate in Hz. Must be in the range (8000
-     *  to 48000).
+     *  exists, overwrite it. Valid sound file formats are WAVE (.wav), 
+     *  AIFF (.aif,.aiff), AU (.au). The file format to write is
+     *  determined automatically from the file extension.
+     *  @param sampleRate Sample rate in Hz. Must be in the range: 8000
+     *  to 48000.
      *  @param sampleSizeInBits Number of bits per sample (valid choices are
      *  8 or 16).
-     *  @param channels Number of audio channels. FIXME: must be 1
-     *   for now.
+     *  @param channels Number of audio channels. 1 for mono, 2 for
+     *  stereo, etc.
      *  @param putSamplesSize Size of the array parameter of
      *   <i>putSamples()</i>. For performance reasons, the size should
      *   be chosen smaller than <i>bufferSize</i>. Typical values
-     *   might be 1/2 to 1/16th of <i>bufferSize</i>.
+     *   are 1/2 to 1/16th of <i>bufferSize</i>.
      */
-    // FIXME: channels must be set = 1.
     public SoundPlayback(String fileName, float sampleRate, int sampleSizeInBits,
 			int channels, int bufferSize,
 			int putSamplesSize) {
@@ -174,8 +182,7 @@ public class SoundPlayback {
     ///  Public Methods                                         ///
 
     /** Perform initialization for the playback of audio data.
-     *  After this method is called, 
-     *   This method must be invoked prior
+     *  This method must be invoked prior
      *  to the first invocation of <i>putSamples</i>. This method
      *  must not be called more than once between invocations of
      *  <i>stopPlayback()</i>.
@@ -203,8 +210,9 @@ public class SoundPlayback {
      *  that the system resources involved in the audio playback
      *  may be freed.
      *  <p>
-     *  If the "play audio to file" constructor was used, then
-     *  the sound file specified by the constructor will be closed.
+     *  If the "write audio data to file" constructor was used, then
+     *  the sound file specified by the constructor is saved and
+     *  closed.
      */
     public void stopPlayback() {
 	if (_playbackMode == "speaker") {
@@ -227,13 +235,16 @@ public class SoundPlayback {
     }
 
     /** If the "play audio to speaker" constructor was called,
-     *  then playback the array of audio samples in
-     *  <i>putSamplesArray</i>. There will be a latency before
-     *  the audio data is actually heard, however, since the
-     *  audio data in <i>putSamplesArray</i> is added to an
-     *  internal audio buffer, the size of which is set by
-     *  the constructor. If the "play audio to speaker" mode is
-     *  used, then this method should be called frequently
+     *  then queue the array of audio samples in
+     *  <i>putSamplesArray</i> for playback. There will be a
+     *  latency before
+     *  the audio data is actually heard, since the
+     *  audio data in <i>putSamplesArray</i> is queued to an
+     *  internal audio buffer. The size of the internal buffer 
+     *  is set by the constructor. A lower bound on the latency 
+     *  is given by (<i>bufferSize</i> / <i>sampleRate</i>) 
+     *  seconds. If the "play audio to speaker" mode is
+     *  used, then this method should be invoked often
      *  enough to prevent underflow of the internal audio buffer.
      *  <p>
      *  If the "play audio to file" constructor was used,
@@ -248,7 +259,8 @@ public class SoundPlayback {
      *  of the (n+1)th channel. putSamplesArray should be a
      *  rectangular array such that putSamplesArray.length() gives
      *  the number of channels and putSamplesArray[n].length() is
-     *  equal to <i>putSamplesSize</i>, for all channels n.
+     *  equal to <i>putSamplesSize</i>, for all channels n. This
+     *  is not actually checked, however.
      */
     public void putSamples(double[][] putSamplesArray) {
 	//System.out.println("SoundPlayback: putSamples(): invoked");
@@ -346,6 +358,10 @@ public class SoundPlayback {
     }
 
     private void _startPlaybackToFile() {
+	// FIXME: Performance is great when the incoming audio
+	// samples are being captured in real-time, possibly
+	// due to resizing of the ArrayList.
+	//
 	// Array to hold all data to be saved to file. Grows
 	// as new data are added (via putSamples()).
 	// Each element is a byte of audio data.
@@ -463,22 +479,6 @@ public class SoundPlayback {
 	    }
 	}
 	return byteArray;
-	/*
-	int lengthInSamples = doubleArray[0].length;
-	double mathDotPow = Math.pow(2, 8 * bytesPerSample - 1);
-	byte[] byteArray = 
-	    new byte[lengthInSamples * bytesPerSample * channels];
-	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-	    long l = Math.round((doubleArray[0][currSamp] * mathDotPow));
-	    byte[] b = new byte[bytesPerSample];
-	    for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
-		b[bytesPerSample - i - 1] = (byte) l;
-	    for (int i = 0; i < bytesPerSample; i += 1) {
-                byteArray[currSamp*bytesPerSample + i] = b[i];
-	    }
-	}
-	return byteArray;
-	*/
     }
 
     ///////////////////////////////////////////////////////////////////
