@@ -253,6 +253,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
         // check if the transition is accurate
         // FIXME: only handle the non-preemptive transitions
+
+        // FIXME: There is a fatal error about this transition enforced
+        // step size control. I have to comment it out before the solution
+        // is found.
+        /*
         try {
             Transition tr = _ctrl._checkTransition(_st.
                 nonpreemptiveTransitionList());
@@ -264,7 +269,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 Variable guard = tr._guard2;
                 _distanceToBoundary = ( (DoubleToken) guard.getToken()).
                     doubleValue();
-                //System.out.println("the distance to guard "+ guard.getExpression() + " is " +  _distanceToBoundary);
+                System.out.println("the distance to guard "+ guard.getExpression() + " is " +  _distanceToBoundary);
 
                 // the returned value as -1.0 indicating this transition is
                 // always enabled, return true. The HSDirector is responsible
@@ -287,7 +292,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             System.out.println("FIXME:: " + e.getMessage());
             return result;
         }
-
+        */
+       return result;
     }
 
     /** Return a CTReceiver.
@@ -395,6 +401,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
             }
         }
+
+        // FIXME: There is a fatal error in this transition enforced
+        // step size control. I comment it out before I find the solution.
+        /*
         if (_transitionAccurate) {
             return result;
         } else {
@@ -466,6 +476,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 return possibleStepSize;
             }
         }
+        */
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
