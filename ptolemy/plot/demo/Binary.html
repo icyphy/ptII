@@ -7,33 +7,12 @@
 <h1>Plotting Binary Data</h1>
 <hr>
 The plot below obtains its data from two binary files. 
-The plot commands are encoded as single characters, and the numeric data 
-is a 4 byte float.  
- <P>The commands are encoded as follows:
-<DL>
-<DT> <CODE>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></CODE>
-<DD> Draw a X,Y point
-<DT> <CODE>e</CODE>
-<DD> End of dataset
-<DT> <CODE>n <I>&lt;dataset name&gt;</I>&#92n</CODE>
-<DD> New dataset name, ends in <CODE>&#92n</CODE>
-<DT> <CODE>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></CODE>
-<DD> Move to a X,Y point.
-</DL>
- <P>To view a binary plot file under unix, we can use the 
-<CODE>od</CODE> command.  Note that the first character is a <CODE>d</CODE>
-followed by eight bytes of data consisting of two floats of four bytes.
-<PRE>
-cxh@carson 324% od -c data/integrator1.plt
-0000000   d  \0  \0  \0  \0  \0  \0  \0  \0   d   ? 200  \0  \0   ? 200
-0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
-
-</PRE>
-
 This binary format is used in <CODE>pxgraph</CODE>, the X11 plotting
 tool that is part of the
 <A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A>.
-
+For information about the binary format, see the
+<A HREF="../doc/codeDoc/plot.Pxgraph.html">Pxgraph</A> Java class
+documentation.
 <p>
 <applet name="Binary" code="plot.Plot" width=500 height=400
     codebase="../.."	
