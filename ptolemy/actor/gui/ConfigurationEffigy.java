@@ -1,4 +1,4 @@
-/* A representative of a ptolemy model
+/* A representative of a ptolemy configuration model
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -29,9 +29,8 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -42,20 +41,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
-//// PtolemyEffigy
+//// ConfigurationEffigy
 /**
-An effigy for a Ptolemy II model.
+An effigy for a Ptolemy II model.  This effigy allows views to be
+easily created on the configuration that contains this effigy.
 
 @author Steve Neuendorffer
 @version $Id$
 */
-public class PtolemyEffigy extends Effigy {
+public class ConfigurationEffigy extends PtolemyEffigy {
 
     /** Create a new proxy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this proxy.
      */
-    public PtolemyEffigy(Workspace workspace) {
+    public ConfigurationEffigy(Workspace workspace) {
 	super(workspace);
     }
 
@@ -63,61 +63,46 @@ public class PtolemyEffigy extends Effigy {
      *  @param container The directory that contains this proxy.
      *  @param name The name of this proxy.
      */
-    public PtolemyEffigy(ModelDirectory container, String name)
+    public ConfigurationEffigy(ModelDirectory container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Return the ptolemy model proxied by this object.
-     *  @return The model, or null if none has been set.
-     */
-    public NamedObj getModel() {
-	return _model;
-    }
 
-    /** Set the ptolemy model proxied by this object.
-     *  @param model The model.
-     */
-    public void setModel(NamedObj model) {
-        _model = model;
-    }
 
-    /** A factory for creating new ptolemy effigies.
+    /** Specify the container, adding the entity to the list
+     *  of entities in the container.  If the container already contains
+     *  an entity with the same name, then throw an exception and do not make
+     *  any changes.  Similarly, if the container is not in the same
+     *  workspace as this entity, throw an exception.
+     *  If the entity is already contained by the container, do nothing.
+     *  If this entity already has a container, remove it
+     *  from that container first.  Otherwise, remove it from
+     *  the directory of the workspace, if it is present.
+     *  If the argument is null, then unlink the ports of the entity
+     *  from any relations and remove it from its container.
+     *  It is not added to the workspace directory, so this could result in
+     *  this entity being garbage collected.
+     *  Derived classes may override this method to constrain the container
+     *  to subclasses of CompositeEntity. This method is write-synchronized
+     *  to the workspace and increments its version number.
+     *  This class overrides the base class to additionally set the model 
+     *  that this effigy views to be its toplevel container.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace..
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
      */
-    public static class Factory extends EffigyFactory {
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
-	 */
-	public Factory(CompositeEntity container, String name)
+    public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
+	super.setContainer(container);
+	if(container != null) {
+	    setModel(container.toplevel());
 	}
-
-	/** Create a new effigy in the given directory.  This class
-	 *  overrides the base class to create a new Ptolemy Effigy
-	 *  whose model is set to a TypedCompositeActor.
-	 */
-	public Effigy createEffigy(ModelDirectory directory) 
-	    throws NameDuplicationException, IllegalActionException {
-	    PtolemyEffigy effigy = new PtolemyEffigy(directory, 
-				     directory.uniqueName("effigy"));
-	    effigy.setModel(new TypedCompositeActor(new Workspace()));
-	    return effigy;
-	}		
     }
-	
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    // The model associated with this proxy.
-    private NamedObj _model;
 }
 

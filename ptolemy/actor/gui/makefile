@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CompositeActorApplication.java \
 	Configuration.java \
+	ConfigurationEffigy.java \
 	Configurer.java \
 	DebugListenerTableau.java \
 	Documentation.java \
@@ -61,6 +62,7 @@ JSRCS = \
 	EditorPaneFactory.java \
 	EditParametersDialog.java \
 	Effigy.java \
+	EffigyFactory.java \
 	HTMLViewer.java \
 	HTMLViewerTableau.java \
 	ModelDirectory.java \

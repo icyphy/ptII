@@ -29,16 +29,28 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.Iterator;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
 
 //////////////////////////////////////////////////////////////////////////
 //// Configuration
@@ -77,6 +89,65 @@ public class Configuration extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+
+    /** Create a new model.  This defers to the effigy factory contained
+     *  by this configuration.
+     */
+    public void newModel() {
+	final ModelDirectory directory = 
+	    (ModelDirectory)getEntity("directory");
+	if(directory == null) 
+	    return;
+	List factoryList = entityList(EffigyFactory.class);
+	Box panel = new Box(BoxLayout.Y_AXIS);
+	final JFrame frame = new JFrame();
+	frame.getContentPane().add(panel);
+	Iterator factories = factoryList.iterator();
+	while(factories.hasNext()) {
+	    final EffigyFactory factory = 
+		(EffigyFactory)factories.next();
+	    Documentation doc = 
+		(Documentation)factory.getAttribute("description");
+	    String buttonName;
+	    if(doc != null) {
+		buttonName = doc.getValue();
+	    } else {
+		buttonName = factory.getName();
+	    }
+	    JButton button = new JButton(buttonName);
+	    panel.add(button);
+	    button.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent event) {
+		    frame.hide();
+		    Effigy effigy = null;
+		    try {
+			effigy = factory.createEffigy(directory);
+		    } catch (KernelException ex) {
+			MessageHandler.error("Could not create new effigy",
+					     ex);
+		    } 
+		    try {
+			_createPrimaryTableau(effigy);
+		    } catch (Exception ex) {
+			MessageHandler.error("Could not create tableau " +
+					     "for new effigy", ex);
+		    } 
+		}
+	    });
+	}
+        panel.add(panel.createVerticalStrut(15));
+	panel.add(panel.createHorizontalGlue());
+	JButton button = new JButton("Cancel");	
+	panel.add(button);
+	button.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent event) {
+		frame.hide();
+	    }
+	});
+	frame.show();
+	frame.pack();
+    }
 
     /** If a model with the specified name is present in the directory,
      *  then find all the tableaux of that model and make them 

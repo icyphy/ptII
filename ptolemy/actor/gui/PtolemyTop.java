@@ -108,7 +108,16 @@ public abstract class PtolemyTop extends Top {
     protected void _addMenus() {
         super._addMenus();
         if (_tableau != null) {
-            Effigy tableauContainer = (Effigy)_tableau.getContainer();
+	    // Check to see if we have an effigy factory.
+	    Configuration configuration = (Configuration)_tableau.toplevel();
+	    EffigyFactory effigyFactory = 
+		(EffigyFactory)configuration.getEntity("effigyFactory");
+	    if(effigyFactory != null) {
+		// Enable the "New" item in the File menu.
+		_fileMenuItems[1].setEnabled(true);
+	    }
+
+	    Effigy tableauContainer = (Effigy)_tableau.getContainer();
             if (tableauContainer != null) {
                 _factoryContainer = tableauContainer.getTableauFactory();
                 if (_factoryContainer != null) {
@@ -137,6 +146,16 @@ public abstract class PtolemyTop extends Top {
                 }
             }
         }
+    }
+
+    /** Open a new Ptolemy II model.
+     */
+    protected void _new() {
+        if (_tableau != null) {
+	    // Check to see if we have an effigy factory.
+	    Configuration configuration = (Configuration)_tableau.toplevel();
+	    configuration.newModel();
+	}
     }
 
     /** Read the specified URL.  This delegates to the ModelDirectory
