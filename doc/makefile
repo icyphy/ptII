@@ -109,9 +109,6 @@ OTHER_FILES_TO_BE_JARED = \
 
 	#doc/design/usingVergil/index.htm 
 
-codeDoc.jar:
-	$(JAR) -cvf $@ -C $(ROOT) doc/codeDoc
-
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	\
@@ -230,7 +227,11 @@ ALLPACKAGES =		$(CODEGENPACKAGES) \
 
 
 all: suball codeDoc/tree.html
-install: all jars
+install: all jars codeDoc.jar
+
+codeDoc.jar:
+	$(JAR) -cvf $@ -C $(ROOT) doc/codeDoc
+
 
 # Vergil gets special versions of the html files because the JDK1.3 Java
 # HTML viewer is not very functional.
