@@ -39,39 +39,15 @@ Our design should make it impossible for this exception to ever occur,
 so occurrence is a bug. This exception is a RuntimeException
 so that it does not have to be declared.
 
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
-public class InternalErrorException extends RuntimeException {
+public class InternalErrorException extends KernelRuntimeException {
 
     /** Constructs an Exception with a detail message.
      *  @param detail The message.
      */
     public InternalErrorException(String detail) {
-        _setMessage(detail);
+        super(detail);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Get the detail message. */
-    public String getMessage() {
-        return _message;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Sets the error message to the specified string.
-     *  @param msg The message.
-     */
-    protected void _setMessage(String msg) {
-        _message = msg;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** @serial The detail message. */
-    private String _message ;
 }

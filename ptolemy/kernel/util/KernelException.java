@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) stackTraceToString()
+@AcceptedRating Red (cxh@eecs.berkeley.edu) complete restructuring
 */
 
 package ptolemy.kernel.util;
@@ -39,7 +39,8 @@ import java.io.PrintWriter;
 /**
 Base class for exceptions that report the names of Nameable objects.
 This exception should not be thrown directly, since it provides very
-little information about the cause of the exception.
+little information about what objects were involved when the exception was
+thrown.
 This exception is not abstract so that we can easily test it.
 If any or all of the arguments to the constructor are null, then the
 detail message is adjusted accordingly.
@@ -52,9 +53,22 @@ an exception and we want to rethrow the exception but print
 the stacktrace where the first exception occurred.  This is called
 exception chaining.
 
-<p>JDK1.4 supports exception chaining.  We are implement them
-ourselves here so that we can use JVMs earlier than JDK1.4.
+<p>JDK1.4 supports exception chaining.  We are implement a version of
+exception chaining here ourselves here so that we can use JVMs earlier
+than JDK1.4.
 
+In this implementation, we have the following differences from
+the JDK1.4 exception chaining implementation:
+<menu>
+<li>In this implementation, the detail message includes the detail
+message from the cause argument.
+<li>The printStackTrace() methods print the stack of the cause
+exception, which should include frames from the primary exception.
+In JDK1.4, the stack trace for the primary exception is printed, then
+the stack trace for the cause exception.  
+</menu>
+
+@see KernelRuntimeException
 @author John S. Davis, II, Edward A. Lee, Christopher Hylands
 @version $Id$
 */
@@ -62,9 +76,6 @@ public class KernelException extends Exception {
 
     /** Constructs an Exception with a no specific detail message */
     public KernelException() {
-        // Note: this nullary exception is required.  If it is
-        // not present, then the subclasses of this class will not
-        // compile.
         this(null, null, null, null);
     }
 
@@ -78,15 +89,17 @@ public class KernelException extends Exception {
      */
     public KernelException(Nameable object1, Nameable object2,
             String detail) {
-        // FIXME: This constructor should go away, all the
-        // subclass constructors should be calling the four arg constructor
         this(object1, object2, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes the
-     *  names of the first two arguments plus the third argument string.
-     *  If one or more of the parameters are null, then the detail
-     *  message is adjusted accordingly.
+    /** Constructs an Exception with a detail message that includes
+     *  the names of the first two arguments plus the third argument
+     *  string.  If the cause argument is non-null, then the detail
+     *  message of this argument will include the detail message of
+     *  the cause argument.  The stack trace of the cause argument is
+     *  used when we print the stack trace of this exception.  If one
+     *  or more of the parameters are null, then the detail message is
+     *  adjusted accordingly.
      *  @param object1 The first object.
      *  @param object2 The second object.
      *  @param cause The cause of this exception.
@@ -99,24 +112,41 @@ public class KernelException extends Exception {
         String prefix;
         if (!object1String.equals("")) {
             if (!object2String.equals("")) {
-                prefix = new String(object1String + " and " + object2String);
+                prefix = object1String + " and " + object2String;
             } else {
                 prefix = object1String;
             }
         } else {
             prefix = object2String;
         }
-        _setMessage(prefix);
         _cause = cause;
-        if (detail != null) {
-            if (!detail.equals("")) {
-                if (!prefix.equals("")) {
-                    _setMessage(new String(prefix + ":\n" + detail));
-                } else {
-                    _setMessage(detail);
-                }
-            }
-        }
+        // Using 'boolean ? if true : if false' is usually frowned
+        // upon, but in this case, the alternatives are a very large
+        // and complex if/else tree or else the creation of a bunch
+        // of temporary strings with a smaller if/else tree.
+        _setMessage(
+                // Do we print the prefix?
+                ((prefix.equals("")) ?
+                        "" : prefix)
+
+                // Do we add a \n?
+                + ((!prefix.equals("")
+                        && detail != null && !detail.equals("")) ?
+                        ":\n" : "")
+
+                // Do we print the detail?
+                + ((detail == null || detail.equals("")) ?
+                        "" : detail)
+
+                // Do we add a \n?
+                + (((!prefix.equals("")
+                        || (detail != null && !detail.equals("")))
+                        && _cause != null) ?
+                        "\n" : "")
+
+                // Do we print the _cause?
+                + ((_cause == null) ?
+                        "" : ("Caused by:\n " + _cause)));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -181,8 +211,6 @@ public class KernelException extends Exception {
         }
     }
 
-
-
     /** Return the stack trace of the given argument as a String.
      *  This method is useful if we are catching and rethrowing
      *  a throwable.  This method should be used instead of
@@ -208,16 +236,16 @@ public class KernelException extends Exception {
      *  @return The name of the argument.
      */
     protected String _getName(Nameable object) {
-        String name;
         if (object == null) {
             return "";
         } else {
+            String name;
             name = object.getName();
             if (name.equals("")) {
-                name = new String("<Unnamed Object>");
+                name = "<Unnamed Object>";
             }
+            return name;
         }
-        return name;
     }
 
     /** Get the name of a Nameable object.  This method attempts to use
@@ -227,17 +255,17 @@ public class KernelException extends Exception {
      *  @return The full name of the argument.
      */
     protected String _getFullName(Nameable object) {
-        String name;
         if (object == null) {
             return "";
         } else {
+            String name;
             try {
                 name = object.getFullName();
             } catch (InvalidStateException ex) {
                 name = object.getName();
             }
+            return name;
         }
-        return name;
     }
 
     /** Sets the error message to the specified string.

@@ -64,18 +64,7 @@ public class NameDuplicationException extends KernelException {
      */
     public NameDuplicationException(Nameable container,
             Nameable wouldBeContainee) {
-        if (_getFullName(container).equals("")) {
-            _setMessage("Attempt to insert object named \"" +
-                    _getName(wouldBeContainee) +
-                    "\" into a container that already contains" +
-                    " an object with that name.");
-        } else {
-            _setMessage("Attempt to insert object named \"" +
-                    _getName(wouldBeContainee) +
-                    "\" into container named \"" +
-                    _getFullName(container) +
-                    "\", which already contains an object with that name.");
-        }
+        this(container, wouldBeContainee, null);
     }
 
     /** Given container, containee, and string.
@@ -89,15 +78,18 @@ public class NameDuplicationException extends KernelException {
             _setMessage("Attempt to insert object named \"" +
                     _getName(wouldBeContainee) +
                     "\" into a container that already contains" +
-                    " an object with that name. " +
-                    moreInfo);
+                    " an object with that name." +
+                    (moreInfo == null ? "" : (" " + moreInfo))
+                    );
         } else {
             _setMessage("Attempt to insert object named \"" +
                     _getName(wouldBeContainee) +
                     "\" into container named \"" +
                     _getFullName(container) +
-                    "\", which already contains an object with that name. " +
-                    moreInfo);
+                    "\", which already contains an object with that name." +
+                    (moreInfo == null ? "" : (" " + moreInfo))
+                        );
+
         }
     }
 }

@@ -42,25 +42,19 @@ permitted. E.g., a NamedObj has a null name. Or a topology has
 inconsistent or contradictory information in it, e.g. an entity
 contains a port that has a different entity as it container. Our
 design should make it impossible for this exception to ever occur,
-so occurrence is a bug. This exception supports all the constructor
-forms of KernelException, but is implemented as a RuntimeException
-so that it does not have to be declared.
+so occurrence is a bug. 
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
 */
-public class InvalidStateException extends RuntimeException {
+public class InvalidStateException extends KernelRuntimeException {
 
-    // NOTE: This class has much duplicated code with KernelException,
-    // but because it needs to be a RuntimeException, there seemed to
-    // be no way to avoid this.  Should there be an interface defined
-    // for the commonality?
 
     /** Constructs an Exception with only a detail message.
      *  @param detail The message.
      */
     public InvalidStateException(String detail) {
-        this(null, null, detail);
+        this(null, null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that includes the
@@ -69,7 +63,7 @@ public class InvalidStateException extends RuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(Nameable obj, String detail) {
-        this(obj, null, detail);
+        this(obj, null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that includes the
@@ -80,28 +74,18 @@ public class InvalidStateException extends RuntimeException {
      */
     public InvalidStateException(Nameable obj1, Nameable obj2,
             String detail) {
-        String obj1string = _getFullName(obj1);
-        String obj2string = _getFullName(obj2);
-        String prefix;
-        if (!obj1string.equals("")) {
-            if (!obj2string.equals("")) {
-                prefix = new String(obj1string + " and " + obj2string);
-            } else {
-                prefix = obj1string;
-            }
-        } else {
-            prefix = obj2string;
-        }
-        _setMessage(prefix);
-        if (detail != null) {
-            if (!detail.equals("")) {
-                if (!prefix.equals("")) {
-                    _setMessage(new String(prefix + ": " + detail));
-                } else {
-                    _setMessage(detail);
-                }
-            }
-        }
+        this(obj1, obj2, null, detail);
+    }
+
+    /** Constructs an Exception with a detail message that includes the
+     *  names of the first two arguments plus the third argument string.
+     *  @param obj1 The first object.
+     *  @param obj2 The second object.
+     *  @param detail The message.
+     */
+    public InvalidStateException(Nameable obj1, Nameable obj2,
+            Throwable cause, String detail) {
+        super(obj1, obj2, cause, detail);
     }
 
     /** Construct an exception with a detail message that includes the
@@ -110,30 +94,7 @@ public class InvalidStateException extends RuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(Enumeration objects, String detail) {
-        String prefix = "";
-        String name;
-        while(objects.hasMoreElements()) {
-            Object obj = objects.nextElement();
-            if (obj instanceof Nameable) {
-                name = _getFullName((Nameable)obj);
-            } else {
-                name = "<Object of class " +
-                    (obj.getClass()).getName() + ">";
-            }
-            prefix += name + ", ";
-        }
-        prefix = prefix.substring(0, prefix.length()-2);
-        prefix += ": ";
-        _setMessage(prefix);
-        if (detail != null) {
-            if (!detail.equals("")) {
-                if (!prefix.equals("")) {
-                    _setMessage(new String(prefix + detail));
-                } else {
-                    _setMessage(detail);
-                }
-            }
-        }
+	super(objects, detail);
     }
 
     /** Constructs an exception with a detail message that includes the
@@ -142,68 +103,6 @@ public class InvalidStateException extends RuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(List objects, String detail) {
-        this(Collections.enumeration(objects), detail);
+        super(objects, detail);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Get the detail message. */
-    public String getMessage() {
-        return _message;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Get the name of a Nameable object.
-     *  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a name.
-     *  @return The name of the argument.
-     */
-    protected String _getName(Nameable obj) {
-        String name;
-        if (obj == null) {
-            return "";
-        } else {
-            name = obj.getName();
-            if (name.equals("")) {
-                name = new String("<Unnamed Object>");
-            }
-        }
-        return name;
-    }
-
-    /** Get the name of a Nameable object.  This method attempts to use
-     *  getFullName(), if it is defined, and resorts to getName() if it is
-     *  not.  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a full name.
-     *  @return The full name of the argument.
-     */
-    protected String _getFullName(Nameable obj) {
-        String name;
-        if (obj == null) {
-            return "";
-        } else {
-            try {
-                name = obj.getFullName();
-            } catch (InvalidStateException ex) {
-                name = obj.getName();
-            }
-        }
-        return name;
-    }
-
-    /** Sets the error message to the specified string.
-     *  @param msg The message.
-     */
-    protected void _setMessage(String msg) {
-        _message = msg;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** @serial The detail message. */
-    private String _message ;
 }
