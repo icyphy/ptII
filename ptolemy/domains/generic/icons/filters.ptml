@@ -32,8 +32,16 @@
 
     <graphic format="tcl" color="blue">
     <tclscript>
-	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
-         text 70 55 -text dx -fill yellow 
+        line 10 50 90 50 
+	line 30 10 30 90 
+
+	line 20 50 20 70 -fill red
+	line 30 50 30 80 -fill red
+	line 40 50 40 30 -fill red
+	line 50 50 50 17 -fill red
+	line 60 50 60 70 -fill red
+	line 70 50 70 40 -fill red
+	line 80 50 80 82 -fill red
     </tclscript>
     </graphic>
 </icon>
@@ -135,6 +143,15 @@
 	</graphic>
     </port>
 
+    <port name="interrupt" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {50 100} -direction s
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+
     <port name="output" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
@@ -146,8 +163,10 @@
 
     <graphic format="tcl" color="blue">
     <tclscript>
-	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
-         text 70 55 -text dx -fill yellow 
+	
+	oval 50 32 86 68 -fill black
+	line 14 32 50 32 50 68 14 68
+
     </tclscript>
     </graphic>
 </icon>
@@ -208,12 +227,12 @@
     </graphic>
 </icon>
 
-<icon name="SDProcessor">
-    <entitytype name="Processor" type="schematic" location="../demo/SDProcessorSchematic.ptml" ports="2"/>
+<icon name="ZeroOrderHoldReverse">
+    <entitytype name="ZeroOrderHold" ports="2"/>
     <port name="input" input="true" type="string">
 	<graphic format="tcl">
 	<tclscript>
-		-coords {0 50} -direction w
+		-coords {100 50} -direction e
                 -style arrowtail
 	</tclscript>
 	</graphic>
@@ -221,7 +240,7 @@
     <port name="output" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
-		-coords {100 50} -direction e
+		-coords {0 50} -direction w
                 -style arrowout
 	</tclscript>
 	</graphic>
@@ -271,7 +290,7 @@
     <port name="demand" input="true" type="string">
 	<graphic format="tcl">
 	<tclscript>
-		-coords {0 50} -direction w
+		-coords {30 100} -direction s
                 -style arrowtail
 	</tclscript>
 	</graphic>
@@ -279,7 +298,7 @@
     <port name="reset" input="true" type="string">
 	<graphic format="tcl">
 	<tclscript>
-		-coords {0 50} -direction w
+		-coords {70 100} -direction s
                 -style arrowtail
 	</tclscript>
 	</graphic>
@@ -287,7 +306,7 @@
     <port name="average" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
-		-coords {100 50} -direction e
+		-coords {100 30} -direction e
                 -style arrowout
 	</tclscript>
 	</graphic>
@@ -295,15 +314,21 @@
     <port name="variance" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
-		-coords {100 50} -direction e
+		-coords {100 70} -direction e
                 -style arrowout
 	</tclscript>
 	</graphic>
     </port>
     <graphic format="tcl" color="blue">
     <tclscript>
-	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
-         text 70 55 -text dx -fill yellow 
+
+	line 30 10 70 10
+	line 40 15 60 45
+	line 40 45 60 15
+	oval 30 65 70 85
+	line 50 65 75 65
+	line 75 55 82 55 84 57 75 65 85 65
+
     </tclscript>
     </graphic>
 </icon>
@@ -330,8 +355,10 @@
 
     <graphic format="tcl" color="blue">
     <tclscript>
-	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
-         text 70 55 -text dx -fill yellow 
+	line 10 90 35 90 65 10 90 10
+	line 30 50 70 50
+	line 70 60 90 70 70 80
+	line 90 75 70 85
     </tclscript>
     </graphic>
 </icon>
