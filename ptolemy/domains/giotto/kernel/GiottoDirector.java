@@ -31,6 +31,7 @@ package ptolemy.domains.giotto.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.IntToken;
@@ -264,6 +265,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 			actor.fire();
 		    }
+
+		    if (_debugging)
+			_debug("Postfiring " + ((NamedObj)actor).getFullName());
+
+		    if (!actor.postfire())
+			postfire = false;
 		}
 
 		// Assumption: schedule has even number of elements.
@@ -283,11 +290,27 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    Actor actor = (Actor) samePeriod.nextElement();
 
 		    if (_debugging)
-			_debug("Postfiring " +
-			       ((NamedObj)actor).getFullName());
+			_debug("Updating " + ((NamedObj)actor).getFullName());
 
-		    if (!actor.postfire())
-			postfire = false;
+		    List outputPortList = actor.outputPortList();
+
+		    Enumeration outputPorts = Collections.enumeration(outputPortList);
+
+		    while (outputPorts.hasMoreElements()) {
+			IOPort port = (IOPort) outputPorts.nextElement();
+
+			Receiver[][] channelArray = port.getRemoteReceivers();
+
+			for (int i = 0; i < channelArray.length; i++) {
+			    Receiver[] receiverArray = channelArray[i];
+
+			    for (int j = 0; j < receiverArray.length; j++) {
+				GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
+
+				receiver.update();
+			    }
+			}
+		    }
 		}
 	    }
 

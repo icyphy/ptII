@@ -97,9 +97,7 @@ public class GiottoReceiver extends AbstractReceiver {
      *  @exception NoRoomException Not thrown in this class.
      */
     public void put(Token token) throws NoRoomException {
-	// Legacy: _nextToken = token;
-
-        _token = token;
+	_nextToken = token;
     }
 
     /** Update the receiver by making any token that has been
@@ -113,7 +111,7 @@ public class GiottoReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The next token. FIX ME: not needed.
+    // The next token.
     private Token _nextToken = null;
 
     // The token available for reading.
