@@ -24,6 +24,10 @@ $Id$
 		             class="ptolemy.kernel.util.StringAttribute"
 			     value="&quot;c&quot;">
                    </property>
+                   <property name="interpreted"
+		             class="ptolemy.kernel.util.StringAttribute"
+			     value="&quot;interpreted&quot;">
+                   </property>
                    <property name="jhdl"
 		             class="ptolemy.kernel.util.StringAttribute"
 			     value="&quot;jhdl&quot;">

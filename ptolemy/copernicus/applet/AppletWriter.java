@@ -33,6 +33,7 @@ package ptolemy.copernicus.applet;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.Copernicus;
+import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringUtilities;
 
@@ -142,19 +143,33 @@ public class AppletWriter extends SceneTransformer {
 	// the we will do mkdir $PTII/foo/bar/Bif/
 	_targetPackage = Options.getString(options, "targetPackage");
 
-	// Convert _targetPackage "foo/bar" to _codeBase "../../.."
-	// There is something a little bit strange here, since we
-	// actually create the code in a sub package of _targetPackage
-	// We could rename the targetPackage parameter to parentTargetPackage
-	// but I'd rather keep things uniform with the other generators?
+	// Check to see if the _outputDirectory has the same root
+	// as the _ptIIDirectory.  _outputDirectory is not under
+	// _ptIIDirectory, then we will need to copy jar files around
+	boolean copyJarFiles = false;
+
+	// Convert _targetPackage "foo/bar" to _codeBase
+	// "../../.."  There is something a little bit strange
+	// here, since we actually create the code in a sub
+	// package of _targetPackage We could rename the
+	// targetPackage parameter to parentTargetPackage but I'd
+	// rather keep things uniform with the other generators?
+
 	int start = _targetPackage.indexOf('.');
 	// _codeBase has one more level than _targetPackage.
 	StringBuffer buffer = new StringBuffer("..");
-        while (start != -1) {
+	while (start != -1) {
 	    buffer.append("/..");
-            start = _targetPackage.indexOf('.', start + 1);
-        }
+	    start = _targetPackage.indexOf('.', start + 1);
+	}
 	_codeBase = buffer.toString();
+
+	try {
+	    if (!_isSubdirectory(_ptIIDirectory, _outputDirectory)) {
+		copyJarFiles = true;
+		_codeBase = ".";
+	    }
+	} catch (IOException ex) {}
 
 	// Determine the value of _domainJar, which is the
 	// path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -226,16 +241,6 @@ public class AppletWriter extends SceneTransformer {
                     + modelFileName + "': " + ex);
 	}
 
-
-	// Check to see if the _outputDirectory has the same root
-	// as the _ptIIDirectory.  _outputDirectory is not under
-	// _ptIIDirectory, then we will need to copy jar files around
-	
-	//try {
-	//    File outputDirectoryFile = new File(_outputDirectory);
-	//    File ptIIDirectoryFile = new File(_ptIIDirectory);
-	//}
-
 	// Read in the templates and generate new files.
 
 	// The directory that contains the templates.
@@ -263,6 +268,9 @@ public class AppletWriter extends SceneTransformer {
 				    _outputDirectory + "/"
 				    + _sanitizedModelName
 				    + "Vergil.htm");
+	    if (copyJarFiles) {
+		_copyJarFiles(director);
+	    }
 	} catch (IOException ex) {
 	    // This exception tends to get eaten by soot, so we print as well.
 	    System.err.println("Problem writing makefile or html files:" + ex);
@@ -272,6 +280,72 @@ public class AppletWriter extends SceneTransformer {
 	}
     }
 
+    // Copy jar files into _outputDirectory
+    private void _copyJarFiles(Director director) 
+	throws IOException {
+
+	Map classMap = new HashMap();
+	classMap.put("ptolemy.actor.gui.MoMLApplet",
+		     "ptolemy/ptsupport.jar");
+	classMap.put(director.getClass().getName(),
+		     _domainJar);
+	classMap.put("ptolemy.vergil.MoMLViewerApplet",
+		     "ptolemy/vergil/vergilApplet.jar");
+	classMap.put("diva.foo",
+		     "lib/diva.jar");
+
+	Iterator classNames = classMap.entrySet().iterator();
+	while (classNames.hasNext()) {
+	    String className = (String)classNames.next();
+	    // FIXME: will this work if we are getting classes
+	    // from a directory?
+	    String classResource =
+		GeneratorAttribute.lookupClassAsResource(className);
+
+	    if (classResource != null) {
+		System.out.println("AppletWriter: " + classResource
+				   + " " + _outputDirectory 
+				   + " " + (String)classMap.get(className));
+		// This is a dumb way to copy files, Java should have
+		// a method that has the os do it for us
+		File inputFile = new File(classResource);
+		File outputFile = new File(_outputDirectory,
+					   (String)classMap.get(className));
+		outputFile.mkdirs();
+		
+		FileReader in = new FileReader(inputFile);
+		FileWriter out = new FileWriter(outputFile);
+		int c;
+
+		while ((c = in.read()) != -1)
+		    out.write(c);
+		
+		in.close();
+		out.close();
+	    }
+	}
+    }
+
+    // Return true if possibleSubdirectory is a subdirectory of parent.
+    private boolean _isSubdirectory(String parent,
+				    String possibleSubdirectory)
+	throws IOException {
+	System.out.println("_isSubdirectory: start \n\t" + parent + "\n\t" +
+			   possibleSubdirectory);
+	File parentFile = new File(parent);
+	File possibleSubdirectoryFile = new File(possibleSubdirectory);
+	if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
+	    throw new IOException ("'" + parent + "' or '" 
+				   + possibleSubdirectory + "' is a file, "
+				   + "it should be a directory");
+	}
+	String parentCanonical = parentFile.getCanonicalPath();
+	String possibleSubdirectoryCanonical =
+	    parentFile.getCanonicalPath();
+	System.out.println("_isSubdirectory: \n\t" + parentCanonical + "\n\t" +
+			   possibleSubdirectoryCanonical);
+	return parentCanonical.startsWith(possibleSubdirectoryCanonical);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

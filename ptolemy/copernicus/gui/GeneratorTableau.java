@@ -422,6 +422,18 @@ public class GeneratorTableau extends Tableau {
 				    throw new IllegalActionException(model,
 								     ex, null);
 				}
+			    } else if (codeGenerator.equals("interpreted")) {
+				// Soot is a memory pig, so we run
+				// it in a separate process.
+				try {
+				    commands =
+					_generateCodeGeneratorCommands(model,
+								       options,
+								       "interpreted"
+								       );
+				} catch (Exception ex) {
+				    throw new IllegalActionException(model, ex, null);
+				}
 			    } else if (codeGenerator.equals("jhdl")
 				       && compile) {
 				exec.updateStatusBar("Starting jhdl "
