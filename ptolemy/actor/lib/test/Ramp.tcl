@@ -239,9 +239,8 @@ test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
 #### Lots of actors
 #
 
-# Create a model with lots of Scale actors and run it
-proc manyScales {numberOfScaleActors {factor 1.1} } {
-    set e0 [sdfModel 5]
+# Create a model with lots of Scale actors
+proc createManyScales {e0 numberOfScaleActors {factor 1.1} } {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set scale [java::new ptolemy.actor.lib.Scale $e0 "scale-0"]
     $e0 connect \
@@ -263,8 +262,13 @@ proc manyScales {numberOfScaleActors {factor 1.1} } {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    return $rec
+}
+
+proc manyScales {numberOfScaleActors {factor 1.1} } {
+    set e0 [sdfModel 5]
     puts "$numberOfScaleActors actors"
-    [$e0 getManager] execute
+    puts "[time {set rec [createManyScales $e0 $numberOfScaleActors $factor]}] to create"
     [$e0 getManager] execute
     [$e0 getManager] execute
     [$e0 getManager] execute
@@ -280,11 +284,23 @@ test Ramp-4.2 {Test with 50 actors} {
     manyScales 50
 } {0.0 106.7189571633598 213.4379143267195 320.1568714900794 426.875828653439}
 
-#test Ramp-4.3 {Test with 500 actors} {
-#    manyScales 500
-#} {0.0 4.5180381521022E20 9.0360763042045E20 1.3554114456307E21 1.8072152608409E21}
+# test Ramp-4.3 {Test with 500 actors} {
+#     manyScales 500
+# } {0.0 4.5180381521022E20 9.0360763042045E20 1.3554114456307E21 1.8072152608409E21}
 
 
-#test Ramp-4.4 {Test with 5000 actors} {
-#    manyScales 5000 1.000001
-#} {0.0 4.5180381521022E20 9.0360763042045E20 1.3554114456307E21 1.8072152608409E21}
+# test Ramp-4.5 {Test with 750 actors} {
+#     manyScales 750 1.0
+# } {}
+
+# test Ramp-4.5 {Test with 1000 actors} {
+#     manyScales 1000 1.0
+# } {}
+
+# test Ramp-4.6 {Test with 2500 actors} {
+#     manyScales 2500 1.0
+# } {}
+
+# test Ramp-4.7 {Test with 5000 actors} {
+#     manyScales 5000 1.0
+# } {}
