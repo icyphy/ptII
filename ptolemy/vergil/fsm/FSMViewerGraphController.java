@@ -39,16 +39,21 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
+import diva.gui.GUIUtilities;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
+
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMViewerGraphController
@@ -62,7 +67,7 @@ transitions.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class FSMViewerGraphController extends BasicGraphController {
+public class FSMViewerGraphController extends RunnableGraphController {
 
     /** Create a new controller with default port, state, and transition
      *  controllers.
@@ -73,6 +78,18 @@ public class FSMViewerGraphController extends BasicGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add hot key for look inside.
+     *  @param menu The menu to add to, which is ignored.
+     *  @param toolbar The toolbar to add to, which is also ignored.
+     */
+    public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
+        super.addToMenuAndToolbar(menu, toolbar);
+        if (_stateController instanceof StateController) {
+           GUIUtilities.addHotKey(getFrame().getJGraph(),
+                    ((StateController)_stateController)._lookInsideAction);
+        }
+    }
 
     /** React to an event by highlighting the new state.
      *  @param state The debug event.
