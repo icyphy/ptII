@@ -1,0 +1,54 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>HelloWorld Jython Applet</TITLE>
+</HEAD>
+<BODY>
+
+<H1>HelloWorld Jython Applet</H1>
+
+<P>This applet does not use Ptolemy, it uses Jython.
+
+<center>
+<applet CODE="HelloWorld" WIDTH="160" HEIGHT="50"
+	ARCHIVE="HelloWorldApplet.jar" 
+	NAME="HelloWorld"
+	ALIGN="BOTTOM" 
+	alt="This browser doesn't support JDK 1.1 applets.">
+</applet>
+</center>
+<a href="HelloWorld.py">HelloWorld.py</a>
+
+To create <code>HelloWorldApplet.jar</code> we used
+the
+<a href="http://www.jython.org/docs/jythonc.html" target="_top"><code>jythonc</code></a>
+command, which is part of the 
+<a href="http://www.jython.org">Jython</a> distribution.
+
+<p>In theory, if everything is installed properly, the
+following command should work:
+
+<pre>
+jythonc --core --deep --jar HelloWorldApplet.jar HelloWorld.py
+</pre>
+
+<p>However, we configured the <a href="makefile"><code>makefile</code></a>
+to run something like:
+
+<pre>
+CLASSPATH="../../../../../..;c:\ptII/lib/jython.jar" \
+"/cygdrive/c/j2sdk1.4.2/bin/java" "-Dpython.home=../../../../../../vendors/jython/jython-2.1" \
+	org.python.util.jython \
+	../../../../../../vendors/jython/jython-2.1/Tools/jythonc/jythonc.py \
+	--compiler javac \
+	--core --deep --jar HelloWorldApplet.jar HelloWorld.py 
+</pre>
+
+For more information, see the 
+<a href="http://www.jython.org/applets/index.html" target="_top">Jython.org applets</a>
+
+
+</BODY>
+</HTML>
