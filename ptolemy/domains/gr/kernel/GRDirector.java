@@ -394,7 +394,7 @@ public class GRDirector extends StaticSchedulingDirector {
             Actor actor = (Actor) allActorsScheduled.next();
             String name = ((Nameable)actor).getFullName();
             ContainedGRActor grActor =
-                         (ContainedGRActor) _allActorsTable.get(actor);
+                (ContainedGRActor) _allActorsTable.get(actor);
             if (grActor == null) {
                 _allActorsTable.put(actor, new ContainedGRActor(actor));
                 grActor = (ContainedGRActor) _allActorsTable.get(actor);
@@ -408,9 +408,9 @@ public class GRDirector extends StaticSchedulingDirector {
         String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
         _allActorsTable.put(actor,
-                            new ContainedGRActor((Actor)getContainer()));
+                new ContainedGRActor((Actor)getContainer()));
         ContainedGRActor grActor =
-                            (ContainedGRActor) _allActorsTable.get(actor);
+            (ContainedGRActor) _allActorsTable.get(actor);
         _actorTable.add(grActor);
 
         _debugViewActorTable();
@@ -541,15 +541,15 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @param object The named object that has a list of attributes
      */
     private void _debugViewAttributesList(NamedObj object) {
-            List list = object.attributeList();
-            Iterator listIterator = list.iterator();
+        List list = object.attributeList();
+        Iterator listIterator = list.iterator();
 
-            debug.println("attribute List:");
-            while(listIterator.hasNext()) {
-                Attribute attribute = (Attribute) listIterator.next();
-                debug.println(attribute);
-            }
+        debug.println("attribute List:");
+        while(listIterator.hasNext()) {
+            Attribute attribute = (Attribute) listIterator.next();
+            debug.println(attribute);
         }
+    }
 
 
     /** For debugging purposes.  Display the list of contained entities

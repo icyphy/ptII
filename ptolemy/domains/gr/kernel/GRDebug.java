@@ -58,8 +58,8 @@ public class GRDebug {
     public static final void prompt(String string) {
         if (_debugOn) {
             JOptionPane.showMessageDialog(
-                      null, string,
-                      "MessageDialog", JOptionPane.ERROR_MESSAGE);
+                    null, string,
+                    "MessageDialog", JOptionPane.ERROR_MESSAGE);
         }
     }
 

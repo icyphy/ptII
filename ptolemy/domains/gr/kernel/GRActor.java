@@ -92,9 +92,9 @@ abstract public class GRActor extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         /*if (!(getDirector() instanceof GRDirector)) {
-            throw new IllegalActionException(this,
-                      "GR Actors can only be used under a GR Director");
-        }*/
+          throw new IllegalActionException(this,
+          "GR Actors can only be used under a GR Director");
+          }*/
     }
 
     /** Reset this actor back to uninitialized state to prepare for
@@ -117,7 +117,7 @@ abstract public class GRActor extends TypedAtomicActor {
      */
     protected void _addChild(Node node) throws IllegalActionException {
         throw new IllegalActionException(this,
-                               "GR domain actor cannot have children");
+                "GR domain actor cannot have children");
     }
 
 

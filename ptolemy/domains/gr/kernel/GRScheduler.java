@@ -94,7 +94,7 @@ public class GRScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public GRScheduler(Director container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -116,11 +116,11 @@ public class GRScheduler extends Scheduler {
      *  schedulable.
      */
     protected Schedule _getSchedule() {
-       // FIXME: should check whether graph is connected
-       // FIXME: should check whether multiple output ports are
-       //        connected to the same broadcast relation.
+        // FIXME: should check whether graph is connected
+        // FIXME: should check whether multiple output ports are
+        //        connected to the same broadcast relation.
 
-       // Clear the graph
+        // Clear the graph
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
         GRDirector director = (GRDirector)getContainer();
