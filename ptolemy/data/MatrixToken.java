@@ -63,7 +63,7 @@ public abstract class MatrixToken extends Token {
         " cannot be converted to a complex matrix.");
     }
 
-    /** Throw an exception, since convertion to this class is not supported
+    /** Throw an exception, since conversion to this class is not supported
      *  (the class is abstract).  This method overrides that in Token,
      *  which simply returns the argument.
      *  @param token A Token to be converted.
