@@ -38,11 +38,13 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
@@ -112,8 +114,12 @@ public class GeneratorAttribute extends SingletonAttribute
                 + "Double click to\ngenerate code.</text></svg>");
 
         initialParametersURL =
-            new Parameter(this, "initialParametersURL",
-                    new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
+            new StringParameter(this, "initialParametersURL");
+        initialParametersURL
+            .setToken(new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
+
+            // new Parameter(this, "initialParametersURL",
+            //        new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,7 +129,7 @@ public class GeneratorAttribute extends SingletonAttribute
     /** MoML file that contains other parameters.  The default value
      *  is the string "ptolemy/copernicus/kernel/Generator.xml".
      */
-    public Parameter initialParametersURL;
+    public StringParameter initialParametersURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -154,8 +160,9 @@ public class GeneratorAttribute extends SingletonAttribute
         // Read in the initialParameters file.
         URL initialParameters =
             getClass().getClassLoader()
-            .getResource(((StringToken)initialParametersURL.getToken())
-                    .stringValue());
+            .getResource(initialParametersURL.getExpression());
+            //            .getResource(((StringToken)initialParametersURL.getToken())
+            //                    .stringValue());
         if (initialParameters == null) {
             throw new IllegalActionException(this, "Failed to find the "
                     + "value of the "
@@ -236,7 +243,7 @@ public class GeneratorAttribute extends SingletonAttribute
             // Get the modelPath and update modelPath and model.
             modelPathOrURL =
                 ((StringToken)
-                        ((Parameter)getAttribute("modelPath"))
+                        ((StringParameter)getAttribute("modelPath"))
                         .getToken()).stringValue();
 
         // Update the modelName and iterations Parameters.
@@ -250,7 +257,7 @@ public class GeneratorAttribute extends SingletonAttribute
 
         String ptIIUserDirectory =
             ((StringToken)
-                    ((Parameter)getAttribute("ptIIUserDirectory"))
+                    ((StringParameter)getAttribute("ptIIUserDirectory"))
                     .getToken()).stringValue();
 
 
@@ -293,7 +300,7 @@ public class GeneratorAttribute extends SingletonAttribute
                             + "directory?");
                 } else {
                     ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
-                    ((Parameter)getAttribute("ptIIUserDirectory"))
+                    ((StringParameter)getAttribute("ptIIUserDirectory"))
                         .setExpression("property(\"user.dir\") + "
                                 + "\"/ptII/cg\"");
                 }
@@ -320,7 +327,7 @@ public class GeneratorAttribute extends SingletonAttribute
             .setExpression("\"" +  ptIIUserDirectoryAsURL + "\"");
         
         String targetPath = ((StringToken)
-                ((Parameter)getAttribute("targetPath"))
+                ((StringParameter)getAttribute("targetPath"))
                 .getToken()).stringValue();
 
         // Check that ptIIUserDirectory + targetPath is writable.
@@ -352,19 +359,38 @@ public class GeneratorAttribute extends SingletonAttribute
         Iterator attributes = attributeList().iterator();
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
-            if (attribute instanceof Parameter) {
+            if (attribute instanceof StringParameter) {
                 StringBuffer value = new StringBuffer("\n Value:         ");
                 try {
-                    value.append(((Parameter)attribute).getToken());
+                    value.append(((StringParameter)attribute).getToken());
                 } catch (Exception ex) {
                     value.append(ex);
                 }
 
-                results.append("Parameter:      " + attribute.getName()
+                results.append("StringParameter:      " + attribute.getName()
                         + "\n Expression:    "
-                        + ((Parameter)attribute).getExpression()
+                        + ((StringParameter)attribute).getExpression()
                         + value.toString()
                                );
+            } else if (attribute instanceof Parameter) {
+                StringBuffer value = new StringBuffer("\n Value:         ");
+                try {
+                    value.append(((StringParameter)attribute).getToken());
+                } catch (Exception ex) {
+                    value.append(ex);
+                }
+
+                try {
+                    results.append("Parameter:      " + attribute.getName()
+                            + "\n Expression:    "
+                            + ((Parameter)attribute).getExpression()
+                            + value.toString()
+                                   );
+                } catch (Exception ex) {
+                    throw new InternalErrorException(attribute, ex,
+                            "Failed to look up " + attribute);
+                }
+
             } else {
                 results.append("Attribute:      " + attribute.getName());
             }
@@ -462,22 +488,22 @@ public class GeneratorAttribute extends SingletonAttribute
                 }
             }
 
-            Parameter modelPath = (Parameter)getAttribute("modelPath");
-            modelPath.setExpression("\"" + modelPathOrURL + "\"");
+            Parameter modelPath = (StringParameter)getAttribute("modelPath");
+            modelPath.setExpression(modelPathOrURL);
 
             // Strip off the leading '.' and then sanitize.
             String modelNameValue =
                 StringUtilities
                 .sanitizeName(toplevel.getFullName().substring(1));
 
-            Parameter modelName = (Parameter)getAttribute("modelName");
-            modelName.setExpression("\"" + modelNameValue + "\"");
+            Parameter modelName = (StringParameter)getAttribute("modelName");
+            modelName.setExpression(modelNameValue);
 
             // Set the iterations parameter.
             CompositeActor compositeActor = (CompositeActor)toplevel;
             Director director = compositeActor.getDirector();
             // If we save a blank model, then there might not be a director.
-            Parameter iterations = (Parameter)getAttribute("iterations");
+            Parameter iterations = (StringParameter)getAttribute("iterations");
             if (director == null) {
                 iterations.setExpression("1000");
             } else {
@@ -512,13 +538,16 @@ public class GeneratorAttribute extends SingletonAttribute
     // separate jar files
     private void _updateNecessaryClassPath() throws IllegalActionException {
 
+        
+        //StringParameter necessaryClassesParameter =
+        //    (StringParameter)getAttribute("necessaryClasses");
         ArrayToken necessaryClassesToken =
             (ArrayToken)
             ((Parameter)getAttribute("necessaryClasses"))
             .getToken();
 
 
-        List classPathList = new LinkedList();
+         List classPathList = new LinkedList();
         for (int i = 0; i < necessaryClassesToken.length(); i++) {
             String necessaryClass =
                 ((StringToken)necessaryClassesToken.getElement(i))
@@ -554,9 +583,8 @@ public class GeneratorAttribute extends SingletonAttribute
 
         }
 
-        ((Parameter)getAttribute("necessaryClassPath"))
-            .setExpression("\"" + necessaryClassPath.toString()
-                    + "\"");
+        ((StringParameter)getAttribute("necessaryClassPath"))
+            .setExpression(necessaryClassPath.toString());
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -194,7 +194,7 @@ public class Copernicus {
             throws Exception {
         String compileCommandTemplateFile =
             ((StringToken)
-                    ((Parameter)generatorAttribute
+                    ((StringParameter)generatorAttribute
                             .getAttribute("compileCommandTemplateFile"))
                     .getToken()).stringValue();
         return substitute(compileCommandTemplateFile, generatorAttribute);
@@ -215,7 +215,7 @@ public class Copernicus {
             throws Exception {
         String runCommandTemplateFile =
             ((StringToken)
-                    ((Parameter)generatorAttribute
+                    ((StringParameter)generatorAttribute
                             .getAttribute("runCommandTemplateFile"))
                     .getToken()).stringValue();
         return substitute(runCommandTemplateFile, generatorAttribute);
@@ -231,10 +231,10 @@ public class Copernicus {
     public static void compileAndRun(GeneratorAttribute generatorAttribute)
             throws Exception {
         int exitValue = 1;
-        String compile = ((Parameter)generatorAttribute
+        String compile = ((StringParameter)generatorAttribute
                 .getAttribute("compile")).getExpression();
 
-        if (compile.equals("\"true\"")) {
+        if (compile.equals("true")) {
             String command = commandToCompile(generatorAttribute);
             exitValue = executeCommand(command);
             if (exitValue != 0) {
@@ -244,10 +244,10 @@ public class Copernicus {
             }
         }
 
-        String run = ((Parameter)generatorAttribute
+        String run = ((StringParameter)generatorAttribute
                 .getAttribute("run")).getExpression();
 
-        if (run.equals("\"true\"")) {
+        if (run.equals("true")) {
             String command = commandToRun(generatorAttribute);
             exitValue = executeCommand(command);
             if (exitValue != 0) {
@@ -642,7 +642,7 @@ public class Copernicus {
             Attribute attribute = _generatorAttribute.getAttribute(name);
             if (attribute instanceof Settable) {
                 match = true;
-                ((Settable)attribute).setExpression("\"" + value + "\"");
+                ((Settable)attribute).setExpression(value);
                 if (attribute instanceof Variable) {
                     // Force evaluation so that listeners
                     // are notified.

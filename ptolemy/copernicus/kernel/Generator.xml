@@ -7,34 +7,34 @@ $Id$
 -->
 <group>
      <property name="codeGenerator" 
-               class="ptolemy.data.expr.Parameter"
-	       value="&quot;java&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value="java"
 	       >
                <property name="style"
 	                 class="ptolemy.actor.gui.style.ChoiceStyle">
                    <property name="java"
 		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;java&quot;">
+			     value="java">
                    </property>
                    <property name="applet"
 		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;applet&quot;">
+			     value="applet">
                    </property>
                    <property name="c"
 		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;c&quot;">
+			     value="c">
                    </property>
                    <property name="interpreted"
 		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;interpreted&quot;">
+			     value="interpreted">
                    </property>
                    <property name="jhdl"
 		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;jhdl&quot;">
+			     value="jhdl">
                    </property>
                    <property name="shallow"
 		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;shallow&quot;">
+			     value="shallow">
                    </property>
                </property>
 	       <doc>The code generator to run.</doc>
@@ -42,7 +42,7 @@ $Id$
 
 
      <property name="compile" 
-               class="ptolemy.data.expr.Parameter"
+               class="ptolemy.data.expr.StringParameter"
 	       value="true"
 	       >
 	       <property name="style"
@@ -53,7 +53,7 @@ $Id$
 
 
      <property name="show" 
-               class="ptolemy.data.expr.Parameter"
+               class="ptolemy.data.expr.StringParameter"
 	       value="true"
 	       >
 	       <property name="style"
@@ -63,7 +63,7 @@ $Id$
      </property>
 
      <property name="run" 
-               class="ptolemy.data.expr.Parameter"
+               class="ptolemy.data.expr.StringParameter"
 	       value="true"
 	       >
 	       <property name="style"
@@ -81,72 +81,78 @@ $Id$
      </property>
 
      <property name="ptIIUserDirectory" 
-               class="ptolemy.data.expr.Parameter"
-	       value="ptII"
+               class="ptolemy.data.expr.StringParameter"
+	       value="$ptII"
 	       >
 	       <doc>The top level directory to write the code in. The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
      </property>
 
      <property name="targetPackage" 
-               class="ptolemy.data.expr.Parameter"
-	       value="modelName"
+               class="ptolemy.data.expr.StringParameter"
+	       value="$modelName"
 	       >
 	       <doc>The package to generate code in. Defaults to the model name</doc>
      </property>
 
      <property name="targetPath" 
-               class="ptolemy.data.expr.Parameter"
-	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot; + modelName"
+               class="ptolemy.data.expr.StringParameter"
+	       value="ptolemy/copernicus/$codeGenerator/cg/$modelName"
 	       >
 	       <doc>The path relative to the ptIIUserDirectory to generate code in.</doc>
      </property>
 
      <property name="modelPath" 
-               class="ptolemy.data.expr.Parameter"
-	       value="ptIIUserDirectory + &quot;/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value="$ptIIUserDirectory/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml"
 	       >
 	       <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
      </property>
 
 
      <property name="modelName" 
-               class="ptolemy.data.expr.Parameter"
-	       value="&quot;OrthogonalCom&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value="OrthogonalCom"
 	       >
 	       <doc> The name of the model, read from the .xml file and sanitized.</doc>
      </property>
 
      <property name="iterations" 
-               class="ptolemy.data.expr.Parameter"
+               class="ptolemy.data.expr.StringParameter"
 	       value="1000"
 	       >
 	       <doc>Number of iterations to run the model for. Usually, the model itself contains the number of iterations to run for. Defaults to 1000.</doc>
      </property>
 
      <property name="iterationsParameter" 
-               class="ptolemy.data.expr.Variable"
-	       value="&quot;,iterations:&quot; + iterations"
+               class="ptolemy.data.expr.StringParameter"
+	       value=",iterations:$iterations"
 	       >
 	       <doc>Defaults to "iterations:" + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
      </property>
 
      <property name="compileCommandTemplateFile" 
-               class="ptolemy.data.expr.Parameter"
-	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/compileCommandTemplate.txt&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value="ptolemy/copernicus/$codeGenerator/compileCommandTemplate.txt"
 	       >
 	       <doc>The template file that contains the command to run that generates the code.</doc>
      </property>
 
      <property name="compileOptions" 
-               class="ptolemy.data.expr.Parameter"
-	       value="&quot;&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value=""
 	       >
 	       <doc>User supplied arguments to be passed to the code generator.  Defaults to the empty string.</doc>
      </property>
 
-     <property name="classPath" 
+     <property name="javaClassPath" 
                class="ptolemy.data.expr.Parameter"
-	       value="ptIIUserDirectory + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses + classPathSeparator + necessaryClassPath"
+	       value="property(&quot;java.class.path&quot;)"
+	       >
+     </property>
+
+     <property name="classPath" 
+               class="ptolemy.data.expr.StringParameter"
+	       value="$ptIIUserDirectory${classPathSeparator}$javaClassPath${classPathSeparator}$sootClasses${classPathSeparator}$necessaryClassPath"
 	       >
 	       <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
      </property>
@@ -158,8 +164,8 @@ $Id$
      </property>
 
      <property name="necessaryClassPath" 
-               class="ptolemy.data.expr.Parameter"
-	       value="ptII + &quot;ptolemy/domains/sdf/sdf.jar&quot;" >
+               class="ptolemy.data.expr.StringParameter"
+	       value="${ptII}/ptolemy/domains/sdf/sdf.jar" >
 	       <doc>Class path that refers to necessary classes. Derived from necessaryClasses</doc>
      </property>
 
@@ -170,72 +176,80 @@ $Id$
 	       <doc>The classpath separator. Under Windows, the default is ';'. Under Unix, the default is ':'</doc>
      </property>
 
-     <property name="java" 
+
+     <property name="javaHome" 
               class="ptolemy.data.expr.Parameter"
-              value="property(&quot;java.home&quot;) + &quot;/bin/java&quot;"
+	      value="property(&quot;java.home&quot;)"
+	      >
+     <doc>Defaults to the value of the java.home property</doc>
+     </property>
+
+     <property name="java" 
+              class="ptolemy.data.expr.StringParameter"
+	      value="$javaHome/bin/java"
 	      >
      <doc>Defaults to the value of the java.home property + bin/java, for example: c:/jdk1.3.1/bin/java</doc>
      </property>
 
      <property name="javaPtIIProperty" 
-              class="ptolemy.data.expr.Variable"
-              value="&quot;-Dptolemy.ptII.dir=&quot; + ptII"
+              class="ptolemy.data.expr.StringParameter"
+              value="-Dptolemy.ptII.dir=$ptII"
 	      >
      <doc>The flag to pass to the java process that defines the value of the ptolemy.ptII.dir property.  Defaults to "-Dptolemy.ptII.dir=" + ptII</doc>
      </property>
 
      <property name="javaSystemJar" 
-               class="ptolemy.data.expr.Parameter"
-	       value="property(&quot;java.home&quot;) + &quot;/lib/rt.jar&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value="$javaHome/lib/rt.jar"
 	       >
 	       <doc>Defaults to the value of the java.home property + "/lib/rt.jar"</doc>
      </property>
 
      <property name="jvmSize" 
-               class="ptolemy.data.expr.Parameter"
-	       value="&quot;-Xmx256m&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value="-Xmx256m"
 	       >
 	       <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
      </property>
 
      <property name="runCommandTemplateFile" 
-               class="ptolemy.data.expr.Parameter"
-	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/runCommandTemplate.txt&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value="ptolemy/copernicus/$codeGenerator/runCommandTemplate.txt"
 	       >
 	       <doc>The template file that contains the command to run the generated code.</doc>
      </property>
 
 
      <property name="runOptions" 
-               class="ptolemy.data.expr.Parameter"
-	       value="&quot;&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value=""
 	       >
 	       <doc>User supplied arguments to be passed to the command that will run the generated code. Defaults to the empty string.</doc>
      </property>
 
      <property name="sootDir" 
-               class="ptolemy.data.expr.Parameter"
-	       value="ptII + &quot;/lib&quot;"
+               class="ptolemy.data.expr.StringParameter"
+	       value="$ptII/lib"
 	       >
 	       <doc>The directory that contains the soot jar files. Defaults to the value of the ptII parameter  + "/lib"</doc>
      </property>
 
      <property name="sootClasses" 
-               class="ptolemy.data.expr.Parameter"
-	       value="sootDir + &quot;/sootclasses.jar&quot; + classPathSeparator + sootDir + &quot;/jasminclasses.jar&quot; + classPathSeparator + javaSystemJar"
+               class="ptolemy.data.expr.StringParameter"
+	       value="$sootDir/sootclasses.jar${classPathSeparator}$sootDir/jasminclasses.jar${classPathSeparator}$javaSystemJar"
 	       >
 	       <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).  The necessaryClassPath parameter may end up duplicating some of the elements of this parameter.</doc>
      </property>
 
      <property name="ptIIUserDirectoryAsURL" 
-               class="ptolemy.data.expr.Parameter"
+               class="ptolemy.data.expr.StringParameter"
 	       value="ptIIUserDirectory"
 	       >
 	       <doc>The top level directory to write the code in as a URL.  Derived from the value of the ptIIUserDirectory parameter.</doc>
      </property>
 
      <property name="watchDogTimeout" 
-               class="ptolemy.data.expr.Parameter"
+               class="ptolemy.data.expr.StringParameter"
 	       value="600000"
 	       >
 	       <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
