@@ -195,7 +195,7 @@ public class VergilApplication extends MoMLApplication {
         // systemProperties is a HashSet, so we merge in the new properties.
         systemProperties.putAll(newProperties);
         System.setProperties(systemProperties);
-        System.out.println("Loaded " + propertyFileName);
+        System.out.println("Loaded " + propertyFileURL);
     }
 
     /**
