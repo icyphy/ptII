@@ -38,6 +38,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ByteToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -94,10 +95,7 @@ broadcasts the data received, along with the return address and return
 socket number from which the datagram originated.
 
 <p>The data portion of the packet is broadcast at the <i>output</i> port.
-The <i>encoding</i> parameter determines how the bytes received are
-formed into a token.  The 3 values currently available for the
-<i>encoding</i> parameter are "for_Ptolemy_parser",
-"raw_integers_little_endian", and "raw_low_bytes_of_integers".
+The type of the output is always an array of bytes.
 
 <p>If <i>encoding</i> equals "for_Ptolemy_parser", then the bytes
 received are first made into a string using the platform's default
@@ -238,9 +236,11 @@ public class DatagramReader extends TypedAtomicActor {
         returnSocketNumber.setOutput(true);
 
         output = new TypedIOPort(this, "output");
-        // Type setting here of <i>output</i> is in concert with
-        // setting later in the constructor of <i>encoding</i>.
-        output.setTypeEquals(BaseType.GENERAL);
+	// Type setting here of <i>output</i> is in concert with
+	// setting later in the constructor of <i>encoding</i>.
+        output.setTypeEquals(new ArrayType(BaseType.INT));
+        //        output.setTypeEquals(BaseType.GENERAL);
+
         output.setOutput(true);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -299,10 +299,10 @@ public class DatagramReader extends TypedAtomicActor {
 
         // <i>encoding</i> is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
 
-        encoding = new StringAttribute(this, "encoding");
+        //    encoding = new StringAttribute(this, "encoding");
         // Type setting here of <i>encoding</i> is in concert with
         // setting earlier in this constructor of <i>output</i>.
-        encoding.setExpression("for_Ptolemy_parser");
+        //  encoding.setExpression("for_Ptolemy_parser");
         // The above setExpression() call causes a call to the
         // attributeChanged() method here in this same actor!
         // The actor uses this to set the related cached values
@@ -457,7 +457,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  of the integer.  For example, 511, 255, and -1 are treated as
      *  the same value under the "raw_low_bytes_of_integers" setting.
      */
-    public StringAttribute encoding;
+    //   public StringAttribute encoding;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -491,7 +491,7 @@ public class DatagramReader extends TypedAtomicActor {
 
         // This is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
         // See also ../io.xml for other half of this mechanism.
-        if (attribute == encoding) {
+        /*    if (attribute == encoding) {
             //System.out.println("---" + encoding.getExpression() + "---");
             //System.out.println("--" + _encoding + "--");
             //System.out.println("-" + _encoding.equals("abc") + "-");
@@ -550,7 +550,7 @@ public class DatagramReader extends TypedAtomicActor {
                         //if (true) System.out.println("->ArrayType(INT)");
                         output.setTypeEquals(new ArrayType(BaseType.INT));
                         // Aha!  Found this in data/type/ArrayType.java by
-                        // double grep-ing ptolemy/data/*/*.java!
+                        // double grep-ing ptolemy/data/*.java!
                     } else {
                         // No other cases implemented yet.
                     }
@@ -562,7 +562,7 @@ public class DatagramReader extends TypedAtomicActor {
             // In the case of default outputs, synchronize in ensure
             // atomic copy from the parameter to the private variable.
 
-        } else if (attribute == defaultReturnAddress) {
+              } else */if (attribute == defaultReturnAddress) {
             synchronized(_syncDefaultOutputs) {
                 _defaultReturnAddress = ((StringToken)
                         defaultReturnAddress.getToken()).stringValue();
@@ -773,8 +773,12 @@ public class DatagramReader extends TypedAtomicActor {
             }
 
             if (_packetsAlreadyAwaitingFire != 0) {
-                useDefaultOutput = false;
                 bytesAvailable = _broadcastPacket.getLength();
+                if(bytesAvailable > 0) {
+                    useDefaultOutput = false;
+                } else {
+                    useDefaultOutput = true;
+                }
                 dataBytes = _broadcastPacket.getData();//The buffer, not copy.
                 _returnAddress = _broadcastPacket
                     .getAddress().getHostAddress();
@@ -785,7 +789,13 @@ public class DatagramReader extends TypedAtomicActor {
             }
 
             if (!useDefaultOutput) {
-                if (_decodeWithPtolemyParser) {
+                Token[] dataTokens = new Token[bytesAvailable];
+                for (int j = 0; j < bytesAvailable; j++) {
+                    dataTokens[j] = new IntToken(ByteToken.unsignedConvert(dataBytes[j]));
+                }
+                _outputToken = new ArrayToken(dataTokens);
+                  
+                /*    if (_decodeWithPtolemyParser) {
                     // Make the data into a string.
                     String dataStr = new String(dataBytes, 0, bytesAvailable);
                     // Parse this data string to a Ptolemy II data object
@@ -815,21 +825,21 @@ public class DatagramReader extends TypedAtomicActor {
                     }
                     if (bytesAvailable/_decodedBytesPerInteger > 0) {
                         // Make an array of tokens.
-                        Token[] dataIntTokens = new Token[
+                        Token[] dataTokens = new Token[
                                 bytesAvailable/_decodedBytesPerInteger];
                         // Fill each token with N bytes, low byte first.
-                        if (_decodedBytesPerInteger/*(N)*/ == 1) {
+                        if (_decodedBytesPerInteger == 1) {
                             for (int j = 0; j < bytesAvailable; j++) {
-                                dataIntTokens[j] = new IntToken(dataBytes[j]);
+                                dataTokens[j] = new IntToken(dataBytes[j]);
                             }
-                        } else if (_decodedBytesPerInteger/*(N)*/ == 4) {
+                        } else if (_decodedBytesPerInteger == 4) {
                             for (int j = 0; j < bytesAvailable/4; j++) {
                                 if (false) System.out.println(
                                         dataBytes[4*j] + ".." +
                                         dataBytes[4*j+1] + ".." +
                                         dataBytes[4*j+2] + ".." +
                                         dataBytes[4*j+3]);
-                                dataIntTokens[j] = new IntToken(
+                                dataTokens[j] = new IntToken(
                                         (255 & dataBytes[4*j]) |
                                         (255 & dataBytes[4*j+1])<<8 |
                                         (255 & dataBytes[4*j+2])<<16 |
@@ -841,7 +851,7 @@ public class DatagramReader extends TypedAtomicActor {
                         // Assemble these into an array-token of tokens
                         if (_debugging) _debug(
                                 "Broadcast non-zero length {int}");
-                        _outputToken = new ArrayToken(dataIntTokens);
+                        _outputToken = new ArrayToken(dataTokens);
                     } else {
                         // Special case of zero length array:
                         // FIXME - test Yuhong's work
@@ -856,7 +866,8 @@ public class DatagramReader extends TypedAtomicActor {
                             "Broadcast token not being set");
                     throw new IllegalActionException(this,
                             "Unrecognized encoding selection " + _encoding);
-                }
+                      }
+                 */
             }
             _syncFireAndThread.notifyAll();
         } // sync
@@ -1168,9 +1179,9 @@ public class DatagramReader extends TypedAtomicActor {
 
     // Cached copy of <i>encoding</i> parameter and its derived quantities:
     private String _encoding = new String("");
-    private boolean _decodeWithPtolemyParser;
-    private boolean _decodeToIntegerArray;
-    private int _decodedBytesPerInteger;
+//    private boolean _decodeWithPtolemyParser;
+//    private boolean _decodeToIntegerArray;
+//    private int _decodedBytesPerInteger;
 
     // Packet buffer info.  Allocated lengths need to be kept track of
     // separately because the .getLength() method returns the length

@@ -40,6 +40,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -124,7 +125,7 @@ public class DatagramWriter extends TypedAtomicActor {
 
         data = new TypedIOPort(this, "data");
         data.setInput(true);
-        data.setTypeEquals(BaseType.GENERAL);
+        data.setTypeEquals(new ArrayType(BaseType.INT));
 
 
         // Parameters that are default values for ports
@@ -150,8 +151,8 @@ public class DatagramWriter extends TypedAtomicActor {
         localSocketNumber.setTypeEquals(BaseType.INT);
         localSocketNumber.setToken(new IntToken(4003)); //setToken works too
 
-        encoding = new StringAttribute(this, "encoding");
-        encoding.setExpression("for_Ptolemy_parser");
+        //  encoding = new StringAttribute(this, "encoding");
+        //encoding.setExpression("for_Ptolemy_parser");
 
 	/** When encodeForPtolemyParser is true, fire() applies
          *  <i>toString().getBytes()</i> to the <i>data</i> token
@@ -169,7 +170,6 @@ public class DatagramWriter extends TypedAtomicActor {
 
 	// Added for SDF usability.  Empty Token() is output, just a trigger.
   	triggerOutput = new TypedIOPort(this, "triggerOutput");
-        // Had had ', true, false' before ');' above.
         triggerOutput.setTypeEquals(BaseType.GENERAL);
         // 'INT' works too in place of 'GENERAL'.
         triggerOutput.setOutput(true);
@@ -194,7 +194,7 @@ public class DatagramWriter extends TypedAtomicActor {
      *  "raw_integers_little_endian".  Default value is
      *  "for_Ptolemy_parser".
      */
-    public StringAttribute encoding;
+    //    public StringAttribute encoding;
 
     /** The local socket number for this actor's socket.  Integer in
      *  the range 0..65535.  Default is 4003.
@@ -299,7 +299,7 @@ public class DatagramWriter extends TypedAtomicActor {
 
             // This is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
             // See also ../io.xml for other half of this mechanism.
-	} else if (attribute == encoding) {
+	}/* else if (attribute == encoding) {
 	    _encoding = encoding.getExpression();
 	    if (_encoding.equals("for_Ptolemy_parser")) {
 		_encodeForPtolemyParser = true;
@@ -317,7 +317,7 @@ public class DatagramWriter extends TypedAtomicActor {
 		        "Unrecognized encoding choice " + _encoding);
 	    }
 
-        } else {
+            } */else {
             super.attributeChanged(attribute);
         }
     }
@@ -359,9 +359,16 @@ public class DatagramWriter extends TypedAtomicActor {
 	}
 
         if (data.hasToken(0)) {
-	    byte[] dataBytes = new byte[0]; //{ (byte)1, (byte)2, (byte)3 };
-	    if (_encodeForPtolemyParser) {
-		// Encoding for the parser is easy, just use toString().
+            ArrayToken dataIntArrayToken = (ArrayToken) data.get(0);
+
+            byte[] dataBytes = new byte[dataIntArrayToken.length()];
+            for (int j = 0; j < dataIntArrayToken.length(); j++) {
+                IntToken token = (IntToken)dataIntArrayToken.getElement(j);
+                dataBytes[j] = (byte)token.intValue();
+            }
+
+            /*  if (_encodeForPtolemyParser) {
+                // Encoding for the parser is easy, just use toString().
 		// Any input token type can be accepted.
 		dataBytes = data.get(0).toString().getBytes();
 	    } else if (_encodeFromIntegerArray) {
@@ -380,9 +387,9 @@ public class DatagramWriter extends TypedAtomicActor {
                     IntToken dataIntOneToken =
                         (IntToken)dataIntArrayToken.getElement(j);
 		    int oneIntValue = dataIntOneToken.intValue();
-		    if (_encodedBytesPerInteger/*(N)*/ == 1) {
+		    if (_encodedBytesPerInteger == 1) {
 			dataBytes[j] = (byte)oneIntValue;
-		    } else if (_encodedBytesPerInteger/*(N)*/ == 4) {
+		    } else if (_encodedBytesPerInteger == 4) {
 			int j4 = j * _encodedBytesPerInteger;
 			dataBytes[j4] = (byte)(oneIntValue);
 			dataBytes[j4+1] = (byte)(oneIntValue>>8);
@@ -399,7 +406,7 @@ public class DatagramWriter extends TypedAtomicActor {
 		throw new IllegalActionException(this,
 	                "Unrecognized encoding selection " + _encoding);
 	    }
-
+*/
 
 	    DatagramPacket packet = new
                 DatagramPacket(dataBytes, dataBytes.length,
@@ -522,8 +529,8 @@ public class DatagramWriter extends TypedAtomicActor {
     private int _localSocketNumber;
 
     // Encoding to apply to data when constructing datagram.
-    private String _encoding = new String("");
-    private boolean _encodeForPtolemyParser = true;
-    private boolean _encodeFromIntegerArray = false;
-    private int _encodedBytesPerInteger = 1;
+    //   private String _encoding = new String("");
+    // private boolean _encodeForPtolemyParser = true;
+    // private boolean _encodeFromIntegerArray = false;
+    // private int _encodedBytesPerInteger = 1;
 }
