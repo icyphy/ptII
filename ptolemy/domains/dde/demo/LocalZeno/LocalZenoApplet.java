@@ -190,7 +190,7 @@ public class LocalZenoApplet extends PtolemyApplet {
 
         // Instantiate the Actors
         _clock = new ListenClock( toplevel, "Clock" );
-        _clock.values.setExpression( "[1, 1, 1]" );
+        _clock.values.setExpression( "{1, 1, 1}" );
         _clock.period.setToken( new DoubleToken(20.0) );
         _clock.offsets.setExpression( "{5.0, 10.0, 15.0}" );
         _clock.stopTime.setToken( new DoubleToken(90.0) );
