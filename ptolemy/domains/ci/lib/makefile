@@ -48,8 +48,10 @@ PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = Queue.java \
-	BinarySwitch.java
+JSRCS = BackDropQueue.java \
+	BinarySwitch.java \
+	FrontDropQueue.java \
+	Queue.java
 
 OTHER_FILES_TO_BE_JARED = \
 	cientities.xml

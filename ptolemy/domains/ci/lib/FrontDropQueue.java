@@ -54,7 +54,7 @@ an push-pull FIFO queue.
 @version $Id$
 @since Ptolemy II 2.2
 */
-public class Queue extends CIActor {
+public class FrontDropQueue extends CIActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -64,18 +64,24 @@ public class Queue extends CIActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Queue(CompositeEntity container, String name)
+    public FrontDropQueue(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(false);
         output.setMultiport(false);
         length = new TypedIOPort(this, "length", false, true);
         length.setTypeEquals(BaseType.INT);
+        dropped = new TypedIOPort(this, "dropped", false, true);
+        dropped.setTypeEquals(input.getType());
+        capacity = new Parameter(this, "capacity");
+        capacity.setTypeEquals(BaseType.INT);
+        capacity.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    public TypedIOPort length;
+    public TypedIOPort length, dropped;
+    public Parameter capacity;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -83,8 +89,15 @@ public class Queue extends CIActor {
     /**
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
+        int c = ((IntToken)capacity.getToken()).intValue();
         if (input.hasToken(0)) {
-            _queue.add(input.get(0));
+            if (_queue.size() < c) {
+                _queue.add(input.get(0));
+            } else {
+                Token token = (Token)_queue.removeFirst();
+                _queue.add(input.get(0));
+                dropped.broadcast(token);
+            }
         } else {
             output.broadcast((Token)_queue.removeFirst());
         }

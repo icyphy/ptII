@@ -78,11 +78,11 @@ public class BinarySwitch extends TypedAtomicActor {
         q2_len = new TypedIOPort(this, "q2_len", true, false);
         q2_len.setTypeEquals(BaseType.INT);
         pkt_in = new TypedIOPort(this, "pkt_in", true, false);
-        pkt_in.setTypeEquals(BaseType.GENERAL);
+        //pkt_in.setTypeEquals(BaseType.UNKNOWN);
         q1_out = new TypedIOPort(this, "q1_out", false, true);
-        q1_out.setTypeEquals(BaseType.GENERAL);
+        q1_out.setTypeEquals(pkt_in.getType());
         q2_out = new TypedIOPort(this, "q2_out", false, true);
-        q2_out.setTypeEquals(BaseType.GENERAL);
+        q2_out.setTypeEquals(pkt_in.getType());
     }
 
     ///////////////////////////////////////////////////////////////////
