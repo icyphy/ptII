@@ -30,6 +30,7 @@ package pt.kernel;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 import pt.exceptions.NullReferenceException; 
 import pt.exceptions.NameDuplicationException;
 
@@ -99,7 +100,7 @@ public abstract class Relation extends GraphElement {
 
     /** Get a particle from this relation.
      */
-    public abstract Particle get();
+    public abstract Particle get() throws NoSuchElementException;
 
     /** Return the Ports which are connected to this Relation.
      * @return Return an Enumeration of Ports; returns null if the
