@@ -54,7 +54,7 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// Variable
 /**
-A variable is an attribute that contains a token, and can be set by an
+A Variable is an Attribute that contains a token, and can be set by an
 expression that can refer to other variables.
 <p>
 A variable can be given a token or an expression as its value. To create
@@ -62,10 +62,10 @@ a variable with a token, either call the appropriate constructor, or create
 the variable with the appropriate container and name, and then call
 setToken(). To set the value from an expression, call setExpression().
 The expression is not actually evaluated until you call getToken(),
-validate(), or getType(). If the expression string is null or empty,
-or if no value has been specified, then getToken() will return null.
-If the variable is <i>lazy</i> (set by calling setLazy(<i>true</i>),
-then validate() will not normally result in evaluating the variable.
+getType(). By default, it is also evaluated when you call validate(),
+unless you have called setLazyValidation(true), in which case it will only
+be evaluted if there are other variables that depend on it and those
+have not had setLazyValidation(true) called.
 <p>
 Consider for example the sequence:
 <pre>
@@ -83,27 +83,45 @@ yet have values.  But there is no problem because the expression
 is not evaluated until getToken() is called.  Equivalently, we
 could have called, for example,
 <pre>
+   v3.validate();
+</pre>
+This will force <code>v3</code> to be evaluated,
+and also <code>v1</code> and <code>v2</code>
+to be evaluated.
+<p>
+There is a potentially confusing subtlety.  In the above code,
+before the last line is executed, the expression for <code>v3</code>
+has not been evaluated, so the dependence that <code>v3</code> has
+on <code>v1</code> and <code>v2</code> has not been recorded.
+Thus, if we call
+<pre>
    v1.validate();
 </pre>
-This will force v1 to be evaluated, as well as all variables that
-depend on v1.
+before <code>v3</code> has ever been evaluated, then it will <i>not</i>
+trigger an evaluation of <code>v3</code>.  Because of this, we recommend
+that user code call validate() immediately after calling
+setExpression().
+<p>
+If the expression string is null or empty,
+or if no value has been specified, then getToken() will return null.
 <p>
 The expression can reference variables that are in scope before the
-expression is evaluated (i.e., before getToken() is called).
+expression is evaluated (i.e., before getToken() or validate() is called).
 Otherwise, getToken() will throw an exception. All variables
 contained by the same container, and those contained by the container's
-container, are in the scope of this variable. An instance of
-ScopeExtendingAttribute can be used to aggregate a set of variables
-and add them to the scope as well. Thus, in the above,
+container, are in the scope of this variable. Thus, in the above,
 all three variables are in each other's scope because they belong
 to the same container. If there are variables in the scope with the
-same name, then those lower in the hierarchy shadow those that are higher,
-except that variables in ScopeExtendingAttribute are shadowed by those
-in the container of the ScopeExtendingAttribute.
+same name, then those lower in the hierarchy shadow those that are higher.
+An instance of ScopeExtendingAttribute can also be used to
+aggregate a set of variables and add them to the scope.
 <p>
 If a variable is referred
 to by expressions of other variables, then the name of the variable must be a
 valid identifier as defined by the Ptolemy II expression language syntax.
+A valid identifier starts with a letter or underscore, and contains
+letters, underscores, numerals, dollar signs ($),
+at signs (@), or pound signs (#).
 <p>
 A variable is a Typeable object. Constraints on its type can be
 specified relative to other Typeable objects (as inequalities on the types),
@@ -121,10 +139,10 @@ whereas dynamic type constraints are given by
 </ul>
 Static type constraints are enforced in this class, meaning that:
 <ul>
-<li> if the variable already has a value (set by setToken() or
+<li> If the variable already has a value (set by setToken() or
      setExpression()) when you set the static type constraint, then
      the value must satisfy the type constraint; and
-<li> if after setting a static type constraint you call give the token
+<li> If after setting a static type constraint you give the token
      a value, then the value must satisfy the constraints.
 </ul>
 A violation will cause an exception (either when setToken() is called
@@ -143,23 +161,14 @@ of the token that was inserted via setToken().  It might be a distinct
 type if the token given by setToken() can be converted losslessly into one
 of the type given by setTypeEquals().
 <p>
-A variable can also be reset. If the variable was originally set from a
-token, then this token is placed again in the variable, and the type of the
-variable is set to equal that of the token. If the variable
-was originally given an expression, then this expression is placed again
-in the variable (but not evaluated), and the type is reset to
-BaseType.UNKNOWN.
-The type will be determined when the expression is evaluated or when
-type resolution is done.
-<p>
 A variable has no MoML description (MoML is an XML modeling markup
 language).  Thus, a variable contained by a named object is not
 persistent, in that if the object is exported to a MoML file, the
 variable will not be represented.  If you prefer that the variable
 be represented, then you should use the derived class Parameter instead.
 <p>
-A variable is also normally not settable by users from the user
-interface.  This is because, by default, getVisibility() returns NONE.
+A variable is also normally not settable by casual users from the user
+interface.  This is because, by default, getVisibility() returns EXPERT.
 The derived class Parameter is fully visible by default.
 
 @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
@@ -169,7 +178,7 @@ The derived class Parameter is fully visible by default.
 @see ptolemy.data.Token
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.expr.Parameter
-
+@see ScopeExtendingAttribute
 */
 
 public class Variable extends Attribute
@@ -252,9 +261,7 @@ public class Variable extends Attribute
     /** Clone the variable.  This creates a new variable containing the
      *  same token (if the value was set with setToken()) or the same
      *  (unevaluated) expression, if the expression was set with
-     *  setExpression().  The clone also recalls the same initial
-     *  expression or initial token, so that reset() on the clone behaves
-     *  as reset() on the original. The list of variables added to the scope
+     *  setExpression().  The list of variables added to the scope
      *  is not cloned; i.e., the clone has an empty scope.
      *  The clone has the same static type constraints (those given by
      *  setTypeEquals() and setTypeAtMost()), but none of the dynamic
@@ -463,7 +470,7 @@ public class Variable extends Attribute
     }
 
     /** Get the visibility of this variable, as set by setVisibility().
-     *  The visibility is set by default to NONE.
+     *  The visibility is set by default to EXPERT.
      *  @return The visibility of this variable.
      */
     public Settable.Visibility getVisibility() {
@@ -549,7 +556,11 @@ public class Variable extends Attribute
      *  expression, then this expression is placed again in the variable
      *  (but not evaluated), and the type is reset to BaseType.UNKNOWN.
      *  The type will be determined when the expression is evaluated or
-     *  when type resolution is done.
+     *  when type resolution is done. Note that if this variable is
+     *  cloned, then reset on the clone behaves exactly as reset on
+     *  the original.
+     *  @deprecated This capability may be removed to simplify this class.
+     *   It is not currently used in Ptolemy II, as of version 2.0.
      */
     public void reset() {
         if (_noTokenYet) return;
@@ -1452,7 +1463,7 @@ public class Variable extends Attribute
     private List _valueListeners;
 
     // The visibility of this variable.
-    private Settable.Visibility _visibility = Settable.NONE;
+    private Settable.Visibility _visibility = Settable.EXPERT;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
