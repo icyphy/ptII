@@ -577,7 +577,6 @@ public class UtilityFunctions {
             // For example, if liba.so uses libb.so and we call this
             // method on a, then libb.so will not be found.
 
-            System.out.println("UtilityFunctions: About to load " + libraryPath);
             System.load(libraryPath);
         }
     }
