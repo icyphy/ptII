@@ -136,13 +136,8 @@ public class ASTPtRootNode implements Node, Cloneable {
      */
     public ptolemy.data.Token evaluateParseTree()
             throws IllegalActionException {
-        try {
-            ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
-            return evaluator.evaluateParseTree(this);
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+        return evaluator.evaluateParseTree(this);
     }
 
     /** Return the evaluated token value of this node.  This value may be
@@ -215,7 +210,16 @@ public class ASTPtRootNode implements Node, Cloneable {
         return _ptToken != null;
     }
 
-    public void jjtOpen() {
+    public void jjtAddChild(Node n, int i) {
+        if (_children == null) {
+            _children = new ArrayList();
+        }
+        if (i >= _children.size()) {
+            while (_children.size() <= i) {
+                _children.add(null);
+            }
+        }
+        _children.set(i, n);
     }
 
     public void jjtClose() {
@@ -236,27 +240,23 @@ public class ASTPtRootNode implements Node, Cloneable {
         }
     }
 
-    public void jjtSetParent(Node n) { _parent = n; }
-    public Node jjtGetParent() { return _parent; }
-
-    public void jjtAddChild(Node n, int i) {
-        if (_children == null) {
-            _children = new ArrayList();
-        }
-        if (i >= _children.size()) {
-            while (_children.size() <= i) {
-                _children.add(null);
-            }
-        }
-        _children.set(i, n);
-    }
-
     public Node jjtGetChild(int i) {
         return (Node)_children.get(i);
     }
 
     public int jjtGetNumChildren() {
         return (_children == null) ? 0 : _children.size();
+    }
+
+    public Node jjtGetParent() {
+        return _parent;
+    }
+
+    public void jjtOpen() {
+    }
+
+    public void jjtSetParent(Node n) {
+        _parent = n;
     }
 
     /** Set whether this node is a constant.  In almost all cases this
@@ -292,8 +292,14 @@ public class ASTPtRootNode implements Node, Cloneable {
      * toString(String), otherwise overriding toString() is probably
      * all you need to do.
      */
-    public String toString() { return PtParserTreeConstants.jjtNodeName[_id] + ":" + _isConstant + ":" + _ptType + ":" + _ptToken; }
-    public String toString(String prefix) { return prefix + toString(); }
+    public String toString() {
+        return PtParserTreeConstants.jjtNodeName[_id] + ":"
+            + _isConstant + ":" + _ptType + ":" + _ptToken;
+    }
+
+    public String toString(String prefix) {
+        return prefix + toString();
+    }
 
     /** Traverse this node with the given visitor.
      *  subclasses should override this method to invoke the appropriate
