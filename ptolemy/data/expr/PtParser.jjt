@@ -87,25 +87,25 @@ Created : May 1998
  * @author Neil Smyth
  * @version $Id$
  
- * @see pt.data.expr.ASTPtFunctionNode
- * @see pt.data.expr.ASTPtLeafNode
- * @see pt.data.expr.ASTPtLogicalNode
- * @see pt.data.expr.ASTPtMiscNode
- * @see pt.data.expr.ASTPtProductNodeI
- * @see pt.data.expr.ASTPtRelationalNode
- * @see pt.data.expr.ASTPtRootNode
- * @see pt.data.expr.ASTPtSumNode
- * @see pt.data.expr.ASTPtUnaryNode
- * @see pt.data.Token 
+ * @see ptolemy.data.expr.ASTPtFunctionNode
+ * @see ptolemy.data.expr.ASTPtLeafNode
+ * @see ptolemy.data.expr.ASTPtLogicalNode
+ * @see ptolemy.data.expr.ASTPtMiscNode
+ * @see ptolemy.data.expr.ASTPtProductNodeI
+ * @see ptolemy.data.expr.ASTPtRelationalNode
+ * @see ptolemy.data.expr.ASTPtRootNode
+ * @see ptolemy.data.expr.ASTPtSumNode
+ * @see ptolemy.data.expr.ASTPtUnaryNode
+ * @see ptolemy.data.Token 
 */
 
 
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.data.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
 
 import java.io.*;
 
@@ -538,8 +538,8 @@ String tidied, x;
      <ID>
      { 
         if (_scope != null) {
-            pt.data.expr.Parameter xx =
-		 (pt.data.expr.Parameter)_scope.get(token.image);
+            ptolemy.data.expr.Parameter xx =
+		 (ptolemy.data.expr.Parameter)_scope.get(token.image);
             if (xx != null) {
                 // the param is stored in the node so that the tree does not 
                 // have to be reparsed
@@ -553,9 +553,9 @@ String tidied, x;
                 throw new ParseException(str + "current scope");
             }
         } else if (token.image.equalsIgnoreCase("PI")) {
-            jjtThis._ptToken = new pt.data.DoubleToken(Math.PI);
+            jjtThis._ptToken = new ptolemy.data.DoubleToken(Math.PI);
         } else if (token.image.equalsIgnoreCase("E")) {
-            jjtThis._ptToken = new pt.data.DoubleToken(Math.E);
+            jjtThis._ptToken = new ptolemy.data.DoubleToken(Math.E);
         } else {
             String str = " Parameter" + token.image + " not visible in ";
             throw new ParseException(str + "current scope");
