@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[123, 194]">
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="394.0, 42.0">
@@ -29,7 +29,7 @@ javasound package.</text>
         </property>
     </property>
     <entity name="Delay" class="ptolemy.domains.sdf.lib.Delay">
-        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="gaussian(0.0, 0.6, 1, 35)">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="gaussian(0.0, 0.6, 1, 35).toArray()">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
         <property name="_location" class="ptolemy.moml.Location" value="85.0, 113.0">
@@ -54,7 +54,7 @@ javasound package.</text>
         </port>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.999999999">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.999999999999">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="379.0, 140.0">
         </property>
@@ -90,7 +90,7 @@ javasound package.</text>
         </property>
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="taps" class="ptolemy.data.expr.Parameter" value="[0.5, 0.5]">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
         </property>
         <doc name="tooltip">FIR filter</doc>
         <property name="_location" class="ptolemy.moml.Location" value="184.0, 120.0">
@@ -117,7 +117,7 @@ javasound package.</text>
     <entity name="Allpass Filter" class="ptolemy.actor.lib.IIR">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{0.07317, 1.0}">
         </property>
-        <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, -0.07317}">
+        <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 0.07317}">
         </property>
         <doc>IIR filter</doc>
         <property name="_location" class="ptolemy.moml.Location" value="282.0, 128.0">
