@@ -31,8 +31,11 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -40,36 +43,12 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 //////////////////////////////////////////////////////////////////////////
 //// Parameter
 /**
-Parameter extends Variable with support for string-valued variables that
-makes these friendlier at the user interface level. In particular,
-if the parameter is in string mode, then when setting the value of
-this parameter, the string that you pass to setExpression(String)
-is taken to be literally the value of the instance of StringToken
-that represents the value of this parameter. It is not necessary
-to enclose it in quotation marks (and indeed, if you do, the quotation
-marks will become part of the value of the string).  In addition,
-the type of this parameter will be set to string. A parameter is
-in string mode if either setStringMode(true) has been called or
-it contains an attribute named "_stringMode".
-<p>
-In string mode, the value passed to setExpression(String) may contain
-references to other variables in scope using the syntax $id,
-${id} or $(id).  The first case only works if the id consists
-only of alphanumeric characters and/or underscore, and if the
-character immediately following the id is not one of these.
-To get a simple dollar sign, use $$.
-<p>
-In addition, this class supports an annotation that specifies
+Parameter extends Variable with additional support for string-valued
+variables that makes these friendlier at the user interface level.
+In particular, this class supports an annotation that specifies
 choices for values.  A user interface can use this to present a
 choice dialog that offers the specified values.  This is typically
 used when a particular set of choices make sense.  The values can
@@ -254,7 +233,4 @@ public class Parameter extends Variable {
 
     // The List of choices.
     private List _choices;
-    
-    // Empty string token.
-    private static StringToken _EMPTY_STRING_TOKEN = new StringToken("");
 }
