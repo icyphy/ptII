@@ -145,11 +145,8 @@ public class VariableFIR extends FIR {
 	    throws CloneNotSupportedException {
         VariableFIR newObject = (VariableFIR)(super.clone(workspace));
 
-        // set the type constraints
-        // FIXME: Doesn't work.
-        // newObject.newTaps.setTypeSameAs(newObject.taps);
-        // FIXME: backup plan.
-        newObject.newTaps.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        newObject.newTaps.setTypeSameAs(newObject.taps);
+        newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
