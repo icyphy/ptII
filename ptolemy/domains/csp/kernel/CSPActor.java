@@ -109,7 +109,7 @@ public class CSPActor extends AtomicActor {
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
      */
-    public CSPActor(CSPCompositeActor container, String name)
+    public CSPActor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
                 super(container, name);
     }
