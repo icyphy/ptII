@@ -31,8 +31,8 @@
 
 ME =		ptolemy/actor/lib/python/demo
 
-DIRS =		Ptolemnizer \
-		PythonScale
+# Ptolemnizer does not have a makefile?
+DIRS =		Pythonscale
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
