@@ -60,11 +60,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.FilterBackwardCompatibility;
-import ptolemy.moml.filter.AddEditorFactory;
-import ptolemy.moml.filter.AddIcon;
-import ptolemy.moml.filter.PortNameChanges;
-import ptolemy.moml.filter.PropertyClassChanges;
-
 import ptolemy.moml.MoMLParser;
 
 import java.util.Date;			// For timing measurements
