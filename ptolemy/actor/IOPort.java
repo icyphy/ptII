@@ -85,7 +85,7 @@ of any base class will trigger an exception.  A subclasses may
 further constrain the containers of the port to be of a subclass of
 Actor or CompositeActor.  To do so they should override setContainer().
 
-@authors Edward A. Lee, Jie Liu
+@authors Edward A. Lee, Jie Liu, Yuhong Xiong
 @version $Id$
 */
 public class IOPort extends ComponentPort {
@@ -174,6 +174,58 @@ public class IOPort extends ComponentPort {
                 }
             }
         }
+    }
+
+    /** Deeply enumerate the input ports connected to this port on the
+     *  outside.  This method calls deepConnectedPorts() of the super
+     *  class to get all the deeply connected ports and returns only the
+     *  input ports among them.
+     *  This method is read-synchronized on the workspace.
+     *  @see pt.kernel.ComponentPort#deepConnectedPorts
+     *  @return An enumeration of input IOPort objects.
+     */
+    public Enumeration deepConnectedInPorts() {
+	try {
+	    workspace().read();
+	    LinkedList result = new LinkedList();
+
+	    for (Enumeration allPorts = deepConnectedPorts();
+		 	allPorts.hasMoreElements(); ) {
+		IOPort port = (IOPort)allPorts.nextElement();
+		if (port.isInput()) {
+		    result.insertLast(port);
+		}
+	    }
+	    return result.elements();
+	} finally {
+	    workspace().doneReading();
+	}
+    }
+
+    /** Deeply enumerate the output ports connected to this port on the
+     *  outside.  This method calls deepConnectedPorts() of the super
+     *  class to get all the deeply connected ports and returns only the
+     *  output ports among them.
+     *  This method is read-synchronized on the workspace.
+     *  @see pt.kernel.ComponentPort#deepConnectedPorts
+     *  @return An enumeration of output IOPort objects.
+     */
+    public Enumeration deepConnectedOutPorts() {
+	try {
+	    workspace().read();
+	    LinkedList result = new LinkedList();
+
+	    for (Enumeration allPorts = deepConnectedPorts();
+		 	allPorts.hasMoreElements(); ) {
+		IOPort port = (IOPort)allPorts.nextElement();
+		if (port.isOutput()) {
+		    result.insertLast(port);
+		}
+	    }
+	    return result.elements();
+	} finally {
+	    workspace().doneReading();
+	}
     }
 
     /** Return a description of the object specified by verbosity.
