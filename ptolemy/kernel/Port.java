@@ -1,4 +1,3 @@
-
 /* A Port is the interface between Entities and Relations.
 
  Copyright (c) 1997 The Regents of the University of California.
@@ -28,6 +27,7 @@
 
 package pt.kernel;
 
+import java.util.Hashtable;
 import java.util.Enumeration;
 import pt.exceptions.NameDuplicationException;
 import pt.exceptions.NullReferenceException;
@@ -43,18 +43,54 @@ public class Port extends GenericPort {
     /** 
      */	
     public Port() {
-	 super();
+	super();
+        if( aliasPairList_ == null ) {
+             aliasPairList_ = new Hashtable();
+        }
     }
 
     /** 
      * @param name The name of the Port.
+     * @exception NameDuplicationException Attempt to store two instances of
+     * the same class with identical names in the same container.
      */	
-    public Port(String name) {
-	 super(name);
+    public Port(String name) throws NameDuplicationException {
+	super(name);
+        if( aliasPairList_ == null ) {
+             aliasPairList_ = new Hashtable();
+        }
+	addNewAliasPair_();
     }
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
+
+    /** Insert this Port in the alias chain one level outside of 
+     *  the position of the argument.
+     *  @param innerPort The Port outside of which this Port will be placed.
+     */
+    public synchronized void aliasInsertAsOuter(Port innerPort) {
+	 Port outerPort = (Port)innerPort.getUpAlias();
+	 Port middlePort = this;
+
+	 juxtaposeOuterWithInner_( middlePort, innerPort );
+	 if( outerPort != null ) {
+	      juxtaposeOuterWithInner_( outerPort, middlePort );
+	 }
+
+	 outerPort.aliasSet();
+	 innerPort.aliasSet();
+    }
+
+    /** Copy the alias pair values from the static alias pair list.
+     */
+    public void aliasSet() {
+	 String name = this.getName();
+	 AliasPair aliasPair = (AliasPair)aliasPairList_.get( name ); 
+	 Port innerPort = (Port)aliasPair.getInnerAlias();
+	 Port outerPort = (Port)aliasPair.getOuterAlias();
+    }
 
     /** Connect this Port to a Relation.
      * @param relation The Relation to which this Port will be connected.
@@ -100,6 +136,14 @@ public class Port extends GenericPort {
 	return _relation.getPorts();
     }
 
+    /** Return a reference to the GenericPort alias one level down in the
+     *  hierarchy. Return null if this port is at the bottom of the
+     *  hierarchy.
+     */
+    public GenericPort getDownAlias() {
+        return innerAlias_;
+    }
+
     /** Return the MultiPort which contains this Port.
      */	
     public MultiPort getMultiPortContainer() {
@@ -116,13 +160,12 @@ public class Port extends GenericPort {
         return _relation.getName();
     }
 
-    /** Insert this Port in the alias chain one level above
-     *  the position of the argument.
-     * @param lowerPort The Port above which this Port will be placed.
+    /** Return a reference to the GenericPort alias one level up in the
+     *  hierarchy. Return null if this port is at the top of the
+     *  hierarchy.
      */
-    public void insertAliasAbove(Port lowerPort) {
-	 super.insertAliasAbove_( lowerPort );
-	 return;
+    public GenericPort getUpAlias() {
+        return outerAlias_;
     }
 
     /** Return false since this is a Port.
@@ -142,7 +185,6 @@ public class Port extends GenericPort {
 	}
         return false;
     }
-
 
 
     /** Prepare for a new connection by returning a port. 
@@ -187,9 +229,58 @@ public class Port extends GenericPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
+    /** Create a new alias pair associated with this Port. 
+     * @param portName The name of the Port associated with this alias pair.
+     * @exception NameDuplicationException Attempt to store two instances of 
+     * the same class with identical names in the same container.
+     */
+    private void addNewAliasPair_() throws NameDuplicationException {
+
+	String portName = this.getName();
+        AliasPair newPair = new AliasPair();
+        AliasPair duplicatePair;
+        duplicatePair = (AliasPair)aliasPairList_.put( portName, newPair );
+        if( duplicatePair != null ) {
+   	     aliasPairList_.put( portName, duplicatePair );
+
+             // Two Ports with identical names have been created.
+             throw new NameDuplicationException( portName );
+        }
+    }
+
+    /** Juxtapose two Ports in the alias chain.
+     * @param outerPort The Port which will be outermost in the pair.
+     * @param innerPort The Port which will be innermost in the pair.
+     */
+    private void juxtaposeOuterWithInner_(Port outerPort, Port innerPort) {
+
+	 String innerName = innerPort.getName();
+	 String outerName = outerPort.getName();
+
+	 AliasPair innerAliasPair = (AliasPair)aliasPairList_.get( innerName );
+	 AliasPair outerAliasPair = (AliasPair)aliasPairList_.get( outerName );
+
+	 innerAliasPair.setOuterAlias( outerPort );
+	 outerAliasPair.setInnerAlias( innerPort );
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
+    /** This list is used to verify that up and down aliases are
+     * consistent.
+     */
+    private static Hashtable aliasPairList_;
+
+    /** The Port reference one level down the hierarchy the chain.
+     *  This reference remains null for Ports at the lowest level of
+     *  hierarchy chain.
+     */
+    private Port innerAlias_;
+
+    /* The Port reference one level up the hierarchy the chain.
+     */
+    private Port outerAlias_;
 
     /* The MultiPort which contains this Port.
      */
