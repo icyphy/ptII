@@ -205,7 +205,7 @@ public class Schedule extends ScheduleElement {
      *   any leaf nodes that are not an instance of Firing.
      */
     public Iterator actorIterator() {
-	return new ActorIterator();
+        return new ActorIterator();
     }
 
     /** Return the actor invocation sequence of this schedule in the form
@@ -446,10 +446,10 @@ public class Schedule extends ScheduleElement {
 		    // in the iteration.
 		    _currentNode = _findLeafNode((Schedule)_currentNode);
                     if (_currentNode == null) {
-                        // Throw runtime exception.
-                        throw new InternalErrorException(
-                                "Encountered a schedule leaf node that is"
-                                + "not an instance of Firing.");
+			// There are no mo Firings in the tree at all.
+			_advance = false;
+			_lastHasNext = false;
+			return _lastHasNext;
 		    }
 		} else {
 		    // Throw runtime exception.
@@ -568,7 +568,10 @@ public class Schedule extends ScheduleElement {
 		} else {
 		    return _findLeafNode((Schedule)nodeElement);
 		}
-	    } else if (_iterationCounts[_currentDepth] <
+	    } else if (node.size() == 0) {
+                Schedule scheduleNode = _backTrack(_currentNode);
+                return _findLeafNode(scheduleNode);
+            } else if (_iterationCounts[_currentDepth] <
                     node.getIterationCount()) {
 		ScheduleElement nodeElement = node.get(0);
 		_currentDepth++;
