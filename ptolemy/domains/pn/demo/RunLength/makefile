@@ -46,8 +46,15 @@ CLASSPATH = $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 PTPACKAGE = 	RLEDivaApplet
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = ThreadDemo.java \
-	RLEDiva.java
+JSRCS = ImageDisplay.java \
+	MatrixPacker.java \
+	MatrixUnpacker.java \
+	PNImageSink.java \
+	PNImageSource.java \
+	RLDecoder.java \
+	RLEDiva.java \
+	RLEncoder.java \
+	ThreadDemo.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
