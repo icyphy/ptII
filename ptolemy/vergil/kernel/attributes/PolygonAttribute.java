@@ -50,8 +50,9 @@ import ptolemy.kernel.util.NamedObj;
 This is an attribute that is rendered as a polygon.  The <i>vertices</i>
 parameter is an array of doubles that specify the vertices of the polygon
 in the form {x1, y1, x2, y2, ... }.
-The <i>width</i> and <i>height</i> parameters are percentages, allowing
-for easy scaling of the polygon.
+The <i>width</i> and <i>height</i> parameters, somewhat awkwardly,
+are used to specify the overall width and height. The polygon will be
+scaled to fit the specified width and height.
 <p>
 @author Edward A. Lee
 @version $Id$
