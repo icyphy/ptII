@@ -128,7 +128,8 @@ to a shared medium using a token-ring protocol.
 </li>
 
 <li><a href="../../data/type/demo/Router/Router.xml">
-The Type System</a>.<br>
+The Type System</a>.
+<br>
 This model illustrates the very sophisticated type system
 of Ptolemy II, where type constraints propagate transparently,
 actors are polymorphic, and composite types such as records and
@@ -139,8 +140,20 @@ models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
 </li>
 
+<li><a href="../../domains/ct/demo/Transmission/Transmission.xml">
+Higher-order expressions</a>.
+<br>
+
+To simplify creating new components, Ptolemy II contains a functional
+expression language.  The expression language is integrated with the
+type system, allowing static type checking of polymorphic expressions
+with few type annotations.  The expression language also allows new,
+encapsulated functions, called function closures, to be defined and
+passed as data.  This model illustrates how function closures can be
+used to make model much more compact. </li>
+
 <li><a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketched Signal</a>
-(see also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>)
+(see also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>).
 <br>
 This model illustrates the use of plotter to provide input
 as well as rendering output from a model.  Right click and drag
@@ -157,7 +170,7 @@ to plot a 3-D surface. This works only if Matlab is installed locally.
 
 <li><a href="../../actor/parameters/demo/SliderParameter/SliderParameter.xml">Interactive
 User Interface</a>  (see also
-<a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>)
+<a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>).
 <br>
 This model illustrates features of the user interface that
 make it easier to create models that execute with rich interaction
