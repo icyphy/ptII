@@ -107,7 +107,7 @@ OPTIONAL_FILES = \
 	'EditorDropTarget$$3.class' \
 	'EditorDropTarget$$4.class' \
 	'EditorDropTarget$$DTListener.class' \
-	'ExtendedGraphFrame$$FullScreenAction.class'
+	'ExtendedGraphFrame$$FullScreenAction.class' \
 	'IconController$$IconRenderer.class' \
 	'NamedObjController$$GetDocumentationAction.class' \
 	'ParameterizedNodeController$$1.class' \
