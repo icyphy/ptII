@@ -151,7 +151,7 @@ public class ODIOPort extends IOPort {
             throw new IllegalActionException( this, "Negative delay "
                     + "values are not allowed.");
 	}
-        ODReceiver[][] farRec;
+        Receiver[][] farRec;
         try {
             workspace().getReadAccess();
             if (!isOutput()) {
@@ -165,16 +165,21 @@ public class ODIOPort extends IOPort {
             }
             // Note that the getRemoteReceivers() method doesn't throw
             // any non-runtime exception.
-            farRec = (ODReceiver[][])getRemoteReceivers();
-            if (farRec == null || farRec[channelindex] == null) return;
+            farRec = getRemoteReceivers();
+            if (farRec == null || farRec[channelindex] == null) {
+                return;
+            }
+            
+            System.out.println("About to call ODReceiver.put() within " +
+                    "ODIOPort.send()."); 
+            for (int j = 0; j < farRec[channelindex].length; j++) {
+                double currentTime = ((ODActor)getContainer()).getCurrentTime(); 
+                ((ODReceiver)farRec[channelindex][j]).put(
+                        token, currentTime + delay);
+            }
         } finally {
             workspace().doneReading();
         }
-        for (int j = 0; j < farRec[channelindex].length; j++) {
-            double currentTime = ((ODActor)getContainer()).getCurrentTime();
-            farRec[channelindex][j].put(token, currentTime + delay);
-        }
- 
     }
 
 
