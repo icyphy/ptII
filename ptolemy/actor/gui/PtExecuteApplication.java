@@ -48,13 +48,36 @@ import java.util.List;
 //// PtExecuteApplication
 /**
 This application executes Ptolemy II models specified on the
-command line.  The exact facilities that are available are determined
-by the configuration file ptolemy/configs/runConfiguration.xml,
-which is loaded before any command-line arguments are processed.
+command line.  
+<p>
+The exact facilities that are available are determined by an optional
+command line argument that names a directory in ptolemy/configs that
+contains a configuration.xml file.  For example, if we call vergil
+-ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and
+ptolemy/configs/ptiny/intro.htm.  The default configuration is
+ptolemy/configs/runConfiguration.xml, which is loaded before any
+other command-line arguments are processed.
+
+<p>This application also takes an optional command line argument pair
+<code>-conf <i>configurationFile.xml</i></code> that names a configuration
+to be read.  For example,
+<pre>
+$PTII/bin/ptexecute -conf ptolemy/configs/full/configuration.xml ../../domains/sdf/demo/Butterfly/Butterfly.xml
+<pre>
+and
+<pre>
+$PTII/bin/ptexecute -full ../../domains/sdf/demo/Butterfly/Butterfly.xml
+</pre>
+are equivalent
+<p>
+If no configuration is specified on the command line, then 
+the MoML file ptolemy/configs/runConfiguration.xml is loaded before
+other command line arguments are processed.
+<p>
 If there are no command-line arguments at all, then this class
 does nothing.
 
-@author Edward A. Lee and Steve Neuendorffer
+@author Edward A. Lee, Steve Neuendorffer Christopher Hyland
 @version $Id$
 @since Ptolemy II 1.0
 @see ModelFrame
@@ -202,11 +225,14 @@ public class PtExecuteApplication extends MoMLApplication
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
-        URL inURL = specToURL(
-                "ptolemy/configs/runConfiguration.xml");
+        if (_configurationURL == null) {
+            _configurationURL =
+                specToURL("ptolemy/configs/runConfiguration.xml");
+        }
         MoMLParser parser = new MoMLParser();
         _configuration =
-            (Configuration)parser.parse(inURL, inURL.openStream());
+            (Configuration)parser.parse(_configurationURL,
+                    _configurationURL.openStream());
         return _configuration;
     }
 
@@ -226,15 +252,123 @@ public class PtExecuteApplication extends MoMLApplication
     protected synchronized void _parseArgs(String args[]) throws Exception {
         _commandTemplate = "ptexecute [ options ] file ...";
 
-        super._parseArgs(args);
+        // PtExecuteApplication.super._parseArgs(args)
+        // calls _createDefaultConfiguration() asap,
+        // so delay calling it until we process
+        // the arguments and possibly get a configuration.
+        List processedArgsList = new LinkedList();
+        for (int i = 0; i < args.length; i++) {
+            // Parse any configuration specific args first so that we can
+            // set up the configuration for later use by the parent class.
+            if (!_configurationParseArg(args[i])) {
+                // If we did not parse the arg, the
+                // add it to the list of args to be passed
+                // to the super class.
+                processedArgsList.add(args[i]);
+            }
+        }
+        if (_expectingConfiguration) {
+            throw new IllegalActionException(
+                    "Missing configuration");
+        }
+        String [] processedArgs =
+            (String [])processedArgsList
+            .toArray(new String[processedArgsList.size()]);
+
+        super._parseArgs(processedArgs);
+    }
+
+    /** Return a string summarizing the command-line arguments.
+     *  @return A usage string.
+     */
+    protected String _usage() {
+        return _configurationUsage(_commandTemplate,
+                _commandOptions, new String [] {} );
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // _commandOptions is static because
+    // _usage() may be called from the constructor of the parent class,
+    //  in which case non-static variables are null?
+
+    /** The command-line options that take arguments. */
+    protected static String _commandOptions[][] = {
+        {"-config",
+         "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>"},
+    };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Parse a command-line argument.  Usually, we would name this
+     *  method _parseArg(), but we want to handle any arguments that
+     *  handle configuration changes before calling the parent class
+     *  _parseArg() because the parent class depends either having a
+     *  configuration to work with, or the parent class sets up a
+     *  configuration.
+     *  @return True if the argument is understood, false otherwise.
+     *  @exception Exception If something goes wrong.
+     */
+    private boolean _configurationParseArg(String arg) throws Exception {
+        if (arg.startsWith("-conf")) {
+            _expectingConfiguration = true;
+        } else if (arg.startsWith("-")) {
+            // If the argument names a directory in ptolemy/configs
+            // that contains a file named configuration.xml that can
+            // be found either as a URL or in the classpath, then
+            // assume that it is a configuration.  For example, -ptiny
+            // will look for ptolemy/configs/ptiny/configuration.xml
+            // If the argument does not name a configuration, then
+            // we return false so that the argument can be processed
+            // by the parent class.
+            try {
+                _configurationSubdirectory = arg.substring(1);
+                String potentialConfiguration =
+                    "ptolemy/configs/" + _configurationSubdirectory
+                    + "/configuration.xml";
+                // This will throw an Exception if we can't find the config.
+                _configurationURL = specToURL(potentialConfiguration);
+            } catch (Exception ex) {
+                // The argument did not name a configuration, let the parent
+                // class have a shot.
+                return false;
+            }
+        } else if (_expectingConfiguration) {
+            _expectingConfiguration = false;
+            _configurationURL = specToURL(arg);
+        } else {
+            return false;
+        }
+
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The count of currently executing runs.
+    private int _activeCount = 0;
+
     // The configuration.
     private Configuration _configuration;
 
-    // The count of currently executing runs.
-    private int _activeCount = 0;
+    // The subdirectory (if any) of ptolemy/configs where the configuration
+    // may be found.  For example if vergil was called with -ptiny,
+    // then this variable will be set to "ptiny", and the configuration
+    // should be at ptolemy/configs/ptiny/configuration.xml
+    private String _configurationSubdirectory;
+
+    // URL of the configuration to read.
+    // The URL may absolute, or relative to the Ptolemy II tree root.
+    // We use the URL instead of the string so that if the configuration
+    // is set as a command line argument, we can use the processed value
+    // from the command line instead of calling specToURL() again, which
+    // might be expensive.
+    private URL _configurationURL;
+
+    // Flag indicating that the previous argument was -conf
+    private boolean _expectingConfiguration = false;
+
 }
