@@ -257,10 +257,14 @@ class SaveAsJava {
                  Relation relation = (Relation)(relations.next());
                  Iterator ports = relation.linkedPortList().iterator();
 
+                 String relationAttributes = _generateAttributes(relation);
+
                  // We adopt the convention of using the "connect"
                  // method for relations that are incident to exactly
-                 // two links.
-                 if (relation.numLinks() == 2) {
+                 // two links, and that have no attributes for which
+                 // code needs to be generated.
+                 if ((relation.numLinks() == 2) &&
+                         (relationAttributes.length() == 0)) {
                      Port port1 = (Port) ports.next();
                      Port port2 = (Port) ports.next();
                      code += _indent(3);
@@ -271,7 +275,9 @@ class SaveAsJava {
                              + _name(port2)
                              + ");\n";
                  }
-                 // Explicitly instantiate the relation, and generate 
+                 // Explicitly instantiate the relation, 
+                 // generate code to set relevant attributes of the
+                 // relation, and generate 
                  // a link() call for each port associated with the relation.
                  else {
                      String relationClassName = _getClassName(relation);
@@ -286,6 +292,7 @@ class SaveAsJava {
                      code += ", \""
                              + _name(relation)
                              + "\");\n";
+                     code += relationAttributes;
                      while (ports.hasNext()) {
                          Port p = (Port)ports.next();
                          code += _indent(3)
