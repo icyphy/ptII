@@ -41,7 +41,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 #### Constructors and Clone
 #
-
 test Clock-1.0 {test constructor and initial value} {
     set e0 [deModel 4.0]
     set clockmaster [java::new ptolemy.actor.lib.Clock $e0 clock]
@@ -70,7 +69,11 @@ test Clock-2.1 {test with the default output value} {
     enumToTokenValues [$rec getRecord 0]
 } {1 0 1 0}
 
-test Clock-2.2 {change output value and type and rerun} {
+test Clock-2.2 {check times} {
+    enumToStrings [$rec getTimeRecord]
+} {0.0 1.0 2.0 3.0}
+
+test Clock-2.3 {change output value and type and rerun} {
     set p [getParameter $clock values]
     $p setExpression {[0.5, -0.5]}
     set mt [java::cast ptolemy.data.DoubleMatrixToken [$p getToken]]
