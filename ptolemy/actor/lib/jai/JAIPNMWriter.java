@@ -56,7 +56,7 @@ import com.sun.media.jai.codec.PNMEncodeParam;
    without asking.  If <i>true</i> (the default), then if the file
    exists, then this actor will ask for confirmation before overwriting.
 
-   @see FileParameter
+   @see ptolemy.data.expr.FileParameter
    @author James Yeh, Christopher Hylands Brooks
    @version $Id$
    @since Ptolemy II 3.0
