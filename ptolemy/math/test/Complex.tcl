@@ -151,6 +151,20 @@ test Complex-5.2 {divide} {
 } {-0.38461538461538464 - 0.9230769230769231i}
 
 ####################################################################
+test Complex-5.2.5 {equals} {
+    # Copy the values of c2
+    set ct4 [java::new ptolemy.math.Complex \
+	    [java::field $c2 real] \
+	    [java::field $c2 imag]]
+    list \
+	    [$c0 {equals ptolemy.math.Complex} $c0] \
+	    [$c1 {equals ptolemy.math.Complex} $c1] \
+	    [$c2 {equals ptolemy.math.Complex} $c2] \
+	    [$c2 {equals ptolemy.math.Complex} $c1] \
+	    [$c2 {equals ptolemy.math.Complex} $ct4]
+} {1 1 1 0 1}
+
+####################################################################
 test Complex-5.3.1 {exp} {
     set ec2 [$c2 exp]
     $ec2 toString
