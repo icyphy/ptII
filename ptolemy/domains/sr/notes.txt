@@ -1,13 +1,12 @@
 
 To Do:
 
-windows update
-add SRDirector and srentities to vergil library
 rename Server to LookupTable
-rename NonStrictClient to NonStrictInstantaneousDialogGenerator
+rename NonStrictClient to InstantaneousDialogGenerator
 move sr.lib actors around
 search and replace for name changes
 move sr tests around
+add SRDirector and srentities to vergil library
 cvs checkout
 talk to xiaojun - monday
 verify that sr tests are passing in the nightly build
@@ -24,6 +23,23 @@ stopwatch, global resets, UI activity, reflex game, examples by sedwards
 run ptolemy classic SR
 
 find second reader
+
+Absent - sr.lib
+AbsentToken - sr.lib
+Latch - actor.lib*
+LookupTable - actor.lib*
+NonStrictActor - actor.lib*
+NonStrictDelay - sr.lib
+NonStrictDisplay - sr.lib
+NonStrictLogicFunction - sr.lib
+NonStrictThreeBitAdder - sr.lib
+SingleTokenDistributor - actor.lib*
+Undefined - sr.lib
+
+InstantaneousDialogGenerator - sr.lib
+SequenceTest - actor.lib*
+
+
 
 -------------------------------------------------------------------------------
 
