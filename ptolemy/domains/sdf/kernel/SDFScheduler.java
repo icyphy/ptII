@@ -329,7 +329,7 @@ public class SDFScheduler extends Scheduler {
      *  schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-	// FIXME: This method just builds a Shedule
+	// FIXME: This method just builds a Schedule
 	// object out of the Enumeration returned by _schedule().
 	// Should probably put the main scheduling code in this
 	// method.
