@@ -432,7 +432,7 @@ public abstract class BaseType implements Type, Serializable {
     ////                      private constructor                  ////
 
     // The constructor is private to make a type safe enumeration.
-    protected BaseType(Class c, String name) {
+    private BaseType(Class c, String name) {
         _tokenClass = c;
         _name = name;
         _addType(this, name, c);
@@ -449,6 +449,4 @@ public abstract class BaseType implements Type, Serializable {
 
     // A map from class name to the type for all base types.
     private static Map _classNameToType;
-
-    private int[] _cachedTypeComparisonResults = null;
 }
