@@ -200,7 +200,7 @@ public interface Application {
      */
     public void setVisible (boolean visible);
 
-    /** Report that an exception occured to the user.
+    /** Report that an exception occurred to the user.
      */
     public void showError(String op, Exception e);
 }

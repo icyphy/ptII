@@ -183,7 +183,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
 
     /** Save the document. Forward the request to the document.  Do
      * nothing if the document is null. Always return true, unless an
-     * I/O exception occured.
+     * I/O exception occurred.
      */
     public boolean save (Document d) {
         if (d != null) {

@@ -131,7 +131,7 @@ public class LayerEvent extends MouseEvent {
         return _figureSource;
     }
 
-    /** Get the point where the event occured. The point is in layer
+    /** Get the point where the event occurred. The point is in layer
      * coordinates, and should be assumed to be a floating-point
      * coordinate. This point is to be a copy of any internal data,
      * so the caller can modify it.
@@ -141,7 +141,7 @@ public class LayerEvent extends MouseEvent {
     }
 
     /** Get the horizontal component of the point where the event
-     * occured. The value is in layer coordinates, and should be
+     * occurred. The value is in layer coordinates, and should be
      * assumed to be a floating-point coordinate.
      */
     public double getLayerX () {
@@ -149,7 +149,7 @@ public class LayerEvent extends MouseEvent {
     }
 
     /** Get the vertical component of the point where the event
-     * occured. The value is in layer coordinates, and should be
+     * occurred. The value is in layer coordinates, and should be
      * assumed to be a floating-point coordinate.
      */
     public double getLayerY () {

@@ -39,7 +39,7 @@ import diva.canvas.event.MouseFilter;
  * is a selection model, which is the selection that figures
  * are added to or removed from.
  *
- * When a mouse pressed event has occured, all figures associated
+ * When a mouse pressed event has occurred, all figures associated
  * with the same SelectionModel will be unselected before the new
  * one is selected.  So, to make sure only one figure is selected
  * at a time, do this:
