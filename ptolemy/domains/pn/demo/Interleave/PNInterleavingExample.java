@@ -81,7 +81,7 @@ class PNInterleavingExample {
 
 
 	//((PNOutPort)_redirect1.getPort("output")).link(queue);
-        portout =(IOPort)_redirect1.getPort("output");
+        portout = (IOPort)_redirect1.getPort("output");
         portin = (IOPort)_interleave.getPort("input");
         queue = (IORelation)myUniverse.connect(portin, portout, "QZ");
         //portin.getQueue().setCapacity(1);
