@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to test the Ptolemy kernel
+# Makefile for the Java classes used to test the Ptolemy actors
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-1998 The Regents of the University of California.
+# @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,11 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
-
-# Root of the Java directory
+# Root of the Ptolemy II directory
 ROOT =		../../../../..
+
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -41,13 +39,15 @@ include $(CONFIG)
 
 CLASSPATH = ../../../../..
 
-TCL_SRCS = \
+TCL_SRCS = testDefs.tcl
+
 
 JSRCS = \
+	TestSink.java 
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	PNActor.tcl
+		BasePNDirector.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
@@ -76,7 +76,7 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 test_java: jclass
 
 # Tycho-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/kernel/test/testDefs.tcl
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
