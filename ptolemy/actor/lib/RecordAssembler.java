@@ -123,9 +123,9 @@ public class RecordAssembler extends TypedAtomicActor {
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
-        Iterator iter = inputPortList().iterator();
-	while (iter.hasNext()) {
-	    IOPort port = (IOPort)iter.next();
+        Iterator ports = inputPortList().iterator();
+	while (ports.hasNext()) {
+	    IOPort port = (IOPort)ports.next();
 	    if ( !port.hasToken(0)) {
 	        return false;
 	    }
