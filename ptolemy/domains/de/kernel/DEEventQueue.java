@@ -67,9 +67,9 @@ public interface DEEventQueue {
      *  event queue. Note that the event is not dequeued.
      *  @return Return the DEEventTag associated with the earliest event
      *    in this queue.
-     *  @exception IllegalAccessException If the queue is empty.
+     *  @exception IllegalActionException If the queue is empty.
      */
-    public DEEventTag getNextTag() throws IllegalAccessException;
+    public DEEventTag getNextTag() throws IllegalActionException;
 
     /** Return true if this event queue is empty.
      *  @return True if this queue is empty, false otherwise.
@@ -84,7 +84,7 @@ public interface DEEventQueue {
     /** Dequeue the earliest event in this event queue.
      *  @return The DEEvent object associated with the earliest event in
      *    the queue.
-     *  @exception IllegalAccessException If the queue is empty.
+     *  @exception IllegalActionException If the queue is empty.
      */
-    public DEEvent take() throws IllegalAccessException;
+    public DEEvent take() throws IllegalActionException;
 }
