@@ -77,12 +77,6 @@ public class DotProduct extends TypedAtomicActor {
         input1.setTypeEquals(unknownArrayType);
         input2.setTypeEquals(unknownArrayType);
         
-        // set input types to be scalar arrays. This allows the input
-        // types to be int array, double array, etc.
-        ArrayType scalarArrayType = new ArrayType(BaseType.SCALAR);
-        input1.setTypeAtMost(scalarArrayType);
-        input2.setTypeAtMost(scalarArrayType);
-
         // set the output type to be no less than the element type of the
         // input arrays.
         ArrayType input1Type = (ArrayType)input1.getType();
