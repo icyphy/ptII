@@ -54,7 +54,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
        FiltApplet.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	Filter.htm
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
