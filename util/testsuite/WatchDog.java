@@ -90,6 +90,12 @@ public class WatchDog {
                         System.err.println(e);
                     } finally {
                         System.out.println("util.testsuite.WatchDog went off");
+                        System.out.println("The string below is so that the "
+                                + "nightly build will notice");
+                        System.out.println("Failed: 666  Total Tests: 0 "
+                                + "((Passed: 0, Newly Passed: 0)  "
+                                + "Known Failed: 0) "
+                                + "util.testsuite.WatchDog went off");
                         // Do not pass go, do not collect $200
                         System.exit(4);
                     }
