@@ -34,7 +34,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// StaticSchedulingDirector
@@ -42,10 +42,10 @@ import java.util.Enumeration;
 A director that uses static scheduling to govern the execution of the
 CompositeActor it belongs to.
 <p>
-A StaticSchedulingDirector contains a scheduler. By calling the schedule()
-method on the scheduler, the director can get an Enumeration of the
-actors in the firing order. Then the director can use this Enumeration
-to fire the actors in that order.
+A StaticSchedulingDirector contains a scheduler. By calling the getSchedule()
+method on the scheduler, the director can get an instance of the
+schedule class.  This class represents the number of times each actor
+should be fired and their firing order. 
 <p>
 "Static" means that the schedule, once constructed, can be
 used during the execution repeatedly.
@@ -58,6 +58,7 @@ However, the schedule may become invalid when the CompositeActor mutates.
 @version $Id$
 @see ptolemy.actor.Director
 @see Scheduler
+@see Schedule
 */
 public class StaticSchedulingDirector extends Director {
 
@@ -147,13 +148,13 @@ public class StaticSchedulingDirector extends Director {
 		int returnVal =
                     actor.iterate(iterationCount);
 		if (returnVal == COMPLETED) {
-		    _postfirereturns = _postfirereturns && true;
+		    _postfireReturns = _postfireReturns && true;
 		} else if (returnVal == NOT_READY) {
 		    throw new IllegalActionException(this,
                             (ComponentEntity) actor, "Actor " +
                             "is not ready to fire.");
 		} else if (returnVal == STOP_ITERATING) {
-		    _postfirereturns = false;
+		    _postfireReturns = false;
 		}
             }
         }
@@ -188,6 +189,35 @@ public class StaticSchedulingDirector extends Director {
         } catch (IllegalActionException ex) {
             // no scheduler.  ignore.
         }
+    }
+
+    /** Return false if the system has finished executing, either by
+     *  reaching the iteration limit, or having an actor in the system return
+     *  false in postfire.
+     *  Increment the number of iterations.
+     *  If the "iterations" parameter is greater than zero, then
+     *  see if the limit has been reached.  If so, return false.
+     *  Otherwise return true if all of the fired actors since the last
+     *  call to prefire returned true.
+     *  @return True if the Director wants to be fired again in the
+     *  future.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        return _postfireReturns;
+    }
+
+    /** Check the input ports of the container composite actor (if there
+     *  are any) to see whether they have enough tokens, and return true
+     *  if they do.  If there are no input ports, then also return true.
+     *  Otherwise, return false.  Note that this does not call prefire()
+     *  on the contained actors.
+     *  @exception IllegalActionException If port methods throw it.
+     *  @return True.
+     */
+    public boolean prefire() throws IllegalActionException {
+        _postfireReturns = true;
+        return super.prefire();
     }
 
     /** Set the scheduler for this StaticSchedulingDirector.
@@ -274,4 +304,7 @@ public class StaticSchedulingDirector extends Director {
 
     // The scheduler.
     private Scheduler _scheduler;
+
+    // The value that the postfire method will return;
+    private boolean _postfireReturns;
 }
