@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 243.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests the NonStrictFSMDirector.The modal model above consumes one token&#10;from input1 and thereafter consumes tokens from input2. There is no deadlock as&#10;input2 does not require token in the first firing. The result should be an infinite&#10;sequence of copies of the first token consumed from input1.&#10;&#10;The &quot;firingCountLimit&quot; parameter is used to limit the firing count of the modal model.&#10;To get infinite sequence of output, set &quot;firingCountLimit&quot; to be less or equal to zero.&#10;&#10;Note this model does not work in DDF or SR. For DDF, this is possibly because&#10;NonstrictFSMDirector does not declare consumption rate.&#10;&#10;Author: Ye Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests the state refinement and nonpreemptive transition reference of&#10;NonStrictFSMDirector.The modal model above consumes one token from input1 and&#10;thereafter consumes tokens from input2. There is no deadlock as input2 does not&#10;require token in the first firing.&#10;&#10;The &quot;firingCountLimit&quot; parameter is used to limit the firing count of the modal model.&#10;To get infinite sequence of output, set &quot;firingCountLimit&quot; to be less or equal to zero.&#10;&#10;Note this model does not work in DDF or SR. For DDF, this is because&#10;NonstrictFSMDirector does not declare consumption rate.&#10;&#10;Author: Ye Zhou">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 255.0]">
         </property>
@@ -127,7 +127,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 205.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 205.0}">
                 </property>
             </entity>
             <entity name="stop" class="ptolemy.domains.fsm.kernel.State">
@@ -241,25 +241,36 @@
             </port>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 245.0]">
                 </property>
             </port>
-            <entity name="Scale" class="ptolemy.actor.lib.Scale">
-                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 245.0]">
+                </property>
+            </entity>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 285}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="input2" relation="relation"/>
             <link port="output" relation="relation2"/>
-            <link port="Scale.input" relation="relation"/>
-            <link port="Scale.output" relation="relation2"/>
+            <link port="AddSubtract.plus" relation="relation"/>
+            <link port="AddSubtract.plus" relation="relation4"/>
+            <link port="AddSubtract.output" relation="relation2"/>
+            <link port="Const.output" relation="relation4"/>
         </entity>
         <relation name="input1Relation" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -283,12 +294,14 @@
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 145.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>

@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0, 278.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests the NonStrictFSMDirector.The modal model above consumes one token&#10;from input1 and thereafter consumes tokens from input2. There is no deadlock as&#10;input2 does not require token in the first firing. The result should be an infinite&#10;sequence of copies of the first token consumed from input1.&#10;&#10;The &quot;firingCountLimit&quot; parameter is used to limit the firing count of the modal model.&#10;To get infinite sequence of output, set &quot;firingCountLimit&quot; to be less or equal to zero.&#10;&#10;Note this model does not work in DDF or SR. For DDF, this is possibly because&#10;NonstrictFSMDirector does not declare consumption rate.&#10;&#10;Author: Ye Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests the NonStrictFSMDirector.The modal model above consumes one token&#10;from input1 and thereafter consumes tokens from input2. There is no deadlock as&#10;input2 does not require token in the first firing.&#10;&#10;The &quot;firingCountLimit&quot; parameter is used to limit the firing count of the modal model.&#10;To get infinite sequence of output, set &quot;firingCountLimit&quot; to be less or equal to zero.&#10;&#10;Note this model does not work in DDF or SR. For DDF, this is possibly because&#10;NonstrictFSMDirector does not declare consumption rate.&#10;&#10;Author: Ye Zhou">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
         </property>
@@ -151,7 +151,7 @@
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &gt; 0 || firingCountLimit &lt;= 0">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = input2">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = input2 + 1">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count - 1">
                 </property>
@@ -204,11 +204,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{425.0, 225.0}">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

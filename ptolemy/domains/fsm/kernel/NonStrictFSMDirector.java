@@ -56,9 +56,11 @@ import ptolemy.kernel.util.Workspace;
    This director extends FSMDirector by consuming only input tokens that
    are needed in the current state. An input port will consume at most one
    token if:
+   <p>
    1. The port is referred by any guard expression of the preemptive
    transitions leaving the current state, the output actions
    and/or set actions of the enabled transition.
+   <p>
    2. No preemptive transition is enabled and the port is referred by
    the refinements of the current state, any guard expression of the
    nonpreemptive transitions leaving the current state, the output
@@ -69,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
    A port is said to be referred by a state refinement if the it is
    not a dangling port and has a consumption rate greater than zero in
    the refinement.
-
+   <p>
    FIXME: This is highly preliminary. Missing capabilities:
    FIXME: Currently this director uses the default receiver of FSMDirector,
    which is a mailbox, so there is no way to consume more than one token.
@@ -183,9 +185,22 @@ public class NonStrictFSMDirector extends FSMDirector {
             }
             controller._readOutputsFromRefinement();
 
+            // Get inputs needed by the nonpreemptive transitions.
+            getNonpreemptiveTransitionsReferredInputPorts(currentState);
+            // Transfer additional inputs needed by the refinement.
+            for (int i = 0; i < inputPortList.size(); i ++) {
+                IOPort port = (IOPort) inputPortList.get(i);
+                if (_nonpreemptiveTransitionsInputs.contains(port)
+                        && !_referredInputPorts.contains(port)) {
+                    super.transferInputs(port);
+                    controller._readInputs();
+                    _referredInputPorts.add(port);
+                }
+            }
+            
             // Choose nonpreemptive transition.
             enabledTransition = controller
-            ._checkTransition(currentState.nonpreemptiveTransitionList());
+                    ._checkTransition(currentState.nonpreemptiveTransitionList());
             _enabledTransition = enabledTransition;
         }
 
