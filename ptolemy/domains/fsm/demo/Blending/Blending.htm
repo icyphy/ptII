@@ -10,9 +10,8 @@
 <H1>Blending</H1>
 
 
-<P>
-The <a href="BlendingVergil.htm">block diagram</a>
-contains a short description of the model.
+<P> A blending controller with two major control modes.
+
 
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
@@ -56,7 +55,20 @@ applet is displayed on a XGA screen-->
 </EMBED>
 </OBJECT>
 </CENTER>
-The <a href="BlendingVergil.htm">block diagram</a>
+The blending controller has two major control modes, implemented by
+controllers A and B inside. When the control mode changes from A to B,
+the transition is smoothed by a blending component. This is achieved
+by letting the "A to B" state of the mode controller (inside the blending
+controller) be refined by three components: Controller_A, Controller_B,
+and Blending_A_to_B. The mode change from B to A is managed
+symmetrically.
+
+<p>Reference: Bonnie Heck, J.V.R. Prasad, and Linda Wills, "Software Enabled
+Control for Innovative Control Technologies for Autonomous Highly Agile and
+Extreme-Performance Aerial Vehicles," available at:
+<a href="http://controls.ae.gatech.edu/projects/sec/status/may01.pdf"><code>http://controls.ae.gatech.edu/projects/sec/status/may01.pdf</code></a>
+
+<p>The <a href="BlendingVergil.htm">block diagram</a>
 for the model was constructed using the Ptolemy II schematic editor
 called Vergil.
 </p>
