@@ -33,6 +33,7 @@ package ptolemy.actor.gui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -116,10 +117,31 @@ public class BrowserLauncher {
         } else {
             BrowserLauncher.openURL("http://ptolemy.eecs.berkeley.edu");
         }
+        if (BrowserLauncher.delayExit) {
+            System.out.println("Delaying exit for 10 seconds because we"
+                    + "may have copied a jar: file");
+            try {
+                Thread.currentThread().sleep(10000);
+            }
+            catch (InterruptedException e) {
+            }
+            System.exit(0);
+        }
     }
       
     /**
      * Attempts to open the default web browser to the given URL.
+     *  
+     * <p> We use the following strategy to find URLs that may be inside
+     * jar files:
+     * <br> If the string does not start with "http": see if it is a
+     * file.  
+     * <br> If the file cannot be found, look it up in the classpath.  
+     * <br> If the file can be found in the classpath then use the
+     * found file instead of the given URL.
+     * <br>If the file cannot be found in the classpath, then pass the
+     * original given URL to the browser.
+     * 
      * @param url The URL to open
      * @exception IOException If the web browser could not be located or
      * does not run
@@ -129,6 +151,70 @@ public class BrowserLauncher {
 	    throw new IOException("Exception in finding browser: "
                     + errorMessage);
 	}
+
+        if (!url.startsWith("http:")) { 
+            // If the url does not start with http:, then look it up
+            // as a regular file and then possibly in the classpath.
+            File urlFile = null;
+            try {
+                urlFile = new File(url);
+            } catch (Exception ex) {
+                // Ignored, we try to fix this below.
+            }
+            if (urlFile == null || !urlFile.exists()) {
+                // The file could not be found, so try the search path mambo.
+
+                // We might be in the Swing Event thread, so
+                // Thread.currentThread().getContextClassLoader()
+                // .getResource(entry) probably will not work.
+                String refClassName = "ptolemy.kernel.util.NamedObj";
+                try {
+                    Class refClass = Class.forName(refClassName);
+                    URL entryURL = refClass.getClassLoader().getResource(url);
+                    if (entryURL != null && !url.startsWith("jar:")) {
+                        System.out.println("BrowserLauncher: Could not "
+                                + "find '"
+                                + url + "', but '" + entryURL
+                                + "' was found.");
+                        url = entryURL.toString();
+                    } else {
+                        if (url.startsWith("jar:")) {
+                            // If the URL begins with jar: then we are
+                            // inside Web Start and we should get the
+                            // resource, write it to a temporary file
+                            // and pass that value to the browser
+                        
+                            // Save the jar file as a temporary file
+                            // in the default platform dependent
+                            // directory with the same suffix as that
+                            // of the jar URL
+                            
+                            // FIXME: we should probably cache this
+                            // copy somehow.
+                            String old = url;
+                            String temporaryURL = JNLPUtilities.saveJarURLInClassPath(url);
+                            if (temporaryURL != null) {
+                                url = temporaryURL;
+                            } else {
+                                url = JNLPUtilities.saveJarURLAsTempFile(url,
+                                        "tmp",
+                                        null, null);
+                                delayExit = true;
+                            }
+                            System.out.println("BrowserLauncher: Could not "
+                                    + "find '"
+                                    + old + "', but jar url'" + url
+                                    + "' was found.");
+                        }
+                    }
+                } catch (ClassNotFoundException ex) {
+                    System.err.println("BrowserLauncher: Internal error, "
+                            + " Could not find " + refClassName);
+                }
+            }
+        }
+
+
 	Object browser = locateBrowser();
 	if (browser == null) {
 	    throw new IOException("Unable to locate browser: "
@@ -262,6 +348,14 @@ public class BrowserLauncher {
 				  + "\n browser was: " + browser);
 	} 
     }
+
+    /** Set to true if we copied a file out of a jar file so that
+     *  the browser could display it.  The reason we need this flag
+     *  is that the system will delete the temporary file on exit,
+     *  and after openURL() is called, this Java process will exit
+     *  unless we delay.
+     */
+    public static boolean delayExit = false;
 
     /**
      * The Java virtual machine that we are running on.  Actually, in
