@@ -30,13 +30,11 @@
 
 package ptolemy.domains.de.kernel;
 
-// FIXME: Trim this.
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.util.*;
-import ptolemy.data.*;
-import ptolemy.graph.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.Actor;
+import ptolemy.data.Token;
 
 import java.util.Enumeration;
 import java.lang.Comparable;

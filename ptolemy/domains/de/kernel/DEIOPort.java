@@ -24,17 +24,22 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import java.util.Enumeration;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.Receiver;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.Token;
+
 import java.util.Set;
 import java.util.HashSet;
 
@@ -52,7 +57,7 @@ time).
 Actors in the DE domain are not required to use this port. If they use
 the base class, TypedIOPort, then the data they send is sent with zero delay.
 
-@authors Lukito Muliadi, Edward A. Lee
+@authors Lukito Muliadi, Edward A. Lee, Jie Liu
 @version $Id$
 */
 public class DEIOPort extends TypedIOPort {
@@ -106,13 +111,51 @@ public class DEIOPort extends TypedIOPort {
     ////                         public methods                    ////
 
     /** Broadcast a token to all receivers connected to this output
+     *  port.  The time stamp of the token is the current time of
+     *  the director.  If you want to broadcast a token with 
+     *  a specified delay, use broadcast(token, delay) instead.
+     *
+     *  @param token The token to send.
+     *  @exception IllegalActionException If the port is not an output.
+     */
+    public void broadcast(Token token)
+            throws IllegalActionException {
+        if (_useDelay) {
+            _useDelay = false;
+            try {
+                _workspace.getReadAccess();
+                Receiver fr[][] = getRemoteReceivers();
+                if (fr == null) {
+                    return;
+                }
+                for (int i = 0; i < fr.length; i++) {
+                    for (int j = 0; j < fr[i].length; j++) {
+                        try {
+                            ((DEReceiver)fr[i][j]).setDelay(_delay);
+                        } catch (ClassCastException e) {
+                            throw new InvalidStateException("DEIOPort.send() " +
+                                    "expects to connect to receivers " + 
+                                    "of type DEReceiver.");
+                        }
+                    }
+                }
+                broadcast(token);            
+            } finally {
+                _workspace.doneReading();
+            }
+        } else {
+            super.broadcast(token);
+        }
+    }
+    
+    /** Broadcast a token to all receivers connected to this output
      *  port with the specified time delay.  The time stamp of
      *  of the token is equal to current time plus the specified delay.
      *  If the specified delay is zero, then the event is queued to be
      *  processed in the next microstep.
      *
      *  @param token The token to send.
-     *  @param delay The time stamp of the token being broadcast.
+     *  @param delay The delay of the token being broadcast.
      *  @exception IllegalActionException If the port is not an output.
      */
     public void broadcast(Token token, double delay)
@@ -144,11 +187,10 @@ public class DEIOPort extends TypedIOPort {
         return _delayToSet;
     }
 
-    /** Override the base class to use the delay that may have been set
-     *  by calling the overloaded version of send() that takes a delay
-     *  argument, or the similarly overloaded version of broadcast().
-     *  After setting the delay in all the receivers, the base class
-     *  send() method is invoked.  If the channel index is out of range,
+    /** Sent a token to the receivers connected on the specified channel
+     *  with the time stamp equaling to the current time of the director.
+     *  If you want to send a token with a specified delay, use 
+     *  send(token, delay) instead. If the channel index is out of range,
      *  then the token is not sent anywhere.
      *
      *  @param channelindex The index of the channel, from 0 to width-1
@@ -189,7 +231,7 @@ public class DEIOPort extends TypedIOPort {
 
     /** Send a token with the specified time delay to the receivers connected
      *  on the specified channel.  The time stamp of
-     *  of the token is equal to current time plus the specified delay.
+     *  the token is equal to current time plus the specified delay.
      *  If the specified delay is zero, then the event is queued to be
      *  processed in the next microstep.
      *

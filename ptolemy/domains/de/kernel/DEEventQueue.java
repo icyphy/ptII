@@ -24,46 +24,38 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.util.*;
-import ptolemy.data.*;
-import ptolemy.graph.*;
-import collections.LinkedList;
-import java.util.Enumeration;
+import ptolemy.kernel.util.Debuggable;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEventQueue
 //
-/** This interface defines the global event queue used by the DE director
+/** This interface defines the global event queue used by DE directors
  *  to sort and manage events. Events are sorted according to their time
- *  stamps. In the case of tie, they are sorted according to their
- *  destination receiver depth. If both the time stamps and receiver depths
- *  are equal then events that were enqueued first are dequeued first.
+ *  stamps, microstep and the depth of the destination actor. 
+ *  One DEEvent is said to be earlier than another, if it has 
+ *  a smaller time stamp, or when the time stamps are identical,
+ *  it has a smaller microstep, or when both time stamps and
+ *  microsteps are identical, it has a smaller depth.
+ *  If both three entries are are identical, the events are stored in
+ *  a FIFO way.
  *
- *  @author Lukito Muliadi
+ *  @author Lukito Muliadi, Jie Liu
  *  @version $Id$
  *  @see DEReceiver
  *  @see CalendarQueue
  *  @see DEDirector
  */
-public interface DEEventQueue {
+public interface DEEventQueue extends Debuggable{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Append a listener to the current set of debug listeners.
-     *  If the listener is already in the set, do not add it again.
-     *  @param listener The listener to which to send debug messages.
-     */
-    public void addDebugListener(DebugListener listener);
 
     /** Empty this event queue.
      */
@@ -83,15 +75,10 @@ public interface DEEventQueue {
 
     /** Enqueue an event into the event queue.
      *  @param event The event to be put into the queue.
+     *  @exception IllegalActionException If the event cannot be
+     *      enqueued.
      */
-    public void put(DEEvent event);
-
-    /** Unregister a debug listener.  If the specified listener has not
-     *  been previously registered, then do nothing.
-     *  @param listener The listener to remove from the list of listeners
-     *   to which debug messages are sent.
-     */
-    public void removeDebugListener(DebugListener listener);
+    public void put(DEEvent event) throws IllegalActionException;
 
     /** Dequeue the earliest event in this event queue.
      *  @return The DEEvent object associated with the earliest event in

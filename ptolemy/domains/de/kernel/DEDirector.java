@@ -155,6 +155,7 @@ public class DEDirector extends Director {
      */
     public DEDirector() {
 	this(null);
+        _initParameters();
     }
 
     /**  Construct a director in the  workspace with an empty name.
@@ -164,9 +165,7 @@ public class DEDirector extends Director {
      */
     public DEDirector(Workspace workspace) {
         super(workspace);
-        setStopTime(Double.MAX_VALUE);
-        // Create event queue.
-        _eventQueue = new DECQEventQueue();
+        _initParameters();
     }
 
     /** Construct a director in the given container with the given name.
@@ -182,32 +181,8 @@ public class DEDirector extends Director {
      */
     public DEDirector(CompositeActor container , String name)
             throws IllegalActionException {
-        this(container, name, null);
-    }
-
-    /** Construct a director in the given workspace with the given name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *
-     *  @param workspace Object for synchronization and version tracking.
-     *  @param name Name of this director.
-     *  @param eventQueue The event queue to use with this director.
-     *  @exception IllegalActionException If the
-     *   director is not compatible with the specified container.
-     */
-    public DEDirector(CompositeActor container, String name,
-            DEEventQueue eventQueue) throws IllegalActionException {
-	super(container, name);
-        setStopTime(Double.MAX_VALUE);
-        // Assign the appropriate event queue.
-        if (eventQueue == null) {
-            _eventQueue = new DECQEventQueue();
-        } else {
-            _eventQueue = eventQueue;
-            _eventQueue.clear();
-        }
+        super(container, name);
+        _initParameters();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,6 +192,33 @@ public class DEDirector extends Director {
      *  DoubleToken.  Its value defaults to Double.MaxValue.
      */
     public Parameter stopTime;
+    
+    /** Stop when queue is empty.  If this parameter is true, the 
+     *  execution of the model will be stop when the queue is empty.
+     *  Its value defaults to true.
+     */
+    public Parameter stopWhenQueueIsEmpty;
+
+    /** Whether the calender queue adjust its bin number at run time.
+     *  If this parameter is true, the calender queue will adapt
+     *  its bin number with respect to the distribution of events.
+     *  This parameter is unable to be changed after the model runs.
+     *  Bu default, it is true.
+     */
+    public Parameter isCQAdaptive;
+
+    /** The minimum (initial) number of bins in the calender queue.
+     *  This parameter is unable to be changed after the model
+     *  runs.
+     *  The default value is 2.
+     */
+    public Parameter minBinCount;
+
+    /** The factor when adjusting the bin number. This parameter
+     *  has type integer.  This parameter is unable to be
+     *  changed after the model runs.  The default value is 2.
+     */
+    public Parameter binCountFactor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -228,6 +230,21 @@ public class DEDirector extends Director {
     public void addDebugListener(DebugListener listener) {
         _eventQueue.addDebugListener(listener);
         super.addDebugListener(listener);
+    }
+
+    /** Update the director parameters when the attributes are changed.
+     *  Only the stopWhenQueueIsEmpty parameter is effective at run time.
+     *  @param attr The changed parameter.
+     *  @exception IllegalActionException If the parameter set is not valid.
+     *     Not thrown in this class. May be needed by derived classes.
+     */
+    public void attributeChanged(Attribute attr)
+            throws IllegalActionException {
+        if (_debugging) _debug("Updating DEDirector parameter", attr.getName());
+        if (attr == stopWhenQueueIsEmpty) {
+            _stopWhenQueueIsEmpty = 
+                ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
+        } 
     }
 
     /** Disable the specified actor.  All events destined to this actor
@@ -484,8 +501,10 @@ public class DEDirector extends Director {
      *   container or one of the deeply contained actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-
-	_eventQueue.clear();
+        _eventQueue = new DECQEventQueue(
+                ((IntToken)minBinCount.getToken()).intValue(),
+                ((IntToken)binCountFactor.getToken()).intValue(),
+                ((BooleanToken)isCQAdaptive.getToken()).booleanValue());
         _deadActors = null;
         _currentTime = 0.0;
         _noMoreActorsToFire = false;
@@ -493,6 +512,7 @@ public class DEDirector extends Director {
 
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
+        
 
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
@@ -953,7 +973,27 @@ public class DEDirector extends Director {
                 "Request the depth of an actor which is not sorted");
     } 
             
-        
+    // initialize parameters. Set all parameters to their default
+    // values.
+    private void _initParameters() {
+        try {
+            stopTime = new Parameter(this, "stopTime", 
+                    new DoubleToken(Double.MAX_VALUE));
+            stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
+                    new BooleanToken(true));
+            isCQAdaptive = new Parameter(this, "isCQAdaptive",
+                    new BooleanToken(true));
+            minBinCount = new Parameter(this, "minBinCount",
+                    new IntToken(2));
+            binCountFactor = new Parameter(this, "binCountFactor",
+                    new IntToken(2));
+        } catch (KernelException e) {
+            throw new InternalErrorException(
+                    "Cannot set stopTime parameter:\n" +
+                    e.getMessage());
+        }
+    }
+
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy Classic terminology).

@@ -68,59 +68,7 @@ public abstract class DEActor extends TypedAtomicActor implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the current time from the director.  This is a facade
-     *  for the director method of the same name.
-     *  @return The current time.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public double getCurrentTime() throws IllegalActionException {
-        Director dir = getDirector();
-        if (dir == null) {
-            throw new IllegalActionException(this, "No director.");
-        }
-        return dir.getCurrentTime();
-    }
-
-    /** Get the start time from the director.
-     *  @return The start time.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public double getStartTime() throws IllegalActionException {
-	DEDirector dir = (DEDirector)getDirector();
-	if (dir == null) {
-	    throw new IllegalActionException(this, "No director.");
-	}
-	return dir.getStartTime();
-    }
-
-    /** Get the stop time from the director.  This is a facade for
-     *  a method by the same name of DEDirector.
-     *  @return The stop time.
-     *  @exception IllegalActionException If there is no director,
-     *   or if the director is not a DEDirector.
-     */
-    public double getStopTime() throws IllegalActionException {
-	Director dir = getDirector();
-	if (dir == null || !(dir instanceof DEDirector)) {
-	    throw new IllegalActionException(this,
-            "Director is not an instance of DEDirector.");
-	}
-	return ((DEDirector)dir).getStopTime();
-    }
-
-    /** Schedule this actor to be fired at a specified time in the future.
-     *  If the time is not in the future (i.e. is less than the current
-     *  time), then throw an exception.  This is a facade for the fireAt()
-     *  method of the director.
-     *  @param time The time at which the actor will be fired.
-     *  @exception IllegalActionException If the time is in the past, or
-     *   if there is no director.
-     */
-    public void fireAt(double time) throws IllegalActionException {
-        Director dir = getDirector();
-	if (dir == null) {
-	    throw new IllegalActionException(this, "No director.");
-	}
-        dir.fireAt(this, time);
-    }
 }
+
+
+

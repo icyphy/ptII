@@ -30,20 +30,23 @@
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.util.*;
-import ptolemy.actor.util.CalendarQueue; // For javadoc
-import ptolemy.data.*;
-import ptolemy.graph.*;
-import collections.LinkedList;
-import java.util.Enumeration;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.actor.util.CQComparator;
+import ptolemy.actor.util.CalendarQueue;
 
 //////////////////////////////////////////////////////////////////////////
 //// DECQEventQueue
 //
-/** A calendar queue implementation of the DE event queue. Its complexity is
+/** A calendar queue implementation of the DE event queue. It store DE
+ *  events in the order of their time stamps, microstep and the depth
+ *  of the destination actor. One DEEvent is said to be earlier than 
+ *  another, if it has 
+ *  a smaller time stamp, or when the time stamps are identical,
+ *  it has a smaller microstep, or when both time stamps and
+ *  microsteps are identical, it has a smaller depth.
+ *  <P>
+ *  Its complexity is
  *  theoretically O(1) for both enqueue and dequeue operations, assuming
  *  a reasonable distribution of time stamps.
  *
@@ -55,13 +58,27 @@ import java.util.Enumeration;
  */
 public class DECQEventQueue implements DEEventQueue {
 
-    /** Construct an empty event queue.
+    /** Construct an empty event queue.  The calender queue takes its
+     *  default parameter, i.e. minBinCount is 2, binCoundFactor is 2,
+     *  and isAdaptive is true.
      */
     public DECQEventQueue() {
         _cQueue = new CalendarQueue(new DECQComparator());
-        // Uncomment this to disable reallocation of bins when
-        // queue size changes.
-        // _cQueue.setAdaptive(false);
+    }
+
+    /** Construct an empty event queue with a minimum bin number
+     *  a bin count factor, and a boolean indicating whether the
+     *  queue is adaptive.
+     *  @param minBinCount The minimum number of bins.
+     *  @param binCountFactor The factor when changing the bin count.
+     *  @param isAdaptive If the queue changes its number of bins
+     *     at run time.
+     */
+    public DECQEventQueue(int minBinCount, int binCountFactor, 
+            boolean isAdaptive) {
+        _cQueue = new CalendarQueue(new DECQComparator(),
+                minBinCount, binCountFactor);
+        _cQueue.setAdaptive(isAdaptive);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -77,6 +94,7 @@ public class DECQEventQueue implements DEEventQueue {
 
     /** Empty the event queue.
      */
+    // FIXME: Why is this synchronized? document or remove...
     public synchronized void clear() {
         _cQueue.clear();
     }
@@ -126,12 +144,12 @@ public class DECQEventQueue implements DEEventQueue {
     ////                         private inner class               ////
 
     // An implementation of the CQComparator interface for use with
-    // calendar queue with DEEventTag as the sort key.
-    // Note: this comparator imposes orderings that are
-    // inconsistent with equals. That is, the compare() method may
-    // return zero even though equals() returns false.  The compare()
-    // method returns zero if the tags of the two events are equal.
-    // But the values may not be.
+    // calendar queue that compares two DEEvents according to there
+    // time stamps, microstep, and depth in that order.
+    // One DEEvent is said to be earlier than another, if it has 
+    // a smaller time stamp, or when the time stamps are identical,
+    // it has a smaller microstep, or when both time stamps and
+    // microsteps are identical, it has a smaller depth.
     private class DECQComparator implements CQComparator {
 
 	/** Compare the two argument for order. Return a negative integer,
@@ -180,7 +198,7 @@ public class DECQEventQueue implements DEEventQueue {
          *  than two, return the default bin width, which is 1.0
 	 *  for this implementation.
 	 *
-	 *  @param entryArray An array of DEEventTag objects.
+	 *  @param entryArray An array of DEEvent objects.
 	 *  @exception ClassCastException If an entry in the array is not
          *   an instance of DEEvent.
 	 */

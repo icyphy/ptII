@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -43,7 +43,7 @@ import java.util.LinkedList;
  *  the DE domain.  Tokens that are put into this receiver logically
  *  have time stamps. If the time stamp is not explicitly given using
  *  the setDelay() method,  then it is assumed to be the current time
- *  (which is maintained by the director).  The put() method delegates
+ *  (which is maintained by the director).  The put() method sends
  *  the specified token to the director, which returns it to this receiver
  *  (via the protected method _triggerEvent()) when current time matches
  *  the time stamp of the token. The get() method returns only tokens
@@ -52,19 +52,13 @@ import java.util.LinkedList;
  *  immediately available to the get() method.
  *  <p>
  *  By default, the time stamp of a token is the current time of the
- *  director when put() is called. To specify the time stamp in the
+ *  director when put() is called. To specify a time stamp in the
  *  future, call setDelay() prior to calling put().
- *  <p>
- *  For use only by the director, this receiver has a 'depth' field
- *  indicating its depth in the topology.  This is used by the director
- *  to prioritize firings of actors when dealing with simultaneous events.
- *  Actors containing receivers with a smaller depth are given priority
- *  over actors with a larger depth.
  *  <p>
  *  Before firing an actor, the director is expected to put at least one
  *  token into at least one of the receivers contained by the actor.
  *
- *  @author Lukito Muliadi, Edward A. Lee
+ *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
  *  @version $Id$
  */
 public class DEReceiver implements Receiver {
@@ -72,6 +66,13 @@ public class DEReceiver implements Receiver {
     /** Construct an empty DEReceiver with no container.
      */
     public DEReceiver() {
+    }
+
+    /** Construct an empty DEReceiver with the specified container.
+     *  @param container The container.
+     */
+    public DEReceiver(IOPort container) {
+        _container = container;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,7 +99,7 @@ public class DEReceiver implements Receiver {
     /** Return the IOPort containing this receiver.
      *  @return An instance of IOPort.
      */
-    public IOPort getContainer() {
+    public final IOPort getContainer() {
         return _container;
     }
 
@@ -142,14 +143,14 @@ public class DEReceiver implements Receiver {
     /** Return true, indicating that there is always room.
      *  @return True.
      */
-    public boolean hasRoom() {
+    public final boolean hasRoom() {
         return true;
     }
 
     /** Return true if there are tokens available to the get() method.
      *  @return True if there are more tokens.
      */
-    public boolean hasToken() {
+    public final boolean hasToken() {
         return (!_tokens.isEmpty());
     }
 
@@ -158,9 +159,10 @@ public class DEReceiver implements Receiver {
      *  Instead, the token is queued with the director, and the director
      *  must put the token back into this receiver using the _triggerEvent()
      *  protected method in order for the token to become available to
-     *  the get() method.  By default, this will occur at the current time
+     *  the get() method.  By default, this token will be enqueued by 
+     *  the director with the current time
      *  of the director.  However, by calling setDelay() before calling put(),
-     *  you can ask the director to make the token available at a future time.
+     *  you can enqueue the event with a time stamp at a future time.
      *  @param token The token to be put.
      */
     public void put(Token token) {
@@ -183,6 +185,33 @@ public class DEReceiver implements Receiver {
         }
     }
 
+    /** Put a token into this receiver with a future time stamp. This token
+     *  will be available to the get() method at the time specified. 
+     *  Note that the time should be greater than or equal
+     *  to the current time of the director, otherwise an exception will
+     *  be thrown. 
+     *  
+     *  @param token The token to be put.
+     *  @param time The time stamp of the token
+     *  @exception IllegalActionException If time is less than the 
+     *     current time of the director, or no director is available.
+     */
+    public void put(Token token, double time) 
+            throws IllegalActionException{
+        DEDirector dir = getDirector();
+        double now = dir.getCurrentTime();
+        if (time < now) {
+            throw new IllegalActionException(getContainer(),
+                    "Cannot enqueue a token in the past.");
+        }
+        if (time == now) {
+            // Use special enqueue method to increment microstep.
+            dir._enqueueEvent(this, token);
+        } else {
+            dir._enqueueEvent(this, token, time);
+        }
+    }
+
     /** Set the IOPort containing this receiver.
      *  @param port The container.
      */
@@ -190,9 +219,9 @@ public class DEReceiver implements Receiver {
         _container = port;
     }
 
-    /** Set the delay for future calls to put().  This causes the director
+    /** Set the delay for the next call to put().  This causes the director
      *  to make the token available for the get() method at some future time,
-     *  current time plus the specified delay.  This value of delay is
+     *  i.e. current time plus the specified delay.  This value of delay is
      *  only used in the next call to put().
      *  If the specified delay is zero, then the next event is queued to be
      *  processed in the next microstep.
