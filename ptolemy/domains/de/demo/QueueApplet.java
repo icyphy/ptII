@@ -48,7 +48,7 @@ An applet that uses Ptolemy II DE domain.
 @author Lukito
 @version $Id$
 */
-public class QueueApplet extends Applet implements Runnable {
+public class QueueApplet extends Applet {
 
     public static final boolean DEBUG = true;
 
@@ -129,6 +129,7 @@ public class QueueApplet extends Applet implements Runnable {
             _localDirector = new DECQDirector("DE Director");
             sys.setDirector(_localDirector);
             _manager = new Manager("Manager");
+            _manager.addExecutionListener(new MyExecutionListener());
             sys.setManager(_manager);            
 
             // ---------------------------------
@@ -191,42 +192,6 @@ public class QueueApplet extends Applet implements Runnable {
         }
     }
 
-    /** Run the simulation.
-     */
-    public void run() {
-
-        // Set the stop time.
-        String timespec = _stopTimeBox.getText();
-        try {
-            Double spec = Double.valueOf(timespec);
-                _stopTime = spec.doubleValue();
-        } catch (NumberFormatException ex) {
-            System.err.println("Invalid stop time: " + ex.getMessage());
-            return;
-        }
-
-        try {
-            
-            System.out.println("Setting stop time = " + _stopTime);
-            _localDirector.setStopTime(_stopTime);
-            
-            // Start the CurrentTimeThread.
-            Thread ctt = new CurrentTimeThread();
-            //ctt.start();
-            
-            System.out.println("About to call _manager.blockingGo()");
-                
-            _manager.blockingGo();
-                
-            System.out.println("Done calling _manager.blockingGo()");
-                
-        } catch (Exception ex) {
-            System.err.println("Run failed: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-    
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
     
@@ -273,6 +238,12 @@ public class QueueApplet extends Applet implements Runnable {
     
     private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
+
+            if (_isSimulationRunning) {
+                System.out.println("Simulation still running.. hold on..");
+                return;
+            }
+
             try {
                 
                 // Set the stop time.

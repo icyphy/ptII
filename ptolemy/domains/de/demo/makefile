@@ -52,6 +52,7 @@ JSRCS = \
 	AdderApplet.java \
 	ClockApplet.java \
 	ClockSystem.java \
+	HierarchyApplet.java \
 	HistogramApplet.java \
 	QueueApp.java \
 	QueueApplet.java

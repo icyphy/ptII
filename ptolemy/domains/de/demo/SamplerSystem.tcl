@@ -31,10 +31,6 @@
 #######################################################################
 
 #######################################################################
-#  DEPoisson->DESampler->DEPlot
-#      |          ^
-#      |          |
-#      ------------
 #
 #  Clock--->Ramp1-------->Sampler1------------------------->Plot
 #                            ^                            |
@@ -64,40 +60,29 @@ set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports
-set poissonOutEnum [$poisson outputPorts]
-set poissonOut [$poissonOutEnum nextElement]
+set poissonOut [java::field $poisson output]
 
-set plotInEnum [$plot inputPorts]
-set plotIn [$plotInEnum nextElement]
+set plotIn [java::field $plot input]
 
-set sampler1InEnum [$sampler1 inputPorts]
-set sampler1DataIn [$sampler1InEnum nextElement]
-set sampler1ClockIn [$sampler1InEnum nextElement]
+set sampler1DataIn [java::field $sampler1 input]
+set sampler1ClockIn [java::field $sampler1 clock]
 
-set sampler2InEnum [$sampler2 inputPorts]
-set sampler2DataIn [$sampler2InEnum nextElement]
-set sampler2ClockIn [$sampler2InEnum nextElement]
+set sampler2DataIn [java::field $sampler2 input]
+set sampler2ClockIn [java::field $sampler2 clock]
 
-set sampler1OutEnum [$sampler1 outputPorts]
-set sampler1Out [$sampler1OutEnum nextElement]
+set sampler1Out [java::field $sampler1 output]
 
-set sampler2OutEnum [$sampler2 outputPorts]
-set sampler2Out [$sampler2OutEnum nextElement]
+set sampler2Out [java::field $sampler2 output]
 
-set ramp1InEnum [$ramp1 inputPorts]
-set ramp1In [$ramp1InEnum nextElement]
+set ramp1In [java::field $ramp1 input]
 
-set ramp1OutEnum [$ramp1 outputPorts]
-set ramp1Out [$ramp1OutEnum nextElement]
+set ramp1Out [java::field $ramp1 output]
 
-set ramp2InEnum [$ramp2 inputPorts]
-set ramp2In [$ramp2InEnum nextElement]
+set ramp2In [java::field $ramp2 input]
 
-set ramp2OutEnum [$ramp2 outputPorts]
-set ramp2Out [$ramp2OutEnum nextElement]
+set ramp2Out [java::field $ramp2 output]
 
-set clockOutEnum [$clock outputPorts]
-set clockOut [$clockOutEnum nextElement]
+set clockOut [java::field $clock output]
 
 # Connect the ports
 set r1 [$sys connect $clockOut $ramp1In R1]
@@ -111,7 +96,7 @@ set r5 [$sys connect $ramp2Out $sampler2DataIn R5]
 set r6 [$sys connect $sampler2Out $plotIn R6]
 
 # Set the stop time
-$dir setStopTime 20.0
+$dir setStopTime 10.0
 
 # Run it
 $exec go
