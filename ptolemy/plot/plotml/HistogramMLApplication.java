@@ -124,7 +124,7 @@ public class HistogramMLApplication extends PlotMLApplication {
                 "HistogramMLApplication class\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 3.0, Build: $Id$\n\n"+
+                "Version 3.1, Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n" +
                 "Copyright (c) 1997-1999,\n" +
