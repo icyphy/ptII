@@ -229,7 +229,7 @@ public class SimpleHS {
             StringToken tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             bpsol.setToken(tok);
             bpsol.parameterChanged(null);
-            Parameter dfsol = (Parameter)ctIncDir.getAttribute("DefaultODESolver");
+            Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             dfsol.setToken(tok);
             dfsol.parameterChanged(null);
@@ -249,7 +249,7 @@ public class SimpleHS {
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             bpsol.setToken(tok);
             bpsol.parameterChanged(null);
-            dfsol = (Parameter)ctDecDir.getAttribute("DefaultODESolver");
+            dfsol = (Parameter)ctDecDir.getAttribute("ODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             dfsol.setToken(tok);
             dfsol.parameterChanged(null);
