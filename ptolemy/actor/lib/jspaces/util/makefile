@@ -39,7 +39,7 @@ DIRS =
 ROOT =		../../../../..
 
 JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/lib
-JINI_JAR =	$(JINI_JAR_PATH)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/jini-ext.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/mahalo.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/space-examples.jar
+JINI_JAR =	$(JINI_JAR_PATH)/jini-jspaces.jar
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JAR)
 
