@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="source" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[390, 185]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[390, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[66, 198]">
     </property>
@@ -23,22 +23,26 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 55.0">
         </property>
     </property>
     <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.4">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={223, 26, 605, 459}}">
     </property>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="meanTime">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{{1}, {0}}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{1ub}, {0ub}}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 140.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{unknown}">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -62,7 +66,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 195.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
