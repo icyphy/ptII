@@ -640,7 +640,7 @@ remote3cvs:  $(GENLOGDIR)
 	@echo `date`
 	ssh -x -n $(REMOTE3HOST) "cd $(GENDIR); make remote3nuke >& $(REMOTE3LOG)"
 	# ssh-ing and then using cvs to ssh results in
-	# (cd /vol/gauss/gauss2/ptII; cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs checkout ptII)
+	# (cd /vol/gauss/gauss2/ptII; cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs checkout ptII; cvs update -P -d)
 	# You have no controlling tty and no DISPLAY.  Cannot read passphrase.
 	# so we do the cvs co locally
 	cd $(GENDIR); make remote3ptiidist >> $(REMOTE3LOG) 2>&1
