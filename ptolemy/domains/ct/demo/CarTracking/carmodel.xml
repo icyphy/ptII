@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="leadingcar" class="ptolemy.actor.TypedCompositeActor">
     <doc>CT model for the leading car, with discrete output.</doc>
-    <director class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+    <director class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="100">
         </property>
     </director>
