@@ -538,7 +538,7 @@ class CSPTokenReader {
                 _data[result].add(t);
                 _count[result]--;
                 ptActor.printDebug("Received " + t.toString() + " on port " + _indexToPort(result) + ", channel " +
-                            _indexToChannelNumber(result));
+                        _indexToChannelNumber(result));
             } else {
                 _done = true;
                 return;
@@ -706,16 +706,16 @@ class CSPTokenWriter {
 
         for (int i = 0; i < _count.length; i++) {
             List datal = (List) _data.get(_indexToChannelID[i]);
-                if (_count[i] < datal.size()) {
-                    ptActor.printDebug("Creating a ConditionalSend to send " +
-                            datal.get(_count[i]) +  " on port " +
-                            _indexToPort(i).getFullName() + " channel " +
-                            _indexToChannelNumber(i));
-                    branches[i] = new ConditionalSend(true, _indexToPort(i), _indexToChannelNumber(i), i,
-                            (Token) datal.get(_count[i]), _cbc);
-                } else {
-                    branches[i] = new ConditionalSend(false, _indexToPort(i), _indexToChannelNumber(i), i, null, _cbc);
-                }
+            if (_count[i] < datal.size()) {
+                ptActor.printDebug("Creating a ConditionalSend to send " +
+                        datal.get(_count[i]) +  " on port " +
+                        _indexToPort(i).getFullName() + " channel " +
+                        _indexToChannelNumber(i));
+                branches[i] = new ConditionalSend(true, _indexToPort(i), _indexToChannelNumber(i), i,
+                        (Token) datal.get(_count[i]), _cbc);
+            } else {
+                branches[i] = new ConditionalSend(false, _indexToPort(i), _indexToChannelNumber(i), i, null, _cbc);
+            }
             //}
         }
         return branches;

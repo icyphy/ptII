@@ -53,7 +53,7 @@ public class Dataflow extends AbstractDDI implements DDI {
 
 
     public boolean isLegalActor() {
-       return true;
+        return true;
     }
 
     public void setupActor() {
@@ -127,7 +127,7 @@ public class Dataflow extends AbstractDDI implements DDI {
 
 
     public void initialize() throws IllegalActionException {
-         _clearInputChannels();
+        _clearInputChannels();
         try {
             _selectInitializer();
         } catch (Exception e) {
@@ -161,13 +161,13 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
     /**
-      * Select a firable action among the actions of the actor, if possible.
-      *
-      * @return True, if an action could be selected.
-      * @throws IllegalActionException If an error occurred during the action selection.
-      *
-      * @see SDF#_selectAction
-      */
+     * Select a firable action among the actions of the actor, if possible.
+     *
+     * @return True, if an action could be selected.
+     * @throws IllegalActionException If an error occurred during the action selection.
+     *
+     * @see SDF#_selectAction
+     */
     public boolean prefire() throws IllegalActionException {
         try {
             _selectAction();

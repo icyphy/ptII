@@ -11,7 +11,7 @@ import ptolemy.caltrop.actors.CalInterpreter;
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
  */
 public class SDFFactory implements DDIFactory {
-   /**
+    /**
      * Create an <tt>SDF</tt>
      * @param ptActor The instance of {@link ptolemy.actor.Actor ptolemy.actor.Actor} that the plugin will be associated
      * with.

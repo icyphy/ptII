@@ -117,9 +117,9 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     /*
-        1. figure out which initializer to fire (if we've gotten this far, rates and guards
-        are both statically computable)
-        2. annotate ports with the correct rates.
+      1. figure out which initializer to fire (if we've gotten this far, rates and guards
+      are both statically computable)
+      2. annotate ports with the correct rates.
     */
     private void annotatePortsWithInitProductionRates() {
         int i = _selectInitializer();
@@ -313,8 +313,8 @@ public class SDF extends AbstractDDI implements DDI {
         for (Iterator iterator = freeVars.iterator(); iterator.hasNext();) {
             String name = (String) iterator.next();
             if (isBoundByPortVar(name, action) ||
-                isIn(name, action.getDecls()) ||
-                isIn(name, _actor.getStateVars()))
+                    isIn(name, action.getDecls()) ||
+                    isIn(name, _actor.getStateVars()))
                 return false;
         }
         return true;
@@ -390,7 +390,7 @@ public class SDF extends AbstractDDI implements DDI {
             throw new IllegalActionException("Could not fire CAL actor '" + _actor.getName() + "': " + e.getMessage());
         }
     }
-        /**
+    /**
      * _selectAction picks an action for which the actor interpreter evaluates the guard to true. Note that this does
      * not necessarily mean that <em>all</em> preconditions for firing are satisfied---the amount of "prechecking"
      * depends on the model of computation ddi. (FIXMELATER)
@@ -459,13 +459,13 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     /**
-      * Select a firable action among the actions of the actor, if possible.
-      *
-      * @return True, if an action could be selected.
-      * @throws IllegalActionException If an error occurred during the action selection.
-      *
-      * @see SDF#_selectAction
-      */
+     * Select a firable action among the actions of the actor, if possible.
+     *
+     * @return True, if an action could be selected.
+     * @throws IllegalActionException If an error occurred during the action selection.
+     *
+     * @see SDF#_selectAction
+     */
     public boolean prefire() throws IllegalActionException {
         try {
             _selectAction();
@@ -487,7 +487,7 @@ public class SDF extends AbstractDDI implements DDI {
                 return true;
             else if (o instanceof ActionRateSignature) {
                 return this.inputRates.equals(((ActionRateSignature)o).inputRates) &&
-                        this.outputRates.equals(((ActionRateSignature)o).outputRates);
+                    this.outputRates.equals(((ActionRateSignature)o).outputRates);
             } else
                 return false;
         }

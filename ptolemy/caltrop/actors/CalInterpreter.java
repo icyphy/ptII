@@ -213,14 +213,14 @@ public class CalInterpreter extends TypedAtomicActor {
     }
 
     private DDI _getPlugin(Environment env) {
-            DDIFactory pluginFactory = (DDIFactory) _directorDDIMap.get(this.getDirector().getClass().getName());
-            if (pluginFactory != null) {
-                return pluginFactory.create(this, _actor, _theContext, env);
-            } else {
-                // default to Dataflow case.
-                return new Dataflow(this, _actor, _theContext, env);
-            }
+        DDIFactory pluginFactory = (DDIFactory) _directorDDIMap.get(this.getDirector().getClass().getName());
+        if (pluginFactory != null) {
+            return pluginFactory.create(this, _actor, _theContext, env);
+        } else {
+            // default to Dataflow case.
+            return new Dataflow(this, _actor, _theContext, env);
         }
+    }
 
     private void _refreshParameters()
             throws IllegalActionException, NameDuplicationException {
