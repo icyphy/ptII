@@ -50,6 +50,7 @@ JSRCS = \
 	LiveSound.java \
 	LiveSoundListener.java \
 	LiveSoundEvent.java \
+	SoundCapture.java \
 	SoundPlayback.java \
 	SoundReader.java \
 	SoundWriter.java
