@@ -7,10 +7,46 @@
 </head>
 <body>
 <h1>Code Generation</h1>
-Ptolemy II includes an experimental code generation implementation
-that was first developed Jeff Tsay as part of his Masters project.
+<p>
+Ptolemy II includes the very beginnings a code generation framework.
+Currently, there are two levels of code generation, shallow and deep.
+Shallow code generation converts a model that has been specified in
+MoML (typically using Vergil) into a Java class definition.  This class
+definition can be used in an applet, which results in faster download
+times because less of the Ptolemy II infrastructure is required
+to execute it. Shallow code generation uses components built into
+the Ptolemy II tree.  Eventually, the process of creating an applet,
+include packaging the requisite code in a jar file, will be more
+automated.
+<p>
+Deep code generation parses the component definitions (which are
+written in Java), and produces optimized code that does not require
+code from the Ptolemy II tree.  Currently, this only works for some
+models, and only in the SDF domain.  Also, the code generation process,
+as currently implemented, requires vast amounts of memory, and thus
+may not work at all on memory-limited platforms.
+<p>
+The implementation here should be viewed as highly preliminary.
+<font color="red">It is likely to fail on all but a few simple test
+cases.</font>  It is at the stage of being a concept demonstration
+only.  We expect it to mature considerably in the near future.
+<p>
+Deep code generation parses Java component definitions, and provides
+an API for accessing the abstract syntax tree.  It is possible,
+in principle, to generate implementations in languages other than
+Java from this AST.  Thus, we hope that in the future, we will have
+code generators that produce C code for embedded processors,
+or VHDL code for hardware design.
+<p>
+The deep code generation framework
+was created by Jeff Tsay
+as part of his Masters project.
 (Jeff Tsay, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/" target="_top">A Code Generation Framework for Ptolemy II</a>," ERL Technical Report UCB/ERL No. M00/25, Dept. EECS, University of California, Berkeley, CA  94720, May 19, 2000.)
-Christopher Hylands then further polished Jeff's work.
+ <p>Shuvra Bhattacharyya created the shallow code generator.
+ <p>Christopher Hylands and Edward A. Lee contributed to both codegenerators
+<p>
+
+<h2>Deep Code Generation</h2>
 
  <p>The Ptolemy II code generation system parses Ptolemy II actor
 code, generates an Abstract Syntax Tree (AST), optimizes the tree and
@@ -25,7 +61,7 @@ to generate Java code for SDF systems and run it.  We were able
 to run simple Ptolemy II simulations on the under PalmOS by using
 KVM.
 
-<h2>Demonstrations</h2>
+<h2>Deep Code Demonstrations</h2>
 <h3>Print out the AST</h3>
 <pre>
 cd $PTII/ptolemy/lang/java
@@ -101,7 +137,7 @@ java -classpath ../.. cg.orthocom.CG_Main
 </pre>
 
 
-<h2>How Code Generation Works</h2>
+<h2>How Deep Code Generation Works</h2>
 Code Generation parses a Java file that contains a Ptolemy II system and
 then generates Java code in a separate directory.
 <h3>Packages and directories</h3>
