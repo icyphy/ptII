@@ -280,7 +280,5 @@ public class ProcessThread extends PtolemyThread {
     private ProcessDirector _director;
     private Manager _manager;
     private boolean _threadStopRequested = false;
-    private boolean _preparingToWrapup = false;
-
     private String _name;
 }
