@@ -16,7 +16,7 @@
 	     contains this file. -->
 
             <input source="ptolemy/apps/charon/charon.xml"/>
-            <input source="ptolemy/apps/softwalls/actors.xml"/>
+            <input source="ptolemy/apps/softwalls/softwalls.xml"/>
 
       </group>
     ?>
