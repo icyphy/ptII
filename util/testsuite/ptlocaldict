@@ -76,6 +76,8 @@ Htmlchek
 Hylands
 Iconified
 Id
+Innerclass
+Installshield
 Instantiable
 Irix
 Itcl
@@ -215,6 +217,7 @@ applet
 applets
 appletviewer
 arial
+arithmatic
 arraycopy
 autoconf
 awt
@@ -269,6 +272,11 @@ edu
 eecs
 email
 faf0e6
+feedforward
+ff0000
+fffff
+ffffff
+fft
 frameborder
 frameset
 fsm
@@ -299,6 +307,8 @@ http
 i
 img
 index.html
+innerclass
+innerclasses
 instanceof
 instantiable
 java
@@ -315,6 +325,7 @@ javasoft
 javax
 jdk
 jindent
+johnli
 johnr
 kienhuis
 lang
@@ -352,9 +363,13 @@ nmake
 noframes
 noresize
 nsmyth
+nullary
 ok
 param
 passwd
+perl
+plotml
+plugin
 posets
 postfire
 prev
