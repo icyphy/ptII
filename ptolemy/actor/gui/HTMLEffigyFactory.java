@@ -41,7 +41,7 @@ import javax.swing.text.Document;
 //////////////////////////////////////////////////////////////////////////
 //// HTMLEffigyFactory
 /**
-A factory for creating new effigies.
+A factory for creating new effigies for HTML pages.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -84,13 +84,15 @@ public class HTMLEffigyFactory extends EffigyFactory {
     /** Create a new effigy in the given container by reading the specified
      *  URL. The extension of the URL must be ".htm" or ".html", or
      *  the content type must be "text/html" or "text/rtf". Otherwise,
-     *  this returns null.
+     *  this returns null.  It will also return null if there is no
+     *  access to the network.
      *  @param container The container for the effigy.
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.  This is ignored in this
      *   class.
      *  @param in The input URL.
-     *  @return A new instance of HTMLEffigy.
+     *  @return A new instance of HTMLEffigy, or null if one cannot
+     *   be created.
      *  @exception Exception If the URL cannot be read, or if the data
      *   is malformed in some way.
      */
@@ -110,7 +112,9 @@ public class HTMLEffigyFactory extends EffigyFactory {
         if (!extension.equals("htm") && !extension.equals("html")) {
             // The extension doesn't match.  Try the content type.
             URLConnection connection = in.openConnection();
+            if (connection == null) return null;
             String contentType = connection.getContentType();
+            if (contentType == null) return null;
             if (!contentType.startsWith("text/html")
                     && !contentType.startsWith("text/rtf")) {
                 return null;
