@@ -46,7 +46,7 @@ in the parse tree.
 <p>
 To allow extension of the parser capabilities without modifying
 the kernel code, method calls on Tokens are supported with the following
-syntax  (token).methodName(comma seperated arguments).
+syntax  (token).methodName(comma separated arguments).
 Note that the arguments to the method, and its returned value, must all
 be of type ptolemy.data.Token
 <p>
