@@ -33,13 +33,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="112.0, 50.0">
+        <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
         </property>
     </property>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <doc>Sinusoidal waveform output.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="299.00001525878906, 136.00000381469727">
+        <property name="_location" class="ptolemy.moml.Location" value="360.0, 129.0">
+        </property>
+    </port>
+    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="multiport"/>
+        <property name="_location" class="ptolemy.moml.Location" value="27.5, 109.0">
         </property>
     </port>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -49,7 +55,7 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/samplingFrequency">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 113.5">
+        <property name="_location" class="ptolemy.moml.Location" value="140.0, 108.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -76,7 +82,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="200.5, 114.5">
+        <property name="_location" class="ptolemy.moml.Location" value="260.5, 109.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -89,8 +95,12 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="output" relation="relation1"/>
+    <link port="trigger" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation"/>
     <link port="Sine Function.input" relation="relation2"/>
     <link port="Sine Function.output" relation="relation1"/>
 </class>
