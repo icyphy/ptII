@@ -36,6 +36,7 @@ import ptolemy.actor.process.BoundaryDetector;
 import ptolemy.actor.process.Branch;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
@@ -266,14 +267,14 @@ public class DDEReceiver extends PrioritizedTimedQueue
             //////////////////////////////////////////
             // Determine if the TimeKeeper is inactive
             //////////////////////////////////////////
-            if ( timeKeeper.getNextTime() == INACTIVE ) {
+            if ( timeKeeper.getNextTime().getTimeValue() == INACTIVE ) {
                 requestFinish();
             }
 
             ///////////////////
             // Check Receiver Times
             ///////////////////
-            if ( getReceiverTime() == IGNORE && !_terminate ) {
+            if ( getReceiverTime().getTimeValue() == IGNORE && !_terminate ) {
                 timeKeeper.removeAllIgnoreTokens();
 
                 sendNullTokens = true;
@@ -508,7 +509,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *   to cease.
      */
     public void put(Token token) {
-        put(token, null);
+        put(token, (Branch)null);
     }
 
     /** Do a blocking write on the queue. Set the time stamp to be
@@ -531,7 +532,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public void put(Token token, Branch branch) {
         Thread thread = Thread.currentThread();
-        double time = _lastTime;
+        Time time = _lastTime;
         if ( thread instanceof DDEThread ) {
             TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
             time = timeKeeper.getOutputTime();
@@ -555,7 +556,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  @exception TerminateProcessException If activity is scheduled
      *   to cease.
      */
-    public void put(Token token, double time) {
+    public void put(Token token, Time time) {
         put(token, time, null);
     }
 
@@ -573,14 +574,17 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  @param token The token to put on the queue.
      *  @param time The time stamp associated with the token.
      */
-    public void put(Token token, double time, Branch branch) {
+    public void put(Token token, Time time, Branch branch) {
         Workspace workspace = getContainer().workspace();
 
         synchronized(this) {
 
-            if ( time > _getCompletionTime() &&
-                    _getCompletionTime() != ETERNITY && !_terminate ) {
-                time = INACTIVE;
+            if ( time.compareTo(_getCompletionTime()) > 0 
+                && _getCompletionTime().getTimeValue() != ETERNITY 
+                && !_terminate ) {
+                time = new Time(
+                    (Actor)getContainer().getContainer().getContainer(), 
+                    INACTIVE);
             }
 
             if ( super.hasRoom() && !_terminate ) {

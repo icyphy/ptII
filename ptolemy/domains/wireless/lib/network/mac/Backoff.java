@@ -32,6 +32,7 @@ import java.util.Random;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
@@ -218,7 +219,8 @@ public class Backoff extends MACActorBase {
             switch(_messageType) {
                 // modify standard here
             case Busy:
-                _slotCnt -= (int)((_currentTime - _backoffStartTime)*1e6/_aSlotTime);
+                _slotCnt -= (int)(_currentTime.subtract(_backoffStartTime)
+                    .getTimeValue()*1e6/_aSlotTime);
                 cancelTimer(_BackoffTimer);
                 _state = Channel_Busy;
                 _status=Busy;
@@ -289,7 +291,8 @@ public class Backoff extends MACActorBase {
 
     private void _startBackoff() throws IllegalActionException {
         _backoffStartTime = _currentTime;
-        _BackoffTimer = setTimer(BackoffTimeOut, _currentTime + _slotCnt*_aSlotTime*1e-6);
+        _BackoffTimer = setTimer(BackoffTimeOut, 
+            _currentTime.add(_slotCnt*_aSlotTime*1e-6));
         _state = Channel_Idle;
         _status=Idle;
     }
@@ -312,11 +315,11 @@ public class Backoff extends MACActorBase {
     // timer types
     private static final int BackoffTimeOut=0;
 
-    private double _backoffStartTime = 0.0;
+    private Time _backoffStartTime = new Time(this);
 
     private RecordToken _inputMessage;
     private int _messageType;
-    private double _currentTime;
+    private Time _currentTime;
 
     protected Random _random = new Random();
 

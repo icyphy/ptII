@@ -142,7 +142,7 @@ public class GraphicalLocator extends Locator {
             // Request refiring one second later to change
             // the icon back to blue.
             Director director = getDirector();
-            director.fireAt(this, director.getCurrentTime() + 1.0);
+            director.fireAt(this, director.getCurrentTime().add(1.0));
         } else {
             // Set color to blue.
             _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");

@@ -37,6 +37,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.FIFOQueue;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -117,6 +118,10 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     /** Construct an empty queue with no container.
      */
     public PrioritizedTimedQueue() {
+        // because the container is not specified, we can not 
+        // call the _initializeTimeVariables() method.
+        // The caller of this constructor is responsible to
+        // initialize the time variables.
     }
 
     /** Construct an empty queue with the specified IOPort container.
@@ -127,6 +132,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public PrioritizedTimedQueue(IOPort container)
             throws IllegalActionException {
         super(container);
+        _initializeTimeVariables();
     }
 
     /** Construct an empty queue with the specified IOPort container
@@ -140,6 +146,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
             throws IllegalActionException {
         super(container);
         _priority = priority;
+        _initializeTimeVariables();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -210,7 +217,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @return The last time.
      * @deprecated Only used for testing purposes
      */
-    public double getLastTime() {
+    public Time getLastTime() {
         return _lastTime;
     }
 
@@ -220,7 +227,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  receiver time value is equal to the "last time."
      * @return The receiver time of this PrioritizedTimedQueue.
      */
-    public synchronized double getReceiverTime() {
+    public synchronized Time getReceiverTime() {
         return _receiverTime;
     }
 
@@ -294,13 +301,16 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @param time The time stamp of the token.
      * @exception NoRoomException If the queue is full.
      */
-    public void put(Token token, double time) throws NoRoomException {
-        if ( time < _lastTime && time != INACTIVE && time != IGNORE ) {
+    public void put(Token token, Time time) throws NoRoomException {
+        double timeValue = time.getTimeValue();
+        if ( time.compareTo(_lastTime) < 0 && timeValue != INACTIVE 
+            && timeValue != IGNORE ) {
             NamedObj actor = (NamedObj)getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName() +
                     " - Attempt to set current time to the past; time = "
                     + time + ". The _lastTime was " + _lastTime);
-        } else if ( time < 0.0 && time != INACTIVE && time != IGNORE ) {
+        } else if ( timeValue < 0.0 && timeValue != INACTIVE 
+            && timeValue != IGNORE ) {
             NamedObj actor = (NamedObj)getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName() +
                     " - Attempt to set current time to a" +
@@ -327,8 +337,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
           }
         */
 
-        double _lastTimeCache = _lastTime;
-        double _receiverTimeCache = _receiverTime;
+        Time _lastTimeCache = _lastTime;
+        Time _receiverTimeCache = _receiverTime;
         _lastTime = time;
         Event event = new Event(token, time);
         if ( _queue.size() == 0 ) {
@@ -354,7 +364,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public synchronized void removeIgnoredToken() {
 
-        if ( getReceiverTime() != PrioritizedTimedQueue.IGNORE ) {
+        if ( getReceiverTime().getTimeValue() 
+            != PrioritizedTimedQueue.IGNORE ) {
             return;
         }
         // Get the token and set all relevant
@@ -385,7 +396,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
         // Set the receiver time if value is still IGNORE
-        if ( getReceiverTime() == PrioritizedTimedQueue.IGNORE ) {
+        if ( getReceiverTime().getTimeValue()
+             == PrioritizedTimedQueue.IGNORE ) {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                     ((DDEThread)thread).getTimeKeeper();
@@ -402,7 +414,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public void reset() {
         DDEDirector director = (DDEDirector)
             ((Actor)getContainer().getContainer()).getDirector();
-        double time = director.getCurrentTime();
+        Time time = director.getCurrentTime();
         _receiverTime = time;
         _lastTime = time;
         // I believe this is not needed anymore, because receivers are
@@ -434,7 +446,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     static final double INACTIVE = -2.0;
 
     // The time stamp of the newest token to be placed in the queue.
-    double _lastTime = 0.0;
+    Time _lastTime;
 
     // The priority of this receiver.
     int _priority = 0;
@@ -446,7 +458,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  is not synchronized so the caller should be.
      * @return The completion time.
      */
-    double _getCompletionTime() {
+    Time _getCompletionTime() {
         return _completionTime;
     }
 
@@ -473,8 +485,9 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  This method is not synchronized so the caller should be.
      * @param time The completion time of this receiver.
      */
-    void _setCompletionTime(double time) {
-        if ( time < 0.0 && time != PrioritizedTimedQueue.ETERNITY ) {
+    void _setCompletionTime(Time time) {
+        double timeValue = time.getTimeValue();
+        if ( timeValue < 0.0 && timeValue != PrioritizedTimedQueue.ETERNITY ) {
             throw new IllegalArgumentException("Attempt to set "
                     + "completion time to a negative value.");
         }
@@ -487,10 +500,18 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  is not synchronized so the caller should be.
      * @param time The new receiver time.
      */
-    synchronized void _setReceiverTime(double time) {
+    synchronized void _setReceiverTime(Time time) {
         if ( !(_queue.size() > 0) ) {
             _receiverTime = time;
         }
+    }
+
+    // Initialize some time variables.
+    private void _initializeTimeVariables() {
+        Actor actor = (Actor) getContainer().getContainer();
+        _completionTime = new Time(actor, ETERNITY);
+        _lastTime = new Time(actor);
+        _receiverTime = new Time(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -499,13 +520,13 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // The time after which execution of this receiver will cease.
     // Initially the value is set so that execution will continue
     // indefinitely.
-    private double _completionTime = ETERNITY;
+    private Time _completionTime;
 
     // The queue in which this receiver stores tokens.
     private FIFOQueue _queue = new FIFOQueue();
 
     // The time stamp of the earliest token that is still in the queue.
-    private double _receiverTime = 0.0;
+    private Time _receiverTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -519,14 +540,14 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     private class Event {
 
         // Construct an Event with a token and time stamp.
-        public Event(Token token, double time) {
+        public Event(Token token, Time time) {
             _token = token;
             _timeStamp = time;
         }
 
         // Construct an Event with a token, a time stamp and a
         // destination receiver.
-        public Event(Token token, double time, Receiver receiver) {
+        public Event(Token token, Time time, Receiver receiver) {
             this(token, time);
             _receiver = receiver;
         }
@@ -541,7 +562,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
         // Return the time stamp of this event.
-        public double getTime() {
+        public Time getTime() {
             return _timeStamp;
         }
 
@@ -553,7 +574,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         ///////////////////////////////////////////////////////////
         ////                     private inner variables       ////
 
-        double _timeStamp = 0.0;
+        Time _timeStamp;
         Token _token = null;
         Receiver _receiver = null;
     }

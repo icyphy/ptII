@@ -29,24 +29,23 @@ COPYRIGHTENDKEY
 
 
 package ptolemy.domains.wireless.lib.network;
-import ptolemy.actor.IOPort;
-import java.util.HashSet;
 import java.util.Iterator;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Settable;
+
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.domains.wireless.kernel.WirelessIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.Utilities;
 
 
 ////////////////////////////////////////////////////////////////////////=
@@ -203,7 +202,7 @@ public class PHY extends NetworkActorBase {
         super.fire();
         int oldnum=_numBusyTimers;
         int kind=whoTimeout2();        // check if a timer times out and which
-        double currentTime=getDirector().getCurrentTime();
+        Time currentTime=getDirector().getCurrentTime();
         if ( oldnum>0 && _numBusyTimers==0 )
           {
              // update channel status
@@ -243,7 +242,7 @@ public class PHY extends NetworkActorBase {
                                 Token dbg=new DoubleToken(power / _interference );
                                 _debug(getFullName()+"Receiving a message."+dbg.toString());}
                             // The PHY will receive this message
-                            setTimer2(RxDone, currentTime+duration, power); 
+                            setTimer2(RxDone, currentTime.add(duration), power); 
 
                             // update channel status
                             _numBusyTimers++;
@@ -268,7 +267,8 @@ public class PHY extends NetworkActorBase {
                           {
                              // this is also an interference
                              // add every conversation in the network to this giant table
-                             setTimer2(InterferenceDone, currentTime+duration, power);
+                             setTimer2(InterferenceDone, 
+                                currentTime.add(duration), power);
                              // update interference  
                              _interference= _interference+power; 
                           }
@@ -357,7 +357,8 @@ public class PHY extends NetworkActorBase {
                                               getAttribute("duration");
                                  _duration.setToken(new DoubleToken(_txDuration));;
 
-                                 setTimer2(TxDone, currentTime+_txDuration, 0.0);
+                                 setTimer2(TxDone, 
+                                    currentTime.add(_txDuration), 0.0);
                              }  
                     }
 
@@ -439,7 +440,8 @@ public class PHY extends NetworkActorBase {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    protected ExtendedTimer setTimer2(int kind, double expirationTime, double power)
+    protected ExtendedTimer setTimer2(int kind, 
+        Time expirationTime, double power)
             throws IllegalActionException {
 
         ExtendedTimer timer=new ExtendedTimer();
@@ -526,9 +528,9 @@ public class PHY extends NetworkActorBase {
              }
          }
            
-            double currentTime=getDirector().getCurrentTime();
+            Time currentTime=getDirector().getCurrentTime();
             // add every conversation in the network to this giant table
-            setTimer2(InterferenceDone, currentTime+duration, power);
+            setTimer2(InterferenceDone, currentTime.add(duration), power);
 
             // update interference 
             _interference= _interference+power;
@@ -571,7 +573,7 @@ public class PHY extends NetworkActorBase {
     // extend the default timer to link the additional info (e.g. power) to a timer
     protected class ExtendedTimer {
         public int kind;
-        public double expirationTime;
+        public Time expirationTime;
         public double power;
     }
 

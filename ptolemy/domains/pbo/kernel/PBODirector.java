@@ -37,6 +37,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.CQComparator;
 import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
@@ -178,11 +179,12 @@ public class PBODirector extends Director {
             // make the next actor ready to execute.
             PBOEvent event = (PBOEvent)_requestQueue.take();
             Actor actor = event.actor();
-            double requestTime = event.time();
+            Time requestTime = event.time();
             // This is the time that the actor next wants to get fired.
-            double nextRequestTime =
-                requestTime + _getExecutionPeriod(actor);
-            double deadlineTime = requestTime + _getExecutionTime(actor);
+            Time nextRequestTime =
+                requestTime.add(_getExecutionPeriod(actor));
+            Time deadlineTime = 
+                _getExecutionTime(actor).add(requestTime);
             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
             setCurrentTime(requestTime);
@@ -193,24 +195,24 @@ public class PBODirector extends Director {
         PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.take();
         Actor executingActor = deadlineEvent.actor();
         // The time the actor expected to finish by.
-        double executingTime = deadlineEvent.time();
+        Time executingTime = deadlineEvent.time();
         // The time the actor actually started executing.
-        double firingTime = getCurrentTime();
+        Time firingTime = getCurrentTime();
         // The time the actor actually finished.
-        double endFiringTime = getCurrentTime() +
-            _getExecutionTime(executingActor);
+        Time endFiringTime = getCurrentTime().add(
+            _getExecutionTime(executingActor));
 
         // first process any new activations that will
         // occur before endFiringTime.
-        double requestTime = ((PBOEvent)_requestQueue.get()).time();
-        while (requestTime < endFiringTime) {
+        Time requestTime = ((PBOEvent)_requestQueue.get()).time();
+        while (requestTime.compareTo(endFiringTime) < 0) {
             // make the given actor ready to execute.
             PBOEvent event = (PBOEvent)_requestQueue.take();
             Actor actor = (Actor)event.actor();
             // This is the time that the actor next wants to get fired.
-            double nextRequestTime =
-                requestTime + _getExecutionPeriod(actor);
-            double deadlineTime = requestTime + _getExecutionTime(actor);
+            Time nextRequestTime =
+                requestTime.add(_getExecutionPeriod(actor));
+            Time deadlineTime = requestTime.add(_getExecutionTime(actor));
             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
             // get the next requested time
@@ -276,7 +278,7 @@ public class PBODirector extends Director {
      *  time should always be greater than or equal to the current time.
      *  @return The time of the next iteration.
      */
-    public double getNextIterationTime() {
+    public Time getNextIterationTime() {
         if (_deadlineQueue.isEmpty()) {
             // This should never be empty.
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
@@ -284,7 +286,10 @@ public class PBODirector extends Director {
         } else {
             PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.get();
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
-            return Math.min(deadlineEvent.time(), requestEvent.time());
+            double minimumTimeValue
+                = Math.min(deadlineEvent.time().getTimeValue(), 
+                    requestEvent.time().getTimeValue());
+            return new Time(this, minimumTimeValue);
         }
     }
 
@@ -313,9 +318,9 @@ public class PBODirector extends Director {
             while (allActors.hasNext()) {
                 Actor actor = (Actor) allActors.next();
                 _deadlineQueue.put(new PBOEvent(actor,
-                                           _getExecutionTime(actor)));
+                    _getExecutionTime(actor)));
                 _requestQueue.put(new PBOEvent(actor,
-                                          _getExecutionPeriod(actor)));
+                    _getExecutionPeriod(actor)));
             }
         } else {
             throw new IllegalActionException("Cannot fire this director " +
@@ -346,9 +351,9 @@ public class PBODirector extends Director {
     public boolean postfire() throws IllegalActionException {
         _debug("postfiring");
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
-        double curtime = getCurrentTime();
+        Time curtime = getCurrentTime();
         _debug("CurrentTime = " + curtime);
-        if (curtime > stoptime)
+        if (curtime.getTimeValue() > stoptime)
             return false;
         else
             return true;
@@ -415,8 +420,8 @@ public class PBODirector extends Director {
      *  This is called from the constructors for this object.
      */
     private void _init() {
-        _requestQueue = new CalendarQueue(new PBOCQComparator());
-        _deadlineQueue = new CalendarQueue(new PBOCQComparator());
+        _requestQueue = new CalendarQueue(new PBOCQComparator(this));
+        _deadlineQueue = new CalendarQueue(new PBOCQComparator(this));
         try {
             stopTime = new Parameter(this, "stopTime", new DoubleToken(10.0));
         }
@@ -435,7 +440,7 @@ public class PBODirector extends Director {
      *  the nameable interface, if the firingPeriod
      *  parameter does not exist, or it has an invalid expression.
      */
-    private double _getExecutionPeriod(Actor a)
+    private Time _getExecutionPeriod(Actor a)
             throws IllegalActionException {
         if (!(a instanceof Nameable))
             throw new IllegalActionException(
@@ -447,7 +452,9 @@ public class PBODirector extends Director {
             throw new IllegalActionException("Actor does not have a " +
                     "executionPeriod parameter");
         }
-        return ((DoubleToken)param.getToken()).doubleValue();
+        double executionPeriodValue 
+            = ((DoubleToken)param.getToken()).doubleValue();
+        return new Time(this, executionPeriodValue);
     }
 
     /** Get the delay between the inputs and the outputs for a given actor.
@@ -459,7 +466,7 @@ public class PBODirector extends Director {
      *  the nameable interface, if the delay
      *  parameter does not exist, or it has an invalid expression.
      */
-    private double _getExecutionTime(Actor a)
+    private Time _getExecutionTime(Actor a)
             throws IllegalActionException {
         if (!(a instanceof Nameable))
             throw new IllegalActionException(
@@ -471,7 +478,9 @@ public class PBODirector extends Director {
             throw new IllegalActionException("Actor does not have an " +
                     "executionTime parameter.");
         }
-        return ((DoubleToken)param.getToken()).doubleValue();
+        double executionTimeValue 
+            = ((DoubleToken)param.getToken()).doubleValue();
+        return new Time(this, executionTimeValue);
     }
 
     // The queue of times when actors will start, ordered by deadline times.
@@ -492,6 +501,16 @@ public class PBODirector extends Director {
     //
     private class PBOCQComparator implements CQComparator {
 
+        /** A constructor that takes a director as its argument.
+         * 
+         *  @param director The director that contains this comparator.
+         */
+        public PBOCQComparator(Director director) {
+            _director = director;
+            _binWidth = new PBOEvent(null, new Time(_director, 1.0));
+            _zeroReference = new PBOEvent(null, new Time(_director, 0.0));
+        }
+        
         /** Compare the two argument for order. Return a negative integer,
          *  zero, or a positive integer if the first argument is less than,
          *  equal to, or greater than the second.
@@ -524,8 +543,9 @@ public class PBODirector extends Director {
          *   an instance of PBOEvent.
          */
         public final long getVirtualBinNumber(Object event) {
-            return (long)((((PBOEvent) event).time()
-                                  - _zeroReference.time())/_binWidth.time());
+            return (long)(((PBOEvent) event).time().subtract(
+                _zeroReference.time()).getTimeValue() 
+                / _binWidth.time().getTimeValue());
         }
 
         /** Given an array of PBOEvent objects, set an appropriate bin
@@ -547,21 +567,22 @@ public class PBODirector extends Director {
         public void setBinWidth(Object[] entryArray) {
 
             if ( entryArray == null || entryArray.length < 2) {
-                _zeroReference = new PBOEvent(null, 0.0);
+                _zeroReference 
+                    = new PBOEvent(null, new Time(_director, 0.0));
                 return;
             }
 
             double[] diff = new double[entryArray.length - 1];
 
             double average =
-                (((PBOEvent)entryArray[entryArray.length - 1]).time() -
-                        ((PBOEvent)entryArray[0]).time()) /
-                (entryArray.length-1);
+                ((PBOEvent)entryArray[entryArray.length - 1]).time()
+                .subtract(((PBOEvent)entryArray[0]).time()).getTimeValue() 
+                / (entryArray.length-1);
             double effectiveAverage = 0.0;
             int effectiveSamples = 0;
             for (int i = 0; i < entryArray.length - 1; ++i) {
-                diff[i] = ((PBOEvent)entryArray[i+1]).time() -
-                    ((PBOEvent)entryArray[i]).time();
+                diff[i] = ((PBOEvent)entryArray[i+1]).time().subtract(
+                    ((PBOEvent)entryArray[i]).time()).getTimeValue();
                 if (diff[i] < 2.0 * average) {
                     effectiveSamples++;
                     effectiveAverage += diff[i];
@@ -575,7 +596,8 @@ public class PBODirector extends Director {
                 return;
             }
             effectiveAverage /= (double)effectiveSamples;
-            _binWidth = new PBOEvent(null, 3.0 * effectiveAverage);
+            _binWidth = new PBOEvent(null, 
+                new Time(_director, 3.0 * effectiveAverage));
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -592,11 +614,14 @@ public class PBODirector extends Director {
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
 
+        // The director.
+        private Director _director;
+
         // The bin width.
-        private PBOEvent _binWidth = new PBOEvent(null, 1.0);
+        private PBOEvent _binWidth;
 
         // The zero reference.
-        private PBOEvent _zeroReference = new PBOEvent(null, 0.0);
+        private PBOEvent _zeroReference;
     }
 
 
@@ -606,7 +631,7 @@ public class PBODirector extends Director {
          *  @param actor The actor.
          *  @param time The time associated with the actor.
          */
-        public PBOEvent(Actor actor, double time) {
+        public PBOEvent(Actor actor, Time time) {
             _actor = actor;
             _time = time;
         }
@@ -647,9 +672,9 @@ public class PBODirector extends Director {
          */
         public final int compareTo(PBOEvent event) {
 
-            if ( _time > event._time)  {
+            if ( _time.compareTo(event._time) > 0)  {
                 return 1;
-            } else if ( _time < event._time) {
+            } else if ( _time.compareTo(event._time) < 0) {
                 return -1;
             } else
                 return 0;
@@ -663,13 +688,13 @@ public class PBODirector extends Director {
          *  @param event The event to compare against.
          */
         public boolean isSimultaneousWith(PBOEvent event) {
-            return ( _time == event._time);
+            return _time.equalTo(event._time);
         }
 
         /** Return the time stamp.
          *  @return The time stamp.
          */
-        public double time() {
+        public Time time() {
             return _time;
         }
 
@@ -689,6 +714,6 @@ public class PBODirector extends Director {
         private Actor _actor;
 
         // The time stamp of the event.
-        private double _time;
+        private Time _time;
     }
 }

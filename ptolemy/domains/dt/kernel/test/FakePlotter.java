@@ -30,6 +30,7 @@ package ptolemy.domains.dt.kernel.test;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -98,7 +99,7 @@ public class FakePlotter extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
 
-        double currentTime;
+        Time currentTime;
         int width = input.getWidth();
         //int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
@@ -107,7 +108,7 @@ public class FakePlotter extends TypedAtomicActor {
                 DoubleToken currentToken = (DoubleToken)input.get(i);
                 double currentValue = currentToken.doubleValue();
                 outVal.send(0,new DoubleToken(currentValue));
-                outTime.send(0,new DoubleToken(currentTime));
+                outTime.send(0,new DoubleToken(currentTime.getTimeValue()));
             }
         }
         return super.postfire();

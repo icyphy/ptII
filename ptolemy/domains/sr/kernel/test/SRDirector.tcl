@@ -126,18 +126,17 @@ test SRDirector-5.1 {Test action methods} {
 	    [java::field [java::cast ptolemy.actor.lib.Sink $r3] input] \
 	    R3
 
-    set r1 [$director getNextIterationTime]
     #puts [$e2 exportMoML]
-    #$manager initialize
+    #[$e2 getManager] initialize
     [$e2 getManager] execute
     #$director iterate 3
-    set r2 [$director getNextIterationTime]
+    set r2 [[$director getNextIterationTime] getTimeValue]
     $director stop
     $director wrapup
-    list $r1 $r2 [enumToTokenValues [$r3 getRecord 0]] \
-	    [$director getNextIterationTime] \
-	    [$director getCurrentTime]
-} {0.0 0.0 {0.0 5.0 10.0 3.0 4.0 5.0 6.0 7.0 8.0} 0.0 0.0}
+    list $r2 [enumToTokenValues [$r3 getRecord 0]] \
+	[[$director getNextIterationTime] getTimeValue] \
+	[[$director getCurrentTime] getTimeValue]
+} {0.0 {0.0 5.0 10.0 3.0 4.0 5.0 6.0 7.0 8.0} 0.0 0.0}
 
 test SRDirector-6.1 {_writeAccessRequired} {
     # Uses 5.1 above

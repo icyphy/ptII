@@ -101,14 +101,15 @@ public class DDEGetToken extends DDEGet {
                 for ( int j = 0; j < receivers[i].length; j++ ) {
                     DDEReceiver receiver = (DDEReceiver)receivers[i][j];
                     if ( receiver.hasToken() ) {
-                        _receiverTimes[cnt] = receiver.getReceiverTime();
+                        _receiverTimes[cnt] 
+                            = receiver.getReceiverTime().getTimeValue();
                         _tokens[cnt] = receiver.get();
                         Thread thread = Thread.currentThread();
                         if ( thread instanceof DDEThread ) {
                             TimeKeeper timeKeeper =
                                 ((DDEThread)thread).getTimeKeeper();
                             _threadTimes[cnt] =
-                                timeKeeper.getCurrentTime();
+                                timeKeeper.getCurrentTime().getTimeValue();
                         }
                     }
                 }

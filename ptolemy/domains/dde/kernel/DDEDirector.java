@@ -43,6 +43,7 @@ import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.ProcessThread;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -180,9 +181,6 @@ public class DDEDirector extends CompositeProcessDirector
      */
     public Parameter stopTime;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Return the current time of the DDEThread that calls this
      *  method on behalf of an actor. If this method is called by
      *  other than a DDEThread, then return the current time as
@@ -190,7 +188,7 @@ public class DDEDirector extends CompositeProcessDirector
      * @return The current time of the DDEThread that calls this
      *  method.
      */
-    public double getCurrentTime() {
+    public Time getCurrentTime() {
         Thread thread = Thread.currentThread();
         if (thread instanceof DDEThread) {
             TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
@@ -218,7 +216,7 @@ public class DDEDirector extends CompositeProcessDirector
      *  method is a DDEThread but the specified actor is
      *  not contained by the DDEThread.
      */
-    public void fireAt(Actor actor, double time)
+    public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
 
         double ETERNITY = PrioritizedTimedQueue.ETERNITY;
@@ -231,11 +229,12 @@ public class DDEDirector extends CompositeProcessDirector
             if (_initialTimeTable == null) {
                 _initialTimeTable = new Hashtable();
             }
-            _initialTimeTable.put(actor, new Double(time));
+            _initialTimeTable.put(actor, new Double(time.getTimeValue()));
             return;
         }
 
-        if (_completionTime != ETERNITY && time > _completionTime) {
+        if (_completionTime.getTimeValue() != ETERNITY && 
+            time.compareTo(_completionTime) > 0) {
             return;
         }
 
@@ -279,7 +278,7 @@ public class DDEDirector extends CompositeProcessDirector
      *  initialization of the actors.
      */
     public void initialize() throws IllegalActionException {
-        _completionTime = PrioritizedTimedQueue.ETERNITY;
+        _completionTime = new Time(this, PrioritizedTimedQueue.ETERNITY);
         _writeBlockedQueues = new LinkedList();
         _pendingMutations = false;
         super.initialize();
@@ -296,13 +295,14 @@ public class DDEDirector extends CompositeProcessDirector
      */
     public Receiver newReceiver() {
         DDEReceiver receiver = new DDEReceiver();
-        double time = _completionTime;
+        double timeValue;
         try {
-            time = ((DoubleToken)stopTime.getToken()).doubleValue();
+            timeValue = ((DoubleToken)stopTime.getToken()).doubleValue();
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e.toString());
         }
-        receiver._setCompletionTime(time);
+        receiver._setCompletionTime(new Time(this, timeValue));
+        receiver._lastTime = new Time(this);
         return receiver;
     }
 
@@ -467,7 +467,9 @@ public class DDEDirector extends CompositeProcessDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _completionTime = PrioritizedTimedQueue.ETERNITY;
+    // Since the completionTime is a constant, we do not convert it 
+    // to a time object.
+    private Time _completionTime;
     private boolean _pendingMutations = false;
     private LinkedList _writeBlockedQueues;
     private Hashtable _initialTimeTable;

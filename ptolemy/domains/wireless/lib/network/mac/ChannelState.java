@@ -32,6 +32,7 @@ package ptolemy.domains.wireless.lib.network.mac;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
@@ -182,9 +183,9 @@ public class ChannelState extends MACActorBase {
                                     _inputMessage.toString());
                         }
                         DoubleToken t = (DoubleToken) _inputMessage.get("tRxEnd");
-                        double tRxEnd = t.doubleValue();
+                        Time tRxEnd = new Time(this, t.doubleValue());
                         if (_IfsTimer != null ) cancelTimer(_IfsTimer);
-                        _IfsTimer=setTimer(IfsTimeOut, tRxEnd + _dIfs*1e-6);
+                        _IfsTimer=setTimer(IfsTimeOut, tRxEnd.add(_dIfs*1e-6));
                     }
             } else if (channelStatus.hasToken(0)) {
                 _inputMessage = (RecordToken) channelStatus.get(0);
@@ -205,7 +206,7 @@ public class ChannelState extends MACActorBase {
             case Idle:
                 // if channel becomes idle,set timer and goes to Wait_Ifs state
                 if (_IfsTimer != null ) cancelTimer(_IfsTimer);
-                _IfsTimer=setTimer(IfsTimeOut,_currentTime + _dIfs*1e-6);
+                _IfsTimer=setTimer(IfsTimeOut,_currentTime.add(_dIfs*1e-6));
                 _state = Wait_Ifs;
                 break;
 
@@ -281,7 +282,7 @@ public class ChannelState extends MACActorBase {
             // if the reservation is over, goes to Wait_Ifs state.
             if (kind == NavTimeOut) {
                 if (_IfsTimer != null ) cancelTimer(_IfsTimer);
-                _IfsTimer = setTimer(IfsTimeOut, _currentTime + _dIfs*1e-6);
+                _IfsTimer = setTimer(IfsTimeOut, _currentTime.add(_dIfs*1e-6));
                 _state = Wait_Ifs;
             } else {
                 //_getMsgType();
@@ -331,17 +332,17 @@ public class ChannelState extends MACActorBase {
     ////                         private methods                 ////
 
     private void _updateNav() throws IllegalActionException {
-        double tNew;
 
         switch(_messageType) {
         case SetNav:
             // new NAV
-            tNew = ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
-                +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
+            Time tNew = new Time(this, 
+                ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
+                +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6);
             // if the new NAV is larger than the existing one, use it instead
-            if (tNew > _NavTimer.expirationTime) {
+            if (tNew.compareTo(_NavTimer.expirationTime) > 0) {
                 _NavTimer.expirationTime = tNew;
-                _setAttribute(_tNavEnd, new DoubleToken(tNew));
+                _setAttribute(_tNavEnd, new DoubleToken(tNew.getTimeValue()));
                 _curSrc=((IntToken)_inputMessage.get("src")).intValue();
             }
             break;
@@ -353,7 +354,8 @@ public class ChannelState extends MACActorBase {
         case ClearNav:
             // force the state transition to the corresponding noNav states
             _NavTimer.expirationTime = _currentTime;
-            _setAttribute(_tNavEnd, new DoubleToken(_currentTime));
+            _setAttribute(_tNavEnd, 
+                new DoubleToken(_currentTime.getTimeValue()));
             _curSrc=nosrc;
             break;
 
@@ -361,10 +363,12 @@ public class ChannelState extends MACActorBase {
     }
 
     private boolean _setNav() throws IllegalActionException {
-        double expirationTime =  ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
-            +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
-        _setAttribute(_tNavEnd, new DoubleToken(expirationTime));
-        if (expirationTime > _currentTime) {
+        Time expirationTime =  new Time(this, 
+            ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
+            +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6);
+        _setAttribute(_tNavEnd, 
+            new DoubleToken(expirationTime.getTimeValue()));
+        if (expirationTime.compareTo(_currentTime) > 0) {
             if (_NavTimer != null ) cancelTimer(_NavTimer);
             _NavTimer=setTimer(NavTimeOut,expirationTime);
             return true;
@@ -424,6 +428,6 @@ public class ChannelState extends MACActorBase {
 
     private RecordToken _inputMessage;
     private int _messageType;
-    private double _currentTime;
+    private Time _currentTime;
 
 }

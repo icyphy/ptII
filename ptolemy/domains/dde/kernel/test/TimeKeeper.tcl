@@ -66,6 +66,14 @@ test TimeKeeper-2.1 {instantiate objects} {
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
 
+    set time [java::new {ptolemy.actor.util.Time ptolemy.actor.Director} $dir]
+    set time1 [$time {add double} 15.0]
+    set time2 [$time {add double} 5.0]
+    set time3 [$time {add double} 6.0]
+    set time4 [$time {add double} 3.0]
+    set time5 [$time {add double} $globalIgnoreTime]
+    set time6 [$time {add double} $globalEndTime]
+
     set tok [java::new ptolemy.data.Token]
 
     list 1
@@ -76,11 +84,11 @@ test TimeKeeper-2.1 {instantiate objects} {
 # Continued from above
 test TimeKeeper-3.1 {getNextTime()} {
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
-    $rcvr1 put $tok 15.0
+    $rcvr1 put $tok $time1
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr2 put $tok 5.0
+    $rcvr2 put $tok $time2
     set rcvr3 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 3]
-    $rcvr3 put $tok 6.0
+    $rcvr3 put $tok $time3
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
@@ -90,7 +98,7 @@ test TimeKeeper-3.1 {getNextTime()} {
 
     set newrcvr [$keeper getFirstReceiver]
 
-    list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
+    list [[$keeper getNextTime] getTimeValue] [expr {$rcvr2 == $newrcvr} ]
 
 } {5.0 1}
 
@@ -99,11 +107,11 @@ test TimeKeeper-3.1 {getNextTime()} {
 # Continued from above
 test TimeKeeper-3.2 {getNextTime()} {
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 20]
-    $rcvr1 put $tok $globalIgnoreTime
+    $rcvr1 put $tok $time5
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr2 put $tok 5.0
+    $rcvr2 put $tok $time2
     set rcvr3 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 3]
-    $rcvr3 put $tok 5.0
+    $rcvr3 put $tok $time2
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
@@ -113,7 +121,7 @@ test TimeKeeper-3.2 {getNextTime()} {
 
     set newrcvr [$keeper getFirstReceiver]
 
-    list [$keeper getNextTime] [expr {$rcvr3 == $newrcvr} ]
+    list [[$keeper getNextTime] getTimeValue] [expr {$rcvr3 == $newrcvr} ]
 
 } {5.0 1}
 
@@ -122,9 +130,9 @@ test TimeKeeper-3.2 {getNextTime()} {
 # Continued from above
 test TimeKeeper-3.3 {getNextTime()} {
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 20]
-    $rcvr1 put $tok $globalIgnoreTime
+    $rcvr1 put $tok $time5
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr2 put $tok $globalEndTime
+    $rcvr2 put $tok $time6
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
@@ -133,7 +141,7 @@ test TimeKeeper-3.3 {getNextTime()} {
 
     set newrcvr [$keeper getFirstReceiver]
 
-    list [$keeper getNextTime] [expr {$rcvr1 == $newrcvr} ]
+    list [[$keeper getNextTime] getTimeValue] [expr {$rcvr1 == $newrcvr} ]
 
 } {-1.0 1}
 
@@ -142,9 +150,9 @@ test TimeKeeper-3.3 {getNextTime()} {
 # Continued from above
 test TimeKeeper-3.4 {getNextTime()} {
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
-    $rcvr1 put $tok $globalEndTime
+    $rcvr1 put $tok $time6
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 5]
-    $rcvr2 put $tok $globalEndTime
+    $rcvr2 put $tok $time6
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
@@ -153,7 +161,7 @@ test TimeKeeper-3.4 {getNextTime()} {
 
     set newrcvr [$keeper getFirstReceiver]
 
-    list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
+    list [[$keeper getNextTime] getTimeValue] [expr {$rcvr2 == $newrcvr} ]
 
 } {-2.0 1}
 
@@ -169,10 +177,10 @@ test TimeKeeper-4.1 {Call Methods On Uninitialized TimeKeeper} {
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     set val 1
-    if { [$keeper getCurrentTime] != 0.0 } {
+    if { [[$keeper getCurrentTime] getTimeValue] != 0.0 } {
 	set val 0
     }
-    if { [$keeper getNextTime] != 0.0 } {
+    if { [[$keeper getNextTime] getTimeValue] != 0.0 } {
 	set val 0
     }
     if { ![java::isnull [$keeper getFirstReceiver]] } {
@@ -196,10 +204,10 @@ test TimeKeeper-5.1 {Ignore Tokens} {
     set tok [java::new ptolemy.data.Token]
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
-    $rcvr1 put $tok 0.0
+    $rcvr1 put $tok $time
 
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 4]
-    $rcvr2 put $tok $globalIgnoreTime
+    $rcvr2 put $tok $time5
 
     set val 0
     if { [$rcvr1 hasToken] == 1 } {
@@ -230,11 +238,11 @@ test TimeKeeper-5.1 {Ignore Tokens} {
 test TimeKeeper-5.2 {Ignore Tokens} {
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
-    $rcvr1 put $tok 0.0
+    $rcvr1 put $tok $time
 
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 4]
-    $rcvr2 put $tok $globalIgnoreTime
-    $rcvr2 put $tok 3.0
+    $rcvr2 put $tok $time5
+    $rcvr2 put $tok $time4
 
     set val 0
     if { [$rcvr1 hasToken] == 1 } {
@@ -255,7 +263,7 @@ test TimeKeeper-5.2 {Ignore Tokens} {
 	set newVal 0
     }
 
-    set time [$rcvr2 getReceiverTime]
+    set time [[$rcvr2 getReceiverTime] getTimeValue]
 
     list $val $time
 
@@ -267,10 +275,10 @@ test TimeKeeper-5.2 {Ignore Tokens} {
 test TimeKeeper-5.3 {Ignore Tokens} {
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
-    $rcvr1 put $tok $globalIgnoreTime
+    $rcvr1 put $tok $time5
 
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 4]
-    $rcvr2 put $tok $globalIgnoreTime
+    $rcvr2 put $tok $time5
 
     set val 0
     if { [$rcvr1 hasToken] == 1 } {
@@ -293,7 +301,7 @@ test TimeKeeper-5.3 {Ignore Tokens} {
 	}
     }
 
-    set time [$rcvr2 getReceiverTime]
+    set time [[$rcvr2 getReceiverTime] getTimeValue]
 
     list $val $newVal
 

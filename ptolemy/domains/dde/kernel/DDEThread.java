@@ -38,6 +38,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessThread;
 import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -110,9 +111,9 @@ public class DDEThread extends ProcessThread {
                     for (int j = 0; j < receivers[i].length; j++) {
                         try {
                             if ( ((DDEReceiver)receivers[i][j]).getReceiverTime()
-                                    != endTime ) {
+                                .getTimeValue() != endTime ) {
                                 ((DDEReceiver) receivers[i][j]).put(null,
-                                        endTime);
+                                    new Time(getActor(), endTime));
                             }
                         } catch( TerminateProcessException e ) {
                             // Do nothing since we are ending
@@ -141,7 +142,7 @@ public class DDEThread extends ProcessThread {
         if ( table != null ) {
             Double dTime = (Double)table.get(actor);
             if ( dTime != null ) {
-                double time = dTime.doubleValue();
+                Time time = new Time(actor, dTime.doubleValue());
                 _timeKeeper.setCurrentTime( time );
             }
         }

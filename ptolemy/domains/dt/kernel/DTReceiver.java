@@ -37,6 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -76,15 +77,6 @@ public class DTReceiver extends SDFReceiver {
      */
     public DTReceiver() {
         super();
-        _init();
-    }
-
-    /** Construct an empty receiver with no container and given size.
-     *  @param size The size of the buffer for the receiver.
-     */
-    public DTReceiver(int size) {
-        super(size);
-        _init();
     }
 
     /** Construct an empty receiver with the specified container.
@@ -96,6 +88,8 @@ public class DTReceiver extends SDFReceiver {
     public DTReceiver(IOPort container) throws IllegalActionException {
         super(container);
         _init();
+        Time localTime = new Time((Actor) container.getContainer());
+        initializeLocalTime(localTime);
     }
 
     /** Construct an empty receiver with the specified container and size.
@@ -109,6 +103,8 @@ public class DTReceiver extends SDFReceiver {
             throws IllegalActionException {
         super(container, size);
         _init();
+        Time localTime = new Time((Actor) container.getContainer());
+        initializeLocalTime(localTime);
     }
 
 
@@ -268,7 +264,7 @@ public class DTReceiver extends SDFReceiver {
         }
 
         // FIXME: timing has bugs for DT inside DT
-        _localTime = _localTime + _deltaTime;
+        _localTime = _localTime.add(_deltaTime);
         return super.get();
     }
 
@@ -276,7 +272,7 @@ public class DTReceiver extends SDFReceiver {
      *
      *   @return The local time associated with this receiver.
      */
-    public double getCurrentTime() {
+    public Time getCurrentTime() {
         return _localTime;
     }
 
@@ -317,20 +313,6 @@ public class DTReceiver extends SDFReceiver {
     }
 
 
-    /** Put a token to the receiver. If the port feeding this
-     *  receiver is null, report an internal error.
-     *
-     *  @param token The token to be put to the receiver.
-     *  @exception InternalErrorException If the source port is null.
-     */
-    public void put(Token token) {
-        if (_fromPort == null) {
-            throw new InternalErrorException(
-                    "internal DT error: Receiver with null source");
-        }
-        super.put(token);
-    }
-
     /** Return true if get() will succeed in returning a token.
      *
      *  @return A boolean indicating whether there is a token in this
@@ -344,6 +326,19 @@ public class DTReceiver extends SDFReceiver {
         }
     }
 
+    /** Put a token to the receiver. If the port feeding this
+     *  receiver is null, report an internal error.
+     *
+     *  @param token The token to be put to the receiver.
+     *  @exception InternalErrorException If the source port is null.
+     */
+    public void put(Token token) {
+        if (_fromPort == null) {
+            throw new InternalErrorException(
+                    "internal DT error: Receiver with null source");
+        }
+        super.put(token);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                  package-access methods                   ////
@@ -373,6 +368,14 @@ public class DTReceiver extends SDFReceiver {
     //    _debug(fromString + " " + toString + " " + _deltaTime);
     }
 
+    /** Initialize the local time to the given time whose time value is 0.0. 
+     *  This method is designed for the newReceiver method of DTDirector only.   
+     * 
+     *  @param time The desired local time.
+     */
+    void initializeLocalTime(Time time) {
+        _localTime = time;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -384,7 +387,6 @@ public class DTReceiver extends SDFReceiver {
     private void _init() {
         _from = null;
         _to   = null;
-        _localTime = 0.0;
         _tokenFlowRate = 0;
         _deltaTime = 0.0;
         overrideHasToken = false;
@@ -415,7 +417,7 @@ public class DTReceiver extends SDFReceiver {
 
 
     // The local cached time
-    private double _localTime;
+    private Time _localTime;
 
     // The cached value of the source token production rate
     private int _outrate;

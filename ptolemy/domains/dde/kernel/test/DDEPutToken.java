@@ -31,6 +31,7 @@ package ptolemy.domains.dde.kernel.test;
 
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.domains.dde.kernel.DDEReceiver;
 import ptolemy.kernel.util.IllegalActionException;
@@ -83,7 +84,8 @@ public class DDEPutToken extends DDEPut {
                     if ( _oneArg ) {
                         rcvr.put( _tokens[cnt] );
                     } else {
-                        rcvr.put( _tokens[cnt], _times[cnt] );
+                        rcvr.put( _tokens[cnt], 
+                            new Time(this, _times[cnt]) );
                     }
                 }
             }

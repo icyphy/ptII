@@ -64,29 +64,34 @@ test ReceiverComparator-2.1 {compareTo() on times, same priorities} {
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set iop [java::new ptolemy.actor.TypedIOPort]
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "IOPort"]
     set tok [java::new ptolemy.data.Token]
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     set cmp [java::new ptolemy.domains.dde.kernel.ReceiverComparator $keeper]
+    set time [java::new {ptolemy.actor.util.Time ptolemy.actor.Director} $dir]
+    set time1 [$time {add double} 0.5]
+    set time2 [$time {add double} 2.5]
+    set time3 [$time {add double} $globalIgnoreTime]
+    set time4 [$time {add double} $globalEndTime]
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr1 put $tok 0.0
+    $rcvr1 put $tok $time
 
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr2 put $tok 0.5
+    $rcvr2 put $tok $time1
 
     set rcvr3 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr3 put $tok 2.5
+    $rcvr3 put $tok $time2
 
     set rcvr4 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr4 put $tok $globalIgnoreTime
+    $rcvr4 put $tok $time3
 
     set rcvr5 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr5 put $tok $globalEndTime
+    $rcvr5 put $tok $time4
 
     set rcvr6 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr6 put $tok 0.5
+    $rcvr6 put $tok $time1
 
     set testA [$cmp compare $rcvr1 $rcvr2]
     set testB [$cmp compare $rcvr4 $rcvr1]
@@ -108,31 +113,31 @@ test ReceiverComparator-2.2 {compareTo() on times and priorities} {
     set cmp [java::new ptolemy.domains.dde.kernel.ReceiverComparator $keeper]
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr1 put $tok 0.0
+    $rcvr1 put $tok $time
 
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
-    $rcvr2 put $tok 0.0
+    $rcvr2 put $tok $time
 
     set rcvr3 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 3]
-    $rcvr3 put $tok $globalIgnoreTime
+    $rcvr3 put $tok $time3
 
     set rcvr4 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 4]
-    $rcvr4 put $tok $globalIgnoreTime
+    $rcvr4 put $tok $time3
 
     set rcvr5 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 5]
-    $rcvr5 put $tok $globalEndTime
+    $rcvr5 put $tok $time4
 
     set rcvr6 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 6]
-    $rcvr6 put $tok $globalEndTime
+    $rcvr6 put $tok $time4
 
     set rcvr7 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr7 put $tok 0.0
+    $rcvr7 put $tok $time
 
     set rcvr8 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 3]
-    $rcvr8 put $tok $globalIgnoreTime
+    $rcvr8 put $tok $time3
 
     set rcvr9 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 5]
-    $rcvr9 put $tok $globalEndTime
+    $rcvr9 put $tok $time4
 
     set testA [$cmp compare $rcvr1 $rcvr2]
     set testB [$cmp compare $rcvr3 $rcvr4]

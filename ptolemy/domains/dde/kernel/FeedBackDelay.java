@@ -31,6 +31,7 @@ package ptolemy.domains.dde.kernel;
 
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -179,18 +180,18 @@ public class FeedBackDelay extends DDEActor {
             if ( token instanceof NullToken ) {
                 if ( delayNullVal ) {
                     _sendOutToken( token,
-                            getDirector().getCurrentTime() + getDelay() );
+                            getDirector().getCurrentTime().add(getDelay()));
                 } else {
                     _sendOutToken( token,
-                            getDirector().getCurrentTime() );
+                            getDirector().getCurrentTime());
                 }
             } else {
                 if ( delayRealVal ) {
                     _sendOutToken( token,
-                            getDirector().getCurrentTime() + getDelay() );
+                            getDirector().getCurrentTime().add(getDelay()));
                 } else {
                     _sendOutToken( token,
-                            getDirector().getCurrentTime() );
+                            getDirector().getCurrentTime());
                 }
             }
         }
@@ -210,7 +211,8 @@ public class FeedBackDelay extends DDEActor {
         for ( int i = 0; i < receivers.length; i++ ) {
             for ( int j = 0; j < receivers[i].length; j++ ) {
                 DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
-                rcvr.put( new Token(), PrioritizedTimedQueue.IGNORE );
+                rcvr.put( new Token(), 
+                    new Time(this, PrioritizedTimedQueue.IGNORE));
             }
         }
 
@@ -230,7 +232,7 @@ public class FeedBackDelay extends DDEActor {
     /** Syntactic sugar for sending out tokens without
      *  depending on IOPort.send().
      */
-    private void _sendOutToken(Token token, double time) {
+    private void _sendOutToken(Token token, Time time) {
         Receiver[][] receivers =
             (Receiver[][])output.getRemoteReceivers();
         for ( int i = 0; i < receivers.length; i++ ) {

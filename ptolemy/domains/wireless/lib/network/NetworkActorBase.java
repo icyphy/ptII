@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -129,7 +130,7 @@ public class NetworkActorBase extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by
      *  getDirector().fireAt().
      */
-    protected Timer setTimer(int kind, double expirationTime)
+    protected Timer setTimer(int kind, Time expirationTime)
             throws IllegalActionException {
         Timer timer=new Timer();
         timer.kind=kind;
@@ -171,7 +172,8 @@ public class NetworkActorBase extends TypedAtomicActor {
         Iterator timers = _timersSet.iterator();
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-            if (timer.expirationTime==getDirector().getCurrentTime())
+            if (timer.expirationTime.compareTo(
+                getDirector().getCurrentTime()) == 0)
                 {
                     // remove it from the set no matter that
                     // it will be processed or ignored
@@ -191,6 +193,6 @@ public class NetworkActorBase extends TypedAtomicActor {
     ////                         inner classes                     ////
     protected class Timer {
         public int kind;
-        public double expirationTime;
+        public Time expirationTime;
     }
 }

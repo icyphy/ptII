@@ -32,6 +32,7 @@ package ptolemy.domains.dde.kernel;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -146,7 +147,7 @@ public class DDEIOPort extends TypedIOPort {
      * @exception NoRoomException If a send to one of the channels
      *  throws it.
      */
-    public void broadcast(Token token, double sendTime)
+    public void broadcast(Token token, Time sendTime)
             throws IllegalActionException, NoRoomException {
         // FIXME: Now that TypedIOPort has
         // broadcast(Token[] tokenArray, int vectorLength)
@@ -182,18 +183,20 @@ public class DDEIOPort extends TypedIOPort {
      * @exception IllegalActionException If the port is not an output,
      *  if the index is out of range.
      */
-    public void send(int chIndex, Token token, double sendTime)
+    public void send(int chIndex, Token token, Time sendTime)
             throws IllegalActionException, NoRoomException {
-        double currentTime = 0.0;
+        double currentTimeValue = 0.0;
+        double sentTimeValue = sendTime.getTimeValue();
         Thread thread = Thread.currentThread();
         DDEThread ddeThread = null;
         if ( thread instanceof DDEThread ) {
             ddeThread = (DDEThread)thread;
-            currentTime = ddeThread.getTimeKeeper().getCurrentTime();
+            currentTimeValue = 
+                ddeThread.getTimeKeeper().getCurrentTime().getTimeValue();
         }
-        if ( sendTime < currentTime &&
-                sendTime != PrioritizedTimedQueue.IGNORE &&
-                sendTime != PrioritizedTimedQueue.INACTIVE ) {
+        if ( sentTimeValue < currentTimeValue &&
+            sentTimeValue != PrioritizedTimedQueue.IGNORE &&
+            sentTimeValue != PrioritizedTimedQueue.INACTIVE ) {
             throw new IllegalActionException( this, "Time values in "
                     + "the past are not allowed.");
         }

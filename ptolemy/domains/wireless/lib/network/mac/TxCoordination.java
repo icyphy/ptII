@@ -30,6 +30,7 @@ package ptolemy.domains.wireless.lib.network.mac;
 import java.util.LinkedList;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -160,7 +161,7 @@ public class TxCoordination extends MACActorBase {
     public void fire() throws IllegalActionException {
         super.fire();
         int kind=whoTimeout();        // check if a timer times out and which
-        double currentTime =getDirector().getCurrentTime();
+        Time currentTime =getDirector().getCurrentTime();
 
         boolean isNetData=false;
 
@@ -219,7 +220,7 @@ public class TxCoordination extends MACActorBase {
                 if (TXTXConfirm.hasToken(0))
                     {
                         TXTXConfirm.get(0);
-                        _Trsp=setTimer(Timeout,currentTime+_CTSTimeout*1e-6);
+                        _Trsp=setTimer(Timeout,currentTime.add(_CTSTimeout*1e-6));
                         _currentState=Wait_Cts;
                     }
                 break;
@@ -258,10 +259,11 @@ public class TxCoordination extends MACActorBase {
                         if ( ((IntToken)GotCtsMsg.get("kind")).intValue()==GotCts )
                             {
                                 cancelTimer(_Trsp);
-                                double endRx=((DoubleToken)GotCtsMsg.get("endRx")).doubleValue();
+                                Time endRx = new Time(this,
+                                    ((DoubleToken)GotCtsMsg.get("endRx")).doubleValue());
                                 _ssrc=0;
 
-                                setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
+                                setTimer(SifsTimeout, endRx.add(_dSifsDly*1e-6));
                                 int durId=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_sAckCtsLng/_mBrate;
                                 _setDurIdField(_tpdu,durId);
                                 _currentState=Wait_Cts_Sifs;
@@ -311,7 +313,7 @@ public class TxCoordination extends MACActorBase {
                             }
                         else
                             {
-                                _Trsp=setTimer(Timeout,currentTime+_CTSTimeout*1e-6);
+                                _Trsp=setTimer(Timeout,currentTime.add(_CTSTimeout*1e-6));
                                 _currentState=Wait_Ack;
                             }
                     }

@@ -36,6 +36,7 @@ import java.util.Random;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -309,7 +310,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 //Call fireAt to set the color back to white after the delay time.
                 Director director = getDirector();
                 double delayTime = ((DoubleToken)delay.getToken()).doubleValue();
-                double time = director.getCurrentTime() + delayTime;
+                Time time = director.getCurrentTime().add(delayTime);
                 director.fireAt(this, time);
             } else if (getName().equals(routeTo) || hops == 0) {
                 // Change the color of the icon to green.
@@ -371,11 +372,11 @@ public class SmallWorldRouter extends TypedAtomicActor {
                                   new StringToken(to),
                                   new IntToken(hops+1)};
                 double delayTime = ((DoubleToken)delay.getToken()).doubleValue();
-                double time = director.getCurrentTime() + delayTime;
+                Time time = director.getCurrentTime().add(delayTime);
                 if (_receptions == null) {
                     _receptions = new HashMap();
                 }
-                Double timeDouble = new Double(time);
+                Double timeDouble = new Double(time.getTimeValue());
                 String[] labels = {"data", "destination", "routeTo", "hops"};
                 RecordToken result = new RecordToken(labels, values);
                 _receptions.put(timeDouble, result);
@@ -392,15 +393,16 @@ public class SmallWorldRouter extends TypedAtomicActor {
                     RecordToken result2 = new RecordToken(labels, values2);
                     _receptions.put(timeDouble, result2);
 
-                    director.fireAt(this, time + delayTime);
+                    director.fireAt(this, time.add(delayTime));
                 }
                 //output.send(0, result);
             }
         } else {
             if (_receptions != null) {
                 // We may be getting fired because of an impending event.
-                double currentTime = getDirector().getCurrentTime();
-                Double timeDouble = new Double(currentTime);
+                double currentTimeValue = 
+                    getDirector().getCurrentTime().getTimeValue();
+                Double timeDouble = new Double(currentTimeValue);
                 RecordToken reception = (RecordToken)_receptions.get(timeDouble);
                 if (reception != null) {
                     // The time matches a pending reception.

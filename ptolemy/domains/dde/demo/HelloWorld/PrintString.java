@@ -31,6 +31,7 @@ package ptolemy.domains.dde.demo.HelloWorld;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.domains.dde.kernel.DDEActor;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,7 +78,7 @@ public class PrintString extends DDEActor {
      */
     public void fire() throws IllegalActionException {
         StringToken token = null;
-        double time = 0.0;
+        Time time;
 
         while ( true ) {
             token = (StringToken)getNextToken();

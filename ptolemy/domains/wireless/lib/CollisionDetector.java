@@ -34,6 +34,7 @@ import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -333,7 +334,7 @@ public class CollisionDetector extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        double currentTime = getDirector().getCurrentTime();
+        Time currentTime = getDirector().getCurrentTime();
         if (_debugging) {
             _debug("---------------------------------");
             _debug("Current time is: " + currentTime);
@@ -357,7 +358,7 @@ public class CollisionDetector extends TypedAtomicActor {
                 Reception reception = new Reception();
                 reception.data = message.get(0);
                 reception.power = powerValue;
-                reception.arrivalTime = currentTime;
+                reception.arrivalTime = currentTime.getTimeValue();
                 reception.collided = false;
                 reception.duration = ((DoubleToken)
                         duration.get(0)).doubleValue();
@@ -370,8 +371,8 @@ public class CollisionDetector extends TypedAtomicActor {
                 _totalPower = _totalPower + reception.power;
 
                 // Put the new reception into the list of prior receptions.
-                double time = currentTime + reception.duration;
-                reception.expiration = time;
+                Time time = currentTime.add(reception.duration);
+                reception.expiration = time.getTimeValue();
 
                 _receptions.add(reception);
 
@@ -393,7 +394,7 @@ public class CollisionDetector extends TypedAtomicActor {
             }
             // If the reception is now expiring, send it to one of the two
             // output ports.
-            if (priorReception.expiration == currentTime) {
+            if (priorReception.expiration == currentTime.getTimeValue()) {
                 if (_debugging) {
                     _debug("Current time matches expiration " +
                             "time of a prior message that arrived at: "

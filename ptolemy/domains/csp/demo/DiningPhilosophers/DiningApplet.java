@@ -321,7 +321,8 @@ public class DiningApplet extends Applet
                     return;
                 }
                 // get the current time from director.
-                double currentTime = _localDirector.getCurrentTime();
+                double currentTime = 
+                    _localDirector.getCurrentTime().getTimeValue();
                 _currentTimeLabel.setText("Current time = " +
                         nf.format(currentTime));
                 try {

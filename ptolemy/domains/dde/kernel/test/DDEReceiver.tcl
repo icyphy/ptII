@@ -68,22 +68,30 @@ proc describeBoundary {receiver} {
 ####
 #
 test DDEReceiver-1.1 {Constructors} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
+    set ddeActor [java::new ptolemy.domains.dde.kernel.DDEActor $toplevel "DDEActor"]
+    set ioPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $ddeActor "IOPort"]
     set r1 [java::new ptolemy.domains.dde.kernel.DDEReceiver]
-    set ioPort [java::new ptolemy.actor.IOPort]
     $ioPort setName IOPort1
     set r2 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort]
     set r3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort 1]
     list [describeBoundary $r1] \
 	[[$r2 getContainer] toString] [describeBoundary $r2] \
 	[[$r3 getContainer] toString] [describeBoundary $r3] \
-} {{0 0 0 0 0 0 1} {ptolemy.actor.IOPort {.IOPort1}} {0 0 0 0 0 0 1} {ptolemy.actor.IOPort {.IOPort1}} {0 0 0 0 0 0 1}}
+} {{0 0 0 0 0 0 1} {ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1} {ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1}}
 
 test DDEReceiver-1.2 {Constructors: make sure that the priorities are used} {
-    set ioPort [java::new ptolemy.actor.IOPort]
-    $ioPort setName IOPort1
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
+    set ddeActor [java::new ptolemy.domains.dde.kernel.DDEActor $toplevel "DDEActor"]
+    set ioPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $ddeActor "IOPort1"]
+
     set r3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort 1]
     set r4 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort 2]
-    set ddeActor [java::new ptolemy.domains.dde.kernel.DDEActor]
+
     set timeKeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $ddeActor]
     set receiverComparator \
 	[java::new ptolemy.domains.dde.kernel.ReceiverComparator $timeKeeper]
@@ -253,6 +261,7 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
 test DDEReceiver-2.5 {Check hasToken() cache.} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
     set actor [java::new ptolemy.actor.TypedCompositeActor $toplevel "actor"]
     set port [java::new ptolemy.actor.TypedIOPort $actor "port"]
     set rcvr [java::new ptolemy.domains.dde.kernel.DDEReceiver $port]

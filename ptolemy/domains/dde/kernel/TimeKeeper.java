@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -104,6 +105,8 @@ public class TimeKeeper {
         _receiverComparator = new ReceiverComparator(this);
 
         _setReceiverPriorities();
+        _currentTime = new Time(actor);
+        _outputTime = new Time(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,7 +117,7 @@ public class TimeKeeper {
      *  consumed by one of the receivers managed by this TimeKeeper.
      * @return The current time of this TimeKeeper.
      */
-    public double getCurrentTime() {
+    public Time getCurrentTime() {
         return _currentTime;
     }
 
@@ -141,7 +144,7 @@ public class TimeKeeper {
      * @return The next earliest possible time stamp to be produced by
      *  this actor.
      */
-    public double getNextTime() {
+    public Time getNextTime() {
         if ( _receiverList.size() == 0 ) {
             return _currentTime;
         }
@@ -153,14 +156,14 @@ public class TimeKeeper {
      *  a new value that is equivalent to this time keeper's current time.
      * @return double The output time of this time keeper.
      */
-    public synchronized double getOutputTime() {
+    public synchronized Time getOutputTime() {
 
         if ( !((ComponentEntity)_actor).isAtomic() ) {
             return _outputTime;
         }
 
 
-        if ( _outputTime < _currentTime ) {
+        if ( _outputTime.compareTo(_currentTime) < 0) {
             _outputTime = _currentTime;
         }
         return _outputTime;
@@ -178,7 +181,7 @@ public class TimeKeeper {
             PrioritizedTimedQueue receiver;
             for ( int i = 0; i < _receiverList.size(); i++ ) {
                 receiver = (PrioritizedTimedQueue)_receiverList.get(i);
-                if ( receiver.getReceiverTime() ==
+                if ( receiver.getReceiverTime().getTimeValue() ==
                         PrioritizedTimedQueue.IGNORE ) {
                     receiver.removeIgnoredToken();
                 }
@@ -198,14 +201,15 @@ public class TimeKeeper {
      */
     public void sendOutNullTokens(DDEReceiver receiver) {
         Iterator ports = _actor.outputPortList().iterator();
-        double time = getCurrentTime();
+        Time time = getCurrentTime();
         while ( ports.hasNext() ) {
             IOPort port = (IOPort)ports.next();
             Receiver receivers[][] =
                 (Receiver[][])port.getRemoteReceivers();
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if ( time > ((DDEReceiver)receivers[i][j])._lastTime ) {
+                    if ( time.compareTo(
+                        ((DDEReceiver)receivers[i][j])._lastTime) > 0 ) {
                         ((DDEReceiver)receivers[i][j]).put(
                                 new NullToken(), time );
                     }
@@ -223,10 +227,10 @@ public class TimeKeeper {
      * @exception IllegalArgumentException If there is an attempt to
      *  decrease the value of current time to a nonnegative number.
      */
-    public synchronized void setCurrentTime(double time) {
-        if ( time < _currentTime
-                && time != PrioritizedTimedQueue.INACTIVE
-                && time != PrioritizedTimedQueue.IGNORE ) {
+    public synchronized void setCurrentTime(Time time) {
+        if ( time.compareTo(_currentTime) < 0 
+                && time.getTimeValue() != PrioritizedTimedQueue.INACTIVE
+                && time.getTimeValue() != PrioritizedTimedQueue.IGNORE ) {
             throw new IllegalArgumentException(
                     ((NamedObj)_actor).getName() + " - Attempt to "
                     + "set current time in the past."
@@ -234,7 +238,7 @@ public class TimeKeeper {
                     + "; current time = " + _currentTime );
         }
 
-        if ( time != PrioritizedTimedQueue.IGNORE ) {
+        if ( time.getTimeValue() != PrioritizedTimedQueue.IGNORE ) {
             _currentTime = time;
         }
     }
@@ -252,15 +256,15 @@ public class TimeKeeper {
             _receiverList = new LinkedList();
         }
 
-        double time = prioritizedTimedQueue.getReceiverTime();
-        if (time == PrioritizedTimedQueue.IGNORE) {
+        Time time = prioritizedTimedQueue.getReceiverTime();
+        if (time.getTimeValue() == PrioritizedTimedQueue.IGNORE) {
             _ignoredReceivers = true;
         }
 
         if ( !_receiverList.contains(prioritizedTimedQueue) ) {
             // Add receiver to list with a touch of
             // optimization before actually sorting.
-            if ( time > 0 ) {
+            if ( time.getTimeValue() > 0 ) {
                 _receiverList.addFirst(prioritizedTimedQueue);
             } else {
                 _receiverList.addLast(prioritizedTimedQueue);
@@ -316,15 +320,15 @@ public class TimeKeeper {
      * @exception IllegalActionException If the output time is
      *  less than the current time.
      */
-    synchronized void _setOutputTime(double outputTime)
+    synchronized void _setOutputTime(Time outputTime)
             throws IllegalActionException {
 
-        if ( outputTime < _currentTime ) {
+        if ( outputTime.compareTo(_currentTime) < 0) {
             throw new IllegalActionException("Illegal attempt "
                     + "to set the time keeper's output time "
                     + "in the past");
         }
-        if ( outputTime != PrioritizedTimedQueue.IGNORE ) {
+        if ( outputTime.getTimeValue() != PrioritizedTimedQueue.IGNORE ) {
             _outputTime = outputTime;
         }
     }
@@ -390,10 +394,10 @@ public class TimeKeeper {
     // The currentTime of the actor that is controlled by this
     // time keeper is equivalent to the minimum positive receiverTime
     // of each input receiver.
-    private double _currentTime = 0.0;
+    private Time _currentTime;
 
     // The output time associated with this time keeper.
-    private double _outputTime = 0.0;
+    private Time _outputTime;
 
     // This flag is set to true if any of the receivers have
     // a time stamp of PrioritizedTimedQueue.IGNORE

@@ -30,6 +30,7 @@
 package ptolemy.domains.wireless.lib.network.mac;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
@@ -136,7 +137,7 @@ public class RxCoordination extends MACActorBase {
     public void fire() throws IllegalActionException {
         super.fire();
         int dAck, ackto;
-        double endRx;
+        Time endRx;
         RecordToken pdu;
 
         // perform the actions/computation done in the handleMessage()
@@ -155,20 +156,22 @@ public class RxCoordination extends MACActorBase {
 
                             dAck= ((IntToken)msg.get("dAck")).intValue();
                             ackto= ((IntToken)msg.get("ackto")).intValue();
-                            endRx= ((DoubleToken)msg.get("endRx")).doubleValue();
+                            endRx= new Time(this,
+                                ((DoubleToken)msg.get("endRx")).doubleValue());
 
                             if (dAck>0)
                                 dAck=dAck-_dRsp;
                             // create Ack
                             _rspdu=_createPacket(Ack,dAck,ackto);
                             // schedule SIFS timer
-                            setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
+                            setTimer(SifsTimeout, endRx.add(_dSifsDly*1e-6));
                             _currentState=Wait_Sifs;
                             break;
 
                         case RxIndicate:
                             pdu= (RecordToken)msg.get("pdu");
-                            endRx= ((DoubleToken)msg.get("endRx")).doubleValue();
+                            endRx= new Time(this,
+                                ((DoubleToken)msg.get("endRx")).doubleValue());
                             int Type=((IntToken)pdu.get("Type")).intValue();
                             int Subtype=((IntToken)pdu.get("Subtype")).intValue();
                             int durId=((IntToken)pdu.get("durId")).intValue();
@@ -182,7 +185,7 @@ public class RxCoordination extends MACActorBase {
                                         case Ack:
                                             Token[] GotAckvalues={
                                                 new IntToken(GotAckMsg),
-                                                new DoubleToken(endRx)};
+                                                new DoubleToken(endRx.getTimeValue())};
                                             RecordToken GotAckmsg =
                                                 new RecordToken(GotCtsMsgFields, GotAckvalues);
                                             // send the message to the TxCoordination process
@@ -192,7 +195,7 @@ public class RxCoordination extends MACActorBase {
                                         case Cts:
                                             Token[] GotCtsvalues={
                                                 new IntToken(GotCts),
-                                                new DoubleToken(endRx)};
+                                                new DoubleToken(endRx.getTimeValue())};
                                             RecordToken GotCtsmsg =
                                                 new RecordToken(GotCtsMsgFields, GotCtsvalues);
                                             // send the message to the TxCoordination process
@@ -200,18 +203,19 @@ public class RxCoordination extends MACActorBase {
                                             break;
 
                                         case Rts:
-                                            double currentTime =getDirector().getCurrentTime();
-                                            double navEnd = currentTime + 1.0;
+                                            Time currentTime =getDirector().getCurrentTime();
+                                            Time navEnd = currentTime.add(1.0);
                                             if (_tNavEnd != null && _tNavEnd instanceof Variable) {
                                                 Token token = ((Variable) _tNavEnd).getToken();
-                                                navEnd = ((DoubleToken) token).doubleValue();
+                                                navEnd = new Time(this,
+                                                    ((DoubleToken) token).doubleValue());
                                             } //FIXME: assume it is instanceof variable.
-                                            if (navEnd <= currentTime)
+                                            if (navEnd.compareTo(currentTime) <= 0)
                                                 {
                                                     // generate Cts
                                                      int Addr2=((IntToken)pdu.get("Addr2")).intValue();
                                                     _rspdu=_createPacket(Cts,durId-_dRsp,Addr2);
-                                                    setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
+                                                    setTimer(SifsTimeout, endRx.add(_dSifsDly*1e-6));
                                                     _currentState=Wait_Sifs;
                                                 }
                                             break;

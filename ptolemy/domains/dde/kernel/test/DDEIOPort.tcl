@@ -138,9 +138,10 @@ test DDEIOPort-4.0 {Check send()} {
     $rcvr setCapacity 1
 
     set hasRoom [$rcvr hasRoom]
+    set time [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $dir 5.0]
     # Tcl requires a fully qualified method signature for the overloaded
     # send() method.
-    $outPort {send int ptolemy.data.Token double}  0 $tok 5.0
+    $outPort {send int ptolemy.data.Token ptolemy.actor.util.Time}  0 $tok $time
     set noRoom [$rcvr hasRoom]
 
     list $hasRoom $noRoom
@@ -193,7 +194,8 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
 	set val 0
     }
 
-    $outPort {broadcast ptolemy.data.Token double} $tok 5.0
+    set time [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $dir 5.0]
+    $outPort {broadcast ptolemy.data.Token ptolemy.actor.util.Time} $tok $time
 
     if { [$rcvr2 hasRoom] != 0 } {
 	set val 0

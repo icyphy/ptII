@@ -684,7 +684,6 @@ public class SRDirector extends StaticSchedulingDirector {
 
             iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
-            setCurrentTime(0.0);
 
         } catch (KernelException ex) {
             throw new InternalErrorException(

@@ -32,6 +32,7 @@ package ptolemy.domains.pn.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -167,7 +168,7 @@ public class TimedPNDirector extends PNDirector
             throws CloneNotSupportedException {
         TimedPNDirector newObject = (TimedPNDirector)super.clone(workspace);
         newObject._eventQueue =
-            new CalendarQueue(new TimedEvent.TimeComparator());
+            new CalendarQueue(new TimedEvent.TimeComparator(this));
         newObject._delayBlockCount = 0;
         return newObject;
     }
@@ -183,16 +184,16 @@ public class TimedPNDirector extends PNDirector
      *  @exception IllegalActionException If the operation is not
      *  permissible (e.g. the given time is in the past).
      */
-    public synchronized void fireAt(Actor actor, double newFiringTime)
+    public synchronized void fireAt(Actor actor, Time newFiringTime)
             throws IllegalActionException {
-        if (newFiringTime < getCurrentTime()) {
+        if (newFiringTime.compareTo(getCurrentTime()) < 0) {
             throw new IllegalActionException(this, "The process wants to "
                     + " get fired in the past!");
         }
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
         _informOfDelayBlock();
         try {
-            while (getCurrentTime() < newFiringTime) {
+            while (getCurrentTime().compareTo(newFiringTime) < 0) {
                 wait();
             }
         } catch (InterruptedException e) {
@@ -206,9 +207,9 @@ public class TimedPNDirector extends PNDirector
      *  time to less than the current time.
      *  @param newTime The new time of the model.
      */
-    public void setCurrentTime(double newTime)
+    public void setCurrentTime(Time newTime)
             throws IllegalActionException {
-        if (newTime < getCurrentTime()) {
+        if (newTime.compareTo(getCurrentTime()) < 0) {
             throw new IllegalActionException(this, "Attempt to set the "+
                     "time to past.");
         } else {
@@ -297,12 +298,12 @@ public class TimedPNDirector extends PNDirector
                         Actor actor = (Actor)event.contents;
                         //Get the resumption time of the newly removed
                         //process.
-                        double newTime = event.timeStamp;
+                        Time newTime = event.timeStamp;
                         //If the resumption time of the newly removed
                         //process is the same as the newly advanced time
                         //then unblock it. Else put the newly removed
                         //process back on the event queue.
-                        if (newTime == getCurrentTime()) {
+                        if (newTime.equalTo(getCurrentTime())) {
                             _informOfDelayUnblock();
                         } else {
                             _eventQueue.put(new TimedEvent(newTime, actor));
@@ -327,7 +328,7 @@ public class TimedPNDirector extends PNDirector
      *  at.
      */
     protected CalendarQueue _eventQueue =
-    new CalendarQueue(new TimedEvent.TimeComparator());
+        new CalendarQueue(new TimedEvent.TimeComparator(this));
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -90,8 +90,8 @@ public class ReceiverComparator implements Comparator {
         //
         // Compare Receiver Time
         //
-        double time1 = receiver1.getReceiverTime();
-        double time2 = receiver2.getReceiverTime();
+        double time1 = receiver1.getReceiverTime().getTimeValue();
+        double time2 = receiver2.getReceiverTime().getTimeValue();
         if ( time1 == PrioritizedTimedQueue.IGNORE ||
                 time2 == PrioritizedTimedQueue.IGNORE ) {
             _timeKeeper._ignoredReceivers = true;

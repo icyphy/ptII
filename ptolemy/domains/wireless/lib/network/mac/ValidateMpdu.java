@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.domains.wireless.lib.network.mac;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
@@ -118,7 +119,7 @@ public class ValidateMpdu extends MACActorBase {
         // perform the actions/computation done in the handleMessage()
         // method
         int kind=whoTimeout();        // check if a timer times out and which
-        double currentTime =getDirector().getCurrentTime();
+        Time currentTime =getDirector().getCurrentTime();
         switch(_currentState)
             {
             case Rx_Idle:
@@ -152,7 +153,7 @@ public class ValidateMpdu extends MACActorBase {
                         switch(((IntToken)msg.get("kind")).intValue())
                             {
                             case RxEnd:
-                                _endRx=currentTime-_D1*1e-6;
+                                _endRx=currentTime.subtract(_D1*1e-6);
                                 if ( ((IntToken)msg.get("status")).intValue()==NoError)
                                     {
                                         // if the received message is RTS, set RtsTimeout timer
@@ -161,13 +162,13 @@ public class ValidateMpdu extends MACActorBase {
                                             {
                                                 _dRts=2*_aSifsTime+2*_aSlotTime+_sAckCtsLng/_rxRate+
                                                     _aPreambleLength+_aPlcpHeaderLength;
-                                                _timer=setTimer(RtsTimeout, currentTime +_dRts*1e-6);
+                                                _timer=setTimer(RtsTimeout, currentTime.add(_dRts*1e-6));
                                             }
                                         // working with record tokens to represent messages
                                         Token[] RxMpduvalues ={
                                             new IntToken(RxMpdu),
                                             _pdu,
-                                            new DoubleToken(_endRx),
+                                            new DoubleToken(_endRx.getTimeValue()),
                                             new IntToken(_rxRate)};
                                         RecordToken msgout =
                                             new RecordToken(RxMpduMsgFields, RxMpduvalues);
@@ -183,7 +184,7 @@ public class ValidateMpdu extends MACActorBase {
                                 // send UseIfs message to ChannelState process
                                 Token[] Ifsvalues ={
                                     new IntToken(UseIfs),
-                                    new DoubleToken(_endRx)};
+                                    new DoubleToken(_endRx.getTimeValue())};
                                 RecordToken msgout =new RecordToken(UseIfsMsgFields, Ifsvalues);
                                 toChannelState.send(0, msgout);
 
@@ -217,7 +218,7 @@ public class ValidateMpdu extends MACActorBase {
 
     private int _dRts;
     private int _rxRate;
-    private double _endRx = 0.0;
+    private Time _endRx = new Time(this);
     private RecordToken _pdu;
     private Timer _timer;
     private int _D1;

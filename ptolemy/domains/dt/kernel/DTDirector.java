@@ -43,6 +43,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -355,7 +356,7 @@ public class DTDirector extends SDFDirector {
      *
      *  @return the current time
      */
-    public double getCurrentTime() {
+    public Time getCurrentTime() {
         return _currentTime;
         //FIXME: 
         //this is a duplicate of the getCurrentTime method of Director?
@@ -367,14 +368,14 @@ public class DTDirector extends SDFDirector {
      *
      *  @return The time of the next iteration.
      */
-    public double getNextIterationTime() {
+    public Time getNextIterationTime() {
         double period = 0.0;
         try {
             period = getPeriod();
         } catch (IllegalActionException exception) {
             // FIXME: handle this
         }
-        return getCurrentTime() + period;
+        return getCurrentTime().add(period);
     }
 
 
@@ -443,7 +444,7 @@ public class DTDirector extends SDFDirector {
     public void initialize() throws IllegalActionException {
         //  -initialize-
 
-        _requestRefireAt(0.0);
+        _requestRefireAt(new Time(this));
         _actorTable = new ArrayList();
         _allActorsTable = new Hashtable();
         _receiverTable = new ArrayList();
@@ -554,7 +555,9 @@ public class DTDirector extends SDFDirector {
      *  @return A new DTReceiver.
      */
     public Receiver newReceiver() {
-        return new DTReceiver();
+        DTReceiver dtReceiver = new DTReceiver();
+        dtReceiver.initializeLocalTime(new Time(this));
+        return dtReceiver;
     }
 
     /** Request the outside director to fire this director's container
@@ -568,7 +571,7 @@ public class DTDirector extends SDFDirector {
     public boolean postfire() throws IllegalActionException {
         _makeTokensAvailable();
         double timeIncrement = getPeriod();
-        setCurrentTime(_formerValidTimeFired + timeIncrement);
+        setCurrentTime(_formerValidTimeFired.add(timeIncrement));
         _requestRefireAt(getCurrentTime());
         if (! _isFiringAllowed) {
             return true;
@@ -600,7 +603,7 @@ public class DTDirector extends SDFDirector {
      *  @param newTime The new current simulation time.
      *  @param actor The actor to be assigned a new local time
      */
-    public void setActorLocalTime(double newTime, Actor actor) {
+    public void setActorLocalTime(Time newTime, Actor actor) {
         DTActor dtActor = (DTActor) _allActorsTable.get(actor);
         dtActor._localTime = newTime;
     }
@@ -611,7 +614,7 @@ public class DTDirector extends SDFDirector {
      *
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(double newTime) {
+    public void setCurrentTime(Time newTime) {
         // _currentTime is inherited from base Director
         _currentTime = newTime;
     }
@@ -867,16 +870,16 @@ public class DTDirector extends SDFDirector {
         }
 
 
-        double currentTime = outsideDirector.getCurrentTime();
-        double currentPeriod = getPeriod();
-        double timeElapsed = currentTime - _formerValidTimeFired;
+        Time currentTime = outsideDirector.getCurrentTime();
+        Time currentPeriod = new Time(this, getPeriod());
+        Time timeElapsed = currentTime.subtract(_formerValidTimeFired);
 
         _debug("DT Director just started fire----------------"
                 + _formerValidTimeFired + " " + currentTime);
 
 
-        if ((currentTime != 0) && (! _inputTokensAvailable) &&
-                ((currentTime - _formerTimeFired) < _TOLERANCE )) {
+        if ((currentTime.getTimeValue() != 0) && (! _inputTokensAvailable) &&
+                (currentTime.compareTo(_formerTimeFired) == 0 )) {
             //  duplicate firings at the same time should be ignored
             //  unless there are input tokens
             _debug("duplicate firing");
@@ -889,7 +892,7 @@ public class DTDirector extends SDFDirector {
         }
 
         // this occurs during startup
-        if (currentTime == 0) {
+        if (currentTime.getTimeValue() == 0) {
             _debug("first firing");
             _shouldDoInternalTransferOutputs = true;
             _formerValidTimeFired = currentTime;
@@ -899,12 +902,12 @@ public class DTDirector extends SDFDirector {
         }
 
 
-        double timeRemaining = currentPeriod - timeElapsed;
+        Time timeRemaining = currentPeriod.subtract(timeElapsed);
         _debug("timeElapsed = " + timeElapsed);
         _debug("timeRemaining = " + timeRemaining);
         _debug("tolerance = " + _TOLERANCE);
 
-        if (timeRemaining < -_TOLERANCE ) {
+        if (timeRemaining.getTimeValue() < 0 ) {
             // this case should not occur
             _debug("InternalErrorException time: "
                     + _formerValidTimeFired
@@ -912,8 +915,8 @@ public class DTDirector extends SDFDirector {
             throw new InternalErrorException("unexpected time rollback");
         }
 
-        if ((timeRemaining > _TOLERANCE)
-                && (timeElapsed > _TOLERANCE)) {
+        if ((timeRemaining.getTimeValue() > 0)
+                && (timeElapsed.getTimeValue() > 0)) {
 
             Iterator outputPorts = container.outputPortList().iterator();
             _isFiringAllowed = false;
@@ -924,7 +927,7 @@ public class DTDirector extends SDFDirector {
                 insideReceivers = port.getInsideReceivers();
                 double deltaTime =
                     ((DTReceiver)insideReceivers[0][0]).getDeltaTime();
-                double ratio = timeElapsed / deltaTime;
+                double ratio = timeElapsed.getTimeValue() / deltaTime;
 
                 if (Math.abs(Math.round(ratio) - ratio) < _TOLERANCE) {
                     // firing at a time when transferOutputs should be called
@@ -1060,7 +1063,7 @@ public class DTDirector extends SDFDirector {
      *  No actual firing occurs of the inside actors will occur; hence the
      *  name 'pseudo-firing'
      */
-    private void _issuePseudoFire(double currentTime)
+    private void _issuePseudoFire(Time currentTime)
             throws IllegalActionException {
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
@@ -1075,9 +1078,9 @@ public class DTDirector extends SDFDirector {
             _debug("request pseudo-fire at " + deltaTime
                     + " intervals. " + periodDivider);
             for (int n = 1; n < periodDivider; n++) {
-                _requestRefireAt(currentTime + n * deltaTime);
+                _requestRefireAt(currentTime.add(n * deltaTime));
                 _debug(" request pseudo-fire at "
-                        + (currentTime + n * deltaTime));
+                        + (currentTime.add(n * deltaTime)).getTimeValue());
             }
         }
     }
@@ -1132,7 +1135,7 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException If getting the container or
      *  executive director fails
      */
-    private void _requestRefireAt(double time) throws IllegalActionException {
+    private void _requestRefireAt(Time time) throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Director outsideDirector = container.getExecutiveDirector();
 
@@ -1166,9 +1169,9 @@ public class DTDirector extends SDFDirector {
         _receiverTable = new ArrayList();
         _outputPortTable = new ArrayList();
         _allActorsTable = new Hashtable();
-        setCurrentTime(0.0);
-        _formerTimeFired = 0.0;
-        _formerValidTimeFired = 0.0;
+        setCurrentTime(new Time(this));
+        _formerTimeFired = new Time(this);
+        _formerValidTimeFired = new Time(this);
         _isFiringAllowed = true;
         _shouldDoInternalTransferOutputs = true;
     }
@@ -1190,10 +1193,10 @@ public class DTDirector extends SDFDirector {
     private Hashtable _allActorsTable;
 
     // The time when the previous valid prefire() was called
-    private double _formerValidTimeFired;
+    private Time _formerValidTimeFired;
 
     // The time when the previous valid or invalid prefire() was called
-    private double _formerTimeFired;
+    private Time _formerTimeFired;
 
 
 
@@ -1224,7 +1227,7 @@ public class DTDirector extends SDFDirector {
     // Inner class to cache important variables for contained actors
     private class DTActor {
         private Actor    _actor;
-        private double   _localTime;
+        private Time   _localTime;
         private int      _repeats;
         private boolean  _shouldGenerateInitialTokens;
 
@@ -1234,7 +1237,7 @@ public class DTDirector extends SDFDirector {
         public DTActor(Actor actor) {
             _actor = actor;
             _repeats = 0;
-            _localTime = 0.0;
+            _localTime = new Time(_actor);
             _shouldGenerateInitialTokens = false;
         }
     }

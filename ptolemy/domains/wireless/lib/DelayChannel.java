@@ -31,6 +31,7 @@ package ptolemy.domains.wireless.lib;
 import java.util.HashMap;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
@@ -42,7 +43,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// DelayChannel
@@ -139,8 +139,8 @@ public class DelayChannel extends ErasureChannel {
         super.fire();
         if (_receptions != null) {
             // We may be getting fired because of an impending event.
-            double currentTime = getDirector().getCurrentTime();
-            Double timeDouble = new Double(currentTime);
+            Time currentTime = getDirector().getCurrentTime();
+            Double timeDouble = new Double(currentTime.getTimeValue());
             Reception reception = (Reception)_receptions.get(timeDouble);
             if (reception != null) {
                 // The time matches a pending reception.
@@ -209,13 +209,12 @@ public class DelayChannel extends ErasureChannel {
             WirelessIOPort destination
                 = (WirelessIOPort)receiver.getContainer();
             double distance = _distanceBetween(sender, destination);
-            double time = director.getCurrentTime() + distance/speed;
-            time = Utilities.round(time, director.getTimeResolution());
+            Time time = director.getCurrentTime().add(distance/speed);
 
             if (_receptions == null) {
                 _receptions = new HashMap();
             }
-            Double timeDouble = new Double(time);
+            Double timeDouble = new Double(time.getTimeValue());
             Reception reception = new Reception();
             reception.token = token;
             reception.sender = sender;

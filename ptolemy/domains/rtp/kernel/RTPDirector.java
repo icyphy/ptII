@@ -33,6 +33,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.ProcessDirector;
+import ptolemy.actor.util.Time;
 import ptolemy.data.LongToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -118,8 +119,10 @@ public class RTPDirector extends ProcessDirector
      *  starting from 1/1/1970 (UTC).
      *  @return The current computer time.
      */
-    public double getCurrentTime() {
-        return (double)(System.currentTimeMillis()-_realStartTime);
+    public Time getCurrentTime() {
+        double currentTime = 
+            (double)(System.currentTimeMillis()-_realStartTime);
+        return new Time(this, currentTime);
     }
 
     /** Calculate the current schedule, if necessary, and iterate
@@ -134,11 +137,11 @@ public class RTPDirector extends ProcessDirector
 
     /** Sleep for the amount of time specified.
      */
-    public void fireAt(Actor actor, double time)
+    public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
-        double timeNow = getCurrentTime();
-        if (time > timeNow) {
-            long delay = (long) (time - timeNow);
+        Time timeNow = getCurrentTime();
+        if (time.compareTo(timeNow) > 0){
+            long delay = (long) (time.subtract(timeNow)).getTimeValue();
             try {
                 if (_debugging) _debug("Sleep " + delay);
                 Thread.sleep(delay+ 5);

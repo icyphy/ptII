@@ -30,6 +30,7 @@ package ptolemy.domains.rtp.lib;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -116,9 +117,10 @@ public class PeriodicTrigger extends TypedAtomicActor {
 
     public boolean postfire() throws IllegalActionException {
         Director director = getDirector();
-        double time = director.getCurrentTime();
-        if (_debugging) _debug("Next iteration at " + (time + _period));
-        director.fireAt(this, time + _period);
+        Time time = director.getCurrentTime();
+        if (_debugging) _debug("Next iteration at " 
+            + time.add(_period).getTimeValue());
+        director.fireAt(this, time.add(_period));
         return super.postfire();
     }
 

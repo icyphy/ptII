@@ -40,6 +40,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -256,7 +257,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @param actor The actor to be fired.
      *  @param time The next time when the actor should be fired.
      */
-    public void fireAt(Actor actor, double time)
+    public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
         setCurrentTime(time);
     }
@@ -269,7 +270,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The current "time"
      */
-    public double getCurrentTime() {
+    public Time getCurrentTime() {
         if (_pseudoTimeEnabled == true) {
             return _insideDirector.getCurrentTime();
         } else {
@@ -284,8 +285,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The maximum value for type double.
      */
-    public double getNextIterationTime() {
-        return Double.MAX_VALUE;
+    public Time getNextIterationTime() {
+        return new Time(this, Double.MAX_VALUE);
     }
 
     /** Initialize all the actors associated with this director. Perform

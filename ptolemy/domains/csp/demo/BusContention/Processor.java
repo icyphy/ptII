@@ -202,7 +202,7 @@ public class Processor extends CSPActor {
      *  false otherwise.
      */
     public boolean endYet() {
-        double time = _dir.getCurrentTime();
+        double time = _dir.getCurrentTime().getTimeValue();
         if ( time > 50.0 ) {
             return true;
         }

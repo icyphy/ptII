@@ -37,6 +37,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -219,7 +220,7 @@ public class CSPDirector extends CompositeProcessDirector
      *   are delayed.
      *  @param newTime The new current model time.
      */
-    public synchronized void setCurrentTime(double newTime)
+    public synchronized void setCurrentTime(Time newTime)
             throws IllegalActionException {
         if (_actorsDelayed != 0) {
             throw new IllegalActionException("CSPDirector.setCurrentTime()"
@@ -285,7 +286,7 @@ public class CSPDirector extends CompositeProcessDirector
             _actorsDelayed++;
             // Enter the actor and the time to wake it up into the
             // LinkedList of delayed actors.
-            _registerDelayedActor( (getCurrentTime() + delta), actor);
+            _registerDelayedActor( getCurrentTime().add(delta), actor);
             notifyAll();
             return;
         }
@@ -341,7 +342,7 @@ public class CSPDirector extends CompositeProcessDirector
         throws IllegalActionException {
         if (_actorsDelayed > 0) {
             // Time deadlock.
-            double nextTime = _getNextTime();
+            Time nextTime = _getNextTime();
             setCurrentTime(nextTime);
 
             // Now go through list of delayed actors
@@ -352,7 +353,7 @@ public class CSPDirector extends CompositeProcessDirector
             while (!done && _delayedActorList.size() > 0 ) {
                 DelayListLink value =
                     (DelayListLink)_delayedActorList.get(0);
-                if (Math.abs(value._resumeTime - nextTime) < TOLERANCE) {
+                if (value._resumeTime.compareTo(nextTime) == 0) {
                     _delayedActorList.remove(0);
                     value._actor._continue();
                     _actorsDelayed--;
@@ -378,7 +379,7 @@ public class CSPDirector extends CompositeProcessDirector
      *  @param actor The delayed actor.
      *  @param actorTime The time at which to resume the actor.
      */
-    private void _registerDelayedActor(double actorTime, CSPActor actor) {
+    private void _registerDelayedActor(Time actorTime, CSPActor actor) {
         DelayListLink newLink = new DelayListLink();
         newLink._resumeTime = actorTime;
         newLink._actor = actor;
@@ -388,7 +389,7 @@ public class CSPDirector extends CompositeProcessDirector
         boolean done = false;
         for (int i = 0; i < size; i++) {
             DelayListLink tmp = (DelayListLink)_delayedActorList.get(i);
-            if (!done && (actorTime < tmp._resumeTime)) {
+            if (!done && (actorTime.compareTo(tmp._resumeTime) < 0)) {
                 _delayedActorList.add(i, newLink);
                 done = true;
             }
@@ -401,7 +402,7 @@ public class CSPDirector extends CompositeProcessDirector
     /* Get the earliest time which an actor has been delayed to. This
      * should always be the top link on the list.
      */
-    private double _getNextTime() {
+    private Time _getNextTime() {
         if (_delayedActorList.size() > 0) {
             return ((DelayListLink)_delayedActorList.get(0))._resumeTime;
         } else {
@@ -437,7 +438,7 @@ public class CSPDirector extends CompositeProcessDirector
     // Keeps track of the actor that is delayed and the time
     // at which to resume it.
     private class DelayListLink {
-        public double _resumeTime;
+        public Time _resumeTime;
         public CSPActor _actor;
     }
 }

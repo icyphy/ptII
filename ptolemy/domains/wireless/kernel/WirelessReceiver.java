@@ -30,6 +30,7 @@ package ptolemy.domains.wireless.kernel;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.util.Time;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEReceiver;
@@ -106,7 +107,7 @@ public class WirelessReceiver extends DEReceiver {
      *  the RecordToken or if the parent class throws it.
      *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token, double)
      */
-    public synchronized void put(Token token, double time)
+    public synchronized void put(Token token, Time time)
             throws IllegalActionException {
         // Bundle the two into one token.
         // Construct the message about the input signal detected.
@@ -128,7 +129,7 @@ public class WirelessReceiver extends DEReceiver {
      *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token)
      */
     public synchronized void put(Token token) {
-        put(token, null);
+        put(token, (Token)null);
     }
 
     /** Put the specified token bundled with the specified properties.

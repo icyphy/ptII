@@ -30,6 +30,7 @@ package ptolemy.domains.rtp.kernel.test;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -86,9 +87,9 @@ public class TestSource extends Source {
         output.broadcast(new DoubleToken(value));
         value += 1.0;
         Director director = getDirector();
-        double time = director.getCurrentTime();
+        Time time = director.getCurrentTime();
         System.out.println("Firing round " + value);
-        director.fireAt(this, time + _period);
+        director.fireAt(this, time.add(_period));
     }
 
     public void initialize() throws IllegalActionException {

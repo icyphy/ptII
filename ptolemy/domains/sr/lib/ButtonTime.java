@@ -41,6 +41,7 @@ import javax.swing.SwingUtilities;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.WallClockTime;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -221,11 +222,11 @@ public class ButtonTime extends WallClockTime implements Placeable {
 
                 // JDK1.2 bug: WallClockTime._getCurrentTime() is
                 // protected, but not accessible here.
-                double firingTime = _getCurrentTime(); // JDK1.2 bug
+                Time firingTime = _getCurrentTime(); // JDK1.2 bug
 
                 Director director = getDirector();
-                double currentTime = director.getCurrentTime();
-                if (firingTime < currentTime) {
+                Time currentTime = director.getCurrentTime();
+                if (firingTime.compareTo(currentTime) < 0) {
                     // This shouldn't happen, but it will prevent us
                     // from enqueuing events in the past
                     firingTime = currentTime;
