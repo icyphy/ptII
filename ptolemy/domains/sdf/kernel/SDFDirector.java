@@ -192,7 +192,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  assuming that it can be fired.   It does
      *  not call prefire on any contained actors.
      *  @return True.
-     *  @exception IllegalActionException Not Thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     // FIXME This should, perhaps return false if the rates on the
     // Composite actors input ports are not satisfied.  This will
