@@ -157,7 +157,7 @@ public class BusContentionApplication implements ActionListener {
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
      */
-    public GraphModel constructDivaGraph () {
+    public GraphModel constructDivaGraph() {
         GraphModel model = new GraphModel();
 
         // Nodes, with user object set to the actor
@@ -194,9 +194,8 @@ public class BusContentionApplication implements ActionListener {
         return model;
     }
 
-    /** Construct the Ptolemy system
-     */
-    public void constructPtolemyModel () {
+    /** Construct the Ptolemy system */
+    public void constructPtolemyModel() {
         try {
 	    Director director = new CSPDirector(_topLevel, "Director");
 
@@ -361,7 +360,7 @@ public class BusContentionApplication implements ActionListener {
         // Display the model in the _window
         try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
-		public void run () {
+		public void run() {
 		    displayGraph(_jgraph, _model);
 		}
 	    });
@@ -381,8 +380,6 @@ public class BusContentionApplication implements ActionListener {
     /**
      */
     public void runDemo() throws IllegalActionException {
-	// System.out.println("Listeners set");
-
         // Run the model
 	// I'm not sure why but "manager.run()" doesn't seem to work.
 	_manager.startRun();
@@ -494,7 +491,7 @@ public class BusContentionApplication implements ActionListener {
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable () {
-                    public void run () {
+                    public void run() {
                         switch (state) {
                         case 1:
 			    figure.setFillPaint(Color.yellow);
@@ -538,7 +535,7 @@ public class BusContentionApplication implements ActionListener {
         /**
          * Return the rendered visual representation of this node.
          */
-        public Figure render (Node n) {
+        public Figure render(Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse =
@@ -573,7 +570,7 @@ public class BusContentionApplication implements ActionListener {
         /**
          * Render the edge
          */
-        public Connector render (Edge edge, Site tailSite, Site headSite) {
+        public Connector render(Edge edge, Site tailSite, Site headSite) {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
