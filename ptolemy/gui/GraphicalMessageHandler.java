@@ -136,12 +136,12 @@ public class GraphicalMessageHandler extends MessageHandler {
      *
      *  @param info The message.
      *  @param throwable The throwable.
-     *  @see CancelException
+     *  @see ptolemy.util.CancelException
      */
     protected void _error(final String info, final Throwable throwable) {
         Runnable doMessage = new Runnable() {
             public void run() {
-                if (throwable instanceof CancelException) return;
+                if (throwable instanceof ptolemy.util.CancelException) return;
 
                 // Sometimes you find that errors are reported multiple times.
                 // To find out who is calling this method, uncomment the following.
@@ -219,9 +219,11 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  be deferred to the swing event thread, according to the swing
      *  architecture, or we could get deadlock or rendering problems.
      *  @param info The message.
-     *  @exception CancelException If the user clicks on the "Cancel" button.
+     *  @exception ptolemy.util.CancelException If the user clicks on the
+     * "Cancel" button.
      */
-    protected void _warning(final String info) throws CancelException {
+    protected void _warning(final String info)
+            throws ptolemy.util.CancelException {
 
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
@@ -249,7 +251,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                     options[0]);
 
             if (selected == 1) {
-                throw new CancelException();
+                throw new ptolemy.util.CancelException();
             }
         } else {
             Runnable doWarning = new Runnable() {
@@ -296,10 +298,11 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  architecture, or we could get deadlock or rendering problems.
      *  @param info The message.
      *  @param throwable The throwable.
-     *  @exception CancelException If the user clicks on the "Cancel" button.
+     *  @exception ptolemy.util.CancelException If the user clicks on the
+     *  "Cancel" button.
      */
     protected void _warning(final String info, final Throwable throwable)
-            throws CancelException {
+            throws ptolemy.util.CancelException {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
@@ -323,7 +326,7 @@ public class GraphicalMessageHandler extends MessageHandler {
             if (selected == 1) {
                 _showStackTrace(throwable, info);
             } else if (selected == 2) {
-                throw new CancelException();
+                throw new ptolemy.util.CancelException();
             }
         } else {
             Runnable doWarning = new Runnable() {

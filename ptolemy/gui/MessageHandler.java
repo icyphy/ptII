@@ -29,6 +29,9 @@
 
 package ptolemy.gui;
 
+// ptolemy.gui.CancelException is deprecated, use ptolemy.util.CancelException.
+import ptolemy.util.CancelException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -78,7 +81,7 @@ public class MessageHandler {
      *
      *  @param info The message.
      *  @param throwable The throwable.
-     *  @see CancelException
+     *  @see ptolemy.util.CancelException
      */
     public static void error(String info, Throwable throwable) {
         // Sometimes you find that errors are reported multiple times.
@@ -139,9 +142,9 @@ public class MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  @param info The message.
-     *  @exception CancelException If the user clicks on the "Cancel" button.
+     *  @exception ptolemy.util.CancelException If the user clicks on the "Cancel" button.
      */
-    public static void warning(String info) throws CancelException {
+    public static void warning(String info) throws ptolemy.util.CancelException {
         _handler._warning(info);
     }
 
@@ -155,10 +158,11 @@ public class MessageHandler {
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
-     *  @exception CancelException If the user clicks on the "Cancel" button.
+     *  @exception ptolemy.util.CancelException If the user clicks on
+     *  the "Cancel" button.
      */
     public static void warning(String info, Throwable throwable)
-            throws CancelException {
+            throws ptolemy.util.CancelException {
         _handler._warning(info + ": " + throwable.getMessage(), throwable);
     }
 
@@ -188,10 +192,10 @@ public class MessageHandler {
      *
      *  @param info The message.
      *  @param throwable The throwable.
-     *  @see CancelException
+     *  @see ptolemy.util.CancelException
      */
     protected void _error(String info, Throwable throwable) {
-        if (throwable instanceof CancelException) {
+        if (throwable instanceof ptolemy.util.CancelException) {
             return;
         }
         System.err.println(info);
@@ -211,9 +215,10 @@ public class MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  @param info The message.
-     *  @exception CancelException If the user clicks on the "Cancel" button.
+     *  @exception ptolemy.util.CancelException If the user clicks on
+     *  the "Cancel" button.
      */
-    protected void _warning(String info) throws CancelException {
+    protected void _warning(String info) throws ptolemy.util.CancelException {
         _error(info);
     }
 
@@ -227,10 +232,11 @@ public class MessageHandler {
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
-     *  @exception CancelException If the user clicks on the "Cancel" button.
+     *  @exception ptolemy.util.CancelException If the user clicks on the
+     *  "Cancel" button.
      */
     protected void _warning(String info, Throwable throwable)
-            throws CancelException {
+            throws ptolemy.util.CancelException {
         _error(info, throwable);
     }
 
