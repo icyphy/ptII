@@ -116,7 +116,7 @@ public class SRRandomizedScheduler extends Scheduler {
             (StaticSchedulingDirector) getContainer();
 
         if (director == null) {
-            throw new NotSchedulableException(this, "SROptimizedScheduler "
+            throw new NotSchedulableException(this, "SRRandomizedScheduler "
                     + "cannot schedule graph with no director.");
         }
 
@@ -124,7 +124,7 @@ public class SRRandomizedScheduler extends Scheduler {
 	    (CompositeActor) (director.getContainer());
 
         if (compositeActor == null) {
-            throw new NotSchedulableException(this, "SROptimizedScheduler "
+            throw new NotSchedulableException(this, "SRRandomizedScheduler "
                     + "cannot schedule graph with no container.");
         }
 
