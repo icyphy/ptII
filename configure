@@ -1488,7 +1488,7 @@ fi
 # Use {} here instead of () because bin/ptinvoke uses JODE_DIR and JODE_CLASSES
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
 JODE_DIR='${PTII}/vendors/jode/1.0.93'
-JODE_CLASSES='$(JODE_DIR)/jode.jar'
+JODE_CLASSES='${JODE_DIR}/jode.jar'
 
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
 if test ! -d "$PTII/vendors/jode"; then
@@ -1527,7 +1527,7 @@ echo "configure:1513: checking for \$JODE_DIR/jode.jar" >&5
     Jode can be downloaded from http://jode.sourceforge.net/download.php'" 1>&2
 	# Note that we don't substitute in the ${PTII} or $(JODE_DIR) here
 	JODE_DIR='${PTII}/vendors/jode/1.0.93'
-   	JODE_CLASSES='$(JODE_DIR)/jode.jar'
+   	JODE_CLASSES='${JODE_DIR}/jode.jar'
     #else
 	# Set to jode and used in
 	# $PTII/ptolemy/apps/makefile if jode was found
