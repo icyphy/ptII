@@ -486,40 +486,15 @@ public class MoMLParser extends HandlerBase {
                     // Cannot open the file.  Iterate through the
                     // classpath to attempt to open the file.
                     try {
-                        // NOTE: An applet will throw a security exception here.
-                        String classpath
-                                = System.getProperty("java.class.path");
-                        String separator
-                                = System.getProperty("path.separator");
-                        StringTokenizer paths = new StringTokenizer(classpath,
-                                separator);
-                        while (paths.hasMoreTokens() && input == null) {
-                            String path = paths.nextToken();
-
-                            // FIXME: If the class path contains a jar
-                            // file, we should probably look inside the
-                            // jar file.  In any case, we should not append
-                            // a trailing /
-                            if (path.endsWith(".jar")) {		
-                                continue;
-                            }
-
-                            // Check to see if the path ends with a "/"     
-                            if (!path.endsWith("/")) {		
-				// need to append a "/"		
-                                path = path.concat("/");	
-			    }					
-                            base = new URL("file", null, path);
-                          
-                            // FIXME: jdk 1.3beta, at least, has a bug in the
-                            // URL constructor invoked below.  It ignores
-                            // the base argument and uses the current working
-                            // directory!
-                            xmlFile = new URL(base, source);
-                            try {
-                                input = xmlFile.openStream();
-                            } catch (IOException e) {
-                            }
+                        xmlFile =
+                            Class.forName("ptolemy.kernel.util.NamedObj").
+                            getClassLoader().getResource(source);
+                        try {
+                            input = xmlFile.openStream();
+                        } catch (NullPointerException e) {
+                                // We did not find the file, so we will
+                                // throw an XmlException below
+                            input = null;
                         }
                     } catch (SecurityException exception) {
                         // FIXME: Is there any way, suspecting now that we are
