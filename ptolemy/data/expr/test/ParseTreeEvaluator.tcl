@@ -498,6 +498,9 @@ test ParseTreeEvaluator-24.1 {Test Function closures} {
 
 ####################################################################
 
-test ParseTreeEvaluator-24.1 {Test merge of records} {
-    list [theTest {merge({a=1, b=2}, {a=3, c=3})}] \
-        } {{{a=1, b=2, c=3}}}
+test ParseTreeEvaluator-25.1 {Test remainder operator} {
+    list [theTest {3.0 % 2.0}] \
+         [theTest {-3.0 % 2.0}] \
+         [theTest {-3.0 % -2.0}] \
+         [theTest {3.0 % -2.0}] \
+     } {1.0 -1.0 -1.0 1.0}

@@ -353,6 +353,32 @@ test Function-floor {Test floor} {
      } {1.0 {{1.0, -1.0}} {[1.0, -1.0]} 0.0 0.0 0.0}
 
 ####################################################################
+# isInfinite
+
+test Function-isInfinite {Test isInfinite} {
+    list [theTest {isInfinite(-1.1)}] \
+         [theTest {isInfinite(Infinity)}] \
+         [theTest {isInfinite(-Infinity)}] \
+         [theTest {isInfinite(-1)}] \
+         [theTest {isInfinite(1ub)}] \
+         [theTest {isInfinite({1.1, Infinity})}] \
+         [theTest {isInfinite([1.1, -Infinity])}] \
+     } {false true true false false {{false, true}} {[false, true]}}
+
+####################################################################
+# isNaN
+
+test Function-isNaN {Test isNaN} {
+    list [theTest {isNaN(-1.1)}] \
+         [theTest {isNaN(Infinity)}] \
+         [theTest {isNaN(NaN)}] \
+         [theTest {isNaN(-1)}] \
+         [theTest {isNaN(1ub)}] \
+         [theTest {isNaN({1.1, NaN})}] \
+         [theTest {isNaN([1.1, -Infinity])}] \
+     } {false false true false false {{false, true}} {[false, false]}}
+
+####################################################################
 # log
 
 test Function-log {Test log} {
@@ -417,6 +443,24 @@ test Function-min {Test min} {
 ####################################################################
 # pow
 
+test Function-pow {Test pow} {
+    list [theTestPtClose {pow(2.0, 0.0)} 1.0] \
+         [theTestPtClose {pow(0.0, -1.0)} Infinity] \
+         [theTestPtClose {pow(1, -1)} 1.0] \
+         [theTestPtClose {pow(2ub, 2ub)} 4.0] \
+         [theTestPtClose {pow({1.0, 2.0}, {-2, -2})} {{1.0, 0.25}}] \
+         [theTestPtClose {pow({1, 2}, {2, 2})} {{1.0, 4.0}}] \
+         [theTestPtClose {pow({1ub, 2ub}, {2ub, 2ub})} {{1.0, 4.0}}] \
+         [theTestPtClose {pow([1.0, 2.0], [-2, -2])} {[1.0, 0.25]}] \
+         [theTestPtClose {pow([1, 2], [2, 2])} {[1.0, 4.0]}] \
+     } {1 1 1 1 1 1 1 1 1}
+
+test Function-pow2 {Test pow on complex} {
+    list [theTestPtClose {pow(i, 2)} {-1.0 + 0.0i}] \
+         [theTestPtClose {pow(e, 2*pi*i)} {1.0 + 0.0i}] \
+         [theTestPtClose {pow(e+0.0i, 2*pi*i)} {1.0 + 0.0i}] \
+     } {1 1 1}
+
 ####################################################################
 # random
 
@@ -437,89 +481,130 @@ test Function-min {Test min} {
 ####################################################################
 # remainder
 
+test Function-remainder {Test remainder} {
+    list [theTestPtClose {remainder(3.0, 2.0)} -1.0] \
+         [theTestPtClose {remainder(2.0, 3.0)} -1.0] \
+         [theTestPtClose {remainder(-1, 1)} 0.0] \
+         [theTestPtClose {remainder(0ub, 1ub)} 0.0] \
+         [theTestPtClose {remainder(2.5, 1.0)} 0.5] \
+         [theTest {remainder({3, 2}, {2, 2})}] \
+         [theTest {remainder([3, 2], [2, 2])}] \
+     } {1 1 1 1 1 {{-1.0, 0.0}} {[-1.0, 0.0]}}
+
 ####################################################################
 # round
+
+test Function-round {Test round} {
+    list [theTest {round(1.1)}] \
+         [theTest {round(-1.1)}] \
+         [theTest {round(NaN)}] \
+         [string compare [theTest {round(Infinity)}] [theTest {MaxLong}]] \
+         [string compare [theTest {round(-Infinity)}] [theTest {MinLong}]] \
+     } {1L -1L 0L 0 0}
+
+####################################################################
+# roundToInt
+
+test Function-roundToInt {Test roundToInt} {
+    list [theTest {roundToInt(1.1)}] \
+         [theTest {roundToInt(-1.1)}] \
+         [theTest {roundToInt(NaN)}] \
+         [string compare [theTest {roundToInt(Infinity)}] [theTest {MaxInt}]] \
+         [string compare [theTest {roundToInt(-Infinity)}] [theTest {MinInt}]] \
+     } {1 -1 0 0 0}
 
 ####################################################################
 # sgn
 
+test Function-sgn {Test sgn} {
+    list [theTest {sgn(1.1)}] \
+         [theTest {sgn(-1.1)}] \
+         [theTest {sgn(0.0)}] \
+     } {1 -1 1}
+
 ####################################################################
 # sqrt
+
+test Function-sqrt {Test sqrt} {
+    list [theTest {sqrt(4.0)}] \
+         [theTest {sqrt(-1.1)}] \
+         [theTest {sqrt(0.0)}] \
+         [theTest {sqrt(4.0 + 0.0i)}] \
+     } {2.0 NaN 0.0 {2.0 + 0.0i}}
+
 
 ####################################################################
 # toDegrees
 
+test Function-toDegrees {Test toDegrees} {
+    list [theTest {toDegrees(0.0)}] \
+         [theTestPtClose {toDegrees(-pi)} -180] \
+     } {0.0 1}
+
 ####################################################################
 # toRadians
 
+test Function-toRadians {Test toRadians} {
+    list [theTest {toRadians(0.0)}] \
+         [theTestPtClose {toRadians(-180)} [theTest {-pi}]] \
+     } {0.0 1}
 
+####################################################################
+####################################################################
+####################################################################
+####################################################################
+####################################################################
 
+####################################################################
+# conjugateTranspose
+
+test Function-conjugateTranspose {Test conjugateTranspose} {
+    list [theTest {conjugateTranspose([0, i; 0, 0])}] \
+        } {{[0.0 + 0.0i, 0.0 + 0.0i; 0.0 - 1.0i, 0.0 + 0.0i]}}
+
+####################################################################
+# crop
+
+test Function-crop {Test crop} {
+    list [theTest {crop(identityDouble(3), 0, 1, 2, 2)}] \
+         [theTest {crop(identityInt(3), 0, 1, 2, 2)}] \
+         [theTest {crop(identityComplex(3), 0, 1, 2, 2)}] \
+         [theTest {crop(identityLong(3), 0, 1, 2, 2)}] \
+} {{[0.0, 0.0; 1.0, 0.0]} {[0, 0; 1, 0]} {[0.0 + 0.0i, 0.0 + 0.0i; 1.0 + 0.0i, 0.0 + 0.0i]} {[0L, 0L; 1L, 0L]}}
+
+####################################################################
+# determinant
+
+test Function-determinant {Test determinant} {
+    list [theTest {determinant(identityDouble(3))}] \
+         [theTest {determinant(identityComplex(3))}]
+} {1.0 {1.0 + 0.0i}}
+
+####################################################################
+# diag
+
+test Function-diag {Test diag} {
+    list [theTest {diag({1, 2})}] \
+         [theTest {diag({1.0, 2.0})}] \
+         [theTest {diag({1.0 + 1.0i, 2.0 + 2.0i})}] \
+         [theTest {diag({1L, 2L})}] \
+} {{[1, 0; 0, 2]} {[1.0, 0.0; 0.0, 2.0]} {[1.0 + 1.0i, 0.0 + 0.0i; 0.0 + 0.0i, 2.0 + 2.0i]} {[1L, 0L; 0L, 2L]}}
 
 
 ####################################################################
-# acos
-
-test Function-19.2 {Test various function calls} {
-    list [theTestPtClose {acos(1+i)} \
-	{0.9045568943023814 - 1.0612750619050355i}] \
-         [theTestPtClose {acos({1+i, 1-i})} \
-	{{0.9045568943023814 - 1.0612750619050355i, 0.9045568943023812 + 1.0612750619050355i}}] \
-         [theTestPtClose {acos([1+i, 1-i])} \
-	{[0.9045568943023814 - 1.0612750619050355i, 0.9045568943023812 + 1.0612750619050355i]}]
-} {1 1 1}
-
-test Function-19.5 {Test various function calls} {
-    list [theTestPtClose {asin(1+i)} \
-	{0.6662394324925155 + 1.0612750619050355i}] \
-         [theTestPtClose {asin({1+i, 1-i})} \
-	{{0.6662394324925155 + 1.0612750619050355i, 0.6662394324925153 - 1.0612750619050355i}}] \
-         [theTestPtClose {asin([1+i, 1-i])} \
-	{[0.6662394324925155 + 1.0612750619050355i, 0.6662394324925153 - 1.0612750619050355i]}]
-} {1 1 1}
-
-test Function-19.7 {Test various function calls} {
-    list [theTest {atan(1+i)}] \
-         [theTest {atan({1+i, 1-i})}] \
-         [theTest {atan([1+i, 1-i])}]
-} {{1.0172219678978514 + 0.402359478108525i} {{1.0172219678978514 + 0.402359478108525i, 1.0172219678978514 - 0.4023594781085251i}} {[1.0172219678978514 + 0.402359478108525i, 1.0172219678978514 - 0.4023594781085251i]}}
-
- test Function-19.8 {Test various function calls} {
-    list [theTest {atanh(1+i)}] \
-         [theTest {atanh({1+i, 1-i})}] \
-         [theTest {atanh([1+i, 1-i])}]
- } {{0.4023594781085251 + 1.0172219678978514i} {{0.4023594781085251 + 1.0172219678978514i, 0.4023594781085251 - 1.0172219678978514i}} {[0.4023594781085251 + 1.0172219678978514i, 0.4023594781085251 - 1.0172219678978514i]}}
-
-test Function-19.9 {Test various function calls} {
-    list [theTest {conjugate(1+i)}] \
-         [theTest {conjugate({1+i, 1-i})}] \
-         [theTest {conjugate([1+i, 1-i])}]
- } {{1.0 - 1.0i} {{1.0 - 1.0i, 1.0 + 1.0i}} {[1.0 - 1.0i, 1.0 + 1.0i]}}
+####################################################################
+####################################################################
+####################################################################
+####################################################################
+# FIXME: Organize the following
 
 ####################################################################
+# merge
 
-test Function-23.2 {Test various function calls} {
-    list [theTest {cot(1+i)}] \
-         [theTest {cot({1+i, 1-i})}] \
-         [theTest {cot([1+i, 1-i])}]
-} {{0.21762156185440262 - 0.8680141428959249i} {{0.21762156185440262 - 0.8680141428959249i, 0.21762156185440262 + 0.8680141428959249i}} {[0.21762156185440262 - 0.8680141428959249i, 0.21762156185440262 + 0.8680141428959249i]}}
+test Function-merge {Test merge of records} {
+    list [theTest {merge({a=1, b=2}, {a=3, c=3})}] \
+        } {{{a=1, b=2, c=3}}}
 
-#  test Function-23.4 {Test various function calls} {
-#     list [theTest {coth(1+i)}] \
-#          [theTest {coth({1+i, 1-i})}] \
-#          [theTest {coth([1+i, 1-i])}]
-#  } {} {Not Implemented}
-
-test Function-23.5 {Test various function calls} {
-    list [theTest {csc(1+i)}] \
-         [theTest {csc({1+i, 1-i})}] \
-         [theTest {csc([1+i, 1-i])}]
-} {{0.6215180171704283 - 0.3039310016284264i} {{0.6215180171704283 - 0.3039310016284264i, 0.6215180171704283 + 0.3039310016284264i}} {[0.6215180171704283 - 0.3039310016284264i, 0.6215180171704283 + 0.3039310016284264i]}}
-
- # test Function-23.6 {Test various function calls} {
-#     list [theTest {csch(1+i)}] \
-#          [theTest {csch({1+i, 1-i})}] \
-#          [theTest {csch([1+i, 1-i])}]
-#  } {} {We don't have this method}
 
 
 test Function-23.6.5 {Test various function calls: createArray} {
@@ -577,41 +662,13 @@ test Function-23.6.7.1 {Test various function calls: createSequence} {
   {-1.0, 0.0, 1.0, 2.0, 3.0}
   {-1.0 - 1.0i, 0.0 - 2.0i, 1.0 - 3.0i, 2.0 - 4.0i, 3.0 - 5.0i}}}
 
-test Function-23.7 {Test various function calls} {
-    list [theTest {exp(1+i)}] \
-         [theTest {exp({1+i, 1-i})}] \
-         [theTest {exp([1+i, 1-i])}]
-} {{1.4686939399158854 + 2.2873552871788427i} {{1.4686939399158854 + 2.2873552871788427i, 1.4686939399158854 - 2.2873552871788427i}} {[1.4686939399158854 + 2.2873552871788427i, 1.4686939399158854 - 2.2873552871788427i]}}
 
-test Function-23.8 {Test various function calls} {
-    list [theTest {isInfinite(1+i)}] \
-         [theTest {isInfinite({1+i, 1-i})}] \
-         [theTest {isInfinite([1+i, 1-i])}]
-} {false {{false, false}} {[false, false]}}
-
-test Function-23.9 {Test various function calls} {
-    list [theTest {isNaN(1+i)}] \
-         [theTest {isNaN({1+i, 1-i})}] \
-         [theTest {isNaN([1+i, 1-i])}]
-} {false {{false, false}} {[false, false]}}
-
-test Function-23.10 {Test various function calls} {
-    list [theTest {log(1+i)}] \
-         [theTest {log({1+i, 1-i})}] \
-         [theTest {log([1+i, 1-i])}]
-} {{0.3465735902799727 + 0.7853981633974483i} {{0.3465735902799727 + 0.7853981633974483i, 0.3465735902799727 - 0.7853981633974483i}} {[0.3465735902799727 + 0.7853981633974483i, 0.3465735902799727 - 0.7853981633974483i]}}
 
 test Function-23.11 {Test various function calls} {
     list [theTest {magnitudeSquared(1+i)}] \
          [theTest {magnitudeSquared({1+i, 1-i})}] \
          [theTest {magnitudeSquared([1+i, 1-i])}]
 } {2.0 {{2.0, 2.0}} {[2.0, 2.0]}}
-
-test Function-23.12 {Test various function calls} {
-    list [theTest {pow(1+i, 2+i)}] \
-         [theTest {pow({1+i, 1-i}, {2+i, 2-i})}] \
-         [theTest {pow([1+i, 1-i], [1+i, 1-i])}]
-} {{-0.30974350492849356 + 0.8576580125887358i} {{-0.30974350492849356 + 0.8576580125887358i, -0.30974350492849356 - 0.8576580125887358i}} {[0.2739572538301211 + 0.5837007587586147i, 0.2739572538301211 - 0.5837007587586147i]}}
 
 test Function-23.13 {Test various function calls} {
     list [theTest {reciprocal(1+i)}] \
@@ -624,26 +681,7 @@ test Function-23.14 {Test various function calls} {
          [theTest {roots({1+i, 1-i}, 4)}]
 } {{{1.0695539323639858 + 0.21274750472674303i, -0.21274750472674295 + 1.0695539323639858i, -1.0695539323639858 - 0.21274750472674314i, 0.2127475047267431 - 1.0695539323639858i}} {{{1.0695539323639858 + 0.21274750472674303i, -0.21274750472674295 + 1.0695539323639858i, -1.0695539323639858 - 0.21274750472674314i, 0.2127475047267431 - 1.0695539323639858i}, {1.0695539323639858 - 0.21274750472674303i, 0.21274750472674311 + 1.0695539323639858i, -1.0695539323639858 + 0.21274750472674342i, -0.21274750472674347 - 1.0695539323639858i}}}}
 
-test Function-23.15 {Test various function calls} {
-    list [theTest {sec(1+i)}] \
-         [theTest {sec({1+i, 1-i})}] \
-         [theTest {sec([1+i, 1-i])}]
-} {{0.4983370305551867 + 0.591083841721045i} {{0.4983370305551867 + 0.591083841721045i, 0.4983370305551867 - 0.591083841721045i}} {[0.4983370305551867 + 0.591083841721045i, 0.4983370305551867 - 0.591083841721045i]}}
-
-#  test Function-19.25 {Test various function calls} {
-#     list [theTest {sech(1+i)}] \
-#          [theTest {sech({1+i, 1-i})}] \
-#          [theTest {sech([1+i, 1-i])}]
-#  } {} {Not implemented}
  
-test Function-23.18 {Test various function calls} {
-    list [theTestPtClose {sqrt(1+i)} \
-	{1.09868411346781 + 0.45508986056222733i}] \
-	 [theTestPtClose {sqrt({1+i, 1-i})} \
-	{{1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i}}] \
-         [theTestPtClose {sqrt([1+i, 1-i])} \
-	{[1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i]}]
-} {1 1 1}
 
  test Function-23.19 {Test various function calls: sum is defined in DoubleArrayMath} {
     list [theTest {sum({0.1,0.2,0.3})}]
