@@ -932,7 +932,7 @@ fi
 # We only need to find Jacl if $PTII/util/testsuite
 # exists.  If we are shipping ptplot, then this directory might not
 # exist
-PTJACL_JAR=$PTII/ptjacl.jar
+PTJACL_JAR=$PTII/lib/ptjacl.jar
 # The reference version of JDK 1.2 has a -native flag
 # If we don't use -native, then some of the threading tests fail
 PTJACL_JFLAG=-native
@@ -949,7 +949,7 @@ if test "${with_ptjacl_jar+set}" = set; then
   withval="$with_ptjacl_jar"
   PTJACL_JAR=$withval
 else
-  PTJACL_JAR=$PTII/ptjacl.jar
+  PTJACL_JAR=$PTII/lib/ptjacl.jar
 fi
 
 
