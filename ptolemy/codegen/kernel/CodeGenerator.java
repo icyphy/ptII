@@ -38,7 +38,6 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -128,7 +127,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
-     * @return The empty string.
+     *  @return The empty string.
      */
     public String generateBodyCode() throws IllegalActionException {
         return "";
@@ -142,6 +141,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   or write-to-file throw any exception.
      */
     public void generateCode(StringBuffer code) throws KernelException {
+        // Get the code generator helper associated with the director of
+        // the container first.
+        ptolemy.actor.Director director
+                = ((CompositeActor)getContainer()).getDirector();
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
+        ((Director)directorHelper).setCodeGenerator(this);
+
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         generateVariableDeclarations(code);
@@ -170,24 +176,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
 
-    /** Generate the code associated with initialization of the container
-     *  composite actor and append it to the given string buffer. This is
-     *  created by stringing together the intialization code for actor
-     *  contained by the container of this attribute (inarbitrary order).
-     *  @param code The given string buffer.
+    /** Return the code associated with initialization of the containing
+     *  composite actor. This method calls the generatreInitializeCode()
+     *  method of the code generator helper associated with the model director.
+     *  @return The initialize code of the containing composite actor.
      */
     public String generateInitializeCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(comment(
-                            "Initialize " + getContainer().getFullName()));
-        Iterator actors = ((CompositeActor)getContainer())
-            .deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
-            code.append(helperObject.generateInitializeCode());
-        }
+                "Initialize " + getContainer().getFullName()));
+        ptolemy.actor.Director director 
+            = ((CompositeActor)getContainer()).getDirector();
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
+        code.append(directorHelper.generateInitializeCode());
         return code.toString();
     }
 
@@ -199,6 +201,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             throws IllegalActionException {
         code.append(comment("Variable Declarations "
                             + getContainer().getFullName()));
+        ptolemy.actor.Director director
+                = ((CompositeActor)getContainer()).getDirector();
+        Director directorHelper = (Director) _getHelper((NamedObj) director);
         Iterator actors = ((CompositeActor)getContainer())
             .deepEntityList().iterator();
         while (actors.hasNext()) {
@@ -233,9 +238,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 if (inputPort.isMultiport()) {
                     code.append("[" + inputPort.getWidth() + "]");
                 }
-                int bufferCapacity = getBufferCapacity(inputPort);
-                if (bufferCapacity > 1) {
-                    code.append("[" + bufferCapacity + "]");
+                int bufferSize = directorHelper.getBufferSize(inputPort);
+                if (bufferSize > 1) {
+                    code.append("[" + bufferSize + "]");
                 }
                 code.append(";\n");
             }
@@ -254,24 +259,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
-    /** Generate into the specified code stream the code associated
-     *  with wrapping up the container composite actor. This is
-     *  created by stringing together the wrapup code for the actors
-     *  contained by the container of this attribute (in arbitrary
-     *  order).
+    /** Generate into the specified code stream the code associated with
+     *  wrapping up the container composite actor. This method calls the
+     *  generateWrapupCode() method of the code generator helper associated
+     *  with the director of this container.
      *  @param code The code stream into which to generate the code.
      */
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
         code.append(comment(
-                            "Wrapup " + getContainer().getFullName()));
-        Iterator actors = ((CompositeActor)getContainer())
-            .deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
-            helperObject.generateWrapupCode(code);
-        }
+                "Wrapup " + getContainer().getFullName()));
+        ptolemy.actor.Director director 
+                = ((CompositeActor)getContainer()).getDirector();
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
+        directorHelper.generateWrapupCode(code);
     }
 
     /** Return the associated component, which is always the container.
@@ -279,17 +280,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public NamedObj getComponent() {
         return getContainer();
-    }
-
-    /** Return the buffer capacity of the given port. This method always
-     *  return 1. Subclasses may override this method.
-     * @param port The given port.
-     * @return The buffer capacity of the given port.
-     * @exception IllegalActionException Subclasses may throw it.
-     */
-    public int getBufferCapacity(TypedIOPort port)
-            throws IllegalActionException {
-        return DFUtilities.getRate(port);
     }
 
     /** Set the container of this object to be the given container.
@@ -404,8 +394,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(object.getFullName().replace('.', '_'));
         return isArrayType;
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

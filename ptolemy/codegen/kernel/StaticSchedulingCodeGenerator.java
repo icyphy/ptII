@@ -28,19 +28,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
-import java.util.Iterator;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.util.DFUtilities;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -84,7 +75,7 @@ public class StaticSchedulingCodeGenerator
      */
     public String generateBodyCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("SDF schedule:"));
+        code.append(comment("Static schedule:"));
         generateFireCode(code);
         return code.toString();
     }
@@ -113,10 +104,9 @@ public class StaticSchedulingCodeGenerator
     }
 
     /** Generate into the specified code stream the code associated
-     *  with one firing of the container composite actor. This is
-     *  created by stringing together the code for the contained
-     *  actors in the order given by the schedule obtained from the
-     *  director of the container.
+     *  with the execution of the container composite actor. This method
+     *  calls the generateFireCode() method of the code generator helper
+     *  associated with the director of the container.
      *  @param code The code stream into which to generate the code.
      */
     public void generateFireCode(StringBuffer code)
@@ -126,7 +116,7 @@ public class StaticSchedulingCodeGenerator
 
         // NOTE: The cast is safe because setContainer ensures
         // the container is an Actor.
-        Director director = ((Actor)model).getDirector();
+        ptolemy.actor.Director director = ((Actor)model).getDirector();
 
         if (director == null) {
             throw new IllegalActionException(this,
@@ -140,55 +130,8 @@ public class StaticSchedulingCodeGenerator
                     + " is not a StaticSchedulingDirector.");
         }
 
-        StaticSchedulingDirector castDirector =
-            (StaticSchedulingDirector)director;
-        Schedule schedule = castDirector.getScheduler().getSchedule();
-
-        Iterator actorsToFire = schedule.iterator();
-        while (actorsToFire.hasNext()) {
-            Firing firing = (Firing)actorsToFire.next();
-            Actor actor = firing.getActor();
-
-            // FIXME: Before looking for a helper class, we should
-            // check to see whether the actor contains a code generator
-            // attribute. If it does, we should use that as the helper.
-
-            //ActorCodeGenerator helperObject
-            //      = (ActorCodeGenerator)_getHelper((NamedObj)actor);
-            CodeGeneratorHelper helperObject
-                = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
-            Variable firings = (Variable)((NamedObj)actor)
-                .getAttribute("firingsPerIteration");
-            int firingsPerIteration = ((IntToken)firings.getToken()).intValue();
-            helperObject.setFiringsPerIteration(firingsPerIteration);
-            for (int i = 0; i < firing.getIterationCount(); i ++) {
-                helperObject.generateFireCode(code);
-                int firingCount = helperObject.getFiringCount() + 1;
-                helperObject.setFiringCount(firingCount);
-            }
-        }
-    }
-
-    /** Return the buffer capacity associated with the given port,
-     *  This method overides the base class by computing the total
-     *  number of tokens transferred in one iteration.
-     * @param port The given port.
-     * @return the buffer capacity associated with the given port.
-     */
-    public int getBufferCapacity(TypedIOPort port)
-            throws IllegalActionException {
-        int bufferCapacity = 1;
-        Variable firings =
-            (Variable)port.getContainer().getAttribute("firingsPerIteration");
-        int firingsPerIteration = 1;
-        if (firings != null) {
-            firingsPerIteration = ((IntToken)firings.getToken()).intValue();
-        }
-        if (port.isInput()) {
-            bufferCapacity = firingsPerIteration
-                * DFUtilities.getTokenConsumptionRate(port);
-        }
-        return bufferCapacity;
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
+        ((Director)directorHelper).generateFireCode(code);
     }
 
     /** Set the container of this object to be the given container.
