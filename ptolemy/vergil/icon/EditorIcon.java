@@ -280,7 +280,7 @@ public class EditorIcon extends Attribute {
      *  container to the same specified container. Once the container
      *  has been set by calling setContainer(), then the object
      *  specified to this method is no longer relevant.
-     *  @param container The container that will eventually be set.
+     *
      *  @see #setContainerToBe(NamedObj)
      */
     public Nameable getContainerOrContainerToBe() {
