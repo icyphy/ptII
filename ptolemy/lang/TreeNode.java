@@ -367,7 +367,7 @@ public abstract class TreeNode extends TrackedPropertyMap
                     + _visitMethodName + " : target = " +
                     ite.getTargetException().toString());
         }
-        return null;
+        // return null;
     }
 
     /** Return a String of spaces, the number of which is specified by the

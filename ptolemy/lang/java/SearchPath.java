@@ -41,7 +41,6 @@ import java.util.HashSet;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import ptolemy.lang.ApplicationUtility;
 import ptolemy.lang.StringManip;
 
 /** A vector containing paths to search for when resolving an import or

@@ -138,8 +138,8 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY));
 
 	//System.out.println("ResolveTypesVisitor:_visitUserTypeNode: " +
-			   node.getName().getIdent() + 
-			   " interfaces: " + node.getInterfaces());
+	//		   node.getName().getIdent() + 
+	//		   " interfaces: " + node.getInterfaces());
         TNLManip.traverseList(this, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, childArgs, node.getMembers());
 

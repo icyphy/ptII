@@ -47,8 +47,7 @@ PTPACKAGE = 	lang
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = ApplicationUtility.java \
-        Decl.java \
+JSRCS = Decl.java \
         Environ.java \
         EnvironIter.java \
         GenerateVisitor.java \

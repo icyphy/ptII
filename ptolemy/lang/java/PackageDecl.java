@@ -119,12 +119,10 @@ public class PackageDecl extends JavaDecl
 	 * StaticResolution.SYSTEM_PACKAGE.getEnviron(), which calls
 	 * PackageDecl.getEnviron(), which calls this method
 	 * 
-	 * The way to see this is to edit ../ApplicationUtility
-	 * and set enableTrace to true and the recompile.
 	 */
 
         //System.out.println("PackageDecl._initEnviron("
-				 + _container + ")");
+	//			 + _container + ")");
 
         boolean empty = true;
 
@@ -175,9 +173,9 @@ public class PackageDecl extends JavaDecl
             subdir = subdir + File.separatorChar;
         }
 
-        //System.out.println("PackageDecl: subdir = " + subdir);
-	//System.out.println("PackageDecl: found " + paths.size() +
-				 " class paths" + paths.toString());
+	//System.out.println("PackageDecl: subdir = " + subdir +
+        //                   " found " + paths.size() +
+	//		     " class paths" + paths.toString());
 
         for (int i = 0; i < paths.size(); i++) {
             String path = (String) paths.get(i);
@@ -194,7 +192,8 @@ public class PackageDecl extends JavaDecl
 
                 String[] nameList = dir.list();
 
-                //System.out.println("isDirectory = true, length = " + nameList.length);
+                //System.out.println("isDirectory = true, length = " +
+                //                   nameList.length);
 
                 for (int j = 0; j < nameList.length; j++) {
                     //System.out.println("iterating over names, j = " + j);
@@ -216,14 +215,15 @@ public class PackageDecl extends JavaDecl
                         if (_environ.lookupProper(className, CG_USERTYPE) == null) {
 
                             //System.out.println("adding class/interface " +
-                            className + " from " + dirName);
+                            //                   className + " from " +
+                            //                   dirName);
 
                             _environ.add(new ClassDecl(className, this));
 
                             empty = false;
 
-                            //System.out.println(
-                             getName() + " : found source in " + dirName + name);
+                            //System.out.println(getName() +
+                            //      " : found source in " + dirName + name);
                         }
 
                     } else {

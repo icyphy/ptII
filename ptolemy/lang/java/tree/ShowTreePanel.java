@@ -56,8 +56,6 @@ public class ShowTreePanel extends JScrollPane {
      */
     public ShowTreePanel(String filename) {
         // Do static semantic analysis to resolve names...
-        // Uncomment this to get more info:
-        //    ApplicationUtility.enableTrace = debug;
         // Need to go all the way to the last pass (2) to resolve all names.
         CompileUnitNode ast = StaticResolution.loadFileName(filename, 2);
         ASTModel model = new ASTModel(ast);

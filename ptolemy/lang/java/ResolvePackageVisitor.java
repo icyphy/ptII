@@ -92,7 +92,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
 	//System.out.println("ResolvePackageVisitor.visitInterfaceDeclNode" +
-				 ((NameNode) node.getName()).getIdent());
+	//			 ((NameNode) node.getName()).getIdent());
         return _visitUserTypeDeclNode(node, args, false);
     }
 
@@ -170,8 +170,8 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
             // fix category if this is an interface
             if (!isClass) {
 		//System.out.println(
-		 "ResolvePackageVisitor:_visitUserTypeDeclNode: " +
-		 "setting to CG_INTERFACE " + className);
+		//  "ResolvePackageVisitor:_visitUserTypeDeclNode: " +
+		//  "setting to CG_INTERFACE " + className);
                 ocl.category = CG_INTERFACE;
             }
 
@@ -199,7 +199,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
             }
 
             //System.out.println("ResolvePackageVisitor: creating new " +
-				     "class decl for " + className);
+	    //			     "class decl for " + className);
             ClassDecl cl = new ClassDecl(className,
                     isClass ? CG_CLASS : CG_INTERFACE,
                     new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);

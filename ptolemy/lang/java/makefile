@@ -85,8 +85,6 @@ JSRCS = \
 	ResolveTypesVisitor.java \
 	ResolveVisitorBase.java \
 	SearchPath.java \
-	Skeleton.java \
-	SkeletonVisitor.java \
 	StaticResolution.java \
 	StmtLblDecl.java \
 	TypeDecl.java \
@@ -140,53 +138,19 @@ run_GenerateVisitor JavaVisitor.java: NodeTypes.def ../GenerateVisitor.class
 ../GenerateVisitor.class: ../GenerateVisitor.java
 	(cd ..; $(MAKE) GenerateVisitor.class)
 
-# Note that we DON'T want to run Skeleton in any directory that contain
-# actors, like actor/lib or domains/sdf/lib because the code generator
-# needs to transform the code contained in actors.
-# If jskel files are present in actor.lib, then you will end up
-# with the intialize() and fire() methods being declared native, which
-# will result in errors like:
-# cxh@maury 15% java -classpath ../.. cg.OrthogonalCom.CG_Main
-# Exception in thread "main" java.lang.UnsatisfiedLinkError: initialize
-#	at cg.OrthogonalCom.CG_Main.main(CG_Main.java, Compiled Code)
-#
-SKELETON_DIRS = \
-	ptolemy/actor/sched \
-	ptolemy/actor/util \
-	ptolemy/kernel \
-	ptolemy/kernel/util \
-	ptolemy/data \
-	ptolemy/data/type \
-	ptolemy/graph \
-	ptolemy/math 
-
-skeleton:
-	for x in $(SKELETON_DIRS); do \
-		echo running Skeleton in $(PTII)/$$x ; \
-		CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.lang.java.Skeleton $(PTII)/$$x/*.java; \
-	done
-
-# Remove .skel files.
-# Perhaps this should be called 'remove_skeletons_from_the_closet'?
-clean_skeleton:
-	for x in $(SKELETON_DIRS); do \
-		rm -f $(ROOT)/$$x/*.skel; \
-	done
-
 depend:
 	@echo "no dependencies in this directory"
 
 # This rule will update the .bin files by reading in .tbl files
-# Note that this requires the modified version of byacc that 
-# we don't actually ship with ptII
-update_tables: JavaParser.class Skeleton.class yylhs.bin
+update_tables: JavaParser.class yylhs.bin
 yylhs.bin: yylhs.tbl
 	rm -f *.bin
-	$(ROOT)/bin/ptinvoke ptolemy.lang.java.Skeleton $(ROOT)/$(ME)/Main.java
-	-rm -f Main.jskel
+	@echo "Ignore the output, we just want the .bin files"
+	$(ROOT)/bin/ptinvoke ptolemy.lang.java.PrintTree \
+		$(ROOT)/$(ME)/Main.java
 
-# We don't actually ship our modified version of byacc
-PTBYACC = $(ROOT)/vendors/misc/byacc/ptbyacc
+# This is our modified version of byacc, which is written in C
+PTBYACC = $(ROOT)/$(ME)/ptbyacc/ptbyacc
 yylhs.tbl: jparser.y 
 	$(PTBYACC) -j -p ptolemy.lang.java -f JavaParserTmp jparser.y	
 
@@ -202,138 +166,41 @@ RegenerateCode:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
 		ptolemy.lang.java.RegenerateCode ./nodetypes/IntLitNode.java
 
-# FIXME: we can't ship these
-JAVASRC_SKELETON_DIR=$(PTII)/vendors/sun/src
-
-# List of Java packages to generate skeleton files for
-# Generate this list with:
-# du /jdk1.3/src/java | awk '{print $2}' | sed 's@/jdk1.3/src/@@'
-# and removing java, sun and sun/tools 
-# We need to includ
-JAVASRC_SKELETON_DIRS = \
-	java/applet \
-	java/awt/color \
-	java/awt/datatransfer \
-	java/awt/dnd/peer \
-	java/awt/dnd \
-	java/awt/event \
-	java/awt/font \
-	java/awt/geom \
-	java/awt/im/spi \
-	java/awt/im \
-	java/awt/image/renderable \
-	java/awt/image \
-	java/awt/peer \
-	java/awt/print \
-	java/awt \
-	java/beans/beancontext \
-	java/beans \
-	java/io \
-	java/lang/ref \
-	java/lang/reflect \
-	java/lang \
-	java/math \
-	java/net \
-	java/rmi/activation \
-	java/rmi/dgc \
-	java/rmi/registry \
-	java/rmi/server \
-	java/rmi \
-	java/security/acl \
-	java/security/cert \
-	java/security/interfaces \
-	java/security/spec \
-	java/security \
-	java/sql \
-	java/text/resources \
-	java/text \
-	java/util/jar \
-	java/util/zip \
-	java/util \
-	sun/tools/ttydebug
-
-# Location of the unjarred Java sources
-JAVASRC_DIR = 	$(PTJAVA_DIR)/src
-
-# Unjar the Java sources if necessary
-$(JAVASRC_DIR): $(PTJAVA_DIR)/src.jar
-	(cd $PTJAVA_DIR/src; $(JAR) -xf src.jar)
-
-# Temporary jar file containing Java source skeleton files
-JAVASRCSKEL_JAR =	/tmp/javasrcskel.jar
-
-# Build all the skeleton files for the Java sources in the java package
-javasrc_skeletons: $(JAVASRC_DIR) Skeleton.class
-	@echo "WARNING: this does not yet work, the sun classes are missing"
-	@if [ ! -d $(JAVASRC_SKELETON_DIR) ]; then \
-		echo "creating $(JAVASRC_SKELETON_DIR) directory"; \
-		mkdir -p $(JAVASRC_SKELETON_DIR); \
-	fi
-	for x in $(JAVASRC_SKELETON_DIRS); do \
-		echo running Skeleton in $(JAVASRC_DIR)/$$x; \
-		CLASSPATH=$(PTII) $(JAVA) ptolemy.lang.java.Skeleton \
-			$(JAVASRC_DIR)/$$x/*.java; \
-	done
-	@echo "Copying .jskel files from $(JAVASRC_DIR)"
-	@echo " to $(JAVASRC_SKELETON_DIR)"
-	(cd $(JAVASRC_DIR); $(JAR) -cf $(JAVASRCSKEL_JAR) \
-		 `ls java/*/*.jskel java/*/*/*.jskel java/*/*/*/*.jskel`)
-	(cd $(JAVASRC_SKELETON_DIR); $(JAR) -xf $(JAVASRCSKEL_JAR))
-	rm -f $(JAVASRCSKEL_JAR)
-
 analysis:
 	@echo "Perform static semantic analysis"
 	@echo " (You can ignore ambiguous reference warnings)"
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
-	$(JAVA) ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
+	CLASSPATH="$(CLASSPATH)" \
+	 $(JAVA) ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
 
 codegen: generate_codegen compile_codegen run_codegen 
 generate_codegen:
-	@if [ ! -d $(JAVASRC_SKELETON_DIR) ]; then \
-		echo "Warning $(JAVASRC_SKELETON_DIR) does not exist"; \
-	fi
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
-	$(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-	-class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
-	-iterations 50 \
-	-outdir $(ROOT) -outpkg cg.OrthogonalCom
+	CLASSPATH="$(CLASSPATH)" \
+	 $(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	 -class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
+	 -iterations 50 \
+	 -outdir $(ROOT) -outpkg cg.OrthogonalCom
 
 compile_codegen:
-	(cd $(ROOT)/cg/OrthogonalCom; $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
+	(cd $(ROOT)/cg/OrthogonalCom; \
+	 $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
 run_codegen: 	
 	(cd $(ROOT)/cg/OrthogonalCom; \
 		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
 
 # Generate code for a trivial ramp demo - much faster for testing
-codegen2: generate_codegen2 compile_codegen2 run_codegen2 
-generate_codegen2:
-	@if [ ! -d $(JAVASRC_SKELETON_DIR) ]; then \
-		echo "Warning $(JAVASRC_SKELETON_DIR) does not exist"; \
-	fi
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
+ramp: generate_ramp compile_ramp run_ramp 
+generate_ramp:
+	CLASSPATH="$(CLASSPATH)" \
 	$(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.apps.kvm.demo.ramp.RampSystem \
 	-iterations 50 \
 	-outdir $(ROOT) -outpkg cg.RampSystem
 
-compile_codegen2:
+compile_ramp:
 	(cd $(ROOT)/cg/RampSystem; $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
-run_codegen2: 	
+run_ramp: 	
 	(cd $(ROOT)/cg/RampSystem; \
 		$(JAVA) -classpath ../.. cg.RampSystem.CG_Main)
-
-# Read in the JDK rt.jar file and generate zero length .java files.
-generate_zero_length_stubs:
-	-mkdir stubs;
-	cd stubs; CLASSPATH=$(CLASSPATH)/.. \
-		 $(JAVA) ptolemy.lang.java.GenerateZeroLengthStubs
-
-# Run using zero length .java files
-codegen_stubs:
-	$(MAKE) JAVASRC_SKELETON_DIR=stubs codegen
-
-codegen2_stubs:
-	$(MAKE) JAVASRC_SKELETON_DIR=stubs codegen2
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

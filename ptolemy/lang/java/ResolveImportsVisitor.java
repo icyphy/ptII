@@ -115,7 +115,7 @@ public class ResolveImportsVisitor extends JavaVisitor
     protected final void _importOnDemand(PackageDecl importedPackage) {
 
         //System.out.println("ResolveImportsVisitor._importOnDemand : importing " +
-                importedPackage.toString());
+        //        importedPackage.toString());
 
         // ignore duplicate imports
         if (_importedPackages.contains(importedPackage)) {
@@ -140,7 +140,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         }
 
         //System.out.println("_importOnDemand : finished" +
-                importedPackage.toString());
+        //        importedPackage.toString());
     }
 
     // we can get rid of this by added java.lang to the import list

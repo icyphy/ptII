@@ -62,8 +62,6 @@ public class RegenerateCode {
             System.out.println("usage : ptolemy.lang.java.RegenerateCode [-d] f1.java [f2.java ...]");
         }
 
-        ApplicationUtility.enableTrace = debug;
-
         for (int f = 0; f < files; f++) {
             JavaParser p = new JavaParser();
 

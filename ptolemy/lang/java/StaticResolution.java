@@ -431,6 +431,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         return loadCompileUnit(loadedAST, pass);
     }
 
+    /** FIXME: this should probably throw the IOException */
     public static CompileUnitNode loadFile(File file, int pass) {
         //System.out.println("StaticResolution.loadFile:" +
         //        file.getName());
@@ -439,7 +440,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         } catch (IOException ioe) {
             throw new RuntimeException(ioe.toString());
         }
-        return null;
     }
 
     /** Load the source file with the given filename. The filename may be
@@ -542,9 +542,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
 
         //System.out.println("StaticResolution<static>: " +
-                "SYSTEM_PACKAGE: " +  SYSTEM_PACKAGE.getEnviron().toString());
+        //      "SYSTEM_PACKAGE: " +  SYSTEM_PACKAGE.getEnviron().toString());
         //System.out.println("StaticResolution<static>: " +
-                "UNNAMED_PACKAGE: " + UNNAMED_PACKAGE.getEnviron().toString());
+        //      "UNNAMED_PACKAGE: " + UNNAMED_PACKAGE.getEnviron().toString());
 
         // dummy environment
         Environ env = new Environ();
@@ -640,8 +640,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 	
         //System.out.println("StaticResolution._importPackage(" +
-                name.getIdent() + ") :" +
-                env.toString());
+        //        name.getIdent() + ") :" +
+        //        env.toString());
         return decl;
     }
 

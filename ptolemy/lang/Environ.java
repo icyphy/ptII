@@ -276,6 +276,11 @@ public class Environ {
         return _parent;
     }
 
+    /** Remove the first Decl that matches the decl arg */
+    public void remove(Decl decl) {
+        _declList.remove(decl);
+    }
+
     /** Return a recursive String representation of this Environ. */
     public String toString() {
         return toString(true);

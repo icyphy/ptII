@@ -68,8 +68,6 @@ public class Main {
                     "usage : ptolemy.lang.java.Main [-d] f1.java [f2.java ...]");
         }
 
-        ApplicationUtility.enableTrace = debug;
-
         LinkedList units = new LinkedList();
         for (int f = fileStart; f < numArgs; f++) {
             units.add(StaticResolution.loadFileName(args[f], 2));

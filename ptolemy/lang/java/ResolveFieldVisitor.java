@@ -63,7 +63,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         //System.out.println("resolve field on " +
-                node.getDefinedProperty(IDENT_KEY));
+        //        node.getDefinedProperty(IDENT_KEY));
 
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -72,7 +72,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
         //System.out.println("finished resolve field on " +
-                node.getDefinedProperty(IDENT_KEY));
+        //        node.getDefinedProperty(IDENT_KEY));
 
         return node;
     }
@@ -566,7 +566,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         }
 
         throw new RuntimeException ("ambiguous method call to " + aMethod.getName());
-        return null;
+        //return null;
     }
 
     protected static class FieldContext implements Cloneable {

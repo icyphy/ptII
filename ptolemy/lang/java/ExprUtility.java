@@ -84,7 +84,7 @@ public class ExprUtility implements JavaStaticSemanticConstants {
         }
 
         throw new RuntimeException("accessedObject() : node not supported " + node);
-        return null;
+        // return null;
     }
 
     /** Return the integer value given by the IntLitNode. */

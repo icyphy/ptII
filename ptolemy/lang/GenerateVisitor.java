@@ -479,7 +479,7 @@ public class GenerateVisitor {
                 className = strTokenizer.nextToken();
 
                 //System.out.println("Reading class info for : "
-                        + className);
+                //                       + className);
 
                 try {
                     _typeList.addLast(className);

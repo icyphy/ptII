@@ -102,7 +102,7 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
         }
 
         throw new RuntimeException("unknown type encountered : " + type);
-        return TYPE_KIND_UNKNOWN;
+        //return TYPE_KIND_UNKNOWN;
     }
 
     /** Return the kind of the user type, either a class type or an interface type.

@@ -84,7 +84,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
         //System.out.println("finished resolveClass for " +
-                node.getProperty(IDENT_KEY));
+        //                node.getProperty(IDENT_KEY));
 
         return null;
     }
@@ -128,9 +128,9 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 	    try {
 		//superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
 		//System.out.println("ResolveClassVisitor." +
-					 "visitClassDeclNode():" +
-					 "Calling JavaDecl.getDecl " + 
-					 superClass);
+                //			 "visitClassDeclNode():" +
+		//			 "Calling JavaDecl.getDecl " + 
+		//			 superClass);
 		superDecl = (ClassDecl) JavaDecl.getDecl(superClass);
 	    } catch (Exception e) {
 		throw new RuntimeException("ResolveClassVisitor.visitClassDeclNode() node=" +
@@ -142,9 +142,9 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 	    }
         }
 	//System.out.println("ResolveClassVisitor.visitClassDeclNode(): " +
-			   node.getName().getIdent() +
-			   ": " + superDecl + ": " +
-			   superClass + ": " + StaticResolution.OBJECT_DECL );
+	//		   node.getName().getIdent() +
+	//		   ": " + superDecl + ": " +
+	//		   superClass + ": " + StaticResolution.OBJECT_DECL );
         if ((superDecl != null) && (superDecl.category != CG_CLASS)) {
             throw new RuntimeException("class " + node.getName().getIdent() +
                     " cannot extend interface " + superDecl.getName());

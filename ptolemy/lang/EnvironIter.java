@@ -178,7 +178,7 @@ public class EnvironIter implements Iterator {
 
             if (matches >= 2) {
                 //System.out.println("EnvironIter: moreThanOne = true" +
-                        " for " + _name);
+                //        " for " + _name);
                 return true;
             }
 

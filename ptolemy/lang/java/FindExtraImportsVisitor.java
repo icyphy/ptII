@@ -179,9 +179,9 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         }
 
         throw new RuntimeException("container of class \"" + 
-         classDecl.getName() + "\" is not a package nor a user type");
+                classDecl.getName() + "\" is not a package nor a user type");
 
-        return null;
+        // return null;
     }
 
     protected boolean _remove;

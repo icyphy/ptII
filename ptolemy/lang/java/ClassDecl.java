@@ -187,7 +187,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     protected void _buildEnviron() {
 	//System.out.println("ClassDecl._buildEnviron(): Building env " +
-				 "for class " + fullName());
+        //				 "for class " + fullName());
         loadSource();
 
         // builds environments for all recently loaded classes, including
@@ -196,7 +196,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
         // If class didn't load, give it a dummy environment, etc
         if (_environ == null) {
-            throw new RuntimeException("class " + _name + " did not load, " +
+            System.err.println("Warning: class " + _name + " did not load, " +
                     "using dummy environment.");
 
             _environ =

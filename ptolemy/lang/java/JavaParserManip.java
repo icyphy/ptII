@@ -38,7 +38,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ptolemy.lang.StringManip;
-import ptolemy.lang.ApplicationUtility;
 import ptolemy.lang.java.nodetypes.AbsentTreeNode;
 import ptolemy.lang.java.nodetypes.ClassDeclNode;
 import ptolemy.lang.java.nodetypes.CompileUnitNode;
@@ -76,7 +75,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
         } catch (IOException ioe) {
             throw new RuntimeException(ioe.toString());
         }
-        return null;
+        //return null;
     }
 
     /** Parse the file with the given canonical filename, doing no static

@@ -443,7 +443,6 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         throw new RuntimeException("node " + node.toString() +
                 " is not an expression, so it does not have a type");
-        return null;
     }
 
     /** For nodes that represent field accesses (ObjectFieldAccessNode,
@@ -469,7 +468,6 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
         }
 
         throw new RuntimeException("accessdObjectType() not supported for node " + node);
-        return null;
     }
 
     /** Return the type of the object that is accessed. */
