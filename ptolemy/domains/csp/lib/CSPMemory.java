@@ -113,6 +113,15 @@ public class CSPMemory extends CSPActor {
 
             int br = chooseBranch( branches );
 
+	    // Sleep so that graphical displays involving this 
+	    // applet will pause after colors are changed.
+	    try {
+	        Thread.sleep(300);
+	    } catch( InterruptedException e ) {
+	        System.err.println("InterruptedException during Thread.sleep()");
+		e.printStackTrace();
+	    }
+
             if( br >= 0 && br < _numInChannels ) {
                 token = (StringToken)branches[br].getToken();
                 _strValue = token.stringValue();
