@@ -65,7 +65,7 @@ public class HSIFUtilities {
      *   @param input HSIF file to be read in.
      *   @param fileWriter A FileWriter that will write to the MoML
      *   file.
-     *   @throws Exception if there is a problem with the transformation.
+     *   @exception Exception if there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, FileWriter fileWriter)
 	throws Exception {
@@ -75,7 +75,7 @@ public class HSIFUtilities {
 	
         Document inputDocument = null;
 	try {
-	    inputDocument= XSLTUtilities.parse(input);
+	    inputDocument = XSLTUtilities.parse(input);
 	} catch (FileNotFoundException ex) {
 	    // Try it as a jar url
 	    try {
@@ -85,7 +85,7 @@ public class HSIFUtilities {
 		    throw new Exception("'" + input + "' was not a jar "
 					+ "URL, or was not found");
 		}
-	    inputDocument= XSLTUtilities.parse(jarURL.toString());
+	    inputDocument = XSLTUtilities.parse(jarURL.toString());
 	    } catch (Exception ex2) {
 		// FIXME: IOException does not take a cause argument
 		throw ex;
@@ -114,7 +114,7 @@ public class HSIFUtilities {
      *	 file.  Note that if the output file exists, then it is overwritten.
      *   @param input HSIF file to be read in
      *   @param output The MoMLFile to be generated.
-     *   @throws Exception if there is a problem with the transformation.
+     *   @exception Exception if there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, String output)
 	throws Exception {
