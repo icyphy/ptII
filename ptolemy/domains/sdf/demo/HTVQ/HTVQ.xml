@@ -18,7 +18,7 @@
     </property>
     <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 273]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 154]">
     </property>
@@ -74,6 +74,8 @@ integer matrices</text>
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 171, 819, 389}}">
     </property>
     <entity name="Source" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
         <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
@@ -252,6 +254,8 @@ integer matrices</text>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={875, 304, 123, 178}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -260,7 +264,7 @@ integer matrices</text>
         </port>
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="95.0, 95.0">
+        <vertex name="vertex0" value="95.0, 95.0">
         </vertex>
     </relation>
     <relation name="R2" class="ptolemy.actor.TypedIORelation">
@@ -270,7 +274,7 @@ integer matrices</text>
     <relation name="R4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="R5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="440.0, 200.0">
+        <vertex name="vertex0" value="440.0, 200.0">
         </vertex>
     </relation>
     <relation name="R6" class="ptolemy.actor.TypedIORelation">

@@ -70,10 +70,16 @@ of antennas used.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={97, 99, 829, 570}}">
+    </property>
     <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -233,6 +239,10 @@ of antennas used.</text>
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="100">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={259, 33, 462, 168}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[454, 113]">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="536.7142944335938, 280.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -257,25 +267,25 @@ of antennas used.</text>
     <relation name="_R9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="430.0, 190.0">
+        <vertex name="vertex0" value="430.0, 190.0">
         </vertex>
     </relation>
     <relation name="_R13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="170.0, 35.0">
+        <vertex name="vertex1" value="170.0, 35.0">
         </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 280.0">
+        <vertex name="vertex1" value="150.0, 280.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="162.0, 268.0">
+        <vertex name="vertex1" value="162.0, 268.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="160.0, 135.0">
+        <vertex name="vertex1" value="160.0, 135.0">
         </vertex>
     </relation>
     <link port="plot.input" relation="_R12"/>
