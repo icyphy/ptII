@@ -37,6 +37,7 @@ import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.ComponentEntity;
@@ -54,6 +55,7 @@ import javax.swing.SwingUtilities;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
@@ -128,15 +130,17 @@ public class VergilApplication extends MoMLApplication {
 		    public void run() {
 			try {
 			    new VergilApplication(args);
+
 			} catch (Exception ex) {
-			    MessageHandler.error("Command failed", ex);
-			    System.exit(0);
+			    _errorAndExit("Command failed", args, ex);
 			}
 		    }
  		});
         } catch (Error ex2) {
-            MessageHandler.error("Command failed" + ex2.toString());
-            System.exit(0);
+	    // We are not likely to get here, but just to be safe
+	    // we try to print the error message and display it in a 
+	    // graphical widget. 
+	    _errorAndExit("Command failed", args, ex2);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -230,16 +234,16 @@ public class VergilApplication extends MoMLApplication {
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
 
-        if (_configurationURLSpec == null) {
-            _configurationURLSpec =
-                "ptolemy/configs/full/configuration.xml";
+        if (_configurationURL == null) {
+            _configurationURL =
+		specToURL("ptolemy/configs/full/configuration.xml");
         }
         Configuration configuration = null;
         try {
-            configuration = _readConfiguration(_configurationURLSpec);
+            configuration = _readConfiguration(_configurationURL);
         } catch (Exception ex) {
             throw new Exception("Failed to read configuration '"
-                    + _configurationURLSpec + "'", ex);
+                    + _configurationURL + "'", ex);
         }
 
         // Read the user's vergilUserLibrary.xml file
@@ -297,11 +301,12 @@ public class VergilApplication extends MoMLApplication {
         }
         // FIXME: This code is Dog slow for some reason.
         URL inURL = specToURL("ptolemy/configs/"
-                + _configurationSubdirectory + "/welcomeWindow.xml");
-
+			      + _configurationSubdirectory
+			      + "/welcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inURL, inURL.openStream());
+	_parser.parse(inURL, inURL.openStream());
+
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
 
         if (_configurationSubdirectory == null) {
@@ -417,8 +422,10 @@ public class VergilApplication extends MoMLApplication {
                         // tools.
                         if (!configurationDirectories[i]
                                 .getName().equals("jxta")) {
+			    URL specificationURL =
+				specToURL(configurationFileName);
                             Configuration configuration =
-                                _readConfiguration(configurationFileName);
+                                _readConfiguration(specificationURL);
                             if (configuration != null
                                     && configuration.getAttribute("_doc")
                                     != null
@@ -490,9 +497,7 @@ public class VergilApplication extends MoMLApplication {
                     "ptolemy/configs/" + _configurationSubdirectory
                     + "/configuration.xml";
                 // This will throw an Exception if we can't find the config.
-                specToURL(potentialConfiguration);
-
-                _configurationURLSpec = potentialConfiguration;
+                _configurationURL = specToURL(potentialConfiguration);
             } catch (Exception ex) {
                 // The argument did not name a configuration, let the parent
                 // class have a shot.
@@ -500,11 +505,53 @@ public class VergilApplication extends MoMLApplication {
             }
         } else if (_expectingConfiguration) {
             _expectingConfiguration = false;
-            _configurationURLSpec = arg;
+            _configurationURL = specToURL(arg);
         } else {
             return false;
         }
         return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+    // Print out an error message and stack trace on stderr and then
+    // display a dialog box.  This method is used as a fail safe
+    // in case there are problems with the configuration
+    private static void _errorAndExit(String message,
+				      String [] args, Throwable ex) {
+	StringBuffer argsBuffer =
+	    new StringBuffer("Command failed");
+
+	if (args.length > 0) {
+	    argsBuffer.append("\nArguments: " + args[0]);
+	    for(int i = 1; i < args.length; i++) {
+		argsBuffer.append(" " + args[i]);
+	    }
+	    argsBuffer.append("\n");
+	}
+
+	// First, print out the stack trace so that
+	// if the next step fails the user has
+	// a chance of seeing the message.
+	System.out.println(argsBuffer.toString());
+	ex.printStackTrace();
+
+	// Display the error message in a stack trace
+	// If there are problems with the configuration,
+	// then there is a chance that we have not 
+	// registered the GraphicalMessageHandler yet
+	// so we do so now so that we are sure
+	// the user can see the message.
+	// One way to test this is to run vergil -conf foo
+
+	MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+	if (!(ex instanceof Exception)) {
+	    MessageHandler.error(argsBuffer.toString() + " " + ex.toString());
+	} else {
+	    MessageHandler.error(argsBuffer.toString(), (Exception)ex);
+	}
+	System.exit(0);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -518,7 +565,11 @@ public class VergilApplication extends MoMLApplication {
 
     // URL of the configuration to read.
     // The URL may absolute, or relative to the Ptolemy II tree root.
-    private String _configurationURLSpec;
+    // We use the URL instead of the string so that if the configuration
+    // is set as a command line argument, we can use the processed value
+    // from the command line instead of calling specToURL() again, which
+    // might be expensive.
+    private URL _configurationURL;
 
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
