@@ -83,7 +83,7 @@ public class HSIFUtilities {
         transforms.add("ptolemy/hsif/xsl/HSIF.xsl");
         transforms.add("ptolemy/hsif/xsl/SlimPreprocessorForLinks.xsl");
 
-        XSLTUtilities.transform(input, transforms, fileWriter);
+        XSLTUtilities.transform(input, fileWriter, transforms);
 
         // Let the caller close the fileWriter.
         //fileWriter.close();
