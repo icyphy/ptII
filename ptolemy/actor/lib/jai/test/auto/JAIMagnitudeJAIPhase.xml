@@ -111,7 +111,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="JAIDataCaster" class="ptolemy.actor.lib.jai.JAIDataCaster">
+    <entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
         <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="byte">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="byte" class="ptolemy.kernel.util.StringAttribute" value="byte">
@@ -189,8 +189,8 @@
     <link port="JAIPolarToComplex.output" relation="relation5"/>
     <link port="JAIIDFT.input" relation="relation5"/>
     <link port="JAIIDFT.output" relation="relation6"/>
-    <link port="JAIDataCaster.input" relation="relation6"/>
-    <link port="JAIDataCaster.output" relation="relation7"/>
+    <link port="JAIDataConvert.input" relation="relation6"/>
+    <link port="JAIDataConvert.output" relation="relation7"/>
     <link port="JAIImageReader.output" relation="relation"/>
     <link port="ImageDisplay.input" relation="relation7"/>
 </entity>

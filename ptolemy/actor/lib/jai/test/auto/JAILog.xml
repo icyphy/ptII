@@ -84,7 +84,7 @@ Unfortunately, it doesn't show much at all.</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="JAIDataCaster" class="ptolemy.actor.lib.jai.JAIDataCaster">
+    <entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
         <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="byte">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="byte" class="ptolemy.kernel.util.StringAttribute" value="byte">
@@ -156,8 +156,8 @@ Unfortunately, it doesn't show much at all.</text></svg></configure>
     <link port="JAILog.input" relation="relation3"/>
     <link port="JAILog.output" relation="relation4"/>
     <link port="ImageDisplay.input" relation="relation5"/>
-    <link port="JAIDataCaster.input" relation="relation4"/>
-    <link port="JAIDataCaster.output" relation="relation5"/>
+    <link port="JAIDataConvert.input" relation="relation4"/>
+    <link port="JAIDataConvert.output" relation="relation5"/>
     <link port="JAIDFT.input" relation="relation"/>
     <link port="JAIDFT.output" relation="relation2"/>
 </entity>

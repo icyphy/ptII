@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="JAIDCTJAIIDCTJAIDataCaster" class="ptolemy.actor.TypedCompositeActor">
+<entity name="JAIDCTJAIIDCTJAIDataConvert" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Take the DCT and IDCT of an image.
-A DataCaster must be used because 
+A DataConvert must be used because 
 the data type of each pixel at the 
 output of the IDCT are doubles, 
 whereas file types expect bytes.</text></svg></configure>
@@ -62,7 +62,7 @@ whereas file types expect bytes.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="JAIDataCaster" class="ptolemy.actor.lib.jai.JAIDataCaster">
+    <entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
         <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="byte">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="byte" class="ptolemy.kernel.util.StringAttribute" value="byte">
@@ -125,8 +125,8 @@ whereas file types expect bytes.</text></svg></configure>
     <link port="JAIDCT.output" relation="relation2"/>
     <link port="JAIIDCT.input" relation="relation2"/>
     <link port="JAIIDCT.output" relation="relation3"/>
-    <link port="JAIDataCaster.input" relation="relation3"/>
-    <link port="JAIDataCaster.output" relation="relation4"/>
+    <link port="JAIDataConvert.input" relation="relation3"/>
+    <link port="JAIDataConvert.output" relation="relation4"/>
     <link port="JAIImageReader.output" relation="relation"/>
     <link port="ImageDisplay.input" relation="relation4"/>
 </entity>
