@@ -445,7 +445,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/ptolemy \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/ptolemy/fsm \
