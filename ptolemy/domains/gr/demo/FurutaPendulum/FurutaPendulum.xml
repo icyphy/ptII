@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="pendulum2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[798, 566]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 566]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[4, -12]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[5, 12]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -439,16 +439,18 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>u</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="2.634999999999966"/>
+<xRange min="0.0" max="2.0149999999999793"/>
 <yRange min="-0.5" max="0.5"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -1079,7 +1081,7 @@
                     </port>
                 </entity>
                 <entity name="Phi0" class="ptolemy.actor.lib.Const">
-                    <property name="value" class="ptolemy.data.expr.Parameter" value="-3.9599239">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="-2.4921921">
                     </property>
                     <doc>Create a constant sequence</doc>
                     <property name="_location" class="ptolemy.moml.Location" value="81.0, 344.0">
@@ -2096,14 +2098,18 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>E+mode</title>
-<xRange min="0.0" max="2.634999999999966"/>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="2.0149999999999793"/>
 <yRange min="-2.0" max="2.0"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
@@ -2181,7 +2187,7 @@
             </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.02">
             </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="0.70">
+            <property name="height" class="ptolemy.data.expr.Parameter" value="0.8">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="90.0, 173.0">
             </property>
@@ -2279,7 +2285,7 @@
         <entity name="Translate1" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.35">
+            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.4">
             </property>
             <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
             </property>
