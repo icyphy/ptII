@@ -1,6 +1,6 @@
 # Ptolemy II Java Code generation lexical analyzer
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, Shuvra Bhattacharyya based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -211,6 +211,22 @@ run_ramp:
 	(cd $(CGROOT)/cg/RampSystem; \
 		"$(JAVA)" -classpath ../.. cg.RampSystem.CG_Main)
 
+# Generate code for the ramp demo using shallow loading of ASTs
+shallowRamp: generate_shallowRamp compile_shallowRamp run_shallowRamp
+generate_shallowRamp:
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+    -shallowLoading \
+	-class  ptolemy.domains.sdf.codegen.test.RampSystem \
+	-iterations 50 \
+	-outdir $(CGROOT) -outpkg cg.ShallowRampSystem
+
+compile_shallowRamp:
+	(cd $(CGROOT)/cg/ShallowRampSystem; "$(JAVAC)" $(JFLAGS) \
+    -classpath ../.. CG_Main.java)
+run_shallowRamp:
+	(cd $(CGROOT)/cg/ShallowRampSystem; \
+		"$(JAVA)" -classpath ../.. cg.ShallowRampSystem.CG_Main)
 
 # Generate code for a trivial butterfly demo - much faster for testing
 butterfly: generate_butterfly compile_butterfly run_butterfly
@@ -229,6 +245,3 @@ run_butterfly:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
