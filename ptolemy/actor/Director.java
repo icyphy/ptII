@@ -668,9 +668,17 @@ public class Director extends NamedObj implements Executable {
 
         Enumeration enum = _queuedTopologyRequests.elements();
         while (enum.hasMoreElements()) {
-            TopologyChangeRequest r = (TopologyChangeRequest)enum.nextElement();
+            TopologyChangeRequest r = 
+                (TopologyChangeRequest)enum.nextElement();
 
-            // Change the topology. This might throw a TopologyChangeFailedException
+            // Change the topology. This might throw a 
+            // TopologyChangeFailedException
+            try {
+                r.constructEventQueue();
+            } catch (Exception ex) {
+                //FIXME: better error message???
+                System.out.println("arrggg" + ex.getClass().getName() + ex.getMessage());
+            }
             r.performRequest();
 
             // Record any new actors that in this request
@@ -678,13 +686,13 @@ public class Director extends NamedObj implements Executable {
             while (events.hasMoreElements()) {
                 TopologyEvent e = (TopologyEvent) events.nextElement();
                 if (e.getID() == TopologyEvent.ENTITY_ADDED) {
-                    if (e.entity instanceof Actor &&
+                    if (e.componentEntity instanceof Actor &&
                             !_newActors.includes(e.entity)) {
-                        _newActors.insertLast(e.entity);
+                        _newActors.insertLast(e.componentEntity);
                     }
                 } else if (e.getID() == TopologyEvent.ENTITY_REMOVED) {
                     // Why on earth would you want do do this???
-                    _newActors.removeOneOf(e.entity);
+                    _newActors.removeOneOf(e.componentEntity);
                 }
             }
 
@@ -719,7 +727,8 @@ public class Director extends NamedObj implements Executable {
     private LinkedList _queuedTopologyRequests = null;
     private TopologyMulticaster _topologyListeners = null;
     private ActorListener _actorListener = null;
-    private LinkedList _newActors = null;
+    
+    private LinkedList _newActors = new LinkedList();
    
     // Deprecated -- will be deleted
     private LinkedList _pendingMutations = null;
