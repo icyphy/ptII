@@ -300,6 +300,11 @@ public abstract class AbstractGraphController implements GraphController {
                         _selectionModel.removeSelection(figure);
                     }
                     clearEdge(object);
+                    // Previously, the figure was being left in _map,
+                    // which results in an accumulation over time
+                    // of figures that should not be rendered.
+                    // EAL 4/29/04.
+                    _map.remove(object);
                 }
             }
         }
@@ -316,6 +321,11 @@ public abstract class AbstractGraphController implements GraphController {
                         _selectionModel.removeSelection(figure);
                     }
                     clearNode(object);
+                    // Previously, the figure was being left in _map,
+                    // which results in an accumulation over time
+                    // of figures that should not be rendered.
+                    // EAL 4/29/04.
+                    _map.remove(object);
                 }
             }
         }
