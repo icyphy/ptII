@@ -132,14 +132,14 @@ public class PNExampleApplet extends Applet {
     }
 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // If non-zero, print out debugging messages.
     protected int _debug = 10;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Run the universe in pnmode for pncount. */
     private void _run(int pnmode, int pncount) {
@@ -161,8 +161,8 @@ public class PNExampleApplet extends Applet {
         //        }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _pnmode = 0;         // Mode of PN Buffer Algorithm.
     private int _pncount = 1;        // Number of times to run.

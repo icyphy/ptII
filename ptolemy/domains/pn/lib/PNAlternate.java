@@ -55,8 +55,8 @@ public class PNAlternate extends PNActor {
     }
     
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
     /** Reads one Token from it's input port and writes this token to 
      *  it's output ports. Needs to read one token for every output
@@ -97,8 +97,8 @@ public class PNAlternate extends PNActor {
         }
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     // The input port 
     private PNInPort _input;

@@ -74,8 +74,8 @@ public class DEPoisson extends AtomicActor {
     }
 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Produce the initializer event which will cause the generation of
      *  the first event at time zero.
@@ -127,8 +127,8 @@ public class DEPoisson extends AtomicActor {
         output.broadcast((Token)outputToken.clone());
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.

@@ -56,8 +56,8 @@ public class PNRedirect extends PNActor{
     }
     
  
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Reads a token from it's input stream and writes it to the output
      */
@@ -91,8 +91,8 @@ public class PNRedirect extends PNActor{
     }
 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /* This is the initial value that the star puts in the stream */
     private IntToken _initValue;

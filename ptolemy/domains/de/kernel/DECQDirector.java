@@ -91,8 +91,8 @@ public class DECQDirector extends Director {
         super(workspace, name);
     }
     
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /** Override the default fire method so that only one actor fire.
         The firing actor would be the one obtained from the global queue.
         Global queue keeps track of the deeply contained actors.
@@ -198,7 +198,7 @@ public class DECQDirector extends Director {
         _stopTime = st;
     }
 
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private inner class                    ////
     
     // private inner class CQValue: wrapper for the datas that want to be
@@ -220,8 +220,8 @@ public class DECQDirector extends Director {
     
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     //_cQueue: an instance of CalendarQueue is used for sorting.
     private CalendarQueue _cQueue = new CalendarQueue(new DECQComparator());

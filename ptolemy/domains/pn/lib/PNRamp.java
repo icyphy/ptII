@@ -52,8 +52,8 @@ public class PNRamp extends PNActor {
         _output = newOutPort(this, "output");
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
     public void setInitState(int seed) {
         _seed = seed;
@@ -90,8 +90,8 @@ public class PNRamp extends PNActor {
             }
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     /* This is the initial value that the star puts in the stream */
     private int _seed;

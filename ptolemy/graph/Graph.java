@@ -63,8 +63,8 @@ public class Graph {
         _nodeIdTable = new Hashtable(numNodes);
     }
         
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Adds a node to this graph.  The node is associated with the
      *  spedified object. The object can't be null.  In addition, two
@@ -219,8 +219,8 @@ public class Graph {
         return false;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Returns the node id of the node associated with the specified Object.
      *  @param o an object associated with a graph node.
@@ -238,11 +238,11 @@ public class Graph {
         return v.intValue();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                          private methods                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        protected variables                     ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** The adjacency list representation of a graph.
      *  This vector is indexed by the node id, each entry is a vector of
@@ -257,8 +257,8 @@ public class Graph {
      */
     protected Vector _backRef;
     
-    ////////////////////////////////////////////////////////////////////////
-    ////                        protected variables                     ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // Translation from Object to nodeId.  This can be down with
     // _backRef.indexOf(), but Hashtable is faster.

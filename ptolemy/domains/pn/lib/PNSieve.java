@@ -53,8 +53,8 @@ public class PNSieve extends PNActor {
     }
     
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
     /** Initializes the Star. Should be called before execution
      * @param prime is the prime for this sieve
@@ -179,8 +179,8 @@ public class PNSieve extends PNActor {
         return m;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     /* The input port */
     private PNInPort _input;

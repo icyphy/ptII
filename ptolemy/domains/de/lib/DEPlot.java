@@ -57,8 +57,8 @@ public class DEPlot extends AtomicActor{
         _yMax = (double)1;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
     /** Initalize.
      */
@@ -135,7 +135,7 @@ public class DEPlot extends AtomicActor{
         return _yMax;
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private inner class                      ////
 
     public class DEPlotFrame extends Frame {
@@ -195,8 +195,8 @@ public class DEPlot extends AtomicActor{
     }
     
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.

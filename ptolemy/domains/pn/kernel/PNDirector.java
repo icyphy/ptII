@@ -54,8 +54,8 @@ public class PNDirector extends Director {
         _processGroup = new ThreadGroup("PNStarGroup");
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Creates a thread for each new PN actor, initializes the actors and starts
      *  the threads corresponding to each new actor.
@@ -210,8 +210,8 @@ public class PNDirector extends Director {
     }
     
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Checks for deadlock(Both artificial and true deadlocks). 
     // noOfStoppedProcess is 0 if the deadlock is being checked for a 
@@ -375,8 +375,8 @@ public class PNDirector extends Director {
         }
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     private boolean _mutate = true;
     // Container is the CompositeEntity the executive is responsible for

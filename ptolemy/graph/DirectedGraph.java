@@ -63,8 +63,8 @@ public class DirectedGraph extends Graph {
         _inDegree = new Vector(numNodes);
     }
         
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Adds a node to this graph.  The node is associated with the
      *  spedified object. The object can't be null.  In addition, two
@@ -202,8 +202,8 @@ public class DirectedGraph extends Graph {
         return result;
     } 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /* Computes the transitive closure. Puts the result in the protected
      * variable _tranClosure.
@@ -254,8 +254,8 @@ public class DirectedGraph extends Graph {
         _tranClosureValid = true;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        protected variables                     ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** The in-degree of each node.
      *  This vector is indexed by node id with each entry an
@@ -271,7 +271,7 @@ public class DirectedGraph extends Graph {
      */
     protected boolean[][] _tranClosure;
 
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                      ////    
 
     private boolean _isAcyclic;

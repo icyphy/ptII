@@ -64,8 +64,8 @@ public class Inequality {
         _greaterTerm = greaterTerm;
     }
     
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /*  Adds the specified <code>InequalityTerm</code> to the list of
      *  variabls in this inequality.
@@ -120,8 +120,8 @@ public class Inequality {
 	return result;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                       private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private InequalityTerm _lesserTerm = null;
     private InequalityTerm _greaterTerm = null;
 

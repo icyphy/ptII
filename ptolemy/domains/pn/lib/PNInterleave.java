@@ -57,8 +57,8 @@ public class PNInterleave extends PNActor{
         _output = newOutPort(this, "output");
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** This reads tokens from each of it's inputs in a circular fashion and
      *  redirects them each to the output 
@@ -89,8 +89,8 @@ public class PNInterleave extends PNActor{
         return;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Input ports 
     private PNInPort _input;

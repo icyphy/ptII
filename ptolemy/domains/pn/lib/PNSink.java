@@ -52,8 +52,8 @@ public class PNSink extends PNActor{
         _input = newInPort(this, "input");
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
     /** Writes successive integers to the output
      */
@@ -79,8 +79,8 @@ public class PNSink extends PNActor{
         }
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     /* Input port */
     private PNInPort _input;

@@ -43,8 +43,8 @@ for definition of operations.
 
 public interface CPO
 {
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Returns the bottom element of this CPO.
      *  @return an object representing the bottom element.
@@ -144,8 +144,8 @@ public interface CPO
      // FiniteCPO class?
     public Object[] upSet(Object e);
  
-    ////////////////////////////////////////////////////////////////////////
-    ////                        public variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Comparison result: the first element is strictly less than
      *  the second.

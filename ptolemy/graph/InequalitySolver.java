@@ -71,8 +71,8 @@ public class InequalitySolver {
         _cpo = cpo;
     }
     
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Adds all of the inequalities in the specified
      *  <code>Enumeration </code> to the set of constraints.
@@ -333,7 +333,7 @@ public class InequalitySolver {
 	return result.elements();
     }
 
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                          inner class                           ////
 
     // Each instance of this class is an entry in _Ilist.
@@ -353,8 +353,8 @@ public class InequalitySolver {
         private boolean _inserted = false;
     }
     
-    ////////////////////////////////////////////////////////////////////////
-    ////                       private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private CPO _cpo = null;
  
