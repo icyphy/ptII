@@ -106,7 +106,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      *   actor with this name.
      */
     public CTAssertion(CompositeEntity container, String name)
-	throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     }
 
@@ -125,7 +125,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      */
 
     public Object clone(Workspace workspace)
-	throws CloneNotSupportedException {
+        throws CloneNotSupportedException {
         CTAssertion newObject = (CTAssertion) super.clone(workspace);
         return newObject;
     }
@@ -135,7 +135,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      *  or getToken() method of Variable throws it.
      */
     public void fire() throws IllegalActionException {
-	super.fire();
+        super.fire();
     }
 
     /** Initialize the actor.
@@ -153,45 +153,45 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      */
     public boolean isThisStepAccurate() {
 
-	try {
-	    BooleanToken result = (BooleanToken) evaluate();
+        try {
+            BooleanToken result = (BooleanToken) evaluate();
 
-	    if (!result.booleanValue()) {
+            if (!result.booleanValue()) {
 
-		if (_debugging) {
-		    _debug(this.getFullName() + " adjusts the step size");
-		}
+                if (_debugging) {
+                    _debug(this.getFullName() + " adjusts the step size");
+                }
 
-		CTDirector dir = (CTDirector)getDirector();
-		_eventMissed = true;
+                CTDirector dir = (CTDirector)getDirector();
+                _eventMissed = true;
 
-		// The refined step size is half of the previous one.
-		_refineStep = 0.5*dir.getCurrentStepSize();
+                // The refined step size is half of the previous one.
+                _refineStep = 0.5*dir.getCurrentStepSize();
 
-		if (_debugging) _debug(getFullName() +
-				       " Former stepsize as " + dir.getCurrentStepSize() +
-				       "\nRefined step at" +  _refineStep);
-		return false;
-	    }
-	    else {
-		if (_debugging) {
-		    _debug(this.getFullName() + " need not adjust the step size");
-		}
-	    }
-	} catch (IllegalActionException e) {
-	    // which should not happen
-	    return false;
-	}
+                if (_debugging) _debug(getFullName() +
+                                       " Former stepsize as " + dir.getCurrentStepSize() +
+                                       "\nRefined step at" +  _refineStep);
+                return false;
+            }
+            else {
+                if (_debugging) {
+                    _debug(this.getFullName() + " need not adjust the step size");
+                }
+            }
+        } catch (IllegalActionException e) {
+            // which should not happen
+            return false;
+        }
 
-	_eventMissed = false;
-	return true;
+        _eventMissed = false;
+        return true;
     }
 
     /** Evaluate the assertion.
      *  @exception IllegalActionException If the super class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-	return super.postfire();
+        return super.postfire();
     }
 
     /** Return the maximum Double, since this actor does not predict
