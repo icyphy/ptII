@@ -148,7 +148,6 @@ public class ABPPlot extends DEActor {
         if (!_rangeInitialized) {
             _plot.setXRange(dir.getStartTime(), dir.getStopTime());
             _plot.setYRange(getYMin(), getYMax());
-            _plot.init();
             _plot.repaint();
             _rangeInitialized = true;
         }
