@@ -309,7 +309,8 @@ public class Engine {
      * @param t Token to provide value.
      * @see Engine
      */
-    public int put(long[] eng, String name, Token t) throws IllegalActionException {
+    public int put(long[] eng, String name, Token t)
+            throws IllegalActionException {
         int retval;
         synchronized(semaphore) {
             if (eng == null || eng[0] == 0) {
@@ -456,7 +457,7 @@ public class Engine {
                                     + nCols);
                         }
                     }
-                    ta[m] = new RecordToken(fieldNames,fieldValues);
+                    ta[m] = new RecordToken(fieldNames, fieldValues);
                 }
                 tr[n] = new ArrayToken(ta);
             }
