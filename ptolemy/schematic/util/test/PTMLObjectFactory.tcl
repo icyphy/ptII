@@ -64,15 +64,15 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
 } icons {
     {ptolemy.schematic.util.Icon {LoadImage} parameters {
     } graphics {
-        {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=pink} {coords=0 0 60 40}} label {}}
-        {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
+        {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {fill=pink} {coords=0 0 60 40} {color=red}} label {}}
+        {ptolemy.schematic.util.GraphicElement {polygon} attributes { {fill=blue} {coords=10 10 50 30 10 30 50 10} {color=black}} label {}}
         {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
         {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=30 20 60 20}} label {}}
     }}
     {ptolemy.schematic.util.Icon {SaveImage} parameters {
     } graphics {
-        {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=orange} {coords=0 0 60 40}} label {}}
-        {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
+        {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {fill=orange} {coords=0 0 60 40} {color=red}} label {}}
+        {ptolemy.schematic.util.GraphicElement {polygon} attributes { {fill=blue} {coords=10 10 50 30 10 30 50 10} {color=black}} label {}}
         {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
         {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=0 20 30 20}} label {}}
     }}
@@ -188,7 +188,7 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
     set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
-    set schematic [java::call ptolemy.schematic.util.PTMLObjectFactory createSchematic $xmllib $entityroot]
+    set schematic [java::call ptolemy.schematic.util.PTMLObjectFactory createSchematic $xmllib $iconroot $entityroot]
 
     $schematic description
 } {ptolemy.schematic.util.Schematic {SDF} parameters {

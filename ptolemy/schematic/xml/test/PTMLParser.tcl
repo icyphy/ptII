@@ -57,30 +57,30 @@ test PTMLParser-2.1 {parser tests} {
     append filename $fileend
     set tree [$parser parse $filename]
     list [$tree toString]
-} {{<iconlibrary version="1.0" name="SDF">
+} {{<iconlibrary name="SDF" version="1.0">
 <description>Icons for use within SDF</description>
 <icon name="LoadImage">
 <description>Load an image from a file</description>
 <xmlgraphic>
-<rectangle coords="0 0 60 40" fill="pink" color="red"></rectangle>
-<polygon color="black" fill="blue" coords="10 10 50 30 10 30 50 10"></polygon>
+<rectangle color="red" coords="0 0 60 40" fill="pink"></rectangle>
+<polygon color="black" coords="10 10 50 30 10 30 50 10" fill="blue"></polygon>
 <ellipse color="black" coords="25 15 10 10" fill="yellow"></ellipse>
 <line coords="30 20 60 20"></line>
 </xmlgraphic>
 </icon>
 <icon name="SaveImage">
 <xmlgraphic>
-<rectangle coords="0 0 60 40" fill="orange" color="red"></rectangle>
-<polygon color="black" fill="blue" coords="10 10 50 30 10 30 50 10"></polygon>
+<rectangle color="red" coords="0 0 60 40" fill="orange"></rectangle>
+<polygon color="black" coords="10 10 50 30 10 30 50 10" fill="blue"></polygon>
 <ellipse color="black" coords="25 15 10 10" fill="yellow"></ellipse>
 <line coords="0 20 30 20"></line>
 </xmlgraphic>
 </icon>
 <terminalstyle name="1out">
-<terminal y="20" x="64" name="output"></terminal>
+<terminal name="output" x="64" y="20"></terminal>
 </terminalstyle>
 <terminalstyle name="1in">
-<terminal y="20" x="-4" name="input"></terminal>
+<terminal name="input" x="-4" y="20"></terminal>
 </terminalstyle>
 </iconlibrary>
 }}
@@ -95,23 +95,21 @@ test PTMLParser-2.2 {Constructor tests} {
     append filename $fileend
     set tree [$parser parse $filename]
     list [$tree toString]
-} {{<schematic version="1.0" name="SDF">
+} {{<schematic name="SDF" version="1.0">
 <description>Icons for use within SDF</description>
-<entity terminalstyle="default" icon="default" template="SDF.LoadImage" name="Load BMP File">
+<entity icon="default" implementation="null" name="Load BMP File" template="SDF.LoadImage" terminalstyle="default">
 <description>Load the Image that will be transmitted and stored.</description>
-<parameter value="" type="string" name="filename"></parameter>
-<port input="false" multiport="false" type="doubleArray" output="true" name="image"></port>
+<parameter name="filename" type="string" value="test"></parameter>
 </entity>
-<entity terminalstyle="default" icon="default" template="SDF.SaveImage" name="Save BMP File">
-<parameter value="" type="string" name="filename"></parameter>
-<port output="false" multiport="false" type="doubleArray" input="true" name="image"></port>
+<entity icon="default" implementation="null" name="Save BMP File" template="SDF.SaveImage" terminalstyle="default">
+<parameter name="filename" type="string" value="test"></parameter>
 </entity>
 <relation name="R1">
 <link from="Save BMP File.input" to="Load BMP File.output"></link>
 </relation>
-<parameter type="string" value="SDF" name="domain"></parameter>
-<parameter type="double" value="1.0" name="starttime"></parameter>
-<parameter type="double" value="7.0" name="endtime"></parameter>
+<parameter name="domain" type="string" value="SDF"></parameter>
+<parameter name="starttime" type="double" value="1.0"></parameter>
+<parameter name="endtime" type="double" value="7.0"></parameter>
 </schematic>
 }}
     
@@ -124,30 +122,30 @@ test PTMLParser-3.1 {Constructor tests} {
     append filename $fileend
     set tree [$parser parse $filename]
     list [$tree toString]
-} {{<domainlibrary version="1.0" name="Dataflow">
-<actorpackage package="ptolemy.lib" name="domain polymorphic"></actorpackage>
+} {{<domainlibrary name="Dataflow" version="1.0">
+<actorpackage name="domain polymorphic" package="ptolemy.lib"></actorpackage>
 <domain name="CT">
 <description>Continuous Time</description>
-<actorpackage package="ptolemy.domains.ct.lib" name="CT default"></actorpackage>
-<director class="ptolemy.domains.ct.kernel.CTSingleSolverDirector" name="Single solver"></director>
-<director class="ptolemy.domains.ct.kernel.CTMultiSolverDirector" name="Multiple solver"></director>
-<director class="ptolemy.domains.ct.kernel.CTMixedSignalDirector" name="Mixed-signal"></director>
+<actorpackage name="CT default" package="ptolemy.domains.ct.lib"></actorpackage>
+<director class="ptolemy.domains.ct.kernel.CTSingleSolverDirector" icon="default" implementation="null" name="Single solver"></director>
+<director class="ptolemy.domains.ct.kernel.CTMultiSolverDirector" icon="default" implementation="null" name="Multiple solver"></director>
+<director class="ptolemy.domains.ct.kernel.CTMixedSignalDirector" icon="default" implementation="null" name="Mixed-signal"></director>
 </domain>
 <domain name="DE">
 <description>Discrete Event</description>
-<actorpackage package="ptolemy.domains.de.lib" name="DE default"></actorpackage>
-<director class="ptolemy.domains.de.kernel.DECQDirector" name="Calendar queue"></director>
+<actorpackage name="DE default" package="ptolemy.domains.de.lib"></actorpackage>
+<director class="ptolemy.domains.de.kernel.DECQDirector" icon="default" implementation="null" name="Calendar queue"></director>
 </domain>
 <domain name="PN">
 <description>Process networks</description>
-<actorpackage package="ptolemy.domains.pn.lib" name="PN default"></actorpackage>
-<director class="ptolemy.domains.pn.kernel.PNDirector" name="Bounded memory"></director>
+<actorpackage name="PN default" package="ptolemy.domains.pn.lib"></actorpackage>
+<director class="ptolemy.domains.pn.kernel.PNDirector" icon="default" implementation="null" name="Bounded memory"></director>
 </domain>
 <domain name="SDF">
 <description>Static dataflow</description>
-<actorpackage package="ptolemy.domains.sdf.lib" name="SDF default"></actorpackage>
-<director class="ptolemy.domains.sdf.kernel.SDFDirector" name="Multirate"></director>
+<actorpackage name="SDF default" package="ptolemy.domains.sdf.lib"></actorpackage>
+<director class="ptolemy.domains.sdf.kernel.SDFDirector" icon="default" implementation="null" name="Multirate"></director>
 </domain>
 </domainlibrary>
 }}
-\
+

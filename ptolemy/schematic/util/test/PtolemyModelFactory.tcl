@@ -69,7 +69,7 @@ test PtolemyModelFactory-2.1 {Constructor tests} {
     set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
-    set schematic [java::call ptolemy.schematic.util.PTMLObjectFactory createSchematic $xmllib $entityroot]
+    set schematic [java::call ptolemy.schematic.util.PTMLObjectFactory createSchematic $xmllib $iconroot $entityroot]
 
     set modelfactory [java::new ptolemy.schematic.util.PtolemyModelFactory]
     set model [$modelfactory createPtolemyModel $schematic]

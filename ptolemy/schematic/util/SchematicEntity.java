@@ -53,15 +53,20 @@ public class SchematicEntity extends PTMLTemplateObject
 
     /**
      * Create a new SchematicEntity object with no template and
-     * the name "SchematicEntity".
+     * a unique name.
      */
-    //    public SchematicEntity () {
-    //    this("SchematicEntity", null);
-    // }
+    public SchematicEntity () {
+        this("entity", null);
+	try {
+	    setName(_createUniqueName());
+	} catch (NameDuplicationException ex) {
+	    throw new InternalErrorException("Unique name was not unique!");
+	}
+    }
 
     /**
-     * Create a new SchematicEntity object with the given entity template and
-     * the name of the template.
+     * Create a new SchematicEntity object with no template and
+     * the given name.
      */
     public SchematicEntity (String name) {
         this(name, null);
@@ -77,11 +82,7 @@ public class SchematicEntity extends PTMLTemplateObject
         _y = 0;
         _ports = new NamedList();
         _terminals = new NamedList();
-	if(et != null) {
-	    setTerminalStyle(et.getTerminalStyle());
-	}
-	else 
-	    setTerminalStyle(null);
+	_terminalstyle = null;
   	//setIcon(DEFAULTICONNAME);
     }
 
@@ -173,7 +174,7 @@ public class SchematicEntity extends PTMLTemplateObject
      * Get the icon of this entity.
      */
     public Icon getIcon () {
-        if(hasTemplate()) 
+        if(hasTemplate() && (_icon == null)) 
             return ((SchematicEntity) getTemplate()).getIcon();
         else
             return _icon;
@@ -184,7 +185,7 @@ public class SchematicEntity extends PTMLTemplateObject
      * may be a java class name, or a URL for a PTML schematic object.
      */
     public String getImplementation () {
-        if(hasTemplate()) 
+        if(hasTemplate() && (_implementation == null)) 
             return ((SchematicEntity) getTemplate()).getImplementation();
         else
             return _implementation;
@@ -194,14 +195,20 @@ public class SchematicEntity extends PTMLTemplateObject
      * Get the terminal map for this entity.
      */
     public TerminalMap getTerminalMap () {
-        return _terminalmap;
+        if(hasTemplate() && (_terminalmap == null)) 
+            return ((SchematicEntity) getTemplate()).getTerminalMap();
+        else
+	    return _terminalmap;
     }
 
     /**
      * Get the terminal style of this entity.
      */
     public TerminalStyle getTerminalStyle () {
-        return _terminalstyle;
+       if(hasTemplate() && (_terminalstyle == null)) 
+            return ((SchematicEntity) getTemplate()).getTerminalStyle();
+       else
+	    return _terminalstyle;
     }
 
     /**
@@ -254,7 +261,8 @@ public class SchematicEntity extends PTMLTemplateObject
      * Remove a port from the entity. Throw an exception if
      * a port with this name is not contained in the entity.
      */
-    public void removePort (SchematicPort port) throws IllegalActionException {
+    public void removePort (SchematicPort port) 
+	throws IllegalActionException {
         try {
 	    _ports.remove(port);
 	    port.setContainer(null);
@@ -282,26 +290,36 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     /**
-     * Set the Icon that describes this entity.
+     * Set the icon that describes this entity.  Note that if this entity
+     * has a template, this corresponds to overriding the value that is 
+     * set in the template, but does not affect the template in any way.
+     * to return to the value set in the template, call this method with a 
+     * null argument.
      */
     public void setIcon (Icon icon) {
 	_icon = icon;
     }
 
     /** 
-     * Set the string that represents the implementation of this entity
+     * Set the string that represents the implementation of this entity.
+     * Note that if this entity
+     * has a template, this corresponds to overriding the value that is 
+     * set in the template, but does not affect the template in any way.
+     * to return to the value set in the template, call this method with a 
+     * null argument.
      * @see #getImplementation
      */
     public void setImplementation (String implementation) {
-	if(hasTemplate()) 
-	    throw new InternalErrorException("Cannot set the implementation" + 
-		" of an entity that has a template");
-        else
-	    _implementation = implementation;
+	_implementation = implementation;
     }
 
     /**
-     * Set the TerminalMap that describes this entity.
+     * Set the TerminalMap that describes this entity. 
+     * Note that if this entity
+     * has a template, this corresponds to overriding the value that is 
+     * set in the template, but does not affect the template in any way.
+     * to return to the value set in the template, call this method with a 
+     * null argument.
      */
     public void setTerminalMap (TerminalMap tmap) {
 	_terminalmap = tmap;
@@ -319,22 +337,23 @@ public class SchematicEntity extends PTMLTemplateObject
         //FIXME this is a bogus way to do this.
         _terminalstyle = style;
 
-        if(_terminalstyle != null) {
-            Enumeration templateTerminals = _terminalstyle.terminals();
-            while(templateTerminals.hasMoreElements()) {
-                SchematicTerminal terminal = 
-                    (SchematicTerminal)templateTerminals.nextElement();
-                try {
+	// Blow away the old terminals
+	_terminals.removeAll();
+
+	Enumeration templateTerminals = getTerminalStyle().terminals();
+	while(templateTerminals.hasMoreElements()) {
+	    SchematicTerminal terminal = 
+		(SchematicTerminal)templateTerminals.nextElement();
+	    try {
                     addTerminal(new SchematicTerminal(terminal.getName(), 
-                            terminal));
+						      terminal));
                     
-                } catch (Exception ex) {
-                    throw new InternalErrorException(ex.getMessage());
-                    // This should never happen, because the terminals in the
-                    // template must follow the same rules as the schematic 
-                    // terminals.
-                }
-            }
+	    } catch (Exception ex) {
+		throw new InternalErrorException(ex.getMessage());
+		// This should never happen, because the terminals in the
+		// template must follow the same rules as the schematic 
+		// terminals.
+	    }
         }
     }
     
@@ -483,7 +502,20 @@ public class SchematicEntity extends PTMLTemplateObject
         else 
             result += super._description(indent, 1);
 
-        result += " terminalstyle {\n";
+        result += " icon {\n";
+        if(_icon == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _icon._description(indent + 1, 0) + "\n";
+
+	result += _getIndentPrefix(indent) + "} implementation {\n";
+	if(_terminalstyle == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _getIndentPrefix(indent + 1) + 
+                getImplementation() + "\n";
+
+	result += "} terminalstyle {\n";
         if(_terminalstyle == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
@@ -495,13 +527,6 @@ public class SchematicEntity extends PTMLTemplateObject
         else
             result += _getIndentPrefix(indent + 1) + 
                 _terminalmap.toString() + "\n";
-
-	result += _getIndentPrefix(indent) + "} implementation {\n";
-	if(_terminalstyle == null) 
-            result += _getIndentPrefix(indent + 1) + "null\n";
-        else
-            result += _getIndentPrefix(indent + 1) + 
-                getImplementation() + "\n";
 
 	result += _getIndentPrefix(indent) + "} ports {\n";
         Enumeration els = ports();

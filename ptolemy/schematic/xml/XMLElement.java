@@ -30,9 +30,7 @@
 
 package ptolemy.schematic.xml;
 
-import java.util.NoSuchElementException;
-import java.util.Enumeration;
-import collections.LLMap;
+import java.util.*;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,7 +52,7 @@ public class XMLElement extends Object {
      * @param name The element type
      */
     public XMLElement(String type) {
-        _attributes = (LLMap) new LLMap();
+        _attributes = new TreeMap();
         _childelements = (LinkedList) new LinkedList();
         _elementtype = type;
         _pcdata = "";
@@ -67,8 +65,8 @@ public class XMLElement extends Object {
      * @param name The element type
      * @param attribs The attributes of this XMLElement.
      */
-    public XMLElement(String type, LLMap attribs) {
-        _attributes = attribs;
+    public XMLElement(String type, Map attribs) {
+        _attributes = new TreeMap(attribs);
         _elementtype = type;
         _childelements = (LinkedList) new LinkedList();
         _pcdata = "";
@@ -93,7 +91,7 @@ public class XMLElement extends Object {
      * in this schematic.
      */
     public Enumeration attributeNames () {
-        return _attributes.keys();
+        return Collections.enumeration(_attributes.keySet());
     }
 
     /**
@@ -128,7 +126,7 @@ public class XMLElement extends Object {
      * given name in this schematic.
      */
     public String getAttribute (String name) {
-        return (String) _attributes.at(name);
+        return (String) _attributes.get(name);
     }
 
     /**
@@ -201,7 +199,7 @@ public class XMLElement extends Object {
      * Test if this element has the attribute wuth the given name.
      */
     public boolean hasAttribute (String name) {
-        return _attributes.includesKey(name);
+        return _attributes.containsKey(name);
     }
 
     /**
@@ -228,7 +226,7 @@ public class XMLElement extends Object {
      * Remove an attribute from this element
      */
     public void removeAttribute(String name) {
-        _attributes.removeAt(name);
+        _attributes.remove(name);
     }
 
     /**
@@ -244,7 +242,7 @@ public class XMLElement extends Object {
      * given name in this schematic.
      */
     public void setAttribute (String name, String value) {
-        _attributes.putAt(name, value);
+        _attributes.put(name, value);
     }
 
     /**
@@ -304,7 +302,7 @@ public class XMLElement extends Object {
     private LinkedList _childelements;
 
     // The attributes of this element.
-    private LLMap _attributes;
+    private TreeMap _attributes;
 
     // The element type of this element.
     private String _elementtype;

@@ -37,13 +37,20 @@ import java.util.*;
 /**
 
 A schematic port represents a port of an entity in a PtolemyII
-schematic. Currently, it is not clear exactly how much
-information is in this object...
+schematic. 
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
 public class SchematicPort extends PTMLTemplateObject {
+
+   /**
+     * Create a new SchematicPort object
+     * with a default name and no template.
+     */
+    public SchematicPort () {
+        this("port", null);
+     }
 
     /**
      * Create a new SchematicPort object, with no attributes.
@@ -61,6 +68,85 @@ public class SchematicPort extends PTMLTemplateObject {
         super(name, template);
     } 
 
+    /**
+     * Return the type of this port.
+     */
+    public String getType() {
+	return _type;
+    }
 
+    /**
+     * Return whether or not this port is an input port.
+     */
+    public boolean isInput() {
+	return _input;
+    }
+
+    /**
+     * Return whether or not this port is a multiport.
+     */
+    public boolean isMultiport() {
+	return _multiport;
+    }
+
+    /**
+     * Return whether or not this port is an output port.
+     */
+    public boolean isOutput() {
+	return _output;
+    }
+
+    /**
+     * Set the type of this port.
+     */
+    public void setType(String type) {
+	_type = type;
+    }
+
+    /**
+     * Set whether or not this port is an input port.
+     */
+    public void setInput(boolean flag) {
+	_input = flag;
+    }
+
+    /**
+     * Set whether or not this port is a multiport.
+     */
+    public void setMultiport(boolean flag) {
+	_multiport = flag;
+    }
+
+    /**
+     * Set whether or not this port is an output port.
+     */
+    public void setOutput(boolean flag) {
+	_output = flag;
+    }
+
+    /**
+     * Return a string this representing Schematic.
+     */
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+	result += " type {\n";
+	result += _getIndentPrefix(indent + 1) + _type + "\n";
+	result += _getIndentPrefix(indent) + "} input {" + _input + "}";
+	result += " output {" + _output + "}";
+	result += " multiport {" + _multiport + "}";	
+
+        if (bracket == 2) result += "}";
+        return result;
+    }
+
+    private String _type;
+    private boolean _input;
+    private boolean _multiport;
+    private boolean _output;
 }
+
 

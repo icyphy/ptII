@@ -52,13 +52,13 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test XMLElement-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.xml.XMLElement element]
-    set attributes [java::new collections.LLMap]
-    $attributes putAt name1 value1
-    $attributes putAt name2 value2
+    set attributes [java::new java.util.TreeMap]
+    $attributes put name1 value1
+    $attributes put name2 value2
     set e1 [java::new ptolemy.schematic.xml.XMLElement element $attributes]
     list [$e0 toString] [$e1 toString]
 } {{<element></element>
-} {<element name2="value2" name1="value1"></element>
+} {<element name1="value1" name2="value2"></element>
 }}
 
 ######################################################################
@@ -66,16 +66,16 @@ test XMLElement-2.1 {Constructor tests} {
 #
 test XMLElement-3.1 {addChildElement tests} {
     set e0 [java::new ptolemy.schematic.xml.XMLElement element0]
-    set attributes [java::new collections.LLMap]
-    $attributes putAt name1 value1
-    $attributes putAt name2 value2
+    set attributes [java::new java.util.TreeMap]
+    $attributes put name1 value1
+    $attributes put name2 value2
     set e1 [java::new ptolemy.schematic.xml.XMLElement element1 $attributes]
     $e0 addChildElement $e1
     list [$e0 toString] [$e1 toString]
 } {{<element0>
-<element1 name2="value2" name1="value1"></element1>
+<element1 name1="value1" name2="value2"></element1>
 </element0>
-} {<element1 name2="value2" name1="value1"></element1>
+} {<element1 name1="value1" name2="value2"></element1>
 }}
 
 
@@ -87,7 +87,7 @@ test XMLElement-3.2 {removeChildElement tests} {
     $e0 removeChildElement $e1
     list [$e0 toString] [$e1 toString]
 } {{<element0></element0>
-} {<element1 name2="value2" name1="value1"></element1>
+} {<element1 name1="value1" name2="value2"></element1>
 }}
 
 ######################################################################
@@ -95,9 +95,9 @@ test XMLElement-3.2 {removeChildElement tests} {
 #
 test XMLElement-4.1 {childElements tests} {
     set e0 [java::new ptolemy.schematic.xml.XMLElement element0]
-    set attributes [java::new collections.LLMap]
-    $attributes putAt name1 value1
-    $attributes putAt name2 value2
+    set attributes [java::new java.util.TreeMap]
+    $attributes put name1 value1
+    $attributes put name2 value2
     set e1 [java::new ptolemy.schematic.xml.XMLElement element1 $attributes]
     set e2 [java::new ptolemy.schematic.xml.XMLElement element2]
     set e3 [java::new ptolemy.schematic.xml.XMLElement element3]    
@@ -140,7 +140,7 @@ test XMLElement-5.1 {setAttribute tests} {
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
-} {<element0 name2="value2" name1="value1"></element0>
+} {<element0 name1="value1" name2="value2"></element0>
 }
 
 
@@ -167,7 +167,7 @@ test XMLElement-7.1 {attributes tests} {
     set e0attrib2 [$e0attributes nextElement] 
     list $e0attrib1 $e0attrib2 \
 [$e0attributes hasMoreElements]
-} {name2 name1 0}
+} {name1 name2 0}
 
 ######################################################################
 ####

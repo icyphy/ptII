@@ -61,6 +61,8 @@ public class PtolemyModelFactory {
      */
     public TypedCompositeActor createPtolemyModel(Schematic schematic) 
             throws IllegalActionException, NameDuplicationException {
+	System.out.println("Creating Ptolemy model for :\n" + schematic);
+	
 	String containerName = schematic.getName();
         System.out.println("name = " + containerName);
 	TypedCompositeActor container = new TypedCompositeActor();

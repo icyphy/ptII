@@ -103,7 +103,7 @@ public class IconLibrary extends PTMLObject {
     }
 
     /**
-     * Test if the library contains an Icon with the given name
+     * Test if the library contains the given icon.
      */
     public boolean containsIcon(Icon icon) {
         return _icons.includes(icon);
@@ -126,88 +126,70 @@ public class IconLibrary extends PTMLObject {
     /** 
      * Search for an icon with the given hierarchical name in 
      * this library and all its deeply contained sublibraries.
-     * @return The found icon
-     * @exception IllegalActionException If no icon with the given
-     * name is found.
+     * @return The found icon, or null if the icon was not found.
      */
-    public Icon findIcon(String dottedName) 
+    public Icon findIcon(String dottedName) {
+        StringTokenizer tokens = new StringTokenizer(dottedName, ".");
+        IconLibrary temp = this;
+        int count = tokens.countTokens();
+        
+        int i;
+        for(i = 0; i < (count - 1); i++) {
+	    String name = (String) tokens.nextElement();
+	    temp = temp.getSubLibrary(name);
+	    if(temp == null) {
+		return null;
+	    }
+	}
+
+	String name = (String) tokens.nextElement();
+	return temp.getIcon(name);
+    }
+
+    /** 
+     * Search for an terminal style with the given hierarchical name in 
+     * this library and all its deeply contained sublibraries.
+     * @return The found terminal style, or null if the terminal style was
+     * not found.
+     */
+    public TerminalStyle findTerminalStyle(String dottedName)
             throws IllegalActionException {
         StringTokenizer tokens = new StringTokenizer(dottedName, ".");
         IconLibrary temp = this;
         int count = tokens.countTokens();
         
         int i;
-        for(i = 0; i < (count - 1); i++) 
-            temp = temp.getSubLibrary((String) (tokens.nextElement()));
-        
-        return temp.getIcon((String) (tokens.nextElement()));
-    }
+        for(i = 0; i < (count - 1); i++) {
+	    String name = (String) tokens.nextElement();
+	    temp = temp.getSubLibrary(name);
+	    if(temp == null) {
+		return null;
+	    }
+	}
 
-    /** 
-     * Search for an terminal style with the given hierarchical name in 
-     * this library and all its deeply contained sublibraries.
-     * @return The found terminal style
-     * @exception IllegalActionException If no terminal style with the given
-     * name is found.
-     */
-    public TerminalStyle findTerminalStyle(String name)
-            throws IllegalActionException {
-        StringTokenizer tokens = new StringTokenizer(name, ".");
-        IconLibrary temp = this;
-        int count = tokens.countTokens();
-        
-        int i;
-        for(i = 0; i < (count - 1); i++) 
-            temp = temp.getSubLibrary((String) (tokens.nextElement()));
-        
-        return temp.getTerminalStyle((String) (tokens.nextElement()));
+	String name = (String) tokens.nextElement();
+	return temp.getTerminalStyle(name);
     }
 
     /**
      * Get the icon that is stored in this icon library with the given name
      */
-    public Icon getIcon(String name) 
-        throws IllegalActionException {
-        Enumeration enumicons = icons();
-        while(enumicons.hasMoreElements()) {
-            Icon icon = (Icon) enumicons.nextElement();
-            if(name.equals(icon.getName()))
-                return icon;
-        }
-        throw new IllegalActionException("Icon does not exist with " +
-                "the name " + name);
+    public Icon getIcon(String name) {
+	return (Icon) _icons.get(name);
     }
 
     /** 
      * Return the URL of the given sublibrary.
      */
-    public IconLibrary getSubLibrary(String name) 
-        throws IllegalActionException {
-        Enumeration enumsubLibraries = subLibraries();
-        while(enumsubLibraries.hasMoreElements()) {
-            IconLibrary iconLibrary = 
-                (IconLibrary) enumsubLibraries.nextElement();
-            if(name.equals(iconLibrary.getName()))
-                return iconLibrary;
-        }
-        throw new IllegalActionException(
-                "SubLibrary does not exist with " +
-                "the name " + name);
+    public IconLibrary getSubLibrary(String name) {
+	return (IconLibrary) _sublibraries.get(name);
     }
 
     /**
      * Get the terminal style in this IconLibrary with the given name.
      */
-    public TerminalStyle getTerminalStyle(String name) 
-        throws IllegalActionException {
-        Enumeration enumstyles = terminalStyles();
-        while(enumstyles.hasMoreElements()) {
-            TerminalStyle style = (TerminalStyle) enumstyles.nextElement();
-            if(name.equals(style.getName()))
-                return style;
-        }
-        throw new IllegalActionException("TerminalStyle does not exist with " +
-                "the name " + name);
+    public TerminalStyle getTerminalStyle(String name) {
+	return (TerminalStyle) _terminalstyles.get(name);
     }
 
     /** Return the version of this library.

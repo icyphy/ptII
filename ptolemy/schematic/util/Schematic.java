@@ -315,7 +315,7 @@ public class Schematic extends PTMLObject
     }
 
     /**
-     * Remove the schemtic entity with the given name.
+     * Remove the schematic entity with the given name.
      * Throw an exception if the entity does not exist
      * in this schematic.
      */
@@ -354,7 +354,7 @@ public class Schematic extends PTMLObject
     }
 
     /**
-     * Return a string representing this Schematic.
+     * Return a string representing this schematic.
      */
     public String toString() {
         Enumeration entities = entities();
@@ -421,7 +421,8 @@ public class Schematic extends PTMLObject
         result += _getIndentPrefix(indent) + "} relations {\n";
         els = relations();
         while(els.hasMoreElements()) {
-            SchematicRelation relation = (SchematicRelation) els.nextElement();
+            SchematicRelation relation = 
+		(SchematicRelation) els.nextElement();
 	    result += relation._description(indent + 1, 2) + "\n";
 	}    
 

@@ -31,8 +31,7 @@
 package ptolemy.schematic.xml;
 
 import ptolemy.kernel.util.*;
-import java.util.Enumeration;
-import collections.*;
+import java.util.*;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import com.microstar.xml.*;
@@ -105,7 +104,7 @@ public class PTMLParser extends HandlerBase{
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());*/
 
-        _attributes.putAt(name, value);
+        _attributes.put(name, value);
     }
 
     /**
@@ -298,7 +297,7 @@ public class PTMLParser extends HandlerBase{
      */
     public void startDocument() {
         if(DEBUG) System.out.println("-- Starting Document.");
-        _attributes = (LLMap) new LLMap();
+        _attributes.clear();
         _rootElement = null;
     }
 
@@ -321,7 +320,7 @@ public class PTMLParser extends HandlerBase{
     public void startElement(String name) {
         XMLElement e;
         if(DEBUG)
-            System.out.println("Starting Element:"+name);
+            System.out.println("Starting Element:" + name);
 
         e = new XMLElement(name, _attributes);
         e.setParent(_currentElement);
@@ -330,7 +329,7 @@ public class PTMLParser extends HandlerBase{
         else
             _currentElement.addChildElement(e);
         _currentElement = e;
-        _attributes = (LLMap) new LLMap();
+        _attributes.clear();
     }
 
     /**
@@ -339,7 +338,7 @@ public class PTMLParser extends HandlerBase{
     public void startExternalEntity(String URI) throws Exception {
         if(DEBUG)
             System.out.println("startExternalEntity: URI=\"" + URI + "\"\n");
-        _externalEntities.insertFirst(URI);
+        _externalEntities.addFirst(URI);
     }
 
     /**
@@ -351,17 +350,16 @@ public class PTMLParser extends HandlerBase{
     protected String _currentExternalEntity() {
         if(DEBUG)
             System.out.println("currentExternalEntity: URI=\"" +
-                    (String)_externalEntities.first() + "\"\n");
-        return (String)_externalEntities.first();
+                    (String)_externalEntities.getFirst() + "\"\n");
+        return (String)_externalEntities.getFirst();
     }
 
     /* A map for accumulating the XML attributes before the start of the next
      * entity.  This is a map from a String representing the attribute's name
      * to a string representing the attribute's value.
      */
-    // FIXME need a HashMap here.
 
-    private LLMap _attributes;
+    private TreeMap _attributes = new TreeMap();
 
     /* The current element being created in the parse tree.
      */
