@@ -307,5 +307,5 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         private boolean _hasEffects;
         private Set _effectSet;
     }
-    private boolean _debug = true;
+    private boolean _debug = false;
 }

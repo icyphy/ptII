@@ -31,6 +31,7 @@ package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
 
+import ptolemy.copernicus.kernel.AliasAssignmentEliminator;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
@@ -101,7 +102,7 @@ public class Main extends KernelMain {
 	// -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                 WatchDogTimer.v()));
-        
+       
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
         // so that we can 
@@ -197,9 +198,6 @@ public class Main extends KernelMain {
         //        StaticInliner.v()));
 
              
-        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
-        //        SideEffectFreeInvocationRemover.v()));
-        
         // Unroll loops with constant loop bounds.
         //  Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
@@ -245,6 +243,15 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.doe",
                 new TransformerAdapter(DeadObjectEliminator.v())));
 
+        // Remove unnecessary assignments using alias analysis. 
+        // This catches assignments to fields which other assignments miss.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.aae",
+                new TransformerAdapter(AliasAssignmentEliminator.v())));
+        
+        // Remove other useless getFoo() methods.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
+                SideEffectFreeInvocationRemover.v()));
+        
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can
         // have access to the result.
@@ -253,10 +260,6 @@ public class Main extends KernelMain {
         //   Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
         //        new TransformerAdapter(CastAndInstanceofEliminator.v())));
         
-        // Removes references to instancefields that come from 'this'.
-        // Scene.v().getPack("jop").add(new Transform("jop.dae",
-        //        ImprovedDeadAssignmentEliminator.v()));
-
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true"));
      }

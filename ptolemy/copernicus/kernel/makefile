@@ -49,6 +49,7 @@ DIRS = test
 # Keep this list alphabetized.
 JSRCS = \
 	AliasAnalysis.java \
+	AliasAssignmentEliminator.java \
 	CastAndInstanceofEliminator.java \
 	ClassWriter.java \
 	EntitySootClass.java \
