@@ -32,8 +32,10 @@
 package ptolemy.actor;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -146,6 +148,10 @@ public class RunCompositeActor extends TypedCompositeActor {
         // Use the local director to transfer inputs.
         try {
             _workspace.getReadAccess();
+            // Make sure that change requests are not executed when requested,
+            // but rather only executed when executeChangeRequests() is called.
+            setDeferChangeRequests(true);
+
             Iterator inputPorts = inputPortList().iterator();
             while (inputPorts.hasNext() && !_stopRequested) {
                 IOPort p = (IOPort)inputPorts.next();
@@ -162,6 +168,8 @@ public class RunCompositeActor extends TypedCompositeActor {
             // NOTE: Use the superclass initialize() because this method overrides
             // initialize() and does not initialize the model.
             super.initialize();
+            
+            
             // Call iterate() until finish() is called or postfire()
             // returns false.
             _debug("-- RunCompositeActor beginning to iterate.");
@@ -169,6 +177,7 @@ public class RunCompositeActor extends TypedCompositeActor {
             // FIXME: This result is not used... Should it be to determine postfire() result?
             _lastIterateResult = COMPLETED;
             while (!_stopRequested) {
+                executeChangeRequests();
                 if (super.prefire()) {
                     super.fire();
                     if (!super.postfire()) {
@@ -181,7 +190,13 @@ public class RunCompositeActor extends TypedCompositeActor {
                 }
             }
         } finally {
-            super.wrapup();
+            try {
+                wrapup();
+            } finally {
+                // Indicate that it is now safe to execute
+                // change requests when they are requested.
+                setDeferChangeRequests(false);
+            }
             if (!_stopRequested) {
                 try {
                     _workspace.getReadAccess();
@@ -236,6 +251,40 @@ public class RunCompositeActor extends TypedCompositeActor {
         return true;
     }
 
+    /** Request that given change be executed.   In this class,
+     *  do not delegate the change request to the container, but
+     *  execute the request immediately or record it, depending on
+     *  whether setDeferChangeRequests() has been called. If
+     *  setDeferChangeRequests() has been called with a true argument,
+     *  then simply queue the request until either setDeferChangeRequests()
+     *  is called with a false argument or executeChangeRequests() is called.
+     *  If this object is already in the middle of executing a change
+     *  request, then that execution is finished before this one is performed.
+     *  Change listeners will be notified of success (or failure) of the
+     *  request when it is executed.
+     *  @param change The requested change.
+     *  @see #executeChangeRequests()
+     *  @see #setDeferChangeRequests(boolean)
+     */
+    public void requestChange(ChangeRequest change) {
+        // Have to ensure that the _deferChangeRequests status and
+        // the collection of change listeners doesn't change during
+        // this execution.  But we don't want to hold a lock on the
+        // this NamedObj during execution of the change because this
+        // could lead to deadlock.  So we synchronize to _changeLock.
+        synchronized(_changeLock) {
+            // Queue the request.
+            // Create the list of requests if it doesn't already exist
+            if (_changeRequests == null) {
+                _changeRequests = new LinkedList();
+            }
+            _changeRequests.add(change);
+            if (!isDeferChangeRequests()) {
+                executeChangeRequests();
+            }
+        }
+    }
+    
     /** Override the base class to do nothing.
      *  @exception IllegalActionException Not thrown, but declared
      *   so the subclasses can throw it.
@@ -244,6 +293,18 @@ public class RunCompositeActor extends TypedCompositeActor {
         if (_debugging) {
             _debug("Called wrapup()");
         }
+    }
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+   
+    /** Call the initialize method of the superclass.  This is
+     *  provided so that subclasses have a mechanism for doing
+     *  this, since Java doesn't supported super.super.initialize().
+     *  @exception IllegalActionException If super.initialize() throws it.
+     */
+    protected void _callSuperInitialize() throws IllegalActionException {
+        super.initialize();
     }
     
     ///////////////////////////////////////////////////////////////////
