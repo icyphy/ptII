@@ -19,9 +19,9 @@ if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
 fi
 
 # If you change the version number, then edit 
-# ptolemy/web/nightly/toc.htm
+# adm/bin/ptIInightly
 # and ptII/adm/gen-xxx/makefile
-GENDIR=$ADMDIR/gen-2.0
+GENDIR=$ADMDIR/gen-2.1
 cd $GENDIR
 
 
@@ -47,7 +47,7 @@ fi
 #ls -l $GENDIR/.gz >> $mailmsg
 #echo "" >> $mailmsg
 #echo "To download the latest build, or see a list of changed files, go to"  >> $mailmsg
-#echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/gen-2.0"  >> $mailmsg
+#echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/gen-2.1"  >> $mailmsg
 #echo "" >> $mailmsg
 #echo "The links below are on the nightly build page:" >> $mailmsg
 #echo "http://ptolemy.eecs.berkeley.edu/~ptII/nightly" >> $mailmsg
