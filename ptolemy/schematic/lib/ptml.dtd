@@ -42,42 +42,39 @@ thing.
 @author Steve Neuendorffer, John Reekie
 -->
 
-<!-- domain libraries will be parsed into class DomainLibrary -->
 <!ELEMENT domainlibrary (actorpackage|domain)*>
 <!ATTLIST domainlibrary
 name ID #REQUIRED
 version CDATA #REQUIRED>
 
-<!-- icon elements will be parsed into class Icon -->
+<!ELEMENT domain (actorpackage|director)*>
+<!ATTLIST domain
+name ID #REQUIRED>
+
 <!ELEMENT entity (entitytype, parameter*, port*)>
 <!ATTLIST entity
 name ID #REQUIRED
 icon CDATA "default">
 
-<!-- entitytype elements will be parsed into class EntityType -->   
 <!ELEMENT entitytype EMPTY>
 <!ATTLIST entitytype
 name ID #REQUIRED>
 
-<!-- icon elements will be parsed into class Icon -->
 <!ELEMENT icon (description, entitytype, graphic*, port*)>
 <!ATTLIST icon
 name ID #REQUIRED>
 
-<!-- iconlibrary elements will be parsed into class IconLibrary -->
 <!ELEMENT iconlibrary (header, icon*)>
 <!ATTLIST iconlibrary
 name ID #REQUIRED
 version CDATA #REQUIRED>
 
-<!-- parameter elements will be parsed into class SchematicParameter -->
 <!ELEMENT parameter EMPTY>
 <!ATTLIST parameter
 name ID #REQUIRED
 value CDATA ""
 type (string|double|doubleArray) #REQUIRED>
 
-<!-- port elements will be parsed into class SchematicPort -->
 <!ELEMENT port (graphic)*>
 <!ATTLIST port
 name ID #REQUIRED
@@ -86,19 +83,16 @@ output (true|false) "false"
 multiport (true|false) "false"
 type (string|double|doubleArray) #REQUIRED>
 
-<!-- schematic relations will be parsed into class SchematicRelation -->
 <!ELEMENT relation (link)*>
 <!ATTLIST relation
 name ID #REQUIRED>
 
-<!-- schematic elements will be parsed into class Schematic -->
 <!ELEMENT schematic (entity|relation|description|parameter)*>
 <!ATTLIST schematic
 name ID #REQUIRED
 version CDATA #REQUIRED>
 
 
-<!-- The following don't have separate classes. -->
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT ellipse EMPTY>
 <!ELEMENT header (description, sublibrary*)>
