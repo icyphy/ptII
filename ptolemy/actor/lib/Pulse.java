@@ -90,11 +90,24 @@ public class Pulse extends SequenceSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        indexes = new Parameter(this, "indexes", defaultIndexToken);
+        indexes = new Parameter(this, "indexes", _defaultIndexToken);
         indexes.setTypeEquals(BaseType.INT_MATRIX);
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
-        values = new Parameter(this, "values", _defaultValueToken);
+
+	// set values parameter
+	IntToken[] defaultValues = new IntToken[2];
+	defaultValues[0] = new IntToken(1);
+	defaultValues[1] = new IntToken(0);
+	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+        values = new Parameter(this, "values", defaultValueToken);
+	values.setTypeEquals(new ArrayType(BaseType.NAT));
+
+	// set type constraint
+	ArrayType valuesArrayType = (ArrayType)values.getType();
+	InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
+	output.setTypeAtLeast(elemTerm);
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
         _zero = new IntToken(0);
@@ -118,11 +131,9 @@ public class Pulse extends SequenceSource {
 
     /** If the attribute being changed is <i>indexes</i>, then check
      *  that it is increasing and nonnegative, and that it has exactly
-     *  one row.  If the attribute being changed is <i>values</i>, then
-     *  check that it has exactly one row.
+     *  one row.
      *  @exception IllegalActionException If the indexes vector is not
-     *   increasing and nonnegative, or either indexes or values is not
-     *   a row vector.
+     *   increasing and nonnegative, or the indexes is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -142,17 +153,6 @@ public class Pulse extends SequenceSource {
                 }
                 previous = idx[0][j];
             }
-        } else if (attribute == values) {
-            Token contents = values.getToken();
-            if (!(contents instanceof MatrixToken)) {
-                throw new IllegalActionException(this,
-                        "Cannot set values parameter to a non-matrix.");
-            }
-            int rowCount = ((MatrixToken)contents).getRowCount();
-            if (rowCount != 1) {
-                throw new IllegalActionException(this,
-                        "Cannot set values parameter to a non-row vector.");
-            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -166,7 +166,7 @@ public class Pulse extends SequenceSource {
      *  when it is safe to redo type resolution.
      *  If there is no director, then do nothing.
      *  @exception IllegalActionException If the new values array has no
-     *   elements in it, or if it is not a MatrixToken.
+     *   elements in it.
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -176,8 +176,8 @@ public class Pulse extends SequenceSource {
                 dir.invalidateResolvedTypes();
             }
             try {
-                MatrixToken valuesArray = (MatrixToken)values.getToken();
-                Token prototype = valuesArray.getElementAsToken(0, 0);
+                ArrayToken valuesArray = (ArrayToken)values.getToken();
+                Token prototype = valuesArray.getElement(0);
                 _zero = prototype.zero();
             } catch (ArrayIndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
@@ -210,15 +210,9 @@ public class Pulse extends SequenceSource {
             newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(newobj.values);
             // set the type constraints.
-            MatrixToken val = (MatrixToken)(newobj.values.getToken());
-            if (val != null && val.getRowCount() > 0 &&
-                    val.getColumnCount() > 0) {
-                MatrixToken valuesArray = (MatrixToken)newobj.values.getToken();
-                Token tok = valuesArray.getElementAsToken(0, 0);
-                newobj._zero = tok.zero();
-            } else {
-                newobj._zero = new IntToken(0);
-            }
+	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();
+	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
+	    newobj.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -234,10 +228,11 @@ public class Pulse extends SequenceSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        MatrixToken val = (MatrixToken)values.getToken();
+
+        ArrayToken val = (ArrayToken)values.getToken();
         int[][] idx = ((IntMatrixToken)indexes.getToken()).intMatrix();
         if (_indexColCount < idx[0].length) {
-            if (val.getColumnCount() != idx[0].length) {
+            if (val.length() != idx[0].length) {
                 throw new IllegalActionException(this,
                         "Parameters values and indexes have " +
                         "different lengths.");
@@ -245,7 +240,7 @@ public class Pulse extends SequenceSource {
             int currentIndex = idx[0][_indexColCount];
             if (_iterationCount == currentIndex) {
                 // Got a match with an index.
-                output.send(0, val.getElementAsToken(0, _indexColCount));
+                output.send(0, val.getElement(_indexColCount));
                 _match = true;
                 return;
             }
@@ -289,33 +284,6 @@ public class Pulse extends SequenceSource {
         return super.prefire();
     }
 
-    /** Return the type constraints of this actor. The constraints are the
-     *  ones imposed by the super class, plus the constraint that the type
-     *  of the output port must be no less than the element type of the
-     *  values parameter.
-     *  @return an Enumeration of Inequality.
-     */
-    public Enumeration typeConstraints() {
-	try {
-	    // Set up the constraint that the output type must be no less than
-	    // the element type of the values parameter. This constraint is
-	    // regenerated every time since the element type may change.
-	    MatrixToken val = (MatrixToken)(values.getToken());
-            Type elemType = val.getElementAsToken(0, 0).getType();
-	    TypeConstant elemTerm = new TypeConstant(elemType);
-	    Inequality ineq = new Inequality(elemTerm, output.getTypeTerm());
-
-	    LinkedList result = new LinkedList();
-	    result.insertLast(ineq);
-	    result.appendElements(super.typeConstraints());
-
-	    return result.elements();
-	} catch (IllegalActionException ex) {
-	    throw new InternalErrorException("Clock.typeConstraints(): " +
-		"Cannot get element of the values parameter.");
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -333,20 +301,12 @@ public class Pulse extends SequenceSource {
     private boolean _match = false;
 
     // Default value of the indexes.
-    private int defaultIndexes[][] = {
+    private int _defaultIndexes[][] = {
         {0, 1}
     };
 
     // Default value of the indexes parameter.
-    private IntMatrixToken defaultIndexToken =
-    new IntMatrixToken(defaultIndexes);
-
-    // Default value of the values array.
-    private int defaultValues[][] = {
-        {1, 0}
-    };
-
-    // Default value of the values parameter.
-    private IntMatrixToken _defaultValueToken =
-            new IntMatrixToken(defaultValues);
+    private IntMatrixToken _defaultIndexToken =
+    new IntMatrixToken(_defaultIndexes);
 }
+

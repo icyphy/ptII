@@ -49,11 +49,18 @@ test Pulse-1.1 {test constructor and clone with default values} {
     set newobj [java::cast ptolemy.actor.lib.Pulse [$pulse clone]]
     set newValues [getParameter $newobj values]
     set newIndexes [getParameter $newobj indexes]
-    set valuesVal [[$newValues getToken] stringValue]
-    set indexesVal [[$newIndexes getToken] stringValue]
+    set valuesVal [[$newValues getToken] toString]
+    set indexesVal [[$newIndexes getToken] toString]
 
     list $valuesVal $indexesVal
-} {{[1, 0]} {[0, 1]}}
+} {{ptolemy.data.ArrayToken(ptolemy.data.IntToken)([1, 0])} {ptolemy.data.IntMatrixToken([0, 1])}}
+
+######################################################################
+#### Check type of values parameter
+#
+test Pulse-1.2 {check type} {
+    list [[$values getType] toString] [[$newValues getType] toString]
+} {(int)array (int)array}
 
 ######################################################################
 #### Test Pulse in an SDF model
@@ -70,10 +77,15 @@ test Pulse-2.1 {test with the default output values} {
 } {1 0 0 0 0}
 
 test Pulse-2.2 {test with the non-default output values} {
-    set values [java::new {double[][]} {1 3} [list [list 0.1 0.2 0.3]]]
+    set val0 [java::new {ptolemy.data.DoubleToken double} 0.1]
+    set val1 [java::new {ptolemy.data.DoubleToken double} 0.2]
+    set val2 [java::new {ptolemy.data.DoubleToken double} 0.3]
+    set valArray [java::new {ptolemy.data.Token[]} 3 [list $val0 $val1 $val2]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
     set valuesParam [getParameter $pulse values]
-    $valuesParam setToken [java::new ptolemy.data.DoubleMatrixToken $values]
-    
+    $valuesParam setToken $valToken
+ 
     set indexes [java::new {int[][]} {1 3} [list [list 0 2 3]]]
     set indexesParam [getParameter $pulse indexes]
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
@@ -82,16 +94,20 @@ test Pulse-2.2 {test with the non-default output values} {
     enumToTokenValues [$rec getRecord 0]
 } {0.1 0.0 0.2 0.3 0.0}
 
-test Pulse-2.3 {test with two-dimensional output values} {
-    set values [java::new {double[][]} {2 2} \
-            [list [list 1 2] [list 3 4]]]
+test Pulse-2.3 {test using setExpression} {
+    $valuesParam setExpression {[5l, 6, 7]}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {5 0 6 7 0}
+
+test Pulse-2.4 {test with two-dimensional output values} {
+    set values [java::new {int[][]} {3 2} \
+            [list [list 1 2] [list 3 4] [list 5 6]]]
     set valuesParam [getParameter $pulse values]
-    catch {
-        $valuesParam setToken [java::new ptolemy.data.DoubleMatrixToken $values]
-    } msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
-Cannot set values parameter to a non-row vector.}}
+    $valuesParam setToken [java::new ptolemy.data.IntMatrixToken $values]
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{[ptolemy.data.IntToken(1), ptolemy.data.IntToken(2)]} {[ptolemy.data.IntToken(0), ptolemy.data.IntToken(0)]} {[ptolemy.data.IntToken(3), ptolemy.data.IntToken(4)]} {[ptolemy.data.IntToken(5), ptolemy.data.IntToken(6)]} {[ptolemy.data.IntToken(0), ptolemy.data.IntToken(0)]}}
 
 ######################################################################
 #### Test error conditions

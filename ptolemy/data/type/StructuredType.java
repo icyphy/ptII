@@ -33,6 +33,7 @@ package ptolemy.data.type;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.data.expr.Variable;
 
 //////////////////////////////////////////////////////////////////////////
 //// StructuredType
@@ -57,27 +58,6 @@ public abstract class StructuredType implements Type, Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If this type is a variable, disallow it to be changed by the
-     *  type resolution procedure. Calling unfixType() will reverse the
-     *  effect of this mehtod. This method does nothing if this type
-     *  is a constant.
-     */
-    public abstract void fixType();
-
-    /** Return the user of this StructuredType. If the user is not set,
-     *  return null.
-     *  @return An Object.
-     */
-    public abstract Object getUser();
-
-    /** Set the user of this StructuedType. The user can only be set once
-     *  Otherwise, an exception will be thrown.
-     *  @param Object The user.
-     *  @exception IllegalActionException If the user is already set, or
-     *   if the argument is null.
-     */
-    public abstract void setUser(Object user) throws IllegalActionException;
-
     /** Return a deep copy this StructuredType. The returned copy does
      *  not have the user set.
      *  @return A StructuredType.
@@ -91,12 +71,39 @@ public abstract class StructuredType implements Type, Cloneable {
 	}
     }
 
+    /** If this type is a variable, disallow it to be changed by the
+     *  type resolution procedure. Calling unfixType() will reverse the
+     *  effect of this mehtod. This method does nothing if this type
+     *  is a constant.
+     */
+    public abstract void fixType();
+
+    /** Return the user of this StructuredType. If the user is not set,
+     *  return null.
+     *  @return An Object.
+     */
+    public abstract Object getUser();
+
+    /** Notify this type that its user, which is a Variable, has changed its
+     *  expression so this type may be changed.
+     *  @param user A Variable.
+     */
+    public abstract void needEvaluate(Variable user);
+
+    /** Set the user of this StructuedType. The user can only be set once
+     *  Otherwise, an exception will be thrown.
+     *  @param Object The user.
+     *  @exception IllegalActionException If the user is already set, or
+     *   if the argument is null.
+     */
+    public abstract void setUser(Object user) throws IllegalActionException;
+
     /** Reset this type to the value it was first constructed.
      *  This method is called at the beginning of type resolution.
-     *  @exception IllegalActionException If this type is a constant.
      */
-    public abstract void reset()
-	    throws IllegalActionException;
+     //  @exception IllegalActionException If this type is a constant.
+    public abstract void reset();
+	    // throws IllegalActionException;
 
     /** If this type is a variable, allow it to be changed by the type
      *  resolution procedure. This method reverses the effect of fixValue().

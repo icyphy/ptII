@@ -163,6 +163,25 @@ public class ArrayToken extends Token {
 	return _value.length;
     }
 
+    /** Returns a new ArrayToken representing the multiplicative identity.
+     *  The returned token contains an array of the same size as the
+     *  array contained by this token, and each element of the array
+     *  in the returned token is the multiplicative identity of the elements
+     *  of this token.
+     *  @return An ArrayToken.
+     *  @exception IllegalActionException If multiplicative identity is not
+     *   supported by the element token.
+     */
+    public Token one()
+	    throws IllegalActionException {
+	Token oneVal = _value[0].one();
+	Token[] oneValArray = new Token[_value.length];
+	for (int i=0; i<_value.length; i++) {
+	    oneValArray[i] = oneVal;
+	}
+	return new ArrayToken(oneValArray);
+    }
+
     /** Return a String representing the value of this token.
      */
     public String stringValue() {
@@ -193,6 +212,25 @@ public class ArrayToken extends Token {
 	}
 	result += "])";
 	return result;
+    }
+
+    /** Returns a new ArrayToken representing the additive identity.
+     *  The returned token contains an array of the same size as the
+     *  array contained by this token, and each element of the array
+     *  in the returned token is the additive identity of the elements
+     *  of this token.
+     *  @return An ArrayToken.
+     *  @exception IllegalActionException If additive identity is not
+     *   supported by the element token.
+     */
+    public Token zero()
+	    throws IllegalActionException {
+	Token zeroVal = _value[0].zero();
+	Token[] zeroValArray = new Token[_value.length];
+	for (int i=0; i<_value.length; i++) {
+	    zeroValArray[i] = zeroVal;
+	}
+	return new ArrayToken(zeroValArray);
     }
 
     ///////////////////////////////////////////////////////////////////

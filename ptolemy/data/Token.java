@@ -291,13 +291,13 @@ public class Token {
 
     /** Returns a new token representing the additive identity.
      *  It should be overridden in subclasses.
+     *  @return A new Token containing the additive identity.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A new Token containing the additive identity.
      */
     public Token zero() throws IllegalActionException {
         throw new IllegalActionException(
-            "Additive identity not supported on "
+            "Token.zero: Additive identity not supported on "
             + this.getClass().getName() + ".");
     }
 }

@@ -581,8 +581,18 @@ public class Variable extends Attribute implements Typeable {
         if (expr == null || expr.equals("")) {
             _token = null;
             _needsEvaluation = false;
+	    // set _varType
+	    if (_declaredType instanceof BaseType) {
+	    	_varType = _declaredType;
+	    } else {
+		// _varType = _declaredType
+		((StructuredType)_varType).reset();
+	    }
         } else {
             _needsEvaluation = true;
+	    if (_varType instanceof StructuredType) {
+		((StructuredType)_varType).needEvaluate(this);
+	    }
         }
         _currentExpression = expr;
         _destroyParseTree();
@@ -822,7 +832,6 @@ public class Variable extends Attribute implements Typeable {
      *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints() {
-
 	// If this variable has a structured type, and the TypeTerm of this
 	// variable is unsettable, make the component of the structured type
 	// to be unsettable.
@@ -1223,6 +1232,9 @@ public class Variable extends Attribute implements Typeable {
         // Save to restore in case the change is rejected.
         Token oldToken = _token;
         Type oldVarType = _varType;
+	if (_varType instanceof StructuredType) {
+	    oldVarType = (Type)((StructuredType)_varType).clone();
+	}
         boolean oldNoTokenYet = _noTokenYet;
         String oldInitialExpression = _initialExpression;
         Token oldInitialToken = _initialToken;
@@ -1232,7 +1244,8 @@ public class Variable extends Attribute implements Typeable {
             _notifyValueDependents();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
-                if(oldVarType != _varType && oldVarType != BaseType.NAT) {
+                if( !oldVarType.isEqualTo(_varType) &&
+					oldVarType != BaseType.NAT) {
                     container.attributeTypeChanged(this);
                 }
                 container.attributeChanged(this);
@@ -1240,7 +1253,12 @@ public class Variable extends Attribute implements Typeable {
         } catch (IllegalActionException ex) {
             // reverse the changes
             _token = oldToken;
-            _varType = oldVarType;
+	    if (_varType instanceof StructuredType) {
+                ((StructuredType)_varType).updateType(
+						(StructuredType)oldVarType);
+	    } else {
+		_varType = oldVarType;
+	    }
             _noTokenYet = oldNoTokenYet;
             _initialExpression = oldInitialExpression;
             _initialToken = oldInitialToken;
