@@ -18,9 +18,13 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
     </property>
-    <entity name="Exec" class="ptolemy.actor.lib.Exec">
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="echo &quot;Hello World&quot;">
+    <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test of Exec.&#10;-No input.&#10;-Produces the same output.">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 35.0">
+        </property>
+    </property>
+    <entity name="Exec" class="ptolemy.actor.lib.Exec">
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 185.0">
         </property>
     </entity>
@@ -31,34 +35,17 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Hello World&#10;&quot;}">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Hello, world.&#10;&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 250.0">
         </property>
     </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 225.0">
-        </property>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Exec.error" relation="relation"/>
-    <link port="Exec.input" relation="relation2"/>
     <link port="Exec.output" relation="relation3"/>
     <link port="Test.input" relation="relation"/>
     <link port="Test2.input" relation="relation3"/>
-    <link port="Const.output" relation="relation2"/>
 </entity>

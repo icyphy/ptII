@@ -87,10 +87,6 @@
         </property>
     </entity>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
-        <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="waitFor" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 170.0">
         </property>
         <port name="command" class="ptolemy.actor.parameters.ParameterPort">

@@ -44,15 +44,11 @@ ability to be a source actor.</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
     </property>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
-        <property name="blocking" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="command" class="ptolemy.actor.parameters.PortParameter" value="env">
         </property>
-        <property name="environment" class="ptolemy.data.expr.Parameter" value="{&quot;MYNAME=Mr.Ptolemy&quot;}">
+        <property name="environment" class="ptolemy.data.expr.Parameter" value="{{name=&quot;FIRSTVARIABLE&quot;, value=&quot;1&quot;}, {name=&quot;MYNAME&quot;, value=&quot;Mr.Ptolemy&quot;}}">
         </property>
-        <property name="waitFor" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 135.0">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.Attribute">
         </property>
