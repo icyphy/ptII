@@ -72,7 +72,7 @@ public class LocationParameter extends Parameter implements Locatable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the location in some cartesian coordinate system.
+    /** Get the location in some Cartesian coordinate system.
      *  @return The location.
      */
     public double[] getLocation() {
@@ -86,7 +86,7 @@ public class LocationParameter extends Parameter implements Locatable {
         }
     }
 
-    /** Set the location in some cartesian coordinate system, and notify
+    /** Set the location in some Cartesian coordinate system, and notify
      *  the container and any value listeners of the new location.
      *  @param location The location.
      *  @exception IllegalActionException If the location is rejected.
