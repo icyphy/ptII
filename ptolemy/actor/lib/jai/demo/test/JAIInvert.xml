@@ -39,7 +39,7 @@
         </property>
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="goldhill.gif">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/PtolemyII.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 165.0">
         </property>

@@ -40,7 +40,7 @@ Unfortunately, it doesn't show much at all.</text></svg></configure>
         </property>
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="goldhill.gif">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/PtolemyII.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 130.0">
         </property>

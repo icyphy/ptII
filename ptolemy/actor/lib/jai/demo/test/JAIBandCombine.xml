@@ -51,7 +51,7 @@
         </port>
     </entity>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="yosemite.png">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/PtolemyII.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 120.0">
         </property>
