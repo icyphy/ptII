@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	EntityLibrary.java \
 	EntityTemplate.java \
+	EnumerationIterator.java \
 	GraphicElement.java \
 	Icon.java \
 	IconLibrary.java \

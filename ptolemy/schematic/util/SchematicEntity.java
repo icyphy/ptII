@@ -30,9 +30,10 @@
 
 package ptolemy.schematic.util;
 
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
+import java.util.*;
 import ptolemy.kernel.util.*;
+import diva.util.*;
+import diva.graph.model.*;
 
  //////////////////////////////////////////////////////////////////////////
 //// SchematicEntity
@@ -47,7 +48,8 @@ upon creation (or by the resetTerminalStyle method).
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicEntity extends PTMLTemplateObject {
+public class SchematicEntity extends PTMLTemplateObject 
+    implements diva.graph.model.CompositeNode {
 
     /**
      * Create a new SchematicEntity object with no set attributes.
@@ -177,7 +179,8 @@ public class SchematicEntity extends PTMLTemplateObject {
      * Remove a port from the entity. Throw an exception if
      * a port with this name is not contained in the entity.
      */
-    public void removeTerminal (SchematicTerminal port) throws IllegalActionException {
+    public void removeTerminal (SchematicTerminal port) 
+	throws IllegalActionException {
         try {
 	    _ports.remove(port);
 	}
@@ -225,6 +228,118 @@ public class SchematicEntity extends PTMLTemplateObject {
         return _terminals.elements();
     }
 
+    // diva.graph.Node
+    /**
+     * Return the parent graph of this node.
+     */
+    public Graph getParent() {
+	return _parent;
+    }
+
+    /* Get the semantic object of this node. Generally this
+     * is used when this node is a "wrapper" for some other object
+     * or model with deeper meaning.
+     */
+    public Object getSemanticObject() {
+	return _semanticObject;
+    }
+    
+    /* Get the visual object of this node. Generally this
+     * is used when this node has a visual representation.
+     */
+    public Object getVisualObject() {
+	return _visualObject;
+    }
+    
+    /**
+     * Return an iterator over the <i>in</i> edges of this
+     * node. This iterator does not support removal operations.
+     * If there are no in-edges, an iterator with no elements is
+     * returned.
+     */
+    public Iterator inEdges() {
+	return new NullIterator();
+    }
+
+    /**
+     * Return the visited flag for this node.  This is typically used
+     * by graph traversal algorithms.
+     */
+    public boolean isVisited() {
+	return _visited;
+    }
+		
+    /**
+     * Return an iterator over the <i>out</i> edges of this
+     * node.  This iterator does not support removal operations.
+     * If there are no out-edges, an iterator with no elements is
+     * returned.
+     */
+    public Iterator outEdges() {
+	return new NullIterator();
+    }
+
+    /** Set the parent of this node, that is, the graph in
+     * which it is contained.
+     */
+    public void setParent(Graph g) {
+        _parent = g;
+    }
+
+    /**  Set the semantic object of this node. Generally this
+     * is used when this node is a "wrapper" for some other object
+     * or model with deeper meaning.
+     */
+    public void setSemanticObject(Object o) {
+	_semanticObject = o;
+    }
+
+    /**  Set the visual object of this node.
+     */
+    public void setVisualObject(Object o) {
+	_visualObject = o;
+    }
+
+    /**
+     * Set the visited flag for this node.  Algorithms that use this
+     * flag are responsible for setting the visited flag to "false"
+     * before they begin a traversal (in other words,
+     * they cannot expect that a previous traversal has
+     * left the nodes unmarked).
+     */
+    public void setVisited(boolean val) {
+	_visited = val;
+    }
+
+    // diva.graph.Graph
+    /**
+     * Return true if this graph contains the given node.
+     */
+    public boolean contains(Node n) {
+	//FIXME: This Nameable cast is dangerous
+	if(_ports.includes((Nameable)n)) return true;
+	// FIXME don't worry about terminals for right now.
+	//	else if(_terminals.includes(n)) return true;
+	else return false;
+    }
+
+    /**
+     * Return the number of nodes contained in
+     * this graph.
+     */
+    public int getNodeCount() {
+	return _ports.size();
+    }
+
+    /**
+     * Provide an iterator over the nodes in this
+     * graph.  This iterator does not support removal
+     * operations.
+     */
+    public Iterator nodes() {
+	return new EnumerationIterator(ports());
+    }
+
     /**
      * Return a string this representing Entity.
      */
@@ -253,6 +368,26 @@ public class SchematicEntity extends PTMLTemplateObject {
     private NamedList _terminals;
     private double _x;
     private double _y;
+
+    /**
+     * The graph to which this node belongs.
+     */
+    private Graph _parent = null;
+
+    /**
+     * Whether or not this node has been visited.
+     */
+    private boolean _visited = false;
+
+    /**
+     * The underlying semantic object.
+     */
+    private Object _semanticObject = null;
+
+    /**
+     * The visual representation.
+     */
+    private Object _visualObject = null;
 }
 
 

@@ -35,6 +35,7 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import collections.*;
 import ptolemy.schematic.xml.XMLElement;
+import diva.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PTMLObject
@@ -46,7 +47,9 @@ any object that can be pulled out of a Schematic file.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class PTMLObject extends Object implements Nameable {
+public class PTMLObject extends diva.util.BasicPropertyContainer
+    implements Nameable {
+    // FIXME Are Properties parameters???
 
     /**
      * Create a new PTMLObject with the name "PTMLObject" and an empty 

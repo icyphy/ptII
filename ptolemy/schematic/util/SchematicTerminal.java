@@ -31,10 +31,11 @@
 package ptolemy.schematic.util;
 
 import ptolemy.kernel.util.*;
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
+import java.util.*;
 import collections.*;
 import ptolemy.schematic.xml.XMLElement;
+import diva.util.*;
+import diva.graph.model.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SchematicTerminal
@@ -50,7 +51,8 @@ In these cases, the terminal is fixed to the position of the template.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicTerminal extends PTMLTemplateObject {
+public class SchematicTerminal extends PTMLTemplateObject 
+implements diva.graph.model.Node {
 
     /**
      * Create a new SchematicTerminal with the name "SchematicTerminal",
@@ -143,6 +145,91 @@ public class SchematicTerminal extends PTMLTemplateObject {
         _y = y;
     }
 
+    // methods from diva.graph.model.Node.
+    /**
+     * Return the parent graph of this node.
+     */
+    public Graph getParent() {
+	return _parent;
+    }
+
+    /* Get the semantic object of this node. Generally this
+     * is used when this node is a "wrapper" for some other object
+     * or model with deeper meaning.
+     */
+    public Object getSemanticObject() {
+	return _semanticObject;
+    }
+    
+    /* Get the visual object of this node. Generally this
+     * is used when this node has a visual representation.
+     */
+    public Object getVisualObject() {
+	return _visualObject;
+    }
+    
+    /**
+     * Return an iterator over the <i>in</i> edges of this
+     * node. This iterator does not support removal operations.
+     * If there are no in-edges, an iterator with no elements is
+     * returned.
+     */
+    public Iterator inEdges() {
+	// FIXME: how to find this?
+	return null;
+    }
+
+    /**
+     * Return the visited flag for this node.  This is typically used
+     * by graph traversal algorithms.
+     */
+    public boolean isVisited() {
+	return _visited;
+    }
+		
+    /**
+     * Return an iterator over the <i>out</i> edges of this
+     * node.  This iterator does not support removal operations.
+     * If there are no out-edges, an iterator with no elements is
+     * returned.
+     */
+    public Iterator outEdges() {
+	// FIXME: how to find this?
+	return null;
+    }
+
+    /** Set the parent of this node, that is, the graph in
+     * which it is contained.
+     */
+    public void setParent(Graph g) {
+        _parent = g;
+    }
+
+    /**  Set the semantic object of this node. Generally this
+     * is used when this node is a "wrapper" for some other object
+     * or model with deeper meaning.
+     */
+    public void setSemanticObject(Object o) {
+	_semanticObject = o;
+    }
+
+    /**  Set the visual object of this node.
+     */
+    public void setVisualObject(Object o) {
+	_visualObject = o;
+    }
+
+    /**
+     * Set the visited flag for this node.  Algorithms that use this
+     * flag are responsible for setting the visited flag to "false"
+     * before they begin a traversal (in other words,
+     * they cannot expect that a previous traversal has
+     * left the nodes unmarked).
+     */
+    public void setVisited(boolean val) {
+	_visited = val;
+    }
+
     /** 
      * Return a string representation of the terminal
      */
@@ -154,5 +241,26 @@ public class SchematicTerminal extends PTMLTemplateObject {
     }
 
     private double _x, _y;
+
+    /**
+     * The graph to which this node belongs.
+     */
+    private Graph _parent = null;
+
+    /**
+     * Whether or not this node has been visited.
+     */
+    private boolean _visited = false;
+
+    /**
+     * The underlying semantic object.
+     */
+    private Object _semanticObject = null;
+
+    /**
+     * The visual representation.
+     */
+    private Object _visualObject = null;
+
 }
 

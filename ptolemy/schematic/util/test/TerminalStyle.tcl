@@ -110,7 +110,7 @@ test TerminalStyle-3.2 {containsTerminal} {
 
 test TerminalStyle-3.3 {terminals} {
     $e0 addTerminal $t2
-    _testEnums terminals $e0
+    eval _testEnums terminals $e0
 } {{Terminal1 Terminal2}}
 
 test TerminalStyle-3.4 {removeTerminal} {

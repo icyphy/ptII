@@ -1,4 +1,4 @@
-/* A SchematicPort represents a PtII design
+/* A SchematicPort represents a port in a PTII design
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -30,7 +30,8 @@
 
 package ptolemy.schematic.util;
 
-import java.util.Enumeration;
+import java.util.*;
+
 
 ////////////////////////////////////////////////////////////////////////////// SchematicPort
 /**
@@ -67,5 +68,7 @@ public class SchematicPort extends PTMLTemplateObject {
     public SchematicPort (String name, EntityPort template) {
         super(name, template);
     } 
+
+
 }
 
