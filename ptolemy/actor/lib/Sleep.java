@@ -28,31 +28,44 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.LongToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Sleep
 /**
-   An actor that calls Thread.sleep() on the current thread the first
-   time fire() is called.  The sleep delays the inputs for a certain
-   amount of real time, specified by the <i>sleepTime</i> parameter.
-
-   <p>Note that one way to slow down the execution of a model while running
+   On each firing, read at most one token from each input channel, sleep
+   by the specified amount of real time, and then produce the same input
+   tokens on the respective output channels. This actor calls Thread.sleep()
+   in the fire() method, so the thread that calls fire() will be suspended.
+   If fire() is called multiple times in one iteration, sleep is only called
+   the first time.
+   If the width of the output port is less than that of the input port,
+   the tokens in the extra channels are lost.
+   <p>
+   The effect of this actor is different in different domains.
+   In domains where all actors are iterated from within a single director
+   thread (like SDF and DE), then multiple instances of this actor will
+   result in cummulative time delays. That is, the time taken by an iteration
+   of the model will be greater than the sum of the sleep times of all the
+   instances. In domains where actors execute in their own thread (like PN
+   and CSP), only the execution of the individual actor is slowed.
+   Note that another way to slow down the execution of a model while running
    inside vergil is to turn on animation.
 
-   <p>If the width of the output port is less than that of the input port,
-   the tokens in the extra channels are lost.
-
-   @author Jie Liu, Christopher Hylands
+   @author Jie Liu, Christopher Hylands, Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (cxh)
+   
+   @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class Sleep extends Transformer {
@@ -68,63 +81,92 @@ public class Sleep extends Transformer {
     public Sleep(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        sleepTime = new Parameter(this, "sleepTime",
-                new LongToken(0));
+        sleepTime = new PortParameter(this, "sleepTime");
+        sleepTime.setExpression("0L");
         sleepTime.setTypeEquals(BaseType.LONG);
+        
+        Port sleepPort = sleepTime.getPort();
+        StringAttribute sleepCardinal
+                = new StringAttribute(sleepPort, "_cardinal");
+        sleepCardinal.setExpression("SOUTH");
+        
         // Data type polymorphic, multiports.
         input.setMultiport(true);
         output.setMultiport(true);
+        output.setTypeAtLeast(input);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The sleepTime amount, in milliseconds
-     *  This parameter must contain a LongToken.
-     *  The default value of this parameter is 0, meaning
-     *  that this actor will not sleep the current thread at all.
+    /** The sleep time in milliseconds. This has type long and default
+     *  "0L".
      */
-    public Parameter sleepTime;
+    public PortParameter sleepTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Call Thread.sleep() the first time fire is called and then
-     *  transfer tokens from inputs to outputs, one token from each
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new instance of Sleep.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Sleep newObject = (Sleep)super.clone(workspace);
+        newObject.output.setTypeAtLeast(input);
+        return newObject;
+    }
+    
+    /** Read input tokens, call Thread.sleep(), and then
+     *  transfer tokens from inputs to outputs, at most one token from each
      *  channel.  If fire() is called twice in a row without an
      *  intervening call to either postfire() or prefire(), then no
-     *  output is produced.
-     *  <p>If the width of the output port is less than
+     *  sleep is performed, an inputs are copied to the output immediately.
+     *  <p>
+     *  If the width of the output port is less than
      *  that of the input port, the tokens in the extra channels
      *  are lost.
-     *  @exception IllegalActionException Not thrown in this base class */
+     *  @exception IllegalActionException Not thrown in this base class
+     */
     public void fire() throws IllegalActionException {
+        int inputWidth = input.getWidth();
+        Token[] inputs = new Token[inputWidth];
+        for (int i = 0; i < inputWidth; i++) {
+            if (input.hasToken(i)) {
+                inputs[i] = input.get(i);
+            }
+        }
         if (!_wasSleepCalledInFireYet) {
             try {
-                long sleepTimeValue =
-                    ((LongToken)sleepTime.getToken()).longValue();
-                if (_debugging) _debug(getName() + ": Wait for " +
-                        sleepTimeValue + " milliseconds.");
+                long sleepTimeValue
+                        = ((LongToken)sleepTime.getToken()).longValue();
+                if (_debugging) {
+                    _debug(getName()
+                            + ": Wait for "
+                            + sleepTimeValue
+                            + " milliseconds.");
+                }
                 Thread.sleep(sleepTimeValue);
             } catch (InterruptedException e) {
                 // Ignore...
             }
-            // Pull these out of the loop so we do not call them
-            // more than once.
-            int inputWidth = input.getWidth();
-            int outputWidth = output.getWidth();
-            for (int i = 0; i < inputWidth; i++) {
-                if (input.hasToken(i)) {
-                    Token inToken = input.get(i);
-                    if ( i < outputWidth) {
-                        output.send(i, inToken);
-                    }
+        }
+        int outputWidth = output.getWidth();
+        for (int i = 0; i < inputWidth; i++) {
+            if (inputs[i] != null) {
+                if ( i < outputWidth) {
+                    output.send(i, inputs[i]);
                 }
             }
         }
     }
 
-    /** Reset the flag that fire() checks so that fire() only sleeps once.
+    /** Reset the flag that fire() checks so that fire() only sleeps once
+     *  per iteration.
      *  @exception IllegalActionException If the parent class throws it.
      *  @return Whatever the superclass returns (probably true).
      */
@@ -133,7 +175,8 @@ public class Sleep extends Transformer {
         return super.postfire();
     }
 
-    /** Reset the flag that fire() checks so that fire() only sleeps once.
+    /** Reset the flag that fire() checks so that fire() only sleeps once
+     *  per iteration.
      *  @exception IllegalActionException If the parent class throws it.
      *  @return Whatever the superclass returns (probably true).
      */
@@ -146,6 +189,6 @@ public class Sleep extends Transformer {
     ////                         private variables                 ////
 
     // True if sleep was called in fire().  Sleep should only
-    // be called once in fire().
+    // be called once in fire() per iteration.
     private boolean _wasSleepCalledInFireYet = false;
 }
