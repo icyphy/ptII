@@ -1,4 +1,4 @@
-/* Generate a convolutional code
+/* Viterbi Decoder.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,48 +30,27 @@
 
 package ptolemy.actor.lib.comm;
 
+import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.IntMatrixToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.ArrayType;
+
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ConvolutionalCoder
+//// ViterbiDecoder
 /**
-Generate a convolutional code by passing the information sequence to be
-transmitted through a linear finite-state shift register.
-The initial state of the shift register is given by the <i>initial</i>
-parameter, which should be a non-negative integer.
-The number of bits per time that should be shifted into and along the
-shift register is given by the <i>inputNumber</i> parameter, which
-should be a positive integer.
-The polynomials are given by the <i>polynomialArray</i> parameter, which
-should be an array of positive integers. Each integer indicates one
-polynomial.
-The n-th bit of the polynomial indicates whether the n-th tap of the delay
-line should be taken to compute the exclusive-ored parity.
-The result is produced as a sequence of length <i>N</i>, where <i>N</i>
-is the length of the <i>polynomialArray</i>. The n-th bit in the sequence
-corresponds to the parity computed from the n-th polynomial.
-<p>
-The leading zero in each polynomial indicates an octal number.
-The order is simply the index of the highest-order non-zero in the polynomial,
-where the low-order bit has index zero.
-Since the polynomial and the shift register are both implemented using type
-"int", the order of the polynomial is limited by the size of the "int" data
-type. For simplicity and portability, the polynomial is not allowed to be
-intepreted as a negative integer, so the sign bit cannot be used.
-Since Java has 32-bit integers, the highest order polynomial allowed
-is 30 (recall that indexing for the order starts at zero, and we cannot
-use the sign bit).
+FIXME
 <p>
 For more information on convolutional codes, see Proakis, Digital
 Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
@@ -80,7 +59,7 @@ b@author Rachel Zhou
 @version $Id$
 */
 
-public class ConvolutionalCoder extends Transformer {
+public class ViterbiDecoder extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -91,7 +70,7 @@ public class ConvolutionalCoder extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ConvolutionalCoder(CompositeEntity container, String name)
+    public ViterbiDecoder(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
@@ -99,7 +78,7 @@ public class ConvolutionalCoder extends Transformer {
         inputNumber.setTypeEquals(BaseType.INT);
         inputNumber.setExpression("1");
 
-        constraintLength = new Parameter(this, "constraintlength");
+        constraintLength = new Parameter(this, "constraintLength");
         constraintLength.setTypeEquals(BaseType.INT);
         constraintLength.setExpression("3");
 
@@ -107,12 +86,12 @@ public class ConvolutionalCoder extends Transformer {
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
         polynomialArray.setExpression("{05, 07}");
 
-        initial = new Parameter(this, "initial");
-        initial.setTypeEquals(BaseType.INT);
-        initial.setExpression("0");
+        delay = new Parameter(this, "delay");
+        delay.setTypeEquals(BaseType.INT);
+        delay.setExpression("10");
 
         // Declare data types, consumption rate and production rate.
-        input.setTypeEquals(BaseType.INT);
+        input.setTypeEquals(BaseType.DOUBLE);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
             new IntToken(1));
         output.setTypeEquals(BaseType.INT);
@@ -131,25 +110,20 @@ public class ConvolutionalCoder extends Transformer {
       */
     public Parameter polynomialArray;
 
-    /** Integer defining the intial state of the shift register.
-     *  The n-th bit of the integer indicates the value of the
-     *  n-th register. This parameter should be a non-negative
-     *  integer. Its default value is the integer 0.
-     */
-    public Parameter initial;
-
     /** Integer defining the number of bits that the shift register
      *  takes in each time. It should be a positive integer. Its
      *  default value is the integer 1.
      */
     public Parameter inputNumber;
-    public Parameter constraintLength;
+
+    public Parameter constraintLength; 
+
+    public Parameter delay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>initial</i>, then verify
-     *  that it is a non-negative integer; if it is <i>inputNumber</i>,
+    /** If the attribute being changed is <i>inputNumber</i>,
      *  then verify that it is a positive integer; if it is
      *  <i>polynomailArray</i>, then verify that each of its elements is
      *  a positive integer and compute the shift register's length,
@@ -160,13 +134,7 @@ public class ConvolutionalCoder extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == initial) {
-            int initialValue = ((IntToken)initial.getToken()).intValue();
-            if (initialValue < 0 ) {
-                throw new IllegalActionException(this,
-                "shift register's value must be non-negative.");
-            }
-        } else if (attribute == inputNumber) {
+        if (attribute == inputNumber) {
             _inputNumber = ((IntToken)inputNumber.getToken()).intValue();
             if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
@@ -177,19 +145,26 @@ public class ConvolutionalCoder extends Transformer {
             // the value until all parameters have been set.
             _inputNumberInvalid = true;
             // Set the input comsumption rate.
-            _inputRate.setToken(new IntToken(_inputNumber));
+            _outputRate.setToken(new IntToken(_inputNumber));
         } else if (attribute == constraintLength) {
             _stageNumber = ((IntToken)constraintLength.getToken()).intValue();
             if (_stageNumber <= 1) {
                 throw new IllegalActionException(this,
-                        "constraintLength must be a integer greater than 1");
+                        "constraintLength must be an integer greater than 1.");
             }
             _inputNumberInvalid = true;
+        }
+          else if (attribute == delay) {
+            _depth = ((IntToken)delay.getToken()).intValue();
+            if (_depth < 1) {
+                throw new IllegalActionException(this,
+                        "Delay must be a positive integer.");
+            }
         } else if (attribute == polynomialArray) {
             ArrayToken maskToken = ((ArrayToken)polynomialArray.getToken());
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
-            //int maxPolyValue = 0;
+            int maxPolyValue = 0;
             for(int i = 0; i < _maskNumber; i++) {
                 _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
                 if (_mask[i] <= 0) {
@@ -199,7 +174,7 @@ public class ConvolutionalCoder extends Transformer {
             }
             _inputNumberInvalid = true;
             // Set the output production rate.
-            _outputRate.setToken(new IntToken(_maskNumber));
+            _inputRate.setToken(new IntToken(_maskNumber));
         } else {
             super.attributeChanged(attribute);
         }
@@ -218,51 +193,135 @@ public class ConvolutionalCoder extends Transformer {
                 throw new IllegalActionException(this,
                 "Output rate should be larger than input rate.");
             }
-             _shiftRegLength = _stageNumber * _inputNumber;
-            if (_inputNumber > _shiftRegLength) {
+            _shiftRegLength = _stageNumber * _inputNumber;
+            if (_inputNumber >= _shiftRegLength) {
                 throw new IllegalActionException(this,
-                "Input rate is larger than the shift register length.");
+                "Input rate must be smaller than shift register length.");
             }
             for (int i = 0; i < _maskNumber; i ++) {
-                if(_mask[i] > (1 << _shiftRegLength)) {
+                if (_mask[i] >= (1 << _shiftRegLength)) {
                     throw new IllegalActionException(this,
-          "Shift register's length must be greater than polynomials' order");
+             "shift register's length must be higher than polynomials' order");
                 }
             }
             _inputNumberInvalid = false;
-        }
-
-        _latestShiftReg = _shiftReg;
-
-        // Read from the input port and shift the bits into
-        // the shift register.
-        Token[] inputToken = (Token[])input.get(0, _inputNumber);
-        int reg = _latestShiftReg;
-        for (int i = 0; i < _inputNumber; i++) {
-             reg = reg << 1;
-             IntToken input = (IntToken)inputToken[i];
-             if (input.intValue() == 1 || input.intValue() == 0) {
-                reg = reg | input.intValue();
-             } else { throw new IllegalActionException(this,
-                      "Input should be either 0 or 1.");
+ 
+            _rowNum = 1 << (_shiftRegLength - _inputNumber);
+            _colNum = 1 << _inputNumber;
+            _truthTable = new int[_rowNum][_colNum][3];
+            _path = new int[_rowNum][_depth + 1];
+            _tempPath = new int[_rowNum][_depth + 1];
+            _distance = new double[_rowNum];
+            _tempDistance = new double[_rowNum];
+            // Initialize.
+            for(int i = 0; i < _rowNum; i ++) {
+                _distance[i] = 0;
+                _tempDistance[i] = 0;
+                for(int j = 0; j < _depth; j ++) {
+                    _path[i][j] = 0;
+                    _tempPath[i][j] = 0;
+                }
+            }    
+           
+            int inputMask = (1 << _inputNumber) - 1;
+            // Compute truthTable
+            // _truthTable[][][0] is the output y
+            // _truthTable[][][1] is the corresponding previous state
+            // _truthTable[][][2] is the input (actually it's the last k
+            // bit of the current state.
+            for (int state = 0; state < _rowNum; state ++) {
+                for (int head = 0; head < _colNum; head ++) {
+                   int reg = head << (_shiftRegLength - _inputNumber);
+                   reg = reg + state;
+                   int[] parity =  _calculateParity(_mask, _maskNumber, reg);
+                   int outValue = 0;
+                   for (int i = 0; i < _maskNumber; i ++) {
+                       outValue = outValue << 1;
+                       outValue = outValue + parity[i];
+                   }
+                   _truthTable[state][head][0] = outValue;
+                   int oldState = reg >> _inputNumber;
+                   _truthTable[state][head][1] = oldState;
+                   int input = reg & inputMask;
+                   _truthTable[state][head][2] = input;
+                   System.out.println("state=" + state + " y=" + outValue + 
+                      " oldState=" + oldState + " input=" + input);
+               }
             }
         }
-        _latestShiftReg = reg;
-
-        // Compute the parities for all polynomials respectively.
-        IntToken[] result = new IntToken[_maskNumber];
-        int[] parity = new int[_maskNumber];
-        parity = _calculateParity(_mask, _maskNumber, reg);
-
-        // Send the parity results to the output.
+        System.out.println(" ");
+        System.out.println("flag =" + _flag);
+        // Read from the input port.
+        Token[] inputToken = (Token[])input.get(0, _maskNumber);
+        double[] y = new double[_maskNumber];
         for (int i = 0; i < _maskNumber; i++) {
-            if (parity[i] == 1){
-                result[i] = _tokenOne;
-            }else{
-                result[i] = _tokenZero;
-            }
+             y[i] = ((DoubleToken)inputToken[i]).doubleValue();             
         }
-        output.broadcast(result, result.length);
+
+        // Search the optimal path (minimum distance) for each state.
+        for (int state = 0; state < _rowNum; state ++) {
+            System.out.println("state = " + state);
+            double minDistance = 0;
+            int minInput = 0;
+            int minState = 0;
+            for (int colIndex = 0; colIndex < _colNum; colIndex ++) {
+                // Compute the distance for each possible path to "state".
+                double d = _computeSoftDistance(y,
+                        _truthTable[state][colIndex][0], _maskNumber);
+                // The previous state for that path.
+                int oldState = _truthTable[state][colIndex][1];
+                d = _tempDistance[oldState] + d;
+                if (colIndex == 0 || d < minDistance) {
+                    minDistance = d;
+                    minState = oldState;
+                    minInput = _truthTable[state][colIndex][2];
+                }
+            }
+            _distance[state] = minDistance;
+            for (int i = 0; i < _flag; i ++) {
+                _path[state][i] = _tempPath[minState][i];
+            }  
+            _path[state][_flag] = minInput;
+            // Note each element in path[][] is an integer representing k bits.
+            // order: x0x1x2x3... where x0 is the first input bit that entered.
+            // When sending to the output, should convert to binary.
+            System.out.println("d = " + minDistance);
+            System.out.print("path = ");
+            for (int i = 0; i <= _flag; i ++) {
+                System.out.print( _path[state][i] + " ");
+            }
+            System.out.println(" ");
+        }
+
+        //When to decide to output?
+        if (_flag >= _depth) {
+            //send to the output;
+            
+            double minD = 0;
+            int minIndex = 0;
+            for (int state = 0; state < _rowNum; state ++) {
+                if (state == 0 || _distance[state] < minD) {
+                    minD = _distance[state];
+                    minIndex = state; 
+                }
+            }
+
+            IntToken[] decoded = new IntToken[_inputNumber];
+            System.out.println("minIndex = " + minIndex);
+            System.out.println("decoded = " + _path[minIndex][0]);
+            decoded = _convertToBit(_path[minIndex][0], _inputNumber);
+            output.broadcast(decoded, _inputNumber);
+
+            // path should move to the front.
+            for (int state = 0; state < _rowNum; state ++ ) {
+                //System.out.println("move to the front path for state " + state);
+                for (int i = 0; i < _flag; i ++) {
+                   _path[state][i] = _path[state][i+1];
+                }
+            }
+            _flag = _flag - 1;
+        }
+        _flag = _flag + 1;
     }
 
 
@@ -272,8 +331,8 @@ public class ConvolutionalCoder extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _latestShiftReg = _shiftReg =
-            ((IntToken)initial.getToken()).intValue();
+        _inputNumberInvalid = true;
+        _flag = 0;
     }
 
     /** Record the most recent shift register state as the new
@@ -281,7 +340,17 @@ public class ConvolutionalCoder extends Transformer {
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
-        _shiftReg = _latestShiftReg;
+        //_shiftReg = _latestShiftReg;
+        // copy distance/path to tempDistance/Path
+        for (int i = 0; i < _rowNum; i ++) {
+            _tempDistance[i] = _distance[i];
+            //System.out.print("temp path state for " + i + " ");    
+            for (int j = 0; j < _flag; j ++) {
+                _tempPath[i][j] = _path[i][j];
+                //System.out.print(_tempPath[i][j] + " ");
+            }
+            //System.out.println(" ");
+        }
         return super.postfire();
     }
 
@@ -309,6 +378,30 @@ public class ConvolutionalCoder extends Transformer {
         return parity;
     }
 
+    private double _computeSoftDistance(double[] y, int truthValue, int maskNum) {
+        double softDistance = 0.0;
+        for (int i = maskNum -1; i >= 0; i --) {
+            int truthBit = truthValue & 1;
+            truthValue = truthValue >> 1;
+            softDistance = softDistance + java.lang.Math.pow(y[i] - truthBit, 2);
+        }
+        return softDistance;
+    }
+
+    private IntToken[] _convertToBit(int integer, int length) {
+        IntToken[] bit = new IntToken[length];
+        for(int i = length -1; i >= 0; i --) {
+            if ((integer & 1) == 1) {
+                bit[i] = _tokenOne;
+            } else {
+                bit[i] = _tokenZero;
+            }
+            integer = integer >> 1;
+        }
+        return bit;
+    }
+
+     
     //////////////////////////////////////////////////////////////
     ////           private parameters and variables           ////
 
@@ -318,22 +411,16 @@ public class ConvolutionalCoder extends Transformer {
     // Production rate of the output port.
     private Parameter _outputRate;
 
-    // Record the state of the shift register.
-    private int _shiftReg;
-
-    // Updated state of the shift register.
-    private int _latestShiftReg;
-
     // Number bits the actor consumes per firing.
     private int _inputNumber;
 
     private int _stageNumber;
 
-    // Polynomial array.
-    private int[] _mask;    
-
     // Number of polynomials.
     private int _maskNumber;
+
+    // Polynomial array.
+    private int[] _mask;
 
     // Length of the shift register.
     private int _shiftRegLength = 0;
@@ -341,6 +428,17 @@ public class ConvolutionalCoder extends Transformer {
     // A flag indicating that the private variable
     //  _inputNumber is invalid.
     private transient boolean _inputNumberInvalid = true;
+
+    private int[][][] _truthTable;
+    private int _rowNum;
+    private int _colNum;
+
+    private int _depth;
+    private double[] _distance;
+    private double[] _tempDistance;
+    private int[][] _path;
+    private int[][] _tempPath;
+    private int _flag;
 
     // Since this actor always sends one of two tokens,
     // we statically create those tokens to avoid unnecessary
