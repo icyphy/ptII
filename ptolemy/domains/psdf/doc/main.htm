@@ -24,7 +24,7 @@
    rate parameters occurs during execution of the SDF schedule.  If
    this test passes, then a parameterized schedule is constructed.
 
-   <li> The generated schedule is checked for local synchrony, to determine
+   <li> The generated schedule is checked for local synchrony [1], to determine
    if external rate parameters may change.  The correct dependency
    information for external ports is then declared.
 
@@ -37,5 +37,36 @@
    for efficient reconfiguration.  The added precision of dependency analysis
    for external rate parameters also means that some hierarchical models that
    would be ruled out by the SDF checks are allowed.
+
+   <p> PSDF uses $PTII/lib/mapss.jar, which is a preliminary and experimental
+version of the MAPSS (MAryland Package for System Synthesis) package, developed
+at the University of Maryland. Publications related to the MAPSS project can be
+found at the link below.  An overview of some of the core features in MAPSS is
+given in [2]. The mapss.jar file includes a basic subset of MAPSS features used
+to support scheduling in the Ptolemy II PSDF domain. A more complete
+distribution of MAPSS, including source code and documentation, is planned for
+the near future.
+
+    <p> References:
+
+    <p>
+
+	<p> [1] B. Bhattacharya and S. S. Bhattacharyya. Parameterized dataflow
+modeling for DSP systems. IEEE Transactions on Signal Processing,
+49(10):2408-2421, October 2001. 
+
+    <p>
+
+	<p> [2] C. Hsu, F. Keceli, M. Ko, S. Shahparnia, and S. S. Bhattacharyya.
+DIF: An interchange format for dataflow-based design tools. In Proceedings of
+the International Workshop on Systems, Architectures, Modeling, and Simulation,
+Samos, Greece, July 2004.
+
+    <p>
+
+	<p> References [1] and [2] are available from the <a
+HREF="http://www.ece.umd.edu/DSPCAD/papers/contents.html">DSP-CAD Group
+publications page.</p>
+
 </body>
 </html>
