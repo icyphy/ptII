@@ -130,6 +130,7 @@ public class ComponentEntity extends Entity {
 
     /** Get the container entity.
      *  @return The container, which is an instance of CompositeEntity.
+     *  @see #setContainer(CompositeEntity)
      */
     public NamedObj getContainer() {
         return _container;
