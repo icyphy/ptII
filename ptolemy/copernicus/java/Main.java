@@ -315,27 +315,29 @@ public class Main extends KernelMain {
      *  @exception NameDuplicationException If the name of the
      *  model cannot be changed to a Java identifier String.
      */ 
-    public static void main(String[] args)
-            throws IllegalActionException, NameDuplicationException {
+    public static void main(String[] args) {
+        try {
+            long startTime = System.currentTimeMillis();
 
-        long startTime = System.currentTimeMillis();
+            Main main = new Main(args);
 
-	Main main = new Main(args);
+            // Parse the model.
+            CompositeActor toplevel = main.readInModel(args[0]);
+        
+            // Create instance classes for the actors.
+            main.initialize(toplevel);
 
-	// Parse the model.
-	CompositeActor toplevel = main.readInModel(args[0]);
-
-	// Create instance classes for the actors.
-	main.initialize(toplevel);
-
-	// Add Transforms to the Scene.
-	main.addTransforms();
+            // Add Transforms to the Scene.
+            main.addTransforms();
 	    
-	main.generateCode(args); 
+            main.generateCode(args); 
 
-        // Print out memory usage info
-	System.out.println(args[0] + " "
-                + ptolemy.actor.Manager.timeAndMemory(startTime));
+            // Print out memory usage info
+            System.out.println(args[0] + " "
+                    + ptolemy.actor.Manager.timeAndMemory(startTime));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
 
