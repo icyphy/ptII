@@ -35,8 +35,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.sr.lib.NonStrictActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -107,19 +107,15 @@ public class SRDirector extends Director {
     ////                         parameters                        ////
 
     /** The number of times that postfire may be called before it
-     *  returns false. The value must be an IntToken, and it defaults 
-     *  to zero. If the value is less than or equal to zero, then the 
-     *  execution will never return false in postfire, and thus the 
-     *  execution can continue forever.
+     *  returns false. The type must be IntToken, and the value 
+     *  defaults to zero. If the value is less than or equal to zero,
+     *  then the execution will never return false in postfire, and 
+     *  thus the execution can continue forever.
      */
     public Parameter iterations;
 
-    /** The period of an iteration. The value must be a ScalarToken, and
-     *  it defaults to 1.
-     *  FIXME: Ideally, I would like this to accept only IntTokens and 
-     *  DoubleTokens. The type system does not allow an IntToken to
-     *  be cast to a DoubleToken, so the parameter must be converted to
-     *  a ScalarToken, and then the value is extracted as a double.
+    /** The period of an iteration. The type must be less than or equal to
+     *  DoubleToken, and it defaults to 1.
      */
     public Parameter period;
 
@@ -130,6 +126,7 @@ public class SRDirector extends Director {
      *  base class and then sets the iterations member.  The new
      *  actor will have the same parameter values as the old.
      *  FIXME: Are the parameters cloned automatically?
+     *  FIXME: Are the type constraints cloned automatically?
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -139,7 +136,9 @@ public class SRDirector extends Director {
             throws CloneNotSupportedException {
         SRDirector newObject = (SRDirector)(super.clone(workspace));
         newObject.iterations = (Parameter)newObject.getAttribute("iterations");
+        //newObject.iterations.setTypeEquals(BaseType.INT);
         newObject.period = (Parameter)newObject.getAttribute("period");
+        //newObject.period.setTypeEquals(BaseType.DOUBLE);
         return newObject;
     }
 
@@ -212,7 +211,7 @@ public class SRDirector extends Director {
      *   not have a valid token.
      */
     public double getPeriod() throws IllegalActionException {
-        return ((ScalarToken) period.getToken()).doubleValue();
+        return ((DoubleToken) period.getToken()).doubleValue();
     }
 
     /** Initialize the director by initializing state variables and invoke
@@ -474,9 +473,11 @@ public class SRDirector extends Director {
     private void _init() {
 	try {
             //FIXME check that the defaults happen.
-	    period = new Parameter(this, "period");
-	    period.setToken(new IntToken(_DEFAULT_SR_PERIOD));
+	    period = new Parameter(this, "period",
+                    new IntToken(_DEFAULT_SR_PERIOD));
+            period.setTypeEquals(BaseType.DOUBLE);
 	    iterations = new Parameter(this, "iterations", new IntToken(0));
+            iterations.setTypeEquals(BaseType.INT);
 	    setCurrentTime(0.0);
         } catch (KernelException ex) {
 	    throw new InternalErrorException(
