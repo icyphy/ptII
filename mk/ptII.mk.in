@@ -241,3 +241,5 @@ DIVA_JAR = $(PTII)/lib/diva.jar
 INSTALL =		$(ROOT)/config/install-sh -c
 INSTALL_PROGRAM =	${INSTALL}
 INSTALL_DATA =		${INSTALL} -m 644
+
+MATLAB_DIR = 	@MATLAB_DIR@

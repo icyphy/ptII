@@ -38,9 +38,11 @@ ME =		ptolemy
 # PTCOPERNICUS_DIR is set to copernicus by configure in $PTII/mk/ptII.mk
 # if the Soot package was found.  copernicus should be compiled before
 # codegen
-
+# PTMATLAB_DIR is set to matlab by configure in $PTII/mk/ptII.mk
+# if libeng.def is found.
 DIRS = kernel plot graph moml data actor gui math media	\
-	lang $(PTCOPERNICUS_DIR) codegen domains vergil apps configs
+	lang $(PTCOPERNICUS_DIR) codegen \
+	$(PTMATLAB_DIR)	domains vergil apps configs
 
 # Root of Ptolemy II directory
 ROOT =		..

@@ -199,6 +199,7 @@
             <input source="../domains/de/lib/deentities.xml"/>
             <input source="../domains/sr/lib/srentities.xml"/>
 	    <input source="../domains/rtos/lib/rtosentities.xml"/>
+            <input source="../matlab/actors.xml"/>
           </group>
         ?>
       </configure>

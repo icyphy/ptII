@@ -157,7 +157,6 @@ ALLPACKAGES =		$(CODEGENPACKAGES) \
 			ptolemy.kernel.util \
 			ptolemy.actor \
 			ptolemy.actor.gui \
-			ptolemy.actor.gui.style \
 			ptolemy.actor.process \
 			ptolemy.actor.lib.hoc \
 			ptolemy.actor.sched \
@@ -181,6 +180,7 @@ ALLPACKAGES =		$(CODEGENPACKAGES) \
 			ptolemy.graph \
 			ptolemy.gui \
 			ptolemy.math \
+			ptolemy.matlab \
 			ptolemy.media \
 			ptolemy.moml \
 			ptolemy.vergil \
@@ -223,7 +223,6 @@ codeDoc/tree.html:	$(CODEGENJSRCS) \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/gui/*.java \
-			../ptolemy/actor/gui/style/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
 			../ptolemy/actor/lib/hoc/*.java \
@@ -255,6 +254,7 @@ codeDoc/tree.html:	$(CODEGENJSRCS) \
 			../ptolemy/graph/*.java \
 			../ptolemy/gui/*.java \
 			../ptolemy/math/*.java \
+			../ptolemy/matlab/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
 			../ptolemy/vergil/*.java \
