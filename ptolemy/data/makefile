@@ -63,10 +63,14 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	ByteToken.java \
+	DoubleMatrix.java \
+	DoubleMatrixToken.java \
 	DoubleToken.java \
 	IntParam.java \
 	IntToken.java \
 	LongToken.java \
+	Matrix.java \
+	MatrixToken.java \
 	NullToken.java \
 	ObjectToken.java \
 	ObservableParameter.java \
