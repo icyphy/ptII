@@ -716,6 +716,65 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       Soot is a Java Optimization Framework, see
+#	http://www.sable.mcgill.ca/soot/
+#       See if there was a command-line option for where Soot is
+#       If not, look in $PTII/vendors/sun/soot
+#--------------------------------------------------------------------
+# PTSOOT_DIR is set to soot and used in
+# $PTII/ptolemy/apps/makefile if soot was found
+PTSOOT_DIR=
+#
+# We only need to look for soot if $PTII/ptolemy/apps/soot exists
+if test ! -d "$PTII/ptolemy/apps/soot"; then
+    AC_MSG_RESULT([$PTII/ptolemy/apps/soot is not present, so we need not
+find the Soot - a Java Optimization Framework])
+    SOOT_DIR='${PTII}/vendors/soot/1.2.2'
+    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+else
+    AC_MSG_CHECKING([for soot directory])
+    AC_ARG_WITH(soot, [  --with-soot=DIR       use SOOT from DIR,
+                          defaults to \$PTII/vendors/soot/1.2.2],
+	SOOT_DIR=$withval,
+	SOOT_DIR=$PTII/vendors/soot/1.2.2)
+
+    if test -d "$SOOT_DIR"; then
+	AC_MSG_RESULT([$SOOT_DIR])
+        AC_MSG_CHECKING([for \$SOOT_DIR/sootclasses.jar])
+	if test -f "$SOOT_DIR/sootclasses.jar"; then
+	    AC_MSG_RESULT([$SOOT_DIR/sootclasses.jar])
+	    AC_MSG_CHECKING([for \$SOOT_DIR/jasminclasses.jar])
+  	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
+                AC_MSG_RESULT([$SOOT_DIR/jasminclasses.jar])
+	        SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+	    else
+	        SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar'
+            fi
+	    AC_MSG_RESULT([$SOOT_CLASSES])
+        else
+	    SOOT_CLASSES=no
+        fi
+    # else
+    # We could look in other places . . .
+    fi
+    	
+    if test "$SOOT_CLASSES" = "no"; then
+        AC_MSG_WARN(['Failed to find soot/sootclasses.jar
+    perhaps Soot is not installed?
+    You need not download Soot unless you plan on using code generation
+    The Soot SDK can be downloaded from http://www.sable.mcgill.ca/soot/'])
+	# Note that we don't substitute in the ${PTII} or $(SOOT_DIR) here
+	SOOT_DIR='${PTII}/vendors/soot/1.2.2'
+   	SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+    else
+	# Set to soot and used in
+	# $PTII/ptolemy/apps/makefile if soot was found
+	PTSOOT_DIR=soot
+    fi
+fi
+
+
+#--------------------------------------------------------------------
 #       TINI is the JDK for Dallas Tini board, see
 #	www.ibutton.com
 #	See if there was a command-line option for where
@@ -950,12 +1009,22 @@ AC_SUBST(PTLEJOS_DIR)
 # $PTII/ptolemy/apps/makefile if TINI was found
 AC_SUBST(PTTINI_DIR)
 
+# Set to soot and used in
+# $PTII/ptolemy/apps/makefile if Soot was found
+AC_SUBST(PTSOOT_DIR)
+
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)
 
 # Location of the PtII directory
 AC_SUBST(PTII_DEFAULT)
+
+# tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
+AC_SUBST(SOOT_CLASSES)
+
+# Directory that contains the Soot installation
+AC_SUBST(SOOT_DIR)
 
 # tini/bin/tinclasses.jar file used by the Dallas Semi Tini
 AC_SUBST(TINI_CLASSES)
