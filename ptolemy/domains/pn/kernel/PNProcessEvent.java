@@ -107,7 +107,7 @@ public class PNProcessEvent {
             st = "PROCESS_BLOCKED";
             if (_cause == BLOCKED_ON_DELAY) {
                 ca = "BLOCKED_ON_DELAY";
-            }else if (_cause == BLOCKED_ON_MUTATION) {
+            } else if (_cause == BLOCKED_ON_MUTATION) {
                 ca = "BLOCKED_ON_MUTATION";
             } else if (_cause == BLOCKED_ON_READ) {
                 ca = "BLOCKED_ON_READ";
@@ -143,19 +143,19 @@ public class PNProcessEvent {
     
     //////////////////////////////////////////////////////////////
     ////                   public variables                  /////
-    public int BLOCKED_ON_DELAY = 111;
-    public int BLOCKED_ON_MUTATION = 112;
-    public int BLOCKED_ON_READ = 113;
-    public int BLOCKED_ON_WRITE = 114;
+    public static int BLOCKED_ON_DELAY = 111;
+    public static int BLOCKED_ON_MUTATION = 112;
+    public static int BLOCKED_ON_READ = 113;
+    public static int BLOCKED_ON_WRITE = 114;
     
-    public int FINISHED_ABRUPTLY = 734;
-    public int FINISHED_PROPERLY = 735;
-    public int FINISHED_WITH_EXCEPTION = 736;
+    public static int FINISHED_ABRUPTLY = 734;
+    public static int FINISHED_PROPERLY = 735;
+    public static int FINISHED_WITH_EXCEPTION = 736;
 
-    public int PROCESS_BLOCKED = 367;
-    public int PROCESS_FINISHED = 368;
-    public int PROCESS_PAUSED = 369;
-    public int PROCESS_RUNNING = 370;
+    public static int PROCESS_BLOCKED = 367;
+    public static int PROCESS_FINISHED = 368;
+    public static int PROCESS_PAUSED = 369;
+    public static int PROCESS_RUNNING = 370;
 
 
     //////////////////////////////////////////////////////////////
