@@ -56,7 +56,6 @@ JSIMPLE_TESTS = \
 	Clock.tcl \
 	Commutator.tcl \
 	Const.tcl \
-	Cosine.tcl \
 	Distributor.tcl \
 	Expression.tcl \
 	Gaussian.tcl \
