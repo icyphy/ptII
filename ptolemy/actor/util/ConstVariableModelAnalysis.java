@@ -223,50 +223,50 @@ public class ConstVariableModelAnalysis {
 
     // Collect the dependence constraints from the given attribute in
     // the given FSM actor.
-    private void _collectConstraints(
-            FSMActor actor, AbstractActionsAttribute action)
-            throws IllegalActionException {
-        for (Iterator names = action.getDestinationNameList().iterator();
-             names.hasNext();) {
-            String name = (String)names.next();
-            NamedObj object = action.getDestination(name);
-            if (object instanceof Variable) {
-                // Note that the context of change is the modal model
-                // container of the FSM.
-                _updateChangeContext((Variable)object, 
-                        (Entity)actor.getContainer());
-            }
-        }
-    }
+//     private void _collectConstraints(
+//             FSMActor actor, AbstractActionsAttribute action)
+//             throws IllegalActionException {
+//         for (Iterator names = action.getDestinationNameList().iterator();
+//              names.hasNext();) {
+//             String name = (String)names.next();
+//             NamedObj object = action.getDestination(name);
+//             if (object instanceof Variable) {
+//                 // Note that the context of change is the modal model
+//                 // container of the FSM.
+//                 _updateChangeContext((Variable)object, 
+//                         (Entity)actor.getContainer());
+//             }
+//         }
+//     }
 
     // Collect all of the constraints from the given FSM actor.
-    private void _collectConstraints(FSMActor actor)
-            throws IllegalActionException {
-        // Collect assignments from FSM transitions
-        for (Iterator states = actor.entityList().iterator();
-             states.hasNext();) {
-            State state = (State)states.next();
-            for (Iterator transitions =
-                     state.outgoingPort.linkedRelationList().iterator();
-                 transitions.hasNext();) {
-                Transition transition = (Transition)transitions.next();
-                for (Iterator actions =
-                         transition.choiceActionList().iterator();
-                     actions.hasNext();) {
-                    AbstractActionsAttribute action =
-                        (AbstractActionsAttribute)actions.next();
-                    _collectConstraints(actor, action);
-                }
-                for (Iterator actions =
-                         transition.commitActionList().iterator();
-                     actions.hasNext();) {
-                    AbstractActionsAttribute action =
-                        (AbstractActionsAttribute)actions.next();
-                    _collectConstraints(actor, action);
-                }
-            }
-        }
-    }
+ //    private void _collectConstraints(FSMActor actor)
+//             throws IllegalActionException {
+//         // Collect assignments from FSM transitions
+//         for (Iterator states = actor.entityList().iterator();
+//              states.hasNext();) {
+//             State state = (State)states.next();
+//             for (Iterator transitions =
+//                      state.outgoingPort.linkedRelationList().iterator();
+//                  transitions.hasNext();) {
+//                 Transition transition = (Transition)transitions.next();
+//                 for (Iterator actions =
+//                          transition.choiceActionList().iterator();
+//                      actions.hasNext();) {
+//                     AbstractActionsAttribute action =
+//                         (AbstractActionsAttribute)actions.next();
+//                     _collectConstraints(actor, action);
+//                 }
+//                 for (Iterator actions =
+//                          transition.commitActionList().iterator();
+//                      actions.hasNext();) {
+//                     AbstractActionsAttribute action =
+//                         (AbstractActionsAttribute)actions.next();
+//                     _collectConstraints(actor, action);
+//                 }
+//             }
+//         }
+//     }
 
     // Collect all of the constraints from the given variable.
     private void _collectConstraints(Variable variable) {
@@ -344,8 +344,14 @@ public class ConstVariableModelAnalysis {
                         (Entity)parameter.getContainer());
             }
         }
-        if (container instanceof FSMActor) {
-            _collectConstraints((FSMActor)container);
+        if (container instanceof ExplicitChangeContext) {
+            List list = 
+                ((ExplicitChangeContext)container).getModifiedVariables();
+            for(Iterator variables = list.iterator();
+                variables.hasNext();) {
+                Variable variable = (Variable)variables.next();
+                _updateChangeContext(variable, (Entity)container);
+            }
         }
         // Recurse through the whole model.
         for (Iterator attributes = container.attributeList().iterator();
