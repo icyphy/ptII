@@ -73,6 +73,9 @@ test Gaussian-2.1 {test without seed set} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     set first [enumToTokenValues [$rec getRecord 0]]
+    # Have to be sure enough time passes that we don't accidentally
+    # get the same seed, which is selected based on the passage of time.
+    sleep 1
     [$e0 getManager] execute
     set second [enumToTokenValues [$rec getRecord 0]]
     expr {$first != $second}
