@@ -44,7 +44,7 @@ Graphics class supporting EPS export from plots.
 @version $Id$
 */
 
-public class EPSGraphics extends Graphics {
+public class EPSGraphics extends PtolemyGraphics {
 
     /** Constructor for a graphics object that writes encapsulated
      *  PostScript to the specified file.  If the file argument is
