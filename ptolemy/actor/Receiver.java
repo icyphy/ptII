@@ -31,9 +31,9 @@
 
 package ptolemy.actor;
 
-import ptolemy.data.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
