@@ -718,7 +718,8 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _isNonStrict(Actor actor) {
 
         // This information is not cached, since there is no semantic reason
-        // that the strictness of an actor could not change during execution.
+        // that the strictness of an actor could not change during execution,
+        // so long as that change happened between iterations.
         Attribute nonStrictAttribute = 
             ((NamedObj) actor).getAttribute(NON_STRICT_ATTRIBUTE_NAME);
 
