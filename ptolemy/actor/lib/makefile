@@ -179,23 +179,31 @@ OTHER_FILES_TO_BE_JARED = \
 	PowerEstimate.xml \
 	Sinewave.xml \
 	TimedSine.xml \
+	aggregators.xml \
+	assertion.xml \
 	array.xml \
 	booleanflowcontrol.xml \
 	busses.xml \
 	communications.xml \
 	esoteric.xml \
+	executioncontrol.xml 
 	filtering.xml \
 	flowcontrol.xml \
 	math.xml \
 	matrix.xml \
 	random.xml \
 	realtime.xml \
+	sequencecontrol.xml \
+	sequencesinks.xml \
+	sequencesources.xml \
 	signalprocessing.xml \
 	sinks.xml \
 	sources.xml \
 	spectrum.xml \
 	statistical.xml \
-	test.xml
+	test.xml \
+	timedsinks.xml \
+	timedsources.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
