@@ -102,6 +102,9 @@ public class FFT extends SDFTransformer {
         if (attribute == order) {
             // Get the size of the FFT transform
             _orderValue = ((IntToken)order.getToken()).intValue();
+            if(_orderValue <= 0) 
+                throw new IllegalActionException("Order was " + _orderValue + 
+                        " but must be greater than zero.");
             _transformSize = (int)Math.pow(2, _orderValue );
             
             // Set the correct consumption/production values
@@ -111,6 +114,9 @@ public class FFT extends SDFTransformer {
             input.setTokenConsumptionRate(_consumptionRate);
             output.setTokenProductionRate(_productionRate);
             
+            inComplexArray = new Complex[_consumptionRate];
+            outTokenArray = new ComplexToken[ _productionRate ];
+
             Director dir = getDirector();
             if (dir != null) {
                 dir.invalidateSchedule();
@@ -142,24 +148,8 @@ public class FFT extends SDFTransformer {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
-        // Get the size of the FFT transform
-        _orderValue = ((IntToken)order.getToken()).intValue();
-        if(_orderValue <= 0) 
-            throw new IllegalActionException("Order was " + _orderValue + 
-                    " but must be greater than zero.");
-        _transformSize = (int)Math.pow(2, _orderValue);
-
-        // Set the correct consumption/production values
-        _productionRate = _transformSize;
-        _consumptionRate = _transformSize;
-
-        input.setTokenConsumptionRate(_consumptionRate);
-        output.setTokenProductionRate(_productionRate);
-
-        inComplexArray = new Complex[_consumptionRate];
-       
-        outTokenArray = new ComplexToken[_productionRate];
+        // initialize everything.
+        attributeChanged(order);
     }
 
     ///////////////////////////////////////////////////////////////////
