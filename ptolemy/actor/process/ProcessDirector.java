@@ -203,7 +203,7 @@ public class ProcessDirector extends Director {
             */
 
             // Creating threads for all actors;
-            Iterator actors = (Iterator)container.deepEntityList();
+            Iterator actors = container.deepEntityList().iterator();
             while( actors.hasNext() ) {
                 Actor actor = (Actor)actors.next();
                 actor.initialize();
@@ -300,7 +300,7 @@ public class ProcessDirector extends Director {
 	try {
 	    // Obtaining a list of all actors in this compositeActor
 	    CompositeActor cont = (CompositeActor)getContainer();
-            Iterator actors = (Iterator) cont.deepEntityList();
+            Iterator actors = cont.deepEntityList().iterator();
 	    Enumeration actorPorts;
 	    ProcessReceiver nextRec;
 
@@ -447,7 +447,7 @@ public class ProcessDirector extends Director {
 	}
 
 	CompositeActor cont = (CompositeActor)getContainer();
-        Iterator actors = (Iterator)cont.deepEntityList();
+        Iterator actors = cont.deepEntityList().iterator();
         Enumeration actorPorts;
         ProcessReceiver nextRec;
         LinkedList recs = new LinkedList();
