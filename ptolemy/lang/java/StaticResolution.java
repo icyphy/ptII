@@ -126,10 +126,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             found = (allPass2ResolvedMap.remove(noExtensionFilename) != null);
 
             if (!found) {
-                ApplicationUtility.warn("couldn't invalidate " +
+                System.err.println("Warning: couldn't invalidate " +
 					noExtensionFilename);
                 Set keySet = allPass2ResolvedMap.keySet();
-                ApplicationUtility.warn("pass 2 resolved files: " +
+                System.err.println("Warning: pass 2 resolved files: " +
 					keySet.toString());
 	    }
         }
@@ -157,7 +157,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 if (classDecl != null) {
                     classDecl.invalidate();
                 } else {
-                    ApplicationUtility.warn("StaticResolution.invalidate" +
+                    System.err.println("Warning: StaticResolution.invalidate" +
 					    "CompileUnit(): could" +
 					    " not find ClassDecl associated" +
 					    " with class " + className +
@@ -217,7 +217,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
             if ((categories & CG_USERTYPE) != 0) {
-                ApplicationUtility.warn("ambiguous reference to " +
+                System.err.println("Warning: ambiguous reference to " +
 					name.getIdent() +
 					", using most specific one.");
 

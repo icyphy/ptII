@@ -119,7 +119,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         // ignore duplicate imports
         if (_importedPackages.contains(importedPackage)) {
-            ApplicationUtility.warn("ResolveImportsVisitor._importOnDemand : ignoring duplicated package "
+            System.err.println("Warning: ResolveImportsVisitor._importOnDemand : ignoring duplicated package "
                     + importedPackage.toString());
             return;
         }
