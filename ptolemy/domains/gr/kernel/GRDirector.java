@@ -72,7 +72,7 @@ rendering on the computer screen.
 @see GRReceiver
 @see GRActor
 
-@author C. Fong
+@author C. Fong, Contributor: Christopher Hylands
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -83,7 +83,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  the workspace. Increment the version number of the workspace.
      */
     public GRDirector() {
-    	super();
+            super();
         _init();
     }
 
@@ -569,14 +569,14 @@ public class GRDirector extends StaticSchedulingDirector {
     private void _debugViewEntityList(CompositeEntity object) {
 
         List list = object.entityList();
-    	Iterator listIterator = list.iterator();
+            Iterator listIterator = list.iterator();
 
-    	debug.println("\nentity List:");
-    	while (listIterator.hasNext()) {
-    	    Entity entity = (Entity) listIterator.next();
-    	    debug.println(entity);
-    	}
-    	debug.println("\n");
+            debug.println("\nentity List:");
+            while (listIterator.hasNext()) {
+                Entity entity = (Entity) listIterator.next();
+                debug.println(entity);
+            }
+            debug.println("\n");
     }
 
     /** For debugging purposes. This is mainly used for figuring out
@@ -610,12 +610,12 @@ public class GRDirector extends StaticSchedulingDirector {
     private void _debugViewPortRemoteReceivers(IOPort port) {
         Receiver[][] remoteReceivers = port.getRemoteReceivers();
 
-    	for (int i = 0; i < port.getWidth(); i++) {
-    	    for (int j = 0; j < remoteReceivers[i].length; j++) {
-    	        debug.println("  -->" + remoteReceivers[i][j]);
-    	        debug.println("  == >" + remoteReceivers[i][j].getContainer());
-    	    }
-    	}
+            for (int i = 0; i < port.getWidth(); i++) {
+                for (int j = 0; j < remoteReceivers[i].length; j++) {
+                    debug.println("  -->" + remoteReceivers[i][j]);
+                    debug.println("  == >" + remoteReceivers[i][j].getContainer());
+                }
+            }
     }
 
     /** For debugging purposes.  This function only makes sense
@@ -630,14 +630,14 @@ public class GRDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	for (int i = 0; i < port.getWidth(); i++) {
-    	    for (int j = 0; j < portReceivers[i].length; j++) {
-    	        debug.println("  ->" + portReceivers[i][j]);
-    	        debug.println("  = >" + portReceivers[i][j].getContainer());
-    	        // FIXME: remove comments when debugging
-    	        // ((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
-    	    }
-    	}
+            for (int i = 0; i < port.getWidth(); i++) {
+                for (int j = 0; j < portReceivers[i].length; j++) {
+                    debug.println("  ->" + portReceivers[i][j]);
+                    debug.println("  = >" + portReceivers[i][j].getContainer());
+                    // FIXME: remove comments when debugging
+                    // ((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
+                }
+            }
     }
 
     /** Convenience method for getting the director of the container that
@@ -662,6 +662,18 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     private void _init() {
         try {
+            // If Java3D is not present, then this class is usually
+            // the class that is reported as missing.
+            Class java3dClass = Class.forName("javax/vecmath/Tuple3f");
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex,
+                    "The GR domain requires that Java 3D be installed.\n" +
+                    "Java 3D can be downloaded from\n" +
+                    "http://java.sun.com/products/java-media/3D/\n" +
+                    "For details see $PTII/ptolemy/domains/gr/main.htm");
+        }
+
+        try {
             GRScheduler scheduler = new GRScheduler(workspace());
             setScheduler(scheduler);
         } catch (Exception e) {
@@ -682,16 +694,16 @@ public class GRDirector extends StaticSchedulingDirector {
                     "Cannot create default iterations parameter:\n" +
                     e.getMessage());
         }
-    	try {
+            try {
             //period = new Parameter(this,"period",new DoubleToken(1.0));
             _reset();
             iterations.setToken(new IntToken(0));
             debug = new GRDebug(false);
-    	} catch (Exception e) {
-    	    throw new InternalErrorException(
+            } catch (Exception e) {
+                throw new InternalErrorException(
                     "unable to initialize GR Director:\n" +
                     e.getMessage());
-    	}
+            }
     }
 
     private void _reset() {
@@ -742,14 +754,14 @@ public class GRDirector extends StaticSchedulingDirector {
 
     // Inner class to cache important variables for contained actors
     private class ContainedGRActor {
-    	private Actor    _actor;
+            private Actor    _actor;
 
-    	/* Construct the information on the contained Actor
-    	 * @param a The actor
-    	 */
-    	public ContainedGRActor(Actor actor) {
+            /* Construct the information on the contained Actor
+             * @param a The actor
+             */
+            public ContainedGRActor(Actor actor) {
             _actor = actor;
-    	}
+            }
     }
 
     // Inner class to cache important variables for container output ports
