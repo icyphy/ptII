@@ -72,15 +72,15 @@ public class ExampleSerializable {
                 String newdescription = newexsys.toString();
                 String olddescription = exsys.toString();
                 if (olddescription.equals(newdescription)) {
-                    System.out.println("Description read in from " +
-                            filename + "is the same as the original\n"+
-                                       newdescription);
+                    System.out.println("OK: Description read in from " +
+                            filename + " is the same as the original\n");
                 } else {                    
                     System.out.println("ERROR\nDescription read in from " +
                             filename + "\n"+
                             newdescription + "\n" +
                             "is NOT the same as the original:\n"+
                                        olddescription);
+                    System.exit(1);
                 }
             } catch (IOException e) {
                 System.err.println("IOException while reading: "+ e);
