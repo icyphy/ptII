@@ -99,9 +99,10 @@ public class EntityController extends LocatableNodeController {
 	interactor.addInteractor(actionInteractor);
 
 	// FIXME this is a horrible dance so that the actioninteractor gets
-	// the events first.
+	// the events before the drag interactor.
 	interactor.setDragInteractor(interactor.getDragInteractor());
- 
+
+        // Initialize the menu creator. 
 	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
     }
@@ -160,6 +161,13 @@ public class EntityController extends LocatableNodeController {
         return nf;
     }
 
+    /** Get the menu factory that will create context menus for this
+     *  controller.
+     */
+    public MenuFactory getMenuFactory() {
+        return _menuCreator.getMenuFactory();
+    }
+
     /** Get the controller for the ports of this entity.
      */
     public NodeController getPortController() {
@@ -182,6 +190,12 @@ public class EntityController extends LocatableNodeController {
 	    _portController.removeNode((Node)(nodes[i]));
 	}
 	super.removeNode(node);
+    }
+
+    /** Set the menu factory that will create menus for this Entity.
+     */
+    public void setMenuFactory(MenuFactory factory) {
+        _menuCreator.setMenuFactory(factory);
     }
 
     /** Set the controller for the ports of this entity.
