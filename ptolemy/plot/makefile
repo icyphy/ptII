@@ -293,39 +293,40 @@ fixtmpdist:
 	echo "	echo \"Nothing need be done for $$@ in ptolemy/plot)\"" >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
 	echo "$(PTDIST) - A Java plotting package" > \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Ptplot is a set of two dimensional signal plotters" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Ptplot is embeddable in applets and applications." >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "For more information, see ptolemy/plot/doc/index.htm" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/README
-	echo "Installer notes " >> $(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Installer notes " >> $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "If you are using the auto installer, then note that" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "under Windows, the Ptplot programs will be added to" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "your start menu under Ptolemy -> Ptplot.  Note further" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "that directory names with spaces do not work very well" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo " because of limitations in the InstallShield tool." >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "To install under Solaris:" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "To build under Solaris:" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "set the PTII variable to this directory " >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "run ./configure" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "run make" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "run bin/ptplot" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	#mv /tmp/ptplotfix $(PTTMPME)/makefile
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "./configure" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "make install" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "bin/ptplot" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	@echo "JShield needs the ico file to be in the top level directory"
 	cp $(PTTMPME)/doc/img/ptplot.ico \
 		$(PTTMPDIR)/$(PTDIST)
@@ -379,8 +380,6 @@ fixtmpdist:
 	echo "foo" | \
 		awk '{	 printf("\t-chmod a+x %c%s %c%s\n", 36, "(SHELL_FILES)", 36, "(BAT_FILES)")}' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	-chmod a+x $(SHELL_FILES) $(BAT_FILES)' >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "ptinvoke: ptinvoke.in ../config.status" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
@@ -392,10 +391,15 @@ fixtmpdist:
 	echo "	(cd ..; /bin/sh ./configure)" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "clean:" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "foo" | \
+		awk '{	 printf("\trm -f %c%s\n", 36, "(SHELL_FILES)")}' >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "# Get the rest of the rules" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "foo" | \
-		awk '{	 printf("include %c%s/mk/ptcommon.mk", 36, "(ROOT)")}' >> \
+		awk '{	 printf("include %c%s/mk/ptcommon.mk\n", 36, "(ROOT)")}' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
