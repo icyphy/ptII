@@ -158,8 +158,8 @@ public abstract class TreeNode extends TrackedPropertyMap
             return null;
         }
     }
-    
-    /** Return the class ID number, which is unique for each sub-type. 
+
+    /** Return the class ID number, which is unique for each sub-type.
      *  The ID number is intended to be used in switch statements.
      *  @return A unique class ID number.
      */

@@ -126,12 +126,12 @@ public class GenerateVisitor {
     public void generate() throws IOException {
 
         _ofs.write(_visitorHeader);
-        _ofs.write("public class "+ _visitorClassName + 
+        _ofs.write("public class "+ _visitorClassName +
                 " implements IVisitor {\n" +
                 "    public " + _visitorClassName + "() {\n" +
                 "        this(TM_CHILDREN_FIRST);\n" +
                 "    }\n\n" +
-                "    public " + _visitorClassName + 
+                "    public " + _visitorClassName +
                 "(int traversalMethod) {\n" +
                 "        if (traversalMethod > TM_CUSTOM) {\n" +
                 "           throw new RuntimeException(\"" +
@@ -323,7 +323,7 @@ public class GenerateVisitor {
                 methodList.add(new MethodSignature("protected final",
                         "Object", "_acceptHere",
                         acceptMethodArgTypes, acceptMethodArgNames,
-                        "return ((" + _visitorClassName + 
+                        "return ((" + _visitorClassName +
                         ") visitor).visit" + typeName + "(this, args);"));
 
             }
@@ -343,7 +343,7 @@ public class GenerateVisitor {
             // add a isSingleton() method
             methodList.add(new MethodSignature("public final", "boolean",
                     "isSingleton", new LinkedList(), new LinkedList(),
-                    "return true;")); 
+                    "return true;"));
         }
 
         // do methods first
@@ -533,7 +533,11 @@ public class GenerateVisitor {
         } while (_lastLine != null);
     }
 
-    private static final String ident = "    ";
+    private static final String _IDENT = "    ";
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
 
     public static class MethodSignature {
         public MethodSignature() {}
@@ -653,8 +657,8 @@ public class GenerateVisitor {
         }
 
         /** A getter or a setter method for a child in the list.
-         *  The childIndex parameter is necessary to differentiate 
-         *  this constructor from the following constructor. 
+         *  The childIndex parameter is necessary to differentiate
+         *  this constructor from the following constructor.
          */
         public MethodSignature(String returnType, String name,
                 int childIndex, boolean setter) {
@@ -729,7 +733,7 @@ public class GenerateVisitor {
         public String methodBody() {
 
             if (_methodBody != null) {
-                return ident + ident + _methodBody;
+                return _IDENT + _IDENT + _methodBody;
             }
 
             if (_construct) {
@@ -740,7 +744,7 @@ public class GenerateVisitor {
 
                     Iterator argsItr = _superArgs.listIterator();
 
-                    sb.append(ident + ident);
+                    sb.append(_IDENT + _IDENT);
                     sb.append("super(");
 
                     for (int i = 0; i < _superParams; i++) {
@@ -770,8 +774,8 @@ public class GenerateVisitor {
 
                         if (varCount >= _superParams) {
 
-                            sb.append(ident);
-                            sb.append(ident);
+                            sb.append(_IDENT);
+                            sb.append(_IDENT);
 
                             switch (placement) {
 
@@ -810,7 +814,7 @@ public class GenerateVisitor {
                 }
 
                 if (_isConcrete) {
-                    sb.append("\n" + ident + ident +
+                    sb.append("\n" + _IDENT + _IDENT +
                             "_childList.trimToSize();");
                 }
 
@@ -824,35 +828,35 @@ public class GenerateVisitor {
             }
 
             if (_returnType.equals("long")) {
-                return ident + ident + "return 0L;";
+                return _IDENT + _IDENT + "return 0L;";
             }
 
             if (_returnType.equals("int") || _returnType.equals("short") ||
                     _returnType.equals("byte")) {
-                return ident + ident + "return 0;";
+                return _IDENT + _IDENT + "return 0;";
             }
 
             if (_returnType.equals("char")) {
-                return ident + ident + "return '\\0';";
+                return _IDENT + _IDENT + "return '\\0';";
             }
 
             if (_returnType.equals("float")) {
-                return ident + ident + "return 0.0f;";
+                return _IDENT + _IDENT + "return 0.0f;";
             }
 
             if (_returnType.equals("double")) {
-                return ident + ident + "return 0.0d";
+                return _IDENT + _IDENT + "return 0.0d";
             }
 
             if (_returnType.equals("boolean")) {
-                return ident + ident + "return false";
+                return _IDENT + _IDENT + "return false";
             }
 
-            return ident + ident + "return null;";
+            return _IDENT + _IDENT + "return null;";
         }
 
         public String toString() {
-            StringBuffer sb = new StringBuffer(ident);
+            StringBuffer sb = new StringBuffer(_IDENT);
 
             if (!_modifiers.equals("")) {
                 sb.append(_modifiers + " ");
@@ -890,7 +894,7 @@ public class GenerateVisitor {
             if (_isInterface) {
                 sb.append(";");
             } else {
-                sb.append(" {\n" + methodBody() + "\n" + ident + "}\n");
+                sb.append(" {\n" + methodBody() + "\n" + _IDENT + "}\n");
             }
 
             return sb.toString();
@@ -1038,7 +1042,7 @@ public class GenerateVisitor {
 
         public String toString() {
             StringBuffer sb = new StringBuffer();
-            sb.append(ident);
+            sb.append(_IDENT);
             sb.append(_modifiers);
             sb.append(' ');
             sb.append(_type);

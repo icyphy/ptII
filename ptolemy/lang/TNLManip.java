@@ -182,7 +182,7 @@ public class TNLManip {
                 sb.append(toString((List) child, nextprefix));
             } else {
                 throw new RuntimeException("toString(" + list + ", \"" +
-					   prefix + 
+					   prefix +
 					   "\"): unknown object in list: " +
 					   child.getClass());
             }
