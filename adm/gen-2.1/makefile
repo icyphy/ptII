@@ -168,6 +168,9 @@ $(PTIIDIST):
 	#cd $(PTIIDIST); make javadocs
 	rm -f $(PTIIDIST)/.glimpse*
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
+	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
+	# the user runs make, then configure will run 
+	touch $(PTIIDIST)/mk/ptII.mk.in
 
 clean_src:
 	rm -f $(PTII_FULL)
