@@ -67,8 +67,8 @@ ALLJSRCS = 		collections \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
-			ptolemy.domains.od.kernel \
-			ptolemy.domains.od.lib \
+			ptolemy.domains.odf.kernel \
+			ptolemy.domains.odf.lib \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.pn.lib \
 			ptolemy.domains.sc.kernel \
@@ -102,8 +102,8 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/domains/ct/kernel/util/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
-			../ptolemy/domains/od/kernel/*.java \
-			../ptolemy/domains/od/lib/*.java \
+			../ptolemy/domains/odf/kernel/*.java \
+			../ptolemy/domains/odf/lib/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/pn/lib/*.java \
 			../ptolemy/domains/sc/kernel/*.java \
