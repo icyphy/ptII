@@ -590,7 +590,7 @@ fi
 PTJACL_JAR=$PTII/lib/ptjacl.jar
 # JTCLSH uses JAVAFLAGS for use with the 
 # vergil/test/VergilConfiguration.tcl test
-JTCLSH='["$(JAVA)" $(JAVAFLAGS) tcl.lang.Shell]'
+JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" tcl.lang.Shell]'
 # PTJACL_DIR is set to ptjacl and used in $PTII/ptolemy/actor/gui/makefile
 # if the ptjacl.jar file was found
 PTJACL_DIR= 
@@ -622,7 +622,7 @@ else
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error.])
 		fi
-		JTCLSH='["$(JAVA)" $(JAVAFLAGS) tcl.lang.Shell]'
+		JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" tcl.lang.Shell]'
 	fi
     else
 	AC_MSG_WARN([The ptjacl.jar file was not found at '$PTJACL_JAR'
