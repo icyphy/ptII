@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractPtolemyGraphModel.java \
 	EditorDropTarget.java \
 	EditorGraphController.java \
 	EntityController.java \
