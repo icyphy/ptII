@@ -217,7 +217,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
             if ((categories & CG_USERTYPE) != 0) {
-                System.err.println("Warning: ambiguous reference to " +
+                System.err.println("Warning: ambiguous reference to '" +
                         name.getIdent() +
                         // " in " +
                         //((currentPackage == null) ?
@@ -225,12 +225,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         //"." +
                         //((currentClass == null) ?
                         //        "?" : currentClass.toString()) +
-                        ", using most specific one.");
+                        "', using most specific one.");
 
             } else {
-                throw new RuntimeException("ambiguous reference to " +
+                throw new RuntimeException("ambiguous reference to '" +
                         name.getIdent() +
-                        " in scope " + scope);
+                        "' in scope " + scope);
             }
         }
 
