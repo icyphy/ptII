@@ -187,7 +187,7 @@ public class DECQEventQueue implements DEEventQueue {
 	public void setBinWidth(Object[] entryArray) {
 
 	    if ( entryArray == null || entryArray.length < 2) {
-		_zeroReference = new DEEvent(null, 0.0, 0, 0);
+		_zeroReference = new DEEvent(null, 0.0, 0);
                 return;
 	    }
 
@@ -215,7 +215,7 @@ public class DECQEventQueue implements DEEventQueue {
                 return;
             }
 	    effAverage = effAverage / nEffSamples;
-            _binWidth = new DEEvent(null, 3.0 * effAverage, 0, 0);
+            _binWidth = new DEEvent(null, 3.0 * effAverage, 0);
 	}
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -231,10 +231,10 @@ public class DECQEventQueue implements DEEventQueue {
         ////                         private members                   ////
         
         // The bin width.
-        private DEEvent _binWidth = new DEEvent(null, 1.0, 0, 0);
+        private DEEvent _binWidth = new DEEvent(null, 1.0, 0);
         
         // The zero reference.
-        private DEEvent _zeroReference = new DEEvent(null, 0.0, 0, 0);
+        private DEEvent _zeroReference = new DEEvent(null, 0.0, 0);
     }
 
 

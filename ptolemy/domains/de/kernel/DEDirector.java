@@ -60,10 +60,9 @@ import java.util.Enumeration;
  *  <p>
  *  Sorting in the CalendarQueue class is done according to the order
  *  defined by the DEEvent class, which implements the java.lang.Comparable
- *  interface. A DE event has a time stamp (double), a microstep (integer)
+ *  interface. A DE event has a time stamp (double)
  *  and a depth (integer). The time stamp
- *  indicates the time when the event occurs, the microstep indicates the
- *  phase of execution at a fixed time, and the depth
+ *  indicates the time when the event occurs, and the depth
  *  indicates the relative priority of events with the same time stamp
  *  (simultaneous events).  The depth is determined by topologically
  *  sorting the actors according to data dependencies over which there
@@ -91,14 +90,12 @@ import java.util.Enumeration;
  *  <p>
  *  At the beginning of the fire() method, this director dequeues
  *  a subset of the oldest events (the ones with smallest time
- *  stamp, microstep, and depth) from the global event queue,
+ *  stamp and depth) from the global event queue,
  *  and puts those events into
  *  their corresponding receivers. The actor(s) to which these
  *  events are destined are the ones to be fired.  The depth of
  *  an event is the depth of the actor to which it is destined.
  *  The depth of an actor is its position in a topological sort of the graph.
- *  The microstep is usually zero, but is incremented when a pure event
- *  is queued with time stamp equal to the current time.
  *  <p>
  *  The actor that is fired must consume tokens from
  *  its input port(s), and will usually produce new events on its output
@@ -300,6 +297,17 @@ public class DEDirector extends Director {
     }
 
     /** Schedule an actor to be fired at the specified time.
+     *  If the specified time is equal to the current time, then this
+     *  event gets scheduled with the largest possible depth (the lowest
+     *  possible priority). The order in which such events is simply
+     *  the order in which they are queued (FIFO semantics), so this is
+     *  one machanism by which the order of firings at a given time stamp
+     *  can be explicitly controlled.  In normal usage, this method is
+     *  called by the actor given as the first argument in its fire() or
+     *  postfire() method.  In such usage, then the order of firings
+     *  in response to these events at the current time will be the same
+     *  as the order of the firings that generated the events in the first
+     *  place.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If the specified time is in the past.
@@ -458,7 +466,6 @@ public class DEDirector extends Director {
         _deadActors = null;
         _currentTime = 0.0;
         _noMoreActorsToFire = false;
-        _microstep = 0;
 
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
@@ -533,42 +540,34 @@ public class DEDirector extends Director {
      *  when it is fired.
      *  The depth is used to prioritize events that have equal
      *  time stamps.  A smaller depth corresponds to a higher priority.
-     *  The microstep for the queued event is equal to the current
-     *  microstep (determined by the last dequeue, or zero if there has
-     *  been none), unless the time is equal to the current time.
-     *  If it is, then the event is queued with the current microstep
-     *  plus one.
      *
      *  @param actor The destination actor.
      *  @param time The time stamp of the "pure event".
      *  @param depth The depth.
      *  @exception IllegalActionException If the time  argument is in the past.
      */
-    protected void _enqueueEvent(Actor actor, double time, int depth)
+    protected final void _enqueueEvent(Actor actor, double time, int depth)
             throws IllegalActionException {
 
-        int microstep = _microstep;
         if (_startTime != Double.MAX_VALUE) {
             // At least one firing has occurred, so current time has
-            // some meaning.
+            // some meaning.  Set the priority to minimum if the event
+            // is at the current time.
             if (time == getCurrentTime()) {
-                microstep++;
+                depth = Integer.MAX_VALUE;
             } else if ( time < getCurrentTime()) {
                 throw new IllegalActionException((Entity)actor,
                 "Attempt to queue an event in the past.");
             }
         }
-        _eventQueue.put(new DEEvent(actor, time, microstep, depth));
+        _eventQueue.put(new DEEvent(actor, time, depth));
     }
 
     /** Put an event into the event queue with the specified destination
      *  receiver, token, time stamp and depth. The depth
      *  is used to prioritize
      *  events that have equal time stamps.  A smaller depth corresponds
-     *  to a higher priority.  The microstep is always equal to zero,
-     *  unless the time argument is equal to the current time, in which
-     *  case, the microstep is equal to the current microstep (determined
-     *  by the last dequeue, or zero if there has been none).
+     *  to a higher priority.
      *
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
@@ -576,22 +575,9 @@ public class DEDirector extends Director {
      *  @param depth The depth.
      *  @exception IllegalActionException If the delay is negative.
      */
-    protected void _enqueueEvent(DEReceiver receiver, Token token,
+    protected final void _enqueueEvent(DEReceiver receiver, Token token,
             double time, int depth) throws IllegalActionException {
-
-        int microstep = 0;
-        if (_startTime != Double.MAX_VALUE) {
-            // At least one firing has occurred, so current time has
-            // some meaning.
-            if (time == getCurrentTime()) {
-                microstep = _microstep;
-            } else if ( time < getCurrentTime()) {
-                Nameable destination = receiver.getContainer();
-                throw new IllegalActionException(destination,
-                "Attempt to queue an event in the past.");
-            }
-        }
-        _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
+        _eventQueue.put(new DEEvent(receiver, token, time, depth));
     }
 
     /** Override the default Director implementation, because in DE
@@ -691,7 +677,6 @@ public class DEDirector extends Director {
                 }
 
                 currentDepth = currentEvent.depth();
-                _microstep = currentEvent.microstep();
 
                 if (currentTime > getStopTime()) {
                     _debug("Current time has passed the stop time.");
@@ -883,9 +868,6 @@ public class DEDirector extends Director {
 
     // The queue used for sorting events.
     private DEEventQueue _eventQueue;
-
-    // The current microstep.
-    private int _microstep = 0;
 
     // Set to true when it's time to end the execution.
     private boolean _noMoreActorsToFire = false;
