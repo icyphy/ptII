@@ -121,7 +121,7 @@ Token that contains a function.
 <li> <a href="codeDoc/ptolemy/data/ImageToken.html">ptolemy.data.ImageToken</a>
 (James Yeh) - An abstract token that contains images.  Derived tokens
 such as 
-<a href="codeDoc/ptolemy/data/AWTImageToken.html">ptolemy.data.AWTImageToken</a>,
+     <a href="codeDoc/ptolemy/data/AWTImageToken.html">ptolemy.data.AWTImageToken</a>,
 <a
 href="codeDoc/ptolemy/actor/lib/jai/JAIImageToken.html">ptolemy.actor.lib.jai.JAIImageToken</a>
 extend ImageToken.
@@ -298,68 +298,77 @@ href="codeDoc/ptolemy/moml/filter/package-summary.html">ptolemy.moml.filter</a>
 that are handled automatically.
 
 <menu>
-<li> ptolemy.moml.filter.AddEditorFactory:
- If a parameter has a <code>_location</code>, then
-Add a VisibleParameterEditorFactory named <code>_editorFactory</code>
-<li> ptolemy.moml.filter.AddIcon:
-Add specialized icons that display the value
+<li>ptolemy.moml.filter.AddEditorFactory:
+If a parameter has a <code>_location</code>, then
+add a VisibleParameterEditorFactory named <code>_editorFactory</code>.
+
+<li>ptolemy.moml.filter.AddIcon: Add specialized icons that display the value
 of one of the parameters.
-<br>The affected actors are:
-  <menu>
-  <li>ptolemy.actor.lib.Scale
-  <li>ptolemy.actor.lib.Const
-  <li>ptolemy.actor.lib.TrigFunction
-  <li>ptolemy.actor.lib.MathFunction
-  <li>ptolemy.actor.lib.Expression
-  </menu>
-<li> ptolemy.moml.filter.HideAnnotationNames:
-If an annotation name ends with
+The affected actors are:
+        <menu>
+	<li>ptolemy.actor.lib.Const
+	<li>ptolemy.actor.lib.MathFunction
+	<li>ptolemy.actor.lib.TrigFunction
+	<li>ptolemy.actor.lib.Scale
+	<li>ptolemy.actor.lib.Expression
+	</menu>
+<li>ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
+Below are original class names followed by the new class names.
+        <menu>
+	<li>ptolemy.kernel.util.VersionAttribute	 -&gt; ptolemy.kernel.attributes.VersionAttribute
+	<li>ptolemy.moml.Location	 -&gt; ptolemy.kernel.util.Location
+	<li>ptolemy.actor.lib.comm.SerialComm	 -&gt; ptolemy.actor.lib.io.comm.SerialComm
+        </menu>
+<li>ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add <code>_hideName</code> if necessary.
 
-<li> ptolemy.moml.filter.PortNameChanges:
-Update any actor port names that have been
-renamed. 
-  <br>Below are the actors that are affected, along with the old port name 
-  and the new port name:
-  <menu>
-  <li>ptolemy.actor.lib.Sleep
-  <br>&nbsp;&nbsp;		delay	 -&gt; sleepTime
-  <li>ptolemy.actor.lib.conversions.ComplexToCartesian
-  <br>&nbsp;&nbsp;		imag	 -&gt; y
-  <br>&nbsp;&nbsp;		real	 -&gt; x
-  <li>	ptolemy.actor.lib.conversions.CartesianToComplex
-  <br>&nbsp;&nbsp;		imag	 -&gt; y
-  <br>&nbsp;&nbsp;		real	 -&gt; x
-  </menu>
-
-<li>ptolemy.moml.filter.PropertyClassChanges:
-Update any actor port class names that have been renamed. 
-  <br>Below are the actors that are affected, along with the port name 
-  and the new classname:
-   
-  <menu>
-  <li>	ptolemy.domains.sdf.lib.vq.ImageUnpartition
-  <br>&nbsp;&nbsp;		output	 -&gt; ptolemy.actor.TypedIOPort
-  <br>&nbsp;&nbsp;		input	 -&gt; ptolemy.actor.TypedIOPort
-  <li>	ptolemy.actor.lib.javasound.AudioReader
-  <br>&nbsp;&nbsp;		sourceURL	 -&gt; ptolemy.data.expr.Parameter
-  <li>	ptolemy.domains.sdf.lib.vq.VQDecode
-  <br>&nbsp;&nbsp; 		output	 -&gt; ptolemy.actor.TypedIOPort
-  <br>&nbsp;&nbsp;		input	 -&gt; ptolemy.actor.TypedIOPort
-  <li>	ptolemy.domains.sdf.lib.vq.HTVQEncode
-  <br>&nbsp;&nbsp;		output	 -&gt; ptolemy.actor.TypedIOPort
-  <br>&nbsp;&nbsp;		input	 -&gt; ptolemy.actor.TypedIOPort
-  <li>	ptolemy.domains.sdf.lib.vq.ImagePartition
-  <br>&nbsp;&nbsp;		output	 -&gt; ptolemy.actor.TypedIOPort
-  <br>&nbsp;&nbsp;		input	 -&gt; ptolemy.actor.TypedIOPort
-  </menu>
+<li>ptolemy.moml.filter.ParameterNameChanges: Update any Parameter names
+that have been renamed.
+Below are the actors that are affected, along with the Parameter name 
+and the new name:	
+       <menu>
+       <li>ptolemy.domains.pn.kernel.PNDirector
+	<br>&nbsp;&nbsp;	Initial_queue_capacity	 -&gt; initialQueueCapacity
+       </menu>
+<li>ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
+renamed.
+Below are the actors that are affected, along
+with the old port name and the new port name:
+        <menu>
+	<li>ptolemy.actor.lib.conversions.CartesianToComplex
+	 <br>&nbsp;&nbsp;	imag	 -&gt; y
+	 <br>&nbsp;&nbsp;	real	 -&gt; x
+	<li>ptolemy.actor.lib.Sleep
+	 <br>&nbsp;&nbsp;	delay	 -&gt; sleepTime
+	<li>ptolemy.actor.lib.conversions.ComplexToCartesian
+	 <br>&nbsp;&nbsp;	imag	 -&gt; y
+	 <br>&nbsp;&nbsp;	real	 -&gt; x
+        </menu>
+<li>ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
+that have been renamed.
+Below are the actors that are affected, along with the port name
+and the new classname:
+        <menu>
+	<li>ptolemy.domains.sdf.lib.vq.HTVQEncode
+	 <br>&nbsp;&nbsp;	input	 -&gt; ptolemy.actor.TypedIOPort
+	 <br>&nbsp;&nbsp;	output	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.domains.sdf.lib.vq.VQDecode
+	 <br>&nbsp;&nbsp;	input	 -&gt; ptolemy.actor.TypedIOPort
+	 <br>&nbsp;&nbsp;	output	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.domains.sdf.lib.vq.ImagePartition
+	 <br>&nbsp;&nbsp;	input	 -&gt; ptolemy.actor.TypedIOPort
+	 <br>&nbsp;&nbsp;	output	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.domains.sdf.lib.vq.ImageUnpartition
+	 <br>&nbsp;&nbsp;	input	 -&gt; ptolemy.actor.TypedIOPort
+	 <br>&nbsp;&nbsp;	output	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.actor.lib.Expression
+	 <br>&nbsp;&nbsp;	expression	 -&gt; ptolemy.kernel.util.StringAttribute
+        </menu>
 </menu>
+
 
 Below are the changes that are not handled automatically:
 <menu>
-
-<li> The SerialComm that was in ptolemy.actor.lib.comm
-is now ptolemy.actor.lib.io.comm.SerialComm.java
 <li> AudioReader now uses a FileAttribute instead of a string valued
 parameter.  The name of this parameter has changed from
 sourceURL to fileOrURL to conform with LineReader and ExpressionReader.
@@ -391,7 +400,7 @@ do not exist already, and stores them in new attributes called
 Parameter), so they will not trigger a prompt to save.
 </menu>
 
-If you have developed your own actors under Ptolemy II 1.0.1 by
+If you have developed your own actors under Ptolemy II 2.0.1 by
 writing your own Java files, you should recompile all your java code with
 the new release.  In theory, copying the .class files should work, but
 recompiling is safer.
