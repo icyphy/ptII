@@ -147,3 +147,34 @@ proc jdkTraceMethodCalls { traceboolean } {
 }
 
 
+# Print info about threads, see also $PTII/util/testsuite/PrintThreads.java
+proc jdkThreads {} {
+    set currentThread [java::call Thread currentThread]
+    set parent [$currentThread getThreadGroup]
+    puts "ThreadGroup:      [$parent toString]"
+
+    # Figure out the root ThreadGroup
+    while { ! [java::isnull $parent] } {
+	set rootGroup $parent
+	set parent2 [$parent getParent]
+	set parent $parent2
+    }
+    puts "Root ThreadGroup: [$rootGroup toString]"
+
+    set threads [java::new {Thread[]} [$rootGroup activeCount]]
+    $rootGroup enumerate $threads
+
+    puts "Current Threads are:"
+    for { set i 0} { $i < [$threads length]} {incr i} {
+	set thread [$threads get $i]
+	set currentThreadString ""
+	if {$thread == $currentThread} {
+	    set currentThreadString "          (Current Thread)"
+	} 
+	puts "$i. [$thread toString] $currentThreadString"
+    }
+    puts "To get a stack trace for each thread:"
+    puts " Under Unix, try 'kill -3 pid', where pid is the process id from ps"
+    puts " Under Windows, try Control-Break"
+}
+
