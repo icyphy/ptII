@@ -40,7 +40,7 @@ import soot.Transform;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLParser;
 
@@ -221,9 +221,8 @@ public class KernelMain {
             _toplevel.setManager(manager);
             manager.initialize();
         } catch (Exception exception) {
-            throw new RuntimeException("Could not initialize "
-                    + "composite actor:\n"
-                    + KernelException.stackTraceToString(exception));
+            throw new KernelRuntimeException(exception,
+                    "Could not initialize composite actor");
         }
     }
 
