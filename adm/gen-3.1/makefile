@@ -1026,7 +1026,8 @@ remotealldone:
 		cat $(REMOTE2LOG) $(REMOTE4LOG) $(REMOTE5LOG) \
 			$(REMOTE6LOG) \
 			>> $(PTIINIGHTLY_TXT); \
-		/bin/sh $(PTIIADM)/bin/ptIInightly-mail $(EMAILTO) ; \
+		/bin/sh $(PTIIADM)/bin/ptIInightly-mail cxh ; \
+		/bin/sh $(PTIIADM)/bin/ptIIcodegen-mail $(EMAILTO) ; \
 	else \
 		date; \
 		echo "Still waiting"; \
