@@ -34,6 +34,8 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 //import ptolemy.actor.NotSchedulableException;
 import ptolemy.kernel.util.*;
+import ptolemy.data.expr.*;
+import ptolemy.data.*;
 import ptolemy.math.Fraction;
 
 import java.util.*;
@@ -128,6 +130,47 @@ public class SDFScheduler extends Scheduler{
  
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
+
+    /** Get the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor.   Return zero if
+     *  setTokenConsumptionRate has not been called on this port.
+     *
+     *  @return The number of tokens consumed on the port, as supplied by 
+     *  setTokenConsumptionRate, or zero if setTokenConsumptionRate has 
+     *  not been called.
+     */
+    protected int _getTokenConsumptionRate(IOPort p) {
+        Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
+        return ((IntToken)param.getToken()).intValue();
+    }
+
+    /** Get the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor during each firing.   
+     *  Return zero if _setTokenProductionRate has not been called
+     *   on this IOPort.
+     *
+     *  @return The number of tokens produced on the port, as supplied by 
+     *  _setTokenProductionRate, or zero if _setTokenProductionRate has not been
+     *  called
+     */
+    protected int _getTokenInitProduction(IOPort p) {
+        Parameter param = (Parameter)p.getAttribute("Token Init Production");
+        return ((IntToken)param.getToken()).intValue();
+    }
+
+    /** Get the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor during each firing.   
+     *  Return zero if _setTokenProductionRate has not been called
+     *   on this IOPort.
+     *
+     *  @return The number of tokens produced on the port, as supplied by 
+     *  _setTokenProductionRate, or zero if _setTokenProductionRate has not been
+     *  called
+     */
+    protected int _getTokenProductionRate(IOPort p) {
+        Parameter param = (Parameter)p.getAttribute("Token Production Rate");
+        return ((IntToken)param.getToken()).intValue();
+    }
 
     /** Return the scheduling sequence. In this base class, it returns
      *  the containees of the CompositeActor in the order of construction.
@@ -300,13 +343,12 @@ public class SDFScheduler extends Scheduler{
             HashedSet RemainingActors, 
             HashedSet PendingActors) 
         throws NotSchedulableException {
-        try {
+
             ComponentEntity currentActor = 
                 (ComponentEntity) currentPort.getContainer();
             
             //Calculate over all the output ports of this actor.
-            int currentRate = ((DataflowActor) currentActor)
-                .getTokenProductionRate(currentPort);
+            int currentRate = _getTokenProductionRate(currentPort);
 
             if(currentRate>0) {
                 // Compute the rate for the Actor currentPort is connected to
@@ -328,8 +370,7 @@ public class SDFScheduler extends Scheduler{
                     
                     Debug.assert(connectedActor instanceof DataflowActor);
                     int connectedRate = 
-                        ((DataflowActor) connectedActor).
-                        getTokenConsumptionRate(connectedPort);
+                        _getTokenConsumptionRate(connectedPort);
                     
                     // currentFiring is the firing that we've already 
                     // calculated for currentactor
@@ -373,14 +414,6 @@ public class SDFScheduler extends Scheduler{
                     RemainingActors.exclude(connectedActor);
                 }
             }
-        }
-        catch (IllegalActionException e) {
-            // This is thrown by getTokenConsumptionRate
-            e.printStackTrace();
-            Debug.println(e.getMessage());
-            throw new NotSchedulableException("SDF domain attempted to " +
-                    "schedule non-SDF Actor");
-        }
     }
 
 
@@ -403,15 +436,13 @@ public class SDFScheduler extends Scheduler{
             HashedSet RemainingActors, 
             HashedSet PendingActors) 
         throws NotSchedulableException {
-        try {
 
             ComponentEntity currentActor = 
                 (ComponentEntity) currentPort.getContainer();
             
             //Calculate over all the output ports of this actor.
             int currentRate = 
-                ((DataflowActor) currentActor).
-                getTokenConsumptionRate(currentPort);
+                _getTokenConsumptionRate(currentPort);
             
             if(currentRate>0) {
                 // Compute the rate for the Actor currentPort is connected to
@@ -429,8 +460,7 @@ public class SDFScheduler extends Scheduler{
                             connectedActor.getName());
 
                     int connectedRate = 
-                        ((DataflowActor) connectedActor).
-                        getTokenProductionRate(connectedPort);
+                        _getTokenProductionRate(connectedPort);
                     
                     // currentFiring is the firing that we've already 
                     // calculated for currentactor
@@ -477,14 +507,6 @@ public class SDFScheduler extends Scheduler{
                     Debug.println(Firings.toString());
                 }
             }
-        }
-        catch (IllegalActionException e) {
-            // This is thrown by getTokenConsumptionRate
-            Debug.println(e.getMessage());
-            e.printStackTrace();
-            throw new NotSchedulableException("SDF domain attempted to " + 
-                    "schedule non-SDF Actor");
-        }
     }
 
 
@@ -563,7 +585,7 @@ public class SDFScheduler extends Scheduler{
                 
                 boolean isalreadyfulfilled = false;
                 int threshold 
-                    = ((DataflowActor) a).getTokenConsumptionRate(ainputPort);
+                    = _getTokenConsumptionRate(ainputPort);
                 int tokens 
                     = ((Integer) waitingTokens.at(ainputPort)).intValue();
                 if(tokens >= threshold) 
@@ -601,8 +623,7 @@ public class SDFScheduler extends Scheduler{
             int tokens = 
                         ((Integer) waitingTokens.at(inputPort)).intValue();
                     int tokenrate = 
-                        ((DataflowActor) currentActor)
-                        .getTokenConsumptionRate(inputPort);
+                        _getTokenConsumptionRate(inputPort);
                     tokens -= tokenrate;
 
                     // keep track of whether or not this actor can fire again
@@ -672,8 +693,7 @@ public class SDFScheduler extends Scheduler{
                     IOPort cport = (IOPort) cports.nextElement();
                     ComponentEntity cactor 
                         = (ComponentEntity) cport.getContainer();
-                    int rate = ((DataflowActor) cactor)
-                         .getTokenInitProduction(cport);
+                    int rate = _getTokenInitProduction(cport);
                     if(rate > 0) {
                         int tokens = ((Integer) waitingTokens.at(ainputport))
                             .intValue();
@@ -763,8 +783,7 @@ public class SDFScheduler extends Scheduler{
                     IOPort aOutputPort = (IOPort) aOutputPorts.nextElement();
                     
                     Integer createdTokens = new Integer(
-                        ((DataflowActor) currentActor).
-                        getTokenProductionRate(aOutputPort));
+                        _getTokenProductionRate(aOutputPort));
                     
                     // find all the ports that this one is connected to.
                     Enumeration connectedPorts = 
@@ -801,8 +820,7 @@ public class SDFScheduler extends Scheduler{
                             
                             // update unfulfilledInputs
                             int inputThreshold = 
-                                ((DataflowActor) connectedActor).
-                                getTokenConsumptionRate(connectedPort);
+                                _getTokenConsumptionRate(connectedPort);
                             if((curTokenAmt.intValue()<inputThreshold) && 
                                     ((newTokenAmt.intValue()>=inputThreshold)))
                                 {
@@ -841,7 +859,7 @@ public class SDFScheduler extends Scheduler{
                 Done = true;
             }
             catch (IllegalActionException iae) {
-                // This could happen if we call getTokenConsumptionRate on a
+                // This could happen if we call _getTokenConsumptionRate on a
                 // port that isn't a part of the actor.   This probably means
                 // the graph is screwed up, or somebody else is mucking 
                 // with it.
