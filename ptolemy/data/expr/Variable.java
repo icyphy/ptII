@@ -833,14 +833,25 @@ public class Variable extends Attribute
      *  @return A string representing the class and the current token.
      */
     public String toString() {
-        ptolemy.data.Token val = null;
+        ptolemy.data.Token value = null;
         try {
-            val = getToken();
+            value = getToken();
         } catch (IllegalActionException ex) {
             // The value of this variable is undefined.
         }
+        String tokenString;
+        if(value == null) {
+            tokenString = "value undefined";
+        } else {
+            tokenString = value.toString();
+        }
+
+        if(tokenString.length() > 50) {
+            tokenString = "value elided";
+        }
+
         return super.toString() + " " +
-            ((val == null) ? "value undefined" : val.toString());
+            tokenString;
     }
 
     /** Return the type constraints of this variable.
