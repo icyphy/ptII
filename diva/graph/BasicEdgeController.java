@@ -68,12 +68,6 @@ public class BasicEdgeController implements EdgeController {
      */
     private ConnectorTarget _connectorTarget;
 
-    /** The filter for control operations
-     */
-    private MouseFilter _controlFilter = new MouseFilter (
-            InputEvent.BUTTON1_MASK,
-            InputEvent.CTRL_MASK);
-
     private Interactor _interactor;
     private EdgeRenderer _renderer;
     private GraphController _controller;
