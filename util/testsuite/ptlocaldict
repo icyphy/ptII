@@ -17,14 +17,14 @@ Bilung
 Blackdown
 CELLPADDING
 CELLSPACING
-Cardelli
-Chandy
-Chatoyant
 CLASSPATH
 COPYRIGHTENDKEY
 CORBA
 CSF
 CSP
+Cardelli
+Chandy
+Chatoyant
 Claudius
 Cloneable
 Codesign
@@ -33,6 +33,7 @@ Dataflow
 Davey
 Dequeue
 Desampling
+Desktop
 Diaz
 Dingbats
 Downsampler
@@ -190,8 +191,8 @@ U
 UCB
 UML
 Varaiya
-Verilog
 Vergil
+Verilog
 Vincentelli
 Vissers
 Vlissides
@@ -216,6 +217,7 @@ anytype
 applet
 applets
 appletviewer
+argv
 arial
 arithmatic
 arraycopy
@@ -240,6 +242,7 @@ codebase
 codebook
 codesign
 colspan
+combobox
 containees
 cshrc
 csp
@@ -259,6 +262,7 @@ davisj
 dde
 demultiplexor
 dequeue
+desktop
 developer.netscape.com
 dfm
 doc
@@ -328,6 +332,7 @@ jindent
 johnli
 johnr
 kienhuis
+kindof
 lang
 laptop
 linux
@@ -341,6 +346,8 @@ makefiles
 marginheight
 marginwidth
 marys
+menubar
+menubars
 michaels
 mikele
 mkdir
@@ -382,6 +389,7 @@ ptolemy
 ptolemy.eecs.berkeley.edu
 ptplot
 ptsupport
+pulldown
 pxgraph
 queueing
 rowspan
@@ -407,6 +415,8 @@ tclblend
 td
 th
 toc
+toolbar
+toolbars
 toplevel
 tr
 unicode
