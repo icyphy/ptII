@@ -33,6 +33,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.*;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -110,6 +111,66 @@ public abstract class AbstractActionsAttribute extends Action {
         if (_destinationsListVersion != workspace().getVersion()) {
             _updateDestinations();
         }
+    }
+
+    /** Return the list of destination names given in expression set
+     *  for this attribute.  If no destinations are specified, then return
+     *  an empty list.
+     */
+    public List getDestinationNameList() {
+        if(_destinationNames == null) {
+            return new LinkedList();
+        } else {
+            return Collections.unmodifiableList(_destinationNames);
+        }
+    }
+
+    /** Return the destination object referred to by the given name.
+     *  Depending on the subclass of this class, this might be a variable, 
+     *  or an output port.
+     *  @exception IllegalActionException If the given name is not a valid
+     *  destination for this action.
+     */
+    public NamedObj getDestination(String name)
+            throws IllegalActionException {
+        return _getDestination(name);
+    }
+
+    /** Return the expression referred to by the given name.  When the
+     *  action is executed, this expression will be evaluated and
+     *  assigned to the object associated with the name.
+     */
+    public String getExpression(String name) {
+        Variable var = (Variable) _variables.get(
+                _destinationNames.indexOf(name));
+        return var.getExpression();
+    }
+    
+    /** Return the channel number associated with the given name, assuming
+     *  that the destination is a port object.
+     *  @exception IllegalActionException If the name does not refer to a
+     *  port, or a channel has not been specified for the name.
+     */
+    public int getChannel(String name) 
+            throws IllegalActionException {
+        Integer integer = (Integer)_numbers.get(
+                _destinationNames.indexOf(name));
+       if(integer == null) {
+           throw new IllegalActionException(
+                   "No channel was specified for " + name);
+       }
+       return integer.intValue();
+    }
+    
+    /** Test if a channel number is associated with the given name.
+     *  @return true If a channel was specified.
+     *  @exception IllegalActionException If the name does not refer to a
+     *  port.
+     */      
+    public boolean isChannelSpecified(String name) {
+        Integer integer = (Integer)_numbers.get(
+                _destinationNames.indexOf(name));
+        return integer != null;
     }
 
     /** Set the action and notify the container
