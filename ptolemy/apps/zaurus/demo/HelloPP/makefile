@@ -68,20 +68,21 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 BINNAME =	hellozaurus-evm_1.0_arm.ipk
 
+JFLAGS =	-target 1.1
 all: jclass $(BINNAME)
 install: jclass subinstall $(PTCLASSJAR)
 	cp $(BINNAME).prc $(PALM_ADD_ON_DIR)
 
 $(BINNAME): HelloPP.class
-	rm *.ipk
-	rm *.gz
+	rm -f *.ipk
+	rm -f  *.gz
 	mkdir -p home/QtPalmtop/java
 	cp HelloPP*.class home/QtPalmtop/java
-	tar -cvf control.tar ./control
-	tar -cvf data.tar ./home
+	gtar -cv --exclude=CVS -f control.tar ./control
+	gtar -cv --exclude=CVS -f data.tar ./home
 	gzip control.tar
 	gzip data.tar
-	tar -cvf hellozaurus.tar ./control.tar.gz ./data.tar.gz
+	gtar -cv --exclude=CVS -f hellozaurus.tar ./control.tar.gz ./data.tar.gz
 	gzip hellozaurus.tar
 	mv hellozaurus.tar.gz $@
 
