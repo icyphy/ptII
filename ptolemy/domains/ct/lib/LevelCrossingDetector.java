@@ -38,7 +38,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTEventGenerator;
-import ptolemy.domains.ct.kernel.CTExecutionPhase;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
