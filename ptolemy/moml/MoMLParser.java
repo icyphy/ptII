@@ -56,7 +56,8 @@ import java.lang.IllegalAccessException;
 import java.lang.SecurityException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
+import java.io.File;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -398,6 +399,26 @@ public class MoMLParser extends HandlerBase {
      */
     public NamedObj parse(URL base, String text) throws Exception {
         return parse(base, new StringReader(text));
+    }
+
+    /** Parse the given file, which contains MoML.
+     *  If there are external references in the MoML, they are interpreted
+     *  relative to the current working directory.
+     *  @param text The file name from which to read MoML.
+     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @exception Exception If the parser fails.
+     */
+    public NamedObj parseFile(String filename) throws Exception {
+        URL base = null;
+        // Use the current working directory as a base.
+        String cwd = System.getProperty("user.dir");
+        if (cwd != null) {
+            base = new URL("file", null, cwd);
+        }
+        // Java's I/O is so lame that it can't find files in the current
+        // working directory...
+        FileReader input = new FileReader(new File(new File(cwd), filename));
+        return parse(base, input);
     }
 
     /** Handle a processing instruction.  Processing instructions
