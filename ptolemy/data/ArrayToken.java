@@ -32,6 +32,8 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.ArrayType;
 
@@ -54,19 +56,21 @@ public class ArrayToken extends Token {
      *   do not have the same type.
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
-	_elementType = value[0].getType();
-	int length = value.length;
-	_value = new Token[length];
-	for (int i = 0; i < length; i++) {
-	    if (_elementType.equals(value[i].getType())) {
-	    	_value[i] = value[i];
-	    } else {
-		throw new IllegalActionException("ArrayToken: " +
-                        "Elements of the array do not have the same type:"
-			+ "value[0]=" + value[0].toString()
-			+ " value[" + i + "]=" + value[i]);
-	    }
-	}
+        _initialize(value);
+    }
+
+    /** Construct an ArrayToken from the specified string.
+     *  @param init A string expression of an array.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable array.
+     */
+    public ArrayToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	ArrayToken token = (ArrayToken)tree.evaluateParseTree();
+
+        Token[] value = token.arrayValue();
+        _initialize(value);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -254,6 +258,23 @@ public class ArrayToken extends Token {
 	if (_value.length != length) {
 	    throw new IllegalActionException("The argument is an " +
                     "ArrayToken of different length.");
+	}
+    }
+
+    // initialize this token using the specified array.
+    private void _initialize(Token[] value) throws IllegalActionException {
+	_elementType = value[0].getType();
+	int length = value.length;
+	_value = new Token[length];
+	for (int i = 0; i < length; i++) {
+	    if (_elementType.equals(value[i].getType())) {
+	    	_value[i] = value[i];
+	    } else {
+		throw new IllegalActionException("ArrayToken._initialize: "
+                        + "Elements of the array do not have the same type:"
+			+ "value[0]=" + value[0].toString()
+			+ " value[" + i + "]=" + value[i]);
+	    }
 	}
     }
 

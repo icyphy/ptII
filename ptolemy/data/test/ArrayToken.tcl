@@ -59,3 +59,8 @@ test ArrayToken-1.0 {Create a string array} {
     $valToken toString
 } {{"AB", "CD"}}
 
+test ArrayToken-1.0 {Create an int array using expression} {
+    set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    $valToken toString
+} {{1, 2, 3}}
+
