@@ -69,8 +69,11 @@ OPTIONAL_FILES = \
 	usingVergil \
 	usingVergil.pdf
 
+# Other jars to make, used by 'make jars'
+OTHER_JARS = hyvisual.jar
+
 all: suball
-install: all jars hyvisual.jar
+install: all jars $(OTHER_JARS)
 
 hyvisual.jar: hyvisual.pdf
 	(cd $(ROOT); "$(JAR)" -cvf $(ME)/$@ $(ME)/hyvisual.pdf)
