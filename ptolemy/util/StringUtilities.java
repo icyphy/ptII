@@ -83,6 +83,29 @@ public class StringUtilities {
     }
 
 
+    /** Given a string, replace all the instances of XML special characters
+     *  with their corresponding XML entities.  This is necessary to
+     *  allow arbitrary strings to be encoded within XML.  This method
+     *  <pre>
+     *  & becomes &amp;amp;
+     *  " becomes &amp;quot;
+     *  < becomes &amp;lt;
+     *  > becomes &amp;gt;
+     *  newline becomes &#10;
+     *  </pre>
+     *
+     *  @param string The string to escape.
+     *  @return A new string with special characters replaced.
+     */
+    public static String escapeForXML(String string) {
+        string = substitute(string, "&", "&amp;");
+        string = substitute(string, "\"", "&quot;");
+        string = substitute(string, "<", "&lt;");
+        string = substitute(string, ">", "&gt;");
+        string = substitute(string, "\n", "&#10;");
+        return string;
+    }
+
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist,
      *  though if certain properties are not defined, then we
@@ -216,6 +239,42 @@ public class StringUtilities {
 	return property;
     }
 
+    /** Sanitize a String so that it can be used as a Java identifier.
+     *  Section 3.8 of the Java language spec says:
+     *  <blockquote>
+     *  "An identifier is an unlimited-length sequence of Java letters
+     *  and Java digits, the first of which must be a Java letter. An
+     *  identifier cannot have the same spelling (Unicode character
+     *  sequence) as a keyword (3.9), boolean literal (3.10.3), or
+     *  the null literal (3.10.7).  "
+     *  </blockquote>
+     *  Java characters are A-Z, a-z, $ and _.
+     *  <p> Characters that are not permitted in a Java identifier are changed
+     *  to an underscores.
+     *  This method does not check that the returned string is a
+     *  keyword or literal.
+     *  Note that two different strings can sanitize to the same
+     *  string.
+     *  This method is commonly used during code generation to map the
+     *  name of a ptolemy object to a valid identifier name.
+     *  @param name A string with spaces and other characters that
+     *  cannot be in a Java name.
+     *  @return A String that follows the Java identifier rules.
+     */
+    public static String sanitizeName(String name) {
+	char [] nameArray = name.toCharArray();
+       	for (int i = 0; i < nameArray.length; i++) {
+	    if (!Character.isJavaIdentifierPart(nameArray[i])) {
+		nameArray[i] = '_';
+	    }
+	}
+      	if (!Character.isJavaIdentifierStart(nameArray[0])) {
+            return "_" + new String(nameArray);
+	} else {
+            return new String(nameArray);
+        }
+    }
+
     /**  If the string is longer than 80 characters, split it up by
      *  displaying adding newlines every 80 characters.
      *  If the <i>longName</i> argument is null, then the string
@@ -245,6 +304,26 @@ public class StringUtilities {
 	results.append(longName.substring(i));
 
 	return results.toString();
+    }
+
+    /** Replace all occurrences of <i>old</i> in the specified
+     *  string with <i>replacement</i>.
+     *  @param string The string to edit.
+     *  @param old The string to replace.
+     *  @param replacement The string to replace it with.
+     *  @return A new string with the specified replacements.
+     */
+    public static String substitute(String string,
+            String old, String replacement) {
+        int start = string.indexOf(old);
+        while (start != -1) {
+            StringBuffer buffer = new StringBuffer(string);
+            buffer.delete(start, start + old.length());
+            buffer.insert(start, replacement);
+            string = new String(buffer);
+            start = string.indexOf(old, start + replacement.length());
+        }
+        return string;
     }
 
     /** Tokenize a String to an array of Strings for use with
