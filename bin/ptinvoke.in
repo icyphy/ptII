@@ -37,7 +37,7 @@
 #### Generic stuff.
 # Location of the Ptolemy II tree.  The bin directory should be found
 # at $PTIIDEFAULT/bin
-PTII_DEFAULT=@PTII_DEFAULT@
+PTII_DEFAULT="@PTII_DEFAULT@"
 
 # Check that PTII is set, and that we can find the proper sources
 if [ -z "$PTII" ]; then
@@ -67,7 +67,7 @@ JINI_DIR="@JINI_DIR@"
 JINI_LIB_DIR="$JINI_DIR/lib"
 
 # Flags needed for Jini
-JINI_JFLAG="-Djava.security.policy=${PTII}/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=http://localhost:4444/"
+JINI_JFLAG=\""-Djava.security.policy=${PTII}/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=http://localhost:4444/"\"
 
 # Jini Jar files
 JINI_CORE_JAR="${JINI_LIB_DIR}/jini-core.jar"
@@ -152,29 +152,29 @@ case "`basename $0`" in
 	# Invoke the class named by the first argument
 	javastartupclass=$1
 	javasourcedir=
-	jarfile=$ALL_JAR
-	javaflag=$ALL_JFLAG
+	jarfile="$ALL_JAR"
+	javaflag="$ALL_JFLAG"
 	shift
 	;;
     ptjacl)
 	# tcl.lang.Shell brings up the Jacl prompt in the current window
 	javastartupclass=tcl.lang.Shell
 	javasourcedir=
-	jarfile=$PTJACL_JAR
-	javaflag=$PTJACL_FLAG
+	jarfile="$PTJACL_JAR"
+	javaflag="$PTJACL_FLAG"
 	;;
     ptjaclapp)
 	# tcl.lang.PanelShellApp brings up Jacl in a separate window
 	javastartupclass=tcl.lang.PanelShellApp
 	javasourcedir=
-	jarfile=$PTJACL_JAR
-	javaflag=$PTJACL_FLAG
+	jarfile="$PTJACL_JAR"
+	javaflag="$PTJACL_FLAG"
 	;;
     ptstartjini)
 	# Ptolemy II Application that starts up Jini
 	javastartupclass=com.sun.jini.example.service.StartService
 	javasourcedir=ptolemy/actor/gui
-	jarfile=$JINI_LIB_DIR/jini-examples.jar
+	jarfile="$JINI_LIB_DIR/jini-examples.jar"
 	case "${OSTYPE-no}" in
 	    cygwin*)
 		JINI_ROOT_DIR=`echo $JINI_DIR | sed 's@/@\\\\@g' | sed 's@\\\jini1_0_1@@'`
@@ -190,8 +190,8 @@ case "`basename $0`" in
 	# Ptolemy II Application that uses Jini
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
-	jarfile=$ALL_JAR
-	javaflag=$ALL_JFLAG
+	jarfile="$ALL_JAR"
+	javaflag="$ALL_JFLAG"
 	;;
     ptolemy)
 	# Ptolemy II Application
@@ -201,8 +201,8 @@ case "`basename $0`" in
 	javasourcedir=ptolemy/actor/gui
 	# Please don't add jini or commapi to ptolemy.
 	# If you want to start up jini or commapi, the run ptjini -cxh 7/00
-	jarfile=${DIVA_JAR}
-	javaflag=${DIVA_JFLAG}
+	jarfile="${DIVA_JAR}"
+	javaflag="${DIVA_JFLAG}"
 	;;
     ptplot)
 	# Signal Plotter
@@ -218,8 +218,8 @@ case "`basename $0`" in
 	# Ptolemy II UI
 	javastartupclass=ptolemy.vergil.VergilApplication
 	javasourcedir=ptolemy/vergil
-	jarfile=$ALL_JAR
-	javaflag=$ALL_JFLAG
+	jarfile="$ALL_JAR"
+	javaflag="$ALL_JFLAG"
 	;;
 esac
 
@@ -291,7 +291,7 @@ if [ "$windows" = "yes" ]; then
     # Windows via Cygwin32
     # chdir prints the current directory in DOS format.
     # The tr command deletes the \r at the end
-    PTII_DIR=`(cd $PTII; cmd /c chdir) | tr -d '\r'`
+    PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r'`
 else
     PTII_DIR=$PTII
 fi
