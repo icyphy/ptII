@@ -82,6 +82,8 @@ MISC_FILES =	 $(DIRS) \
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
+	'EventButton$$1.class' \
+	'EventButton$$ButtonListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
