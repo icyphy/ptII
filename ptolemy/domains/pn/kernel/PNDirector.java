@@ -320,58 +320,9 @@ public class PNDirector extends BasePNDirector {
                 _mutationBlockCount >= _getActiveActorsCount());
     }
 
-    /** Process the queued topology change requests after pausing the
-     *  execution. Registered topology
-     *  listeners are informed of each change in a series of calls
-     *  after successful completion of each request. If any queued
-     *  request fails, the request is undone, and no further requests
-     *  are processed. Note that change requests processed successfully
-     *  prior to the failed request are <i>not</i> undone.
-     *
-     *  Initialize any new actors created, create receivers for them,
-     *  initialize the receivers and create new threads for the new actors.
-     *  After all threads
-     *  are created, resume the execution and start the threads for the
-     *  newly created actors.
-     *
-     *  @exception IllegalActionException If any of the pending requests have
-     *  already been implemented or if the type system detects a type conflict
-     *  after performing the requested mutations.
-     *  @exception TopologyChangeFailedException If any of the requests fails.
-     */
-    // protected void _processTopologyRequests()
-    //    throws IllegalActionException, TopologyChangeFailedException {
-    // 	Workspace worksp = workspace();
-    // 	super._processTopologyRequests();
-    // 	//Perform the type resolution.
-    // 	try {
-    // 	    ((CompositeActor)getContainer()).getManager().resolveTypes();
-    // 	} catch (TypeConflictException e) {
-    // 	    throw new IllegalActionException (this, e.toString());
-    // 	}
-    // 	LinkedList threadList = new LinkedList();
-    // 	Enumeration newactors = _newActors();
-    // 	while (newactors.hasMoreElements()) {
-    // 	    Actor actor = (Actor)newactors.nextElement();
-    // 	    actor.initialize();
-    // 	    ProcessThread pnt = new ProcessThread(actor, this);
-    // 	    threadList.insertFirst(pnt);
-    // 	    _addNewThread(pnt);
-    // 	}
-    // 	//Resume the paused actors
-    // 	resume();
-    // 	Enumeration threads = threadList.elements();
-    // 	//Starting threads;
-    // 	while (threads.hasMoreElements()) {
-    // 	    ProcessThread pnt = (ProcessThread)threads.nextElement();
-    // 	    pnt.start();
-    // 	}
-    //     }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    //This flag is set to true when mutations are pending
+    // This flag is set to true when mutations are pending
     private boolean _mutationsRequested = false;
 }
