@@ -1549,6 +1549,29 @@ void insertComments( src_in, dst_in)
     }
 }
 
+void convertConstCharToString( src_in)
+    char *src_in;
+{
+    char *p = src_in;
+    printf("convertConstChar: %s\n", src_in);
+    p = strstr(p, "const char");
+
+    while(p != NULL) {
+        *p++ = 'S'; // c
+        *p++ = 't'; // o
+        *p++ = 'r'; // n
+        *p++ = 'i'; // s
+        *p++ = 'n'; // t 
+        *p++ = 'g'; // 
+        *p++ = ' '; // c
+        *p++ = ' '; // h
+        *p++ = ' '; // a
+        *p++ = ' '; // r
+        p = strstr(p, "const char");
+    }
+    printf("convertConstChar2: %s\n", src_in);
+}
+
 void genMethod( fp, src)
     FILE *fp;
     char *src;
@@ -2079,8 +2102,10 @@ void genDef ()
 		    insertComments(dst, dst2);	
 		    fprintf (fp, "\n    /**\n");
 		    fprintf (fp, "     */\n");
+		    strcpy (str1, codeType[i]);
+		    convertConstCharToString(str1);
 		    fprintf (fp, "    public %s %s() {\n    %s\n",
-		      codeType[i], codeFuncName[i], dst2);
+		      str1, codeFuncName[i], dst2);
 		    if (strncmp(codeType[i], "void", 4) != 0) { 
 			    fprintf (fp, "        // Dummy return value.\n");
 			    char returnValue[SMALLBUFSIZE];
@@ -2132,10 +2157,10 @@ void genDef ()
 		genCodeBlock( fp, codeBlocks[i], 0);
 		fprintf (fp, ";\n");
 	    } else {
-		// FIXME: codeBlockArgs might have "const char", which
-		// should be converted to String
+                strcpy (str1, codeBlockArgs[i]);
+		convertConstCharToString(str1);
 		fprintf (fp, "\n    public String %s (%s) {\n",
-			codeBlockNames[i],codeBlockArgs[i]);
+			codeBlockNames[i], str1);
 		fprintf (fp, "        return\n        ");
 		genCodeBlock( fp, codeBlocks[i], 1);
 		genCodeBlock( fp, "\n");
