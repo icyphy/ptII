@@ -52,155 +52,155 @@ import ptolemy.kernel.util.NamedObj.*;
 This typed composite actor supports mirroring of its ports in its container
 (which is required to be a ModalModel), which in turn assures
 mirroring of ports in each of the refinements and the controller.
-This class implements the CTStepSizeControlActor interface so that
+Refinements fulfills the CTStepSizeControlActor interface so that
 it can be used to construct hybrid systems using the CT domain.
 
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
-                      public class Refinement extends TypedCompositeActor
-                          implements CTStepSizeControlActor {
+public class Refinement extends TypedCompositeActor
+    implements CTStepSizeControlActor {
 
-                          /** Construct a modal controller with a name and a container.
-                           *  The container argument must not be null, or a
-                           *  NullPointerException will be thrown.
-                           *  @param container The container.
-                           *  @param name The name of this actor.
-                           *  @exception IllegalActionException If the container is incompatible
-                           *   with this actor.
-                           *  @exception NameDuplicationException If the name coincides with
-                           *   an actor already in the container.
-                           */
-                          public Refinement(CompositeEntity container, String name)
-                                  throws IllegalActionException, NameDuplicationException {
-                              super(container, name);
+    /** Construct a modal controller with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public Refinement(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
-                              // The base class identifies the class name as TypedCompositeActor
-                              // irrespective of the actual class name.  We override that here.
-                              getMoMLInfo().className = "ptolemy.vergil.fsm.modal.Refinement";
-                          }
+        // The base class identifies the class name as TypedCompositeActor
+        // irrespective of the actual class name.  We override that here.
+        getMoMLInfo().className = "ptolemy.vergil.fsm.modal.Refinement";
+    }
 
-                          ///////////////////////////////////////////////////////////////////
-                          ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-                          /** Delegate to the local director if the local
-                           *  director is an instance of CTTransparentDirector. Otherwise,
-                           *  return true, indicating that this composite actor does not
-                           *  perform step size control.
-                           *  @return True if this step is accurate.
-                           */
-                          public boolean isThisStepAccurate() {
-                              Director dir = getDirector();
-                              if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-                                  return ((CTTransparentDirector)dir).isThisStepAccurate();
-                              }
-                              return true;
-                          }
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return true, indicating that this composite actor does not
+     *  perform step size control.
+     *  @return True if this step is accurate.
+     */
+    public boolean isThisStepAccurate() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).isThisStepAccurate();
+        }
+        return true;
+    }
 
-                          /** Create a new port with the specified name in the container of
-                           *  this refinement, which in turn creates a port in this refinement
-                           *  all other refinements, and the controller.
-                           *  This method is write-synchronized on the workspace.
-                           *  @param name The name to assign to the newly created port.
-                           *  @return The new port.
-                           *  @exception NameDuplicationException If the entity already has a port
-                           *   with the specified name.
-                           */
-                          public Port newPort(String name) throws NameDuplicationException {
-                              try {
-                                  _workspace.getWriteAccess();
-                                  if (_mirrorDisable || getContainer() == null) {
-                                      // Have already called newPort() in the container.
-                                      // This time, process the request.
-                                      RefinementPort port = new RefinementPort(this, name);
+    /** Create a new port with the specified name in the container of
+     *  this refinement, which in turn creates a port in this refinement
+     *  all other refinements, and the controller.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The name to assign to the newly created port.
+     *  @return The new port.
+     *  @exception NameDuplicationException If the entity already has a port
+     *   with the specified name.
+     */
+    public Port newPort(String name) throws NameDuplicationException {
+        try {
+            _workspace.getWriteAccess();
+            if (_mirrorDisable || getContainer() == null) {
+                // Have already called newPort() in the container.
+                // This time, process the request.
+                RefinementPort port = new RefinementPort(this, name);
 
-                                      // NOTE: This is a total kludge, but when a port is created
-                                      // this way, rather than by parsing MoML that specifies the
-                                      // class, we assume that it is being created interactively,
-                                      // rather than by reading a stored MoML file, so we enable
-                                      // mirroring in the port.
-                                      port._mirrorDisable = false;
+                // NOTE: This is a total kludge, but when a port is created
+                // this way, rather than by parsing MoML that specifies the
+                // class, we assume that it is being created interactively,
+                // rather than by reading a stored MoML file, so we enable
+                // mirroring in the port.
+                port._mirrorDisable = false;
 
-                                      // Create the appropriate links.
-                                      ModalModel container = (ModalModel)getContainer();
-                                      if (container != null) {
-                                          String relationName = name + "Relation";
-                                          Relation relation = container.getRelation(relationName);
-                                          if (relation == null) {
-                                              relation = container.newRelation(relationName);
-                                              Port containerPort = container.getPort(name);
-                                              containerPort.link(relation);
-                                          }
-                                          port.link(relation);
-                                      }
-                                      return port;
-                                  } else {
-                                      _mirrorDisable = true;
-                                      ((ModalModel)getContainer()).newPort(name);
-                                      return getPort(name);
-                                  }
-                              } catch (IllegalActionException ex) {
-                                  // This exception should not occur, so we throw a runtime
-                                  // exception.
-                                  throw new InternalErrorException(
-                                          "Refinement.newPort: Internal error: " +
-                                          ex.getMessage());
-                              } finally {
-                                  _mirrorDisable = false;
-                                  _workspace.doneWriting();
-                              }
-                          }
+                // Create the appropriate links.
+                ModalModel container = (ModalModel)getContainer();
+                if (container != null) {
+                    String relationName = name + "Relation";
+                    Relation relation = container.getRelation(relationName);
+                    if (relation == null) {
+                        relation = container.newRelation(relationName);
+                        Port containerPort = container.getPort(name);
+                        containerPort.link(relation);
+                    }
+                    port.link(relation);
+                }
+                return port;
+            } else {
+                _mirrorDisable = true;
+                ((ModalModel)getContainer()).newPort(name);
+                return getPort(name);
+            }
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(
+                    "Refinement.newPort: Internal error: " +
+                    ex.getMessage());
+        } finally {
+            _mirrorDisable = false;
+            _workspace.doneWriting();
+        }
+    }
 
-                          /** Delegate to the local director if the local
-                           *  director is an instance of CTTransparentDirector. Otherwise,
-                           *  return java.lang.Double.MAX_VALUE.
-                           *  @return The predicted step size.
-                           */
-                          public double predictedStepSize() {
-                              Director dir = getDirector();
-                              if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-                                  return ((CTTransparentDirector)dir).predictedStepSize();
-                              }
-                              return java.lang.Double.MAX_VALUE;
-                          }
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return java.lang.Double.MAX_VALUE.
+     *  @return The predicted step size.
+     */
+    public double predictedStepSize() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).predictedStepSize();
+        }
+        return java.lang.Double.MAX_VALUE;
+    }
 
-                          /** Delegate to the local director if the local
-                           *  director is an instance of CTTransparentDirector. Otherwise,
-                           *  return the current step size of the executive director.
-                           *  @return The refined step size.
-                           */
-                          public double refinedStepSize() {
-                              Director dir = getDirector();
-                              if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-                                  return ((CTTransparentDirector)dir).refinedStepSize();
-                              }
-                              return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
-                          }
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return the current step size of the executive director.
+     *  @return The refined step size.
+     */
+    public double refinedStepSize() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).refinedStepSize();
+        }
+        return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
+    }
 
-                          ///////////////////////////////////////////////////////////////////
-                          ////                         protected methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-                          /** Override the base class to ensure that the proposed container
-                           *  is a ModalModel or null.
-                           *  @param container The proposed container.
-                           *  @exception IllegalActionException If the proposed container is not a
-                           *   TypedActor, or if the base class throws it.
-                           */
-                          protected void _checkContainer(Entity container)
-                                  throws IllegalActionException {
-                              if (!(container instanceof ModalModel) && (container != null)) {
-                                  throw new IllegalActionException(container, this,
-                                          "Refinement can only be contained by "
-                                          + "ModalModel objects.");
-                              }
-                          }
+    /** Override the base class to ensure that the proposed container
+     *  is a ModalModel or null.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the proposed container is not a
+     *   TypedActor, or if the base class throws it.
+     */
+    protected void _checkContainer(Entity container)
+            throws IllegalActionException {
+        if (!(container instanceof ModalModel) && (container != null)) {
+            throw new IllegalActionException(container, this,
+                    "Refinement can only be contained by "
+                    + "ModalModel objects.");
+        }
+    }
 
-                          ///////////////////////////////////////////////////////////////////
-                          ////                         protected variables               ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-                          // These are protected to be accessible to ModalModel.
+    // These are protected to be accessible to ModalModel.
 
-                          /** Indicator that we are processing a newPort request. */
-                          protected boolean _mirrorDisable = false;
-                      }
+    /** Indicator that we are processing a newPort request. */
+    protected boolean _mirrorDisable = false;
+}
