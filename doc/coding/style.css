@@ -1,0 +1,799 @@
+BODY {
+   background: #faf0e6
+}
+A.link {
+	color: blue;
+	text-decoration: underline;
+}
+A.visited {
+	color: purple;
+	text-decoration: underline;
+}
+A.active {
+	color: red;
+	text-decoration: underline;
+}
+H1.FM1Heading, H2.FM1Heading, H3.FM1Heading, H4.FM1Heading, H5.FM1Heading, H6.FM1Heading {
+	display: block;
+	text-align: center;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 37.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 60.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.FM1HeadingTOC {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 17.999985pt;
+	font-size: 12.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+H1.FM2Heading, H2.FM2Heading, H3.FM2Heading, H4.FM2Heading, H5.FM2Heading, H6.FM2Heading {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 12.000000pt;
+	margin-bottom: 9.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 18.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.FM2HeadingTOC {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 35.999985pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+H1.FM3Heading, H2.FM3Heading, H3.FM3Heading, H4.FM3Heading, H5.FM3Heading, H6.FM3Heading {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 10.000000pt;
+	margin-bottom: 7.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 14.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.FM3HeadingTOC {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 53.999985pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Italic;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.FM4Heading {
+	display: block;
+	text-align: justify;
+	text-indent: 0.000000pt;
+	margin-top: 8.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Italic;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.A2Heading {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 12.000000pt;
+	margin-bottom: 9.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 18.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.A2HeadingTOC {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 53.999985pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Italic;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.A3Heading {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 9.000000pt;
+	margin-bottom: 7.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 14.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Affiliation {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Italic;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.AHeading {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 12.000000pt;
+	margin-bottom: 9.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 18.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.Appendix {
+	display: block;
+	text-align: center;
+	text-indent: 0.000000pt;
+	margin-top: 12.000000pt;
+	margin-bottom: 9.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 18.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.AppendixTOC {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 35.999985pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Author {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Italic;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Body {
+	display: block;
+	text-align: justify;
+	text-indent: 17.999985pt;
+	margin-top: 2.000000pt;
+	margin-bottom: 2.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.Bulleted {
+	display: block;
+	text-align: justify;
+	text-indent: -17.999985pt;
+	margin-top: 2.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 17.999985pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.CellBody {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 8.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.CellHeading {
+	display: block;
+	text-align: center;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 8.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Code {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 28.346451pt;
+	font-size: 10.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Courier New";
+}
+P.CodeSmall {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 9.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Courier New";
+}
+P.ContentsTitle {
+	display: block;
+	text-align: center;
+	text-indent: 0.000000pt;
+	margin-top: 25.000000pt;
+	margin-bottom: 25.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 40.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.Equation {
+	display: block;
+	text-align: center;
+	text-indent: 17.999985pt;
+	margin-top: 6.000000pt;
+	margin-bottom: 6.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.Figure {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 9.000000pt;
+	margin-bottom: 5.000000pt;
+	margin-right: 28.346451pt;
+	margin-left: 28.346451pt;
+	font-size: 9.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.FirstBody {
+	display: block;
+	text-align: justify;
+	text-indent: 17.999985pt;
+	margin-top: 6.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Footnote {
+	display: block;
+	text-align: left;
+	text-indent: -12.000183pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 17.999985pt;
+	margin-left: 30.000168pt;
+	font-size: 9.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.GroupTitlesIX {
+	display: block;
+	text-align: center;
+	text-indent: 0.000000pt;
+	margin-top: 3.000000pt;
+	margin-bottom: 3.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 12.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.header-right {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 9.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Heading {
+	display: block;
+	text-align: center;
+	text-indent: 0.000000pt;
+	margin-top: 25.000000pt;
+	margin-bottom: 25.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 40.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Indented {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 8.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 17.999985pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.LBody {
+	display: block;
+	text-align: justify;
+	text-indent: 0.000000pt;
+	margin-top: 2.000000pt;
+	margin-bottom: 2.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Level1IX {
+	display: block;
+	text-align: justify;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 10.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Level2IX {
+	display: block;
+	text-align: justify;
+	text-indent: -36.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 54.000000pt;
+	font-size: 12.000000pt;
+	font-weight: medium;
+	font-style: Italic;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Mapping-Table-Cell {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 2.000000pt;
+	margin-bottom: 2.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 12.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Mapping-Table-Title {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 2.000000pt;
+	margin-bottom: 2.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 14.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Note {
+	display: block;
+	text-align: justify;
+	text-indent: 0.000000pt;
+	margin-top: 10.000000pt;
+	margin-bottom: 10.000000pt;
+	margin-right: 42.519669pt;
+	margin-left: 42.519669pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.Numbered {
+	display: block;
+	text-align: left;
+	text-indent: -17.999985pt;
+	margin-top: 7.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 17.999985pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.Numbered1 {
+	display: block;
+	text-align: left;
+	text-indent: -17.999985pt;
+	margin-top: 7.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 17.999985pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.Quote {
+	display: block;
+	text-align: justify;
+	text-indent: 0.000000pt;
+	margin-top: 10.000000pt;
+	margin-bottom: 10.000000pt;
+	margin-right: 42.519669pt;
+	margin-left: 42.519669pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Italic;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.Reference {
+	display: block;
+	text-align: justify;
+	text-indent: -21.599991pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 7.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 21.599991pt;
+	font-size: 11.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+P.right-footer {
+	display: block;
+	text-align: left;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 9.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+LI.TableTitle {
+	display: block;
+	text-align: center;
+	text-indent: 0.000000pt;
+	margin-top: 0.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 9.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+H1.Title, H2.Title, H3.Title, H4.Title, H5.Title, H6.Title {
+	display: block;
+	text-align: center;
+	text-indent: 0.000000pt;
+	margin-top: 7.000000pt;
+	margin-bottom: 0.000000pt;
+	margin-right: 0.000000pt;
+	margin-left: 0.000000pt;
+	font-size: 40.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: uppercase;
+	font-family: "Times New Roman";
+}
+EM.bold {
+	font-weight: Bold;
+	font-style: Regular;
+}
+EM.Code {
+	font-size: 10.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Courier New";
+}
+EM.Emphasis {
+	font-style: Italic;
+}
+EM.EquationVariables {
+	font-style: Italic;
+}
+EM.Figure {
+	font-size: 9.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+EM.Huge {
+	font-size: 150.000000pt;
+	font-weight: Bold;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+EM.SFigure {
+	font-size: 8.000000pt;
+	font-weight: medium;
+	font-style: Regular;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: baseline;
+	text-transform: none;
+	font-family: "Times New Roman";
+}
+EM.Symbol {
+	font-family: "Symbol";
+}
