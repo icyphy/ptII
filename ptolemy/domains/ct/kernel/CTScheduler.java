@@ -24,10 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
-
-@ProposedCodeRate red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
