@@ -555,7 +555,7 @@ public class Director extends NamedObj implements Executable {
             //  if (result.trim().length() > 0) {
             //      result += " ";
             //  }
-            //  result += "fixme {\n";
+            //  result += "FIXME {\n";
             //  result += _getIndentPrefix(indent) + "}";
             // }
             if (bracket == 2) result += "}";
