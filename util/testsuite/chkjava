@@ -40,6 +40,7 @@
 # 8) Check for lines with trailing spaces
 # 9) Check the rating
 # 10) Check for bogus spaces around declarations
+# 11) Check for %W% %G%, which are from SCCS
 
 for file in $@
 do
@@ -220,5 +221,13 @@ do
 	    echo "$file: needs space between ')' and '{' in decl"
 	    echo "$results"
 	fi
+
+        # 11) Check for %W% %G%, which are from SCCS
+	results=`egrep '%W%|%G%' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: has old SCCS keywords: %W% or %G%"
+	    echo "$results"
+	fi
+
 done
 
