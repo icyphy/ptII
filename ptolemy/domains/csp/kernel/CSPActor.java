@@ -213,6 +213,8 @@ public class CSPActor extends TypedAtomicActor
 		        _internalLock.wait();
 		    }
                     if (_cancelDelay) {
+                        // Throwing this exception is really not
+                        // not necessary for a "well" written actor.
                         throw new TerminateProcessException("delay cancelled");
                     }
 		}
