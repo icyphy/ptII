@@ -36,6 +36,7 @@ import java.util.Set;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.Entity;
 import soot.Body;
 import soot.FastHierarchy;
@@ -286,13 +287,20 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 field.setType(type);
                 
                 // Update the type tag.
-                if(debug) System.out.println("updating type tag of " + field 
-                        + " to " + typeAnalysis.getSpecializedType(field));
-                field.removeTag("_CGType");
-                field.addTag(
-                        new TypeTag(
-                                typeAnalysis.getSpecializedType(field)));
-                
+                // FIXME: Correct?
+                ptolemy.data.type.Type specializedType = 
+                    typeAnalysis.getSpecializedType(field);
+                if(specializedType != BaseType.UNKNOWN &&
+                   specializedType != BaseType.GENERAL &&
+                   specializedType.isInstantiable()) {
+                    if(debug) System.out.println(
+                            "updating type tag of " + field 
+                            + " to " + typeAnalysis.getSpecializedType(field));
+                    field.removeTag("_CGType");
+                    field.addTag(
+                            new TypeTag(
+                                    typeAnalysis.getSpecializedType(field)));
+                }
                 map.put(field, typeAnalysis.getSpecializedType(field));
             }
         }

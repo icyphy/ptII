@@ -379,6 +379,9 @@ public class TypeSpecializerAnalysis {
             // constrain the type more.
             TypeTag tag = (TypeTag)field.getTag("_CGType");
             if (tag != null) {
+                if(debug) {
+                    System.out.println("tagged with type = " + tag.getType());
+                }
                 _addInequality(debug, _solver,
                         new ConstantTerm(tag.getType(), field),
                         (InequalityTerm)_objectToInequalityTerm.get(field));
@@ -579,7 +582,23 @@ public class TypeSpecializerAnalysis {
                 (InequalityTerm)objectToInequalityTerm.get(r.getBase());
             // FIXME: match better.
             // If we are invoking a method on a token, then...
-          
+
+            if (SootUtilities.derivesFrom(baseClass,
+                               PtolemyUtilities.typeClass)) {
+                if (methodName.equals("convert")) {
+                    try {
+                        ptolemy.data.type.Type baseType = 
+                            PtolemyUtilities.getTypeValue(
+                                method, (Local)r.getBase(),
+                                unit, localDefs, localUses);
+                        InequalityTerm baseTypeTerm =
+                            new ConstantTerm(baseType, r);
+                        return baseTypeTerm;
+                    } catch (RuntimeException ex) {
+                        // Ignore..
+                    }
+                }
+            }
             if (SootUtilities.derivesFrom(baseClass,
                                PtolemyUtilities.tokenClass)) {
                 if (r.getMethod().equals(PtolemyUtilities.arrayTokenConstructor)) {

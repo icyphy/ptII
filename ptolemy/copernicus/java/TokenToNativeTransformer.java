@@ -906,7 +906,6 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                     // Then determine the method that was
                     // actually invoked.
                     List methodList =
-                        //      invokeGraph.getTargetsOf((Stmt)unit);
                         hierarchy.resolveAbstractDispatch(
                                 type.getSootClass(),
                                 r.getMethod());
