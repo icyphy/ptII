@@ -168,8 +168,8 @@ public class PetriNetActor extends TypedCompositeActor  {
     public void fire() throws IllegalActionException {
 
         System.out.println("PetriNetActor.fire, the actors is "
-                           + "  " + getFullName()  + " Container is "
-                           + getContainer().getFullName());
+                + "  " + getFullName()  + " Container is "
+                + getContainer().getFullName());
 
 
         PetriNetDirector director = (PetriNetDirector) getDirector();
@@ -196,7 +196,7 @@ public class PetriNetActor extends TypedCompositeActor  {
             Nameable componentActor = (Nameable) components.next();
             if (componentActor instanceof TypedCompositeActor) {
                 TypedCompositeActor transitionComponent
-                                 = (TypedCompositeActor) componentActor;
+                    = (TypedCompositeActor) componentActor;
 		if(director.isTransitionReady(transitionComponent)) {
                     return true;
                 }
@@ -208,6 +208,21 @@ public class PetriNetActor extends TypedCompositeActor  {
 
 }
 
+<<<<<<< PetriNetActor.java
+/*               LinkedList componentList = _findTransitions(pnActor);
+                Iterator components = componentList.iterator();
+                while (components.hasNext()) {
+
+                    Nameable component1 = (Nameable) components.next();
+                    if (component1 instanceof TypedCompositeActor) {
+                        TypedCompositeActor transitionComponent
+                                 = (TypedCompositeActor) component1;
+		        if(_testReadyTransition(transitionComponent))
+                            readyComponentList.add(transitionComponent);
+                    }
+                }
+=======
 
 
+>>>>>>> 1.17
 
