@@ -81,16 +81,16 @@ demo: compileDemo runDemo
 
 # OrthogonalCom - There is no .xml file for this model
 MODEL =			OrthogonalCom
-SOURCECLASS =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+MODELPATH =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
 
 # 
 MODEL =			modulation
-SOURCECLASS = 		../../../ptolemy/moml/demo/modulation.xml
+MODELPATH = 		../../../ptolemy/moml/demo/modulation.xml
 
 # Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
-#   make MODEL=IIR SOURCECLASS=../../../ptolemy/actor/lib/test/auto/IIR.xml compileDemo runDemo 
+#   make MODEL=IIR MODELPATH=../../../ptolemy/actor/lib/test/auto/IIR.xml compileDemo runDemo 
 # To run on ArrayAppend:
-#   make MODEL=ArrayAppend SOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml compileDemo runDemo 
+#   make MODEL=ArrayAppend MODELPATH=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml compileDemo runDemo 
 
 # Location where we create code that we are generating
 TARGETPACKAGE = 	ptolemy.copernicus.applet.cg.$(MODEL)
@@ -113,12 +113,20 @@ WATCH_DOG_TIMEOUT = 	100000
 # The tests and the UI use the compileDemo rule, so if you
 # change this rule, be sure to run make tests
 compileDemo: $(JCLASS)
-	@echo "generate an applet for '$(SOURCECLASS)'"
-	$(JAVA) $(JVM_SIZE) \
-	 -classpath "$(CLASSPATH)" \
-	-Dptolemy.ptII.dir="$(PTII)" \
-	ptolemy.copernicus.applet.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
-		-p wjtp.appletWriter targetPackage:$(TARGETPACKAGE) \
+	@echo "generate an applet for '$(MODELPATH)'"
+	$(JAVA) \
+		-classpath "$(ROOT)" \
+		ptolemy.copernicus.kernel.Copernicus \
+		-verbose \
+		-codeGenerator   '"applet"' \
+		-compile	 true \
+		-java            '"$(JAVA)"' \
+		-modelPath       '"$(MODELPATH)"' \
+		-run		 false \
+		-root            '"$(PTII)"' \
+		-targetPackage   '"$(TARGETPACKAGE)"' \
+		-targetPath      '"$(TARGETPATH)"'
+
 
 # Run the OrthoComm demo
 ORTHOCOMMTARGETDIRECTORY = $(TARGETPATH)/ToplevelModel
