@@ -179,12 +179,6 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
 
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    protected static Object _monitor = new Object();
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -209,6 +203,9 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private PtolemyThread _thread;
     private boolean _isWaiting = true;
+    private static Object _monitor = new Object();
+    private PtolemyThread _thread;
 }
+
+
