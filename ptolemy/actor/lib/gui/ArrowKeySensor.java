@@ -190,7 +190,9 @@ public class ArrowKeySensor extends TypedAtomicActor {
 
     /** Dispose of the JFrame, causing the window to vanish. */
     public void wrapup() {
-        _myFrame.dispose();
+        if(_myFrame != null) {
+            _myFrame.dispose();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
