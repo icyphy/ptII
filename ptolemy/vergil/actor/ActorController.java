@@ -51,7 +51,6 @@ import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
-import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -345,22 +344,64 @@ public class ActorController extends AttributeController {
         }
     }
 
+    // An action to listen to debug messages in the actor.
+    private class ListenToActorAction extends FigureAction {
+        public ListenToActorAction() {
+            super("Listen to Actor");
+        }
+        public void actionPerformed(ActionEvent e) {
+            if (_configuration == null) {
+                MessageHandler.error(
+                        "Cannot listen to actor without a configuration.");
+                return;
+            }
+
+            // Determine which entity was selected for the listen to
+            // actor action.
+            super.actionPerformed(e);
+            NamedObj object = getTarget();
+            try {
+                BasicGraphController controller =
+                    (BasicGraphController)getController();
+                BasicGraphFrame frame = controller.getFrame();
+                Tableau tableau = frame.getTableau();
+
+                // effigy is the whole model.
+                Effigy effigy = (Effigy)tableau.getContainer();
+                
+                // We want to open a new window that behaves as a
+                // child of the model window.  So, we create a new text
+                // effigy inside this one.  Specify model's effigy as
+                // a container for this new effigy.
+                Effigy textEffigy = new TextEffigy(effigy,
+                        effigy.uniqueName("debugListener" + object.getName()));
+                
+                DebugListenerTableau debugTableau =
+                    new DebugListenerTableau(textEffigy,
+                            textEffigy.uniqueName("debugListener"
+                                    + object.getName()));
+                debugTableau.setDebuggable(object);
+            }
+            catch (KernelException ex) {
+                MessageHandler.error(
+                        "Failed to create debug listener.", ex);
+            }
+        }
+    }
+
     // An action to look inside a composite.
-    // NOTE: This requires that the configuration be non null, or it
-    // will report an error with a fairly cryptic message.
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside");
         }
         public void actionPerformed(ActionEvent e) {
-
             if (_configuration == null) {
                 MessageHandler.error(
                         "Cannot look inside without a configuration.");
                 return;
             }
 
-            // Figure out what entity.
+            // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
             NamedObj object = getTarget();
             if (!(object instanceof CompositeEntity)) {
@@ -381,8 +422,8 @@ public class ActorController extends AttributeController {
                 }
                 return;
             }
+            
             CompositeEntity entity = (CompositeEntity)object;
-
             try {
                 _configuration.openModel(entity);
             } catch (Exception ex) {
@@ -390,51 +431,4 @@ public class ActorController extends AttributeController {
             }
         }
     }
-
-
-
-    // An action to listen to debug messages in the actor.
-    // NOTE: This requires that the configuration be non null, or it
-    // will report an error with a fairly cryptic message.
-    private class ListenToActorAction extends FigureAction {
-        public ListenToActorAction() {
-            super("Listen to Actor");
-        }
-        public void actionPerformed(ActionEvent e) {
-
-            if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot look inside without a configuration.");
-                return;
-            }
-
-            // Figure out what entity.
-            super.actionPerformed(e);
-            try {
-                NamedObj object = getTarget();
-
-                BasicGraphController controller =
-                    (BasicGraphController)getController();
-                BasicGraphFrame frame = controller.getFrame();
-                Tableau tableau = frame.getTableau();
-                Effigy effigy = (Effigy)tableau.getContainer();
-                // Create a new text effigy inside this one.
-                // FIXME: see ActorGraphFrame#DebugMenuListener@actionPerformed
-                //   Is it ok for these to have the same names?
-                Effigy textEffigy = new TextEffigy(effigy,
-                        effigy.uniqueName("debug listener"));
-                DebugListenerTableau debugTableau =
-                    new DebugListenerTableau(textEffigy,
-                            textEffigy.uniqueName("debugListener"));
-                debugTableau.setDebuggable(object);
-            }
-            catch (KernelException ex) {
-                try {
-                    MessageHandler.warning(
-                            "Failed to create debug listener: " + ex);
-                } catch (CancelException exception) {}
-            }
-        }
-    }
-
 }
