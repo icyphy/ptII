@@ -46,17 +46,32 @@ if {[info procs sootCodeGeneration] == "" } then {
 
 # Generate code for all the xml files in a directory.
 proc autoShallowCG {autoDirectory} {
+    # We attempt to gather speed stats
+    set builtinPercentageSum 0
+    set execPercentageSum 0
+    set numberOfModels 0
     foreach file [glob $autoDirectory/*.xml] {
 	puts "---- testing $file"
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
-	    set elapsedTime [time {sootCodeGeneration $file}]
+	    set elapsedTime [time {set results [sootCodeGeneration $file]}]]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds for $file"
+	    puts "$results"
+	    incr builtinPercentageSum [lindex $results 7]
+	    incr execPercentageSum [lindex $results 11]
+	    incr numberOfModels
 	    list {}
 	} {{}}
 	java::call System gc
 	#puts "[java::call ptolemy.actor.Manager timeAndMemory [$time longValue]]"
     }
+    set summary "Percentages for $autoDirectory: $numberOfModels models \
+	    Builtin Interp/Shallow: \ 
+	    [expr {$builtinPercentageSum / $numberOfModels}] % \
+	    Exec Interp/Shallow: \
+	    [expr {$execPercentageSum / $numberOfModels}] $"
+    puts $summary
+    return $summary
 }
 
 ######################################################################
@@ -71,11 +86,15 @@ proc autoShallowCG {autoDirectory} {
 #    lrange $result 0 9
 #} {2 4 6 8 10 12 14 16 18 20}
 
+autoShallowCG [file join $relativePathToPTII ptolemy domains de lib test auto]
+
+
 # First, do a SDF and a DE test just be sure things are working
 test Shallow-1.2 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    IIR.xml]]
+    puts $result
     list {}
 } {{}}
 
@@ -83,6 +102,7 @@ test Shallow-1.3 {Compile and run the DE Counter test} {
     set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    Counter.xml]]
+    puts $result
     list {}
 } {{}}
  
