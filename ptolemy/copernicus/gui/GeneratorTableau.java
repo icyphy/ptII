@@ -52,6 +52,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringUtilities;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -286,6 +287,8 @@ public class GeneratorTableau extends Tableau {
 			    boolean run =
 				((BooleanToken)options.run.getToken())
 				.booleanValue();
+			    boolean runAsApplet = false;
+
 			    List execCommands = new LinkedList();
 
 			    String packageNameString =
@@ -303,7 +306,7 @@ public class GeneratorTableau extends Tableau {
 					.add(_generateSootJavaCommand(model,
 								      directoryName,
 								      packageNameString,
-								      true /* Generate shallow code */));
+								      "shallow" /* Generate shallow code */));
 				} catch (Exception exception) {
 				    throw new IllegalActionException(exception
 								     .toString());
@@ -315,6 +318,23 @@ public class GeneratorTableau extends Tableau {
 
 				disassemble = true;
 			    } else if (((BooleanToken)options
+				 .sootApplet.getToken())
+				.booleanValue()) {
+				// Soot is a memory pig, so we run
+				// it in a separate process.
+				try {
+				    execCommands
+					.add(_generateSootJavaCommand(model,
+								      directoryName,
+								      packageNameString,
+								      "applet" /* Generate applet code. */));
+
+				} catch (Exception exception) {
+				    throw new IllegalActionException(exception
+								     .toString());
+				}
+				runAsApplet = true;
+			    } else if (((BooleanToken)options
 				 .sootDeep.getToken())
 				.booleanValue()) {
 
@@ -325,7 +345,8 @@ public class GeneratorTableau extends Tableau {
 					.add(_generateSootJavaCommand(model,
 								      directoryName,
 								      packageNameString,
-								      false /* Generate deep code. */));
+								      "java"
+								      /* Generate deep code. */));
 
 				disassemble = true;
 				} catch (Exception exception) {
@@ -385,11 +406,29 @@ public class GeneratorTableau extends Tableau {
 						 + className);
 			    }
                             if (run) {
-                                execCommands.add("java "
+				if (runAsApplet) {
+				    String appletFileName =
+					StringUtilities.substitute(
+								   packageNameString,
+								   ".", "/")
+					+ "/" + model.getName() 
+					+ "/" + model.getName();
+
+				    execCommands.add("appletviewer "
+						     + appletFileName
+						     + ".htm"
+						     );
+				    execCommands.add("appletviewer "
+						     + appletFileName
+						     + "Vergil.htm"
+						     );
+				} else {
+				    execCommands.add("java "
                                         + runOptions
                                         + " ptolemy.actor.gui"
 					+ ".CompositeActorApplication -class "
                                         + className);
+				}
                             }
                             if(execCommands.size() > 0) {
 				exec.setCommands(execCommands);
@@ -461,12 +500,13 @@ public class GeneratorTableau extends Tableau {
     // @param directoryName The name of the directory to generate code in
     // @param targetPackage The java package that the generated code
     // will reside in.  Usually the targetPackage is relative to $PTII
-    // @param generateShallowJavaCode True if we generate code shallowly.
-    // If false, then generate deeply.
+    // @param copernicusSubdirectory The directory that contains
+    // the generator we are running.  Usually, something like
+    // "applet" or "java" or "shallow".
     private String _generateSootJavaCommand(CompositeEntity model,
 					    String directoryName,
 					    String targetPackage,
-					    boolean generateShallowJavaCode)
+					    String copernicusSubdirectory) 
 	throws IllegalArgumentException, InternalErrorException
     {
 	// This method is only called in one place, but the method
@@ -488,15 +528,6 @@ public class GeneratorTableau extends Tableau {
 					   + "=\"$PTII\":\n"
 					   + KernelException
                                              .stackTraceToString(security));
-        }
-
-        // What directory does the makefile that we want to run
-        // reside in?
-        String copernicusSubdirectory = null;
-	if (generateShallowJavaCode) {
-            copernicusSubdirectory = "shallow";
-        } else {
-            copernicusSubdirectory = "java";
         }
 
 	// Make sure the directory exists.

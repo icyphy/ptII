@@ -46,7 +46,7 @@ This is an attribute that stores the configuration of a generator tableau.
 It contains a number of parameters that are presented to the user in
 the generator tableau to configure the generator.
 
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class GeneratorTableauAttribute extends SingletonAttribute {
@@ -78,6 +78,12 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 	new CheckBoxStyle(sootShallow, "style");
         Documentation doc = new Documentation(sootShallow, "tooltip");
         doc.setValue("Shallow code generation using Soot");
+
+	sootApplet = new Parameter(this, "sootApplet",
+			     new BooleanToken(false));
+	new CheckBoxStyle(sootApplet, "style");
+        doc = new Documentation(sootApplet, "tooltip");
+        doc.setValue("Applet code generation using Soot");
 
 	sootDeep = new Parameter(this, "sootDeep",
 			     new BooleanToken(false));
@@ -231,8 +237,13 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
      */
     public Parameter show;
 
+    /** If true, generate an applet using Soot. This has type boolean and
+     *  defaults to false.
+     */
+    public Parameter sootApplet;
+
     /** If true, generate deep Java code using Soot. This has type boolean and
-     *  defaults to false
+     *  defaults to false.
      */
     public Parameter sootDeep;
 
@@ -301,6 +312,8 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             newObject.getAttribute("runOptions");
         newObject.show = (Parameter)
             newObject.getAttribute("show");
+        newObject.sootApplet = (Parameter)
+            newObject.getAttribute("sootApplet");
         newObject.sootDeep = (Parameter)
             newObject.getAttribute("sootDeep");
         newObject.sootShallow = (Parameter)
