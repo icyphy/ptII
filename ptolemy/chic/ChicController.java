@@ -44,7 +44,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.kernel.SetIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
@@ -85,12 +84,6 @@ public class ChicController extends AttributeController {
         super(controller, access);
 
         _access = access;
-
-        // Add a command to set the icon if the access level is full
-        if (access == FULL) {
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(new SetIconAction()));
-        }
 
         // Add commands to invoke Chic
         _menuFactory.addMenuItemFactory(
