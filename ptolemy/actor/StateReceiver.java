@@ -44,7 +44,6 @@ package ptolemy.actor;
 
    @see ptolemy.domains.giotto.kernel.GiottoReceiver
    @see ptolemy.domains.hde.kernel.HDEReceiver
-   @see ptolemy.domains.pbo.kernel.PBOReceiver
    @see ptolemy.domains.sr.kernel.SRReceiver
    @author Haiyang Zheng
    @version $Id$
