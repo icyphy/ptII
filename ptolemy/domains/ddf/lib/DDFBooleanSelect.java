@@ -41,26 +41,26 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
 /**
-   A type polymorphic select with boolean valued control. In the first 
-   iteration, an input token at the <i>control</i> port is read and 
+   A type polymorphic select with boolean valued control. In the first
+   iteration, an input token at the <i>control</i> port is read and
    its value is noted. In the second iteration, if the <i>control</i>
    input read from previous iteration is true, then an input token at
-   the <i>trueInput</i> port is read and sent to the output. Likewise 
+   the <i>trueInput</i> port is read and sent to the output. Likewise
    with a false input and the <i>falseInput</i> port. It alternates
-   between these two kinds of iterations until stopped. The 
-   <i>control</i> port must receive boolean Tokens. The <i>trueInput</i> 
-   and <i>falseInput</i> port may receive Tokens of any type. 
-   Because tokens are immutable, the same Token is sent to the output, 
-   rather than a copy.  
+   between these two kinds of iterations until stopped. The
+   <i>control</i> port must receive boolean Tokens. The <i>trueInput</i>
+   and <i>falseInput</i> port may receive Tokens of any type.
+   Because tokens are immutable, the same Token is sent to the output,
+   rather than a copy.
    <p>
-   Note this actor sends an output token every two iterations. Contrast 
-   this with BooleanSelect which sends an output token every iteration. 
+   Note this actor sends an output token every two iterations. Contrast
+   this with BooleanSelect which sends an output token every iteration.
 
    @author Gang Zhou
 */
 
 public class DDFBooleanSelect extends TypedAtomicActor {
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -81,22 +81,22 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
-        
-        trueInputTokenConsumptionRate = 
+
+        trueInputTokenConsumptionRate =
                 new Parameter(trueInput, "tokenConsumptionRate");
         trueInputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         trueInputTokenConsumptionRate.setTypeEquals(BaseType.INT);
-        
-        falseInputTokenConsumptionRate = 
+
+        falseInputTokenConsumptionRate =
                 new Parameter(falseInput, "tokenConsumptionRate");
         falseInputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         falseInputTokenConsumptionRate.setTypeEquals(BaseType.INT);
 
-        controlTokenConsumptionRate = 
+        controlTokenConsumptionRate =
                 new Parameter(control, "tokenConsumptionRate");
         controlTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         controlTokenConsumptionRate.setTypeEquals(BaseType.INT);
-        
+
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal
                 = new StringAttribute(control, "_cardinal");
@@ -120,27 +120,27 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      *  <i>trueInput</i> and <i>falseInput</i>
      */
     public TypedIOPort output;
-    /** This parameter provides token consumption rate for true input. 
+    /** This parameter provides token consumption rate for true input.
      */
     public Parameter trueInputTokenConsumptionRate;
-    /** This parameter provides token consumption rate for false input. 
+    /** This parameter provides token consumption rate for false input.
      */
     public Parameter falseInputTokenConsumptionRate;
-    /** This parameter provides token consumption rate for control. 
+    /** This parameter provides token consumption rate for control.
      */
     public Parameter controlTokenConsumptionRate;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Read a new token from the <i>control</i> port and note its value
-     *  if it hasn't done so. This concludes the current firing. Otherwise 
-     *  if the token read from the <i>control</i> port in previous firing 
-     *  is true, output the token consumed from the <i>trueInput</i> port. 
-     *  Likewise with a false <i>control</i> input and the <i>falseInput</i> 
-     *  port. Then reset an internal variable so that it will read from 
+     *  if it hasn't done so. This concludes the current firing. Otherwise
+     *  if the token read from the <i>control</i> port in previous firing
+     *  is true, output the token consumed from the <i>trueInput</i> port.
+     *  Likewise with a false <i>control</i> input and the <i>falseInput</i>
+     *  port. Then reset an internal variable so that it will read from
      *  <i>control</i> port in the next iteration.
-     *  This method will throw a NoTokenException if any input channel 
+     *  This method will throw a NoTokenException if any input channel
      *  does not have a token.
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created.
@@ -148,7 +148,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         if (_isControlRead) {
             if (_control) {
-                output.send(0, trueInput.get(0));                
+                output.send(0, trueInput.get(0));
             } else {
                 output.send(0, falseInput.get(0));
             }
@@ -156,10 +156,10 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         } else {
             _control = ((BooleanToken)control.get(0)).booleanValue();
             _isControlRead = true;
-        }        
+        }
     }
-    
-    /** Initialize this actor and rate parameters so that it will read 
+
+    /** Initialize this actor and rate parameters so that it will read
      *  from the <i>control</i> port in the first iteration.
      *  @exception IllegalActionException If setToken() throws it.
      */
@@ -168,12 +168,12 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         _isControlRead = false;
         trueInputTokenConsumptionRate.setToken(new IntToken(0));
         falseInputTokenConsumptionRate.setToken(new IntToken(0));
-        controlTokenConsumptionRate.setToken(new IntToken(1));       
+        controlTokenConsumptionRate.setToken(new IntToken(1));
     }
-    
+
     /** Update rate parameters for the next iteration.
-     *  Then return whatever the superclass returns. 
-     *  @return True if execution can continue into the next iteration. 
+     *  Then return whatever the superclass returns.
+     *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException If setToken() throws it.
      */
     public boolean postfire() throws IllegalActionException {
@@ -194,9 +194,9 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         }
         return super.postfire();
     }
-    
+
     /** Return false if the port it needs to read from in the following
-     *  firing does not have a token. 
+     *  firing does not have a token.
      *  Otherwise, return whatever the superclass returns.
      *  @return False if there are not enough tokens to fire.
      *  @exception IllegalActionException If the receivers do not support
@@ -217,16 +217,16 @@ public class DDFBooleanSelect extends TypedAtomicActor {
             if (!control.hasToken(0)) {
                 return false;
             }
-        }        
+        }
         return super.prefire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The most recently read control token.
     private boolean _control;
-    
+
     // The boolean to determine to read control or true/false input.
     private boolean _isControlRead;
 }

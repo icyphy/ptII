@@ -41,14 +41,14 @@ import ptolemy.kernel.util.Settable;
 //////////////////////////////////////////////////////////////////////////
 //// DDFOrderedMerge
 /**
-   This actor merges two monotonically nondecreasing streams of tokens 
-   into one monotonically nondecreasing stream. On each firing, it reads 
-   data from one of the inputs. On the first firing, it simply records 
-   that token. On the second firing, it reads data from the other input 
-   and outputs the smaller of the recorded token and the one it just read.  
-   If they are equal, then it outputs the recorded token. It then records 
-   the larger token. On each subsequent firing, it reads a token from the 
-   input port that did not provide the recorded token, and produces at the 
+   This actor merges two monotonically nondecreasing streams of tokens
+   into one monotonically nondecreasing stream. On each firing, it reads
+   data from one of the inputs. On the first firing, it simply records
+   that token. On the second firing, it reads data from the other input
+   and outputs the smaller of the recorded token and the one it just read.
+   If they are equal, then it outputs the recorded token. It then records
+   the larger token. On each subsequent firing, it reads a token from the
+   input port that did not provide the recorded token, and produces at the
    output the smaller of the recorded token and the one just read.
    <p>
    If both input sequences are nondecreasing, then the output sequence
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Settable;
    Note that if the inputs are not nondecreasing, then the output is
    rather complex. The key is that in each firing, it produces the smaller
    of the recorded token and the token it is currently reading.
-   This derived class only updates rate parameters to indicate next input 
+   This derived class only updates rate parameters to indicate next input
    port.
 
    @author Gang Zhou
@@ -75,13 +75,13 @@ public class DDFOrderedMerge extends OrderedMerge {
     public DDFOrderedMerge(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         inputA_tokenConsumptionRate =
                 new Parameter(inputA, "tokenConsumptionRate");
         inputA_tokenConsumptionRate.setToken(new IntToken(1));
         inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
-        
+
         inputB_tokenConsumptionRate =
                 new Parameter(inputB, "tokenConsumptionRate");
         inputB_tokenConsumptionRate.setToken(new IntToken(0));
@@ -94,16 +94,16 @@ public class DDFOrderedMerge extends OrderedMerge {
 
     /** The rate parameter for the input port A.
      */
-    public Parameter inputA_tokenConsumptionRate;  
+    public Parameter inputA_tokenConsumptionRate;
 
     /** The rate parameter for the input port B.
      */
-    public Parameter inputB_tokenConsumptionRate;  
- 
+    public Parameter inputB_tokenConsumptionRate;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize rate parameters to indicate the first token will be 
+    /** Initialize rate parameters to indicate the first token will be
      *  read from inputA.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -114,12 +114,12 @@ public class DDFOrderedMerge extends OrderedMerge {
     }
 
     /** Update rate parameters indicating the next input port.
-     *  @return True if execution can continue into the next iteration. 
-     *  @exception IllegalActionException If any called method throws 
-     *   IllegalActionException. 
+     *  @return True if execution can continue into the next iteration.
+     *  @exception IllegalActionException If any called method throws
+     *   IllegalActionException.
      */
     public boolean postfire() throws IllegalActionException {
-        
+
         // Call postfire first so that next input port is updated.
         boolean postfireReturn = super.postfire();
         TypedIOPort nextPort = _getNextPort();

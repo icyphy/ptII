@@ -49,9 +49,9 @@ import ptolemy.kernel.util.Settable;
    type must be greater than or equal to the input type. On each call to
    the fire method, the actor reads one token from the current input,
    and writes one token to an output channel. In the following postfire
-   method, it will update the ArrayToken with consumption rate for each 
+   method, it will update the ArrayToken with consumption rate for each
    input channel indicating it will read token from the next channel in
-   the next iteration. 
+   the next iteration.
 
    @author Gang Zhou
 */
@@ -68,31 +68,31 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
     public DDFSingleTokenCommutator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
-        inputTokenConsumptionRate = 
+
+        inputTokenConsumptionRate =
                     new Parameter(input, "tokenConsumptionRate");
         inputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputTokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                          parameters                       ////
-    
+
     /** This parameter provides token consumption rate for each input
      *  channel.
      */
     public Parameter inputTokenConsumptionRate;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Begin execution by setting rate parameter indicating it will 
-     *  read the zeroth input channel. 
+    /** Begin execution by setting rate parameter indicating it will
+     *  read the zeroth input channel.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         Token[] rates = new IntToken[input.getWidth()];
         rates[0] = new IntToken(1);
         for (int i=1; i < input.getWidth(); i++) {
@@ -102,15 +102,15 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
     }
 
     /** Update rate parameter indicating the next input channel.
-     *  @return True if execution can continue into the next iteration. 
-     *  @exception IllegalActionException If any called method throws 
-     *   IllegalActionException. 
+     *  @return True if execution can continue into the next iteration.
+     *  @exception IllegalActionException If any called method throws
+     *   IllegalActionException.
      */
     public boolean postfire() throws IllegalActionException {
-        
+
         // Call postfire first so that current input position is updated.
         boolean postfireReturn = super.postfire();
-        
+
         Token[] rates = new IntToken[input.getWidth()];
         int currentInputPosition = _getCurrentInputPosition();
         rates[currentInputPosition] = new IntToken(1);
@@ -119,7 +119,7 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
                 rates[i] = new IntToken(0);
         }
         inputTokenConsumptionRate.setToken(new ArrayToken(rates));
-        
+
         return postfireReturn;
     }
 
