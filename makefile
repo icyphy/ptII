@@ -32,7 +32,7 @@
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite
 # Don't go down into collections, it does not have a makefile
-DIRS = util pt doc gui #collections
+DIRS = util ptolemy doc gui #collections
 
 # Root of Ptolemy II directory
 ROOT =		.
