@@ -65,11 +65,11 @@ public class PNProcessEvent {
         _cause = cause;
     }
 
-    public PNProcessEvent(Actor actor, Exception excep) {
+    public PNProcessEvent(Actor actor, Exception exception) {
         _actor = actor;
         _state = PROCESS_FINISHED;
         _cause = FINISHED_WITH_EXCEPTION;
-        _excep = excep;
+        _exception = exception;
     }
 
     //////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ public class PNProcessEvent {
     /** Return the exception associated with the event.
      */
     public Exception getException() {
-        return _excep;
+        return _exception;
     }
 
     public int getFinishingCause() {
@@ -124,7 +124,7 @@ public class PNProcessEvent {
                 ca = "FINISHED_PROPERLY";
             } else if (_cause == FINISHED_WITH_EXCEPTION) {
                 ca = "FINISHED_WITH_EXCEPTION with exception "+
-                    _excep.toString();
+                    _exception.toString();
             } else ca = "FINISHED_CAUSE_UNKNOWN";
             result = "State of "+((Entity)_actor).getFullName()+" is "+st+
                 " and the cause = "+ca;
@@ -163,7 +163,7 @@ public class PNProcessEvent {
 
     private Actor _actor = null;
     private int _cause = 0;
-    private Exception _excep = null;
+    private Exception _exception = null;
     private int _state = 0;
 }
 
