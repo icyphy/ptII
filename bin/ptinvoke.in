@@ -167,7 +167,7 @@ case `basename "$0"` in
 	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
-    tp)
+    mescal)
         # Mescal UI
 	javastartupclass=mescal.MescalApplication
 	javasourcedir=mescal
