@@ -1,4 +1,5 @@
-/* Reads an audio file and divides the audio data into blocks.
+/** Actor that reads a stream of double tokens and places them into a
+Upper Triangular Matrix.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -40,12 +41,14 @@ import java.io.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// PNImageSink
+//// StreamToMatrix
 /**
-Stores an image file (int the ASCII PBM format) and creates a matrix token
 
-@author Mudit Goel
-@version $Id$
+Convert a stream of Double Tokens into a Matrix. The Matrix is an
+Upper triangular Matrix.
+@author Bart Kienhuis 
+@version $Id:
+StreamToMatrix.java,v 1.2 1999/11/30 03:55:57 kienhuis Exp $
 */
 
 public class StreamToMatrix extends Transformer {
@@ -62,13 +65,11 @@ public class StreamToMatrix extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // input  = new IOPort(this, "input", true, false);
-        // output = new IOPort(this, "output", false, true);
-
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        dimension = new Parameter(this, "Dimension", new IntToken( 6 ));
+        dimension = new Parameter(this, "dimension", new IntToken( 6 ));
 
+        // Initialize the dimension
         attributeChanged( dimension );
 
     }
@@ -76,8 +77,7 @@ public class StreamToMatrix extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The interpolation ratio of the filter. This must contain an
-     *  IntToken, and by default it has value one.
+    /** The dimension of the matrix.
      */
     public Parameter dimension;
 
@@ -86,19 +86,16 @@ public class StreamToMatrix extends Transformer {
     ////                         public methods                    ////
 
     /** If the argument is the meanTime parameter, check that it is
-      *  positive.
-     *  @exception IllegalActionException If the meanTime value is
-     *   not positive.
-     */
+      *  positive.  
+      * @exception IllegalActionException If the
+      *  meanTime value is * not positive.
+      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-            System.out.println(" ---- Attribute Changed For Dimension ");
+            _debug(" Attribute Change: " + attribute.toString() );
         if (attribute == dimension) {
-            System.out.println(" ---- Attribute Changed For Dimension ");
             _rows = ((IntToken)dimension.getToken()).intValue();
             _columns = ((IntToken)dimension.getToken()).intValue();
-            System.out.println(" ---- Row:    " + _rows );
-            System.out.println(" ---- Column: " + _columns );
         } else {
             super.attributeChanged(attribute);
         }
@@ -118,40 +115,46 @@ public class StreamToMatrix extends Transformer {
         return newobj;
     }
 
-    /** Reads one block of data from file and writes it to output port.
-     *  Assuming data in 16 bit, higher byte first format.
+    /** Reads a stream of DoubleTokens and places these tokens in a
+     *  Matrix. The Matrix produced is an Upper Triangular Matrix.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-
         int runL = 0;
         double[][] image = new double[_rows][_columns];
         for (int i = 0; i < _rows; i++) {
             for (int j = 0; j < _columns; j++) {
-
                 if ( j >= runL ) {
                     image[i][j] = ((DoubleToken)input.get(0)).doubleValue();
-                    System.out.println(" created[" +i+"]["+j+"] " + image[i][j]);
                 } else {
-                  image[i][j] = 0.0;
-                  System.out.println(" ZERO created[" +i+"]["+j+"] " + image[i][j]);
+                    image[i][j] = 0.0;
                 }
             }
             runL++;
         }
-        System.out.println(" **** MATRIX SEND **** ");
+        _debug(" **** MATRIX SEND **** ");
         output.broadcast(new DoubleMatrixToken(image));
     }
 
+
+    /** Initialize the row and column number. 
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {	
+	super.initialize();
+
+        _debug(" initialize StreamToMatrix ");        
+
+	// Get the correct value from the parameters
+        _rows = ((IntToken)dimension.getToken()).intValue();
+        _columns = ((IntToken)dimension.getToken()).intValue();
+
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private int _rows    = 6;
     private int _columns = 6;
-
-
-    //Get Matrix dimensions
-    // int rows = ((IntToken)_dimen.get(0)).intValue();
-    // int columns = ((IntToken)_dimen.get(0)).intValue();
 
 }

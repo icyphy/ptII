@@ -4,12 +4,12 @@
 <model name="topLevel" class="ptolemy.actor.TypedCompositeActor">
 
 
-    <property name="N"
+    <property name="Antennas"
                value="6"
                class="ptolemy.data.expr.Parameter">
       <doc>Number of Antenna's</doc>
     </property>
-    <property name="K"	
+    <property name="Iterations"	
                value="10"
                class="ptolemy.data.expr.Parameter">
       <doc>The number of QR iterations.
@@ -29,9 +29,9 @@
         </port>
     </entity>
     <entity name="ND_6" class="ptolemy.domains.pn.demo.QR.ND_6">
-        <property name="N" class="ptolemy.data.expr.Parameter" value="N">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="K">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -41,9 +41,9 @@
         </port>
     </entity>
     <entity name="ND_66" class="ptolemy.domains.pn.demo.QR.ND_66">
-        <property name="N" class="ptolemy.data.expr.Parameter" value="N">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="K">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -71,9 +71,9 @@
         </port>
     </entity>
     <entity name="ND_14" class="ptolemy.domains.pn.demo.QR.ND_14">
-        <property name="N" class="ptolemy.data.expr.Parameter" value="N">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="K">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -83,9 +83,9 @@
         </port>
     </entity>
     <entity name="ND_36" class="ptolemy.domains.pn.demo.QR.ND_36">
-        <property name="N" class="ptolemy.data.expr.Parameter" value="N">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="K">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -105,9 +105,9 @@
         </port>
     </entity>
     <entity name="ND_86" class="ptolemy.domains.pn.demo.QR.ND_86">
-        <property name="N" class="ptolemy.data.expr.Parameter" value="N">
+        <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="K" class="ptolemy.data.expr.Parameter" value="K">
+        <property name="K" class="ptolemy.data.expr.Parameter" value="Iterations">
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -125,7 +125,7 @@
         </port>
     </entity>
     <entity name="StreamToMatrix" class="ptolemy.domains.pn.demo.QR.StreamToMatrix">
-        <property name="Dimension" class="ptolemy.data.expr.Parameter" value="N">
+        <property name="dimension" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
         </port>

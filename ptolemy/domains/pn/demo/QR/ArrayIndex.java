@@ -52,7 +52,7 @@ public class ArrayIndex extends TreeMap {
     public double retrieve(String aKey ) {
 	Double value = (Double) _map.get( aKey );
 	if ( value == null ) {
-	    System.err.println(" --- NULL Value retrieved for key " + aKey );
+	    throw new Error(" --- NULL Value retrieved for key " + aKey );
 	}
 	return value.doubleValue();
     }
@@ -62,11 +62,11 @@ public class ArrayIndex extends TreeMap {
     }
 
     public void ReadMatrix(String filename ) {
-	System.out.println(" --- ReadMatrix: " + filename);
+	// System.out.println(" --- ReadMatrix: " + filename);
 
 	if ( filename == "U_1000x16" ) {
-
-	    System.out.println(" ---- CREATE U_1000x16 ----- ");
+            
+	    // System.out.println(" ---- CREATE U_1000x16 ----- ");
 	    for (int i=0;i<575;i++) {
 		for (int j=0;j<16;j++) {
 		    String key = atKey(i+1,j+1);
@@ -82,7 +82,7 @@ public class ArrayIndex extends TreeMap {
 		}
 	    }
 	} else {
-	    System.out.println(" ---- CREATE Zeros64x64 ----- ");
+	    // System.out.println(" ---- CREATE Zeros64x64 ----- ");
 	    for (int i=0;i<64;i++) {
 		for (int j=0;j<64;j++) {
 		    String key = atKey(i,j);
@@ -95,6 +95,6 @@ public class ArrayIndex extends TreeMap {
     }
 
     public void WriteMatrix(String filename ) {
-	System.out.println(" --- WriteMatrix: " + filename);
+	// System.out.println(" --- WriteMatrix: " + filename);
     }
 }

@@ -82,6 +82,9 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 
             getContentPane().add( _query );
 
+            // The 2 argument requests a go and stop button.
+            getContentPane().add(_createRunControls(2));
+
 	    _eventplot = new SequencePlotter(_toplevel, "plot");
             _eventplot.place(getContentPane());
             _eventplot.plot.setBackground(getBackground());
@@ -138,8 +141,13 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
             System.out.println(_toplevel.exportMoML());
             _initCompleted = true;
 
-            // The 2 argument requests a go and stop button.
-            getContentPane().add(_createRunControls(2));
+            StreamListener sa = new StreamListener();
+	    _ND_66.addDebugListener(sa);
+
+            StreamListener sa2 = new StreamListener();
+	    _s2m.addDebugListener(sa2);
+            
+        
 	
 	} catch (Exception ex) {
             report("Setup failed:", ex);

@@ -97,19 +97,19 @@ public class ND_66 extends TypedAtomicActor {
         out3.setTypeEquals(BaseType.DOUBLE);
         out4.setTypeEquals(BaseType.DOUBLE);
 
-
-
 	// The Type of these Parameter is set by the First
 	// Token placed in the parameters when created
 	parameter_N = new Parameter(this,"N", new IntToken(6));
 	parameter_K = new Parameter(this,"K", new IntToken(10));
 	parameter_d = new Parameter(this,"d", new IntToken(0));
 
-	System.out.println(" --- Process ND_66 Created -- ");
+	// System.out.println(" --- Process ND_66 Created -- ");
     }
  
     public void initialize() throws IllegalActionException {	
 	super.initialize();
+
+        _debug(" initialize ND66 ");        
 
 	_t = 0;
 	_returnValue = true;
@@ -178,7 +178,11 @@ public class ND_66 extends TypedAtomicActor {
     }
 
     public void fire() throws IllegalActionException {	
-	System.out.println(" -- Firing ND_66 -- ");
+	// System.out.println(" -- Firing ND_66 -- ");
+	// System.out.println(" -- N = " + _N );
+	// System.out.println(" -- K = " + _K );
+
+        _debug(" fire ND66 ");
 
 	if  ( k - 2 >= 0 ) { // ED_5
 	    _argIn0 = ((DoubleToken) in0.get(0)).doubleValue();

@@ -61,7 +61,7 @@ public class ND_14 extends TypedAtomicActor {
 
 	x_1.ReadMatrix( "U_1000x16" );
 
-	System.out.println(" --- Process ND_14 Created -- ");
+	// System.out.println(" --- Process ND_14 Created -- ");
     }
  
     public void initialize() throws IllegalActionException {	

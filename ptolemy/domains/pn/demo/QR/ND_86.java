@@ -70,7 +70,7 @@ public class ND_86 extends TypedAtomicActor {
 	parameter_K = new Parameter(this,"K", new IntToken(10));
 	parameter_d = new Parameter(this,"d", new IntToken(0));
 
-	System.out.println(" --- Process ND_86 Created -- ");
+	// System.out.println(" --- Process ND_86 Created -- ");
     }
  
     public void initialize() throws IllegalActionException {	

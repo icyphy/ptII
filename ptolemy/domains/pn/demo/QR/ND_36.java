@@ -61,7 +61,7 @@ public class ND_36 extends TypedAtomicActor {
 
 	super(aContainer, aName);
 
-        System.out.println(" -- THROUGH CONSTRUCTOR ND_36 -- ");
+        // System.out.println(" -- THROUGH CONSTRUCTOR ND_36 -- ");
 
 	in0 = new TypedIOPort(this,"in0",true,false);
 	in1 = new TypedIOPort(this,"in1",true,false);
@@ -88,7 +88,7 @@ public class ND_36 extends TypedAtomicActor {
 	parameter_K = new Parameter(this,"K", new IntToken(10));
 	parameter_d = new Parameter(this,"d", new IntToken(0));
 
-	System.out.println(" --- Process ND_36 Created -- ");
+	// System.out.println(" --- Process ND_36 Created -- ");
     }
  
     public void initialize() throws IllegalActionException {	
@@ -224,7 +224,7 @@ public class ND_36 extends TypedAtomicActor {
 	    if (_t == 2) { // t equals n means counter finished completed n-1 cycles.
 		// sbfQuit();
 		// sbfExit();
-		System.out.println(" -- FINISHED ND_36 -- ");
+		// System.out.println(" -- FINISHED ND_36 -- ");
 		_returnValue = false;
 		// (Thread.currentThread()).suspend();
 		// System.exit(0);

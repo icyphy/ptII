@@ -581,6 +581,6 @@ public class SourceMatrix {
 	{  -105.0, -114.0, -77.0, -36.0, -3.0, 1.0, -13.0, -46.0, -46.0, -25.0, 7.0, 74.0, 110.0, 96.0, 57.0, 14.0 } };
  
     public static void main(String args[]) {
-	System.out.println(" -- item: " + sourcematrix_0[574][15] );
+	// System.out.println(" -- item: " + sourcematrix_0[574][15] );
     }
 }
