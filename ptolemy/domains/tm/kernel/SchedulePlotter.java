@@ -122,7 +122,6 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                     plot.clear(true);
                     _taskMap.clear();
                     _taskState.clear();
-                    System.out.println("clearing");
                 }
             } else {
                 if (_taskMap != null) {
@@ -134,7 +133,6 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                         final int finalid = id;
                         _taskMap.put(actorName, new Integer(id));
                         _taskState.add(new Integer(0));
-                        System.out.println("adding legend");
                         // Note: addLegend is not intended to be
                         // called from outside the swing thread.
                         Runnable doAddPoint = new Runnable() {
@@ -150,6 +148,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                     plot.addPoint(id, time, id  + _oldState/2.1, true);
                     plot.addPoint(id, time, id + scheduleEvent/2.1, true);
                     _taskState.set(id, new Integer(scheduleEvent));
+                    plot.fillPlot();
                     plot.repaint();
                 }
             }
