@@ -28,20 +28,19 @@
 #						COPYRIGHTENDKEY
 ##########################################################################
 
-# Root of Ptolemy II directory
-ROOT =		.
-
-# True source directory
-VPATH =		$(ROOT)
-
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+ME =		ptII
 
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite
 # Don't go down into collections, it does not have a makefile
 DIRS = util ptolemy doc com #collections
+
+# Root of Ptolemy II directory
+ROOT =		.
+
+# Get configuration info
+CONFIG =	$(ROOT)/mk/ptII.mk
+include $(CONFIG)
 
 EXTRA_SRCS = \
 	copyright.txt \
@@ -62,11 +61,14 @@ OPTIONAL_FILES = \
 DISTCLEAN_STUFF = \
 	mk/ptII.mk config.log config.status config.cache
 
-all: mk/ptII.mk suball
-install: subinstall
+all: mk/ptII.mk suball collections/ptcollections.jar
+install: subinstall collections/ptcollections.jar
+
+collections/ptcollections.jar:
+	(cd collections; $(MAKE) ptcollections.jar)
 
 # Glimpse is a tool that prepares an index of a directory tree.
-# glimpse is not included with Tycho, see http://glimpse.cs.arizona.edu
+# glimpse is not included with Ptolemy II, see http://glimpse.cs.arizona.edu
 GLIMPSEINDEX =	/usr/sww/bin/glimpseindex
 glimpse: .glimpse_exclude
 	@echo "Saving .glimpse_exclude, removing the .glimpse* files"

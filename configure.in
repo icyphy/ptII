@@ -88,6 +88,14 @@ so we search for the java compiler.])
     if test -x "$JAVAC"; then	
 	JAVABIN=`dirname $JAVAC`
 	PTJAVA_DIR=`dirname $JAVABIN`
+	if test "$PTJAVA_DIR" = "/"; then
+	    if test -d /usr/java; then
+		PTJAVA_DIR=/usr/java
+	        AC_MSG_WARN([ Found javac in '$JAVABIN', /usr/java exists, so
+  we are setting PTJAVA_DIR to '$PTJAVA_DIR'])
+	    fi	
+	fi
+
     else
         AC_MSG_WARN([ Failed to find javac, perhaps Java is not installed?])
     fi
