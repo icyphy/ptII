@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2002 The Regents of the University of California.
+# @Copyright (c) 2002-2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -318,4 +318,3 @@ test RemoveGraphicalClasses-1.4 {Try a configuration has a class that we are goi
         </group>
     </configure>
 </entity>
-}}
