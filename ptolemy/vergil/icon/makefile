@@ -94,7 +94,7 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all:' \
+all: \
 	jclass
 install: jclass $(PTCLASSJAR)
 
