@@ -433,10 +433,10 @@ public class Time implements Comparable {
 			// NOTE: A simple computation may help to warn users that
 			// the returned double value loses the specified precisoin.
 			// One example: if time resolution is 1E-12,
-			// any double that is bigger than 8192.0 cannot distinguish from itself
-			// from a value slighter bigger (with the difference as time
-			// resolution). 8192 is the LUB of the set of double values have
-			// the time resolution.
+			// any double that is bigger than 8192.0 cannot distinguish itself
+			// from any other bigger values (even slightly bigger with the 
+            // difference as small as the time resolution). Therefore, 8192 is 
+            // the LUB of the set of double values have the time resolution.
 			// NOTE: The strategy to find the LUB for a given time resolution r:
 			// find the smallest N such that time resolution r >=  2^(-1*N);
 			// get M = 52 - N, which is the multiplication we can apply on the
