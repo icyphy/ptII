@@ -195,10 +195,10 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
              _realGain = _chop(realgain, _prec);
 
              for (int i=0;i<realnum.length;i++){
-                  _realNumerator[i]=_chop(realnum[i], _prec);
+                  _realNumerator[i]= _chop(realnum[i], _prec);
              }
              for (int i=0;i<realden.length;i++){
-                  _realDenominator[i]=_chop(realden[i], _prec);
+                  _realDenominator[i]= _chop(realden[i], _prec);
              }
              size = Math.max(realnum.length, realden.length)*120+50; 
              
@@ -213,8 +213,12 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
  
          // chop the text of the value to the desired precision
          int pt = strValue.indexOf(".");
+         int E = strValue.indexOf("E");
          if ((pt != -1) && ((strValue.length()-pt) > prec+1)){
              strValueChop = (strValue.substring(0,pt+(prec+1))).trim();
+             if (E != -1) {
+                 strValueChop = strValueChop + strValue.substring(E);
+             }
          } else {
              strValueChop = strValue;
          }
