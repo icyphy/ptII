@@ -140,8 +140,6 @@ public class ActorController extends AttributeController {
             _removeIconAction.setConfiguration(_configuration);
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_removeIconAction));
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(new RemoveIconAction()));
         }
 
         // NOTE: This requires that the configuration be non null, or it
