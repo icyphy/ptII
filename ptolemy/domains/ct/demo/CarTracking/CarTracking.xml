@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 592]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[54, 31]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 29.5">
         </property>
     </property>
-    <property name="fault" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="fault" class="ptolemy.data.expr.Parameter" value="1">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -95,12 +95,12 @@ apply maximum acceleration if it is too far from the leading car.  </text></svg>
         </property>
         <port name="package" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="849.0909090909088, 313.44444444444457">
+            <property name="_location" class="ptolemy.moml.Location" value="760.0, 324.0">
             </property>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="647.0454545454539, 222.740740740741">
+            <property name="_location" class="ptolemy.moml.Location" value="648.5, 224.0">
             </property>
         </port>
         <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -223,7 +223,7 @@ apply maximum acceleration if it is too far from the leading car.  </text></svg>
             </port>
         </entity>
         <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-            <property name="_location" class="ptolemy.moml.Location" value="806.5, 314.5">
+            <property name="_location" class="ptolemy.moml.Location" value="731.5, 314.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -830,7 +830,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="acceleration" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="496.0, 206.75">
+                    <property name="_location" class="ptolemy.moml.Location" value="496.0, 206.66666666666666">
                     </property>
                     <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
                     </property>

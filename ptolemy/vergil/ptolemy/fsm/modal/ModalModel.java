@@ -111,6 +111,18 @@ models.
 public class ModalModel extends TypedCompositeActor
         implements CTStepSizeControlActor {
 
+    /** Construct a modal model in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public ModalModel(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+	super(workspace);
+        _init();
+    }
+
     /** Construct a modal model with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -124,66 +136,7 @@ public class ModalModel extends TypedCompositeActor
     public ModalModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // The base class identifies the class name as TypedCompositeActor
-        // irrespective of the actual class name.  We override that here.
-        getMoMLInfo().className = "ptolemy.vergil.ptolemy.fsm.modal.ModalModel";
-
-        // This actor contains an FSMDirector and an FSMActor.
-        // The names are preceded with underscore to minimize the
-        // likelihood of a conflict with a user-desired name.
-        // NOTE This director will be described in the exported MoML
-        // file, so when that is encountered, it will match this director.
-        FSMDirector director = newDirector();
-
-        // NOTE This controller will be described in the exported MoML
-        // file, so when that is encountered, it will match this.
-        _controller = new ModalController(this, "_Controller");
-
-        director.controllerName.setExpression("_Controller");
-
-        // NOTE This library will be described in the exported MoML
-        // file, so when that is encountered, it will match this.
-        // Configure the controller so it has the appropriate library.
-        LibraryAttribute attribute = new LibraryAttribute(
-                _controller, "_library");
-        CompositeEntity library = new CompositeEntity(new Workspace("Library"));
-        library.setName("state library");
-        attribute.setLibrary(library);
-        State state = new State(library, "state");
-        new Attribute(state, "_centerName");
-        new HierarchicalStateControllerFactory(state, "_controllerFactory");
-
-        // Import annotations file.
-        // Do this as a MoML change request so we can easily read the library
-        // spec from a file, rather than replicating it here.
-        // NOTE: Because this library has no association with a director,
-        // the change will always be executed immediately.
-        // This should be OK, since the library is in its own workspace,
-        // and modifying the library cannot possibly affect the executing
-        // model.
-        String moml = "<input source=\"ptolemy/configs/annotation.xml\"/>";
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, library, moml);
-        library.requestChange(request);
-
-        // Putting this attribute in causes look inside to be handled
-        // by it.
-        new ModalTableauFactory(this, "_tableauFactory");
-
-        // Create a more reasonable default icon.
-	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"60\" " +
-                "height=\"40\" style=\"fill:red\"/>\n" +
-                "<rect x=\"2\" y=\"2\" width=\"56\" " +
-                "height=\"36\" style=\"fill:lightgrey\"/>\n" +
-                "<ellipse cx=\"30\" cy=\"20\"" +
-                " rx=\"15\" ry=\"10\"/>\n" +
-                "<circle cx=\"15\" cy=\"20\"" +
-                " r=\"5\" style=\"fill:white\"/>\n" +
-                "<circle cx=\"45\" cy=\"20\"" +
-                " r=\"5\" style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -320,6 +273,74 @@ public class ModalModel extends TypedCompositeActor
             return ((CTTransparentDirector)dir).refinedStepSize();
         }
         return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Initialize the model.
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
+
+        // The base class identifies the class name as TypedCompositeActor
+        // irrespective of the actual class name.  We override that here.
+        getMoMLInfo().className = "ptolemy.vergil.ptolemy.fsm.modal.ModalModel";
+
+        // This actor contains an FSMDirector and an FSMActor.
+        // The names are preceded with underscore to minimize the
+        // likelihood of a conflict with a user-desired name.
+        // NOTE This director will be described in the exported MoML
+        // file, so when that is encountered, it will match this director.
+        FSMDirector director = newDirector();
+
+        // NOTE This controller will be described in the exported MoML
+        // file, so when that is encountered, it will match this.
+        _controller = new ModalController(this, "_Controller");
+
+        director.controllerName.setExpression("_Controller");
+
+        // NOTE This library will be described in the exported MoML
+        // file, so when that is encountered, it will match this.
+        // Configure the controller so it has the appropriate library.
+        LibraryAttribute attribute = new LibraryAttribute(
+                _controller, "_library");
+        CompositeEntity library = new CompositeEntity(new Workspace("Library"));
+        library.setName("state library");
+        attribute.setLibrary(library);
+        State state = new State(library, "state");
+        new Attribute(state, "_centerName");
+        new HierarchicalStateControllerFactory(state, "_controllerFactory");
+
+        // Import annotations file.
+        // Do this as a MoML change request so we can easily read the library
+        // spec from a file, rather than replicating it here.
+        // NOTE: Because this library has no association with a director,
+        // the change will always be executed immediately.
+        // This should be OK, since the library is in its own workspace,
+        // and modifying the library cannot possibly affect the executing
+        // model.
+        String moml = "<input source=\"ptolemy/configs/annotation.xml\"/>";
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, library, moml);
+        library.requestChange(request);
+
+        // Putting this attribute in causes look inside to be handled
+        // by it.
+        new ModalTableauFactory(this, "_tableauFactory");
+
+        // Create a more reasonable default icon.
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" width=\"60\" " +
+                "height=\"40\" style=\"fill:red\"/>\n" +
+                "<rect x=\"2\" y=\"2\" width=\"56\" " +
+                "height=\"36\" style=\"fill:lightgrey\"/>\n" +
+                "<ellipse cx=\"30\" cy=\"20\"" +
+                " rx=\"15\" ry=\"10\"/>\n" +
+                "<circle cx=\"15\" cy=\"20\"" +
+                " r=\"5\" style=\"fill:white\"/>\n" +
+                "<circle cx=\"45\" cy=\"20\"" +
+                " r=\"5\" style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

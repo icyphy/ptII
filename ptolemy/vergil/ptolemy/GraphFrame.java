@@ -802,12 +802,8 @@ public abstract class GraphFrame extends PtolemyFrame
     }
 
     /** Write the model to the specified file.  This overrides the base
-     *  class to yield different behavior if the save action is "save as"
-     *  vs. a simple "save".  If the action is "save as" and we are in
-     *  an inside composite actor, then only that composite actor is
-     *  saved.  Otherwise, the entire model is saved by delegating to
-     *  the parent class.  In addition, this method records the current
-     *  size and position of the window in the model.
+     *  class to record the current size and position of the window
+     *  in the model.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
@@ -832,6 +828,12 @@ public abstract class GraphFrame extends PtolemyFrame
             // Ignore problems here.  Errors simply result in a default
             // size and location.
         }
+        // NOTE: This used to override the base class so that saveAs
+        // on a submodel would save only the submodel.  But this was
+        // strange, to have behavior different from save, and also it
+        // broke save for top-level modal models.  So now we just do
+        // the same thing in saveAs as in save.
+        /*
         if (_saveAsFlag && getModel().getContainer() != null) {
             java.io.FileWriter fout = new java.io.FileWriter(file);
             getModel().exportMoML(fout);
@@ -839,6 +841,9 @@ public abstract class GraphFrame extends PtolemyFrame
         } else {
             super._writeFile(file);
         }
+        */
+
+        super._writeFile(file);
     }
 
     /** Remove the listeners we have created when the frame closes.

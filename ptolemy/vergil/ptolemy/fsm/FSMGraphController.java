@@ -58,7 +58,9 @@ import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 
 import ptolemy.gui.MessageHandler;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.StateListener;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
@@ -84,9 +86,11 @@ control-clicking and dragging from one state to another.
 
 @author Steve Neuendorffer
 @contributor Edward A. Lee
+
 @version $Id$
-*/
-public class FSMGraphController extends FSMViewerController {
+ */
+public class FSMGraphController extends FSMViewerController
+        implements StateListener {
 
     /** Create a new basic controller with default
      *  terminal and edge interactors.
@@ -127,6 +131,26 @@ public class FSMGraphController extends FSMViewerController {
         menu.addSeparator();
 	diva.gui.GUIUtilities.addMenuItem(menu, _newStateAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
+
+        // FIXME: This needs to be controlled via menu and/or toolbar.
+        // FIXME: Need to be able to remove a listener.
+        // Add an item to listen for state transitions.
+        FSMGraphModel graphModel = (FSMGraphModel)getGraphModel();
+        if (graphModel != null) {
+            CompositeEntity toplevel = graphModel.getPtolemyModel();
+            if (toplevel instanceof FSMActor) {
+                ((FSMActor)toplevel).addStateListener(this);
+            }
+        }
+    }
+
+    /** React to state change. This method is called when the specified
+     *  state becomes the current state. Currently, it just prints out the
+     *  name of the new state. FIXME: Animate.
+     *  @param state The new current state.
+     */
+    public void newState(State state) {
+        System.out.println("*** " + state.getFullName());
     }
 
     ///////////////////////////////////////////////////////////////////

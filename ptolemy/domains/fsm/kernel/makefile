@@ -61,6 +61,7 @@ JSRCS = \
 	InterfaceAutomatonTransition.java \
 	OutputActionsAttribute.java \
 	State.java \
+	StateListener.java \
 	Transition.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -65,6 +65,7 @@ import ptolemy.data.type.Typeable;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -172,6 +173,22 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a listener to be notified of the current state
+     *  when it changes. Do nothing if the listener is already listed.
+     *  The listener is registered using a weak reference, so there
+     *  is no need to remove it.  In fact, there is no mechanism to
+     *  remove it.
+     *  @param listener The listener.
+     */
+    public void addStateListener(StateListener listener) {
+        if (_stateListeners == null) {
+            _stateListeners = new LinkedList();
+        }
+        if (!_stateListeners.contains(listener)) {
+            _stateListeners.add(new WeakReference(listener));
+        }
+    }
 
     /** React to a change in an attribute. If the changed attribute is
      *  the <i>initialStateName</i> attribute, record the change but do
@@ -718,6 +735,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + "destination state.");
 	}
         _currentState = _lastChosenTransition.destinationState();
+        if (_stateListeners != null) _notifyListeners(_currentState);
 	BooleanToken resetToken =
 	        (BooleanToken)_lastChosenTransition.reset.getToken();
 	if (resetToken.booleanValue()) {
@@ -1082,6 +1100,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     private void _gotoInitialState() throws IllegalActionException {
         _currentState = getInitialState();
+        if (_stateListeners != null) _notifyListeners(_currentState);
         _setCurrentConnectionMap();
     }
 
@@ -1096,6 +1115,23 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
                     + ex.getMessage());
+        }
+    }
+
+    /** Notify any registered listeners of the specified new state.
+     *  This should be called only if the list of listeners is not null.
+     *  @param state The new state.
+     */
+    private void _notifyListeners(State state) {
+        Iterator listeners = _stateListeners.iterator();
+        while(listeners.hasNext()) {
+            WeakReference reference = (WeakReference)listeners.next();
+            if (reference == null || reference.get() == null) {
+                _stateListeners.remove(reference);
+            } else {
+                StateListener listener = (StateListener)reference.get();
+                listener.newState(state);
+            }
         }
     }
 
@@ -1127,4 +1163,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
 
+    // Listeners for state changes.
+    private List _stateListeners;
 }
