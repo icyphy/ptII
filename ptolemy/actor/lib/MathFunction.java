@@ -62,8 +62,8 @@ If the argument is NaN, then the result is NaN.
 If the argument is NaN, then the result is NaN.
 <li> <b>remainder</b>: The remainder after division.
 If the second operand is zero, then the result is NaN.
-<li> <b>sign</b>: The signum function
-If the argument is NaN, then the result is NaN.
+<li> <b>sign</b>: If the argument is greater than 0, return 1.0, if
+it is less than 0, return -1.0, otherwise return 0.0.
 <li> <b>square</b>: The square function
 If the argument is NaN, then the result is NaN.
 <li> <b>sqrt</b>: The square root function.
