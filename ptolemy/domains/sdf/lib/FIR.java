@@ -1,4 +1,4 @@
-/* An FIR filter.
+/* A type polymorphic FIR filter.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -39,10 +39,16 @@ import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FIR
-/**
-This actor implements a finite-impulse response
-filter with multirate capability.
+/** 
+
+This actor implements a type polymorphic finite-impulse response
+filter with multirate capability. Since this filter operates on
+Tokens, it is polymorphic in the type of data it operates on. It can
+operate on Double values like the default FIR filter, but also on
+Complex or FixPoint values.
+
 <p>
+
 When the <i>decimation</i> (<i>interpolation</i>)
 parameters are different from unity, the filter behaves exactly
 as it were followed (preceded) by a DownSample (UpSample) actor.
@@ -79,8 +85,10 @@ For more information about polyphase filters, see F. J. Harris,
 "Multirate FIR Filters for Interpolating and Desampling", in
 <i>Handbook of Digital Signal Processing</i>, Academic Press, 1987.
 
-@author Edward A. Lee
+@author Edward A. Lee, Bart Kienhuis
 @version $Id$
+@see ptolemy.data.Token
+@see ptolemy.domains.sdf.lib.FIR
 */
 
 public class FIR extends SDFAtomicActor {
@@ -98,15 +106,13 @@ public class FIR extends SDFAtomicActor {
         super(container, name);
 
         input = new SDFIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.DOUBLE);
-
         output = new SDFIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.DOUBLE);
 
         taps = new Parameter(this, "taps", new DoubleMatrixToken());
         interpolation = new Parameter(this, "interpolation", new IntToken(1));
-
+        
         // FIXME: Added decimation and decimationPhase parameters
+        attributeTypeChanged( taps );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,8 +129,8 @@ public class FIR extends SDFAtomicActor {
      */
     public Parameter interpolation;
 
-    /** The taps of the filter.  This is a row vector embedded in
-     *  in a token of type DoubleMatrixToken.  By default, it is empty,
+    /** The taps of the filter. This is a row vector embedded in in a
+     *  token of type FixMatrixToken. By default, it is empty,
      *  meaning that the output of the filter is zero.
      */
     public Parameter taps;
@@ -133,6 +139,36 @@ public class FIR extends SDFAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the argument is the meanTime parameter, check that it is
+      *  positive.  
+      * @exception IllegalActionException If the
+      *  meanTime value is not positive.
+      */
+    public void attributeTypeChanged(Attribute attribute) 
+            throws IllegalActionException {
+        if (attribute == taps) {
+            if ( taps.getType() == BaseType.FIX_MATRIX ) {
+                _zero = new FixToken( 0,16,2 );
+                input.setTypeEquals(BaseType.FIX);
+                output.setTypeEquals(BaseType.FIX);
+            }
+
+            if ( taps.getType() == BaseType.COMPLEX_MATRIX ) {
+                _zero = new ComplexToken();
+                input.setTypeEquals(BaseType.COMPLEX);
+                output.setTypeEquals(BaseType.COMPLEX);
+            }
+
+            if ( taps.getType() == BaseType.DOUBLE_MATRIX ) {
+                _zero = new DoubleToken();
+                input.setTypeEquals(BaseType.DOUBLE);
+                output.setTypeEquals(BaseType.DOUBLE);
+            }
+        } else {
+            super.attributeTypeChanged(attribute);
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -167,24 +203,33 @@ public class FIR extends SDFAtomicActor {
 
         // FIXME: consume just one input for now.
         if (--_mostRecent < 0) _mostRecent = _data.length - 1;
-        _data[_mostRecent] = ((DoubleToken)(input.get(0))).doubleValue();
+        _data[_mostRecent] = input.get(0);
 
         // Interpolate once for each input consumed
         for (int inC = 1; inC <= _dec; inC++) {
+
             // Produce however many outputs are required
             // for each input consumed
             while (phase < _interp) {
-                double out = 0.0;
+                _outToken = _zero;
+
                 // Compute the inner product.
                 for (int i = 0; i < _phaseLength; i++) {
                     int tapsIndex = i * _interp + phase;
-                    double tap = 0.0;
-                    if (tapsIndex < _taps.length) tap = _taps[tapsIndex];
+
                     int dataIndex =
                         (_mostRecent + _dec - inC + i)%(_data.length);
-                    out += tap * _data[dataIndex];
+                    if (tapsIndex < _taps.length) {                       
+                        _tapItem = _taps[tapsIndex];
+                        _dataItem = _data[dataIndex];
+                        _dataItem = _tapItem.multiply( _dataItem );
+                        _outToken = _outToken.add( _dataItem ); 
+                    } else {
+                        _dataItem = _data[dataIndex];
+                        _outToken = _outToken.add( _dataItem );
+                    }
                 }
-                output.send(0, new DoubleToken(out));
+                output.send(0, _outToken);
                 phase += _dec;
             }
             phase -= _interp;
@@ -196,14 +241,14 @@ public class FIR extends SDFAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
+        
         IntToken interptoken = (IntToken)(interpolation.getToken());
         _interp = interptoken.intValue();
-
+        
         // FIXME: Support multirate.  Get values from parameters.
         _dec = 1;
         _decPhase = 0;
-
+        
         // FIXME: Does the SDF infrastructure support accessing past samples?
         // FIXME: Handle mutations.
         input.setTokenConsumptionRate(_dec);
@@ -211,20 +256,29 @@ public class FIR extends SDFAtomicActor {
         if (_decPhase >= _dec) {
             throw new IllegalActionException(this,"decimationPhase too large");
         }
+
+    }
+
+    public void initialize() throws  IllegalActionException {
         // FIXME: Need error checking of parameter.
-        DoubleMatrixToken tapstoken = (DoubleMatrixToken)(taps.getToken());
-        _taps = new double[tapstoken.getColumnCount()];
+        MatrixToken tapstoken = (MatrixToken)(taps.getToken());
+        _taps = new Token[tapstoken.getColumnCount()];
         for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = tapstoken.getElementAt(0, i);
+            _taps[i] = tapstoken.getElementAsToken(0, i);
         }
+       
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
 
         // Create new data array and initialize index into it.
         int datalength = _taps.length/_interp;
         if (_taps.length%_interp != 0) datalength++;
-        _data = new double[datalength];
+        _data = new Token[datalength];
+        for(int i=0; i<datalength; i++ ) {
+            _data[i] = _zero;
+        }
         _mostRecent = datalength;
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -233,14 +287,22 @@ public class FIR extends SDFAtomicActor {
     /** The phaseLength is ceiling(length/interpolation), where
      *  length is the number of taps.
      */
-    int _phaseLength;
+    protected int _phaseLength;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Local cache of these parameter values.
     private int _dec, _interp, _decPhase;
-    private double[] _taps;
-    private double[] _data;
+    private Token[] _taps;
+    private Token[] _data;
     private int _mostRecent;
+
+
+    private Token _outToken;
+    private Token _tapItem;
+    private Token _dataItem;
+
+    private Token _zero;
 }
+

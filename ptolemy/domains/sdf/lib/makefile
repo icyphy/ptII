@@ -58,7 +58,7 @@ JSRCS = \
 	BitsToInt.java \
 	Delay.java \
 	FIR.java \
-	FIRToken.java \
+	FIRDouble.java \
 	FFT.java \
 	IntToBits.java\
 	LineCoder.java \
