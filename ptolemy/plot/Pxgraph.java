@@ -77,7 +77,7 @@ public class Pxgraph {
 	Parse the command line arguments, do any preprocessing, then plot.
       */
     public static void main(String arg[]) {
-        String args[] = new String[12];
+        String args[] = new String[11];
         AppletFrame myAppletFrame;
         Pxgraph pxgraph = new Pxgraph();
 
@@ -99,11 +99,9 @@ public class Pxgraph {
         args[5] = new String(".");
         args[6] = new String("-documentbase");
         args[7] = new String(".");
-
         args[8] = new String("dataurl=" + pxgraph.getDataURL() );
-        args[9] = new String("-noinit");
-        args[10] = new String("-name");
-        args[11] = new String(pxgraph.getCommandOption("-t"));
+        args[9] = new String("-name");
+        args[10] = new String(pxgraph.getCommandOption("-t"));
 
 	myAppletFrame = new AppletFrame("plot.Plot",args);
     }
