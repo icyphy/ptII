@@ -209,15 +209,11 @@ public class BoundaryDetector {
                 _isConnectedOutsideOfBoundaryValue = false;
                 return _isConnectedOutsideOfBoundaryValue;
             }
-            ComponentEntity contEntity =
-                (ComponentEntity)contPort.getContainer();
-            IOPort connectedPort = null;
-            ComponentEntity connectedEntity = null;
-
+      
             Iterator ports = contPort.connectedPortList().iterator();
             while ( ports.hasNext() ) {
-                connectedPort = (IOPort)ports.next();
-                connectedEntity = (ComponentEntity)connectedPort.getContainer();
+                IOPort connectedPort = (IOPort)ports.next();
+                ComponentEntity connectedEntity = (ComponentEntity)connectedPort.getContainer();
                 if ( connectedPort.isOpaque()
                         && !connectedEntity.isAtomic()
                         && connectedPort.isOutput() ) {
