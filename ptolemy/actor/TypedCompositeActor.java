@@ -372,7 +372,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 result.addAll(typeable.typeConstraintList());
             }
 
-            System.out.println("constraints for " + this + " = " + result);
             return result;
         } finally {
             workspace().doneReading();
