@@ -229,14 +229,20 @@ public class Scale extends Transformer {
 	    return compute(portType, paramType);
         }
 
-        /** Return a one element array containing the InequalityTerm
-	 *  representing the type of the port.
+        /** Return the type variable in this inequality term. If the type
+	 *  of the input port is not declarad, return an one element array
+	 *  containing the inequality term representing the type of the port;
+	 *  otherwise, return an empty array.
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    InequalityTerm[] variable = new InequalityTerm[1];
-	    variable[0] = _port.getTypeTerm();
-	    return variable;
+	    InequalityTerm portTerm = _port.getTypeTerm();
+	    if (portTerm.isSettable()) {
+	        InequalityTerm[] variable = new InequalityTerm[1];
+	        variable[0] = portTerm;
+	        return variable;
+	    }
+	    return (new InequalityTerm[0]);
         }
 
         /** Throw an Exception. This method cannot be called on a function
