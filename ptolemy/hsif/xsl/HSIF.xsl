@@ -589,11 +589,7 @@ For more help, choose Help from the upper menu bar.</text>
         <!-- Link the relations and the input ports of Invariants-->
         <!-- Link the output port of Invariants and the input of throwModelError actor -->
         <xsl:for-each select="Expr">
-            <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
-            <xsl:variable name="name">
-                <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
-                <xsl:if test="$temp=''">invariant</xsl:if>
-            </xsl:variable>
+            <xsl:variable name="name">invariant</xsl:variable>
             <xsl:for-each select="descendant::VarRef">
                 <xsl:variable name="varName" select="key('nid',@var)/@name"/>
                 <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
@@ -858,11 +854,7 @@ For more help, choose Help from the upper menu bar.</text>
 <!-- Invariants -->
 <xsl:template match="Expr" mode="invariant">
     <xsl:element name="entity">
-        <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
-        <xsl:attribute name="name">
-            <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
-            <xsl:if test="$temp=''">invariant</xsl:if>
-        </xsl:attribute>
+        <xsl:attribute name="name">invariant</xsl:attribute>
         <xsl:attribute name="class">ptolemy.actor.lib.Expression</xsl:attribute>
         <xsl:element name="property">
             <xsl:attribute name="name">expression</xsl:attribute>
@@ -903,11 +895,7 @@ For more help, choose Help from the upper menu bar.</text>
     </xsl:element>
 
     <xsl:element name="entity">
-        <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
-        <xsl:attribute name="name">
-            <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
-            <xsl:if test="$temp=''">throwModelError</xsl:if>
-        </xsl:attribute>
+        <xsl:attribute name="name">throwModelError</xsl:attribute>
         <xsl:attribute name="class">ptolemy.actor.lib.ThrowModelError</xsl:attribute>
         <xsl:element name="property">
             <xsl:attribute name="name">message</xsl:attribute>
