@@ -123,8 +123,9 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("\nCircuitTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-	//new ModelGraph(_model, options);
-
+	DirectedGraph dg = new CompositeModelGraph(_model,options);
+	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+	toDotty.writeDotFile(".", _model.getName(), dg);
 	//HWSystem hw = new HWSystem();
 	//JHDLTestbench jtb = new JHDLTestbench(hw);
 

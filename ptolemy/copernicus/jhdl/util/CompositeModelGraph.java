@@ -52,8 +52,9 @@ import ptolemy.kernel.ComponentEntity;
 */
 public class CompositeModelGraph extends ModelGraph {
 
-    public CompositeModelGraph(CompositeActor entity) {
+    public CompositeModelGraph(CompositeActor entity, Map options) {
 	super(entity);
+	_options = options;
 	_build();
     }
 
@@ -77,9 +78,10 @@ public class CompositeModelGraph extends ModelGraph {
 	    // Create Node for entity
 	    Object entityWeight = null;	    
 	    if (entity instanceof CompositeActor)
-		entityWeight = new CompositeModelGraph((CompositeActor) entity);
+		entityWeight = new CompositeModelGraph((CompositeActor) entity,_options);
 	    else if (entity instanceof AtomicActor)
-		entityWeight = new ActorModelGraph((AtomicActor) entity);
+		entityWeight = new ActorModelGraph((AtomicActor) entity,
+						   _options);
 	    else
 		entityWeight = new ModelGraph(entity);
 
@@ -147,4 +149,5 @@ public class CompositeModelGraph extends ModelGraph {
 
     }
 
+    protected Map _options;
 }
