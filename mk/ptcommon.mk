@@ -132,6 +132,7 @@ subinstall:
 
 
 # Run make demo in the subdirs
+demo: subdemo
 subdemo:
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
