@@ -195,6 +195,7 @@ public class KernelRuntimeException extends RuntimeException {
             printWriter.print("Caused by: ");
             _cause.printStackTrace(printWriter);
         }
+        printWriter.flush();
     }
 
 
