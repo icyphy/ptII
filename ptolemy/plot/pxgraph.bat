@@ -2,8 +2,8 @@
 rem MSDOS batch script to start up pxgraph
 
 rem @author Christopher Hylands
-rem @version @(#)pxgraph.bat	1.7 05/25/98
-rem @copyright: Copyright (c) 1997-1998 The Regents of the University of California.
+rem @version $Id$
+rem @copyright: Copyright (c) 1997- The Regents of the University of California.
 rem All rights reserved.
 
 rem Check the TYCHO variable.
