@@ -236,7 +236,8 @@ public class IOPort extends ComponentPort {
     public void createReceivers() throws IllegalActionException {
         if (!isOpaque()) {
             throw new IllegalActionException(this,
-                    "createReceivers: Can only create receivers on opaque ports.");
+                    "createReceivers: Can only create " +
+                    receivers on opaque ports.");
         }
         int portWidth = getWidth();
         if (portWidth <= 0) return;
