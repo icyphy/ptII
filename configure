@@ -3989,8 +3989,8 @@ fi
 # The problem is that the nesc/configure script does not understand
 # "c:/" style syntax, it works with "/cygdrive/c/", yet Java
 # does not understand /cygdrive/c syntax, so we hack
-if  ! -z "$TOSROOT" ; then 
-    TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\(a-zA-Z\)/@\1:/@'`
+if test ! -z "$TOSROOT" ; then 
+    TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
 fi
 
 #--------------------------------------------------------------------
