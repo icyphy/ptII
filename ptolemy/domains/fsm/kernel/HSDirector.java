@@ -35,6 +35,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
@@ -173,6 +174,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
         _ctrl._setInputsFromRefinement();
 
+        // Note that the actions associated with the transition
+        // are not executed.
         tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
 
         // execute the refinements of the enabled transition
@@ -228,6 +231,21 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return execDir.getNextIterationTime();
     }
 
+    /** Return true if the current refinement produces events.
+     *  @return True if the current refinement produces events.
+     */
+    public boolean hasCurrentEvent() {
+        // FIXME: delegate the method to the enabled refinement.
+        boolean eventPresent = false;
+        Iterator actors = _enabledRefinements.iterator();
+        while (!eventPresent && actors.hasNext()) {
+            // Note that the refinement is a CTCompositeActor.
+            CTCompositeActor actor = (CTCompositeActor)actors.next();
+            eventPresent |= actor.hasCurrentEvent();
+        }
+        return eventPresent;
+    }
+
     /** Return true if there are no refinements, or if the current
      *  integration step is accurate with the respect of all the enabled
      *  refinements, which are refinements that returned true in their
@@ -262,17 +280,17 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                             tr.getGuardExpression());
                 }
             }
-            // Check if there is any events dected.
+            // Check if there is any events detected.
             Transition trWithEvent = _checkEvent(_st.nonpreemptiveTransitionList());
             if (trWithEvent != null) {
                 if (_debugging) {
-                    _debug("Dected event for transition:  " +
+                    _debug("Detected event for transition:  " +
                             trWithEvent.getGuardExpression());
                 }
             }
 
             // If no transition is enabled, try to set "tr" as the transition
-            // with event dected.
+            // with event detected.
             if (tr == null && trWithEvent != null) {
                 tr = trWithEvent;
             }
@@ -349,7 +367,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *   enabled.
      */
     public boolean postfire() throws IllegalActionException {
-        Director dir= ((Actor)getContainer()).getExecutiveDirector();
+        CompositeActor container = (CompositeActor)getContainer();
+        Director dir= container.getExecutiveDirector();
         Iterator refinements = _enabledRefinements.iterator();
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();
@@ -363,8 +382,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             _ctrl._setInputsFromRefinement();
         }
         // FIXME: why do we need to execute the update actions again in postfire?
-        // From Xiaojun: we need to make sure the actions associated with the
-        // enabled transition get executed.
+        // From Xiaojun: actions of the event triggered transition need to be 
+        // executed. 
         Transition tr =
             _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
         // If there is one transition enabled, the HSDirector requests fire again
@@ -381,7 +400,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             while (iterator.hasNext()) {
                 ((Transition) iterator.next()).getRelationList().clearRelationList();
             }
-            CompositeActor container = (CompositeActor)getContainer();
             // If the top level of the model is modal model, the director
             // is null. We do not request to fire again since no one in upper
             // hierarchy will do that.
@@ -392,6 +410,16 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 dir.fireAt(container, getCurrentTime());
             }
         }
+        
+//        // FIXME: the above actions may change some outputs, which need
+//        // to be propagated to outside.  This has to be done by
+//        // the executive director calling transferOutputs().
+//        Iterator outports = container.outputPortList().iterator();
+//        while (outports.hasNext() && !_stopRequested) {
+//            IOPort p = (IOPort)outports.next();
+//            dir.transferOutputs(p);
+//        }
+        
         return super.postfire();
     }
 
@@ -427,8 +455,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return super.prefire();
     }
 
-    /** Check if the modal model is embedded inside a CT model or a modal model
-     *  with a HSDirector.
+    /** Check if the modal model is embedded inside a CT model or another 
+     *  modal model with a HSDirector.
      * 
      *  @exception IllegalActionException If parent class throws it or the 
      *  immediately upper director is neither a CTDirector nor a HSDirector. 
