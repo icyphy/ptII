@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -48,51 +48,60 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ViterbiDecoder
 /**
-The Viterbi algorithm is one optimal way to decode convolutional codes.
-The <i>polynomialArray</i> indicates the polynomials used to compute
-parities for the corresponding convolutional encoder.
-The <i>uncodeBlockSize</i> is the input rate of the encoder, and it is
-actually the output rate of the decoder.
+The Viterbi algorithm is an optimal way to decode convolutional and
+trellis codes. The code is specified jointly by the <i>uncodedRate</i>
+and <i>polynomialArray</i> parameters.  To get a <i>k</i>/<i>n</i>
+code, set <i>uncodedRate</i> to <i>k</i> and give <i>n</i> integers
+in <i>polynomialArray</i>.  See ConvolutionalCoder for details about
+the meaning of these parameters. On each firing, this actor will
+read <i>n</i> inputs and produce <i>k</i> outputs.
 <p>
-The decoder tries to "guess" the most likely input sequence of the
-encoder by searching all possibilities and computing the "distance"
-between the codewords they produce and the received ones. The one
-that makes the minimum distance is the most likely input sequence.
+The decoder finds the most likely data sequence given noisy inputs
+by searching all possibilities and computing the distance
+between the codewords they produce and the observed noisy data.
+The sequence yielding the minimum distance is the decoded output.
 <p>
-There are 2 choices offered in this actor to compute such "distance".
+There are two choices offered in this actor to compute the distance.
 If it the parameter <i>softDecoding</i> is set to be false, the input
 port will accept boolean tokens and compute the Hamming distance.
 If the parameter <i>softDecoding</i> is set to be true, the input port
 will accept double tokens and compute the Euclidean distance.
-The parameter <i>amplitude</i> should be a double array of length 2.
+The parameter <i>contellation</i> should be a double array of length 2.
 The first element specifies the amplitude of "true" input. The second
-element specifies the amplitude of "false" input.
+element specifies the amplitude of "false" input.  At this time,
+this actor can only handle binary antipodal constellations, but
+we expect to generalize this.
 <p>
 Soft decoding has lower probability of decoding error than hard decoding.
 But distance computation for hard decoding is easier, since it is based
-on bit-operations. Users can choose either mode based on the trade-off
-between probability of decoding error and computational complexity.
+on bit operations. Moreover, hard decoding can be used when there is no
+direct observation of the noisy data, but only observations of a bit
+sequence that may have errors in it.  With hard decoding, this
+actor serves the role of correcting errors.  With soft decoding, it
+serves the role of reducing the likelyhood of errors.
 <p>
-As each new corrupted codeword is received, the decoder makes a final
-decision on the most-likely input symbol of "D" firings earlier, where "D"
-is specified by the <i>delay</i> parameter. It should be a positive integer.
-Therefore, in the first "D" firings, the decoder does not make any
-decoding decision and sends all-zero tokens to the output.
-And the last "D" codewords are "lost" in the decoder.
-The larger "D" is, the more likely the decoder can "guess" correctly.
-The trade-off is more waiting time and more complexity in the computation.
-Users who wish to get a complete sequence of the decoded bits should attach
-"D" blocks of redundant inputs when they send their information bits into the
-ConvolutionalCoder. It has been found experimentally that a proper value
-for "D" would be 5 times of the highest order of all polynomials, provided
-that the convolutional code is a one that has good distance property.
+There is some delay between the reading of input data and the
+production of decoded output data.  That delay, which is called
+the <i>trace-back depth</i> or <i>truncation depth</i> of the
+decoder, is controlled by the
+<i>delay</i> parameter, which is required to be a positive integer.
+On the first <i>delay</i> firings of this actor, the outputs will
+be <i>false</i>.  On each firing, the number of outputs produced
+is <i>uncodedRate</i>, so the output will have a prefix of
+<i>delay</i>*<i>uncodedRate</i> false-valued tokens before any
+decoded bits are produced.  Larger values of <i>delay</i> generally
+reduce the probability of error.  A good rule of thumb is to set
+<i>delay</i> to five times the highest order of all polynomials, provided
+that the convolutional code is a one that has good distance properties.
 <p>
 For more information on convolutional codes and Viterbi decoder,
 see the ConvolutionalCoder actor and
-Proakis, Digital Communications, Fourth Edition, McGraw-Hill,
-2001, pp. 471-477 and pp. 482-485.
+Proakis, <i>Digital Communications</i>, Fourth Edition, McGraw-Hill,
+2001, pp. 471-477 and pp. 482-485,
+or Barry, Lee and Messerschmitt, <i>Digital Communication</i>, Third Edition,
+Kluwer, 2004.
 <p>
-@author Rachel Zhou
+@author Rachel Zhou, contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 3.0
 */
@@ -111,9 +120,9 @@ public class ViterbiDecoder extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        uncodeBlockSize = new Parameter(this, "uncodeBlockSize");
-        uncodeBlockSize.setTypeEquals(BaseType.INT);
-        uncodeBlockSize.setExpression("1");
+        uncodedRate = new Parameter(this, "uncodedRate");
+        uncodedRate.setTypeEquals(BaseType.INT);
+        uncodedRate.setExpression("1");
 
         polynomialArray = new Parameter(this, "polynomialArray");
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
@@ -127,12 +136,11 @@ public class ViterbiDecoder extends Transformer {
         softDecoding.setExpression("false");
         softDecoding.setTypeEquals(BaseType.BOOLEAN);
 
-        amplitude = new Parameter(this, "amplitude");
-        amplitude.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        amplitude.setExpression("{1.0, 0.0}");
+        contellation = new Parameter(this, "contellation");
+        contellation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        contellation.setExpression("{1.0, 0.0}");
 
         // Declare data types, consumption rate and production rate.
-        //input.setTypeEquals(BaseType.DOUBLE);
         _type = new ptolemy.actor.TypeAttribute(input, "inputType");
         _type.setExpression("boolean");
         _inputRate = new Parameter(input, "tokenConsumptionRate",
@@ -146,19 +154,19 @@ public class ViterbiDecoder extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** An array of integers defining an array of polynomials with
+    /** An array of integers defining polynomials with
      *  binary coefficients. The coefficients indicate the presence (1)
      *  or absence (0) of a tap in the shift register. Each element
      *  of this array parameter should be a positive integer.
-     *  The array's default value is {05, 07}.
+     *  The default value is {05, 07}.
      */
     public Parameter polynomialArray;
 
-    /** Integer defining the number of bits that the shift register
-     *  takes in each firing. It should be a positive integer. Its
-     *  default value is the integer 1.
+    /** Integer defining the number of bits produced at the output
+     *  in each firing. It should be a positive integer. Its
+     *  default value is 1.
      */
-    public Parameter uncodeBlockSize;
+    public Parameter uncodedRate;
 
     /** Integer defining the trace back depth of the viterbi decoder.
      *  It should be a positive integer. Its default value is the
@@ -167,29 +175,31 @@ public class ViterbiDecoder extends Transformer {
     public Parameter delay;
 
     /** Boolean defining the decoding mode. If it is true, the decoder
-     *  will do soft decoding; otherwise it will do hard decoding.
-     *  Its default value is true, which means it by default will do
-     *  soft decoding.
+     *  will do soft decoding, and the input data type will be double;
+     *  otherwise it will do hard decoding, and the input data type will
+     *  be boolean. The default value is true.
      */
     public Parameter softDecoding;
 
-    /** This parameter should be a double array of length 2. The first
+    /** The constellation for soft decoding.  Inputs are expected to be
+     *  symbols from this constellation with added noise.
+     *  This parameter should be a double array of length 2. The first
      *  element defines the amplitude of "true" input. The second element
      *  defines the amplitude of "false" input.
      */
-    public Parameter amplitude;
+    public Parameter contellation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>mode</i>, set input port
-     *  type to be double if <i>mode</i> is true; set it to be boolean
-     *  type  if it is false.
-     *  If the attribute being changed is <i>uncodeBlockSize</i> or
+     *  type to be double if <i>mode</i> is true and set it to type boolean
+     *  if it is false.
+     *  If the attribute being changed is <i>uncodedRate</i> or
      *  <i>delay</i> then verify it is a positive integer; if it is
      *  <i>polynomialArray</i>, then verify that each of its elements
      *  is a positive integer.
-     *  @exception IllegalActionException If <i>uncodeBlockSize</i>,
+     *  @exception IllegalActionException If <i>uncodedRate</i>,
      *  or <i>delay</i> is non-positive, or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
@@ -203,8 +213,8 @@ public class ViterbiDecoder extends Transformer {
             } else {
                 _type.setExpression("boolean");
             }
-        } else if (attribute == uncodeBlockSize) {
-            _inputNumber = ((IntToken)uncodeBlockSize.getToken()).intValue();
+        } else if (attribute == uncodedRate) {
+            _inputNumber = ((IntToken)uncodedRate.getToken()).intValue();
             if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
                         "inputLength must be non-negative.");
@@ -246,20 +256,20 @@ public class ViterbiDecoder extends Transformer {
         }
     }
 
-    /** If the private variable _inputNumberInvalid is true, verify
-     *  the validity of the parameters. If they are valid, compute
-     *  the state-transition table of this convolutional code, which
-     *  is stored in a 3-D array _truthTable[][][].
-     *
+    /** Read <i>n</i> inputs and produce <i>k</i> outputs, where <i>n</i>
+     *  is the number of integers in <i>polynomialArray</i> and <i>k</i>
+     *  is the value of the <i>uncodedRate</i> parameter.  The outputs
+     *  are a decoded bit sequence, with a prefix of <i>false</i>-valued
+     *  tokens produced on the first <i>delay</i> firings.  The number
+     *  of leading <i>false</i> outputs, therefore, is
+     *  <i>delay</i>*<i>uncodedRate</i>.
      *  To decode, the actor searches iteratively of all possible
-     *  input sequence and find the one that has the minimum distance.
-     *  After the first "D" firings, the actor starts to make a
-     *  decision and begins to send the decoded bits to the output
-     *  port.
+     *  input sequence and find the one that has the minimum distance
+     *  to the observed inputs.
      */
     public void fire() throws IllegalActionException {
         if (_mode) {
-            ArrayToken ampToken = ((ArrayToken)amplitude.getToken());
+            ArrayToken ampToken = ((ArrayToken)contellation.getToken());
             if (ampToken.length() != 2) {
                 throw new IllegalActionException(this,
                         "Invalid amplitudes for soft decoding!");
@@ -273,6 +283,10 @@ public class ViterbiDecoder extends Transformer {
             }
         }
 
+        // If the private variable _inputNumberInvalid is true, verify
+        // the validity of the parameters. If they are valid, compute
+        // the state-transition table of this convolutional code, which
+        // is stored in a 3-D array _truthTable[][][]. 
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
@@ -314,7 +328,7 @@ public class ViterbiDecoder extends Transformer {
             // _truthTable[m][n][1:3] has the following meanings:
             // "m" is the possible current state of the shift register.
             // It has 2<i>k</i> possible previous states, where "k"
-            // is the <i>uncodeBlockSize</i>.
+            // is the <i>uncodedRate</i>.
             // Hence _truthTable[m][n][1:3] stores the truth values for
             // the n-th possible previous state for state "m".
             // _truthTable[m][n][1] is the "value" of the previous
@@ -443,8 +457,7 @@ public class ViterbiDecoder extends Transformer {
         _flag = _flag + 1;
     }
 
-    /** Initialize the actor by resetting _inputNumberInvalid to be
-     *  true, and _flag to be 0.
+    /** Initialize the actor.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {

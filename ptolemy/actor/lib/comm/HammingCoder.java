@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// HammingCoder
 /**
 Encode the information symbols into Hamming code.
-Let <i>k</i> denotes parameter <i>uncodeBlockSize</i> and <i>n</i> denotes
+Let <i>k</i> denotes parameter <i>uncodedRate</i> and <i>n</i> denotes
 parameter <i>codeBlockSize</i>. During each firing, the actor consumes
 <i>k</i> bits and encode them into a block of code with length <i>n</i>.
 The rate of the code is <i>k/n</i>.
@@ -131,11 +131,11 @@ public class HammingCoder extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>uncodeBlockSize</i> or
-     *  <i>uncodeBlockSize</i>, then verify that it is a positive integer.
+    /** If the attribute being changed is <i>uncodedRate</i> or
+     *  <i>uncodedRate</i>, then verify that it is a positive integer.
      *  Set the tokenConsumptionRate and tokenProductionRate.
-     *  @exception IllegalActionException If <i>initial</i> is negative
-     *  or <i>uncodeBlockSize</i> is non-positive or any element of
+     *  @exception IllegalActionException If <i>initialState</i> is negative
+     *  or <i>uncodedRate</i> is non-positive or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
@@ -168,8 +168,8 @@ public class HammingCoder extends Transformer {
     }
 
     /** If the attributes has changed, check the validity of
-     *  uncodeBlockSize and codeBlockSize. Generate the parity matrix.
-     *  Read "uncodeBlockSize" number of tokens from the input port
+     *  uncodedRate and codeBlockSize. Generate the parity matrix.
+     *  Read "uncodedRate" number of tokens from the input port
      *  and compute the parities. Send the parities in sequence to the
      *  output port.
      */

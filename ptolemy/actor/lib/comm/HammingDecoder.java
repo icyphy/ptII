@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 Decode a (<i>n</i>, <i>k</i>) Hamming code, where <i>n</i> is specified by
 parameter <i>codeBlockSize</i> nad <i>k</i> is specified by parameter
-<i>uncodeBlockSize</i>.
+<i>uncodedRate</i>.
 <p>
 The Hamming code can correct one-bit error.
 To encode a Hamming code, the HammingCoder consumes <i>k</i> information bits
@@ -118,11 +118,11 @@ public class HammingDecoder extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>uncodeBlockSize</i> or
-     *  <i>uncodeBlockSize</i>, then verify that it is a positive integer.
+    /** If the attribute being changed is <i>uncodedRate</i> or
+     *  <i>uncodedRate</i>, then verify that it is a positive integer.
      *  Set the tokenConsumptionRate and tokenProductionRate.
-     *  @exception IllegalActionException If <i>initial</i> is negative
-     *  or <i>uncodeBlockSize</i> is non-positive or any element of
+     *  @exception IllegalActionException If <i>initialState</i> is negative
+     *  or <i>uncodedRate</i> is non-positive or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
@@ -155,8 +155,8 @@ public class HammingDecoder extends Transformer {
     }
 
     /** If the attributes has changed, check the validity of
-     *  uncodeBlockSize and codeBlockSize. Generate the parity matrix.
-     *  Read "uncodeBlockSize" number of tokens from the input port
+     *  uncodedRate and codeBlockSize. Generate the parity matrix.
+     *  Read "uncodedRate" number of tokens from the input port
      *  and compute the syndrome. If the syndrome is non-zero, correct
      *  one-bit error and send the decoded result to the output.
      */

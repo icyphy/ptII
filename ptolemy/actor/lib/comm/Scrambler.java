@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Scrambler
 /**
 Scramble the input bit sequence using a feedback shift register.
-The initial state of the shift register is given by the <i>initial</i>
+The initialState state of the shift register is given by the <i>initialState</i>
 parameter, which should be a non-negative integer.
 The taps of the feedback shift register are given by the <i>polynomial</i>
 parameter, which should be a positive integer.
@@ -79,7 +79,7 @@ states that a register with <i>N</i> bits can take on.  This one missing
 state, in fact, is a <i>lock-up</i> state, in that if the input is
 an appropriate constant, the scrambler will cease to produce random-looking
 output, and will output a constant. For example, if the input is all zeros,
-and the initial state of the scrambler is zero, then the outputs will be all
+and the initialState state of the scrambler is zero, then the outputs will be all
 zero, hardly random. This is easily avoided by initializing the scrambler
 to some non-zero state. The default value for the <i>shiftReg</i> is set to 1.
 <p>
@@ -173,7 +173,7 @@ public class Scrambler extends Transformer {
         polynomial.setTypeEquals(BaseType.INT);
         polynomial.setExpression("0440001");
 
-        initial = new Parameter(this, "initial");
+        initial = new Parameter(this, "initialState");
         initial.setTypeEquals(BaseType.INT);
         initial.setExpression("1");
 
@@ -204,10 +204,10 @@ public class Scrambler extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>initial</i>, then verify
+    /** If the attribute being changed is <i>initialState</i>, then verify
      *  that it is a non-negative integer; if it is <i>polynomial</i>, then
      *  verify that is a positive integer and the lower-order bit is 1.
-     *  @exception IllegalActionException If <i>initial</i> is non-positive
+     *  @exception IllegalActionException If <i>initialState</i> is non-positive
      *  or polynomial is non-positive or the lower-order bit is not 1.
      */
     public void attributeChanged(Attribute attribute)
@@ -269,7 +269,7 @@ public class Scrambler extends Transformer {
     }
 
     /** Initialize the actor by resetting the shift register state
-     *  equal to the value of <i>initial</i>
+     *  equal to the value of <i>initialState</i>
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -279,7 +279,7 @@ public class Scrambler extends Transformer {
     }
 
     /** Record the most recent shift register state as the new
-     *  initial state for the next iteration.
+     *  initialState state for the next iteration.
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {

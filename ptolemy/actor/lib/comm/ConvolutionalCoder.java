@@ -1,4 +1,4 @@
-/* Generate a convolutional code
+/* Encode an input sequence with a convolutional code.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -46,55 +46,60 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ConvolutionalCoder
 /**
-Generate a convolutional code by passing the information sequence to be
-transmitted through a linear finite-state shift register.
-The initial state of the shift register is given by the <i>initial</i>
-parameter, which should be a non-negative integer.
-The <i>uncodeBlockSize</i> parameter, denoted by "k", is the number of
-bits per firing that should be shifted into and along the shift register.
-It should be a positive integer. We call a k-bit block of input sequence
-as an <i>information symbol</i>.
-The <i>polynomialArray</i> parameter should be an array of positive
-integers. Each integer indicates one polynomial used for computing
-parity. The leading zero in each polynomial indicates it is an octal
-number. The i-th bit of the polynomial indicates whether the i-th
-tap of the delay line should be taken to compute the exclusive-ored
-parity. See more details in Scrambler actor on using an integer to
-define a polynomial.
-The "n" parity results are produced in a sequence, where "n" is the
-length of the <i>polynomialArray</i>. The i-th bit in the sequence
-corresponds to the parity computed from the i-th polynomial. We call such
-an n-bit block of result as a <i>codeword</i>.
+Encode an input sequence with a convolutional code. The inputs and
+outputs are booleans. The input sequence
+enters a shift register, and the contents of the shift register are
+combined using boolean functions given by the <i>polynomialArray</i>
+parameter. The initialState state of the shift register is given by the
+<i>initialState</i> parameter, which should be a non-negative integer.
+The <i>uncodedRate</i> parameter, often denoted by <i>k</i> in the
+coding literature, is the number of bits per firing that are shifted
+into the shift register. The <i>polynomialArray</i> parameter is an
+array of positive integers. Each integer indicates one polynomial
+used for computing output bits. To get a <i>k</i>/<i>n</i>
+convolutional code, set <i>uncodedRate</i> to <i>k</i> and provide
+<i>n</i> integers in <i>polynomialArray</i>.
 <p>
-Like Scrambler, the input port accepts a sequence of booleans. When computing
-parities, the actor treats "true" as 1 and "false" as 0. The output port
-produces the encoded bits also into booleans.
-<p>
-Therefore, during each firing the encoder consumes "k" bits and produces
-"n" bits. The rate of this convolutional code is k/n.
+The integers in <i>polynomialArray</i> are usually most conveniently
+given as octal numbers. A leading zero indicates an octal
+number. The <i>i</i>-th bit of the integer indicates whether the
+<i>i</i>-th tap of the delay line should be used.  All bits that
+are used are exclusive-ored, thus yielding the parity of the selected
+bits. See more details in Scrambler actor on using an integer to
+define a polynomial. The <i>n</i> parity results are produced on
+the output in a sequence.
 <p>
 A good convolutional code should have large Hamming distance between
-any two of its codewords. This generally cannot be easily observed
-unless by checking its complete code book. However, there are some
-basic lines that all "good" codes should satisfy:
+any two of its codewords. This is not easily checked, but there are some
+simple rules that all "good" codes should satisfy:
 <ol>
-<li> "k" should be strictly smaller than "n", otherwise the code is
-not uniquely decodable.
-<li> "k" should not be higher than the highest order of all polynomials,
+<li> <i>k</i> should be strictly smaller than <i>n</i>, otherwise
+     the code is not uniquely decodable.  Thus, <i>uncodedRate</i>
+     should be less than the length of <i>polynomialArray</i>.
+<li> <i>k</i> should not be higher than the highest order of
+     all polynomials, otherwise, some input bits never get
+     involved in computing parities.
 </ol>
-otherwise, some bits never get involved in computing parities.
-In the above two cases, the actor will throw an exception. However, they
-do not guarantee the codeword can be decoded successfully, and it is
-not always true that "the larger the polynomials are, the better."
-Users should check tables for convolutional code from professional
-references, which are achieved using computer search methods.
+If these rules are violated, the actor will throw an exception.
+However, these rules do not guarantee the codeword can be decoded
+successfully, and it is not always true that larger polynomials
+yield better codes. Users should check tables for convolutional
+codes from professional references.
+<p>
+Note that this implementation is limited to a shift register
+length of 32 because of the specification of the polynomials and
+initial shift register state as 32-bit integers.
 <p>
 For more information on convolutional codes, see Proakis, Digital
-Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
+Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477,
+or Barry, Lee and Messerschmitt, <i>Digital Communication</i>, Third Edition,
+Kluwer, 2004.
 <p>
-@author Rachel Zhou
+@author Rachel Zhou, contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 3.0
+@see Scrambler
+@see ViterbiDecoder
 */
 public class ConvolutionalCoder extends Transformer {
 
@@ -111,17 +116,17 @@ public class ConvolutionalCoder extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        uncodeBlockSize = new Parameter(this, "uncodeBlockSize");
-        uncodeBlockSize.setTypeEquals(BaseType.INT);
-        uncodeBlockSize.setExpression("1");
+        uncodedRate = new Parameter(this, "uncodedRate");
+        uncodedRate.setTypeEquals(BaseType.INT);
+        uncodedRate.setExpression("1");
 
         polynomialArray = new Parameter(this, "polynomialArray");
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
         polynomialArray.setExpression("{05, 07}");
 
-        initial = new Parameter(this, "initial");
-        initial.setTypeEquals(BaseType.INT);
-        initial.setExpression("0");
+        initialState = new Parameter(this, "initialState");
+        initialState.setTypeEquals(BaseType.INT);
+        initialState.setExpression("0");
 
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -139,7 +144,7 @@ public class ConvolutionalCoder extends Transformer {
      *  binary coefficients. The coefficients indicate the presence (1)
      *  or absence (0) of a tap in the shift register. Each element
      *  of this array parameter should be a positive integer.
-     *  The array's default value is {05, 07}.
+     *  The default value is {05, 07}.
      */
     public Parameter polynomialArray;
 
@@ -148,37 +153,37 @@ public class ConvolutionalCoder extends Transformer {
      *  i-th register. This parameter should be a non-negative
      *  integer. Its default value is the integer 0.
      */
-    public Parameter initial;
+    public Parameter initialState;
 
     /** Integer defining the number of bits that the shift register
      *  takes in each firing. It should be a positive integer. Its
      *  default value is the integer 1.
      */
-    public Parameter uncodeBlockSize;
+    public Parameter uncodedRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>initial</i>, then verify
-     *  that it is a non-negative integer; if it is <i>uncodeBlockSize</i>,
+    /** If the attribute being changed is <i>initialState</i>, then verify
+     *  that it is a non-negative integer; if it is <i>uncodedRate</i>,
      *  then verify that it is a positive integer; if it is
      *  <i>polynomialArray</i>, then verify that each of its elements is
      *  a positive integer and find the maximum value among them, which
      *  is used to compute the highest order among all polynomials.
-     *  @exception IllegalActionException If <i>initial</i> is negative
-     *  or <i>uncodeBlockSize</i> is non-positive or any element of
+     *  @exception IllegalActionException If <i>initialState</i> is negative
+     *  or <i>uncodedRate</i> is non-positive or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == initial) {
-            int initialValue = ((IntToken)initial.getToken()).intValue();
+        if (attribute == initialState) {
+            int initialValue = ((IntToken)initialState.getToken()).intValue();
             if (initialValue < 0 ) {
                 throw new IllegalActionException(this,
                         "shift register's value must be non-negative.");
             }
-        } else if (attribute == uncodeBlockSize) {
-            _inputNumber = ((IntToken)uncodeBlockSize.getToken()).intValue();
+        } else if (attribute == uncodedRate) {
+            _inputNumber = ((IntToken)uncodedRate.getToken()).intValue();
             if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
                         "inputLength must be non-negative.");
@@ -212,11 +217,11 @@ public class ConvolutionalCoder extends Transformer {
         }
     }
 
-    /** Read "<i>uncodeBlockSize</i>" bits from the input port and shift
+    /** Read <i>uncodedRate</i> bits from the input port and shift
      *  them into the shift register. Compute the parity for each
      *  polynomial specified in <i>polynomialArray</i>. Send the results
-     *  in sequence. The i-th bit corresponds to the parity computed
-     *  using the i-th polynomial.
+     *  in sequence to the output. The i-th bit in the output 
+     *  corresponds to the parity computed using the i-th polynomial.
      */
     public void fire() throws IllegalActionException {
 
@@ -263,17 +268,17 @@ public class ConvolutionalCoder extends Transformer {
 
 
     /** Initialize the actor by resetting the shift register state
-     *  equal to the value of <i>initial</i>
+     *  equal to the value of <i>initialState</i>.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _latestShiftReg = _shiftReg =
-            ((IntToken)initial.getToken()).intValue();
+            ((IntToken)initialState.getToken()).intValue();
     }
 
     /** Record the most recent shift register state as the new
-     *  initial state for the next iteration.
+     *  state for the next iteration.
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
@@ -335,5 +340,4 @@ public class ConvolutionalCoder extends Transformer {
     // A flag indicating that the private variable
     // _inputNumber is invalid.
     private transient boolean _inputNumberInvalid = true;
-
 }

@@ -45,8 +45,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 Descramble the input bit sequence using a feedback shift register.
 The taps of the feedback shift register are given by the <i>polynomial</i>
-parameter. The initial state of the shift register is given by the
-<i>initial</i> parameter. This is a self-synchronizing descrambler that
+parameter. The initialState state of the shift register is given by the
+<i>initialState</i> parameter. This is a self-synchronizing descrambler that
 will exactly reverse the operation of the Scrambler if the polynomials
 are the same. The low-order bit of the polynomial should always be set.
 For more information, see the documentation for the Scrambler actor
@@ -76,7 +76,7 @@ public class DeScrambler extends Transformer {
         polynomial.setTypeEquals(BaseType.INT);
         polynomial.setExpression("0440001");
 
-        initial = new Parameter(this, "initial");
+        initial = new Parameter(this, "initialState");
         initial.setTypeEquals(BaseType.INT);
         initial.setExpression("1");
 
@@ -108,10 +108,10 @@ public class DeScrambler extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>initial</i>, then verify
+    /** If the attribute being changed is <i>initialState</i>, then verify
      *  that is a non-negative interger; if it is <i>polynomial</i>, then
      *  verify that is a positive interger and the lower-order bit is 1.
-     *  @exception IllegalActionException If <i>initial</i> is non-positive
+     *  @exception IllegalActionException If <i>initialState</i> is non-positive
      *  or polynomial is non-positive or the lower-order bit is not 1.
      */
     public void attributeChanged(Attribute attribute)
@@ -167,7 +167,7 @@ public class DeScrambler extends Transformer {
     }
 
     /** Initialize the actor by resetting the shift register state
-     *  equal to the value of <i>initial</i>.
+     *  equal to the value of <i>initialState</i>.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -176,7 +176,7 @@ public class DeScrambler extends Transformer {
     }
 
     /** Record the most recent shift register state as the new
-     *  initial state for the next iteration.
+     *  initialState state for the next iteration.
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {
