@@ -31,10 +31,10 @@
 
 ME =		jni/demo
 
-DIRS =		jni
+DIRS =		jni HelloWorld
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../..
 
 CLASSPATH =	$(ROOT)
 
