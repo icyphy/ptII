@@ -93,7 +93,7 @@ public abstract class Decl extends TrackedPropertyMap {
      * supported for the benefit of hashtables such as those provided by
      * java.util.Hashtable.
      */
-    public int hashCode () {
+    public int hashCode() {
         // If we override equals, we should override hashCode.
         // http://java.sun.com/docs/books/tutorial/java/javaOO/objectclass.html
         // FIXME: should we divide by 2 here or not to avoid overflow?
