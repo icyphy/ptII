@@ -230,7 +230,8 @@ htmlchek:
 nightly: ptclean ptbuild \
 	clean all \
 	glimpse \
-	findchanges
+	findchanges \
+	remote1
 
 ####################################
 # Rules that operate in ~ptII
