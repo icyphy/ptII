@@ -100,6 +100,10 @@ public class GenerateCopyrights {
                 "ptolemy/cal/saxon-copyright.htm");
 
         _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.io.comm.SerialComm",
+                "ptolemy/actor/lib/io/comm/copyright.htm");
+
+        _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.joystick.Joystick",
                 "ptolemy/actor/lib/joystick/copyright.htm");
 
@@ -127,13 +131,13 @@ public class GenerateCopyrights {
                 + "<h1>Ptolemy II Copyrights</h1>\n"
                 + "The primary copyright for the Ptolemy II System can be\n"
                 + "found in <a href=\"" + ptIICopyright + "\"><code>"
-                + ptIICopyright + "</code></a>.\n"
+                + _canonicalizeURLToPTII(ptIICopyright) + "</code></a>.\n"
                 + "This configuration includes code that uses packages\n"
                 + "with the following copyrights.\n"
                 + "<p>Ptolemy II uses AElfred as an XML Parser.\n"
                 + "AElfred is covered by the copyright in\n "
                 + "<a href=\"" + aelfredCopyright + "\"><code>"
-                + aelfredCopyright + "</code></a>\n"
+                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n"
                 + "<p>Below we list actors and the corresponding copyright of "
                 + "the package that is used.  If an actor is not listed \n"
                 + "below, then the Ptolemy II copyright is the only copyright."
@@ -169,7 +173,7 @@ public class GenerateCopyrights {
 
             htmlBuffer.append("<tr><td>" + entityBuffer
                     + "</td>\n    <td> <a href=\"" + foundCopyright + "\"><code>"
-                    + foundCopyright + "</code></a></td>\n</tr>\n");
+                    + _canonicalizeURLToPTII(foundCopyright) + "</code></a></td>\n</tr>\n");
         }
         htmlBuffer.append("</dl>\n</body>\n</html>");
         return htmlBuffer.toString();
@@ -238,4 +242,23 @@ public class GenerateCopyrights {
                 + majorVersion + "/" + localURL;
         }
     }
+
+    // Truncate a jarURL so that the very long jar:file:...! is
+    // converted to $PTII.  If the string does not start with jar:file
+    // or if it startes with jar:file but does not contain a !, then
+    // it is returned unchanged.  This method is used to truncate
+    // the very long paths that we might see under Web Start.
+    private static String _canonicalizeURLToPTII(String path) {
+        if (!path.startsWith("jar:file")) {
+            return path;
+        } else {
+            int index = path.lastIndexOf("!");
+            if (index == -1) {
+                return path;
+            } else {
+                return "$PTII" + path.substring(index + 1, path.length());
+            }
+        }
+    }
+    
 }
