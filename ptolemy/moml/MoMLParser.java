@@ -851,7 +851,10 @@ public class MoMLParser extends HandlerBase {
                 String portName = (String)_attributes.get("name");
                 _checkForNull(portName,
                         "No name for element \"deletePort\"");
-                NamedObj deletedPort = _deletePort(portName);
+                        // The entity attribute is optional
+                String entityName = (String)_attributes.get("entity");
+
+                NamedObj deletedPort = _deletePort(portName, entityName);
                 if (_current != null) {
                     // Although there is not supposed to be anything inside
                     // this element, we nontheless change the environment so
@@ -1143,7 +1146,7 @@ public class MoMLParser extends HandlerBase {
 				Class.forName(className, true, _classLoader);
 			} catch (NoClassDefFoundError ex) {
 			    throw new XmlException("Failed to find class '"
-				   + className + "': " 
+				   + className + "': "
 				   + KernelException.stackTraceToString(ex),
                                    _currentExternalEntity(),
                                    _parser.getLineNumber(),
@@ -1387,7 +1390,7 @@ public class MoMLParser extends HandlerBase {
                         ex.getTargetException());
                 if (reply == ErrorHandler.CONTINUE) {
                     _attributes.clear();
-                    _attributeNameList.clear(); 
+                    _attributeNameList.clear();
                     _skipElement = 1;
                     _skipElementName = elementName;
                     return;
@@ -1417,7 +1420,7 @@ public class MoMLParser extends HandlerBase {
                         _getCurrentElement(elementName), _current, ex);
                 if (reply == ErrorHandler.CONTINUE) {
                     _attributes.clear();
-                    _attributeNameList.clear(); 
+                    _attributeNameList.clear();
                     _skipElement = 1;
                     _skipElementName = elementName;
                     return;
@@ -1859,15 +1862,47 @@ public class MoMLParser extends HandlerBase {
 
     // Delete the port after verifying that it is contained (deeply)
     // by the current environment.
-    private Port _deletePort(String portName) throws Exception {
-        Port toDelete = _searchForPort(portName);
+    private Port _deletePort(String portName, String entityName) throws Exception {
+        // NOTE: if the entity attribute is not used, then the
+        // deletion of any links associated with this port will
+        // not be undoable.
+        // If the entity attribute is used, then the port name must be
+        // immediate i.e. not contain a period.
+        Port toDelete = null;
+        Entity portContainer = null;
+        boolean entityAttrUsed = false;
+        if (entityName == null) {
+            toDelete = _searchForPort(portName);
+            entityAttrUsed = false;
+        }
+        else {
+            entityAttrUsed = true;
+            portContainer = _searchForEntity(entityName);
+            if (portContainer == null) {
+                throw new XmlException("No such entity (" + entityName +
+                        ") to delete the port on: " + portName,
+                        _currentExternalEntity(),
+                        _parser.getLineNumber(),
+                        _parser.getColumnNumber());
+            }
+            if (portName.indexOf(".") != -1) {
+                throw new XmlException("Invalid port name: " + portName +
+                        ", must be immediately contained if the entity " +
+                        "attribute is used",
+                        _currentExternalEntity(),
+                        _parser.getLineNumber(),
+                        _parser.getColumnNumber());
+            }
+            toDelete = portContainer.getPort(portName);
+        }
         if (toDelete == null) {
             throw new XmlException("No such port to delete: "
-                    + portName,
+                     + portName,
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
+
         toDelete.setContainer(null);
 
         // If the container is cloned from something, then
@@ -2106,7 +2141,7 @@ public class MoMLParser extends HandlerBase {
             String port,
             String relation,
             String insertAtSpec) {
-        
+
         if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
@@ -2131,7 +2166,7 @@ public class MoMLParser extends HandlerBase {
                         "Unable to record extension to class!\n" + ex.toString());
             }
         }
-        
+
     }
 
     // If a new object is added to a container, and this is not the
@@ -2225,7 +2260,7 @@ public class MoMLParser extends HandlerBase {
     // return the previous instance.
     public ComponentEntity _searchForClass(String name, String source)
             throws XmlException {
-        
+
         // If the name is absolute, the class may refer to an existing
         // entity.  Check to see whether there is one with a matching source.
         ComponentEntity candidate;
@@ -2236,7 +2271,7 @@ public class MoMLParser extends HandlerBase {
                 if (candidate.getMoMLInfo().elementName.equals("class")) {
                     // Check that its source matches.
                     String candidateSource = candidate.getMoMLInfo().source;
-                      
+
                     if (source == null && candidateSource == null) {
                         return candidate;
                     } else if (source != null
@@ -2421,7 +2456,7 @@ public class MoMLParser extends HandlerBase {
 
     // Attributes associated with an entity.
     private Map _attributes = new HashMap();
- 
+
     // The list of attribute names, in the order they were parsed.
     private List _attributeNameList = new ArrayList(0);
 
