@@ -34,7 +34,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
-import ptolemy.domains.hs.kernel.*;
+import ptolemy.domains.fsm.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.gui.*;
@@ -157,8 +157,8 @@ public class HelicopterApplet extends CTApplet {
             suboutVz.setInput(false);
             suboutVz.setOutput(true);
 
-            HSController hsctrl = new HSController(sub, "HSController");
-            _hsdir.setController(hsctrl);
+            FSMActor hsctrl = new FSMActor(sub, "HSController");
+            _hsdir.controllerName.setToken(new StringToken("HSController"));
 
             TypedIOPort hscInAct = new TypedIOPort(hsctrl, "inputAction");
             hscInAct.setInput(true);
@@ -166,38 +166,49 @@ public class HelicopterApplet extends CTApplet {
             TypedIOPort hscInPz = new TypedIOPort(hsctrl, "inputPz");
             hscInPz.setInput(true);
             hscInPz.setOutput(false);
+            TypedIOPort hscInV = new TypedIOPort(hsctrl, "outputV");
+            hscInV.setInput(true);
+            hscInV.setOutput(false);
+            TypedIOPort hscInR = new TypedIOPort(hsctrl, "outputR");
+            hscInR.setInput(true);
+            hscInR.setOutput(false);
 
-            FSMState hoverState = new FSMState(hsctrl, "HoverState");
-            FSMState accelState = new FSMState(hsctrl, "AccelState");
-            FSMState cruise1State = new FSMState(hsctrl, "Cruise1State");
-            FSMState climbState = new FSMState(hsctrl, "ClimbState");
-            FSMState cruise2State = new FSMState(hsctrl, "Cruise2State");
-            hsctrl.setInitialState(hoverState);
+            State hoverState = new State(hsctrl, "HoverState");
+            State accelState = new State(hsctrl, "AccelState");
+            State cruise1State = new State(hsctrl, "Cruise1State");
+            State climbState = new State(hsctrl, "ClimbState");
+            State cruise2State = new State(hsctrl, "Cruise2State");
+            hsctrl.initialStateName.setToken(new StringToken("HoverState"));
             CTCompositeActor linHover = _createLinearizer(sub, 0);
             CTCompositeActor linAccel = _createLinearizer(sub, 1);
             CTCompositeActor linCruise1 = _createLinearizer(sub, 2);
             CTCompositeActor linClimb = _createLinearizer(sub, 3);
             CTCompositeActor linCruise2 = _createLinearizer(sub, 4);
-            hoverState.setRefinement(linHover);
-            accelState.setRefinement(linAccel);
-            cruise1State.setRefinement(linCruise1);
-            climbState.setRefinement(linClimb);
-            cruise2State.setRefinement(linCruise2);
-            FSMTransition tr1 = hsctrl.createTransition(hoverState, accelState);
-            tr1.setTriggerCondition("inputAction");
-            FSMTransition tr2 =
-                hsctrl.createTransition(accelState, cruise1State);
-            tr2.setTriggerCondition("(outputV >= 5.0) && (inputPz > -2.05) " +
-                    "&& (inputPz < -1.95)");
+            hoverState.refinementName.setToken(new StringToken("HoverCTSub"));
+            accelState.refinementName.setToken(new StringToken("AccelCTSub"));
+            cruise1State.refinementName.setToken(new StringToken("Cruise1CTSub"));
+            climbState.refinementName.setToken(new StringToken("ClimbCTSub"));
+            cruise2State.refinementName.setToken(new StringToken("Cruise2CTSub"));
+            Transition tr1 = new Transition(hsctrl, "tr1");
+            hoverState.outgoingPort.link(tr1);
+            accelState.incomingPort.link(tr1);
+            tr1.setGuardExpression("inputAction_V");
+            Transition tr2 = new Transition(hsctrl, "tr2");
+            accelState.outgoingPort.link(tr2);
+            cruise1State.incomingPort.link(tr2);
+            tr2.setGuardExpression("(outputV_V >= 5.0) && (inputPz_V> -2.05) " +
+                    "&& (inputPz_V < -1.95)");
 
-            FSMTransition tr3 =
-                hsctrl.createTransition(cruise1State, climbState);
-            tr3.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) " +
-                    "&& (outputR > -0.01) && (outputR < 0.01)");
-            FSMTransition tr4 = hsctrl.createTransition(climbState,
-                    cruise2State);
-            tr4.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) " +
-                    "&& (inputPz > -10.05) && (inputPz < -9.95)");
+            Transition tr3 = new Transition(hsctrl, "tr3");
+            cruise1State.outgoingPort.link(tr3);
+            climbState.incomingPort.link(tr3);
+            tr3.setGuardExpression("(outputV_V > 4.9) && (outputV_V < 5.1) " +
+                    "&& (outputR_V > -0.01) && (outputR_V < 0.01)");
+            Transition tr4 = new Transition(hsctrl, "tr4");
+            climbState.outgoingPort.link(tr4);
+            cruise2State.incomingPort.link(tr4);
+            tr4.setGuardExpression("(outputV_V > 4.9) && (outputV_V < 5.1) " +
+                    "&& (inputPz_V > -10.05) && (inputPz_V < -9.95)");
 
             TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
             TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
@@ -229,6 +240,8 @@ public class HelicopterApplet extends CTApplet {
 
             sub.connect(subinAction, hscInAct);
             hscInPz.link(rSubPz);
+            hscInV.link(rSubOutV);
+            hscInR.link(rSubOutR);
             Iterator entities = sub.entityList().iterator();
             while(entities.hasNext()) {
                 Entity ent = (Entity)entities.next();
@@ -752,7 +765,12 @@ public class HelicopterApplet extends CTApplet {
             while (_thisManager.getState() != _thisManager.IDLE ) {
                 _switched = false;
                 // get current FSM state.
-                FSMState st = _hsdir.currentState();
+                State st = null;
+                try {
+                    st = _hsdir.getController().currentState();
+                } catch (IllegalActionException ex) {
+                    report("Error getting state of mode controller:", ex);
+                }
                 if( st == null) {
                     continue;
                 }
