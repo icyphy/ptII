@@ -55,7 +55,6 @@ OTHER_FILES_TO_BE_JARED = \
 	Datagram.xml \
 	DatagramDE.xml \
 	DatagramInjector.xml \
-	DatagramNetworkedCopyPaste.xml \
 	DatagramParsed.xml \
 	DatagramUnparsed.xml
 
