@@ -41,7 +41,6 @@ include $(CONFIG)
 EXTRA_SRCS = \
 	acks.htm \
 	body.htm \
-	buttons.htm \
 	changes.htm \
 	index.htm \
 	install.htm \
