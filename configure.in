@@ -941,7 +941,7 @@ fi
 #       Jython is an implementation of Python in Java
 #	For more information, 
 #       see http://www.jython.org
-#       See if there was a command-line option for where JMF is.
+#       See if there was a command-line option for where Jython is.
 #--------------------------------------------------------------------
 
 # PTJYTHON_DIR is set to python (FIXME: should be jython) and used in
@@ -2040,18 +2040,24 @@ fi
 #       check to see if $PTII/vendors/misc/X10 exists
 #--------------------------------------------------------------------
 
-# PTX10_DIR is set to tini and used in
-# $PTII/ptolemy/apps/makefile if tini was found
+# PTX10_DIR is set to x10 and used in
+# $PTII/ptolemy/apps/superb/makefile if tini was found
 PTX10_DIR=
 #
 
-AC_MSG_CHECKING([for X10 directory])
-AC_ARG_WITH(x10, [  --with-X10=DIR       use X10 from DIR,
+# We only need to look for x10 if $PTII/ptolemy/apps/superb/x10 exists
+X10_USER_DIR="$PTII/ptolemy/apps/superb/x10"
+if test ! -d "$X10_USER_DIR"; then
+    AC_MSG_RESULT([$X10_USER_DIR is not present,
+	so we need not find the X10 SDK. X10 is the power line comm interface.])
+else
+    AC_MSG_CHECKING([for X10 directory])
+    AC_ARG_WITH(x10, [  --with-X10=DIR       use X10 from DIR,
                           defaults to \$PTII/vendors/misc/x10],
 	X10_DIR=$withval,
 	X10_DIR=$PTII/vendors/misc/x10)
 
-if test -d "$X10_DIR"; then
+    if test -d "$X10_DIR"; then
       	AC_MSG_RESULT([$X10_DIR])
       	AC_MSG_CHECKING([for \$X10_DIR/tjx10p-11/lib/x10.jar])
 	if test -f "$X10_DIR/tjx10p-11/lib/x10.jar"; then
@@ -2072,13 +2078,14 @@ if test -d "$X10_DIR"; then
 	X10_DIR='${PTII}/vendors/misc/x10'
    	X10_CLASSES='${X10_DIR}/tjx10p-11/lib/x10.jar'
     else
-	# Set to tini and used in
-	# $PTII/ptolemy/apps/makefile if tini was found
+	# Set to x10 and used in
+	# $PTII/ptolemy/apps/superb/makefile if tini was found
 	PTX10_DIR=x10
     fi
+fi
 
 if test -z "$PTX10_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/x10"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/x10/|ptolemy/apps/superb/x10/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$X10_CLASSES\"/>"
@@ -2312,6 +2319,10 @@ AC_SUBST(PTQUICKTIME_DIR)
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)
+
+# Set to x10 and used in
+# $PTII/ptolemy/apps/superb/makefile if the X10 jar files were found
+AC_SUBST(PTX10_DIR)
 
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
