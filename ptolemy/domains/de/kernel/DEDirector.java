@@ -884,7 +884,7 @@ public class DEDirector extends Director {
         super.removeDebugListener(listener);
     }
 
-    /** Request that execution of the current iteration stops.
+    /** Request that execution of the current iteration stop.
      *  This is similar to stopFire(), except that the current iteration
      *  is not allowed to complete.  This is useful if there is actor
      *  in the model that has a bug where it fails to consume inputs.
@@ -907,7 +907,7 @@ public class DEDirector extends Director {
         super.stop();
     }
 
-    /** Request that execution of the current iteration completes.
+    /** Request that execution of the current iteration complete.
      *  If the director is paused waiting for events to appear in the
      *  event queue, then it stops waiting,
      *  and calls stopFire() for all actors
