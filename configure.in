@@ -151,17 +151,18 @@ AC_MSG_CHECKING([the Java compiler with a simple compile])
 # under NT and cygwin works properly
 startdir=`pwd`
 cd $srcdir/mk
-if env $JAVAC -d $startdir confTest.java ; then
+# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+if $JAVAC -d $startdir confTest.java ; then
     AC_MSG_RESULT(ok)
     JFLAGS="$JFLAGSINIT -depend"
     AC_MSG_CHECKING([javac $JFLAGS])
-    if env $JAVAC -d $startdir $JFLAGS confTest.java ; then
+    if $JAVAC -d $startdir $JFLAGS confTest.java ; then
 	AC_MSG_RESULT(yes)
     else
 	AC_MSG_RESULT(no)
 	JFLAGS="$JFLAGSINIT -Xdepend"
 	AC_MSG_CHECKING([javac $JFLAGS])
-	if env $JAVAC -d $startdir $JFLAGS confTest.java ; then
+	if $JAVAC -d $startdir $JFLAGS confTest.java ; then
 	    AC_MSG_RESULT(yes)
 	else
 	    AC_MSG_RESULT(no)
