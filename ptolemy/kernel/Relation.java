@@ -1,5 +1,5 @@
-/* Relations serve as a general notion of connection between Entities in a
-hierarchical graph. 
+/* A Relation serves as a connection class between Entities in 
+a hierarchical graph.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -35,255 +35,108 @@ import pt.exceptions.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Relation
 /** 
-Relations serve as a general notion of connection between Entities in a
-hierarchical graph. Relations can be specialized to point-to-point
-connections. FIXME: What should happen to a disconnected Net (zero 
-connections)?
+/* A Relation serves as a connection class between Entities in a 
+hierarchical graph. A Relation connects n links such that each link has 
+access to the other n-1 links. In our case, a "link" is a Port. We say 
+that a Relation is <\EM> dangling </EM> if it has only one Port connected 
+to it.  FIXME: Eventually we will set a variable in Port for determining if 
+it is connected to a dangling Relation. FIXME: What should happen to a 
+disconnected Relation (zero connections)?
 @author John S. Davis, II
 @version $Id$
 */
-public class Relation extends Node {
-    /** 
-     */	
-    public Relation() {
-	 super();
-	 _nets = null;
-	 _netAdditionCount = 0;
-    }
-
+public class Relation extends NamedObj {
     /** 
      * @param name The name of the Relation.
      */	
     public Relation(String name) {
-	 super(name);
+	super(name);
+	_links = null;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Add a Port to this Relation. 
-     * @param newPort The Port being added to this Relation.
+    /** Connect a Port to this Relation.
+     * @param port The Port being connected to the Relation.
      * @exception NameDuplicationException Attempt to store two instances of
      * the same class with identical names in the same container.
-     */
-    public void addPort(Port newPort) throws NameDuplicationException {
-	if( isPortAMember( newPort.getName() ) ) {
-	     return;
+     */	
+    public void connectPort(Port port) throws NameDuplicationException {
+	Port duplicatePort;
+	if( _links == null ) {
+	     _links = new Hashtable();
 	}
-	createNewDanglingNet( newPort );
+	duplicatePort = (Port)_links.put( port.getName(), port );
+	if( duplicatePort != null ) {
+	     duplicatePort = (Port)_links.put
+		( duplicatePort.getName(), duplicatePort );
+	     throw new NameDuplicationException( duplicatePort.getName() );
+	}
         return;
-    }
-
-    /** Connect three ports to each other through this Relation.
-     * @param port1 The first port being connected to the triad.
-     * @param port2 The second port being connected to the triad.
-     * @param port3 The third port being connected to the triad.
-     * @exception NameDuplicationException Attempt to store two instances of
-     * the same class with identical names in the same container.
-     */
-    public void connectThreePorts(Port port1, Port port2, Port port3) 
-	throws NameDuplicationException {
-
-	Net net23;
-	net23 = getNet( port2, port3 ); 
-	if( net23 != null ) {
-	     connectNetToPort( net23, port1 );
-	     consolidateNets();
-	     return;
-	} 
-
-	Net net12;
-	net12 = getNet( port1, port2 );
-	if( net12 != null ) {
-	     connectNetToPort( net12, port3 );
-	     consolidateNets();
-	     return;
-	} 
-
-	Net net13;
-	net13 = getNet( port1, port3 );
-	if( net13 != null ) {
-	     connectNetToPort( net13, port2 );
-	     consolidateNets();
-	     return;
-	} 
-
-	return;
-    }
-
-    /** Connect two ports to each other through this Relation.
-     * @param port1 The first port being connected.
-     * @param port2 The second port being connected.
-     * @exception NameDuplicationException Attempt to store two instances of
-     * the same class with identical names in the same container.
-     */
-    public void connectTwoPorts(Port port1, Port port2) 
-	throws NameDuplicationException {
-
-	boolean port1Membership;
-	boolean port2Membership;
-
-	port1Membership = isPortAMember( port1.getName() );
-	port2Membership = isPortAMember( port2.getName() );
-
-	if( port1Membership == false && port2Membership == false ) {
-	     Net net;
-	     net = createNewDanglingNet( port1 );
-	     connectNetToPort( net, port2 );
-
-	} else if( port1Membership == true && port2Membership == false ) {
-	     Net port1Net;
-	     port1Net = getDanglingNet( port1.getName() );
-	     if( port1Net == null ) {
-		  port1Net = createNewDanglingNet( port1 );
-	     }
-	     connectNetToPort( port1Net, port2 );
-
-	} else if( port1Membership == false && port2Membership == true ) {
-	     Net port2Net;
-	     port2Net = getDanglingNet( port2.getName() );
-	     if( port2Net == null ) {
-		  port2Net = createNewDanglingNet( port2 );
-	     }
-	     connectNetToPort( port2Net, port1 );
-
-	} else { 
-	     Net port1Net, port2Net;
-
-	     port1Net = getDanglingNet( port1.getName() );
-	     if( port1Net != null ) {
-	          connectNetToPort( port1Net, port2 );
-		  return;
-	     } 
-
-	     port2Net = getDanglingNet( port2.getName() );
-	     if( port2Net != null ) {
-	          connectNetToPort( port2Net, port1 );
-		  return;
-	     }
-	}
-
-	// Both ports have connections, neither of which are dangling.
-	Net port1Net;
-	port1Net = createNewDanglingNet( port1 ); 
-	connectNetToPort( port1Net, port2 );
-
-	// Consolidate any duplicate Nets
-	consolidateNets();
-        return;
-    }
-
-    /** Check all Nets within this Relation and consolidate if necessary. 
-     *  NOTE: Is it okay to remove elements as we iterate through the
-     *  corresponding Enumeration?
-     * @return Return the number of consolidations that occurred.
-     */
-    public int consolidateNets() {
-	Enumeration net1Enum, net2Enum;
-	Net net1, net2;
-	int numRemovedNets = 0;
-
-	net1Enum = _nets.elements();
-	net2Enum = _nets.elements();
-
-	while( net1Enum.hasMoreElements() ) {
-	     net1 = (Net)net1Enum.nextElement();
-	     while( net2Enum.hasMoreElements() ) {
-		  net2 = (Net)net2Enum.nextElement();
-		  if( consolidateNets( net1, net2 ) ) {
-		       numRemovedNets++;
-		  }
-	     }
-	}
-
-        return numRemovedNets;
-    }
-
-    /** Disconnect two Ports from each other.
-     * @param port1 The first Port being disconnected.
-     * @param port2 The first Port being disconnected.
-     * @returns Returns true if a disconnect occurs; returns false otherwise.
-     */
-    public boolean disconnectPorts(Port port1, Port port2) {
-	if( _nets == null ) {
-	     return false;
-	}
-
-	// Make sure that no Nets are being duplicated.
-	consolidateNets();
-
-	// Find the Net that these two Ports have in common.
-	Net commonNet;
-	commonNet = getNet(port1, port2);
-
-	// Ports do not share a common Net and thus do not 
-	// need to be disconnected.
-	if( commonNet == null ) {
-	     return false;
-	}
-
-	// Ports share a common Net.
-	commonNet.disconnectPort( port1 );
-	commonNet.disconnectPort( port2 );
-
-        return true;
     }
 
     /** Disconnect a Port from this Relation.
-     * @param port The Port being disconnected. 
-     * @return Returns true if the Port is found and is disconnected;
-     * returns false otherwise.
-     */
-    public boolean disconnectPort(Port port) {
-	boolean portWasConnected = false;
-	if( _nets == null ) {
-	     return false;
+     * @param port The Port being disconnected from the Relation.
+     * @return Returns the disconnected Port; returns null if the Port is
+     * not found.
+     */	
+    public Port disconnectPort(Port port) {
+	if( _links == null ) {
+	     return null;
 	}
-
-	Net net; 
-	Enumeration enum = _nets.elements();
-	while( enum.hasMoreElements() ) {
-	     net = (Net)enum.nextElement();
-	     if( net.isPortConnected( port.getName() ) ) {
-		  net.disconnectPort( port );
-		  portWasConnected = true;
-	     }
-	}
-
-        return portWasConnected;
+	return (Port)_links.remove( port.getName() );
     }
 
-    /** Determine if a Port is a member of any of the Nets.
-     * @param portName The name of the Port for which membership is in question.
-     * @return Returns true if the Port is a member; returns false otherwise.
-     */
-    public boolean isPortAMember(String portName) {
-	if( _nets == null ) {
+    /** Return the Ports which are connected to this Relation.
+     * @return Returns an Enumeration of Ports; returns null if the
+     * collection of Ports is null.
+     */	
+    public Enumeration getPorts() {
+	if( _links == null ) {
+	     return null;
+	}
+	if( size() == 0 ) {
+	     return null;
+	}
+        return _links.elements();
+    }
+
+    /** Determine if the Relation is dangling? By dangling, we mean that the
+     *  Relation has exactly one Port connection.
+     *  FIXME: What if there are zero connections?
+     * @return Returns true if the Relation is dangling; returns false otherwise.
+     */	
+    public boolean isDangling() {
+	if( _links == null ) {
 	     return false;
 	}
-
-	Net net; 
-
-	Enumeration enum = _nets.elements();
-	while( enum.hasMoreElements() ) {
-	     net = (Net)enum.nextElement();
-	     if( net.isPortConnected( portName ) ) {
-		  return true;
-	     }
+	if( _links.size() == 1 ) {
+	     return true;
 	}
         return false;
     }
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-    public int APublicMethod() {
-        return 1;
+    /** Determine if a given Port is connected to this Relation.
+     * @param portName The name of the Port for which we check connectivity.
+     * @return Returns true if the Port is connected to this Relation. Returns 
+     * false otherwise.
+     */	
+    public boolean isPortConnected(String portName) {
+	if( _links == null ) {
+	     return false;
+	}
+	return _links.containsKey( portName );
     }
-     */
+
+    /** Returns the number of Ports connected to the net.
+     */	
+    public int size() {
+	if( _links == null ) {
+	     return 0;
+	}
+        return _links.size();
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
@@ -294,148 +147,14 @@ public class Relation extends Node {
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
-    /* Connect a new Port to a Net. 
-     */
-    private void connectNetToPort(Net net, Port newPort ) 
-	throws NameDuplicationException {
-	net.connectPort( newPort );
-        return;
-    }
-
-    /* Determine if two Nets contain the same Ports. If so, 
-     * remove one of the Nets and consolidate one of them.
-     * FIXME: What if both Nets are dangling? This shouldn't
-     * be a problem.
-     * NOTE: Doug Lea's Collections package includes a sameStructure()
-     * method which offers the functionality of this method.
-     * @param net1 The first Net for which a match is sought. 
-     * @param net2 The first Net for which a match is sought. 
-     * @return Returns true if a consolidation occurred; returns false
-     * otherwise.
-     */
-    private boolean consolidateNets(Net net1, Net net2) {
-	Enumeration net1PortEnum; 
-	Enumeration net2PortEnum;
-	Port net1Port, net2Port;
-	int netMatchCount = 0;
-	int previousNetMatchCount = 0;
-
-	if( net1.size() != net2.size() ) {
-	     return false;
-	}
-
-	net1PortEnum = net1.getPorts();
-
-	// NOTES: This algorithm relies on the fact that no duplications
-	// of Ports connected to Nets can occur.
-	while( net1PortEnum.hasMoreElements() ) { 
-	     net1Port = (Port)net1PortEnum.nextElement(); 
-	     previousNetMatchCount++;
-	     
-	     net2PortEnum = net2.getPorts();
-	     while( net2PortEnum.hasMoreElements() ) {
-		  net2Port = (Port)net2PortEnum.nextElement();
-		  if( net1Port.equals( net2Port ) ) {
-		       netMatchCount++;
-		  }
-	     }
-	     if( previousNetMatchCount != netMatchCount ) {
-		  return false;
-	     }
-	     previousNetMatchCount++;
-	}
-
-	// The Nets are identical. Remove net2. 
-	net2PortEnum = net2.getPorts();
-	while( net2PortEnum.hasMoreElements() ) {
-	     net2Port = (Port)net2PortEnum.nextElement();
-	     net2.disconnectPort( net2Port );
-	}
-	_nets.remove( net2.getName() );
-        return true;
-    }
-
-    /* Create a new dangling Net for a Port. A dangling Net is one 
-     * which has only one Port connected to it. 
-     */
-    private Net createNewDanglingNet(Port port) 
-	throws NameDuplicationException {
-	if( _nets == null ) {
-	     _nets = new Hashtable();
-	}
-	Net newNet = new Net( createNewName() );
-	newNet.connectPort( port );
-	_nets.put( newNet.getName(), newNet );
-
-        return newNet;
-    }
-
-    /* Create a unique name for a new Net. Names are of the form 
-     * "net#num" where "num" is an enumeration of the order in which the
-     * Net in question was added.
-     */
-    private String createNewName() {
-	_netAdditionCount++;
-        String name;
-        name = "net" + "#" + _netAdditionCount;
-        return name;
-    }
-
-    /* Determine if a Port has a dangling net. 
-     */
-    private Net getDanglingNet(String portName) {
-	Net net; 
-	Enumeration enum = _nets.elements();
-
-	if( _nets == null ) {
-	     return null;
-	}
-	while( enum.hasMoreElements() ) {
-	     net = (Net)enum.nextElement();
-	     if( net.isPortConnected( portName ) ) {
-		  net.isDangling();
-		  return net;
-	     }
-	}
-        return null;
-    }
-
-    /* Get a Net that is connected to two specified Ports. 
-     */
-    private Net getNet(Port port1, Port port2) {
-	if( _nets == null ) {
-	     return null;
-	}
-
-	Net net;
-
-	Enumeration enum = _nets.elements();
-	while( enum.hasMoreElements() ) {
-	     net = (Net)enum.nextElement();
-	     if( net.isPortConnected( port1.getName() ) ) {
-		  if( net.isPortConnected( port2.getName() ) ) {
-		       return net;
-		  }
-	     }
-	}
-        return null;
-    }
-
-
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* This is a count of Ports that have been added to MultiPort. Note that
-     * this only increments, even if Ports are removed. This variable is
-     * used for creating unique Port names.
+    /* A hashtable of links which are connected to this Relation.
      */
-    private int _netAdditionCount = 0;
-
-    /* The Nets are the elemental connection units upon which a 
-     * Relation is based. 
-     */
-    private Hashtable _nets;
+    private Hashtable _links;
 }
+
 
 
 
