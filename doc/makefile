@@ -42,11 +42,6 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
-	demos.html \
-	index.html \
-	install.html \
-	ptII0.1release.html \
-	troubleshooting.html
 
 # The files in design and img are not under sccs because they are binaries.
 MISC_FILES =	$(DIRS) design img
