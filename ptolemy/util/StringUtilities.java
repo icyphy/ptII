@@ -321,7 +321,6 @@ public class StringUtilities {
             } catch (SecurityException security) {
                 // Ignore, we are probably running as an applet or -sandbox
             }
-            System.out.println("getProperty(): " + home); 
             return home;
         }
         if (property == null) {
