@@ -81,6 +81,9 @@ public class ComplexMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
+     *  <p>
+     *  Since the DO_NOT_COPY option requires some care, this constructor
+     *  is protected.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */

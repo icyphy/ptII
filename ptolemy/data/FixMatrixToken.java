@@ -69,11 +69,14 @@ public class FixMatrixToken extends MatrixToken {
      *  constructed will not affect the content of this token.
      *  @param value the 2D matrix of FixPoint values.
      *  @exception IllegalActionException If the precisions of the
-     *   entries in the matrix are not all identical.
-     *  @exception NullPointerException If the specified matrix
-     *   is null.
+     *   entries in the matrix are not all identical, or the specified
+     *   matrix is null.
      */
     public FixMatrixToken(FixPoint[][] value ) throws IllegalActionException {
+	if (value == null) {
+	    throw new IllegalActionException("FixMatrixToken: The specified "
+		    + "matrix is null.");
+	}
         _initialize(value);
     }
 

@@ -53,17 +53,24 @@ public class IntMatrixToken extends MatrixToken {
      *  only element in the matrix has value 0.0
      */
     public IntMatrixToken() {
-        this(new int[1][1], DO_NOT_COPY);
+	int[][] value = new int[1][1];
+	value[0][0] = 0;
+        _initialize(value, DO_NOT_COPY);
     }
 
     /** Construct a IntMatrixToken with the specified 1-D matrix.
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified matrix
+     *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public IntMatrixToken(final int[] value, int rows, int columns) {
+    public IntMatrixToken(final int[] value, int rows, int columns)
+            throws IllegalActionException {
+	if (value == null) {
+	    throw new IllegalActionException("IntMatrixToken: The specified "
+		    + "matrix is null.");
+	}
         _rowCount = rows;
         _columnCount = columns;
         _value = IntegerMatrixMath.toMatrixFromArray(value, rows, columns);
@@ -73,10 +80,10 @@ public class IntMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified matrix
+     *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public IntMatrixToken(final int[][] value) {
+    public IntMatrixToken(final int[][] value) throws IllegalActionException {
         this(value, DO_COPY);
     }
 
@@ -88,10 +95,18 @@ public class IntMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
-     *  @exception NullPointerException If the specified matrix
+     *  <p>
+     *  Since the DO_NOT_COPY option requires some care, this constructor
+     *  is protected.
+     *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    protected IntMatrixToken(final int[][] value, final int copy) {
+    protected IntMatrixToken(final int[][] value, final int copy)
+            throws IllegalActionException {
+	if (value == null) {
+	    throw new IllegalActionException("IntMatrixToken: The specified "
+		    + "matrix is null.");
+	}
         _initialize(value, copy);
     }
 
@@ -437,8 +452,14 @@ public class IntMatrixToken extends MatrixToken {
      *   identity.
      */
     public final Token one() {
-        return new IntMatrixToken(IntegerMatrixMath.identity(_rowCount),
+	try {
+            return new IntMatrixToken(IntegerMatrixMath.identity(_rowCount),
 	                          DO_NOT_COPY);
+	} catch (IllegalActionException illegalAction) {
+	    // should not happen
+	    throw new InternalErrorException("IntMatrixToken.one: "
+		    + "Cannot create identity matrix.");
+	}
     }
 
     /** Return a new Token representing the right multiplicative
@@ -449,8 +470,14 @@ public class IntMatrixToken extends MatrixToken {
      *   identity.
      */
     public final Token oneRight() {
-        return new IntMatrixToken(IntegerMatrixMath.identity(_columnCount),
+	try {
+            return new IntMatrixToken(IntegerMatrixMath.identity(_columnCount),
 	                          DO_NOT_COPY);
+	} catch (IllegalActionException illegalAction) {
+	    // should not happen
+	    throw new InternalErrorException("IntMatrixToken.oneRight: "
+		    + "Cannot create identity matrix.");
+	}
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -532,8 +559,14 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A new IntMatrixToken containing the additive identity.
      */
     public final Token zero() {
-        return new IntMatrixToken(new int[_rowCount][_columnCount],
+	try {
+            return new IntMatrixToken(new int[_rowCount][_columnCount],
 			          DO_NOT_COPY);
+	} catch (IllegalActionException illegalAction) {
+	    // should not happen
+	    throw new InternalErrorException("IntMatrixToken.zero: "
+		    + "Cannot create zero matrix.");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

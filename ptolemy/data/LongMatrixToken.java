@@ -59,10 +59,14 @@ public class LongMatrixToken extends MatrixToken {
      *  This method makes a copy of the matrix and stores the copy,
      *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified matrix
+     *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public LongMatrixToken(long[][] value) {
+    public LongMatrixToken(long[][] value) throws IllegalActionException {
+	if (value == null) {
+	    throw new IllegalActionException("LongMatrixToken: The specified "
+		    + "matrix is null.");
+	}
         _initialize(value);
     }
 
@@ -327,7 +331,13 @@ public class LongMatrixToken extends MatrixToken {
 	    }
 	    result[i][i] = 1;
 	}
-	return new LongMatrixToken(result);
+	try {
+	    return new LongMatrixToken(result);
+	} catch (IllegalActionException illegalAction) {
+            // should not happen
+	    throw new InternalErrorException("LongMatrixToken.one: "
+		    + "Cannot create identity matrix.");
+	}
     }
 
     /** Return a new Token representing the right multiplicative
@@ -345,7 +355,14 @@ public class LongMatrixToken extends MatrixToken {
 	    }
 	    result[i][i] = 1;
 	}
-	return new LongMatrixToken(result);
+
+	try {
+	    return new LongMatrixToken(result);
+	} catch (IllegalActionException illegalAction) {
+            // should not happen
+	    throw new InternalErrorException("LongMatrixToken.oneRight: "
+		    + "Cannot create identity matrix.");
+	}
     }
 
     /** Return a new Token representing the additive identity.
@@ -361,7 +378,14 @@ public class LongMatrixToken extends MatrixToken {
 		result[i][j] = 0;
 	    }
 	}
-	return new LongMatrixToken(result);
+
+	try {
+	    return new LongMatrixToken(result);
+	} catch (IllegalActionException illegalAction) {
+            // should not happen
+	    throw new InternalErrorException("LongMatrixToken.zero: "
+		    + "Cannot create zero matrix.");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
