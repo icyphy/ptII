@@ -60,8 +60,9 @@ public class ClassUtilities {
      *  the resource, if any of the {entry}.
      *  If the string does not contain <code>!/</code>, then return null.
      *  Web Start uses jar URL, and there are some cases where
-     *  if we have a jar URL, then we may need to strip off the jar:<i>url</i>!/
-     *  part so that we can search for the {entry} as a resource.
+     *  if we have a jar URL, then we may need to strip off the
+     *  jar:<i>url</i>!/ part so that we can search for the {entry}
+     *  as a resource.
      *
      *  @param spec The string containing the jar url.
      *  @return The resource, if any.
