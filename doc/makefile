@@ -165,6 +165,7 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.fsm.kernel \
+			ptolemy.domains.fsm.lib \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq \
