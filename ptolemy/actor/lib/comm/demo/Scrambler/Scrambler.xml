@@ -5,18 +5,12 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 964, 511}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, -2, 964, 509}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[749, 400]">
     </property>
@@ -84,19 +78,15 @@ measured. It should be close to 0.5.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 300.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{374.5, 200.0}">
+    </property>
     <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="0440001">
-        </property>
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="06161">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 155.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
@@ -110,43 +100,20 @@ measured. It should be close to 0.5.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 155.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="0440001">
-        </property>
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="06161">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 155.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Scrambled Data" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 373, 292, 392}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {3, 373, 332, 412}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 80.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Measure Rate of Trues" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 230.0">
@@ -177,14 +144,6 @@ that are true (vs. false).</text></svg></configure>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 30.0">
             </property>
         </property>
@@ -194,10 +153,6 @@ that are true (vs. false).</text></svg></configure>
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <port name="rate" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -205,31 +160,10 @@ that are true (vs. false).</text></svg></configure>
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-            <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 215.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="reset" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
             <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
@@ -238,16 +172,8 @@ that are true (vs. false).</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 205.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="init" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
@@ -255,63 +181,22 @@ that are true (vs. false).</text></svg></configure>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 280.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 245.0">
             </property>
-            <port name="multiply" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="divide" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="110.0, 205.0">
             </vertex>
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </relation>
         <link port="data" relation="relation4"/>
         <link port="rate" relation="relation6"/>
@@ -326,7 +211,7 @@ that are true (vs. false).</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Rate of Trues" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.5609756097561">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.489">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -337,52 +222,24 @@ that are true (vs. false).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 230.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Descrambled Data" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={296, 374, 292, 392}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {296, 374, 332, 412}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 155.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="170.0, 155.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="Scrambler.input" relation="relation3"/>
     <link port="Scrambler.output" relation="relation2"/>
