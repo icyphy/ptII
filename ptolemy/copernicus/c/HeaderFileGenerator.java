@@ -272,7 +272,7 @@ public class HeaderFileGenerator extends CodeGenerator {
     }
 
     // Generate C declarations corresponding to all non-static fields inherited from
-    // a given super class.
+    // a given superclass.
     private String _generateInheritedFields(SootClass superClass) {
         StringBuffer fieldCode = new StringBuffer();
         Iterator fields = superClass.getFields().iterator();

@@ -317,7 +317,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      */
     public void caseSpecialInvokeExpr(SpecialInvokeExpr v) {
         // Presently, we consider one case: a call to a method
-        // that is declared by the super class of the base. This
+        // that is declared by the superclass of the base. This
         // occurs when the base class constructor is invoked automatically
         // from with a given class constructor.
         SootClass methodClass = v.getMethod().getDeclaringClass();
@@ -340,7 +340,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 _unexpectedCase(v, "Expected method class to be superclass of base");
             // If we are generating code in single class mode, then
             // we are not supporting inheritance, so ignore invocation 
-            // of the super class constructor.
+            // of the superclass constructor.
             } else if (_context.getSingleClassMode()) {
                 return;
             } else {
