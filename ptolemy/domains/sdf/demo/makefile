@@ -78,13 +78,13 @@ VideoDemo: ../lib/vq/*.class ../kernel/*.class
 	set classpath = $(CLASSPATH); jtclsh VideoDemo.tcl
 
 demo: $(JSRCS)
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFdemo
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFDemo
 
 demo2: $(JSRCS)
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFdemo2
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFDemo2
 
 demo3: $(JSRCS)
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFdemo3
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFDemo3
 
 docs: javadocs
 
