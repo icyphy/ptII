@@ -71,8 +71,6 @@ public class Attribute extends NamedObj {
      *  NullPointerException will be thrown.  This attribute will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  The object is added to the directory of the workspace
-     *  if the container is null.
      *  Increment the version of the workspace.
      *  @param container The container.
      *  @param name The name of this attribute.
