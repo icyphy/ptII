@@ -45,11 +45,8 @@ include $(CONFIG)
 PTPACKAGE = 	CarTracking
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-TCL_SRCS = 
-
-#	BangBangController.java \
-
 JSRCS = \
+	BangBangController.java \
 	CarInformationPublisher.java \
 	CarInformationSubscriber.java \
 	CTSubscriber.java \
