@@ -508,7 +508,14 @@ public class CachedMethod {
             // instead of getMethods().  Note that this approach has the
             // side effect that additional methods (not only public) are
             // accessible.
-            Method[] methods = library.getDeclaredMethods();
+            Method[] methods;
+            try {
+                methods = library.getDeclaredMethods();
+            } catch (SecurityException security) {
+                // We are in an applet.
+                // This hack will likely only work for java.lang.Math.cos()
+                methods = library.getMethods();
+            }
             for (int i = 0; i < methods.length; i++) {
                 // Check the name.
                 if (!methods[i].getName().equals(methodName)) continue;
