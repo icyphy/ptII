@@ -47,7 +47,7 @@ import java.util.Enumeration;
 An FSMDirector governs the execution of a *charts model.
 
 @author Xiaojun Liu
-@version: @(#)SCDirector.java	1.2 11/27/98
+@version: $Id$
 */
 public class FSMDirector extends Director {
 
