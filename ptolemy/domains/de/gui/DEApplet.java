@@ -36,7 +36,7 @@ import java.awt.event.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
-import ptolemy.actor.util.PtolemyApplet;
+import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.domains.de.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
