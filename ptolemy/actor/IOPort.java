@@ -391,7 +391,8 @@ public class IOPort extends ComponentPort {
         if (!isOpaque()) {
             throw new IllegalActionException(this,
                     "createReceivers: Can only create " +
-                    "receivers on opaque ports.");
+                    "receivers on opaque ports. Perhaps there is no " +
+                    "top level director?");
         }
 
         if (_debugging) {
