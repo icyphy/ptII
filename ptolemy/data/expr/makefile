@@ -69,6 +69,7 @@ JSRCS = \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
 	Parameter.java \
+	UnknownResultException.java \
 	UtilityFunctions.java \
 	FixPointFunctions.java \
 	Variable.java

@@ -472,6 +472,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      *   and there are variables that depend on this one.
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
+        if (_isTokenUnknown) throw new UnknownResultException(this);
         if (_needsEvaluation) _evaluate();
         return _token;
     }
@@ -512,6 +513,22 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public Settable.Visibility getVisibility() {
         return _visibility;
+    }
+
+    /** Return whether the value of this variable is known.
+     *  @return True if the value is known.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if the result of evaluation
+     *   violates type constraints, or if the result of evaluation is null
+     *   and there are variables that depend on this one.
+     */
+    public boolean isKnown() throws IllegalActionException {
+        try {
+            getToken();
+        } catch (UnknownResultException ex) {
+            return false;
+        }
+        return true;
     }
 
     /** Force evaluation of this variable and its value dependents
@@ -843,6 +860,15 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    ((StructuredType)_varType).updateType(
                     (StructuredType)_token.getType());
         }
+    }
+
+    /** Mark the contained token to be unknown if the specified value is 
+     *  true, or mark the contained token to be known if the specified value 
+     *  is false.
+     *  @param value A boolean value.
+     */
+    public void setUnknown(boolean value) {
+        _isTokenUnknown = value;
     }
 
     /** Set the visibility of this variable.  The argument should be one
@@ -1371,6 +1397,9 @@ public class Variable extends Attribute implements Typeable, Settable {
     // the first token placed in the variable is not the result of evaluating
     // an expression.
     private String _initialExpression;
+
+    // Indicates whether this variable has been flagged as unknown.
+    private boolean _isTokenUnknown = false;
 
     // Flags that the expression needs to be evaluated when the value of this
     // variable is queried.
