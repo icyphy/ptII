@@ -190,6 +190,18 @@ public class MailboxBoundaryReceiver extends Mailbox
 	return _boundaryDetector.isConnectedToBoundary();
     }
 
+    /**
+     */
+    public boolean isConnectedToBoundaryInside() {
+	return _boundaryDetector.isConnectedToBoundaryInside();
+    }
+
+    /**
+     */
+    public boolean isConnectedToBoundaryOutside() {
+	return _boundaryDetector.isConnectedToBoundaryOutside();
+    }
+
     /** This class serves as an example of a ConsumerReceiver and
      *  hence this method returns true;
      */

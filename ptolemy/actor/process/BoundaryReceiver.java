@@ -75,6 +75,40 @@ public interface BoundaryReceiver extends ProcessReceiver {
      */
     public boolean isConnectedToBoundary();
 
+    /** Return true if this receiver is connected to the inside of a 
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is connected
+     *  to the inside of a boundary port, then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  It is suggested that this method be implemented using
+     *  the BoundaryDetector class although such an implementation 
+     *  is not necessary.
+     *  <P>
+     *  This method is not synchronized so the caller
+     *  @return True if this receiver is contained on the inside of
+     *   a boundary port; return false otherwise.
+     *  @see BoundaryDetector
+     */
+    public boolean isConnectedToBoundaryInside();
+
+    /** Return true if this receiver is connected to the outside of a 
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is connected
+     *  to the outside of a boundary port, then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  It is suggested that this method be implemented using
+     *  the BoundaryDetector class although such an implementation 
+     *  is not necessary.
+     *  <P>
+     *  This method is not synchronized so the caller
+     *  @return True if this receiver is contained on the outside of
+     *   a boundary port; return false otherwise.
+     *  @see BoundaryDetector
+     */
+    public boolean isConnectedToBoundaryOutside();
+
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
