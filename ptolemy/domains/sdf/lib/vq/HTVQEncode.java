@@ -235,7 +235,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         _codewords =  new IntToken[_blockCount];
         _blocks = new IntMatrixToken[_blockCount];
 
-        String filename = ((StringToken)codeBook.getToken()).toString();
+        String filename = ((StringToken)codeBook.getToken()).stringValue();
         try {
             if (filename != null) {
                 if(_baseurl != null) {
@@ -247,11 +247,11 @@ public final class HTVQEncode extends SDFAtomicActor {
                         System.err.println(e.toString());
                     } catch (FileNotFoundException e) {
                         System.err.println("HTVQEncode: " +
-                                "file not found: " +e);
+                                "file not found: " + e);
                     } catch (IOException e) {
-                        System.err.println(
-                                "HTVQEncode: error reading"+
-                                " input file: " +e);
+                        throw new IllegalActionException(
+                                "HTVQEncode: error reading" +
+                                " input file: " + e.getMessage());
                     }
                 } else {
                     File sourcefile = new File(filename);

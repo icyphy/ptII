@@ -154,7 +154,7 @@ public final class ImageSequence extends Source {
         InputStream source = null;
 
         String fileroot =
-            ((StringToken)imageURLTemplate.getToken()).toString();
+            ((StringToken)imageURLTemplate.getToken()).stringValue();
         _startFrame = ((IntToken)startFrame.getToken()).intValue();
         _endFrame = ((IntToken)endFrame.getToken()).intValue();
         _imageColumns = ((IntToken)imageColumns.getToken()).intValue();

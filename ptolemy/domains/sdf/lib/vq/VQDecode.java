@@ -185,7 +185,7 @@ public final class VQDecode extends SDFAtomicActor {
         _codewords =  new IntToken[_blockCount];
         _blocks = new IntMatrixToken[_blockCount];
 
-        String filename = ((StringToken)codeBook.getToken()).toString();
+        String filename = ((StringToken)codeBook.getToken()).stringValue();
         try {
             if (filename != null) {
                 if(_baseurl != null) {
@@ -198,9 +198,9 @@ public final class VQDecode extends SDFAtomicActor {
                     } catch (FileNotFoundException e) {
                         System.err.println("File not found: " + e);
                     } catch (IOException e) {
-                        System.err.println(
-                                "Error reading"+
-                                " input file: " + e);
+			throw new IllegalActionException(
+                                "Error reading" +
+                                " input file: " + e.getMessage());
                     }
                 } else {
                     File sourcefile = new File(filename);
