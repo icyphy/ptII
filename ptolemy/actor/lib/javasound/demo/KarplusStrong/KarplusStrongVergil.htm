@@ -4,11 +4,11 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Eye</title>
+<title>Karplus-Strong</title>
 <link href="../../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>Eye</H1>
+<H1>Karplus-Strong</H1>
 <P>
 The Karplus Strong diagram model can be created in the Ptolemy II schematic editor
 called Vergil, as shown below:
@@ -24,8 +24,10 @@ called Vergil, as shown below:
 <PARAM NAME = CODEBASE VALUE = ../../../../../..>
 <PARAM NAME=ARCHIVE VALUE="
 	ptolemy/ptsupport.jar,
+	lib/diva.jar,
+	ptolemy/vergil/vergilapplet.jar,
 	ptolemy/domains/sdf/sdf.jar">
-<PARAM NAME = NAME VALUE = "MoML" >
+<PARAM NAME = NAME VALUE = "KarplusStrongVergil" >
 <PARAM NAME = "type" VALUE="application/x-java-applet;version=1.2.2">
 <PARAM NAME = "background" VALUE = "#faf0e6">
 <PARAM NAME = "model" VALUE = "KarplusStrong.xml">
@@ -35,23 +37,25 @@ called Vergil, as shown below:
  codebase=../../../../../..
  archive="
 	ptolemy/ptsupport.jar,
+	lib/diva.jar,
+	ptolemy/vergil/vergilapplet.jar,
 	ptolemy/domains/sdf/sdf.jar"
- NAME = "Vergil"
+ NAME = "KarplusStrongVergil"
  WIDTH = 600
  HEIGHT = 400
  background="#faf0e6"
- model="eye.xml"
+ model="KarplusStrong.xml"
  pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html">
 </COMMENT>
 <NOEMBED>
-<a href="eye.xml">MoML specification for this model.</a>
+<a href="KarplusStrong.xml">MoML specification for this model.</a>
 </NOEMBED>
 </EMBED>
 </OBJECT>
 </CENTER>
 <p>
 Vergil is in fact an editor for MoML, an XML schema used by Ptolemy II
-to represent models.  The XML for the eye diagram model is shown below:
+to represent models.  The XML for the Karplus-Strong diagram model is shown below:
 <CENTER>
 <P><!--"CONVERTED_APPLET"-->
 
