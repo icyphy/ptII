@@ -121,7 +121,7 @@ public class DDESink extends TypedAtomicActor {
      *  iterations. Return false otherwise.
      * @throws IllegalActionException Is not thrown but may be thrown
      *  in derived classes.
-     * @see fire()
+     * @see #fire
      */
     public boolean postfire() throws IllegalActionException {
     	return _continue;
