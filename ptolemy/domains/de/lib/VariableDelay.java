@@ -46,7 +46,7 @@ import ptolemy.kernel.util.*;
 /**
 This actor works exactly as the ptolemy.domains.de.lib.TimedDelay actor,
 except that the amount of time delayed is specified by a incoming
-token throught the delay port, in stead of a parameter
+token through the delay port, instead of a by a parameter.
 
 @see ptolemy.domains.de.lib.TimedDelay
 @see ptolemy.domains.de.lib.Server
@@ -87,7 +87,7 @@ public class VariableDelay extends DETransformer {
      */
     public Parameter defaultDelay;
 
-    /** The input port for specifing delay.
+    /** The input port for specifying delay.
      */
     public DEIOPort delay;
 

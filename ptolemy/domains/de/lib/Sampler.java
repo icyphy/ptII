@@ -57,7 +57,7 @@ the input port. If the width of the <i>output</i> is greater
 than that of the <i>input</i>, then the last few
 channels of the <i>output</i> will never emit tokens.
 <p>
-Note that an event on the input port does not diretly cause an output event.
+Note that an event on the input port does not directly cause an output event.
 Hence, this actor can be used to break feedback loops.
 <p>
 Note: If the width of the input changes during execution, then
@@ -131,9 +131,9 @@ public class Sampler extends DETransformer {
         if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
-            int win = input.getWidth();
-            int wout = output.getWidth();
-            int n = Math.min(win, wout);
+            int widthOfInputs = input.getWidth();
+            int widthOfOutputs = output.getWidth();
+            int n = Math.min(win, widthOfOutputs);
             if (_lastInputs == null || _lastInputs.length != win) {
                 _lastInputs = new Token[win];
             }

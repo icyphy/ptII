@@ -171,8 +171,9 @@ public class PreemptableTask extends DETransformer {
 
         // If there is an interrupt.
         if (interrupt.hasToken(0)) {
-            boolean intr = ((BooleanToken)interrupt.get(0)).booleanValue();
-            if (intr) {
+            boolean interruptValue =
+                ((BooleanToken)interrupt.get(0)).booleanValue();
+            if (interruptValue) {
                 _interruptTime = currentTime;
                 _interrupted = true;
             } else {
