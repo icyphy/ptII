@@ -94,7 +94,7 @@ cp $shortfiles $reviewdir
 cd $reviewdir/codeDoc
 echo "Generating PostScript of the docs in `pwd`"
 
-if [ "$DISPLAY" -eq "" ]; then
+if [ "$DISPLAY" = "" ]; then
     echo "$0: Warning: \$DISPLAY is not set, so we are not generating PS or PDF of the docs"
 else
     # html2ps is a hack that often does not work
