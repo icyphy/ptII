@@ -41,6 +41,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -286,17 +287,23 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    effigy.setContainer(null);
 			}
 		    } catch (Exception e) {
-			// Need this catch so we get better error messages
-			// out of the ptolemy script.
-			// If we don't report the exception message,
-			// touch foo.xml
-			// ptolemy foo.xml
-			// will quickly return without an error message
-			e.printStackTrace();
-			// We rethrow, which is not strictly necessary
-			// but could help if the finally statement is
-			// removed.
-			throw e;
+                        // The finally clause below can result in the
+                        // application exiting if there are no other
+                        // effigies open.  We check for that condition,
+                        // and report the error here.  Otherwise, we
+                        // pass the error to the caller.
+                        ModelDirectory dir = (ModelDirectory)
+                                effigy.topEffigy().getContainer();
+                        List effigies = dir.entityList(Effigy.class);
+                        // Note that one of the effigies is the configuration
+                        // itself, which does not prevent exiting the app.
+                        // Hence, we handle the error if there are 2 or fewer.
+                        if (effigies.size() <= 2) {
+                            MessageHandler.error("Failed to read " + in, e);
+                        } else {
+                            // Let the caller handle the error.
+                            throw e;
+                        }
 		    }
 		} finally {
 		    // If we failed to populate the effigy with a model,
