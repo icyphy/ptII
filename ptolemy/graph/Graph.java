@@ -1376,6 +1376,60 @@ public class Graph implements Cloneable {
         return true;
     }
 
+    /** Validate the weight of a node. This method checks the validity of
+     *  of the given node weight, using {@link #validNodeWeight(Object)}, and
+     *  updates, if necessary, the internal mapping of weights into
+     *  their associated nodes.
+     *  This updating operation is necessary for correct operation of
+     *  {@link #containsNodeWeight(Object)}, 
+     *  {@link #node(Object)}, 
+     *  {@link #nodes(Collection)}, and
+     *  {@link #nodes(Object)}, 
+     *  if the node weight has changed in a way
+     *  that affects comparison under the equals method.
+     *  This method returns true if the node weight has changed (as determined
+     *  by the equals() method) since the last time the graph was notified
+     *  of the node's weight. Furthermore, if the node weight has changed in
+     *  this way,  a graph change is registered.
+     *  This is an <em>O(n)</em> operation. 
+     *  @param node The node whose weight is to be validated.
+     *  @return True if the node weight has changed.
+     *  @exception IllegalStateException if the weight of the given node
+     *  is not valid, as determined by {@link #validNodeWeight(Object)}.
+     *  @see #validateNodeWeight(Node, Object).
+     */
+    public boolean validateNodeWeight(Node node) {
+        boolean weightValueHasChanged = false;
+        if (!validNodeWeight(node.getWeight())) {
+            throw new IllegalStateException("Invalid weight associated with a "
+                    + "node in the graph." +  _nodeDump(node));
+        }
+        Iterator weights = _nodeWeightMap.keySet().iterator();
+        boolean removed = false;
+        Object weight = null;
+        List nodes = null;
+        while (weights.hasNext() && !removed) {
+            weight = weights.next();
+            nodes = (List)_nodeWeightMap.get(weight);
+            removed = nodes.remove(node);
+        }  
+        if (removed) {
+            // Note that the weight can change without the weight value,
+            // as referenced here, changing if the change does not affect
+            // comparison under the equals method. 
+            weightValueHasChanged = weight.equals(node.getWeight());
+            if (nodes.size() == 0) {
+                _nodeWeightMap.remove(weight);
+            }
+        }
+        _registerWeight(node);
+        if (weightValueHasChanged) {
+            _registerChange();
+        }
+        return weightValueHasChanged;
+    }
+     
+
     /** Given a collection of graph elements (nodes and edges), return an array
      * of weights associated with these elements.
      * If a weight is common across multiple elements in
@@ -1644,16 +1698,7 @@ public class Graph implements Cloneable {
         }
         _nodes.add(node);
         _incidentEdgeMap.put(node, new ArrayList());
-        if (node.hasWeight()) {
-            ArrayList sameWeightList;
-            try {
-                sameWeightList = _sameWeightNodes(weight);
-            } catch (Exception exception) {
-                sameWeightList = new ArrayList();
-                _nodeWeightMap.put(weight, sameWeightList);
-            }
-            sameWeightList.add(node);
-        }
+        _registerWeight(node);
         _registerChange();
     }
 
@@ -1740,6 +1785,21 @@ public class Graph implements Cloneable {
         return "\nDumps of the offending node and graph follow.\n"
             + "The offending node:\n" + nodeString
             + "\nThe offending graph:\n" + this.description() + "\n";
+    }
+
+    // Associate a node to its weight in the internal mapping of node
+    // weights to nodes.
+    // @param node The node.
+    private void _registerWeight(Node node) {
+        if (node.hasWeight()) {
+            Object weight = node.getWeight();
+            ArrayList sameWeightList = (ArrayList)(_nodeWeightMap.get(weight));
+            if (sameWeightList == null) {
+                sameWeightList = new ArrayList();
+                _nodeWeightMap.put(weight, sameWeightList);
+            }
+            sameWeightList.add(node);
+        }
     }
 
     // Remove an object from an ArrayList if it exists in the list.
