@@ -94,7 +94,7 @@ public class GiottoReceiver extends AbstractReceiver {
      *  token will be lost. The token becomes available to the
      *  get() method only when update() is called.
      *  @param token The token to be put into this receiver.
-     *  @exception NoRoomException Not thrown in this class.
+     *  @exception NoRoomException Not thrown in this base class
      */
     public void put(Token token) throws NoRoomException {
 	_nextToken = token;

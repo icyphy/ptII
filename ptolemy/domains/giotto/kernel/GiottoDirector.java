@@ -200,7 +200,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  return false in postfire.
      *  Increment the number of iterations.
      *  @return True if the execution is not finished.
-     *  @throws IllegalActionException If the iterations parameter does
+     *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
@@ -337,7 +337,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    while (schedule.hasMoreElements()) {
 		List sameFrequencyList = (List) schedule.nextElement();
 
-		Enumeration sameFrequency = Collections.enumeration(sameFrequencyList);
+		Enumeration sameFrequency =
+                    Collections.enumeration(sameFrequencyList);
 
 		while (sameFrequency.hasMoreElements()) {
 		    Actor actor = (Actor) sameFrequency.nextElement();
@@ -364,7 +365,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		List higherFrequencyList = (List) schedule.nextElement();
 		
 		if (higherFrequencyList != null) {
-		    Enumeration higherFrequency = Collections.enumeration(higherFrequencyList);
+		    Enumeration higherFrequency =
+                        Collections.enumeration(higherFrequencyList);
 
 		    // Recursive call.
 		    postfire = _fire(higherFrequency) && postfire;

@@ -46,10 +46,11 @@ based on a "frequency" attribute of the actors.
 The frequency of an actor which does not have a "frequency" attribute
 is _DEFAULT_GIOTTO_FREQUENCY.
 <p>
-Given two actors A1 and A2,
-compare(A1,A2) is -1 (A1<A2) if A1's frequency is strictly less than A2's frequency, or
-compare(A1,A2) is 0 (A1==A2) if A1's frequency is equal to A2's frequency, or
-compare(A1,A2) is 1 (A1>A2) if A1's frequency is strictly greater than A2's frequency.
+Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
+frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
+(A1 == A2) if A1's frequency is equal to A2's frequency, or
+compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater than
+A2's frequency.
 
 @author Christoph Meyer
 @version $Id$
@@ -59,6 +60,8 @@ public class GiottoActorComparator implements Comparator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** 
+     */
     public static int getFrequency(Actor actor) {
 	try {
 	    Parameter parameter = (Parameter)
@@ -77,8 +80,8 @@ public class GiottoActorComparator implements Comparator {
 	}
     }
 
-    // Caution: equals is inconsistent with compare.
-
+    /** Caution: equals is inconsistent with compare.
+     */
     public int compare(Object object1, Object object2) {
 	if (((object1 != null) && Actor.class.isInstance(object1)) &&
 	    ((object2 != null) && Actor.class.isInstance(object2))) {
@@ -95,18 +98,18 @@ public class GiottoActorComparator implements Comparator {
 	    throw new ClassCastException();
     }
 
-    // Caution: equals is inconsistent with compare.
-
+    /** Caution: equals is inconsistent with compare.
+     *  FIXME: If there is an equals, then hashCode should probably also
+     *  be overriden
+     */   
     public boolean equals(Object object) {
 	return false;
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     // The static default Giotto frequency.
     protected static int _DEFAULT_GIOTTO_FREQUENCY = 1;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 }

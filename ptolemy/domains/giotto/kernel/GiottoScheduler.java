@@ -124,10 +124,9 @@ public class GiottoScheduler extends Scheduler {
 
 	    int frequency = GiottoActorComparator.getFrequency(actor);
 
-	    List scheduleList =_treeSchedule(actorList.listIterator(),
-					     GiottoActorComparator.
-					     _DEFAULT_GIOTTO_FREQUENCY,
-					     frequency);
+	    List scheduleList = _treeSchedule(actorList.listIterator(),
+                    GiottoActorComparator._DEFAULT_GIOTTO_FREQUENCY,
+                    frequency);
 
 	    return Collections.enumeration(scheduleList);
 	}
@@ -139,7 +138,8 @@ public class GiottoScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private List _treeSchedule(ListIterator iterator, int lastFrequency, int frequency)
+    private List _treeSchedule(ListIterator iterator,
+            int lastFrequency, int frequency)
 	throws NotSchedulableException {
 
 	List sameFrequencyList = new LinkedList();
