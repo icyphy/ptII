@@ -1,6 +1,6 @@
 # Tests for the StaticSchedulingDirector class
 #
-# @Author: Jie Liu
+# @Author: Jie Liu, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -40,14 +40,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
-
-
 ######################################################################
 ####
 #
@@ -86,4 +78,70 @@ test StaticSchedulingDirector-4.1 {Test setScheduler and getScheduler} {
     catch {[$d2 setScheduler $s2]} err1
     list [$s0 getFullName] [$s1 getFullName] $err1
 } {.D1.Scheduler .D1.Scheduler {ptolemy.kernel.util.IllegalActionException: Cannot set container because workspaces are different.
-  in .Scheduler and .D2}
+  in .Scheduler and .D2}}
+
+
+
+######################################################################
+####
+#
+test StaticSchedulingDirector-5.1 {addDebugListener, removeDebugListener} {
+    set d1 [java::new ptolemy.actor.sched.StaticSchedulingDirector]
+    
+    # No listeners have been added, and no scheduler is present
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamListener $printStream]
+    $d1 removeDebugListener $listener
+    $d1 addDebugListener $listener
+
+    set s0 [java::new ptolemy.actor.sched.Scheduler]
+    # setScheduler calls _setScheduler which calls invalidateSchedule twice.
+    $d1 setScheduler $s0
+
+    $d1 removeDebugListener $listener
+    $d1 addDebugListener $listener
+
+    # Add the same Listener twice
+    $d1 addDebugListener $listener
+    
+    # This will print a message to the stream
+    $d1 invalidateSchedule
+
+    $d1 removeDebugListener $listener
+    # This should not print a message to the stream
+    $d1 invalidateSchedule
+
+    $printStream flush
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list $output
+} {{Added attribute Scheduler to .
+Invalidating schedule.
+Invalidating schedule.
+Invalidating schedule.
+}}
+
+
+######################################################################
+####
+#
+test StaticSchedulingDirector-6.1 {call fire() on a director with no Scheduler  } {
+    set d1 [java::new ptolemy.actor.sched.StaticSchedulingDirector]
+    catch {$d1 fire} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Attempted to fire system with no scheduler}}
+
+######################################################################
+####
+#
+test StaticSchedulingDirector-7.1 {call setScheduler(null) and call isScheduleValid() on a director with no Scheduler  } {
+    set d1 [java::new ptolemy.actor.sched.StaticSchedulingDirector]
+    $d1 setScheduler [java::null]
+    catch {$d1 isScheduleValid} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: has no scheduler.
+  in .<Unnamed Object>}}
+
