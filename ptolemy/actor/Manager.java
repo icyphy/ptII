@@ -682,6 +682,15 @@ public class Manager extends NamedObj implements Runnable {
                     "with no associated CompositeActor model");
         }
         ((CompositeActor)container).stop();
+
+        // Since Manager.resume() is synchronized, start a thread
+        // to call resume() in order to avoid deadlock
+        Thread resumeThread = new PtolemyThread( new Runnable() {
+                public void run() {
+                    resume();
+                }
+            });
+        resumeThread.start();
     }
 
     /** Terminate the currently executing model with extreme prejudice.
