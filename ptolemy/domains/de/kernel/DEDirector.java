@@ -138,7 +138,7 @@ import java.util.Iterator;
  *  recalculated the next time prefire() is invoked.
  *  <p>
  *  However, there is one subtlety.  If an actor produces events in the
- *  future via DEIOPort, then the desintation actor will be fired even
+ *  future via DEIOPort, then the destination actor will be fired even
  *  if it has been removed from the topology by the time the execution
  *  reaches that future time.  This may not always be the expected behavior.
  *  The Delay actor in the DE library behaves this way.
