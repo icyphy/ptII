@@ -150,6 +150,8 @@ public class SDFReceiver extends AbstractReceiver {
      *  fill the array with them.
      *  If there are not enough tokens in the receiver, throw an exception
      *  and remove none of the tokens from the receiver.
+     *
+     *  @deprecated Use Token[] getArray(int) insntead.
      *  @exception NoTokenException If there is no token in the receiver.
      */
     public void getArray(Token t[]) {
@@ -162,6 +164,36 @@ public class SDFReceiver extends AbstractReceiver {
                     + " tokens in the receiver and " + _queue.historySize()
                     + " in history.");
         }
+    }
+
+    /** Get an array of tokens from this receiver. The parameter
+     *  specifies the number of valid tokens to get in the returned
+     *  array. The length of the returned array can be greater than
+     *  <i>vectorLength</i>, in which case, only the first <i>vectorLength</i> 
+     *  elements are guaranteed to be valid. This is allowed so that
+     *  an implementation of this method can choose to reallocate
+     *  the returned token array only when the vector length is increased.
+     *  <p>
+     *  This base class method is not performance optimized, since
+     *  it simply calls put(Token) multiple times. Domains that
+     *  can use a vectorized put() and get() should probably  implement 
+     *  a more optimized version of this method.
+     *  @param vectorLength The number of valid tokens to get in the
+     *   returned array.
+     *  @exception NoTokenException If there are not <i>vectorLength</i>
+     *   tokens.
+     */
+    // FIXME: Make this work (currently broken).
+    public Token[] getArray(int vectorLength) {
+	//System.out.println("SDFReceiver: getArray() invoked with vector length: " + vectorLength);
+	// Check if we need to reallocate the cached
+	// token array.
+	if (vectorLength > _tokenArray.length) {
+	    // Reallocate token array.
+	    _tokenArray = new Token[vectorLength];
+	}
+	_queue.takeArray(_tokenArray, vectorLength);
+	return _tokenArray;
     }
 
     /** Return the capacity, or INFINITE_CAPACITY if it is unbounded.
@@ -257,11 +289,27 @@ public class SDFReceiver extends AbstractReceiver {
     /** Put an array of tokens in the receiver.
      *  If the receiver has insufficient room, throw an
      *  exception, and add none of the tokens to the receiver.
+     *
+     *  @deprecated Use void putArray(token[], int) instead.
      *  @param token The token to be put to the receiver.
      *  @exception NoRoomException If the receiver is full.
      */
     public void putArray(Token token[]) {
         if (!_queue.putArray(token)) {
+            throw new NoRoomException(getContainer(),
+                    "Queue is at capacity. Cannot put a token.");
+        }
+    }
+
+    /** Put an array of tokens in the receiver.
+     *  If the receiver has insufficient room, throw an
+     *  exception, and add none of the tokens to the receiver.
+     *  @param token The token to be put to the receiver.
+     *  @exception NoRoomException If the receiver is full.
+     */
+    public void putArray(Token token[], int vectorLength) {
+	//System.out.println("SDFReceiver: putArray() invoked with vector length: " + vectorLength);
+	if (!_queue.putArray(token, vectorLength)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
         }
@@ -319,4 +367,5 @@ public class SDFReceiver extends AbstractReceiver {
 
     private ArrayFIFOQueue _queue;
     private IOPort _container;
+    private Token[] _tokenArray = new Token[1];
 }
