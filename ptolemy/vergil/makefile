@@ -34,7 +34,7 @@ ME =		ptolemy/vergil
 DIRS = 		toolbox basic actor kernel fsm debugger icon img lib tree test
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
