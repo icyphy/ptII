@@ -35,7 +35,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.PtolemyThread;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
 
@@ -44,30 +46,33 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// ActiveActorManager
 /**
-An active actor manager iterates the active actor through the execution
-cycle until stop is requested. If the active actor pulls data from its
-input ports and its prefire() returns false, the actor manager will notify
-the CI director to process the pull request by the actor.
+An active actor manager iterates an active actor until its postfire()
+returns false, or the director is requested to stop. If the active
+actor has pull input and its prefire() returns false, the actor manager
+will notify the CI director to process the pull request by the actor.
+
+When the actor has a <i>period</i> parameter, the actor manager will
+sleep between successive iterations of the actor for the duration
+given by the parameter, in milliseconds. This is used to control the
+execution rate of source actors in the model that are always ready to
+produce the next output.
 
 @author Xiaojun Liu, Yang Zhao
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 3.0
 */
 public class ActiveActorManager extends PtolemyThread {
 
-    /** Construct a thread to be used for the execution of the
-     *  iteration methods of the actor. This increases the count of active
-     *  actors in the director.
+    /** Construct an actor manager to iterate the actor.
      *  @param actor The actor that is managed.
-     *  @param director The director responsible for the execution of this
-     *   actor.
+     *  @param director The director of the actor.
      */
     public ActiveActorManager(Actor actor, CIDirector director) {
         super();
         _actor = actor;
         _director = director;
         CompositeActor container =
-            (CompositeActor)((NamedObj)actor).getContainer();
+                (CompositeActor)((NamedObj)actor).getContainer();
         _manager = container.getManager();
         _init();
         director._addActorManager(this);
@@ -76,14 +81,18 @@ public class ActiveActorManager extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Iterate the actor through the execution cycle
-     *  until a stop has been requested. At the end of the termination,
-     *  calls wrapup on the actor.
+    /** Iterate the actor until its postfire() returns false, or the
+     *  director is requested to stop.
      */
     public void run() {
         boolean iterate = true;
         try {
-            while (iterate && !_director._stopRequested) {
+            while (iterate && !_director._isStopRequested()) {
+                while (_director._pauseRequested) {
+                    synchronized (_director) {
+                        _director.wait();
+                    }
+                }
                 // container is checked for null to detect the
                 // deletion of the actor from the topology
                 if (((Entity)_actor).getContainer() != null) {
@@ -91,12 +100,7 @@ public class ActiveActorManager extends PtolemyThread {
                         _actor.fire();
                         iterate = _actor.postfire();
                         if (_period > 0) {
-                            try {
-                                sleep(_period);
-                            } catch (InterruptedException ex) {
-                                //FIXME: better way to handle?
-                                ex.printStackTrace();
-                            }
+                            sleep(_period);
                         }
                     } else {
                         if (_isPushSource) {
@@ -105,22 +109,23 @@ public class ActiveActorManager extends PtolemyThread {
                             yield();
                         } else {
                             synchronized (_actor) {
-                                try {
-                                    if (!_actor.prefire()) {
-                                        _director._requestAsyncPull(_actor);
-                                        _actor.wait();
-                                    }
-                                } catch (InterruptedException ex) {
-                                    //FIXME: better way to handle?
-                                    ex.printStackTrace();
+                                if (!_actor.prefire()) {
+                                    _director._requestAsyncPull(_actor);
+                                    _actor.wait();
                                 }
                             }
                         }
                     }
                 }
             }
-        } catch (IllegalActionException e) {
-            _manager.notifyListenersOfException(e);
+        } catch (IllegalActionException ex) {
+            _manager.notifyListenersOfException(ex);
+        } catch (InterruptedException ex) {
+            // ignore
+            // either the director interrupts this actor manager to stop
+            // the model, or the user interrupts the execution of the model.
+        } finally {
+            _director._removeActorManager(this);
         }
     }
 
@@ -166,7 +171,7 @@ public class ActiveActorManager extends PtolemyThread {
     // The active actor being managed.
     private Actor _actor;
 
-    // The CI director that executes non-active actors.
+    // The CI director that executes inactive actors.
     private CIDirector _director;
 
     // The manager of the Ptolemy model.
@@ -179,4 +184,3 @@ public class ActiveActorManager extends PtolemyThread {
     private int _period = 0;
 
 }
-

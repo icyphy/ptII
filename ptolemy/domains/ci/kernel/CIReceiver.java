@@ -32,35 +32,36 @@ package ptolemy.domains.ci.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
-import ptolemy.actor.*;
+import ptolemy.actor.AbstractReceiver;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CIReceiver
 /**
-An implementation of the ptolemy.actor.Receiver interface for the
-CI domain. When a token is put into a CIReceiver, that receiver checks
-whether the port containing the receiver is push or pull, and whether the
-current thread is the same as the director thread. If it is a push port
-and the current thread is the same as the director thread, the actor is
-added to a list of actors to be fired by the director, so that the model
-executes as data-driven. If it is a push port and the current thread is not
-the same as the director thread, the active actor thread will notify the
-director to process the pushed data. If it is a pull port, the director will
-check whether the actor containing the port has been pulled. If so and its
-prefire() is true, the director will fire the actor; if prefire() returns
-false, the director then recursively registers actors providing data to this
-actor as being pulled, so that the model executes as demand-driven.
+An implementation of the ptolemy.actor.Receiver interface for the CI
+domain. This receiver provides a FIFO buffer between an active actor
+and an inactive actor or two inactive actors. When an active actor
+with push output puts a token in a receiver, the inactive actor that
+reads from the receiver will be put in the task queue of the director.
+When the director fires an inactive actor, the actors that receive
+data from this actor are executed as data-driven. For an active actor
+with pull input, its actor manager will be notified when an input
+token arrives, and will continue to iterate the actor.
 <p>
+
 @author Xiaojun Liu, Yang Zhao
 @version $Id$
 @since Ptolemy II 3.0
 */
 public class CIReceiver extends AbstractReceiver {
 
-    /** Construct an empty receiver working with the given CI director.
+    /** Construct an empty receiver.
      *  @param director The director that creates this receiver.
      */
     public CIReceiver(CIDirector director) {
@@ -71,7 +72,8 @@ public class CIReceiver extends AbstractReceiver {
     ////                         public methods                    ////
 
     /** Get a token from this receiver.
-     *  @exception NoTokenException If there is no token.
+     *  @return A token from this receiver.
+     *  @exception ptolemy.actor.NoTokenException If there is no token.
      */
     public synchronized Token get() throws NoTokenException {
         if (_tokens.size() == 0)
@@ -80,7 +82,7 @@ public class CIReceiver extends AbstractReceiver {
         return (Token)_tokens.removeFirst();
     }
 
-    /** Return true. The receiver acts as an infinite FIFO queue.
+    /** Return true. The receiver acts as an infinite FIFO buffer.
      *  @return True if the next call to put() will not result in a
      *   NoRoomException.
      */
@@ -151,50 +153,52 @@ public class CIReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Checks whether the port containing the receiver is push or pull,
-    // and whether the current thread is the same as the director thread.
-    // If it is a push port and the current thread is the same as the
-    // director thread, the actor is added to a list of actors to be fired
-    // by the director. If it is a push port and the current thread is not
-    // the same as the director thread, the active actor thread will notify
-    // the director to process the pushed data. If it is a pull port, the
-    // director will check whether the actor containing the port has been
-    // pulled. If so and its prefire() is true, the director will fire the
-    // actor; if prefire() returns false, the director then recursively
-    // registers actors providing data to this actor as being pulled, so that
-    // the model executes as demand-driven.
+    /* If an active actor with push output puts a token in this receiver,
+     * put the inactive actor that reads from this receiver in the task
+     * queue of the director. If an active actor with pull input reads
+     * from this receiver, notify its actor manager.
+     */
     private void _notify() {
-        IOPort port = (IOPort)getContainer();
-        boolean isPush = CIDirector._isPushPort(port);
-        Actor actor = (Actor)port.getContainer();
-        if (isPush) {
-            if (Thread.currentThread() != _director._getThread()) {
-                _director._addAsyncPushedActor(actor);
+        if (!_initialized) {
+            _initialize();
+        }
+        if (_isPush) {
+            if (_isAsyncPushSink) {
+                _director._addAsyncPushedActor(_actor);
             } else {
-                _director._addSyncPushedActor(actor);
+                _director._addSyncPushedActor(_actor);
             }
         } else {
-            //FIXME: this does not allow an active source actor (with push
-            // output) to be connected directly to a sync actor with pull
-            // input
-            if (_director._isPulled(actor)) {
+            if (_director._isPulled(_actor)) {
                 try {
-                    if (actor.prefire()) {
-                        _director._actorEnabled(actor);
+                    if (_actor.prefire()) {
+                        _director._actorEnabled(_actor);
                     } else {
-                        _director._requestSyncPull(actor);
+                        _director._requestSyncPull(_actor);
                     }
                 } catch (IllegalActionException ex) {
-                    //FIXME: better way to handle this
-                    ex.printStackTrace();
+                    _actor.getManager().notifyListenersOfException(ex);
                 }
-            }
-            if (CIDirector._isActive(actor)) {
-                synchronized (actor) {
-                    actor.notifyAll();
+            } else if (_isAsyncPullSink) {
+                synchronized (_actor) {
+                    _actor.notifyAll();
                 }
             }
         }
+    }
+
+    private void _initialize() {
+        IOPort port = getContainer();
+        _isPush = CIDirector._isPushPort(port);
+        _actor = (Actor)port.getContainer();
+        _isAsyncPullSink = !_isPush && CIDirector._isActive(_actor);
+        Iterator sourcePorts = port.sourcePortList().iterator();
+        if (sourcePorts.hasNext()) {
+            port = (IOPort)sourcePorts.next();
+            Actor actor = (Actor)port.getContainer();
+            _isAsyncPushSink = _isPush && CIDirector._isActive(actor);
+        }
+        _initialized = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -203,8 +207,21 @@ public class CIReceiver extends AbstractReceiver {
     // The CI director that created this receiver.
     private CIDirector _director;
 
+    // The actor that reads from this receiver.
+    private Actor _actor;
+
     // List for storing tokens.
     private LinkedList _tokens = new LinkedList();
 
-}
+    private boolean _initialized = false;
 
+    // True if an active actor put token in this receiver.
+    private boolean _isAsyncPushSink = false;
+
+    // True if an active actor reads from this receiver.
+    private boolean _isAsyncPullSink = false;
+
+    // True if this receiver is in a push input port.
+    private boolean _isPush = false;
+
+}

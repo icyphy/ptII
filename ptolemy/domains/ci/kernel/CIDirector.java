@@ -54,55 +54,42 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// CIDirector
 /**
-Director of the component interaction (CI) domain. A CIDirector governs
-the execution of a CompositeActor with extended CORBA Event Service (ES)
-semantics.
+Director of the component interaction (CI) domain. The CI domain supports
+two styles of interaction between actors, push and pull. In push interaction,
+the actor that produces data initiates the interaction. The receiving actor
+reacts to the data. The computation proceeds as data-driven. In pull
+interaction, the actor that consumes data decides when the interaction
+takes place, and the computation proceeds as demand-driven.
 <p>
-CORBA ES has two basic models: push model and pull model. In a push model,
-the supplier decides when the data are sent; the consumer dose not take
-any initiative and just waits for the data. In a pull model, the consumer
-decides when to request data; the supplier dose not take any initiative and
-just waits for those requesting the data. In a CORBA ES model, there could be
-four kinds of components: event driven component (push input/push output),
-demand driven component (pull input/pull output), queueing component
-(push input/pull output), and active agent component (pull input/push output).
+When a relation connects the push(pull) output port of one actor with the
+push(pull) input port of another, the style of interation between the two
+actors is push(pull). To configure a port as a push port, add a parameter
+named <i>push</i> to the port, and give the value "true" to the parameter.
+Ports are pull ports by default. Relations connecting both push and pull
+ports are not supported. (TODO: add check in the director.)
 <p>
-The CI domain does not aim for an implementation of CORBA ES. It abstracts the
-push/pull semantics, and creates an environment to simulate different kinds of
-interactions among components in a model.
-<p>
-In the CI domain, a port contains a push/pull attribute. According to the input
-and output configuration, an actor can be sorted into four kinds as a
-component in CORBA ES. An actor with push output may trigger the actor
-receiving data from it to fire; an actor with pull input may pull the actor
-providing data to it to fire.
-<p>
-An actor with pull input/push output, a source actor with push output, or
-a sink actor with pull input is called an active actor. Each active actor
-executes in a single thread created by the CI director. Actors that are not
-active execute in the same thread as the director.
-<p>
-The CI director maintains several lists: the _asyncPushedActors list for actors
-with push input that are triggered by active actors; the _asyncPulledActors
-list for actors pulled by active actors; the _actorsToFire list for actors ready
-to fire, including actors added by the director thread directly and actors from
-the _asyncPulledActors and _asyncPushedActors list.
-<p>
-Input ports in a CI model contain instances of CIReceiver. When a token is put
-into a CIReceiver, that receiver checks whether the port is push or pull, and
-whether the current thread is the same as the director thread. If it is a push
-port and the current thread is the same as the director thread, the director
-will add the actor containing the port to the _actorsToFire list, so that the
-model executes as data-driven. If it is a push port and the current thread is
-not the same as the director thread, the active actor thread will add the actor
-to _asyncPushedactors list. If it is a pull port, the director will check
-whether the actor which contains the port has been pulled. If so and the prefire
-is true, the director will remove this actor from _asyncPulledActors list and
-add it to _actorToFire list; if the prefire return false, the director then
-recursively registers actors providing data to this actor as being pulled.
-<p>
-Currently this director does not properly deal with cooperating with other
-domains.
+Actors in a CI model are classified as either active or inactive. Each
+active actor is controlled by an {@link ActiveActorManager actor manager},
+which runs asynchronously with respect to the director (i.e. not in the
+same thread of control). Active actors include:
+<ul>
+<li> source actors with push output ports </li>
+<li> sink actors with pull input ports </li>
+<li> actors with pull input ports and push output ports </li>
+</ul>
+These actors initiate all the computation in a CI model. The director
+controls the execution of inactive actors by maintaining a task queue.
+A task in the queue is an inactive actor that either receives a token
+from an active actor via the push interaction, or is requested to
+produce a token by an active actor via the pull interaction. In one
+iteration of the CI model, the director removes the first actor from
+the queue. If the actor is pushed, the computation proceeds as
+data-driven from the actor, until the produced data reach actors that
+are either not ready to fire or with pull output ports and no pending
+pull request. If the actor is pulled, then the computation proceeds
+as demand-driven from the actor, until either the actor is fired or
+the pull request reaches actors that have push input ports and are not
+ready to fire.
 
 @author Xiaojun Liu, Yang Zhao
 @version $Id$
@@ -121,7 +108,7 @@ public class CIDirector extends Director {
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  @param workspace The workspace of this object.
+     *  @param workspace The workspace of this director.
      */
     public CIDirector(Workspace workspace) {
         super(workspace);
@@ -138,7 +125,7 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException If the name has a period in it, or
      *   the director is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
+     *   an attribute with the specified name.
      */
     public CIDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -148,17 +135,15 @@ public class CIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Check whether there is an asynchronously pushed/pulled actor. If
-     *  there is an asynchronously pushed actor, fire the actor and any
-     *  actors triggered by the actor. For asynchronously pulled actors,
-     *  if its prefire() returns true, then fire the actor, which may
-     *  enable other pulled actors to fire, otherwise, request the actors
-     *  providing data to it to be fired.
+    /** Check whether there is an actor pushed or pulled by an active
+     *  actor. If there is a pushed actor, proceed with data-driven
+     *  computation from the actor. For an asynchronously pulled actor,
+     *  proceed with demand-driven computation from the actor.
      *  <p>
-     *  If the CI director is not at the top level of the hierarchy,
-     *  return after completing the data-driven computation for the pushed
-     *  actors or propagating pull requests; otherwise, wait until active
-     *  actors produce pushed data or pull requests.
+     *  If this director is not at the top level of the model, return
+     *  after completing the data-driven computation for a pushed actor
+     *  or propagating the pull request for a pulled actor; otherwise,
+     *  wait until active actors produce pushed data or pull requests.
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -167,6 +152,7 @@ public class CIDirector extends Director {
      *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
+
         Actor pushedActor = _nextAsyncPushedActor();
         if (pushedActor != null) {
             _actorsToFire.add(pushedActor);
@@ -201,7 +187,7 @@ public class CIDirector extends Director {
                 }
             }
         } else {
-            // if this director is at the top-level, wait for async push/pull
+            // if this director is at the top level, wait for async push/pull
             // requests, otherwise just return
             if (!_isTopLevel()) {
                 return;
@@ -216,7 +202,8 @@ public class CIDirector extends Director {
                             if (_debugging)
                                 _debug("Wake up from wait...");
                         } catch (InterruptedException ex) {
-                            //FIXME how to handle this
+                            // stop
+                            _stopRequested = true;
                         }
                     }
                 }
@@ -224,13 +211,11 @@ public class CIDirector extends Director {
         }
     }
 
-    /** Initialize the model controlled by this director. For each actor deeply
-     *  contained by this director, check if it is an active actor. Create
-     *  a thread (an instance of ActiveActorManager) for each active actor and
-     *  start it.
+    /** Initialize the model controlled by this director. For each active
+     *  actor, create an instance of ActiveActorManager and start it.
      *  <p>
-     *  This method is <i>not</i> synchronized on the workspace, so the caller
-     *  should be.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
@@ -265,9 +250,9 @@ public class CIDirector extends Director {
         return r;
     }
 
-    /** Return false if all active actors have finished execution and there
-     *  is no pushed data or pull request to be processed; otherwise,
-     *  return true.
+    /** Return false if all active actors have finished execution and
+     *  there is no pushed data or pull request to be processed;
+     *  otherwise, return true.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
@@ -279,19 +264,21 @@ public class CIDirector extends Director {
         }
     }
 
-    /** If the CI director is at the top level of the hierarchy, always
-     *  return true. If the CI director is not at the top level, return true
-     *  if there is pushed data or pull request to be processed; otherwise,
-     *  return false.
-     *
+    /** If this director is at the top level of the model or there is pushed
+     *  data or pull request to be processed, return true; otherwise, return
+     *  false.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         _iteratingStarted = true;
         super.prefire();
+        if (_pauseRequested) {
+            synchronized (this) {
+                notifyAll();
+                _pauseRequested = false;
+            }
+        }
         if (_isTopLevel()) {
-            if (_debugging)
-                _debug("Is top-level, prefire returns true...");
             return true;
         } else {
             return (_asyncPushedActors.size() > 0)
@@ -299,11 +286,14 @@ public class CIDirector extends Director {
         }
     }
 
-    /** This method is invoked once per execution, before any
+    /** Validate the attributes and then invoke the preinitialize()
+     *  methods of all its deeply contained actors.
+     *  This method is invoked once per execution, before any
      *  iteration, and before the initialize() method.
      *  Time is not set during this stage. So preinitialize() method
      *  of actors should not make use of time. They should wait
      *  until the initialize phase of the execution.
+     *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -317,9 +307,8 @@ public class CIDirector extends Director {
         _actorsToFire.clear();
         _pulledActors.clear();
         _actorManagers.clear();
-        _stopRequested = false;
+        _pauseRequested = false;
         _iteratingStarted = false;
-        _directorThread = Thread.currentThread();
         _receivers.clear();
         Parameter interval = (Parameter)getAttribute("interval");
         if (interval != null) {
@@ -339,7 +328,7 @@ public class CIDirector extends Director {
         if (_debugging)
             _debug("Stop fire called...");
         if (_iteratingStarted) {
-            _stopRequested = true;
+            _pauseRequested = true;
         }
         synchronized (this) {
             notifyAll();
@@ -358,9 +347,8 @@ public class CIDirector extends Director {
      *  further operations.
      *  <p>
      *  Calls terminate() on all actors contained by the container
-     *  of this director. set the <i>_stopRequested<i> flag to be true,
-     *  so that the ActiveActorManager thread will terminate the executing
-     *  of the active actor.
+     *  of this director. Set the <i>_stopRequested<i> flag to be true,
+     *  and interrupt the actor manager threads.
      */
     public void terminate() {
         super.terminate();
@@ -370,9 +358,12 @@ public class CIDirector extends Director {
             _stopRequested = true;
         }
         synchronized (this) {
-            notifyAll();
+            Iterator actorManagers = _actorManagers.iterator();
+            while (actorManagers.hasNext()) {
+                Thread actorManager = (Thread)actorManagers.next();
+                actorManager.interrupt();
+            }
         }
-        //FIXME: terminate actor managers
     }
 
     /** Invoke the wrapup() method of all the actors contained in the
@@ -380,14 +371,11 @@ public class CIDirector extends Director {
      *  active actors to stop.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
-     *
      *  @exception IllegalActionException If the wrapup() method of
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        if (_debugging)
-            _debug("Wrap up...");
+
         _stopRequested = true;
         Iterator actors =
             ((CompositeEntity)getContainer()).entityList().iterator();
@@ -400,19 +388,27 @@ public class CIDirector extends Director {
             }
         }
 
-        while (_actorManagers.size() > 0) {
-            try {
-                synchronized (this) {
+        synchronized (this) {
+            Iterator actorManagers = _actorManagers.iterator();
+            while (actorManagers.hasNext()) {
+                Thread actorManager = (Thread)actorManagers.next();
+                actorManager.interrupt();
+            }
+            while (_actorManagers.size() > 0) {
+                try {
                     wait();
-                }
-            } catch (InterruptedException ex) {}
+                } catch (InterruptedException ex) {}
+            }
         }
+
+        super.wrapup();
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Schedule the enabled (pulled) actor to fire.
+    /** Schedule the pulled inactive actor to fire.
      *  @param actor The pulled actor that is ready to fire.
      */
     protected void _actorEnabled(Actor actor) {
@@ -431,10 +427,10 @@ public class CIDirector extends Director {
         _actorManagers.add(actorManager);
     }
 
-    /** Add the given actor to the list that contains actors that received
-     *  pushed data from active actors. Notify the director that there is
-     *  pushed data to process.
-     *  @param actor The actor that received pushed data from an active actor.
+    /** Add the given actor to the list of actors that received pushed
+     *  data from active actors. Notify this director.
+     *  @param actor The actor that received pushed data from an active
+     *   actor.
      */
     protected synchronized void _addAsyncPushedActor(Actor actor) {
         if (_debugging)
@@ -455,11 +451,13 @@ public class CIDirector extends Director {
         _actorsToFire.add(actor);
     }
 
-    /** Return true if the actor is active, such as: source with push output;
-     *  sink with pull input; actor with pull input and push output.
+    /** Return true if the actor is active, such as: source with push
+     *  output; sink with pull input; actor with pull input and push
+     *  output.
      *  @param actor The actor to be tested whether it is active.
      */
     protected static boolean _isActive(Actor actor) {
+        //TODO: check all inputs and outputs have the same setting.
         boolean inputIsPush = false;
         boolean hasInput = false;
         boolean outputIsPush = false;
@@ -484,7 +482,14 @@ public class CIDirector extends Director {
             || (!inputIsPush && outputIsPush);
     }
 
-    /** Return true if the given actor has been pulled.
+    /** Return true if this director is requested to stop.
+     *  @return True if this director is requested to stop.
+     */
+    protected boolean _isStopRequested() {
+        return _stopRequested;
+    }
+
+    /** Return true if the given actor has a pending pull request.
      *  @param actor The actor to test.
      *  @return True if the given actor has been pulled.
      */
@@ -493,7 +498,8 @@ public class CIDirector extends Director {
     }
 
     /** Return true if the port is a push port, that is a port having a
-     *  parameter named push with boolean value true.
+     *  parameter named push with boolean value true. Otherwise the
+     *  port is considered a pull port.
      *  @param port The port to test.
      *  @return True if the port is a push port.
      */
@@ -507,24 +513,17 @@ public class CIDirector extends Director {
                     result = ((BooleanToken)t).booleanValue();
                 }
             } catch (IllegalActionException e) {
-                // ignore, the port is considered not a push port
+                // ignore, the port is considered a pull port
             }
         }
         return result;
     }
 
-    /** Return the thread of the CI director.
-     *  @return The director thread.
-     */
-    protected Thread _getThread() {
-        return _directorThread;
-    }
-
     /** Remove the actor manager from the set of active actor managers.
      *  @param actorManager An active actor manager.
      */
-    protected synchronized void
-    _removeActorManager(ActiveActorManager actorManager) {
+    protected synchronized void _removeActorManager(
+            ActiveActorManager actorManager) {
         _actorManagers.remove(actorManager);
         notifyAll();
     }
@@ -577,13 +576,9 @@ public class CIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Flag that indicates that a stop has been requested.
+    /** If true, pause the execution of the model.
      */
-    protected boolean _stopRequested = false;
-
-    /** The thread in which this director executes.
-     */
-    protected Thread _directorThread;
+    protected boolean _pauseRequested = false;
 
     /** The default interval between iterations of active actors.
      */
@@ -609,17 +604,15 @@ public class CIDirector extends Director {
     }
 
     // Return the list of actors providing data to the given actor.
-    //FIXME:
-    // assumes that the actor is homogeneous, i.e. it need one token at each
+    // Assume that the actor is homogeneous, i.e. it need one token at each
     // input port to fire, so this list contains the providers that have not
     // produced a token to the actor
+    //TODO: handle multiports
     private List _providerActors(Actor actor) {
         List result = new LinkedList();
         Iterator ports = actor.inputPortList().iterator();
         while (ports.hasNext()) {
             IOPort port = (IOPort)ports.next();
-
-            //FIXME: handle multiports
             try {
                 if (port.hasToken(0)) continue;
             } catch (IllegalActionException ex) {
@@ -683,4 +676,3 @@ public class CIDirector extends Director {
     // Flag that indicates that an iteration is started.
     private boolean _iteratingStarted;
 }
-
