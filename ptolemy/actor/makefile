@@ -82,6 +82,7 @@ JSRCS = \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
+	TypeConflictException.java \
 	TypedIOPort.java \
 	TypedIORelation.java
 
