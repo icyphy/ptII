@@ -222,6 +222,20 @@ public class StringUtilities {
                 return property;
             }
         }
+        if (propertyName.equals("ptolemy.ptII.dir")
+            && property.indexOf("cygdrive") != -1
+            && !_printedCygwinWarning) {
+            // This error only occurs when users build their own, 
+            // so it is safe to print to stderr
+            _printedCygwinWarning = true;
+            System.err.println("ptolemy.ptII.dir property = \""
+                    + property + "\", which contains \"cygdrive\". "
+                    + "This is almost always an error under Cygwin that "
+                    + "is occurs when one does PTII=`pwd`.  Instead, do "
+                    + "PTII=c:/foo/ptII");
+        }
+
+
         if (property != null) {
             return property;
         }
@@ -307,6 +321,7 @@ public class StringUtilities {
             } catch (SecurityException security) {
                 // Ignore, we are probably running as an applet or -sandbox
             }
+            System.out.println("getProperty(): " + home); 
             return home;
         }
         if (property == null) {
@@ -839,4 +854,7 @@ public class StringUtilities {
      *  the file system.
      */
     private static String _CLASSPATH_VALUE = "xxxxxxCLASSPATHxxxxxx";
+
+    /** Set to true if we print the cygwin warning in getProperty(). */
+    private static boolean _printedCygwinWarning = false;
 }
