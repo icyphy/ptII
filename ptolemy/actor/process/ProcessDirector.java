@@ -415,15 +415,15 @@ public class ProcessDirector extends Director {
      */
     public void wrapup() throws IllegalActionException {
 	// First wake up threads if they are stopped.
-        Enumeration threads = _newthreads.elements();
+        //Enumeration threads = _newthreads.elements();
         ProcessThread thread = null;
 	if( _areAllThreadsStopped() ) {
-	    threads = _threadList.elements();
+	    Enumeration threads = _threadList.elements();
 	    while( threads.hasMoreElements() ) {
 		thread = (ProcessThread)threads.nextElement();
 		thread.restartThread();
 		synchronized(thread) {
-		    notifyAll();
+		    thread.notifyAll();
 		}
 		if( _threadsStopped > 0 ) {
 		    _threadsStopped--;
@@ -492,7 +492,7 @@ public class ProcessDirector extends Director {
      *  by this thread have stopped; otherwise return false.
      */ 
     protected synchronized boolean _areAllThreadsStopped() {
-        return ( _threadsStopped == _actorsActive );
+        return ( _threadsStopped != 0 && _threadsStopped == _actorsActive);
     }
  
     /** Return true if the count of active processes in the container is 0.
