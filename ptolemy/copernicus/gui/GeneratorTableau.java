@@ -632,7 +632,7 @@ public class GeneratorTableau extends Tableau {
 		    ((Variable)attribute
 		     .getAttribute(tokenName))
 		    .getToken()).stringValue();
-	} catch (Throwable ex) {
+	} catch (Throwable throwable) {
 	    throw new IllegalActionException(attribute, throwable,
 					     "Could not find an attribute "
 					     + "named '"
