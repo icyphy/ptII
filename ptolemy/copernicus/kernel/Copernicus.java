@@ -235,7 +235,7 @@ public class Copernicus {
      *  an octothorpe '#' are ignored.  Substrings that start and end with
      *  a double quote are considered to be a single argument.
      *
-     *  @param commmand The command to execute.
+     *  @param command The command to execute.
      *  @return the exit status of the process, which is usually
      *  0 if the process executed normally.
      */
