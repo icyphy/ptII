@@ -90,7 +90,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      * @param controllingBranch The Branch controlling execution of
      *  this method.
      * @return The token contained by this receiver.
-     */
     public Token consumerGet() throws TerminateBranchException {
         Workspace workspace = getContainer().workspace();
         ProcessDirector director = ((ProcessDirector)((Actor)
@@ -117,15 +116,25 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
         }
     }
+     */
 
-    /**
+    /** Get a token from the mailbox receiver and specify a null
+     *  Branch to control the execution of this method. 
+     * @return The token contained by this receiver.
      */
     public Token get() {
         return get(null);
     }
     
-    /** Throw a TerminateBranchException. This method should never
-     *  be called. Instead, calls should be made to get(Branch).
+    /** Get a token from the mailbox receiver and specify a Branch
+     *  to control the execution of this method. If the controlling
+     *  branch becomes inactive during the execution of this method,
+     *  then throw a TerminateBranchException. If this receiver is
+     *  terminated during the execution of this method, then throw
+     *  a TerminateProcessException.
+     * @param controllingBranch The Branch controlling execution of
+     *  this method.
+     * @return The token contained by this receiver.
      */
     public Token get(Branch branch) {
         Workspace workspace = getContainer().workspace();
@@ -182,7 +191,7 @@ public class MailboxBoundaryReceiver extends Mailbox
     
     /**
      */
-    public void waitForBranchPermission(Branch branch) 
+    public synchronized void waitForBranchPermission(Branch branch) 
     	    throws TerminateBranchException {
         if( branch == null ) {
             return;
@@ -200,19 +209,20 @@ public class MailboxBoundaryReceiver extends Mailbox
             
     /**
      */
-    public void checkIfBranchIterationIsOver(Branch branch) 
+    public synchronized void checkIfBranchIterationIsOver(Branch branch) 
     	    throws TerminateBranchException {
         if( branch != null ) {
             if( branch.isIterationOver() ) {
                 throw new TerminateBranchException("The current "
-                        + "has ended.");
+                        + "iteration has ended.");
             }
         }
     }
     
     /**
      */
-    public void prepareToBlock(Branch branch) throws TerminateBranchException {
+    public synchronized void prepareToBlock(Branch branch) 
+            throws TerminateBranchException {
         if( branch != null ) {
             branch.registerRcvrBlocked(this);
             _otherBranch = branch;
@@ -220,6 +230,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             ProcessDirector director = ((ProcessDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
             director._actorBlocked(this);
+            _otherBranch = branch;
         }
     }
     
@@ -299,7 +310,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      * @param controllingBranch The Branch controlling execution of
      *  this method.
      * @return The token contained by this receiver.
-     */
     public Token consumerProducerGet(Branch controllingBranch) throws 
     	    TerminateBranchException {
         Workspace workspace = getContainer().workspace();
@@ -349,6 +359,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
         }
     }
+     */
 
     /**
      */
@@ -398,7 +409,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      * @param controllingBranch The Branch controlling execution of
      *  this method.
      * @return The token contained by this receiver.
-     */
     public Token producerGet(Branch controllingBranch) throws 
     	    TerminateBranchException {
         Workspace workspace = getContainer().workspace();
@@ -454,9 +464,17 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
         }
     }
+     */
 
-    /** Throw a TerminateBranchException. This method should never
-     *  be called. Instead, calls should be made to put(Token, Branch).
+    /** Put a token into the mailbox receiver and specify a Branch
+     *  to control the execution of this method. If the controlling
+     *  branch becomes inactive during the execution of this method,
+     *  then throw a TerminateBranchException. If this receiver is
+     *  terminated during the execution of this method, then throw
+     *  a TerminateProcessException.
+     * @param token The token being placed in this receiver.
+     * @param controllingBranch The Branch controlling execution of
+     *  this method.
      */
     public void put(Token token, Branch branch) {
         Workspace workspace = getContainer().workspace();
@@ -503,8 +521,8 @@ public class MailboxBoundaryReceiver extends Mailbox
         }
     }
             
-    /** Throw a TerminateBranchException. This method should never
-     *  be called. Instead, calls should be made to put(Token, Branch).
+    /** Put a token into the mailbox receiver and specify a null
+     *  Branch to control the execution of this method. 
      */
     public void put(Token token) {
         put(token, null);
@@ -549,7 +567,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      * @param token The token being placed in this receiver.
      * @param controllingBranch The Branch controlling execution of
      *  this method.
-     */
     public void consumerPut(Token token, Branch controllingBranch) throws 
     	    TerminateBranchException {
         Workspace workspace = getContainer().workspace();
@@ -601,6 +618,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
         }
     }
+     */
 
     /** Put a token into the mailbox receiver and specify a Branch
      *  to control the execution of this method. If the controlling
@@ -611,7 +629,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      * @param token The token being placed in this receiver.
      * @param controllingBranch The Branch controlling execution of
      *  this method.
-     */
     public void consumerProducerPut(Token token, Branch controllingBranch) throws 
     	    TerminateBranchException {
         ProcessDirector director = ((ProcessDirector)((Actor)
@@ -672,6 +689,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
         }
     }
+     */
 
     /** Atomic Put/Composite Get
      *  Put a token into the mailbox receiver and specify a Branch
@@ -683,7 +701,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      * @param token The token being placed in this receiver.
      * @param controllingBranch The Branch controlling execution of
      *  this method.
-     */
     public void producerPut(Token token) throws 
     	    TerminateBranchException {
         ProcessDirector director = ((ProcessDirector)((Actor)
@@ -715,6 +732,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
         }
     }
+     */
 
     /** Reset the local flags of this receiver. Use this method when
      *  restarting execution.
