@@ -1304,7 +1304,7 @@ public class SootUtilities {
      *  Loop through all the methods of the given class and replace
      *  instance references to the given field with static references.
      *  Note that in general, this is not a safe thing to do unless there is
-     *  guaraunteed to be exactly one instance of the class that defines the
+     *  guaranteed to be exactly one instance of the class that defines the
      *  given field.
      */
     public static void makeFieldStatic(SootClass theClass, SootField field) {
