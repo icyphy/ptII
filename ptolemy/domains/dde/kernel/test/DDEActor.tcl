@@ -51,7 +51,7 @@ test DDEActor-1.1 {Constructor tests} {
     $a2 setName A2
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0
-    set a3 [java::new ptolemy.domains.tm.kernel.TMDirector $e0 D3]
+    set a3 [java::new ptolemy.domains.dde.kernel.DDEDirector $e0 D3]
     list [$a1 getFullName] [$a2 getFullName] [$a3 getFullName]
 } {.A1 .A2 .E0.D3}
 
