@@ -45,16 +45,25 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+//////////////////////////////////////////////////////////////////////////
+//// Dataflow
+/**
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class Dataflow extends AbstractDDI implements DDI {
 
-    public Dataflow(CalInterpreter ptActor, Actor actor, Context context, Environment env) {
+    public Dataflow(CalInterpreter ptActor, Actor actor, Context context,
+            Environment env) {
         _ptActor = ptActor;
         _actor = actor;
         _context = context;
         _env = env;
         _inputPorts = createPortMap(_actor.getInputPorts(), true);
         _outputPorts = createPortMap(_actor.getOutputPorts(), false);
-        _actorInterpreter = new DataflowActorInterpreter(_actor, _context, _env, _inputPorts, _outputPorts);
+        _actorInterpreter = new DataflowActorInterpreter(_actor, _context,
+                _env, _inputPorts, _outputPorts);
     }
 
     private Map createPortMap(PortDecl [] ports, boolean isInput) {
@@ -63,9 +72,11 @@ public class Dataflow extends AbstractDDI implements DDI {
             String name = ports[i].getName();
             TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
             if (isInput) {
-                portMap.put(name, new SingleInputPort(name, new DFInputChannel(port, 0)));
+                portMap.put(name, new SingleInputPort(name,
+                        new DFInputChannel(port, 0)));
             } else {
-                portMap.put(name, new SingleOutputPort(name, new DFOutputChannel(port, 0)));
+                portMap.put(name, new SingleOutputPort(name,
+                        new DFOutputChannel(port, 0)));
             }
         }
         return portMap;
@@ -92,21 +103,27 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
     /**
-     * Executes the selected action on the first {@link #fire() fire()} call. On successive calls,
-     * it rolls back previous
-     * state changes, selects a new action and executes it.
+     * Executes the selected action on the first {@link #fire()
+     * fire()} call. On successive calls, it rolls back previous state
+     * changes, selects a new action and executes it.
      * <p>
-     * <b>Note: Is this correct behavior? What is the contract between the result of prefire() and successive
-     * calls to fire()?</b>
+     *  <b>Note: Is this correct behavior? What is the contract
+     * between the result of prefire() and successive calls to
+     * fire()?</b>
      *
-     * @throws IllegalActionException  If an error occures during the interpretation of the action.
+     * @throws IllegalActionException If an error occures during the
+     * interpretation of the action.
+
      */
     public void fire() throws IllegalActionException {
         // FIXMELATER: state transition and potentially rollback
         try {
             if (_actorInterpreter.currentAction() == null) {
-                // This point is reached iff this is not the first fire() call of this iteration.
+
+                // This point is reached iff this is not the first
+                // fire() call of this iteration.
                 // Hence we could put rollback work here.
+
                 _selectAction();
             }
             if (_actorInterpreter.currentAction() != null) {
@@ -115,22 +132,27 @@ public class Dataflow extends AbstractDDI implements DDI {
                 _actorInterpreter.actionClear();
                 _clearInputChannels();
             }
-        } catch (Exception e) {
-            throw new IllegalActionException("Could not fire CAL actor '" + _actor.getName() + "': " + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(null, ex,
+                    "Could not fire CAL actor '" + _actor.getName() + "'");
         }
     }
-    /**
-     * _selectAction picks an action for which the actor interpreter evaluates the guard to true. Note that this does
-     * not necessarily mean that <em>all</em> preconditions for firing are satisfied---the amount of "prechecking"
-     * depends on the model of computation ddi. (FIXMELATER)
-     *
-     * @return The action number that was selected, a value <0 if no action was selected.
-     * */
 
+    /**
+     * _Selectaction picks an action for which the actor interpreter
+     * evaluates the guard to true. Note that this does not
+     * necessarily mean that <em>all</em> preconditions for firing are
+     * satisfied---the amount of "prechecking" depends on the model of
+     * computation ddi. (FIXMELATER)
+     *
+     * @return The action number that was selected, a value <0 if no
+     * action was selected.
+     */
     private int  _selectAction() {
         Action [] actions = _actor.getActions();
         for (int i = 0; i < actions.length; i++) {
-            _actorInterpreter.actionSetup(actions[i]);   // Note: could we perhaps reuse environment?
+            // Note: could we perhaps reuse environment?
+            _actorInterpreter.actionSetup(actions[i]);
             if (_actorInterpreter.actionEvaluatePrecondition()) {
                 return i;
             } else {
@@ -143,7 +165,8 @@ public class Dataflow extends AbstractDDI implements DDI {
     private int  _selectInitializer() {
         Action [] actions = _actor.getInitializers();
         for (int i = 0; i < actions.length; i++) {
-            _actorInterpreter.actionSetup(actions[i]);   // Note: could we perhaps reuse environment?
+            // Note: could we perhaps reuse environment?
+            _actorInterpreter.actionSetup(actions[i]);
             if (_actorInterpreter.actionEvaluatePrecondition()) {
                 return i;
             } else {
@@ -158,9 +181,10 @@ public class Dataflow extends AbstractDDI implements DDI {
         _clearInputChannels();
         try {
             _selectInitializer();
-        } catch (Exception e) {
-            throw new IllegalActionException("Error during initializer selection in actor '"
-                    + _actor.getName() + "': " + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(null, ex, 
+                    "Error during initializer selection in actor '"
+                    + _actor.getName() + "'");
         }
         try {
             if (_actorInterpreter.currentAction() != null) {
@@ -168,14 +192,16 @@ public class Dataflow extends AbstractDDI implements DDI {
                 _actorInterpreter.actionComputeOutputs();
                 _actorInterpreter.actionClear();
             }
-        } catch (Exception e) {
-            throw new IllegalActionException("Could not fire initializer in CAL actor '"
-                    + _actor.getName() + "': " + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(null, ex,
+                    "Could not fire initializer in CAL actor '"
+                    + _actor.getName() + "'");
         }
     }
 
     private void  _clearInputChannels() {
-        for (Iterator iterator = _inputPorts.values().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = _inputPorts.values().iterator();
+             iterator.hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
             for (int i = 0; i < inputPort.width(); i++) {
                 DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
@@ -192,7 +218,8 @@ public class Dataflow extends AbstractDDI implements DDI {
      * Select a firable action among the actions of the actor, if possible.
      *
      * @return True, if an action could be selected.
-     * @throws IllegalActionException If an error occurred during the action selection.
+     * @throws IllegalActionException If an error occurred during the
+     * action selection.
      *
      * @see SDF#_selectAction
      */
@@ -203,8 +230,10 @@ public class Dataflow extends AbstractDDI implements DDI {
                 return true;
             else
                 return _ptActor.superPrefire();
-        } catch (Exception e) {
-            throw new IllegalActionException("Error during action selection in actor '" + _actor.getName() + "': " + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(null, ex,
+                    "Error during action selection in actor '"
+                    + _actor.getName() + "'");
         }
     }
 
