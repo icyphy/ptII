@@ -47,7 +47,6 @@ JSRCS = \
 	CommandLineTransformer.java \
 	EntitySootClass.java \
 	FieldsForAttributesTransformer.java \
-	FieldLoadOptimizer.java \
 	FieldOptimizationTransformer.java \
 	InlineDirectorTransformer.java \
 	InlineParameterTransformer.java \
