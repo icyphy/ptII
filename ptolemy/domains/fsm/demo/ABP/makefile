@@ -58,8 +58,14 @@ JSRCS = \
 EXTRA_SRCS =	$(JSRCS) \
 	ABP.htm \
 	ABP.xml \
+	ABPVergil.htm \
+	ABPVergil.xml \
 	ChannelTest.xml \
+	ConnectComponent.xml \
 	LossyDelayChannel.xml
+	Receiver.xml \
+	SendComponent.xml \
+	SenderController.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
