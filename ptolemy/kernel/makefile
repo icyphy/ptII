@@ -60,7 +60,10 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all install: jclass jhtml
+all: jclass
+
+install: jclass javadocs
+docs: javadocs
 
 depend:
 	@echo "no dependencies in this directory"
