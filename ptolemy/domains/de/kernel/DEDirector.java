@@ -185,7 +185,7 @@ import java.util.Iterator;
  *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
  *  @version $Id$
  *  @see DEReceiver
- *  @see CalendarQueue
+ *  @see ptolemy.actor.util.CalendarQueue
  */
 public class DEDirector extends Director {
 
