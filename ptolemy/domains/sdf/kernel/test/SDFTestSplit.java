@@ -42,7 +42,7 @@ import ptolemy.domains.sdf.kernel.*;
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class SDFTestSplit extends AtomicActor {
+public class SDFTestSplit extends TypedAtomicActor {
     public SDFTestSplit(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

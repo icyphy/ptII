@@ -46,7 +46,7 @@ import ptolemy.domains.sdf.kernel.*;
  * @version $Id$
  * @author Steve Neuendorffer
  */
-public class SDFTestRamp extends AtomicActor {
+public class SDFTestRamp extends TypedAtomicActor {
     public SDFTestRamp(TypedCompositeActor container, String name)
             throws IllegalActionException,
             NameDuplicationException {

@@ -43,7 +43,7 @@ import ptolemy.domains.sdf.kernel.*;
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class SDFTestDelay extends AtomicActor {
+public class SDFTestDelay extends TypedAtomicActor {
     /*
      * Object constructor. This creates an object of class SDFTestDelay.
      * The object will have a name given by the 'name' argument and will
@@ -61,9 +61,9 @@ public class SDFTestDelay extends AtomicActor {
      */
     public SDFTestDelay(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        /* This starts out by calling AtomicActor's constructor.
+        /* This starts out by calling TypedAtomicActor's constructor.
          * allows us to add some extra code specific to this actor, in
-         * addition to the regular initializer in AtomicActor.
+         * addition to the regular initializer in TypedAtomicActor.
          */
         super(container, name);
         /* This construct is called a "try-catch block".  It is used to
