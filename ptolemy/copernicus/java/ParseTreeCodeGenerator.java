@@ -316,7 +316,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             CachedMethod.findMethod(node.getFunctionName(),
                     argTypes, CachedMethod.FUNCTION);
 
-        if (cachedMethod.isMissing()) {
+        if (!cachedMethod.isValid()) {
             throw new IllegalActionException("Function " + cachedMethod +
                     " not found.");
         }
@@ -586,7 +586,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             CachedMethod.ArgumentConversion conversion)
             throws IllegalActionException {
 
-        if (conversion == CachedMethod.IDENTITY) {
+        if (conversion == CachedMethod.IDENTITY_CONVERSION) {
             Local tempLocal = Jimple.v().newLocal("arg" ,
                     PtolemyUtilities.tokenType);
             _body.getLocals().add(tempLocal);
@@ -598,7 +598,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                             tokenLocal),
                     _insertPoint);
             return tempLocal;
-        } else if (conversion == CachedMethod.ARRAYTOKEN) {
+        } else if (conversion == CachedMethod.ARRAYTOKEN_CONVERSION) {
             Local tempLocal = Jimple.v().newLocal("arg" ,
                     RefType.v(PtolemyUtilities.arrayTokenClass));
             _body.getLocals().add(tempLocal);
@@ -620,7 +620,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                                     tempLocal,
                                     PtolemyUtilities.arrayValueMethod)), _insertPoint);
             return resultLocal;
-        } else if (conversion == CachedMethod.NATIVE) {
+        } else if (conversion == CachedMethod.NATIVE_CONVERSION) {
             if (tokenType == ptolemy.data.type.BaseType.DOUBLE) {
                 Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.doubleTokenClass));
@@ -1189,7 +1189,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             CachedMethod.findMethod(node.getMethodName(),
                     argTypes, CachedMethod.METHOD);
 
-        if (cachedMethod.isMissing()) {
+        if (!cachedMethod.isValid()) {
             throw new IllegalActionException("Function " + cachedMethod +
                     " not found.");
         }
