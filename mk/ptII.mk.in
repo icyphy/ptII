@@ -87,6 +87,9 @@ JAVASOUND_NEEDED_DIRS = @JAVASOUND_NEEDED_DIRS@
 # http://java.sun.com/products/kvm
 KVM_CLASSES = @KVM_CLASSES@
 
+# Directory that contains the kvm used by PalmOS
+KVM_DIR = @KVM_DIR@
+
 ########## You should not have to change anything below this line ######
 
 # The 'javac' compiler.
