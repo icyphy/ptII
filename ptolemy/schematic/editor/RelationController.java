@@ -73,8 +73,9 @@ public class RelationController extends LocatableNodeController {
 	super(controller);
 	setNodeRenderer(new RelationRenderer());
 	SelectionModel sm = controller.getSelectionModel();
-	NodeInteractor interactor = new NodeInteractor(sm);
-	setNodeInteractor(interactor);	
+	SelectionInteractor interactor = 
+            (SelectionInteractor) getNodeInteractor();
+	interactor.setSelectionModel(sm);
 	_menuCreator = new MenuCreator(new RelationContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
     }

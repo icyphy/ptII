@@ -58,6 +58,7 @@ JSRCS = \
 	GraphEditor.java \
 	LinkController.java \
 	LocatableNodeController.java \
+	LocatableNodeDragInteractor.java \
 	PortController.java \
 	RelationController.java \
 	SchematicPalette.java

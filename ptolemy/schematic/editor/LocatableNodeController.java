@@ -62,17 +62,18 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeController
 /**
- * When this NodeController draws nodes, it locates them at the 
- * coordinate given by the locatable interface, if that interface is
- * implemented by the node's semanticObject.
- *
- * @author Steve Neuendorffer 
- * @version $Id$
- */
+When this NodeController draws nodes, it locates them at the 
+coordinate given by the locatable interface, if that interface is
+implemented by the node's semanticObject.
 
+@author Steve Neuendorffer 
+@version $Id$
+*/
 public class LocatableNodeController extends NodeController {
     public LocatableNodeController(GraphController controller) {
 	super(controller);
+        NodeInteractor nodeInteractor = (NodeInteractor) getNodeInteractor();
+        nodeInteractor.setDragInteractor(new LocatableNodeDragInteractor());
     }
 
     /** Draw the node at it's location.

@@ -225,7 +225,7 @@ public class EditorGraphController extends CompositeGraphController {
         Object object = node.getSemanticObject();
         if(object instanceof Vertex) {
             return _relationController;
-        } else if(object instanceof Entity) {
+        } else if(object instanceof ptolemy.moml.Icon) {
             return _entityController;  
 	} else if(object instanceof Port) {
             return _portController;

@@ -80,8 +80,9 @@ public class EntityController extends LocatableNodeController {
 	setPortController(new EntityPortController(controller));
 	
 	SelectionModel sm = controller.getSelectionModel();
-	NodeInteractor interactor = new NodeInteractor(sm);
-	setNodeInteractor(interactor);
+        SelectionInteractor interactor = 
+            (SelectionInteractor) getNodeInteractor();
+	interactor.setSelectionModel(sm);
 
 	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
