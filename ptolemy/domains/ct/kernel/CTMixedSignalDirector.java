@@ -331,10 +331,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                         + " current time " + _outsideTime
                         + " next iteration time " + nextIterTime);
             }
-            System.out.println( "Current Time " + getCurrentTime() 
-                    + "Outside domain current time " + _outsideTime
-                    + " next iteration time " + nextIterTime
-                    + "run length "+ runlength);
+            //System.out.println( "Current Time " + getCurrentTime() 
+            //        + "Outside domain current time " + _outsideTime
+            //        + " next iteration time " + nextIterTime
+            //        + "run length "+ runlength);
             
             // synchronization, handle round up error.
             if(runlength < timeAcc) {
@@ -473,7 +473,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         while(getCurrentTime() < (getOutsideTime()-getTimeResolution())) {
             _fireOneIteration();
         }
-        System.out.println("***Catch up time"+getCurrentTime());
+        //System.out.println("***Catch up time"+getCurrentTime());
     }
 
     /** Mark the current state as the known good state. Call the
