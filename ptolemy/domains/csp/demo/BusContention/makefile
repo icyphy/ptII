@@ -37,8 +37,6 @@ ME =		ptolemy/domains/csp/demo/BusContention
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-#JAVAHOME =      /opt/jdk1.2latest
-#JAVAHOME = C:/jdk1.2
 
 DIRS = 		# demo test doc
 
@@ -82,7 +80,7 @@ depend:
 	@echo "no dependencies in this directory"
 
 demo:
-	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.domains.csp.demo.BusContentionApplication
+	CLASSPATH="$(CLASSPATH)" appletviewer BusContentionApplet.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
