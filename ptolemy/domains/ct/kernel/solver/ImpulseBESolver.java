@@ -103,7 +103,7 @@ public class ImpulseBESolver extends BackwardEulerSolver
      *  step size h and -h, respectively, where h is the minimum
      *  step size. Note that the state of the dynamic actors are updated
      *  after the first Backward Euler solving process. This is OK,
-     *  since we have alrady used the minimum step size. This method 
+     *  since we have already used the minimum step size. This method 
      *  does not update the states after the second Backward Euler solving
      *  process, so the director that uses this solver should do it.
      * 

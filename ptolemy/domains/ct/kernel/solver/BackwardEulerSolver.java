@@ -127,15 +127,16 @@ public class BackwardEulerSolver extends FixedStepSolver {
                     " must have a CT director.");
         }
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-        double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
-        double cerror = Math.abs(pstate-integrator.getTentativeState());
-        if( !(cerror < dir.getValueResolution())) {
+        double tentativeState = 
+            integrator.getState() + f*(dir.getCurrentStepSize());
+        double error = Math.abs(tentativeState-integrator.getTentativeState());
+        if( !(error < dir.getValueResolution())) {
             _voteForConvergence(false);
         }
-        integrator.setTentativeState(pstate);
+        integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
 
-        integrator.output.broadcast(new DoubleToken(pstate));
+        integrator.output.broadcast(new DoubleToken(tentativeState));
     }
 
 
@@ -158,14 +159,14 @@ public class BackwardEulerSolver extends FixedStepSolver {
             throw new IllegalActionException( this,
                     " must have a CT director.");
         }
-        CTScheduler sch = (CTScheduler)dir.getScheduler();
-        if (sch == null) {
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
             throw new IllegalActionException( dir,
                     " must have a director to fire.");
         }
         resetRound();
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
-        Iterator actors = sch.scheduledDynamicActorList().iterator();
+        Iterator actors = scheduler.scheduledDynamicActorList().iterator();
         while(actors.hasNext()) {
             CTDynamicActor next = (CTDynamicActor)actors.next();
             _debug(getFullName(), " ask ", ((Nameable)next).getName(),
@@ -180,14 +181,14 @@ public class BackwardEulerSolver extends FixedStepSolver {
             }
             _setConvergence(true);
             incrementRound();
-            actors = sch.scheduledStateTransitionActorList().iterator();
+            actors = scheduler.scheduledStateTransitionActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " Firing..."+
                         ((Nameable)next).getName());
                 next.fire();
             }
-            actors = sch.scheduledDynamicActorList().iterator();
+            actors = scheduler.scheduledDynamicActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " Refiring..."+

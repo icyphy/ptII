@@ -120,11 +120,12 @@ public class ForwardEulerSolver extends FixedStepSolver {
                     " must have a CT director.");
         }
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-        double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
-        integrator.setTentativeState(pstate);
+        double tentativeState = 
+            integrator.getState() + f*(dir.getCurrentStepSize());
+        integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
 
-        integrator.output.broadcast(new DoubleToken(pstate));
+        integrator.output.broadcast(new DoubleToken(tentativeState));
     }
 
 
@@ -148,8 +149,8 @@ public class ForwardEulerSolver extends FixedStepSolver {
             throw new IllegalActionException( this,
                     " must have a CT director.");
         }
-        CTScheduler sch = (CTScheduler)dir.getScheduler();
-        if (sch == null) {
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
             throw new IllegalActionException( dir,
                     " must have a director to fire.");
         }
@@ -157,13 +158,14 @@ public class ForwardEulerSolver extends FixedStepSolver {
         if(dir.STAT) {
             dir.NFUNC++;
         }
-        Iterator actors = sch.scheduledStateTransitionActorList().iterator();
+        Iterator actors = 
+            scheduler.scheduledStateTransitionActorList().iterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " is firing..."+((Nameable)next).getName());
             next.fire();
         }
-        actors = sch.scheduledDynamicActorList().iterator();
+        actors = scheduler.scheduledDynamicActorList().iterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " is firing..."+((Nameable)next).getName());

@@ -175,18 +175,18 @@ public class ExplicitRK23Solver extends ODESolver {
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         try {
             CTDirector dir = (CTDirector)getContainer();
-            double errtol = dir.getErrorTolerance();
+            double tolerance = dir.getErrorTolerance();
             double h = dir.getCurrentStepSize();
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
             integrator.setTentativeDerivative(f);
             double[] k = integrator.getAuxVariables();
-            double lte = h * Math.abs(k[0]*_E[0] + k[1]*_E[1]
+            double error = h * Math.abs(k[0]*_E[0] + k[1]*_E[1]
                     + k[2]*_E[2] + f* _E[3]);
             //k[3] is Local Truncation Error
-            integrator.setAuxVariables(3, lte);
+            integrator.setAuxVariables(3, error);
             _debug("Integrator: "+ integrator.getName() +
-                    " local truncation error = " + lte);
-            if(lte<errtol) {
+                    " local truncation error = " + error);
+            if(error < tolerance) {
                 _debug("Integrator: " + integrator.getName() +
                         " report a success.");
                 return true;
@@ -212,12 +212,13 @@ public class ExplicitRK23Solver extends ODESolver {
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
-        double lte = (integrator.getAuxVariables())[3];
+        double error = (integrator.getAuxVariables())[3];
         double h = dir.getCurrentStepSize();
-        double errtol = dir.getErrorTolerance();
+        double tolerance = dir.getErrorTolerance();
         double newh = 5.0*h;
-        if(lte>dir.getValueResolution()) {
-            newh = h* Math.max(0.5, 0.8*Math.pow((errtol/lte), 1.0/_order));
+        if(error > dir.getValueResolution()) {
+            newh = h* 
+                Math.max(0.5, 0.8*Math.pow((tolerance/error), 1.0/_order));
         }
         _debug("integrator: " + integrator.getName() +
                 " suggests next step size = " + newh);
@@ -242,8 +243,8 @@ public class ExplicitRK23Solver extends ODESolver {
             throw new IllegalActionException( this,
                     " must have a CT director.");
         }
-        CTScheduler sch = (CTScheduler)dir.getScheduler();
-        if (sch == null) {
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
             throw new IllegalActionException( dir,
                     " must have a director to fire.");
         }
@@ -254,14 +255,14 @@ public class ExplicitRK23Solver extends ODESolver {
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
-            actors = sch.scheduledDynamicActorList().iterator();
+            actors = scheduler.scheduledDynamicActorList().iterator();
             while(actors.hasNext()) {
                 CTDynamicActor next = (CTDynamicActor)actors.next();
                 _debug(getFullName() + ": Build integrator history"
                         +((Nameable)next).getName());
                 next.emitTentativeOutputs();
             }
-            actors = sch.scheduledStateTransitionActorList().iterator();
+            actors = scheduler.scheduledStateTransitionActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + ": Build integrator history..."
@@ -273,7 +274,7 @@ public class ExplicitRK23Solver extends ODESolver {
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
-            actors = sch.scheduledDynamicActorList().iterator();
+            actors = scheduler.scheduledDynamicActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " firing..."+
@@ -282,7 +283,7 @@ public class ExplicitRK23Solver extends ODESolver {
             }
             dir.setCurrentTime(dir.getCurrentTime()+
                     dir.getCurrentStepSize()*_timeInc[i]);
-            actors = sch.scheduledStateTransitionActorList().iterator();
+            actors = scheduler.scheduledStateTransitionActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName(), " firing... ",
@@ -305,7 +306,7 @@ public class ExplicitRK23Solver extends ODESolver {
     // The name of the solver
     private static final String _DEFAULT_NAME = "CT_Runge_Kutta_2_3_Solver";
 
-    // The ratio of time increaments within one integration step.
+    // The ratio of time increments within one integration step.
     private static final double[] _timeInc = {0.5, 0.25, 0.25};
 
     // B coefficients

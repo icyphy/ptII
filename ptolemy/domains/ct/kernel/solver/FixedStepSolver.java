@@ -1,4 +1,4 @@
-/* Base class for fixed stepsize (no error control) ODE solvers.
+/* Base class for fixed step size (no error control) ODE solvers.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.domains.ct.kernel.ODESolver;
 /**
 Abstract base class for fixed step size (no error control) ODE solvers.
 It provide base implementation for some methods that are shared by
-all fixed-stepsize solvers.
+all fixed-step-size solvers.
 
 @author Jie Liu
 @version $Id$

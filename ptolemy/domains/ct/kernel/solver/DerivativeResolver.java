@@ -131,10 +131,9 @@ public class DerivativeResolver extends ODESolver
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
-        double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-        double pstate = integrator.getState();
-        integrator.setTentativeState(pstate);
-        integrator.setTentativeDerivative(f);
+        integrator.setTentativeState(integrator.getState());
+        integrator.setTentativeDerivative(
+                ((DoubleToken)integrator.input.get(0)).doubleValue());
     }
 
     /** Return true, since there is no step size control.
@@ -174,15 +173,15 @@ public class DerivativeResolver extends ODESolver
             throw new IllegalActionException( this,
                     " must have a CT director.");
         }
-        CTScheduler sch = (CTScheduler)dir.getScheduler();
-        if (sch == null) {
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
             throw new IllegalActionException( dir,
                     " must have a director to fire.");
         }
         resetRound();
         dir.setCurrentStepSize(0.0);
         dir.setSuggestedNextStepSize(dir.getInitialStepSize());
-        Iterator actors = sch.scheduledDynamicActorList().iterator();
+        Iterator actors = scheduler.scheduledDynamicActorList().iterator();
         while(actors.hasNext()) {
             CTDynamicActor next = (CTDynamicActor)actors.next();
             _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
@@ -191,14 +190,14 @@ public class DerivativeResolver extends ODESolver
         if(dir.STAT) {
             dir.NFUNC ++;
         }
-        actors = sch.scheduledStateTransitionActorList().iterator();
+        actors = scheduler.scheduledStateTransitionActorList().iterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " Firing..."+
                     ((Nameable)next).getName());
             next.fire();
         }
-        actors = sch.scheduledDynamicActorList().iterator();
+        actors = scheduler.scheduledDynamicActorList().iterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " Refiring..."+

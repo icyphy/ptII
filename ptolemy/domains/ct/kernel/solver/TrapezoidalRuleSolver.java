@@ -140,8 +140,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
             //correction
             double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
             pstate = integrator.getState() + (h*(f1+f2))/(double)2.0;
-            double cerror = Math.abs(pstate-integrator.getTentativeState());
-            if( !(cerror < dir.getValueResolution())) {
+            double error = Math.abs(pstate-integrator.getTentativeState());
+            if( !(error < dir.getValueResolution())) {
                 _voteForConvergence(false);
             }
             integrator.setTentativeDerivative(f2);
@@ -160,13 +160,14 @@ public class TrapezoidalRuleSolver extends ODESolver {
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
-        double errtol = dir.getErrorTolerance();
+        double tolerance = dir.getErrorTolerance();
         double[] k = integrator.getAuxVariables();
-        double lte = 0.1*Math.abs(integrator.getTentativeState() - k[0]);
-        integrator.setAuxVariables(1, lte);
+        double localError = 
+            0.1*Math.abs(integrator.getTentativeState() - k[0]);
+        integrator.setAuxVariables(1, localError);
         _debug("Integrator: "+ integrator.getName() +
-                " local truncation error = " + lte);
-        if(lte<errtol) {
+                " local truncation error = " + e);
+        if(localError < tolerance) {
             _debug("Integrator: " + integrator.getName() +
                     " report a success.");
             return true;
@@ -179,22 +180,23 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
     /** Provide the suggestedNextStepSize() method for integrators under
      *  this solver. If this step (with step size 'h') is successful,
-     *  the local truncation error is 'lte', and the local truncation
-     *  error tolerance is 'errtol', then the suggested next step size is:
+     *  the local truncation error is 'localError', and the local truncation
+     *  error tolerance is 'tolerance', then the suggested next step size is:
      *  <pre>
-     *     h* max(0.5, power((3.0*errtol/lte), 1.0/3.0))
+     *     h* max(0.5, power((3.0*tolerance/localError), 1.0/3.0))
      *  </pre>
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
-        double lte = (integrator.getAuxVariables())[1];
+        double localError = (integrator.getAuxVariables())[1];
         double h = dir.getCurrentStepSize();
-        double errtol = dir.getErrorTolerance();
+        double tolerance = dir.getErrorTolerance();
         double newh = h;
-        if(lte/errtol < 0.1) {
-            newh = h* Math.min(2, Math.pow((3.0*errtol/lte), 1.0/3.0));
+        if(localError/tolernace < 0.1) {
+            newh = 
+                h* Math.min(2, Math.pow((3.0*tolerance/localError), 1.0/3.0));
         }
         _debug("integrator: " + integrator.getName() +
                 " suggests next step size = " + newh);
