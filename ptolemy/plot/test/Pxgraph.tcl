@@ -389,7 +389,17 @@ test Pxgraph-2.7 {Flags: -db (turn on debugging)} {
 test Pxgraph-2.7.5 {Flags: -debug 20 (turn on debugging)} { 
     global pxgraphfile1
     pxgraphTest  -debug 20 $pxgraphfile1
-} {
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
+<plot>
+<!-- Ptolemy plot, version 3.1, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-2.8 {Flags: -help} {
