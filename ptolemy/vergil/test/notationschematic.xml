@@ -7,7 +7,7 @@
         </property>
     </director>
     <doc>ramp-recorder...  a good first start</doc>
-    <entity name="Notation" class="ptolemy.vergil.PtolemyFSMNotation"/>
+    <entity name="Notation" class="ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation"/>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
