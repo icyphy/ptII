@@ -1,6 +1,6 @@
 /* An example to demonstrate the PN Domain Scheduler.
 
- Copyright (c) 1997-1998 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.*;
 An example to test the PN domain. This example tests the PN INterleaving 
 example.
 @author Mudit Goel
-@version @(#)PNInterleavingExample.java	1.17 08/20/98
+@version $Id$
 */
 
 class PNInterleavingExample {
@@ -48,9 +48,9 @@ class PNInterleavingExample {
 	    IllegalStateException, IllegalActionException, 
             NameDuplicationException {
 	CompositeActor myUniverse = new CompositeActor();
-	PNDirector exec = new PNDirector("exec");
+	Manager exec = new Manager("exec");
         // FIXME FIXME FIXME
-        // myUniverse.setExecutiveDirector(exec);
+        myUniverse.setManager(exec);
 	PNDirector local = new PNDirector("Local");
 	myUniverse.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
