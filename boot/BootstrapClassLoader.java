@@ -28,15 +28,18 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// BootstrapClassLoader
 /**
-This class loader is instantiated in order to load ptolemy classes.  It is
+This class loader is instantiated in order to load ptolemy classes in a more
+flexible way than is allowed by the default class loader.  It is
 intended to be used as the very first ptolemy class that is loaded, and 
 preferably the only one that is loaded by the system class loader.  This 
 allows the majority of ptolemy classes to be loaded from arbitrary places 
@@ -45,31 +48,73 @@ recompiled and dynamically reloaded (by throwing away this classloader and
 creating a new one.)  
 
 This would usually be invoked with something like:
-java -classpath $PTII/boot -Dptolemy.PTII=file:$PTII BootstrapClassLoader ptolemy.vergil.VergilApplication
+java -classpath $PTII/boot -Dptolemy.class.path=file:$PTII/ BootstrapClassLoader ptolemy.vergil.VergilApplication
+
+Note that the constructors to URL that take a string are rather picky as to the
+format of the string.  For example, a file URL that references a directory 
+must end in '/'.  A slightly more robust way to create file URLs is to create
+a File object and use the toURL() method, since the string constructors to the
+File class refer to files and directories in the same way.
 
 @author Steve Neuendorffer
 @version $Id$
 */
 public class BootstrapClassLoader extends URLClassLoader {
+    /**
+     * Create a new class loader that searches the given urls for classes and
+     * has the given class loader as its parent.
+     */
     public BootstrapClassLoader(URL[] urls, ClassLoader parent) {
 	super(urls, parent);
     }
 
+    /**
+     * Add the given URL to the classpath that this class searches for classes.
+     * This method may be called after this class is created to dynamically
+     * add classes to the classpath.
+     */
     public void addToClassPath(URL url) {
 	addURL(url);
     }
     
+    /**
+     * Create a new bootstrap class loader and use it to load the class
+     * whose full name is given by the first argument.  Since ideally this
+     * class is the only one that the default class loader can find, it is 
+     * necessary to give a set of default URLs to search to the bootstrap
+     * class loader.  These URLs are created by parsing the environment
+     * variable "ptolemy.class.path".  This environment variable works 
+     * similarly to a regular classpath: it accepts any kind of URL or 
+     * directory and multiple paths are separated by the platform-dependent 
+     * class path separator.  
+     *
+     * After instiating the class given in the first argument, its static
+     * main method is reflected and called with the remaining arguments.
+     */
     public static void main(String argv[]) {
-	String ptIILocation = System.getProperty("ptolemy.PTII");
-	URL urls[];
-	try {
-	    URL ptIIURL = new URL(ptIILocation);
-	    urls = new URL[1];
-	    urls[0] = ptIIURL;
-	} catch (MalformedURLException ex) {
-	    urls = new URL[0];
+	// Create an array of URLs representing the class path.
+	String classpath = System.getProperty("ptolemy.class.path");
+	String separator = System.getProperty("path.separator");
+	StringTokenizer paths = new StringTokenizer(classpath, separator);
+	URL urls[] = new URL[paths.countTokens()];
+	int count = 0;
+	while(paths.hasMoreTokens()) {
+	    String path = paths.nextToken();
+	    try {
+		urls[count] = new URL(path);
+	    } catch (MalformedURLException ex) {
+		// hmm.. maybe they wrote it down as a file.  Let's
+		// try adding it as a file.  
+		try {
+		    File file = new File(path);
+		    urls[count] = file.toURL();
+		} catch (MalformedURLException ex2) {
+		    ex2.printStackTrace();
+		    System.exit(1);
+		}
+	    }
+	    count++;
 	}
-	System.out.println("ptII = " + ptIILocation);
 	ClassLoader loader = 
 	new BootstrapClassLoader(urls, getSystemClassLoader());
 	try {
