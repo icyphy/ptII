@@ -87,6 +87,7 @@ JSRCS = \
 	Minimum.java \
         Multiplexor.java \
 	MultiplyDivide.java \
+	PhaseUnwrap.java \
 	PoissonClock.java \
 	Pulse.java \
 	Quantizer.java \
@@ -114,7 +115,6 @@ JSRCS = \
 	Transformer.java \
 	TrigFunction.java \
 	Uniform.java \
-	Unwrap.java \
 	VariableClock.java \
 	Writer.java
 
