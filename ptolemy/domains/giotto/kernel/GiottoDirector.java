@@ -422,13 +422,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
             }
         }
 
-        // Next, construct the schedule.
-        // FIXME: Note that mutations will not be supported since the
-        // schedule is constructed only once.
-        GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
-        _schedule = scheduler.getSchedule();
-        _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
-
         if (_isEmbedded()) {
             // Request an initial firing at time 0.0
             _requestFiring();
@@ -504,6 +497,21 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
         }
         return true;
+    }
+
+    /** Preinitialize the actors associated with this director.
+     *  Generate the giotto schedule.
+     *  @exception IllegalActionException If the preinitialize() method of
+     *   one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        // Next, construct the schedule.
+        // FIXME: Note that mutations will not be supported since the
+        // schedule is constructed only once.
+        GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
+        _schedule = scheduler.getSchedule();
+        _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
     }
 
     /** Transfer data from an input port of the container to the ports
