@@ -54,7 +54,8 @@ JSRCS = \
 	PNExampleApplet.java
 
 EXTRA_SRCS =	$(JSRCS) \
-	PNExample.html
+	PNExample.html \
+	PNPrimeExample.tcl
 
 # Files or directories that are present, but that 'make checkjunk' 
 # should not complain about
@@ -70,6 +71,18 @@ all: jclass
 
 install: jclass javadocs
 docs: javadocs
+
+tests:: $(EXTRA_SRCS) test_prime_java
+
+test_prime: test_prime_java test_prime_tclblend
+
+# Use java
+test_prime_java:
+	CLASSPATH=$(CLASSPATH) $(JAVA) pt.domains.pn.kernel.PNPrimeExample 50
+
+# Use Tcl Blend
+test_prime_tclblend:
+	tyjtclsh PNPrimeExample.tcl
 
 depend:
 	@echo "no dependencies in this directory"
