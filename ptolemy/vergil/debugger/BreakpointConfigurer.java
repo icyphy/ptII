@@ -46,15 +46,16 @@ import ptolemy.vergil.basic.BasicGraphController;
 //// BreakpointConfigurer
 /**
    A GUI widget for configuring breakpoints.  This class is an editor to
-   configure the breakpoints of an actor.  The user can set breakpoints
-   before or after any of the following firing events: prefire, fire,
-   postfire, iterate.
+   configure the breakpoints of an actor in an SDF model.
+   The user can set breakpoints before or after iterate().
 
-   <p>There is further documentation in $PTII/doc/coding/debugging.htm
+   <p>
+   <p>There is further documentation in the
+   <a href="package-summary.html">package summary</a>.
 
    @see ptolemy.actor.gui.PortConfigurer
 
-   @author Elaine Cheong
+   @author Elaine Cheong, Contributor: Christopher Brooks
    @version $Id$
    @since Ptolemy II 2.1
    @Pt.ProposedRating Red (celaine)
@@ -102,9 +103,26 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
                     "No director associated with this actor.");
         } else {
             // FIXME: Currently, it seems that this facility 
-            // only works in SDF.  Perhaps we should check
-            // that the director is an instance of SDF?
+            // only works in SDF. 
             // Perhaps this constructor should throw IllegalActionException.
+
+            if (_sdfDirectorClass == null) {
+                try {
+                    _sdfDirectorClass = Class.forName(
+                            "ptolemy.domains.sdf.kernel.SDFDirector");
+                } catch (Throwable throwable) {
+                    throw new InternalErrorException(object, throwable,
+                            "The breakpoint facility only works with "
+                            + "that are instances of SDFDirector.  The "
+                            + "SDFDirector was not found.");
+                }
+            }
+            if (!_sdfDirectorClass.isInstance(director)) {
+                throw new InternalErrorException(director, null,
+                        "The breakpoint facility only works with directors "
+                        + "that are instances of SDFDirector.  The director "
+                        + "of this model is a '" + director + "'.");
+            }
 
             // See if the director already has a DebugController.
             DebugController debugController =
@@ -268,4 +286,8 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
 
     // The GraphController associated with _actor.
     private BasicGraphController _graphController;
+
+    // The class of ptolemy.domains.sdf.Director
+    private static Class _sdfDirectorClass = null;
+
 }
