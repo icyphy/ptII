@@ -157,6 +157,7 @@ OPTIONAL_FILES = \
 	'PlotLive$$StopButtonListener.class' \
 	'Plot$$Format.class' \
 	'PlotApplication$$1.class' \
+	'PlotFrame$$EPSFileFilter.class' \
 	'PlotFrame$$FileMenuListener.class' \
 	'PlotFrame$$FormatListener.class' \
 	'PlotFrame$$PLTOrXMLFileFilter.class' \
