@@ -69,7 +69,7 @@ You can contact the authors via
 
 <DT> <A NAME="mailing list"><B>1.5 Is there a mailing list?</B></A>
 <DD> We maintain the <CODE>ptplot-announce</CODE> alias for announcing
-new ptplot releases.  This alias is for Ptplot announcments only.  Thus,
+new ptplot releases.  This alias is for Ptplot announcements only.  Thus,
 you cannot post to this group.  To subscribe to this group,
 send email to <A HREF="mailto:ptplot-announce-request@ptolemy.eecs.berkeley.edu"><CODE>ptplot-announce-request@ptolemy.eecs.berkeley.edu</CODE></A>
 with the word <CODE>subscribe</CODE> in the body, not the header.
@@ -98,8 +98,10 @@ later.
 <DT> <A NAME="ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
 <DD> 
 To use Ptplot, you will need the Java Development kit (JDK), which
-can be downloaded from <A HREF="http://www.javasoft.com"><CODE>http://www.javasoft.com</CODE></A>.
- <P>You can also run Pplot as an applet in your local browser.
+can be downloaded from
+<A HREF="http://www.javasoft.com"><CODE>http://www.javasoft.com</CODE></A>.
+The <A HREF="../codeDoc/ptplot.Pxgraph.html#Installation Instructions">Pxgraph documentation</A> contains further installation instructions.
+ <P>You can also run Ptplot as an applet in your local browser.
 
 
 <DT> <A NAME="ptplot troubleshooting overview"><B>2.4 Troubleshooting</B></A>
@@ -137,7 +139,7 @@ See:
 
  <P>Another ways it to call <CODE>plot().addPoint</CODE>.
 The <A HREF="../../demo/FourierSeries.html">Fourier Series demo</A>
-uses this methodd.
+uses this method.
 
 The PlotFourierSeries class at
 <A HREF="../../demo/PlotFourierSeries.java"><CODE>demo/PlotFourierSeries.java</CODE></A> is what actually does the plotting.
@@ -153,19 +155,21 @@ The PlotLiveDemo class at
 is what actually does the plotting.
 
 <DT> <A NAME="binarydata"><B>3.2 How do I plot binary data?</B></A>
-<DD>Ptplot can plot binary datafiles.  The format was originally created
-by Joe Buck for the X11 <CODE>pxgraph</CODE> program.
-For details on the format, see the description of the 
-
-<CODE>-binary</CODE> option in <A
-HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>.  You might
+<DD>Ptplot can plot binary datafiles.  
+Ptplot 1.1 and earlier can plot data in the format that
+was originally created by Joe Buck for the X11 <CODE>pxgraph</CODE> program.
+For details on the format.  Ptplot 1.2 and later can also
+plot data that consists of raw 4 byte floats.
+For more information, see the description of the 
+<CODE>-binary</CODE> option in
+<A HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>.  You might
 find the 
 <A HREF="../codeDoc/ptplot.Pxgraph.html">javadoc Pxgraph documentation</A>
 easier to read.
 
 <DT>  <A NAME="appletprinting"><B>3.3 How do I print an plot from a Plot applet?</B></A>
 <DD> Unfortunately, most browsers cannot print applets.  There are
-workarounds, but in general, it is hard, and involves security
+work arounds, but in general, it is hard, and involves security
 violations.
 
 <A HREF="http://www.best.com/~pvdl/javafaq.html"><CODE>http://www.best.com/~pvdl/javafaq.html</CODE></A> says:
@@ -183,7 +187,7 @@ browser page.
 For more information about printing, join the JavaSoft Developer
 Connection (it is free) and search for printing.
 
- <P>Note that printing is supported from standalong Pxgraph applications in
+ <P>Note that printing is supported from standalone Pxgraph applications in
 the Pxgraph class.  Note that printing in the Pxgraph class requires
 JDK1.1 and later.
 
@@ -193,7 +197,7 @@ JDK1.1 and later.
 <a href="index.html">Ptplot infrastructure</a><br>
 <p>
 <HR>
-Copyright &#169 1997--, The Regents of the University of California.
+Copyright &#169 1997-, The Regents of the University of California.
 All rights reserved.
 <br>
 Last updated: $Date$,
