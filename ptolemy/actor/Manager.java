@@ -705,17 +705,16 @@ public class Manager extends NamedObj implements Runnable {
             // EAL 5/31/02.
             _container.preinitialize();
 
-            // Clear the preinitialization analyses.
-            if (_nameToAnalysis != null) {
-                _nameToAnalysis.clear();
-                _nameToAnalysis = null;
-            }
-
             executeChangeRequests();
 
             resolveTypes();
             _typesResolved = true;
         } finally {
+            // Clear the preinitialization analyses.
+            if (_nameToAnalysis != null) {
+                _nameToAnalysis.clear();
+                _nameToAnalysis = null;
+            }
             _workspace.doneReading();
         }
     }
