@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 A variable InequalityTerm.
 This class is for testing inequality related classes.
 The value of this InequalityTerm is a String.
+This term has name, which is used for printing test result.
 
 @author Yuhong Xiong
 $Id$
@@ -59,6 +60,14 @@ public class TestVariable implements InequalityTerm {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the information of this term. The information is a
+     *  String of the form: <name>(variable)_<value>
+     *  @return A String
+     */
+    public String getInfo() {
+        return _name + "(variable)_" + getValue();
+    }
 
     /** Return the String value of this term.
      *  @return a String
@@ -84,6 +93,18 @@ public class TestVariable implements InequalityTerm {
 	return true;
     }
  
+    /** Set the name of this variable. If the specified String is null,
+     *  Set the name to an empty String.
+     *  @param A String
+     */
+    public void setName(String name) {
+	if (name != null) {
+	    _name = name;
+	} else {
+	    _name = "";
+	}
+    }
+
     /** Set the value of this variable to the specified String.
      *  @param e a String
      *  @exception IllegalActionException not thrown
@@ -96,6 +117,7 @@ public class TestVariable implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
+    private String _name = "";
     private String _value = null;
 }
 

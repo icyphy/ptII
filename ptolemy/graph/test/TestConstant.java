@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 A constant InequalityTerm.
 This class is for testing inequality related classes.
 The value of this InequalityTerm is a String set in the constructor.
+This term has name, which is used for printing test result.
 
 @author Yuhong Xiong
 $Id$
@@ -53,6 +54,14 @@ public class TestConstant implements InequalityTerm {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the information of this term. The information is a 
+     *  String of the form: <name>(constant)_<value>
+     *  @return A String
+     */
+    public String getInfo() {
+        return _name + "(constant)_" + getValue();
+    }
 
     /** Return the constant String value of this term.
      *  @return a String
@@ -75,6 +84,18 @@ public class TestConstant implements InequalityTerm {
 	return false;
     }
  
+    /** Set the name of this constant. If the specified String is null,
+     *  Set the name to an empty String.
+     *  @param A String
+     */
+    public void setName(String name) {
+        if (name != null) {
+            _name = name;
+        } else {
+            _name = "";
+        }
+    }
+
     /** Throw an Exception.
      *  @param e an Object. Ignored by this method.
      *  @exception IllegalActionException always thrown.
@@ -88,6 +109,7 @@ public class TestConstant implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
+    private String _name = "";
     private String _value = null;
 }
 

@@ -48,6 +48,37 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 ######################################################################
+#### enumToInfo
+# Convert an Enumeration to a list. If the Enumeration contains
+# InequalityTerms, the list contains the information returned by
+# getInfo() of the terms; if the Enumeration contains Inequalities,
+# the list contains pairs of information for the lesser and greater
+# terms of the Inequality.
+#
+proc enumToInfo {enum} {
+    set result {}
+    if {$enum != [java::null]} {
+        while {[$enum hasMoreElements] == 1} {
+            set elem [$enum nextElement]
+	    if [ java::instanceof $elem ptolemy.graph.InequalityTerm] {
+		lappend result [$elem getInfo]
+	    } else {
+		if [ java::instanceof $elem ptolemy.graph.Inequality] {
+		    set lesser [$elem getLesserTerm]
+		    set greater [$elem getGreaterTerm]
+		    set ineq {}
+		    lappend ineq [$lesser getInfo]
+		    lappend ineq [$greater getInfo]
+		    lappend result $ineq
+		}
+	    }
+
+        }
+    }
+    return $result
+}
+
+######################################################################
 ####
 # 
 test InequalitySolver-2.1 {construct the 4-point CPO in the design doc.} {
@@ -77,9 +108,13 @@ test InequalitySolver-2.1 {construct the 4-point CPO in the design doc.} {
 # 
 test InequalitySolver-2.2 {construct inequality constraints} {
     set tw [java::new ptolemy.graph.test.TestConstant $w]
+    $tw setName W
     set tx [java::new ptolemy.graph.test.TestConstant $x]
+    $tx setName X
     set ta [java::new ptolemy.graph.test.TestVariable]
+    $ta setName A
     set tb [java::new ptolemy.graph.test.TestVariable]
+    $tb setName B
 
     set iaw [java::new ptolemy.graph.Inequality $ta $tw]
     set ibx [java::new ptolemy.graph.Inequality $tb $tx]
@@ -92,14 +127,62 @@ test InequalitySolver-2.2 {construct inequality constraints} {
 ######################################################################
 ####
 # 
-test InequalitySolver-2.3 {solver the above constraints} {
+test InequalitySolver-2.3 {solver for the least solution} {
     set s [java::new ptolemy.graph.InequalitySolver $cpo]
     $s addInequality $iaw
     $s addInequality $ibx
     $s addInequality $iba
     $s addInequality $iab
 
-    $s solveLeast
-    list [$ta getValue] [$tb getValue] \
-} {z z}
+    set sat [$s solveLeast]
+    list $sat [$ta getValue] [$tb getValue] \
+	 [enumToInfo [$s bottomVariables]] [enumToInfo [$s topVariables]] \
+	 [enumToInfo [$s unsatisfiedInequalities]]
+} {1 z z {A(variable)_z B(variable)_z} {} {}}
+
+######################################################################
+####
+# 
+test InequalitySolver-2.4 {solver for the greatest solution} {
+    set sat [$s solveGreatest]
+    list $sat [$ta getValue] [$tb getValue] \
+	 [enumToInfo [$s bottomVariables]] [enumToInfo [$s topVariables]] \
+	 [enumToInfo [$s unsatisfiedInequalities]]
+} {1 x x {} {} {}}
+
+######################################################################
+####
+# 
+test InequalitySolver-2.5 {constraints with no solution} {
+    set ty [java::new ptolemy.graph.test.TestConstant $y]
+    $ty setName Y
+    set tz [java::new ptolemy.graph.test.TestConstant $z]
+    $tz setName Z
+
+    set iaw [java::new ptolemy.graph.Inequality $ta $tw]
+    set iwa [java::new ptolemy.graph.Inequality $tw $ta]
+    set ibz [java::new ptolemy.graph.Inequality $tb $tz]
+    set iyb [java::new ptolemy.graph.Inequality $ty $tb]
+
+    set s1 [java::new ptolemy.graph.InequalitySolver $cpo]
+    $s1 addInequality $iaw
+    $s1 addInequality $iwa
+    $s1 addInequality $ibz
+    $s1 addInequality $iyb
+
+    set sat [$s1 solveLeast]
+    list $sat [$ta getValue] [$tb getValue] \
+	 [enumToInfo [$s1 bottomVariables]] [enumToInfo [$s1 topVariables]] \
+	 [enumToInfo [$s1 unsatisfiedInequalities]]
+} {0 w y {} A(variable)_w {{B(variable)_y Z(constant)_z}}}
+
+######################################################################
+####
+# 
+test InequalitySolver-2.6 {solve for greatest solutino for above} {
+    set sat [$s1 solveGreatest]
+    list $sat [$ta getValue] [$tb getValue] \
+         [enumToInfo [$s1 bottomVariables]] [enumToInfo [$s1 topVariables]] \
+         [enumToInfo [$s1 unsatisfiedInequalities]]
+} {0 w z B(variable)_z A(variable)_w {{Y(constant)_y B(variable)_z}}}
 
