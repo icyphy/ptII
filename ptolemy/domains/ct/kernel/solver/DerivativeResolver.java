@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
    with respect to the current time.
    For example, if the ODE is
    <pre>
-   x' = f(x, t),
+   x' = f(x, u, t),
    </pre>
    the current time is t0, and
    <pre>
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
    </pre>
    then this method calculates
    <pre>
-   x'(t0) = f(x(t0), t0).
+   x'(t0) = f(x(t0), u(t0), t0).
    </pre>
 
    <P>
@@ -66,8 +66,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class DerivativeResolver extends ODESolver
     implements BreakpointODESolver {
@@ -106,7 +106,7 @@ public class DerivativeResolver extends ODESolver
      *  by this solver.
      *  @return 0.
      */
-    public final int getHistoryCapacityRequirement() {
+    public final int getAmountOfHistoryInformation() {
         return 0;
     }
 
@@ -146,8 +146,8 @@ public class DerivativeResolver extends ODESolver
      */
     public double integratorPredictedStepSize(
             CTBaseIntegrator integrator) {
-        CTDirector dir = (CTDirector)getContainer();
-        return dir.getInitialStepSize();
+        CTDirector director = (CTDirector)getContainer();
+        return director.getInitialStepSize();
     }
 
     ///////////////////////////////////////////////////////////////////

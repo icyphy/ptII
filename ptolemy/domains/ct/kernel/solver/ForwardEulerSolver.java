@@ -54,8 +54,8 @@ import ptolemy.kernel.util.Workspace;
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (liuxj)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class ForwardEulerSolver extends FixedStepSolver {
 
@@ -81,30 +81,24 @@ public class ForwardEulerSolver extends FixedStepSolver {
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
-            throw new InternalErrorException(this, ex, null);
+            throw new InternalErrorException(ex);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire the integrator to resolve states. Vote true for convergence if
-     *  a fixed-point solution is found. Otherwise, vote false.
-     *
+    /** Fire the integrator to resolve states. 
      *  @param integrator The integrator to be fired.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
+        CTDirector director = (CTDirector)getContainer();
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
         double tentativeState =
-            integrator.getState() + f * (dir.getCurrentStepSize());
+            integrator.getState() + f*(director.getCurrentStepSize());
 
         integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
@@ -116,5 +110,5 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ////                         private variables                 ////
 
     // static name.
-    private static final String _DEFAULT_NAME = "CT_Forward_Euler_Solver";
+    private static final String _DEFAULT_NAME="CT_Forward_Euler_Solver" ;
 }
