@@ -2,11 +2,11 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 2.0-beta Release Notes</title>
+<title>Ptolemy II 2.0.1 Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#faf0e6">
-<h1>Ptolemy II 2.0-beta Release Notes</h1>
+<h1>Ptolemy II 2.0.1 Release Notes</h1>
 
 Ptolemy II is a set of Java packages supporting heterogeneous,
 concurrent modeling and design.  Its <code>kernel</code> package
@@ -33,13 +33,14 @@ processing functions, and
  <br><code>graph</code>, providing graph-theoretic manipulations.
 
 
- <p>The Ptolemy II design document describes the Ptolemy II design and
-the implementation of the Java classes.  The design document is not
-included with Ptolemy II 2.0-beta, but will be shipped with the
-Ptolemy II 2.0 production release.  In the interim, please see the
-"Using Vergil" chapter (
+ <p>The Ptolemy II 
+<a href="design/design.pdf">Design Document</a>
+describes the Ptolemy II design and
+the implementation of the Java classes.
+ <p>The "Using Vergil" chapter (
 <a href="design/usingVergil/usingVergil.pdf">PDF</a>
- - <a href="design/usingVergil/index.htm">HTML</a>)
+ - <a href="design/usingVergil/index.htm">HTML</a>) describes
+how to use Vergil.
 
 
 <h2>Complete List of Domains in Ptolemy II</h2>
@@ -81,7 +82,7 @@ The core of Ptolemy II 2.0 is 100% Java, so it should work on any
 platform that has JDK1.3
 
  <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
-and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
+and with JDK1.3.1 and JDK1.4.  Note that code generation 
 only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
 
 Ptolemy II 2.0 will not compile under JDK1.2.2.
@@ -263,6 +264,14 @@ use this attribute to manage backward compatibility.
  A blending controller with two major control modes.
  <li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple&nbsp;Runs</a> 
  A state machine performs multiple runs of the refinement of mode1. 
+ </menu>
+
+<li><a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto</a>:
+	Synchronous Periodic Systems
+ <menu>
+ <li> <a href="../ptolemy/domains/giotto/demo/Composite/Composite.htm">Composite</a>
+A composite demo with a Giotto model embedded in a DE model.
+
  </menu>
 
 <li><a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
@@ -684,14 +693,6 @@ than 100 characters.  If you do not have GNU tar, you can obtain
 source and selected binaries from 
 ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 
-<li> The Ptolemy II 2.0-beta release does not include the design
-document.  We will include an updated version of the design document
-in the full release.  The Ptolemy II 1.0 design document can be found
-in:
-
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">Ptolemy Web Site</a>
-
-
 <li> Instructions for adding an actor may be found at
 <a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
 
@@ -703,8 +704,17 @@ the internal hyperlinks refer to usingVergil.html instead of index.htm
 <li> The documentation for custom actors used in demonstrations is not
 included in the release.
 
-<li> When running a Vergil applet, 'Look inside' on a composite actor fails:
+
+<li> Applet issues:
+	<ul>
+	<li>   Look inside on a composite actor fails :
 	"Cannot look inside with a configuration"
+	<li> Applets that use MoMLViewerApplet do not auto start.
+	These applets include
+		<ul>
+		<li> Giotto applets
+		<li> SDF Expression, FixPoint, LMSAdaptive, MaximumEntropy
+		</ul>
 
 
 <li> The DDE Zeno demo produces an error message in the Java Plug-in console
@@ -753,7 +763,6 @@ not on the local file system, so we get a SecurityException.
 
 <li> Web Start issues:
 	<ul>
-	<li> Applet generation still does not work in the Web Edition
 	<li> Invoking a pdf file or the code generator brings up a blank
 	 window.
 	<li> Web Start is limited to about 65Mb of memory
@@ -818,6 +827,10 @@ Below are some of the limitations of Vergil, the Ptolemy II Graphical
 User Interface.
 
 <ul>
+
+<li> Under JDK1.3.1_03, the tool tips do not work.  They work under
+JDK1.3.1_02.
+
 <li> You should not change the names of built in ports - The port
 mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
@@ -829,9 +842,6 @@ have constraints on their element types can cause problems.
 
 <li> HTVQ demo is badly laid out when run under vergil
 	
-<li> The Vergil HTML Viewer does not correctly handle internal hyperlinks.
-The codegen page is especially difficult to use because of this.
-
 <li>No undo mechanism.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
