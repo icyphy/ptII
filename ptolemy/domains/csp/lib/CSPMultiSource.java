@@ -55,7 +55,7 @@ public class CSPMultiSource extends CSPActor {
         super();
     }
 
-    public CSPMultiSource  (TypedCompositeActor cont, String name)
+    public CSPMultiSource(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         output = new TypedIOPort(this, "output", false, true);
@@ -73,7 +73,7 @@ public class CSPMultiSource extends CSPActor {
             _branchCount = new int[size];
             int i = 0;
             boolean[] guards = new boolean[size];
-            for (i=0; i<size; i++) {
+            for (i = 0; i < size; i++) {
                 _branchCount[i] = 0;
                 guards[i] = true;
             }
@@ -82,7 +82,7 @@ public class CSPMultiSource extends CSPActor {
             while (continueCDO || (count < 25) ) {
                 Token t = new IntToken(count);
                 ConditionalBranch[] branches = new ConditionalBranch[size];
-                for (i=0; i<size; i++) {
+                for (i = 0; i < size; i++) {
                     branches[i] = new ConditionalSend(guards[i],
                             output, i, i, t);
                 }
@@ -91,7 +91,7 @@ public class CSPMultiSource extends CSPActor {
 
                 _branchCount[successfulBranch]++;
                 boolean flag = false;
-                for (i=0; i<size; i++) {
+                for (i = 0; i < size; i++) {
                     if (successfulBranch == i) {
                         System.out.println(getName() + ": sent Token: " +
                                 t.toString() + " to receiver " + i);
