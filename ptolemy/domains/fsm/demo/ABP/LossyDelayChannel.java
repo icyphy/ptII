@@ -50,8 +50,6 @@ public class LossyDelayChannel extends TypedCompositeActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-
-        getMoMLInfo().className = "TypedCompositeActor";
         
         // Parameters.
         minimumDelay = new Parameter(this, "minimumDelay");

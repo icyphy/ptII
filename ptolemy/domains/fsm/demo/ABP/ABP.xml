@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ABP" class="ptolemy.domains.fsm.demo.ABP.ABP">
+<entity name="ABP" class="ptolemy.actor.TypedCompositeActor">
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -18,9 +18,9 @@
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
     </property>
-    <property name="forwardRate" class="ptolemy.data.expr.Parameter" value="0.3">
+    <property name="forwardLossRate" class="ptolemy.data.expr.Parameter" value="0.3">
     </property>
-    <property name="backwardRate" class="ptolemy.data.expr.Parameter" value="0.2">
+    <property name="backwardLossRate" class="ptolemy.data.expr.Parameter" value="0.2">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
@@ -45,38 +45,198 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="ForwardChannel" class="ptolemy.domains.fsm.demo.ABP.DEChannel">
-        <property name="dropRate" class="ptolemy.data.expr.Parameter" value="forwardRate">
+    <entity name="ForwardChannel" class="ptolemy.actor.TypedCompositeActor">
+        <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="maxDelay" class="ptolemy.data.expr.Parameter" value="5.0">
+        <property name="maximumDelay" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="minDelay" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="forwardLossRate">
         </property>
-        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="output"/>
-        </port>
-        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <entity name="uniform" class="ptolemy.actor.lib.Uniform">
+            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="minimumDelay">
+            </property>
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="maximumDelay">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="variableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+            <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+            </port>
+            <port name="delay" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="loser" class="ptolemy.actor.lib.Switch">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="loss" class="ptolemy.actor.lib.DiscreteRandomSource">
+            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="pmf" class="ptolemy.data.expr.Parameter" value="[(1.0 - lossProbability) , lossProbability]">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="[0, 1]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="input" relation="relation3"/>
+        <link port="output" relation="_R1"/>
+        <link port="uniform.output" relation="_R0"/>
+        <link port="uniform.trigger" relation="relation3"/>
+        <link port="variableDelay.input" relation="relation3"/>
+        <link port="variableDelay.output" relation="relation5"/>
+        <link port="variableDelay.delay" relation="_R0"/>
+        <link port="loser.input" relation="relation5"/>
+        <link port="loser.output" relation="_R1"/>
+        <link port="loser.control" relation="_R2"/>
+        <link port="loss.output" relation="_R2"/>
+        <link port="loss.trigger" relation="relation5"/>
     </entity>
-    <entity name="BackwardChannel" class="ptolemy.domains.fsm.demo.ABP.DEChannel">
-        <property name="dropRate" class="ptolemy.data.expr.Parameter" value="backwardRate">
+    <entity name="BackwardChannel" class="ptolemy.actor.TypedCompositeActor">
+        <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
-        <property name="maxDelay" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="maximumDelay" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <property name="minDelay" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="backwardLossRate">
         </property>
-        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="output"/>
-        </port>
-        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <entity name="uniform" class="ptolemy.actor.lib.Uniform">
+            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="minimumDelay">
+            </property>
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="maximumDelay">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="variableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+            <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+            </port>
+            <port name="delay" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="loser" class="ptolemy.actor.lib.Switch">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="loss" class="ptolemy.actor.lib.DiscreteRandomSource">
+            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="pmf" class="ptolemy.data.expr.Parameter" value="[(1.0 - lossProbability) , lossProbability]">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="[0, 1]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="input" relation="relation3"/>
+        <link port="output" relation="_R1"/>
+        <link port="uniform.output" relation="_R0"/>
+        <link port="uniform.trigger" relation="relation3"/>
+        <link port="variableDelay.input" relation="relation3"/>
+        <link port="variableDelay.output" relation="relation5"/>
+        <link port="variableDelay.delay" relation="_R0"/>
+        <link port="loser.input" relation="relation5"/>
+        <link port="loser.output" relation="_R1"/>
+        <link port="loser.control" relation="_R2"/>
+        <link port="loss.output" relation="_R2"/>
+        <link port="loss.trigger" relation="relation5"/>
     </entity>
     <entity name="Plot" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="received, sent, alternating">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -105,39 +265,61 @@
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
         </port>
         <port name="msgIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
         </port>
         <port name="next" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
         </port>
         <port name="error" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
         </port>
         <port name="ack" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
         </port>
         <port name="pktOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
         </port>
         <port name="setTimer" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
         </port>
         <port name="expired" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
         </port>
         <port name="monitor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
         </port>
         <entity name="Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Connecting">
             </property>
             <port name="next" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
             </port>
             <port name="error" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
             </port>
             <entity name="Connecting" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Connect">
@@ -187,26 +369,42 @@
         <entity name="Connect" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
             </property>
+	    <property name="count" class="ptolemy.data.expr.Variable" value="0">
+            </property>
             <port name="request" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
             </port>
             <port name="next" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
             </port>
             <port name="error" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
             </port>
             <port name="ack" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
             </port>
             <port name="pktOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
             </port>
             <port name="setTimer" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
             </port>
             <port name="expired" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
             </port>
             <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
@@ -382,26 +580,44 @@
         <entity name="Send" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0">
             </property>
+	    <property name="trying" class="ptolemy.data.expr.Variable" value="false">
+            </property>
+	    <property name="msg" class="ptolemy.data.expr.Variable" value="0">
+            </property>
             <port name="msgIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
             </port>
             <port name="next" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
             </port>
             <port name="ack" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
             </port>
             <port name="pktOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
             </port>
             <port name="setTimer" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
             </port>
             <port name="expired" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+                </property>
             </port>
             <port name="monitor" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
             </port>
             <entity name="0" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
@@ -716,12 +932,18 @@
         </property>
         <port name="pktIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
         </port>
         <port name="ack" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
         </port>
         <port name="msgOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
         </port>
         <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
@@ -889,10 +1111,10 @@
     <link port="MessageSource.next" relation="next"/>
     <link port="Timer.expired" relation="expired"/>
     <link port="Timer.set" relation="setTimer"/>
-    <link port="ForwardChannel.output" relation="pktIn"/>
     <link port="ForwardChannel.input" relation="pktOut"/>
-    <link port="BackwardChannel.output" relation="sdrAck"/>
+    <link port="ForwardChannel.output" relation="pktIn"/>
     <link port="BackwardChannel.input" relation="recAck"/>
+    <link port="BackwardChannel.output" relation="sdrAck"/>
     <link port="Plot.input" relation="msgOut"/>
     <link port="Plot.input" relation="msgIn"/>
     <link port="Plot.input" relation="monitor"/>
@@ -900,8 +1122,8 @@
     <link port="Sender.msgIn" relation="msgIn"/>
     <link port="Sender.next" relation="next"/>
     <link port="Sender.ack" relation="sdrAck"/>
-    <link port="Sender.pktOut" make: *** [demo_vergil] Interrupt
-="Sender.setTimer" relation="setTimer"/>
+    <link port="Sender.pktOut" relation="pktOut"/>
+    <link port="Sender.setTimer" relation="setTimer"/>
     <link port="Sender.expired" relation="expired"/>
     <link port="Sender.monitor" relation="monitor"/>
     <link port="Receiver.pktIn" relation="pktIn"/>
