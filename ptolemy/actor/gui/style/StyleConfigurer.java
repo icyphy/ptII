@@ -63,7 +63,7 @@ the parameter values to those before the dialog was opened.
 public class StyleConfigurer extends Query implements QueryListener {
 
     /** Construct a configurer for the specified object.
-`     *  @param object The object to configure.
+     *  @param object The object to configure.
      *  @exception IllegalActionException If the specified object has
      *   no editor factories, and refuses to accept as an attribute
      *   an instance of EditorPaneFactory.
@@ -78,12 +78,15 @@ public class StyleConfigurer extends Query implements QueryListener {
 	setTextWidth(25);
 	
 	try {
-	    parameterStyles = new ParameterEditorStyle[2];
+	    parameterStyles = new ParameterEditorStyle[3];
 	    parameterStyles[0] = new LineStyle();
 	    parameterStyles[0].setName("Line");
 	    parameterStyles[1] = new CheckBoxStyle();
 	    parameterStyles[1].setName("Check Box");
+	    parameterStyles[2] = new ChoiceStyle();
+	    parameterStyles[2].setName("Choice");
 	} catch (NameDuplicationException ex) {
+	    throw new InternalErrorException(ex.getMessage());
 	}
 
 	Iterator params
@@ -96,10 +99,10 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    boolean foundOne = false;
 	    Iterator styles
 		= param.attributeList(ParameterEditorStyle.class).iterator();
-	    ParameterEditorStyle style = null;
+	    ParameterEditorStyle foundStyle = null;
 	    while (styles.hasNext()) {
 		foundOne = true;
-		style = (ParameterEditorStyle)styles.next();
+		foundStyle = (ParameterEditorStyle)styles.next();
 	    }
 	    
 	    List styleList = new ArrayList();
@@ -108,14 +111,19 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    int count = 0;
 	    // Reduce the list of parameters
 	    for(int i = 0; i < parameterStyles.length; i++) {
-		if(parameterStyles[i].accept(param)) {
+		 if(foundOne &&
+		    parameterStyles[i].getClass() == foundStyle.getClass()) {
+		     defaultIndex = count;
+		     if(foundStyle.accept(param)) {
+			 styleList.add(parameterStyles[i].getName());
+			 count++;
+		     }
+		 } else if(parameterStyles[i].accept(param)) {
 		    styleList.add(parameterStyles[i].getName());
 		    count++;
 		}
-		if(foundOne &&
-		   parameterStyles[i].getClass() == style.getClass())
-		    defaultIndex = i;
 	    }
+	    System.out.println("default = " + defaultIndex);
 	    String styleArray[] = 
 		(String[])styleList.toArray(new String[count]);
 	    

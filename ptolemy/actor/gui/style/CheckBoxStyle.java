@@ -50,7 +50,7 @@ presence of this attribute to guide construction of an interactive
 parameter editor.
 
 @see EditorPaneFactory
-@author Edward A. Lee
+@author Edward A. Lee, Steve Neuendorffer
 @version $Id$
 */
 

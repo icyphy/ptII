@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	CheckBoxStyle.java \
+	ChoiceStyle.java \
 	LineStyle.java \
 	ParameterEditorStyle.java \
 	StyleConfigurer.java

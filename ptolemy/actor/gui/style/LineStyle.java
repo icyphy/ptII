@@ -83,6 +83,7 @@ public class LineStyle extends ParameterEditorStyle {
     ////                         public methods                    ////
 
     /** Return true if this style is acceptable for the given parameter.
+     *  @return True.
      */
     public boolean accept(Parameter param) {
 	return true;
