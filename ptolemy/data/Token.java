@@ -33,8 +33,6 @@
 //// Token
 /**
 Abstract base class for data capsules. Tokens are immutable.
-FIXME: This class declares that tokens are cloneable and promotes
-the protected clone() method of the Object base class to public.
 <p>
 Operator overloading between tokens is supported with methods
 for each operator. The operators that are overloaded
@@ -53,7 +51,7 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-public abstract class Token implements Cloneable {
+public abstract class Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -87,20 +85,8 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Promote the clone method of the base class Object to public.
-     *  @see java.lang.Object#clone()
-     *  @exception CloneNotSupportedException May be thrown by derived classes.
-     *  @return The cloned Token.
-     */
-    public Object clone()
-            throws CloneNotSupportedException {
-        Token result = (Token)super.clone();
-        return result;
-
-    }
-
     /** Convert the specified token into an instance of this class.
-     *  Since all the token classes are drived from this base class,
+     *  Since all the token classes are derived from this base class,
      *  no conversion is needed. This method just returns the specified
      *  token. The derived classes should override this method to
      *  convert a token type further down the type hierarchy to the
