@@ -54,6 +54,8 @@
 #
 
 
+package require java
+
 # Load up Tcl procs to print out enums
 if {[info procs _testEnums] == "" } then { 
     source [file join $PTII util testsuite testEnums.tcl]
