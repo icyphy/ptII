@@ -234,14 +234,14 @@ public class PlotBox extends Panel {
             // Clear all the way from the top so that we erase the title.
             // If we don't do this, then zooming in with the pxgraph
             // application ends up blurring the title.
-            graphics.clearRect(0,0,drawRect.width, drawRect.height);
+            graphics.clearRect(0, 0, drawRect.width, drawRect.height);
         }
 
         if (_debug > 8) {
             System.out.println("PlotBox: drawPlot drawRect ="+
                     drawRect.width+" "+drawRect.height+" "+
                     drawRect.x+" "+drawRect.y);
-            graphics.drawRect(0,0,drawRect.width, drawRect.height);
+            graphics.drawRect(0, 0, drawRect.width, drawRect.height);
         }
 
         // If an error message has been set, display it and return.
@@ -250,7 +250,7 @@ public class PlotBox extends Panel {
             int msgy = fheight;
             graphics.setColor(Color.black);
             for(int i=0; i<_errorMsg.length;i++) {
-                graphics.drawString(_errorMsg[i],10, msgy);
+                graphics.drawString(_errorMsg[i], 10, msgy);
                 msgy += fheight;
                 System.err.println(_errorMsg[i]);
             }
@@ -261,7 +261,7 @@ public class PlotBox extends Panel {
         if (!_xRangeGiven) {
             if (_xBottom > _xTop) {
                 // have nothing to go on.
-                _setXRange(0,0);
+                _setXRange(0, 0);
             } else {
                 _setXRange(_xBottom, _xTop);
             }
@@ -269,7 +269,7 @@ public class PlotBox extends Panel {
         if (!_yRangeGiven) {
             if (_yBottom > _yTop) {
                 // have nothing to go on.
-                _setYRange(0,0);
+                _setYRange(0, 0);
             } else {
                 _setYRange(_yBottom, _yTop);
             }
@@ -300,7 +300,8 @@ public class PlotBox extends Panel {
             xSPos -= _superscriptFontMetrics.stringWidth(superscript);
             graphics.setFont(_superscriptfont);
             if (!_xlog) {
-                graphics.drawString(superscript,xSPos,ySPos - halflabelheight);
+                graphics.drawString(superscript, xSPos,
+                        ySPos - halflabelheight);
                 xSPos -= _labelFontMetrics.stringWidth("x10");
                 graphics.setFont(_labelfont);
                 graphics.drawString("x10", xSPos, ySPos);
@@ -371,7 +372,7 @@ public class PlotBox extends Panel {
             //                    _formatNum(1.9995, 0));
             // System.out.println("1 with 3 digits: " + _formatNum(1, 3));
             // System.out.println("10 with 0 digits: " + _formatNum(10, 0));
-            // System.out.println("997 with 3 digits: " + _formatNum(997,3));
+            // System.out.println("997 with 3 digits: " + _formatNum(997, 3));
             // System.out.println("0.005 needs: " + _numFracDigits(0.005));
             // System.out.println("1 needs: " + _numFracDigits(1));
             // System.out.println("999 needs: " + _numFracDigits(999));
@@ -386,7 +387,7 @@ public class PlotBox extends Panel {
 
             double yTmpStart = yStart;
             if (_ylog)
-                yTmpStart = _gridStep(ygrid,yStart, yStep, _ylog);
+                yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
 
             for (double ypos = yTmpStart; ypos <= _ytickMax;
                  ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
@@ -438,10 +439,10 @@ public class PlotBox extends Panel {
 
         // background for the plotting rectangle
         graphics.setColor(_background);
-        graphics.fillRect(_ulx,_uly,width,height);
+        graphics.fillRect(_ulx, _uly, width, height);
 
         graphics.setColor(_foreground);
-        graphics.drawRect(_ulx,_uly,width,height);
+        graphics.drawRect(_ulx, _uly, width, height);
 
         // NOTE: subjective tick length.
         int tickLength = 5;
@@ -474,11 +475,11 @@ public class PlotBox extends Panel {
                 // colliding with x labels.
                 int offset = 0;
                 if (ind > 0 &&  ! _ylog) offset = halflabelheight;
-                graphics.drawLine(_ulx,yCoord1,xCoord1,yCoord1);
-                graphics.drawLine(_lrx,yCoord1,xCoord2,yCoord1);
+                graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
+                graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
                 if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                     graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
+                    graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
                     graphics.setColor(_foreground);
                 }
                 // Check to see if any of the labels printed contain
@@ -497,7 +498,7 @@ public class PlotBox extends Panel {
 
             if (_ylog) {
                 // Draw in grid lines that don't have labels.
-                Vector unlabeledgrid  = _gridInit(yStart,yStep,false,ygrid);
+                Vector unlabeledgrid  = _gridInit(yStart, yStep, false, ygrid);
                 if (unlabeledgrid.size() > 0) {
                     // If the step is greater than 1, clamp it to 1 so that
                     // we draw the unlabeled grid lines for each
@@ -513,7 +514,8 @@ public class PlotBox extends Panel {
                             (int)((ypos-_ytickMin)*_ytickscale);
                         if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                             graphics.setColor(Color.lightGray);
-                            graphics.drawLine(_ulx+1,yCoord1,_lrx-1,yCoord1);
+                            graphics.drawLine(_ulx+1, yCoord1,
+                                    _lrx-1, yCoord1);
                             graphics.setColor(_foreground);
                         }
                     }
@@ -547,11 +549,11 @@ public class PlotBox extends Panel {
                 int yCoord1 = _lry - (int)((ypos-_yMin)*_yscale);
                 int offset = 0;
                 if (ypos < _lry - labelheight) offset = halflabelheight;
-                graphics.drawLine(_ulx,yCoord1,xCoord1,yCoord1);
-                graphics.drawLine(_lrx,yCoord1,xCoord2,yCoord1);
+                graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
+                graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
                 if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                     graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
+                    graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
                     graphics.setColor(_foreground);
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
@@ -640,11 +642,11 @@ public class PlotBox extends Panel {
                     xticklabel = _formatNum(xpos, numfracdigits);
                 }
                 xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
-                graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
-                graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
+                graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
+                graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                     graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1,yCoord1,xCoord1,yCoord2);
+                    graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
                     graphics.setColor(_foreground);
                 }
                 int labxpos = xCoord1 -
@@ -683,7 +685,8 @@ public class PlotBox extends Panel {
                         xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                         if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                             graphics.setColor(Color.lightGray);
-                            graphics.drawLine(xCoord1,_uly+1,xCoord1,_lry-1);
+                            graphics.drawLine(xCoord1, _uly+1,
+                                    xCoord1, _lry-1);
                             graphics.setColor(_foreground);
                         }
                     }
@@ -712,11 +715,11 @@ public class PlotBox extends Panel {
                 double xpos = ((Double)(nt.nextElement())).doubleValue();
                 if (xpos > _xMax || xpos < _xMin) continue;
                 xCoord1 = _ulx + (int)((xpos-_xMin)*_xscale);
-                graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
-                graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
+                graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
+                graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                     graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1,yCoord1,xCoord1,yCoord2);
+                    graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
                     graphics.setColor(_foreground);
                 }
                 int labxpos = xCoord1 - _labelFontMetrics.stringWidth(label)/2;
@@ -735,14 +738,14 @@ public class PlotBox extends Panel {
             graphics.setFont(_titlefont);
             int titlex = _ulx +
                 (width - _titleFontMetrics.stringWidth(_title))/2;
-            graphics.drawString(_title,titlex,titley);
+            graphics.drawString(_title, titlex, titley);
         }
 
         graphics.setFont(_labelfont);
         if (_xlabel != null) {
             int labelx = _ulx +
                 (width - _labelFontMetrics.stringWidth(_xlabel))/2;
-            graphics.drawString(_xlabel,labelx,ySPos);
+            graphics.drawString(_xlabel, labelx, ySPos);
         }
 
         int charcenter = 2 + _labelFontMetrics.stringWidth("W")/2;
@@ -752,9 +755,9 @@ public class PlotBox extends Panel {
             int yl = _ylabel.length();
             int starty = _uly + (_lry-_uly)/2 - yl*charheight/2 + charheight;
             for (int i = 0; i < yl; i++) {
-                String nchar = _ylabel.substring(i,i+1);
+                String nchar = _ylabel.substring(i, i+1);
                 int cwidth = _labelFontMetrics.stringWidth(nchar);
-                graphics.drawString(nchar,charcenter - cwidth/2, starty);
+                graphics.drawString(nchar, charcenter - cwidth/2, starty);
                 starty += charheight;
             }
         }
@@ -781,7 +784,7 @@ public class PlotBox extends Panel {
         String fontname = new String ("helvetica");
         int style = Font.PLAIN;
         int size = 12;
-        StringTokenizer stoken = new StringTokenizer(fullfontname,"-");
+        StringTokenizer stoken = new StringTokenizer(fullfontname, "-");
 
         if (stoken.hasMoreTokens()) {
             fontname = stoken.nextToken();
@@ -820,20 +823,20 @@ public class PlotBox extends Panel {
             // Check to see if it is a hexadecimal
             // Can't use Color decode here, it is not in 1.0.2
             //Color col = Color.decode(name);
-            Color col = new Color(Integer.parseInt(name,16));
+            Color col = new Color(Integer.parseInt(name, 16));
             return col;
         } catch (NumberFormatException e) {}
         // FIXME: This is a poor excuse for a list of colors and values.
         // We should use a hash table here.
         // Note that Color decode() wants the values to start with 0x.
         String names[][] = {
-            {"black","00000"},{"white","ffffff"},
-            {"red","ff0000"}, {"green","00ff00"}, {"blue","0000ff"}
+            {"black", "00000"}, {"white", "ffffff"},
+            {"red", "ff0000"}, {"green", "00ff00"}, {"blue", "0000ff"}
         };
         for(int i=0;i< names.length; i++) {
             if(name.equals(names[i][0])) {
                 try {
-                    Color col = new Color(Integer.parseInt(names[i][1],16));
+                    Color col = new Color(Integer.parseInt(names[i][1], 16));
                     return col;
                 } catch (NumberFormatException e) {}
             }
@@ -858,7 +861,7 @@ public class PlotBox extends Panel {
      * Get the legend for a dataset.
      */
     public String getLegend(int dataset) {
-        int idx = _legendDatasets.indexOf(new Integer(dataset),0);
+        int idx = _legendDatasets.indexOf(new Integer(dataset), 0);
         if (idx != -1) {
             return (String)_legendStrings.elementAt(idx);
         } else {
@@ -928,7 +931,7 @@ public class PlotBox extends Panel {
         validate();
 
         if (_dataurl != null) {
-            parseFile(_dataurl,_documentBase);
+            parseFile(_dataurl, _documentBase);
         }
     }
 
@@ -1258,7 +1261,7 @@ public class PlotBox extends Panel {
                     width+" "+height);
         _width = width;
         _height = height;
-        super.reshape(x,y,_width,_height);
+        super.reshape(x, y, _width, _height);
     }
 
     /**
@@ -1271,7 +1274,7 @@ public class PlotBox extends Panel {
             System.out.println("PlotBox: resize"+width+" "+height);
         _width = width;
         _height = height;
-        super.resize(width,height); // FIXME: resize() is deprecated.
+        super.resize(width, height); // FIXME: resize() is deprecated.
     }
 
     /** Set the background color.
@@ -1374,7 +1377,7 @@ public class PlotBox extends Panel {
     public void setXRange (double min, double max) {
         if (_debug > 7) System.out.println("PlotBox: setXRange");
         _xRangeGiven = true;
-        _setXRange(min,max);
+        _setXRange(min, max);
     }
 
     /**
@@ -1402,7 +1405,7 @@ public class PlotBox extends Panel {
      */
     public void setYRange (double min, double max) {
         _yRangeGiven = true;
-        _setYRange(min,max);
+        _setYRange(min, max);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -1474,7 +1477,7 @@ public class PlotBox extends Panel {
         if (lcLine.startsWith("xrange:")) {
             int comma = line.indexOf(",", 7);
             if (comma > 0) {
-                String min = (line.substring(7,comma)).trim();
+                String min = (line.substring(7, comma)).trim();
                 String max = (line.substring(comma+1)).trim();
                 try {
                     Double dmin = new Double(min);
@@ -1489,7 +1492,7 @@ public class PlotBox extends Panel {
         if (lcLine.startsWith("yrange:")) {
             int comma = line.indexOf(",", 7);
             if (comma > 0) {
-                String min = (line.substring(7,comma)).trim();
+                String min = (line.substring(7, comma)).trim();
                 String max = (line.substring(comma+1)).trim();
                 try {
                     Double dmin = new Double(min);
@@ -1714,20 +1717,20 @@ public class PlotBox extends Panel {
             if (num - (int)(num) < 0.001) {
                 results = "1e" + results;
             } else {
-                results = _formatNum(Math.pow(10.0,(num - (int)num)),
+                results = _formatNum(Math.pow(10.0, (num - (int)num)),
                         numfracdigits);
             }
         } else {
             if (-num - (int)(-num) < 0.001) {
                 results = "1e" + results;
             } else {
-                results = _formatNum(Math.pow(10.0,(num - (int)num))*10,
+                results = _formatNum(Math.pow(10.0, (num - (int)num))*10,
                         numfracdigits);
             }
         }
         if (_debug == 5)
             System.out.println("PlotBox: _formatLogNum: "+num+" "+
-                    Math.pow(10.0,num)+" "+results+" "+(num -(int)num));
+                    Math.pow(10.0, num)+" "+results+" "+(num -(int)num));
         return results;
     }
 
@@ -2021,7 +2024,7 @@ public class PlotBox extends Panel {
             int comma = line.indexOf(",", start);
             String pair = null ;
             if (comma > start) {
-                pair = (line.substring(start,comma)).trim();
+                pair = (line.substring(start, comma)).trim();
             } else {
                 pair = (line.substring(start)).trim();
                 cont = false;
@@ -2035,12 +2038,12 @@ public class PlotBox extends Panel {
                 close = pair.indexOf(" ");
             }
             if (close > 0) {
-                String label = pair.substring(open,close);
+                String label = pair.substring(open, close);
                 String index = (pair.substring(close+1)).trim();
                 try {
                     double idx = (Double.valueOf(index)).doubleValue();
                     if (xtick) addXTick(label, idx);
-                    else addYTick(label,idx);
+                    else addYTick(label, idx);
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
                 }
@@ -2090,11 +2093,11 @@ public class PlotBox extends Panel {
             //}
 
         // Find the exponent.
-        double largest = Math.max(Math.abs(_xMin),Math.abs(_xMax));
+        double largest = Math.max(Math.abs(_xMin), Math.abs(_xMax));
         _xExp = (int) Math.floor(Math.log(largest)*_LOG10SCALE);
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_xExp > 1 || _xExp < -1) {
-            double xs = 1.0/Math.pow(10.0,(double)_xExp);
+            double xs = 1.0/Math.pow(10.0, (double)_xExp);
             _xtickMin = _xMin*xs;
             _xtickMax = _xMax*xs;
         } else {
@@ -2128,11 +2131,11 @@ public class PlotBox extends Panel {
             //        }
 
         // Find the exponent.
-        double largest = Math.max(Math.abs(_yMin),Math.abs(_yMax));
+        double largest = Math.max(Math.abs(_yMin), Math.abs(_yMax));
         _yExp = (int) Math.floor(Math.log(largest)*_LOG10SCALE);
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_yExp > 1 || _yExp < -1) {
-            double ys = 1.0/Math.pow(10.0,(double)_yExp);
+            double ys = 1.0/Math.pow(10.0, (double)_yExp);
             _ytickMin = _yMin*ys;
             _ytickMax = _yMax*ys;
         } else {

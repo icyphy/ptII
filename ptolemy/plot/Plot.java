@@ -90,7 +90,7 @@ import java.util.*;
  * <pre>
  * Lines: on
  * </pre>
- * You can also specify "impulses," which are lines drawn from a plotted point
+ * You can also specify "impulses", which are lines drawn from a plotted point
  * down to the x axis.  These are off by default, but can be turned on with the
  * command:
  * <pre>
@@ -132,10 +132,10 @@ import java.util.*;
  * The data itself is given by a sequence of commands with one of the
  * following forms:
  * <pre>
- * <i>x</i>,<i>y</i>
- * draw: <i>x</i>,<i>y</i>
- * move: <i>x</i>,<i>y</i>
- * <i>x</i>,<i>y</i>,<i>yLowErrorBar</i>,<i>yHighErrorBar</i>
+ * <i>x</i>, <i>y</i>
+ * draw: <i>x</i>, <i>y</i>
+ * move: <i>x</i>, <i>y</i>
+ * <i>x</i>, <i>y</i>, <i>yLowErrorBar</i>, <i>yHighErrorBar</i>
  * </pre>
  * The "draw" command is optional, so the first two forms are equivalent.
  * The "move" command causes a break in connected points, if lines are
@@ -174,7 +174,7 @@ public class Plot extends PlotBox {
     ////                         public methods                          ////
 
     /**
-     * In the specified data set, add the specified x,y point to the
+     * In the specified data set, add the specified x, y point to the
      * plot.  Data set indices begin with zero.  If the dataset
      * argument is out of range, ignore.  The number of data sets is
      * given by calling *setNumSets()*.  The fourth argument indicates
@@ -207,7 +207,7 @@ public class Plot extends PlotBox {
     }
 
     /**
-     * In the specified data set, add the specified x,y point to the
+     * In the specified data set, add the specified x, y point to the
      * plot with error bars.  Data set indices begin with zero.  If
      * the dataset argument is out of range, ignore.  The number of
      * data sets is given by calling *setNumSets()*.  yLowEB and
@@ -315,7 +315,7 @@ public class Plot extends PlotBox {
      */
     public void paint(Graphics graphics) {
         if (_debug > 7) System.out.println("Plot: paint");
-        drawPlot(graphics,true);
+        drawPlot(graphics, true);
     }
 
     /** Parse pxgraph style command line arguments.
@@ -444,15 +444,15 @@ public class Plot extends PlotBox {
                     continue;
                 } else if (arg.equals("-binary")) {
                     setBinary(true);
-                    _endian = NATIVE_ENDIAN;
+                    _endian = _NATIVE_ENDIAN;
                     continue;
                 } else if (arg.equals("-bigendian")) {
                     setBinary(true);
-                    _endian = BIG_ENDIAN;
+                    _endian = _BIG_ENDIAN;
                     continue;
                 } else if (arg.equals("-littleendian")) {
                     setBinary(true);
-                    _endian = LITTLE_ENDIAN;
+                    _endian = _LITTLE_ENDIAN;
                     continue;
                 } else if (arg.equals("-db")) {
                     _debug = 6;
@@ -609,7 +609,7 @@ public class Plot extends PlotBox {
         setTitle(title);
         if (_debug > 9)
             System.out.println("Plot: parseArgs: resize()"+_width+" "+_height);
-        resize(_width,_height);
+        resize(_width, _height);
 
         if (_debug > 0) {
             System.err.println("Plot: dataurl = " + dataurl);
@@ -631,7 +631,8 @@ public class Plot extends PlotBox {
      * @exception pt.plot.CmdLineArgException if there is a problem parsing
      * the command line arguments passed in.
      */
-    public int parsePxgraphargs(String pxgraphargs) throws CmdLineArgException  {
+    public int parsePxgraphargs(String pxgraphargs) throws
+            CmdLineArgException  {
         // We convert the String to a Stream and then use a StreamTokenizer
         // to parse the arguments into a Vector and then copy
         // the vector into an array of Strings.  We use a Vector
@@ -655,7 +656,7 @@ public class Plot extends PlotBox {
             // the syntax and then add back what we want.
             stoken.resetSyntax();
             stoken.whitespaceChars(0, ' ');
-            stoken.wordChars('(','~');
+            stoken.wordChars('(', '~');
             stoken.quoteChar('"');
             stoken.quoteChar('\'');
             int c;
@@ -736,7 +737,7 @@ public class Plot extends PlotBox {
             System.out.println("Plot: resize"+width+" "+height);
         _width = width;
         _height = height;
-        super.resize(width,height); // FIXME: resize() is deprecated.
+        super.resize(width, height); // FIXME: resize() is deprecated.
     }
 
     /**
@@ -1219,7 +1220,8 @@ public class Plot extends PlotBox {
      * @exception PlotDataException if there is a serious data format problem.
      * @exception java.io.IOException if an I/O error occurs.
      */
-    protected void _parseBinaryStream(DataInputStream in) throws PlotDataException,  IOException {
+    protected void _parseBinaryStream(DataInputStream in)
+            throws PlotDataException,  IOException {
         // This method is similar to _parseLine() below, except it parses
         // an entire file at a time.
         int c;
@@ -1231,16 +1233,16 @@ public class Plot extends PlotBox {
         if (_connected) connected = true;
 
         switch (_endian) {
-        case NATIVE_ENDIAN:
+        case _NATIVE_ENDIAN:
             try {
                 if ( System.getProperty("os.arch").equals("x86")) {
                     byteSwapped = true;
                 }
             } catch (SecurityException e) {}
             break;
-        case BIG_ENDIAN:
+        case _BIG_ENDIAN:
             break;
-        case LITTLE_ENDIAN:
+        case _LITTLE_ENDIAN:
             byteSwapped = true;
             break;
         default:
@@ -1292,7 +1294,7 @@ public class Plot extends PlotBox {
                     // pxgraph to read binary format data.
                     // The format consists of a command character,
                     // followed by optional arguments
-                    // d <4byte float> <4byte float> - Draw a X,Y point
+                    // d <4byte float> <4byte float> - Draw a X, Y point
                     // e                             - End of a data set
                     // n <chars> \n                  - New set name, ends in \n
                     // m                             - Move to a point
@@ -1443,7 +1445,7 @@ public class Plot extends PlotBox {
                 _maxdataset = _currentdataset;
                 return true;
             } else if (lcLine.startsWith("lines:")) {
-                if (lcLine.indexOf("off",6) >= 0) {
+                if (lcLine.indexOf("off", 6) >= 0) {
                     setConnected(false);
                 } else {
                     setConnected(true);
@@ -1451,7 +1453,7 @@ public class Plot extends PlotBox {
                 _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("impulses:")) {
-                if (lcLine.indexOf("off",9) >= 0) {
+                if (lcLine.indexOf("off", 9) >= 0) {
                     setImpulses(false);
                 } else {
                     setImpulses(true);
@@ -1459,7 +1461,7 @@ public class Plot extends PlotBox {
                 _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("bars:")) {
-                if (lcLine.indexOf("off",5) >= 0) {
+                if (lcLine.indexOf("off", 5) >= 0) {
                     setBars(false);
                 } else {
                     setBars(true);
@@ -1535,7 +1537,7 @@ public class Plot extends PlotBox {
                 }
                 if (fieldsplit2 > 0) {
                     line = (y.substring(fieldsplit2+1)).trim();
-                    y = (y.substring(0,fieldsplit2)).trim();
+                    y = (y.substring(0, fieldsplit2)).trim();
                 }
                 try {
                     Double xpt = new Double(x);
@@ -1643,7 +1645,7 @@ public class Plot extends PlotBox {
         return connected;
     }
 
-    /* In the specified data set, add the specified x,y point to the
+    /* In the specified data set, add the specified x, y point to the
      * plot.  Data set indices begin with zero.  If the dataset
      * argument is out of range, ignore.  The number of data sets is
      * given by calling *setNumSets()*.  The fourth argument indicates
@@ -1684,7 +1686,8 @@ public class Plot extends PlotBox {
         Vector pts = _points[dataset];
         pts.addElement(pt);
         if (_pointsPersistence > 0) {
-            if (pts.size() > _pointsPersistence) erasePoint(dataset,0);
+            if (pts.size() > _pointsPersistence)
+                erasePoint(dataset, 0);
         }
         // If drawPlot() has not yet been called, then we need not
         // attempt to draw the point yet.
@@ -1824,7 +1827,7 @@ public class Plot extends PlotBox {
     private boolean _calledDrawPlot = false;
 
     // The highest data set used.
-    protected int _maxdataset = -1;
+    private int _maxdataset = -1;
 
     // True if we saw 'reusedatasets: on' in the file.
     private boolean _reusedatasets = false;
@@ -1845,14 +1848,14 @@ public class Plot extends PlotBox {
     private boolean _pxgraphBlankLineMode = true;
 
     // Check the osarch and use the appropriate endian
-    private static final int NATIVE_ENDIAN = 0;
+    private static final int _NATIVE_ENDIAN = 0;
     // Data is in big-endian
-    private static final int BIG_ENDIAN = 1;
+    private static final int _BIG_ENDIAN = 1;
     // Data is in little-endian
-    private static final int LITTLE_ENDIAN = 2;
+    private static final int _LITTLE_ENDIAN = 2;
 
     // Format to read data in.
-    private int _endian = NATIVE_ENDIAN;
+    private int _endian = _NATIVE_ENDIAN;
 
     // Information about the previously plotted point.
     private long _prevx[], _prevy[];

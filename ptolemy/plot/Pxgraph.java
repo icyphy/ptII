@@ -175,13 +175,13 @@ running on.
  <br>The commands are encoded as follows:
   <dl>
   <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
-  <dd> Draw a X,Y point
+  <dd> Draw a X, Y point
   <dt> <code>e</code>
   <dd> End of dataset
   <dt> <code>n <I>&lt;dataset name&gt;</I>&#92n</code>
   <dd> New dataset name, ends in <code>&#92n</code>
   <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
-  <dd> Move to a X,Y point.
+  <dd> Move to a X, Y point.
   </dl>
 </ol>
  <br>To view a binary plot file under unix, we can use the
@@ -570,7 +570,7 @@ public class Pxgraph extends Frame {
                 "the Pxgraph class documentation.\n" +
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                Color.white,Color.black);
+                Color.white, Color.black);
         message.setTitle("About Pxgraph");
         message.pack();
         message.show();
@@ -670,7 +670,7 @@ public class Pxgraph extends Frame {
         // Read in the user's CLASSPATH and get the first directory,
         // which should be the location of the Plot classes
         StringTokenizer stoken =
-            new StringTokenizer(System.getProperty("java.class.path"),";:");
+            new StringTokenizer(System.getProperty("java.class.path"), ";:");
         String plotclassdir = new String("");
         if (stoken.hasMoreTokens()) {
             plotclassdir = stoken.nextToken();
@@ -778,7 +778,7 @@ public class Pxgraph extends Frame {
         // Copy the command line args so we can use them in the printer
         _cmdLineArgs = new String[args.length];
         try {
-            System.arraycopy(args,0,_cmdLineArgs,0,args.length);
+            System.arraycopy(args, 0, _cmdLineArgs, 0, args.length);
         } catch (ArrayIndexOutOfBoundsException e) {}
         catch (ArrayStoreException e) {}
 
@@ -828,7 +828,8 @@ public class Pxgraph extends Frame {
                 int xscreen = 1, yscreen = 1;
                 boolean screenlocationgiven = false;
                 StringTokenizer stoken =
-                    new StringTokenizer(arg.substring(1,arg.length()), "=x-+");
+                    new StringTokenizer(arg.substring(1, arg.length()),
+                            "=x-+");
                 if (stoken.hasMoreTokens()) {
                     width = (int)Integer.valueOf(stoken.nextToken()).
                         intValue();
@@ -858,7 +859,7 @@ public class Pxgraph extends Frame {
         }
 
         // Set up the frame
-        resize(width,height);   // FIXME: resize is deprecated in 1.1,
+        resize(width, height);   // FIXME: resize is deprecated in 1.1,
                                 // we should use setsize(width,height)
                                 // but setsize is not in JDK1.0.2
         setTitle(title);
@@ -893,7 +894,7 @@ public class Pxgraph extends Frame {
         newprops.put("awt.print.destination", "file");
         newprops.put("awt.print.fileName", _outputFile);
         PrintJob printjob = getToolkit().getPrintJob(this,
-                getTitle(),newprops);
+                getTitle(), newprops);
         if (printjob != null) {
             Graphics printgraphics = printjob.getGraphics();
             if (printgraphics != null) {
@@ -912,9 +913,9 @@ public class Pxgraph extends Frame {
                 _plotApplet._setButtonsVisibility(true);
                 _setButtonsVisibility(true);
 
-                resize(dim.width,dim.height);   // FIXME: resize is deprecated
+                resize(dim.width, dim.height);   // FIXME: resize is deprecated
                 // in 1.1, we should use
-                // setsize(width,height) but
+                // setsize(width, height) but
                 // setsize is not in JDK1.0.2
 
                 show();
