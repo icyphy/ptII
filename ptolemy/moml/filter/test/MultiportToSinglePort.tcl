@@ -122,3 +122,45 @@ test MultiportToSinglePort-1.1 {output port should not be a multi port} {
     </entity>
 </entity>
 }}
+
+
+set chainedTransitionMoML  "$header 
+<entity name=\"chainedTransitionMoML\" class=\"ptolemy.actor.TypedCompositeActor\">
+            <entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">
+                <property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"slope\">
+                </property>
+                <property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">
+                    <property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">
+                    </property>
+                    <property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"40\">
+                    </property>
+                </property>
+                <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"85.0, 145.0\">
+                </property>
+                <port name=\"trigger\" class=\"ptolemy.actor.TypedIOPort\">
+                    <property name=\"input\"/>
+                    <property name=\"multiport\"/>
+                    <property name=\"_hide\" class=\"ptolemy.kernel.util.Attribute\">
+                    </property>
+                </port>
+            </entity>
+</entity>"
+
+######################################################################
+####
+#
+test MultiportToSinglePort-2.1 {output port is not a multiport, should not be marked as modified } { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Reset the isModified flag  
+    $parser reset
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    set toplevel [$parser parse $chainedTransitionMoML]
+    set newMoML [$toplevel exportMoML]
+    list [$parser isModified]
+} {0}
