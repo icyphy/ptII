@@ -249,7 +249,7 @@ public class Director extends NamedObj implements Executable {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                _debug("Invoking initialize(): ",
+                if (_debugging) _debug("Invoking initialize(): ",
                         ((NamedObj)actor).getFullName());
                 actor.initialize();
             }
@@ -423,12 +423,12 @@ public class Director extends NamedObj implements Executable {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                _debug("Invoking preinitialize(): ",
+                if (_debugging) _debug("Invoking preinitialize(): ",
                 ((NamedObj)actor).getFullName());
                 actor.preinitialize();
             }
         }
-        _debug("Finished preinitialize().");
+        if (_debugging) _debug("Finished preinitialize().");
     }
 
     /** Queue a change request with the manager.

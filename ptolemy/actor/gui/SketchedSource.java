@@ -167,10 +167,10 @@ public class SketchedSource extends Source implements SequenceActor {
         int prd = ((IntToken)period.getToken()).intValue();
         if (_count < _data[1].length) {
             // NOTE: X value ignored.
-            output.broadcast(new DoubleToken(_data[1][_count]));
+            output.send(0, new DoubleToken(_data[1][_count]));
             _count++;
         } else {
-            output.broadcast(_zero);
+            output.send(0, _zero);
             if (_count < prd) {
                 _count++;
             }

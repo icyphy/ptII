@@ -111,10 +111,10 @@ public class Const extends Source {
 
     /** Send the token in the <i>value</i> parameter to the output.
      *  @exception IllegalActionException If it is thrown by the
-     *   broadcast() method sending out the token.
+     *   send() method sending out the token.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.broadcast(value.getToken());
+        output.send(0, value.getToken());
     }
 }

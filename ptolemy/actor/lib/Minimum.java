@@ -88,7 +88,7 @@ public class Minimum extends Transformer {
             }
         }
         if (result != null) {
-            output.broadcast(result);
+            output.send(0, result);
         }
     }
 }

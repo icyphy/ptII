@@ -177,6 +177,6 @@ public class MultiplyDivide extends TypedAtomicActor {
         if (denominator != null) {
             numerator = numerator.divide(denominator);
 	}
-        output.broadcast(numerator);
+        output.send(0, numerator);
     }
 }

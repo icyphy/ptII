@@ -109,7 +109,7 @@ public class Gaussian extends RandomSource {
     public void fire() {
         try {
             super.fire();
-            output.broadcast(new DoubleToken(_current));
+            output.send(0, new DoubleToken(_current));
         } catch (IllegalActionException ex) {
             // Should not be thrown because this is an output port.
             throw new InternalErrorException(ex.getMessage());

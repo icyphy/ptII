@@ -87,15 +87,11 @@ public class CurrentTime extends TimedSource {
     }
 
     /** Send the current value of the state of this actor to the output.
+     *  @exception IllegalActionException If send() throws it.
      */
-    public void fire() {
-        try {
-            super.fire();
-            Director dir = getDirector();
-            output.broadcast(new DoubleToken(dir.getCurrentTime()));
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because this is an output port.
-            throw new InternalErrorException(ex.getMessage());
-        }
+    public void fire() throws IllegalActionException {
+        super.fire();
+        Director dir = getDirector();
+        output.send(0, new DoubleToken(dir.getCurrentTime()));
     }
 }

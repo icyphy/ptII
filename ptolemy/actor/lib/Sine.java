@@ -135,7 +135,7 @@ public class Sine extends Transformer {
             double p = ((DoubleToken)phase.getToken()).doubleValue();
 
             double result = A*Math.sin(w*in.doubleValue()+p);
-            output.broadcast(new DoubleToken(result));
+            output.send(0, new DoubleToken(result));
         }
     }
 }

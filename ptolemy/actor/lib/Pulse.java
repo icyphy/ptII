@@ -245,12 +245,12 @@ public class Pulse extends SequenceSource {
             int currentIndex = idx[0][_indexColCount];
             if (_iterationCount == currentIndex) {
                 // Got a match with an index.
-                output.broadcast(val.getElementAsToken(0, _indexColCount));
+                output.send(0, val.getElementAsToken(0, _indexColCount));
                 _match = true;
                 return;
             }
         }
-        output.broadcast(_zero);
+        output.send(0, _zero);
         _match = false;
     }
 

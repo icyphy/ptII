@@ -137,7 +137,7 @@ public class Average extends Transformer {
                 _latestSum = _latestSum.add(in);
             }
             Token out = _latestSum.divide(new IntToken(_latestCount));
-            output.broadcast(out);
+            output.send(0, out);
         }
     }
 

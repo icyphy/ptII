@@ -268,7 +268,7 @@ public class Interpolator extends SequenceSource {
                  */
                 InterpolatedResult = currentValue;
                 ResultToken = new DoubleToken(InterpolatedResult); 
-                output.broadcast(ResultToken);
+                output.send(0, ResultToken);
                 _match = true;
                 return;     
             } else {
@@ -370,7 +370,7 @@ public class Interpolator extends SequenceSource {
                             T,Coefficient)[0][0];
                     ResultToken = new DoubleToken(InterpolatedResult);
                 }
-                output.broadcast(ResultToken);
+                output.send(0, ResultToken);
                 _match = false;
             }
         } else {
@@ -379,7 +379,7 @@ public class Interpolator extends SequenceSource {
              */
             InterpolatedResult = 0;
             ResultToken = new DoubleToken(InterpolatedResult);
-            output.broadcast(ResultToken);
+            output.send(0, ResultToken);
             _match = false;
         }
     }

@@ -175,7 +175,7 @@ public class AddSubtract extends TypedAtomicActor {
 	}
 
 	if (sum != null) {
-	    output.broadcast(sum);
+	    output.send(0, sum);
 	}
     }
 }

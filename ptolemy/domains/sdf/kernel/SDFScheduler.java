@@ -223,7 +223,7 @@ public class SDFScheduler extends Scheduler {
             ComponentEntity a = (ComponentEntity)Entities.nextElement();
 
             if(a instanceof CompositeActor) {
-		_debug("Scheduling contained system");
+		if (_debugging) _debug("Scheduling contained system");
                 Director containedDirector =
                     ((CompositeActor) a).getDirector();
                 if(containedDirector instanceof StaticSchedulingDirector) {
@@ -256,16 +256,20 @@ public class SDFScheduler extends Scheduler {
 
         _setFiringVector(firings);
 
-        _debug("Firing Vector:");
-        _debug(firings.toString());
+        if (_debugging) {
+            _debug("Firing Vector:");
+            _debug(firings.toString());
+        }
 
         // Schedule all the actors using the calculated firings.
         LinkedList result = _scheduleConnectedActors(AllActors);
 
         _setFiringVector(firings);
 
-        _debug("Firing Vector:");
-        _debug(firings.toString());
+        if (_debugging) {
+            _debug("Firing Vector:");
+            _debug(firings.toString());
+        }
 
         try {
             _setContainerRates();
@@ -386,14 +390,14 @@ public class SDFScheduler extends Scheduler {
     private int _countUnfulfilledInputs(Actor a,
             LinkedList actorList, Map waitingTokens)
             throws IllegalActionException {
-	_debug("counting unfufilled inputs for " +
+	if (_debugging) _debug("counting unfufilled inputs for " +
                 ((Entity) a).getFullName());
         Enumeration ainputPorts = a.inputPorts();
 
 	int inputCount = 0;
 	while(ainputPorts.hasMoreElements()) {
 	    IOPort ainputPort = (IOPort) ainputPorts.nextElement();
-	    _debug("checking input " +
+	    if (_debugging) _debug("checking input " +
                     ainputPort.getFullName());
 
 	    Enumeration cports = ainputPort.deepConnectedOutPorts();
@@ -407,7 +411,7 @@ public class SDFScheduler extends Scheduler {
 
 	    int threshold =
 		_getTokenConsumptionRate(ainputPort);
-	    _debug("Threshold = " + threshold);
+	    if (_debugging) _debug("Threshold = " + threshold);
 	    int[] tokens =
 		(int []) waitingTokens.get(ainputPort);
 
@@ -416,8 +420,10 @@ public class SDFScheduler extends Scheduler {
 	    for(channel = 0;
 		channel < ainputPort.getWidth();
 		channel++) {
-		_debug("Channel = " + channel);
-		_debug("Waiting Tokens = " + tokens[channel]);
+		if (_debugging) {
+                    _debug("Channel = " + channel);
+                    _debug("Waiting Tokens = " + tokens[channel]);
+                }
 		if(tokens[channel] < threshold)
 		    isalreadyfulfilled = false;
 	    }
@@ -458,7 +464,7 @@ public class SDFScheduler extends Scheduler {
         Iterator unnormalizedFirings = firings.values().iterator();
         int lcm = 1;
 
-        _debug("Normalizing Firings");
+        if (_debugging) _debug("Normalizing Firings");
         // First find the lcm of all the denominators
         while(unnormalizedFirings.hasNext()) {
             Fraction f = (Fraction) unnormalizedFirings.next();
@@ -466,7 +472,7 @@ public class SDFScheduler extends Scheduler {
             lcm = Fraction.lcm(lcm, den);
         }
 
-        _debug("lcm = " + (new Integer(lcm)).toString());
+        if (_debugging) _debug("lcm = " + (new Integer(lcm)).toString());
         Iterator Actors = firings.keySet().iterator();
 
         Fraction lcmFraction = new Fraction(lcm);
@@ -475,7 +481,7 @@ public class SDFScheduler extends Scheduler {
         while(Actors.hasNext()) {
 
             Object actor = Actors.next();
-            _debug("normalizing Actor " +
+            if (_debugging) _debug("normalizing Actor " +
                     ((ComponentEntity) actor).getName());
             Fraction reps = (Fraction) firings.get(actor);
             reps = reps.multiply(lcmFraction);
@@ -528,7 +534,7 @@ public class SDFScheduler extends Scheduler {
                 ComponentEntity connectedActor =
                     (ComponentEntity) connectedPort.getContainer();
 
-                _debug("Propagating input to " +
+                if (_debugging) _debug("Propagating input to " +
                         connectedActor.getName());
 
                 int connectedRate =
@@ -586,8 +592,10 @@ public class SDFScheduler extends Scheduler {
                   }
                 */
 
-                _debug("New Firing: ");
-                _debug(firings.toString());
+                if (_debugging) {
+                    _debug("New Firing: ");
+                    _debug(firings.toString());
+                }
             }
         }
     }
@@ -654,7 +662,7 @@ public class SDFScheduler extends Scheduler {
                 ComponentEntity connectedActor =
                     (ComponentEntity) connectedPort.getContainer();
 
-                _debug("Propagating output to " +
+                if (_debugging) _debug("Propagating output to " +
                         connectedActor.getName());
 
                 int connectedRate =
@@ -697,8 +705,10 @@ public class SDFScheduler extends Scheduler {
                             "does not appear in the firings Map");
                 }
 
-                _debug("New Firing: ");
-                _debug(firings.toString());
+                if (_debugging) {
+                    _debug("New Firing: ");
+                    _debug(firings.toString());
+                }
             }
         }
     }
@@ -763,8 +773,8 @@ public class SDFScheduler extends Scheduler {
 		while(aoutputports.hasMoreElements()) {
 		    IOPort aOutputPort = (IOPort) aoutputports.nextElement();
 		    int count = _getTokenInitProduction(aOutputPort);
-                    _debug("Simulating " + count + " tokens created on " + 
-                            aOutputPort);
+                    if (_debugging) _debug("Simulating " + count
+                            + " tokens created on " + aOutputPort);
 		    if(count > 0) {
 			_simulateTokensCreated(aOutputPort,
 					       count,
@@ -786,32 +796,33 @@ public class SDFScheduler extends Scheduler {
 		if(inputCount == 0)
 		    readyToScheduleActorList.addFirst((ComponentEntity) a);
 
-		_debug("Actor " + ((ComponentEntity) a).getName() +
-                        " has " + inputCount +
-                        " unfulfilledInputs.");
-
+		if (_debugging) _debug("Actor "
+                        + ((ComponentEntity) a).getName() +
+                        " has " + inputCount + " unfulfilledInputs.");
 	    }
 
 	    while(readyToScheduleActorList.size() > 0) {
-		_debug("\nwaitingTokens: ");
+		if (_debugging) _debug("\nwaitingTokens: ");
 		Iterator ports = waitingTokens.keySet().iterator();
 		while(ports.hasNext()) {
 		    IOPort port = (IOPort)ports.next();
-		    _debug("Port " + port.getFullName());
 		    int tokencount[] = (int[])waitingTokens.get(port);
-		    _debug("Number of channels = " + tokencount.length);
+		    if (_debugging) {
+                        _debug("Port " + port.getFullName());
+                        _debug("Number of channels = " + tokencount.length);
+                    }
 		    for(int channel = 0;
 			channel < tokencount.length;
 			channel++)
-			_debug("Channel " + channel + " has " +
+			if (_debugging) _debug("Channel " + channel + " has " +
 			       tokencount[channel] + " tokens.");
 		}
 
-		_debug("Actors that can be scheduled:");
+		if (_debugging) _debug("Actors that can be scheduled:");
 		Iterator actorsLeft = readyToScheduleActorList.iterator();
 		while(actorsLeft.hasNext()) {
 		    Entity e = (Entity)actorsLeft.next();
-		    _debug(e.getFullName());
+		    if (_debugging) _debug(e.getFullName());
 		}
 
 		// pick an actor that is ready to fire.
@@ -820,7 +831,9 @@ public class SDFScheduler extends Scheduler {
 		// remove it from the list of actors we are waiting to fire
                 while(readyToScheduleActorList.remove(currentActor)); 
 
-		_debug("Scheduling Actor " + currentActor.getName());
+		if (_debugging) {
+                    _debug("Scheduling Actor " + currentActor.getName());
+                }
 		_simulateInputConsumption(currentActor, waitingTokens);
 
 		// add it to the schedule
@@ -852,8 +865,10 @@ public class SDFScheduler extends Scheduler {
                 firingsRemainingVector.put(currentActor,
                         new Integer(firingsRemaining));
 
-		_debug(currentActor.getName() + " should fire " +
-                        firingsRemaining + " more times.");
+		if (_debugging) {
+                    _debug(currentActor.getName() + " should fire " +
+                            firingsRemaining + " more times.");
+                }
 
 		// Figure out what to do with the actor, now that it has been
 		// scheduled.
@@ -898,9 +913,8 @@ public class SDFScheduler extends Scheduler {
             // with it.
             throw new InternalErrorException("SDF Scheduler Failed " +
                     "internal consistency check: " + iae.getMessage());
-        }
-        finally {
-            _debug("finishing loop");
+        } finally {
+            if (_debugging) _debug("finishing loop");
 	}
 
 	if(unscheduledActorList.size() > 0) {
@@ -914,9 +928,12 @@ public class SDFScheduler extends Scheduler {
 	}
 
         Iterator eschedule = newSchedule.iterator();
-        _debug("Schedule is:");
-        while(eschedule.hasNext())
-            _debug(((ComponentEntity) eschedule.next()).toString());
+        if (_debugging) {
+            _debug("Schedule is:");
+            while(eschedule.hasNext()) {
+                _debug(((ComponentEntity) eschedule.next()).toString());
+            }
+        }
         return newSchedule;
     }
 
@@ -954,10 +971,12 @@ public class SDFScheduler extends Scheduler {
                     _getTokenProductionRate(cport);
                 initProduction = _getFiringCount(cactor) *
                     _getTokenInitProduction(cport);
-                _debug("CPort " + cport.getName());
-                _debug("consumptionRate = " + consumptionRate);
-                _debug("productionRate = " + productionRate);
-                _debug("initProduction = " + initProduction);
+                if (_debugging) {
+                    _debug("CPort " + cport.getName());
+                    _debug("consumptionRate = " + consumptionRate);
+                    _debug("productionRate = " + productionRate);
+                    _debug("initProduction = " + initProduction);
+                }
             }
             // All the ports connected to this port must have the same rate
             while(connectedports.hasMoreElements()) {
@@ -989,10 +1008,12 @@ public class SDFScheduler extends Scheduler {
                         "!");
 
             }
-            _debug("Port " + port.getName());
-            _debug("consumptionRate = " + consumptionRate);
-            _debug("productionRate = " + productionRate);
-            _debug("initProduction = " + initProduction);
+            if (_debugging) {
+                _debug("Port " + port.getName());
+                _debug("consumptionRate = " + consumptionRate);
+                _debug("productionRate = " + productionRate);
+                _debug("initProduction = " + initProduction);
+            }
             // SDFAtomicActor blindly creates parameters with bad values.
 
             /*
@@ -1145,17 +1166,19 @@ public class SDFScheduler extends Scheduler {
             LinkedList readyToScheduleActorList,
             Map waitingTokens)
             throws IllegalActionException {
-	_debug("Creating " + createdTokens + " on " +
-                outputPort.getFullName());
 
 	Receiver[][] creceivers = outputPort.getRemoteReceivers();
 
-	_debug("source channels = " + creceivers.length);
+	if (_debugging) {
+            _debug("Creating " + createdTokens + " on "
+                    + outputPort.getFullName());
+            _debug("source channels = " + creceivers.length);
+        }
 	int sourcechannel;
 	for(sourcechannel = 0;
-	    sourcechannel < creceivers.length;
-	    sourcechannel++) {
-	    _debug("destination receivers = " +
+	        sourcechannel < creceivers.length;
+	        sourcechannel++) {
+	    if (_debugging) _debug("destination receivers = " +
 		   creceivers[sourcechannel].length);
 	    int destinationreceiver;
 	    for(destinationreceiver = 0;
@@ -1178,8 +1201,10 @@ public class SDFScheduler extends Scheduler {
 				    );
 		    int[] tokens = (int[]) waitingTokens.get(connectedPort);
 		    tokens[destinationchannel] += createdTokens;
-		    _debug("Channel " + destinationchannel + " of " +
-			   connectedPort.getName());
+		    if (_debugging) {
+                        _debug("Channel " + destinationchannel + " of " +
+                                connectedPort.getName());
+                    }
 		    // Check and see if the connectedActor can be scheduled
 		    int ival =
 			_countUnfulfilledInputs((Actor)connectedActor,
@@ -1256,12 +1281,18 @@ public class SDFScheduler extends Scheduler {
         }
 
         while(!done) try {
-            _debug("pendingActors: ");
-            _debug(pendingActors.toString());
+            // NOTE: Do not move this debug clause after the removeFirst()
+            // call... that causes an infinite loop!
+            if (_debugging) {
+                _debug("pendingActors: ");
+                _debug(pendingActors.toString());
+            }
             // Get the next actor to recurse over
             Actor currentActor = (Actor) pendingActors.removeFirst();
-            _debug("Balancing from " +
-                    ((ComponentEntity) currentActor).getName());
+            if (_debugging) {
+                _debug("Balancing from " +
+                        ((ComponentEntity) currentActor).getName());
+            }
 
             // traverse all the input and output ports, setting the firings
             // for the actor(s)???? that each port is connected to relative
@@ -1309,13 +1340,17 @@ public class SDFScheduler extends Scheduler {
     private int _getChannel(IOPort port, Receiver receiver)
 	throws IllegalActionException {
 	int width = port.getWidth();
-	_debug("port width = " + width);
 	Receiver[][] receivers = port.getReceivers();
 	int channel;
-	_debug("number of channels = " + receivers.length);
+	if (_debugging) {
+            _debug("port width = " + width);
+            _debug("number of channels = " + receivers.length);
+        }
 	for(channel = 0; channel < receivers.length; channel++) {
 	    int receivernumber;
-	    _debug("number of receivers = " + receivers[channel].length);
+	    if (_debugging) {
+                _debug("number of receivers = " + receivers[channel].length);
+            }
 	    for(receivernumber = 0;
 		receivernumber < receivers[channel].length;
 		receivernumber++)
@@ -1326,7 +1361,10 @@ public class SDFScheduler extends Scheduler {
 	receivers = port.getInsideReceivers();
 	for(channel = 0; channel < receivers.length; channel++) {
 	    int receivernumber;
-	    _debug("number of insidereceivers = " + receivers[channel].length);
+	    if (_debugging) {
+                _debug("number of insidereceivers = "
+                       + receivers[channel].length);
+            }
 	    for(receivernumber = 0;
 		receivernumber < receivers[channel].length;
 		receivernumber++)

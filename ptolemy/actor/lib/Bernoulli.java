@@ -102,7 +102,7 @@ public class Bernoulli extends RandomSource {
     public void fire() {
         try {
             super.fire();
-            output.broadcast(new BooleanToken(_current));
+            output.send(0, new BooleanToken(_current));
         } catch (IllegalActionException ex) {
             // Should not be thrown because this is an output port.
             throw new InternalErrorException(ex.getMessage());

@@ -302,7 +302,7 @@ public class Clock extends TimedSource {
             _tentativeNextFiringTime
                 = _tentativeCycleStartTime + offsts[0][_tentativePhase];
         }
-        output.broadcast(_tentativeCurrentValue);
+        output.send(0, _tentativeCurrentValue);
     }
 
     /** Schedule the first firing and initialize local variables.

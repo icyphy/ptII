@@ -119,7 +119,7 @@ public class Scale extends Transformer {
             Token in = input.get(0);
             Token gainToken = gain.getToken();
             Token result = gainToken.multiply(in);
-            output.broadcast(result);
+            output.send(0, result);
         }
     }
 }

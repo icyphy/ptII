@@ -260,7 +260,7 @@ public class DEDirector extends Director {
             Actor actorToFire = _getActorToFire();
             if (actorToFire == null) {
                 // There is nothing more to do.
-                _debug("No more events on the event queue.");
+                if (_debugging) _debug("No more events on the event queue.");
                 _noMoreActorsToFire = true;
                 return;
             }
@@ -276,15 +276,17 @@ public class DEDirector extends Director {
             // tokens available, or until prefire() return false.
             boolean refire = false;
             do {
-                _debug("Iterating actor", ((Entity)actorToFire).getName(),
-                        "at time ", Double.toString(getCurrentTime()));
+                if (_debugging) {
+                    _debug("Iterating actor", ((Entity)actorToFire).getName(),
+                    "at time ", Double.toString(getCurrentTime()));
+                }
                 if (!actorToFire.prefire()) {
-                    _debug("Prefire returned false.");
+                    if (_debugging) _debug("Prefire returned false.");
                     break;
                 }
                 actorToFire.fire();
                 if (!actorToFire.postfire()) {
-                    _debug("Postfire returned false:",
+                    if (_debugging) _debug("Postfire returned false:",
                             ((Entity)actorToFire).getName());
                     // Actor requests that it not be fired again.
                     disableActor(actorToFire);
@@ -719,7 +721,9 @@ public class DEDirector extends Director {
             } else {
                 // In this case we want to do a blocking read of the queue.
                 while (_eventQueue.isEmpty()) {
-                    _debug("Queue is empty. Waiting for input events.");
+                    if (_debugging) {
+                        _debug("Queue is empty. Waiting for input events.");
+                    }
                     synchronized(_eventQueue) {
                         try {
                             _eventQueue.wait();
@@ -748,7 +752,7 @@ public class DEDirector extends Director {
 
                 if (_deadActors != null && _deadActors.contains(actorToFire)) {
                     // This actor has requested that it not be fired again.
-                    _debug("Skipping actor: ",
+                    if (_debugging) _debug("Skipping actor: ",
                            ((Entity)actorToFire).getFullName());
                     actorToFire = null;
                     continue;
@@ -756,7 +760,7 @@ public class DEDirector extends Director {
 
                 double currentTime = currentEvent.timeStamp();
                 // Advance current time.
-                _debug("******* Setting current time to: ",
+                if (_debugging) _debug("******* Setting current time to: ",
                         Double.toString(currentTime));
                 try {
                     setCurrentTime(currentTime);
@@ -777,7 +781,9 @@ public class DEDirector extends Director {
                 _microstep = currentEvent.microstep();
 
                 if (currentTime > getStopTime()) {
-                    _debug("Current time has passed the stop time.");
+                    if (_debugging) {
+                        _debug("Current time has passed the stop time.");
+                    }
                     return null;
                 }
 
@@ -916,10 +922,12 @@ public class DEDirector extends Director {
     private void _computeDepth() throws IllegalActionException {
         DirectedAcyclicGraph dag = _constructDirectedGraph();
         Object[] sort = (Object[]) dag.topologicalSort();
-        _debug("####### Result of topological sort (highest depth to lowest):");
+        if (_debugging) {
+            _debug("## Result of topological sort (highest depth to lowest):");
+        }
 	for(int i = sort.length-1; i >= 0; i--) {
             Actor actor = (Actor)sort[i];
-            _debug(((Nameable)actor).getFullName());
+            if (_debugging) _debug(((Nameable)actor).getFullName());
             // Set the fine levels of all DEReceiver instances in input
             // ports of the actor to i.
             Enumeration ports = actor.inputPorts();
@@ -939,7 +947,7 @@ public class DEDirector extends Director {
                 }
             }
 	}
-        _debug("####### End of topological sort.");
+        if (_debugging) _debug("## End of topological sort.");
     }
 
     // Request that the container of this director be refired in the future.
@@ -949,7 +957,7 @@ public class DEDirector extends Director {
         DEEvent nextEvent = null;
         nextEvent = _eventQueue.get();
 
-        _debug("Request refiring of opaque composite actor.");
+        if (_debugging) _debug("Request refiring of opaque composite actor.");
        // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
                 (Actor)getContainer(), nextEvent.timeStamp());

@@ -143,7 +143,7 @@ public class Commutator extends Transformer implements SequenceActor {
             if (!input.hasToken(_tentativeInputPosition)) {
                 break;
             }
-            output.broadcast(input.get(_tentativeInputPosition++));
+            output.send(0, input.get(_tentativeInputPosition++));
             if (_tentativeInputPosition >= width) {
                 _tentativeInputPosition = 0;
             }

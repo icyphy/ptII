@@ -172,7 +172,7 @@ public class Expression extends TypedAtomicActor {
                     "Expression yields a null result: " +
                     expression.getExpression());
         }
-        output.broadcast(result);
+        output.send(0, result);
     }
 
     /** Initialize the iteration count to 1.

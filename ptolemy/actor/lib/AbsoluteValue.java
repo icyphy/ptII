@@ -75,7 +75,7 @@ public class AbsoluteValue extends Transformer {
         if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken)input.get(0);
             double result = Math.abs(in.doubleValue());
-            output.broadcast(new DoubleToken(result));
+            output.send(0, new DoubleToken(result));
         }
     }
 }

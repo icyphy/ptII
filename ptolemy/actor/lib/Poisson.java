@@ -237,7 +237,7 @@ public class Poisson extends TimedSource {
             }
             _boundaryCrossed = true;
         }
-        output.broadcast(_getValue(_tentativeCurrentOutputIndex));
+        output.send(0, _getValue(_tentativeCurrentOutputIndex));
     }
 
     /** Schedule the first firing at time zero and initialize local variables.

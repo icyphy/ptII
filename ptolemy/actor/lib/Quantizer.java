@@ -161,7 +161,7 @@ public class Quantizer extends Transformer {
         if (input.hasToken(0)) {
             double in = ((DoubleToken)input.get(0)).doubleValue();
             int index = _getQuantizationIndex(in);
-            output.broadcast(((DoubleMatrixToken)levels.getToken()).
+            output.send(0, ((DoubleMatrixToken)levels.getToken()).
                     getElementAsToken(0, index));
         }
     }

@@ -88,7 +88,7 @@ public class FixToDouble extends Transformer {
 	if (input.hasToken(0)) {
     	    FixToken in = (FixToken)input.get(0);
 	    DoubleToken result = new DoubleToken(in.doubleValue());    
-            output.broadcast(result);
+            output.send(0, result);
         }
     }
 
