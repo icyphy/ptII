@@ -32,6 +32,8 @@ package ptolemy.vergil.ptolemy;
 
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.TerminalFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.graph.BasicNodeController;
 import diva.graph.GraphController;
@@ -39,6 +41,8 @@ import diva.graph.GraphViewEvent;
 import diva.graph.NodeInteractor;
 
 import java.awt.Color;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -49,8 +53,8 @@ import ptolemy.vergil.toolbox.SnapConstraint;
 //// LocatableNodeController
 /**
 This node controller provides interaction techniques for nodes that are
-locations.   This is common when the node has some
-concept of its graphical location, but does not know about the figure that it
+locations.   This is common when the node has some concept of its
+graphical location, but does not know about the figure that it
 is associated with.  This class provides the connection between the
 figure's notion of location and the node's concept of location.
 <p>
@@ -110,11 +114,46 @@ public class LocatableNodeController extends BasicNodeController {
     /** Move the node's figure to the location specified in the node's
      *  semantic object, if that object is an instance of Location.
      *  If the semantic object is not a location, then do nothing.
+     *  If the figure associated with the semantic object is an instance
+     *  of TerminalFigure, then modify the location to ensure that the
+     *  connect site snaps to grid.
+     *  @param node The object to locate.
      */
     public void locateFigure(Object node) {
 	Figure nf = getController().getFigure(node);
 	if(hasLocation(node)) {
 	    double[] location = getLocation(node);
+            // NOTE: It might make sense to modify the translation of
+            // all objects so that the logical zero location is located
+            // at a grid point.  This would take over the rather complicated
+            // operation in LocatableNodeDragInteractor.  However, this
+            // would be tricky for composite figures.  Best to leave it
+            // alone.  EAL
+            if (nf instanceof TerminalFigure) {
+                // Snap connect site to grid.
+                Site connectSite = ((TerminalFigure)nf).getConnectSite();
+                Point2D connectPoint = connectSite.getPoint();
+                Rectangle2D bounds = nf.getBounds();
+                double[] preSnapSiteLocation = new double[2];
+                preSnapSiteLocation[0] = location[0]
+                       + connectPoint.getX() - bounds.getCenterX();
+                preSnapSiteLocation[1] = location[1]
+                       + connectPoint.getY() - bounds.getCenterY();
+                double[] postSnapSiteLocation = SnapConstraint
+                       .constrainPoint(preSnapSiteLocation);
+                // Translate back.
+                location[0] = postSnapSiteLocation[0]
+                       - connectPoint.getX() + bounds.getCenterX();
+                location[1] = postSnapSiteLocation[1]
+                       - connectPoint.getY() + bounds.getCenterY();
+                // Record the new location, otherwise it will get
+                // quantized again.
+                try {
+                    setLocation(node, location);
+                } catch (IllegalActionException ex) {
+                    // Ignore... not critical, and shouldn't happen.
+                }
+            }
 	    CanvasUtilities.translateTo(nf, location[0], location[1]);
         }
     }
@@ -127,7 +166,7 @@ public class LocatableNodeController extends BasicNodeController {
 	if(node instanceof Location) {
             ((Location)node).setLocation(location);
         } else throw new RuntimeException("The node " + node +
-                "can not have a desired location");
+                "cannot have a desired location");
     }
 
     ///////////////////////////////////////////////////////////////////

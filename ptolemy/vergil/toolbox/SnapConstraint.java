@@ -83,8 +83,8 @@ public class SnapConstraint implements PointConstraint {
      */
     public static double[] constrainPoint(double x, double y) {
         double[] result = new double[2];
-        result[0] = Math.floor(x/_resolution)*_resolution;
-        result[1] = Math.floor(y/_resolution)*_resolution;
+        result[0] = Math.round(x/_resolution)*_resolution;
+        result[1] = Math.round(y/_resolution)*_resolution;
         return result;
     }
 

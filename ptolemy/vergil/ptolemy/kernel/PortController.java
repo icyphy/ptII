@@ -32,6 +32,8 @@ package ptolemy.vergil.ptolemy.kernel;
 
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.moml.Location;
 
 import diva.graph.GraphController;
@@ -94,6 +96,55 @@ public class PortController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+
+    // Prototype input port.
+    public static IOPort _GENERIC_INPUT = new IOPort();
+
+    // Prototype output port.
+    public static IOPort _GENERIC_OUTPUT = new IOPort();
+
+    // Prototype inout port.
+    public static IOPort _GENERIC_INOUT = new IOPort();
+
+    // Prototype input multiport.
+    public static IOPort _GENERIC_INPUT_MULTIPORT = new IOPort();
+
+    // Prototype output multiport.
+    public static IOPort _GENERIC_OUTPUT_MULTIPORT = new IOPort();
+
+    // Prototype inout multiport.
+    public static IOPort _GENERIC_INOUT_MULTIPORT = new IOPort();
+
+    // Static initializer.
+    static {
+        _GENERIC_INPUT.setInput(true);
+        _GENERIC_OUTPUT.setOutput(true);
+        _GENERIC_INOUT.setInput(true);
+        _GENERIC_INOUT.setOutput(true);
+        _GENERIC_INPUT_MULTIPORT.setInput(true);
+        _GENERIC_OUTPUT_MULTIPORT.setOutput(true);
+        _GENERIC_INOUT_MULTIPORT.setInput(true);
+        _GENERIC_INOUT_MULTIPORT.setOutput(true);
+        _GENERIC_INPUT_MULTIPORT.setMultiport(true);
+        _GENERIC_OUTPUT_MULTIPORT.setMultiport(true);
+        _GENERIC_INOUT_MULTIPORT.setMultiport(true);
+        try {
+            // Need location attributes for these ports in order to
+            // be able to render them.
+            new Location(_GENERIC_INPUT, "_location");
+            new Location(_GENERIC_OUTPUT, "_location");
+            new Location(_GENERIC_INOUT, "_location");
+            new Location(_GENERIC_INPUT_MULTIPORT, "_location");
+            new Location(_GENERIC_OUTPUT_MULTIPORT, "_location");
+            new Location(_GENERIC_INOUT_MULTIPORT, "_location");
+        } catch (KernelException ex) {
+            // Should not occur.
+            throw new InternalErrorException(ex.toString());
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
@@ -106,6 +157,16 @@ public class PortController extends AttributeController {
      *  while single ports are rendered filled.
      */
     public class PortRenderer implements NodeRenderer {
+
+        /** Render a port.  If the argument is an instance of Location,
+         *  then render the port that is the container of that location.
+         *  If the argument is an instnace of _GENERIC_INPUT,
+         *  _GENERIC_OUTPUT, or _GENERIC_INOUT, then render an input,
+         *  output, or inout port with no name.  If the argument is null,
+         *  then render a port that is neither an input nor an output.
+         *  @param n An instance of LOCATION or one of the objects
+         *   _GENERIC_INPUT, _GENERIC_OUTPUT, or _GENERIC_INOUT.
+         */
 	public Figure render(Object n) {
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 
@@ -178,7 +239,10 @@ public class PortController extends AttributeController {
 		Site tsite = new PerimeterSite(figure, 0);
 		tsite.setNormal(normal);
 		tsite = new FixedNormalSite(tsite);
-                figure = new NameWrapper(figure, port.getName());
+                String name = port.getName();
+                if (name != null && !name.equals("")) {
+                    figure = new NameWrapper(figure, port.getName());
+                }
 		figure = new TerminalFigure(figure, tsite)  {
                     // Override this because the tooltip may change over time.
                     // I.e., the port may change from being an input or

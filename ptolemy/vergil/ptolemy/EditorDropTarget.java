@@ -278,8 +278,8 @@ public class EditorDropTarget extends DropTarget {
         ///////////////////////////////////////////////////////////////
         ////                     private methods                   ////
 
-        // Create an icon if necessary for the specified object, and
-        // set its location to the specified point.
+        // Create a Location attribute if necessary for the specified object,
+        // and set the location to the specified point.
         // Note that this needs to be done after the change request
         // that creates the object has succeeded.
         private void _setLocation(NamedObj newObject, Point2D point)

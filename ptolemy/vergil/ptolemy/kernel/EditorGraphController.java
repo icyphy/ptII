@@ -34,6 +34,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
@@ -59,9 +60,12 @@ import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.MenuCreator;
 
 import ptolemy.gui.MessageHandler;
+import ptolemy.actor.IOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Documentation;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
@@ -106,8 +110,21 @@ public class EditorGraphController extends ViewerGraphController {
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
         // Add an item that adds new ports.
-	diva.gui.GUIUtilities.addMenuItem(menu, _newPortAction);
-       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newPortAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
+       	diva.gui.GUIUtilities.addToolBarButton(
+                   toolbar, _newInputMultiportAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
+       	diva.gui.GUIUtilities.addToolBarButton(
+                   toolbar, _newOutputMultiportAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInoutMultiportAction);
+       	diva.gui.GUIUtilities.addToolBarButton(
+                   toolbar, _newInoutMultiportAction);
 
         // Add an item that adds new relations.
 	diva.gui.GUIUtilities.addMenuItem(menu, _newRelationAction);
@@ -183,11 +200,44 @@ public class EditorGraphController extends ViewerGraphController {
     /** The interactor that interactively creates edges. */
     private LinkCreator _linkCreator;
 
-    /** Action for creating a new port. */
-    private Action _newPortAction = new NewPortAction();
+    /** Action for creating a new input port. */
+    private Action _newInputPortAction = new NewPortAction(
+            PortController._GENERIC_INPUT, "New input port",
+            KeyEvent.VK_I);
+
+    /** Action for creating a new output port. */
+    private Action _newOutputPortAction = new NewPortAction(
+            PortController._GENERIC_OUTPUT, "New output port",
+            KeyEvent.VK_O);
+
+    /** Action for creating a new inout port. */
+    private Action _newInoutPortAction = new NewPortAction(
+            PortController._GENERIC_INOUT, "New input/output port",
+            KeyEvent.VK_P);
+
+    /** Action for creating a new input multiport. */
+    private Action _newInputMultiportAction = new NewPortAction(
+            PortController._GENERIC_INPUT_MULTIPORT,
+            "New input multiport",
+            KeyEvent.VK_N);
+
+    /** Action for creating a new output multiport. */
+    private Action _newOutputMultiportAction = new NewPortAction(
+            PortController._GENERIC_OUTPUT_MULTIPORT,
+            "New output multiport",
+            KeyEvent.VK_U);
+
+    /** Action for creating a new inout multiport. */
+    private Action _newInoutMultiportAction = new NewPortAction(
+            PortController._GENERIC_INOUT_MULTIPORT,
+            "New input/output multiport",
+            KeyEvent.VK_T);
 
     /** Action for creating a new relation. */
     private Action _newRelationAction = new NewRelationAction();
+
+    /** Offset of ports from the visible border. */
+    private static double _PORT_OFFSET = 20.0;
 
     /** The interactor for creating new relations. */
     private RelationCreator _relationCreator;
@@ -266,37 +316,81 @@ public class EditorGraphController extends ViewerGraphController {
     ///////////////////////////////////////////////////////////////
     //// NewPortAction
 
-    // An action to create a new port.
+    /** An action to create a new port. */
     public class NewPortAction extends FigureAction {
-	public NewPortAction() {
-	    super("New External Port");
+
+        /** Create a new port that has the same input, output, and
+         *  multiport properties as the specified port.  If the specified
+         *  port is null, then a new port that is neither an input, an
+         *  output, nor a multiport will be created.
+         *  @param prototype Prototype port.
+         *  @param description The description used for menu entries and
+         *   tooltips.
+         *  @param mnemonicKey The KeyEvent field for the mnemonic key to
+         *   use in the menu.
+         */
+	public NewPortAction(
+                IOPort prototype, String description, int mnemonicKey) {
+	    super(description);
+            _prototype = prototype;
 	    String dflt = "";
 	    // Creating the renderers this way is rather nasty..
 	    // Standard toolbar icons are 25x25 pixels.
 	    NodeRenderer renderer = _portController.getNodeRenderer();
-	    Figure figure = renderer.render(null);
+            Object location = null;
+            if (_prototype != null) {
+                location = _prototype.getAttribute("_location");
+            }
+	    Figure figure = renderer.render(location);
 
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
-	    putValue("tooltip", "Create a New External Port");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_E,
-                            java.awt.Event.CTRL_MASK));
+
+	    putValue("tooltip", description);
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_E));
+                    new Integer(mnemonicKey));
 	}
 
+        /** Create a new port. */
 	public void actionPerformed(ActionEvent e) {
 	    super.actionPerformed(e);
-	    GraphPane pane = getGraphPane();
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
-		// no location in the action, so make something up.
-		Point2D point = pane.getSize();
-		x = point.getX()/2;
-		y = point.getY()/2;
+		// No location in the action, so put it in the middle.
+                GraphFrame frame = getFrame();
+                if (frame != null) {
+                    // Put in the middle of the visible part.
+                    Point2D center = frame.getCenter();
+                    if (_prototype != null) {
+                        Rectangle2D visiblePart = frame.getVisibleRectangle();
+                        if (_prototype.isInput() && _prototype.isOutput()) {
+                            x = center.getX();
+                            y = visiblePart.getY()
+                                   + visiblePart.getHeight() - _PORT_OFFSET;
+                        } else if (_prototype.isInput()) {
+                            x = visiblePart.getX() + _PORT_OFFSET;
+                            y = center.getY();
+                        } else if (_prototype.isOutput()) {
+                            x = visiblePart.getX()
+                                   + visiblePart.getWidth() - _PORT_OFFSET;
+                            y = center.getY();
+                        } else {
+                            x = center.getX();
+                            y = center.getY();
+                        }
+                    } else {
+                        x = center.getX();
+                        y = center.getY();
+                    }
+                } else {
+                    // Put in the middle of the pane.
+                    GraphPane pane = getGraphPane();
+                    Point2D center = pane.getSize();
+                    x = center.getX()/2;
+                    y = center.getY()/2;
+                }
 	    } else {
 		x = getX();
 		y = getY();
@@ -308,12 +402,23 @@ public class EditorGraphController extends ViewerGraphController {
             final double[] point = SnapConstraint.constrainPoint(x, y);
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
 	    final String portName = toplevel.uniqueName("port");
-	    final String locationName = "location1";
+	    final String locationName = "_location";
 	    // Create the port.
 	    StringBuffer moml = new StringBuffer();
 	    moml.append("<port name=\"" + portName + "\">\n");
 	    moml.append("<property name=\"" + locationName +
                     "\" class=\"ptolemy.moml.Location\"/>\n");
+            if (_prototype != null) {
+                if (_prototype.isInput()) {
+                    moml.append("<property name=\"input\"/>");
+                }
+                if (_prototype.isOutput()) {
+                    moml.append("<property name=\"output\"/>");
+                }
+                if (_prototype.isMultiport()) {
+                    moml.append("<property name=\"multiport\"/>");
+                }
+            }
 	    moml.append("</port>");
 
 	    ChangeRequest request =
@@ -341,6 +446,8 @@ public class EditorGraphController extends ViewerGraphController {
 		throw new GraphException(ex);
 	    }
 	}
+
+        private IOPort _prototype;
     }
 
     ///////////////////////////////////////////////////////////////

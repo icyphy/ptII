@@ -34,6 +34,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -45,6 +46,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -73,6 +75,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -493,11 +496,11 @@ public abstract class GraphFrame extends PtolemyFrame
         super.dispose();
     }
 
-    /** Return the center of the visible part of the pane.
+    /** Return the center location of the visible part of the pane.
      *  @return The center of the visible part.
      */
     public Point2D getCenter() {
-        Rectangle rect = _graphScrollPane.getViewport().getViewRect();
+        Rectangle2D rect = getVisibleRectangle();
         return new Point2D.Double(rect.getCenterX(), rect.getCenterY());
     }
 
@@ -508,11 +511,40 @@ public abstract class GraphFrame extends PtolemyFrame
 	return _jgraph;
     }
 
+    /** Return the rectangle representing the visible part of the pane.
+     *  This is the range of locations that are visible.
+     *  @return The rectangle representing the visible part.
+     */
+    public Rectangle2D getVisibleRectangle() {
+        Rectangle raw = _graphScrollPane.getViewport().getViewRect();
+        Point2D upperLeft = new Point2D.Double(raw.getX(), raw.getY());
+        Point2D lowerRight = new Point2D.Double(raw.getX() + raw.getWidth(),
+               raw.getY() + raw.getHeight());
+
+        // Reverse any current zoom or pan transformations.
+        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        AffineTransform transform = 
+                canvas.getCanvasPane().getTransformContext().getTransform();
+        try {
+            Point2D newUpperLeft = transform.inverseTransform(
+                    upperLeft, null);
+            Point2D newLowerRight = transform.inverseTransform(
+                    lowerRight, null);
+            return new Rectangle2D.Double(
+                    newUpperLeft.getX(), newUpperLeft.getY(),
+                    newLowerRight.getX() - newUpperLeft.getX(),
+                    newLowerRight.getY() - newUpperLeft.getY());
+        } catch (NoninvertibleTransformException ex) {
+            // This should not occur with just zoom and pan.
+            return raw;
+        }
+    }
+
     /** Layout the graph view.
      */
     public void layoutGraph() {
 	GraphController controller =
-	    _jgraph.getGraphPane().getGraphController();
+                 _jgraph.getGraphPane().getGraphController();
         LayoutTarget target = new PtolemyLayoutTarget(controller);
         GraphModel model = controller.getGraphModel();
         PtolemyLayout layout = new PtolemyLayout(target);
@@ -577,6 +609,58 @@ public abstract class GraphFrame extends PtolemyFrame
         } else return NO_SUCH_PAGE;
     }
 
+    /** Set the center location of the visible part of the pane.
+     *  This will cause the panner to center on the specified location
+     *  with the current zoom factor.
+     *  @param center The center of the visible part.
+     */
+    public void setCenter(Point2D center) {
+        // The center is in view coordinates, and we have to convert
+        // it to find the coordinates of the upper left corner in the
+        // raw coordinates.  This is a bit complex...
+        JViewport viewport = _graphScrollPane.getViewport();
+        Rectangle raw = viewport.getViewRect();
+        Point2D upperLeft = new Point2D.Double(raw.getX(), raw.getY());
+        Point2D lowerRight = new Point2D.Double(raw.getX() + raw.getWidth(),
+               raw.getY() + raw.getHeight());
+
+        // Reverse any current zoom or pan transformations.
+        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        AffineTransform transform = 
+                canvas.getCanvasPane().getTransformContext().getTransform();
+        try {
+            Point2D viewUpperLeft = transform.inverseTransform(
+                    upperLeft, null);
+            Point2D viewLowerRight = transform.inverseTransform(
+                    lowerRight, null);
+            double width = viewLowerRight.getX() - viewUpperLeft.getX();
+            double height = viewLowerRight.getY() - viewUpperLeft.getY();
+            Point2D newUpperLeft = new Point2D.Double(
+                    center.getX() - width/2.0, center.getY() - height/2.0);
+            Point2D rawNewUpperLeft = transform.transform(newUpperLeft, null);
+            double x = rawNewUpperLeft.getX();
+            // Do not let raw coordinates go negative.
+            if (x < 0.0) x = 0.0;
+            double y = rawNewUpperLeft.getY();
+            if (y < 0.0) y = 0.0;
+            Point spec = new Point();
+
+            // Do not let the raw coordinates overflow the canvas.
+            if (x + raw.getWidth() > canvas.getWidth()) {
+                x = canvas.getWidth() - raw.getWidth();
+            }
+            if (y + raw.getHeight() > canvas.getHeight()) {
+                y = canvas.getHeight() - raw.getHeight();
+            }
+
+            spec.setLocation(x, y);
+            viewport.setViewPosition(spec);
+        } catch (NoninvertibleTransformException ex) {
+            // This should not occur with just zoom and pan.
+            // Ignore.
+        }
+    }
+
     /** Zoom in or out to magnify by the specified factor, from the current
      *  magnification.
      *  @param factor The magnification factor (relative to 1.0).
@@ -585,8 +669,12 @@ public abstract class GraphFrame extends PtolemyFrame
         JCanvas canvas = _jgraph.getGraphPane().getCanvas();
         AffineTransform current = 
                 canvas.getCanvasPane().getTransformContext().getTransform();
+        // Translate the view center to zero before zooming,
+        // then translate back.
+        Point2D center = getCenter();
         current.scale(factor, factor);
         canvas.getCanvasPane().setTransform(current);
+        setCenter(center);
         _graphPanner.repaint();
     }
 
@@ -931,7 +1019,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    super("Import Library");
 	    putValue("tooltip", "Import a library into the Palette");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_I));
+                    new Integer(KeyEvent.VK_M));
 	}
 
         /** Import a library by first opening a file chooser dialog and
