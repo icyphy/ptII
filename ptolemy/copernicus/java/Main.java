@@ -416,8 +416,8 @@ public class Main extends KernelMain {
         super.addTransforms();
         addStandardTransforms(_toplevel);
         // And write C!
-   //      Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.finalSnapshot", CWriter.v()));
+        //      Scene.v().getPack("wjtp").add(
+        //                 new Transform("wjtp.finalSnapshot", CWriter.v()));
 
         // Generate the makefile files in outDir
         Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
