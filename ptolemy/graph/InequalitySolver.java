@@ -262,7 +262,8 @@ public class InequalitySolver {
     // index as value to _Clist.  The InequalityTerms are variables
     // and the index is the index of the Inequality in _Ilist that
     // contains the variables.
-    /*private*/ void _addToClist(InequalityTerm[] variables, Integer indexWrap) {
+    /*private*/ void _addToClist(InequalityTerm[] variables,
+            Integer indexWrap) {
         for (int i = 0; i < variables.length; i++) {
 	    if ( !variables[i].isSettable()) {
 		throw new InvalidStateException(
@@ -337,7 +338,7 @@ public class InequalitySolver {
         while (_NS.size() > 0) {
 
 	    // FIXME: restore this line for jdk1.2
-            //            int index = ((Integer)(_NS.removeFirst())).intValue();
+            //          int index = ((Integer)(_NS.removeFirst())).intValue();
 
 	    // FIXME: delete the following 2 lines for jdk1.2
             int index = ((Integer)(_NS.first())).intValue();
