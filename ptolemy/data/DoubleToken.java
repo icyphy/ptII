@@ -131,28 +131,43 @@ public class DoubleToken extends ScalarToken {
         return new Complex(_value);
     }
 
-    /** Used to convert Token types further down the type hierarchy to
-     *  the type of this Token
-     *  @param tok The token to be converted to a DoubleToken.
+    /** Convert the specified token into an instance of DoubleToken.
+     *  This method does lossly conversion.
+     *  If the argument is already an instance of DoubleToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below DoubleToken in the type hierarchy, it is converted to
+     *  an instance of DoubleToken or one of the subclasses of
+     *  DoubleToken and returned. If non of the above condition is
+     *  met, an exception is thrown.
+     *  @param token The token to be converted to a DoubleToken.
+     *  @return A DoubleToken.
      *  @exception IllegalActionException If the conversion
-     *  cannot be carried out in a lossless fashion.
-     *  @return A new Token containing the argument Token converted
-     *   to the type of this Token.
+     *   cannot be carried out in a lossless fashion.
      */
-    public Token convert(Token tok) throws IllegalActionException{
-        if (tok instanceof IntToken) {
-            double result = ((IntToken)tok).doubleValue();
-            return new DoubleToken(result);
-        } else {
-            try {
-                IntToken res = (IntToken)(new IntToken()).convert(tok);
-                return convert(res);
-            } catch (Exception ex) {
-                String str = "cannot convert from token type: ";
-                str = str + tok.getClass().getName() + " to a ";
-                throw new IllegalActionException(str + "DoubleToken");
-            }
-        }
+    public static Token convert(Token token)
+	    throws IllegalActionException {
+
+	int compare = TypeCPO.compare(new DoubleToken(), token);
+	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+	    throw new IllegalActionException("DoubleToken.convert: " +
+	    	"type of argument: " + token.getClass().getName() +
+	    	"is higher or incomparable with DoubleToken in the type " +
+		"hierarchy.");
+	}
+
+	if (token instanceof DoubleToken) {
+	    return token;
+	}
+
+	compare = TypeCPO.compare(new IntToken(), token);
+	if (compare == CPO.SAME || compare == CPO.HIGHER) {
+	    IntToken inttoken = (IntToken)IntToken.convert(token);
+	    return new DoubleToken(inttoken.doubleValue());
+	}
+
+	// FIXME: token must be user defined. what to do?
+	throw new IllegalActionException("cannot convert from token " +
+		"type: " + token.getClass().getName() + " to a DoubleToken");
     }
 
     /** Return a new Token whose value is the value of this token

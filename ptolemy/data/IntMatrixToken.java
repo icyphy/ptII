@@ -187,33 +187,45 @@ public class IntMatrixToken extends MatrixToken {
     }
 
     /** Convert the specified token to an instance of IntMatrixToken.
-     *  @param t The token to be converted to IntMatrixToken.
+     *  This method does lossly conversion.
+     *  If the argument is already an instance of IntMatrixToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below IntMatrixToken in the type hierarchy, it is converted to
+     *  an instance of IntMatrixToken or one of the subclasses of
+     *  IntMatrixToken and returned. If non of the above condition is
+     *  met, an exception is thrown.
+     *  @param token The token to be converted to IntMatrixToken.
      *  @return A IntMatrixToken
      *  @exception IllegalActionException If the conversion cannot
      *   be carried out in a lossless fashion.
      */
-    public Token convert(Token t)
+    public static Token convert(Token token)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, t);
+
+	int compare = TypeCPO.compare(new IntMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("cannot convert from token " +
-		"type " + t.getClass().getName() + " to " +
-		getClass().getName());
+	    throw new IllegalActionException("IntMatrixToken.convert: " +
+		"type of argument: " + token.getClass().getName() +
+		"is higher or incomparable with IntMatrixToken in the " +
+                "type hierarchy.");
 	}
 
-	if (t instanceof IntMatrixToken) {
-	    return t;
-	} else {
-	    IntToken tem = null;
-	    if (t instanceof IntToken) {
-		tem = (IntToken)t;
-	    } else {
-	    	tem = (IntToken)(new IntToken(0)).convert(t);
-	    }
-	    int[][] result = new int[1][1];
-	    result[0][0] = tem.intValue();
-	    return new IntMatrixToken(result);
+	if (token instanceof IntMatrixToken) {
+	    return token;
 	}
+
+        compare = TypeCPO.compare(new IntToken(), token);
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+            IntToken tem = (IntToken)IntToken.convert(token);
+            int[][] result = new int[1][1];
+            result[0][0] = tem.intValue();
+            return new IntMatrixToken(result);
+        }
+
+        // FIXME: token must be user defined. what to do?
+        throw new IllegalActionException("cannot convert from token " +
+                "type: " + token.getClass().getName() + " to a " +
+                "IntMatrixToken.");
     }
 
     /** Return the content of this token as a 2-D double array.

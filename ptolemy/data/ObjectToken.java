@@ -29,6 +29,7 @@ package ptolemy.data;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// ObjectToken
@@ -61,6 +62,39 @@ public class ObjectToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Convert the specified token into an instance of ObjectToken.
+     *  This method does lossly conversion.
+     *  If the argument is already an instance of ObjectToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below ObjectToken in the type hierarchy, it is converted to
+     *  an instance of ObjectToken or one of the subclasses of
+     *  ObjectToken and returned. If non of the above condition is
+     *  met, an exception is thrown.
+     *  @param token The token to be converted to an ObjectToken.
+     *  @return An ObjectToken.
+     *  @exception IllegalActionException If the conversion
+     *   cannot be carried out in a lossless fashion.
+     */
+    public static Token convert(Token token)
+	    throws IllegalActionException {
+
+	int compare = TypeCPO.compare(new ObjectToken(), token);
+	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+	    throw new IllegalActionException("ObjectToken.convert: " +
+	    	"type of argument: " + token.getClass().getName() +
+	    	"is higher or incomparable with ObjectToken in the type " +
+		"hierarchy.");
+	}
+
+	if (token instanceof ObjectToken) {
+	    return token;
+	}
+
+	// FIXME: token must be user defined. what to do?
+	throw new IllegalActionException("cannot convert from token " +
+		"type: " + token.getClass().getName() + " to a ObjectToken");
+    }
 
     /** Return the value of the token, a reference to an object.
      	FIXME: this method should only be in leaf classes

@@ -187,65 +187,55 @@ public class DoubleMatrixToken extends MatrixToken {
 	return array;
     }
 
-    /** Convert the specified token to an instance of DoubleMatrixToken.
-     *  @param t The token to be converted to DoubleMatrixToken.
+    /** Convert the specified token into an instance of DoubleMatrixToken.
+     *  This method does lossly conversion.
+     *  If the argument is already an instance of DoubleMatrixToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below DoubleMatrixToken in the type hierarchy, it is converted to
+     *  an instance of DoubleMatrixToken or one of the subclasses of
+     *  DoubleMatrixToken and returned. If non of the above condition is
+     *  met, an exception is thrown.
+     *  @param token The token to be converted to a DoubleMatrixToken.
      *  @return A DoubleMatrixToken
      *  @exception IllegalActionException If the conversion cannot
      *   be carried out in a lossless fashion.
      */
-    public Token convert(Token t)
+    public static Token convert(Token token)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, t);
+
+	int compare = TypeCPO.compare(new DoubleMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("cannot convert from token " +
-		"type " + t.getClass().getName() + " to " +
-		getClass().getName());
+	    throw new IllegalActionException("DoubleMatrixToken.convert: " +
+                "type of argument: " + token.getClass().getName() +
+                "is higher or incomparable with DoubleMatrixToken in the " +
+	 	"type hierarchy.");
 	}
 
-	if (t instanceof DoubleMatrixToken) {
-	    return t;
-	} else {
-	    try {
-	        compare = TypeCPO.compare(Class.forName("DoubleToken"),
-				          t.getClass());
-	        if (compare == CPO.SAME || compare == CPO.HIGHER) {
-		    DoubleToken tem = null;
-		    if (t instanceof DoubleToken) {
-		        tem = (DoubleToken)t;
-		    } else {
-		        tem = (DoubleToken)(new DoubleToken()).convert(t);
-		    }
-
-		    double[][] result = new double[1][1];
-		    result[0][0] = tem.doubleValue();
-		    return new DoubleMatrixToken(result);
-	        } else {
-		    // type of specified token not below double.
-	    	    compare = TypeCPO.compare(Class.forName("IntMatrixToken"),
-				 	      t.getClass());
-	    	    if (compare == CPO.SAME || compare == CPO.HIGHER) {
-	    	        IntMatrixToken tem = null;
-	    	        if (t instanceof IntMatrixToken) {
-			    tem = (IntMatrixToken)t;
-	    	        } else {
-			    IntMatrixToken instance = new IntMatrixToken();
-	    		    tem = (IntMatrixToken)instance.convert(t);
-	    	        }
-	    	        double[][] result = tem.doubleMatrix();
-	    	        return new DoubleMatrixToken(result);
-		    } else {
-		        // should not get here: type of specified token is not
-		        // <= double, int matrix.
-		        throw new InternalErrorException("The specified " +
-			    "token is <= double matrix but not <= " +
-			    "double or int matrix.");
-		    }
-		}
-	    } catch (ClassNotFoundException ex) {
-		throw new InternalErrorException("cannot create instance " +
-		    "of DoubleToken or IntMatrixToken.");
-	    }
+	if (token instanceof DoubleMatrixToken) {
+	    return token;
 	}
+
+	// try double
+	compare = TypeCPO.compare(new DoubleToken(), token);
+	if (compare == CPO.SAME || compare == CPO.HIGHER) {
+	    DoubleToken tem = (DoubleToken)DoubleToken.convert(token);
+	    double[][] result = new double[1][1];
+	    result[0][0] = tem.doubleValue();
+	    return new DoubleMatrixToken(result);
+	}
+
+	// try IntMatrix
+	compare = TypeCPO.compare(new IntMatrixToken(), token);
+	if (compare == CPO.SAME || compare == CPO.HIGHER) {
+	    IntMatrixToken tem = (IntMatrixToken)IntMatrixToken.convert(token);
+	    double[][] result = tem.doubleMatrix();
+	    return new DoubleMatrixToken(result);
+	}
+
+	// FIXME: token must be user defined. what to do?
+        throw new IllegalActionException("cannot convert from token " +
+                "type: " + token.getClass().getName() + " to a " +
+		"DoubleMatrixToken.");
     }
 
     /** Return the content in the token as a 2-D double array.

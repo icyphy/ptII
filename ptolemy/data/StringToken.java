@@ -113,31 +113,44 @@ public class StringToken extends Token {
         return new StringToken(result);
     }
 
-    /** Used to convert Token types further down the type hierarchy to
-     *  the a StringToken.
+    /** Convert the specified token into an instance of StringToken.
+     *  This method does lossly conversion.
+     *  If the argument is already an instance of StringToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below StringToken in the type hierarchy, it is converted to
+     *  an instance of StringToken or one of the subclasses of
+     *  StringToken and returned. If non of the above condition is
+     *  met, an exception is thrown.
      *  @param token The token to be converted to a StringToken.
-     *  @exception IllegalActionException If the conversion
-     *  cannot be carried out in a lossless fashion.
-     *  @return A new Token containing the argument Token converted
-     *   to the type of this Token, if possible.
+     *  @return A StringToken
+     *  @exception IllegalActionException If the conversion cannot
+     *   be carried out in a lossless fashion.
      */
-    public Token convert(Token token) throws IllegalActionException{
-        if (token instanceof BooleanToken) {
-            String result = ((BooleanToken)token).stringValue();
-            return new StringToken(result);
-        } else if (token instanceof DoubleToken) {
-            String result = ((DoubleToken)token).stringValue();
-            return new StringToken(result);
-        } else {
-            try {
-                Token tmp = (new DoubleToken()).convert(token);
-                return convert((DoubleToken)tmp);
-            } catch (Exception ex) {
-                String str = "cannot convert from token type: ";
-                str = str + token.getClass().getName() + " to a ";
-                throw new IllegalActionException(str + "DoubleToken");
-            }
-        }
+    public static Token convert(Token token)
+	    throws IllegalActionException {
+
+	int compare = TypeCPO.compare(new StringToken(), token);
+	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+	    throw new IllegalActionException("StringToken.convert: " +
+                "type of argument: " + token.getClass().getName() +
+                "is higher or incomparable with StringToken in the " +
+	 	"type hierarchy.");
+	}
+
+	if (token instanceof StringToken) {
+	    return token;
+	}
+
+	if (token instanceof MatrixToken || token instanceof ScalarToken ||
+	    token instanceof BooleanToken) {
+	    String str = token.stringValue();
+	    return new StringToken(str);
+	}
+
+	// FIXME: token must be user defined. what to do?
+        throw new IllegalActionException("cannot convert from token " +
+                "type: " + token.getClass().getName() + " to a " +
+		"StringToken.");
     }
 
     /** Lexicographically test the values of this Token and the

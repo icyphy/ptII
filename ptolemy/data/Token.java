@@ -85,17 +85,20 @@ public abstract class Token {
         throw new IllegalActionException(str);
     }
 
-    /** Convert the specified token into an instance of this class.
+    /** Convert the specified token into an instance of Token.
      *  Since all the token classes are derived from this base class,
      *  no conversion is needed. This method just returns the specified
      *  token. The derived classes should override this method to
      *  convert a token type further down the type hierarchy to the
      *  type of itself.
-     *  @param token The Token to be converted to an instance of this class.
-     *  @return A new Token of the same type as this token.
-     *  @exception IllegalActionException not thrown in this base class.
+     *  @param token A Token.
+     *  @return The same Token as the argument.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *   Derived  classes may throw it if the conversion cannot be carried
+     *   out in a lossless fashion.
      */
-    public Token convert(Token token) throws IllegalActionException {
+    public static Token convert(Token token)
+	    throws IllegalActionException {
 	return token;
     }
 

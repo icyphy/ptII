@@ -28,6 +28,7 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanToken
@@ -60,6 +61,39 @@ public class BooleanToken extends Token {
     */
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Convert the specified token into an instance of BooleanToken.
+     *  This method does lossly conversion.
+     *  If the argument is already an instance of BooleanToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below BooleanToken in the type hierarchy, it is converted to
+     *  an instance of BooleanToken or one of the subclasses of
+     *  BooleanToken and returned. If non of the above condition is
+     *  met, an exception is thrown.
+     *  @param token The token to be converted to a BooleanToken.
+     *  @return A BooleanToken.
+     *  @exception IllegalActionException If the conversion
+     *   cannot be carried out in a lossless fashion.
+     */
+    public static Token convert(Token token)
+	    throws IllegalActionException {
+
+	int compare = TypeCPO.compare(new BooleanToken(), token);
+	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+	    throw new IllegalActionException("DoubleToken.convert: " +
+	    	"type of argument: " + token.getClass().getName() +
+	    	"is higher or incomparable with BooleanToken in the type " +
+		"hierarchy.");
+	}
+
+	if (token instanceof BooleanToken) {
+	    return token;
+	}
+
+	// FIXME: token must be user defined. what to do?
+	throw new IllegalActionException("cannot convert from token " +
+		"type: " + token.getClass().getName() + " to a BooleanToken");
+    }
 
     /** Return a new BooleanToken whose value depends on whether
      *  the argument Token has the same truth value as this

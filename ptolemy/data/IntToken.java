@@ -125,19 +125,37 @@ public class IntToken extends ScalarToken {
 	return new Complex((double)_value);
     }
 
-    /** Used to convert Token types further down the type hierarchy to
-     *  the type of this Token. There are no types below IntToken in the
-     *  lossless type hierarchy, so throw an exception if reach here.
-     *  @param tok The token to be converted to a IntToken.
+    /** Convert the specified token into an instance of IntToken.
+     *  This method does lossly conversion.
+     *  If the argument is already an instance of IntToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below IntToken in the type hierarchy, it is converted to
+     *  an instance of IntToken or one of the subclasses of
+     *  IntToken and returned. If non of the above condition is
+     *  met, an exception is thrown.
+     *  @param token The token to be converted to a IntToken.
+     *  @return A IntToken.
      *  @exception IllegalActionException If the conversion
-     *  cannot be carried out in a lossless fashion.
-     *  @return A new Token containing the argument Token converted
-     *   to the type of this Token.
+     *   cannot be carried out in a lossless fashion.
      */
-    public Token convert(Token tok) throws IllegalActionException{
-        String str = "cannot convert from token type: ";
-        str = str + tok.getClass().getName() + " to a ";
-        throw new IllegalActionException(str + "IntToken");
+    public static Token convert(Token token)
+	    throws IllegalActionException {
+
+	int compare = TypeCPO.compare(new IntToken(), token);
+	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+	    throw new IllegalActionException("IntToken.convert: " +
+	    	"type of argument: " + token.getClass().getName() +
+	    	"is higher or incomparable with IntToken in the type " +
+		"hierarchy.");
+	}
+
+	if (token instanceof IntToken) {
+	    return token;
+	}
+
+	// FIXME: token must be user defined. what to do?
+	throw new IllegalActionException("cannot convert from token " +
+		"type: " + token.getClass().getName() + " to a DoubleToken");
     }
 
     /** Return a new Token whose value is the value of this token

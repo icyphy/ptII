@@ -58,6 +58,20 @@ public abstract class ScalarToken extends Token {
     		+ "class does not contain a value.");
     }
 
+    /** Convert the specified token into an instance of ScalarToken.
+     *  Since ScalarToken is not in the type hierarchy, we just throw
+     *  an exception.
+     *  @parameter A Token.
+     *  @return A ScalarToken.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     */
+    public static Token convert(Token token)
+            throws IllegalActionException {
+        throw new IllegalActionException("ScalarToken.convert: method " +
+                "not supported on ScalarToken.");
+    }
+
     /** Return the value of this token as a double.
      *  In this base class, we just throw an exception.
      *  @return A double

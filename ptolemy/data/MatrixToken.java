@@ -60,6 +60,20 @@ public abstract class MatrixToken extends Token {
 	throw new IllegalActionException(str);
     }
 
+    /** Convert the specified token into an instance of MatrixToken.
+     *  Since MatrixToken is not in the type hierarchy, we just throw
+     *  an exception.
+     *  @parameter A Token.
+     *  @return A MatrixToken.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     */
+    public static Token convert(Token token)
+	    throws IllegalActionException {
+	throw new IllegalActionException("MatrixToken.convert: method " +
+		"not supported on MatrixToken.");
+    }
+
     /** Return the content of this token as a 2-D double array.
      *  In this base class, we just throw an exception.
      *  @return A 2-D double array
