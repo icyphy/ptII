@@ -1,6 +1,6 @@
 /* A library of audio operations using the Java Sound API.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1999 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (srao@eecs.berkeley.edu)
 */
 
-package ptolemy.media;
+package ptolemy.media.javasound;
 
 import java.io.InputStream;
 import java.io.FileInputStream;
@@ -51,7 +51,7 @@ import javax.media.sound.sampled.Mixer;
 import javax.media.sound.sampled.AudioUnavailableException;
 
 //////////////////////////////////////////////////////////////////////////
-//// NewAudio FIXME : Need to change the name of this class!!!
+//// Audio
 /** Instances of this class represent streams of audio data 
  *  based on the new Java Sound API. The audio data may be retrieved 
  *  from a file, a URL, a byte array, a double array, or another 
@@ -72,7 +72,7 @@ import javax.media.sound.sampled.AudioUnavailableException;
  */
 
 
-public class NewAudio implements Runnable {
+public class Audio implements Runnable {
     
     /** Create a new instance which is initially empty. This instance
      *  can receive data through the receiveSample method in real time.
@@ -80,7 +80,7 @@ public class NewAudio implements Runnable {
      *  between -1.0 and 1.0 .
      *	@param af The AudioFormat that data samples should have.
      */
-    public NewAudio(AudioFormat af) {
+    public Audio(AudioFormat af) {
         _soundQueue = new AudioQueue(af);
 	_format = _getProperFormat(af, Encoding.PCM_SIGNED_BIG_ENDIAN);
 	_byteBuffer = null;
@@ -99,7 +99,7 @@ public class NewAudio implements Runnable {
      *	 to a usable format, or an I/O error occurs while the data is
      *   being converted. 
      */
-    public NewAudio(double[] buffer, AudioFormat af) throws IOException {
+    public Audio(double[] buffer, AudioFormat af) throws IOException {
         _format = af;
         _doubleBuffer = buffer;
 	_doubleToByte();
@@ -117,7 +117,7 @@ public class NewAudio implements Runnable {
      *   to a usable format, or an I/O error occurs while the data is
      *   being converted.
      */
-    public NewAudio(byte[] buffer, AudioFormat af) throws IOException {
+    public Audio(byte[] buffer, AudioFormat af) throws IOException {
 	this(new ByteArrayInputStream(buffer), af, buffer.length);
     }  
   
@@ -130,7 +130,7 @@ public class NewAudio implements Runnable {
      *   to a usable format, or an I/O error occurs while the data is 
      *   being converted.
      */
-    public NewAudio(InputStream is, AudioFormat af, long length) 
+    public Audio(InputStream is, AudioFormat af, long length) 
             throws IOException {
 	_loadAsStream(new AudioStream(is, af, length));
     }
@@ -141,7 +141,7 @@ public class NewAudio implements Runnable {
      *   to a usable format, or an I/O error occurs while the data is
      *   being converted.
      */
-    public NewAudio(AudioStream as) throws IOException {
+    public Audio(AudioStream as) throws IOException {
 	_loadAsStream(as);
     }
 
@@ -152,7 +152,7 @@ public class NewAudio implements Runnable {
      *  @throws IOException if the file does not exist, can't be parsed 
      *   for audio data, or some I/O error occurs while reading the file.
      */
-    public NewAudio(String pathName) throws IOException {
+    public Audio(String pathName) throws IOException {
 	try {
 	    URL theurl = new URL(pathName);
 	    InputStream urlstream = theurl.openStream();

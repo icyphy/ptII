@@ -1,6 +1,6 @@
 /* A special queue for use with NewAudio.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1999 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (srao@eecs.berkeley.edu)
 */
 
-package ptolemy.media;
+package ptolemy.media.javasound;
 
 import java.io.PushbackInputStream;
 import java.io.InputStream;
