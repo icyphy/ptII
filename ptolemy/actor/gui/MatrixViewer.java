@@ -104,10 +104,10 @@ public class MatrixViewer extends Sink implements Placeable {
 
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
-            if ( input.hasToken(i) ) {
+            if (input.hasToken(i)) {
                 in = input.get(i);
-                _matrixTable = new MatrixAsTable( (MatrixToken) in );
-                table.setModel( _matrixTable );
+                _matrixTable = new MatrixAsTable((MatrixToken) in);
+                table.setModel(_matrixTable);
 
                 // Avoid reordering of the tables
                 table.getTableHeader().setReorderingAllowed(false);
@@ -122,10 +122,10 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if ( table == null ) {
+        if (table == null) {
             place(_container);
         }
-        if ( _frame != null ) {
+        if (_frame != null) {
             _frame.setVisible(true);
         }
     }
@@ -192,7 +192,7 @@ public class MatrixViewer extends Sink implements Placeable {
         /** Construct for a specific matrix.
             @param matrix The matrix.
          */
-        MatrixAsTable( MatrixToken matrix ) {
+        MatrixAsTable(MatrixToken matrix) {
             _matrix = matrix;
         }
 
@@ -217,15 +217,15 @@ public class MatrixViewer extends Sink implements Placeable {
             @return The object store in the matrix at the specified location.
         */
         public Object getValueAt(int row, int column) {
-            return (Object) (_matrix.getElementAsToken( row, column )).
+            return (Object) (_matrix.getElementAsToken(row, column)).
                 toString();
         }
 
         /** Get column names of the Matrix.
             @return the column names.
          */
-        public String getColumnName( int columnIndex ) {
-            return Integer.toString( columnIndex + 1 );
+        public String getColumnName(int columnIndex ) {
+            return Integer.toString(columnIndex + 1);
         }
 
         /** The Matrix for which a Table Model is created. */
