@@ -63,17 +63,21 @@ import ptolemy.moml.MoMLParser;
 //// ApplyFilterOverArray
 
 /**
-   This is an atomic actor that filter an array received at its <i>inputArray</i>
-   input port via applying a model specified by a file or URL. The specified model
-   evaluated on each input array element should return a boolean value and the
-   output is an array that only contains elements satisfying the specified model
-   (the evaluated result is true).
-   <p>
-   Instead of output all the satisfied elements in the input array, the parameter
-   <i>maxOutputLength</i> can be used to specify how many elements this actor
-   should only output. If the specified length is larger than the number of
-   satisfied elements, it will ignore the specified length and only output
-   all the satisfied elements.
+
+   This is an atomic actor that filter an array received at its
+   <i>inputArray</i> input port via applying a model specified by a
+   file or URL. The specified model evaluated on each input array
+   element should return a boolean value and the output is an array
+   that only contains elements satisfying the specified model (the
+   evaluated result is true).
+
+   <p> Instead of output all the satisfied elements in the input
+   array, the parameter <i>maxOutputLength</i> can be used to specify
+   how many elements this actor should only output. If the specified
+   length is larger than the number of satisfied elements, it will
+   ignore the specified length and only output all the satisfied
+   elements.
+
    <p>
    FIXME: what should be the correct behavior if no enough elements to output?
    <p>
@@ -205,11 +209,18 @@ public class ApplyFilterOverArray extends TypedAtomicActor
         }
     }
 
-    /** Override the base class to ensure that private variables are reset to null.
+    /** Clone the actor into the specified workspace. This overrides
+     *  the base class ensure that private variables are reset to
+     *  null.
+     *  @param workspace The workspace for the new object.
      *  @return A new instance of ApplyFilterOverArray.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ApplyFilterOverArray newActor = (ApplyFilterOverArray) super.clone(workspace);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ApplyFilterOverArray newActor =
+            (ApplyFilterOverArray) super.clone(workspace);
         newActor._manager = null;
         newActor._model = null;
         newActor._throwable = null;
@@ -258,11 +269,11 @@ public class ApplyFilterOverArray extends TypedAtomicActor
      *  as many elements as specified by the <i>maxOutputLength</i> parameter.
      *  If there are no enough elements satisfying the filter model, then
      *  only output all the satisfied elements.
-     *  Before running the filter model, this method update the filter model's
-     *  <i>inputArrayElement</i> parameter for each array element. After
-     *  running the filter model, this method looks for the <evaluatedValue</i>
-     *  parameter and keep the input element if the evaluated value is ture,
-     *  otherwise, skip the element.
+     *  Before running the filter model, this method update the filter
+     *  model's <i>inputArrayElement</i> parameter for each array
+     *  element. After running the filter model, this method looks for
+     *  the <i>evaluatedValue</i> parameter and keep the input element
+     *  if the evaluated value is ture, otherwise, skip the element.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
@@ -346,8 +357,11 @@ public class ApplyFilterOverArray extends TypedAtomicActor
         }
     }
 
-    /** Override the base class to perform requested postfire actions.
+    /** Remove this class from the manager's list of execution listeners
      *  @return Whatever the superclass returns (probably true).
+     *  @exception IllegalActionException If removing the execution listener
+     *  throws it, or if thrown by the superclass.
+     *   is not valid.
      */
     public boolean postfire() throws IllegalActionException {
         // Test auto/ApplyFilterOverArray2.xml seems to end up here with
