@@ -244,9 +244,10 @@ public class Entity extends Prototype {
     public void connectionsChanged(Port port) {
     }
 
-    /** Return an iterator over contained objects. In this class,
-     *  this is simply an iterator over attributes and ports.  In derived classes,
-     *  the iterator will also traverse classes, entities, and relations.
+    /** Return an iterator over contained objects. In this class, this
+     *  is simply an iterator over attributes and ports.  In derived
+     *  classes, the iterator will also traverse classes, entities,
+     *  and relations.
      *  @return An iterator over instances of NamedObj contained by this
      *   object.
      */
@@ -416,7 +417,7 @@ public class Entity extends Prototype {
      *  argument is true, then this entity contains no ports with links.
      *  This method is write synchronized on the workspace.
      *  @param isClass True to make this object a class definition.
-     *  @throws IllegalActionException If the argument is true and
+     *  @exception IllegalActionException If the argument is true and
      *   this entity contains ports with links.
      */
     public final void setClassDefinition(boolean isClass)
