@@ -265,6 +265,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             _startTime = ((DoubleToken)startTime.getToken()).doubleValue();
         } else if(attribute == stopTime) {
             _stopTime = ((DoubleToken)stopTime.getToken()).doubleValue();
+            // Make stop time a breakpoint.
+            if (_breakPoints != null) {
+                _breakPoints.insert(new Double(_stopTime));
+            }
         } else if(attribute == initStepSize) {
             double value = ((DoubleToken)initStepSize.getToken()).
                 doubleValue();
