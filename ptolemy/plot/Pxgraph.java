@@ -144,8 +144,20 @@ grid lines (see <code>-tk</code>).
 <b>In the Java version, this argument takes hexadecimal color values 
 (<code>fffff</code>), not color names.</b>
 
+<dt><a name="-bigendian flag"><code>-bigendian</code></a>
+<dt>Data files are in big-endian, or network binary format.
+See the <code>-binary</code> command line argument documentation
+below for details about the format.
+If you are on a little-endian machine, such as a machine
+with an Intel x86 chip, and you would like to read a binary
+format file, created on a big-endian machine, such as a Sun SPARC,
+use the <code>-bigendian</code> flag.
+
 <dt><a name="-binary flag"><code>-binary</code></a>
-<dd>Data files are in binary format.  The <code>-binary</code>
+<dd>Data files are in a binary format.
+The endian-ism of the data depends on which of the two
+subformats below are chosen. 
+The <code>-binary</code>
 argument is the primary difference between <code>xgraph</code>
 and <code>pxgraph</code>.  The 
 <A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A> software
@@ -153,10 +165,13 @@ makes extensive use of <code>-binary</code>.
 <br>There are two binary formats, both of which use 4 byte floats.
 <ol>
 <li>If the first byte of the data file is not a <code>d</code>, then
-we assume that the file contains 4 byte floats with no plot commands.
+we assume that the file contains 4 byte floats in big-endian ordering
+with no plot commands.
 <li>If the first byte of the data file is a <code>d</code>, then 
 we assume that the plot commands are encoded as single characters,
-and the numeric data is a 4 byte float.  
+and the numeric data is a 4 byte float encoded in the
+native endian format of the machine that the java interpreter is
+running on.
  <br>The commands are encoded as follows:
   <dl>
   <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
@@ -176,8 +191,10 @@ followed by eight bytes of data consisting of two floats of four bytes.
 cxh@carson 324% od -c data/integrator1.plt
 0000000   d  \0  \0  \0  \0  \0  \0  \0  \0   d   ? 200  \0  \0   ? 200
 0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
-
 </pre>
+For further information about endian-ism, see the
+<code>-bigendian</code> and <code>-littleendian<code> command
+line argument documentation.
 
 <dt><code>-brb</code> <code><i>&lt;base&gt;</i></code>
 <dd>This specifies the base for a bar graph. By default,
@@ -235,6 +252,15 @@ In the Java version, fonts may be specified as
 <code><i>size</i></code> is an integer font size in points.
 </menu>
 The default is <code>helvetica-PLAIN-12</code>.
+
+<dt><a name="-littleendian"><code>-littleendian</code></a>
+<dt>Data files are in little-endian, or x86 binary format.
+See the <code>-binary</code> command line argument documentation
+above for details about the format.
+If you are on a big-endian machine, such as a Sun Sparc,
+and you would like to read a binary
+format file created on a little-endian machine, such as Intel x86
+machine, then use the <code>-littleendian</code> flag.
 
 <dt><code>-lnx</code> <dd>
 Specifies a logarithmic X axis. Grid labels represent
