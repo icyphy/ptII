@@ -648,51 +648,6 @@ public class CompositeActor extends CompositeEntity
         }
     }
 
-    /** Create Receivers and invoke the
-     *  preinitialize() method of its local director. If this actor is
-     *  not opaque, throw an exception.  This method also resets
-     *  the protected variable _stopRequested
-     *  to false, so if a derived class overrides this method, then it
-     *  should also do that.  This method is
-     *  read-synchronized on the workspace, so the preinitialize()
-     *  method of the director need not be, assuming it is only called
-     *  from here.
-     *
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's preinitialize() method throws it, or if this actor
-     *   is not opaque.
-     */
-    public void preinitialize() throws IllegalActionException {
-        _stopRequested = false;
-        // because function dependency is not persistent,
-        // it gets reset each time the preinitialize method is called.
-        _functionDependency = null;
-        if (_debugging) {
-            _debug("Called preinitialize()");
-        }
-        try {
-            _workspace.getReadAccess();
-            _createReceivers();
-
-            if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Cannot preinitialize a non-opaque actor.");
-            }
-            if (_director == null) {
-                throw new InternalErrorException(
-                        "Actor says it is opaque, but it has no director: "
-                        + getFullName());
-            }
-
-            // Note that this is assured of firing the local director,
-            // not the executive director, because this is opaque.
-            getDirector().preinitialize();
-
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
     /** If this actor is opaque, invoke the postfire() method of its
      *  local director and transfer output data.
      *  Specifically, transfer any data from the output ports of this composite
@@ -753,6 +708,51 @@ public class CompositeActor extends CompositeEntity
                 _debug("Prefire returns (from director) " + result);
             }
             return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Create Receivers and invoke the
+     *  preinitialize() method of its local director. If this actor is
+     *  not opaque, throw an exception.  This method also resets
+     *  the protected variable _stopRequested
+     *  to false, so if a derived class overrides this method, then it
+     *  should also do that.  This method is
+     *  read-synchronized on the workspace, so the preinitialize()
+     *  method of the director need not be, assuming it is only called
+     *  from here.
+     *
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's preinitialize() method throws it, or if this actor
+     *   is not opaque.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _stopRequested = false;
+        // because function dependency is not persistent,
+        // it gets reset each time the preinitialize method is called.
+        _functionDependency = null;
+        if (_debugging) {
+            _debug("Called preinitialize()");
+        }
+        try {
+            _workspace.getReadAccess();
+            _createReceivers();
+
+            if (!isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Cannot preinitialize a non-opaque actor.");
+            }
+            if (_director == null) {
+                throw new InternalErrorException(
+                        "Actor says it is opaque, but it has no director: "
+                        + getFullName());
+            }
+
+            // Note that this is assured of firing the local director,
+            // not the executive director, because this is opaque.
+            getDirector().preinitialize();
+
         } finally {
             _workspace.doneReading();
         }
