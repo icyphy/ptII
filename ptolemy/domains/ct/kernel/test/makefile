@@ -43,11 +43,21 @@ TCL_SRCS = \
 	testDefs.tcl
 
 
-JSRCS =
+JSRCS = \
+	CTDummyDynamicActor.java \
+	CTDummyEventGenerator.java \
+	CTDummyEventInterpreter.java \
+	CTDummyMISOActor.java \
+	CTDummySISOActor.java \
+	CTDummySSControlActor.java \
+	CTDummySink.java \
+	CTDummySouce.java \
+	CTDummyStatefulActor.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-		CTActor.tcl
+		CTActor.tcl \
+		CTScheduler.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
