@@ -129,4 +129,9 @@ OPTIONAL_FILES =
 
 install: jars
 
+updateimages:
+	for file in usingVergil/Output/images/usingVergil[0-9]*.gif; \
+	do \
+		cp $$file `echo $$file | sed 's@usingVergil/Output/images/usingVergil@index-@'g`; \
+	done
 include $(ROOT)/mk/ptno-compile.mk
