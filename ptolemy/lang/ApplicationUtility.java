@@ -45,6 +45,7 @@ public class ApplicationUtility {
 
     /** Ensure the condition evaluates to true if enableAsserts is true.
      *  This method simply calls assert(condition, "no reason specified").
+     *  @param condition The condition to test if it true.
      */
     public static final void assert(boolean condition) {
         if (enableAsserts) {
@@ -55,6 +56,7 @@ public class ApplicationUtility {
     /** Ensure the condition evaluates to true if enableAsserts is true.
      *  If condition is false, call error() with the argument error
      *  message.
+     *  @param condition The condition to test if it true.
      */
     public static final void assert(boolean condition, String errMsg) {
         if (enableAsserts && !condition) {
@@ -65,13 +67,14 @@ public class ApplicationUtility {
     /** Handle an error in the application. If exceptionOnError is true, throw
      *  a RuntimeException. Otherwise, print the error message to standard
      *  error. If exitOnError is true, exit the application.
+     *  @param message The error message.
      */
-    public static final void error(String msg) {
+    public static final void error(String message) {
         errors++;
         if (exceptionOnError) {
-            throw new RuntimeException(msg);
+            throw new RuntimeException(message);
         } else {
-            System.err.println("Error: " + msg);
+            System.err.println("Error: " + message);
 
             if (exitOnError) {
                 System.exit(-1);
@@ -79,32 +82,39 @@ public class ApplicationUtility {
         }
     }
 
-    /** Print a status message to the standard out. */
-    public static final void status(String msg) {
-        System.out.println(msg);
+    /** Print a status message to the standard out.
+     *  @param message The status message.
+     */
+    public static final void status(String message) {
+        System.out.println(message);
     }
 
     /** Print a trace message to standard out if enableTrace is true. Append
      *  the separator string after the message.
+     *  @param message The trace message.
+     *  @param separator The separator.
      */
-    public static final void trace(String msg, String separator) {
+    public static final void trace(String message, String separator) {
         if (enableTrace) {
-            System.out.print(msg + separator);
+            System.out.print(message + separator);
         }
     }
-    /** Print a trace message to standard out if enableTrace is true. */
-    public static final void trace(String msg) {
+    /** Print a trace message to standard out if enableTrace is true.
+     *  @param message The trace message.
+     */
+    public static final void trace(String message) {
         if (enableTrace) {
-            System.out.println("Trace: " + msg);
+            System.out.println("Trace: " + message);
         }
     }
 
     /** Print a warning to standard error if enableWarnings is true. If
      *  errorOnWarning is true, call error() with the argument message.
+     *  @param message The warning message.
      */
-    public static final void warn(String msg) {
+    public static final void warn(String message) {
         if (enableWarnings) {
-            System.err.println("Warning: " + msg);
+            System.err.println("Warning: " + message);
             warnings++;
 
             if (errorOnWarning) {
