@@ -96,6 +96,16 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
            return (TypeNode) ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone();
         }
 
+        if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN) ||
+            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN)) {
+           return (TypeNode) ExtendedJavaTypeIdentifier.TOKEN_TYPE.clone();
+        }
+        
+        if ((kind1 == TypeIdentifier.TYPE_KIND_NULL) &&
+            (kind2 == TypeIdentifier.TYPE_KIND_NULL)) {
+           return NullTypeNode.instance;
+        }
+
         return super.arithPromoteType(type1, type2);        
     }          
 }

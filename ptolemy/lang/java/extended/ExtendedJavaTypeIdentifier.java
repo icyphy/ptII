@@ -83,13 +83,15 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
      *  which may be a special type in Ptolemy. If the type is not a special type, 
      *  return the integer given by super.kindOfClassDecl(classDecl).
      */     
-    public int kindOfClassDecl(ClassDecl classDecl) {    
+    public int kindOfClassDecl(ClassDecl classDecl) {                
         if (classDecl == PtolemyTypeIdentifier.COMPLEX_DECL) {
            return TYPE_KIND_COMPLEX;
         } else if (classDecl == PtolemyTypeIdentifier.FIX_POINT_DECL) {
            return TYPE_KIND_FIX_POINT;
         } else if (classDecl == StaticResolution.STRING_DECL) {
            return TYPE_KIND_STRING;
+        } else if (classDecl == TOKEN_DECL) {
+           return TYPE_KIND_TOKEN;           
         } else {
            return super.kindOfClassDecl(classDecl);        
         }
@@ -101,14 +103,16 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
      = PtolemyTypeIdentifier.TYPE_KIND_COMPLEX;      
     public static final int TYPE_KIND_FIX_POINT = TYPE_KIND_COMPLEX + 1;         
     
-    // String kind
-    
+    // String kind    
     public static final int TYPE_KIND_STRING = TYPE_KIND_FIX_POINT + 1;
+    
+    // Token kind (used for unresolved tokens)
+    public static final int TYPE_KIND_TOKEN = TYPE_KIND_STRING + 1;
     
     // matrix kinds
     
     public static final int TYPE_KIND_BOOLEAN_MATRIX = 
-     TYPE_KIND_STRING + 1;     
+     TYPE_KIND_TOKEN + 1;     
     public static final int TYPE_KIND_INT_MATRIX = 
      TYPE_KIND_BOOLEAN_MATRIX + 1;     
     public static final int TYPE_KIND_LONG_MATRIX =         
@@ -120,6 +124,12 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_FIX_POINT_MATRIX =        
      TYPE_KIND_COMPLEX_MATRIX + 1;         
      
+    // Token type (not currently used)  
+    public static final ClassDecl TOKEN_DECL = 
+     PtolemyTypeIdentifier.TOKEN_DECL;    
+    public static final TypeNameNode TOKEN_TYPE = 
+     PtolemyTypeIdentifier.TOKEN_TYPE;
+          
     // Ptolemy math types
      
     public static final ClassDecl COMPLEX_DECL = 

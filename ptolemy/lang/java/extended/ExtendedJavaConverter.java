@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
-
 package ptolemy.lang.java.extended;
 
 import java.util.LinkedList;
@@ -49,15 +48,37 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
      implements JavaStaticSemanticConstants {
     
     public ExtendedJavaConverter() {
-        super(TM_CHILDREN_FIRST);
+        super(TM_CUSTOM);
         _typeID = new ExtendedJavaTypeIdentifier();
         _typeVisitor = new TypeVisitor(new ExtendedJavaTypePolicy());    
     }
 
-    public Object visitCastNode(CastNode node, LinkedList args) {
-        int returnKind = _typeID.kind(_typeVisitor.type(node));
+    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
+        int kind = _typeID.kind(node);
         
-        return convertExprToKind(node.getExpr(), returnKind);        
+        // convert Token -> Object
+        if (kind == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN) {
+           return (TypeNameNode) StaticResolution.OBJECT_TYPE.clone();
+        }    
+        return node;  
+    }
+   
+    public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
+        return _visitVarInitDeclNode(node);
+    }
+
+    public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
+        return _visitVarInitDeclNode(node);
+    }
+      
+    public Object visitCastNode(CastNode node, LinkedList args) {    
+        int returnKind = _typeID.kind(_typeVisitor.type(node));
+        int exprKind = _typeID.kind(_typeVisitor.type(node.getExpr()));
+        
+        // there should be no reason to change the type casted to
+        
+        return convertExprToKind((ExprNode) node.getExpr().accept(this, args), 
+         exprKind, returnKind);        
     } 
 
     public Object visitMultNode(MultNode node, LinkedList args) {
@@ -66,76 +87,163 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         
         int kind1 = _typeID.kind(_typeVisitor.type(expr1));
         int kind2 = _typeID.kind(_typeVisitor.type(expr2));
-        
+                
+        expr1 = (ExprNode) expr1.accept(this, args);
+        expr2 = (ExprNode) expr2.accept(this, args);
+                
         switch (kind1) {
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+          case TypeIdentifier.TYPE_KIND_BOOLEAN:   
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+            case TypeIdentifier.TYPE_KIND_BOOLEAN:   
             return new CandNode(expr1, expr2);            
           }
           ApplicationUtility.error("boolean * other type not supported");          
           break;
-                    
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:      
-          switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+          
+          case TypeIdentifier.TYPE_KIND_BYTE:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
             return node;
-                        
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
-            node.setExpr1(convertExprToKind(expr1, kind2));
+                     
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
             return node;
             
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
             return new MethodCallNode(
              new ObjectFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "scale"), expr2),
-             TNLManip.cons(convertExprToKind(expr1, 
-              ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE)));
+             TNLManip.cons(convertExprToKind(expr1, kind1,
+              TypeIdentifier.TYPE_KIND_DOUBLE)));
+          } 
+          ApplicationUtility.error("byte * other type not supported");          
+          break;
+
+          case TypeIdentifier.TYPE_KIND_SHORT:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+                        
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            return node;
+                                 
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+              new NameNode(AbsentTreeNode.instance, "scale"), expr2),
+             TNLManip.cons(convertExprToKind(expr1, kind1,
+              TypeIdentifier.TYPE_KIND_DOUBLE)));
+          } 
+          ApplicationUtility.error("short * other type not supported");          
+          break;
+
+                              
+          case TypeIdentifier.TYPE_KIND_INT:      
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+          
+            case TypeIdentifier.TYPE_KIND_INT:
+            return node;
+                        
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+              new NameNode(AbsentTreeNode.instance, "scale"), expr2),
+             TNLManip.cons(convertExprToKind(expr1, kind1, 
+              TypeIdentifier.TYPE_KIND_DOUBLE)));
           } 
           ApplicationUtility.error("int * other type not supported");          
           break;
                               
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+          case TypeIdentifier.TYPE_KIND_LONG:     
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));            
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));            
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+            case TypeIdentifier.TYPE_KIND_LONG:     
             return node;                                                      
           } 
           ApplicationUtility.error("long * other type not supported");          
           break;
                               
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
-          switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));
+          case TypeIdentifier.TYPE_KIND_FLOAT:   
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+          
+            case TypeIdentifier.TYPE_KIND_FLOAT:                        
             return node;
                                     
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+            case TypeIdentifier.TYPE_KIND_DOUBLE:   
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));            
             return node;
             
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "scale"), expr2),
-             TNLManip.cons(convertExprToKind(expr1, 
-              ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE))); 
+             TNLManip.cons(convertExprToKind(expr1, kind1, 
+              TypeIdentifier.TYPE_KIND_DOUBLE))); 
+          } 
+          ApplicationUtility.error("float * other type not supported");          
+          break;
+                                                            
+          case TypeIdentifier.TYPE_KIND_DOUBLE:   
+          switch (kind2) {
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_FLOAT:            
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+                                    
+            case TypeIdentifier.TYPE_KIND_DOUBLE:   
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(new NameNode(
+              AbsentTreeNode.instance, "scale"), expr2),
+             TNLManip.cons(expr1)); 
           } 
           ApplicationUtility.error("double * other type not supported");          
           break;
                                         
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:                        
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                                
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:                        
+            case TypeIdentifier.TYPE_KIND_FLOAT:            
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                                
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "scale"), expr1),
-              TNLManip.cons(convertExprToKind(expr2, 
-               ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE))); 
+              TNLManip.cons(convertExprToKind(expr2, kind2, 
+               TypeIdentifier.TYPE_KIND_DOUBLE))); 
                                     
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
             return new MethodCallNode(
@@ -158,9 +266,6 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           break;
                                                  
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:                 
-          // nothing supported yet
-          break;
-          
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
           case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
           case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
@@ -170,8 +275,8 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             int returnKind = _typeID.kind(_typeVisitor.type(node));
           
             LinkedList methodArgs = new LinkedList();
-            methodArgs.addLast(convertExprToKind(expr1, returnKind));
-            methodArgs.addLast(convertExprToKind(expr2, returnKind));
+            methodArgs.addLast(convertExprToKind(expr1, kind1, returnKind));
+            methodArgs.addLast(convertExprToKind(expr2, kind2, returnKind));
                       
             return new MethodCallNode(
              new TypeFieldAccessNode(
@@ -184,85 +289,173 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         return null;
     }
 
-    public Object visitDivNode(DivNode node, LinkedList args) {
+    public Object visitDivNode(DivNode node, LinkedList args) {    
         ExprNode expr1 = node.getExpr1();
         ExprNode expr2 = node.getExpr2();
         
         int kind1 = _typeID.kind(_typeVisitor.type(expr1));
         int kind2 = _typeID.kind(_typeVisitor.type(expr2));
+                
+        expr1 = (ExprNode) expr1.accept(this, args);
+        expr2 = (ExprNode) expr2.accept(this, args);
         
         switch (kind1) {
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+          case TypeIdentifier.TYPE_KIND_BOOLEAN:   
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+            case TypeIdentifier.TYPE_KIND_BOOLEAN:   
             // what should we do here?
             break;
           }
           ApplicationUtility.error("boolean / other type not supported");          
           break;
-                    
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:      
-          switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+                
+          case TypeIdentifier.TYPE_KIND_BYTE:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            return node;
+                     
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "divide"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2));             
+          } 
+          ApplicationUtility.error("byte / other type not supported");          
+          break;
+
+          case TypeIdentifier.TYPE_KIND_SHORT:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
-            node.setExpr1(convertExprToKind(expr1, kind2));
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            return node;
+                                 
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "divide"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2)); 
+          } 
+          ApplicationUtility.error("short / other type not supported");          
+          break;
+                                    
+          case TypeIdentifier.TYPE_KIND_INT:      
+          switch (kind2) {
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));          
+            return node;
+          
+            case TypeIdentifier.TYPE_KIND_INT:
+            return node;
+                        
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
             return node;
             
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                                                  
             return new MethodCallNode(
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "divide"), 
-               convertExprToKind(expr1, kind2)),
+               convertExprToKind(expr1, kind1, kind2)),
              TNLManip.cons(expr2)); 
           } 
           ApplicationUtility.error("int / other type not supported");          
           break;
                               
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+          case TypeIdentifier.TYPE_KIND_LONG:     
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));            
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));            
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+            case TypeIdentifier.TYPE_KIND_LONG:     
             return node;                                                      
           } 
           ApplicationUtility.error("long / other type not supported");          
           break;
-                              
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+
+          case TypeIdentifier.TYPE_KIND_FLOAT:   
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+          
+            case TypeIdentifier.TYPE_KIND_FLOAT:                        
             return node;
                                     
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+            case TypeIdentifier.TYPE_KIND_DOUBLE:   
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));            
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:              
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "divide"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2));                         
+            
+          } 
+          ApplicationUtility.error("float / other type not supported");          
+          break;
+                              
+          case TypeIdentifier.TYPE_KIND_DOUBLE:   
+          switch (kind2) {
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_FLOAT:                        
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+                                    
+            case TypeIdentifier.TYPE_KIND_DOUBLE:   
             return node;
             
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
             return new MethodCallNode(
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "divide"), 
-               convertExprToKind(expr1, ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX)),
+               convertExprToKind(expr1, kind1, kind2)),
              TNLManip.cons(expr2));                         
           } 
-          ApplicationUtility.error("double * other type not supported");          
+          ApplicationUtility.error("double / other type not supported");          
           break;
                                         
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:                        
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                                
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:              
+            case TypeIdentifier.TYPE_KIND_FLOAT:                                  
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                                
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "scale"), expr1),
               TNLManip.cons(
                new DivNode(new DoubleLitNode("1.0"),
-               convertExprToKind(expr2, 
-                ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE)))); 
+               convertExprToKind(expr2, kind2, 
+                TypeIdentifier.TYPE_KIND_DOUBLE)))); 
                                     
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
             return new MethodCallNode(
@@ -285,9 +478,6 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           break;
                                                  
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:                                     
-          // nothing supported yet
-          break;
-          
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
           case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
           case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
@@ -306,38 +496,77 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         
         int kind1 = _typeID.kind(_typeVisitor.type(expr1));
         int kind2 = _typeID.kind(_typeVisitor.type(expr2));
+                
+        expr1 = (ExprNode) expr1.accept(this, args);
+        expr2 = (ExprNode) expr2.accept(this, args);
         
         switch (kind1) {
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:             
+          case TypeIdentifier.TYPE_KIND_BOOLEAN:             
           ApplicationUtility.error("boolean % other type not supported");          
           break;
-                    
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:      
-          switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+                
+          case TypeIdentifier.TYPE_KIND_BYTE:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            return node;
+                     
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+          } 
+          ApplicationUtility.error("byte % other type not supported");          
+          break;
+
+          case TypeIdentifier.TYPE_KIND_SHORT:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
-            node.setExpr1(convertExprToKind(expr1, kind2));
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            return node;
+                                 
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;            
+          } 
+          ApplicationUtility.error("short % other type not supported");          
+          break;
+                                    
+          case TypeIdentifier.TYPE_KIND_INT:      
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+                    
+            case TypeIdentifier.TYPE_KIND_INT:
+            return node;
+                        
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
             return node;            
           } 
           ApplicationUtility.error("int % other type not supported");          
           break;
                               
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+          case TypeIdentifier.TYPE_KIND_LONG:     
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));            
+            case TypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));            
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+            case TypeIdentifier.TYPE_KIND_LONG:     
             return node;                                                      
           } 
           ApplicationUtility.error("long % x not supported");          
           break;
                               
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+          case TypeIdentifier.TYPE_KIND_DOUBLE:   
           ApplicationUtility.error("double % x not supported");          
           break;          
           
@@ -362,93 +591,180 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         return null;            
     }
     
-    public Object visitPlusNode(PlusNode node, LinkedList args) {            
+    public Object visitPlusNode(PlusNode node, LinkedList args) {                
         ExprNode expr1 = node.getExpr1();
         ExprNode expr2 = node.getExpr2();
         
         int kind1 = _typeID.kind(_typeVisitor.type(expr1));
         int kind2 = _typeID.kind(_typeVisitor.type(expr2));
                 
+        expr1 = (ExprNode) expr1.accept(this, args);
+        expr2 = (ExprNode) expr2.accept(this, args);
+                                
         // support for string concatenation
         // convert expresssions to strings (at most one will actually be changed)       
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_STRING) ||
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_STRING)) {
-           node.setExpr1(convertExprToKind(expr1, 
+           node.setExpr1(convertExprToKind(expr1, kind1, 
             ExtendedJavaTypeIdentifier.TYPE_KIND_STRING));   
-           node.setExpr2(convertExprToKind(expr2, 
+           node.setExpr2(convertExprToKind(expr2, kind2, 
             ExtendedJavaTypeIdentifier.TYPE_KIND_STRING));   
            return node;            
         }
         
         switch (kind1) {
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+          case TypeIdentifier.TYPE_KIND_BOOLEAN:   
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+            case TypeIdentifier.TYPE_KIND_BOOLEAN:   
             // convert to XOR
             return new CandNode(new CorNode(expr1, expr2),
              new NotNode(new CandNode(expr1, expr2)));                        
           }
           ApplicationUtility.error("boolean + other type not supported");          
           break;
-                    
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:      
-          switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+                
+          case TypeIdentifier.TYPE_KIND_BYTE:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            return node;
+                     
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "add"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2));             
+          } 
+          ApplicationUtility.error("byte + other type not supported");          
+          break;
+
+          case TypeIdentifier.TYPE_KIND_SHORT:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
-            node.setExpr1(convertExprToKind(expr1, kind2));
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            return node;
+                                 
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "add"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2)); 
+          } 
+          ApplicationUtility.error("short + other type not supported");          
+          break;
+                                    
+          case TypeIdentifier.TYPE_KIND_INT:      
+          switch (kind2) {
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));          
+            return node;
+          
+            case TypeIdentifier.TYPE_KIND_INT:
+            return node;
+                        
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
             return node;
             
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
                AbsentTreeNode.instance, "add"), expr2),
-              TNLManip.cons(convertExprToKind(expr1, kind2))); 
+              TNLManip.cons(convertExprToKind(expr1, kind1, kind2))); 
           } 
           ApplicationUtility.error("int + other type not supported");          
           break;
                               
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+          case TypeIdentifier.TYPE_KIND_LONG:     
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));            
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            case TypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));            
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+            case TypeIdentifier.TYPE_KIND_LONG:     
             return node;                        
           } 
           ApplicationUtility.error("long + other type not supported");          
           break;
-                              
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+                         
+          case TypeIdentifier.TYPE_KIND_FLOAT:   
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+                    
+            case TypeIdentifier.TYPE_KIND_FLOAT:                        
             return node;
                                     
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+            case TypeIdentifier.TYPE_KIND_DOUBLE:   
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));            
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:              
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "add"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2));                         
+            
+          } 
+          ApplicationUtility.error("float + other type not supported");          
+          break;
+                                                       
+          case TypeIdentifier.TYPE_KIND_DOUBLE:   
+          switch (kind2) {
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            case TypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+                                    
+            case TypeIdentifier.TYPE_KIND_DOUBLE:   
             return node;
             
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "add"), expr2),
-             TNLManip.cons(convertExprToKind(expr1, kind2))); 
+             TNLManip.cons(convertExprToKind(expr1, kind1, kind2))); 
           } 
           ApplicationUtility.error("double + other type not supported");          
           break;
                                         
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:                                    
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                     
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:                                    
+            case TypeIdentifier.TYPE_KIND_FLOAT:                                                
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                     
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                                                                                                 
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "add"), expr1),
-              TNLManip.cons(convertExprToKind(expr2, kind1)));                                                  
+              TNLManip.cons(convertExprToKind(expr2, kind2, kind1)));                                                  
           } 
           ApplicationUtility.error("complex + other type not supported");          
           break;
@@ -465,9 +781,6 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           break;
                                                  
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:                 
-          // nothing supported yet
-          break;
-          
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
           case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
           case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
@@ -477,8 +790,8 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             int returnKind = _typeID.kind(_typeVisitor.type(node));
           
             LinkedList methodArgs = new LinkedList();
-            methodArgs.addLast(convertExprToKind(expr1, returnKind));
-            methodArgs.addLast(convertExprToKind(expr2, returnKind));
+            methodArgs.addLast(convertExprToKind(expr1, kind1, returnKind));
+            methodArgs.addLast(convertExprToKind(expr2, kind2, returnKind));
                       
             return new MethodCallNode(
              new TypeFieldAccessNode(
@@ -492,70 +805,155 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
     }
 
 
-    public Object visitMinusNode(MinusNode node, LinkedList args) {
+    public Object visitMinusNode(MinusNode node, LinkedList args) {        
         ExprNode expr1 = node.getExpr1();
         ExprNode expr2 = node.getExpr2();
         
         int kind1 = _typeID.kind(_typeVisitor.type(expr1));
         int kind2 = _typeID.kind(_typeVisitor.type(expr2));
-                        
+                
+        expr1 = (ExprNode) expr1.accept(this, args);
+        expr2 = (ExprNode) expr2.accept(this, args);
+                                
         switch (kind1) {
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+          case TypeIdentifier.TYPE_KIND_BOOLEAN:   
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+            case TypeIdentifier.TYPE_KIND_BOOLEAN:   
             // convert to XOR
             return new CandNode(new CorNode(expr1, expr2),
              new NotNode(new CandNode(expr1, expr2)));                        
           }
           ApplicationUtility.error("boolean - other type not supported");          
           break;
-                    
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:      
-          switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+                
+          case TypeIdentifier.TYPE_KIND_BYTE:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            return node;
+                     
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "subtract"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2));             
+          } 
+          ApplicationUtility.error("byte - other type not supported");          
+          break;
+
+          case TypeIdentifier.TYPE_KIND_SHORT:
+          switch (kind2) {          
+            case TypeIdentifier.TYPE_KIND_BYTE: 
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
-            node.setExpr1(convertExprToKind(expr1, kind2));
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            return node;
+                                 
+            case TypeIdentifier.TYPE_KIND_INT:
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "subtract"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2)); 
+          } 
+          ApplicationUtility.error("short - other type not supported");          
+          break;
+                
+                    
+          case TypeIdentifier.TYPE_KIND_INT:      
+          switch (kind2) {
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+                    
+            case TypeIdentifier.TYPE_KIND_INT:
+            return node;
+                        
+            case TypeIdentifier.TYPE_KIND_LONG:
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));
             return node;
             
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
             return new MethodCallNode(
               new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "subtract"), 
-               convertExprToKind(expr1, kind2)),
+               convertExprToKind(expr1, kind1, kind2)),
               TNLManip.cons(expr2)); 
           } 
           ApplicationUtility.error("int - other type not supported");          
           break;
                               
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+          case TypeIdentifier.TYPE_KIND_LONG:     
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));            
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            case TypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));            
             return node;
                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+            case TypeIdentifier.TYPE_KIND_LONG:     
             return node;                        
           } 
           ApplicationUtility.error("long - other type not supported");          
           break;
-                              
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+
+          case TypeIdentifier.TYPE_KIND_FLOAT:   
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-            node.setExpr2(convertExprToKind(expr2, kind1));
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));          
+            return node;
+          
+            case TypeIdentifier.TYPE_KIND_FLOAT:                        
             return node;
                                     
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+            case TypeIdentifier.TYPE_KIND_DOUBLE:   
+            node.setExpr1(convertExprToKind(expr1, kind1, kind2));            
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:              
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "subtract"), 
+               convertExprToKind(expr1, kind1, kind2)),
+             TNLManip.cons(expr2));                         
+            
+          } 
+          ApplicationUtility.error("float - other type not supported");          
+          break;
+                              
+          case TypeIdentifier.TYPE_KIND_DOUBLE:   
+          switch (kind2) {
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind2, kind1));
+            return node;
+                                    
+            case TypeIdentifier.TYPE_KIND_DOUBLE:   
             return node;
             
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
             return new MethodCallNode(
               new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "subtract"), 
-               convertExprToKind(expr1, kind2)),
+               convertExprToKind(expr1, kind1, kind2)),
               TNLManip.cons(expr2)); 
           } 
           ApplicationUtility.error("double - other type not supported");          
@@ -563,13 +961,16 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                                         
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
           switch (kind2) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:                                    
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                     
+            case TypeIdentifier.TYPE_KIND_BYTE:          
+            case TypeIdentifier.TYPE_KIND_SHORT:          
+            case TypeIdentifier.TYPE_KIND_INT:                        
+            case TypeIdentifier.TYPE_KIND_FLOAT:                                             
+            case TypeIdentifier.TYPE_KIND_DOUBLE:                     
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                                                                                                 
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "subtract"), expr1),
-              TNLManip.cons(convertExprToKind(expr2, kind1)));                                                  
+              TNLManip.cons(convertExprToKind(expr2, kind2, kind1)));                                                  
           } 
           ApplicationUtility.error("complex - other type not supported");          
           break;
@@ -586,9 +987,6 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           break;
                                                  
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:                 
-          // nothing supported yet
-          break;
-          
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
           case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
           case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
@@ -598,8 +996,8 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             int returnKind = _typeID.kind(_typeVisitor.type(node));
           
             LinkedList methodArgs = new LinkedList();
-            methodArgs.addLast(convertExprToKind(expr1, returnKind));
-            methodArgs.addLast(convertExprToKind(expr2, returnKind));
+            methodArgs.addLast(convertExprToKind(expr1, kind1, returnKind));
+            methodArgs.addLast(convertExprToKind(expr2, kind2, returnKind));
                       
             return new MethodCallNode(
              new TypeFieldAccessNode(
@@ -612,11 +1010,34 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         return null; 
     }
 
-    public Object visitAssignNode(AssignNode node, LinkedList args) {
+    public Object visitAssignNode(AssignNode node, LinkedList args) {                            
         int returnKind = _typeID.kind(_typeVisitor.type(node));
+        int exprKind = _typeID.kind(_typeVisitor.type(node.getExpr2()));
+                
+        node.setExpr2(convertExprToKind(
+         (ExprNode) node.getExpr2().accept(this, args), 
+         exprKind, returnKind));        
         
-        node.setExpr2(convertExprToKind(node.getExpr2(), returnKind));                
-        return node;
+        return node;        
+    }
+
+    protected VarInitDeclNode _visitVarInitDeclNode(VarInitDeclNode node) {
+        TypeNode defType = node.getDefType();
+        
+        node.setDefType((TypeNode) defType.accept(this, null));
+        
+        TreeNode initTreeNode = node.getInitExpr();
+        
+        if (initTreeNode != AbsentTreeNode.instance) {                
+           int defKind = _typeID.kind(defType);
+           int exprKind = _typeID.kind(_typeVisitor.type((ExprNode) initTreeNode));
+           
+           node.setInitExpr(convertExprToKind(
+            (ExprNode) initTreeNode.accept(this, null), 
+            exprKind, defKind));        
+        } 
+        
+        return node;            
     }
 
     /** Return the TypeNameNode corresponding to the class containing matrix math 
@@ -658,16 +1079,54 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
          new NameNode(AbsentTreeNode.instance, className));
     }
 
-    public ExprNode convertExprToKind(ExprNode expr, int targetKind) {
-        int exprKind = _typeID.kind(_typeVisitor.type(expr));
+    public ExprNode convertExprToKind(ExprNode expr, int exprKind, int targetKind) {                
+        // if the target is Token, return a null pointer
+        if (targetKind == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN) {
+           return new NullPntrNode();
+        }
         
         // if they are the same kind, do no conversion
-        if (exprKind == targetKind) return expr;
+        if (exprKind == targetKind) return expr;        
         
         switch (exprKind) {
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_CLASS:
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_INTERFACE:
-          if (targetKind == ExtendedJavaTypeIdentifier.TYPE_KIND_STRING) {
+          
+          // dummy values 
+          case TypeIdentifier.TYPE_KIND_NULL:
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN:                    
+          switch (targetKind) {
+            case TypeIdentifier.TYPE_KIND_BOOLEAN:   
+            return new BoolLitNode("false");
+
+            case TypeIdentifier.TYPE_KIND_BYTE:
+            return new CastNode(ByteTypeNode.instance, new IntLitNode("0"));            
+
+            case TypeIdentifier.TYPE_KIND_CHAR:      
+            return new CharLitNode("\\0");
+
+            case TypeIdentifier.TYPE_KIND_SHORT:      
+            return new CastNode(ShortTypeNode.instance, new IntLitNode("0"));
+            
+            case TypeIdentifier.TYPE_KIND_INT:      
+            return new IntLitNode("0");
+            
+            case TypeIdentifier.TYPE_KIND_LONG:      
+            return new LongLitNode("0L");
+
+            case TypeIdentifier.TYPE_KIND_FLOAT:      
+            return new FloatLitNode("0.0f");
+
+            case TypeIdentifier.TYPE_KIND_DOUBLE:      
+            return new DoubleLitNode("0.0");                         
+          }
+          return new NullPntrNode();
+                  
+          case TypeIdentifier.TYPE_KIND_CLASS:          
+          case TypeIdentifier.TYPE_KIND_INTERFACE:                    
+          switch (targetKind) {                             
+            // note: arrays have kind TYPE_KIND_CLASS. Attempts to convert
+            // byte, short, float 2D arrays should be handled here
+               
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:                         
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
@@ -675,7 +1134,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           }
           break;
         
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+          case TypeIdentifier.TYPE_KIND_BOOLEAN:   
           switch (targetKind) {            
             case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:               
             return new MethodCallNode(new TypeFieldAccessNode(
@@ -684,13 +1143,25 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.cons(expr));            
           }
           break;
-          
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:      
+
+          case TypeIdentifier.TYPE_KIND_BYTE:
           switch (targetKind) {            
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:            
+            case TypeIdentifier.TYPE_KIND_CHAR:   
+            return new CastNode(CharTypeNode.instance, expr);                    
+          
+            case TypeIdentifier.TYPE_KIND_SHORT:   
+            return new CastNode(ShortTypeNode.instance, expr);          
+          
+            case TypeIdentifier.TYPE_KIND_INT:   
+            return new CastNode(IntTypeNode.instance, expr);
+          
+            case TypeIdentifier.TYPE_KIND_LONG:   
             return new CastNode(LongTypeNode.instance, expr);
-                                                
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+                     
+            case TypeIdentifier.TYPE_KIND_FLOAT:   
+            return new CastNode(FloatTypeNode.instance, expr);
+
+            case TypeIdentifier.TYPE_KIND_DOUBLE:               
             return new CastNode(DoubleTypeNode.instance, expr);
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:               
@@ -704,34 +1175,78 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
               TNLManip.cons(new CastNode(DoubleTypeNode.instance, expr)), 
                AbsentTreeNode.instance);                      
-                         
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:                                      
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:
-            // these are the cases in which dummy values of 0 and 1 are used
-            // when resolving Token.zero(), Token.one(), and Token.oneRight()
-            // they are replaced by a null pointer here
-            System.out.println("found int -> matrix conversion");
-            if (expr.classID() == INTLITNODE_ID) {
-               System.out.println("found literal node in int -> matrix conversion");
-                        
-               IntLitNode intLitExpr = (IntLitNode) expr;
-               
-               String literal = intLitExpr.getLiteral();
-               
-               System.out.println("literal = " + literal);
-               
-               if (literal.equals("0") || literal.equals("1")) {
-                  return new NullPntrNode();               
-               }
-            }
-            break;                    
           }
           break;
 
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:      
+          case TypeIdentifier.TYPE_KIND_SHORT:
+          switch (targetKind) {            
+            case TypeIdentifier.TYPE_KIND_INT:   
+            return new CastNode(IntTypeNode.instance, expr);
+          
+            case TypeIdentifier.TYPE_KIND_LONG:   
+            return new CastNode(LongTypeNode.instance, expr);
+                     
+            case TypeIdentifier.TYPE_KIND_FLOAT:   
+            return new CastNode(FloatTypeNode.instance, expr);
+
+            case TypeIdentifier.TYPE_KIND_DOUBLE:               
+            return new CastNode(DoubleTypeNode.instance, expr);
+
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:               
+            return new MethodCallNode(new TypeFieldAccessNode(
+              new NameNode(AbsentTreeNode.instance, "valueOf"),
+              new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
+             TNLManip.cons(expr));            
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:            
+            return new AllocateNode((TypeNameNode)
+              ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
+              TNLManip.cons(new CastNode(DoubleTypeNode.instance, expr)), 
+               AbsentTreeNode.instance);                      
+          }
+          break;
+                    
+          case TypeIdentifier.TYPE_KIND_INT:      
+          switch (targetKind) {            
+            case TypeIdentifier.TYPE_KIND_LONG:   
+            return new CastNode(LongTypeNode.instance, expr);
+                     
+            case TypeIdentifier.TYPE_KIND_DOUBLE:               
+            return new CastNode(DoubleTypeNode.instance, expr);
+
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:               
+            return new MethodCallNode(new TypeFieldAccessNode(
+              new NameNode(AbsentTreeNode.instance, "valueOf"),
+              new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
+             TNLManip.cons(expr));            
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:            
+            return new AllocateNode((TypeNameNode)
+              ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
+              TNLManip.cons(new CastNode(DoubleTypeNode.instance, expr)), 
+               AbsentTreeNode.instance);                                               
+          }
+          break;
+
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_FLOAT:      
+          switch (targetKind) {
+            case TypeIdentifier.TYPE_KIND_DOUBLE:
+            return new CastNode(DoubleTypeNode.instance, expr);
+          
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:               
+            return new MethodCallNode(new TypeFieldAccessNode(
+              new NameNode(AbsentTreeNode.instance, "valueOf"),
+              new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
+             TNLManip.cons(expr));            
+                        
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:            
+            return new AllocateNode((TypeNameNode)
+              ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
+              TNLManip.cons(expr), AbsentTreeNode.instance);                              
+          }
+          break;
+
+          case TypeIdentifier.TYPE_KIND_DOUBLE:      
           switch (targetKind) {
             case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:               
             return new MethodCallNode(new TypeFieldAccessNode(
@@ -746,7 +1261,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           }
           break;
           
-          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:            
+          case TypeIdentifier.TYPE_KIND_LONG:            
           switch (targetKind) {                        
             case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:               
             return new MethodCallNode(new TypeFieldAccessNode(
@@ -754,6 +1269,29 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
              TNLManip.cons(expr));            
             
+          }
+          break;
+
+
+          case TypeIdentifier.TYPE_KIND_ARRAYINIT:          
+          switch (targetKind) {                        
+             // actually this should make sure that the target type is an array            
+            case TypeIdentifier.TYPE_KIND_CLASS:  
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:                 
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:                                      
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:                       
+            return expr;                                
+          }          
+          break;          
+          
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:                      
+          switch (targetKind) {
+            // actually this should make sure that the target type is Object
+            case TypeIdentifier.TYPE_KIND_CLASS:               
+            return expr;                                
           }
           break;
                               
@@ -770,7 +1308,8 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:                 
-          switch (targetKind) {            
+          switch (targetKind) {
+                      
             case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:               
             // not supported yet
             break;            
@@ -862,11 +1401,10 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           }
           break;                    
         }
-        ApplicationUtility.error("cannot convert kind " + exprKind + 
-         " to kind " + targetKind);                  
+        ApplicationUtility.error("cannot convert " + expr + " (kind " + 
+         exprKind + ") to kind " + targetKind);                  
         return null; 
     }
-
 
     protected TypeIdentifier _typeID;
     protected TypeVisitor _typeVisitor;

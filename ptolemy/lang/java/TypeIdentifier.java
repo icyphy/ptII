@@ -74,26 +74,29 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
     
        switch (type.classID()) {       
          // null type
-         case NULLTYPENODE_ID:     return TYPE_KIND_NULL;              
+         case NULLTYPENODE_ID:      return TYPE_KIND_NULL;              
 
           // primitive types          
-         case BOOLTYPENODE_ID:    return TYPE_KIND_BOOLEAN;          
-         case CHARTYPENODE_ID:    return TYPE_KIND_CHAR; 
-         case BYTETYPENODE_ID:    return TYPE_KIND_BYTE; 
-         case SHORTTYPENODE_ID:   return TYPE_KIND_SHORT; 
-         case INTTYPENODE_ID:     return TYPE_KIND_INT; 
-         case LONGTYPENODE_ID:    return TYPE_KIND_LONG; 
-         case FLOATTYPENODE_ID:   return TYPE_KIND_FLOAT; 
-         case DOUBLETYPENODE_ID:  return TYPE_KIND_DOUBLE;                  
+         case BOOLTYPENODE_ID:      return TYPE_KIND_BOOLEAN;          
+         case CHARTYPENODE_ID:      return TYPE_KIND_CHAR; 
+         case BYTETYPENODE_ID:      return TYPE_KIND_BYTE; 
+         case SHORTTYPENODE_ID:     return TYPE_KIND_SHORT; 
+         case INTTYPENODE_ID:       return TYPE_KIND_INT; 
+         case LONGTYPENODE_ID:      return TYPE_KIND_LONG; 
+         case FLOATTYPENODE_ID:     return TYPE_KIND_FLOAT; 
+         case DOUBLETYPENODE_ID:    return TYPE_KIND_DOUBLE;                  
                        
          // class or interface
-         case TYPENAMENODE_ID:    return kindOfTypeNameNode((TypeNameNode) type);
+         case TYPENAMENODE_ID:      return kindOfTypeNameNode((TypeNameNode) type);
          
+         // array initializer (not used in the static semantic analysis)
+         case ARRAYINITTYPENODE_ID: return TYPE_KIND_ARRAYINIT; 
+                  
          // array types (derive from Object)
-         case ARRAYTYPENODE_ID:   return TYPE_KIND_CLASS;
+         case ARRAYTYPENODE_ID:     return TYPE_KIND_CLASS;
 
          // void type          
-         case VOIDTYPENODE_ID:    return TYPE_KIND_VOID;
+         case VOIDTYPENODE_ID:      return TYPE_KIND_VOID;                  
        }
 
        ApplicationUtility.error("unknown type encountered : " + type);
@@ -135,7 +138,7 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
     
     // primitive types
           
-    public static final int TYPE_KIND_BOOLEAN    = 0; // first primitive type should start at 0       
+    public static final int TYPE_KIND_BOOLEAN = 0; // first primitive type should start at 0       
     public static final int TYPE_KIND_BYTE    = 1;        
     public static final int TYPE_KIND_SHORT   = 2;        
     public static final int TYPE_KIND_CHAR    = 3;            
