@@ -490,19 +490,19 @@ public class SoundPlayback {
             Byte j = (Byte)_toFileBuffer.get(i);
             audioBytes[i] = j.byteValue();
         }
-        ByteArrayInputStream byteInputArrayStream =
-            new ByteArrayInputStream(audioBytes);
 
-        AudioInputStream audioInputStream =
-            new AudioInputStream(byteInputArrayStream,
-                    _playToFileFormat,
-                    audioBytes.length /  _frameSizeInBytes);
-
-        File outFile = new File(_fileName);
-
-
-
+        ByteArrayInputStream byteInputArrayStream = null;
+        AudioInputStream audioInputStream = null;
         try {
+            byteInputArrayStream = new ByteArrayInputStream(audioBytes);
+
+            audioInputStream =
+                new AudioInputStream(byteInputArrayStream,
+                        _playToFileFormat,
+                        audioBytes.length /  _frameSizeInBytes);
+
+            File outFile = new File(_fileName);
+
             StringTokenizer st = new StringTokenizer(_fileName, ".");
             // Do error checking:
             if (st.countTokens() != 2) {
@@ -542,6 +542,25 @@ public class SoundPlayback {
         } catch (IOException e) {
             throw new IOException("SoundPlayback: error saving" +
                     " file: " + e);
+        } finally {
+            if (byteInputArrayStream != null) {
+                try {
+                    byteInputArrayStream.close();
+                } catch (Throwable throwable) {
+                    System.out.println("Ignoring failure to close stream "
+                            + "on " +audioBytes.length + " bytes of data.");
+                    throwable.printStackTrace();
+                }
+            }
+            if (audioInputStream != null) {
+                try {
+                    audioInputStream.close();
+                } catch (Throwable throwable) {
+                    System.out.println("Ignoring failure to close stream "
+                            + "on " +audioBytes.length + " bytes of data.");
+                    throwable.printStackTrace();
+                }
+            }
         }
     }
 
