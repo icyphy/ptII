@@ -903,11 +903,11 @@ public class CompositeEntity extends ComponentEntity {
      *  @param name The name for the clone.
      *  @return A new instance that is a clone of this prototype
      *   with adjusted deferral relationships.
-     *  @throws CloneNotSupportedException If this prototype
+     *  @exception CloneNotSupportedException If this prototype
      *   cannot be cloned.
-     *  @throws IllegalActionException If this object is not a class definition
+     *  @exception IllegalActionException If this object is not a class definition
      *   or the proposed container is not acceptable.
-     *  @throws NameDuplicationException If the name collides with
+     *  @exception NameDuplicationException If the name collides with
      *   an object already in the container.
      */
     public Instantiable instantiate(NamedObj container, String name)
@@ -1463,7 +1463,7 @@ public class CompositeEntity extends ComponentEntity {
      *  ordinary entities.
      *  @param prototype The object that was cloned.
      *  @param clone The clone.
-     *  @throws IllegalActionException If the clone does not contain
+     *  @exception IllegalActionException If the clone does not contain
      *   a corresponding object to defer to.
      */
     protected void _adjustDeferrals(

@@ -1843,7 +1843,7 @@ public class NamedObj implements
      *  @param relativeName The name relative to the container.
      *  @param container The container expected to contain the object.
      *  @return null.
-     *  @throws InternalErrorException If the object does not exist
+     *  @exception InternalErrorException If the object does not exist
      *   or has the wrong class. Not thrown in this base class.
      */
     protected NamedObj _getHeritageObject(String relativeName, NamedObj container)

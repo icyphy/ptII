@@ -108,11 +108,11 @@ public interface Instantiable extends Heritable {
      *  @param name The name for the clone.
      *  @return A new instance of the same class that implements
      *   this Instantiable interface.
-     *  @throws CloneNotSupportedException If this prototype
+     *  @exception CloneNotSupportedException If this prototype
      *   cannot be cloned.
-     *  @throws IllegalActionException If this object is not a class definition
+     *  @exception IllegalActionException If this object is not a class definition
      *   or the proposed container is not acceptable.
-     *  @throws NameDuplicationException If the name collides with
+     *  @exception NameDuplicationException If the name collides with
      *   an object already in the container.
      *  @see #isClassDefinition()
      */

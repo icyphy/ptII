@@ -594,7 +594,7 @@ public class Port extends NamedObj {
      *  @param container The container expected to contain the object, which
      *   must be an instance of Entity.
      *  @return An object of the same class as this object.
-     *  @throws InternalErrorException If the object does not exist
+     *  @exception InternalErrorException If the object does not exist
      *   or has the wrong class, or if the specified container is not
      *   an instance of Entity.
      */
