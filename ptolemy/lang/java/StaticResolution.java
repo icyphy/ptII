@@ -228,9 +228,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         "', using most specific one.");
 
             } else {
-                throw new RuntimeException("ambiguous reference to '" +
-                        name.getIdent() +
-                        "' in scope " + scope);
+                throw new RuntimeException("ambiguous reference to '"
+                        + name.getIdent()
+                        + "' in scope " + scope
+                        + "\nNote: You might see this problem if you have "
+                        + "two directories in your classpath that have the "
+                        + "same name as a package.  For example, if $PTII/cg "
+                        + "and ./cg both exist, then you might get this "
+                        + "message.  This is a bug in the codegen.");
             }
         }
 
