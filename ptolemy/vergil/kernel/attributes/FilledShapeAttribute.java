@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
 
 //////////////////////////////////////////////////////////////////////////
@@ -168,7 +169,26 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
             super.attributeChanged(attribute);
         }
     }
-
+    
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        FilledShapeAttribute newObject
+                = (FilledShapeAttribute)super.clone(workspace);
+        newObject._centeredValue = false;
+        newObject._heightValue = 0.0;
+        newObject._inAttributeChanged = false;
+        newObject._widthValue = 0.0;
+        return newObject;
+    }
+ 
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
     
@@ -187,11 +207,11 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
     protected boolean _centeredValue = false;
     
     /** Most recently set value of the height parameter. */
-    protected double _heightValue;
+    protected double _heightValue = 0.0;
 
     /** Variable used to prevent re-entry into attributeChanged(). */
-    protected boolean _inAttributeChanged = false;
+    protected transient boolean _inAttributeChanged = false;
 
     /** Most recently set value of the width parameter. */
-    protected double _widthValue;
+    protected double _widthValue = 0.0;
 }
