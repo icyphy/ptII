@@ -597,8 +597,6 @@ public class ComplexMatrixMath {
      *
      *  @param destMatrix A matrix of complex numbers, used as the destination.
      *  @param srcMatrix A matrix of complex numbers, used as the source.
-     *  @return A new matrix of complex numbers equal to the first matrix
-     *  but with the values of <i>destMatrix</i>.
      */
     public static final void matrixCopy(final Complex[][] srcMatrix,
             final Complex[][] destMatrix) {
@@ -620,9 +618,6 @@ public class ComplexMatrixMath {
      *         dest.
      *  @param rowSpan An int specifying how many rows to copy.
      *  @param colSpan An int specifying how many columns to copy.
-     *  @return A new matrix of complex numbers equal to the first matrix
-     *  but with the values of the second matrix starting from the specified
-     *  row and column.
      */
     public static final void matrixCopy(final Complex[][] srcMatrix,
             final int srcRowStart, final int srcColStart,
@@ -1164,11 +1159,7 @@ public class ComplexMatrixMath {
                             + "third argument be non-negative.");
                 }
 
-                double realDifference = matrix1[i][j].real - matrix2[i][j].real;
-                double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
-
-                if (realDifference*realDifference + imagDifference*imagDifference
-                        > maxError[i][j]*maxError[i][j]) {
+                if (!matrix1[i][j].isCloseTo(matrix2[i][j], maxError[i][j])) {
                     return false;
                 }
             }
