@@ -93,7 +93,7 @@ public class BarGraph extends Plotter implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port, which has type DoubleToken. */
+    /** Input port, which receives an array of doubles. */
     public TypedIOPort input;
 
     /** The number of iterations between updates of the display
