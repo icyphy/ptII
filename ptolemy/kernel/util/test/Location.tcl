@@ -72,9 +72,12 @@ test Location-2.1 {addValueListener} {
     $s2_1 setLocation $locations
 
     # Set locations with different locations to cover a basic block.
+    # Note that when we later call getExpression(), the value that is 
+    # returned is not parseable by setExpression() in other classes
+    # because it does not have a leading { and a closing }.
     $s2_1 setExpression "3.0, 4.0"
 
-    # For Locations, calling validate notifies the listeners
+    # For Locations, calling validate notifies the listeners.
     $s2_1 validate
 
     # Call setExpression with the same expression and call validate()
@@ -92,8 +95,8 @@ test Location-2.1 {addValueListener} {
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
     list $output
-} {{(ptolemy.kernel.util.Location, Location = (1.0, 2.0)) changed, new expression: 1.0, 2.0
-(ptolemy.kernel.util.Location, Location = (3.0, 4.0)) changed, new expression: 3.0, 4.0
+} {{(ptolemy.kernel.util.Location, Location = {1.0, 2.0}) changed, new expression: {1.0, 2.0}
+(ptolemy.kernel.util.Location, Location = 3.0, 4.0) changed, new expression: 3.0, 4.0
 }}
 
 
@@ -115,7 +118,7 @@ test Location-4.1 {clone with an empty location} {
     set s1 [java::new ptolemy.kernel.util.Location $n "my Location"]
     set s2 [$s1 clone]
     $s2 toString
-} {(ptolemy.kernel.util.Location, Location = (0.0, 0.0))}
+} {(ptolemy.kernel.util.Location, Location = {0.0, 0.0})}
 
 test Location-4.2 {clone with a non-empty location} {
     set n [java::new ptolemy.kernel.util.NamedObj "my NamedObj"]
@@ -125,4 +128,16 @@ test Location-4.2 {clone with a non-empty location} {
 
     set s2 [$s1 clone]
     $s2 toString
-} {(ptolemy.kernel.util.Location, Location = (1.0, 2.0))}
+} {(ptolemy.kernel.util.Location, Location = {1.0, 2.0})}
+
+test Location-5.1 {three dimensional location} {
+    set n [java::new ptolemy.kernel.util.NamedObj "my NamedObj"]
+    set s1 [java::new ptolemy.kernel.util.Location $n "my Location"]
+    set locations [java::new {double[]} {3} [list -1.0 2.0 3.0]]
+    # The Z axis is Infinity
+    $locations set 2 [java::field java.lang.Double POSITIVE_INFINITY]
+    $s1 setLocation $locations
+
+    set s2 [$s1 clone]
+    $s2 toString
+} {(ptolemy.kernel.util.Location, Location = {-1.0, 2.0, Infinity})}
