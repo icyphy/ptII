@@ -32,7 +32,7 @@ package ptolemy.copernicus.applet;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.copernicus.kernel.GenerateCode;
+import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringUtilities;
 
@@ -235,14 +235,14 @@ public class AppletWriter extends SceneTransformer {
                     "templateDirectory"),
                     "$PTII", _ptIIDirectory);
 	try {
-	    GenerateCode.substitute(_templateDirectory + "makefile.in",
+	    Copernicus.substitute(_templateDirectory + "makefile.in",
 				    _substituteMap,
 				    _modelDirectory + "makefile");
-	    GenerateCode.substitute(_templateDirectory + "model.htm.in",
+	    Copernicus.substitute(_templateDirectory + "model.htm.in",
 				    _substituteMap,
 				    _modelDirectory + _sanitizedModelName
 				    + ".htm");
-	    GenerateCode.substitute(_templateDirectory + "modelVergil.htm.in",
+	    Copernicus.substitute(_templateDirectory + "modelVergil.htm.in",
 				    _substituteMap,
 				    _modelDirectory + _sanitizedModelName
 				    + "Vergil.htm");
