@@ -77,7 +77,8 @@
         <!-- Make the relations based on I/O ports block diagram of network of Hybrid Automata-->
         <xsl:for-each select="HybridAutomaton">
             <xsl:variable name="prefix"><xsl:value-of select="@name"/></xsl:variable>
-            <xsl:for-each select="IntegerVariable[@kind='Input']|RealVariable[@kind='Input']|BooleanVariable[@kind='Input']">
+            <!--xsl:for-each select="IntegerVariable[@kind='Input']|RealVariable[@kind='Input']|BooleanVariable[@kind='Input']"-->
+            <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
                 <xsl:element name="relation">
                     <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                     <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
@@ -305,7 +306,7 @@
         <xsl:element name="property">
             <xsl:attribute name="name">guardExpression</xsl:attribute>
             <xsl:attribute name="class">ptolemy.kernel.util.StringAttribute</xsl:attribute>
-            <xsl:attribute name="value"><xsl:call-template name="Expr"/></xsl:attribute>
+            <xsl:attribute name="value"><xsl:apply-templates select="Expr" mode="expr"/></xsl:attribute>
         </xsl:element>
         <!-- attributes of Output Action -->
         <xsl:element name="property">
@@ -390,9 +391,7 @@
         </xsl:for-each>
 
         <!-- Invariants -->
-        <xsl:for-each select="Expr">
-            <xsl:call-template name="invariant"/>
-        </xsl:for-each>
+        <xsl:apply-templates select="Expr" mode="invariant"/>
 
         <!-- Differential Equations -->
         <xsl:for-each select="DiffEquation">
@@ -610,24 +609,71 @@
 
 <!-- ========================================================== -->
 <!-- Expressions, Invariants, DiffEquations, UpdateActions -->
-<!-- FIXME: order is not correct -->
 <!-- ========================================================== -->
 <!-- Expression -->
-<xsl:template name="Expr">
-    <xsl:for-each select="descendant::Par|descendant::Var|descendant::Const|descendant::LOp|descendant::ROp|descendant::AOp|descendant::MOp">
-    <xsl:sort select="@ix" order="ascending"/>
-        <xsl:for-each select="@unOp|@value|@logicOp|@relOp|@addOp|@mulOp|@name">
+
+<xsl:template match="Expr" mode="expr">
+    <xsl:for-each select="LExpr">
+        <xsl:variable name="index" select="position()"/>
+        <xsl:apply-templates select="."/>
+        <xsl:text> </xsl:text>
+        <xsl:variable name="temp">
+            <xsl:value-of disable-output-escaping="yes" select="../LOp[$index]/@logicOp"/>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$temp='and'"><xsl:text>&amp;</xsl:text></xsl:when>
+            <xsl:when test="$temp='or'">||</xsl:when>
+        </xsl:choose>
+        <xsl:text> </xsl:text>
+    </xsl:for-each>
+</xsl:template>
+
+<xsl:template match="LExpr">
+    <xsl:for-each select="RExpr">
+        <xsl:variable name="index" select="position()"/>
+        <xsl:apply-templates select="."/>
+        <xsl:value-of disable-output-escaping="yes" select="../ROp[$index]/@relOp"/>
+    </xsl:for-each>
+</xsl:template>
+
+<xsl:template match="RExpr">
+    <xsl:for-each select="AExpr">
+        <xsl:variable name="index" select="position()"/>
+        <xsl:apply-templates select="."/>
+        <xsl:value-of disable-output-escaping="yes" select="../AOp[$index]/@addOp"/>
+    </xsl:for-each>
+</xsl:template>
+
+<xsl:template match="AExpr">
+    <xsl:for-each select="MExpr">
+        <xsl:variable name="index" select="position()"/>
+        <xsl:apply-templates select="."/>
+        <xsl:value-of disable-output-escaping="yes" select="../MOp[$index]/@mulOp"/>
+    </xsl:for-each>
+</xsl:template>
+
+<xsl:template match="MExpr">
+    <xsl:apply-templates select="ExprCall"/>
+    <xsl:for-each select="Par|Var|Const">
+        <xsl:for-each select="@unOp">
             <xsl:variable name="temp"><xsl:value-of select="."/></xsl:variable>
             <xsl:choose>
                 <xsl:when test="$temp!='NOP'"><xsl:value-of select="$temp"/></xsl:when>
             </xsl:choose>
         </xsl:for-each>
+        <xsl:value-of select="@value|@name"/>
     </xsl:for-each>
 </xsl:template>
 
+<xsl:template match="ExprCall">
+    <xsl:text>(</xsl:text>
+    <xsl:apply-templates select="Expr" mode="expr"/>
+    <xsl:text>)</xsl:text>
+</xsl:template>
+
 <!-- Invariants -->
-<xsl:template name="invariant">
-    <xsl:element name="entity">
+<xsl:template match="Expr" mode="invariant">
+    <xsl:element name="entity"> 
         <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
         <xsl:attribute name="name">
             <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
@@ -637,7 +683,7 @@
         <xsl:element name="property">
             <xsl:attribute name="name">assertion</xsl:attribute>
             <xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute>
-            <xsl:attribute name="value"><xsl:call-template name="Expr"/></xsl:attribute>
+            <xsl:attribute name="value"><xsl:apply-templates select="." mode="expr"/></xsl:attribute>
         </xsl:element>
         <xsl:for-each select="descendant::Var">
             <xsl:element name="port">
@@ -662,7 +708,7 @@
             </xsl:choose>
         </xsl:for-each>
     </xsl:for-each>
-    =
+    <xsl:text>=</xsl:text>
     <xsl:for-each select="Expr">
         <xsl:for-each select="descendant::Par|descendant::Var|descendant::Const|descendant::LOp|descendant::ROp|descendant::AOp|descendant::MOp">
         <xsl:sort select="@ix" order="ascending"/>
@@ -674,7 +720,7 @@
             </xsl:for-each>
         </xsl:for-each>
     </xsl:for-each>
-    ; 
+    <xsl:text>;</xsl:text>
 </xsl:template>
 
 <!-- DiffEquation -->
@@ -710,7 +756,7 @@
             <xsl:element name="property">
                 <xsl:attribute name="name">expression</xsl:attribute>
                 <!--xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute-->
-                <xsl:attribute name="value"><xsl:call-template name="Expr"/></xsl:attribute>
+                <xsl:attribute name="value"><xsl:apply-templates select="."/></xsl:attribute>
             </xsl:element>
             <xsl:element name="port">
                 <xsl:attribute name="name">output</xsl:attribute>
