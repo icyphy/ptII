@@ -61,8 +61,17 @@ Thus, the output type of this actor is DoubleToken.
 <b>Usage</b>
 <p>
 The <i>sourceURL</i> parameter should be set to the name of the file,
-specified as a fully qualified URL. The default value is
-file:///tmp/test.wav
+specified as a fully qualified URL. It is possible to load a file 
+from the local file system by using the prefix "file://" instead of 
+"http://". Relative file paths are allowed. To specify a file 
+relative to the current directory, use "../" or "./". For example, 
+if the current directory contains a file called "test.wav", then 
+<i>sourceURL</i> should be set to "file:./test.wav". If the parent 
+directory contains a file called "test.wav", then <i>sourceURL</i> 
+should be set to "file:../test.wav". To reference the file
+test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
+should be set to "file:///tmp/test.wav" The default value is
+"file:///tmp/test.wav". 
 The sound file is not periodically repeated by this actor, so
 postfire() will return false when the end of the sound
 file is reached.
@@ -106,16 +115,9 @@ public class AudioReader extends Source {
     ////                     parameters                            ////
 
     /** The URL of the file to read from. The default value of this 
-     *  parameter is the URL
-     *  file:///tmp/test.wav
+     *  parameter is the URL "file:///tmp/test.wav".
      *  Supported file formats are  WAV, AU, and AIFF. The sound
      *  file format is determined from the file extension.
-     *  It is possible to load a file from the local
-     *  file system by using the prefix "file://" instead of "http://".
-     *  Relative file paths are not allowed, so the complete path
-     *  must be specified. As an example, to reference the file
-     *  test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
-     *  should be set to "file:///tmp/test.wav"
      *  <p>
      *  An exception will occur if the path references a
      *  non-existent or unsupported sound file.
@@ -162,7 +164,7 @@ public class AudioReader extends Source {
 	    _initializeReader();
 	} catch (IOException ex) {
 	    throw new IllegalActionException(this,
-			 "Cannot read audio:\n" +
+			 "Cannot open the specified URL: " +
 			 ex);
 	}
 	_safeToInitialize = true;
