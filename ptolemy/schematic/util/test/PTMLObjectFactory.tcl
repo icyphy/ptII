@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test PTMLObjectFactory-2.1 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
     set fileend [file join $PTII ptolemy schematic util test exampleIconLibrary.ptml]
-    set filename "file:/"
+    set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
     set iconlib [java::call ptolemy.schematic.util.PTMLObjectFactory \
@@ -127,13 +127,13 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
 test PTMLObjectFactory-2.2 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
     set fileend [file join $PTII ptolemy schematic util test exampleRootIconLibrary.ptml]
-    set filename "file:/"
+    set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
     set iconroot [java::call ptolemy.schematic.util.PTMLObjectFactory createIconLibrary $xmllib]
 
     set fileend [file join $PTII ptolemy schematic util test exampleEntityLibrary.ptml]
-    set filename "file:/"
+    set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
     set entitylib [java::call ptolemy.schematic.util.PTMLObjectFactory \
@@ -218,14 +218,14 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
 
     set fileend [file join $PTII ptolemy schematic util test exampleRootEntityLibrary.ptml]
-    set filename "file:/"
+    set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
     set entityroot [java::call ptolemy.schematic.util.PTMLObjectFactory \
 	    createEntityLibrary $xmllib $iconroot]
 
     set fileend [file join $PTII ptolemy schematic util test exampleschematic.ptml]
-    set filename "file:/"
+    set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
     set schematic [java::call ptolemy.schematic.util.PTMLObjectFactory createSchematic $xmllib $entityroot]
