@@ -32,6 +32,12 @@
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <!-- Factories for tableaux that offer views of Ptolemy II fsms. -->
     <property name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
+
+      <!-- These will appear in the View menu of an interface automata tableau. -->
+      <property name="Interface Automaton Editor" class="ptolemy.vergil.ptolemy.fsm.InterfaceAutomatonGraphTableau$Factory"/>
+      <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+      <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+
       <!-- These will appear in the View menu of an fsm tableau. -->
       <property name="FSM Editor" class="ptolemy.vergil.ptolemy.fsm.FSMGraphTableau$Factory"/>
       <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
