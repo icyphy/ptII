@@ -43,6 +43,7 @@ import ptolemy.media.Picture;
 import java.io.*;
 import java.text.MessageFormat;
 import java.util.Enumeration;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.BorderLayout;
 import java.awt.event.*;
@@ -89,6 +90,9 @@ public final class ImageDisplay extends Sink implements Placeable {
         _container = null;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Initialize this actor.
      * If place has not been called, then create a frame to display the
@@ -110,12 +114,13 @@ public final class ImageDisplay extends Sink implements Placeable {
     }
 
     /**
-     * Fire this actor.
-     * Consume an IntMatrixToken from the input port.  If the image is not
-     * the same size as the previous image, or this is the first image, then
-     * create a new Picture object to represent the image, and put it in the
-     * appropriate container (either the container set using place, or the frame
-     * created during the initialize phase).
+     * Fire this actor.  
+     * Consume an IntMatrixToken from the input port.  If the image is
+     * not the same size as the previous image, or this is the first
+     * image, then create a new Picture object to represent the image,
+     * and put it in the appropriate container (either the container
+     * set using place, or the frame created during the initialize
+     * phase).
      * Convert the pixels from greyscale to RGBA triples (setting the
      * image to be opaque) and update the picture.
      * @exception IllegalActionException If a contained method throws it.
@@ -139,6 +144,7 @@ public final class ImageDisplay extends Sink implements Placeable {
 
             _picture = new Picture(xsize, ysize);
             _picture.setImage(_RGBbuffer);
+            _picture.setBackground(null);
             _container.add("Center", _picture);
             _container.validate();
 	    _container.invalidate();
@@ -184,6 +190,15 @@ public final class ImageDisplay extends Sink implements Placeable {
         }
     }
 
+    /** Set the background */
+    public Color getBackground() {
+	return _container.getBackground();
+    } 
+    /** Set the background */
+    public void setBackground(Color background) {
+	_container.setBackground(background);
+    } 
+
     /** Set the container that this actor should display data in.  If place
      * is not called, then the actor will create its own frame for display.
      */
@@ -198,6 +213,9 @@ public final class ImageDisplay extends Sink implements Placeable {
 	}
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** This inner class provides a convenient way to create a JFrame for the
      *  picture when it becomes necessary.
      */
@@ -210,6 +228,9 @@ public final class ImageDisplay extends Sink implements Placeable {
             this.validate();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Picture _picture;
     private JFrame _frame;
