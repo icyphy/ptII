@@ -30,7 +30,7 @@
 
 ME = 		ptolemy/domains/fsm/modal
 
-DIRS =
+DIRS =		test
 
 # Root of ptII directory
 ROOT =		../../../..
