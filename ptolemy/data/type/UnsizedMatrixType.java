@@ -58,7 +58,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      *  given class with the given number of rows and columns.
      */
     public UnsizedMatrixType(Class c, String name) {
-	_tokenClass = c;
+        _tokenClass = c;
         _name = name;
     }
 
@@ -80,7 +80,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      *   be done.
      */
     public abstract Token convert(Token token)
-	    throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Determine if the argument represents the same MatrixType as this
      *  object.
@@ -126,8 +126,8 @@ public abstract class UnsizedMatrixType extends StructuredType
      *  @return True if the argument is compatible with this type.
      */
     public boolean isCompatible(Type type) {
-	int typeInfo = TypeLattice.compare(this, type);
-	return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+        int typeInfo = TypeLattice.compare(this, type);
+        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
     }
 
     /** Test if this Type is a constant. A Type is a constant if it
@@ -135,7 +135,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      *  @return False.
      */
     public boolean isConstant() {
-	return false;
+        return false;
     }
 
     /** Test if this type corresponds to an instantiable token
@@ -143,7 +143,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      *  @return True.
      */
     public boolean isInstantiable() {
-	return true;
+        return true;
     }
 
     /** Test if the argument is a substitution instance of this type.
@@ -163,7 +163,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      *  @return A String.
      */
     public String toString() {
-	return _name;
+        return _name;
     }
 
     /** Update this StructuredType to the specified Structured Type.

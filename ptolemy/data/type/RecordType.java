@@ -129,9 +129,9 @@ public class RecordType extends StructuredType {
         }
 
         RecordToken recordToken = (RecordToken)token;
-	// The converted token has the same set of labels as the argument.
-	// That is, fields not in this type are not cut off.
-	Object[] labelArray = recordToken.labelSet().toArray();
+        // The converted token has the same set of labels as the argument.
+        // That is, fields not in this type are not cut off.
+        Object[] labelArray = recordToken.labelSet().toArray();
 
         // Arrays that will be used to create the new token.
         String[] labelStringArray = new String[labelArray.length];
@@ -142,14 +142,14 @@ public class RecordType extends StructuredType {
 
             // Convert each field of the record.
             Token fieldToken = recordToken.get(label);
-	    Type newFieldType = get(label);
+            Type newFieldType = get(label);
 
             // If the type of the field is specified, then convert it.
-	    if (newFieldType != null) {
-	        values[i] = newFieldType.convert(fieldToken);
-	    } else {
-	        values[i] = fieldToken;
-	    }
+            if (newFieldType != null) {
+                values[i] = newFieldType.convert(fieldToken);
+            } else {
+                values[i] = fieldToken;
+            }
 
             // Store the label for each field.
             labelStringArray[i] = label;
@@ -244,7 +244,7 @@ public class RecordType extends StructuredType {
 
             // The given type cannot be losslessly converted to this type
             // if it does not contain one of the fields of this type.
-	    Type argumentFieldType = argumentRecordType.get(label);
+            Type argumentFieldType = argumentRecordType.get(label);
             if (argumentFieldType == null) {
                 // argument token does not contain this label
                 return false;
@@ -287,9 +287,9 @@ public class RecordType extends StructuredType {
     public boolean isInstantiable() {
         // Loop through all of the fields.
         Iterator fieldNames = _fields.keySet().iterator();
-	while (fieldNames.hasNext()) {
-	    String label = (String)fieldNames.next();
-	    Type type = this.get(label);
+        while (fieldNames.hasNext()) {
+            String label = (String)fieldNames.next();
+            Type type = this.get(label);
             // Return false if the field is not instantiable.
             if (!type.isInstantiable()) {
                 return false;
@@ -411,18 +411,18 @@ public class RecordType extends StructuredType {
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
-	if (this.isConstant()) {
-	    if (this.equals(newType)) {
-	        return;
-	    } else {
-	        throw new IllegalActionException("RecordType.updateType: " +
+        if (this.isConstant()) {
+            if (this.equals(newType)) {
+                return;
+            } else {
+                throw new IllegalActionException("RecordType.updateType: " +
                         "This type is a constant and the argument is not the" +
                         " same as this type. This type: " + this.toString() +
                         " argument: " + newType.toString());
             }
-	}
+        }
 
-	// This type is a variable.
+        // This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("RecordType.updateType: "
                     + "Cannot update this type to the new type.");
@@ -510,12 +510,12 @@ public class RecordType extends StructuredType {
 
         // construct the GLB RecordToken
         Object[] labelArray = unionSet.toArray();
-	int size = labelArray.length;
+        int size = labelArray.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
 
         for (int i=0; i<size; i++) {
-	    labels[i] = (String)labelArray[i];
+            labels[i] = (String)labelArray[i];
             Type type1 = this.get(labels[i]);
             Type type2 = recordType.get(labels[i]);
             if (type1 == null) {
@@ -557,7 +557,7 @@ public class RecordType extends StructuredType {
 
         // construct the GLB RecordToken
         Object[] labelArray = intersectionSet.toArray();
-	int size = labelArray.length;
+        int size = labelArray.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
         for (int i = 0; i < size; i++) {
@@ -711,15 +711,15 @@ public class RecordType extends StructuredType {
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
                 throw new IllegalActionException("FieldType.setValue: "
                         + "Cannot update the field type of this RecordType "
-			+ "to the new type."
+                        + "to the new type."
                         + " Field type: " + _declaredType.toString()
-			+ ", New type: " + e.toString());
+                        + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
-	        try {
+                try {
                     _resolvedType = (Type)((Type)e).clone();
-		} catch (CloneNotSupportedException cnse) {
+                } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
                             "RecordType$FieldType.setValue: " +
                             "The specified type cannot be cloned.");

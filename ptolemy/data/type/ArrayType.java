@@ -107,17 +107,17 @@ public class ArrayType extends StructuredType {
 
         ArrayToken argumentArrayToken = (ArrayToken)token;
 
-	// if the argument array token is empty, return an empty array
-	// token.
-	if (argumentArrayToken.length() == 0) {
-	    if (_elementType == BaseType.UNKNOWN) {
-	        // Since any type is a substitution instance of UNKNOWN, just
+        // if the argument array token is empty, return an empty array
+        // token.
+        if (argumentArrayToken.length() == 0) {
+            if (_elementType == BaseType.UNKNOWN) {
+                // Since any type is a substitution instance of UNKNOWN, just
                 // return the argument.
-		return token;
-	    } else {
-	        return new ArrayToken(_elementType);
-	    }
-	}
+                return token;
+            } else {
+                return new ArrayToken(_elementType);
+            }
+        }
 
         Token[] argumentArray = argumentArrayToken.arrayValue();
         Token[] resultArray = new Token[argumentArray.length];
@@ -188,14 +188,14 @@ public class ArrayType extends StructuredType {
      */
     public boolean isCompatible(Type type) {
         ArrayType arrayType;
-	if (type instanceof ArrayType) {
-	    arrayType = (ArrayType)type;
-	} else {
-	    return false;
-	}
+        if (type instanceof ArrayType) {
+            arrayType = (ArrayType)type;
+        } else {
+            return false;
+        }
 
         Type elementType = arrayType.getElementType();
-	return _elementType.isCompatible(elementType);
+        return _elementType.isCompatible(elementType);
     }
 
     /** Test if this ArrayType is a constant. An ArrayType is a constant if
@@ -223,8 +223,8 @@ public class ArrayType extends StructuredType {
      */
     public boolean isSubstitutionInstance(Type type) {
         if ( !(type instanceof ArrayType)) {
-	    return false;
-	}
+            return false;
+        }
 
         Type argElemType = ((ArrayType)type).getElementType();
         return _declaredElementType.isSubstitutionInstance(argElemType);
@@ -249,19 +249,19 @@ public class ArrayType extends StructuredType {
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
-	if (this.isConstant()) {
-	    if (this.equals(newType)) {
-	        return;
-	    } else {
-	        throw new IllegalActionException("ArrayType.updateType: "
-		        + "This type is a constant and the argument is not "
-			+ "the same as this type. "
-			+ "This type: " + this.toString()
-			+ " argument: " + newType.toString());
+        if (this.isConstant()) {
+            if (this.equals(newType)) {
+                return;
+            } else {
+                throw new IllegalActionException("ArrayType.updateType: "
+                        + "This type is a constant and the argument is not "
+                        + "the same as this type. "
+                        + "This type: " + this.toString()
+                        + " argument: " + newType.toString());
             }
-	}
+        }
 
-	// This type is a variable.
+        // This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("ArrayType.updateType: "
                     + "The type " + this + " cannot be updated to "
@@ -420,13 +420,13 @@ public class ArrayType extends StructuredType {
         public void initialize(Object e) throws IllegalActionException {
             if (isConstant()) {
                 throw new IllegalActionException(
-		        "ArrayType$ElementTypeTerm.initialize: " +
-			"This type " + this + " is not settable.");
+                        "ArrayType$ElementTypeTerm.initialize: " +
+                        "This type " + this + " is not settable.");
             }
 
             if ( !(e instanceof Type)) {
                 throw new IllegalActionException(
-		        "ArrayType$ElementTypeTerm.initialize: " +
+                        "ArrayType$ElementTypeTerm.initialize: " +
                         "The argument " + this + " is not a Type.");
             }
 
@@ -457,7 +457,7 @@ public class ArrayType extends StructuredType {
         /** Set the element type to the specified type.
          *  @param e a Type.
          *  @exception IllegalActionException If the specified type violates
-	 *   the declared type of the element.
+         *   the declared type of the element.
          */
         public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {
@@ -470,11 +470,11 @@ public class ArrayType extends StructuredType {
                 // The LUB of the _elementType and another type is General,
                 // this is a type conflict.
                 throw new IllegalActionException(
-		        "ArrayType$ElementTypeTerm.setValue: "
+                        "ArrayType$ElementTypeTerm.setValue: "
                         + "Cannot update the element type of this array to "
-			+ "the new type."
-			+ " Element type: " + _declaredElementType.toString()
-			+ ", New type: " + e.toString());
+                        + "the new type."
+                        + " Element type: " + _declaredElementType.toString()
+                        + ", New type: " + e.toString());
             }
 
             if (_declaredElementType == BaseType.UNKNOWN) {

@@ -54,7 +54,7 @@ public class TypeConstant implements InequalityTerm {
      *  @param type An instance of Type.
      */
     public TypeConstant(Type type) {
-	_type = type;
+        _type = type;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -64,28 +64,28 @@ public class TypeConstant implements InequalityTerm {
      *  @return null.
      */
     public Object getAssociatedObject() {
-	return null;
+        return null;
     }
 
     /** Return the constant type represented by this term.
      *  @return A Type.
      */
     public Object getValue() {
-	return _type;
+        return _type;
     }
 
     /* Return an array of size zero.
      * @return An array of InequalityTerm of size 0.
      */
     public InequalityTerm[] getVariables() {
-	return (new InequalityTerm[0]);
+        return (new InequalityTerm[0]);
     }
 
     /** Throw an Exception since type constant cannot be initialized.
      *  @exception IllegalActionException Always thrown.
      */
     public void initialize(Object e) throws IllegalActionException {
-	throw new IllegalActionException("TypeConstant.initialize: " +
+        throw new IllegalActionException("TypeConstant.initialize: " +
                 "Type constant cannot be initialized.");
     }
 
@@ -93,7 +93,7 @@ public class TypeConstant implements InequalityTerm {
      *  @return false.
      */
     public boolean isSettable() {
-	return false;
+        return false;
     }
 
     /** Check whether the current type of this term is acceptable,
@@ -113,7 +113,7 @@ public class TypeConstant implements InequalityTerm {
      *  @exception IllegalActionException Always thrown.
      */
     public void setValue(Object e) throws IllegalActionException {
-	throw new IllegalActionException("TypeConstant.setValue: Cannot set "
+        throw new IllegalActionException("TypeConstant.setValue: Cannot set "
                 + "the value of a type constant.");
     }
 
@@ -121,7 +121,7 @@ public class TypeConstant implements InequalityTerm {
      *  @return A String.
      */
     public String toString() {
-	return "(TypeConstant, " + getValue() + ")";
+        return "(TypeConstant, " + getValue() + ")";
     }
 
     ///////////////////////////////////////////////////////////////////

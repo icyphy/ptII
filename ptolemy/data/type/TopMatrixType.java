@@ -78,7 +78,7 @@ public class TopMatrixType extends StructuredType
      *   be done.
      */
     public Token convert(Token token)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException("Cannot convert " + token +
                 " to TopMatrixType");
     }
@@ -125,8 +125,8 @@ public class TopMatrixType extends StructuredType
      *  @return True if the argument is compatible with this type.
      */
     public boolean isCompatible(Type type) {
-	int typeInfo = TypeLattice.compare(this, type);
-	return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+        int typeInfo = TypeLattice.compare(this, type);
+        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
     }
 
     /** Test if this Type is a constant. A Type is a constant if it
@@ -134,7 +134,7 @@ public class TopMatrixType extends StructuredType
      *  @return False.
      */
     public boolean isConstant() {
-	return false;
+        return false;
     }
 
     /** Test if this type corresponds to an instantiable token
@@ -142,7 +142,7 @@ public class TopMatrixType extends StructuredType
      *  @return False.
      */
     public boolean isInstantiable() {
-	return false;
+        return false;
     }
 
     /** Test if the argument is a substitution instance of this type.
@@ -150,14 +150,14 @@ public class TopMatrixType extends StructuredType
      *  @return False.
      */
     public boolean isSubstitutionInstance(Type type) {
-	return false;
+        return false;
     }
 
     /** Return the string representation of this type.
      *  @return A String.
      */
     public String toString() {
-	return "[general]";
+        return "[general]";
     }
 
     /** Update this StructuredType to the specified Structured Type.

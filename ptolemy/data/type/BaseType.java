@@ -71,7 +71,7 @@ public abstract class BaseType implements Type, Serializable {
      *   be done.
      */
     public abstract Token convert(Token t)
-	    throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Determine if the argument represents the same BaseType as this
      *  object.
@@ -80,9 +80,9 @@ public abstract class BaseType implements Type, Serializable {
      *   this object; false otherwise.
      */
     public boolean equals(Object object) {
-	// since BaseType is a type safe enumeration, can use == to
-	// test equality.
-	return this == object;
+        // since BaseType is a type safe enumeration, can use == to
+        // test equality.
+        return this == object;
     }
 
     /** Return an instance of this class that corresponds to tokens
@@ -122,19 +122,19 @@ public abstract class BaseType implements Type, Serializable {
      *  @return True if the argument is compatible with this type.
      */
     public boolean isCompatible(Type type) {
-	if (this == UNKNOWN) {
-	    return true;
-	}
+        if (this == UNKNOWN) {
+            return true;
+        }
 
-	int typeInfo = TypeLattice.compare(this, type);
-	return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+        int typeInfo = TypeLattice.compare(this, type);
+        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
     }
 
     /** Test if this Type is UNKNOWN.
      *  @return True if this Type is not UNKNOWN; false otherwise.
      */
     public boolean isConstant() {
-	return this != UNKNOWN;
+        return this != UNKNOWN;
     }
 
     /** Determine if this type corresponds to an instantiable token
@@ -143,20 +143,20 @@ public abstract class BaseType implements Type, Serializable {
      *  @return True if this type is instantiable.
      */
     public boolean isInstantiable() {
-	if (this == UNKNOWN) {
-	    return false;
-	}
+        if (this == UNKNOWN) {
+            return false;
+        }
 
-	int mod = _tokenClass.getModifiers();
-	if (Modifier.isAbstract(mod)) {
-	    return false;
-	}
+        int mod = _tokenClass.getModifiers();
+        if (Modifier.isAbstract(mod)) {
+            return false;
+        }
 
-	if (_tokenClass.isInterface()) {
-	    return false;
-	}
+        if (_tokenClass.isInterface()) {
+            return false;
+        }
 
-	return true;
+        return true;
     }
 
     /** Return true if the argument is a substitution instance of this type.
@@ -164,14 +164,14 @@ public abstract class BaseType implements Type, Serializable {
      *  @return True if this type is UNKNOWN; false otherwise.
      */
     public boolean isSubstitutionInstance(Type type) {
-	return (this == UNKNOWN) || (this == type);
+        return (this == UNKNOWN) || (this == type);
     }
 
     /** Return the string representation of this type.
      *  @return A String.
      */
     public String toString() {
-	return _name;
+        return _name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -214,12 +214,12 @@ public abstract class BaseType implements Type, Serializable {
 
     /** The byte data type */
     public static class ByteType extends BaseType {
-	private ByteType() {
-	    super(ByteToken.class, "byte");
-	}
-	public Token convert(Token t) throws IllegalActionException {
-	    return ByteToken.convert(t);
-	}
+        private ByteType() {
+            super(ByteToken.class, "byte");
+        }
+        public Token convert(Token t) throws IllegalActionException {
+            return ByteToken.convert(t);
+        }
     }
     public static final ByteType BYTE = new ByteType();
 
@@ -361,8 +361,8 @@ public abstract class BaseType implements Type, Serializable {
 
     // The constructor is private to make a type safe enumeration.
     private BaseType(Class c, String name) {
-	_tokenClass = c;
-	_name = name;
+        _tokenClass = c;
+        _name = name;
         // Because the private variables are below the public variables
         // that call this initializer,
         // it doesn't work to initialize this statically.
