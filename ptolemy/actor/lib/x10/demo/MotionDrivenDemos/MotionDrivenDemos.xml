@@ -4,7 +4,7 @@
 <entity name="MotionDrivenDemos" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 592}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 590}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 474]">
     </property>
@@ -73,7 +73,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 50.0">
         </property>
     </property>
-    <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM2">
+    <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -412,7 +412,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Run Inspection" class="ptolemy.vergil.actor.lib.ModelReference">
                 <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/ptolemy/domains/de/demo/Inspection/Inspection.xml">
                 </property>
-                <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil (full screen)">
+                <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil">
                     <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
                         <property name="doNotOpen" class="ptolemy.kernel.util.StringAttribute" value="do not open">
                         </property>
@@ -454,7 +454,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Run Lorenz" class="ptolemy.vergil.actor.lib.ModelReference">
                 <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/ptolemy/domains/ct/demo/Lorenz/Lorenz.xml">
                 </property>
-                <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil (full screen)">
+                <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil">
                     <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
                         <property name="doNotOpen" class="ptolemy.kernel.util.StringAttribute" value="do not open">
                         </property>
@@ -798,7 +798,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 226, 815, 518}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 226, 815, 516}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -843,7 +843,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Const2" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="25">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <doc>Create a constant sequence</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -932,13 +932,13 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                     </property>
                 </port>
             </entity>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="Const.output" relation="relation2"/>
-            <link port="Const2.output" relation="relation3"/>
-            <link port="Middle Spotlight.dim" relation="relation3"/>
+            <link port="Const2.output" relation="relation"/>
+            <link port="Middle Spotlight.off" relation="relation"/>
             <link port="Side Lights.on" relation="relation2"/>
         </entity>
         <relation name="onRelation" class="ptolemy.actor.TypedIORelation">
