@@ -1,4 +1,4 @@
-/* Abstract base class for data capsules.
+/* Base class for data capsules.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// Token
 /**
-Abstract base class for data capsules. Tokens are immutable.
+Base class for data capsules. Tokens are immutable.
 <p>
 Operator overloading between tokens is supported with methods
 for each operator. The operators that are overloaded
@@ -44,12 +44,16 @@ if it can be performed in a lossless manner.
 Not all derived classes are required to implement these methods,
 so the default implementation in this base class triggers an exception.
 <p>
+This base class can be used to represent a pure event, i.e., to
+indicate that an event is present. For this purpose, the stringValue()
+method returns the String "present".
+<p>
 
-@author Neil Smyth
+@author Neil Smyth, Yuhong Xiong
 @version $Id$
 
 */
-public abstract class Token {
+public class Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -64,7 +68,7 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token add(Token rightArg) throws IllegalActionException {
-        String str = "Add method not supported on ";
+        String str = "add method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -80,9 +84,25 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token addR(Token leftArg) throws IllegalActionException {
-        String str = "Addr method not supported on ";
+        String str = "addR method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
+    }
+
+    /** Convert the specified token to an instance of this class.
+     *  Since any token is an instance of this class, no conversion is
+     *  necessary. However, this implementation does not return the
+     *  specified token, but returns a brand new instance of Token.
+     *  This is for reducing the chance of undetected error caused by
+     *  accidental use of this method by the derived class (when the
+     *  derived class fails to override this method).
+     *  @param token A Token to be converted, ignored in this implementation.
+     *  @return A new instance of Token.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public static Token convert(Token token)
+	    throws IllegalActionException {
+	return new Token();
     }
 
     /** Return a new Token whose value is the value of this token
@@ -96,7 +116,7 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token divide(Token divisor) throws  IllegalActionException {
-        String str = "Divide method not supported on ";
+        String str = "divide method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -112,7 +132,7 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token divideR(Token dividend) throws  IllegalActionException {
-        String str = "DivideR method not supported on ";
+        String str = "divideR method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -126,7 +146,7 @@ public abstract class Token {
      *  @return A  new BooleanToken which contains the result of the test.
      */
     public BooleanToken equals(Token token) throws IllegalActionException {
-        String str = "Equality method not supported on ";
+        String str = "equals method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -156,7 +176,7 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token moduloR(Token leftArg) throws IllegalActionException {
-        String str = "ModuloR method not supported on ";
+        String str = "moduloR method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -172,7 +192,7 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token multiply(Token rightFactor) throws  IllegalActionException {
-        String str = "Multiply method not supported on ";
+        String str = "multiply method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -188,7 +208,7 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token multiplyR(Token leftFactor) throws  IllegalActionException {
-        String str = "MultiplyR method not supported on ";
+        String str = "multiplyR method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -205,16 +225,14 @@ public abstract class Token {
         throw new IllegalActionException(str);
     }
 
-    /** Return the value of the Token as a String.
-     *  It should be overridden in subclasses.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return The value of the token as a String.
+    /** Return the String "present" to indicate that an event is present.
+     *  This method should be overridden in the derived classes to
+     *  return the data in the token as a String.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  @return The String "present".
      */
     public String stringValue() throws IllegalActionException {
-        Class myclass = getClass();
-        throw new IllegalActionException("Tokens of class "
-                + myclass.getName() + " cannot be returned as a String");
+        return "present";
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -227,7 +245,7 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token subtract(Token rightArg) throws  IllegalActionException {
-        String str = "Subtract method not supported on ";
+        String str = "subtract method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -242,7 +260,7 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token subtractR(Token leftArg) throws  IllegalActionException {
-        String str = "Subtract method not supported on ";
+        String str = "subtractR method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -267,11 +285,4 @@ public abstract class Token {
         throw new IllegalActionException(str);
     }
 }
-
-
-
-
-
-
-
 
