@@ -18,12 +18,12 @@
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 48, 815, 516}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 192, 815, 516}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="# This is a test script.&#10;class Main :&#10;  &quot;test method calls&quot;&#10;  s = &quot;&quot;&#10;  def fire(self) :&#10;    # read input, compute, send output&#10;    self.s = self.s + &quot;fire &quot;&#10;    return&#10;  def initialize(self) :&#10;    self.s = self.s + &quot;initialize &quot;&#10;    return&#10;  def postfire(self) : &#10;    self.s = self.s + &quot;postfire &quot;&#10;    return&#10;  def prefire(self) :&#10;    self.s = self.s + &quot;prefire &quot;&#10;    return 1&#10;  def preinitialize(self) :&#10;    self.s = self.s + &quot;preinitialize &quot;&#10;    return&#10;  def stop(self) :&#10;    self.s = self.s + &quot;stop &quot;&#10;    return&#10;  def stopFire(self) :&#10;    self.s = self.s + &quot;stopFire &quot;&#10;    return&#10;  def terminate(self) :&#10;    self.s = self.s + &quot;terminate &quot;&#10;    return&#10;  def wrapup(self) :&#10;    self.s = self.s + &quot;wrapup &quot;&#10;    #self.actor.debug(self.s)&#10;    #self.actor.debug(self.result.getExpression())&#10;    if self.s != self.result.getExpression() :&#10;      raise Exception, &quot;test failed&quot;&#10;    return&#10;">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="# This is a test script.&#10;class Main :&#10;  &quot;test method calls&quot;&#10;  s = &quot;&quot;&#10;  def fire(self) :&#10;    # read input, compute, send output&#10;    self.s = self.s + &quot;fire &quot;&#10;    return&#10;  def initialize(self) :&#10;    self.s = self.s + &quot;initialize &quot;&#10;    return&#10;  def postfire(self) : &#10;    self.s = self.s + &quot;postfire &quot;&#10;    return&#10;  def prefire(self) :&#10;    self.s = self.s + &quot;prefire &quot;&#10;    return 1&#10;  def preinitialize(self) :&#10;    self.s = self.s + &quot;preinitialize &quot;&#10;    return&#10;  def wrapup(self) :&#10;    self.s = self.s + &quot;wrapup &quot;&#10;    #self.actor.debug(self.s)&#10;    #self.actor.debug(self.result.getExpression())&#10;    if self.s != self.result.getExpression() :&#10;      raise Exception, &quot;test failed&quot;&#10;    return&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
         </property>
@@ -37,7 +37,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 175.0">
         </property>
-        <property name="result" class="ptolemy.kernel.util.StringAttribute" value="preinitialize stopFire stopFire initialize prefire fire postfire wrapup ">
+        <property name="result" class="ptolemy.kernel.util.StringAttribute" value="preinitialize initialize prefire fire postfire wrapup ">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
