@@ -290,11 +290,10 @@ public class VergilApplication extends MDIApplication {
 
     public void createTreeNodes(JTreePane pane,
             String parent, CompositeEntity library) {
-	Enumeration enum = library.getEntities();
+        Iterator entities = library.entityList().iterator();
         int i = 0;
-        while(enum.hasMoreElements()) {
-            Entity entity = 
-                (Entity) enum.nextElement();
+        while(entities.hasNext()) {
+            Entity entity = (Entity)entities.next();
             if(!(entity instanceof CompositeEntity)) {
 		GraphPalette palette = (GraphPalette)
 		    pane.getComponentAt(library.getFullName());
