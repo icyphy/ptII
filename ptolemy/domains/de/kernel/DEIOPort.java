@@ -28,13 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.actor.NoRoomException;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -59,6 +55,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (cxh)
 */
 public class DEIOPort extends TypedIOPort {
+
+    // FIXME: this class will be removed..
 
     /** Construct a DEIOPort with no container and no name that is
      *  neither an input nor an output.
@@ -117,157 +115,4 @@ public class DEIOPort extends TypedIOPort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Broadcast a token to all receivers connected to this output
-     *  port.  The time stamp of the token is the current time of
-     *  the director.  If you want to broadcast a token with
-     *  a specified delay, use broadcast(token, delay) instead.
-     *
-     *  @param token The token to send.
-     *  @exception IllegalActionException If the port is not an output.
-     */
-    public void broadcast(Token token)
-            throws IllegalActionException {
-        if (_useDelay) {
-            _useDelay = false;
-            try {
-                _workspace.getReadAccess();
-                Receiver farReceivers[][] = getRemoteReceivers();
-                if (farReceivers == null) {
-                    return;
-                }
-                for (int i = 0; i < farReceivers.length; i++) {
-                    for (int j = 0; j < farReceivers[i].length; j++) {
-                        try {
-                            ((DEReceiver)farReceivers[i][j]).setDelay(_delay);
-                        } catch (ClassCastException e) {
-                            throw new InvalidStateException("DEIOPort.send() " +
-                                    "expects to connect to receivers " +
-                                    "of type DEReceiver.");
-                        }
-                    }
-                }
-                broadcast(token);
-            } finally {
-                _workspace.doneReading();
-            }
-        } else {
-            super.broadcast(token);
-        }
-    }
-
-    /** Broadcast a token to all receivers connected to this output
-     *  port with the specified time delay.  The time stamp of
-     *  of the token is equal to current time plus the specified delay.
-     *  If the specified delay is zero, then the event is queued to be
-     *  processed in the next microstep.
-     *
-     *  @param token The token to send.
-     *  @param delay The delay of the token being broadcast.
-     *  @exception IllegalActionException If the port is not an output.
-     */
-    public void broadcast(Token token, double delay)
-            throws IllegalActionException {
-        _delay = delay;
-        _useDelay = true;
-        broadcast(token);
-    }
-
-    /** Clone this port into the specified workspace. Override the base
-     *  class to clear any ports that may have been specified with the
-     *  delayTo() method. Note that this means that when cloning an
-     *  actor that uses this port, you need to respecify delayTo()
-     *  relationships.  The new port is
-     *  <i>not</i> added to the directory of that workspace (you must
-     *  do this yourself if you want it there).
-     *  The result is a new port with no connections and no container.
-     *  The new port will have the same type as this one, but will not
-     *  have any type listeners and type constraints attached to it.
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If one or more of the
-     *   attributes cannot be cloned.
-     *  @return A new TypedIOPort.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DEIOPort newObject = (DEIOPort)super.clone(workspace);
-        return newObject;
-    }
-
-    /** Send a token to the receivers connected on the specified channel
-     *  with the time stamp equaling to the current time of the director.
-     *  If you want to send a token with a specified delay, use
-     *  send(token, delay) instead. If the channel index is out of range,
-     *  then the token is not sent anywhere.
-     *
-     *  @param channelIndex The index of the channel, from 0 to width-1
-     *  @param token The token to send
-     *  @exception IllegalActionException If the port is not an output,
-     *   or if the token to be sent cannot
-     *   be converted to the type of this port, or if the token is null.
-     *  @exception NoRoomException If there is no room in the receiver.
-     *   This should not occur in the DE domain.
-     */
-    public void send(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException {
-        if (_useDelay) {
-            _useDelay = false;
-            try {
-                workspace().getReadAccess();
-                Receiver[][] farReceivers = getRemoteReceivers();
-                if (farReceivers == null) return;
-                if (farReceivers[channelIndex] == null) return;
-                for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                    try {
-                        ((DEReceiver)farReceivers[channelIndex][j]).
-                            setDelay(_delay);
-                    } catch (ClassCastException e) {
-                        throw new InvalidStateException("DEIOPort.send() " +
-                                "expects to connect to receivers of type " +
-                                "DEReceiver.");
-                    }
-                }
-                super.send(channelIndex, token);
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                // Ignore... send token nowhere.
-            } finally {
-                workspace().doneReading();
-            }
-        } else {
-            super.send(channelIndex, token);
-        }
-    }
-
-    /** Send a token with the specified time delay to the receivers connected
-     *  on the specified channel.  The time stamp of
-     *  the token is equal to current time plus the specified delay.
-     *  If the specified delay is zero, then the event is queued to be
-     *  processed in the next microstep.
-     *
-     *  @param channelIndex The index of the channel, from 0 to width-1.
-     *  @param token The token to send.
-     *  @param delay The time delay of the token being sent.
-     *  @exception IllegalActionException If the port is not an output,
-     *   or if the index is out of range.
-     */
-    public void send(int channelIndex, Token token, double delay)
-            throws IllegalActionException {
-        _delay = delay;
-        _useDelay = true;
-        send(channelIndex, token);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The delay to use in transferring tokens.
-    // Be careful to set this back to zero after using it.
-    private double _delay = 0.0;
-
-    // A flag indicating that there is delay in the next output.
-    private boolean _useDelay = false;
 }

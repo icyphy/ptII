@@ -31,9 +31,7 @@ import ptolemy.actor.TimedActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 
@@ -43,12 +41,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
    A base class for actors specific to the DE domain.  This class
    implements both SequenceActor and TimedActor.
-   This class returns a new DEIOPort for the newPort() method.
-   Although most DE specific actors extend this class,
-   other (domain polymorphic) actors can also be used in the
-   DE domain.
 
-   @author Jie Liu
+   @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (liuj)
@@ -58,6 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public abstract class DEActor extends TypedAtomicActor
     implements SequenceActor, TimedActor {
 
+    // FIXME: this class may be abandoned since DEIOPort will be abandoned.
     /** Construct an actor with the specified container and name.
      *  This is protected because there is no reason to create an instance
      *  of this class, but derived classes will want to invoke the
@@ -72,35 +67,6 @@ public abstract class DEActor extends TypedAtomicActor
     protected DEActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return a new DEIOPort with the specified name.
-     *  The container of the port is set to this actor.
-     *  This method is write-synchronized on the workspace.
-     *  Normally this method is not called directly by actor code.
-     *  Instead, a change request should be queued with the director.
-     *
-     *  @param name The name for the new port.
-     *  @return The new DEIOPort.
-     *  @exception NameDuplicationException If this actor already has a port
-     *   with the specified name.
-     */
-    public Port newPort(String name) throws NameDuplicationException {
-        try {
-            _workspace.getWriteAccess();
-            DEIOPort port = new DEIOPort(this, name);
-            return port;
-        } catch (IllegalActionException ex) {
-            // This exception should not occur, so we throw a runtime
-            // exception.
-            throw new InternalErrorException(
-                    "AtomicActor.newPort: Internal error: " + ex.getMessage());
-        } finally {
-            _workspace.doneWriting();
-        }
     }
 
 }
