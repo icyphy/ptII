@@ -44,8 +44,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	Wavepacket
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	#$(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 		PNWavepacket.java
@@ -54,35 +53,24 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS) #test
-
-PTAUXJAR =	Wavepacket.jar
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR) \
-	Wavepacket.jar
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass Wavepacket.jar
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass Wavepacket.jar 
+install: all
 
+demo:
+	CLASSPATH=$(CLASSPATH) java ptolemy.domains.pn.demo.Interleave.PNInterleavingExample
 
-
-# 'make clean' removes everything in KRUFT
-KRUFT = Wavepacket.jar
-
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-Wavepacket.jar: 	$(JSRCS) $(JCLASS)
-		(cd $(CLASSPATH); \
-                $(JAR) cf \
-                $(ME)/$@ \
-		$(ME)/*.class )
 depend:
 	@echo "no dependencies in this directory"
 

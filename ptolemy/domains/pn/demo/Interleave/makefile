@@ -44,8 +44,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	Interleave
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	#$(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	PNAlternate.java \
@@ -59,33 +58,22 @@ EXTRA_SRCS =	$(JSRCS)
 # should not complain about
 MISC_FILES =	$(DIRS)
 
-PTAUXJAR =	Interleave.jar
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR) \
-	Interleave.jar
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass Interleave.jar
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass Interleave.jar 
+install: all
 
+demo:
+	CLASSPATH=$(CLASSPATH) java ptolemy.domains.pn.demo.Interleave.PNInterleavingExample
 
-
-# 'make clean' removes everything in KRUFT
-KRUFT = Interleave.jar
-
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-Interleave.jar:	$(JSRCS) $(JCLASS)
-		(cd $(CLASSPATH); \
-                $(JAR) cf \
-                $(ME)/$@ \
-		$(ME)/*.class )
 depend:
 	@echo "no dependencies in this directory"
 

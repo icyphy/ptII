@@ -76,7 +76,7 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo:
-	CLASSPATH=$(CLASSPATH) java ptolemy.domains.pn.demo.Prime.PNPrimeExample 10
+	CLASSPATH=$(CLASSPATH) java ptolemy.domains.pn.demo.Prime.PNPrimeExample
 
 depend:
 	@echo "no dependencies in this directory"
