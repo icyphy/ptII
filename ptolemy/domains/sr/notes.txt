@@ -7,6 +7,8 @@ FIXMEs
 
 are tests running?
 
+add SRDirector and sr.lib to vergil library
+
 -------------------------------------------------------------------------------
 
 Issues:
