@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@Pt.ProposedRating Yellow (rowland)
-@Pt.AcceptedRating Red (rowland)
 */
 
 package ptolemy.actor.gui;
@@ -58,8 +56,8 @@ import ptolemy.moml.MoMLChangeRequest;
    @author Rowland R Johnson
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.ProposedRating Yellow (rowland)
+   @Pt.AcceptedRating Red (rowland)
 */
 public class UnitConstraintsDialog
     extends PtolemyDialog

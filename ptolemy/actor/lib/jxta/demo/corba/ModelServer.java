@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj)
-@AcceptedRating Red (cxh)
 */
 package ptolemy.actor.lib.jxta.demo.corba;
 
@@ -63,6 +61,8 @@ import net.jxta.resolver.ResolverService;
    A model server register the servant to the name server and wait for calls.
    @author Jie Liu
    @version $Id$
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class ModelServer implements QueryHandler{
 

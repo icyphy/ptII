@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@Pt.ProposedRating Yellow (eal)
-@Pt.AcceptedRating Red (eal)
 */
 
 package ptolemy.actor.gui;
@@ -95,8 +93,8 @@ import ptolemy.vergil.basic.LocatableNodeController;
    @author Rowland R Johnson
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public class PortConfigurerDialog
     extends PtolemyDialog
