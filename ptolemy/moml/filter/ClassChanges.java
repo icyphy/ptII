@@ -217,6 +217,9 @@ public class ClassChanges implements MoMLFilter {
         //        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
         //            "ptolemy.domains.de.kernel.DEEDirector");
 
+        // DEIOPort is obsolete as of 4.1-devel
+        _classChanges.put("ptolemy.domains.de.kernel.DEIOPort",
+                "ptolemy.actor.TypedIOPort");
     }
 
     // Set of class names that are obsolete and should be simply

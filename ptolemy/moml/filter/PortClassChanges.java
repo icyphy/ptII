@@ -201,17 +201,31 @@ public class PortClassChanges implements MoMLFilter {
         // VariableDelay: delay is now a ParameterPort,
         // not a DEIOPort.
         HashMap variableDelayPorts = new HashMap();
-        HashMap portChanges = new HashMap();
+        HashMap variableDelayPortChanges = new HashMap();
 
         variableDelayPorts.put(
                 "ptolemy.domains.de.kernel.DEIOPort",
                 "ptolemy.actor.parameters.ParameterPort");
 
-        portChanges.put("delay", variableDelayPorts);
+        variableDelayPortChanges.put("delay", variableDelayPorts);
 
         _actorsWithPortClassChanges
             .put("ptolemy.domains.de.lib.VariableDelay",
-                    portChanges);
+            variableDelayPortChanges);
 
+        // Server: delay is now a ParameterPort,
+        // not a DEIOPort.
+        HashMap serverPorts = new HashMap();
+        HashMap serverPortChanges = new HashMap();
+
+        variableDelayPorts.put(
+                "ptolemy.domains.de.kernel.DEIOPort",
+                "ptolemy.actor.parameters.ParameterPort");
+
+        serverPortChanges.put("serviceTime", serverPorts);
+
+        _actorsWithPortClassChanges
+            .put("ptolemy.domains.de.lib.Server",
+            serverPortChanges);
     }
 }
