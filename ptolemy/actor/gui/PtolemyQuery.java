@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
+import javax.swing.JOptionPane;
 
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.actor.parameters.IntRangeParameter;
@@ -435,7 +436,10 @@ public class PtolemyQuery extends Query
                                     + entryName);
                         }
                         _dialog =
-                            new ComponentDialog(null, "Error", _query, null);
+                            new ComponentDialog(
+                                    JOptionPane.getFrameForComponent(
+                                            PtolemyQuery.this),
+                                    "Error", _query, null);
 
                         // The above returns only when the modal
                         // dialog is closing.  The following will
