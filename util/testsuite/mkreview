@@ -36,7 +36,7 @@ if [ $# -lt 1 ]; then
     echo "reviewname should be of the form YYYYMMDD"
     echo "file should be of the form: ptolemy/package/foo.java"
     echo "For example:"
-    echo "mkreview 19990426 ptolemy/data/expr/{Variable,VariableList}.java"
+    echo "mkreview 19990430 ptolemy/data/expr/{Variable,VariableList}.java"
     exit 2
 fi
 # It generates PostScript and PDF versions of the source files and 
@@ -51,6 +51,7 @@ files=$@
 basedir=`dirname $1`
 reviewtopdir=/users/ptII/public_html/reviews
 
+
 # This directory will contain the docs
 reviewdir=$reviewtopdir/$basedir/$reviewname
 if [ -d $reviewdir ]; then
@@ -58,7 +59,16 @@ if [ -d $reviewdir ]; then
     exit 3
 fi
 
+# Name of the HTML page that refers to the review materials
+# Note that this page is in the directory above the review materials
+reviewfile=$reviewtopdir/$basedir/$reviewname.htm
+
+
 echo "Will generate review materials in $reviewdir"
+echo "The file '$reviewfile'"
+echo " contains links to the review materials."
+echo "Please edit this file and check in to CVS"
+
 mkdir $reviewdir
 
 ####################################
@@ -81,14 +91,18 @@ cp -r codeDoc $reviewdir
 cp $shortfiles $reviewdir
 
 ####################################
-echo "Generating PostScript of the docs"
 cd $reviewdir/codeDoc
+echo "Generating PostScript of the docs in `pwd`"
 
-# html2ps is a hack that often does not work
-sh $PTII/util/testsuite/html2ps -d ../javadocs.ps $basedir
+if [ "$DISPLAY" -eq "" ]; then
+    echo "$0: Warning: \$DISPLAY is not set, so we are not generating PS or PDF of the docs"
+else
+    # html2ps is a hack that often does not work
+    sh $PTII/util/testsuite/html2ps -d ../javadocs.ps $basedir
+    psnup -n 2 < javadocs.ps > javadocs2up.ps
+fi
 
 cd ..
-psnup -n 2 < javadocs.ps > javadocs2up.ps
 
 # Generate PostScript of the code
 enscript -G2rp - $shortfiles > javafiles.ps
@@ -98,16 +112,9 @@ psnup -n 2 < javafiles.ps > javafiles2up.ps
 distill *.ps
 
 
-
-# HTML file to generate
-# This file is _not_ called index.html so that reviews can see the 
-# contents of this directory.
-outfile=review.htm
-
-
 ####################################
 echo "Generate a html file with the appropriate links"
-cat >$outfile <<EoF
+cat >$reviewfile <<EoF
 <!-- $Id$
 
 This file should be of the form yyyymmdd-design.htm, for example
@@ -144,10 +151,10 @@ EoF
 
 for file in $shortfiles
 do
-    echo "  <li><a href=\"$file\"><code>$file</code><a/>" >>$outfile
+    echo "  <li><a href=\"$file\"><code>$file</code><a/>" >>$reviewfile
 done
 
-cat >>$outfile <<EOF
+cat >>$reviewfile <<EOF
   <li><a href="javafiles.ps" target="_top">PostScript</a> -
 <a href="javafiles.pdf" target="_top">PDF</a>
   <li><a href="javafiles2up.ps" target="_top">2 up PostScript</a> -
@@ -217,6 +224,21 @@ Review ended: <I>time</I>
 </html>
 EOF
 
+# Do a little checking
+retval=0
+outputfiles="javafiles.ps javafiles2up.ps javafiles.pdf javafiles2up.pdf javadocs.ps javadocs2up.ps javadocs.pdf javadocs2up.pdf"
+for outputfile in $outputfiles
+do
+    if [ ! -f $outputfile ]; then
+	echo "$0: Warning: '$outputfile' does not exist."
+	retval=3
+    fi
+done
+
+
+# Fix the permissions
 chmod g+ws .
-chmod -R g+w .
-chgrp -R ptolemy .
+chmod -R g+w . $reviewfile
+chgrp -R ptolemy . $reviewfile
+
+exit $retval
