@@ -133,12 +133,6 @@ public class Pxgraph extends Frame {
 
         pxgraph.show();
 	plotApplet.init();
-
-        for(i = argsread+1; i < args.length; i++) {
-            if (_debug > 0) System.out.println(args[i]);
-            plotApplet.parseFile(args[i]);
-        }
-        
 	plotApplet.start();
 
 	if (_test) {
