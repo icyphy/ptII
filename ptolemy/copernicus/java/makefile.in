@@ -387,18 +387,20 @@ profileGcj: $(MODEL)_gcj
 # http://jode.sourceforge.net/download.php
 JODE=$(ROOT)/bin/jode
 # Class to disassemble
-DECOMPILERTARGETCLASS =		Model$(MODEL)
+DECOMPILERTARGETCLASS =		$(MODEL)
 
 # Generate a .java file from a class file and recompile it.
 # Jode
 jodeDecompile: jodeDecompileDemo jodeRecompileDemo jodeRunRecompiledDemo
 jodeDecompileDemo:
 	@echo "Convert .class file back to .java file, compile it, run it"
-	classes=`cd $(DECOMPILERTARGETPATH); ls -1 *.class | sed 's/.class//g'`; \
+	classes=`cd $(DECOMPILERTARGETPATH)/$(MODEL); ls -1 *.class | sed 's/.class//g'`; \
 	for class in $$classes; \
 	do \
 		echo "--- Decompiling $(DECOMPILERTARGETPACKAGE).$$class"; \
-		"$(JODE)" -d $(DECOMPILERTARGETPATH) $(DECOMPILERTARGETPACKAGE).$$class; \
+		"$(JODE)" -classpath $(DECOMPILERTARGETPATH) \
+			-d $(DECOMPILERTARGETPATH) \
+			$(DECOMPILERTARGETPACKAGE).$$class; \
 		relativetargetpath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
 		sh "$(ROOT)/ptolemy/copernicus/shallow/test/jode2java" \
 			$$relativetargetpath/$$class.java \
