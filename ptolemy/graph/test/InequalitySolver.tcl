@@ -193,8 +193,8 @@ test InequalitySolver-2.6 {solve for greatest solutino for above} {
 # 
 test InequalitySolver-3.1 {solve constraints on TypeLattic} {
     # This comes from a real topology in DE SamplerSystem.
-    set tem [java::new ptolemy.data.TypeCPO]
-    set cpo [$tem cpo]
+    set tem [java::new ptolemy.data.TypeLattice]
+    set lattice [$tem lattice]
 
     # init. type terms
     set pDouble [java::new ptolemy.actor.TypedIOPort]
@@ -231,7 +231,7 @@ test InequalitySolver-3.1 {solve constraints on TypeLattic} {
     set d_s2d [java::new ptolemy.graph.Inequality $tDouble $ts2d]
 
     # solver constraints
-    set s [java::new ptolemy.graph.InequalitySolver $cpo]
+    set s [java::new ptolemy.graph.InequalitySolver $lattice]
     $s addInequality $d_s1c
     $s addInequality $d_s2c
     $s addInequality $s1d_s1o
