@@ -255,7 +255,8 @@ public class IOPort extends ComponentPort {
         if (input) {
             Enumeration outsideRelations = linkedRelations();
             while (outsideRelations.hasMoreElements()) {
-                IORelation relation = (IORelation) outsideRelations.nextElement();
+                IORelation relation =
+                    (IORelation) outsideRelations.nextElement();
                 int width = relation.getWidth();
 
                 Receiver[][] result = null;
