@@ -105,7 +105,7 @@ test TimedDelay-4.1 {test a self loop with the zero TimedDelay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-}{{ptolemy.kernel.util.IllegalActionException: Zero delay self-loop on actor: .top.add
+} {{ptolemy.kernel.util.IllegalActionException: Zero delay self-loop on actor: .top.add
     in .top.DEDirector}}
 
 test TimedDelay-5.1 {test a more complex loop with the zero TimedDelay} {
