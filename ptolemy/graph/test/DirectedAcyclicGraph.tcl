@@ -182,3 +182,31 @@ test DirectedAcyclicGraph-3.1 {a DAG with 4 nodes forming a diamond} {
 	 [$p isLattice]
 } {node1 node2 node3 node4 1}
 
+######################################################################
+####
+# 
+test DirectedAcyclicGraph-3.2 { topologicalSort part of the graph } {
+    set p [java::new ptolemy.graph.DirectedAcyclicGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    set n4 [java::new {java.lang.String String} node4]
+    set n5 [java::new {java.lang.String String} node5]
+    set n6 [java::new {java.lang.String String} node6]
+    $p add $n1
+    $p add $n2
+    $p add $n3
+    $p add $n4
+    $p add $n5
+    $p add $n6
+    $p addEdge $n1 $n2
+    $p addEdge $n1 $n3
+    $p addEdge $n2 $n4
+    $p addEdge $n3 $n4
+    $p addEdge $n3 $n5
+    $p addEdge $n4 $n6
+    set nodeArray [java::new {java.lang.String[]} 5 \
+	    [list $n4 $n3 $n1 $n5 $n2]]
+    set sort [$p {topologicalSort java.lang.Object[]} $nodeArray]
+    list [$sort get 0] [$sort get 1] [$sort get 2] [$sort get 3] [$sort get 4]
+} {node1 node3 node2 node5 node4}
