@@ -44,6 +44,8 @@ import javax.swing.JTextArea;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
+import javax.swing.text.BadLocationException;
+
 
 /** Display the values of the tokens arriving on the input channels
  *  in a text area on the screen.
@@ -114,9 +116,19 @@ public class Print extends TypedAtomicActor implements Placeable {
                 // FIXME: Unfortunately, this doesn't work.
                 // There appears to be no way in swing to do this...
                 // Putting it in SwingUtilities.invokeLater() doesn't help...
+
+                /*
                 JScrollBar bar = _scrollPane.getVerticalScrollBar();
                 if (bar != null) {
                     bar.setValue(bar.getMaximum() - bar.getVisibleAmount());
+                }
+                */
+                try {
+                    int lineOffset =
+                    textArea.getLineEndOffset(textArea.getLineCount() - 1);
+                    textArea.setCaretPosition(lineOffset);
+                } catch (BadLocationException ex) {
+                    // Ignore
                 }
             }
         }
@@ -134,8 +146,11 @@ public class Print extends TypedAtomicActor implements Placeable {
         if (textArea == null) {
             place(_container);
         } else {
-            // FIXME: Incredibly, JTextArea has no clear method!
-            // textArea.clear();
+            // Erase previous text.
+            textArea.setText(null);
+        }
+        if (_frame != null) {
+            _frame.setVisible(true);
         }
     }
 
@@ -154,15 +169,17 @@ public class Print extends TypedAtomicActor implements Placeable {
             // place the text area in its own frame.
             // FIXME: This probably needs to be a PtolemyFrame, when one
             // exists, so that the close button is dealt with, etc.
-            JFrame frame = new JFrame(getFullName());
+            JFrame _frame = new JFrame(getFullName());
             textArea = new JTextArea();
             _scrollPane = new JScrollPane(textArea);
-            frame.getContentPane().add(_scrollPane);
+            _frame.getContentPane().add(_scrollPane);
         } else {
             textArea = new JTextArea();
             _scrollPane = new JScrollPane(textArea);
             _container.add(_scrollPane);
         }
+        // Make sure the text is not editable.
+        textArea.setEditable(false);
     }
 
     /** Override the base class to make sure the end of the text is visible.
@@ -179,4 +196,7 @@ public class Print extends TypedAtomicActor implements Placeable {
 
     private Container _container;
     private JScrollPane _scrollPane;
+
+    // The frame into which to put the text widget, if any.
+    private JFrame _frame;
 }
