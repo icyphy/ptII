@@ -181,12 +181,34 @@ public class Entity extends InstantiableNamedObj {
             for (int i = 0; i < fields.length; i++) {
                 try {
                     if (fields[i].get(newEntity) instanceof Port) {
-                        fields[i].set(newEntity,
-                                newEntity.getPort(fields[i].getName()));
+                        Port port = newEntity.getPort(fields[i].getName());
+                        if (port == null) { 
+                            throw new IllegalActionException(this,
+                                    "Could not find a port named '"
+                                    + fields[i].getName() + "'. "
+                                    + "This can occur when the name of the "
+                                    + "variable does not match the name "
+                                    + "passed to the constructor of the "
+                                    + "actor.\n"
+                                    + "Right:\n"
+                                    + "    input = new TypedIOPort(this, "
+                                    + "\"input\", true, false);\n"
+                                    + "Wrong:\n"
+                                    + "    myInput = new TypedIOPort(this, "
+                                    + "\"input\", true, false);");
+                        } else {
+                            fields[i].set(newEntity, port);
+                        }
                     }
-                } catch (IllegalAccessException e) {
-                    throw new CloneNotSupportedException(e.getMessage() +
-                            ": " + fields[i].getName());
+                } catch (Exception ex) {
+                    // CloneNotSupportedException does not have a
+                    // constructor that takes a cause argument, so we call
+                    // initCause() and then throw.
+                    CloneNotSupportedException cloneException =
+                        new CloneNotSupportedException("Problem cloning '"
+                                + fields[i].getName() + "'");
+                    cloneException.initCause(ex);
+                    throw cloneException;
                 }
             }
             _cloneFixAttributeFields(newEntity);
