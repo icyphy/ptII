@@ -36,6 +36,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collections;
@@ -55,7 +56,9 @@ DataFlavor.plainTextFlavor.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class PtolemyTransferable implements Transferable {
+public class PtolemyTransferable implements Transferable, Serializable {
+    // This class implements Serializable in hopes that 
+    // drag and drop will work under Mac OS X.
 
     /**
      * Create a new transferable object that contains no objects.
