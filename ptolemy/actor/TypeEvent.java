@@ -24,8 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Red (yuhong@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+downgrade rating because this class is changed to implement DebugEvent.
 */
 
 package ptolemy.actor;
