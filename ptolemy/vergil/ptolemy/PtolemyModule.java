@@ -73,15 +73,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.pn.kernel.*;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.domains.fsm.kernel.FSMDirector;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.dt.kernel.*;
-
 /**
  * A module that can be plugged into Vergil that adds support for
  * Ptolemy II.  This package adds a Ptolemy II menu to the menu bar, which
@@ -187,109 +178,9 @@ public class PtolemyModule implements Module {
 	//GUIUtilities.addToolBarButton(tb, new newCompositeAction(), 
 	//			      "New Composite", icon);
 
-	_directorModel = new DefaultComboBoxModel();
-	try {
-	    Director dir;
-	    dir = new SDFDirector();
-	    dir.setName("SDF");
-	    _directorModel.addElement(dir);
-	     dir = new DTDirector();
-	    dir.setName("DT");
-	    _directorModel.addElement(dir);
-	    dir = new PNDirector();
-	    dir.setName("PN");
-	    _directorModel.addElement(dir);
-	    dir = new DEDirector();
-	    dir.setName("DE");
-	    _directorModel.addElement(dir);
-	    dir = new CSPDirector();
-	    dir.setName("CSP");
-	    _directorModel.addElement(dir);
-	    dir = new DDEDirector();
-	    dir.setName("DDE");
-	    _directorModel.addElement(dir);
-	    dir = new FSMDirector();
-	    dir.setName("FSM");
-	    _directorModel.addElement(dir);
-	    dir = new CTMixedSignalDirector();	    
-	    dir.setName("CT");
-	    _directorModel.addElement(dir);
-	}
-	catch (Exception ex) {
-	    _application.showError("Director combobox creation failed", ex);
-	}
-	//FIXME find these names somehow.
-	_directorComboBox = new JComboBox(_directorModel);
-	_directorComboBox.setRenderer(new PtolemyListCellRenderer());
-	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
-        _directorComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-		    // When a director is selected, update the 
-		    // director of the model in the current document.
-		    Director director = (Director) e.getItem();
-		    PtolemyDocument d = (PtolemyDocument)
-			_application.getCurrentDocument();
-		    if(d == null) return;
-		    CompositeEntity entity =
-			d.getModel();
-		    if(entity instanceof Actor) {
-			CompositeActor actor =
-			    (CompositeActor) entity;
-			try {
-			    Director clone =
-				(Director)director.clone(actor.workspace());
-			    actor.setDirector(clone);
-			} catch (Exception ex) {
-                            getApplication().showError("Failed to set " + 
-                                    "Director", ex);
-			}
-		    }
-                }
-            }
-        });
-        tb.add(_directorComboBox);
+	// Create something that will manage Directors for us.  
+	new DirectorService(getApplication(), tb);
 
-	ListDataListener ldl = new ListDataListener() {
-	    public void contentsChanged(ListDataEvent event) {		
-		// When the current document is changed, set the 
-		// director menu to whatever director is currently associated
-		// with the model in the document.
-		PtolemyDocument d = 
-		(PtolemyDocument)_application.getCurrentDocument();
-		if(d == null) {
-		    _directorModel.setSelectedItem(null);
-		    return;
-		}
-                CompositeEntity entity = d.getModel();
-                if(!(entity instanceof CompositeActor)) {
-                    _directorModel.setSelectedItem(null);
-                    return;
-                }
-		CompositeActor actor = (CompositeActor)entity;
-		Director director = actor.getDirector();
-		if(director == null) {
-		    _directorModel.setSelectedItem(null);
-		    return;
-		}
-		Director foundDirector = null;
-		for(int i = 0; foundDirector == null && 
-			i < _directorModel.getSize(); i++) {
-		    if(director.getClass().isInstance(_directorModel.getElementAt(i))) {
-		    	foundDirector = 
-		    	(Director)_directorModel.getElementAt(i);
-		    }
-		}
-		_directorModel.setSelectedItem(foundDirector);
-	    }
-	    public void intervalAdded(ListDataEvent event) {
-		contentsChanged(event);
-	    }
-	    public void intervalRemoved(ListDataEvent event) {
-		contentsChanged(event);
-	    }
-	};
-	application.addDocumentListener(ldl);
         application.addDocumentFactory(new PtolemyDocument.Factory());
 	application.addDocumentFactory(new PtolemyDocument.FSMFactory());
 
@@ -329,24 +220,6 @@ public class PtolemyModule implements Module {
 	_notationModel.addElement(notation);
     }
 
-    /**
-     * Add a director to the list of possible directors.
-     */
-    public void addDirector(Director director) {
-	_directorModel.addElement(director);
-    }
-
-    /**
-     * Return a list of the directors in the director list.
-     */
-    public List directorList() {
-	List list = new LinkedList();
-	for(int i = 0; i < _directorModel.getSize(); i++) {
-	    list.add(_directorModel.getElementAt(i));
-	}
-	return list;
-    }
-
     /** 
      * Return the application that contains this module.
      */
@@ -384,13 +257,6 @@ public class PtolemyModule implements Module {
 	    list.add(_notationModel.getElementAt(i));
 	}
 	return list;
-    }
-
-    /**
-     * Remove a director from the list of directors.
-     */
-    public void removeDirector(Director director) {
-	_directorModel.removeElement(director);
     }
 
     /**
@@ -929,14 +795,8 @@ public class PtolemyModule implements Module {
     // The application that this package is associated with.
     private VergilApplication _application;
 
-    // The director selection combobox
-    private JComboBox _directorComboBox;
-
     // The layout button
     private JButton _layoutButton;
-
-    // The list of directors.
-    private DefaultComboBoxModel _directorModel;
 
     // The list of notations.
     private DefaultComboBoxModel _notationModel;
