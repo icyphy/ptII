@@ -50,28 +50,31 @@ package pt.data.parser;
 
 public class ASTPtProductNode extends ASTPtSimpleNode {
     
-    protected void _resolveValue() throws Exception {
+    protected pt.data.Token _resolveNode() throws Exception {
         int num =  jjtGetNumChildren();
         if (num ==1) {
-            String str = childTokens[0].toString();
-            _ptToken.fromString(String.valueOf(str));
-            return;
+            return childTokens[0];
         }
-        if (num != ( _tokenList.size() +1) ) {
-            throw new ParseException();
+        if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
+            String str = "Invalid state in product node, number of children is";
+            throw new Exception(str + "equal to number of operators +1");
         }
-        _ptToken = _ptToken.add(_ptToken, childTokens[0]);
-        int size = _tokenList.size();
-        for (int i=0; i<size; i++) {
+        pt.data.Token result = childTokens[0];
+        for (int i=1; i<num; i++) {
+            // When start using 1.2 will change this
             Token x = (Token)_tokenList.take();
             if (x.image.compareTo("*") == 0) {
-                _ptToken = _ptToken.multiply(_ptToken, childTokens[i+1]);
+                result = result.multiply(childTokens[i]);
             } else if (x.image.compareTo("/") == 0) {
-                _ptToken = _ptToken.divide(_ptToken, childTokens[i+1]);
+                result = result.divide(childTokens[i]);
+            } else if (x.image.compareTo("%") == 0) {
+                result = result.modulo(childTokens[i]);
             } else {
-                throw new Exception();
+                String str = "Invlid concatenator in term() production, ";
+                throw new Exception(str + "check parser");
             }
         }
+        return result;
     }
 
   public ASTPtProductNode(int id) {

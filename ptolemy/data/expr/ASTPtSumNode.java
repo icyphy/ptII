@@ -48,33 +48,31 @@ Created : May 1998
 
 package pt.data.parser;
 
-//import java.util.*;
-
 public class ASTPtSumNode extends ASTPtSimpleNode {
     
-    protected void _resolveValue() throws Exception {
+    protected pt.data.Token _resolveNode() throws Exception {
         int num =  jjtGetNumChildren();
         if (num ==1) {
-            String str = childTokens[0].toString();
-            _ptToken.fromString(String.valueOf(str));
-            return;
+            return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
-            throw new ParseException();
+            String str = "Invalid state in sum node, number of children is";
+            throw new Exception(str + "equal to number of operators +1");
         }
-        _ptToken = _ptToken.add(_ptToken, childTokens[0]);
-        int size = _tokenList.size();
-        for (int i=0; i<size; i++) {
+        pt.data.Token result = childTokens[0];
+        for (int i=1; i<num; i++) {
             // When start using 1.2 will change this
             Token x = (Token)_tokenList.take();
             if (x.image.compareTo("+") == 0) {
-                _ptToken = _ptToken.add(_ptToken, childTokens[i+1]);
+                result = result.add(childTokens[i]);
             } else if (x.image.compareTo("-") == 0) {
-                _ptToken = _ptToken.subtract(_ptToken, childTokens[i+1]);
+                result = result.subtract(childTokens[i]);
             } else {
-                throw new Exception();
+                String str = "Invlid concatenator in sum() production, ";
+                throw new Exception(str + "check parser");
             }
         }
+        return result;
     }
 
 

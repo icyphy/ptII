@@ -49,19 +49,26 @@ Created : May 1998
 package pt.data.parser;
 
 public class ASTPtUnaryNode extends ASTPtSimpleNode {
-    protected boolean isNegated = false;
+    protected boolean isMinus = false;
+    protected boolean isNot = false;
        
-     protected void _resolveValue() throws Exception {
+     protected pt.data.Token  _resolveNode() throws Exception {
          if (jjtGetNumChildren() != 1) {
-             throw new Exception(); 
+             throw new Exception("More than one child of a Unary node"); 
          }
-         if (isNegated == false) {
-             _ptToken = ((ASTPtSimpleNode)jjtGetChild(0))._ptToken;
-             //_ptToken = childTokens[0];
-         } else {
-             // assume that _ptToken was created with zero as its value
-             _ptToken = _ptToken.subtract(_ptToken, childTokens[0]);
+         pt.data.Token result = childTokens[0];
+         if (isMinus == true) {
+             // Need to chose the type at the bottom of the hierarch
+             // so as to not do any upcasting. For now IntToken will do.
+             result = result.multiply(new pt.data.IntToken(-1));
+         } else if (isNot == true) {
+             if (result instanceof pt.data.BooleanToken) {
+                 String str = "Cannot negate a nonBoolean type";
+                 throw new Exception(str + result.toString()); 
+             }
+             ((pt.data.BooleanToken)result).negate();
          }
+         return result;
      }
 
              

@@ -34,11 +34,14 @@ Created : May 1998
 */
 
 //////////////////////////////////////////////////////////////////////////
-//// ASTPtSumNode
+//// ASTPtRelationalNode
 /**
  * The parse tree created from the expression string consists of a 
  * hierarchy of node objects. This class represents relational 
- * operator(>, >=, <, <=, ==, !=) nodes in the parse tree
+ * operator(>, >=, <, <=, ==, !=) nodes in the parse tree.
+ * 
+ * Each node of this type has exactly one or two children. If it
+ * has two children the resolved type is a BooleanToken.
  * 
  * @author Neil Smyth
  * @version $Id$
@@ -51,33 +54,44 @@ package pt.data.parser;
 
 public class ASTPtRelationalNode extends ASTPtSimpleNode {
     
-    protected void _resolveValue() throws Exception {
+    protected pt.data.Token  _resolveNode() throws Exception {
         int num =  jjtGetNumChildren();
         if (num ==1) {
-            String str = childTokens[0].toString();
-            _ptToken.fromString(String.valueOf(str));
-            return;
+            return childTokens[0];
         }
-        if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
-            throw new ParseException();
+        if ( _tokenList.size() != 1 ) {
+            throw new Exception("need an operator if have two children");
         }
-        _ptToken = _ptToken.add(_ptToken, childTokens[0]);
-        int size = _tokenList.size();
-        for (int i=0; i<size; i++) {
-            // When start using 1.2 will change this
-            Token x = (Token)_tokenList.take();
-            if (x.image.compareTo("+") == 0) {
-                _ptToken = _ptToken.add(_ptToken, childTokens[i+1]);
-            } else if (x.image.compareTo("-") == 0) {
-                _ptToken = _ptToken.subtract(_ptToken, childTokens[i+1]);
+        pt.data.Token result = childTokens[0];
+        Token x = (Token)_tokenList.take();
+        if (x.image.compareTo("==") == 0) {
+            result = result.equality(childTokens[1]);
+            return result;
+        } else  if (x.image.compareTo("!=") == 0) {
+            result = result.equality(childTokens[1]);
+            ((pt.data.BooleanToken)result).negate();
+            return result;
+        } else  {
+            // relational operators only make sense on types below double
+            double a = ((pt.data.RealToken)childTokens[0]).doubleValue();
+            double b = ((pt.data.RealToken)childTokens[1]).doubleValue();
+            boolean res = false;
+            if (x.image.compareTo(">=") == 0) {
+                if (a>=b) res = true;
+            } else if  (x.image.compareTo(">") == 0) {
+                if (a>b) res = true;
+            } else if (x.image.compareTo("<=") == 0) {
+                if (a<=b) res = true;
+            } else if (x.image.compareTo("<") == 0) {
+                if (a<b) res = true;
             } else {
-                throw new Exception();
+                String str = "invalid operator " + x.image + " in relational";
+                throw new Exception(str + "node");
             }
+            return new pt.data.BooleanToken(res);
         }
     }
-
-
-
+        
     public ASTPtRelationalNode(int id) {
         super(id);
     }

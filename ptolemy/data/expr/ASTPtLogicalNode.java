@@ -50,29 +50,38 @@ package pt.data.parser;
 
 public class ASTPtLogicalNode extends ASTPtSimpleNode {
     
-    protected void _resolveValue() throws Exception {
-        int num =  jjtGetNumChildren();
+    protected pt.data.Token _resolveNode() throws Exception {
+        int num = jjtGetNumChildren();
         if (num ==1) {
-            String str = childTokens[0].toString();
-            _ptToken.fromString(String.valueOf(str));
-            return;
+            return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
-            throw new ParseException();
+            String str = "Not enough/too many operators for number";
+            throw new Exception(str + " of children");
         }
-        _ptToken = _ptToken.add(_ptToken, childTokens[0]);
-        int size = _tokenList.size();
-        for (int i=0; i<size; i++) {
-            // When start using 1.2 will change this
+        boolean values[] = new boolean[num];
+        int i = 0;
+        try {
+             for ( i=0; i<num; i++ ) {
+                 values[i] = ((pt.data.BooleanToken)childTokens[i]).getValue();
+             }
+        } catch (Exception ex) {
+            String str = "Could not convert " + childTokens[i].toString();
+            throw new Exception(str + "to a Boolean");
+        }
+        boolean result = values[0];
+        for (i=0; i<_tokenList.size(); i++) {
             Token x = (Token)_tokenList.take();
-            if (x.image.compareTo("+") == 0) {
-                _ptToken = _ptToken.add(_ptToken, childTokens[i+1]);
-            } else if (x.image.compareTo("-") == 0) {
-                _ptToken = _ptToken.subtract(_ptToken, childTokens[i+1]);
+            if ( x.image.equalsIgnoreCase("&&") ) {
+                result = (result && values[i+1]);
+            } else if ( x.image.equalsIgnoreCase("||") ) {
+                result = (result || values[i+1]);
             } else {
-                throw new Exception();
+                String str = "operator on booleans: " + x.image;
+                throw new Exception("illegal " + str + ", check parse tree");
             }
         }
+        return new pt.data.BooleanToken(result);
     }
 
     public ASTPtLogicalNode(int id) {
