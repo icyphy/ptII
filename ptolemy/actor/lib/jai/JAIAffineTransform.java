@@ -52,14 +52,17 @@ import javax.media.jai.RenderedOp;
 /**
  Compute an affine transformation on an image.  The parameter
  affineMatrix must be a two by three matrix.  If the matrix is
-
+ <p>
  a b c
  d e f
-
+ <p>
  the output is determined by the following two equations.
-
+ <p>
  x' = a*x + b*y + c;
- y' = d*x + e*y + c
+ y' = d*x + e*y + f;
+ <p>
+ Note that the c and f terms do not show up when the output is directly
+ displayed
 
  @author James Yeh
  @version $Id$
