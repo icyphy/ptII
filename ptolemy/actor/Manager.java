@@ -110,6 +110,21 @@ will not make changes to the topology during execution.  Instead, any
 desired mutations are delegated to the manager via the requestChange()
 method.
 
+<p> Many domains make use of static analyses for performing, e.g.,
+static scheduling of actor firings.  In some cases, these analyses
+must make use of global information.  The class provides a centralized
+mechanism for managing such global analyses.  During preinitialize,
+domains can invoke the getAnalysis and addAnalysis methods to create a
+global analysis.  It is up to the users of this mechanism to ensure
+that a particular type of analysis is only created once, if that is
+what is required.  After preinitialize, the manager clears the list of
+analyses, to avoid unnecessary memory usage, and to ensure that the
+analyses are performed again on the next invocation of the model.
+This is somewhat preferable to tying a cache of analysis information
+to the version of the workspace, since the version number of the
+workspace itself may change during preinitialize as domains add
+annotation to the model.
+
 @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong
 // Contributors: Mudit Goel, John S. Davis II
 @version $Id$
