@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ci/kernel
 
-DIRS = 		#test
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../..
