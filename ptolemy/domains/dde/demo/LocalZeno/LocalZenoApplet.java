@@ -30,7 +30,7 @@
 
 package ptolemy.domains.dde.demo.LocalZeno;
 
-import diva.graph.*;
+import diva.graph.compat.*;
 import diva.graph.model.*;
 import diva.graph.model.Node;
 import diva.graph.layout.*;
