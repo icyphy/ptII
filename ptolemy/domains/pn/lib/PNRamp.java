@@ -84,7 +84,7 @@ public class PNRamp extends PNStar{
                 writeTo(_output, data);
                 _seed++;
             }
-            System.out.println("Terminating et al "+this.getName());
+            System.out.println("Terminating at al "+this.getName());
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+this.getName());
             return;
