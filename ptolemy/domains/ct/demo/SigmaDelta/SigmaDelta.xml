@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DigitalSystem" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CTSubsystem" class="ptolemy.actor.TypedCompositeActor">
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -17,17 +17,39 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="80.33332824707031, 37.0">
+        </property>
     </property>
     <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.02">
     </property>
     <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="-20.0">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="310.0, 114.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This models shows a model for a Sigma-Delta A/D convertor for an accelerometer.
+The system exhibits a mixed-signal behavior with both continuous dynamics 
+and discrete events. The accelerometer is modeled as a second order 
+differential system. The acceleration is sampled and their quantized values
+are feeded back. The accumulation of the quantized values is the digital output.
+</text>
+           </svg>
+           </configure>
+        </property>
     </property>
     <entity name="CTSubsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
-        <property name="CTEmbDir" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="CTMixedSignalDirector" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
@@ -52,15 +74,29 @@
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="71.0, 27.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="86.66666793823242, 225.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <port name="Pin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="18.0, 152.0">
+            </property>
         </port>
         <port name="Pout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="659.0, 118.0">
+            </property>
         </port>
-        <entity name="CurTime" class="ptolemy.actor.lib.CurrentTime">
+        <entity name="Current Time" class="ptolemy.actor.lib.CurrentTime">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="61.0, 311.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -70,8 +106,10 @@
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+        <entity name="Sin" class="ptolemy.actor.lib.TrigFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="91.0, 208.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -80,7 +118,9 @@
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="Hold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+        <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.moml.Location" value="95.0, 152.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -89,6 +129,8 @@
             </port>
         </entity>
         <entity name="Add1" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.moml.Location" value="290.0, 118.0">
+            </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -104,6 +146,8 @@
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="377.0, 117.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -113,6 +157,8 @@
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="494.0, 117.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -124,6 +170,8 @@
         <entity name="Scale0" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="50.0">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="201.0, 208.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -133,6 +181,8 @@
         </entity>
         <entity name="Scale1" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="-2.5">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="282.0, 37.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -144,6 +194,8 @@
         <entity name="Scale2" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="-250.0">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="506.0, 37.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -154,6 +206,8 @@
         <entity name="Scale3" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="179.0, 311.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -163,6 +217,8 @@
         </entity>
         <entity name="Scale4" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="feedbackGain">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="178.0, 110.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -178,22 +234,24 @@
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="637.0, 201.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+            <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
 <xRange min="0.0" max="15.0"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
-            </configure>
-        </entity>
+                                    </configure>        </entity>
         <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="610.0, 116.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -209,14 +267,20 @@
         <relation name="_R1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="CR0" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="142.0, 245.0">
+            </vertex>
         </relation>
         <relation name="CR1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="CR2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="CR3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="434.0, 66.0">
+            </vertex>
         </relation>
         <relation name="CR4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="542.0, 123.0">
+            </vertex>
         </relation>
         <relation name="CR5" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -229,14 +293,16 @@
         <relation name="CR9" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="CR10" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="140.0, 157.0">
+            </vertex>
         </relation>
         <link port="Pin" relation="CR9"/>
         <link port="Pout" relation="CR5"/>
-        <link port="CurTime.output" relation="_R0"/>
-        <link port="TrigFunction.input" relation="_R1"/>
-        <link port="TrigFunction.output" relation="CR0"/>
-        <link port="Hold.input" relation="CR9"/>
-        <link port="Hold.output" relation="CR10"/>
+        <link port="Current Time.output" relation="_R0"/>
+        <link port="Sin.input" relation="_R1"/>
+        <link port="Sin.output" relation="CR0"/>
+        <link port="ZeroOrderHold.input" relation="CR9"/>
+        <link port="ZeroOrderHold.output" relation="CR10"/>
         <link port="Add1.plus" relation="CR1"/>
         <link port="Add1.plus" relation="CR6"/>
         <link port="Add1.plus" relation="CR7"/>
@@ -265,6 +331,8 @@
     <entity name="delay" class="ptolemy.domains.de.lib.Delay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="171.0, 225.0">
+        </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
         </port>
@@ -272,7 +340,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="fir" class="ptolemy.domains.sdf.lib.FIR">
+    <entity name="FIR Filter" class="ptolemy.domains.sdf.lib.FIR">
         <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
@@ -280,6 +348,8 @@
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.7, 0.3}">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="264.3333282470703, 226.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -303,6 +373,8 @@
     <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
         <property name="levels" class="ptolemy.data.expr.Parameter" value="{-1.0, 1.0}">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="350.66666412353516, 226.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -310,7 +382,9 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="accumulator" class="ptolemy.actor.lib.Average">
+    <entity name="Accumulator" class="ptolemy.actor.lib.Average">
+        <property name="_location" class="ptolemy.moml.Location" value="370.6666564941406, 328.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -321,7 +395,9 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="sampler" class="ptolemy.domains.de.lib.Sampler">
+    <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <property name="_location" class="ptolemy.moml.Location" value="463.0, 353.0">
+        </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -334,7 +410,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="ADClock" class="ptolemy.actor.lib.Clock">
+    <entity name="DigitalClock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -342,6 +418,8 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="78.0, 361.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -358,12 +436,13 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="555.3333282470703, 260.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
@@ -371,9 +450,8 @@
 <yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-        </configure>
-    </entity>
-    <entity name="MAV" class="ptolemy.domains.sdf.lib.FIR">
+                        </configure>    </entity>
+    <entity name="Moving Average" class="ptolemy.domains.sdf.lib.FIR">
         <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
@@ -381,6 +459,8 @@
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="271.3333435058594, 307.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -408,10 +488,14 @@
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" class="ptolemy.moml.Vertex" value="221.0, 265.0">
+        </vertex>
     </relation>
     <relation name="_R4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" class="ptolemy.moml.Vertex" value="177.33333333333331, 367.0">
+        </vertex>
     </relation>
     <relation name="_R6" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -421,20 +505,19 @@
     <link port="CTSubsystem.Pout" relation="_R0"/>
     <link port="delay.input" relation="_R0"/>
     <link port="delay.output" relation="_R1"/>
-    <link port="fir.input" relation="_R1"/>
-    <link port="fir.output" relation="_R2"/>
+    <link port="FIR Filter.input" relation="_R1"/>
+    <link port="FIR Filter.output" relation="_R2"/>
     <link port="Quantizer.input" relation="_R2"/>
     <link port="Quantizer.output" relation="_R3"/>
-    <link port="accumulator.input" relation="_R4"/>
-    <link port="accumulator.output" relation="_R6"/>
-    <link port="accumulator.reset" relation="_R5"/>
-    <link port="sampler.input" relation="_R6"/>
-    <link port="sampler.output" relation="_R7"/>
-    <link port="sampler.trigger" relation="_R5"/>
-    <link port="ADClock.output" relation="_R5"/>
+    <link port="Accumulator.input" relation="_R4"/>
+    <link port="Accumulator.output" relation="_R6"/>
+    <link port="Accumulator.reset" relation="_R5"/>
+    <link port="Sampler.input" relation="_R6"/>
+    <link port="Sampler.output" relation="_R7"/>
+    <link port="Sampler.trigger" relation="_R5"/>
+    <link port="DigitalClock.output" relation="_R5"/>
     <link port="DEPlot.input" relation="_R7"/>
     <link port="DEPlot.input" relation="_R3"/>
-    <link port="MAV.input" relation="_R3"/>
-    <link port="MAV.output" relation="_R4"/>
+    <link port="Moving Average.input" relation="_R3"/>
+    <link port="Moving Average.output" relation="_R4"/>
 </entity>
-
