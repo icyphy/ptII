@@ -635,10 +635,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	/** Append moml to the given buffer that connects a link with the
 	 *  given head, tail, and relation.  Names in the returned moml will be
          *  relative to the given container.  This may require adding an
-	 *  anonymous relation to the ptolemy model.  If this is required,
-	 *  the name of the relation <b>relative to the toplevel object
-         *  of this graph model</b> is returned.
-	 *  If no relation need be added, then
+	 *  anonymous relation to the ptolemy model.  
+         *  If no relation need be added, then
 	 *  null is returned.
 	 */
 	private String _linkMoML(
@@ -696,7 +694,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                         failmoml.append("</entity>");
                     }
 
-		    return relationName;
+                    // Ugh this is ugly.
+                    if(getToplevel() != container) {
+                        return getToplevel().getName(container) + "." + 
+                            relationName;
+                    } else {
+                        return relationName;
+                    }
 		} else if(head instanceof ComponentPort &&
 			  linkTail instanceof Vertex) {
 		    // Linking a port to an existing relation.
@@ -789,6 +793,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                             ComponentRelation relation =
 			    (ComponentRelation)container.getRelation(
                                     relationNameToAdd);
+                            if(relation == null) 
+                            throw new InternalErrorException(
+                                    "Tried to find relation with name "
+                                    + relationNameToAdd
+                                    + " in context "
+                                    + container);
       			    link.setRelation(relation);
 			} else {
 			    link.setRelation(null);
@@ -869,6 +879,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                            ComponentRelation relation =
                            (ComponentRelation)container.getRelation(
                                    relationNameToAdd);
+                           if(relation == null) 
+                           throw new InternalErrorException(
+                                   "Tried to find relation with name "
+                                   + relationNameToAdd
+                                   + " in context "
+                                   + container);
                            link.setRelation(relation);
 		       } else {
 			   link.setRelation(null);
@@ -918,7 +934,6 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             public void changeExecuted(ChangeRequest change) {
                 // modification to the linkset HAS to occur in the swing
                 // thread.
-
                 if(GraphUtilities.isPartiallyContainedEdge(_link,
                         getRoot(),
                         PtolemyGraphModel.this)) {
