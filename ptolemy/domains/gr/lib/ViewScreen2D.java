@@ -61,10 +61,13 @@ import diva.canvas.event.EventLayer;
 import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
-//// ViewScreen
+//// ViewScreen2D
 
 /** 
-A sink actor that renders a two-dimensional scene into a display screen.
+A sink actor that renders a two-dimensional scene into a display screen.  All
+mouse and keyboard events within the viewscreen are handled by a ViewScreen2DListener
+which must be made aware of this viewscreen by having its setViewScreen() method
+invoked.
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
