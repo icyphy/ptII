@@ -170,11 +170,14 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         ASTPtRootNode rootNode;
         try {
             // Parse the expression to obtain the parse tree
+            // start() can generate a TokenMgrError if we parse a "\0"
             rootNode = start();
-            if (debug) rootNode.displayParseTree(" ");
-        } catch (ParseException x) {
-            throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
+            if (debug) {
+                rootNode.displayParseTree(" ");
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(null, throwable,
+                    "Error parsing expression \"" + stringIn + "\"");
         }
         ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
         primary.jjtSetParent(null);
@@ -199,9 +202,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             // Parse the expression to obtain the parse tree
             rootNode = startSimpleAssignment();
             if (debug) rootNode.displayParseTree(" ");
-        } catch (ParseException x) {
-            throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(null, throwable,
+                    "Error parsing expression \""
+                    + stringIn + "\"");
         }
         ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
         primary.jjtSetParent(null);
@@ -226,11 +230,14 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         try {
             // Parse the expression to obtain the parse tree
             token_source.SwitchTo(StringMode);
+            // startString() can generate a TokenMgrError
             rootNode = startString();
-            if (debug) rootNode.displayParseTree(" ");
-        } catch (ParseException x) {
-            throw new IllegalActionException("Error parsing string \""
-                    + stringIn + "\":\n" + x.getMessage());
+            if (debug) {
+                rootNode.displayParseTree(" ");
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(null, throwable,
+                    "Error parsing expression \"" + stringIn + "\"");
         } finally {
             token_source.SwitchTo(DEFAULT);
         }
@@ -257,9 +264,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         try {
             // Parse the expression to obtain the parse tree.
             map = startAssignmentList();
-        } catch (ParseException x) {
-            throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(null, throwable,
+                    "Error parsing expression \"" + stringIn + "\"");
         }
         return map;
     }
@@ -2318,6 +2325,16 @@ String tidied, x;
     finally { jj_save(6, xla); }
   }
 
+  final private boolean jj_3_3() {
+    if (jj_scan_token(57)) return true;
+    return false;
+  }
+
+  final private boolean jj_3_6() {
+    if (jj_scan_token(64)) return true;
+    return false;
+  }
+
   final private boolean jj_3_5() {
     if (jj_scan_token(64)) return true;
     if (jj_scan_token(ID)) return true;
@@ -2345,16 +2362,6 @@ String tidied, x;
   final private boolean jj_3_7() {
     if (jj_scan_token(ID)) return true;
     if (jj_scan_token(57)) return true;
-    return false;
-  }
-
-  final private boolean jj_3_3() {
-    if (jj_scan_token(57)) return true;
-    return false;
-  }
-
-  final private boolean jj_3_6() {
-    if (jj_scan_token(64)) return true;
     return false;
   }
 
