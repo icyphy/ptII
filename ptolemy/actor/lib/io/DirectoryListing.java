@@ -44,8 +44,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.SequenceSource;
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
    http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
    <p>
-   If <i>directoryOrURL</i> is a directory (not a URL), then you can
+   If <i>directoryOrURL</i> is a local directory (not a URL), then you can
    optionally list only contained files or directories.
    If <i>listOnlyDirectories</i> is true, then only directories will be
    listed on the output.  If <i>listOnlyFiles</i> is true, then only
@@ -107,13 +107,10 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         super(container, name);
 
         // Tell the file browser to allow only selection of directories.
-        directoryOrURL = new FileParameter(this, "directoryOrURL");
+        directoryOrURL = new FilePortParameter(this, "directoryOrURL");
         new Parameter(directoryOrURL, "allowFiles", BooleanToken.FALSE);
         new Parameter(directoryOrURL, "allowDirectories", BooleanToken.TRUE);
  
-        directoryOrURLPort = new TypedIOPort(this, "directoryOrURL", true, false);
-        directoryOrURLPort.setTypeEquals(BaseType.STRING);
-
         output.setTypeEquals(new ArrayType(BaseType.STRING));
 
         pattern = new StringParameter(this, "pattern");
@@ -135,19 +132,20 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  any form accepted by FileParameter.
      *  @see FileParameter
      */
-    public FileParameter directoryOrURL;
+    public FilePortParameter directoryOrURL;
 
-    /** An input port for optionally providing a directory name. This has
-     *  type string.
-     */
-    public TypedIOPort directoryOrURLPort;
-    
-    /** If true, then only directories will be listed on the output.
+    /** If true, and <i>directoryOrURL</i> refers to a local directory (not a URL),
+     *  then only directories will be listed on the output. If <i>directoryOrURL</i>
+     *  is a URL, then this parameter is ignored (there appears to be no reliable
+     *  way to tell whether the URL refers to a directory or file).
      *  This is a boolean that defaults to false.
      */
     public Parameter listOnlyDirectories;
 
-    /** If true, then only file will be listed on the output.
+    /** If true, and <i>directoryOrURL</i> refers to a local directory (not a URL),
+     *  then only files will be listed on the output. If <i>directoryOrURL</i>
+     *  is a URL, then this parameter is ignored (there appears to be no reliable
+     *  way to tell whether the URL refers to a directory or file).
      *  This is a boolean that defaults to false.
      */
     public Parameter listOnlyFiles;
@@ -205,12 +203,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     public void fire() throws IllegalActionException {
         super.fire();
         
-        if (directoryOrURLPort.getWidth() > 0
-                && directoryOrURLPort.hasToken(0)) {
-            String newValue
-                    = ((StringToken)directoryOrURLPort.get(0)).stringValue();
-            directoryOrURL.setExpression(newValue);
-        }
+        directoryOrURL.update();
 
         URL sourceURL = directoryOrURL.asURL();
 
@@ -223,10 +216,13 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         boolean directoriesOnly = ((BooleanToken)
                 listOnlyDirectories.getToken()).booleanValue();
         boolean filesOnly = ((BooleanToken)
-                listOnlyDirectories.getToken()).booleanValue();
+                listOnlyFiles.getToken()).booleanValue();
         if (sourceURL.getProtocol().equals("file")) {
             File sourceFile = directoryOrURL.asFile();
             if (sourceFile.isDirectory()) {
+                if (_debugging) {
+                	_debug("Reading directory.");
+                }
                 File[] files = sourceFile.listFiles(this);
                 ArrayList result = new ArrayList();
                 for (int i = 0; i < files.length; i++) {
@@ -237,8 +233,11 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                         continue;
                     }
                     if (accept(null, files[i].getName())) {
-                    	result.add(new StringToken(
-                                files[i].getAbsolutePath()));
+                        String path = files[i].getAbsolutePath();
+                        if (_debugging) {
+                            _debug("Path: " + path);
+                        }
+                    	result.add(new StringToken(path));
                     }
                 }
                 if (result.size() == 0) {
@@ -250,12 +249,14 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 	resultArray[i] = (StringToken)result.get(i);
                 }
                 output.broadcast(new ArrayToken(resultArray));
-                return;
             } else if (sourceFile.isFile()) {
                 StringToken[] result = new StringToken[1];
                 result[0] = new StringToken(sourceFile.toString());
+                if (_debugging) {
+                    _debug("Listing just the specified file: "
+                            + result[0].stringValue());
+                }
                 output.broadcast(new ArrayToken(result));
-                return;
             } else {
                 throw new IllegalActionException("'"
                         + directoryOrURL
@@ -276,7 +277,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Read the URL and produce output.
+    /** Read the URL and produce output.
+     *  @param sourceURL The source URL.
+     */
     private void _readURL(URL sourceURL)
             throws IOException, IllegalActionException {
         // Handle urls here.
@@ -360,6 +363,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                             if (!base.endsWith("/")) {
                                             	base = base + "/";
                                             }
+                                            // FIXME: Is there any way to tell whether
+                                            // the result is a directory or file?
                                             resultsList.add(new StringToken(
                                             		base + target));
                                         }
