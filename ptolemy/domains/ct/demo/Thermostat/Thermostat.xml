@@ -96,7 +96,7 @@ a finite state machine.</text>
 <plot>
 <title>Thermostat</title>
 <xRange min="0.0" max="5.0"/>
-<yRange min="-3.885780586188048E-16" max="0.20000000000000023"/>
+<yRange min="-3.885780586E-16" max="0.20000000000000198"/>
 </plot>?>
         </configure>
     </entity>
@@ -274,7 +274,7 @@ a finite state machine.</text>
                 </port>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="-3.885780586E-16">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="2.7755575615629E-17">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="152.0, 228.0">
                 </property>
@@ -318,6 +318,12 @@ a finite state machine.</text>
                 <property name="expression" class="ptolemy.data.expr.Parameter" value="in - 0.2">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="291.0, 302.0">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -486,6 +492,12 @@ a finite state machine.</text>
                 <property name="expression" class="ptolemy.data.expr.Parameter" value="in + 0.0">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="320.3333435058594, 311.0">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
