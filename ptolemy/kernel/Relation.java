@@ -30,7 +30,11 @@
 
 package ptolemy.kernel;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.CrossRefList;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.Collections;
 import java.util.Enumeration;
