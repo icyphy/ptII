@@ -90,7 +90,7 @@ test Director-5.1 {Test action methods} {
     set a1 [java::new ptolemy.actor.test.TestActor $e0 A1]
     set a2 [java::new ptolemy.actor.test.TestActor $e0 A2]
     $a1 clear
-    $d4 run 3
+    $d4 go 3
     $a1 getRecord
 } {W.E0.A1.initialize
 W.E0.A2.initialize
@@ -125,7 +125,7 @@ test Director-6.1 {Test wormhole activation} {
     $e1 setDirector $d5
     $a2 setContainer $e1
     $a1 clear
-    $d4 run 3
+    $d4 go 3
     $a1 getRecord
 } {W.E0.A1.initialize
 W.E0.E1.A2.initialize
