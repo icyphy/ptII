@@ -49,6 +49,15 @@ provide additional information about the error).
 */
 public class NameDuplicationException extends KernelException {
 
+    /** Given container and string for message.
+     *  @param container The would be container.
+     *  @param moreInfo A message.
+     */
+    public NameDuplicationException(Nameable container,
+            String moreInfo) {
+       super(container, null, moreInfo);
+    }
+
     /** Given container and containee.
      *  @param wouldBeContainee The would be containee.
      *  @param container The would be container.
