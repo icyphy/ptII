@@ -59,5 +59,14 @@ Error executing link.exe.
 Solution: Download from Xerces-C 2.6.0 from
 http://xml.apache.org/xerces-c/download.cgi
 
-Edit the Xml2Ecsl project settings and add the Xerces Library to 
+1. Edit the Xml2Ecsl project settings and add the Xerces Library to 
 Link -> Input -> Additional library path
+2. Change library to xerces-c_2d
+
+-------
+Problem:
+LINK : fatal error LNK1104: cannot open file "zlibD.lib"
+Solution: Download Zlib Developer files from
+http://gnuwin32.sourceforge.net/downlinks/zlib-lib-zip.php
+and add that directory to the link list
+Also, change the library to libz.lib
