@@ -103,16 +103,20 @@ public class Branch implements Runnable {
                     + "receivers of this branch are null.");
         }
         if ( !producerReceiver.isProducerReceiver() ) {
-            String name = ((Nameable)consumerReceiver.getContainer()).getName();
-            throw new IllegalActionException("Receiver: " + name +
-                    " Not producer receiver");
+            String name = ((Nameable)consumerReceiver
+                    .getContainer()).getFullName();
+            throw new IllegalActionException("Receiver in the port: "
+                    + name
+                    + " is not a producer receiver");
         }
         _producerReceiver = producerReceiver;
 
         if ( !consumerReceiver.isConsumerReceiver() ) {
-            String name = ((Nameable)consumerReceiver.getContainer()).getName();
-            throw new IllegalActionException("Receiver: " + name +
-                    " Not consumer receiver");
+            String name = ((Nameable)consumerReceiver
+                    .getContainer()).getFullName();
+            throw new IllegalActionException("Receiver in the port: "
+                    + name
+                    + " is not a consumer receiver");
         }
         _consumerReceiver = consumerReceiver;
     }
