@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.kernel;
 
+import ptolemy.util.StringUtilities;
 import javax.swing.UIManager;
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,7 +52,21 @@ public class VergilUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if we are running under MacOS look and feel. */
+    /** Return true if we are running under MacOS look and feel or
+     *  if the ptolemy.ptII.MacOS property is defined.
+     *  To define ptolemy.ptII.MacOS, invoke Vergil with
+     *  java -Dptolemy.ptII.MacOS=true -classpath $PTII ptolemy.vergil.VergilApplication
+     *  Or, under Cygwin:
+     *  <pre>
+     *  export JAVAFLAGS=-Dptolemy.ptII.MacOS=true
+     *  $PTII/bin/vergil
+     *  </pre>
+     *  If the ptolemy.ptII.MacOS property is set to true, this method
+     *  prints the message "ptolemy.ptII.MacOS = true property detected".
+     *
+     *  @return True if the look and feel starts with "Mac OS" or the
+     *  ptolemy.ptII.MacOS property is set to true.
+     */   
     public static boolean macOSLookAndFeel() {
         // Dan Higgins writes:
         // "Apple suggests in their tech note 2042 (http://developer.apple.com/
@@ -67,6 +82,10 @@ public class VergilUtilities {
         // However, calling getProperty will likely fail in applets
         // or within the sandbox, so we use this method instead.
 
+        if (StringUtilities.getProperty("ptolemy.ptII.MacOS").equals("true")) {
+            System.out.println("ptolemy.ptII.MacOS = true property detected");
+            return true;
+        }
         return UIManager.getLookAndFeel().getName().startsWith("Mac OS");
     }
 }
