@@ -9,5 +9,148 @@
 </header>
 
 
+<icon name="Add">
+    <entitytype name="Add" ports="2"/>
+    <port name="input-1" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {0 50}
+            -direction w
+            -style arrowin
+            -tags input
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="input-2" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {50 0}
+            -direction n
+            -style arrowin
+            -tags input
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {100 50}
+            -direction e
+            -style arrowout
+            -tags output
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" slatetype="IconOval" fill="white">
+    <tclscript>
+        line 20 50 80 50 -width 4
+        line 50 20 50 80 -width 4
+    </tclscript>
+    </graphic>
+</icon>
+
+
+<icon name="Add3">
+    <entitytype name="Add" ports="2"/>
+    <port name="input-1" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {0 50}
+            -direction w
+            -style arrowin
+            -tags input
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="input-2" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {50 0}
+            -direction n
+            -style arrowin
+            -tags input
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="input-3" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {50 100}
+            -direction s
+            -style arrowin
+            -tags input
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {100 50}
+            -direction e
+            -style arrowout
+            -tags output
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" slatetype="IconOval" fill="white">
+    <tclscript>
+        line 20 50 80 50 -width 4
+        line 50 20 50 80 -width 4
+    </tclscript>
+    </graphic>
+</icon>
+
+
+<icon name="Multiply">
+    <entitytype name="Multiply" ports="2"/>
+    <port name="input-1" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {0 50}
+            -direction w
+            -style arrowin
+            -tags input
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="input-2" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {50 0}
+            -direction n
+            -style arrowin
+            -tags input
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {100 50}
+            -direction e
+            -style arrowout
+            -tags output
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" slatetype="IconOval" fill="white">
+    <tclscript>
+        line 30 30 70 70 -width 4
+        line 30 70 70 30 -width 4
+    </tclscript>
+    </graphic>
+</icon>
+
+
 </iconlibrary>
 

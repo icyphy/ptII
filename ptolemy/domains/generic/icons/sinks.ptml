@@ -19,7 +19,7 @@
 	</graphic>
     </port>
 
-    <graphic format="tcl">
+    <graphic format="tcl" color="lightblue">
     <tclscript>
         polygon 20 20 20 80 80 80 80 20 -fill gray -outline black
         line 21 39 79 39 -fill green -stipple gray25
@@ -51,7 +51,7 @@
 	</graphic>
     </port>
 
-    <graphic format="tcl">
+    <graphic format="tcl" color="lightblue">
     <tclscript>
         polygon 20 20 20 80 80 80 80 20 -fill gray -outline black
         line 21 39 79 39 -fill green -stipple gray25
@@ -83,7 +83,7 @@
 	</graphic>
     </port>
 
-    <graphic format="tcl">
+    <graphic format="tcl" color="lightblue">
     <tclscript>
         polygon 20 20 20 80 80 80 80 20 -fill gray -outline black
         line 21 39 79 39 -fill green -stipple gray25

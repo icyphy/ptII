@@ -9,6 +9,64 @@
 </header>
 
 
+<icon name="GainLeft">
+    <entitytype name="Gain" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" color="lightsteelblue">
+    <tclscript>
+         polygon 30 50 70 80 70 20 -fill red -outline black
+         line 10 50 30 50 -width 1 -fill black
+         line 70 50 90 50 -width 1 -fill black
+    </tclscript>
+    </graphic>
+</icon>
+
+<icon name="GainRight">
+    <entitytype name="Gain" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" color="lightsteelblue">
+    <tclscript>
+         polygon 30 20 30 80 70 50 -fill red -outline black
+         line 10 50 30 50 -width 1 -fill black
+         line 70 50 90 50 -width 1 -fill black
+    </tclscript>
+    </graphic>
+</icon>
+
 <icon name="Integrator">
     <entitytype name="Integrator" ports="2"/>
     <port name="input" input="true" type="string">
@@ -19,6 +77,7 @@
 	</tclscript>
 	</graphic>
     </port>
+
     <port name="output" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
@@ -28,13 +87,14 @@
 	</graphic>
     </port>
 
-    <graphic format="tcl">
+    <graphic format="tcl" color="blue">
     <tclscript>
 	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
          text 70 55 -text dx -fill yellow 
     </tclscript>
     </graphic>
 </icon>
+
 
 <icon name="LookupTable">
     <entitytype name="LookupTable" ports="2"/>
@@ -55,7 +115,7 @@
 	</graphic>
     </port>
 
-    <graphic format="tcl">
+    <graphic format="tcl" color="darkgreen">
     <tclscript>
          polygon  30 10 70 10 70 85 30 85 -fill lightsteelblue -outline black
          line 30 25 70 25 -width 1 -fill black
@@ -63,6 +123,60 @@
          line 30 55 70 55 -width 1 -fill black
          line 30 70 70 70 -width 1 -fill black
          line 50 10 50 85 -width 1 -fill black
+    </tclscript>
+    </graphic>
+</icon>
+
+
+
+<icon name="ZeroOrderHold">
+    <entitytype name="ZeroOrderHold" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl">
+    <tclscript>
+    </tclscript>
+    </graphic>
+</icon>
+
+
+
+<icon name="Sampler">
+    <entitytype name="PeriodicalSampler" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl">
+    <tclscript>
     </tclscript>
     </graphic>
 </icon>
