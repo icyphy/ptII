@@ -122,7 +122,7 @@ public class AddSub extends TypedAtomicActor {
      *  rest are left for future firings.  If none of the input
      *  channels has a token, do nothing.  If none of the plus channels
      *  have tokens, then the tokens on the minus channels are subtracted
-     *  from a zero token of the same type as the first token enountered
+     *  from a zero token of the same type as the first token encountered
      *  on the minus channels.
      *
      *  @exception IllegalActionException If there is no director,
