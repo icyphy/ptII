@@ -45,8 +45,7 @@ include $(CONFIG)
 PTPACKAGE =     demo
 PTCLASSJAR =    $(PTPACKAGE).jar
 
-JSRCS = \
-        SimpleHS.java
+JSRCS = 
 
 EXTRA_SRCS =    $(JSRCS)
 
