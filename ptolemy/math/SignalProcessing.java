@@ -428,7 +428,7 @@ public final class SignalProcessing {
                 zeroscontrib = ArrayMath.product(diffzeros);
             }
             freq[index] = zeroscontrib.divide(polescontrib);
-            freq[index].multiply(gain);
+            freq[index] = freq[index].multiply(gain);
             angle += step;
         }
         return freq;
