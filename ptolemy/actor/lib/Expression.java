@@ -87,24 +87,24 @@ import java.util.LinkedList;
    the input tokens can be converted losslessly into tokens with the
    type of the output.  If this is not the case, then the types of the
    output ports must be set manually.
-  
+
    <p> The <i>expression</i> parameter specifies an expression that
    can refer to the inputs by name.  By default, the expression is
    empty, and attempting to execute the actor without setting it
    triggers an exception.
-   
+
    <p> The expression language understood by this actor is the same as
    <a href="../../../../expressions.htm">that used to set any
    parameter value</a>, with the exception that the expressions
    evaluated by this actor can refer to the values of inputs, and to
    the current time by the identifier name "time", and to the current
    iteration count by the identifier named "iteration."
-  
+
    <p> This actor can be used instead of many of the arithmetic actors,
    such as AddSubtract, MultiplyDivide, and TrigFunction.  However,
    those actors will be usually be more efficient, and sometimes more
    convenient to use.
-   
+
    <p> This actor requires its all of its inputs to be present.  If
    inputs are not all present, then an exception will be thrown.
 
@@ -262,7 +262,7 @@ public class Expression extends TypedAtomicActor {
         // This actor never requests termination.
         return true;
     }
-    
+
     /** Prefire this actor.  Return false if an input port has no
      *  data, otherwise return true.
      *  @exception IllegalActionException If the superclass throws it.
