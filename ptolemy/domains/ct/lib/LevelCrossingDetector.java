@@ -47,6 +47,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// LevelCrossingDetector
@@ -154,6 +155,24 @@ public class LevelCrossingDetector extends Transformer
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the value public variable in the new
+     *  object to equal the cloned parameter in that new object.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+	    throws CloneNotSupportedException {
+        LevelCrossingDetector newObject = (LevelCrossingDetector)
+            super.clone(workspace);
+	// Set the type constraint.
+	newObject.output.setTypeAtLeast(newObject.input);
+	newObject.output.setTypeAtLeast(newObject.defaultEventValue);
+        return newObject;
     }
 
     /** Consume the input token and the trigger token. The trigger token
