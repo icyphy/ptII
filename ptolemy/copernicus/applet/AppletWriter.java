@@ -30,6 +30,7 @@
 
 package ptolemy.copernicus.applet;
 
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.Copernicus;
@@ -65,7 +66,9 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
 A transformer that writes an applet version of a model.
@@ -170,18 +173,7 @@ public class AppletWriter extends SceneTransformer {
                     + "with '.kernel', it is :" + directorPackage);
 	}
 
-	String directorPackageDomain =
-            directorPackage.substring(0,
-                    directorPackage.lastIndexOf(".")
-                                      );
-
-	String directorDomain =
-            directorPackageDomain.substring(directorPackageDomain
-                    .lastIndexOf(".") + 1);
-
-	_domainJar =
-	    StringUtilities.substitute(directorPackageDomain, ".", "/")
-	    + "/" + directorDomain + ".jar";
+	_domainJar = _getDomainJar(directorPackage);
 
 	_sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
@@ -196,12 +188,38 @@ public class AppletWriter extends SceneTransformer {
             outDirFile.mkdirs();
 	}
 
+	try {
+	    if (!_codeBase.equals(".")) {
+		_modelJarFiles = "ptolemy/ptsupport.jar," + _domainJar;
+	    } else {
+		// If the code base is the current directory, then we
+		// copy the jar files over and set the value of _domainJar
+		// to the names of the jar files separated by commas.
+		StringBuffer jarFilesResults = new StringBuffer();
+		Iterator jarFiles = _copyJarFiles(director).iterator();
+		while (jarFiles.hasNext()) {
+		    String jarFile = (String)jarFiles.next();
+		    if (jarFilesResults.length() > 0) {
+		    jarFilesResults.append(",");
+		    }
+		    jarFilesResults.append(jarFile);
+		}
+		_modelJarFiles = jarFilesResults.toString();
+	    }
+	} catch (IOException ex) {
+	    // This exception tends to get eaten by soot, so we print as well.
+	    System.err.println("Problem writing makefile or html files:" + ex);
+	    ex.printStackTrace();
+	    throw new InternalErrorException("Problem writing the makefile "
+                    + "or htm files: " + ex);
+	}
+
 	// Set up the HashMap we will use when we read in files like
 	// model.htm.in and search for strings like @codebase@ and
 	// substitute in the value of _codeBase.
 	_substituteMap = new HashMap();
 	_substituteMap.put("@codeBase@", _codeBase);
-	_substituteMap.put("@domainJar@", _domainJar);
+	_substituteMap.put("@modelJarFiles@", _modelJarFiles);
 	_substituteMap.put("@outDir@", _outputDirectory);
 	_substituteMap.put("@sanitizedModelName@",
                 _sanitizedModelName);
@@ -230,8 +248,6 @@ public class AppletWriter extends SceneTransformer {
                     + modelFileName + "': " + ex);
 	}
 
-	// Read in the templates and generate new files.
-
 	// The directory that contains the templates.
 	// FIXME: this could be a Ptolemy parameter?
 
@@ -244,6 +260,7 @@ public class AppletWriter extends SceneTransformer {
 	System.out.println("AppletWriter: _templateDirectory: '"
 			   + _templateDirectory + "'");
 
+	// Read in the templates and generate new files.
 	try {
 	    Copernicus.substitute(_templateDirectory + "model.htm.in",
 				    _substituteMap,
@@ -254,9 +271,17 @@ public class AppletWriter extends SceneTransformer {
 				    _outputDirectory + "/"
 				    + _sanitizedModelName
 				    + "Vergil.htm");
-	    if (_codeBase.equals(".")) {
-		_copyJarFiles(director);
-	    }
+
+	    // Copy $PTII/doc/default.css as well.
+	    File defaultStyleSheetDirectory =
+		new File(_outputDirectory + "/doc");
+	    defaultStyleSheetDirectory.mkdirs();
+
+	    Copernicus.substitute(_templateDirectory + "default.css",
+				  _substituteMap,
+				  defaultStyleSheetDirectory.toString()
+				  + "/default.css" );
+
 	} catch (IOException ex) {
 	    // This exception tends to get eaten by soot, so we print as well.
 	    System.err.println("Problem writing makefile or html files:" + ex);
@@ -266,8 +291,32 @@ public class AppletWriter extends SceneTransformer {
 	}
     }
 
+    // Return a Map that maps classes to jar files for all the AtomicEntities
+    // and Directors in the model
+    private Map _allAtomicEntityJars() {
+	HashMap results = new HashMap();
+	Iterator atomicEntities = _model.allAtomicEntityList().iterator();
+	while (atomicEntities.hasNext()) {
+	    Object object = atomicEntities.next();
+	    
+	    //System.out.println("_allAtomicEntityJars: " + object.getClass().getName());
+	    results.put(object.getClass().getName(),
+			_getDomainJar(object.getClass().getPackage().getName()));
+
+	    if (object instanceof AtomicActor) {
+		// Add in the Managers
+		results.put(((AtomicActor)object).getDirector().getClass().getName(),
+			    _getDomainJar(((AtomicActor)object).getDirector().getClass().getPackage().getName()));
+	    }
+	}
+	return results;
+    } 
+
+
+
     // Copy jar files into _outputDirectory
-    private void _copyJarFiles(Director director)
+    // Return the jar files that have been copied
+    private Set _copyJarFiles(Director director)
         throws IOException {
 
 	// In the perfect world, we would run tree shaking here, or
@@ -280,7 +329,8 @@ public class AppletWriter extends SceneTransformer {
 	// We use a HashMap that maps class names to destination jar
 	// files.
 
-        Map classMap = new HashMap();
+        Map classMap = _allAtomicEntityJars();
+	
         classMap.put("ptolemy.actor.gui.MoMLApplet",
                      "ptolemy/ptsupport.jar");
         classMap.put(director.getClass().getName(),
@@ -290,6 +340,9 @@ public class AppletWriter extends SceneTransformer {
         // FIXME: unfortunately, vergil depends on FSM now.
         classMap.put("ptolemy.domains.fsm.kernel.FSMActor",
                      "ptolemy/domains/fsm/fsm.jar");
+	// FIXME: vergil.fsm.modal.ModalModel depends on CTStepSizeControlActor
+	classMap.put("ptolemy.domains.ct.kernel.CTStepSizeControlActor",
+		     "ptolemy/domains/ct/ct.jar");
         classMap.put("diva.graph.GraphController",
                      "lib/diva.jar");
 	// First, we search for the jar file, then we try
@@ -297,13 +350,22 @@ public class AppletWriter extends SceneTransformer {
 	// FIXME: we don't handle the case where there are no
 	// individual jar files because the user did not run 'make install'.
 
+	HashSet jarFilesThatHaveBeenCopied = new HashSet();
         Iterator classNames = classMap.keySet().iterator();
         while (classNames.hasNext()) {
             String className = (String)classNames.next();
 
 	    File potentialSourceJarFile =
 		new File(_ptIIDirectory, (String)classMap.get(className));
+	    if (jarFilesThatHaveBeenCopied
+		.contains((String)classMap.get(className))) {
+		// If we have already copied the jar file, then skip it
+		continue;
+	    }
+
 	    if (potentialSourceJarFile.exists()) {
+		jarFilesThatHaveBeenCopied
+		    .add((String)classMap.get(className));
 		// Ptolemy II development trees will have jar files
 		// if 'make install' was run.
 		_copyFile(_ptIIDirectory + File.separator
@@ -347,19 +409,14 @@ public class AppletWriter extends SceneTransformer {
                         + "\n\tclassName:        " + className
                         + "\n\tclassMap.get():   "
                         + (String)classMap.get(className));
+		jarFilesThatHaveBeenCopied
+		    .add((String)classMap.get(className));
                 _copyFile(classResource, _outputDirectory,
                         (String)classMap.get(className));
 	    }
 	}
 
-        // Copy $PTII/doc/default.css as well.
-	File defaultStyleSheetDirectory =
-            new File(_outputDirectory + "/doc");
-	defaultStyleSheetDirectory.mkdirs();
-
-        Copernicus.substitute(_templateDirectory + "default.css",
-                _substituteMap,
-                defaultStyleSheetDirectory.toString() + "/default.css" );
+	return jarFilesThatHaveBeenCopied;
     }
 
     // Copy sourceFile to the destinationFile in destinationDirectory.
@@ -398,6 +455,21 @@ public class AppletWriter extends SceneTransformer {
 	out.close();
     }
 
+    // Given a domain package, return the corresponding jar file
+    private static String _getDomainJar(String domainPackage) { 
+	String domainPackageDomain =
+            domainPackage.substring(0,
+                    domainPackage.lastIndexOf(".")
+                                      );
+
+	String domainDomain =
+            domainPackageDomain.substring(domainPackageDomain
+                    .lastIndexOf(".") + 1);
+
+	return StringUtilities.substitute(domainPackageDomain, ".", "/")
+	    + "/" + domainDomain + ".jar";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -411,6 +483,11 @@ public class AppletWriter extends SceneTransformer {
 
     // The model we are generating code for.
     private CompositeActor _model;
+
+    // The jar files that are necessary to run the model if the codebase
+    // is ".".
+    // For example: "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar".
+    private String _modelJarFiles;
 
     // The full path to the directory where we are creating the model
     private String _outputDirectory;
