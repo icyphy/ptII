@@ -314,7 +314,7 @@ public class TypedIOPort extends IOPort {
      *  @param type an instance of Class that is an element in the type
      *   lattice.
      */
-    protected void setResolvedType(Class c) {
+    protected void _setResolvedType(Class c) {
 	try {
 	    workspace().getWriteAccess();
 	    _resolvedType = c;

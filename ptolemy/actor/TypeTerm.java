@@ -149,7 +149,7 @@ public class TypeTerm implements InequalityTerm {
     	if (_port != null) {
 	    Class declared = _port.getDeclaredType();
 	    if (declared == null) {
-		_port.setResolvedType((Class)e);
+		_port._setResolvedType((Class)e);
 		return;
 	    }
 	}
