@@ -334,13 +334,22 @@ public class AppletWriter extends SceneTransformer {
 		String classResource =
 		    GeneratorAttribute.lookupClassAsResource(className);
 
+		if (classResource.equals(_ptIIDirectory)) {
+                    throw new IOException("Looking up '" + className
+                            + "' returned the $PTII directory '"
+                            + _ptIIDirectory + "' instead of a jar file. "
+                            + " Perhaps you need to run 'make install'"
+                            + "to create the jar files?");
+                }
 		if (classResource != null) {
-		    System.out.println("AppletWriter: " + classResource
-				       + " " + _outputDirectory
-				       + " "
-				       + (String)classMap.get(className));
-		    _copyFile(classResource, _outputDirectory, 
-				 (String)classMap.get(className));
+		    System.out.println("AppletWriter: "
+                            + "\n\tclassResource:    " + classResource
+                            + "\n\t_outputDirectory: " + _outputDirectory
+                            + "\n\tclassName:        " + className
+                            + "\n\tclassMap.get():   " 
+                            + (String)classMap.get(className));
+                    _copyFile(classResource, _outputDirectory, 
+                            (String)classMap.get(className));
 		} else {
 		    throw new IOException("Could not find '" + className
 					  + "' as a resource.\n"
