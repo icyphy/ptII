@@ -116,12 +116,16 @@ public class SearchPath extends Vector {
                 file = _tryOpen(candidate, targetPath, "jskel");
                 if (file != null) {
                     File javaFile = _tryOpen(candidate, targetPath, "java");
-                    if (javaFile.lastModified() > file.lastModified()) {
-                        throw new RuntimeException("SearchPath.openSource():" +
-                                candidate + target + 
-                                ".java was modified more recently than" +
-                                candidate + target + ".jskel. Rerun '" +
-                                "cd $PTII/ptolemy/lang/java; make skeleton'");
+                    if (javaFile != null) {
+                        if (javaFile.lastModified() > file.lastModified()) {
+                            throw new RuntimeException("SearchPath." +
+                                    "openSource():" +
+                                    candidate + target + 
+                                    ".java was modified more recently than" +
+                                    candidate + target + ".jskel. Rerun '" +
+                                    "cd $PTII/ptolemy/lang/java;"  +
+                                    "make skeleton'");
+                        }
                     }
                 }
             }
