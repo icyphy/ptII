@@ -123,7 +123,7 @@ public class LiveSoundActor extends TypedAtomicActor
      */
     public Parameter channels;
 
-    /** The number of samples that will be transfered to the audio driver
+    /** The number of samples that will be transferred to the audio driver
      *  together.  The default is 128.
      */
     public Parameter transferSize;

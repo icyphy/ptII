@@ -68,7 +68,7 @@ public class ModelUtilities {
     /**
      * This method takes a url specifying the model to be execute. The
      * <i>args<i> argument is a record token that will be used to set
-     * corresponding attributes of the spedified model by
+     * corresponding attributes of the specified model by
      * naming match, (see _setAttribute() method). The results of
      * executing the model is returned back by setting the value of some
      * Attributes. In particular, only Attributes
@@ -109,7 +109,7 @@ public class ModelUtilities {
     /**
      * This method takes model argument which is type of CompositeActor.
      * The <i>args<i> argument is a record token that will be used to
-     * set corresponding attributes of the spedified model by
+     * set corresponding attributes of the specified model by
      * naming match, (see _setAttribute() method). The results of
      * executing the model is returned back by setting the value of some
      * Attributes. In particular, only Attributes

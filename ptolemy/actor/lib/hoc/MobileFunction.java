@@ -113,7 +113,7 @@ public class MobileFunction extends TypedAtomicActor{
 
     /** The output port.
      *  Note: Due to the same reason above, the type of the output can't be
-     *  resolved currently. User has to spedify the type.
+     *  resolved currently. User has to specify the type.
      */
     public TypedIOPort output;
 
