@@ -628,7 +628,7 @@ public class NamedObj implements
                     // The following is a bad idea because there may be
                     // many fine-grain change requests in the list, and
                     // notification triggers expensive operations such
-                    // as rapairing the graph model in diva and repainting.
+                    // as repairing the graph model in diva and repainting.
                     // Hence, we do the notification once after all the
                     // change requests have executed.  Note that this may
                     // make it harder to optimize Vergil so that it
@@ -2365,7 +2365,7 @@ public class NamedObj implements
             return (NamedObj)clone(container.workspace());
         } catch (CloneNotSupportedException e) {
             throw new IllegalActionException(this, e,
-                    "Failed to propogate instance.");
+                    "Failed to propagate instance.");
         }
     }
 
@@ -2565,7 +2565,7 @@ public class NamedObj implements
             // It should not occur again because the first occurrence
             // would have been from an object that propagated to
             // this occurrence. A similar propagation will occur
-            // in propagation from the container, and for propagateing
+            // in propagation from the container, and for propageting
             // to work in that context, we must not issue the
             // change from here.  There is also no need to
             // go any further up the containment tree, since
