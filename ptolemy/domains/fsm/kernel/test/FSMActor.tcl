@@ -47,8 +47,12 @@ test FSMActor-1.1 {test creating an FSMActor} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set v0 [java::field $fsm initialStateName]
-    list [$fsm getFullName] [$v0 getFullName]
-} {..fsm ..fsm.initialStateName}
+    set fsm1 [java::new ptolemy.domains.fsm.kernel.FSMActor]
+    set ws [java::new ptolemy.kernel.util.Workspace]
+    set fsm2 [java::new ptolemy.domains.fsm.kernel.FSMActor $ws]
+    list [$fsm getFullName] [$v0 getFullName] [$fsm1 getFullName] \
+            [$fsm2 getFullName]
+} {..fsm ..fsm.initialStateName . .}
 
 test FSMActor-1.2 {container must be TypedCompositeActor or null} {
     $fsm setContainer [java::null]
@@ -287,3 +291,14 @@ test FSMActor-7.1 {test exception when multiple transitions enabled} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: ..fsm and ..fsm.s0:
 Multiple enabled transitions.}}
+
+######################################################################
+####
+#
+test FSMActor-8.1 {test newRelation} {
+    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor]
+    set r0 [$fsm newRelation r0]
+    set re0 [java::instanceof $r0 ptolemy.domains.fsm.kernel.Transition]
+    catch {$fsm newRelation r0} msg
+    list $re0 [$r0 getFullName] $msg
+} {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named ".", which already contains an object with that name.}}

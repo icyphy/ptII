@@ -79,14 +79,16 @@ test State-2.1 {test listing preemptive and non-preemptive transitions} {
     set t1 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t1]
     [java::field $s0 outgoingPort] link $t1
     [java::field $s1 incomingPort] link $t1
-    $t1 setPreemptive true
+    set tok0 [java::field ptolemy.data.BooleanToken FALSE]
+    set tok1 [java::field ptolemy.data.BooleanToken TRUE]
+    [java::field $t1 preemptive] setToken $tok1
     set ls1 [listToNames [$s0 preemptiveTransitionList]]
     set ls2 [listToNames [$s0 nonpreemptiveTransitionList]]
-    $t1 setPreemptive false
+    [java::field $t1 preemptive] setToken $tok0
     set ls3 [listToNames [$s0 preemptiveTransitionList]]
     set ls4 [listToNames [$s0 nonpreemptiveTransitionList]]
-    $t0 setPreemptive true
-    $t1 setPreemptive true
+    [java::field $t0 preemptive] setToken $tok1
+    [java::field $t1 preemptive] setToken $tok1
     set ls5 [listToNames [$s0 preemptiveTransitionList]]
     set ls6 [listToNames [$s0 nonpreemptiveTransitionList]]
     list $ls1 $ls2 $ls3 $ls4 $ls5 $ls6

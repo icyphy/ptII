@@ -39,6 +39,7 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -119,7 +120,7 @@ only be chosen after the refinement of its source state is fired.
 public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Construct an FSMActor in the default workspace with an empty string
-     *  as its name. Add the entity to the workspace directory.
+     *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      */
     public FSMActor() {
@@ -127,27 +128,29 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         try {
             initialStateName = new Parameter(this, "initialStateName");
             initialStateName.setTypeEquals(BaseType.STRING);
-        } catch (Exception e) {
+        } catch (KernelException ex) {
             // This should never happen.
-            throw new InternalErrorException("Constructor error " + e.getMessage());
+            throw new InternalErrorException("Constructor error "
+                    + ex.getMessage());
         }
     }
 
-    /** Construct an entity in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
+    /** Construct an FSMActor in the specified workspace with an empty
+     *  string as its name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
-     *  Add the entity to the workspace directory.
+     *  Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the entity.
+     *  @param workspace The workspace that will list the actor.
      */
     public FSMActor(Workspace workspace) {
 	super(workspace);
         try {
             initialStateName = new Parameter(this, "initialStateName");
             initialStateName.setTypeEquals(BaseType.STRING);
-        } catch (Exception e) {
+        } catch (KernelException ex) {
             // This should never happen.
-            throw new InternalErrorException("Constructor error " + e.getMessage());
+            throw new InternalErrorException("Constructor error "
+                    + ex.getMessage());
         }
     }
 
@@ -389,28 +392,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
-    /** Create a new relation with the specified name, add it to the
-     *  relation list, and return it. Derived classes can override
-     *  this to create domain-specific subclasses of ComponentRelation.
-     *  This method is write-synchronized on the workspace and increments
-     *  its version number.
-     *  @param name The name of the new relation.
-     *  @return A new instance of Transition.
-     *  @exception IllegalActionException If name argument is null.
-     *  @exception NameDuplicationException If name collides with a name
-     *   already in the container.
-     */
-    public ComponentRelation newRelation(String name)
-            throws IllegalActionException, NameDuplicationException {
-        try {
-            _workspace.getWriteAccess();
-            ComponentRelation rel = new Transition(this, name);
-            return rel;
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
-
     /** Return a new receiver of a type compatible with the director.
      *
      *  @exception IllegalActionException If there is no director.
@@ -423,6 +404,26 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     "Cannot create a receiver without a director.");
         }
         return dir.newReceiver();
+    }
+
+    /** Create a new instance of Transition with the specified name in
+     *  this actor, and return it.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The name of the new transition.
+     *  @return A transition with the given name.
+     *  @exception IllegalActionException If the name argument is null.
+     *  @exception NameDuplicationException If name collides with that
+     *   of a transition already in this actor.
+     */
+    public ComponentRelation newRelation(String name)
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            workspace().getWriteAccess();
+            Transition tr = new Transition(this, name);
+            return tr;
+        } finally {
+            workspace().doneWriting();
+        }
     }
 
     /** Return a list of the output ports.

@@ -38,8 +38,11 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 
@@ -89,24 +92,66 @@ public class Transition extends ComponentRelation {
     public Transition(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // Create the parameters for evaluating guard and trigger.
-        guard = new Parameter(this, "guard");
-        guard.setTypeEquals(BaseType.BOOLEAN);
-        trigger = new Parameter(this, "trigger");
-        trigger.setTypeEquals(BaseType.BOOLEAN);
+        guardExpression = new Parameter(this, "guardExpression");
+        guardExpression.setTypeEquals(BaseType.STRING);
+        preemptive = new Parameter(this, "preemptive");
+        preemptive.setTypeEquals(BaseType.BOOLEAN);
+        preemptive.setToken(BooleanToken.FALSE);
+        triggerExpression = new Parameter(this, "triggerExpression");
+        triggerExpression.setTypeEquals(BaseType.STRING);
+        _guard = new Variable(this, "_guard");
+        _guard.setTypeEquals(BaseType.BOOLEAN);
+        _trigger = new Variable(this, "_trigger");
+        _trigger.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    // Parameter for evaluating guard.
-    public Parameter guard = null;
+    /** Parameter specifying the guard expression.
+     */
+    public Parameter guardExpression = null;
 
-    // Parameter for evaluating trigger.
-    public Parameter trigger = null;
+    /** Parameter specifying whether this transition is preemptive.
+     */
+    public Parameter preemptive = null;
+
+    /** Parameter specifying the trigger expression.
+     */
+    public Parameter triggerExpression = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in an attribute. If the changed attribute is
+     *  the <i>preemptive</i> parameter, evaluate the parameter. If the
+     *  parameter is given an expression that does not evaluate to a
+     *  boolean value, throw an exception; otherwise increment the
+     *  version number of the workspace.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown by the superclass
+     *   attributeChanged() method, or the changed attribute is the
+     *   <i>preemptive</i> parameter and is given an expression that
+     *   does not evaluate to a boolean value.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        super.attributeChanged(attribute);
+        if (attribute == preemptive) {
+            // evaluate the parameter to make sure it is given a valid
+            // expression
+            preemptive.getToken();
+            workspace().incrVersion();
+        }
+        if (attribute == guardExpression) {
+            StringToken tok = (StringToken)guardExpression.getToken();
+            _guard.setExpression(tok.toString());
+        }
+        if (attribute == triggerExpression) {
+            StringToken tok = (StringToken)triggerExpression.getToken();
+            _trigger.setExpression(tok.toString());
+        }
+    }
 
     /** Return the list of choice actions contained by this transition.
      *  @return The list of choice actions contained by this transition.
@@ -129,8 +174,13 @@ public class Transition extends ComponentRelation {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         Transition newobj = (Transition)super.clone(ws);
-        newobj.guard = (Parameter)newobj.getAttribute("guard");
-        newobj.trigger = (Parameter)newobj.getAttribute("trigger");
+        newobj.guardExpression =
+                (Parameter)newobj.getAttribute("guardExpression");
+        newobj.preemptive = (Parameter)newobj.getAttribute("preemptive");
+        newobj.triggerExpression =
+                (Parameter)newobj.getAttribute("triggerExpression");
+        newobj._guard = (Variable)newobj.getAttribute("_guard");
+        newobj._trigger = (Variable)newobj.getAttribute("_trigger");
         newobj._actionListsVersion = -1;
         newobj._stateVersion = -1;
         return newobj;
@@ -161,7 +211,7 @@ public class Transition extends ComponentRelation {
      *  @return The guard expression.
      */
     public String getGuardExpression() {
-        return guard.getExpression();
+        return _guard.getExpression();
     }
 
     /** Return the trigger expression. The trigger expression should evaluate
@@ -169,7 +219,7 @@ public class Transition extends ComponentRelation {
      *  @return The trigger expression.
      */
     public String getTriggerExpression() {
-        return trigger.getExpression();
+        return _trigger.getExpression();
     }
 
     /** Return true if the transition is enabled, that is the guard is true.
@@ -177,15 +227,22 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
     public boolean isEnabled() throws IllegalActionException {
-        Token tok = guard.getToken();
+        Token tok = _guard.getToken();
         return ((BooleanToken)tok).booleanValue();
     }
 
-    /** Return true if this transition is preemptive.
+    /** Return true if this transition is preemptive. Whether this transition
+     *  is preemptive is specified by the <i>preemptive</i> parameter.
      *  @return True if this transition is preemptive.
      */
     public boolean isPreemptive() {
-        return _preemptive;
+        try {
+            return ((BooleanToken)preemptive.getToken()).booleanValue();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(preemptive.getFullName()
+                    + ": The parameter does not have a valid value, \""
+                    + preemptive.getExpression() + "\".");
+        }
     }
 
     /** Return true if the transition is triggered.
@@ -194,9 +251,9 @@ public class Transition extends ComponentRelation {
      *   trigger, or the trigger is true but the guard is false.
      */
     public boolean isTriggered() throws IllegalActionException {
-        Token tok = trigger.getToken();
+        Token tok = _trigger.getToken();
         boolean result = ((BooleanToken)tok).booleanValue();
-        tok = guard.getToken();
+        tok = _guard.getToken();
         boolean g = ((BooleanToken)tok).booleanValue();
         if (result == true && g == false) {
             throw new IllegalActionException(this, "The trigger: "
@@ -235,16 +292,13 @@ public class Transition extends ComponentRelation {
      *  @param expression The guard expression.
      */
     public void setGuardExpression(String expression) {
-        guard.setExpression(expression);
-    }
-
-    /** If the argument is true, set the transition to be preemptive.
-     *  Increment the version number of the workspace.
-     *  @param flag True to set the transition preemptive.
-     */
-    public void setPreemptive(boolean flag) {
-        _preemptive = flag;
-        workspace().incrVersion();
+        try {
+            guardExpression.setToken(new StringToken(expression));
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(getFullName()
+                    + " cannot set guard expression: "
+                    + ex.getMessage());
+        }
     }
 
     /** Set the trigger expression. The trigger expression should evaluate 
@@ -252,7 +306,13 @@ public class Transition extends ComponentRelation {
      *  @param expression The trigger expression.
      */
     public void setTriggerExpression(String expression) {
-        trigger.setExpression(expression);
+        try {
+            triggerExpression.setToken(new StringToken(expression));
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(getFullName()
+                    + " cannot set trigger expression: "
+                    + ex.getMessage());
+        }
     }
 
     /** Return the source state of this transition.
@@ -370,6 +430,9 @@ public class Transition extends ComponentRelation {
     // Cached destination state of this transition.
     private State _destinationState = null;
 
+    // Variable for evaluating guard.
+    private Variable _guard = null;
+
     // Set to true when the transition is preemptive.
     private boolean _preemptive = false;
 
@@ -378,5 +441,8 @@ public class Transition extends ComponentRelation {
 
     // Version of cached source/destination state.
     private long _stateVersion = -1;
+
+    // Variable for evaluating trigger.
+    private Variable _trigger = null;
 
 }

@@ -168,9 +168,9 @@ test FSMDirector-4.1 {test action methods} {
     [java::field $s0 refinementName] setToken $tok
     [java::field $s1 refinementName] setToken $tok
     $t0 setGuardExpression "p1_V > 5"
-    $t1 setPreemptive true
+    [java::field $t1 preemptive] setExpression "true"
     $t1 setGuardExpression "p1_V > 0"
-    $t2 setPreemptive true
+    [java::field $t2 preemptive] setExpression "true"
     $t2 setGuardExpression "p1_V > 5"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
     set tok [java::new ptolemy.data.StringToken p2]
@@ -288,7 +288,7 @@ test FSMDirector-6.1 {test transferInputs} {
     set tok [java::new ptolemy.data.StringToken e3]
     [java::field $s1 refinementName] setToken $tok
     $t0 setGuardExpression "p1_V > 5"
-    $t1 setPreemptive true
+    [java::field $t1 preemptive] setExpression "true"
     $t1 setGuardExpression "p1_V > 5"
 
     $d0 preinitialize
@@ -368,9 +368,9 @@ test FSMDirector-7.1 {test clone a modal model} {
     [java::field $s0 refinementName] setToken $tok
     [java::field $s1 refinementName] setToken $tok
     $t0 setGuardExpression "p1_V > 5"
-    $t1 setPreemptive true
+    [java::field $t1 preemptive] setExpression "true"
     $t1 setGuardExpression "p1_V > 0"
-    $t2 setPreemptive true
+    [java::field $t2 preemptive] setExpression "true"
     $t2 setGuardExpression "p1_V > 5"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
     set tok [java::new ptolemy.data.StringToken p2]

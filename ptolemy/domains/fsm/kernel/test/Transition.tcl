@@ -48,10 +48,12 @@ test Transition-1.1 {test creating a transition} {
     $e0 setName e0
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
-    set v0 [java::field $t0 guard]
-    set v1 [java::field $t0 trigger]
-    list [$t0 getFullName] [$v0 getFullName] [$v1 getFullName]
-} {.e0.fsm.t0 .e0.fsm.t0.guard .e0.fsm.t0.trigger}
+    set v0 [java::field $t0 guardExpression]
+    set v1 [java::field $t0 triggerExpression]
+    set v2 [java::field $t0 preemptive]
+    list [$t0 getFullName] [$v0 getFullName] [$v1 getFullName] \
+            [$v2 getFullName]
+} {.e0.fsm.t0 .e0.fsm.t0.guardExpression .e0.fsm.t0.triggerExpression .e0.fsm.t0.preemptive}
 
 test Transition-1.2 {container of a transition must be an FSMActor or null} {
     $t0 setContainer [java::null]
@@ -138,12 +140,14 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     $p2 link $r0
     $p2 link $r1
     $dir preinitialize
-    set guard [java::field $t0 guard]
-    set trigger [java::field $t0 trigger]
+    set guard [java::cast ptolemy.data.expr.Variable \
+            [$t0 getAttribute _guard]]
+    set trigger [java::cast ptolemy.data.expr.Variable \
+            [$t0 getAttribute _trigger]]
     set scope1 [[$guard getScope] elementList]
     set scope2 [[$trigger getScope] elementList]
     list [listToNames $scope1] [listToNames $scope2]
-} {{trigger initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V} {guard initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V}}
+} {{guardExpression preemptive triggerExpression _trigger initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V} {guardExpression preemptive triggerExpression _guard initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V}}
 
 test Transition-3.2 {test setting guard and trigger expression} {
     $t0 setGuardExpression "p0_V > 0"
@@ -179,9 +183,9 @@ test Transition-4.1 {test setting a transition preemptive or non-preemptive} {
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     set re0 [$t0 isPreemptive]
-    $t0 setPreemptive true
+    [java::field $t0 preemptive] setExpression "true"
     set re1 [$t0 isPreemptive]
-    $t0 setPreemptive false
+    [java::field $t0 preemptive] setExpression "false"
     set re2 [$t0 isPreemptive]
     list $re0 $re1 $re2
 } {0 1 0}
