@@ -45,6 +45,14 @@ import java.util.List;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+/** 
+ *  Create declarations for fields, constructors, and methods, and add them to
+ *  their enclosing class's environment.
+ * 
+ *  Code and comments adopted from st-class.cc from the Titanium project.
+ *
+ *  @author Jeff Tsay
+ */
 public class ResolveClassVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants  {
     public ResolveClassVisitor() {
@@ -53,7 +61,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         ApplicationUtility.trace("resolveClass for " +
-         node.getDefinedProperty(IDENT_KEY));
+         node.getProperty(IDENT_KEY));
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 

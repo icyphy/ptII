@@ -1522,13 +1522,13 @@ case 214:
 break;
 case 215:
 //#line 1238 "jparser.y"
-{ yyval.obj = new AllocateNode((TypeNameNode) val_peek(3).obj, (List) val_peek(1).obj, new ThisNode()); }
+{ yyval.obj = new AllocateNode((TypeNameNode) val_peek(3).obj, (List) val_peek(1).obj, AbsentTreeNode.instance); }
 break;
 case 216:
 //#line 1241 "jparser.y"
 {
      yyval.obj = new AllocateAnonymousClassNode((TypeNameNode) val_peek(4).obj,
-               (List) val_peek(2).obj, (List) val_peek(0).obj, new ThisNode());
+               (List) val_peek(2).obj, (List) val_peek(0).obj, AbsentTreeNode.instance);
    }
 break;
 case 217:

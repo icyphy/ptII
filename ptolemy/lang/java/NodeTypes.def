@@ -42,6 +42,8 @@ import java.util.List;
 import ptolemy.lang.IVisitor;
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;
+
+/** A visitor for AST's for Java code. */
 </vheader>
 
 <nheader>
@@ -49,10 +51,14 @@ package ptolemy.lang.java.nodetypes;
 
 import java.util.List;
 import ptolemy.lang.TreeNode;
+
+/** A specific type of node in the AST for Java code. */
 </nheader>
 
 <iheader>
 package ptolemy.lang.java.nodetypes;
+
+/** An interface containing the class ID's of all concrete node types. */
 </iheader>
 
 // interfaces
@@ -197,9 +203,12 @@ TypeClassAccessNode C ExprNode k 0 TypeNode fType k
 OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 MethodCallNode C ExprNode k 0 ExprNode method List args k
-AllocateNode C ExprNode k 0 TypeNameNode dtype List args ExprNode enclosingInstance k
+
+// both may have an AbsentTreeNode as the enclosing instace if we are in static code
+AllocateNode C ExprNode k 0 TypeNameNode dtype List args TreeNode enclosingInstance k
+AllocateAnonymousClassNode C ExprNode k 0 TypeNameNode superType List superArgs List members TreeNode enclosingInstance k
+
 AllocateArrayNode C ExprNode k 0 TypeNode dtype List dimExprs int dims TreeNode initExpr k
-AllocateAnonymousClassNode C ExprNode k 0 TypeNameNode superType List superArgs List members ExprNode enclosingInstance k
 PostIncrNode C IncrDecrNode c 1 ExprNode expr c
 PostDecrNode C IncrDecrNode c 1 ExprNode expr c
 UnaryPlusNode C UnaryArithNode c 1 ExprNode expr c

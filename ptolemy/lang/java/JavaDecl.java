@@ -59,7 +59,7 @@ import ptolemy.lang.java.nodetypes.*;
  *     same pointer, ignoring contents: names that are different pointers
  *     to strings containing the same characters are considered distinct.
  *
- *   ATTRIBUTE container(), container (declp)
+ *   ATTRIBUTE container
  *     Members, classes, interfaces, and packages are all parts of some
  *     larger declared entity, which is their container.  Members are
  *     contained in classes and interfaces, which are themselves contained
@@ -94,7 +94,7 @@ import ptolemy.lang.java.nodetypes.*;
  *
  *  Code and comments converted from Decl in the Titanium project.
  *
- *  @author ctsay@eecs.berkeley.edu
+ *  @author Jeff Tsay
  */
 public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstants {
 
@@ -130,7 +130,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
     throw new RuntimeException(getClass().getName() + " defined no type.");
   }
 
-  /** Set the environment associated with this declaration. */
+  /** Set the TypeNameNode associated with this declaration. */
   public void setDefType(TypeNameNode node) {
     throw new RuntimeException(getClass().getName() + " defines no type.");
   }

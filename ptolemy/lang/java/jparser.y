@@ -1235,12 +1235,12 @@ ArgumentList :
 
 AllocationExpression :
    NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
-   { $$ = new AllocateNode((TypeNameNode) $2, (List) $4, new ThisNode()); }
+   { $$ = new AllocateNode((TypeNameNode) $2, (List) $4, AbsentTreeNode.instance); }
    /* NEW: Java 1.1 : D.2.1 Anonymous classes */
  | NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
    {
      $$ = new AllocateAnonymousClassNode((TypeNameNode) $2,
-               (List) $4, (List) $6, new ThisNode());
+               (List) $4, (List) $6, AbsentTreeNode.instance);
    }
  | NEW ClassOrInterfaceType DimExprs DimsOpt
    {

@@ -37,7 +37,5 @@ import ptolemy.lang.java.nodetypes.*;
 public class FieldDecl extends MemberDecl {
     public FieldDecl(String name, TypeNode type, int modifiers, TreeNode source, JavaDecl container) {
         super(name, JavaDecl.CG_FIELD, type, modifiers, source, container);
-
     }
-
 }

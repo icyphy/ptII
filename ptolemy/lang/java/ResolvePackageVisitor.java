@@ -217,7 +217,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
            ClassDecl cl = new ClassDecl(className,
             isClass ? CG_CLASS : CG_INTERFACE,
-            null, node.getModifiers(), node, encDecl);
+            new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);
 
            if (ocl != null)  { // Redefinition in same package.
               ApplicationUtility.error("user type name " + className +

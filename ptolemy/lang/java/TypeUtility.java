@@ -41,6 +41,11 @@ import java.util.List;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+/** Methods dealing with types. Most of the code and comments were taken from the 
+ *  Titanium project.
+ *
+ *  @author Jeff Tsay
+ */
 public class TypeUtility implements JavaStaticSemanticConstants {
 
     /** Public constructor allows inheritence of methods although this class has no
@@ -54,7 +59,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
      *  the type of FOO. This method figures out the sub-type of NODE
      *  and calls the appropriate more specific method. 
      */
-    public static TypeNameNode accessedObjectType(FieldAccessNode node) {
+    public static TypeNode accessedObjectType(FieldAccessNode node) {
         switch (node.classID()) {
         
           case TYPEFIELDACCESSNODE_ID:
@@ -74,18 +79,26 @@ public class TypeUtility implements JavaStaticSemanticConstants {
         return null;              
     }
 
+    /** Return the type of the object that is accessed. */
     public static TypeNameNode accessedObjectType(TypeFieldAccessNode node) {
         return JavaDecl.getDecl((NamedNode) node.getFType()).getDefType();
     }
 
-    public static TypeNameNode accessedObjectType(ObjectFieldAccessNode node) {
-        return (TypeNameNode) type((ExprNode) node.getObject());        
+    /** Return the type of the object that is accessed. */
+    public static TypeNode accessedObjectType(ObjectFieldAccessNode node) {
+        return (TypeNode) type((ExprNode) node.getObject());        
     }
 
+    /** Return the type of the object that is accessed, which is the type
+     *  of THIS.
+     */
     public static TypeNameNode accessedObjectType(ThisFieldAccessNode node)  {
         return (TypeNameNode) node.getDefinedProperty(THIS_CLASS_KEY);
     }
 
+    /** Return the type of the object that is accessed, which is the type
+     *  of the superclass of THIS.
+     */
     public static TypeNameNode accessedObjectType(SuperFieldAccessNode node) {    
         ClassDecl myClass = (ClassDecl) JavaDecl.getDecl(
          (NamedNode) node.getDefinedProperty(THIS_CLASS_KEY));
@@ -273,61 +286,60 @@ public class TypeUtility implements JavaStaticSemanticConstants {
        switch (kind1) {
          case TYPE_KIND_CLASS:
          switch (kind2) {
-   	       case TYPE_KIND_NULL: 
-           return true;
+             case TYPE_KIND_NULL: 
+             return true;
 
-	         case TYPE_KIND_INTERFACE: 
-	         {
-              JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);	       
+             case TYPE_KIND_INTERFACE: 
+             {
+              JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);           
 
-	            return (decl == StaticResolution.OBJECT_DECL);
-  	       }
+                return (decl == StaticResolution.OBJECT_DECL);
+             }
 
-	         case TYPE_KIND_CLASS:
-	         if (isSubClass((ClassDecl) JavaDecl.getDecl((NamedNode) type2), 
-	                        (ClassDecl) JavaDecl.getDecl((NamedNode) type1))) {
-	            return true;
-  	       }
+             case TYPE_KIND_CLASS:                          
+             if (isSubClass(type2, type1)) {
+                return true;
+             }
 
-	         if (isArrayType(type1) && isArrayType(type2)) {
-	            ArrayTypeNode arrType1 = (ArrayTypeNode) type1;
-	            ArrayTypeNode arrType2 = (ArrayTypeNode) type2;
+             if (isArrayType(type1) && isArrayType(type2)) {
+                ArrayTypeNode arrType1 = (ArrayTypeNode) type1;
+                ArrayTypeNode arrType2 = (ArrayTypeNode) type2;
 
-  	          TypeNode elementType1 = arrType1.getBaseType();     
-	            TypeNode elementType2 = arrType2.getBaseType();     
+                TypeNode elementType1 = arrType1.getBaseType();     
+                TypeNode elementType2 = arrType2.getBaseType();     
 
-  	          return isAssignableFromType(elementType1, elementType2);
-	         }  
-	         return false;
+                return isAssignableFromType(elementType1, elementType2);
+             }  
+             return false;
 
-	         case TYPE_KIND_ARRAYINIT: 
-  	       return isArrayType(type1);
-	       }
-	       return false;
+             case TYPE_KIND_ARRAYINIT: 
+             return isArrayType(type1);
+         }
+         return false;
 
          case TYPE_KIND_INTERFACE:
          switch (kind2) {
- 	         case TYPE_KIND_NULL: 
-  	       return true;
+             case TYPE_KIND_NULL: 
+             return true;
 
-	         case TYPE_KIND_CLASS:
-	         {
-             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);	       
-             ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);	       
+             case TYPE_KIND_CLASS:
+             {
+             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);           
+             ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);           
 
-	           return doesImplement(decl2, decl1);
-	         }
+               return doesImplement(decl2, decl1);
+             }
 
-	         case TYPE_KIND_INTERFACE:
-	         {
-             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);	       
+             case TYPE_KIND_INTERFACE:
+             {
+             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);           
              ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);
-  	         return isSuperInterface(decl1, decl2); 
-	         }
+               return isSuperInterface(decl1, decl2); 
+             }
 
-	         default: 
-	         return false;
-	       }
+             default: 
+             return false;
+           }
 
          case TYPE_KIND_NULL:
          return false;         
@@ -391,22 +403,44 @@ public class TypeUtility implements JavaStaticSemanticConstants {
     }         
              
     public static final TypeNode type(final ExprNode expr) {
-       return (TypeNode) expr.accept(new TypeVisitor(), null);       
+        return (TypeNode) expr.accept(new TypeVisitor(), null);       
     }         
 
-    public static boolean isSubClass(JavaDecl decl1, JavaDecl decl2) {
-       int d1cat = decl1.category;
-       int d2cat = decl2.category;
-
-       if ((d1cat != CG_CLASS) || (d2cat != CG_CLASS)) {
+    /** Return true iff type1 is the same class as or a subclass of type2. 
+     *  In particular, return true if type1 is an ArrayTypeNode and
+     *  type2 is the TypeNameNode for Object.
+     */
+    public static boolean isSubClass(TypeNode type1, TypeNode type2) {
+         
+       if (type2.classID() != TYPENAMENODE_ID) {
+          return false;       
+       }
+    
+       ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl((NamedNode) type2);
+       
+       // arrays are subclasses of Object
+       if ((decl2 == StaticResolution.OBJECT_DECL) && 
+           (type1.classID() == ARRAYTYPENODE_ID)) {
+          return true;
+       } 
+  
+       if (type1.classID() != TYPENAMENODE_ID) {
+          return false;
+       }   
+       
+       ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl((NamedNode) type1);
+    
+       if ((decl1.category != CG_CLASS) || (decl2.category != CG_CLASS)) {
           return false;
        }
-
-       return isSubClass((ClassDecl) decl1, (ClassDecl) decl2);
+            
+       return isSubClass(decl1, decl2);
     }
 
+    /** Return true iff decl1 corresponds to a class that is the same or
+     *  a subclass of the class correspoinding to decl2.
+     */
     public static boolean isSubClass(ClassDecl decl1, ClassDecl decl2) {
-
        while (true) {
           if (decl1 == decl2) {
              return true;
@@ -419,7 +453,11 @@ public class TypeUtility implements JavaStaticSemanticConstants {
           decl1 = decl1.getSuperClass();
        }
     }                  
-
+    
+    
+    /** Return true iff the class corresponding to classDecl implements the
+     *  interface corresponding to iFaceDecl.
+     */
     public static boolean doesImplement(ClassDecl classDecl, ClassDecl iFaceDecl) {
        Iterator iFaceItr = classDecl.getInterfaces().iterator();
 
