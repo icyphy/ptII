@@ -149,7 +149,6 @@ PTINYPACKAGES = \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
 			ptolemy.actor.lib.logic \
-			ptolemy.actor.lib.parameters \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.de.lib \
 			ptolemy.domains.sdf.lib \
@@ -191,6 +190,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.actor.process \
 			ptolemy.actor.lib.hoc \
 			ptolemy.actor.lib.net \
+			ptolemy.actor.parameters \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
 			ptolemy.domains.csp.kernel \
@@ -312,7 +312,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/net/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
-			../ptolemy/actor/lib/parameters/*.java \
+			../ptolemy/actor/parameters/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
 			../ptolemy/actor/util/*.java \
