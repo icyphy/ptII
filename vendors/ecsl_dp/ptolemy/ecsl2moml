@@ -108,7 +108,7 @@ awk ' {
        }
        split(position, p, ",")
        #scale = 4
-       scale = 1
+       scale = 1.0
        x = substr(p[1], 2, length(p[1])) / scale
        y = substr(p[2], 1, length(p[2]) - 1) / scale
 
@@ -209,7 +209,7 @@ awk ' {
        }
        split(position, p, ",")
        #scale = 4
-       scale = 1
+       scale = 1.0
        x = substr(p[1], 2, length(p[1])) / scale
        y = substr(p[2], 1, length(p[2]) - 1) / scale
 
@@ -368,7 +368,7 @@ awk 'BEGIN {
        }
        split(position, p, ",")
        #scale = 2.4 
-       scale = 1
+       scale = 1.0
        x = substr(p[1], 2, length(p[1])) / scale
        y = substr(p[2], 1, length(p[2]) - 1) / scale
 
@@ -494,7 +494,7 @@ $0 ~ /<entity/ {
  
        # First, we handle the usual case where OutputPort only
        # has a dstLine field
-       if ($1 ~ /<OutputPort/) {
+       if ($1 ~ /<OutputPort/ || $1 ~ /<COutPort/ ) {
            relation = dstLine
        } else { # bof
            relation = srcLine
@@ -511,8 +511,10 @@ $0 ~ /<entity/ {
            }
        }
        split(position, p, ",")
-       x = substr(p[1], 2, length(p[1])) / 4
-       y = substr(p[2], 1, length(p[2]) - 1) / 4
+       #scale = 4
+       scale = 1.0
+       x = substr(p[1], 2, length(p[1])) / scale
+       y = substr(p[2], 1, length(p[2]) - 1) / scale
 
        location="[" x "," y "]"
        relationLocationMap[dstLine] = location
@@ -584,8 +586,10 @@ $0 ~ /<entity/ {
            }
        }
        split(position, p, ",")
-       x = substr(p[1], 2, length(p[1])) / 4
-       y = substr(p[2], 1, length(p[2]) - 1) / 4
+       #scale = 4
+       scale = 1.0
+       x = substr(p[1], 2, length(p[1])) / scale
+       y = substr(p[2], 1, length(p[2]) - 1) / scale
        print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
        print indent "     </property>"
 
@@ -634,7 +638,7 @@ $0 ~ /<entity/ {
             }
             # Get the port, if any
             if (relationPortMap[name] != "") { 
-                print indent "<link port=\"" relationPortMap[name] "\" relation=\"" name "\"/>"
+                print indent "<!-- " NR, $0, " 1 --><link port=\"" relationPortMap[name] "\" relation=\"" name "\"/>"
             }
         } else {
             print $0   
@@ -652,7 +656,7 @@ $1 ~ /<\/entity>/ {
        if ( length(addRelations[addRelation]) > 0 ) {
            addRelationsFullName = addRelationsContainer[addRelation] "_" addRelations[addRelation] "_multiPort"
            print indent "<relation name=\"" addRelationsFullName "\" class=\"ptolemy.actor.TypedIORelation\"/>"
-           print indent "<link port=\"" addRelation "\" relation=\"" addRelationsFullName "\"/>" 
+           print indent "<!-- 2 --><link port=\"" addRelation "\" relation=\"" addRelationsFullName "\"/>" 
        }
     }
 
@@ -671,7 +675,7 @@ $1 ~ /<\/entity>/ {
           relation = links[link]
           if (index(relation, " ") == 0) {
               # No spaces is the relation name
-              print indent "<link port=\"" link "\" relation=\"" relation "\"/>" 
+              print indent "<!-- 3 --><link port=\"" link "\" relation=\"" relation "\"/>" 
           } else {
               nf = split(relation, relations, " ") 
               for(i = 1; i <= nf; i++) {
@@ -696,7 +700,7 @@ $1 ~ /<\/entity>/ {
                        }
                   } 
                   if (addRelationsHack == 0) {
-                      print indent "<link port=\"" link "\" relation=\"" relations[i] "\"/>"
+                      print indent "<!-- 4--><link port=\"" link "\" relation=\"" relations[i] "\"/>"
                   }
               }
           }
