@@ -1336,7 +1336,7 @@ void function()                 :
 	  // does not have to be reparsed whenever the Token in 
 	  // the Parameter changes.
           jjtn001._var   = referredVar; 
-          // Register the calling parameter as a ParameterListener 
+          // Register the calling parameter as a listener 
           // of this Parameter this ID references.
           if (_owner != null) {
        	    referredVar._addValueDependent(_owner);
