@@ -783,6 +783,21 @@ public class Manager extends NamedObj implements Runnable {
         _container = compositeActor;
     }
 
+    /** Check whether write access is needed during an
+     *  iteration. This is done by asking the directors.
+     *  This method calls the needWriteAccess() method of
+     *  the top level director, which will in turn query any inside
+     *  directors.
+     */
+    protected boolean _needWriteAccess() {
+        if (_writeAccessVersion == _workspace.getVersion()) {
+            return _writeAccessNeeded;
+        }
+        _writeAccessNeeded = _container.getDirector().needWriteAccess();
+        _writeAccessVersion = _workspace.getVersion();
+        return _writeAccessNeeded;
+    }
+
     /** Notify listeners that execution has completed successfully.
      */
     protected void _notifyListenersOfCompletion() {
@@ -814,21 +829,6 @@ public class Manager extends NamedObj implements Runnable {
                 listener.managerStateChanged(this);
             }
         }
-    }
-
-    /** Check whether write access is needed during an
-     *  iteration. This is done by asking the directors.
-     *  This method calls the needWriteAccess() method of
-     *  the top level director, which will in turn query any inside
-     *  directors.
-     */
-    protected boolean _needWriteAccess() {
-        if (_writeAccessVersion == _workspace.getVersion()) {
-            return _writeAccessNeeded;
-        }
-        _writeAccessNeeded = _container.getDirector().needWriteAccess();
-        _writeAccessVersion = _workspace.getVersion();
-        return _writeAccessNeeded;
     }
 
     /** Process the queued change requests that have been added with
