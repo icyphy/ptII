@@ -41,7 +41,9 @@ import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
+import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 
 import java.awt.Container;
 import java.awt.Font;
@@ -293,6 +295,12 @@ public class PtolemyQuery extends Query
             // a weak reference.
             request.addChangeListener(this);
 	    if(_handler != null) {
+                // Remove the error handler so that this class handles
+                // the error through the notification.  Save the previous
+                // error handler to restore after this request has been
+                // processes.
+                _savedErrorHandler = MoMLParser.getErrorHandler();
+                MoMLParser.setErrorHandler(null);
 		_handler.requestChange(request);
 	    } else {
 		request.execute();
@@ -308,6 +316,11 @@ public class PtolemyQuery extends Query
         // Ignore if this was not the originator.
         if (change != null) {
             if (change.getSource() != this) return;
+
+            // Restore the parser error handler.
+            if (_savedErrorHandler != null) {
+                MoMLParser.setErrorHandler(_savedErrorHandler);
+            }
 
             String name = change.getDescription();
             if (_attributes.containsKey(name)) {
@@ -335,6 +348,12 @@ public class PtolemyQuery extends Query
         if (change == null || change.getSource() != this) {
             return;
         }
+
+        // Restore the parser error handler.
+        if (_savedErrorHandler != null) {
+            MoMLParser.setErrorHandler(_savedErrorHandler);
+        }
+
         // If this is already a dialog reporting an error, and is
         // still visible, then just update the message.  Otherwise,
         // create a new dialog to prompt the user for a corrected input.
@@ -519,6 +538,9 @@ public class PtolemyQuery extends Query
 
     // Maps an entry name to the most recent error-free value.
     private Map _revertValue = new HashMap();
+
+    // Saved error handler to restore after change.
+    private ErrorHandler _savedErrorHandler = null;
 
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.

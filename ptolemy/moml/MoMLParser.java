@@ -315,7 +315,25 @@ public class MoMLParser extends HandlerBase {
             // a warning only, but this has the side effect of blocking
             // the mechanism in PtolemyQuery that carefully prompts
             // the user for corrected parameter values.
-            param.validate();
+            try {
+                param.validate();
+            } catch (Exception ex) {
+                if (_handler != null) {
+                    int reply = _handler.handleError(
+                            "<param name=\""
+                            + param.getName()
+                            + "\" value=\""
+                            + param.getExpression()
+                            + "\"/>",
+                            (NamedObj)param.getContainer(),
+                            ex);
+                    if (reply == ErrorHandler.CONTINUE) {
+                        continue;
+                    }
+                }
+                // No handler, or cancel button pushed.
+                throw ex;
+            }
         }
     }
 
@@ -443,6 +461,15 @@ public class MoMLParser extends HandlerBase {
 	}
 
         throw new XmlException(message, currentExternalEntity, line, column);
+    }
+
+    /** Get the error handler to handle parsing errors.
+     *  Note that this method is static. The returned error handler
+     *  will handle all errors for any instance of this class.
+     *  @return The ErrorHandler currently handling errors.
+     */
+    public static ErrorHandler getErrorHandler() {
+        return _handler;
     }
 
     /** Get the top-level entity associated with this parser, or null if none.
