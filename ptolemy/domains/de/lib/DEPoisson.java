@@ -32,7 +32,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
 // FIXME: Delete these when infrastructure improves (see FIXME below).
@@ -69,6 +69,8 @@ public class DEPoisson extends DEActor {
         output = new TypedIOPort(this, "output", false, true);
         meantime = new Parameter(this, "lambda", new DoubleToken(0.1));
         outputvalue = new Parameter(this, "value");
+        // Create a parameter listener
+        meantime.addParameterListener(new LambdaListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,6 +87,7 @@ public class DEPoisson extends DEActor {
 	    newobj.output = (TypedIOPort)newobj.getPort("output");
 	    newobj.outputvalue = (Parameter)newobj.getAttribute("outputvalue");
 	    newobj.meantime = (Parameter)newobj.getAttribute("meantime");
+            newobj.meantime.addParameterListener(new LambdaListener());
 	    return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -109,13 +112,11 @@ public class DEPoisson extends DEActor {
      */
     public void fire() throws IllegalActionException {
 
-        double lambda = ((DoubleToken)meantime.getToken()).doubleValue();
-
 	// send a token via the output port.
 	output.broadcast(outputvalue.getToken());
 
         // compute an exponential random variable.
-        double exp = -Math.log((1-Math.random()))*lambda;
+        double exp = -Math.log((1-Math.random()))*_lambda;
 	fireAfterDelay(exp);
     }
 
@@ -145,6 +146,23 @@ public class DEPoisson extends DEActor {
     // the mean inter-arrival time and value
     public Parameter meantime;
     public Parameter outputvalue;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    private class LambdaListener implements ParameterListener {
+        public void parameterChanged(ParameterEvent event) {
+            _lambda = ((DoubleToken)meantime.getToken()).doubleValue();
+        }
+        public void parameterRemoved(ParameterEvent event) {
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private double _lambda;            
 }
 
 
