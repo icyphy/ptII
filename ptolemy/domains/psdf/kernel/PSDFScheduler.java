@@ -63,6 +63,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Fraction;
@@ -122,6 +123,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
     public PSDFScheduler() 
             throws IllegalActionException, NameDuplicationException {
         super();
+        _init();
     }
 
     /** Construct a scheduler in the given workspace with the name
@@ -135,6 +137,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
     public PSDFScheduler(Workspace workspace) 
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
+        _init();
     }
 
     /** Construct a scheduler in the given container with the given name.
@@ -153,6 +156,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
     public PSDFScheduler(Director container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
     }
 
     /** Return the parameterized scheduling sequence.  
@@ -275,6 +279,13 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         } catch (Exception exception) {
             throw new RuntimeException("Error converting cluster hierarchy to "
                     + "schedule.\n" + exception.getMessage());
+        }
+    }
+
+    // Initialize the object.
+    private void _init() {
+        if (_debugFlag) {
+            addDebugListener(new StreamListener());
         }
     }
 
