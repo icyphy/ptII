@@ -70,7 +70,7 @@ is active. If this actor is used in conjunction with an
 AudioPlayer actor, changing a parameter will cause the corresponding
 parameter value of the AudioPlayer to automatically be set to the
 same value. This behavior is required because the AudioCapture and
-AudioPlayback actors both share access to the audio hardware, which
+AudioPlayer actors both share access to the audio hardware, which
 is associated with a single sample rate, bit resolution, and
 number of channels.
 <ul>
@@ -106,7 +106,7 @@ Note: Requires Java 2 v1.3.0 or later.
 @author Brian K. Vogel
 @version $Id$
 @see ptolemy.media.javasound.LiveSound
-@see AudioPlayback
+@see AudioPlayer
 @see SoundReader
 @see SoundWriter
 */
