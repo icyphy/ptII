@@ -2,7 +2,7 @@
 #
 # @Authors: Edward A. Lee
 #
-# @Version: $Id$
+# @Version: makefile,v 1.6 2004/01/08 22:53:56 eal Exp
 #
 # @Copyright (c) 2001-2003 The Regents of the University of California.
 # All rights reserved.
@@ -43,8 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTPACKAGE = 	attributes
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
