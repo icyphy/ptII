@@ -279,7 +279,7 @@ public class Manager extends NamedObj implements Runnable {
 	long totalMemory = runtime.totalMemory()/1024;
 	long freeMemory = runtime.freeMemory()/1024;
 
-        System.out.println("ptolemy.actor.Manager run(): elapsed time:"
+        System.out.println("Manager.run(): Elapsed Time:"
                 + (endTime - startTime) + " ms. Memory: "
                 + totalMemory + "K Free: " + freeMemory + "K ("
                 + Math.round( (((double)freeMemory)/((double)totalMemory))
