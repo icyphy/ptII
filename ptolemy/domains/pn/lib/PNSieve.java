@@ -48,7 +48,8 @@ public class PNSieve extends PNActor {
             throws NameDuplicationException {
         super(container, name);
         _input = newInPort(this, "input");
-        _output = null;
+        //_output = null;
+        _output = newOutPort(this, "output");
     }
     
 
@@ -69,16 +70,17 @@ public class PNSieve extends PNActor {
      */
     public void run() {
         Token[] data;
+        boolean islargestprime = true;
         try {
-            int i;
-            for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
+            writeTo(_output, new IntToken(_prime));
+            for (int i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
 	      Enumeration relations = _input.linkedRelations();
 	      while (relations.hasMoreElements()) {
 		  IORelation rel = (IORelation)relations.nextElement();
 		  data = readFrom(_input, rel);
 		  if (((IntToken)data[0]).intValue()%_prime != 0) {
 		      // is it the next prime? 
-		      if (_output == null) {
+		      if (islargestprime) {
 
 			  // yes - make the mutation for it 
                           Mutation m = makeMutation(((IntToken)data[0]).intValue());
@@ -87,6 +89,7 @@ public class PNSieve extends PNActor {
 
                           // Queue the new mutation
                           director.queueMutation(m);
+                          islargestprime = false;
 
                           // In PN, we should process the mutations NOW
                           director.processPendingMutations();
@@ -106,13 +109,7 @@ public class PNSieve extends PNActor {
         } catch (NoSuchItemException e) {
             System.out.println("Terminating "+ this.getName());
             return;
-        } /* catch (NameDuplicationException e) {
-            System.err.println("Exception: " + e.toString());
-            //This should never be thrown
-        }  catch (IllegalActionException e) {
-            //This should never be thrown
-            System.err.println("Exception: " + e.toString());
-        } */
+        } 
     }
     
     public void setParam(String name, double value)
@@ -131,8 +128,11 @@ public class PNSieve extends PNActor {
             // remember this
             PNSieve newSieve = null;
             Relation newRelation = null;
-            PNPort input = null;
-
+            Relation relation = null;
+            PNInPort input = null;
+            PNOutPort output = null;
+            PNOutPort outport = null;
+            
             // Create the mutation
             public void perform() {
                 try {
@@ -140,9 +140,20 @@ public class PNSieve extends PNActor {
 
                     newSieve = new PNSieve(container, value + "_sieve");
                     newSieve.setInitState(value);
-                    input = (PNPort)newSieve.getPort("input");
                     
-                    _output = new PNOutPort(PNSieve.this, "output");
+                    //Disconnecting the plotter and attaching it to the output
+                    //of the new Sieve
+                    Enumeration relations = _output.linkedRelations();
+                    relation = (Relation)relations.nextElement();
+                    //Disconnected
+                    _output.unlink(relation);
+                    //Connect PLotter again
+                    outport = (PNOutPort)newSieve.getPort("output");
+                    outport.link(relation);
+
+                    //Connect newsieve
+                    input = (PNInPort)newSieve.getPort("input");
+                    //_output = new PNOutPort(PNSieve.this, "output");
                     newRelation = container.connect(input, _output, value+"_queue");
                 } catch (NameDuplicationException e) {
                     System.err.println("Exception: " + e.toString());
@@ -156,7 +167,13 @@ public class PNSieve extends PNActor {
             public void update(MutationListener listener) {
                 CompositeActor container = (CompositeActor)PNSieve.this.getContainer();
                 listener.addEntity(container, newSieve);
-                listener.addPort(PNSieve.this, _output);
+                //listener.addPort(PNSieve.this, _output);
+                //Disconnected
+                listener.unlink(relation, _output);
+                //_output.unlink(PNOutPort);
+                //Connect PLotter again
+                listener.link(relation, outport);
+                //outport.link(relation);
                 listener.addRelation(container, newRelation);
                 listener.link(newRelation, input);
                 listener.link(newRelation, _output);
