@@ -261,9 +261,11 @@ public final class Workspace implements Nameable, Serializable {
             if (record.readDepth == 0) {
                 // the current thread is no longer a reader
                 _numReaders--;
-                if (_numReaders == 0) {
-                    notifyAll();
-                }
+                // notify waiting writers
+                // these writers may have read access, so this notification
+                // cannot be conditioned on _numReaders == 0
+                // possible condition: _writeReq >= _numReaders
+                notifyAll();
             }
         } else if (record.failedReadAttempts > 0) {
             record.failedReadAttempts--;
@@ -302,7 +304,6 @@ public final class Workspace implements Nameable, Serializable {
             }
         } else {
             if (_writeDepth > 0) {
-                _writeReq--;
                 _writeDepth--;
                 if (_writeDepth == 0) {
                     _writer = null;
@@ -389,9 +390,9 @@ public final class Workspace implements Nameable, Serializable {
         // Go into a loop, and at each iteration check whether the current
         // thread can get read access. If not then do a wait() on the
         // workspace. Otherwise, exit the loop.
-        while (_writeReq != 0) {
+        while (_writeReq != 0 || _writer != null) {
             try {
-                wait(this);
+                wait();
             } catch (InterruptedException ex) {
                 throw new InternalErrorException(current.getName()
                         + " - thread interruped while waiting to get "
@@ -432,10 +433,13 @@ public final class Workspace implements Nameable, Serializable {
      */
     public final synchronized void getWriteAccess() {
 
-        // check whether this workspace is read-only, if this feature
-        // is to be supported
-
         Thread current = Thread.currentThread();
+        if (current == _writer) {
+            // already have write permission
+            _writeDepth++;
+            return;
+        }
+
         AccessRecord record = null;
         if (current == _lastReader) {
             record = _lastReaderRecord;
@@ -444,12 +448,6 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         _writeReq++;
-
-        if (current == _writer) {
-            // already have write permission
-            _writeDepth++;
-            return;
-        }
 
         // probably need to wait for write access
         // first increment this to make the record not empty, so as to
@@ -461,39 +459,36 @@ public final class Workspace implements Nameable, Serializable {
         // can get a write access. If yes, then return, if not then perform
         // a wait() on the workspace.
 
-        while (true) {
-
-            if (_writer == null) {
-                // there are no writers. Are there any readers?
-                if (_numReaders == 0) {
-                    // No readers
-                    _writer = current;
-                    _writeDepth = 1;
-                    record.failedWriteAttempts--;
-                    return;
-                } else if (_numReaders == 1) {
-                    // Check if sole reader is this current thread.
-                    if (record != null && record.readDepth > 0) {
-                        // The only reader is the current thread.
+        try {
+            while (true) {
+                if (_writer == null) {
+                    // there are no writers. Are there any readers?
+                    if (_numReaders == 0
+                            || _numReaders == 1 && record.readDepth > 0) {
+                        // No readers
+                        // or the only reader is the current thread
                         _writer = current;
                         _writeDepth = 1;
                         record.failedWriteAttempts--;
                         return;
                     }
                 }
-            }
 
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                _writeReq--;
-                throw new InternalErrorException(current.getName()
-                        + " - thread interruped while waiting to get "
-                        + "write access: " + ex.getMessage());
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                    throw new InternalErrorException(current.getName()
+                            + " - thread interruped while waiting to get "
+                            + "write access: " + ex.getMessage());
+                }
             }
-
+        } finally {
+            _writeReq--;
+            if (_writeReq == 0 && _writer == null) {
+                // notify waiting readers
+                notifyAll();
+            }
         }
-
     }
 
     /** Handle a model error by throwing the specified exception.
@@ -515,13 +510,6 @@ public final class Workspace implements Nameable, Serializable {
      */
     public final synchronized void incrVersion() {
         _version++;
-    }
-
-    /** Return true if the workspace is read only, and false otherwise.
-     *  @return True if the workspace is read-only, false otherwise.
-     */
-    public final synchronized boolean isReadOnly() {
-        return _readOnly;
     }
 
     /** Remove the specified item from the directory.
@@ -556,43 +544,6 @@ public final class Workspace implements Nameable, Serializable {
         }
         _name = name;
         incrVersion();
-    }
-
-    /** Specify whether this workspace is read only. When the workspace is
-     *  read only, calling getWriteAccess() or doneWriting() will result in
-     *  a runtime exception, and calling getReadAccess() and doneReading()
-     *  will return immediately. Accesses to topology information are
-     *  considerably more efficient if the workspace is read only.
-     *
-     *  @param flagValue True to make the workspace read only, and false
-     *   otherwise.
-     *  @exception IllegalActionException If a thread has write
-     *   access on the workspace.
-     */
-    public synchronized void setReadOnly(boolean flagValue)
-            throws IllegalActionException {
-
-        // Problem with the read-only feature:
-        // One thread set the workspace to read only, another thread gets
-        // read permission without a trace. Suppose the first thread then
-        // set the workspace to be writable, then the second thread calls
-        // doneReading() to release read access: invalid state.
-
-        /*
-        if (flagValue != _readOnly) {
-            // assert that there is no writer or reader
-            // NOTE: This used to only check the writer, but that's
-            // not correct, because doneReading() and getReadAccess()
-            // will get out of sync.  EAL 4/10/03
-            if (_writer != null || _numReaders != 0 ||
-                    _numBlockedReaders != 0) {
-                throw new IllegalActionException(this,
-                        "Can't change the read-only status of a workspace "
-                        + "while threads have read or write permission.");
-            }
-        }
-        */
-        _readOnly = flagValue;
     }
 
     /** Return a concise description of the object.
@@ -759,7 +710,8 @@ public final class Workspace implements Nameable, Serializable {
 
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
-            if (current == _writer || _writeReq == 0 ) {
+            if (current == _writer
+                    || (_writeReq == 0 && _writer == null)) {
                 _numReaders++;
                 record.failedReadAttempts -= count;
                 record.readDepth = count;
@@ -800,10 +752,7 @@ public final class Workspace implements Nameable, Serializable {
             return 0;
         } else {
             _numReaders--;
-            if (_numReaders == 0) {
-                // notify any waiting writer
-                notifyAll();
-            }
+            notifyAll();
             int result = record.readDepth;
             record.failedReadAttempts += result;
             record.readDepth = 0;

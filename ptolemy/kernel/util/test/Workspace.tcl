@@ -318,6 +318,67 @@ TR.doneReading()
 TR.doneReading()
 }}
 
+######################################################################
+#
+test Workspace-8.2 {Test notifying a reader waiting for write access} {
+    set tw [java::new ptolemy.kernel.util.test.TestWorkspace3]
+    $tw runTest
+    list [$tw profile]
+} {{A1 got read access
+A3 got read access
+A3 released read access
+A2 got write access
+A2 released write access
+A1 released read access
+}}
+
+######################################################################
+#
+test Workspace-8.3 {Test handling failure in getting read access} {
+    set tw [java::new ptolemy.kernel.util.test.TestWorkspace4]
+    $tw runTest
+    list [$tw profile]
+} {{A0 got write access
+A2 failed to get read access
+A0 released write access
+A3 got read access
+A3 released read access
+A1 got write access
+A1 released write access
+A2 handled failure in getting read access
+}}
+
+######################################################################
+#
+test Workspace-8.3 {Test handling failure in getting write access} {
+    set tw [java::new ptolemy.kernel.util.test.TestWorkspace5]
+    $tw runTest
+    list [$tw profile]
+} {{A0 got read access
+A2 failed to get write access
+A0 released read access
+A3 got write access
+A3 released write access
+A1 got read access
+A1 released read access
+A2 handled failure in getting write access
+}}
+
+######################################################################
+#
+test Workspace-8.3 {Test handling interrupt when waiting on lock object} {
+    set tw [java::new ptolemy.kernel.util.test.TestWorkspace6]
+    $tw runTest
+    list [$tw profile]
+} {{A0 got read access
+A1 got read access
+A2 entered waiting on lock
+A3 got write access
+A3 released write access
+A2 interrupted while waiting
+A1 released read access
+A0 released read access
+}}
 
 ######################################################################
 #### 

@@ -46,6 +46,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	AccessAction.java \
+	AccessThread.java \
 	ChangeRequestTest.java \
 	PtestWorkspace.java \
 	StreamValueListener.java \
@@ -53,8 +55,13 @@ JSRCS = \
 	TestDebugEvent.java \
 	TestNullNamedObj.java \
 	TestPtolemyThread.java \
+	TestWorkspaceBase.java \
 	TestWorkspace.java \
-	TestWorkspace2.java
+	TestWorkspace2.java \
+	TestWorkspace3.java \
+	TestWorkspace4.java \
+	TestWorkspace5.java \
+	TestWorkspace6.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
