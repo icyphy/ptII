@@ -50,36 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test IntToken-1.1 {Get information about the class} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.data.IntToken]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.data.IntToken
-  fields:        
-  methods:       {add pt.data.Token} {addR pt.data.Token} byteValue clon
-    e {divide pt.data.Token} {divideR pt.data.Token} double
-    Value {equality pt.data.Token} {equals java.lang.Object
-    } {fromString java.lang.String} getClass getPublisher g
-    etValue hashCode intValue isArray longValue {modulo pt.
-    data.Token} {moduloR pt.data.Token} {multiply pt.data.T
-    oken} {multiplyR pt.data.Token} notify notifyAll notify
-    Subscribers one {setPublisher pt.data.TokenPublisher} {
-    setValue int} stringValue {subtract pt.data.Token} {sub
-    tractR pt.data.Token} toString wait {wait long} {wait l
-    ong int} zero
-    
-  constructors:  pt.data.IntToken {pt.data.IntToken int}
-    
-  properties:    array class publisher value
-    
-  superclass:    pt.data.ScalarToken
-    
-}}
-
-######################################################################
-####
-# 
 test IntToken-2.1 {Create an empty instance} {
     set p [java::new pt.data.IntToken]
     $p toString

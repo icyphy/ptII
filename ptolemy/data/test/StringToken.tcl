@@ -50,37 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test StringToken-1.1 {Get information about the class} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.data.StringToken]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.data.StringToken
-  fields:        
-  methods:       {add pt.data.Token} {addR pt.data.Token} clone {divide 
-    pt.data.Token} {divideR pt.data.Token} {equality pt.dat
-    a.Token} {equals java.lang.Object} {fromString java.lan
-    g.String} getClass getObject getPublisher getValue hash
-    Code isArray {modulo pt.data.Token} {moduloR pt.data.To
-    ken} {multiply pt.data.Token} {multiplyR pt.data.Token}
-     notify notifyAll notifySubscribers one {setPublisher p
-    t.data.TokenPublisher} {setValue java.lang.Object} {set
-    Value java.lang.String} stringValue {subtract pt.data.T
-    oken} {subtractR pt.data.Token} toString wait {wait lon
-    g} {wait long int} zero
-    
-  constructors:  pt.data.StringToken {pt.data.StringToken java.lang.Stri
-    ng}
-    
-  properties:    array class object publisher value
-    
-  superclass:    pt.data.ObjectToken
-    
-}}
-
-######################################################################
-####
-# 
 test StringToken-2.1 {Create an empty instance} {
     set p [java::new pt.data.StringToken]
     $p toString
