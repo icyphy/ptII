@@ -209,7 +209,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         }
                     } else if (getReceiver()._isConditionalSendWaiting()) {
                         // CASE 2: a conditionalSend is already waiting. As
-                        // this conditonalReceive arrived second, it has to
+                        // this conditionalReceive arrived second, it has to
                         // check if both branches are "first" and if so
                         // perform transfer & reset state of the receiver.
                         // A ConditionalSend can "disappear" so this
