@@ -61,7 +61,6 @@ JSRCS = \
 	NamedObj.java \
 	NamedObjList.java \
 	NameDuplicationException.java \
-	NullReferenceException.java \
 	ObservableParameter.java \
 	Param.java \
 	ParamList.java \
