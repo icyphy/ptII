@@ -56,6 +56,27 @@
     </property>
     <property name="stoppedThreshold" class="ptolemy.data.expr.Parameter" value="0.01">
     </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This Continuous Time model uses a Finite State Machine
+and the GR domain to simulate a bouncing ball.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="330.0, 40.0">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -75,7 +96,7 @@
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="17.899999999999984"/>
+<xRange min="0.0" max="8.105999999999984"/>
 <yRange min="9.027550412032514E-8" max="10.0"/>
 </plot>?>
                 </configure>    </entity>
@@ -495,9 +516,9 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[50, 232]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="1.862130471582258E-6">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="9.027550412032514E-8">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="4.9310902387755">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="10.3096313572466">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
