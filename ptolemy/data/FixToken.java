@@ -120,6 +120,12 @@ public class FixToken extends ScalarToken {
 	return new FixToken(result);
     }
 
+    /** Return the value of this token as a double.
+     *  @return A double
+     */
+    public double doubleValue() {
+	return _value.doubleValue();
+    }
 
     /** Return the value of this token as a Fixpoint.
      *  @return A Fixpoint
@@ -184,6 +190,13 @@ public class FixToken extends ScalarToken {
     public Token zero()
     {
         return new FixToken("(1/1)",0);
+    }
+
+    /** Set the Rounding mode of the FixPoint number. */
+    // FIXME: Currently it is a string, should be come a
+    // type safe enumerated type
+    public void setRoundingMode(String x) {
+	_value.setRounding( (String) x );
     }
 
     ///////////////////////////////////////////////////////////////////
