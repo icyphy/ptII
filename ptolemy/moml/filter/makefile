@@ -53,6 +53,7 @@ JSRCS = \
 	BackwardCompatibility.java \
 	ClassChanges.java \
 	HideAnnotationNames.java \
+	ParameterNameChanges.java \
 	PortNameChanges.java \
 	PropertyClassChanges.java \
 	RemoveGraphicalClasses.java
