@@ -101,11 +101,11 @@ public class TaskReceiver extends Source {
         coordinatorName.setToken(new StringToken("TaskCoordinator"));
         thisClientName = new Parameter(this, "thisClientName");
         thisClientName.setToken(new StringToken(""));
-        blocking = new Parameter(this, "blocking",
-                new BooleanToken(true));
+        blocking = new Parameter(this, "blocking");
         blocking.setTypeEquals(BaseType.BOOLEAN);
-        defaultToken = new Parameter(this, "defaultToken",
-                new DoubleToken(0.0));
+        blocking.setExpression("true");
+        defaultToken = new Parameter(this, "defaultToken");
+        defaultToken.setExpression("0.0");
         //defaultToken.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(defaultToken.getType());
     }

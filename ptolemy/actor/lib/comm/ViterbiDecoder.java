@@ -155,12 +155,11 @@ public class ViterbiDecoder extends Transformer {
         // Declare data types, consumption rate and production rate.
         _type = new ptolemy.actor.TypeAttribute(input, "inputType");
         _type.setExpression("boolean");
-        _inputRate = new Parameter(input, "tokenConsumptionRate",
-                new IntToken(1));
+        _inputRate = new Parameter(input, "tokenConsumptionRate");
+        _inputRate.setExpression("1");
         output.setTypeEquals(BaseType.BOOLEAN);
-        _outputRate = new Parameter(output, "tokenProductionRate",
-                new IntToken(1));
-
+        _outputRate = new Parameter(output, "tokenProductionRate");
+        _outputRate.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////

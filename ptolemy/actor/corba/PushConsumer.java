@@ -93,11 +93,12 @@ public class PushConsumer extends Source {
         ORBInitProperties.setToken(new StringToken(""));
         consumerName = new Parameter(this, "consumerName");
         consumerName.setToken(new StringToken(""));
-        blocking = new Parameter(this, "blocking",
-                new BooleanToken(false));
+        blocking = new Parameter(this, "blocking");
         blocking.setTypeEquals(BaseType.BOOLEAN);
-        defaultToken = new Parameter(this, "defaultToken",
-                new DoubleToken(0.0));
+        blocking.setExpression("false");
+        defaultToken = new Parameter(this, "defaultToken");
+        defaultToken.setExpression("0.0");
+
         //defaultToken.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(defaultToken.getType());
     }
