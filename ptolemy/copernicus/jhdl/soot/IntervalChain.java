@@ -45,6 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import soot.toolkits.graph.Block;
 import soot.jimple.IfStmt;
 import soot.Unit;
+import soot.SootMethod;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntervalChain
@@ -63,6 +64,10 @@ separate such Intervals.
 @since Ptolemy II 2.0
 */
 public class IntervalChain {
+
+    public IntervalChain(SootMethod method) throws IllegalActionException {
+	this(new DominatorCFG(method));
+    }
 
     /**
      * This constructor is called to create an IntervalChain for a top-level

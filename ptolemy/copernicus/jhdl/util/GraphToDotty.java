@@ -38,7 +38,10 @@ public abstract class GraphToDotty {
 
     public static final String MYEOL = "\n";
 
-    public abstract String convert(Object g, String ename);
+    //public abstract String convert(Object g, String ename);
+    public String convert(Object g, String ename) {
+	return null;
+    }
 
     /**
      * Print a .dot file header
@@ -116,9 +119,16 @@ public abstract class GraphToDotty {
 	return new String(bbytes);
     }
 
+    public void writeDotFile(String basename, Object graph) {
+	writeDotFile(null,basename,graph);
+    }
+
     public void writeDotFile(
             String dirName, String basename, Object graph) {
-	String filename = dirName + "/" + validFileName(basename) + ".dot";
+	String filename = validFileName(basename) + ".dot";
+	if (dirName != null) {
+	    filename = dirName + "/" + filename;
+	}
 	System.out.println("Writing " + filename);
 	try {
 	    FileWriter dotFile = new FileWriter(filename);

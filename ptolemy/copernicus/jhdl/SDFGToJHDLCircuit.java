@@ -72,10 +72,10 @@ public class SDFGToJHDLCircuit {
 
     protected void _processDFG() throws JHDLUnsupportedException {
 
-	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("orig",_sdfg);
+	new ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty().writeDotFile("orig",_sdfg);
 	Collection outputNodes = _determineOutputNodes();
 	_trimNonReachableNodes(outputNodes);
-	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("reachable",_sdfg);
+	new ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty().writeDotFile("reachable",_sdfg);
 
 	// Generate a topological order of nodes in this graph
 	// (this is a single basic block, so it should be acyclic)
@@ -534,6 +534,7 @@ public class SDFGToJHDLCircuit {
 	JHDLTestbench jtb = new JHDLTestbench(hw);
 	try {
 	    SDFGToJHDLCircuit c = new SDFGToJHDLCircuit(sbdg,jtb);
+	    //hw.cycle(2);
 	    java.awt.Frame f = new SmartSchematicFrame(c.getCell());
 	    f.addWindowListener(new java.awt.event.WindowAdapter() {
 		    public void windowClosing(java.awt.event.WindowEvent e) {

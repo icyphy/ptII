@@ -81,10 +81,10 @@ public class BDFGToJHDLCircuit {
 
     protected void _processDFG() throws JHDLUnsupportedException {
 
-	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("orig",_bdfg);
+	new ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty().writeDotFile("orig",_bdfg);
 	Collection outputNodes = _determineOutputNodes();
 	_trimNonReachableNodes(outputNodes);
-	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("reachable",_bdfg);
+	new ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty().writeDotFile("reachable",_bdfg);
 
 	// Generate a topological order of nodes in this graph
 	// (this is a single basic block, so it should be acyclic)
@@ -519,7 +519,7 @@ public class BDFGToJHDLCircuit {
 	IntervalDFG idfg=null;
 	try {
 	    idfg = IntervalDFG.createIntervalDFG(args);
-	    PtDirectedGraphToDotty.writeDotFile("merge",idfg);
+	    new PtDirectedGraphToDotty().writeDotFile("merge",idfg);
 	    HWSystem hw = new HWSystem();
 	    JHDLTestbench jtb = new JHDLTestbench(hw);
 	    BDFGToJHDLCircuit c = new BDFGToJHDLCircuit(idfg,jtb);

@@ -46,6 +46,7 @@ import soot.Local;
 import soot.Unit;
 import soot.UnitBox;
 import soot.ValueBox;
+import soot.SootMethod;
 
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.AssignStmt;
@@ -66,6 +67,10 @@ import ptolemy.graph.DirectedGraph;
 
 public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
+    /**
+     * This constructor will create an IntervalBlockDirectedGraph
+     * object from an IntervalChain object.
+     **/
     public IntervalBlockDirectedGraph(IntervalChain ic)
 	throws JHDLUnsupportedException, SootASTException {
 
@@ -90,6 +95,16 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
             dgToDotty.writeDotFile(".",filename,this);
 	}
 
+    }
+
+    /**
+     * This constructor will create an IntervalBlockDirectedGraph
+     * object from a SootMethod.
+     **/
+    public IntervalBlockDirectedGraph(SootMethod method) 
+	throws JHDLUnsupportedException, SootASTException, 
+	       IllegalActionException {
+	this(new IntervalChain(method));
     }
 
     protected void _processChain()
@@ -431,6 +446,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * that represents the merged DFG.
      *
      * @see IntervalChain#createIntervalChain(String[],boolean)
+     * TODO: modify this method to use the SootMethod constructor
      **/
     public static IntervalBlockDirectedGraph createIntervalBlockDirectedGraph(String args[],boolean writeGraphs)
 	throws JHDLUnsupportedException {

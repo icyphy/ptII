@@ -46,6 +46,7 @@ DIRS =		util soot test
 
 # Keep this list alphabetized.
 JSRCS = \
+	ActorDataFlowAnalysis.java \
 	BDFGToJHDLCircuit.java \
 	BlockDataFlowGraph.java \
 	CircuitAnalysis.java \
