@@ -178,14 +178,14 @@ public class SCTransition extends ComponentRelation {
         return _preemptive;
     }
 
-    /** If the argument is true, this transition will initialize the 
+    /** If the argument is true, this transition will initialize the
      *  destination state's subsystem when taken.
      */
     public void setInitEntry(boolean init) {
         _initEntry = init;
     }
 
-    /** Return whether this transition will initialize the destination 
+    /** Return whether this transition will initialize the destination
      *  state's subsystem when taken.
      */
     public boolean isInitEntry() {
@@ -261,9 +261,9 @@ public class SCTransition extends ComponentRelation {
      */
     public void setupScope() throws NameDuplicationException {
         SCState src = sourceState();
-        VariableList localInputVarS = 
+        VariableList localInputVarS =
                 (VariableList)src.getAttribute(SCState.LOCAL_INPUT_STATUS_VAR_LIST);
-        VariableList localInputVarV = 
+        VariableList localInputVarV =
                 (VariableList)src.getAttribute(SCState.LOCAL_INPUT_VALUE_VAR_LIST);
         VariableList inputVarS = null;
         VariableList inputVarV = null;
@@ -310,11 +310,11 @@ public class SCTransition extends ComponentRelation {
 
     /** Add a trigger action.
      */
-    public void addTriggerAction(String name, String expr) 
+    public void addTriggerAction(String name, String expr)
             throws NameDuplicationException {
         if (_actions == null) {
             _createVarLists();
-        }        
+        }
         try {
             Variable var = new Variable(_actions, name);
             if (expr == null) {
@@ -334,11 +334,11 @@ public class SCTransition extends ComponentRelation {
 
     /** Add a local variable update.
      */
-    public void addLocalVariableUpdate(String name, String expr) 
+    public void addLocalVariableUpdate(String name, String expr)
             throws NameDuplicationException {
         if (_localVarUpdates == null) {
             _createVarLists();
-        }        
+        }
         try {
             Variable var = new Variable(_localVarUpdates, name);
             if (expr == null) {

@@ -68,7 +68,7 @@ public class SCController extends CompositeEntity implements Actor {
     }
 
 
-    public void addLocalVariable(String name, Token initialValue) 
+    public void addLocalVariable(String name, Token initialValue)
             throws IllegalActionException, NameDuplicationException {
         if (_localVariables == null) {
             _localVariables = new VariableList(this, LOCAL_VARIABLE_LIST);
@@ -77,7 +77,7 @@ public class SCController extends CompositeEntity implements Actor {
         try {
             // var's type is determined by initialValue's type.
             var.setToken(initialValue);
-        } catch (IllegalArgumentException ex) {            
+        } catch (IllegalArgumentException ex) {
             // this should not happen
         }
     }
@@ -88,13 +88,13 @@ public class SCController extends CompositeEntity implements Actor {
         // This method needs careful refinement.
         SCController newobj = (SCController)super.clone();
         if (_initialState != null) {
-            newobj._initialState = 
+            newobj._initialState =
                     (SCState)newobj.getEntity(_initialState.getName());
         }
         newobj._inputStatusVars = null;
         newobj._inputValueVars = null;
         try {
-            VariableList vlist = 
+            VariableList vlist =
                     (VariableList)newobj.getAttribute(INPUT_STATUS_VAR_LIST);
             if (vlist != null) {
                 vlist.setContainer(null);
@@ -161,7 +161,7 @@ public class SCController extends CompositeEntity implements Actor {
 
 
 // When an SCController fires, its behavior is the parallel composition of
-// its own sequential controll logic and its current refinement. 
+// its own sequential controll logic and its current refinement.
 // Preemptive transitions of controll logic take precedence of refinement.
 // Question: what to do to the refinement when a transition is taken?
     public void fire() throws IllegalActionException {
@@ -185,7 +185,7 @@ public class SCController extends CompositeEntity implements Actor {
         if (_takenTransition == null) {
             // The local input of an SCState is the output of its refinement.
             _currentState.resetLocalInputStatus();
-   
+
             // Invoke refinement.
             // Delegate to the executive director.
             // FIXME!
@@ -259,7 +259,7 @@ public class SCController extends CompositeEntity implements Actor {
         // Evaluate initial transitions, determine initial state.
         _setInputVars();
         _takenTransition = null;
-        if (_initTrans != null) { 
+        if (_initTrans != null) {
             Enumeration trs = _initTrans.elements();
             SCTransition trans;
             while (trs.hasMoreElements()) {
@@ -407,7 +407,7 @@ public class SCController extends CompositeEntity implements Actor {
     }
 
 
-    /** Change state according to the enabled transition determined 
+    /** Change state according to the enabled transition determined
      *  from last fire.
      *  @return True, the execution can continue into the next iteration.
      *  @exception IllegalActionException If the refinement of the state
@@ -424,13 +424,13 @@ public class SCController extends CompositeEntity implements Actor {
 // What to do to the refinement of the state left?
 
         _currentState = _takenTransition.destinationState();
-        if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {   
+        if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {
             // Initialize the refinement.
             Actor actor = currentRefinement();
             if (actor == null) {
                 return true;
             }
-// If the refinement is an SCController or an SC system, then the trigger 
+// If the refinement is an SCController or an SC system, then the trigger
 // actions of the taken transition should be input to the actor to enable
 // initial transitions.
 // ADD THIS!
@@ -441,7 +441,7 @@ public class SCController extends CompositeEntity implements Actor {
 //            }
             // FIXME!
             actor.initialize();
-        }    
+        }
         return true;
     }
 
@@ -467,10 +467,10 @@ public class SCController extends CompositeEntity implements Actor {
                     "CompositeActor.");
         }
         super.setContainer(container);
-    }        
+    }
 
 
-    public void setInitialState(SCState initialState) 
+    public void setInitialState(SCState initialState)
             throws IllegalActionException {
         if (initialState != null && initialState.getContainer() != this) {
             throw new IllegalActionException(this, initialState,
@@ -482,7 +482,7 @@ public class SCController extends CompositeEntity implements Actor {
 
     public void setInitialTransition(SCTransition initialTransition)
             throws IllegalActionException {
-        if (initialTransition != null 
+        if (initialTransition != null
                 && initialTransition.getContainer() != this) {
             throw new IllegalActionException(this, initialTransition,
                     "Initial transition is not contained by SCController.");
@@ -495,10 +495,10 @@ public class SCController extends CompositeEntity implements Actor {
         } else {
             _initTrans.insertFirst(initialTransition);
         }
-    }            
+    }
 
 
-    public void setupScope() 
+    public void setupScope()
             throws NameDuplicationException {
         try {
             // remove old variable lists
@@ -529,15 +529,15 @@ public class SCController extends CompositeEntity implements Actor {
     }
 
 
-    /** By default, an AtomicActor does nothing incredible in its 
-     *  terminate, it just wraps up.  
+    /** By default, an AtomicActor does nothing incredible in its
+     *  terminate, it just wraps up.
      */
     public void terminate() {
         try {
             wrapup();
         }
         catch (IllegalActionException e) {
-            // Do not pass go, do not collect $200.  Most importantly, 
+            // Do not pass go, do not collect $200.  Most importantly,
             // just ignore everything and terminate.
         }
     }
@@ -627,7 +627,7 @@ public class SCController extends CompositeEntity implements Actor {
     }
 
 
-    protected void _outputTriggerActions(VariableList vlist) 
+    protected void _outputTriggerActions(VariableList vlist)
             throws IllegalActionException, NoRoomException {
         if (vlist == null) {
             return;
@@ -653,7 +653,7 @@ System.out.println("SCController " + this.getFullName() + " setting " +
 
                     dir.currentState().setLocalInputVar(var.getName(), var.getToken());
                 }
-            }            
+            }
             port = (IOPort)getPort(var.getName());
             if (port == null || !port.isOutput()) {
                 continue;
@@ -686,12 +686,12 @@ System.out.println("Port " + port.getFullName() + " is floating.");
     }
 
 
-    protected void _setInputVars() 
+    protected void _setInputVars()
             throws IllegalArgumentException, IllegalActionException {
         // Do not deal with multiport, multiple tokens now.
         Enumeration inports = inputPorts();
         IOPort port;
-        while (inports.hasMoreElements()) { 
+        while (inports.hasMoreElements()) {
             port = (IOPort)inports.nextElement();
             if (port.numLinks() > 0) {
                 if (port.hasToken(0)) {
@@ -727,7 +727,7 @@ System.out.println("Port " + port.getFullName() + " has no token.");
         }
     }
 
-   
+
     protected synchronized String _uniqueStateName() {
         return super._uniqueEntityName();
     }
@@ -750,7 +750,7 @@ System.out.println("Port " + port.getFullName() + " has no token.");
             var.evaluate();
             _localVariables.setVarValue(var.getName(), var.getToken());
         }
-    } 
+    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -803,7 +803,7 @@ System.out.println("Port " + port.getFullName() + " has no token.");
     private transient LinkedList _cachedOutputPorts;
 
 
-}    
+}
 
 
 

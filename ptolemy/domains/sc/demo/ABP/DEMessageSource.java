@@ -38,7 +38,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DEMessageSource
 /**
-Generate messages according to Poisson process. 
+Generate messages according to Poisson process.
 
 @author Xiaojun Liu
 @version $Id$
@@ -62,7 +62,7 @@ public class DEMessageSource extends DEActor {
         output = new DEIOPort(this, "output", false, true);
         output.setDeclaredType(IntToken.class);
         request = new DEIOPort(this, "request", false, true);
-        request.setDeclaredType(Token.class);        
+        request.setDeclaredType(Token.class);
         next = new DEIOPort(this, "next", true, false);
         next.setDeclaredType(Token.class);
         _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));
@@ -78,7 +78,7 @@ public class DEMessageSource extends DEActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _firstFire = true;
-        fireAfterDelay(((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());        
+        fireAfterDelay(((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());
     }
 
     /** If this is the first fire, output the request token. Otherwise, if current
@@ -87,7 +87,7 @@ public class DEMessageSource extends DEActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        
+
         if (_firstFire) {
             request.broadcast(new Token());
             _firstFire = false;
@@ -110,7 +110,7 @@ public class DEMessageSource extends DEActor {
 System.out.println("DEMessageSource " + this.getFullName() + " next message "
         + "scheduled at " + _nextMsgTime);
 
-        } 
+        }
 
         if (Math.abs(getCurrentTime() - _nextMsgTime) < 1e-14) {
             ++_msgNum;

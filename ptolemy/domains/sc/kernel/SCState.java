@@ -41,7 +41,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// SCState
 /**
-A SCState is a state in the *charts formalism. It can be refined by a 
+A SCState is a state in the *charts formalism. It can be refined by a
 subsystem which is an opaque composite actor.
 
 @author Xiaojun Liu
@@ -55,11 +55,11 @@ public class SCState extends ComponentEntity {
     // The actor refining this state.
     Actor _refinement = null;
 
-    // The list of variables corresponding to the status of output 
+    // The list of variables corresponding to the status of output
     // of refinement.
     VariableList _localStatusVars = null;
 
-    // The list of variables corresponding to the value of output 
+    // The list of variables corresponding to the value of output
     // of refinement.
     VariableList _localValueVars = null;
 
@@ -89,7 +89,7 @@ public class SCState extends ComponentEntity {
     public SCState() {
 	super();
     }
-    
+
     /** Construct a state in the specified workspace with an empty
      *  string as its name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -140,7 +140,7 @@ public class SCState extends ComponentEntity {
         newobj._localStatusVars = null;
         newobj._localValueVars = null;
         try {
-            VariableList vlist = 
+            VariableList vlist =
                     (VariableList)newobj.getAttribute(LOCAL_INPUT_STATUS_VAR_LIST);
             if (vlist != null) {
                 vlist.setContainer(null);
@@ -172,10 +172,10 @@ public class SCState extends ComponentEntity {
     /** Set the composite actor refining this state.
      *  @param refinement The composite actor refining this state.
      */
-    public void setRefinement(Actor refinement) 
+    public void setRefinement(Actor refinement)
             throws IllegalActionException, NameDuplicationException {
         try {
-            workspace().getWriteAccess();  
+            workspace().getWriteAccess();
             // remove the current local variable list from the scope of
             // non-preemptive transitions
             if (_localStatusVars != null) {
@@ -298,11 +298,11 @@ public class SCState extends ComponentEntity {
                 workspace().doneWriting();
             }
         }
-        return _incoming; 
+        return _incoming;
     }
 
     /** Return the port connecting all outgoing transitions.
-     */ 
+     */
     protected ComponentPort _outgoingPort() {
         if (_outgoing == null) {
             try {
@@ -360,10 +360,10 @@ public class SCState extends ComponentEntity {
     protected void setupScope() {
         try {
             if (_localStatusVars != null) {
-                // remove old variable lists 
+                // remove old variable lists
                 _localStatusVars.setContainer(null);
                 _localValueVars.setContainer(null);
-            }   
+            }
             if (_refinement != null) {
                 // create new variable lists
                 _localStatusVars = new VariableList(this, LOCAL_INPUT_STATUS_VAR_LIST);
@@ -397,7 +397,7 @@ public class SCState extends ComponentEntity {
     /** Set the value of a local input value variable, and set the
      *  corresponding local input status variable to PRESENT.
      */
-    public void setLocalInputVar(String name, Token value) 
+    public void setLocalInputVar(String name, Token value)
             throws IllegalArgumentException {
         if (_localValueVars == null) {
             return;

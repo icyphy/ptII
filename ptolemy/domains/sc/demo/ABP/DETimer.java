@@ -86,7 +86,7 @@ public class DETimer extends DEActor {
 System.out.println("Reset DETimer " + this.getFullName() + " to expire at "
         + _expireTime);
 
-        } else if (Math.abs(getCurrentTime() - _expireTime) < 1e-14) { 
+        } else if (Math.abs(getCurrentTime() - _expireTime) < 1e-14) {
             // timer expires
             expired.broadcast(_outToken);
 

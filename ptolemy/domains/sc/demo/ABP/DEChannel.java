@@ -55,7 +55,7 @@ public class DEChannel extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEChannel(TypedCompositeActor container, String name, 
+    public DEChannel(TypedCompositeActor container, String name,
                 double dropRate, double maxDelay, double minDelay)
                 throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -84,7 +84,7 @@ public class DEChannel extends DEActor {
             if (Math.random() < ((DoubleToken)_dropRate.getToken()).doubleValue()) {
                 // drop the message
                 input.get(0);
-            } else {   
+            } else {
                 // put input message into queue
                 _msgs.insertLast(input.get(0));
                 if (_msgs.size() == 1) {
@@ -102,14 +102,14 @@ System.out.println("DEChannel " + this.getFullName() + " get input message at "
 
         }
 
-        if(Math.abs(getCurrentTime() - _nextOutTime) < 1e-14) { 
+        if(Math.abs(getCurrentTime() - _nextOutTime) < 1e-14) {
             // send out a message
             IntToken msg = (IntToken)_msgs.take();
             output.broadcast(msg);
 
 System.out.println("DEChannel " + this.getFullName() + " sends message at "
         + getCurrentTime());
-            
+
             if (_msgs.size() > 0) {
                 // schedule output time
                 double minDelay = ((DoubleToken)_minDelay.getToken()).doubleValue(

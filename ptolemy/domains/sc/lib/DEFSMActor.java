@@ -39,7 +39,7 @@ public class DEFSMActor extends SCController implements TypedActor {
 	DEDirector dir = (DEDirector)getDirector();
 	if (dir==null) {
 	    throw new IllegalActionException("No director available");
-	}	
+	}
 	return dir.getStopTime();
     }
 
@@ -50,7 +50,7 @@ public class DEFSMActor extends SCController implements TypedActor {
         // one higher than the max depth of the input ports.
         // If this actor has no input ports, then the depth is set to
         // to be zero.
-        
+
         dir.fireAfterDelay(this, delay);
     }
 */
@@ -87,7 +87,7 @@ public class DEFSMActor extends SCController implements TypedActor {
 
 		    	if (outport.getDeclaredType() == null &&
 			    inport != outport) {
-			    // output also undeclared, not bi-directional port, 
+			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
 				inport.getTypeTerm(), outport.getTypeTerm());
 			    result.insertLast(ineq);

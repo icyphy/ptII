@@ -142,7 +142,7 @@ public class ABPPlot extends DEActor {
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     Token curToken = input.get(i);
-                    
+
                     if (curToken instanceof DoubleToken) {
                         _processDoubleToken(i, curTime, (DoubleToken)curToken);
                     } else if (curToken instanceof IntToken) {
@@ -200,15 +200,15 @@ public class ABPPlot extends DEActor {
     ////                         protected methods                      ////
 
     /** Process input tokens that are instances of DoubleToken.
-     *  
+     *
      * @param channel The channel number
      * @param curTime The current time of the simulation
      * @param token The input token that is an instance of DoubleToken
-     */	
-    protected void _processDoubleToken(int channel, 
-            double curTime, 
+     */
+    protected void _processDoubleToken(int channel,
+            double curTime,
             DoubleToken token) {
-        
+
         double curValue = token.doubleValue();
 
         // update the y range
@@ -234,7 +234,7 @@ public class ABPPlot extends DEActor {
                     ", CurrentValue = " + curValue + ".");
         }
         _plot.addPoint(channel, curTime, curValue, false);
-        
+
     }
 
     protected void _processIntToken(int channel,
@@ -270,15 +270,15 @@ public class ABPPlot extends DEActor {
     }
 
     /** Process pure token, i.e. typeless token.
-     *  
+     *
      * @param channel The channel number
      * @param curTime The current time of the simulation
      * @param token The input token
-     */	
-    protected void _processPureToken(int channel, 
-            double curTime, 
+     */
+    protected void _processPureToken(int channel,
+            double curTime,
             Token token) {
-        
+
         double curValue = channel;
 
         // update the y range
@@ -304,8 +304,8 @@ public class ABPPlot extends DEActor {
                     ", CurrentValue = " + curValue + ".");
         }
         _plot.addPoint(channel, curTime, curValue, false);
-        
-    }   
+
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////

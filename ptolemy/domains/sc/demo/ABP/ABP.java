@@ -123,10 +123,10 @@ public class ABP {
             SCState ctrlDead = new SCState(ctrl, "Dead");
             SCState ctrlSending = new SCState(ctrl, "Sending");
             ctrl.setInitialState(ctrlConnecting);
-            SCTransition ctrlTr1 = 
+            SCTransition ctrlTr1 =
                     ctrl.createTransition(ctrlConnecting, ctrlSending);
             ctrlTr1.setTriggerEvent("next");
-            SCTransition ctrlTr2 = 
+            SCTransition ctrlTr2 =
                     ctrl.createTransition(ctrlConnecting, ctrlDead);
             ctrlTr2.setTriggerEvent("error");
 
@@ -285,40 +285,40 @@ public class ABP {
             ctrlSending.setRefinement(send);
 
             // connect sender's components
-            TypedIORelation sdrR1 = 
+            TypedIORelation sdrR1 =
                     (TypedIORelation)sender.newRelation("request");
             sdrRequest.link(sdrR1);
             conRequest.link(sdrR1);
-            TypedIORelation sdrR2 = 
+            TypedIORelation sdrR2 =
                     (TypedIORelation)sender.newRelation("setTimer");
             sdrSetTimer.link(sdrR2);
             conSetTimer.link(sdrR2);
             sendSetTimer.link(sdrR2);
-            TypedIORelation sdrR3 = 
+            TypedIORelation sdrR3 =
                     (TypedIORelation)sender.newRelation("ack");
             sdrAck.link(sdrR3);
             conAck.link(sdrR3);
             sendAck.link(sdrR3);
-            TypedIORelation sdrR4 = 
+            TypedIORelation sdrR4 =
                     (TypedIORelation)sender.newRelation("pktOut");
             sdrPktOut.link(sdrR4);
             conPktOut.link(sdrR4);
             sendPktOut.link(sdrR4);
-            TypedIORelation sdrR5 = 
+            TypedIORelation sdrR5 =
                     (TypedIORelation)sender.newRelation("expired");
             sdrExpired.link(sdrR5);
             conExpired.link(sdrR5);
             sendExpired.link(sdrR5);
-            TypedIORelation sdrR6 = 
+            TypedIORelation sdrR6 =
                     (TypedIORelation)sender.newRelation("next");
             sdrNext.link(sdrR6);
             conNext.link(sdrR6);
             sendNext.link(sdrR6);
-            TypedIORelation sdrR7 = 
+            TypedIORelation sdrR7 =
                     (TypedIORelation)sender.newRelation("msgIn");
             sdrMsgIn.link(sdrR7);
             sendMsgIn.link(sdrR7);
-            TypedIORelation sdrR8 = 
+            TypedIORelation sdrR8 =
                     (TypedIORelation)sender.newRelation("monitor");
             sdrMonitor.link(sdrR8);
             sendMonitor.link(sdrR8);
@@ -369,54 +369,54 @@ public class ABP {
             recTr6.addTriggerAction("msgOut", "pktIn/2");
 
             // connect the top level system
-            TypedIORelation sysR1 = 
+            TypedIORelation sysR1 =
                     (TypedIORelation)sys.newRelation("request");
             msgSrc.request.link(sysR1);
             sdrRequest.link(sysR1);
-            TypedIORelation sysR2 = 
+            TypedIORelation sysR2 =
                     (TypedIORelation)sys.newRelation("msgIn");
             msgSrc.output.link(sysR2);
             sdrMsgIn.link(sysR2);
-            TypedIORelation sysR3 = 
+            TypedIORelation sysR3 =
                     (TypedIORelation)sys.newRelation("pktOut");
             forward.input.link(sysR3);
             sdrPktOut.link(sysR3);
-            TypedIORelation sysR4 = 
+            TypedIORelation sysR4 =
                     (TypedIORelation)sys.newRelation("sdrAck");
             backward.output.link(sysR4);
             sdrAck.link(sysR4);
-            TypedIORelation sysR5 = 
+            TypedIORelation sysR5 =
                     (TypedIORelation)sys.newRelation("recAck");
             backward.input.link(sysR5);
             recAck.link(sysR5);
-            TypedIORelation sysR6 = 
+            TypedIORelation sysR6 =
                     (TypedIORelation)sys.newRelation("msgOut");
             recMsgOut.link(sysR6);
             plot.input.link(sysR6);
-            TypedIORelation sysR7 = 
+            TypedIORelation sysR7 =
                     (TypedIORelation)sys.newRelation("setTimer");
             timer.set.link(sysR7);
             sdrSetTimer.link(sysR7);
-            TypedIORelation sysR8 = 
+            TypedIORelation sysR8 =
                     (TypedIORelation)sys.newRelation("expired");
             timer.expired.link(sysR8);
             sdrExpired.link(sysR8);
-            TypedIORelation sysR9 = 
+            TypedIORelation sysR9 =
                     (TypedIORelation)sys.newRelation("pktIn");
             forward.output.link(sysR9);
             recPktIn.link(sysR9);
-            TypedIORelation sysR10 = 
+            TypedIORelation sysR10 =
                     (TypedIORelation)sys.newRelation("next");
             msgSrc.next.link(sysR10);
             sdrNext.link(sysR10);
 
             plot.input.link(sysR2);
-            TypedIORelation sysR11 = 
+            TypedIORelation sysR11 =
                     (TypedIORelation)sys.newRelation("monitor");
             sdrMonitor.link(sysR11);
             plot.input.link(sysR11);
-                    
-            
+
+
             // finally we can run the system
             double stopTime = 60.0;
             if (argv.length > 0) {
