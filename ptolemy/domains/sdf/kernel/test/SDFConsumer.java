@@ -47,8 +47,8 @@ import ptolemy.domains.sdf.kernel.*;
  * @version $Id$
  * @author Steve Neuendorffer
  */
-public class SDFConsumer extends SDFAtomicActor {
-    public SDFConsumer(TypedCompositeActor container, String name)
+public class SDFTestConsumer extends SDFAtomicActor {
+    public SDFTestConsumer(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
@@ -57,7 +57,7 @@ public class SDFConsumer extends SDFAtomicActor {
             input.setTokenConsumptionRate(1);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFConsumer: Constructor error");
+            System.out.println("SDFTestConsumer: Constructor error");
         }
         _history = new StringBuffer("");
     }
@@ -72,7 +72,7 @@ public class SDFConsumer extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFConsumer newobj = (SDFConsumer)(super.clone(ws));
+            SDFTestConsumer newobj = (SDFTestConsumer)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj._history = new StringBuffer(_history.toString());
 	    return newobj;
