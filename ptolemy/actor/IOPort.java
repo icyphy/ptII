@@ -471,19 +471,6 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Deeply enumerate the ports connected to this port on the
-     *  outside that are input ports.  This method is deprecated and calls
-     *  deepConnectedInPortList(). It is read-synchronized on the
-     *  workspace.
-     *
-     *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
-     *  @deprecated Use deepConnectedInPortList() instead.
-     *  @return An enumeration of input IOPort objects.
-     */
-    public Enumeration deepConnectedInPorts() {
-        return Collections.enumeration( deepConnectedInPortList() );
-    }
-
     /** Return a list of input ports connected to this port on the
      *  outside. NOTE: This method is not as useful as it might seem.
      *  In particular, it includes in the returned list input ports that
@@ -516,16 +503,16 @@ public class IOPort extends ComponentPort {
     }
 
     /** Deeply enumerate the ports connected to this port on the
-     *  outside that are output ports. This method is deprecated and calls
+     *  outside that are input ports.  This method is deprecated and calls
      *  deepConnectedInPortList(). It is read-synchronized on the
      *  workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
      *  @deprecated Use deepConnectedInPortList() instead.
-     *  @return An enumeration of output IOPort objects.
+     *  @return An enumeration of input IOPort objects.
      */
-    public Enumeration deepConnectedOutPorts() {
-        return Collections.enumeration( deepConnectedOutPortList() );
+    public Enumeration deepConnectedInPorts() {
+        return Collections.enumeration( deepConnectedInPortList() );
     }
 
     /** Return a list of output ports connected to this port on the
@@ -557,6 +544,19 @@ public class IOPort extends ComponentPort {
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Deeply enumerate the ports connected to this port on the
+     *  outside that are output ports. This method is deprecated and calls
+     *  deepConnectedInPortList(). It is read-synchronized on the
+     *  workspace.
+     *
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
+     *  @deprecated Use deepConnectedInPortList() instead.
+     *  @return An enumeration of output IOPort objects.
+     */
+    public Enumeration deepConnectedOutPorts() {
+        return Collections.enumeration( deepConnectedOutPortList() );
     }
 
     /** If the port is an input, return the receivers deeply linked on the
@@ -1415,7 +1415,7 @@ public class IOPort extends ComponentPort {
         }
         if (_debugging) {
             _debug("hasRoomInside on channel " + channelIndex
-                   + " returns " + result);
+                    + " returns " + result);
         }
         return result;
     }
@@ -1460,7 +1460,51 @@ public class IOPort extends ComponentPort {
         }
         if (_debugging) {
             _debug("hasToken on channel " + channelIndex
-                   + " returns " + result);
+                    + " returns " + result);
+        }
+        return result;
+    }
+
+    /** Return true if the specified channel has the specified number
+     *  of tokens to deliver via the get() method.
+     *  If this port is not an input, or if the
+     *  channel index is out of range, then throw an exception.
+     *  Note that this does not report any tokens in inside receivers
+     *  of an output port. Those are accessible only through
+     *  getInsideReceivers().
+     *
+     *  @param channelIndex The channel index.
+     *  @param tokens The number of tokens to query the channel for.
+     *  @return True if there is a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if there is no director, and hence no receivers,
+     *   if the port is not an input port, or if the channel index is out
+     *   of range.
+     */
+    public boolean hasToken(int channelIndex, int tokens)
+            throws IllegalActionException {
+        boolean result = false;
+        try {
+            // The getReceivers() method throws an IllegalActionException if
+            // there's no director.
+            Receiver[][] receivers = getReceivers();
+            if (receivers != null && receivers[channelIndex] != null) {
+                for (int j = 0; j < receivers[channelIndex].length; j++) {
+                    if (receivers[channelIndex][j].hasToken(tokens)) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This might be thrown if the port is not an output port.
+            throw new IllegalActionException(this,
+                    "hasToken: channel index is out of range.");
+        }
+        if (_debugging) {
+            _debug("hasToken on channel " + channelIndex
+                    + " returns " + result + ", with "
+                    + tokens + " tokens requested");
         }
         return result;
     }
@@ -1505,51 +1549,7 @@ public class IOPort extends ComponentPort {
         }
         if (_debugging) {
             _debug("hasTokenInside on channel " + channelIndex
-                   + " returns " + result);
-        }
-        return result;
-    }
-
-    /** Return true if the specified channel has the specified number
-     *  of tokens to deliver via the get() method.
-     *  If this port is not an input, or if the
-     *  channel index is out of range, then throw an exception.
-     *  Note that this does not report any tokens in inside receivers
-     *  of an output port. Those are accessible only through
-     *  getInsideReceivers().
-     *
-     *  @param channelIndex The channel index.
-     *  @param tokens The number of tokens to query the channel for.
-     *  @return True if there is a token in the channel.
-     *  @exception IllegalActionException If the receivers do not support
-     *   this query, if there is no director, and hence no receivers,
-     *   if the port is not an input port, or if the channel index is out
-     *   of range.
-     */
-    public boolean hasToken(int channelIndex, int tokens)
-            throws IllegalActionException {
-        boolean result = false;
-        try {
-            // The getReceivers() method throws an IllegalActionException if
-            // there's no director.
-            Receiver[][] receivers = getReceivers();
-            if (receivers != null && receivers[channelIndex] != null) {
-                for (int j = 0; j < receivers[channelIndex].length; j++) {
-                    if (receivers[channelIndex][j].hasToken(tokens)) {
-                        result = true;
-                        break;
-                    }
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This might be thrown if the port is not an output port.
-            throw new IllegalActionException(this,
-                    "hasToken: channel index is out of range.");
-        }
-        if (_debugging) {
-            _debug("hasToken on channel " + channelIndex
-                   + " returns " + result + ", with "
-                   + tokens + " tokens requested");
+                    + " returns " + result);
         }
         return result;
     }
@@ -1908,60 +1908,6 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Send the specified token to all receivers connected to the
-     *  specified inside channel of this port.  Tokens are in general
-     *  immutable, so each receiver is given a reference to the same
-     *  token and no clones are made.  If the port is not connected to
-     *  anything on the inside, or receivers have not been created in
-     *  the remote port, or the channel index is out of range, or the
-     *  port is not an input port, then just silently return.  This
-     *  behavior makes it easy to leave external input ports of a
-     *  composite unconnected when you are not interested in the
-     *  received values.  The transfer is accomplished by calling the
-     *  put() method of the inside remote receivers.  If the port is
-     *  not connected to anything, or receivers have not been created
-     *  in the remote port, then just return.  This method is normally
-     *  called only by the transferInputs method of directors of
-     *  composite actors, as AtomicActors do not usually have any
-     *  relations on the inside of their ports.
-     *
-     *  <p> Some of this method is read-synchronized on the workspace.
-     *  Since it is possible for a thread to block while executing a
-     *  put, it is important that the thread does not hold read access
-     *  on the workspace when it is blocked. Thus this method releases
-     *  read access on the workspace before calling put.
-     *
-     *  @param channelIndex The index of the channel, from 0 to width-1
-     *  @param token The token to send
-     *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void sendInside(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException {
-        Receiver[][] farReceivers;
-        if (_debugging) {
-            _debug("send inside to channel " + channelIndex + ": " + token);
-        }
-        try {
-            try {
-                _workspace.getReadAccess();
-                // Note that the getRemoteReceivers() method doesn't throw
-                // any non-runtime exception.
-                farReceivers = deepGetReceivers();
-                if (farReceivers == null ||
-                        farReceivers[channelIndex] == null) return;
-            } finally {
-                _workspace.doneReading();
-            }
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].put(token);
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the channel index is out of range.
-            // This is allowed, just do nothing.
-        }
-    }
-
     /** Send the specified portion of a token array to all receivers connected
      *  to the specified channel. The first <i>vectorLength</i> tokens
      *  of the token array are sent.
@@ -2108,6 +2054,60 @@ public class IOPort extends ComponentPort {
             }
             for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                 farReceivers[channelIndex][j].setAbsent();
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the channel index is out of range.
+            // This is allowed, just do nothing.
+        }
+    }
+
+    /** Send the specified token to all receivers connected to the
+     *  specified inside channel of this port.  Tokens are in general
+     *  immutable, so each receiver is given a reference to the same
+     *  token and no clones are made.  If the port is not connected to
+     *  anything on the inside, or receivers have not been created in
+     *  the remote port, or the channel index is out of range, or the
+     *  port is not an input port, then just silently return.  This
+     *  behavior makes it easy to leave external input ports of a
+     *  composite unconnected when you are not interested in the
+     *  received values.  The transfer is accomplished by calling the
+     *  put() method of the inside remote receivers.  If the port is
+     *  not connected to anything, or receivers have not been created
+     *  in the remote port, then just return.  This method is normally
+     *  called only by the transferInputs method of directors of
+     *  composite actors, as AtomicActors do not usually have any
+     *  relations on the inside of their ports.
+     *
+     *  <p> Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a
+     *  put, it is important that the thread does not hold read access
+     *  on the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param channelIndex The index of the channel, from 0 to width-1
+     *  @param token The token to send
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void sendInside(int channelIndex, Token token)
+            throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("send inside to channel " + channelIndex + ": " + token);
+        }
+        try {
+            try {
+                _workspace.getReadAccess();
+                // Note that the getRemoteReceivers() method doesn't throw
+                // any non-runtime exception.
+                farReceivers = deepGetReceivers();
+                if (farReceivers == null ||
+                        farReceivers[channelIndex] == null) return;
+            } finally {
+                _workspace.doneReading();
+            }
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                farReceivers[channelIndex][j].put(token);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the channel index is out of range.
