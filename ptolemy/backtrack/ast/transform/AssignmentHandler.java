@@ -1,4 +1,4 @@
-/* 
+/* Interface of the assignment handlers called by TypeAnalyzer.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -35,15 +35,37 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// AssignmentHandler
 /**
- *  
- * 
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
- */
+   Interface of the assignment handlers called by {@link TypeAnalyzer}.
+   Users may register assignment handlers (and other kinds of supported
+   handlers) to the {@link TypeAnalyzer} used to analyze Java source code.
+   When the analyzer detects an assignment, it calls back those assignment
+   handlers after proper types are assigned to both the left-hand side and
+   the right-hand side of the assignment.
+   <p>
+   Assignment handlers are allowed to modify the assignment, either by
+   modifying its children in the AST, or by replacing the whole assignment
+   with another expression. This is because the handler is called after the
+   subtree rooted at the assignment is completely visited by the analyzer.
+   However, modifying any node out of this subtree (e.g., changing the parent
+   of this assignment to another one) may cause unexpected effect.
+  
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public interface AssignmentHandler {
 
+    /** Handle an assignment. The assignment can be an assignment acting as a
+     *  statement, or an assignment as a sub-expression in a larger expression.
+     *  Assignments in field declarations or local variable declarations are
+     *  not handled by this function, because they are initializers, where the
+     *  old values of the declared fields or variables are meaningless.
+     * 
+     *  @param node The assignment to be handled.
+     *  @param state The current state of the analyzer.
+     */
     public void handle(Assignment node, TypeAnalyzerState state);
     
 }
