@@ -56,7 +56,9 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	SmallWorldRouter.htm \
+	SmallWorldRouterVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -76,10 +78,10 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 # Run the demo in all its different formats
-demo: demo_vergil
+demo: demo_vergil demo_vergil
 
-#demo_applet: $(PTCLASSJAR)
-#	CLASSPATH="$(CLASSPATH)" appletviewer SmallWorld.htm
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH="$(CLASSPATH)" appletviewer SmallWorld.htm
 
 demo_vergil:
 	"$(PTII)/bin/vergil" SmallWorld.xml

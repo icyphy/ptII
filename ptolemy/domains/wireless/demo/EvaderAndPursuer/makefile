@@ -53,7 +53,9 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	EvaderAndPursuer.htm \
+	EvaderAndPursuerVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,10 +75,10 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 # Run the demo in all its different formats
-demo: demo_vergil
+demo: demo_applet demo_vergil
 
-#demo_applet: $(PTCLASSJAR)
-#	CLASSPATH="$(CLASSPATH)" appletviewer EvaderAndPursuer.htm
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH="$(CLASSPATH)" appletviewer EvaderAndPursuer.htm
 
 #demo_ptolemy:
 #	"$(PTII)/bin/ptolemy" EvaderAndPursuer.xml
