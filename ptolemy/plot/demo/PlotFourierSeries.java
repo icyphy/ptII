@@ -25,9 +25,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptolemy.plot.demo;
+package pt.plot.demo;
 
-import ptolemy.plot.*;
+import pt.plot.*;
 import java.awt.*;
 import java.applet.Applet;
 
@@ -42,8 +42,8 @@ import java.applet.Applet;
  */
 public class PlotFourierSeries extends PlotApplet {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    //////////////////////////////////////////////////////////////////////////
+    ////                         public methods                           ////
 
     /**
      * Return a string describing this applet.
@@ -51,7 +51,7 @@ public class PlotFourierSeries extends PlotApplet {
     public String getAppletInfo() {
         return "PlotFourierSeries 1.1: Demo of PlotApplet.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
-            "$Id$";
+            "($Id$)";
     }
 
     /**
@@ -63,7 +63,6 @@ public class PlotFourierSeries extends PlotApplet {
 
         plot().setTitle("Fourier Series Approximation to a Square Wave");
         plot().setXRange(0, 400);
-        plot().setNumSets(11);
         plot().setMarksStyle("none");
         plot().addLegend(0, "ideal");
         plot().addLegend(1, "1 sinusoid");
@@ -77,7 +76,7 @@ public class PlotFourierSeries extends PlotApplet {
             double approximation = 0.0;
             for (int j=1; j <= 10; j++) {
                 double sig = 4.0*Math.sin(i*2.0*Math.PI*(2*j-1)/400.0)/
-                    (Math.PI*(2*j-1));
+                       (Math.PI*(2*j-1));
                 approximation += sig;
                 plot().addPoint(j, (double)i, approximation, !first);
             }
@@ -90,5 +89,5 @@ public class PlotFourierSeries extends PlotApplet {
             }
         }
         plot().addPoint(0, 400.0, 0.0, true);
-    }
+   }
 }

@@ -25,9 +25,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptolemy.plot.demo;
+package pt.plot.demo;
 
-import ptolemy.plot.*;
+import pt.plot.*;
 import java.awt.*;
 import java.applet.Applet;
 
@@ -41,14 +41,14 @@ import java.applet.Applet;
  */
 public class PlotDemo extends PlotApplet {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    //////////////////////////////////////////////////////////////////////////
+    ////                         public methods                           ////
 
     /**
      * Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotDemo 1.0: Demo of Plot.\n" +
+        return "PlotDemo 2.0: Demo of Plot.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
             "($Id$)";
     }
@@ -71,7 +71,6 @@ public class PlotDemo extends PlotApplet {
         plot().addYTick("0", 0);
         plot().addYTick("PI/2", Math.PI/2);
         plot().addYTick("PI", Math.PI);
-        plot().setNumSets(10);
         plot().setMarksStyle("none");
         plot().setImpulses(true);
 
