@@ -232,6 +232,7 @@ COMPLEXCLASSFILES = \
 		'$(ME)/PlotLive$$StopButtonListener.class' \
 		'$(ME)/PlotFrame$$FileMenuListener.class' \
 		'$(ME)/PlotFrame$$FormatListener.class' \
+		'$(ME)/PlotFrame$$PLTOrXMLFileFilter.class' \
 		'$(ME)/PlotFrame$$SpecialMenuListener.class' \
 		$(ME)/PlotFrame.class
 
