@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptplot;
+package pt.plot;
 
 import java.applet.Applet;
 import java.awt.*;

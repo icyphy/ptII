@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptplot;
+package pt.plot;
 
 import java.awt.*;
 
@@ -391,7 +391,7 @@ the <CODE>Print</CODE> and <CODE>About</CODE> buttons will not work.
 untar the tar file:
 <PRE>
 cd $PTOLEMY/tycho/java
-gzcat /tmp/ptplot1.3p1.tar.gz | tar -xf
+gzcat /tmp/pt.plot2.0.tar.gz | tar -xf
 </PRE>
 
 <LI> The <CODE>pxgraph</CODE>shell script reads
@@ -565,7 +565,7 @@ public class Pxgraph extends Frame {
                 "        A Java Plotting Tool\n\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
                 "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 1.3p1, Build: $Id$\n\n"+
+                "Version 2.0, Build: $Id$\n\n"+
                 "For help, type 'pxgraph -help', or see \n" +
                 "the Pxgraph class documentation.\n" +
                 "For more information, see\n" +

@@ -5,7 +5,7 @@ exec tclsh "$0" "$@"
 # This is a hack that takes PostScript produced by Ptplot
 # and converts it to Framemaker mif format
 
-# @Version: $Id$
+# @Version: @(#)ptplot2mif.tcl	1.5 01/29/98
 # @Author: Christopher Hylands.  Based on pxgraph/mif.c by Edward A. Lee
 
 # @Copyright (c) 1998 The Regents of the University of California.

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptplot;
+package pt.plot;
 
 // FIXME: To do
 //   - support for oscilloscope-like plots (where x axis wraps around).

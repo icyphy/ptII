@@ -30,29 +30,29 @@
 # 						COPYRIGHTENDKEY
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH =	..
+CLASSPATH =	../..
 
 # Note that this package has the the name 'ptplot', not
 # tycho.java.ptplot.  The Itcl and java package have different root
 # directories.
 
-TYPACKAGE = 	ptplot
+TYPACKAGE = 	pt.plot
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = $(TYPACKAGE)
+TYPACKAGE_DIR = pt/plot
 # If you change JVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
-TYVERSION =	1.3p1
+TYVERSION =	2.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 # Classes that are included in the jar file as Java Beand.
-JBEANCLASSES =	ptplot/Plot.class ptplot/PlotLive.class
+JBEANCLASSES =	pt/plot/Plot.class pt/plot/PlotLive.class
 
 SRCDIRS = 	demo
 DIRS = 		$(SRCDIRS) doc #test
@@ -85,11 +85,11 @@ MISC_FILES = demo doc #bean #test \
 OPTIONAL_FILES = \
 	adm \
 	manifest.tmp \
-	ptplot.jar \
-	ptplot.zip \
-	ptplot$(JVERSION).tar.gz \
-	ptplot$(JVERSION).zip \
-	ptplotapplet.jar
+	pt.plot.jar \
+	pt.plot.zip \
+	pt.plot$(JVERSION).tar.gz \
+	pt.plot$(JVERSION).zip \
+	pt.plotapplet.jar
 
 # Files to be removed by 'make realclean'
 REALCLEAN_STUFF = 
@@ -99,15 +99,15 @@ JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: sources jclass suball $(TYZIP) $(JARFILE) ptplotapplet.jar
+all: sources jclass suball $(TYZIP) $(JARFILE) pt.plotapplet.jar
 	chmod a+x pxgraph testpxgraph
-install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptplotapplet.jar
+install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) pt.plotapplet.jar
 	chmod a+x pxgraph testpxgraph
 
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
-ptplotapplet.jar:
-	(cd $(CLASSPATH); $(JAR) cfm $(TYPACKAGE_DIR)/ptplotapplet.jar \
+pt.plotapplet.jar:
+	(cd $(CLASSPATH); $(JAR) cfm $(TYPACKAGE_DIR)/pt.plotapplet.jar \
 		$(TYPACKAGE_DIR)/CmdLineArgException.class \
 		$(TYPACKAGE_DIR)/Plot.class \
 		$(TYPACKAGE_DIR)/PlotApplet.class \

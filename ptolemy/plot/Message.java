@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptplot;
+package pt.plot;
 
 import java.awt.*;
 import java.util.*;
