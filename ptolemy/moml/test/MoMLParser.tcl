@@ -1620,6 +1620,39 @@ test MoMLParser-2.8 {Test incremental parsing: remove a port} {
 ######################################################################
 ####
 #
+test MoMLParser-2.8.1 {Test incremental parsing: remove a port using entity attribute} {
+    # First add the port back in
+    set incMoml_2_8_1_a {<entity name=".top">
+    <entity name="inside">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+</entity>}
+    # Test using a new parser.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser setToplevel $toplevel
+    $parser parse $incMoml_2_8_1_a
+
+    # Then delete it
+    set incMoml_2_8_1_b {<entity name=".top">
+    <deletePort name="input" entity="inside"/>
+</entity>}
+    $parser parse $incMoml_2_8_1_b
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+        <property name="prop" class="ptolemy.data.expr.Parameter">
+        </property>
+    </entity>
+</entity>
+}
+
+######################################################################
+####
+#
 test MoMLParser-2.9 {Test link with insertAt attribute, inside links} {
     $parser reset
     set toplevel [$parser parse {
