@@ -217,7 +217,7 @@ public class CompositeEntityModel implements CompositeModel {
             if (attribute instanceof Director) {
                 nodes.add(_getLocation(attribute));
             } else {
-                // The object is not a director, so only give a locaiton
+                // The object is not a director, so only give a location
                 // if one exists already.
                 List locations = attribute.attributeList(Location.class);
                 if (locations.size() > 0) {
