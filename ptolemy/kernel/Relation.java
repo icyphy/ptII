@@ -152,7 +152,7 @@ public abstract class Relation extends NamedObj {
      * connecting Ports to Relations (see Port.connect(Port)). It should 
      * NOT be modified by any other method.
      */
-    protected CrossRefList __ortList;
+    protected CrossRefList _portList;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
