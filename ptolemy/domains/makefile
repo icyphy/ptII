@@ -76,7 +76,8 @@ PTAUXALLJARS = \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		tm/tm.jar \
-		sr/sr.jar
+		sr/sr.jar \
+		wireless/wireless.jar
 
 # Are we shipping these domains?
 #		hdf/hdf.jar
