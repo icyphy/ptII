@@ -158,6 +158,8 @@ ALLPACKAGES =		$(CODEGENPACKAGES) \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.sdf.kernel \
+			ptolemy.domains.sr.kernel \
+			ptolemy.domains.sr.lib \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.data.type \
@@ -228,6 +230,8 @@ codeDoc/tree.html:	$(CODEGENJSRCS) \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
+			../ptolemy/domains/sr/kernel/*.java \
+			../ptolemy/domains/sr/lib/*.java \
 			../ptolemy/data/*.java \
 			../ptolemy/data/expr/*.java \
 			../ptolemy/data/type/*.java \
