@@ -56,7 +56,7 @@ JSRCS = \
 	PlotPoint.java \
 	Pxgraph.java
 
-EXTRA_SRCS = $(JSRCS) pxgraph testpxgraph
+EXTRA_SRCS = $(JSRCS) pxgraph testpxgraph index.html
 
 MISC_FILES = demo doc #test 
 
