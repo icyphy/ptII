@@ -192,18 +192,6 @@ public class SDFDelay extends SDFAtomicActor {
              */
             message = (IntToken)input.get(0);
 
-            /* System.out.print and System.out.println
-             * are calls to the operating
-             * system to print characters (and possibly a linefeed)
-             * to the console.
-             */
-            System.out.print("Delay - ");
-
-            /* IntToken.intValue returns the value stored in an IntToken as an
-             * integer.
-             */
-            System.out.println(message.intValue());
-
             /* After looking at the token, pass it along to the next actor
              */
             output.send(0, message);

@@ -46,41 +46,62 @@ public class SDFSplit extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            TypedIOPort inputport = (TypedIOPort)newPort("input");
-            inputport.setInput(true);
-            setTokenConsumptionRate(inputport, 2);
-            inputport.setDeclaredType(IntToken.class);
+            input = (TypedIOPort)newPort("input");
+            input.setInput(true);
+            setTokenConsumptionRate(input, 2);
+            input.setDeclaredType(IntToken.class);
 
-            TypedIOPort outputport1 = (TypedIOPort)newPort("output1");
-            outputport1.setOutput(true);
-            setTokenProductionRate(outputport1, 1);
-            outputport1.setDeclaredType(IntToken.class);
+            output1 = (TypedIOPort)newPort("output1");
+            output1.setOutput(true);
+            setTokenProductionRate(output1, 1);
+            output1.setDeclaredType(IntToken.class);
 
-            TypedIOPort outputport2 = (TypedIOPort)newPort("output2");
-            outputport2.setOutput(true);
-            setTokenProductionRate(outputport2, 1);
-            outputport2.setDeclaredType(IntToken.class);
+            output2 = (TypedIOPort)newPort("output2");
+            output2.setOutput(true);
+            setTokenProductionRate(output2, 1);
+            output2.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFSplit: constructor error");
         }
     }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    //// 
+
+
+    public TypedIOPort input;
+    public TypedIOPort output1;
+    public TypedIOPort output2;
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            SDFSplit newobj = (SDFSplit)(super.clone(ws));
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.output1 = (TypedIOPort)newobj.getPort("output1");
+            newobj.output2 = (TypedIOPort)newobj.getPort("output2");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
 
     public void fire() throws IllegalActionException {
         IntToken message;
-        TypedIOPort inputport = (TypedIOPort)getPort("input");
-        TypedIOPort outputport1 = (TypedIOPort)getPort("output1");
-        TypedIOPort outputport2 = (TypedIOPort)getPort("output2");
 
-        message = (IntToken)inputport.get(0);
-        System.out.print("Split1 - ");
-        System.out.println(message.intValue());
-        outputport1.send(0, message);
-        message = (IntToken)inputport.get(0);
-        System.out.print("Split2 - ");
-        System.out.println(message.intValue());
-        outputport2.send(0, message);
+        message = (IntToken)input.get(0);
+        output1.send(0, message);
+        message = (IntToken)input.get(0);
+        output2.send(0, message);
     }
+
 }
 
 

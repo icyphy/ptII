@@ -50,42 +50,60 @@ public class SDFJoin extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            TypedIOPort inputport1 = (TypedIOPort)newPort("input1");
-            inputport1.setInput(true);
-            setTokenConsumptionRate(inputport1, 1);
-            inputport1.setDeclaredType(IntToken.class);
+            input1 = (TypedIOPort)newPort("input1");
+            input1.setInput(true);
+            setTokenConsumptionRate(input1, 1);
+            input1.setDeclaredType(IntToken.class);
 
-            TypedIOPort inputport2 = (TypedIOPort)newPort("input2");
-            inputport2.setInput(true);
-            setTokenConsumptionRate(inputport2, 1);
-            inputport2.setDeclaredType(IntToken.class);
+            input2 = (TypedIOPort)newPort("input2");
+            input2.setInput(true);
+            setTokenConsumptionRate(input2, 1);
+            input2.setDeclaredType(IntToken.class);
 
-            TypedIOPort outputport = (TypedIOPort)newPort("output");
-            outputport.setOutput(true);
-            setTokenProductionRate(outputport, 2);
-            outputport.setDeclaredType(IntToken.class);
+            output = (TypedIOPort)newPort("output");
+            output.setOutput(true);
+            setTokenProductionRate(output, 2);
+            output.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFJoin: constructor error");
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    //// 
+
+    public TypedIOPort input1;
+    public TypedIOPort input2;
+    public TypedIOPort output;
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            SDFJoin newobj = (SDFJoin)(super.clone(ws));
+            newobj.input1 = (TypedIOPort)newobj.getPort("input1");
+            newobj.input2 = (TypedIOPort)newobj.getPort("input2");
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
     public void fire() throws IllegalActionException {
         IntToken message;
 
-        TypedIOPort inputport1 = (TypedIOPort) getPort("input1");
-        TypedIOPort inputport2 = (TypedIOPort) getPort("input2");
-        TypedIOPort outputport = (TypedIOPort) getPort("output");
-
-        message = (IntToken)inputport1.get(0);
-        System.out.print("Join1 - ");
-        System.out.println(message.intValue());
-        outputport.send(0, message);
-        message = (IntToken)inputport2.get(0);
-
-        System.out.print("Join2 - ");
-        System.out.println(message.intValue());
-        outputport.send(0, message);
+        message = (IntToken)input1.get(0);
+        output.send(0, message);
+        message = (IntToken)input2.get(0);
+        output.send(0, message);
 
     }
 }

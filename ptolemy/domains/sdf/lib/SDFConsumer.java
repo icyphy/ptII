@@ -56,6 +56,7 @@ public class SDFConsumer extends SDFAtomicActor {
         catch (IllegalActionException e1) {
             System.out.println("SDFConsumer: Constructor error");
         }
+        history = new StringBuffer("");
     }
 
     public TypedIOPort input;
@@ -70,6 +71,7 @@ public class SDFConsumer extends SDFAtomicActor {
         try {
             SDFConsumer newobj = (SDFConsumer)(super.clone(ws));
             newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.history = new StringBuffer(history.toString());
 	    return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -81,10 +83,17 @@ public class SDFConsumer extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         int tokens = getTokenConsumptionRate(input);
         int i;
-        for(i = 0; i < tokens; i++)
-            input.get(0);
+        for(i = 0; i < tokens; i++) {
+            Token t = input.get(0);
+            history.append(t.toString() + "\n");
+        }        
     }
 
+    public String getHistory() {
+        return history.toString();
+    }
+
+    private StringBuffer history;
 }
 
 
