@@ -38,19 +38,13 @@ ME =		ptolemy/domains/pn/demo/RunLength
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		# demo test doc
-
-# Used to build zip files
-#JPACKAGE = 	ptolemy.domains.pn.guidemo
-#JPACKAGE_DIR = 	ptolemy/domains/pn/guidemo
-#JVERSION =	1.0
-#JDIST =		$(JPACKAGE)$(JVERSION)
-#JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
-PTCLASSJAR = 	$(JPACKAGE).jar
-
-DIVA_JAR = $(ROOT)/lib/diva.jar
+DIRS =
 
 CLASSPATH = $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
+
+# Used to build jar files
+PTPACKAGE = 	RLEDivaApplet
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = ThreadDemo.java \
 	RLEDiva.java
@@ -59,40 +53,25 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS) # doc #test
-
-#PTAUXJAR =	RLEDivaApplet.jar
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) \
-	RLEDivaApplet.jar
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass RLEDivaApplet.jar
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass 
+install: all
 
+demo:
+	CLASSPATH="$(CLASSPATH)" appletviewer RLEDiva.htm
 
 # 'make clean' removes everything in KRUFT
-KRUFT = RLEDivaApplet.jar
-
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-RLEDivaApplet.jar: $(JSRCS) $(JCLASS)
-		(cd $(ROOT); \
-                $(JAR) cf \
-                $(ME)/$@ \
-		$(ME)/*.class) 
-
-
-depend:
-	@echo "no dependencies in this directory"
-
-run::
-	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.domains.pn.demo.RunLength.ThreadDemo
+KRUFT = $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -42,48 +42,21 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	#$(PTPACKAGE).jar
-
-JSRCS = \
-
-
-EXTRA_SRCS =	$(JSRCS)
-
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 MISC_FILES =	$(DIRS)
 
-PTAUXJAR =	pndemo.jar
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	$(PTCLASSJAR) \
-	pndemo.jar
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
-all: jclass pndemo.jar
+install: all
 
-install: jclass pndemo.jar 
 demo: subdemo
 
-
-
-# 'make clean' removes everything in KRUFT
-KRUFT = pndemo.jar
-
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-pndemo.jar: $(JSRCS) $(JCLASS)
-		(cd $(CLASSPATH); \
-                $(JAR) cf \
-                $(ME)/$@ \
-		$(ME)/*.class )
 depend:
 	@echo "no dependencies in this directory"
 
