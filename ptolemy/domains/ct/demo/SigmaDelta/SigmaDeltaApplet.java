@@ -202,7 +202,8 @@ public class SigmaDeltaApplet extends CTApplet {
             accu.reset.link(dr4);
             mav.input.link(dr3);
             Relation dr5 = _toplevel.connect(accu.input, mav.output, "DR5");
-            Relation dr6 = _toplevel.connect(_dePlot.input, accu.average, "DR6");
+            Relation dr6 = _toplevel.connect(_dePlot.input, accu.average,
+                    "DR6");
             _dePlot.input.link(dr3);
 
             // CT Director parameters
