@@ -224,6 +224,6 @@ test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.actor.sched.NotSchedulableException: .top.ramp:  is in the continuous cluster, but it is a sequence or discrete actor.}}
+} {{ptolemy.actor.sched.NotSchedulableException: ramp is a SequenceActor, which cannot be a source actor in the CT domain.}}
 
 
