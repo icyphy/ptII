@@ -516,7 +516,7 @@ public class Variable extends Attribute
      *  false otherwise.  In domains with fixed-point semantics, such
      *  as SR, a variable that depends on a port value may be unknown
      *  at various points during the execution.
-     *  @see #setUnknown()
+     *  @see #setUnknown(boolean)
      *  @return True if the value is known.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation

@@ -103,7 +103,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
     /** Remove a class to be filtered
      *  @param className The name of the class to be filtered
      *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
-     *  @see #put(String)   
+     *  @see #put(String, String)   
      */
     public void remove(String className) {
         // ptolemy.copernicus.kernel.MakefileGenerator
