@@ -2,24 +2,25 @@
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
-<META NAME="GENERATOR" CONTENT="Adobe FrameMaker 5.5/HTML Export Filter">
+<META NAME="GENERATOR" CONTENT="Adobe FrameMaker 6.0/HTML Export Filter">
 <LINK REL="STYLESHEET" HREF="index.css" CHARSET="ISO-8859-1" TYPE="text/css">
 <TITLE>
- Author:		Steve Neuendorffer
+ 2 Using Vergil
 </TITLE>
-
 </HEAD>
 <BODY BGCOLOR="#ffffff">
-<h1>Using Vergil</h1>
 <DIV>
-<H3 CLASS="Author">
-<A NAME="pgfId-162678"></A>Authors:		Steve Neuendorffer</H3>
+<H1 CLASS="FM1Heading">
+<A NAME="pgfId-158262"></A>Using Vergil</H1>
+<DIV>
+<H4 CLASS="Author">
+<A NAME="pgfId-162678"></A>Authors:		Steve Neuendorffer</H4>
 </DIV>
 <DIV>
-<H2 CLASS="FM2Heading">
-<A NAME="pgfId-164801"></A><A NAME="42160"></A>Introduction</H2>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-164801"></A><A NAME="42160"></A>Introduction</H3>
 <P CLASS="Body">
-<A NAME="pgfId-164802"></A>Vergil is the Graphical User Interface for Ptolemy II. This chapter will guide you though using Vergil to create and manipulate Ptolemy models. Figure <A HREF="index.htm#74460" CLASS="XRef">See Example of a Vergil window.</A> shows a simple Ptolemy II model in Vergil, showing the graph editor, one of several editors available in Vergil.</P>
+<A NAME="pgfId-164802"></A>Vergil is the Graphical User Interface for Ptolemy II. This chapter will guide you though using Vergil to create and manipulate Ptolemy models. Figure <A HREF="usingVergil.htm#74460" CLASS="XRef">See Example of a Vergil window.</A> shows a simple Ptolemy II model in Vergil, showing the graph editor, one of several editors available in Vergil.</P>
 <DIV>
 <MAP NAME="index-1">
 </MAP>
@@ -27,26 +28,26 @@
 </DIV>
 </DIV>
 <DIV>
-<H2 CLASS="FM2Heading">
-<A NAME="pgfId-165833"></A>Quick Start</H2>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-165833"></A>Quick Start</H3>
 <P CLASS="Body">
 <A NAME="pgfId-165834"></A>The traditional first programming example is Hello World. Why break tradition?</P>
 <P CLASS="Body">
-<A NAME="pgfId-165846"></A>First start Vergil. From the command line, enter &quot;vergil&quot;, or select Vergil from the Start menu. You should see a welcome screen that looks like the one in figure <A HREF="index.htm#66708" CLASS="XRef">See Welcome window.</A>. Feel free to explore the links in this window. Most useful is probably the &quot;Quick tour&quot; link.</P>
+<A NAME="pgfId-165846"></A>First start Vergil. From the command line, enter &quot;vergil&quot;, or select Vergil from the Start menu. You should see a welcome screen that looks like the one in figure <A HREF="usingVergil.htm#66708" CLASS="XRef">See Welcome window.</A>. Feel free to explore the links in this window. Most useful is probably the &quot;Quick tour&quot; link.</P>
 <DIV>
 <MAP NAME="index-2">
 </MAP>
 <IMG SRC="index-2.gif" USEMAP="#index-2">
 </DIV>
 <P CLASS="Body">
-<A NAME="pgfId-166445"></A>Create a new graph editor from the <A NAME="marker-166625"></A>File-&gt;New menu in the <A NAME="marker-166626"></A>welcome window. You should see something like the window shown in Figure <A HREF="index.htm#30804" CLASS="XRef">See An empty Vergil Graph Editor.</A>. Ignoring the menus and toolbar for a moment, on the left is a palette of objects that can be dragged onto the page on the right. To begin with, the page on the right is blank. Open the <A NAME="marker-166627"></A>actor library in the palette, and go into the <A NAME="marker-166628"></A>sources library. Find the <A NAME="marker-166672"></A>Const actor and drag an instance over onto the blank page. Then go into the <A NAME="marker-166629"></A>sinks library and drag a <A NAME="marker-166673"></A>Display actor onto the page. Each of these actors can be dragged around on the page. However, we would like to connect one to the other. To do this, drag a connection from the output port on the right of the Const actor to the input port of the Display actor. Lastly, open the <A NAME="marker-166630"></A>director library and drag an SDFDirector onto the page. The Director gives an execution meaning to the graph, but for now we don't have to be concerned about exactly what that is.</P>
+<A NAME="pgfId-166445"></A>Create a new graph editor from the <A NAME="marker-166625"></A>File-&gt;New menu in the <A NAME="marker-166626"></A>welcome window. You should see something like the window shown in Figure <A HREF="usingVergil.htm#30804" CLASS="XRef">See An empty Vergil Graph Editor.</A>. Ignoring the menus and toolbar for a moment, on the left is a palette of objects that can be dragged onto the page on the right. To begin with, the page on the right is blank. Open the <A NAME="marker-166627"></A>actor library in the palette, and go into the <A NAME="marker-166628"></A>sources library. Find the <A NAME="marker-166672"></A>Const actor and drag an instance over onto the blank page. Then go into the <A NAME="marker-166629"></A>sinks library and drag a <A NAME="marker-166673"></A>Display actor onto the page. Each of these actors can be dragged around on the page. However, we would like to connect one to the other. To do this, drag a connection from the output port on the right of the Const actor to the input port of the Display actor. Lastly, open the <A NAME="marker-166630"></A>director library and drag an SDFDirector onto the page. The Director gives an execution meaning to the graph, but for now we don't have to be concerned about exactly what that is.</P>
 <DIV>
 <MAP NAME="index-3">
 </MAP>
 <IMG SRC="index-3.gif" USEMAP="#index-3">
 </DIV>
 <P CLASS="Body">
-<A NAME="pgfId-165895"></A>Now you should have something that looks like Figure <A HREF="index.htm#56559" CLASS="XRef">See The Hello World example.</A>. The Const actor is going to create our string, and the Display actor is going to print it out for us. We need to take care of one small detail before we run our example: we need to tell the Const actor that we want the string &quot;Hello World&quot;. To do this we need to edit one of the parameters of the Const. To do this, right click on the Const actor and select &quot;Edit Parameters&quot;. You should see the dialog box in figure <A HREF="index.htm#76275" CLASS="XRef">See The Const parameter editor.</A>. Enter the string &quot;Hello World&quot; for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.</P>
+<A NAME="pgfId-165895"></A>Now you should have something that looks like Figure <A HREF="usingVergil.htm#56559" CLASS="XRef">See The Hello World example.</A>. The Const actor is going to create our string, and the Display actor is going to print it out for us. We need to take care of one small detail before we run our example: we need to tell the Const actor that we want the string &quot;Hello World&quot;. To do this we need to edit one of the parameters of the Const. To do this, right click on the Const actor and select &quot;Edit Parameters&quot;. You should see the dialog box in figure <A HREF="usingVergil.htm#76275" CLASS="XRef">See The Const parameter editor.</A>. Enter the string &quot;Hello World&quot; for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.</P>
 <DIV>
 <MAP NAME="index-4">
 </MAP>
@@ -58,7 +59,7 @@
 <IMG SRC="index-5.gif" USEMAP="#index-5">
 </DIV>
 <P CLASS="Body">
-<A NAME="pgfId-166518"></A>To run the example, go to the <A NAME="marker-166624"></A>View menu and select the <A NAME="marker-166623"></A>Run Window. If you click the &quot;Go&quot; button, you will see a large number of strings in the Display at the right. To stop the execution, click the &quot;Stop button. To see only one string, change the <A NAME="marker-166631"></A>iterations parameter of the director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the Const actor before. The run window is shown in Figure <A HREF="index.htm#15942" CLASS="XRef">See Execution of the Hello World example.</A>.</P>
+<A NAME="pgfId-166518"></A>To run the example, go to the <A NAME="marker-166624"></A>View menu and select the <A NAME="marker-166623"></A>Run Window. If you click the &quot;Go&quot; button, you will see a large number of strings in the Display at the right. To stop the execution, click the &quot;Stop button. To see only one string, change the <A NAME="marker-166631"></A>iterations parameter of the director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the Const actor before. The run window is shown in Figure <A HREF="usingVergil.htm#15942" CLASS="XRef">See Execution of the Hello World example.</A>.</P>
 <DIV>
 <MAP NAME="index-6">
 </MAP>
@@ -66,10 +67,10 @@
 </DIV>
 </DIV>
 <DIV>
-<H2 CLASS="FM2Heading">
-<A NAME="pgfId-165974"></A>Data Types and the Type System</H2>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-165974"></A>Data Types and the Type System</H3>
 <P CLASS="Body">
-<A NAME="pgfId-165955"></A>So what is really going on here? The Const actor is creating values on its output port. The Display actor is consuming data values from its input port and displaying them in the run window. The value that is created by the Const actor can be any type of object. For example, try giving the value 1 (the integer with value one), or 1.0 (the floating point number with value one), or {1.0} (An array containing a one), or {value=1, name=&quot;one&quot;} (A record of two elements: an integer named value and a string named name), or even [1,1;1,1] (a two by two matrix). They all seem pretty much the same in the Display, but Ptolemy knows the difference between them! To see the difference, try creating the model in Figure <A HREF="index.htm#61713" CLASS="XRef">See Another example</A>. The Ramp actor is listed under sources and the AddSubtract actor is listed under math. Set the value parameter of the constant to be 0 and the iterations parameter of the director to 5. Running the model should result in 5 numbers between 0 and 4. These are the values produced by the Ramp, which are having the value of the Const actor subtracted from them. Experiment with changing the value of the Const actor and see how it changes the 5 numbers at the output. Now for the real test: Change the value of the Const actor back to &quot;Hello World&quot;. When you execute the model, you should see an error window popup. Not to worry, this window is just telling you that you have tried to subtract a string value from an integer value, which doesn't make much sense at all.</P>
+<A NAME="pgfId-165955"></A>So what is really going on here? The Const actor is creating values on its output port. The Display actor is consuming data values from its input port and displaying them in the run window. The value that is created by the Const actor can be any type of object. For example, try giving the value 1 (the integer with value one), or 1.0 (the floating point number with value one), or {1.0} (An array containing a one), or {value=1, name=&quot;one&quot;} (A record of two elements: an integer named value and a string named name), or even [1,1;1,1] (a two by two matrix). They all seem pretty much the same in the Display, but Ptolemy knows the difference between them! To see the difference, try creating the model in Figure <A HREF="usingVergil.htm#61713" CLASS="XRef">See Another example</A>. The Ramp actor is listed under sources and the AddSubtract actor is listed under math. Set the value parameter of the constant to be 0 and the iterations parameter of the director to 5. Running the model should result in 5 numbers between 0 and 4. These are the values produced by the Ramp, which are having the value of the Const actor subtracted from them. Experiment with changing the value of the Const actor and see how it changes the 5 numbers at the output. Now for the real test: Change the value of the Const actor back to &quot;Hello World&quot;. When you execute the model, you should see an error window popup. Not to worry, this window is just telling you that you have tried to subtract a string value from an integer value, which doesn't make much sense at all.</P>
 <DIV>
 <MAP NAME="index-7">
 </MAP>
@@ -81,19 +82,19 @@
 <A NAME="pgfId-166645"></A>There are actually two things going on here. The first is that all the connections to the same port must have the same type. Ptolemy automatically converts the integers from the Ramp to strings. The second is that the strings are added together as strings usually are in Java, which means concatenating them.</P>
 </DIV>
 <DIV>
-<H2 CLASS="FM2Heading">
-<A NAME="pgfId-166138"></A>Hierarchy</H2>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-166138"></A>Hierarchy</H3>
 <P CLASS="Body">
 <A NAME="pgfId-166565"></A>Let's look at a slightly more interesting problem. In this case, a small signal processing problem, where we are interested in recovering a signal based only on noisy measurements of it. First open a new document and drag in a <A NAME="marker-166647"></A>Typed <A NAME="marker-166648"></A>Composite Actor from the <A NAME="marker-166646"></A>utilities library. This actor is going to add the noise to our measurements. First, using the <A NAME="marker-166649"></A>context menu (<A NAME="marker-166650"></A>right click over the composite actor), select &quot;Rename&quot; and give the composite a good name, like &quot;Channel&quot;. Then, using the context menu again, select &quot;look inside&quot; on the actor. You should get a blank graph editor. The original graph editor is still open. To see it, move the new one using its title bar.</P>
 <P CLASS="Body">
-<A NAME="pgfId-166651"></A>First we have to add some external ports. There are several ways to do this, but clicking on the port toolbar button is probably the easiest. The <A NAME="marker-166652"></A>port <A NAME="marker-166653"></A>toolbar button is the small black triangle at the upper left. Create two ports and rename them input and output. Using the context menu on the background, select <A NAME="marker-166657"></A>Configure ports and set input to be an input port and output to be an output port. Then using these ports, create the diagram shown in Figure <A HREF="index.htm#23515" CLASS="XRef">See An example of a hierarchical model.</A><A HREF="#pgfId-166915" CLASS="footnote">2</A>. </P>
+<A NAME="pgfId-166651"></A>First we have to add some external ports. There are several ways to do this, but clicking on the port toolbar button is probably the easiest. The <A NAME="marker-166652"></A>port <A NAME="marker-166653"></A>toolbar button is the small black triangle at the upper left. Create two ports and rename them input and output. Using the context menu on the background, select <A NAME="marker-166657"></A>Configure ports and set input to be an input port and output to be an output port. Then using these ports, create the diagram shown in Figure <A HREF="usingVergil.htm#23515" CLASS="XRef">See An example of a hierarchical model.</A><A HREF="#pgfId-166915" CLASS="footnote">2</A>. </P>
 <DIV>
 <MAP NAME="index-8">
 </MAP>
 <IMG SRC="index-8.gif" USEMAP="#index-8">
 </DIV>
 <P CLASS="Body">
-<A NAME="pgfId-166658"></A>The <A NAME="marker-166664"></A>Gaussian actor creates values from a Gaussian distributed random variable, and is found in the sources library. Now if you close this editor and return to the previous one, you should be able to easily create the model shown in figure <A HREF="index.htm#71815" CLASS="XRef">See A simple signal processing example.</A>. The <A NAME="marker-166668"></A>Sinewave actor is listed under <A NAME="marker-166669"></A>signal processing, and the <A NAME="marker-166670"></A>SequencePlotter actor is found in sinks. Notice that the Sinewave actor is also a hierarchical model, as suggested by its red outline. If you execute this model (you will probably want to set the iterations to something reasonable, like 200), you should see something like Figure <A HREF="index.htm#72225" CLASS="XRef">See The output of the simple signal processing example above.</A>.</P>
+<A NAME="pgfId-166658"></A>The <A NAME="marker-166664"></A>Gaussian actor creates values from a Gaussian distributed random variable, and is found in the sources library. Now if you close this editor and return to the previous one, you should be able to easily create the model shown in figure <A HREF="usingVergil.htm#71815" CLASS="XRef">See A simple signal processing example.</A>. The <A NAME="marker-166668"></A>Sinewave actor is listed under <A NAME="marker-166669"></A>signal processing, and the <A NAME="marker-166670"></A>SequencePlotter actor is found in sinks. Notice that the Sinewave actor is also a hierarchical model, as suggested by its red outline. If you execute this model (you will probably want to set the iterations to something reasonable, like 200), you should see something like Figure <A HREF="usingVergil.htm#72225" CLASS="XRef">See The output of the simple signal processing example above.</A>.</P>
 <DIV>
 <MAP NAME="index-9">
 </MAP>
@@ -106,10 +107,154 @@
 </DIV>
 </DIV>
 <DIV>
-<H2 CLASS="FM2Heading">
-<A NAME="pgfId-166285"></A>Broadcast Relations</H2>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-166285"></A>Parameters and Expressions</H3>
+<P CLASS="Body">
+<A NAME="pgfId-167419"></A>The values of parameters can be expressions. The details of the expression language are described in chapter <A HREF="data.htm#23387" CLASS="XRef">See Data Package</A>, but we give a brief summary here. First, expressions can include references to variables and some constants. By default, the <A NAME="marker-167421"></A>constants supported are <A NAME="marker-167422"></A>PI, <A NAME="marker-167423"></A>pi, <A NAME="marker-167424"></A>E, <A NAME="marker-167425"></A>e, <A NAME="marker-167426"></A>true, <A NAME="marker-167427"></A>false, <A NAME="marker-167428"></A>i, and <A NAME="marker-167429"></A>j. for example,</P>
+<P CLASS="Code">
+<A NAME="pgfId-167480"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167488"></A>PI/2.0</P>
+<P CLASS="Code">
+<A NAME="pgfId-167489"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167490"></A>is a valid expression, and can be given as the value of a parameter that can accept doubles. The constants i and j are complex numbers with value equal to 0.0 + 1.0i. In addition, <A NAME="marker-167430"></A>literal string constants are supported. Anything between quotes, &quot;...&quot;, is interpreted as a <A NAME="marker-167431"></A>string constant. Numerical values without decimal points, such as &quot;10&quot; or &quot;-3&quot; are <A NAME="marker-167432"></A>integers. Numerical values with decimal points, such as &quot;10.0&quot; or &quot;3.14159&quot; are <A NAME="marker-167433"></A>doubles. Integers followed by the character &quot;l&quot; (el) or &quot;L&quot; are <A NAME="marker-167434"></A>long integers.</P>
+<P CLASS="Body">
+<A NAME="pgfId-167501"></A>The <A NAME="marker-166973"></A>arithmetic operators are +, <EM CLASS="Symbol">
+&#8722;,</EM>
+ *, /, ^, and %. Most of these operators operate on most data types, including matrices. The ^ operator computes &quot;to the power of&quot; where the power can only be an integer. The <A NAME="marker-166980"></A>bitwise operators are &amp;, |, and &#126;. They operate on integers, where &amp; is bitwise and, &#126; is bitwise not, and | is bitwise or. </P>
+<P CLASS="Body">
+<A NAME="pgfId-167512"></A>The <A NAME="marker-166983"></A>relational operators are &lt;, &lt;=, &gt;, &gt;=, <EM CLASS="Code">
+==</EM>
+ and !=. They return booleans. Boolean-valued expressions can be used to give conditional values. The syntax for this is </P>
+<P CLASS="Code">
+<A NAME="pgfId-167514"></A>boolean ? value1 : value2</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167515"></A>If the boolean is true, <EM CLASS="Code">
+value1</EM>
+ is returned, else <EM CLASS="Code">
+value2</EM>
+ is returned. The <A NAME="marker-166986"></A>logical boolean operators are &amp;&amp;, ||, !, &amp; and |. They operate on booleans and return booleans. Note that the difference between logical &amp;&amp; and logical &amp; is that &amp; evaluates all the operands regardless of whether their value is now irrelevant. Similarly for logical || and |. This approach is borrowed from Java.</P>
+<P CLASS="Body">
+<A NAME="pgfId-167529"></A>Expressions can contain references by name to parameters within the <EM CLASS="Emphasis">
+scope</EM>
+<A NAME="marker-167528"></A> of the expression. Consider a parameter P in actor X which is in turn contained by composite actor Y. The scope of an expression for P includes all the parameters contained by X and Y, plus those of the container of Y, its container, etc. You can <A NAME="marker-167536"></A>add <A NAME="marker-167537"></A>parameters to actors (composite or not) by right clicking on the actor, selecting &quot;Configure&quot; and then clicking on &quot;Add.&quot;</P>
+<P CLASS="Body">
+<A NAME="pgfId-167020"></A><A NAME="marker-167552"></A>Arrays are specified with curly brackets. E.g., &quot;{1, 2, 3}&quot; is an array of integers, while &quot;<EM CLASS="Code">
+{&quot;x&quot;, &quot;y&quot;, &quot;z&quot;}</EM>
+&quot; is an array of strings. An array is an ordered list of tokens of any type, with the only constraint being that the elements all have the same type. Thus, for example, &quot;{1, 2.3}&quot; is illegal because the first element is an integer and the second is a double. The elements of the array can be given by expressions, as in the example &quot;{2*pi, 3*pi}.&quot; Arrays can be nested; for example, &quot;{{1, 2}, {3, 4, 5}}&quot; is an array of arrays of integers.</P>
+<P CLASS="Body">
+<A NAME="pgfId-167023"></A><A NAME="marker-167575"></A>Matrices are specified with square brackets, using commas to separate row elements and semicolons to separate rows. E.g., &quot;[1, 2, 3; 4, 5, 5+1]&quot; gives a two by three integer matrix (2 rows and 3 columns). Note that an array or matrix element can be given by an expression. A row vector can be given as &quot;[1, 2, 3]&quot; and a column vector as &quot;[1; 2; 3]&quot;. Some Matlab-style array constructors are supported. For example, &quot;[1:2:9]&quot; gives an array of odd numbers from 1 to 9, and is equivalent to &quot;[1, 3, 5, 7, 9].&quot; Similarly, &quot;[1:2:9; 2:2:10]&quot; is equivalent to &quot;[1, 3, 5, 7, 9; 2, 4, 6, 8, 10].&quot;</P>
 <P CLASS="FirstBody">
-<A NAME="pgfId-166289"></A>In the previous section we showed only one noisy measurement of the original signal. Now let's try to remove some of the noise. First, make three copies of the channel by selecting the one we created before, copying and pasting. We want to feed the original signal through all four channels and average the outputs of the channel. To broadcast the output of the Sinewave to more than one place, first create a <A NAME="marker-166679"></A>relation (represented by a <A NAME="marker-166680"></A>diamond), and then connect each of the ports to the relation. The relation can be created using the <A NAME="marker-166681"></A>toolbar, or by <A NAME="marker-166682"></A>control-clicking on the background. This should allow you to create the model shown in Figure <A HREF="index.htm#72088" CLASS="XRef">See An example of a broadcast relation.</A>. The parameter of the Const actor is 4, and the <A NAME="marker-166683"></A>MultiplyDivide actor is found in the math library.</P>
+<A NAME="pgfId-167025"></A>Reference to matrices have the form &quot;<EM CLASS="Emphasis">
+name</EM>
+(<EM CLASS="Emphasis">
+n</EM>
+, <EM CLASS="Emphasis">
+m</EM>
+)&quot; where <EM CLASS="Emphasis">
+name</EM>
+ is the name of a matrix variable in scope (or a constant matrix), <EM CLASS="Emphasis">
+n</EM>
+ is the row index, and <EM CLASS="Emphasis">
+m</EM>
+ is the column index. Index numbers start with zero, as in Java, not 1, as in Matlab.</P>
+<P CLASS="FirstBody">
+<A NAME="pgfId-167028"></A>A <A NAME="marker-167027"></A>record token is a composite type where each element is named, and each element can have a distinct type. Records are delimited by curly braces, with each element given a name. For example, &quot;<EM CLASS="Code">
+{a=1, b=&quot;foo&quot;}</EM>
+&quot; is a record with two elements, named &quot;a&quot; and &quot;b&quot;, with values 1 (an integer) and &quot;foo&quot; (a string), respectively. The value of a record element can be an arbitrary expression, and records can be nested (an element of a record token may be a record token).</P>
+<P CLASS="Body">
+<A NAME="pgfId-167031"></A>The language includes an extensible set of <A NAME="marker-167030"></A>functions, such as sin(), cos(), etc. The functions that are built in include all static methods of the java.lang.Math class and the ptolemy.data.expr.UtilityFunctions class. This can easily be extended by registering another class that includes static methods. The functions currently available are shown in figures <A HREF="data.htm#17982" CLASS="XRef">See Functions available to the expression language from the ptolemy.data.expr.UtilityFunctions class. This class is still at a preliminary stage, and the function it provides will grow over time.</A> and <A HREF="data.htm#99698" CLASS="XRef">See Functions available to the expression language from the java.lang.Math class.</A>.</P>
+<P CLASS="Body">
+<A NAME="pgfId-167314"></A>One slightly subtle function is the <A NAME="marker-167313"></A>random() function. It takes no arguments, and hence is written &quot;<EM CLASS="Code">
+random()</EM>
+&quot;. It returns a random number. However, this function is evaluated only when the expression within which it appears is evaluated. The result of the expression may be used repeatedly without re-evaluating the expression. The random() function is not called again. Thus, for example, if the value parameter of the Const actor is set to &quot;<EM CLASS="Code">
+random()</EM>
+&quot;, then its output will be a random constant; i.e., it will not change on each firing.</P>
+<P CLASS="Body">
+<A NAME="pgfId-167316"></A>Every element and subexpression in an expression represents an instance of Token (or more likely, a class derived from Token). The expression language supports invocation of any <A NAME="marker-167317"></A>method of a given token, as long as the arguments of the method are of type Token and the return type is Token (or a class derived from Token, or something that the expression parser can easily convert to a token, such as a string, double, int, etc.). The syntax for this is (<EM CLASS="Emphasis">
+token</EM>
+).<EM CLASS="Emphasis">
+name</EM>
+(<EM CLASS="Emphasis">
+args</EM>
+), where <EM CLASS="Emphasis">
+name</EM>
+ is the name of the method and <EM CLASS="Emphasis">
+args</EM>
+ is a comma-separated set of arguments. Each argument can itself be an expression. Note that the parentheses around the <EM CLASS="Emphasis">
+token</EM>
+ are not required, but might be useful for clarity. As an example, the ArrayToken class has a <A NAME="marker-167318"></A>getElement(int) method, which can be used as follows:</P>
+<P CLASS="Code">
+<A NAME="pgfId-167319"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167320"></A>{1, 2, 3}.getElement(1)</P>
+<P CLASS="Code">
+<A NAME="pgfId-167321"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167322"></A>This returns the integer 2. Another useful function of array token is illustrated by the following example:</P>
+<P CLASS="Code">
+<A NAME="pgfId-167323"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167325"></A>{1, 2, 3}.<A NAME="marker-167324"></A>length()</P>
+<P CLASS="Code">
+<A NAME="pgfId-167326"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167327"></A>which returns the integer 3.</P>
+<P CLASS="Body">
+<A NAME="pgfId-167329"></A>The <A NAME="marker-167328"></A>MatrixToken classes have three particularly useful methods, illustrated in the following examples:</P>
+<P CLASS="Code">
+<A NAME="pgfId-167330"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167332"></A>[1, 2; 3, 4; 5, 6].<A NAME="marker-167331"></A>getRowCount()</P>
+<P CLASS="Code">
+<A NAME="pgfId-167333"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167334"></A>which returns 3, and</P>
+<P CLASS="Code">
+<A NAME="pgfId-167335"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167337"></A>[1, 2; 3, 4; 5, 6].<A NAME="marker-167336"></A>getColumnCount()</P>
+<P CLASS="Code">
+<A NAME="pgfId-167338"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167339"></A>which returns 2, and</P>
+<P CLASS="Code">
+<A NAME="pgfId-167340"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167342"></A>[1, 2; 3, 4; 5, 6].<A NAME="marker-167341"></A>toArray()</P>
+<P CLASS="Code">
+<A NAME="pgfId-167343"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167344"></A>which returns {1, 2, 3, 4, 5, 6}. The latter function can be particularly useful for creating arrays using Matlab-style syntax. For example, to obtain an array with the integers from 1 to 100, you can enter:</P>
+<P CLASS="Code">
+<A NAME="pgfId-167345"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167346"></A>[1:1:100].toArray()</P>
+<P CLASS="Code">
+<A NAME="pgfId-167347"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167348"></A>The get() method of RecordToken accesses a record field, as in the following example:</P>
+<P CLASS="Code">
+<A NAME="pgfId-167349"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167350"></A>{a=1, b=2}.get(&quot;a&quot;)</P>
+<P CLASS="Code">
+<A NAME="pgfId-167351"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167352"></A>which returns 1.</P>
+<P CLASS="Body">
+<A NAME="pgfId-167354"></A>The <A NAME="marker-167588"></A>types currently supported in the language are boolean, complex, fixed point, double, int, long, arrays, matrices, records, and string. Note that there is no float or byte. Use double or int instead. A <A NAME="marker-167355"></A>long is defined by appending an integer with &quot;l&quot; (lower case L) or &quot;L&quot;, as in Java. A <A NAME="marker-167356"></A>complex is defined by appending an &quot;i&quot; or a &quot;j&quot; to a double for the imaginary part. This gives a purely imaginary complex number which can then leverage the polymorphic operations in the Token classes to create a general complex number. Thus &quot;<EM CLASS="Code">
+2 + 3i</EM>
+&quot; will result in the expected complex number. A fixed point number is defined using the &quot;fix&quot; function, as will be explained below in <A HREF="usingVergil.htm#20864" CLASS="XRef"></A>.</P>
+<P CLASS="FirstBody">
+<A NAME="pgfId-167558"></A>In expressions, anything inside /*...*/ is ignored, so you can insert <A NAME="marker-167557"></A>comments.</P>
+</DIV>
+<DIV>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-166956"></A>Broadcast Relations</H3>
+<P CLASS="FirstBody">
+<A NAME="pgfId-166289"></A>In the previous section we showed only one noisy measurement of the original signal. Now let's try to remove some of the noise. First, make three copies of the channel by selecting the one we created before, copying and pasting. We want to feed the original signal through all four channels and average the outputs of the channel. To broadcast the output of the Sinewave to more than one place, first create a <A NAME="marker-166679"></A>relation (represented by a <A NAME="marker-166680"></A>diamond), and then connect each of the ports to the relation. The relation can be created using the <A NAME="marker-166681"></A>toolbar, or by <A NAME="marker-166682"></A>control-clicking on the background. This should allow you to create the model shown in Figure <A HREF="usingVergil.htm#72088" CLASS="XRef">See An example of a broadcast relation.</A>. The parameter of the Const actor is 4, and the <A NAME="marker-166683"></A>MultiplyDivide actor is found in the math library.</P>
 <DIV>
 <MAP NAME="index-11">
 </MAP>
@@ -117,14 +262,14 @@
 </DIV>
 </DIV>
 <DIV>
-<H2 CLASS="FM2Heading">
-<A NAME="pgfId-166337"></A>SDF and Multirate Systems</H2>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-166337"></A>SDF and Multirate Systems</H3>
 <P CLASS="Body">
 <A NAME="pgfId-166341"></A>So far we have been dealing with relatively simple systems. They are simple in the sense that each actor produces and consumes one token from each port at a time. In this case, the SDF director simply ensures that an actor fires after the actors whose value it depends on. The number of output values that is created is determined by the number of iterations.</P>
 <P CLASS="Body">
 <A NAME="pgfId-166684"></A>It turns out that the <A NAME="marker-166687"></A>SDF scheduler is actually much more sophisticated. It is capable of scheduling the execution of actors with arbitrary prespecified data rates. Not all actors produce and consume just a single sample each time they are invoked (<A NAME="marker-166692"></A>fired). Some require several input samples (<A NAME="marker-166693"></A>tokens) before they can be fired, and produce several tokens when they are fired.</P>
 <P CLASS="Body">
-<A NAME="pgfId-166688"></A>One such actor is a spectral estimation actor. Figure <A HREF="index.htm#46190" CLASS="XRef">See A multirate SDF model.</A> shows a system that computes the <A NAME="marker-166700"></A>spectrum of a sine wave. The spectrum actor has a single parameter, which gives the order of the <A NAME="marker-166701"></A>FFT used to calculate the spectrum. Figure <A HREF="index.htm#25033" CLASS="XRef">See Execution of the multirate SDF model.</A> shows the output of the model with order set to 8 and the number of iterations set to 1. Note that there are 256 output samples. This is because the Spectrum actor requires 2<sup>8</sup>, or 256 input samples to fire, and produces 2<sup>8</sup>, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples.</P>
+<A NAME="pgfId-166688"></A>One such actor is a spectral estimation actor. Figure <A HREF="usingVergil.htm#46190" CLASS="XRef">See A multirate SDF model.</A> shows a system that computes the <A NAME="marker-166700"></A>spectrum of a sine wave. The spectrum actor has a single parameter, which gives the order of the <A NAME="marker-166701"></A>FFT used to calculate the spectrum. Figure <A HREF="usingVergil.htm#25033" CLASS="XRef">See Execution of the multirate SDF model.</A> shows the output of the model with order set to 8 and the number of iterations set to 1. Note that there are 256 output samples. This is because the Spectrum actor requires 2^8, or 256 input samples to fire, and produces 2^8, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples.</P>
 <DIV>
 <MAP NAME="index-12">
 </MAP>
@@ -137,14 +282,14 @@
 </DIV>
 </DIV>
 <DIV>
-<H2 CLASS="FM2Heading">
-<A NAME="pgfId-166726"></A>Using the <A NAME="marker-166766"></A>Plotter</H2>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-166726"></A>Using the <A NAME="marker-166766"></A>Plotter</H3>
 <P CLASS="FirstBody">
-<A NAME="pgfId-166744"></A>The plot shown in figure <A HREF="index.htm#25033" CLASS="XRef">See Execution of the multirate SDF model.</A> is not particularly satisfying. It has no title, the axes are not labeled, and the horizontal axis ranges from 0 to 255<A HREF="#pgfId-166823" CLASS="footnote">3</A>, because in one iteration, the Spectrum actor produces 256 output tokens. These outputs represent frequency bins that range between <IMG SRC="index-14.gif" ALIGN="BASELINE">
+<A NAME="pgfId-166744"></A>The plot shown in figure <A HREF="usingVergil.htm#25033" CLASS="XRef">See Execution of the multirate SDF model.</A> is not particularly satisfying. It has no title, the axes are not labeled, and the horizontal axis ranges from 0 to 255<A HREF="#pgfId-166823" CLASS="footnote">3</A>, because in one iteration, the Spectrum actor produces 256 output tokens. These outputs represent frequency bins that range between <IMG SRC="index-14.gif" ALIGN="BASELINE">
  and <IMG SRC="index-15.gif" ALIGN="BASELINE">
  radians per second.</P>
 <P CLASS="Body">
-<A NAME="pgfId-166784"></A>The <A NAME="marker-166767"></A>SequencePlotter actor has some pertinent parameters, shown in figure <A HREF="index.htm#15407" CLASS="XRef">See Parameters of the SequencePlotter actor.</A>. The xInit parameter specifies the value to use on the horizontal axis for the first token. The xUnit parameter specifies the value to increment this by for each subsequent token. Setting these to &quot;-PI&quot; and &quot;PI/128&quot; respectively results in the plot shown in figure <A HREF="index.htm#21802" CLASS="XRef">See Better labeled plot, where the horizontal axis now properly represents the frequency values.</A>.</P>
+<A NAME="pgfId-166784"></A>The <A NAME="marker-166767"></A>SequencePlotter actor has some pertinent parameters, shown in figure <A HREF="usingVergil.htm#15407" CLASS="XRef">See Parameters of the SequencePlotter actor.</A>. The xInit parameter specifies the value to use on the horizontal axis for the first token. The xUnit parameter specifies the value to increment this by for each subsequent token. Setting these to &quot;-PI&quot; and &quot;PI/128&quot; respectively results in the plot shown in figure <A HREF="usingVergil.htm#21802" CLASS="XRef">See Better labeled plot, where the horizontal axis now properly represents the frequency values.</A>.</P>
 <DIV>
 <MAP NAME="index-16">
 </MAP>
@@ -156,7 +301,7 @@
 <IMG SRC="index-17.gif" USEMAP="#index-17">
 </DIV>
 <P CLASS="Body">
-<A NAME="pgfId-166828"></A>This plot is better, but still missing useful information. To control more precisely the visual appearance of the plot, click on the second button from the right in the row of buttons at the top right of the plot. This button brings up a format control window. It is shown in figure <A HREF="index.htm#28511" CLASS="XRef">See Format control window for a plot.</A>, filled in with values that result in the plot shown in figure <A HREF="index.htm#56406" CLASS="XRef">See Still better labeled plot.</A>. Most of these are self-explanatory, but the following pointers may be useful:</P>
+<A NAME="pgfId-166828"></A>This plot is better, but still missing useful information. To control more precisely the visual appearance of the plot, click on the second button from the right in the row of buttons at the top right of the plot. This button brings up a format control window. It is shown in figure <A HREF="usingVergil.htm#28511" CLASS="XRef">See Format control window for a plot.</A>, filled in with values that result in the plot shown in figure <A HREF="usingVergil.htm#56406" CLASS="XRef">See Still better labeled plot.</A>. Most of these are self-explanatory, but the following pointers may be useful:</P>
 <DIV>
 <MAP NAME="index-18">
 </MAP>
@@ -191,6 +336,7 @@
 <A NAME="pgfId-166897"></A>label value, label value, ...</P>
 <P CLASS="Indented">
 <A NAME="pgfId-166898"></A>where the label is any string (enclosed in quotation marks if it includes spaces), and the value is a number.</P>
+</DIV>
 </DIV>
 <HR>
 <DIV CLASS="footnotes">
