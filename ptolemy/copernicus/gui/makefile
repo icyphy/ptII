@@ -1,6 +1,6 @@
-# Ptolemy code generation using Soot 
+# Makefile for Ptolemy II code generation graphical user interface
 #
-# @Authors: (makefile) Christopher Hylands- based on a file by Thomas M. Parks
+# @Authors: Steve Neuendorffer, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -29,58 +29,47 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus
-
-# kernel first, then alphabetical, then gui
-# PTJHDL_DIR is set by configure in $PTII/mk/ptII.mk if the jhdl jar file
-# was found
-DIRS =		kernel c shallow java $(PTJHDL_DIR) gui
+ME =		ptolemy/copernicus/gui
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/soot/1.2.2/soot/classes$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	copernicus
-PTCLASSJAR =
+PTPACKAGE = 	kernel
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	c/c.jar \
-	kernel/kernel.jar \
-	java/java.jar \
-	shallow/shallow.jar \
-	gui/gui.jar
+DIRS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-JSRCS =
+# Keep this list alphabetized.
+JSRCS = \
+	GeneratorTableau.java \
+	GeneratorTableauAttribute.java
 
-EXTRA_SRCS =	$(JSRCS) \
-		README.txt
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) cg
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+
+install: all
 
 depend:
 	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
 
