@@ -171,7 +171,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _myplot.plot.setTitle("Fixpoint FIR Filter Transfer Function");
             _myplot.plot.setXRange( -Math.PI/2, Math.PI/2 );
             _myplot.plot.setYRange( -100, 1);
-            _myplot.plot.setYLabel("amplitude (dB)");
+            _myplot.plot.setYLabel("amplitude (DB)");
             _myplot.plot.setXLabel("angular frequency");
             _myplot.plot.setSize(500, 300);
             _myplot.xInit.setToken(new DoubleToken( -Math.PI/2 ));
@@ -211,7 +211,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _rtop = new RectangularToPolar(_transform,"RecToPolar");
 
             // Go from Real to Decibel
-            _rtod = new dB(_transform, "dB");
+            _rtod = new DB(_transform, "DB");
 
             // Connect the actors inside the FFT transform
             _transform.connect( input_transform, _mult.multiply );
@@ -324,7 +324,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
     private FFT _fft;
     private ComplexToReal _ctor;
     private RectangularToPolar _rtop;
-    private dB _rtod;
+    private DB _rtod;
 
     // Copies of the FFT transform composite actor
     private TypedCompositeActor _transform;
