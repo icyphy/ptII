@@ -48,7 +48,7 @@ protected method _addPort() to throw an exception if its argument is a
 port that is not of the appropriate subclass. In this base class, the
 actor does nothing in the action methods (prefire, fire, ...).
 
-@author Mudit Goel, Edward A. Lee, Lukito Muliadi
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
 @see ptolemy.actors.CompositeActor
 @see ptolemy.actors.IOPort
@@ -302,6 +302,19 @@ public class AtomicActor extends ComponentEntity implements Actor {
                     "CompositeActor.");
         }
         super.setContainer(container);
+    }
+
+    /** By default, an AtomicActor does nothing incredible in its 
+     *  terminate, it just wraps up.  
+     */
+    public void terminate() {
+        try {
+            wrapup();
+        }
+        catch (IllegalActionException e) {
+            // Do not pass go, do not collect $200.  Most importantly, 
+            // just ignore everything and terminate.
+        }
     }
 
     /** Do nothing.  Derived classes override this method to define
