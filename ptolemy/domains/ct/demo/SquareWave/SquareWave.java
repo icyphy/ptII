@@ -68,7 +68,6 @@ public class SquareWave extends TypedCompositeActor {
         super(workspace);
         setName("LinearSystem");
         CTMultiSolverDirector dir= new CTMultiSolverDirector(this, "DIR");
-        dir.STAT = true;
         //dir.addDebugListener(new StreamListener());
 
         // Top level Parameters

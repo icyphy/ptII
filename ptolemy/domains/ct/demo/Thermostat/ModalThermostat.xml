@@ -25,6 +25,8 @@
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
                 <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -106,9 +108,9 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.moml.Location" value="250.0, 40.0">
                 </property>
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
             <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -169,9 +171,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.Integrator.initialState = 65.0; heating.HeatSource.value = 35.0; heating.Threshold.value = 80.0">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.Integrator.initialState = 65.0; heating.HeatSource.value = 35.0; heating.ZeroCrossingDetector.zeroLevel = 80.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.770501419737834">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -185,9 +189,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 0.0; heating.Threshold.value = 70.0">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 0.0; heating.ZeroCrossingDetector.zeroLevel = 70.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -201,9 +207,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 35.0; heating.Threshold.value = 80.0">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 35.0; heating.ZeroCrossingDetector.zeroLevel = 80.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -220,9 +228,9 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="init.outgoingPort" relation="relation"/>
         </entity>
         <entity name="heating" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
             <property name="CTEmbedded" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -242,6 +250,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
                 <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
                     <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -324,9 +334,13 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="zeroLevel" class="ptolemy.data.expr.Parameter" value="70.0">
+                </property>
+                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="528.5, 253.5">
+                <property name="_location" class="ptolemy.moml.Location" value="395.0, 265.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -342,35 +356,6 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
-                </port>
-            </entity>
-            <entity name="Threshold" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="70.0">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="225.0, 244.5">
-                </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-            </entity>
-            <entity name="2:AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="372.5, 204.5">
-                </property>
-                <port name="plus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="minus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
                 </port>
             </entity>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -395,12 +380,6 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 250.0">
-                </vertex>
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -415,13 +394,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="AddSubtract.output" relation="relation3"/>
             <link port="Integrator.input" relation="relation3"/>
             <link port="Integrator.output" relation="relation"/>
-            <link port="ZeroCrossingDetector.input" relation="relation4"/>
             <link port="ZeroCrossingDetector.output" relation="relation6"/>
-            <link port="ZeroCrossingDetector.trigger" relation="relation5"/>
-            <link port="Threshold.output" relation="relation4"/>
-            <link port="2:AddSubtract.plus" relation="relation"/>
-            <link port="2:AddSubtract.minus" relation="relation4"/>
-            <link port="2:AddSubtract.output" relation="relation5"/>
+            <link port="ZeroCrossingDetector.trigger" relation="relation"/>
             <link port="Scale.input" relation="relation"/>
             <link port="Scale.output" relation="relation8"/>
         </entity>
@@ -449,7 +423,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Temperature</title>
@@ -458,7 +433,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 <xRange min="0.0" max="20.0"/>
 <yRange min="65.0" max="80.0000824876088"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="modal model.output" relation="relation"/>

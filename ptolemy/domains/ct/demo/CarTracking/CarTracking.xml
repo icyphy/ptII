@@ -4,7 +4,7 @@
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[160, 125]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -24,6 +24,8 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -249,11 +251,13 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[53, 160]">
             </property>
-            <property name="frequency" class="ptolemy.data.expr.Parameter" value="PI*0.05">
-            </property>
             <property name="magnitude" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="frequencyInHz" class="ptolemy.data.expr.Parameter" value="0.05">
+            </property>
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="PI*0.05">
             </property>
             <doc>This composite actor generates a timed sine wave.</doc>
             <property name="_location" class="ptolemy.moml.Location" value="65.0, 390.0">
@@ -857,6 +861,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -872,6 +878,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -1042,6 +1050,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -1058,6 +1068,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
@@ -1073,6 +1085,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -1561,7 +1575,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 <plot>
 <title></title>
 <xRange min="0.0" max="99.99999999999862"/>
-<yRange min="0.0" max="181.67896331079464"/>
+<yRange min="0.0" max="204.19808586493394"/>
 </plot>?>
             </configure>
         </entity>

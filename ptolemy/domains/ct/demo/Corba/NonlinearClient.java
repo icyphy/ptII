@@ -72,7 +72,6 @@ public class NonlinearClient extends TypedCompositeActor {
         CTMultiSolverDirector director =
             new CTMultiSolverDirector(this, "CTMultiSolverDirector");
 	setDirector(director);
-        director.STAT = true;
         director.stopTime.setExpression("stopTime");
         //director.addDebugListener(new StreamListener());
         Clock sqwv = new Clock(this, "SQWV");

@@ -74,7 +74,6 @@ public class NonlinearClientApplication {
             _toplevel.setManager(man);
             _dir = new CTMultiSolverDirector(
                     _toplevel, "DIR");
-            _dir.STAT = true;
             //man.addDebugListener(new StreamListener());
             //_dir.addDebugListener(new StreamListener());
             Clock sqwv = new Clock(_toplevel, "SQWV");
