@@ -678,12 +678,12 @@ public class Graph implements Cloneable {
         return result;
     }
 
-    /** Returns a hash code value for the graph.
+    /** Returns the hash code for this graph. The hash code value is
+     *  the sum of the node and edge hash code values.
      *
-     *  @return A hash code value for this graph.
+     *  @return The hash code for this graph.
      */
     public int hashCode() {
-        // FIXME: modify this so that mappings have less chance of collision.
         int code = 0;
         Iterator nodes = nodes().iterator();
         while (nodes.hasNext()) {
