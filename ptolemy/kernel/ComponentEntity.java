@@ -240,6 +240,27 @@ public class ComponentEntity extends Entity {
         }
     }
 
+    /** Backward compatibility form of this method.
+     *  Before the existence of the Prototype class, the argument to
+     *  setContainer() was a CompositeEntity.  Subclasses override that
+     *  method. So that they continue to work, this method is provided
+     *  to bridge the two.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
+     *  @see #isClassElement()
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+       setContainer((Prototype)container);
+    }
+
     /** Set the name of the ComponentEntity. If there is already
      *  a ComponentEntity of the container with the same name, throw an
      *  exception.
