@@ -26,7 +26,7 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.colt;
 
 import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.StringToken;

@@ -1,4 +1,4 @@
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.colt;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
