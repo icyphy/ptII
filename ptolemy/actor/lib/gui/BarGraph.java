@@ -176,14 +176,16 @@ public class BarGraph extends Plotter implements SequenceActor {
      *  plot so that all the data is visible.
      */
     public void wrapup() {
-        for (int i = _tokens.length - 1; i >= 0; i--) {
-            if (_tokens[i] != null) {
-                Token[] currentArray = _tokens[i].arrayValue();
-                plot.clear(i + _offset);
-                for (int j = 0; j < currentArray.length; j++) {
-                    double currentValue =
-                            ((DoubleToken)currentArray[j]).doubleValue();
-                    plot.addPoint(i + _offset, j, currentValue, true);
+        if (_tokens != null) {
+            for (int i = _tokens.length - 1; i >= 0; i--) {
+                if (_tokens[i] != null) {
+                    Token[] currentArray = _tokens[i].arrayValue();
+                    plot.clear(i + _offset);
+                    for (int j = 0; j < currentArray.length; j++) {
+                        double currentValue =
+                                ((DoubleToken)currentArray[j]).doubleValue();
+                        plot.addPoint(i + _offset, j, currentValue, true);
+                    }
                 }
             }
         }
