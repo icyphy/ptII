@@ -607,7 +607,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  that order.
      *  <p>
      *  This method recursively calls the needWriteAccess() method of all lower
-     *  level directors. Intuitively, the workspace will only be made 
+     *  level directors. Intuitively, the workspace will only be made
      *  read-only, if all the directors permit it.
      */
     private boolean _needWriteAccess() {
