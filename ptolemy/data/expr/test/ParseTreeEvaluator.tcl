@@ -176,8 +176,10 @@ test ParseTreeEvaluator-4.2 {Construct a Parser,test use of equality operator on
 ######################################################################
 ####
 test ParseTreeEvaluator-4.3 {Construct a Parser,test shift operators} {
-    list [theTest "2 << 2"] [theTest "-4 >> 1"] [theTest "-4L >>> 1"] [theTest "4UB >> 2"]
-} {8 -2 9223372036854775806L 1ub}
+    list [theTest "2 << 2"] [theTest "-4 >> 1"] \
+	[theTest "-4L >>> 1ub"] [theTest "4UB >> 2ub"] \
+	[theTest "-4L >>> 1"] [theTest "4UB >> 2"]
+} {8 -2 9223372036854775806L 1ub 9223372036854775806L 1ub}
 
 ######################################################################
 ####
