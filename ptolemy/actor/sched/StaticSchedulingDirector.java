@@ -166,7 +166,7 @@ public class StaticSchedulingDirector extends Director{
      *  @param true to set the schedule to be valid.
      *  @exception IllegalActionException IF there's no scheduler.
      */
-    public void setScheduleValid( boolean valid)
+    public void setScheduleValid(boolean valid)
             throws IllegalActionException {
         if(_scheduler == null) {
             throw new IllegalActionException(this,
