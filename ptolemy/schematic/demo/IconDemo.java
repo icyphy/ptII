@@ -10,6 +10,7 @@ package ptolemy.schematic.demo;
 
 import ptolemy.schematic.util.*;
 import ptolemy.schematic.xml.*;
+import ptolemy.kernel.util.IllegalActionException;
 
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -120,8 +121,10 @@ public class IconDemo {
 } 
 
     /** Create an icon from an XML library
+     *  @throws IllegalActionException If the libname can't be found.
      */
-    public IconFigure createIconFromLibrary (String libname, String iconname) {
+    public IconFigure createIconFromLibrary (String libname, String iconname)
+        throws IllegalActionException {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Get the "sources" library and the "Const" icon
@@ -154,8 +157,9 @@ public class IconDemo {
      }
     
     /** Create a display of icons
+     *  @throws IllegalActionException if a library cannot be found.
      */
-    public void createIconDisplay () {
+    public void createIconDisplay () throws IllegalActionException {
         IconFigure icon = createIconFromLibrary("Sources", "Clock");
         icon.translate(100,50);
         
@@ -168,6 +172,11 @@ public class IconDemo {
     public static void main (String argv[]) {
         IconDemo ex = new IconDemo();
         ex.parseIconLibraries();
-        ex.createIconDisplay();
+        try {
+            ex.createIconDisplay();
+        } catch (IllegalActionException e) {
+            System.out.println("Failed to create Icon Display: " +
+                    "Library not found?");
+        }
     }
 }
