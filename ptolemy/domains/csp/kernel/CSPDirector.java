@@ -91,8 +91,8 @@ may specify zero delay, in which case they
 delay until the next occasion time is advanced. Note that time can
 be advanced to the current time. This happens if one of the
 delayed actors delayed with a delta delay of zero. Otherwise the
-simulation time is increased as well as being advanced.  By default the 
-simulation uses time. To use CSP without a notion of time, do not use the 
+current model time is increased as well as being advanced.  By default the 
+model uses time. To use CSP without a notion of time, do not use the 
 delay(double) method in any process.
 <p>
 The execution of the model may be paused by calling setPauseRequested() which

@@ -220,20 +220,20 @@ public class CSPReceiver implements ProcessReceiver {
         _container = parent;
     }
 
-    /** The simulation has been paused, so set a flag so that the
-     *  next time an actor tries to get or put it knows to pause.
+    /** The execution of the model has been paused, so set a flag so that
+     *  the next time an actor tries to get or put it knows to pause.
      *  @param value The new value of the paused flag.
      */
     public synchronized void setPause(boolean value) {
-        _simulationPaused = value;
+        _modelPaused = value;
     }
-    /** The simulation has finished, so set a flag so that the
+    /** The model has finished executing, so set a flag so that the
      *  next time an actor tries to get or put it gets a
      *  TerminateProcessException which will cause it to finish.
      */
     public synchronized void setFinish() {
-        _simulationFinished = true;
-        _simulationPaused = false; // needed?
+        _modelFinished = true;
+        _modelPaused = false; // needed?
         // Need to reset the state of the receiver.
         _setConditionalReceive(false, null);
         _setConditionalSend(false, null);
@@ -349,13 +349,13 @@ public class CSPReceiver implements ProcessReceiver {
 
     /* Check the flags controlling the state of the receiver and
      * hence the actor process trying to rendezvous with it. If the
-     * simulation has been finished the _simulationFinished flag will
+     * model has finished executing, the _modelFinished flag will
      * have been set and a TerminateProcessException will be thrown
-     * which will cause the actor process to finish.
+     * causing the actor process to finish.
      * <p>
-     * If the simulation has been paused, register the the current
+     * If the model execution has been paused, register the the current
      * thread as being paused with director, and after the pause
-     * reset the simulationPaused flag.
+     * reset the _modelPaused flag.
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs has been terminated while still
      *   running i.e. it was not allowed to run to completion.
@@ -364,26 +364,27 @@ public class CSPReceiver implements ProcessReceiver {
      */
     private synchronized void _checkFlags()
             throws InterruptedException, TerminateProcessException{
-        if (_simulationFinished) {
+        if (_modelFinished) {
             throw new TerminateProcessException(getContainer().getName() +
                     ": terminated.");
-        } else if (_simulationPaused) {
+        } else if (_modelPaused) {
             _getDirector().increasePausedCount();
-            while (_simulationPaused) {
+            while (_modelPaused) {
                 wait();
             }
-            // The simulation may have ended while we were paused...
+            // The execution of the model may have finished while we were 
+            // paused...
             // Need to do this as wait is used above.
-            if (_simulationFinished) {
+            if (_modelFinished) {
                 throw new TerminateProcessException(getContainer().getName() +
                         ": terminated.");
             }
         }
     }
 
-    /* Return the director that is controlling this simulation.
+    /* Return the director that is controlling the execution of this model.
      * The director is cached as it is accessed often.
-     * @return The CSPDirector controlling this simulation.
+     * @return The CSPDirector controlling this model.
      */
     private CSPDirector _getDirector() {
         try {
@@ -485,11 +486,11 @@ public class CSPReceiver implements ProcessReceiver {
 
     // Flag indicating that any subsequent attempts to rendezvous
     // at this receiver should cause the attempting processes to terminate.
-    private boolean _simulationFinished = false;
+    private boolean _modelFinished = false;
 
-    // Flag indicating that the director controlling the simulation
+    // Flag indicating that the director controlling the model
     // has been paused.
-    private boolean _simulationPaused = false;
+    private boolean _modelPaused = false;
 
     // The token being transferred during the rendezvous.
     private Token _token;
