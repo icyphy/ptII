@@ -36,6 +36,7 @@ import java.util.Map;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.lib.NonStrictTest;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
@@ -207,9 +208,11 @@ public abstract class KernelMain {
             if (copernicus_iterations != null) {
                 iterations.setToken(copernicus_iterations.getToken());
             } else {
-                System.out.println("KernelMain: "
-                        + "Setting number of iterations to 100000");
-                iterations.setToken(new IntToken(100000));
+                if (NonStrictTest.isRunningNightlyBuild()) {
+                    System.out.println("KernelMain: "
+                            + "Setting number of iterations to 100000");
+                    iterations.setToken(new IntToken(100000));
+                }
             }
         }
 
