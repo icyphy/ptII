@@ -70,7 +70,7 @@ appropriate container and name, then call setExpression() to set its value.
 <p>
 A Parameter can also be reset. If the Parameter was originally set from a
 Token, then this Token is placed again in the Parameter. If the Parameter
- was originally given an expression, then this expression is placed agian
+ was originally given an expression, then this expression is placed again
 in the Parameter and evaluated. Note that the type of the Token resulting
 from reset must be compatible the current Parameter type.
 <p>
