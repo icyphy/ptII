@@ -55,22 +55,36 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
      *  @param attributeName The name of the attribute, ignored
      *  in this method.
      *  @param attributeValue The value of the attribute.
-     *  @return the filtered attributeValue;
+     *  @return the filtered attributeValue.
      */
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue) {
-        // System.out.println("filterAttributeValue: " + container + "\t"
+
+        // If the nightly build is failing with messages like:
+        // " X connection to foo:0 broken (explicit kill or server shutdown)."
+        // Try uncommenting the next lines to see what is being
+        // expanding before the error:
+        //System.out.println("filterAttributeValue: " + container + "\t"
         //        +  attributeName + "\t" + attributeValue);
-        if (attributeValue != null
-                && (attributeValue
-                        .equals("ptolemy.vergil.icon.AttributeValueIcon")
-                        || attributeValue
-                        .equals("ptolemy.vergil.icon.ValueIcon")
-                        || attributeValue
-                        .equals("ptolemy.vergil.basic.NodeControllerFactory")
-                    )) {
+
+        if (attributeValue == null) {
+            return null;
+        } else if (attributeValue
+                .equals("ptolemy.vergil.icon.ValueIcon")
+                || attributeValue
+                .equals("ptolemy.vergil.basic.NodeControllerFactory")
+                   ) {
             return "ptolemy.kernel.util.Attribute";
-        } 
+        } else if (attributeValue
+                .equals("ptolemy.vergil.icon.AttributeValueIcon")
+                || attributeValue
+                .equals("ptolemy.vergil.icon.BoxedValueIcon")) {
+            // We return null here instead of returning 
+            // "ptolemy.kernel.util.Attribute" because if we do not return
+            // null, then ptII/ptolemy/vergil/test/VergilConfiguration.tcl
+            // will fail.
+            return null;
+        }
         return attributeValue;
     } 
 }
