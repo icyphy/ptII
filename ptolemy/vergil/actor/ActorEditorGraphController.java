@@ -39,7 +39,6 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
-import javax.swing.UIManager;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.CompositeEntity;
@@ -54,6 +53,7 @@ import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.kernel.RelationController;
+import ptolemy.vergil.kernel.VergilUtilities;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
@@ -206,7 +206,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         // Create listeners that creates new relations.
         _relationCreator = new RelationCreator();
-        if (UIManager.getLookAndFeel().getName().startsWith("MacOS")) {
+        if (VergilUtilities.macOSLookAndFeel()) {
             // On the Mac, do not override Control-Click, which is
             // used to bring up the context menu
             _relationCreator.setMouseFilter(_metaFilter);
@@ -220,7 +220,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
-        if (UIManager.getLookAndFeel().getName().startsWith("MacOS")) {
+        if (VergilUtilities.macOSLookAndFeel()) {
             // On the Mac, do not override Control-Click, which is
             // used to bring up the context menu
             _linkCreator.setMouseFilter(_metaFilter);
