@@ -413,7 +413,7 @@ public class PlotBox extends Panel {
     public void paint(Graphics graphics) {
         // Return the if size has not been set.
         if (_buffer == null) return;
-        
+
         // Double buffer for maximally smooth rendering.
         Graphics gBuffer = _buffer.getGraphics();
         super.paint(gBuffer);
@@ -593,7 +593,7 @@ public class PlotBox extends Panel {
         _parseLine(command);
     }
 
-    /** Do nothing in this base class. Derived classes might want to override 
+    /** Do nothing in this base class. Derived classes might want to override
      *  this class to give an example of their use.
      */
     public void samplePlot() {

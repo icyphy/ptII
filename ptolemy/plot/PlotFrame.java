@@ -67,7 +67,7 @@ all windows have been closed. This is done with code something like:
     });
 </pre>
 <p>
-PlotFrame contains an instance of PlotBox. PlotBox is the base class for 
+PlotFrame contains an instance of PlotBox. PlotBox is the base class for
 classes with drawing capability, e.g. Plot, LogicAnalyzer. If not
 specified in the constructor, the default is to contain a Plot object. This
 field is set once in the constructor and immutable afterwards.
@@ -84,7 +84,7 @@ public class PlotFrame extends Frame {
      */
     public PlotFrame() {
         this("Ptolemy Plot Frame");
-        
+
     }
 
     /** Construct a plot frame with the specified title and by default
@@ -105,7 +105,7 @@ public class PlotFrame extends Frame {
         } else {
             plot = plotArg;
         }
-        
+
         // File menu
         MenuItem[] fileMenuItems = {
             // FIXME: These shortcuts are not right.
@@ -228,7 +228,7 @@ public class PlotFrame extends Frame {
      */
     protected void _help() {
         Message message = new Message(
-                "PlotFrame is a versatile two-dimensional data plotter " + 
+                "PlotFrame is a versatile two-dimensional data plotter " +
                 "that runs as part of an application, but in its own " +
                 "window. It can read files compatible with the Ptolemy " +
                 "plot file format (currently only ASCII), or the " +
