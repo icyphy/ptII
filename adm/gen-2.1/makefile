@@ -546,7 +546,8 @@ JSALLDIRS = \
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
 	ptolemy/copernicus/java \
-	ptolemy/copernicus/shallow
+	ptolemy/copernicus/shallow \
+	ptolemy/copernicus/c
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
