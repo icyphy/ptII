@@ -57,7 +57,7 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	Sound.java
+	AudioViewer.java
 
 EXTRA_SRCS =	$(JSRCS)
 
