@@ -433,7 +433,8 @@ public class ProcessDirector extends Director {
     /** Handles and responds to deadlocks. In this base class it 
      *  returns true when deadlock has been detected. Override this 
      *  method to obtain domain specific handling of deadlocks.
-     *  @return true for termination.
+     *  @return true If the current model cannot execute without new external
+     *  data..
      *  @exception IllegalActionException If a derived class throws it.
      */
     protected boolean _handleDeadlock()
