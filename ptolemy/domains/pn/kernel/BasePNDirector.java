@@ -204,7 +204,7 @@ public class BasePNDirector extends ProcessDirector {
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no topology listeners. The count of active proceses is zero 
+     *  and no topology listeners. The count of active processes is zero 
      *  and it is not paused. The parameter "Initial_queue_capacity" has the 
      *  same value as the director being cloned.
      *
