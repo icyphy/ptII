@@ -148,6 +148,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _eventMissed = false;
+	_lastInput = 0;
     }
     
     /** Return true if this step does not cross the threshold.
