@@ -8,6 +8,7 @@
   <doc>Actors that route tokens or otherwise affect the flow of control.</doc>
 
   <entity name="BooleanMultiplexor" class="ptolemy.actor.lib.BooleanMultiplexor"/>
+  <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect"/>
   <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/>
   <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop"/>
   <entity name="Commutator" class="ptolemy.actor.lib.Commutator"/>

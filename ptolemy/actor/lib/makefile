@@ -74,6 +74,7 @@ JSRCS = \
 	Bernoulli.java \
 	BooleanExpression.java \
 	BooleanMultiplexor.java \
+	BooleanSelect.java \
 	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \

@@ -24,8 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+Code review issue: This actor reads data in prefire.
 */
 
 package ptolemy.actor.lib;
@@ -40,31 +41,33 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Select
 /**
-A polymorphic select, which routes specified input channels to the output.
-This actor has two input ports, the <i>input</i> port for data,
-and the <i>control</i> port to select which input channel to read.
-In an iteration, if an input token is available at the <i>control</i>
-input, that token is read, and its value is noted.  Its value specifies
-the input channel that should be read next. If an input
-token is available on the specified channel of the <i>input</i> port,
-then that token is read and sent to the output.
-<p>
-The actor indicates a willingness to fire in its prefire() method
+A polymorphic select, which routes specified input channels to the
+output.  This actor has two input ports, the <i>input</i> port for
+data, and the <i>control</i> port to select which input channel to
+read.  In an iteration, if an input token is available at the
+<i>control</i> input, that token is read, and its value is noted.  Its
+value specifies the input channel that should be read next. If an
+input token is available on the specified channel of the <i>input</i>
+port, then that token is read and sent to the output.
+
+<p> The actor indicates a willingness to fire in its prefire() method
 if there is an input available on the channel specified by the most
-recently seen token on the <i>control</i> port.
-If no token has ever been received on the <i>control</i> port,
-then channel zero is assumed to be the one to read.
-If the value of the most recently received token
-on the <i>control</i> port is out of range (less than zero,
-or greater than or equal to the width of the input), then the actor
-will not fire() (although it will continue to consume tokens on
-the <i>control</i> port in its prefire() method).
-<p>
-In the DE domain, where this actor is commonly used, note
-that if a new value is given to the <i>control</i> port, then
-all previously unread input tokens on the specified input port
-will be read at the same firing time, in the order in which
-they arrived.  Thus, no input tokens are lost.
+recently seen token on the <i>control</i> port.  If no token has ever
+been received on the <i>control</i> port, then channel zero is assumed
+to be the one to read.  If the value of the most recently received
+token on the <i>control</i> port is out of range (less than zero, or
+greater than or equal to the width of the input), then the actor will
+not fire() (although it will continue to consume tokens on the
+<i>control</i> port in its prefire() method).
+
+<p> This actor is similar to the Multiplexor actor, except that it
+never discards input tokens.  Tokens on channels that are not selected
+are not consumed.
+
+<p> Note that in the DE domain, where this actor is commonly used, if
+a new value is given to the <i>control</i> port, then all previously
+unread input tokens on the specified input channel will be read at the
+same firing time, in the order in which they arrived.
 
 @author Edward A. Lee
 @version $Id$
@@ -110,6 +113,15 @@ public class Select extends Transformer {
         if (input.hasToken(_control)) {
             output.send(0, input.get(_control));
         }
+    }
+
+    /** Initialize this actor so that channel zero of <i>input</i> is read
+     *  from until a token arrives on the <i>control</i> input.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _control = 0;
     }
 
     /** Read a control token, if there is one, and check to see

@@ -25,13 +25,14 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+(This is similar to Select and BooleanMultiplexor and could be 
+design/code reviewed at the same time.
 */
 
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.kernel.CompositeEntity;
@@ -39,22 +40,35 @@ import ptolemy.kernel.util.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// BooleanMultiplexor
+//// BooleanSelect
 /**
-A type polymorphic multiplexor with boolean valued select. 
-This actor consumes exactly one token from each input port, and sends one
-of the tokens from either <i>trueInput</i> or <i>falseInput</i>
-to the output.  The token sent to the output
-is determined by the <i>select</i> input, which must be a boolean value.
-Because tokens are immutable, the same Token
-is sent to the output, rather than a copy.
-The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of any type.
+A type polymorphic select with boolean valued control.  In an
+iteration, if an input token is available at the <i>control</i> input,
+that token is read, and its value is noted.  Its value specifies the
+input port that should be read next. If the <i>control</i> input is
+true, then if an input token is available on the <i>trueInput</i>
+port, then it is is read and sent to the output.  Likewise with a
+false input and the <i>falseInput</i> port.  The token sent to the
+output is determined by the <i>control</i> input, which must be a
+boolean value.  Because tokens are immutable, the same Token is sent
+to the output, rather than a copy.  The <i>trueInput</i> and
+<i>falseInput</i> port may receive Tokens of any type.
+
+<p> The actor indicates a willingness to fire in its prefire() method
+if there is an input available on the channel specified by the most
+recently seen token on the <i>control</i> port.  If no token has ever
+been received on the <i>control</i> port, then <i>falseInput<i> is
+assumed to be the one to read.
+
+<p> This actor is similar to the BooleanMultiplexor actor, except that
+it never discards input tokens.  Tokens on channels that are not
+selected are not consumed.
 
 @author Steve Neuendorffer
 @version $Id$
 */
 
-public class BooleanMultiplexor extends TypedAtomicActor {
+public class BooleanSelect extends TypedAtomicActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -65,14 +79,14 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public BooleanMultiplexor(CompositeEntity container, String name)
+    public BooleanSelect(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         trueInput = new TypedIOPort(this, "trueInput", true, false);
         falseInput = new TypedIOPort(this, "falseInput", true, false);
-        select = new TypedIOPort(this, "select", true, false);
-        select.setTypeEquals(BaseType.BOOLEAN);
+        control = new TypedIOPort(this, "control", true, false);
+        control.setTypeEquals(BaseType.BOOLEAN);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
@@ -90,7 +104,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
     /** Input that selects one of the other input ports.  The type is
      *  BooleanToken.
      */
-    public TypedIOPort select;
+    public TypedIOPort control;
     /** The output port.  The type is at least the type of
      *  <i>trueInput</i> and <i>falseInput</i>
      */
@@ -100,7 +114,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Read a token from each input port.  If the token from the
-     *  <i>select</i> input is true, then output the token consumed from the
+     *  <i>control</i> input is true, then output the token consumed from the
      *  <i>trueInput</i> port, otherwise output the token from the
      *  <i>falseInput</i> port.
      *  This method will throw a NoTokenException if any
@@ -109,15 +123,25 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        boolean flag = ((BooleanToken) select.get(0)).booleanValue();
-        Token trueToken = trueInput.get(0);
-        Token falseToken = falseInput.get(0);
-            
-        if(flag) {
-            output.send(0, trueToken);
+        if(_control) {
+            // Redo this check in case the control has changed since prefire().
+            if (trueInput.hasToken(0)) {
+                output.send(0, trueInput.get(0));
+            }
         } else {
-            output.send(0, falseToken);
-        }
+            if (falseInput.hasToken(0)) {
+                output.send(0, falseInput.get(0));
+            }
+        }            
+    }
+
+    /** Initialize this actor so that the <i>falseInput<i> is read
+     *  from until a token arrives on the <i>control</i> input.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _control = false;
     }
 
     /** Return false if any input channel does not have a token.
@@ -126,10 +150,25 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!select.hasToken(0)) return false;
-        if (!trueInput.hasToken(0)) return false;
-        if (!falseInput.hasToken(0)) return false;
+        if (control.hasToken(0)) {
+            _control = ((BooleanToken)control.get(0)).booleanValue();
+        }
+        if (_control) {
+            if(!trueInput.hasToken(0)) {
+                return false;
+            }
+        } else {
+            if(!falseInput.hasToken(0)) {
+                return false;
+            }
+        }
         return super.prefire();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The most recently read control token.
+    private boolean _control = false;
 }
 
