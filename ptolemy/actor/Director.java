@@ -639,6 +639,26 @@ public class Director extends Attribute implements Executable {
         }
     }
 
+    /** Set the current time of the model under this director.
+     *  Derived classes will likely override this method to ensure that
+     *  the time is valid.
+     *
+     *  @exception IllegalActionException If the new time is less than
+     *   the current time returned by getCurrentTime().
+     *  @param newTime The new current simulation time.
+     */
+    public void setCurrentTime(double newTime) throws IllegalActionException {
+        if (newTime < getCurrentTime()) {
+            throw new IllegalActionException(this, "Attempt to move current "
+                    + "time backwards. (newTime = " + newTime
+                    + ") < (getCurrentTime() = " + getCurrentTime() + ")");
+        }
+        _currentTime = newTime;
+        if (_debugging) {
+            _debug("--- Set current time to: " + newTime);
+        }
+    }
+
     /** Request that the director cease execution altogether.
      *  This causes a call to stop() on all actors contained by
      *  the container of this director, and sets a flag
@@ -683,26 +703,6 @@ public class Director extends Attribute implements Executable {
                 Actor actor = (Actor)actors.next();
                 actor.stopFire();
             }
-        }
-    }
-
-    /** Set the current time of the model under this director.
-     *  Derived classes will likely override this method to ensure that
-     *  the time is valid.
-     *
-     *  @exception IllegalActionException If the new time is less than
-     *   the current time returned by getCurrentTime().
-     *  @param newTime The new current simulation time.
-     */
-    public void setCurrentTime(double newTime) throws IllegalActionException {
-        if (newTime < getCurrentTime()) {
-            throw new IllegalActionException(this, "Attempt to move current "
-                    + "time backwards. (newTime = " + newTime
-                    + ") < (getCurrentTime() = " + getCurrentTime() + ")");
-        }
-        _currentTime = newTime;
-        if (_debugging) {
-            _debug("--- Set current time to: " + newTime);
         }
     }
 
