@@ -54,6 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 	docs.htm \
 	index.htm \
 	main.htm \
+	signal_types.htm \
 	toc.htm
 
 # Files that are not compiled, such as .tcl and .itcl files.
