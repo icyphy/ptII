@@ -88,10 +88,9 @@ public class TTTPlayer extends AtomicActor {
 	for (int i = 0; i < 3; i++ ) {
 	    //FIXME One of them might be -1 or +1, decreasing the number!!
 	    //Check for row sum
-	    if (Math.abs(moves[i][0] + moves[i][1] + moves[i][2]) == 2) {
+	    if (moves[i][0] + moves[i][1] + moves[i][2] == -2) {
 		//Comp on verge of victory
 		//So go ahead and win!!
-		//Else player on verge of victory- Block him
 		for (int j = 0; j < 3; j++) {
 		    if (moves[i][j] == 0) {
 			_col = j;
@@ -102,8 +101,34 @@ public class TTTPlayer extends AtomicActor {
 		    } 
 		}
 	    } //Check for column sum
-	    else if (Math.abs(moves[0][i] + moves[1][i] + moves[2][i]) 
-		    == 2) {
+	    else if (moves[0][i] + moves[1][i] + moves[2][i] == -2) {
+		//Comp on verge of victory
+		//So go ahead and win!!
+		//Else player on verge of victory- Block him
+		for (int j = 0; j < 3; j++) {
+		    if (moves[j][i] == 0) {
+			_row = j;
+			_col = i;
+			i = 3;
+			j = 3;
+			done = true;
+		    }
+		}
+	    }
+	    else if (moves[i][0] + moves[i][1] + moves[i][2] == 2) {
+		//Player on verge of victory.
+		//So go ahead and block him!!
+		for (int j = 0; j < 3; j++) {
+		    if (moves[i][j] == 0) {
+			_col = j;
+			_row = i;
+			i = 3;
+			j = 3;
+			done = true;
+		    } 
+		}
+	    } //Check for column sum
+	    else if (moves[0][i] + moves[1][i] + moves[2][i] == 2) {
 		//Comp on verge of victory
 		//So go ahead and win!!
 		//Else player on verge of victory- Block him
