@@ -233,9 +233,9 @@ public class Query extends Panel {
         if(_listeners != null) {
             Enumeration listeners = _listeners.elements();
             while(listeners.hasMoreElements()) {
-                QueryListener qlistener =
+                QueryListener queueListener =
                     (QueryListener)(listeners.nextElement());
-                qlistener.changed(name);
+                queueListener.changed(name);
             }
         }
     }
