@@ -87,8 +87,9 @@ public class FSMViewerGraphController extends RunnableGraphController {
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
-        GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _stateController._lookInsideAction);
+        // NOTE: The transition controller's LookInsideAction is designed
+        // to handle both State and Transition.  We can't associate more
+        // than one with the hot key, so that one handles both.
         GUIUtilities.addHotKey(getFrame().getJGraph(),
                 _transitionController._lookInsideAction);
     }

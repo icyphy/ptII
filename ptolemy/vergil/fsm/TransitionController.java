@@ -65,6 +65,7 @@ import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.Entity;
@@ -346,22 +347,25 @@ public class TransitionController extends BasicEdgeController {
             }
 	    super.actionPerformed(e);
 	    NamedObj target = getTarget();
-            // If the target is not an instance of State, do nothing.
-            if (target instanceof Transition) {
-                try {
-                    TypedActor[] refinements
-                            = ((Transition)target).getRefinement();
-                    if (refinements != null && refinements.length > 0) {
-                        for (int i = 0; i < refinements.length; i++) {
-                            // Open each refinement.
-                            _configuration.openModel((NamedObj)refinements[i]);
-                        }
-                    } else {
-                        MessageHandler.error("Transition has no refinement.");
-                    }
-                } catch (Exception ex) {
-                    MessageHandler.error("Look inside failed: ", ex);
+            // If the target is not an instance of
+            // State or Transition, do nothing.
+            try {
+                TypedActor[] refinements = null;
+                if (target instanceof Transition) {
+                    refinements = ((Transition)target).getRefinement();
+                } else if (target instanceof State) {
+                    refinements = ((State)target).getRefinement();
                 }
+                if (refinements != null && refinements.length > 0) {
+                    for (int i = 0; i < refinements.length; i++) {
+                        // Open each refinement.
+                        _configuration.openModel((NamedObj)refinements[i]);
+                    }
+                } else {
+                    MessageHandler.error("No refinement.");
+                }
+            } catch (Exception ex) {
+                MessageHandler.error("Look inside failed: ", ex);
             }
 	}
     }
