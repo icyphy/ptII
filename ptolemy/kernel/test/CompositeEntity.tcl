@@ -791,6 +791,14 @@ test CompositeEntity-11.9 {Test clone} {
 
 ######################################################################
 ####
+# NOTE:  Uses the setup constructed in 11.1.
+test CompositeEntity-11.10 {Test numRelations} {
+    list [$e0 numRelations] [$e3 numRelations] [$e4 numRelations] \
+	    [$e7 numRelations] [$e10 numRelations]
+} {2 3 3 2 2}
+
+######################################################################
+####
 # Test connections.
 test CompositeEntity-12.1 {Test connect} {
     set e0 [java::new ptolemy.kernel.CompositeEntity]
