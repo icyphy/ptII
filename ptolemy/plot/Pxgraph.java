@@ -70,15 +70,16 @@ The input format is similar to <code>graph(<i>1G</i>)</code> but differs
 slightly. The data consists of a number of <I>data</I> <I>sets</I>. Data
 sets are separated by a blank line. A new data set is also
 assumed at the start of each input file. A data set consists
-of an ordered list of points of the form &quot;{directive}
-X Y". The directive is either &quot;draw&quot; or &quot;move&quot; and can be
-omitted. If the directive is &quot;draw", a line will be drawn
+of an ordered list of points of the form <code><i>directive</i>
+X Y</code>.
+The directive is either <code>draw</code> or <code>move</code> and can be
+omitted. If the directive is <code>draw</code>, a line will be drawn
 between the previous point and the current point (if a line
-graph is chosen). Specifying a &quot;move&quot; directive tells
+graph is chosen). Specifying a <code>move</code> directive tells
 xgraph not to draw a line between the points. If the directive
-is omitted, &quot;draw&quot; is assumed for all points in a data
-set except the first point where &quot;move&quot; is assumed. The
-&quot;move&quot; directive is used most often to allow discontinuous
+is omitted, <code>draw</code> is assumed for all points in a data
+set except the first point where <code>move</code> is assumed. The
+<code>move</code> directive is used most often to allow discontinuous
 data in a data set. 
 
 After <code>pxgraph</code> has read the data, it will create a new window
@@ -96,14 +97,14 @@ the lower left corner of each window: <code>Exit</code>,
 <p>The <code>Exit</code> button will exit the process.  You can also
 type <code>Control-D</code>, <code>Control-C</code> or <code>q</code>
 to exit.
-<p>The <code>Print</code> button brings up a print dialog window
+<p>The <code>Print</code> button brings up a print dialog window.
 <p>The <code>About</code> button brings up a message about 
-<code>pxgraph</code>
+<code>pxgraph</code>.
 <p>The <code>HTML</code> button prints an HTML file to stdout that
 can be used to display the file with applet <code>Plot</code> classes
 (Experimental).
 <p>
-<I>pxgraph</I> accepts a large number of commmand line options.
+<code>pxgraph</code> accepts a large number of commmand line options.
 A list of these options is given below.
 <p>
 
@@ -174,7 +175,6 @@ cxh@carson 324% od -c data/integrator1.plt
 the base is zero.
 <b>Unsupported in the Java version.</b>
 
-<dl>
 <dt><code>-brw</code> <code><i>&lt;width&gt;</i></code>
 <dd>This specifies the width of bars in a bar graph. The
 amount is specified in the user's units. By default,
@@ -187,7 +187,6 @@ a bar one pixel wide is drawn.
 <dt><code>-db</code>
 <dd>Causes xgraph to run in synchronous mode and prints out
 the values of all known defaults.
-<p>
 
 <dt><code>-fg</code> <code><i>&lt;color&gt;</i></code>
 <dd>Foreground color. This color is used to draw all text
@@ -245,8 +244,8 @@ default is zero.
 
 <dt><code>-lx</code> <code><i>&lt;xl,xh&gt;</i></code> <dd>
 This option limits the range of the X axis to the
-specified interval. This (along with -ly) can be used
-to &quot;zoom in&quot; on a particularly interesting portion of a
+specified interval. This (along with <code>-ly</code>) can be used
+to zoom in on a particularly interesting portion of a
 larger graph.
 
 <dt><code>-ly</code> <code><i>&lt;yl,yh&gt;</i></code> <dd>
@@ -260,60 +259,57 @@ markers are assigned uniquely to each different line
 style on black and white machines and varies with each
 color on color machines.
 
-<dt><code>-M</code> <dd>
-Similar to -m but markers are assigned uniquely to each
+<dt><code>-M</code>
+<dd>Similar to <code>-m</code> but markers are assigned uniquely to each
 eight consecutive data sets (this corresponds to each
 different line style on color machines).
 
-<dt><code>-nl</code> <dd>
-Turn off drawing lines. When used with -m, -M, -p, or
--P this can be used to produce scatter plots. When
-used with -bar, it can be used to produce standard bar
-graphs.
+<dt><code>-nl</code>
+<dd>Turn off drawing lines. When used with <code>-m</code>,
+<code>-M</code>, <code>-p</code>, or <code>-P</code> this can be used
+to produce scatter plots. When used with -bar, it can be used to
+produce standard bar graphs.
 
-<dt><code>-p</code> <dd>
-Marks each data point with a small marker (pixel
+<dt><code>-p</code>
+<dd>Marks each data point with a small marker (pixel
 sized). This is usually used with the -nl option for
 scatter plots.
 
-<dt><code>-P</code> <dd>
-Similar to -p but marks each pixel with a large dot.
+<dt><code>-P</code>
+<dd>Similar to <code>-p</code> but marks each pixel with a large dot.
 
-<dt><code>-rv</code> <dd>
-Reverse video. On black and white displays, this will
+<dt><code>-rv</code>
+<dd>Reverse video. On black and white displays, this will
 invert the foreground and background colors. The
 behaviour on color displays is undefined.
 
-<dt><code>-t</code> <code><i>&lt;string&gt;</i></code> <dd>
-Title of the plot. This string is centered at the top
+<dt><code>-t</code> <code><i>&lt;string&gt;</i></code>
+<dd>Title of the plot. This string is centered at the top
 of the graph.
 
-<dt><code>-tf</code> <code><i>&lt;fontname&gt;</i></code> <dd>
-Title font. This is the name of the font to use for
+<dt><code>-tf</code> <code><i>&lt;fontname&gt;</i></code>
+<dd>Title font. This is the name of the font to use for
 the graph title.  See the <code>-lf</code> description above
 for how to specify fonts.
 The default is <code>helvetica-BOLD-14</code>
 
-<dt><code>-tk</code> <dd>
-This option causes <code>pxgraph</code> to draw tick marks rather
-than full grid lines. The -bb option is also useful
+<dt><code>-tk</code>
+<dd>This option causes <code>pxgraph</code> to draw tick marks rather
+than full grid lines. The <code>-bb</code> option is also useful
 when viewing graphs with tick marks only.
 
-<dt><code>-x</code>  <code><i>&lt;unitname&gt;</i></code> <dd>
-This is the unit name for the X axis. Its default is
-&quot;X".
-<p>
+<dt><code>-x</code>  <code><i>&lt;unitname&gt;</i></code>
+<dd>This is the unit name for the X axis. Its default is "X".
 
-<dt><code>-y</code> <code><i>&lt;unitname&gt;</i></code> <dd>
-This is the unit name for the Y axis. Its default is
-&quot;Y".
+<dt><code>-y</code> <code><i>&lt;unitname&gt;</i></code>
+<dd>This is the unit name for the Y axis. Its default is "Y".
 
-<dt><code>-zg</code> <code><i>&lt;color&gt;</i></code> <dd>
-This is the color used to draw the zero grid line.
+<dt><code>-zg</code> <code><i>&lt;color&gt;</i></code>
+<dd>This is the color used to draw the zero grid line.
 <b>Unsupported in the Java version.</b>
 
-<dt><code>-zw</code> <code><i>&lt;width&gt;</i></code> <dd>
-This is the width of the zero grid line in pixels.
+<dt><code>-zw</code> <code><i>&lt;width&gt;</i></code>
+<dd>This is the width of the zero grid line in pixels.
 <b>Unsupported in the Java version.</b>
 </dl>
 
