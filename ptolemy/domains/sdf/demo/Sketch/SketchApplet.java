@@ -72,6 +72,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
     public void editDataModified(EditablePlot source, int dataset) {
         try {
             if (_manager.getState() == _manager.IDLE) {
+                _sketchedSource.editDataModified(source, dataset);
                 _go();
             }
         } catch (IllegalActionException ex) {
@@ -90,14 +91,12 @@ public class SketchApplet extends MoMLApplet implements EditListener {
             int iterations =
                 ((IntToken)(director.iterations.getToken())).intValue();
 
-            SketchedSource source = (SketchedSource)
-                toplevel.getEntity("Sketched Source");
-            SequencePlotter plotter = (SequencePlotter)
-                toplevel.getEntity("Plotter");
+            _sketchedSource = (SketchedSource)
+                    toplevel.getEntity("SketchedSource");
 
             // Note: The order of the following is important.
             // First, specify how long the sketched plot should be.
-            source.length.setToken(new IntToken(iterations));
+            _sketchedSource.length.setToken(new IntToken(iterations));
 
             // Then, create the plot and place it in this applet,
             // and specify to both the source and destination actors
@@ -108,8 +107,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
             plot.setXRange(0, iterations);
             plot.setButtons(true);
             getContentPane().add(plot);
-            plotter.place(plot);
-            source.place(plot);
+            _sketchedSource.place(plot);
             plot.setBackground(null);
             plot.addEditListener(this);
         } catch (Exception ex) {
@@ -117,8 +115,6 @@ public class SketchApplet extends MoMLApplet implements EditListener {
         }
     }
 
-    /** Do not execute the model on startup.
-     */
-    public void start() {
-    }
+    /** The SketchedSource actor */
+    public SketchedSource _sketchedSource;
 }
