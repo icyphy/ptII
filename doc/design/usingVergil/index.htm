@@ -21,7 +21,7 @@
 This version is in HTML, a <a href="usingVergil.pdf">PDF version</a>
 is also available. 
 <br>The Expression Language is documented in a separate
-<a href="expression.htm">file</a>
+<a href="../../expression.htm">file</a>
 
 <a name="162678"> </a><font  >Authors:		Edward A. Lee<br></font>
 
@@ -41,7 +41,7 @@ is also available.
 
 <p>
   <a name="167754"> </a><font  >In this chapter, we describe how to graphically construct models using Vergil, a graphical user interface (GUI) for Ptolemy II. Figure <img src="images/usingVergil5.gif" height="470" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#167754">2.1</a> shows a simple Ptolemy II model in Vergil, showing the graph editor, one of several editors available in Vergil. Keep in mind as you read this document that graphical entry of models is only one of several possible entry mechanisms available in Ptolemy II. Moreover, only some of the execution engines (called <font  ><i>domains</i></font>) are described here. A major emphasis of Ptolemy II is to provide a framework for the construction of modeling and design tools, so the specific modeling and design tools described here should be viewed as representative of our efforts.</font>
+<a href="index.html#167754">2.1</a> shows a simple Ptolemy II model in Vergil, showing the graph editor, one of several editors available in Vergil. Keep in mind as you read this document that graphical entry of models is only one of several possible entry mechanisms available in Ptolemy II. Moreover, only some of the execution engines (called <font  ><i>domains</i></font>) are described here. A major emphasis of Ptolemy II is to provide a framework for the construction of modeling and design tools, so the specific modeling and design tools described here should be viewed as representative of our efforts.</font>
 </p>
 
 
@@ -62,7 +62,7 @@ is also available.
 
 <p>
   <a name="165846"> </a><font  >First start Vergil. From the command line, enter "vergil", or select Vergil or Ptolemy II in the Start menu, or click on a Web Start link on a web page supporting the web edition. You should see an initial welcome window that looks like the one in figure <img src="images/usingVergil27.gif" height="294" width="599" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#165846">2.2</a>. Feel free to explore the links in this window. Most useful is probably the "Quick tour" link.</font>
+<a href="index.html#165846">2.2</a>. Feel free to explore the links in this window. Most useful is probably the "Quick tour" link.</font>
 </p>
 
 
@@ -73,14 +73,14 @@ is also available.
 
 <p>
   <a name="169824"> </a><font  >Create a new model by selecting File-&gt;New-&gt;Graph Editor in the welcome window. You should see something like the window shown in figure <img src="images/usingVergila.gif" height="421" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#169824">2.3</a>. Ignoring the menus and toolbar for a moment, on the left is a palette of objects that can be dragged onto the page on the right. To begin with, the page on the right is blank. Open the <font  ><i>actor library</i></font> in the palette, and go into the <font  ><i>sources</i></font> library. Find the <font  ><i>Const</i></font> actor and drag an instance over onto the blank page. Then go into the <font  ><i>sinks </i></font>library and drag a <font  ><i>Display</i></font> actor onto the page. Each of these actors can be dragged around on the page. However, we would like to connect one to the other. To do this, drag a connection from the output port on the right of the <font  ><i>Const </i></font>actor to the input port of the <font  ><i>Display</i></font> actor. Lastly, open the <font  ><i>director library</i></font> and drag an <font  ><i>SDFDirector</i></font> onto the page. The director gives an execution meaning to the graph, but for now we don't have to be concerned about exactly what that is.</font>
+<a href="index.html#169824">2.3</a>. Ignoring the menus and toolbar for a moment, on the left is a palette of objects that can be dragged onto the page on the right. To begin with, the page on the right is blank. Open the <font  ><i>actor library</i></font> in the palette, and go into the <font  ><i>sources</i></font> library. Find the <font  ><i>Const</i></font> actor and drag an instance over onto the blank page. Then go into the <font  ><i>sinks </i></font>library and drag a <font  ><i>Display</i></font> actor onto the page. Each of these actors can be dragged around on the page. However, we would like to connect one to the other. To do this, drag a connection from the output port on the right of the <font  ><i>Const </i></font>actor to the input port of the <font  ><i>Display</i></font> actor. Lastly, open the <font  ><i>director library</i></font> and drag an <font  ><i>SDFDirector</i></font> onto the page. The director gives an execution meaning to the graph, but for now we don't have to be concerned about exactly what that is.</font>
 </p>
 
 
 <p>
   <a name="165895"> </a><font  >Now you should have something that looks like Figure <img src="images/usingVergil3.gif" height="421" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#165895">2.4</a>. The <font  ><i>Const</i></font> actor is going to create our string, and the <font  ><i>Display</i></font> actor is going to print it out for us. We need to take care of one small detail to make it look like Figure <a href="usingVergil.html#165895">2.4</a>: we need to tell the <font  ><i>Const</i></font> actor that we want the string "Hello World". To do this we need to edit one of the parameters of the <font  ><i>Const</i></font>. To do this, either double click on the <font  ><i>Const</i></font> actor icon, or right click on the <font  ><i>Const</i></font> actor icon and select "Configure". You should see the dialog box in Figure <img src="images/usingVergil9.gif" height="137" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#165895">2.5</a>. Enter the string "Hello World" for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.</font>
+<a href="index.html#165895">2.4</a>. The <font  ><i>Const</i></font> actor is going to create our string, and the <font  ><i>Display</i></font> actor is going to print it out for us. We need to take care of one small detail to make it look like Figure <a href="index.html#165895">2.4</a>: we need to tell the <font  ><i>Const</i></font> actor that we want the string "Hello World". To do this we need to edit one of the parameters of the <font  ><i>Const</i></font>. To do this, either double click on the <font  ><i>Const</i></font> actor icon, or right click on the <font  ><i>Const</i></font> actor icon and select "Configure". You should see the dialog box in Figure <img src="images/usingVergil9.gif" height="137" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#165895">2.5</a>. Enter the string "Hello World" for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.</font>
 </p>
 
 
@@ -96,7 +96,7 @@ is also available.
 
 <p>
   <a name="166518"> </a><font  >To run the example, go to the View menu and select the Run Window. If you click the "Go" button, you will see a large number of strings in the display at the right. To stop the execution, click the "Stop" button. To see only one string, change the <font  ><i>iterations</i></font> parameter of the SDF Director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the <font  ><i>Const</i></font> actor before. The run window is shown in Figure <img src="images/usingVergil13.gif" height="239" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#166518">2.6</a>.</font>
+<a href="index.html#166518">2.6</a>.</font>
 </p>
 
 
@@ -114,10 +114,10 @@ is also available.
   <a name="169954"> </a><font  >First create a model in a new graph editor that includes an <font  ><i>SDFDirector</i></font>, a <font  ><i>Ramp</i></font> actor (found in the <font  ><i>sources</i></font>) library, a <font  ><i>Display </i></font>actor, and a <font  ><i>SequencePlotter</i></font> actor, found in the <font  ><i>sinks</i></font> library, as shown in Figure <img src="images/usingVergil25.gif" usemap="#usingVergil25_gif" height="169" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil25_gif">
 
-<area href="usingVergil.html#169954" shape=rect coords="3,136,597,162">
+<area href="index.html#169954" shape=rect coords="3,136,597,162">
 </map>
-<a href="usingVergil.html#169954">2.7</a>. Suppose we wish to route the output of the <font  ><i>Ramp</i></font> to both the <font  ><i>Display</i></font> and the <font  ><i>SequencePlotter</i></font>. If we simply attempt to make the connections, we get the exception shown in Figure <img src="images/usingVergil39.gif" height="201" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#169954">2.7</a>. Don't panic! Exceptions are normal and common. The key line in this exception report is the last one, which says</font>
+<a href="index.html#169954">2.7</a>. Suppose we wish to route the output of the <font  ><i>Ramp</i></font> to both the <font  ><i>Display</i></font> and the <font  ><i>SequencePlotter</i></font>. If we simply attempt to make the connections, we get the exception shown in Figure <img src="images/usingVergil39.gif" height="201" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#169954">2.7</a>. Don't panic! Exceptions are normal and common. The key line in this exception report is the last one, which says</font>
 </p>
 
 <pre>
@@ -149,7 +149,7 @@ is also available.
 
 <p>
   <a name="169983"> </a><font  >So how do we get the output of the <font  ><i>Ramp</i></font> to the other two actors? We need an explicit <font  ><i>relation</i></font> in the diagram. A relation is represented in the diagram by a black diamond, as shown in Figure <img src="images/usingVergil60.gif" height="257" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#169983">2.9</a>. It can be created by either control-clicking on the background or by clicking on the button in the toolbar with the black diamond on it.</font>
+<a href="index.html#169983">2.9</a>. It can be created by either control-clicking on the background or by clicking on the button in the toolbar with the black diamond on it.</font>
 </p>
 
 
@@ -159,7 +159,7 @@ is also available.
 
 
 <p>
-  <a name="170023"> </a><font  >In the model shown in Figure <a href="usingVergil.html#169983">2.9</a>, the relation is used to broadcast the output from a single port to a number of places. The single port still has only one connection to it, a connection to a relation. Relations can also be used to control the routing of wires in the diagram. However, as of the 2.0 release of Ptolemy II, a connection can only have a single relation on it, so the degree to which routing can be controlled is limited.</font>
+  <a name="170023"> </a><font  >In the model shown in Figure <a href="index.html#169983">2.9</a>, the relation is used to broadcast the output from a single port to a number of places. The single port still has only one connection to it, a connection to a relation. Relations can also be used to control the routing of wires in the diagram. However, as of the 2.0 release of Ptolemy II, a connection can only have a single relation on it, so the degree to which routing can be controlled is limited.</font>
 </p>
 
 
@@ -174,12 +174,12 @@ is also available.
 
 
 <p>
-  <a name="167804"> </a><font  >In the example of Figure <a href="usingVergil.html#165895">2.4</a>, the <font  ><i>Const</i></font> actor creates a sequence of values on its output port. The values are encapsulated as <font  ><i>tokens</i></font>, and sent to the <font  ><i>Display</i></font> actor, which consumes them and displays them in the run window.</font>
+  <a name="167804"> </a><font  >In the example of Figure <a href="index.html#165895">2.4</a>, the <font  ><i>Const</i></font> actor creates a sequence of values on its output port. The values are encapsulated as <font  ><i>tokens</i></font>, and sent to the <font  ><i>Display</i></font> actor, which consumes them and displays them in the run window.</font>
 </p>
 
 
 <p>
-  <a name="167859"> </a><font  >The tokens produced by the <font  ><i>Const</i></font> actor can have any value that can be expressed in the Ptolemy II <font  ><i>expression language</i></font>. We will say more about the expression language in chapter <a href="expressions.htm#158262">3, "Expressions"</a>, but for now, try giving the value 1 (the integer with value one), or 1.0 (the floating-point number with value one), or {1.0} (An array containing a one), or {value=1, name="one"} (A record with two elements: an integer named "value" and a string named "name"), or even [1,0;0,1] (the two-by-two identity matrix). These are all expressions.</font>
+  <a name="167859"> </a><font  >The tokens produced by the <font  ><i>Const</i></font> actor can have any value that can be expressed in the Ptolemy II <font  ><i>expression language</i></font>. We will say more about the expression language in chapter <a href="../../expressions.htm#158262">3, "Expressions"</a>, but for now, try giving the value 1 (the integer with value one), or 1.0 (the floating-point number with value one), or {1.0} (An array containing a one), or {value=1, name="one"} (A record with two elements: an integer named "value" and a string named "name"), or even [1,0;0,1] (the two-by-two identity matrix). These are all expressions.</font>
 </p>
 
 
@@ -190,23 +190,23 @@ is also available.
 
 <p>
   <a name="168209"> </a><font  >To explore data types a bit further, try creating the model in Figure<img src="images/usingVergil7.gif" height="241" width="600" align="center" border="0" hspace="0" vspace="0">
- <a href="usingVergil.html#168209">2.10</a>. The <font  ><i>Ramp</i></font> actor is listed under <font  ><i>sources</i></font> and the <font  ><i>AddSubtract</i></font> actor is listed under <font  ><i>math</i></font>. Set the <font  ><i>value</i></font> parameter of the constant to be 0 and the <font  ><i>iterations</i></font> parameter of the director to 5. Running the model should result in 5 numbers between 0 and 4, as shown in the figure. These are the values produced by the <font  ><i>Ramp</i></font>, which are having the value of the <font  ><i>Const</i></font> actor subtracted from them. Experiment with changing the value of the <font  ><i>Const</i></font> actor and see how it changes the 5 numbers at the output.</font>
+ <a href="index.html#168209">2.10</a>. The <font  ><i>Ramp</i></font> actor is listed under <font  ><i>sources</i></font> and the <font  ><i>AddSubtract</i></font> actor is listed under <font  ><i>math</i></font>. Set the <font  ><i>value</i></font> parameter of the constant to be 0 and the <font  ><i>iterations</i></font> parameter of the director to 5. Running the model should result in 5 numbers between 0 and 4, as shown in the figure. These are the values produced by the <font  ><i>Ramp</i></font>, which are having the value of the <font  ><i>Const</i></font> actor subtracted from them. Experiment with changing the value of the <font  ><i>Const</i></font> actor and see how it changes the 5 numbers at the output.</font>
 </p>
 
 
 <p>
   <a name="168231"> </a><font  >Now for the real test: change the value of the <font  ><i>Const</i></font> actor back to "Hello World". When you execute the model, you should see an exception window, as shown in Figure <img src="images/usingVergil51.gif" height="265" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168231">2.11</a>. Do not worry; exceptions are a normal part of constructing (and debugging) models. In this case, the exception window is telling you that you have tried to subtract a string value from an integer value, which doesn't make much sense at all (following Java, adding strings <font  ><i>is</i></font> allowed). This is an example of a type error.</font>
+<a href="index.html#168231">2.11</a>. Do not worry; exceptions are a normal part of constructing (and debugging) models. In this case, the exception window is telling you that you have tried to subtract a string value from an integer value, which doesn't make much sense at all (following Java, adding strings <font  ><i>is</i></font> allowed). This is an example of a type error.</font>
 </p>
 
 
 <p>
-  <a name="168136"> </a><font  >Exceptions can be a very useful debugging tool, particularly if you are developing your own components in Java. To illustrate how to use them, click on the Display Stack Trace button in the exception window of Figure <a href="usingVergil.html#168231">2.11</a>. You should see the stack trace shown in Figure <img src="images/usingVergil11.gif" usemap="#usingVergil11_gif" height="354" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="168136"> </a><font  >Exceptions can be a very useful debugging tool, particularly if you are developing your own components in Java. To illustrate how to use them, click on the Display Stack Trace button in the exception window of Figure <a href="index.html#168231">2.11</a>. You should see the stack trace shown in Figure <img src="images/usingVergil11.gif" usemap="#usingVergil11_gif" height="354" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil11_gif">
 
-<area href="usingVergil.html#168231" shape=rect coords="3,322,597,348">
+<area href="index.html#168231" shape=rect coords="3,322,597,348">
 </map>
-<a href="usingVergil.html#168136">2.12</a>. This window displays the execution sequence that resulted in the exception. For example, the line</font>
+<a href="index.html#168136">2.12</a>. This window displays the execution sequence that resulted in the exception. For example, the line</font>
 </p>
 
 <pre>
@@ -227,7 +227,7 @@ is also available.
 
 <p>
   <a name="168116"> </a><font  >Let's try a small change to the model to get something that does not trigger an exception. Disconnect the <font  ><i>Const</i></font> from the lower port of the <font  ><i>AddSubtract</i></font> actor and connect it instead to the upper port, as shown in Figure <img src="images/usingVergil16.gif" height="245" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168116">2.13</a>. You can do this by selecting the connection and deleting it (using the delete key), then adding a new connection, or by selecting it and dragging one of its endpoints to the new location. Notice that the upper port is an unfilled triangle; this indicates that it is a <font  ><i>multiport</i></font>, meaning that you can make more than one connection to it. Now when you run the model you should see strings like "0HelloWorld", as shown in the figure.</font>
+<a href="index.html#168116">2.13</a>. You can do this by selecting the connection and deleting it (using the delete key), then adding a new connection, or by selecting it and dragging one of its endpoints to the new location. Notice that the upper port is an unfilled triangle; this indicates that it is a <font  ><i>multiport</i></font>, meaning that you can make more than one connection to it. Now when you run the model you should see strings like "0HelloWorld", as shown in the figure.</font>
 </p>
 
 
@@ -263,8 +263,8 @@ is also available.
 
 <p>
   <a name="170457"> </a><font  >First open a new graph editor and drag in a <font  ><i>Typed Composite Actor</i></font> from the <font  ><i>utilities</i></font> library. This actor is going to add noise to our measurements. First, using the context menu (obtained by right clicking over the composite actor), select "Customize Name", and give the composite a better name, like "Channel", as shown in Figure <img src="images/usingVergil52.gif" height="245" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170457">2.14</a>. Then, using the context menu again, select "Look Inside" on the actor. You should get a blank graph editor, as shown in Figure <img src="images/usingVergil55.gif" height="324" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170457">2.15</a>. The original graph editor is still open. To see it, move the new graph editor window by dragging the title bar of the window.</font>
+<a href="index.html#170457">2.14</a>. Then, using the context menu again, select "Look Inside" on the actor. You should get a blank graph editor, as shown in Figure <img src="images/usingVergil55.gif" height="324" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#170457">2.15</a>. The original graph editor is still open. To see it, move the new graph editor window by dragging the title bar of the window.</font>
 </p>
 
 
@@ -275,20 +275,20 @@ is also available.
 
 <p>
   <a name="166651"> </a><font  >First we have to add some ports to the composite actor. There are several ways to do this, but clicking on the port buttons in the toolbar is probably the easiest. You can explore the ports in the toolbar by lingering with the mouse over each button in the toolbar. A tool tip pops up that explains the button. The buttons are summarized in Figure <img src="images/usingVergil54.gif" height="217" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#166651">2.16</a>. Create an input port and an output port and rename them <font  ><i>input</i></font> and <font  ><i>output </i></font>right by clicking on the ports and selecting "Customize Name". Note that, as shown in Figure <img src="images/usingVergil56.gif" height="217" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#166651">2.17</a>, you can also right click on the background of the composite actor and select <font  ><i>Configure Ports</i></font> to change whether a port is an input, an output, or a multiport. The resulting dialog also allows you to set the type of the port, although much of the time you will not need to do this, since the type inference mechanism in Ptolemy II will figure it out from the connections.</font>
+<a href="index.html#166651">2.16</a>. Create an input port and an output port and rename them <font  ><i>input</i></font> and <font  ><i>output </i></font>right by clicking on the ports and selecting "Customize Name". Note that, as shown in Figure <img src="images/usingVergil56.gif" height="217" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#166651">2.17</a>, you can also right click on the background of the composite actor and select <font  ><i>Configure Ports</i></font> to change whether a port is an input, an output, or a multiport. The resulting dialog also allows you to set the type of the port, although much of the time you will not need to do this, since the type inference mechanism in Ptolemy II will figure it out from the connections.</font>
 </p>
 
 
 <p>
   <a name="168725"> </a><font  >Then using these ports, create the diagram shown in Figure <img src="images/usingVergil57.gif" height="174" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168725">2.18</a><a href="#166915"><sup>1</sup></a>. The <font  ><i>Gaussian</i></font> actor creates values from a Gaussian distributed random variable, and is found in the <font  ><i>random</i></font> library. Now if you close this editor and return to the previous one, you should be able to easily create the model shown in Figure <img src="images/usingVergil19.gif" height="164" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168725">2.19</a>. The <font  ><i>Sinewave</i></font> actor is listed under <font  ><i>sources</i></font>, and the <font  ><i>SequencePlotter</i></font> actor is found in <font  ><i>sinks</i></font>. Notice that the <font  ><i>Sinewave</i></font> actor is also a hierarchical model, as suggested by its red outline (try looking inside). If you execute this model (you will probably want to set the iterations to something reasonable, like 100), you should see something like Figure <img src="images/usingVergil22.gif" usemap="#usingVergil22_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#168725">2.18</a><a href="#166915"><sup>1</sup></a>. The <font  ><i>Gaussian</i></font> actor creates values from a Gaussian distributed random variable, and is found in the <font  ><i>random</i></font> library. Now if you close this editor and return to the previous one, you should be able to easily create the model shown in Figure <img src="images/usingVergil19.gif" height="164" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#168725">2.19</a>. The <font  ><i>Sinewave</i></font> actor is listed under <font  ><i>sources</i></font>, and the <font  ><i>SequencePlotter</i></font> actor is found in <font  ><i>sinks</i></font>. Notice that the <font  ><i>Sinewave</i></font> actor is also a hierarchical model, as suggested by its red outline (try looking inside). If you execute this model (you will probably want to set the iterations to something reasonable, like 100), you should see something like Figure <img src="images/usingVergil22.gif" usemap="#usingVergil22_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil22_gif">
 
-<area href="usingVergil.html#168725" shape=rect coords="3,269,597,296">
+<area href="index.html#168725" shape=rect coords="3,269,597,296">
 </map>
-<a href="usingVergil.html#168725">2.20</a>.</font>
+<a href="index.html#168725">2.20</a>.</font>
 </p>
 
 
@@ -298,7 +298,7 @@ is also available.
 
 
 <p>
-  <a name="170465"> </a><font  >In the above example, we never needed to define the types of any ports. The types were inferred from the connections. Indeed, this is usually the case in Ptolemy II, but occasionally, you will need to set the types of the ports. Notice in Figure <a href="usingVergil.html#166651">2.17</a> that there is a position in the dialog box that configures ports for specifying the type. Thus, to specify that a port has type <font  ><i>boolean</i></font>, you could enter <font  ><i>boolean </i></font>into the dialog box. There are other commonly used types: <font  ><i>complex</i></font>, <font  ><i>double</i></font>, <font  ><i>fixedpoint</i></font>, <font  ><i>general</i></font>, <font  ><i>int</i></font>, <font  ><i>long</i></font>, <font  ><i>matrix</i></font>, <font  ><i>object</i></font>, <font  ><i>scalar</i></font>, <font  ><i>string</i></font>, and <font  ><i>unknown</i></font>. Let's take a more complicated case. How would you specify that the type of a port is a double matrix? Easy:</font>
+  <a name="170465"> </a><font  >In the above example, we never needed to define the types of any ports. The types were inferred from the connections. Indeed, this is usually the case in Ptolemy II, but occasionally, you will need to set the types of the ports. Notice in Figure <a href="index.html#166651">2.17</a> that there is a position in the dialog box that configures ports for specifying the type. Thus, to specify that a port has type <font  ><i>boolean</i></font>, you could enter <font  ><i>boolean </i></font>into the dialog box. There are other commonly used types: <font  ><i>complex</i></font>, <font  ><i>double</i></font>, <font  ><i>fixedpoint</i></font>, <font  ><i>general</i></font>, <font  ><i>int</i></font>, <font  ><i>long</i></font>, <font  ><i>matrix</i></font>, <font  ><i>object</i></font>, <font  ><i>scalar</i></font>, <font  ><i>string</i></font>, and <font  ><i>unknown</i></font>. Let's take a more complicated case. How would you specify that the type of a port is a double matrix? Easy:</font>
 </p>
 
 <pre>
@@ -333,24 +333,24 @@ is also available.
 
 
 <p>
-  <a name="168830"> </a><font  >In this section, we will enhance the model in Figure <a href="usingVergil.html#168725">2.19</a> in a number of ways.</font>
+  <a name="168830"> </a><font  >In this section, we will enhance the model in Figure <a href="index.html#168725">2.19</a> in a number of ways.</font>
 </p>
 
 
 <p>
-  <a name="168893"> </a><font  >First, notice from Figure <a href="usingVergil.html#168725">2.20</a> that the noise overwhelms the sinusoid, making it barely visible. A useful channel model would have a parameter that sets the level of the noise. Look inside the channel model, and add a parameter by dragging one in from the <font  ><i>utilities</i></font> library, as shown in Figure <img src="images/usingVergil59.gif" height="580" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168893">2.21</a>. Right click on the parameter to change its name to "noisePower". (In order to be able to use this parameter in expressions, the name cannot have any spaces in it.) Also, right click or double click on the parameter to change its default value to 0.1.</font>
+  <a name="168893"> </a><font  >First, notice from Figure <a href="index.html#168725">2.20</a> that the noise overwhelms the sinusoid, making it barely visible. A useful channel model would have a parameter that sets the level of the noise. Look inside the channel model, and add a parameter by dragging one in from the <font  ><i>utilities</i></font> library, as shown in Figure <img src="images/usingVergil59.gif" height="580" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#168893">2.21</a>. Right click on the parameter to change its name to "noisePower". (In order to be able to use this parameter in expressions, the name cannot have any spaces in it.) Also, right click or double click on the parameter to change its default value to 0.1.</font>
 </p>
 
 
 <p>
   <a name="168902"> </a><font  >Now we can use this parameter. First, let's use it to set the amount of noise. The <font  ><i>Gaussian</i></font> actor has a parameter called <font  ><i>standardDeviation</i></font>. In this case, the power of the noise is equal to the variance of the Gaussian, not the standard deviation. If you recall from basic statistics, the standard deviation is equal to the square root of the variance. Change the <font  ><i>standardDeviation </i></font>parameter of the <font  ><i>Gaussian</i></font> actor so its value is "sqrt(noisePower)", as shown in Figure <img src="images/usingVergil30.gif" height="165" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168902">2.22</a>. This is an expression that references the <font  ><i>noisePower</i></font> parameter. We will explain the expression language in the next chapter. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <font  ><i>Channel</i></font> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in Figure <img src="images/usingVergil58.gif" usemap="#usingVergil58_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#168902">2.22</a>. This is an expression that references the <font  ><i>noisePower</i></font> parameter. We will explain the expression language in the next chapter. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <font  ><i>Channel</i></font> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in Figure <img src="images/usingVergil58.gif" usemap="#usingVergil58_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil58_gif">
 
-<area href="usingVergil.html#168725" shape=rect coords="3,269,597,296">
+<area href="index.html#168725" shape=rect coords="3,269,597,296">
 </map>
-<a href="usingVergil.html#168902">2.23</a>.</font>
+<a href="index.html#168902">2.23</a>.</font>
 </p>
 
 
@@ -377,7 +377,7 @@ is also available.
 
 <p>
   <a name="170131"> </a><font  >In addition, it is possible to pan over a model. Consider the window shown in Figure <img src="images/usingVergil61.gif" height="459" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170131">2.25</a>. Here, we have zoomed in so that icons are larger than the default. The <font  ><i>pan window</i></font> at the lower left shows the entire model, with a red box showing the visible portion of the model. By clicking and dragging in the pan window, it is easy to navigate around the entire model. Clicking on the "Zoom fit" button in the toolbar results in the editor area showing the entire model, just as the pan window does.</font>
+<a href="index.html#170131">2.25</a>. Here, we have zoomed in so that icons are larger than the default. The <font  ><i>pan window</i></font> at the lower left shows the entire model, with a red box showing the visible portion of the model. By clicking and dragging in the pan window, it is easy to navigate around the entire model. Clicking on the "Zoom fit" button in the toolbar results in the editor area showing the entire model, just as the pan window does.</font>
 </p>
 
 
@@ -418,12 +418,12 @@ is also available.
 
 <p>
   <a name="166688"> </a><font  >One such actor is a spectral estimation actor. Figure <img src="images/usingVergil33.gif" height="195" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#166688">2.26</a> shows a system that computes the spectrum of the same noisy sine wave that we constructed in Figure <a href="usingVergil.html#168725">2.19</a>. The <font  ><i>Spectrum</i></font> actor has a single parameter, which gives the <font  ><i>order</i></font> of the FFT used to calculate the spectrum. Figure <img src="images/usingVergil36.gif" usemap="#usingVergil36_gif" height="328" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="index.html#166688">2.26</a> shows a system that computes the spectrum of the same noisy sine wave that we constructed in Figure <a href="index.html#168725">2.19</a>. The <font  ><i>Spectrum</i></font> actor has a single parameter, which gives the <font  ><i>order</i></font> of the FFT used to calculate the spectrum. Figure <img src="images/usingVergil36.gif" usemap="#usingVergil36_gif" height="328" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil36_gif">
 
-<area href="usingVergil.html#166688" shape=rect coords="3,296,597,322">
+<area href="index.html#166688" shape=rect coords="3,296,597,322">
 </map>
-<a href="usingVergil.html#166688">2.27</a> shows the output of the model with <font  ><i>order</i></font> set to 8 and the number of <font  ><i>iterations</i></font> set to 1. <font  ><b>Note that there are 256 output samples output from the </b></font><font  ><i>Spectrum</i></font><font  ><b> actor</b></font>. This is because the <font  ><i>Spectrum</i></font> actor requires 2^8, or 256 input samples to fire, and produces 2^8, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples. The <font  ><i>Spectrum</i></font> actor makes this a <font  ><i>multirate</i></font> model, because the firing rates of the actors are not all identical.</font>
+<a href="index.html#166688">2.27</a> shows the output of the model with <font  ><i>order</i></font> set to 8 and the number of <font  ><i>iterations</i></font> set to 1. <font  ><b>Note that there are 256 output samples output from the </b></font><font  ><i>Spectrum</i></font><font  ><b> actor</b></font>. This is because the <font  ><i>Spectrum</i></font> actor requires 2^8, or 256 input samples to fire, and produces 2^8, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples. The <font  ><i>Spectrum</i></font> actor makes this a <font  ><i>multirate</i></font> model, because the firing rates of the actors are not all identical.</font>
 </p>
 
 
@@ -434,7 +434,7 @@ is also available.
 
 <p>
   <a name="170224"> </a><font  >A second subtlety with SDF models is that if there is a feedback loop, as in Figure <img src="images/usingVergil4.gif" height="183" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170224">2.28</a>, then the loop must have at least one instance of the <font  ><i>SampleDelay</i></font> actor in it (found in the <font  ><i>flow control</i></font> library). Without this actor, the loop will deadlock. The <font  ><i>SampleDelay</i></font> actor produces initial tokens on its output, before the model begins firing. The initial tokens produced are given by a the <font  ><i>initialOutputs</i></font> parameter, which specifies an array of tokens. These initial tokens enable downstream actors and break the circular dependencies that would result otherwise from a feedback loop.</font>
+<a href="index.html#170224">2.28</a>, then the loop must have at least one instance of the <font  ><i>SampleDelay</i></font> actor in it (found in the <font  ><i>flow control</i></font> library). Without this actor, the loop will deadlock. The <font  ><i>SampleDelay</i></font> actor produces initial tokens on its output, before the model begins firing. The initial tokens produced are given by a the <font  ><i>initialOutputs</i></font> parameter, which specifies an array of tokens. These initial tokens enable downstream actors and break the circular dependencies that would result otherwise from a feedback loop.</font>
 </p>
 
 
@@ -465,12 +465,12 @@ is also available.
 
 <p>
   <a name="170593"> </a><font  >Consider the DE model shown in Figure <img src="images/usingVergil6.gif" height="378" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170593">2.29</a>. This model includes a <font  ><i>PoissonClock</i></font> actor, a <font  ><i>CurrentTime</i></font> actor, and a <font  ><i>WallClockTime</i></font> actor, all found in the <font  ><i>sources</i></font> library. The <font  ><i>PoissonClock</i></font> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <font  ><i>PoissonClock</i></font> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <font  ><i>CurrentTime</i></font> and <font  ><i>WallClockTime</i></font> actors. The <font  ><i>CurrentTime</i></font> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <font  ><i>WallClockTime</i></font> actor an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.</font>
+<a href="index.html#170593">2.29</a>. This model includes a <font  ><i>PoissonClock</i></font> actor, a <font  ><i>CurrentTime</i></font> actor, and a <font  ><i>WallClockTime</i></font> actor, all found in the <font  ><i>sources</i></font> library. The <font  ><i>PoissonClock</i></font> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <font  ><i>PoissonClock</i></font> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <font  ><i>CurrentTime</i></font> and <font  ><i>WallClockTime</i></font> actors. The <font  ><i>CurrentTime</i></font> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <font  ><i>WallClockTime</i></font> actor an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.</font>
 </p>
 
 
 <p>
-  <a name="170654"> </a><font  >The plot in Figure <a href="usingVergil.html#170593">2.29</a> shows an execution. Note that model time has advanced approximately 10 seconds, but real time has advanced almost not at all. In this model, model time advances much more rapidly than real time. If you build this model, and set the <font  ><i>synchronizeToRealTime</i></font> parameter of the director to true, then you will find that the two plots coincide almost perfectly.</font>
+  <a name="170654"> </a><font  >The plot in Figure <a href="index.html#170593">2.29</a> shows an execution. Note that model time has advanced approximately 10 seconds, but real time has advanced almost not at all. In this model, model time advances much more rapidly than real time. If you build this model, and set the <font  ><i>synchronizeToRealTime</i></font> parameter of the director to true, then you will find that the two plots coincide almost perfectly.</font>
 </p>
 
 
@@ -481,7 +481,7 @@ is also available.
 
 <p>
   <a name="170730"> </a><font  >Consider the model shown in Figure <img src="images/usingVergil8.gif" height="365" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170730">2.30</a>, which produces a histogram of the interarrival times of events from the <font  ><i>PoissonClock</i></font> actor. In this model, we calculate the difference between the current event time and the previous event time, resulting in the plot that is shown in the figure. The <font  ><i>Previous </i></font>actor is a <font  ><i>zero-delay</i></font> actor, meaning that it produces an output with the same time stamp as the input (except on the first firing, where in this case it produces no output). Thus, when the <font  ><i>PoissonClock </i></font>actor produces an output, there will be two simultaneous events, one at the input to the <font  ><i>plus</i></font> port of the <font  ><i>AddSubtract</i></font> actor, and one at the input of the <font  ><i>Previous</i></font> actor. Should the director fire the <font  ><i>AddSubtract </i></font>actor or the <font  ><i>Previous</i></font> actor? Either seems OK if it is to respect chronological order, but it seems intuitive that the <font  ><i>Previous</i></font> actor should be fired first.</font>
+<a href="index.html#170730">2.30</a>, which produces a histogram of the interarrival times of events from the <font  ><i>PoissonClock</i></font> actor. In this model, we calculate the difference between the current event time and the previous event time, resulting in the plot that is shown in the figure. The <font  ><i>Previous </i></font>actor is a <font  ><i>zero-delay</i></font> actor, meaning that it produces an output with the same time stamp as the input (except on the first firing, where in this case it produces no output). Thus, when the <font  ><i>PoissonClock </i></font>actor produces an output, there will be two simultaneous events, one at the input to the <font  ><i>plus</i></font> port of the <font  ><i>AddSubtract</i></font> actor, and one at the input of the <font  ><i>Previous</i></font> actor. Should the director fire the <font  ><i>AddSubtract </i></font>actor or the <font  ><i>Previous</i></font> actor? Either seems OK if it is to respect chronological order, but it seems intuitive that the <font  ><i>Previous</i></font> actor should be fired first.</font>
 </p>
 
 
@@ -491,7 +491,7 @@ is also available.
 
 
 <p>
-  <a name="170953"> </a><font  >How does the director deliver on the intuition that the <font  ><i>Previous</i></font> actor should be fired first? Before executing the model, the DE director constructs a <font  ><i>topological sort</i></font> of the model. A topological sort is simply a list of the actors in data-precedence order. For the model in Figure <a href="usingVergil.html#170730">2.30</a>, there is only one allowable topological sort:</font>
+  <a name="170953"> </a><font  >How does the director deliver on the intuition that the <font  ><i>Previous</i></font> actor should be fired first? Before executing the model, the DE director constructs a <font  ><i>topological sort</i></font> of the model. A topological sort is simply a list of the actors in data-precedence order. For the model in Figure <a href="index.html#170730">2.30</a>, there is only one allowable topological sort:</font>
 </p>
 
 <ul>
@@ -510,7 +510,7 @@ is also available.
 
 <p>
   <a name="170882"> </a><font  >There remains one key subtlety. If the model has a directed loop, then a topological sort is not possible. In the DE domain, every feedback loop is required to have at least one actor in it that introduces a time delay, such as the <font  ><i>TimedDelay</i></font> actor, which can be found in the <font  ><i>domain specific</i></font> library under <font  ><i>discrete-event</i></font> (this library is shown on the left in Figure <img src="images/usingVergil10.gif" height="522" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170882">2.31</a>). Consider for example the model shown in Figure <a href="usingVergil.html#170882">2.31</a>. That model has a <font  ><i>Clock</i></font> actor, which is set to produce events every 1.0 time units. Those events trigger the <font  ><i>Ramp</i></font> actor, which produces outputs that start at 0 and increase by 1 on each firing. In this model, the output of the <font  ><i>Ramp</i></font> goes into an <font  ><i>AddSubtract</i></font> actor, which subtracts from the <font  ><i>Ramp</i></font> output its own prior output delayed by one time unit. The result is shown in the plot in the figure.</font>
+<a href="index.html#170882">2.31</a>). Consider for example the model shown in Figure <a href="index.html#170882">2.31</a>. That model has a <font  ><i>Clock</i></font> actor, which is set to produce events every 1.0 time units. Those events trigger the <font  ><i>Ramp</i></font> actor, which produces outputs that start at 0 and increase by 1 on each firing. In this model, the output of the <font  ><i>Ramp</i></font> goes into an <font  ><i>AddSubtract</i></font> actor, which subtracts from the <font  ><i>Ramp</i></font> output its own prior output delayed by one time unit. The result is shown in the plot in the figure.</font>
 </p>
 
 
@@ -548,7 +548,7 @@ is also available.
 
 <p>
   <a name="171152"> </a><font  >A model of these differential equations in the CT domain is shown in Figure <img src="images/usingVergil26.gif" height="572" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171152">2.32</a>. As is customary in modeling differential equations, we use <font  ><i>integrators</i></font> instead of differentiators. Integrators are much more numerically robust. They are arranged in a feedback loop, so that the input to an integrator is simply the derivative of the output. Thus, the output of <font  ><i>Integrator 1</i></font> is <img src="images/usingVergil28.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+<a href="index.html#171152">2.32</a>. As is customary in modeling differential equations, we use <font  ><i>integrators</i></font> instead of differentiators. Integrators are much more numerically robust. They are arranged in a feedback loop, so that the input to an integrator is simply the derivative of the output. Thus, the output of <font  ><i>Integrator 1</i></font> is <img src="images/usingVergil28.gif" height="21" width="16" border="0" hspace="0" vspace="0">
 , and its input is <img src="images/usingVergil29.gif" height="21" width="16" border="0" hspace="0" vspace="0">
 . A feedback loop is used to specify the value of <img src="images/usingVergil31.gif" height="21" width="16" border="0" hspace="0" vspace="0">
  in terms of <img src="images/usingVergil32.gif" height="21" width="16" border="0" hspace="0" vspace="0">
@@ -559,14 +559,14 @@ is also available.
 
 
 <p>
-  <a name="171151"> </a><font  >This set of differential equations describe a famous chaotic system called a Lorenz attractor. It is a special case of a family of nonlinear feedback systems that exhibit <font  ><i>strange attractor</i></font> behavior. The "attractors" are the two nodes in the plot in Figure <a href="usingVergil.html#171152">2.32</a> that the trace seems to be alternately orbiting.</font>
+  <a name="171151"> </a><font  >This set of differential equations describe a famous chaotic system called a Lorenz attractor. It is a special case of a family of nonlinear feedback systems that exhibit <font  ><i>strange attractor</i></font> behavior. The "attractors" are the two nodes in the plot in Figure <a href="index.html#171152">2.32</a> that the trace seems to be alternately orbiting.</font>
 </p>
 
 
 <p>
-  <a name="171229"> </a><font  >The model in Figure <a href="usingVergil.html#171152">2.32</a> illustrates several points. First, in CT, every feedback loop must contain an integrator. Second, the <font  ><i>XYPlotter</i></font> actor is used to plot <img src="images/usingVergil53.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+  <a name="171229"> </a><font  >The model in Figure <a href="index.html#171152">2.32</a> illustrates several points. First, in CT, every feedback loop must contain an integrator. Second, the <font  ><i>XYPlotter</i></font> actor is used to plot <img src="images/usingVergil53.gif" height="21" width="16" border="0" hspace="0" vspace="0">
 vs. <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace="0" vspace="0">
-. Third, three instances of the <font  ><i>Expression</i></font> actor are used instead of complex block diagrams to specify arithmetic expressions. Use of the <font  ><i>Expression</i></font> actor is explained in Chapter <a href="expressions.htm#158262">3, "Expressions"</a>.</font>
+. Third, three instances of the <font  ><i>Expression</i></font> actor are used instead of complex block diagrams to specify arithmetic expressions. Use of the <font  ><i>Expression</i></font> actor is explained in Chapter <a href="../../expressions.htm#158262">3, "Expressions"</a>.</font>
 </p>
 
 
@@ -582,28 +582,28 @@ vs. <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace
 
 <p>
   <a name="170308"> </a><font  >The finite-state machine domain (FSM) in Ptolemy II is a relatively less mature domain (but mature enough to be useful) with semantics very different from the domains covered so far. An FSM model looks different in Vergil. An example is shown in Figure <img src="images/usingVergil38.gif" height="369" width="598" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170308">2.33</a>. Notice that the component library on the left and the toolbar at the top are different for this model. We will explain how to construct this model.</font>
+<a href="index.html#170308">2.33</a>. Notice that the component library on the left and the toolbar at the top are different for this model. We will explain how to construct this model.</font>
 </p>
 
 
 <p>
-  <a name="171389"> </a><font  >First, the FSM domain is almost always used in combination with other domains in Ptolemy II to create <font  ><i>modal models</i></font>. A modal model is one that has <font  ><i>modes</i></font>, which represent regimes of operation. Each mode in a modal model is represented by a <font  ><i>state</i></font> in a finite-state machine. The circles in Figure <a href="usingVergil.html#170308">2.33</a> are states, and the arcs between circles are <font  ><i>transitions </i></font>between states.</font>
+  <a name="171389"> </a><font  >First, the FSM domain is almost always used in combination with other domains in Ptolemy II to create <font  ><i>modal models</i></font>. A modal model is one that has <font  ><i>modes</i></font>, which represent regimes of operation. Each mode in a modal model is represented by a <font  ><i>state</i></font> in a finite-state machine. The circles in Figure <a href="index.html#170308">2.33</a> are states, and the arcs between circles are <font  ><i>transitions </i></font>between states.</font>
 </p>
 
 
 <p>
   <a name="171407"> </a><font  >A modal model is typically a component in a larger model. You can create a modal model by dragging one in from the <font  ><i>utilities</i></font> library. By default, it has no ports. To make it useful, you will probably need to add ports. Figure <img src="images/usingVergil43.gif" height="207" width="598" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171407">2.34</a> shows a top-level continuous-time model with a single modal model that has been renamed <font  ><i>Ball Model</i></font>. It represents a bouncing ball. Three outputs have been added, but only the top one is used. It gives the vertical distance of the ball from the surface on which it bounces.</font>
+<a href="index.html#171407">2.34</a> shows a top-level continuous-time model with a single modal model that has been renamed <font  ><i>Ball Model</i></font>. It represents a bouncing ball. Three outputs have been added, but only the top one is used. It gives the vertical distance of the ball from the surface on which it bounces.</font>
 </p>
 
 
 <p>
-  <a name="171433"> </a><font  >If you create a new modal model by dragging it in from the <font  ><i>utilities</i></font> library, and then look inside, you will get an FSM editor like that in Figure <a href="usingVergil.html#170308">2.33</a>, except that it will be almost blank. The only items in it will be the ports you have added. You may want to move these ports to reasonable locations.</font>
+  <a name="171433"> </a><font  >If you create a new modal model by dragging it in from the <font  ><i>utilities</i></font> library, and then look inside, you will get an FSM editor like that in Figure <a href="index.html#170308">2.33</a>, except that it will be almost blank. The only items in it will be the ports you have added. You may want to move these ports to reasonable locations.</font>
 </p>
 
 
 <p>
-  <a name="171440"> </a><font  >To create a finite-state machine like that in Figure <a href="usingVergil.html#170308">2.33</a>, drag in states (white circles). You can rename these states by right clicking on them and selecting "Customize Name". Choose names that are pertinent to your application. In Figure <a href="usingVergil.html#170308">2.33</a>, there is an <font  ><i>init</i></font> state for initialization, a <font  ><i>free</i></font> state for when the ball is in the air, and a <font  ><i>stop</i></font> state for when the ball is no longer bouncing. You must specify the initial state of the FSM by right clicking on the background of the FSM Editor, selecting "Edit Parameters", and specifying an initial state name. In this example, the initial state is <font  ><i>init</i></font>.</font>
+  <a name="171440"> </a><font  >To create a finite-state machine like that in Figure <a href="index.html#170308">2.33</a>, drag in states (white circles). You can rename these states by right clicking on them and selecting "Customize Name". Choose names that are pertinent to your application. In Figure <a href="index.html#170308">2.33</a>, there is an <font  ><i>init</i></font> state for initialization, a <font  ><i>free</i></font> state for when the ball is in the air, and a <font  ><i>stop</i></font> state for when the ball is no longer bouncing. You must specify the initial state of the FSM by right clicking on the background of the FSM Editor, selecting "Edit Parameters", and specifying an initial state name. In this example, the initial state is <font  ><i>init</i></font>.</font>
 </p>
 
 
@@ -611,9 +611,9 @@ vs. <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace
   <a name="171454"> </a><font  >To create transitions, you must hold the control button on the keyboard while clicking and dragging from one state to the next (a transition can also go back to the same state). The handles on the transition can be used to customize its curvature and orientation. Double clicking on the transition (or right clicking and selecting "Configure") allows you to configure the transition. The dialog for the transition from <font  ><i>init</i></font> to <font  ><i>free </i></font>is shown in Figure <img src="images/usingVergil40.gif" usemap="#usingVergil40_gif" height="207" width="598" align="left" border="0" hspace="0" vspace="0">
 <map name="usingVergil40_gif">
 
-<area href="usingVergil.html#170308" shape=rect coords="3,182,593,204">
+<area href="index.html#170308" shape=rect coords="3,182,593,204">
 </map>
-<a href="usingVergil.html#171454">2.35</a>. In that dialog, we see the following:</font>
+<a href="index.html#171454">2.35</a>. In that dialog, we see the following:</font>
 </p>
 
 <ul>
@@ -636,12 +636,12 @@ vs. <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace
 
 <p>
   <a name="171563"> </a><font  >To create a refinement for a state, right click on the state, and select "Add Refinement". You will see a dialog like that in Figure <img src="images/usingVergil45.gif" height="187" width="598" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171948">2.39</a>. You can specify the class name for the refinement, but for now, it is best to accept the default. Once you have created a refinement, you can look inside a state. For the bouncing ball example, the refinement of the <font  ><i>free</i></font> state is shown in Figure <img src="images/usingVergil49.gif" usemap="#usingVergil49_gif" height="212" width="598" align="left" border="0" hspace="0" vspace="0">
+<a href="index.html#171948">2.39</a>. You can specify the class name for the refinement, but for now, it is best to accept the default. Once you have created a refinement, you can look inside a state. For the bouncing ball example, the refinement of the <font  ><i>free</i></font> state is shown in Figure <img src="images/usingVergil49.gif" usemap="#usingVergil49_gif" height="212" width="598" align="left" border="0" hspace="0" vspace="0">
 <map name="usingVergil49_gif">
 
-<area href="usingVergil.html#170308" shape=rect coords="3,187,593,209">
+<area href="index.html#170308" shape=rect coords="3,187,593,209">
 </map>
-<a href="usingVergil.html#171563">2.37</a>. This model exhibits certain key properties of state refinements:</font>
+<a href="index.html#171563">2.37</a>. This model exhibits certain key properties of state refinements:</font>
 </p>
 
 <ul>
@@ -652,8 +652,8 @@ vs. <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace
 </ul>
 
 <p>
-  <a name="171494"> </a><font  >As you can see from Figure <a href="usingVergil.html#170308">2.33</a>, when the position and velocity of the ball drop below a specified threshold, the state machine transitions to the state <font  ><i>stop</i></font>, which has no refinement. This results in the model producing no further output. The result of an execution is shown in Figure <img src="images/usingVergil48.gif" height="291" width="598" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171494">2.38</a>. Notice that the ball bounces until it stops, after which there are no further outputs.</font>
+  <a name="171494"> </a><font  >As you can see from Figure <a href="index.html#170308">2.33</a>, when the position and velocity of the ball drop below a specified threshold, the state machine transitions to the state <font  ><i>stop</i></font>, which has no refinement. This results in the model producing no further output. The result of an execution is shown in Figure <img src="images/usingVergil48.gif" height="291" width="598" align="left" border="0" hspace="0" vspace="0">
+<a href="index.html#171494">2.38</a>. Notice that the ball bounces until it stops, after which there are no further outputs.</font>
 </p>
 
 
@@ -679,7 +679,7 @@ vs. <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace
 
 
 <p>
-  <a name="166744"> </a><font  >Several of the plots shown above have flaws that can be fixed using the features of the plotter. For instance, the plot shown in Figure <a href="usingVergil.html#166688">2.27</a> has the default (uninformative) title, the axes are not labeled, and the horizontal axis ranges from 0 to 255<a href="#166823"><sup>2</sup></a>, because in one iteration, the <font  ><i>Spectrum</i></font> actor produces 256 output tokens. These outputs represent frequency bins that range between <img src="images/usingVergil41.gif" height="18" width="19" border="0" hspace="0" vspace="0">
+  <a name="166744"> </a><font  >Several of the plots shown above have flaws that can be fixed using the features of the plotter. For instance, the plot shown in Figure <a href="index.html#166688">2.27</a> has the default (uninformative) title, the axes are not labeled, and the horizontal axis ranges from 0 to 255<a href="#166823"><sup>2</sup></a>, because in one iteration, the <font  ><i>Spectrum</i></font> actor produces 256 output tokens. These outputs represent frequency bins that range between <img src="images/usingVergil41.gif" height="18" width="19" border="0" hspace="0" vspace="0">
  and <img src="images/usingVergil42.gif" height="18" width="12" border="0" hspace="0" vspace="0">
  radians per second.</font>
 </p>
@@ -687,15 +687,15 @@ vs. <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace
 
 <p>
   <a name="171948"> </a><font  >The <font  ><i>SequencePlotter</i></font> actor has some pertinent parameters, shown in Figure <img src="images/usingVergil44.gif" height="153" width="598" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171563">2.36</a>. The <font  ><i>xInit</i></font> parameter specifies the value to use on the horizontal axis for the first token. The <font  ><i>xUnit</i></font> parameter specifies the value to increment this by for each subsequent token. Setting these to "-PI" and "PI/128" respectively results in the plot shown in Figure <img src="images/usingVergil47.gif" height="261" width="598" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171948">2.40</a>.</font>
+<a href="index.html#171563">2.36</a>. The <font  ><i>xInit</i></font> parameter specifies the value to use on the horizontal axis for the first token. The <font  ><i>xUnit</i></font> parameter specifies the value to increment this by for each subsequent token. Setting these to "-PI" and "PI/128" respectively results in the plot shown in Figure <img src="images/usingVergil47.gif" height="261" width="598" align="left" border="0" hspace="0" vspace="0">
+<a href="index.html#171948">2.40</a>.</font>
 </p>
 
 
 <p>
   <a name="171960"> </a><font  >This plot is better, but still missing useful information. To control more precisely the visual appearance of the plot, click on the second button from the right in the row of buttons at the top right of the plot. This button brings up a format control window. It is shown in Figure <img src="images/usingVergil50.gif" height="248" width="594" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171960">2.41</a>, filled in with values that result in the plot shown in Figure <img src="images/usingVergil12.gif" height="282" width="599" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171960">2.42</a>. Most of these are self-explanatory, but the following pointers may be useful:</font>
+<a href="index.html#171960">2.41</a>, filled in with values that result in the plot shown in Figure <img src="images/usingVergil12.gif" height="282" width="599" align="left" border="0" hspace="0" vspace="0">
+<a href="index.html#171960">2.42</a>. Most of these are self-explanatory, but the following pointers may be useful:</font>
 </p>
 
 <ul>
