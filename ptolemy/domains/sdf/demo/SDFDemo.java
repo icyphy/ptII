@@ -48,9 +48,8 @@ public class SDFdemo {
 
                 r=(IORelation) c.connect(ramp.outputport,delay.inputport,"R1");
                 r=(IORelation) c.connect(delay.outputport,print.inputport,"R2");
-             
-                
-                m.go(5);
+                             
+                m.blockingGo(5);
         }
 }    
  
