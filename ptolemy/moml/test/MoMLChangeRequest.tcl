@@ -342,9 +342,13 @@ test MoMLChangeRequest-2.2 {Test propagation} {
     # NOTE: Request is filled immediately in the toplevel context.
     $toplevel requestChange $change
     # NOTE: exportMoML won't give a full description.
+    # 10/28/02: Earlier change to MoMLParser means that the description
+    # output now includes URIAttribute.  Not sure why?
     $toplevel description
 } {ptolemy.kernel.CompositeEntity {.top} attributes {
     {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top._iconDescription} attributes {
+    }}
+    {ptolemy.kernel.attributes.URIAttribute {.top._uri} attributes {
     }}
     {ptolemy.moml.ParserAttribute {.top._parser} attributes {
     }}
@@ -423,9 +427,13 @@ test MoMLChangeRequest-3.2 {Test propagation} {
     # NOTE: Request is filled immediately in the toplevel context.
     $toplevel requestChange $change
     # NOTE: exportMoML won't give a full description.
+    # 10/28/02: Earlier change to MoMLParser means that the description
+    # output now includes URIAttribute.  Not sure why?
     $toplevel description
 } {ptolemy.kernel.CompositeEntity {.top} attributes {
     {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top._iconDescription} attributes {
+    }}
+    {ptolemy.kernel.attributes.URIAttribute {.top._uri} attributes {
     }}
     {ptolemy.moml.ParserAttribute {.top._parser} attributes {
     }}
