@@ -46,7 +46,7 @@
 # HDRS		.h files.
 # JSRCS		.java files
 # OPTIONAL_JSRCS derived .java files (i.e. created by javacc)
-# OPTIONAL_JSRCS2 master derived .java file (i.e. created by javacc)
+# DERIVED_JSRCS master derived .java file (i.e. created by javacc)
 # JCLASS	.class files
 # OBJS		.o files
 # LIBR		The name of the library being created.  We can't just call
@@ -224,7 +224,7 @@ makefiles: makefile
 # Build all the Java class files.
 # Run in the subdirs first in case the subpackages need to be compiled first.
 
-jclass:	$(OPTIONAL_JSRCS2) $(JSRCS) subjclass $(JCLASS) 
+jclass:	$(DERIVED_JSRCS) $(JSRCS) subjclass $(JCLASS) 
 
 subjclass:
 	@if [ "x$(DIRS)" != "x" ]; then \
@@ -245,8 +245,8 @@ jclass1_1: $(JSRCS1_1) $(JCLASS1_1)
 # Build the Java documentation.
 javadocs: doc/codeDoc/tree.html
 jhtml: doc/codeDoc/tree.html
-# $(OPTIONAL_JSRCS2) is used in ptolemy/data/expr
-doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(OPTIONAL_JSRCS2)
+# $(DERIVED_JSRCS) is used in ptolemy/data/expr
+doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
 	@if [ "$(JSRCS)" = "" ]; then \
 		echo "No java sources, so we don't run javadoc";\
 	else \
@@ -254,7 +254,7 @@ doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(OPTIONAL_JSRCS2)
 	rm -f doc/codeDoc/*.html; \
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVAHOME)/lib/classes.zip$(AUXCLASSPATH)" \
 	   $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc \
-		$(JSRCS) $(OPTIONAL_JSRCS) $(OPTIONAL_JSRCS2); \
+		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS); \
 	for x in doc/codeDoc/*.html; do \
 		echo "Fixing paths in $$x"; \
 		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
