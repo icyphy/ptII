@@ -2,79 +2,57 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PolarToCartesianAndBack" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 90.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Ramp0" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 165.0]">
+        </property>
     </entity>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="pi/2">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="pi/2">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 250.0]">
+        </property>
     </entity>
     <entity name="CartesianToPolar2" class="ptolemy.actor.lib.conversions.CartesianToPolar">
-        <port name="x" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="y" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="magnitude" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="angle" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{327.2734375, 204.9375}">
+        </property>
     </entity>
     <entity name="PolarToCartesian4" class="ptolemy.actor.lib.conversions.PolarToCartesian">
-        <port name="magnitude" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="angle" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="x" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="y" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{207.4140625, 204.9375}">
+        </property>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.5707963, 3.1415927, -1.5707963, 0.0, 1.5707963, 3.1415927, -1.5707963}">
@@ -83,10 +61,8 @@
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 245.0]">
+        </property>
     </entity>
     <entity name="Test13" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8}">
@@ -95,10 +71,8 @@
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 170.0]">
+        </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
