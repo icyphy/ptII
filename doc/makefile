@@ -51,10 +51,11 @@ REALCLEAN_STUFF =
 # Sub directories to run make in.
 DIRS =		#usersGuides #internals
 
-ALLJSRCS = 	pn/*/*.java tcl/*.java tycho/*.java
+ALLJSRCS = 	pn/*/*.java tcl/*.java tycho/*.java tycho/Cool_Beans/util/*.java
 all: codeDoc/tree.html
 
-codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java
+codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java \
+		../tycho/Cool_Beans/util/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
