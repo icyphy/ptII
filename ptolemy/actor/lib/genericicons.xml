@@ -47,5 +47,17 @@
 ]]>
 </configure>
 </entity>
+
+<entity name="integral" class="ptolemy.vergil.toolbox.XMLIcon">
+<configure>
+<![CDATA[
+	<xmlgraphic>
+	<rectangle coords="0 0 60 40" fill="white"/>
+	<line coords="33 10 29 13 27 15 30 20 33 25 31 27 27 30"/>
+	</xmlgraphic>
+]]>
+
+</configure>
+</entity>
 </class>
 
