@@ -29,12 +29,21 @@
 
 package ptolemy.domains.fsm.kernel;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
 import ptolemy.actor.IODependency;
-import ptolemy.actor.IODependencyOfFSMActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
@@ -51,26 +60,22 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.Typeable;
 import ptolemy.domains.sdf.kernel.SDFUtilities;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMActor
@@ -327,13 +332,31 @@ public class FSMActor extends CompositeEntity
     /** Return an instance of DirectedGraph, where the nodes are IOPorts,
      *  and the edges are the relations between ports. The graph shows 
      *  the dependencies between the input and output ports. If there is
-     *  an path between a pair, input and output, they are dependent. 
+     *  a path between a pair, input and output, they are dependent. 
      *  Otherwise, they are independent.
      */
     public IODependency getIODependencies() {
         if (_ioDependency == null) {
-            _ioDependency = new IODependencyOfFSMActor(this);
-        }
+            try{
+                TypedActor[] refinements = _currentState.getRefinement();
+                //FIXME: we assume there is only one refinement.
+                // If there are many refinements, we choose the first one.
+                if (refinements.length > 0) {
+                    _ioDependency = refinements[0].getIODependencies();
+                } else {
+                    //FIXME: what to do if no refinement?
+                    //The dependency relation between the actions associated
+                    //with transitions and downstream receivers is too complicated,
+                    //and I want to exclude the output actions. 
+                    _ioDependency = null;
+                }
+            } catch (IllegalActionException e) {
+               // dealing with the exception 
+               // FIXME: how? make this method throw the exception?
+               // Similar things happen in the _getEntities method 
+               // in IODependencyOfModalModel
+            }
+       }
         //_ioDependency.validate();
         return _ioDependency;
     }
@@ -613,28 +636,6 @@ public class FSMActor extends CompositeEntity
         _createReceivers();
         _hdfArrays = new Hashtable();
         
-// FIXME: Modification according to the following changes:
-// Refactoring the IODependence class to two classes, one for atomic actor,
-// the other for composite actor. 
-// Change of the way to access IODependence attribute, which removes the
-// local private variable _ioDependence.
-    
-//        try {
-//            if (_ioDependence != null) {
-//                _ioDependence.setContainer(null);
-//            }
-//            _ioDependence = new IODependence(this, "_IODependence");
-//            //TODO:
-//            // Analyze io depencence (conservative):
-//            // For an output port O, and input port I, if there is an output
-//            // action that writes to O, and either the corresponding guard or
-//            // the output value expression depends on input from I, then O
-//            // depends on I.
-//        } catch (NameDuplicationException ex) {
-//            throw new InternalErrorException(this, ex,
-//                    "Unable to create IODepedence attribute.");
-//        }
-
         // Populate a map from identifier to the input port represented.
         _identifierToPort.clear();
         for(Iterator inputPorts = inputPortList().iterator();
@@ -1408,6 +1409,6 @@ public class FSMActor extends CompositeEntity
     private Hashtable _hdfArrays;
     
     // The IODependence attribute of this actor.
-    private IODependencyOfFSMActor _ioDependency;
+    private IODependency _ioDependency;
 
 }
