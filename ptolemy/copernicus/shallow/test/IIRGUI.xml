@@ -3,6 +3,8 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="IIRGUI" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -20,6 +22,10 @@
     <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
         <property name="initialParametersURL" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/kernel/Generator.xml&quot;">
             <doc name="tooltip">MoML File that contains the initial parameter values.</doc>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_editorFactory" class="ptolemy.copernicus.gui.GeneratorTableauAttribute$GeneratorTableauEditorFactory">
         </property>
         <property name="codeGenerator" class="ptolemy.data.expr.Parameter" value="&quot;java&quot;">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -110,10 +116,6 @@
         </property>
         <property name="watchDogTimeout" class="ptolemy.data.expr.Parameter" value="600000">
             <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_editorFactory" class="ptolemy.copernicus.gui.GeneratorTableauAttribute$GeneratorTableauEditorFactory">
         </property>
         <property name="sootShallow" class="ptolemy.data.expr.Parameter" value="true">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">

@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
     <property name="velocity1" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -32,6 +33,8 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -955,6 +958,12 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="223.0, 238.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1983,6 +1992,12 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="215.0, 463.0">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -2343,6 +2358,8 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                 </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -2359,6 +2376,8 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                 </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -2374,6 +2393,8 @@ uses the GR domain to render the results</text></svg></configure>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -2410,6 +2431,8 @@ uses the GR domain to render the results</text></svg></configure>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
                 <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
                 </property>
@@ -2563,6 +2586,8 @@ uses the GR domain to render the results</text></svg></configure>
                 </port>
             </entity>
             <entity name="ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="382.0, 319.72726509787816">
@@ -2652,6 +2677,8 @@ uses the GR domain to render the results</text></svg></configure>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
                 <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
                 </property>

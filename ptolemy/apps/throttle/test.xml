@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
@@ -24,6 +25,8 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -79,14 +82,16 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
 <xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Desired Throttle Angle and Derivatives" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="159.5, 148.5">
         </property>
@@ -218,6 +223,8 @@
                 </port>
             </entity>
             <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+                <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+                </property>
                 <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1/samplingPeriod">
                     <doc>The sampling frequency, in the same units as the frequency.</doc>
                 </property>
@@ -244,7 +251,7 @@
       </svg>
     </configure>
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                     </property>

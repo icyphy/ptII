@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Spectrum" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -109,6 +110,8 @@ Try changing the parameters in the run window.</text>
         </port>
     </entity>
     <entity name="Carrier Source" class="ptolemy.actor.lib.Sinewave">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -151,6 +154,8 @@ Try changing the parameters in the run window.</text>
         </property>
     </entity>
     <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -209,7 +214,8 @@ Try changing the parameters in the run window.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Spectrum</title>
@@ -219,7 +225,8 @@ Try changing the parameters in the run window.</text>
 <yRange min="-50.0" max="10.0"/>
 <noGrid/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -267,7 +274,8 @@ centered at zero frequency.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Time-Domain Plot</title>
@@ -277,7 +285,8 @@ centered at zero frequency.</text>
 <yRange min="-1.154037151526568" max="1.1568297032397656"/>
 <noGrid/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
         </property>

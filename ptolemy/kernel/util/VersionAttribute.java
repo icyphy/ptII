@@ -282,6 +282,7 @@ public class VersionAttribute
 	}
     }
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

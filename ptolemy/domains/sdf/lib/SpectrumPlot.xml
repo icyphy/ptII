@@ -2,6 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="SpectrumPlot" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <doc>This composite actor calculates the spectrum of the input.</doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[690, 454]">
     </property>
@@ -141,7 +142,8 @@ centered at zero frequency.</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Spectrum</title>
@@ -151,7 +153,8 @@ centered at zero frequency.</text></svg></configure>
 <yRange min="-21.208318390214906" max="36.538209132222235"/>
 <noGrid/>
 </plot>?>
-                                                </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R1" class="ptolemy.actor.TypedIORelation">

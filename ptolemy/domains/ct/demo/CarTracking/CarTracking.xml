@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
@@ -247,6 +248,8 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             </port>
         </entity>
         <entity name="TimedSinewave" class="ptolemy.actor.lib.TimedSine">
+            <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+            </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 450]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[53, 160]">
@@ -1223,8 +1226,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
@@ -1569,8 +1572,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>

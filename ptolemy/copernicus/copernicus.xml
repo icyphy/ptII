@@ -1,13 +1,21 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Copernicus" class="ptolemy.moml.EntityLibrary">
-  <configure>
-    <?moml
-      <group>
-        <doc>Code Generation Attributes</doc>
-	<property name="SDF CodeGenerator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute"/>
-      </group>
-    ?>
-  </configure>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <configure>
+        <group>
+            <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <doc>Code Generation Attributes</doc>
+            <property name="SDF CodeGenerator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
+                <property name="initialParametersURL" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/kernel/Generator.xml&quot;">
+                </property>
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_editorFactory" class="ptolemy.copernicus.gui.GeneratorTableauAttribute$GeneratorTableauEditorFactory">
+                </property>
+            </property>
+        </group>
+    </configure>
 </entity>

@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MultipleRuns" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
         <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
         </property>
@@ -173,6 +174,8 @@
         <property name="blockSize" class="ptolemy.data.expr.Parameter" value="2000">
         </property>
         <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+            <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+            </property>
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
                 <doc>The sampling frequency, in the same units as the frequency.</doc>
             </property>
@@ -211,6 +214,8 @@
             </property>
         </entity>
         <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
+            <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+            </property>
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
                 <doc>The sampling frequency, in the same units as the frequency.</doc>
             </property>
@@ -265,7 +270,8 @@
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
@@ -275,7 +281,8 @@
 <yRange min="-0.9900000000000001" max="0.9900000000000001"/>
 <default marks="dots"/>
 </plot>?>
-                                    </configure>        </entity>
+            </configure>
+        </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">

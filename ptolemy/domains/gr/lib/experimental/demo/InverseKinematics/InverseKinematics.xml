@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="InverseKinematics" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
         </property>
@@ -59,6 +60,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
         </property>
     </property>
     <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
+        <property name="initialParametersURL" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/kernel/Generator.xml&quot;">
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_editorFactory" class="ptolemy.copernicus.gui.GeneratorTableauAttribute$GeneratorTableauEditorFactory">
+        </property>
         <property name="codeGenerator" class="ptolemy.kernel.util.StringAttribute" value="applet">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="sootDeep" class="ptolemy.kernel.util.StringAttribute" value="deep">
@@ -609,6 +616,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="534.0, 140.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -789,6 +802,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="405.0, 309.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1015,6 +1034,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 75.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -1040,6 +1065,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 135.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1271,6 +1302,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 375.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -1296,6 +1333,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 75.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1566,6 +1609,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 195.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -1591,6 +1640,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 375.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2337,6 +2392,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="534.0, 140.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -2517,6 +2578,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="405.0, 309.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2743,6 +2810,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="141.0, 254.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -2768,6 +2841,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="141.0, 317.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -3003,6 +3082,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="141.0, 254.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -3028,6 +3113,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="141.0, 317.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -3725,6 +3816,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="534.0, 140.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -3905,6 +4002,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="405.0, 309.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -4135,6 +4238,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 75.0">
                     </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                    </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                     </port>
@@ -4160,6 +4269,12 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 255.0">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -4745,6 +4860,8 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>

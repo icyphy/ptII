@@ -3,6 +3,8 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="V2Vcharon" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 255]">
@@ -176,6 +178,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="30.0, 245.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="aMax" class="ptolemy.data.expr.Parameter" value="2.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -190,6 +194,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="30.0, 265.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="vMin" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -206,6 +212,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="30.0, 285.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="vMax" class="ptolemy.data.expr.Parameter" value="30.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -220,6 +228,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="30.0, 305.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="elow1" class="ptolemy.data.expr.Parameter" value="-100.0">
@@ -236,6 +246,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="30.0, 325.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="elow2" class="ptolemy.data.expr.Parameter" value="-2.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -250,6 +262,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="30.0, 345.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="eup1" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -266,6 +280,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="150.0, 245.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="eup2" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -280,6 +296,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="150.0, 265.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="rvlow1" class="ptolemy.data.expr.Parameter" value="-50.0">
@@ -296,6 +314,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="150.0, 285.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="rvlow2" class="ptolemy.data.expr.Parameter" value="-50.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -310,6 +330,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="150.0, 305.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="rvup1" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -326,6 +348,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="150.0, 325.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="rvup2" class="ptolemy.data.expr.Parameter" value="0.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -340,6 +364,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="150.0, 345.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="k11" class="ptolemy.data.expr.Parameter" value="-3.0">
@@ -356,6 +382,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="260.0, 245.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="k12" class="ptolemy.data.expr.Parameter" value="-1.5">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -370,6 +398,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="260.0, 265.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="k21" class="ptolemy.data.expr.Parameter" value="-3.0">
@@ -386,6 +416,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="260.0, 285.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="k22" class="ptolemy.data.expr.Parameter" value="-0.75">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -400,6 +432,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="260.0, 305.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="k31" class="ptolemy.data.expr.Parameter" value="-1.0">
@@ -416,6 +450,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="260.0, 325.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="k32" class="ptolemy.data.expr.Parameter" value="-0.125">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -430,6 +466,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="260.0, 345.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="lambdaP" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -446,6 +484,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="370.0, 245.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="lambdaV" class="ptolemy.data.expr.Parameter" value="1.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -460,6 +500,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="370.0, 265.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <property name="epsE" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -476,6 +518,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="370.0, 285.0">
             </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="vInit" class="ptolemy.data.expr.Parameter" value="25.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -490,6 +534,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="370.0, 305.0">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <port name="dist" class="ptolemy.actor.TypedIOPort">
@@ -1500,6 +1546,8 @@ of following the LeadingPlatoon.</text></svg></configure>
             </port>
         </entity>
         <entity name="TimedSinewave" class="ptolemy.actor.lib.TimedSine">
+            <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+            </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 450]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[92, 102]">

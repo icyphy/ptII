@@ -2,7 +2,10 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="ConnectComponent" extends="ptolemy.domains.fsm.kernel.FSMActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
+    </property>
+    <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
     </property>
     <property name="count" class="ptolemy.data.expr.Parameter" value="3">
     </property>
@@ -102,55 +105,91 @@
     <relation name="conTr1" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="request_isPresent">
         </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = -1; setTimer = 5.0">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 5">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = -1; setTimer = 5.0">
-	</property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 5">
-	</property>
     </relation>
     <relation name="conTr2" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack == -1">
         </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="connected = true; setTimer = -1.0">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="connected = true; setTimer = -1.0">
         </property>
     </relation>
     <relation name="conTr3" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; count == 0">
         </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="error = true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="error = true">
-	</property>
     </relation>
     <relation name="conTr4" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack != -1 &amp;&amp; expired_isPresent &amp;&amp; count == 0">
         </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="error = true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="error = true">
         </property>
     </relation>
     <relation name="conTr5" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(!ack_isPresent || ack != -1) &amp;&amp; expired_isPresent &amp;&amp; count != 0">
         </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = -1; setTimer = 5.0">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count - 1">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = -1; setTimer = 5.0">
-	</property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count - 1">
         </property>
     </relation>
     <link port="Init.outgoingPort" relation="conTr1"/>

@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Networked" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <doc>Multiply a low-frequency sine wave (the signal)
 by a higher frequency one (the carrier).</doc>
     <property name="frequency1" class="ptolemy.data.expr.Parameter" value="PI*0.2">
@@ -56,6 +57,8 @@ is defined remotely.</text>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
     <entity name="Carrier" class="ptolemy.actor.lib.Sinewave">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -166,8 +169,8 @@ http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>

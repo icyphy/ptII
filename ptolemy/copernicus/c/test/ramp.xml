@@ -1,11 +1,42 @@
+<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-	<entity name="fileTest" class="ptolemy.actor.TypedCompositeActor">
+<entity name="fileTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <doc>Sample model for C code generation</doc>
-	<property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
-    <entity name="ramp" class="ptolemy.actor.lib.Ramp"/>
-    <entity name="sink" class="ptolemy.actor.lib.FileWriter"/>
-    <relation name="r" class="ptolemy.actor.TypedIORelation"/>
+    <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </property>
+    <entity name="ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="sink" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ramp.output" relation="r"/>
     <link port="sink.input" relation="r"/>
 </entity>

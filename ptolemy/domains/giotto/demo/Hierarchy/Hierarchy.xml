@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Hierarchy" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
         </property>
@@ -10,9 +11,9 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
             <doc>Number of iterations in an execution.</doc>
         </property>
-        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
         </property>
@@ -77,6 +78,8 @@ source and the upper composite.</text>
         </port>
     </entity>
     <entity name="Upper Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
             <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
             </property>
@@ -84,11 +87,11 @@ source and the upper composite.</text>
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
-            </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+            </property>
+            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
             </property>
         </property>
         <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="3">
@@ -101,6 +104,8 @@ source and the upper composite.</text>
         </property>
     </entity>
     <entity name="Lower Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
             <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
             </property>
@@ -108,11 +113,11 @@ source and the upper composite.</text>
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
-            </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+            </property>
+            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
             </property>
         </property>
         <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="2">
@@ -141,8 +146,8 @@ source and the upper composite.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>

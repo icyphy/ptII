@@ -2,7 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -30,18 +33,18 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="real" class="ptolemy.actor.TypedIOPort">
+        <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="imag" class="ptolemy.actor.TypedIOPort">
+        <port name="y" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <entity name="CartesianToComplex2" class="ptolemy.actor.lib.conversions.CartesianToComplex">
-        <port name="real" class="ptolemy.actor.TypedIOPort">
+        <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="imag" class="ptolemy.actor.TypedIOPort">
+        <port name="y" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -70,10 +73,10 @@
     </relation>
     <link port="Ramp0.output" relation="relation5"/>
     <link port="ComplexToCartesian1.input" relation="relation5"/>
-    <link port="ComplexToCartesian1.real" relation="relation7"/>
-    <link port="ComplexToCartesian1.imag" relation="relation9"/>
-    <link port="CartesianToComplex2.real" relation="relation7"/>
-    <link port="CartesianToComplex2.imag" relation="relation9"/>
+    <link port="ComplexToCartesian1.x" relation="relation7"/>
+    <link port="ComplexToCartesian1.y" relation="relation9"/>
+    <link port="CartesianToComplex2.x" relation="relation7"/>
+    <link port="CartesianToComplex2.y" relation="relation9"/>
     <link port="CartesianToComplex2.output" relation="relation11"/>
     <link port="Test3.input" relation="relation11"/>
 </entity>
