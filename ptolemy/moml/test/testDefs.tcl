@@ -54,3 +54,8 @@ if {![info exist PTII]} {
 if {[string compare test [info procs test]] == 1} then {
     source [file join $PTII util testsuite testDefs.tcl]
 }
+
+if {[string compare removeGraphicalClasses [info procs removeGraphicalClasses]] != 0} \
+        then {
+    source [file join $PTII util testsuite removeGraphicalClasses.tcl]
+} {}

@@ -69,3 +69,8 @@ if {[string compare lcompare [info procs lcompare]] != 0} \
         then {
     source [file join $PTII util testsuite lcompare.tcl]
 } {}
+
+if {[string compare removeGraphicalClasses [info procs removeGraphicalClasses]] != 0} \
+        then {
+    source [file join $PTII util testsuite removeGraphicalClasses.tcl]
+} {}

@@ -64,3 +64,8 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
         then {
     source [file join $PTII util testsuite models.tcl]
 } {}
+
+if {[string compare removeGraphicalClasses [info procs removeGraphicalClasses]] != 0} \
+        then {
+    source [file join $PTII util testsuite removeGraphicalClasses.tcl]
+} {}
