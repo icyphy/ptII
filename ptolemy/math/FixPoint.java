@@ -72,7 +72,7 @@ and conversion to floating point. During construction from floating point
 values, the nearest fixed point representation is created. The preferred
 divide operator provides for explicit specification of the quantization.
 A deprecated divide operator guesses at the result precision.
-Conversion to  floating point is limited by the available floating point
+Conversion to floating point is limited by the available floating point
 accuracy.
 <p>
 The FixPoint implementation uses the Java class BigInteger to represent the
@@ -312,7 +312,9 @@ public class FixPoint implements Cloneable, Serializable {
      *  required behaviour or use Overflow.TRAP and/or Rounding.UNNECESSARY
      *  to throw exceptions if external interaction is required.
      */
-    public Error getError() { return _error; }
+    public Error getError() { 
+        return _error; 
+    }
 
     /** Return a precision to represent this number. This is constructed
      *  from the necessary fraction precusiona and the integer precision
@@ -488,7 +490,7 @@ public class FixPoint implements Cloneable, Serializable {
     ////                       private constructor                 ////
 
     /** Construct a FixPoint from an integerValue that has been shifted to
-     * incorporate fracBits from the logical floating point value.
+     *  incorporate fracBits from the logical floating point value.
      *
      *  @param integerValue The integer value of the scaled floating point
      *    value.
@@ -559,6 +561,7 @@ public class FixPoint implements Cloneable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** The BigInteger comprising the logical floating point value
      *  multiplied by (1 << _frac_bits)
      */
@@ -567,13 +570,12 @@ public class FixPoint implements Cloneable, Serializable {
     /** The number of fraction bits within _value */
     private int _frac_bits;
 
-
-    /** The number of integer bits within _value
-     *  This valiue is maintained to support FixType which relies on a
+    /** The number of integer bits within _value.
+     *  This value is maintained to support FixType which relies on a
      *  value exemplar to define the full type characteristics. It only
-     *  affects this class in so far as newe instnmaces may have a changed
+     *  affects this class in so far as new instances may have a changed
      *  value, but this changed value is of limited utility since it just
-     *  Maintains backward compatibility. It is cerytainly wrong
+     *  maintains backward compatibility. It is certainly wrong
      *  for cases such as the abs of max negative.
      */
     private int _int_bits;
@@ -582,8 +584,8 @@ public class FixPoint implements Cloneable, Serializable {
     ////                         static variables                  ////
 
     /** The size of the pre-computed _twoRaisedTo powers of two array.
-    *   65 entries are used to cache all powers of 2 from 0 to 64.
-    **/
+     *   65 entries are used to cache all powers of 2 from 0 to 64.
+     **/
     private static final int TWORAISEDTOSIZE = 64+1;
 
     /** Calculate the table containing 2^x, with 0 <= x < TWORAISEDTOSIZE.
@@ -625,4 +627,5 @@ public class FixPoint implements Cloneable, Serializable {
         public String getDescription() {
             return " Overflow status is no longer tracked.";
         }
-    }}
+    }
+}

@@ -195,7 +195,6 @@ public class Precision implements Cloneable, Serializable {
      *  @return The maximum value obtainable for this precision.
      */
     public BigDecimal findMaximum() {
-
         // FIXME: Why does this return a BigDecimal instead of a FixPoint?
         // Because it's intended for internal use.
         // It should be package friendly.
@@ -252,15 +251,14 @@ public class Precision implements Cloneable, Serializable {
      *  @return A precision at least as precise as the two arguments.
      */
     public static Precision matchThePoint(Precision precisionA,
-            Precision precisionB)
-        {
-            int bitright   = Math.max(precisionA.getFractionBitLength(),
-                    precisionB.getFractionBitLength());
-            int newIntLength = Math.max(precisionA.getIntegerBitLength(),
-                    precisionB.getIntegerBitLength());
-            int newLength  = newIntLength+bitright;
-            return new Precision(newLength, newIntLength);
-        }
+            Precision precisionB) {
+        int bitright = Math.max(precisionA.getFractionBitLength(),
+                precisionB.getFractionBitLength());
+        int newIntLength = Math.max(precisionA.getIntegerBitLength(),
+                precisionB.getIntegerBitLength());
+        int newLength  = newIntLength+bitright;
+        return new Precision(newLength, newIntLength);
+    }
 
     /** Return a string representing this precision. The string is
      *  expressed as "(<i>m.n</i>)", where <i>m</i>
