@@ -759,7 +759,7 @@ public class Type extends SDFApplet implements ChangeListener {
 	 * Create a new basic controller with default
 	 * node and edge interactors.
 	 */
-	public TypeGraphController () {
+	public TypeGraphController() {
 	    // The interactors attached to nodes and edges
 	    setNodeController(new NodeController(this));
 	    setEdgeController(new EdgeController(this));
@@ -774,7 +774,7 @@ public class Type extends SDFApplet implements ChangeListener {
 	 * the controller does not yet have a reference to its pane
 	 * at that time.
 	 */
-	protected void initializeInteraction () {
+	protected void initializeInteraction() {
 	    GraphPane pane = getGraphPane();
 
 	    // Create and set up the selection dragger
