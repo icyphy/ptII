@@ -38,21 +38,31 @@ import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList
-/**
-Maintain a list of pairwise links between Objects (cross
-references). That is, each member of a set of objects has a list of
-references to other members of the set, and each reference has
-similar list that contains a corresponding back reference. Each
-reference list is an instance of this class. The class is used as if
-it were a simple list of references to objects, but it ensures the
-symmetry of the references, and supports efficient removal of links.
-Removing a reference in one list automatically updates N
-back-references in O(N) time, independent of the
-sizes of the cross-reference lists.
-<p>
-Instances of this class are required to have a container, and the
-container is immutable (it cannot be changed after the instance
-is constructed).
+/** 
+
+CrossRefList is a list that maintains pointers to other CrossRefLists.
+This class is meant to be used to keep track of links between Objects,
+like the arcs between some nodes of a graph, for example.
+CrossRefList is an implementation class that requires an Object to
+contain it.  (This container is immutable in that it cannot be changed
+after the instance is constructed.)  CrossRefList enumerators and
+query methods do not return references to other CrossRefLists;
+instead, references to those CrossRefLists' containers (of type
+Object) are returned.
+<p> 
+For efficiency, CrossRefList maintains a list of pairwise links
+between Objects (CrossRefs). That is, each member of a set of objects
+has a list of references to other members of the set, and each
+reference has a similar list that contains a corresponding back
+reference. Each reference list is an instance of this class. The class
+is used as if it were a simple list of references to objects, but it
+ensures the symmetry of the references, and supports efficient removal
+of links.  Removing a reference in one list automatically updates N
+back-references in O(N) time, independent of the sizes of the
+cross-reference lists.
+<p> 
+CrossRefList implements the Serializable interface but this has not
+been tested.
 
 @author Geroncio Galicia
 @contributor Edward A. Lee
@@ -74,11 +84,12 @@ public final class CrossRefList implements Serializable  {
         _container = container;
     }
 
-    /** Copy constructor.
-     *  Create a new list that duplicates an original list except that it
-     *  has a new container.  This method synchronizes on the original list.
+    /** Create a new CrossRefList that is linked to the same
+     *  CrossRefLists as the original CrossRefList except that this
+     *  new one has a new container.  This method synchronizes on the
+     *  original list.  Note that this is not a true copy constructor.
      *  @param container The container of the object to be constructed.
-     *  @param originalList The model to copy.
+     *  @param originalList The model to copy.  
      *  @exception IllegalActionException If either argument is null.
      */
     public CrossRefList(Object container, CrossRefList originalList)
@@ -91,10 +102,8 @@ public final class CrossRefList implements Serializable  {
         synchronized(originalList) {
             if(originalList.size() == 0) return; // List to copy is empty.
             for(CrossRef p = originalList._headNode; p != null; p = p._next) {
-                if(p._far != null) {
-                    if(p._far._nearList() != null) {
-                        link(p._far._nearList());
-                    }
+                if(p._far._nearList() != null) {
+                    link(p._far._nearList());
                 }
             }
         }
@@ -103,11 +112,8 @@ public final class CrossRefList implements Serializable  {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return the first remote Object referenced by this list, or
-     *  null if the list is empty.  That is, return the
-     *  owner/parent/container of the first member referenced in this
-     *  list (if there is one).  This member is a different
-     *  CrossRefList instance that always has an owner/container.  
+    /** Return the first container referenced by this list, or
+     *  null if the list is empty.  
      *  Time complexity: O(1).  
      *  @return The first entry, or null if there is none.  
      */
@@ -119,19 +125,20 @@ public final class CrossRefList implements Serializable  {
         }
     }
 
-    /** Enumerate the objects referenced by this list.  The
-     *  enumeration returns the object itself and not the CrossRefList
-     *  instance in *this list that the object owns or contains.  Note
-     *  that an object may be enumerated more than once if more than
-     *  one link to it has been established.  
+    /** Enumerate the containers referenced by this list.  The
+     *  enumeration returns the container object itself and not the
+     *  CrossRefList instance in this list that the object owns or
+     *  contains.  Note that an object may be enumerated more than
+     *  once if more than one link to it has been established.
      *  Time complexity: O(1).
      *  @return An enumeration of remote referenced objects.  
      */
-    public synchronized Enumeration getLinks() {
+    public synchronized Enumeration getContainers() {
         return new CrossRefEnumeration();
     }
 
-    /** Return true if the specified object is referenced on this list.
+    /** Return true if the specified container is referenced on this
+     *  list.
      *  Time complexity: O(n).
      *  @param obj An object that might be referenced.
      *  @return A boolean indicating whether the object is referenced.
@@ -146,8 +153,8 @@ public final class CrossRefList implements Serializable  {
         return false;
     }
 
-    /** Register *this as a member of a different CrossRefList (farList).
-     *  This action additionally registers farList as a member of *this.
+    /** Link this list to a different CrossRefList (farList).
+     *  This action additionally creates a back-reference in the far list.
      *  Redundant entries are allowed.
      *  Note that this method does not synchronize on the remote object.
      *  Thus, this method should be called within a write-synchronization of
@@ -166,9 +173,10 @@ public final class CrossRefList implements Serializable  {
 
         ++_listVersion;
         CrossRef localCrossRef = new CrossRef();
-        // NOTE: In jdk 1.2 or higher, the line below could  be
-        // put in and initializer and _far could be made a "blank final."
-        // This would prevent modifications.
+        // NOTE: In jdk 1.2 or higher, the line below could be
+        // put in an initializer and _far could be made a "blank final."
+        // This would prevent modifications to _far, equivalent
+        // to making it a const in C++.
         localCrossRef._far = farList.new CrossRef(localCrossRef);
     }
 
@@ -180,11 +188,11 @@ public final class CrossRefList implements Serializable  {
         return _size;
     }
 
-    /** Delete a link to the specified object.  If there is no such
+    /** Delete a link to the specified container.  If there is no such
      *  link, ignore.  That is, delete the entry in this list that
-     *  points to a different CrossRefList owned/contained by the
+     *  points to a different CrossRefList contained by the
      *  specified object.  That object's CrossRefList list is
-     *  similarly updated to remove *this from its members.
+     *  similarly updated to remove this from its members.
      *  Time complexity: O(n).  
      *  @param obj The object to delete.
      */
@@ -294,13 +302,13 @@ public final class CrossRefList implements Serializable  {
         }
 
         private synchronized void _dissociate() {
-            _unlink(); // Remove *this.
+            _unlink(); // Remove this.
             if(_far != null) _far._unlink(); // Remove far
         }
 
         private synchronized void _unlink() {
             ++_listVersion;
-            // Removes *this from enclosing CrossRefList.
+            // Removes this from enclosing CrossRefList.
             if(_next != null) _next._previous = _previous; // Modify next.
             else _lastNode = _previous;
             if(_previous != null) _previous._next = _next; // Modify previous.
