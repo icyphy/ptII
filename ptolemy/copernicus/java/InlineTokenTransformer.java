@@ -259,11 +259,11 @@ public class InlineTokenTransformer extends SceneTransformer {
                 //       System.out.println("unknown value = " + value);
             }
         } else {
-            System.out.println("more than one definition of = " + local);
+            /* System.out.println("more than one definition of = " + local);
             for(Iterator i = definitionList.iterator();
                 i.hasNext();) {
                 System.out.println(i.next().toString());
-            }
+                }*/
         }
         return null;
     }

@@ -557,6 +557,44 @@ public class SootUtilities {
             throw new RuntimeException("unrecognized constant value = " + object);
         }            
     }
+    
+    /** Create a new instance field with the given name
+     *  and type and add it to the
+     *  given class.  Add statements to the given body to initialize the
+     *  field from the given local.
+     */
+    public static void createAndSetFieldFromLocal(JimpleBody body,
+            Local local, SootClass theClass, Type type,
+            String name) {
+        Chain units = body.getUnits();
+        Local thisLocal = body.getThisLocal();
+
+        Local castLocal;
+        if(local.getType().equals(type)) {
+            castLocal = local;
+        } else {
+            castLocal = Jimple.v().newLocal("local_" + name, type);
+            body.getLocals().add(castLocal);
+            // Cast the local to the type of the field.
+            units.add(Jimple.v().newAssignStmt(castLocal,
+                    Jimple.v().newCastExpr(local, type)));
+        }
+
+        // Create the new field if necessary
+        SootField field;
+        if(theClass.declaresFieldByName(name))  {
+            field = theClass.getFieldByName(name);
+        } else {
+            field = new SootField(name,
+                    type, Modifier.PUBLIC);
+            theClass.addField(field);
+        }
+
+        // Set the field.
+        units.add(Jimple.v().newAssignStmt(
+                Jimple.v().newInstanceFieldRef(thisLocal, field),
+                castLocal));
+    }
 
     /** Create statements that correspond to a for loop and return them.
      *  The returned list will incorporate the statements in the
@@ -1016,7 +1054,41 @@ public class SootUtilities {
             }
         }    
     }
-        
+      
+    /** Make the given field a static field.
+     *  Loop through all the methods of the given class and replace
+     *  instance references to the given field with static references.
+     *  Note that in general, this is not a safe thing to do unless there is
+     *  guaraunteed to be exactly one instance of the class that defines the 
+     *  given field.
+     */
+    public static void makeFieldStatic(SootClass theClass, SootField field) {
+        field.setModifiers(field.getModifiers() | Modifier.STATIC);
+        for(Iterator methods = theClass.getMethods().snapshotIterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            // ignore static methods?
+            if(method.isStatic()) {
+                continue;
+            }
+            
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            for(Iterator useBoxes = body.getUseAndDefBoxes().iterator();
+                useBoxes.hasNext();) {
+                ValueBox box = (ValueBox)useBoxes.next();
+                if(box.getValue() instanceof InstanceFieldRef) {
+                    InstanceFieldRef expr = 
+                        (InstanceFieldRef) box.getValue();
+                    if(expr.getField() == field) {
+                        System.out.println("fixing field = " + expr);
+                        box.setValue(Jimple.v().newStaticFieldRef(
+                                expr.getField()));
+                    }
+                }
+            }
+        }
+    }
+
     /** Reflect the given method on the class of the given object.  
      * Invoke the method and return the returned value as a constant.
      * If the returned value cannot be represented as a constant, then 

@@ -42,6 +42,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 // FIXME: bad dependencies.
 import ptolemy.copernicus.java.EntitySootClass;
+import ptolemy.copernicus.java.ModelTransformer;
 
 import soot.util.Chain;
 
@@ -170,35 +171,17 @@ public class ActorTransformer extends SceneTransformer {
                         Modifier.PUBLIC);
             Scene.v().addClass(entityInstanceClass);
             entityInstanceClass.setApplicationClass();
-            
+
             // populate the method to initialize this instance.
+            // We need to put something here before folding so that
+            // the folder can deal with it.
             SootMethod initMethod = entityInstanceClass.getInitMethod();
             JimpleBody body = Jimple.v().newBody(initMethod);
-            // Add this and read the parameters into locals
-            body.insertIdentityStmts();
             initMethod.setActiveBody(body);
-            Chain units = body.getUnits();
-            Local thisLocal = body.getThisLocal();
-            
-            // insert code to initialize the settable
-            // parameters of this instance
-            // FIXME don't assume that the parameter has already been
-            // created.
-            _initializeParameters(body, 
-                    entity, entity, thisLocal);
-            
             // return void
-            units.add(Jimple.v().newReturnVoidStmt());
-            
-        }
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());
 
-
-        // Take the classes we just created and fold them with their
-        // superclasses until we get to TypedAtomicActor or TypedCompositeActor
-        for(Iterator classes =
-                Scene.v().getApplicationClasses().snapshotIterator();
-            classes.hasNext();) {
-            SootClass theClass = (SootClass)classes.next();
+            SootClass theClass = (SootClass)entityInstanceClass;
             SootClass superClass = theClass.getSuperclass();
             while(superClass != objectClass &&
                     superClass != actorClass &&
@@ -207,6 +190,27 @@ public class ActorTransformer extends SceneTransformer {
                 SootUtilities.foldClass(theClass);
                 superClass = theClass.getSuperclass();
             }
+
+            // replace the previous dummy body with a new one.
+            body = Jimple.v().newBody(initMethod);
+            initMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+            
+            // insert code to initialize the settable
+            // parameters of this instance
+            // FIXME don't assume that the parameter has already been
+            // created.
+            // create fields for attributes.
+            //ModelTransformer.createFieldsForAttributes(body, entity, thisLocal, 
+            //        entity, entityInstanceClass);
+            _initializeParameters(body, 
+                    entity, entity, thisLocal);
+            
+            // return void
+            units.add(Jimple.v().newReturnVoidStmt());
+            
         }
     }
 

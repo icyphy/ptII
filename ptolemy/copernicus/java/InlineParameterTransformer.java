@@ -103,6 +103,13 @@ public class InlineParameterTransformer extends SceneTransformer {
         SootMethod setTokenMethod = 
             parameterClass.getMethod("void setToken(ptolemy.data.Token)");
 
+        Map attributeToValueFieldMap = new HashMap();
+
+        // For every variable and settable attribute in the model, create a
+        // field that has the value of that attributes.
+        _createTokenAndExpressionFields(Scene.v().getMainClass(), _model, _model,
+                attributeToValueFieldMap);
+
         // Loop over all the actor instance classes.
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
@@ -111,46 +118,14 @@ public class InlineParameterTransformer extends SceneTransformer {
                 + "." + entity.getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
             
-            // Create a field for every settable attribute,
-            // in case we haven't been
-            // following coding convention.
-            // now initialize each settable.
-            for(Iterator attributes =
-                    entity.attributeList(Settable.class).iterator();
-                attributes.hasNext();) {
-                Attribute attribute = (Attribute)attributes.next();
-                if(attribute instanceof ptolemy.moml.Location) {
-                    // ignore locations.
-                    // FIXME: this is a bit of a hack.
-                    continue;
-                }
-                Settable settable = (Settable)attribute;
-                
-                if(!entityClass.declaresFieldByName(attribute.getName())) {
-                    // Create the new field
-                    SootField field = new SootField(attribute.getName(), 
-                            settableType, Modifier.PUBLIC);
-                    entityClass.addField(field);
-                }
-                
-                // Create a field to contain the value of the attribute.
-                if(settable instanceof Variable) {
-                    SootField field = new SootField("_CGToken_" + attribute.getName(), 
-                            tokenType, Modifier.PUBLIC | Modifier.FINAL);
-                    entityClass.addField(field);
-                    try {
-                        field.addTag(new ValueTag(((Variable)settable).getToken()));
-                    } catch (Exception ex) {
-                    }
-                } else {
-                    SootField field = new SootField("_CGExpression_" + attribute.getName(), 
-                            stringType, Modifier.PUBLIC | Modifier.FINAL);
-                    entityClass.addField(field);
-                    field.addTag(new ValueTag(settable.getExpression()));
-                }
-            }
+            _createTokenAndExpressionFields(entityClass, entity, entity,
+                    attributeToValueFieldMap);
+        }
 
-            // replace calls to getAttribute with field references.
+        for(Iterator i = Scene.v().getApplicationClasses().iterator();
+            i.hasNext();) {
+            SootClass entityClass = (SootClass)i.next();
+            
             // inline calls to parameter.getToken and getExpression
             for(Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
@@ -197,7 +172,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                             //      System.out.println("invoking = " + r.getMethod());
                           
                                                         
-                            if(r.getMethod().equals(getAttributeMethod)) {
+                            if(false) {//r.getMethod().equals(getAttributeMethod)) {
                                 // inline calls to getAttribute(arg) when arg is a string
                                 // that can be statically evaluated.
                                 Value nameValue = r.getArg(0);
@@ -207,9 +182,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                         (StringConstant)
                                         Evaluator.getConstantValueOf(nameValue);
                                     String name = nameConstant.value;
-                                    box.setValue(Jimple.v().newInstanceFieldRef(
-                                            r.getBase(),
-                                            entityClass.getFieldByName(name)));
+                                    box.setValue(Jimple.v().newStaticFieldRef(
+                                            _findAttributeField(entityClass, 
+                                                    name)));
                                 }
                             } else if(r.getBase().getType() instanceof RefType) {
                                 RefType type = (RefType)r.getBase().getType();
@@ -234,9 +209,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // if we are invoking a method on a variable class, then
                                     // attempt to get the constant value of the variable.
                                     Attribute attribute =
-                                        getAttributeValue(entity, (Local)r.getBase(), unit, localDefs);
-                                                                      
-                                    // If the base is not constant, then obviously there is nothing we can do.
+                                        getAttributeValue((Local)r.getBase(), unit, localDefs);
+                                  
+                                    // If the base is not constant, then obviously there is nothing we can do
                                     if(attribute == null) {
                                         continue;
                                     }
@@ -251,29 +226,27 @@ public class InlineParameterTransformer extends SceneTransformer {
                                         // Deal with tricky methods separately.
                                         if(r.getMethod().getName().equals("getToken")) {
                                             // replace the method call with a field ref.
-                                            box.setValue(Jimple.v().newInstanceFieldRef(thisLocal,
-                                                    entityClass.getFieldByName("_CGToken_" + 
-                                                            attribute.getName())));
+                                            box.setValue(Jimple.v().newStaticFieldRef(
+                                                    (SootField)attributeToValueFieldMap.get(attribute)));
                                         } else if(r.getMethod().getName().equals("setToken")) {
                                             // Call attribute changed AFTER we set the token.
                                             PtolemyUtilities.callAttributeChanged(
                                                     (Local)r.getBase(), body, 
                                                     body.getUnits().getSuccOf(unit));
                                             
-                                            // replace the entire statement (which must be an invokeStmt anyway)
+                                            // replace the entire statement
+                                            // (which must be an invokeStmt anyway)
                                             // with an assignment to the field of the first argument.
                                             body.getUnits().swapWith(unit, 
                                                     Jimple.v().newAssignStmt(
-                                                            Jimple.v().newInstanceFieldRef(thisLocal,
-                                                                    entityClass.getFieldByName("_CGToken_" + 
-                                                                            attribute.getName())),
-                                                            r.getArg(0)));
+                                                            Jimple.v().newStaticFieldRef((SootField)
+                                                                    attributeToValueFieldMap.get(attribute)),
+                                                                    r.getArg(0)));
                                         } else if(r.getMethod().getName().equals("getExpression")) {
                                             // First get the token out of the field, and then insert a call
                                             // to its toString method to get the expression.
                                             SootField tokenField = 
-                                                entityClass.getFieldByName("_CGToken_" + 
-                                                        attribute.getName());
+                                                (SootField)attributeToValueFieldMap.get(attribute);
                                             String localName = "_CGTokenLocal" + localCount++;
                                             Local tokenLocal = Jimple.v().newLocal(localName,
                                                         tokenField.getType());
@@ -281,8 +254,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                             
                                             body.getUnits().insertBefore(
                                                     Jimple.v().newAssignStmt(tokenLocal,
-                                                            Jimple.v().newInstanceFieldRef(thisLocal,
-                                                                   tokenField)),
+                                                            Jimple.v().newStaticFieldRef(tokenField)),
                                                     unit);
                                             box.setValue(Jimple.v().newVirtualInvokeExpr(tokenLocal, 
                                                     toStringMethod));
@@ -294,7 +266,8 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                     body.getUnits().getSuccOf(unit));
                                             
                                             Token token;
-                                            // First create a token with the given expression and then set the
+                                            // First create a token with the given
+                                            // expression and then set the
                                             // token to that value.
                                             try {
                                                 // FIXME: This is rather tricky..
@@ -303,14 +276,13 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                 temp.setTypeEquals(((Variable)attribute).getType());
                                                 temp.setExpression(((StringConstant)argValues[0]).value);
                                                 token = temp.getToken();
-                                        } catch (Exception ex) {
+                                            } catch (Exception ex) {
                                                 throw new RuntimeException("Illegal parameter value = " 
                                                         + argValues[0]);
                                             }
                                             // Create code to instantiate the token
                                             SootField tokenField = 
-                                                entityClass.getFieldByName("_CGToken_" + 
-                                                        attribute.getName());
+                                                (SootField)attributeToValueFieldMap.get(attribute);
                                             String localName = "_CGTokenLocal" + localCount++;
                                             Local tokenLocal = 
                                                 PtolemyUtilities.buildConstantTokenLocal(
@@ -318,7 +290,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                                                          
                                             body.getUnits().swapWith(unit, 
                                                     Jimple.v().newAssignStmt(
-                                                            Jimple.v().newInstanceFieldRef(thisLocal,
+                                                            Jimple.v().newStaticFieldRef(
                                                                     tokenField), tokenLocal));
                                         } 
                                     } else {
@@ -328,9 +300,8 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                     (Local)r.getBase(), body, 
                                                     body.getUnits().getSuccOf(unit));
                                             
-                                            box.setValue(Jimple.v().newInstanceFieldRef(thisLocal,
-                                                    entityClass.getFieldByName("_CGExpression_" + 
-                                                            attribute.getName())));
+                                            box.setValue(Jimple.v().newStaticFieldRef(
+                                                    (SootField)attributeToValueFieldMap.get(attribute)));
                                         } else if(r.getMethod().equals(setExpressionMethod)) {
                                             // Call attribute changed AFTER we set the token.
                                             PtolemyUtilities.callAttributeChanged(
@@ -340,10 +311,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                             // with an assignment to the field of the first argument.
                                             body.getUnits().swapWith(unit, 
                                                     Jimple.v().newAssignStmt(
-                                                            Jimple.v().newInstanceFieldRef(thisLocal,
-                                                                entityClass.getFieldByName("_CGExpression_" + 
-                                                                        attribute.getName())),
-                                                            r.getArg(0)));
+                                                            Jimple.v().newStaticFieldRef((SootField)
+                                                                    attributeToValueFieldMap.get(attribute)),
+                                                                    r.getArg(0)));
                                         }
                                     }
                                    
@@ -375,16 +345,23 @@ public class InlineParameterTransformer extends SceneTransformer {
      *  try to symbolically evaluate the value of the variable. If the value can be determined, 
      *  then return it, otherwise return null.
      */ 
-    public static Attribute getAttributeValue(Entity entity, Local local, Unit location, LocalDefs localDefs) {
+    public static Attribute getAttributeValue(Local local, 
+            Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                return getAttributeValue(entity, (Local)((CastExpr)value).getOp(), stmt, localDefs);
+                return getAttributeValue( 
+                        (Local)((CastExpr)value).getOp(), stmt, localDefs);
             } else if(value instanceof FieldRef) {
-                String name = ((FieldRef)value).getField().getName();
-                return (Variable)entity.getAttribute(name);
+                SootField field = ((FieldRef)value).getField();
+                ValueTag tag = (ValueTag)field.getTag("_CGValue");
+                if(tag == null) {
+                    return null;
+                } else {
+                    return (Attribute)tag.getObject();
+                }
             } else {
                 System.out.println("unknown value = " + value);
             }
@@ -396,6 +373,59 @@ public class InlineParameterTransformer extends SceneTransformer {
             }
         }
         return null;
+    }
+    
+    // Create a static field in the given class for each attribute in the given container 
+    // that is a variable or settable.  If the attribute is a variable, then the field will have
+    // type Token, and if only a settable, then the field will have type String.
+    // In addition, add a tag to the field that contains the value of the token or expression
+    // that that field contains.
+    private static void _createTokenAndExpressionFields(SootClass theClass,
+            NamedObj context, NamedObj container, Map attributeToValueFieldMap) {
+        SootClass tokenClass = 
+            Scene.v().loadClassAndSupport("ptolemy.data.Token");
+        Type tokenType = RefType.v(tokenClass);
+        SootClass stringClass =
+            Scene.v().loadClassAndSupport("java.lang.String");
+        Type stringType = RefType.v(stringClass);
+        for(Iterator attributes =
+                container.attributeList().iterator();
+            attributes.hasNext();) {
+            Attribute attribute = (Attribute)attributes.next();
+            if(attribute instanceof Settable) {
+                Settable settable = (Settable)attribute;
+
+                String fieldName = SootUtilities.sanitizeName(attribute.getName(context));
+                SootField field;
+                // Create a field to contain the value of the attribute.
+                if(settable instanceof Variable) {
+                    field = new SootField(
+                            fieldName + "_CGToken",
+                            tokenType, 
+                            Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
+                    theClass.addField(field);
+                    try {
+                        field.addTag(new ValueTag(
+                                ((Variable)settable).getToken()));
+                    } catch (Exception ex) {
+                    }
+                } else {
+                    field = new SootField(
+                            fieldName + "_CGExpression",
+                            stringType,
+                            Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
+                    theClass.addField(field);
+                    String expression = settable.getExpression();
+                    field.addTag(new ValueTag(expression));
+                }
+                attributeToValueFieldMap.put(attribute, field);
+            }
+            _createTokenAndExpressionFields(theClass, context, attribute, attributeToValueFieldMap);
+        }
+    }
+
+    public SootField _findAttributeField(SootClass entityClass, String name) {
+        return entityClass.getFieldByName(name);
     }
 
     private CompositeActor _model;

@@ -275,6 +275,56 @@ public class PtolemyUtilities {
         body.getUnits().insertBefore(stmt, insertPoint);
     }
 
+    /** In the given body, create a new local with the given name.
+     *  The local will refer to an object of type className.
+     *  Add instructions to the end of the chain of the body
+     *  to create and initialize a new
+     *  named object with the given container and name.  Assign the value
+     *  of the local to the created instance.
+     *  @return The local that was created.
+     */
+    public static Local createNamedObjAndLocal(Body body, String className,
+            Local container, String name) {
+        Chain units = body.getUnits();
+        SootClass objectClass;
+        if(Scene.v().containsClass(className)) {
+            objectClass = Scene.v().getSootClass(className);
+        } else {
+            objectClass = Scene.v().loadClassAndSupport(className);
+        }
+
+        RefType objectType = RefType.v(objectClass);
+
+        // Create the new local with the given name.
+        Local local = Jimple.v().newLocal(name, objectType);
+
+        // Add the local to the body.
+        body.getLocals().add(local);
+
+        // Create the new local with the given name.
+        Local attributeLocal = Jimple.v().newLocal(name, attributeType);
+
+        // Add the local to the body.
+        body.getLocals().add(attributeLocal);
+
+        // Create the object.
+        units.add(Jimple.v().newAssignStmt(local,
+                Jimple.v().newNewExpr(objectType)));
+
+        // The constructor arguments.
+        List args = new LinkedList();
+        args.add(container);
+        args.add(StringConstant.v(name));
+
+        // Call the constructor on the object.
+        SootMethod constructor =
+            SootUtilities.getMatchingMethod(objectClass, "<init>", args);
+        units.add(Jimple.v().newInvokeStmt(
+                Jimple.v().newSpecialInvokeExpr(local,
+                        constructor, args)));
+        return local;
+    }
+
     /** Inline the given invocation expression, given knowledge that the
      *  method was invoked on the given named object.  In general, 
      *  methods that return information that can be determined from the
@@ -351,5 +401,71 @@ public class PtolemyUtilities {
             //body.getUnits().swapWith(unit, 
             //        Jimple.v().newThrowStmt(exceptionLocal));
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Soot class representing the ptolemy.actor.TypedAtomicActor class.
+    public static SootClass actorClass;
+
+    // Soot Type representing the ptolemy.actor.TypedAtomicActor class.
+    public static Type actorType;
+
+    // Soot Type representing the ptolemy.kernel.util.Settable class.
+    public static Type attributeType;
+
+    // Soot class representing the ptolemy.actor.TypedCompositeActor class.
+    public static SootClass compositeActorClass;
+
+    // SootMethod representing
+    // ptolemy.kernel.util.Attribute.getAttribute();
+    public static SootMethod getAttributeMethod;
+
+    // SootMethod representing ptolemy.kernel.ComponentPort.insertLink().
+    public static SootMethod insertLinkMethod;
+
+    // SootClass representing ptolemy.kernel.util.NamedObj.
+    public static SootClass namedObjClass;
+
+    // Soot Type representing the ptolemy.kernel.ComponentPort class.
+    public static Type portType;
+
+    // SootMethod representing ptolemy.kernel.util.Settable.setExpression().
+    public static SootMethod setExpressionMethod;
+
+    // Soot Type representing the ptolemy.kernel.util.Settable class.
+    public static Type settableType;
+
+    static {
+        //SootClass objectClass =
+        //    Scene.v().loadClassAndSupport("java.lang.Object");
+        namedObjClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
+        getAttributeMethod = namedObjClass.getMethod(
+                "ptolemy.kernel.util.Attribute "
+                + "getAttribute(java.lang.String)");
+        SootClass attributeClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
+        attributeType = RefType.v(attributeClass);
+
+        SootClass settableClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
+        settableType = RefType.v(settableClass);
+        setExpressionMethod =
+            settableClass.getMethodByName("setExpression");
+
+        actorClass =
+            Scene.v().loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
+        actorType = RefType.v(actorClass);
+
+        compositeActorClass =
+            Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
+    
+        SootClass portClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.ComponentPort");
+        portType = RefType.v(portClass);
+        insertLinkMethod = SootUtilities.searchForMethodByName(portClass,
+                "insertLink");
     }
 }

@@ -45,6 +45,8 @@ DIRS =
 # Keep this list alphabetized.
 JSRCS = \
 	ActorTransformer.java \
+	ImprovedConstantPropagatorAndFolder.java \
+	ImprovedDeadAssignmentEliminator.java \
 	KernelMain.java \
 	SootUtilities.java \
 	TransformerAdapter.java

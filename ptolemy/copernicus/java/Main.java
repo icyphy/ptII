@@ -32,6 +32,7 @@ package ptolemy.copernicus.java;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
+import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -91,19 +92,20 @@ public class Main extends KernelMain {
                 CommandLineTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
                 InlineDirectorTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ffat",
+                FieldsForAttributesTransformer.v(_toplevel)));
+       
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ipt",
                 InlineParameterTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
                 InlineTokenTransformer.v(_toplevel)));
-        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.fot",
+        // Scene.v().getPack("wjtp").add(new Transform("wjtp.fot",
         //        FieldOptimizationTransformer.v(_toplevel)));
-        //        Scene.v().getPack("wjtp").add(new Transform("wjtp.clu",
-        //      new TransformerAdapter(ConstantLoopUnroller.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iportt",
                 InlinePortTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
                 InlineTokenTransformer.v(_toplevel)));
-
+       
         //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
@@ -120,7 +122,10 @@ public class Main extends KernelMain {
         Scene.v().getPack("jtp").add(new Transform("jtp.cp",
                 CopyPropagator.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
-                DeadAssignmentEliminator.v()));
+                ImprovedDeadAssignmentEliminator.v()));
+        //  Scene.v().getPack("jtp").add(new Transform("wjtp.clu",
+        //        ConstantLoopUnroller.v()));
+
     }
 
     /** Read in a MoML model, generate java files

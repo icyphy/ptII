@@ -323,71 +323,6 @@ public class InlinePortTransformer extends SceneTransformer {
                                         
                                         // replace the method invocation.
                                         box.setValue(constant);
-                                    } else if(false) {
-                                        // If not constant valued, then use the argument
-                                        // as an index into the array of port channels.
-                                        SootField indexArrayField = 
-                                            entityClass.getFieldByName("_index_" + port.getName());
-                                        SootField arrayField = 
-                                            entityClass.getFieldByName("_portbuffer_" + port.getName());
-                                        // Load the array of indexes.
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(indexArrayLocal,
-                                                        Jimple.v().newInstanceFieldRef(
-                                                                body.getThisLocal(),
-                                                                indexArrayField)), 
-                                                unit);
-                                        // Load the correct index.
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(indexLocal,
-                                                        Jimple.v().newArrayRef(indexArrayLocal, r.getArg(0))),
-                                                unit);
-                                        // Load the array of port channels.
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(bufferArrayLocal,
-                                                        Jimple.v().newInstanceFieldRef(
-                                                                body.getThisLocal(),
-                                                                arrayField)),
-                                                unit);
-                                        // Load the buffer array.
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(bufferLocal,
-                                                        Jimple.v().newArrayRef(bufferArrayLocal, r.getArg(0))),
-                                                unit);
-                                        
-                                        // store back.
-                                        body.getUnits().insertAfter(
-                                                Jimple.v().newAssignStmt(
-                                                        Jimple.v().newArrayRef(indexArrayLocal, r.getArg(0)),
-                                                        indexLocal),
-                                                unit);
-                                        // wrap around.
-                                        body.getUnits().insertAfter(
-                                                Jimple.v().newAssignStmt(indexLocal,
-                                                        Jimple.v().newRemExpr(indexLocal,
-                                                                bufferSizeLocal)),
-                                                unit);
-                                        // get the length of the buffer
-                                        body.getUnits().insertAfter(
-                                                Jimple.v().newAssignStmt(
-                                                        bufferSizeLocal,
-                                                        Jimple.v().newLengthExpr(bufferLocal)),
-                                                unit);
-                                        
-                                        // increment the position.
-                                        body.getUnits().insertAfter(
-                                                Jimple.v().newAssignStmt(indexLocal,
-                                                        Jimple.v().newAddExpr(indexLocal,
-                                                                IntConstant.v(1))),
-                                                unit);
-                                        
-                                        // Replace the put() with an array write.
-                                        body.getUnits().swapWith(unit,
-                                                Jimple.v().newAssignStmt(
-                                                        Jimple.v().newArrayRef(bufferLocal, 
-                                                                indexLocal), r.getArg(1)));
-                                        
-                                        
                                     } else if(r.getMethod().getName().equals("get")) {
                                         // Could be get that takes a channel and returns a token,
                                         // or get that takes a channel and a count and returns
@@ -486,39 +421,17 @@ public class InlinePortTransformer extends SceneTransformer {
                                         }
                                         // If we are calling with just a channel, then read the value.
                                         if(r.getArgCount() == 1) {
-                                            // Now update the index into the buffer.
-                                            // Note that this is in reverse order from the order they end up in.
-                                            // store back.
-                                            body.getUnits().insertAfter(
-                                                    Jimple.v().newAssignStmt(
-                                                            Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                    channelValue),
-                                                            indexLocal),
+                                            body.getUnits().insertAfter(createIndexUpdateInstructions( 
+                                                    indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
                                                     unit);
-                                            
-                                            // wrap around.
-                                            body.getUnits().insertAfter(
-                                                    Jimple.v().newAssignStmt(
-                                                            indexLocal,
-                                                            Jimple.v().newRemExpr(
-                                                                    indexLocal,
-                                                                    bufferSizeValue)),
-                                                    unit);
-                                            
-                                            // increment the position.
-                                            body.getUnits().insertAfter(
-                                                    Jimple.v().newAssignStmt(
-                                                            indexLocal,
-                                                            Jimple.v().newAddExpr(
-                                                                    indexLocal,
-                                                                    IntConstant.v(1))),
-                                                    unit);
-                                            
+                                           
                                             // We may be calling get without setting the return value to anything.
                                             if(unit instanceof DefinitionStmt) {
                                                 // Replace the get() with an array read.
                                                 box.setValue(Jimple.v().newArrayRef(bufferLocal,
                                                         indexLocal));
+                                            } else {
+                                                body.getUnits().remove(unit);
                                             }
                                         } else {
                                             // We must return an array of tokens.
@@ -530,6 +443,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                                                     tokenType, r.getArg(1))),
                                                     unit);
                                             // If the count is specified statically
+                                            // FIXME: constant loop unroller should take care of this.
                                             if(constantArgCount > 1) {
                                                 int argCount = ((IntConstant)argValues[0]).value;
                                                 for(int k = 0; k < argCount; k++) {
@@ -547,31 +461,13 @@ public class InlinePortTransformer extends SceneTransformer {
                                                                             IntConstant.v(k)),
                                                                     returnLocal),
                                                             unit);
-                                                    // increment the position.
+                                                    // increment the position in the buffer.
                                                     body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    indexLocal,
-                                                                    Jimple.v().newAddExpr(
-                                                                            indexLocal,
-                                                                            IntConstant.v(1))),
+                                                            createIndexUpdateInstructions( 
+                                                                    indexLocal, indexArrayLocal, 
+                                                                    channelValue, bufferSizeValue),
                                                             unit);
-                                                    // wrap around.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    indexLocal,
-                                                                    Jimple.v().newRemExpr(
-                                                                            indexLocal,
-                                                                            bufferSizeValue)),
-                                                            unit);
-                                                    
                                                 }
-                                                // store back.
-                                                body.getUnits().insertBefore(
-                                                        Jimple.v().newAssignStmt(
-                                                                Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                        channelValue),
-                                                                indexLocal),
-                                                        unit);
                                                 // Replace the get() call.
                                                 box.setValue(returnArrayLocal);
                                             } else {
@@ -748,32 +644,11 @@ public class InlinePortTransformer extends SceneTransformer {
                                         }
                                         // If we are calling with just a channel, then read the value.
                                         if(r.getArgCount() == 2) {
-                                            // Now update the index into the buffer.
-                                            // Note that this is in reverse order from the order they end up in.
-                                            // store back.
+                                            // increment the position in the buffer.
                                             body.getUnits().insertAfter(
-                                                    Jimple.v().newAssignStmt(
-                                                            Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                    channelValue),
-                                                            indexLocal),
-                                                    unit);
-                                            
-                                            // wrap around.
-                                            body.getUnits().insertAfter(
-                                                    Jimple.v().newAssignStmt(
-                                                            indexLocal,
-                                                            Jimple.v().newRemExpr(
-                                                                    indexLocal,
-                                                                    bufferSizeValue)),
-                                                    unit);
-                                            
-                                            // increment the position.
-                                            body.getUnits().insertAfter(
-                                                    Jimple.v().newAssignStmt(
-                                                            indexLocal,
-                                                            Jimple.v().newAddExpr(
-                                                                    indexLocal,
-                                                                    IntConstant.v(1))),
+                                                    createIndexUpdateInstructions( 
+                                                            indexLocal, indexArrayLocal, 
+                                                            channelValue, bufferSizeValue),
                                                     unit);
                                             // Replace the put() with an array write.
                                             body.getUnits().swapWith(unit,
@@ -806,31 +681,13 @@ public class InlinePortTransformer extends SceneTransformer {
                                                                             indexLocal),
                                                                     returnLocal),
                                                             unit);
-                                                    // increment the position.
+                                                    // increment the position in the buffer.
                                                     body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    indexLocal,
-                                                                    Jimple.v().newAddExpr(
-                                                                            indexLocal,
-                                                                            IntConstant.v(1))),
+                                                            createIndexUpdateInstructions( 
+                                                                    indexLocal, indexArrayLocal, 
+                                                                    channelValue, bufferSizeValue),
                                                             unit);
-                                                    // wrap around.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    indexLocal,
-                                                                    Jimple.v().newRemExpr(
-                                                                            indexLocal,
-                                                                            bufferSizeValue)),
-                                                            unit);
-                                                    
                                                 }
-                                                // store back the index.
-                                                body.getUnits().insertBefore(
-                                                        Jimple.v().newAssignStmt(
-                                                                Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                        channelValue),
-                                                                indexLocal),
-                                                        unit);
                                                 // blow away the send.
                                                 body.getUnits().remove(unit);
                                             } else {
@@ -978,29 +835,12 @@ public class InlinePortTransformer extends SceneTransformer {
                                                                         Jimple.v().newArrayRef(bufferLocal, 
                                                                                 indexLocal), r.getArg(0)),
                                                                 unit); 
-                                                        // Increment the position.
+                                                        // increment the position in the buffer.
                                                         body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(
-                                                                        indexLocal,
-                                                                        Jimple.v().newAddExpr(
-                                                                                indexLocal,
-                                                                                IntConstant.v(1))),
+                                                                createIndexUpdateInstructions( 
+                                                                        indexLocal, indexArrayLocal, 
+                                                                        channelValue, bufferSizeValue),
                                                                 unit);
-                                                        // wrap around.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(
-                                                                        indexLocal,
-                                                                        Jimple.v().newRemExpr(
-                                                                                indexLocal,
-                                                                                bufferSizeValue)),
-                                                                unit);
-                                                        // store back.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(
-                                                                        Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                                channelValue),
-                                                                        indexLocal),
-                                                                unit); 
                                                         // blow away the send.
                                                         body.getUnits().remove(unit);
                                                     } else {
@@ -1030,42 +870,24 @@ public class InlinePortTransformer extends SceneTransformer {
                                                                                         indexLocal),
                                                                                 returnLocal),
                                                                         unit);
-                                                                // increment the position.
+                                                                // increment the position in the buffer.
                                                                 body.getUnits().insertBefore(
-                                                                        Jimple.v().newAssignStmt(
-                                                                                indexLocal,
-                                                                                    Jimple.v().newAddExpr(
-                                                                                            indexLocal,
-                                                                                            IntConstant.v(1))),
-                                                                            unit);
-                                                                    // wrap around.
-                                                                    body.getUnits().insertBefore(
-                                                                            Jimple.v().newAssignStmt(
-                                                                                    indexLocal,
-                                                                                    Jimple.v().newRemExpr(
-                                                                                            indexLocal,
-                                                                                            bufferSizeValue)),
-                                                                            unit);
-                                                                    
-                                                                }
-                                                                // store back the index.
-                                                                body.getUnits().insertBefore(
-                                                                        Jimple.v().newAssignStmt(
-                                                                                Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                                        channelValue),
-                                                                                indexLocal),
+                                                                        createIndexUpdateInstructions( 
+                                                                                indexLocal, indexArrayLocal, 
+                                                                                channelValue, bufferSizeValue),
                                                                         unit);
-                                                                // blow away the send.
-                                                                body.getUnits().remove(unit);
-                                                            } else {
-                                                                // we don't know the size beforehand,
-                                                                // so build a loop into the code.
-                                                                // The loop counter
-                                                                Local counterLocal = 
-                                                                    Jimple.v().newLocal("counter", 
-                                                                            IntType.v());
-                                                                body.getLocals().add(counterLocal);
-                                                                
+                                                            }
+                                                            // blow away the send.
+                                                            body.getUnits().remove(unit);
+                                                        } else {
+                                                            // we don't know the size beforehand,
+                                                            // so build a loop into the code.
+                                                            // The loop counter
+                                                            Local counterLocal = 
+                                                                Jimple.v().newLocal("counter", 
+                                                                        IntType.v());
+                                                            body.getLocals().add(counterLocal);
+                                                            
                                                                 // The list of initializer instructions.
                                                                 List initializerList = new LinkedList();
                                                                 initializerList.add(
@@ -1173,6 +995,37 @@ public class InlinePortTransformer extends SceneTransformer {
             }
         }
         return null;
+    }
+
+    public List createIndexUpdateInstructions(
+            Local indexLocal, Local indexArrayLocal, Value channelValue, 
+            Value bufferSizeValue) {
+        // Now update the index into the buffer.
+        List list = new LinkedList();
+        // No update is necessary if the index is one.
+        if(bufferSizeValue.equals(IntConstant.v(1)))
+            return list;
+
+        // increment the position.
+        list.add(Jimple.v().newAssignStmt(
+                        indexLocal,
+                        Jimple.v().newAddExpr(
+                                indexLocal,
+                                IntConstant.v(1))));
+        
+        // wrap around.
+        list.add(Jimple.v().newAssignStmt(
+                        indexLocal,
+                        Jimple.v().newRemExpr(
+                                indexLocal,
+                                bufferSizeValue)));
+                                                
+        // store back.
+        list.add(Jimple.v().newAssignStmt(
+                        Jimple.v().newArrayRef(indexArrayLocal, 
+                                channelValue),
+                        indexLocal));
+        return list;
     }
 
     private CompositeActor _model;
