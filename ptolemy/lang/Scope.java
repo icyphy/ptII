@@ -210,12 +210,12 @@ public class Scope {
      *  look in the parent scopes.
      */
     public Decl lookup(String name, int mask, boolean[] more, boolean local) {
-        ScopeIterator itr = lookupFirst(name, mask, local);
+        ScopeIterator Iterator = lookupFirst(name, mask, local);
 
-        if (itr.hasNext()) {
-            Decl retval = (Decl) itr.next();
-            more[0] = itr.hasNext();
-            return retval;
+        if (Iterator.hasNext()) {
+            Decl returnValue = (Decl) Iterator.next();
+            more[0] = Iterator.hasNext();
+            return returnValue;
         }
         more[0] = false;
         return null;
@@ -299,30 +299,30 @@ public class Scope {
      *  @return a possibly recursive String representation of this Scope.
      */
     public String toString(boolean recursive) {
-        ListIterator declItr = _declList.listIterator();
+        ListIterator declIterator = _declList.listIterator();
 
-        StringBuffer retval = new StringBuffer("[");
+        StringBuffer returnValue = new StringBuffer("[");
 
-        while (declItr.hasNext()) {
-            Decl d = (Decl) declItr.next();
-            retval.append(d.toString());
-            if (declItr.hasNext()) {
-                retval.append(", ");
+        while (declIterator.hasNext()) {
+            Decl d = (Decl) declIterator.next();
+            returnValue.append(d.toString());
+            if (declIterator.hasNext()) {
+                returnValue.append(", ");
             }
         }
 
-        retval.append("] ");
+        returnValue.append("] ");
 
         if (_parent != null) {
-            retval.append("has parent\n");
+            returnValue.append("has parent\n");
 
             if (recursive) {
-                retval.append(_parent.toString(true));
+                returnValue.append(_parent.toString(true));
             }
         } else {
-            retval.append("no parent\n");
+            returnValue.append("no parent\n");
         }
-        return retval.toString();
+        return returnValue.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

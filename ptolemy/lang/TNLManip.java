@@ -85,16 +85,16 @@ public class TNLManip {
      *  @return A new list with the same elements as the array.
      */
     public static final LinkedList arrayToList(Object[] objArray) {
-        LinkedList retval = new LinkedList();
+        LinkedList returnValue = new LinkedList();
         for (int i = 0; i < objArray.length; i++) {
             Object obj = objArray[i];
             if (obj == null) {
-                retval.addLast(NullValue.instance);
+                returnValue.addLast(NullValue.instance);
             } else {
-                retval.addLast(objArray[i]);
+                returnValue.addLast(objArray[i]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Make a deep clone of a list.  That is, each element is cloned
@@ -104,24 +104,24 @@ public class TNLManip {
      */
     public static final List cloneList(List list) {
         Iterator itr = list.iterator();
-        ArrayList retval = new ArrayList(list.size());
+        ArrayList returnValue = new ArrayList(list.size());
 
         while (itr.hasNext()) {
             Object obj = itr.next();
 
             if (obj instanceof TreeNode) {
-                retval.add(((TreeNode) obj).clone());
+                returnValue.add(((TreeNode) obj).clone());
             } else if (obj instanceof List) {
-                retval.add(cloneList((List) obj));
+                returnValue.add(cloneList((List) obj));
             } else {
                 throw new RuntimeException("unknown object in list: " +
                         obj.getClass());
             }
         }
-        return retval;
+        return returnValue;
     }
 
-    /** Print the classnames of the specified node and any nodes
+    /** Print the class names of the specified node and any nodes
      *  it contains.  Do this recursively so that the entire hierarchy
      *  is seen.
      *  @param node The node to print, which should be either a TreeNode
@@ -165,19 +165,19 @@ public class TNLManip {
             return " {}";
         }
         String nextPrefix = prefix + " ";
-        StringBuffer sb = new StringBuffer();
-        sb.append("{ \n");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("{ \n");
 
         Iterator itr = list.iterator();
         while (itr.hasNext()) {
-            sb.append(nextPrefix);
+            stringBuffer.append(nextPrefix);
             Object child = itr.next();
 
             if (child instanceof TreeNode) {
                 TreeNode childNode = (TreeNode) child;
-                sb.append(childNode.toString(nextPrefix));
+                stringBuffer.append(childNode.toString(nextPrefix));
             } else if (child instanceof List) {
-                sb.append(toString((List) child, nextPrefix));
+                stringBuffer.append(toString((List) child, nextPrefix));
             } else {
                 throw new RuntimeException("toString(" + list + ", \"" +
                         prefix +
@@ -185,8 +185,8 @@ public class TNLManip {
                         child.getClass());
             }
         }
-        sb.append("}");
-        return sb.toString();
+        stringBuffer.append("}");
+        return stringBuffer.toString();
     }
 
     /** Have each member of the specified <i>list</i> accept the
@@ -206,7 +206,7 @@ public class TNLManip {
      */
     public static final ArrayList traverseList(IVisitor visitor,
             LinkedList args, List list) {
-        Object retval;
+        Object returnValue;
         ArrayList retList = new ArrayList(list.size());
 
         Iterator itr = list.iterator();
@@ -216,18 +216,18 @@ public class TNLManip {
             if (obj instanceof TreeNode) {
                 TreeNode node = (TreeNode) obj;
 
-                retval = node.accept(visitor, args);
+                returnValue = node.accept(visitor, args);
 
-                if (retval == null) {
+                if (returnValue == null) {
                     retList.add(NullValue.instance);
                 } else {
-                    retList.add(retval);
+                    retList.add(returnValue);
                 }
 
             } else if (obj instanceof List) {
-                retval = traverseList(visitor, args, (List)obj);
+                returnValue = traverseList(visitor, args, (List)obj);
 
-                retList.add(retval);
+                retList.add(returnValue);
             } else {
                 throw new RuntimeException("TNLManip.traverseList(): " +
                         "unknown object in list: " + obj.getClass());

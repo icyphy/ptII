@@ -88,15 +88,15 @@ public class GenerateVisitor {
 
     public GenerateVisitor(String[] args) throws IOException {
 
-        File fsrc  = new File(args[0]);
+        File inputFile  = new File(args[0]);
 
-        String visitorOutFile;
+        String visitorOutFileName;
         if (args.length < 2) {
             _visitorClassName = "Visitor";
-            visitorOutFile = "Visitor.java";
+            visitorOutFileName = "Visitor.java";
         } else {
             _visitorClassName = args[1];
-            visitorOutFile = _visitorClassName + ".java";
+            visitorOutFileName = _visitorClassName + ".java";
         }
 
         if (args.length < 3) {
@@ -115,30 +115,30 @@ public class GenerateVisitor {
             _nodePath = _nodePath + File.separatorChar;
         }
 
-        File fdest = new File(visitorOutFile);
+        File visitorOutFile = new File(visitorOutFileName);
 
-        if (!fdest.createNewFile()) {
-            fdest.delete();
-            fdest = new File(visitorOutFile);
-            fdest.createNewFile();
+        if (!visitorOutFile.createNewFile()) {
+            visitorOutFile.delete();
+            visitorOutFile = new File(visitorOutFile);
+            visitorOutFile.createNewFile();
         }
 
         try {
-            _ofs = new FileWriter(fdest);
+            _visitorOutFileWriter = new FileWriter(visitorOutFile);
         } catch (FileNotFoundException e) {
             System.err.println("Couldn't open destination file.");
             return;
         }
 
         try {
-            _ifs = new LineNumberReader(new FileReader(fsrc));
+            _inputFileReader = new LineNumberReader(new FileReader(inputFile));
         } catch (FileNotFoundException e) {
             System.err.println("Couldn't open input file.");
             return;
         }
 
         // initialize _lastLine
-        _lastLine = _ifs.readLine();
+        _lastLine = _inputFileReader.readLine();
 
         // get common header for nodes and visitor
         String commonHeader = _readBlock("cheader");
@@ -159,8 +159,8 @@ public class GenerateVisitor {
     /** Generate the visitor class and the node class files */
     public void generate() throws IOException {
 
-        _ofs.write(_visitorHeader);
-        _ofs.write("public class "+ _visitorClassName +
+        _visitorOutFileWriter.write(_visitorHeader);
+        _visitorOutFileWriter.write("public class "+ _visitorClassName +
                 " implements IVisitor {\n" +
                 "    public " + _visitorClassName + "() {\n" +
                 "        this(TM_CHILDREN_FIRST);\n" +
@@ -178,34 +178,34 @@ public class GenerateVisitor {
 
         _readClassInfo();
 
-        _ifs.close();
+        _inputFileReader.close();
 
-        Iterator itr = _typeList.iterator();
-        Iterator parItr = _parentTypeList.iterator();
-        Iterator concreteItr = _isConcreteList.iterator();
-        Iterator singletonItr = _isSingletonList.iterator();
-        Iterator inTreeItr = _isInTreeList.iterator();
-        Iterator interfaceItr = _isInterfaceList.listIterator();
-        Iterator methodListItr = _methodListList.iterator();
-        Iterator implListItr = _implListList.iterator();
+        Iterator iterator = _typeList.iterator();
+        Iterator parentIterator = _parentTypeList.iterator();
+        Iterator concreteIterator = _isConcreteList.iterator();
+        Iterator singletonIterator = _isSingletonList.iterator();
+        Iterator inTreeIterator = _isInTreeList.iterator();
+        Iterator interfaceIterator = _isInterfaceList.listIterator();
+        Iterator methodListIterator = _methodListList.iterator();
+        Iterator implListIterator = _implListList.iterator();
 
-        while (itr.hasNext()) {
-            String typeName = (String) itr.next();
-            String parentTypeName = (String) parItr.next();
-            boolean isConcrete = ((Boolean) concreteItr.next()).booleanValue();
+        while (iterator.hasNext()) {
+            String typeName = (String) iterator.next();
+            String parentTypeName = (String) parentIterator.next();
+            boolean isConcrete = ((Boolean) concreteIterator.next()).booleanValue();
             boolean isSingleton =
-                ((Boolean) singletonItr.next()).booleanValue();
+                ((Boolean) singletonIterator.next()).booleanValue();
             boolean isInterface =
-                ((Boolean) interfaceItr.next()).booleanValue();
+                ((Boolean) interfaceIterator.next()).booleanValue();
             boolean isInTree =
-                ((Boolean) inTreeItr.next()).booleanValue();
+                ((Boolean) inTreeIterator.next()).booleanValue();
 
-            LinkedList methodList = (LinkedList) methodListItr.next();
-            LinkedList implList = (LinkedList) implListItr.next();
+            LinkedList methodList = (LinkedList) methodListIterator.next();
+            LinkedList implList = (LinkedList) implListIterator.next();
 
             if (isConcrete) {
                 if (isInTree) {
-                    _ofs.write(
+                    _visitorOutFileWriter.write(
                             "\n" +
                             "    public Object visit" + typeName + "(" +
                             typeName +
@@ -217,13 +217,13 @@ public class GenerateVisitor {
                 _idStringList.add(typeName.toUpperCase() + "_ID");
             }
 
-            _generateNodeFile(typeName, parentTypeName, isConcrete, isSingleton,
-                    isInterface, isInTree, methodList, implList);
+            _generateNodeFile(typeName, parentTypeName, isConcrete,
+                    isSingleton, isInterface, isInTree, methodList, implList);
 
             _generateClassIDFile();
         }
 
-        _ofs.write(
+        _visitorOutFileWriter.write(
                 "\n" +
                 "    /** Specify the order in visiting the nodes. */\n" +
                 "    public final int traversalMethod() { " +
@@ -238,7 +238,7 @@ public class GenerateVisitor {
                 "    protected final int _traversalMethod;\n" +
                 "}\n");
 
-        _ofs.close();
+        _visitorOutFileWriter.close();
     }
 
     public static void main(String[] args) throws IOException {
@@ -263,7 +263,7 @@ public class GenerateVisitor {
 
         while ((_lastLine != null) &&
                 (_lastLine.equals("") || _lastLine.startsWith("//"))) {
-            _lastLine = _ifs.readLine();
+            _lastLine = _inputFileReader.readLine();
 
             if (_lastLine != null) {
                 _lastLine = _lastLine.trim();
@@ -277,79 +277,79 @@ public class GenerateVisitor {
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
 
         boolean endHeader = false;
         do {
-            _lastLine = _ifs.readLine();
+            _lastLine = _inputFileReader.readLine();
 
             endHeader = ((_lastLine == null) || _lastLine.equals(endTag));
 
             if (!endHeader) {
-                sb.append(_lastLine + "\n");
+                stringBuffer.append(_lastLine + "\n");
             }
         } while (!endHeader);
 
-        _lastLine = _ifs.readLine();
+        _lastLine = _inputFileReader.readLine();
 
-        sb.append('\n');
+        stringBuffer.append('\n');
 
-        return sb.toString();
+        return stringBuffer.toString();
     }
 
     protected void _generateNodeFile(String typeName, String parentTypeName,
             boolean isConcrete, boolean isSingleton, boolean isInterface,
             boolean isInTree, LinkedList methodList, LinkedList implList)
             throws IOException {
-        File fdest = new File(_nodePath + typeName + ".java");
+        File nodeFile = new File(_nodePath + typeName + ".java");
 
-        if (!fdest.createNewFile()) {
-            fdest.delete();
-            fdest = new File(_nodePath + typeName + ".java");
-            fdest.createNewFile();
+        if (!nodeFile.createNewFile()) {
+            nodeFile.delete();
+            nodeFile = new File(_nodePath + typeName + ".java");
+            nodeFile.createNewFile();
         }
 
-        FileWriter fw = new FileWriter(fdest);
+        FileWriter nodeFileWriter = new FileWriter(nodeFile);
 
-        StringBuffer sb = new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
 
-        sb.append(_nodeHeader);
+        stringBuffer.append(_nodeHeader);
 
-        sb.append("public ");
+        stringBuffer.append("public ");
 
         boolean concreteClass = isConcrete && !isInterface;
 
         if (!isConcrete && !isInterface) {
-            sb.append("abstract ");
+            stringBuffer.append("abstract ");
         } else if (isSingleton) {
-            sb.append("final ");
+            stringBuffer.append("final ");
         }
 
-        sb.append(isInterface ? "interface " : "class ");
-        sb.append(typeName);
+        stringBuffer.append(isInterface ? "interface " : "class ");
+        stringBuffer.append(typeName);
 
         if (!parentTypeName.equals("<none>")) {
-            sb.append(" extends ");
-            sb.append(parentTypeName);
+            stringBuffer.append(" extends ");
+            stringBuffer.append(parentTypeName);
         }
 
-        Iterator implItr = implList.listIterator();
+        Iterator implIterator = implList.listIterator();
 
-        if (implItr.hasNext()) {
-            sb.append(" implements ");
+        if (implIterator.hasNext()) {
+            stringBuffer.append(" implements ");
 
             do {
-                String interfaceName = (String) implItr.next();
+                String interfaceName = (String) implIterator.next();
 
-                sb.append(interfaceName);
+                stringBuffer.append(interfaceName);
 
-                if (implItr.hasNext()) {
-                    sb.append(", ");
+                if (implIterator.hasNext()) {
+                    stringBuffer.append(", ");
                 }
-            } while (implItr.hasNext());
+            } while (implIterator.hasNext());
         }
 
-        sb.append(" {\n");
+        stringBuffer.append(" {\n");
 
         if (concreteClass) {
             String idString = typeName.toUpperCase() + "_ID";
@@ -396,78 +396,78 @@ public class GenerateVisitor {
         }
 
         // do methods first
-        Iterator methodItr = methodList.listIterator();
+        Iterator methodIterator = methodList.listIterator();
 
-        while (methodItr.hasNext()) {
-            Object o = methodItr.next();
+        while (methodIterator.hasNext()) {
+            Object o = methodIterator.next();
 
             if (o instanceof MethodSignature) {
-                sb.append(o.toString() + "\n");
+                stringBuffer.append(o.toString() + "\n");
             }
         }
 
         // now do fields
-        methodItr = methodList.listIterator();
+        methodIterator = methodList.listIterator();
 
-        while (methodItr.hasNext()) {
-            Object o = methodItr.next();
+        while (methodIterator.hasNext()) {
+            Object o = methodIterator.next();
 
             if (o instanceof ClassField) {
-                sb.append(o.toString() + "\n");
+                stringBuffer.append(o.toString() + "\n");
             }
         }
 
-        sb.append("}\n");
+        stringBuffer.append("}\n");
 
-        fw.write(sb.toString());
-        fw.close();
+        nodeFileWriter.write(stringBuffer.toString());
+        nodeFileWriter.close();
     }
 
     protected void _generateClassIDFile() throws IOException {
-        File fdest = new File(_nodePath + "NodeClassID.java");
+        File nodeClassIDFile = new File(_nodePath + "NodeClassID.java");
 
-        if (!fdest.createNewFile()) {
-            fdest.delete();
-            fdest = new File(_nodePath + "NodeClassID.java");
-            fdest.createNewFile();
+        if (!nodeClassIDFile.createNewFile()) {
+            nodeClassIDFile.delete();
+            nodeClassIDFile = new File(_nodePath + "NodeClassID.java");
+            nodeClassIDFile.createNewFile();
         }
 
-        FileWriter fw = new FileWriter(fdest);
+        FileWriter nodeClassIDFileWriter = new FileWriter(nodeClassIDFile);
 
-        StringBuffer sb = new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
 
-        sb.append(_classIDHeader);
+        stringBuffer.append(_classIDHeader);
 
-        sb.append("public interface NodeClassID {\n");
+        stringBuffer.append("public interface NodeClassID {\n");
 
         int count = 0;
 
-        Iterator stringItr = _idStringList.iterator();
+        Iterator stringIterator = _idStringList.iterator();
 
-        while (stringItr.hasNext()) {
-            String idString = (String) stringItr.next();
+        while (stringIterator.hasNext()) {
+            String idString = (String) stringIterator.next();
             ClassField field = new ClassField("int", idString, "public",
                     Integer.toString(count));
-            sb.append(field.toString() + '\n');
+            stringBuffer.append(field.toString() + '\n');
             count++;
         }
-        sb.append("}\n");
+        stringBuffer.append("}\n");
 
-        fw.write(sb.toString());
-        fw.close();
+        nodeClassIDFileWriter.write(stringBuffer.toString());
+        nodeClassIDFileWriter.close();
     }
 
     protected void _readPlacement() throws IOException {
-        _lastLine = _ifs.readLine();
+        _lastLine = _inputFileReader.readLine();
 
         if (_lastLine.startsWith("mplace")) {
             _defaultPlacement = _lastLine.charAt(7);
-            _lastLine = _ifs.readLine();
+            _lastLine = _inputFileReader.readLine();
         }
     }
 
     protected void _readClassInfo() throws IOException {
-        StringTokenizer strTokenizer;
+        StringTokenizer stringTokenizer;
         String className;
         String marker;
 
@@ -475,9 +475,9 @@ public class GenerateVisitor {
             if ((_lastLine != null) && (_lastLine.length() > 4) &&
                     !(_lastLine.startsWith("//"))) {
 
-                strTokenizer = new StringTokenizer(_lastLine);
+                stringTokenizer = new StringTokenizer(_lastLine);
 
-                className = strTokenizer.nextToken();
+                className = stringTokenizer.nextToken();
 
                 //System.out.println("Reading class info for : "
                 //                       + className);
@@ -490,7 +490,7 @@ public class GenerateVisitor {
                     return;
                 }
 
-                String nextToken = strTokenizer.nextToken();
+                String nextToken = stringTokenizer.nextToken();
 
                 boolean isSingleton;
                 boolean isInterface;
@@ -515,7 +515,7 @@ public class GenerateVisitor {
                 }
 
                 try {
-                    nextToken = strTokenizer.nextToken();
+                    nextToken = stringTokenizer.nextToken();
                     _parentTypeList.addLast(nextToken);
                 } catch (NullPointerException e) {
                     System.err.println("Not enough parameters in line : " +
@@ -526,8 +526,8 @@ public class GenerateVisitor {
                 LinkedList methodList = new LinkedList();
                 LinkedList implList   = new LinkedList();
 
-                while (strTokenizer.hasMoreTokens()) {
-                    marker = strTokenizer.nextToken();
+                while (stringTokenizer.hasMoreTokens()) {
+                    marker = stringTokenizer.nextToken();
                     char markChar = marker.charAt(0);
                     switch (markChar) {
 
@@ -535,7 +535,7 @@ public class GenerateVisitor {
                     case 'm':
                         {
                             MethodSignature ms =
-                                new MethodSignature(markChar, strTokenizer,
+                                new MethodSignature(markChar, stringTokenizer,
                                         className, _defaultPlacement,
                                         isInterface, isConcrete);
                             methodList.addLast(ms);
@@ -545,7 +545,7 @@ public class GenerateVisitor {
                     case 'k':
                         {
                             MethodSignature ms =
-                                new MethodSignature(markChar, strTokenizer,
+                                new MethodSignature(markChar, stringTokenizer,
                                         className, _defaultPlacement,
                                         isInterface, isConcrete);
 
@@ -558,7 +558,7 @@ public class GenerateVisitor {
                         {
                             boolean isName;
                             do {
-                                nextToken = strTokenizer.nextToken();
+                                nextToken = stringTokenizer.nextToken();
 
                                 isName = ((nextToken != null) &&
                                         !nextToken.equals("i"));
@@ -578,7 +578,7 @@ public class GenerateVisitor {
                 _methodListList.addLast(methodList);
                 _implListList.addLast(implList);
             }
-            _lastLine = _ifs.readLine();
+            _lastLine = _inputFileReader.readLine();
         } while (_lastLine != null);
     }
 
@@ -587,8 +587,8 @@ public class GenerateVisitor {
 
     protected char _defaultPlacement = 'l';
 
-    protected FileWriter _ofs;
-    protected LineNumberReader _ifs;
+    protected FileWriter _visitorOutFileWriter;
+    protected LineNumberReader _inputFileReader;
 
     protected LinkedList _typeList = new LinkedList();
     protected LinkedList _parentTypeList = new LinkedList();
@@ -637,7 +637,7 @@ public class GenerateVisitor {
         }
 
         /** a constructor or method */
-        public MethodSignature(char sigType, StringTokenizer strToken,
+        public MethodSignature(char signatureType, StringTokenizer stringToken,
                 String className, char defaultPlacement, boolean isInterface,
                 boolean isConcrete)
                 throws IOException {
@@ -645,8 +645,8 @@ public class GenerateVisitor {
             _isInterface = isInterface;
             _isConcrete = isConcrete;
 
-            _defConstruct = (sigType == 'k');
-            _construct = (sigType == 'c') || _defConstruct;
+            _defConstruct = (signatureType == 'k');
+            _construct = (signatureType == 'c') || _defConstruct;
 
             _modifiers = "public";
 
@@ -654,64 +654,64 @@ public class GenerateVisitor {
                 _name = className;
                 _returnType = "";
 
-                _superParams = Integer.parseInt(strToken.nextToken());
+                _superParams = Integer.parseInt(stringToken.nextToken());
 
-            } else if (sigType == 'm') { // method
+            } else if (signatureType == 'm') { // method
                 _superParams = 0;
 
                 if (!isInterface) _modifiers += " final";
 
-                _returnType = strToken.nextToken() + " ";
+                _returnType = stringToken.nextToken() + " ";
 
-                _name = strToken.nextToken();
+                _name = stringToken.nextToken();
             } else {
                 throw new RuntimeException("Invalid token for " +
-                        "MethodSignature : " + sigType);
+                        "MethodSignature : " + signatureType);
             }
 
-            String s = strToken.nextToken();
+            String s = stringToken.nextToken();
 
             while (!(s.equals("c") || s.equals("m") || s.equals("k"))) {
                 if (s.charAt(0) == '{') {
                     // explicit placement, don't check
-                    _varPlacements.addLast(new Character(s.charAt(1)));
+                    _variablePlacements.addLast(new Character(s.charAt(1)));
                     s = s.substring(3);
                 }  else {
 
                     if ((defaultPlacement == 'l') && _isJavaType(s)) {
                         // make it a member if it's a Java type and we
                         // default to put it in a list
-                        _varPlacements.addLast(new Character('m'));
+                        _variablePlacements.addLast(new Character('m'));
                     } else {
                         if (defaultPlacement == 'l') {
                             _childListSize++;
                         }
 
-                        _varPlacements.addLast(
+                        _variablePlacements.addLast(
                                 new Character(defaultPlacement));
                     }
                 }
 
                 if (s.equals("[")) { // super constructor argument
-                    StringBuffer sb = new StringBuffer();
+                    StringBuffer stringBuffer = new StringBuffer();
                     boolean isInit;
 
-                    s = strToken.nextToken();
+                    s = stringToken.nextToken();
 
-                    sb.append(s);
+                    stringBuffer.append(s);
 
                     do {
-                        s = strToken.nextToken();
+                        s = stringToken.nextToken();
 
                         isInit = !s.equals("]");
 
                         if (isInit) {
-                            sb.append(' ');
-                            sb.append(s);
+                            stringBuffer.append(' ');
+                            stringBuffer.append(s);
                         }
                     } while (isInit);
 
-                    _superArgs.addLast(sb.toString());
+                    _superArgs.addLast(stringBuffer.toString());
 
                     _paramTypes.addLast("omitted");
                     _paramNames.addLast("omitted");
@@ -720,13 +720,13 @@ public class GenerateVisitor {
 
                     _paramTypes.addLast(s);
 
-                    String paramName = strToken.nextToken();
+                    String paramName = stringToken.nextToken();
 
                     _paramNames.addLast(paramName);
                     _superArgs.addLast(paramName);
                 }
 
-                s = strToken.nextToken();
+                s = stringToken.nextToken();
             }
         }
 
@@ -812,59 +812,59 @@ public class GenerateVisitor {
 
             if (_construct) {
 
-                StringBuffer sb = new StringBuffer();
+                StringBuffer stringBuffer = new StringBuffer();
 
                 if (_superParams > 0) {
 
-                    Iterator argsItr = _superArgs.listIterator();
+                    Iterator argsIterator = _superArgs.listIterator();
 
-                    sb.append(_IDENT + _IDENT);
-                    sb.append("super(");
+                    stringBuffer.append(_IDENT + _IDENT);
+                    stringBuffer.append("super(");
 
                     for (int i = 0; i < _superParams; i++) {
-                        sb.append((String) argsItr.next());
+                        stringBuffer.append((String) argsIterator.next());
 
                         if (i < (_superParams - 1)) {
-                            sb.append(", ");
+                            stringBuffer.append(", ");
                         }
                     }
 
-                    sb.append(");\n");
+                    stringBuffer.append(");\n");
                 }
 
                 if (_defConstruct) {
 
-                    Iterator typeItr = _paramTypes.listIterator();
-                    Iterator nameItr = _paramNames.listIterator();
-                    Iterator varPlaceItr = _varPlacements.listIterator();
+                    Iterator typeIterator = _paramTypes.listIterator();
+                    Iterator nameIterator = _paramNames.listIterator();
+                    Iterator variablePlaceIterator = _variablePlacements.listIterator();
 
-                    int varCount = 0;
+                    int variableCount = 0;
 
                     do {
-                        String typeStr = (String) typeItr.next();
-                        String nameStr = (String) nameItr.next();
+                        String typeStr = (String) typeIterator.next();
+                        String nameStr = (String) nameIterator.next();
                         char placement =
-                            ((Character) varPlaceItr.next()).charValue();
+                            ((Character) variablePlaceIterator.next()).charValue();
 
-                        if (varCount >= _superParams) {
+                        if (variableCount >= _superParams) {
 
-                            sb.append(_IDENT);
-                            sb.append(_IDENT);
+                            stringBuffer.append(_IDENT);
+                            stringBuffer.append(_IDENT);
 
                             switch (placement) {
 
                             case 'l':
-                                sb.append("_childList.add(" + nameStr + ");");
+                                stringBuffer.append("_childList.add(" + nameStr + ");");
                                 break;
 
                             case 'm':
                             case 'h':
-                                sb.append("_" + nameStr + " = " +
+                                stringBuffer.append("_" + nameStr + " = " +
                                         nameStr + ";");
                                 break;
 
                             case 'p':
-                                sb.append("setProperty(" + nameStr + ", " +
+                                stringBuffer.append("setProperty(" + nameStr + ", " +
                                         _wrapPrimitive(typeStr, nameStr) +
                                         ");");
                                 break;
@@ -878,21 +878,21 @@ public class GenerateVisitor {
                                         "unknown variable placement");
                             }
 
-                            if (typeItr.hasNext()) {
-                                sb.append('\n');
+                            if (typeIterator.hasNext()) {
+                                stringBuffer.append('\n');
                             }
                         }
 
-                        varCount++;
-                    } while (typeItr.hasNext());
+                        variableCount++;
+                    } while (typeIterator.hasNext());
                 }
 
                 if (_isConcrete) {
-                    sb.append("\n" + _IDENT + _IDENT +
+                    stringBuffer.append("\n" + _IDENT + _IDENT +
                             "_childList.trimToSize();");
                 }
 
-                return sb.toString();
+                return stringBuffer.toString();
             } // if _construct
 
             // this is method
@@ -930,99 +930,99 @@ public class GenerateVisitor {
         }
 
         public String toString() {
-            StringBuffer sb = new StringBuffer(_IDENT);
+            StringBuffer stringBuffer = new StringBuffer(_IDENT);
 
             if (!_modifiers.equals("")) {
-                sb.append(_modifiers + " ");
+                stringBuffer.append(_modifiers + " ");
             }
 
             if (!_returnType.equals("")) {
-                sb.append(_returnType + " ");
+                stringBuffer.append(_returnType + " ");
             }
 
-            sb.append(_name + "(");
+            stringBuffer.append(_name + "(");
 
-            Iterator typeItr = _paramTypes.listIterator();
-            Iterator nameItr = _paramNames.listIterator();
+            Iterator typeIterator = _paramTypes.listIterator();
+            Iterator nameIterator = _paramNames.listIterator();
 
             int paramCount = 0;
-            while (typeItr.hasNext()) {
+            while (typeIterator.hasNext()) {
 
-                String typeName = (String) typeItr.next();
-                String paramName = (String) nameItr.next();
+                String typeName = (String) typeIterator.next();
+                String paramName = (String) nameIterator.next();
 
                 if (!typeName.equals("omitted")) {
                     if (paramCount > 0) {
-                        sb.append(", ");
+                        stringBuffer.append(", ");
                     }
                     paramCount++;
 
-                    sb.append(typeName);
-                    sb.append(' ');
-                    sb.append(paramName);
+                    stringBuffer.append(typeName);
+                    stringBuffer.append(' ');
+                    stringBuffer.append(paramName);
                 }
             }
 
-            sb.append(')');
+            stringBuffer.append(')');
 
             if (_isInterface) {
-                sb.append(";");
+                stringBuffer.append(";");
             } else {
-                sb.append(" {\n" + methodBody() + "\n" + _IDENT + "}\n");
+                stringBuffer.append(" {\n" + methodBody() + "\n" + _IDENT + "}\n");
             }
 
-            return sb.toString();
+            return stringBuffer.toString();
         }
 
         public LinkedList accessors() {
-            LinkedList retval = new LinkedList();
+            LinkedList returnValue = new LinkedList();
 
-            int varCount = 0;
+            int variableCount = 0;
             int childIndex = 0;
 
-            Iterator typeItr = _paramTypes.listIterator();
-            Iterator nameItr = _paramNames.listIterator();
-            Iterator varPlaceItr = _varPlacements.listIterator();
+            Iterator typeIterator = _paramTypes.listIterator();
+            Iterator nameIterator = _paramNames.listIterator();
+            Iterator variablePlaceIterator = _variablePlacements.listIterator();
 
-            while (typeItr.hasNext()) {
+            while (typeIterator.hasNext()) {
 
-                String typeStr = (String) typeItr.next();
-                String nameStr = (String) nameItr.next();
-                char placement = ((Character) varPlaceItr.next()).charValue();
+                String typeStr = (String) typeIterator.next();
+                String nameStr = (String) nameIterator.next();
+                char placement = ((Character) variablePlaceIterator.next()).charValue();
 
-                if (varCount >= _superParams) {
+                if (variableCount >= _superParams) {
 
                     switch (placement) {
 
                     case 'l':
                         // getter
-                        retval.addLast(new MethodSignature(typeStr, nameStr,
+                        returnValue.addLast(new MethodSignature(typeStr, nameStr,
                                 childIndex, false));
 
                         //setter
-                        retval.addLast(new MethodSignature(typeStr, nameStr,
+                        returnValue.addLast(new MethodSignature(typeStr, nameStr,
                                 childIndex, true));
 
                         // getter index
-                        retval.addLast(new ClassField("int",
+                        returnValue.addLast(new ClassField("int",
                                 "CHILD_INDEX_" + nameStr.toUpperCase(),
                                 "public static final",
                                 Integer.toString(childIndex)));
                         break;
 
                     case 'h': // member with hasX()
-                        retval.addLast(new MethodSignature(nameStr, -1));
+                        returnValue.addLast(new MethodSignature(nameStr, -1));
                         // no break;
 
                     case 'm': // member
-                        retval.addLast(new ClassField(typeStr, nameStr));
+                        returnValue.addLast(new ClassField(typeStr, nameStr));
 
                         // getter
-                        retval.addLast(new MethodSignature(typeStr, nameStr,
+                        returnValue.addLast(new MethodSignature(typeStr, nameStr,
                                 false));
 
                         // setter
-                        retval.addLast(new MethodSignature(typeStr, nameStr,
+                        returnValue.addLast(new MethodSignature(typeStr, nameStr,
                                 true));
                         break;
 
@@ -1046,10 +1046,10 @@ public class GenerateVisitor {
                     childIndex++;
                 }
 
-                varCount++;
+                variableCount++;
             }
 
-            return retval;
+            return returnValue;
         }
 
         protected String _wrapPrimitive(String typeStr, String nameStr) {
@@ -1084,7 +1084,7 @@ public class GenerateVisitor {
 
         protected LinkedList _paramTypes = new LinkedList();
         protected LinkedList _paramNames = new LinkedList();
-        protected LinkedList _varPlacements = new LinkedList();
+        protected LinkedList _variablePlacements = new LinkedList();
         protected LinkedList _superArgs = new LinkedList();
 
         protected int _childListSize = 0; // not currently used
@@ -1115,25 +1115,25 @@ public class GenerateVisitor {
         }
 
         public String toString() {
-            StringBuffer sb = new StringBuffer();
-            sb.append(_IDENT);
-            sb.append(_modifiers);
-            sb.append(' ');
-            sb.append(_type);
-            sb.append(' ');
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append(_IDENT);
+            stringBuffer.append(_modifiers);
+            stringBuffer.append(' ');
+            stringBuffer.append(_type);
+            stringBuffer.append(' ');
 
             if (!_modifiers.startsWith("public")) {
-                sb.append(" _");
+                stringBuffer.append(" _");
             }
 
-            sb.append(_name);
+            stringBuffer.append(_name);
 
             if (_init != null) {
-                sb.append(" = " + _init);
+                stringBuffer.append(" = " + _init);
             }
 
-            sb.append(';');
-            return sb.toString();
+            stringBuffer.append(';');
+            return stringBuffer.toString();
         }
 
         String _type;

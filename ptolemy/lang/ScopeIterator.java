@@ -215,12 +215,12 @@ public class ScopeIterator implements Iterator {
 
     /** Return the first Decl without advancing the iterator */
     public Decl peek() {
-        Decl retval = nextDecl();
+        Decl returnValue = nextDecl();
 
         // Rewind back to valid Decl.
         _declIter.previous();
 
-        return retval;
+        return returnValue;
     }
 
     /** Throw a RuntimeException, because we do not support the optional

@@ -89,13 +89,13 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  @return The result of the visit, which depends on the visitor.
      */
     public Object accept(IVisitor visitor, LinkedList visitorArgs) {
-        Object retval;
+        Object returnValue;
         switch (visitor.traversalMethod()) {
         case IVisitor.TM_CHILDREN_FIRST:
             {
                 // Traverse the children first.
                 traverseChildren(visitor, visitorArgs);
-                retval = _acceptHere(visitor, visitorArgs);
+                returnValue = _acceptHere(visitor, visitorArgs);
 
                 // Remove the children return values to prevent
                 // exponential usage of memory.
@@ -106,7 +106,7 @@ public abstract class TreeNode extends TrackedPropertyMap
         case IVisitor.TM_SELF_FIRST:
             {
                 // Visit myself first.
-                retval = _acceptHere(visitor, visitorArgs);
+                returnValue = _acceptHere(visitor, visitorArgs);
                 traverseChildren(visitor, visitorArgs);
             }
             break;
@@ -114,7 +114,7 @@ public abstract class TreeNode extends TrackedPropertyMap
         case IVisitor.TM_CUSTOM:
             {
                 // Let visitor do custom traversal.
-                retval = _acceptHere(visitor, visitorArgs);
+                returnValue = _acceptHere(visitor, visitorArgs);
             }
             break;
 
@@ -122,7 +122,7 @@ public abstract class TreeNode extends TrackedPropertyMap
             throw new RuntimeException("Unknown traversal method for visitor");
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return the list of children of this node.
@@ -230,16 +230,16 @@ public abstract class TreeNode extends TrackedPropertyMap
      */
     public String toString(String prefix) {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
 
         Class c = getClass();
         String className = StringManip.unqualifiedPart(c.getName());
 
-        sb.append(" {" + className);
+        stringBuffer.append(" {" + className);
 
         // If the number property is defined, print the number.
         if (hasProperty(NUMBER_KEY)) {
-            sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ')');
+            stringBuffer.append(" (" + getDefinedProperty(NUMBER_KEY) + ')');
         }
 
         Method[] methodArr = c.getMethods();
@@ -259,7 +259,7 @@ public abstract class TreeNode extends TrackedPropertyMap
 
                 matchingMethods++;
                 if (matchingMethods == 1) {
-                    sb.append(" { \n");
+                    stringBuffer.append(" { \n");
                 }
 
                 String methodLabel = methodName.substring(3);
@@ -267,28 +267,28 @@ public abstract class TreeNode extends TrackedPropertyMap
                 String totalPrefix = nextPrefix +
                     _makeSpaceString(methodLabel.length()) + "  ";
 
-                sb.append(nextPrefix + " {" + methodLabel);
+                stringBuffer.append(nextPrefix + " {" + methodLabel);
 
-                Object retval = null;
+                Object returnValue = null;
                 try {
-                    retval = method.invoke(this, null);
+                    returnValue = method.invoke(this, null);
                 } catch (Exception e) {
                     throw new RuntimeException("Error invoking method " +
                             methodName);
                 }
 
-                if (retval instanceof TreeNode) {
-                    TreeNode node = (TreeNode) retval;
-                    sb.append(node.toString(totalPrefix) + "} \n");
-                } else if (retval instanceof List) {
-                    sb.append(" " +
-                            TNLManip.toString((List) retval, nextPrefix) +
+                if (returnValue instanceof TreeNode) {
+                    TreeNode node = (TreeNode) returnValue;
+                    stringBuffer.append(node.toString(totalPrefix) + "} \n");
+                } else if (returnValue instanceof List) {
+                    stringBuffer.append(" " +
+                            TNLManip.toString((List) returnValue, nextPrefix) +
                             "} \n");
                 } else {
-		    if (retval == null) {
-			sb.append(" null}\n");
+		    if (returnValue == null) {
+			stringBuffer.append(" null}\n");
 		    } else {
-			sb.append(" " + retval.toString() + "} \n");
+			stringBuffer.append(" " + returnValue.toString() + "} \n");
 		    }
                 }
             }
@@ -296,13 +296,13 @@ public abstract class TreeNode extends TrackedPropertyMap
 
         if (matchingMethods < 1) {
             // Node has no children.
-            sb.append(" {leaf}");
+            stringBuffer.append(" {leaf}");
         } else {
-            sb.append(prefix + "}") ;
+            stringBuffer.append(prefix + "}") ;
         }
 
-        sb.append("}");
-        return sb.toString();
+        stringBuffer.append("}");
+        return stringBuffer.toString();
     }
 
     /** Visit all nodes or lists in in the argument list, and place
@@ -377,13 +377,13 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  @return A string of spaces.
      */
     protected static String _makeSpaceString(int spaces) {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
 
         for (int i = 0; i < spaces; i++) {
-            sb.append(' ');
+            stringBuffer.append(' ');
         }
 
-        return sb.toString();
+        return stringBuffer.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

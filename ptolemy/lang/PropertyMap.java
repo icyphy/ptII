@@ -82,12 +82,12 @@ public class PropertyMap implements Cloneable {
      *  Throw a RuntimeException if the property in not defined.
      */
     public Object getDefinedProperty(Integer property) {
-        Object retval = _propertyMap.get(property);
-        if (retval == null) {
+        Object returnValue = _propertyMap.get(property);
+        if (returnValue == null) {
             throw new RuntimeException("Property " + property +
                     " not defined");
         }
-        return retval;
+        return returnValue;
     }
 
     /** Get a property. If the property is not defined, returned null. */
@@ -103,13 +103,13 @@ public class PropertyMap implements Cloneable {
             obj = NullValue.instance;
         }
 
-        Object retval = _propertyMap.put(property, obj);
+        Object returnValue = _propertyMap.put(property, obj);
 
-        if (retval == null) {
+        if (returnValue == null) {
             throw new RuntimeException("Property " + property +
                     " not defined");
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the a Set of the defined properties. */
