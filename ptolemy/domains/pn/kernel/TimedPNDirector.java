@@ -502,7 +502,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
     //     protected void _processTopologyRequests()
-    //             throws IllegalActionException, TopologyChangeFailedException {
+    //         throws IllegalActionException, TopologyChangeFailedException {
     // 	Workspace worksp = workspace();
     // 	super._processTopologyRequests();
     // 	//Perform type resolution.
