@@ -429,7 +429,7 @@ public class ModelTransformer extends SceneTransformer {
 
                 if (token == null) {
                     throw new RuntimeException("Calling getToken() on '"
-                            + attribute "' returned null.  This may occur "
+                            + attribute + "' returned null.  This may occur "
                             + "if an attribute has no value in the moml file");
                 }
 
