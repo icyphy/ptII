@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE schematic SYSTEM "ptolemyicon.dtd">
+
+<schematic name="SDF demo" version="1.0">
+<description>The first SDF demo</description>
+
+<entity name="Ramp" icon="SDF.Ramp">
+<description></description>
+<port name="output" output="true" type="Integer"/>
+</entity>
+
+<entity name="Print" icon="SDF.Print">
+<port name="input" input="true" type="Integer"/>
+</entity>
+
+<relation name="R1">
+<link name="Ramp.output"/>
+<link name="Print.input"/>
+</relation>
+
+<!-- these parameters will get set in the Director -->
+<parameter name="domain" value="SDF" type="string"/>
+<parameter name="starttime" value="1.0" type="double"/>
+<parameter name="endtime" value="7.0" type="double"/>
+
+</schematic>
+
