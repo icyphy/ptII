@@ -359,6 +359,7 @@ PTWABA_DIR =	@PTWABA_DIR@
 # Set to x10 and used in
 # $PTII/ptolemy/apps/superb/makefile if the X10 jar files were found
 PTX10_DIR =	@PTX10_DIR@
+X10_JAR =       @X10_CLASSES@
 
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see
