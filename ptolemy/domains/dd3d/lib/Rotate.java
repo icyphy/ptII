@@ -36,7 +36,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import ptolemy.domains.dd3d.kernel.*;
-import ptolemy.domains.dt.kernel.DTDebug;
 
 import com.sun.j3d.utils.universe.*;
 import javax.media.j3d.*;
@@ -48,12 +47,12 @@ import javax.vecmath.*;
 /** Conceptually, this actor takes 3D geometry in its input and produces a rotated
 version in its output. In reality, this actor encapsulates a Java3D TransformGroup
 which is converted into a node in the resulting Java3D scene graph. This actor will
-only have meaning in the DD3D domain. Scaling can be done uniformly or non-uniformly.
-Uniform scaling scales the input geometry equally in all directions. Uniform scaling 
-is done through modification of the <i>scaleFactor</i> parameter. Non-uniform scaling
-involves preferential scaling of the input geometry in a specified Cartesian axis. 
-Non-uniform scaling is done through modification of the <i>xScale<i>, <i>yScale<i/>,
-and <i>zScale<i/> parameters. 
+only have meaning in the DD3D domain. 
+
+The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and <i>axisDirectionZ</i>
+determine the direction of the axis of rotation.  The parameters <i>baseX</i>,
+<i>baseY</i>, and <i>baseZ</i> determine the pivot point for axis of the rotation.
+The parameter <i>initialAngle</i> determines the initial angle of rotation.
 @author C. Fong
 */
 public class Rotate extends Transform {
@@ -81,25 +80,73 @@ public class Rotate extends Transform {
   	    baseY = new Parameter(this, "baseY", new DoubleToken(0.0));
   	    baseZ = new Parameter(this, "baseZ", new DoubleToken(0.0));
   	    
-  	    Transform3D _rotation = new Transform3D();
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
+    /** The amount of rotation during firing. If this transform is in
+     *  accumulate mode, the angle value is accumulated for each firing.
+     */
     public TypedIOPort angle;
    
-    public Parameter initialAngle; 
+
+    /** The initial angle of rotation
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
+    public Parameter initialAngle;
+
+    /** The x component of the direction of the axis of rotation
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
     public Parameter axisDirectionX;
+    
+
+    /** The y component of the direction of the axis of rotation
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 1.0.
+     */
     public Parameter axisDirectionY;
+    
+
+    /** The z component of the direction of the axis of rotation
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
     public Parameter axisDirectionZ;
     
+    /** The x component of the pivot of the axis of rotation
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
     public Parameter baseX;
+    
+
+    /** The y component of the pivot of the axis of rotation
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
     public Parameter baseY;
+    
+
+    /** The z component of the pivot of the axis of rotation
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
     public Parameter baseZ;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Connect other Java3D nodes as children of the encapsulated node in 
+     *  this actor
+     *  @param node The child Java3D node.
+     */
+    public void addChild(Node node) {
+        _bottomTranslate.addChild(node);
+    }
     
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
@@ -110,11 +157,56 @@ public class Rotate extends Transform {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Rotate newobj = (Rotate)super.clone(workspace);
+        newobj.angle = (TypedIOPort) newobj.getPort("angle");
+        newobj.initialAngle = (Parameter) newobj.getAttribute("initialAngle");
+        newobj.axisDirectionX = (Parameter) newobj.getAttribute("axisDirectionX");
+        newobj.axisDirectionY = (Parameter) newobj.getAttribute("axisDirectionY");
+        newobj.axisDirectionZ = (Parameter) newobj.getAttribute("axisDirectionZ");
+        newobj.baseX = (Parameter) newobj.getAttribute("baseX");
+        newobj.baseY = (Parameter) newobj.getAttribute("baseY");
+        newobj.baseZ = (Parameter) newobj.getAttribute("baseZ");
         return newobj;
     }
     
+    /** Change the rotation angle depending on the value given in the input port
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
+    public void fire() throws IllegalActionException {
+        if (angle.getWidth() != 0) {
+            if (angle.hasToken(0)) {
+                System.out.println("get angle");
+                double in = ((DoubleToken)angle.get(0)).doubleValue();
+                double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
+                _xAxis = ((DoubleToken) axisDirectionX.getToken()).doubleValue();
+                _yAxis = ((DoubleToken) axisDirectionY.getToken()).doubleValue();
+                _zAxis = ((DoubleToken) axisDirectionZ.getToken()).doubleValue();
+        
+                Quat4d quat = new Quat4d();
+                if (_isAccumulating()) {
+                    _accumulatedAngle = in + _accumulatedAngle;
+                    quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,_accumulatedAngle));
+                } else {
+                    quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,in + originalAngle));
+                }
+                _rotation.set(quat);
+                _middleRotate.setTransform(_rotation);
+            }
+        }
+    }
     
-    /**
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor TransformGroup
+     *  @return the Java3D TransformGroup
+     */
+    public Node getNodeObject() {
+        return (Node) _topTranslate;
+    }
+
+    
+    /** Setup the initial rotation
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     public void initialize() throws IllegalActionException {
 
@@ -125,7 +217,11 @@ public class Rotate extends Transform {
         double _baseY = ((DoubleToken) baseY.getToken()).doubleValue();
         double _baseZ = ((DoubleToken) baseZ.getToken()).doubleValue();
         double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
-
+        
+   	    _accumulatedAngle = originalAngle; 
+        
+   	    _rotation = new Transform3D();
+   	    
         _topTranslate = new TransformGroup();
         _middleRotate = new TransformGroup();
         _middleRotate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -147,36 +243,6 @@ public class Rotate extends Transform {
         _middleRotate.addChild(_bottomTranslate);
     }
     
-    /**
-     */
-    public void fire() throws IllegalActionException {
-        if (angle.getWidth() != 0) {
-            if (angle.hasToken(0)) {
-                double in = ((DoubleToken)angle.get(0)).doubleValue();
-                double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
-                _xAxis = ((DoubleToken) axisDirectionX.getToken()).doubleValue();
-                _yAxis = ((DoubleToken) axisDirectionY.getToken()).doubleValue();
-                _zAxis = ((DoubleToken) axisDirectionZ.getToken()).doubleValue();
-        
-                Quat4d quat = new Quat4d();
-                quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,in+originalAngle));
-                _rotation.set(quat);
-                _middleRotate.setTransform(_rotation);
-            }
-        }
-    }
-    
-    /**
-     */
-    public void addChild(Node node) {
-        _bottomTranslate.addChild(node);
-    }
-    
-    /**
-     */
-    public Node getNodeObject() {
-        return (Node) _topTranslate;
-    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -191,4 +257,5 @@ public class Rotate extends Transform {
     private TransformGroup _middleRotate;
     private TransformGroup _bottomTranslate;
     private Transform3D _rotation;
+    private double _accumulatedAngle;
 }

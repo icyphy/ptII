@@ -108,6 +108,8 @@ public class SphereActor extends Shaded3DActor {
     ////                         protected methods                 ////
 
     /** Create the shape and appearance of the encapsulated sphere
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
@@ -120,6 +122,8 @@ public class SphereActor extends Shaded3DActor {
 
     /**  Return the value of the radius parameter
      *  @return the radius of the sphere
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getRadius() throws IllegalActionException {
         return ((DoubleToken) radius.getToken()).doubleValue();

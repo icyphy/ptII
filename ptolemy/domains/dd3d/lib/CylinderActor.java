@@ -103,8 +103,8 @@ public class CylinderActor extends Shaded3DActor {
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a Java3D sphere.
-     *  @return the Java3D Sphere
+     *  node for this actor is a Java3D Cylinder.
+     *  @return the Java3D Cylinder
      */    
     public Node getNodeObject() {
         return (Node) containedNode;
@@ -113,7 +113,9 @@ public class CylinderActor extends Shaded3DActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated sphere
+    /** Create the shape and appearance of the encapsulated cylinder
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
        super._createModel();
@@ -128,6 +130,8 @@ public class CylinderActor extends Shaded3DActor {
     
     /** Return the value of the radius parameter
      *  @return the radius of the cylinder
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getRadius() throws IllegalActionException {
         return ((DoubleToken) radius.getToken()).doubleValue();
@@ -135,6 +139,8 @@ public class CylinderActor extends Shaded3DActor {
     
     /** Return the value of the height parameter
      *  @return the height of the cylinder
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getHeight() throws IllegalActionException  {
         return ((DoubleToken) height.getToken()).doubleValue();

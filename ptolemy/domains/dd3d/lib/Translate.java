@@ -35,7 +35,6 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
-import ptolemy.domains.dt.kernel.DTDebug;
 import ptolemy.domains.dd3d.kernel.*;
 
 import javax.media.j3d.*;
@@ -75,17 +74,43 @@ public class Translate extends Transform {
 	    initialXTranslation = new Parameter(this, "xTranslation", new DoubleToken(0.0));
   	    initialYTranslation = new Parameter(this, "yTranslation", new DoubleToken(0.0));
   	    initialZTranslation = new Parameter(this, "zTranslation", new DoubleToken(0.0));
+  	    
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
+    /** The amount of translation in the x-axis during firing. If this transform
+     *  is in accumulate mode, the translation value is accumulated for each firing.
+     */
     public TypedIOPort xTranslate;
+    
+    /** The amount of translation in the y-axis during firing. If this transform
+     *  is in accumulate mode, the translation value is accumulated for each firing.
+     */
     public TypedIOPort yTranslate;
+    
+    /** The amount of translation in the z-axis during firing. If this transform
+     *  is in accumulate mode, the translation value is accumulated for each firing.
+     */
     public TypedIOPort zTranslate;
     
+    /** The initial translation in the x-axis
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
     public Parameter initialXTranslation;
+    
+    /** The initial translation in the y-axis
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
     public Parameter initialYTranslation;
+    
+    /** The initial translation in the z-axis
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is 0.0.
+     */
     public Parameter initialZTranslation;
     
     
@@ -110,19 +135,21 @@ public class Translate extends Transform {
         return newobj;
     }
  
-    /**
+    /** Check the input ports for translation inputs.  Convert the translation
+     *  tokens into a Java3D transformation.
      */
     public void fire() throws IllegalActionException {
         boolean applyTransform = false;
         double xOffset = _initialXTranslation;
         double yOffset = _initialYTranslation;
         double zOffset = _initialZTranslation;
+        boolean isAccumulating = _isAccumulating();
         
         if (xTranslate.getWidth() != 0) {
             if (xTranslate.hasToken(0)) {
                 double in = ((DoubleToken) xTranslate.get(0)).doubleValue();
                 applyTransform = true;
-                xOffset = in + _initialXTranslation;
+                xOffset = xOffset + in;
             }
         }
         
@@ -130,7 +157,7 @@ public class Translate extends Transform {
             if (yTranslate.hasToken(0)) {
                 double in = ((DoubleToken) yTranslate.get(0)).doubleValue();
                 applyTransform = true;
-                yOffset = in + _initialYTranslation;
+                yOffset = yOffset + in;
             }
         }
         
@@ -138,9 +165,19 @@ public class Translate extends Transform {
             if (zTranslate.hasToken(0)) {
                 double in = ((DoubleToken) zTranslate.get(0)).doubleValue();
                 applyTransform = true;
-                zOffset = in + _initialZTranslation;
+                zOffset = zOffset + in;
             }
         }
+        
+        if (isAccumulating) {
+            xOffset = xOffset + _accumulatedX - _initialXTranslation;
+            _accumulatedX = xOffset;
+            yOffset = yOffset + _accumulatedY - _initialYTranslation;
+            _accumulatedY = yOffset;
+            zOffset = zOffset + _accumulatedZ - _initialZTranslation;
+            _accumulatedZ = zOffset;
+        }
+
         
         if (applyTransform) {
             Transform3D transform = new Transform3D();
@@ -150,7 +187,9 @@ public class Translate extends Transform {
         
     }
  
-    /**
+    /** Setup the initial translation.
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */   
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -161,6 +200,10 @@ public class Translate extends Transform {
         Transform3D transform = new Transform3D();
 	    transform.setTranslation(new Vector3d(_initialXTranslation,_initialYTranslation,_initialZTranslation));
         transformNode.setTransform(transform);
+
+   	    _accumulatedX = 0.0;
+  	    _accumulatedY = 0.0;
+  	    _accumulatedZ = 0.0;
     }
 
     
@@ -171,4 +214,7 @@ public class Translate extends Transform {
     private double _initialXTranslation;
     private double _initialYTranslation;
     private double _initialZTranslation;
+    private double _accumulatedX;
+    private double _accumulatedY;
+    private double _accumulatedZ;
 }

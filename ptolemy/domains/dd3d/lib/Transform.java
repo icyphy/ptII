@@ -1,4 +1,4 @@
-/* An actor that transforms the input 3D shape
+/* An abstract base class for transforming input 3D shape
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -44,10 +44,11 @@ import javax.vecmath.*;
 //////////////////////////////////////////////////////////////////////////
 //// Transform
 
-/** Conceptually, this actor takes 3D geometry in its input and produces a translate
-version in its output. In reality, this actor encapsulates a Java3D TransformGroup
-which is converted into a node in the resulting Java3D scene graph. This actor will
-only have meaning in the DD3D domain.
+/** An abstract base class for a transform operator of DD3D shapes. This actor
+will only have meaning in the DD3D domain.
+
+The parameter <i>accumulate</i> determines whether transformations are 
+accumulated or reset during firing.
 
 @author C. Fong
 */
@@ -72,13 +73,27 @@ public class Transform extends DD3DActor {
 	    output = new TypedIOPort(this, "output");
 	    output.setOutput(true);
 	    output.setTypeEquals(BaseType.GENERAL);
+	    
+	    accumulate = new Parameter(this, "accumulate", new BooleanToken(false));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
+    /** The input port for connecting to other DD3D Actors in
+     *  the scene graph
+     */
     public TypedIOPort input;
+    
+    /** The output port for connecting to other DD3D Actors in
+     *  the scene graph
+     */
     public TypedIOPort output;
+    
+    /** Boolean value determining whether transformations are 
+     *  accumulated or reset for each firing
+     */
+    public Parameter accumulate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -103,13 +118,15 @@ public class Transform extends DD3DActor {
         return newobj;
     }
     
-    /**
-     */
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor is a Java3D TransformGroup.
+     *  @return the Java3D TransformGroup
+     */    
     public Node getNodeObject() {
         return (Node) transformNode;
     }
 
-    /**
+    /** Setup the transform object
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -117,6 +134,18 @@ public class Transform extends DD3DActor {
 	    transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
     }
     
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /**  Return the value of the <i>accumulate</i> parameter
+     *  @return the accumlation mode
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
+    protected boolean _isAccumulating() throws IllegalActionException {
+        return ((BooleanToken) accumulate.getToken()).booleanValue();
+    }
     
 
     ///////////////////////////////////////////////////////////////////

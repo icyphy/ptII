@@ -49,6 +49,11 @@ This actor produces a generalized cylindrical shape in the DD3D domain.
 The output port is used to connect this actor to the Java3D scene
 graph. This actor will only have meaning in the DD3D domain.
 
+The parameter <i>polygon</i> determines the polygonal shape of the base
+of this generalized cylinder. One will need to enter an array of coordinates
+in the X-Y plane to specify the polygonal shape for the base. The parameter
+<i>thickness</i> determines the thickness of the generalized cylinder
+
 @author C. Fong
 */
 
@@ -86,7 +91,7 @@ public class PolyCylinder extends Shaded3DActor {
     /** The polygonal shape of the base
      *  This parameter should contain a ArrayToken with an even number
      *   of DoubleToken values.
-     *  The default value of this parameter is the DoubleToken 1.0
+     *  The default shape for this polygon is a triangle
      */
     public Parameter polygon;
     
@@ -127,7 +132,9 @@ public class PolyCylinder extends Shaded3DActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated sphere
+    /** Create the shape and appearance of the encapsulated generalized cylinder
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
     
@@ -209,10 +216,15 @@ public class PolyCylinder extends Shaded3DActor {
         containedNode.setGeometry(gi.getGeometryArray());
     }
     
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Get the array that contains the 2D polygonal representation
      *  of the base of this cylinder
      *  @return the float[] array that contains the 2D polygonal vertex coordinates
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private float[] _getPolygon() throws IllegalActionException {
         ArrayToken arrayToken = ((ArrayToken) polygon.getToken());
@@ -232,6 +244,8 @@ public class PolyCylinder extends Shaded3DActor {
 
     /** Get the thickness of this generalized cylinder
      *  @return the thickness of this generalized cylinder
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getThickness() throws IllegalActionException  {
         return ((DoubleToken) thickness.getToken()).doubleValue();
@@ -239,6 +253,8 @@ public class PolyCylinder extends Shaded3DActor {
     
     /** Get the number of vertices in the 2D polygonal base of this generalized cylinder
      *  @return the number of vertices in the base polygon
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private int _getVertexCount() throws IllegalActionException {
         ArrayToken arrayToken = ((ArrayToken) polygon.getToken());

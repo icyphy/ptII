@@ -1,4 +1,4 @@
-/* A DD3D Shape consisting of a sphere
+/* An abstract base class for shaded DD3D Actors
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -45,7 +45,12 @@ import javax.vecmath.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Shaded3DActor
-/**
+/** An abstract base class for DD3D Actors that have material and color
+properties. The parameters <i>redComponent</i>, <i>greenComponent</i>,
+<i>blueComponent</i> determine the color of the object.  The parameter
+<i>shininess</i> determines the Phong exponent used in calculating
+the shininess of the object. 
+
 @author C. Fong
 */
 public class Shaded3DActor extends DD3DActor {
@@ -71,15 +76,13 @@ public class Shaded3DActor extends DD3DActor {
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
         
         _color = new Color3f(1.0f,1.0f,1.0f);
-        //_material = new Material();
-        //_material.setCapability(Material.ALLOW_COMPONENT_WRITE);
-        //_appearance = new Appearance();
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The output port
+    /** The output port for connecting to other DD3D Actors in
+     *  the scene graph
      */
     public TypedIOPort output;
     

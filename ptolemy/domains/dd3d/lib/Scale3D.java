@@ -123,7 +123,7 @@ public class Scale3D extends Transform {
         return newobj;
     }
 
-    /**
+    /** Setup the transformation needed for scaling
      */    
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -135,18 +135,33 @@ public class Scale3D extends Transform {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Get the scaling factor in the x-axis
+     *  @return the scaling factor in the x-axis
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
     private double _getScaleX() throws IllegalActionException {
         double factor = ((DoubleToken) scaleFactor.getToken()).doubleValue();
         double xFactor = ((DoubleToken) xScale.getToken()).doubleValue();
         return factor * xFactor;
     }
-    
+
+    /** Get the scaling factor in the y-axis
+     *  @return the scaling factor in the y-axis
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
     private double _getScaleY() throws IllegalActionException {
         double factor = ((DoubleToken) scaleFactor.getToken()).doubleValue();
         double yFactor = ((DoubleToken) yScale.getToken()).doubleValue();
         return factor * yFactor;
     }
     
+    /** Get the scaling factor in the z-axis
+     *  @return the scaling factor in the z-axis
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
     private double _getScaleZ() throws IllegalActionException {
         double factor = ((DoubleToken) scaleFactor.getToken()).doubleValue();
         double zFactor = ((DoubleToken) zScale.getToken()).doubleValue();

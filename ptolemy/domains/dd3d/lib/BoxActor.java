@@ -47,7 +47,10 @@ import javax.vecmath.*;
 //// BoxActor
 /** This actor contains the geometry and appearance specifications for a DD3D
 box.  The output port is used to connect this actor to the Java3D scene
-graph. This actor will only have meaning in the DD3D domain.
+graph. This actor will only have meaning in the DD3D domain. 
+
+    The parameters <i>xLength</i>, <i>yHeight</i>, and <i>zWidth</i> determine
+the dimensions of box.  
 
 @author C. Fong
 */
@@ -123,11 +126,13 @@ public class BoxActor extends Shaded3DActor {
     ////                         protected methods                 ////
 
     /** Create the shape and appearance of the encapsulated box
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        containedNode = new Box((float)_getLength(),(float) _getWidth(),(float) _getHeight(),
-                                 Box.GENERATE_NORMALS,_appearance);
+        containedNode = new Box((float)_getLength(),(float) _getWidth(),
+                   (float) _getHeight(), Box.GENERATE_NORMALS,_appearance);
     }
     
     
@@ -136,6 +141,8 @@ public class BoxActor extends Shaded3DActor {
 
     /** Return the value of the length parameter
      *  @return the length of the box
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getLength() throws IllegalActionException {
         double value = ((DoubleToken) xLength.getToken()).doubleValue();
@@ -145,6 +152,8 @@ public class BoxActor extends Shaded3DActor {
     
     /** Return the value of the width parameter
      *  @return the width of the box
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getWidth() throws IllegalActionException {
         double value = ((DoubleToken) yHeight.getToken()).doubleValue();
@@ -153,6 +162,8 @@ public class BoxActor extends Shaded3DActor {
 
     /** Return the value of the height parameter
      *  @return the height of the box
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getHeight() throws IllegalActionException  {
         double value = ((DoubleToken) zWidth.getToken()).doubleValue();

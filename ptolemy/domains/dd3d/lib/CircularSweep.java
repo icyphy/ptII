@@ -44,7 +44,16 @@ import javax.vecmath.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircularSweep
-/**
+/** This actor contains the geometry and appearance specifications for a DD3D
+circularly swept object.  The output port is used to connect this actor to the
+Java3D scene graph. This actor will only have meaning in the DD3D domain. 
+
+    The parameter <i>polyline</i> determines the silhouette of the object. One
+will need to enter an array of coordinates in the X-Y plane to specify the 
+contour for this silhouette.  The parameter <i>angleSpan</i> determines the
+angle in which the silhouette is swept.  The parameter <i>slices</i> determines
+the number of polygonal slices used in the sweep.
+
 
 @author C. Fong
 */
@@ -73,6 +82,7 @@ public class CircularSweep extends Shaded3DActor {
         tokenArray[8] = new DoubleToken(0.5);
         tokenArray[9] = new DoubleToken(0.25);
       	ArrayToken defaultPolygon = new ArrayToken(tokenArray);
+      	
         polyline = new Parameter(this, "polyline", defaultPolygon);
         polyline.setTypeEquals(new ArrayType(BaseType.ANY));
         angleSpan = new Parameter(this, "angleSpan", new DoubleToken(2*Math.PI));
@@ -128,6 +138,8 @@ public class CircularSweep extends Shaded3DActor {
     ////                         protected methods                 ////
 
     /** Create the shape and appearance of the encapsulated swept surface
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
     
@@ -205,6 +217,8 @@ public class CircularSweep extends Shaded3DActor {
 
     /** Return the polyline
      *  @return the polyline
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private float[] _getPolyline() throws IllegalActionException {
         ArrayToken arrayToken = ((ArrayToken) polyline.getToken());
@@ -220,6 +234,8 @@ public class CircularSweep extends Shaded3DActor {
     
     /** Return the vertex count
      *  @return the vertex count
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private int _getVertexCount() throws IllegalActionException {
         ArrayToken arrayToken = ((ArrayToken) polyline.getToken());
@@ -230,6 +246,8 @@ public class CircularSweep extends Shaded3DActor {
 
     /** Return the number of slices
      *  @return the number of slices
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private int _getSlices() throws IllegalActionException {
        return ((IntToken) slices.getToken()).intValue();
@@ -237,6 +255,8 @@ public class CircularSweep extends Shaded3DActor {
     
     /** Return the angle span of the sweep
      *  @return the angle span of the sweep
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getAngleSpan() throws IllegalActionException  {
         return ((DoubleToken) angleSpan.getToken()).doubleValue();

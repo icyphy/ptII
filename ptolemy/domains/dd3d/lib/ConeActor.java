@@ -48,6 +48,7 @@ import javax.vecmath.*;
 cone.  The output port is used to connect this actor to the Java3D scene
 graph. This actor will only have meaning in the DD3D domain.
 
+
 @author C. Fong
 */
 public class ConeActor extends Shaded3DActor {
@@ -71,7 +72,7 @@ public class ConeActor extends Shaded3DActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The height of the base of the cone
+    /** The height of the cone
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is 0.5
      */
@@ -113,14 +114,19 @@ public class ConeActor extends Shaded3DActor {
     ////                         protected methods                 ////
 
     /** Create the shape and appearance of the encapsulated cone
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        containedNode = new Cone((float)_getRadius(),(float) _getHeight(),Cone.GENERATE_NORMALS,_appearance);
+        containedNode = new Cone((float)_getRadius(),(float) _getHeight(),
+                               Cone.GENERATE_NORMALS,_appearance);
     }
 
     /**  Return the value of the radius parameter
      *  @return the radius of the base of the cone
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getRadius() throws IllegalActionException {
         return ((DoubleToken) radius.getToken()).doubleValue();
@@ -128,6 +134,8 @@ public class ConeActor extends Shaded3DActor {
     
     /**  Return the value of the height parameter
      *  @return the height of the cone
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     private double _getHeight() throws IllegalActionException  {
         return ((DoubleToken) height.getToken()).doubleValue();
