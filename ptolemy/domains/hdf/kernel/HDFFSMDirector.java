@@ -72,85 +72,75 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMDirector
 /**
-<h1>HDF overview</h1>
-Read [1].
-<h1>Class comments</h1>
-An HDFFSMDirector governs the execution of the finite state
-machine in heterochronous dataflow (HDF) model. This director should be used
-as the director of a finite state machine when the finite state
- machine refines a heterochronous dataflow (HDF) actor. When this
-class is the director, it is necessary to also use HDFFSMActor instead
-of HDFFSMActor. Note that there
-is currently no HDF director. An SDFDirector should be used as the
-director of an HDF modal, and an exception will be thrown if one
-attempts to use a different director.
+An HDFFSMDirector governs the execution of a finite state machine 
+(FSM) in a heterochronous dataflow (HDF) or synchronous dataflow 
+(SDF) model according to the *charts [1] semantics. *charts is a 
+family of models of computation that specifies an operational 
+semantics for hierarchical FSMs composed with multiple concurrency 
+models.
 <p>
-<h1>Usage</h1>
-The toplevel modal must be HDF. Note that SDF is a special case of
-HDF, so the toplevel modal is allowed to be SDF. The director of the
-toplevel model must be an instance of SDFDirector, or else an exception
-will occur. The toplevel HDF model is constructed just like an SDF
-model, except that it may contain HDF actors as well as SDF actors.
-All HDF actors must refine to an FSM with this class as the FSM's
-local director. All states in the FSM must refine to either another
-FSM, an HDF diagram or a SDF diagram. There is no constraint on the
-number of levels in the hierarchy.
+This director should be used as the director of an FSM when the FSM 
+refines a heterochronous dataflow (HDF) or SDF actor. 
 <p>
-Currently, constructing the FSM is somewhat akward. To construct an FSM,
-first create a TypedCompositeActor in the HDF diagram to contain
+<b>Usage</b>
+<p>
+Hierarchical compositions of HDF with FSMs can be quite complex to 
+represent textually, even for simple models. It is therefore 
+recomended that a graphical model editor like Vergil be used to 
+construct the model.
+<p>
+The toplevel modal must be HDF or SDF. Otherwise an exception
+will occur. An HDF actor that refines to an FSM will use this 
+class as the FSM's local director. All states in the FSM must 
+refine to either another FSM, an HDF model or a SDF model. There 
+is no constraint on the number of levels in the hierarchy.
+<p>
+Currently, constructing the FSM is somewhat akward. To construct 
+an FSM, first create a TypedCompositeActor in the HDF model to contain
 the FSM. This TypedCompositeActor will henceforth be refered to as
-"the HDF actor." Create an HDFFSMDirector with the HDF actor as its
-container. Create an HDFFSMActor actor with the HDF actor as
-its container. Create one TypedComposite actor for each state
-in the FSM, with the HDF actor as its container. This
-TypedComposite actor is henceforth refered to as "the refinement."
-Create the necessary ports on each refinement
-such that each refining state actor contains the same number and
-type of ports (typically input or output TypedIOPort) with the
-same name as the corresponding ports of the HDF actor. Create a
-relation for each port of the HDF actor. For each relation, link
-all ports with the same name to the relation. (FIXME: consider
-having the director do this automatically) (FIXME: Curently,
-the ports of a refinement must be of type SDFIOPort)
+"the opaque HDF actor." Create an HDFFSMDirector with the opaque 
+HDF actor as its container. Create an HDFFSMActor actor with the 
+opaque HDF actor as its container. Create one TypedComposite actor 
+for each state in the FSM, with the opaque HDF actor as its container. 
+This TypedComposite actor is henceforth refered to as "the refinement."
+Create the necessary ports on each refinementsuch that each 
+refining state actor contains the same number and type of ports 
+(typically input or output TypedIOPort) with the same name as the 
+corresponding ports of the HDF actor. Zero-rate ports do not need 
+to be explicitly connected. Create arelation for each port of the 
+HDF actor. For each relation, link all ports with the same name to 
+the relation. 
 <p>
 The FSM diagram itself is constructed inside the HDFFSMActor.
-To construct the FSM diagram, create an instance of State, for
+To construct the FSM diagram, create an instance of State for
 each state in the FSM, with the HDFFSMActor as its
-container. The parameter "refinementName" of each State should
+container. The parameter <i>refinementName</i> of each State should
 be set to the name of the refinement.
-Use the "initialStateName" parameter of HDFFSMActor to
+<p>
+Use the <i>initialStateName</i> parameter of HDFFSMActor to
 set the initial state. Create an instance of Transition for
 each transition in the FSM, with the HDFFSMActor as its container.
-The guard expression of a transition is set by using the
-setGuardExpression() method of Transition, with a guard expression
-string as the parameter.
+The guard expression of a transition is represented by the 
+<i>guardExpression</i> parameter of Transition.
+<p>
 The guard expression is evaluated only after a "Type B firing" [1],
 which is the last firing of the HDF actor in the current iteration
-of the current HDF schedule.
-A state transition (possibly back to the current state) will occurr
+of the current HDF schedule. A state transition will occurr
 if the guard expression evaluates to true after a "Type B firing."
 <p>
-<h1>Guard expression syntax</h1>
-The guard expressions use the Ptolemy II expression language. Currently,
-the only variables allowed in the guard expressions are variables
-containing tokens transfered through the input or output ports of
-the HDF actor. Following the syntax of [1], if the HDF actor contains
-an input port called dataIn, then use dataIn$0 in the guard
-expression to reference the token most recently transfered through
-port dataIn. Use dataIn$1 to reference the next most recent token,
-dataIn$2 to reference the next most recent token, and so on. By
-default, only the most recently transfered token is allowed.
-In order to be able to reference up to the m'th most recently
-transfered token (dataIn$m), call the setGuardTokenHistory()
-method with m as the parameter. (FIXME: m is currently limited to 1)
-
-<H1>References</H1>
-
+The state transition guard expressions use the Ptolemy II 
+expression language. The expression may include references to 
+variables contained by HDF controller. See the HDFFSMActor 
+documentation more more details.
+<p>
+<b>References</b>
+<p>
 <OL>
 <LI>
 A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
 Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 1998.</LI>
+</ol>
 
 @author Brian K. Vogel
 @version: $Id$
@@ -197,24 +187,25 @@ public class HDFFSMDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the values of input variables in the mode controller. If the refinement of the current state of the mode controller
-     *  is ready to fire, then fire the current refinement. If there is exactly one
-     *  non-preemptive transition enabled then it is chosen and the choice
-     *  actions contained by the transition are executed. Note that choice actions are not really needed (but are allowed) in HDF with FSMs, since a the current refinement can be used to produce output instead of a choice action.
+    /** Set the values of input variables and the input array in the 
+     *  mode controller. If the refinement of the current state of 
+     *  the mode controller is ready to fire, then fire the current 
+     *  refinement. 
      *
-     *  @exception IllegalActionException If there is more than one
-     *   transition enabled, or there is no controller, or thrown by any
-     *   choice action.
+     *  @exception IllegalActionException If there is no controller.
      */
     public void fire() throws IllegalActionException {
-        if(_debug_info) System.out.println(getName() + " fire() invoked.");
+        if(_debug_info) System.out.println(getName() + 
+					   " fire() invoked.");
         HDFFSMActor ctrl = (HDFFSMActor)getController();
         ctrl.setInputVariables();
         State st = ctrl.currentState();
 	Actor ref = ctrl.currentState().getRefinement();
         _fireRefinement = false;
         if (ref != null) {
-	  if(_debug_info) System.out.println(getName() + " fire(): refinement is " + ((CompositeActor)ref).getName());
+	  if(_debug_info) System.out.println(getName() + 
+			     " fire(): refinement is " + 
+			     ((CompositeActor)ref).getName());
 	  // Note that we do not call refinement.prefire() in 
 	  // this.prefire(). This is because transferInputs() is
 	  // called by the composite actor in fire(), and 
@@ -223,27 +214,25 @@ public class HDFFSMDirector extends FSMDirector {
 	  // the current refinement.
 	  _fireRefinement = ref.prefire();
         }
-	if(_debug_info) System.out.println(getName() + " fire(): refinement is ready to fire = " + _fireRefinement);
+	if(_debug_info) System.out.println(getName() + 
+               " fire(): refinement is ready to fire = " + 
+					   _fireRefinement);
         if (_fireRefinement) {
-            if(_debug_info) System.out.println(getName() + " firingrefinement");
+            if(_debug_info) System.out.println(getName() + 
+					" firingrefinement");
 	    // Fire the refinement.
             ref.fire();
             ctrl.setInputsFromRefinement();
         }
-	// FIXME: what does this do?
         ctrl.chooseTransition(st.nonpreemptiveTransitionList());
         return;
     }
 
     /** Invoke the initialize() method of each deeply contained actor.
-     *  Initialize the current firing count in the current
-     *  iteration of the current schedule of the executive
-     *  director. Note that the executive director will
-     *  be an instance of SDFDirector.
      *  This method should be invoked once per execution, after the
      *  initialization phase, but before any iteration.  Since type
-     *  resolution has been completed, the initialize() method of a contained
-     *  actor may produce output or schedule events.
+     *  resolution has been completed, the initialize() method of 
+     *  a contained actor may produce output or schedule events.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -260,6 +249,7 @@ public class HDFFSMDirector extends FSMDirector {
 
     /** Return a new receiver of a type compatible with this director.
      *  This returns an instance of SDFReceiver.
+     *
      *  @return A new SDFReceiver.
      */
     public Receiver newReceiver() {
@@ -267,103 +257,55 @@ public class HDFFSMDirector extends FSMDirector {
     }
 
     /** Return true if the mode controller is ready to fire.
-     *  If this model is not at the top level and the current
-     *  time of this director lags behind that of the executive director,
-     *  update the current time to that of the executive director. 
      *
      *  @exception IllegalActionException If there is no controller.
      */
     public boolean prefire() throws IllegalActionException {
-	if(_debug_info) System.out.println(getName() + " prefire() invoked.");
-        Nameable container = getContainer();
-        if (!(container instanceof Actor)) return false;
-        Actor cont = (Actor)container;
-        Director exeDir = cont.getExecutiveDirector();
-        HDFFSMActor ctrl = (HDFFSMActor)getController();
-        Actor ref = ctrl.currentState().getRefinement();
-	// Note: current time stuff is not needed for HDF.
-        if (exeDir != null) {
-            double outTime = exeDir.getCurrentTime();
-            if (getCurrentTime() < outTime) {
-                setCurrentTime(outTime);
-            }
-        }
-        // Otherwise there's no notion of time.
-
-	// FIXME: move this code into the fire() method.
-        //_fireRefinement = false;
-        //if (ref != null) {
-	//  if(_debug_info) System.out.println(getName() + " prefire(): refinement is " + ((CompositeActor)ref).getName());
-	//  _fireRefinement = ref.prefire();
-        //}
-	//if(_debug_info) System.out.println(getName() + " prefire(): refinement is ready to fire = " + _fireRefinement);
+	if(_debug_info) System.out.println(getName() + 
+				  " prefire() invoked.");
         return getController().prefire();
     }
 
 
     /** Return true if the mode controller wishes to be scheduled for
      *  another iteration. Postfire the refinement of the current state
-     *  of the mode controller.
-     *  If a type B firing has occured and exactly
+     *  of the mode controller. If a type B firing has occured and exactly
      *  one transition is enabled, then change state to the destination
      *  state of the enabled trasition. Note that a type B firing is
-     *  the last firing of an actor in an iteration of the graph in
+     *  the last firing of an actor in an iteration of the HDF graph in
      *  which it is embedded.
-
- If a state change occurs, change
-     *  the port rates of the HDF actor (the container of this director)
-     *  to be consistant with the port rates of the new state and
-     *  tell the executive director (an SDFDirector) to invalidate
-     *  its current schedule and compute a new schedule.
+     *  <p>
+     *  If a state change occurs to a refinement with different port 
+     *  rates from the previous refinement, change the port rates of 
+     *  the container of this director to be consistant with the port 
+     *  rates of the new state's refinement and tell the HDF director 
+     *  to invalidate its current schedule and compute a new schedule.
+     *
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
-     *  @exception IllegalActionException If thrown by any commit action
-     *   or there is no controller.
+     *  @exception IllegalActionException If a refinement throws it or
+     *   if there is no controller.
      */
-    // FIXME: This method is WAY too long. Consider breaking it
-    // into several smaller methods to make the code more
-    // readable.
     public boolean postfire() throws IllegalActionException {
-
         HDFFSMActor ctrl = (HDFFSMActor)getController();
 	State curState = ctrl.currentState();
 	// Get the current refinement actor.
 	TypedActor currentRefinement = 
 	    curState.getRefinement();
-
 	if (currentRefinement == null) {
 	    throw new IllegalActionException(this,
-                    "Can't postfire because current refinement is null.");
+             "Can't postfire because current refinement is null.");
 	}
-	// For debugging.
 	if(_debug_info) {
-	    TypedCompositeActor ta = (TypedCompositeActor)curState.getRefinement();
-	    System.out.println(getName() + " :  postfire(): firing " +
-                    "current refinment: " +
-                    ta.getFullName());
-	    // Get all of its input ports.
-	    Iterator refineInPorts = ta.inputPortList().iterator();
-	    while (refineInPorts.hasNext()) {
-		IOPort refineInPort =
-			(IOPort)refineInPorts.next();
-		if (_debug_info) System.out.println(getName() + " :  postfire(): Current port of refining actor " +
-                        refineInPort.getFullName());
-		if (_debug_info) System.out.println(getName() + " :  postfire(): token consumption rate = " +
-                        _getTokenConsumptionRate(refineInPort));
-	    }
-	    System.out.println(getName() + " :  postfire(): firing " +
-                    "current refinment right now: " +
-                    ((CompositeActor)(curState.getRefinement())).getFullName());
+	    _debugPostfire(curState);
 	}
 	// Postfire the current refinement.
 	boolean postfireReturn = currentRefinement.postfire();
-
 	// Increment current firing count. This is the number of
 	// times the current refining HDF actor has been fired
 	// in the current iteration of the current static schedule
 	// of the SDF/HDF graph containing this FSM.
 	_firingsSoFar++;
-
 	// Check if the current iteration of the HDF/SDF graph in
 	// which this FSM refines has completed yet. The
 	// iteration is complete iff the current refinement has
@@ -388,50 +330,39 @@ public class HDFFSMDirector extends FSMDirector {
 	    // The current refinement has been fired the number
 	    // of times speified by the current static schedule.
 	    // A state transition can now occur.
-
 	    // Set firing count back to zero for next iteration.
 	    _firingsSoFar = 0;
-
-	    ///////////////////////////////////////////////////////////////
-	    // FIXME: 
 	    Transition lastChosenTr = ctrl._getLastChosenTransition();
-	    //Transition lastChosenTr = ctrl._lastChosenTransition;
-	    
 	    if (lastChosenTr  == null) {
 		// There is no enabled transition, so remain in the
 		// current state.
-		if (_debug_info) System.out.println(getName() + " :  postfire(): Making a state transition back " +
-                        "to the current state. ");
+		if (_debug_info) System.out.println(getName() + 
+                  " :  postfire(): Making a state transition back " +
+                                             "to the current state. ");
 	    } else {
-		// Make a state transition (possibly back to the current
-		// state).
-
 		// The HDF/SDF graph in which this FSM is embedded has
 		// just finished one iteration, so make a state 
 		// transition.
-
-		if (_debug_info) System.out.println(getName() + " :  postfire(): Making a state transition. ");
+		if (_debug_info) System.out.println(getName() + 
+                     " :  postfire(): Making a state transition. ");
 		// Update the current refinement to point to the destination
 		// state of the (enabled) transition.
 		// FIXME:
 		State newState = lastChosenTr.destinationState();
 		ctrl.setCurrentState(newState);
-		if (_debug_info) System.out.println(getName() + " : postfire(): making state transition to: " + newState.getFullName());
+		if (_debug_info) System.out.println(getName() + 
+                   " : postfire(): making state transition to: " + 
+                                           newState.getFullName());
 		curState = newState;
 		// Since a state change has occured, recompute the
 		// Mapping from input ports of the modal model to
 		// their corresponding receivers of the new current
 		// state and the mode controller.
 		ctrl.setCurrentConnectionMap();
-
 		// Update the map from an input port of the modal model
 		// to the receivers of the current state.
 		_currentLocalReceiverMap =
 		    (Map)_localReceiverMaps.get(ctrl.currentState());
-
-		// execute the transition actions
-		//_takenTransition.executeTransitionActions();
-
 		// Now update the token consumption/production rates of
 		// the ports of the HDF actor refining to the FSM (this
 		// actor's container). I.e., queue a mutation with the
@@ -450,9 +381,9 @@ public class HDFFSMDirector extends FSMDirector {
 		_updateOutputTokenProductionRates(actor);
 		// Tell the scheduler that the current schedule is no
 		// longer valid.
-		if (_debug_info) System.out.println(getName() + " : invalidating " +
-                        "current schedule.");
-		// FIXME: remove this after hdf director is complete?
+		if (_debug_info) System.out.println(getName() + 
+					   " : invalidating " +
+					    "current schedule.");
 		_invalidateSchedule();
 		// Get the firing count for the HDF actor (the container
 		// of this director) in the current schedule.
@@ -460,28 +391,24 @@ public class HDFFSMDirector extends FSMDirector {
 		    _getFiringsPerSchedulIteration();
 	    }
 	} 
-	if (_debug_info) System.out.println(getName() + " :  postfire(): returning now.");
+	if (_debug_info) System.out.println(getName() + 
+			     " :  postfire(): returning now.");
         return postfireReturn;
     }
 
-    /** Create receivers and invoke the preinitialize() methods of all
-     *  actors deeply contained by the container of this director.
-     *  Propagate the consumption and production rates of the current state
-     *  out to the corresponding ports of the container of this director.
-     *  Note that in HDF, distinct current refinements may have distinct
-     *  type signatures (port rates).
-     *  This method is invoked once per execution, before any iteration,
-     *  and before the initialize() method.
+    /** Create receivers and invoke the preinitialize() methods 
+     *  of all actors deeply contained by the container of this 
+     *  director. Propagate the consumption and production rates 
+     *  of the current state out to the corresponding ports of 
+     *  the container of this director. This method is invoked 
+     *  once per execution, before any iteration, and before the 
+     *  initialize() method.
+     *
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it, or there is no controller.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-	// The above will preinitialize all actors under the control of
-	// this director. The ports of all refining actors (which contain
-	// an HDF diagram) will now have the correct type signatures.
-        //_buildLocalReceiverMaps();
-
 	// Now propagate the type signature of the current refinment (the
 	// refinement of the initial state) out to the corresponding ports
 	// of the container of this director.
@@ -490,7 +417,6 @@ public class HDFFSMDirector extends FSMDirector {
 	HDFFSMActor ctrl = (HDFFSMActor)getController();
 	// Attempt to get the initial state from the mode controller.
 	State initialState = ctrl.getInitialState();
-
 	if (_debug_info) {
 	    System.out.println(getName() + " : preinitialize(): " +
 		"initialState is " + initialState.getName());
@@ -499,8 +425,6 @@ public class HDFFSMDirector extends FSMDirector {
 	TypedCompositeActor curRefinement =
 	    (TypedCompositeActor)initialState.getRefinement();
 	if (curRefinement != null) {
-	    // FIXME: should not cast to SDFDirector.
-	    // Should also allow HDFDirector and HDFFSMDirector.
 	    Director refinementDir = curRefinement.getDirector();
 	    if (_debug_info) {
 		System.out.println(getName() + " : preinitialize(): " +
@@ -514,11 +438,15 @@ public class HDFFSMDirector extends FSMDirector {
 		    ((StaticSchedulingDirector)refinementDir).getScheduler();
 		refinmentSched.setValid(false);
 		refinmentSched.schedule();
-		if (_debug_info) System.out.println(getName() + " : preinitialize(): refinement's director : " + refinementDir.getFullName());
+		if (_debug_info) System.out.println(getName() + 
+                  " : preinitialize(): refinement's director : " + 
+				      refinementDir.getFullName());
 		
 		if (_debug_info) {
-		    CompositeActor container = (CompositeActor)getContainer();
-		    System.out.println(getName() + " : preinitialize(): Name of HDF composite acotr: " +
+		    CompositeActor container = 
+			(CompositeActor)getContainer();
+		    System.out.println(getName() + 
+                   " : preinitialize(): Name of HDF composite acotr: " +
 				       ((Nameable)container).getName());
 		}
 	    } else {
@@ -531,8 +459,9 @@ public class HDFFSMDirector extends FSMDirector {
 	    _updateOutputTokenProductionRates(curRefinement);
 	    // Tell the scheduler that the current schedule is no
 	    // longer valid.
-	    if (_debug_info) System.out.println(getName() + " : preinitialize(): invalidating " +
-                    "current schedule.");
+	    if (_debug_info) System.out.println(getName() + 
+                        " : preinitialize(): invalidating " +
+					  "current schedule.");
 	    _invalidateSchedule();
 	} else {
 	    throw new IllegalActionException(this,
@@ -541,22 +470,22 @@ public class HDFFSMDirector extends FSMDirector {
     }
 
     /** Return true if data are transferred from the input port of
-     *  the container to the ports connected to the inside of the input
-     *  port
-     // FIXME: NO.
-     and on the mode controller or the refinement of its current
-     *  state. This method will transfer all of the available tokens on each
-     *  input channel. The port
-     *  argument must be an opaque input port. If any channel of the
-     *  input port has no data, then that channel is ignored. Any token
-     *  left not consumed in the ports to which data are transferred is
-     *  discarded.
+     *  the container to the connected ports of the controller and
+     *  of the current refinement actor.
+     *  <p>
+     *  This method will transfer all of the available tokens on each
+     *  input channel. The port argument must be an opaque input port. 
+     *  If any channel of the input port has no data, then that 
+     *  channel is ignored. Any token left not consumed in the ports 
+     *  to which data are transferred is discarded.
+     *
      *  @param port The input port to transfer tokens from.
      *  @return True if data are tranferred.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      */
-    public boolean transferInputs(IOPort port) throws IllegalActionException {
+    public boolean transferInputs(IOPort port) 
+	           throws IllegalActionException {
 	if(_debug_info) System.out.println(getName() +
                 " : transferInputs() invoked");
         if (!port.isInput() || !port.isOpaque()) {
@@ -571,27 +500,26 @@ public class HDFFSMDirector extends FSMDirector {
 	// For each channel.
         for (int i = 0; i < port.getWidth(); i++) {
 	    int rate = SDFScheduler.getTokenConsumptionRate(port);
-	    if(_debug_info) System.out.println(getName() + " : transferInputs(): " + getFullName() +
+	    if(_debug_info) System.out.println(getName() + 
+                                 " : transferInputs(): " + 
+					   getFullName() +
                     ": transferInputs(): Rate of port: " +
-                    port.getFullName() + " is " + rate);
+			port.getFullName() + " is " + rate);
 	    for(int k = 0; k < rate; k++) {
 		try {
                     ptolemy.data.Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
                         if(_debug_info) {
-			    System.out.println(getName() + " : transferInputs() " + getFullName() +
-					       ": transfering input from port: " + port.getFullName() + "---");
-			    System.out.println(getName() + " : transferInputs(): token value =  " + t.toString());
+			    System.out.println(getName() + 
+                           " : transferInputs() " + getFullName() +
+			        ": transfering input from port: " + 
+                                         port.getFullName() + "---");
+			    System.out.println(getName() + 
+                            " : transferInputs(): token value =  " + 
+                                                       t.toString());
 			}
                         for (int j = 0; j < insiderecs[i].length; j++) {
                             insiderecs[i][j].put(t);
-			    // begin debug:
-			    //Receiver rec1 = insiderecs[i][j];
-			    //IOPort rec1Container = rec1.getContainer();
-			    //if(_debug_info) System.out.println("HDFFSMDirector: " + getFullName() +
-			    //" : transferInputs(): Just put token in port: " +
-				//	rec1Container.getFullName());
-			    // end debug.
                         }
 			// Sucessfully transfered data, so return true.
                         trans = true;
@@ -599,23 +527,23 @@ public class HDFFSMDirector extends FSMDirector {
 		} catch (NoTokenException ex) {
 		    // this shouldn't happen.
 		    throw new InternalErrorException(
-                            "Director.transferInputs: Internal error: " +
-                            ex.getMessage());
+                      "Director.transferInputs: Internal error: " +
+                                                    ex);
 		}
 	    }
         }
         return trans;
     }
 
-    /** Return true if transfers data from an output port of the
-     *  container to the ports it is connected to on the outside.
-     *  This method differs from the base class method in that this
-     *  method will transfer all available tokens in the receivers,
-     *  while the base class method will transfer at most one token.
-     *  This behavior is required to handle the case of non-homogeneous
-     *  opaque composite actors. The port argument must be an opaque
-     *  output port.  If any channel of the output port has no data,
-     *  then that channel is ignored.
+    /** Transfer data from an output port of the current
+     *  refinement actor to the ports it is connected to on 
+     *  the outside. This method differs from the base class 
+     *  method in that this method will transfer all available 
+     *  tokens in the receivers, while the base class method will 
+     *  transfer at most one token. This behavior is required to 
+     *  handle the case of non-homogeneous actors. The port 
+     *  argument must be an opaque output port.  If any channel 
+     *  of the output port has no data, then that channel is ignored.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
@@ -624,25 +552,29 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
-	if(_debug_info) System.out.println(getName() + " : transferOutputs() invoked on port: "
-                + port.getFullName());
+	if(_debug_info) System.out.println(getName() + 
+                  " : transferOutputs() invoked on port: "
+				      + port.getFullName());
 
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "HDFFSMDirector: transferOutputs(): port argument is not " +
-                    "an opaque output port.");
+                    "HDFFSMDirector: transferOutputs():" +
+                                "  port argument is not " +
+				   "an opaque output port.");
         }
         boolean trans = false;
         Receiver[][] insiderecs = port.getInsideReceivers();
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
                 if (insiderecs[i] != null) {
-		    if(_debug_info) System.out.println(getName() + " : transferOutputs(): insiderecs[0].length: " +
-                            insiderecs[0].length);
+		    if(_debug_info) System.out.println(getName() + 
+                    " : transferOutputs(): insiderecs[0].length: " +
+                                               insiderecs[0].length);
                     for (int j = 0; j < insiderecs[i].length; j++) {
 			while (insiderecs[i][j].hasToken()) {
                             try {
-                                ptolemy.data.Token t = insiderecs[i][j].get();
+                                ptolemy.data.Token t = 
+				    insiderecs[i][j].get();
 				if(_debug_info) System.out.println(getName() + 
                                         "transferOutputs(): sending token.");
                                 port.send(i, t);
@@ -651,7 +583,7 @@ public class HDFFSMDirector extends FSMDirector {
                                 throw new InternalErrorException(
                                         "Director.transferOutputs: " +
                                         "Internal error: " +
-                                        ex.getMessage());
+                                        ex);
                             }
                         }
                     }
@@ -663,6 +595,33 @@ public class HDFFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+
+    /** Debug postfire.
+     */
+    private void _debugPostfire(State curState) 
+	throws IllegalActionException {
+	    TypedCompositeActor ta = 
+		(TypedCompositeActor)curState.getRefinement();
+	    System.out.println(getName() + " :  postfire(): firing " +
+                    "current refinment: " +
+                    ta.getFullName());
+	    // Get all of its input ports.
+	    Iterator refineInPorts = ta.inputPortList().iterator();
+	    while (refineInPorts.hasNext()) {
+		IOPort refineInPort =
+			(IOPort)refineInPorts.next();
+		if (_debug_info) System.out.println(getName() + 
+		 " :  postfire(): Current port of refining actor " +
+                        refineInPort.getFullName());
+		if (_debug_info) System.out.println(getName() + 
+		       " :  postfire(): token consumption rate = " +
+                        _getTokenConsumptionRate(refineInPort));
+	    }
+	    System.out.println(getName() + " :  postfire(): firing " +
+                    "current refinment right now: " +
+                    ((CompositeActor)(curState.getRefinement())).getFullName());
+    }
 
     /** Get the SDF or HDF scheduler associated with the container of
      *  this director.
@@ -715,7 +674,8 @@ public class HDFFSMDirector extends FSMDirector {
      */
     private int _getFiringsPerSchedulIteration() 
 	throws IllegalActionException {
-	if (_debug_info) System.out.println(getName() + " :  _getFiringsPerSchedulIteration(): just got sdf schedule.");
+	if (_debug_info) System.out.println(getName() + 
+      " :  _getFiringsPerSchedulIteration(): just got sdf schedule.");
 	// Move up towards the top level of the hierarchy until we
 	// reach an actor that is directly contained by either an
 	// SDF or an HDF model.
@@ -727,7 +687,7 @@ public class HDFFSMDirector extends FSMDirector {
 		// We have reached the toplevel without finding a
 		// valid director.
 		throw new IllegalActionException(this,
-			  "This model is not a refinement of an SDF or " +
+		   "This model is not a refinement of an SDF or " +
 			       "an HDF model.");
 	    } else if (director instanceof SDFDirector) {
 		foundValidDirector = true;
@@ -763,13 +723,15 @@ public class HDFFSMDirector extends FSMDirector {
 	    }
 
 	    if (_debug_info) { 
-		System.out.println(getName() + " :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
+		System.out.println(getName() + 
+     " :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
 				   ((Nameable)actor).getName());
-		System.out.println(getName() + " :  _getFiringsPerSchedulIteration(): Actors in static schedule: **** " +
+		System.out.println(getName() + 
+      " : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
 				   occurrence);
-		System.out.println(getName() + " :  _getFiringsPerSchedulIteration(): current fire count: **** " +
+		System.out.println(getName() + 
+          " :  _getFiringsPerSchedulIteration(): current fire count: " +
 		   _firingsSoFar);
-		
 	    }
 	}
 	return occurrence;
@@ -785,7 +747,8 @@ public class HDFFSMDirector extends FSMDirector {
      */
     protected int _getTokenConsumptionRate(IOPort p)
             throws IllegalActionException {
-        Parameter param = (Parameter)p.getAttribute("tokenConsumptionRate");
+        Parameter param = 
+	    (Parameter)p.getAttribute("tokenConsumptionRate");
         if(param == null) {
             if(p.isInput())
                 return 1;
@@ -806,7 +769,8 @@ public class HDFFSMDirector extends FSMDirector {
      */
     protected int _getTokenProductionRate(IOPort p)
             throws IllegalActionException {
-        Parameter param = (Parameter)p.getAttribute("tokenProductionRate");
+        Parameter param = 
+	    (Parameter)p.getAttribute("tokenProductionRate");
         if(param == null) {
             if(p.isOutput())
                 return 1;
@@ -898,8 +862,6 @@ public class HDFFSMDirector extends FSMDirector {
      *
      * @param actor The current refinement.
      */
-    // FIXME: All ports of the container of this director that are not connected
-    // to an actor inside the current refinement should have their rate set to 0.
     protected void _updateInputTokenConsumptionRates(TypedCompositeActor actor)
             throws IllegalActionException {
 	if (_debug_info) System.out.println(getName() + " : " +
@@ -924,10 +886,10 @@ public class HDFFSMDirector extends FSMDirector {
 	while (refineInPorts.hasNext()) {
 	    IOPort refineInPort =
 		(IOPort)refineInPorts.next();
-	    if (_debug_info) System.out.println(getName() + " : _updateInputTokenConsumptionRates(): Current port of refining actor " +
-                    refineInPort.getFullName());
-
-
+	    if (_debug_info) System.out.println(getName() + 
+                " : _updateInputTokenConsumptionRates(): Current " +
+                                         "port of refining actor " +
+					  refineInPort.getFullName());
 	    // Get all of the input ports this port is
 	    // linked to on the outside (should only consist
 	    // of 1 port).
@@ -942,20 +904,25 @@ public class HDFFSMDirector extends FSMDirector {
 	    while (inPortsOutside.hasNext()) {
 		IOPort inputPortOutside =
 		    (IOPort)inPortsOutside.next();
-		if (_debug_info) System.out.println(getName() + " : _updateInputTokenConsumptionRates(): Current outisde port connected " +
-                        "to port of refining actor " +
-                        inputPortOutside.getFullName());
+		if (_debug_info) System.out.println(getName() + 
+                    " : _updateInputTokenConsumptionRates(): " +
+                            " Current outisde port connected " +
+                                  "to port of refining actor " +
+                                  inputPortOutside.getFullName());
 		// Check if the current port is contained by the
 		// container of the current refinment.
 		ComponentEntity thisPortContainer =
 		    (ComponentEntity)inputPortOutside.getContainer();
-		if (thisPortContainer.getFullName() == refineInPortContainer.getFullName()) {
+		if (thisPortContainer.getFullName() == 
+		    refineInPortContainer.getFullName()) {
 		    // The current port  is contained by the
 		    // container of the current refinment.
 		    // Update its consumption rate.
-		    if (_debug_info) System.out.println(getName() + " : _updateInputTokenConsumptionRates(): Updating consumption " +
-                            "rate of port: " +
-                            inputPortOutside.getFullName());
+		    if (_debug_info) System.out.println(getName() + 
+                      " : _updateInputTokenConsumptionRates(): " +
+                                         "Updating consumption " +
+                                                "rate of port: " +
+                                   inputPortOutside.getFullName());
 		    // Get the port to which "refineInPort" is
 		    // connected on the inside.
 		    List listOfPorts = refineInPort.insidePortList();
@@ -963,7 +930,8 @@ public class HDFFSMDirector extends FSMDirector {
 		    // since they all must have the same rate.
 		    int refineInPortRate;
 		    if (listOfPorts.isEmpty()) {
-			// Set the rate to 0, since this port is not connected
+			// Set the rate to 0, since this port is 
+			// not connected
 			// to anything on the inside.
 			refineInPortRate = 0;
 		    } else {
@@ -971,12 +939,16 @@ public class HDFFSMDirector extends FSMDirector {
 			    (IOPort)listOfPorts.get(0);
 
 			refineInPortRate =
-			    _getTokenConsumptionRate(portWithRateInfo);		    }
-
-		    if (_debug_info) System.out.println(getName() + " : _updateInputTokenConsumptionRates(): Port: " + refineInPort.getFullName() + " rate = " + _getTokenConsumptionRate(refineInPort));
-		    //if (_debug_info) System.out.println("Port: " + refineInPort.getFullName() + " rate = " + ((SDFIOPort)refineInPort).getTokenConsumptionRate());
-		    if (_debug_info) System.out.println(getName() + " : _updateInputTokenConsumptionRates(): New consumption rate is " +
-                            refineInPortRate);
+			    _getTokenConsumptionRate(portWithRateInfo); 
+		    }
+		    if (_debug_info) System.out.println(getName() + 
+                 " : _updateInputTokenConsumptionRates(): Port: " + 
+                          refineInPort.getFullName() + " rate = " + 
+                             _getTokenConsumptionRate(refineInPort));
+		    if (_debug_info) System.out.println(getName() + 
+                 " : _updateInputTokenConsumptionRates(): New " + 
+					 "consumption rate is " +
+						  refineInPortRate);
                     _setTokenConsumptionRate(refineInPortContainer,
                             inputPortOutside,
                             refineInPortRate);
@@ -994,7 +966,6 @@ public class HDFFSMDirector extends FSMDirector {
      *
      * @param actor The current refinement.
      */
-    // FIXME: queue the mutation with the director?
     protected void _updateOutputTokenProductionRates(TypedCompositeActor actor)
             throws IllegalActionException {
 	// Get the current refinement's container.
@@ -1015,10 +986,10 @@ public class HDFFSMDirector extends FSMDirector {
 	while (refineOutPorts.hasNext()) {
 	    IOPort refineOutPort =
 		(IOPort)refineOutPorts.next();
-	    if (_debug_info) System.out.println(getName() + " : _updateOutputTokenProductionRates(): Current port of refining actor " +
-                    refineOutPort.getFullName());
-
-
+	    if (_debug_info) System.out.println(getName() + 
+               " : _updateOutputTokenProductionRates(): Current " +
+                                        "port of refining actor " +
+                                       refineOutPort.getFullName());
 	    // Get all of the output ports this port is
 	    // linked to on the outside (should only consist
 	    // of 1 port).
@@ -1033,18 +1004,23 @@ public class HDFFSMDirector extends FSMDirector {
 	    while (outPortsOutside.hasNext()) {
 		IOPort outputPortOutside =
 		    (IOPort)outPortsOutside.next();
-		if (_debug_info) System.out.println(getName() + " : _updateOutputTokenProductionRates(): Current outisde port connected " +
-                        "to port of refining actor " +
-                        outputPortOutside.getFullName());
+		if (_debug_info) System.out.println(getName() + 
+                  " : _updateOutputTokenProductionRates(): " +
+                           "Current outisde port connected " +
+                                "to port of refining actor " +
+                               outputPortOutside.getFullName());
 		// Check if the current port is contained by the
 		// container of the current refinment.
 		ComponentEntity thisPortContainer =
 		    (ComponentEntity)outputPortOutside.getContainer();
-		if (thisPortContainer.getFullName() == refineOutPortContainer.getFullName()) {
+		if (thisPortContainer.getFullName() == 
+		    refineOutPortContainer.getFullName()) {
 		    // The current port  is contained by the
 		    // container of the current refinment.
 		    // Update its consumption rate.
-		    if (_debug_info) System.out.println(getName() + " : _updateOutputTokenProductionRates(): Updating production " +
+		    if (_debug_info) System.out.println(getName() + 
+                        " : _updateOutputTokenProductionRates(): " +
+                                            "Updating production " +
                             "rate of port: " +
                             outputPortOutside.getFullName());
 		    // Get the port to which "refineOutPort" is
@@ -1063,9 +1039,10 @@ public class HDFFSMDirector extends FSMDirector {
 			refineOutPortRate =
 			    _getTokenProductionRate(portWithRateInfo);
 		    }
-		    if (_debug_info) System.out.println(getName() + " : _updateOutputTokenProductionRates(): New production rate is " +
+		    if (_debug_info) System.out.println(getName() + 
+                      " : _updateOutputTokenProductionRates(): New " +
+                                                "production rate is " +
                             refineOutPortRate);
-				// FIXME: call requestChange in Manager for this?
                     _setTokenProductionRate(refineOutPortContainer,
                             outputPortOutside,
                             refineOutPortRate);

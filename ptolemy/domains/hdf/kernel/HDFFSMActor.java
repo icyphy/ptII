@@ -95,29 +95,35 @@ enabled transition. If there is exactly one enabled transition then
 the current state of the actor is set to the destination state of the
 transition.
 <p>
-An HDFFSMActor enters its initial state during initialization. The name of the
-initial state is specified by the <i>initialStateName</i> parameter.
+An HDFFSMActor enters its initial state during initialization. 
+The name of the initial state is specified by the 
+<i>initialStateName</i> parameter.
 <p>
-An HDFFSMActor contains a set of variables for the input ports that can be
-referenced in the guard and trigger expressions of transitions. If an input
-port is a single port, one variable is created: an input value variable
-with name "<i>portName</i>_V". The input value variable always
-contains the latest token received from the port.
-If the given port is a multiport, a value variable is
-created for each channel. The value variable is named
-"<i>portName</i>_<i>channelIndex</i>_V". Note that the syntax for
-variables a transition guard expression differs from that used in [1].
-The guard expressions allowed here are also currently less expressive
-then those in [1]. Particularly, there is currently no token history,
-so only the most recently read token can be used in a guard expression.
-
-<H1>References</H1>
-
+An HDFFSMActor contains a set of variables for the input ports that 
+can be referenced in the guard expression of a transition. If an 
+input port is a single port, one variable and one value array are 
+created: an input value variable with the name <i>portName</i> and 
+a value array with the name <i>portName</i>. The input value 
+variable always
+contains the latest token received from the port. The input token 
+array contains all tokens read during the current iteration of the
+ HDF schedule. If the HDF actor that this FSM refines has a port 
+rate of M, and a firing count of N, then the length of the token 
+array is M*N.
+<p>
+If the given port is a multiport, a value variable and a value 
+array are created for each channel. The value variable is named
+<i>portName</i>_<i>channelIndex</i> and the value array is named 
+<i>portName</i>_<i>channelIndex</i>. 
+<p>
+<b>References</b>
+<p>
 <OL>
 <LI>
 A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
 Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 1998.</LI>
+</ol>
 
 @author Brian K. Vogel
 @version $Id$
@@ -126,9 +132,9 @@ Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 */
 public class HDFFSMActor extends FSMActor implements TypedActor {
 
-    /** Construct an HDFFSMActor in the default workspace with an empty string
-     *  as its name. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
+    /** Construct an HDFFSMActor in the default workspace with an 
+     *  empty string as its name. Add the actor to the workspace 
+     *  directory. Increment the version number of the workspace.
      */
     public HDFFSMActor() {
         super();
@@ -227,14 +233,15 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
     ////                         protected methods                 ////
 
     /** Return the last chosen transition.
+     *
      *  @return The last chosen transition.
      */
     protected Transition _getLastChosenTransition() {
 	return _lastChosenTransition;
     }
 
-        /** Set the input variables for the channel of the port.
-     *  @see #_createInputVariables(TypedIOPort port)
+    /** Set the input variables for the channel of the port.
+     *
      *  @param port An input port of this actor.
      *  @param channel A channel of the input port.
      *  @exception IllegalActionException If the port is not contained by
@@ -243,10 +250,6 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
      */
     protected void _setInputVariables(TypedIOPort port, int channel)
             throws IllegalActionException {
-	// FIXME: bkv: This method should read all available tokens.
-	// There is no problem when this actor is used with
-	// homogeneous SDF. For non-homogeneous SDF, however,
-	// there may be more than one token available.
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
                     "Cannot set input variables for port "
@@ -277,7 +280,8 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 		_debug(port.getName(), "has token: " + t);
 	    }
 	    if (_debug_info) {
-		System.out.println("FSMActor: _setInputVariables(): " + port.getName() + "has token: " + t);
+		System.out.println("FSMActor: _setInputVariables(): " 
+                                + port.getName() + "has token: " + t);
 	    }
 	    tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
 	    pVars[channel][0].setToken(tok);
@@ -288,12 +292,16 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
                 _debug(port.getName(), "token value:", tok.toString());
             }
 	    if (_debug_info) {
-		System.out.println("FSMActor: _setInputVariables(): " + port.getName() + "token value:" + tok.toString());
+		System.out.println("FSMActor: _setInputVariables(): " 
+                    + port.getName() + "token value:" + tok.toString());
 	    }
             pVars[channel][1].setToken(tok);
 
 	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Set to true to enable debuging.
     private boolean _debug_info = false;
