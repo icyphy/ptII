@@ -154,8 +154,8 @@ public abstract class MatrixToken extends Token {
      */
     public Token oneRight()
 	    throws IllegalActionException {
-	throw new IllegalActionException("Right multiplicative identity " +
-		"not supported on " + getClass().getName() + " objects.");
+        throw new IllegalActionException("Right multiplicative identity " +
+		 "not supported on " + getClass().getName() + " objects.");
     }
 
     /** Return a String representing the value of this token.
@@ -176,15 +176,30 @@ public abstract class MatrixToken extends Token {
     public String toString() {
         int rowCount = getRowCount();
         int columnCount = getColumnCount();
-	String s = "[";
-	for (int i = 0; i < rowCount; i++) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[");
+        for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                s += getElementAsToken(i, j).toString();
-                if (j < columnCount - 1) s += ", ";
+                sb.append(getElementAsToken(i, j).toString());
+                if (j < columnCount - 1) sb.append(", ");
             }
-            if (i < rowCount - 1) s += "; ";
+            if (i < rowCount - 1) sb.append("; ");
         }
-	s += "]";
-	return s;
+        sb.append("]");
+        return sb.toString();
     }
+        
+    /** A constant indicating to constructors that contents of an argument 2-D
+     *  array should be copied. The contents of the input 2-D array may be
+     *  modified after construction without violating the immutibility of 
+     *  MatrixTokens.
+     */
+    protected static final int DO_COPY = 0; 
+    
+    /** A constant indicating to constructors not to copy the contents of an argument 
+     *  2-D array, but instead to just copy the pointer to the matrix. The contents
+     *  of the input 2-D array should NOT be modified after construction of an
+     *  instance of MatrixToken, if the property of immutability is to be preserved.
+     */
+    protected static final int DO_NOT_COPY = 1;
 }

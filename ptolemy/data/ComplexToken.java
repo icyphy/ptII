@@ -49,7 +49,7 @@ public class ComplexToken extends ScalarToken {
     /** Construct a ComplexToken with Complex 0.0+0.0i
      */
     public ComplexToken() {
-	_value = new Complex(0.0, 0.0);
+	_value = Complex.ZERO;
     }
 
     /** Construct a ComplexToken with the specified value.
@@ -453,7 +453,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {
-        return new ComplexToken(new Complex(0.0));
+        return new ComplexToken(Complex.ZERO);
     }
 
     ///////////////////////////////////////////////////////////////////

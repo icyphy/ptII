@@ -53,10 +53,10 @@ public final class IntMatrixToken extends MatrixToken {
      *  only element in the array has value 0.
      */
     public IntMatrixToken() {
-	_rowCount = 1;
-	_columnCount = 1;
-	_value = new int[1];
-	_value[0] = 0;
+        _rowCount = 1;
+        _columnCount = 1;
+        _value = new int[1];
+        _value[0] = 0;
     }
 
     /** Construct an IntMatrixToken with the specified 2-D array.
@@ -67,13 +67,13 @@ public final class IntMatrixToken extends MatrixToken {
      *   is null.
      */
     public IntMatrixToken(int[][] value) {
-	_rowCount = value.length;
-	_columnCount = value[0].length;
-	_value = new int[_rowCount * _columnCount];
-	for (int i = 0; i < _rowCount; i++) {
+        _rowCount = value.length;
+        _columnCount = value[0].length;
+        _value = new int[_rowCount * _columnCount];
+        for (int i = 0; i < _rowCount; i++) {
             System.arraycopy(value[i], 0, _value, i * _columnCount,
                     _columnCount);
-	}
+        }
     }
 
     /** Construct an IntMatrixToken with the specified 1-D array,
@@ -94,16 +94,16 @@ public final class IntMatrixToken extends MatrixToken {
                     "IntMatrixToken with " + rows + " rows and " +
                     columns + " columns, but the array was length " +
                     value.length + ".");
-	_rowCount = rows;
-	_columnCount = columns;
-	_value = new int[_rowCount * _columnCount];
+        _rowCount = rows;
+        _columnCount = columns;
+        _value = new int[_rowCount * _columnCount];
         System.arraycopy(value, 0, _value, 0,
                 _rowCount * _columnCount);
 
     }
 
     // FIXME: finish this method after array is added to the
-    // 	      expression language.
+    //               expression language.
     // Construct an IntMatrixToken from the specified string.
     // @param init A string expression of a 2-D int array.
     // @exception IllegalArgumentException If the string does
@@ -130,49 +130,49 @@ public final class IntMatrixToken extends MatrixToken {
      *   not of a type that can be added to this token in a lossless
      *   fashion.
      */
-    public Token add(Token t)
-	    throws IllegalActionException {
+    public Token add(final Token t)
+            throws IllegalActionException {
 
-	int compare = TypeLattice.compare(this, t);
-	if (compare == CPO.INCOMPARABLE) {
-	    String msg = "add method not supported between " +
+        int compare = TypeLattice.compare(this, t);
+        if (compare == CPO.INCOMPARABLE) {
+            String msg = "add method not supported between " +
                 this.getClass().getName() + " and " +
                 t.getClass().getName();
-	    throw new IllegalActionException(msg);
-	} else if (compare == CPO.LOWER) {
-	    return t.addReverse(this);
-	} else {
- 	    // type of the specified token <= IntMatrixToken
-	    int[][] result = null;
+            throw new IllegalActionException(msg);
+        } else if (compare == CPO.LOWER) {
+            return t.addReverse(this);
+        } else {
+             // type of the specified token <= IntMatrixToken
+            int[][] result = null;
 
-	    if (t instanceof ScalarToken) {
-		int scalar = ((ScalarToken)t).intValue();
-		result = new int[_rowCount][_columnCount];
-		for (int i = 0; i < _rowCount; i++) {
-		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] =
+            if (t instanceof ScalarToken) {
+                int scalar = ((ScalarToken)t).intValue();
+                result = new int[_rowCount][_columnCount];
+                for (int i = 0; i < _rowCount; i++) {
+                    for (int j = 0; j < _columnCount; j++) {
+                        result[i][j] =
                             scalar + _value[i * _columnCount + j];
-		    }
-		}
-	    } else {
-		// the specified token is not a scalar.
-		IntMatrixToken tem = (IntMatrixToken)this.convert(t);
-	    	if (tem.getRowCount() != _rowCount ||
+                    }
+                }
+            } else {
+                // the specified token is not a scalar.
+                IntMatrixToken tem = (IntMatrixToken)this.convert(t);
+                    if (tem.getRowCount() != _rowCount ||
                         tem.getColumnCount() != _columnCount) {
-		    throw new IllegalActionException("Cannot add two " +
+                    throw new IllegalActionException("Cannot add two " +
                             "matrices with different dimension.");
-	    	}
+                    }
 
-		result = tem.intMatrix();
-		for (int i = 0; i < _rowCount; i++) {
-		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] +=
+                result = tem.intMatrix();
+                for (int i = 0; i < _rowCount; i++) {
+                    for (int j = 0; j < _columnCount; j++) {
+                        result[i][j] +=
                             _value[i * _columnCount + j];
-		    }
-		}
-	    }
-	    return new IntMatrixToken(result);
-	}
+                    }
+                }
+            }
+            return new IntMatrixToken(result);
+        }
     }
 
     /** Return a new token whose value is the sum of this token
@@ -183,16 +183,16 @@ public final class IntMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than IntMatrixToken.
      */
-    public Token addReverse(Token t)
-	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, t);
-	if (! (compare == CPO.HIGHER)) {
-	    throw new IllegalActionException("The type of the specified "
+    public Token addReverse(final Token t)
+            throws IllegalActionException {
+        int compare = TypeLattice.compare(this, t);
+        if (! (compare == CPO.HIGHER)) {
+            throw new IllegalActionException("The type of the specified "
                     + "token " + t.getClass().getName() + " is not lower than "
                     + getClass().getName());
-	}
-	// add is commutative on integer matrix.
-	return add(t);
+        }
+        // add is commutative on integer matrix.
+        return add(t);
     }
 
     /** Return the content of this token as a 2-D Complex array.
@@ -222,20 +222,20 @@ public final class IntMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the conversion cannot
      *   be carried out in a lossless fashion.
      */
-    public static Token convert(Token token)
-	    throws IllegalActionException {
+    public static Token convert(final Token token)
+            throws IllegalActionException {
 
-	int compare = TypeLattice.compare(new IntMatrixToken(), token);
-	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("IntMatrixToken.convert: " +
+        int compare = TypeLattice.compare(new IntMatrixToken(), token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException("IntMatrixToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
                     "is higher or incomparable with IntMatrixToken in the " +
                     "type hierarchy.");
-	}
+        }
 
-	if (token instanceof IntMatrixToken) {
-	    return token;
-	}
+        if (token instanceof IntMatrixToken) {
+            return token;
+        }
 
         compare = TypeLattice.compare(new IntToken(), token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
@@ -262,14 +262,14 @@ public final class IntMatrixToken extends MatrixToken {
                 array[i][j] = (double)_value[i * _columnCount + j];
             }
         }
-	return array;
+        return array;
     }
 
     /** Return the type of this token.
      *  @return BaseType.INT_MATRIX
      */
     public Type getType() {
-	return BaseType.INT_MATRIX;
+        return BaseType.INT_MATRIX;
     }
 
     /** Test if the content of this token is equal to that of the specified
@@ -284,41 +284,48 @@ public final class IntMatrixToken extends MatrixToken {
      *   not a matrix token, or lossless conversion is not possible.
      */
     public BooleanToken isEqualTo(Token t)
-	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, t);
-	if ( !(t instanceof MatrixToken) ||
+            throws IllegalActionException {
+        int compare = TypeLattice.compare(this, t);
+        if ( !(t instanceof MatrixToken) ||
                 compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("Cannot check equality " +
+            throw new IllegalActionException("Cannot check equality " +
                     "between " + this.getClass().getName() + " and " +
                     t.getClass().getName());
-	}
+        }
 
-	if ( ((MatrixToken)t).getRowCount() != _rowCount ||
+        if ( ((MatrixToken)t).getRowCount() != _rowCount ||
                 ((MatrixToken)t).getColumnCount() != _columnCount) {
-	    return new BooleanToken(false);
-	}
+            return new BooleanToken(false);
+        }
 
-	if (compare == CPO.LOWER) {
-	    return t.isEqualTo(this);
-	} else {
-	    // type of specified token <= IntMatrixToken
-	    IntMatrixToken tem = null;
-	    if (t instanceof IntMatrixToken) {
-		tem = (IntMatrixToken)t;
-	    } else {
-		tem = (IntMatrixToken)convert(t);
-	    }
+        if (compare == CPO.LOWER) {
+            return t.isEqualTo(this);
+        } else {
+            // type of specified token <= IntMatrixToken
+            IntMatrixToken tem = null;
+            if (t instanceof IntMatrixToken) {
+                tem = (IntMatrixToken)t;
+            } else {
+                tem = (IntMatrixToken)convert(t);
+            }
 
-	    for (int i = 0; i < _rowCount; i++) {
-		for (int j = 0; j < _columnCount; j++) {
-		    if (_value[i * _columnCount + j] !=
+            for (int i = 0; i < _rowCount; i++) {
+                for (int j = 0; j < _columnCount; j++) {
+                    if (_value[i * _columnCount + j] !=
                             tem.getElementAt(i, j)) {
-			return new BooleanToken(false);
-		    }
-		}
-	    }
-	    return new BooleanToken(true);
-	}
+                        return new BooleanToken(false);
+                    }
+                }
+            }
+            return new BooleanToken(true);
+        }
+    }
+
+    /** Return the number of columns in the matrix.
+     *  @return An integer.
+     */
+    public int getColumnCount() {
+        return _columnCount;
     }
 
     /** Return the element of the matrix at the specified
@@ -332,7 +339,7 @@ public final class IntMatrixToken extends MatrixToken {
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
-	return new IntToken(_value[row * _columnCount + column]);
+        return new IntToken(_value[row * _columnCount + column]);
     }
 
     /** Return the element of the contained array at the specified
@@ -345,7 +352,14 @@ public final class IntMatrixToken extends MatrixToken {
      *   of the index of the contained array.
      */
     public int getElementAt(int row, int column) {
-	return _value[row * _columnCount + column];
+        return _value[row * _columnCount + column];
+    }
+
+    /** Return the number of rows of the contained  matrix.
+     *  @return An integer.
+     */
+    public int getRowCount() {
+        return _rowCount;
     }
 
     /** Return the content of this token as a 2-D integer array.
@@ -397,20 +411,6 @@ public final class IntMatrixToken extends MatrixToken {
         return array;
     }
 
-    /** Return the number of columns in the matrix.
-     *  @return An integer.
-     */
-    public int getColumnCount() {
-        return _columnCount;
-    }
-
-    /** Return the number of rows of the contained  matrix.
-     *  @return An integer.
-     */
-    public int getRowCount() {
-        return _rowCount;
-    }
-
     /** Return a new Token representing the left multiplicative
      *  identity. The returned token contains an identity matrix
      *  whose dimension is the same as the number of rows of
@@ -418,14 +418,14 @@ public final class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the left multiplicative identity.
      */
     public Token one() {
-	int[][] result = new int[_rowCount][_rowCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _rowCount; j++) {
-		result[i][j] = 0;
-	    }
-	    result[i][i] = 1;
-	}
-	return new IntMatrixToken(result);
+        int[][] result = new int[_rowCount][_rowCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _rowCount; j++) {
+                result[i][j] = 0;
+            }
+            result[i][i] = 1;
+        }
+        return new IntMatrixToken(result);
     }
 
     /** Return a new Token representing the right multiplicative
@@ -435,14 +435,14 @@ public final class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the right multiplicative identity.
      */
     public Token oneRight() {
-	int[][] result = new int[_columnCount][_columnCount];
-	for (int i = 0; i < _columnCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		result[i][j] = 0;
-	    }
-	    result[i][i] = 1;
-	}
-	return new IntMatrixToken(result);
+        int[][] result = new int[_columnCount][_columnCount];
+        for (int i = 0; i < _columnCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                result[i][j] = 0;
+            }
+            result[i][i] = 1;
+        }
+        return new IntMatrixToken(result);
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -455,48 +455,48 @@ public final class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     public Token subtract(Token t)
-	    throws IllegalActionException {
+            throws IllegalActionException {
 
-	int compare = TypeLattice.compare(this, t);
-	if (compare == CPO.INCOMPARABLE) {
-	    String msg = "subtract method not supported between " +
+        int compare = TypeLattice.compare(this, t);
+        if (compare == CPO.INCOMPARABLE) {
+            String msg = "subtract method not supported between " +
                 this.getClass().getName() + " and " +
                 t.getClass().getName();
-	    throw new IllegalActionException(msg);
-	} else if (compare == CPO.LOWER) {
-	    return t.subtractReverse(this);
-	} else {
- 	    // type of the specified token <= IntMatrixToken
-	    int[][] result = null;
+            throw new IllegalActionException(msg);
+        } else if (compare == CPO.LOWER) {
+            return t.subtractReverse(this);
+        } else {
+             // type of the specified token <= IntMatrixToken
+            int[][] result = null;
 
-	    if (t instanceof ScalarToken) {
-		int scalar = ((ScalarToken)t).intValue();
-		result = new int[_rowCount][_columnCount];
-		for (int i = 0; i < _rowCount; i++) {
-		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] =
+            if (t instanceof ScalarToken) {
+                int scalar = ((ScalarToken)t).intValue();
+                result = new int[_rowCount][_columnCount];
+                for (int i = 0; i < _rowCount; i++) {
+                    for (int j = 0; j < _columnCount; j++) {
+                        result[i][j] =
                             _value[i * _columnCount + j] - scalar;
-		    }
-		}
-	    } else {
-		// the specified token is not a scalar.
-		IntMatrixToken tem = (IntMatrixToken)this.convert(t);
-	    	if (tem.getRowCount() != _rowCount ||
+                    }
+                }
+            } else {
+                // the specified token is not a scalar.
+                IntMatrixToken tem = (IntMatrixToken)this.convert(t);
+                    if (tem.getRowCount() != _rowCount ||
                         tem.getColumnCount() != _columnCount) {
-		    throw new IllegalActionException("Cannot subtract two " +
+                    throw new IllegalActionException("Cannot subtract two " +
                             "matrices with different dimension.");
-	    	}
+                    }
 
-		result = tem.intMatrix();
-		for (int i = 0; i < _rowCount; i++) {
-		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] = _value[i * _columnCount + j] -
+                result = tem.intMatrix();
+                for (int i = 0; i < _rowCount; i++) {
+                    for (int j = 0; j < _columnCount; j++) {
+                        result[i][j] = _value[i * _columnCount + j] -
                             result[i][j];
-		    }
-		}
-	    }
-	    return new IntMatrixToken(result);
-	}
+                    }
+                }
+            }
+            return new IntMatrixToken(result);
+        }
     }
 
     /** Return a new Token whose value is the value of this Token
@@ -509,47 +509,47 @@ public final class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     public Token subtractReverse(Token t)
-	    throws IllegalActionException {
+            throws IllegalActionException {
 
-	int compare = TypeLattice.compare(this, t);
-	if (compare == CPO.INCOMPARABLE) {
-	    String msg = "subtractReverse method not supported between " +
+        int compare = TypeLattice.compare(this, t);
+        if (compare == CPO.INCOMPARABLE) {
+            String msg = "subtractReverse method not supported between " +
                 this.getClass().getName() + " and " +
                 t.getClass().getName();
-	    throw new IllegalActionException(msg);
-	} else if (compare == CPO.LOWER) {
-	    return t.subtract(this);
-	} else {
- 	    // type of the specified token <= IntMatrixToken
-	    int[][] result = null;
+            throw new IllegalActionException(msg);
+        } else if (compare == CPO.LOWER) {
+            return t.subtract(this);
+        } else {
+             // type of the specified token <= IntMatrixToken
+            int[][] result = null;
 
-	    if (t instanceof ScalarToken) {
-		int scalar = ((ScalarToken)t).intValue();
-		result = new int[_rowCount][_columnCount];
-		for (int i = 0; i < _rowCount; i++) {
-		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] = scalar -
+            if (t instanceof ScalarToken) {
+                int scalar = ((ScalarToken)t).intValue();
+                result = new int[_rowCount][_columnCount];
+                for (int i = 0; i < _rowCount; i++) {
+                    for (int j = 0; j < _columnCount; j++) {
+                        result[i][j] = scalar -
                             _value[i * _columnCount + j];
-		    }
-		}
-	    } else {
-		// the specified token is not a scalar.
-		IntMatrixToken tem = (IntMatrixToken)this.convert(t);
-	    	if (tem.getRowCount() != _rowCount ||
-                        tem.getColumnCount() != _columnCount) {
-		    throw new IllegalActionException("Cannot subtract two " +
-                            "matrices with different dimension.");
-	    	}
+                    }
+                }
+            } else {
+                // the specified token is not a scalar.
+                IntMatrixToken tem = (IntMatrixToken)this.convert(t);
+                if (tem.getRowCount() != _rowCount ||
+                    tem.getColumnCount() != _columnCount) {
+                   throw new IllegalActionException("Cannot subtract two " +
+                    "matrices with different dimension.");
+                }
 
-		result = tem.intMatrix();
-		for (int i = 0; i < _rowCount; i++) {
-		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] -= _value[i * _columnCount + j];
-		    }
-		}
-	    }
-	    return new IntMatrixToken(result);
-	}
+                result = tem.intMatrix();
+                for (int i = 0; i < _rowCount; i++) {
+                    for (int j = 0; j < _columnCount; j++) {
+                        result[i][j] -= _value[i * _columnCount + j];
+                    }
+                }
+            }
+            return new IntMatrixToken(result);
+        }
     }
 
     /** Return a new Token representing the additive identity.
@@ -559,13 +559,8 @@ public final class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {
-	int[][] result = new int[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		result[i][j] = 0;
-	    }
-	}
-	return new IntMatrixToken(result);
+        // assume arrays are initialized with elements equal to 0
+        return new IntMatrixToken(new int[_rowCount][_columnCount]);
     }
 
     ///////////////////////////////////////////////////////////////////

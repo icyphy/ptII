@@ -53,16 +53,16 @@ versa, as both have 64 bit representations in Java.
 */
 public class DoubleToken extends ScalarToken {
 
-    /** Construct a DoubleToken with double 0.0.
+    /** Construct a DoubleToken with value 0.0.
      */
     public DoubleToken() {
-	_value = 0.0;
+        _value = 0.0;
     }
 
     /** Construct a DoubleToken with the specified value.
      */
     public DoubleToken(double value) {
-	_value = value;
+        _value = value;
     }
 
     /** Construct a DoubleToken from the specified string.
@@ -70,11 +70,11 @@ public class DoubleToken extends ScalarToken {
      *   be created with the given String.
      */
     public DoubleToken(String init) throws IllegalArgumentException {
-	try {
-	    _value = (Double.valueOf(init)).doubleValue();
-	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException(e.getMessage());
-	}
+        try {
+            _value = (Double.valueOf(init)).doubleValue();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A DoubleToken.
      */
     public ScalarToken absolute() {
-	return _value >= 0.0 ? this : new DoubleToken(-_value);
+        return _value >= 0.0 ? this : new DoubleToken(-_value);
     }
 
     /** Return a new token whose value is the sum of this token
@@ -144,7 +144,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A Complex
      */
     public Complex complexValue() {
-        return new Complex(_value);
+        return new Complex(_value, 0.0);
     }
 
     /** Convert the specified token into an instance of DoubleToken.
@@ -161,27 +161,27 @@ public class DoubleToken extends ScalarToken {
      *   cannot be carried out in a lossless fashion.
      */
     public static Token convert(Token token)
-	    throws IllegalActionException {
+            throws IllegalActionException {
 
-	int compare = TypeLattice.compare(new DoubleToken(), token);
-	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("DoubleToken.convert: " +
+        int compare = TypeLattice.compare(new DoubleToken(), token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException("DoubleToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
                     "is higher or incomparable with DoubleToken in the type " +
                     "hierarchy.");
-	}
+        }
 
-	if (token instanceof DoubleToken) {
-	    return token;
-	}
+        if (token instanceof DoubleToken) {
+            return token;
+        }
 
-	compare = TypeLattice.compare(new IntToken(), token);
-	if (compare == CPO.SAME || compare == CPO.HIGHER) {
-	    IntToken inttoken = (IntToken)IntToken.convert(token);
-	    return new DoubleToken(inttoken.doubleValue());
-	}
-	throw new IllegalActionException("cannot convert from token " +
-		"type: " + token.getClass().getName() + " to a DoubleToken");
+        compare = TypeLattice.compare(new IntToken(), token);
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+            IntToken inttoken = (IntToken)IntToken.convert(token);
+            return new DoubleToken(inttoken.doubleValue());
+        }
+        throw new IllegalActionException("cannot convert from token " +
+                "type: " + token.getClass().getName() + " to a DoubleToken");
     }
 
     /** Return a new Token whose value is the value of this token
@@ -237,14 +237,14 @@ public class DoubleToken extends ScalarToken {
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
-	return _value;
+        return _value;
     }
 
     /** Return the type of this token.
      *  @return BaseType.DOUBLE
      */
     public Type getType() {
-	return BaseType.DOUBLE;
+        return BaseType.DOUBLE;
     }
 
     /** Test the values of this Token and the argument Token for equality.
@@ -291,28 +291,28 @@ public class DoubleToken extends ScalarToken {
      *   is incomparable with the type of this token.
      */
     public BooleanToken isLessThan(ScalarToken arg)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, arg);
         if (typeInfo == CPO.INCOMPARABLE) {
             throw new IllegalActionException("DoubleToken.isLessThan: The " +
                     "type of the argument token is incomparable with the type " +
                     "of this token. argType: " + arg.getType());
-	}
+        }
 
-	if (typeInfo == CPO.LOWER) {
-	    return arg.isLessThan(this);
-	}
+        if (typeInfo == CPO.LOWER) {
+            return arg.isLessThan(this);
+        }
 
-	// Argument type is lower or equal to this token.
-	ScalarToken doubleArg = arg;
-	if (typeInfo == CPO.HIGHER) {
-	    doubleArg = (ScalarToken)convert(arg);
-	}
+        // Argument type is lower or equal to this token.
+        ScalarToken doubleArg = arg;
+        if (typeInfo == CPO.HIGHER) {
+            doubleArg = (ScalarToken)convert(arg);
+        }
 
-	if (_value < doubleArg.doubleValue()) {
-	    return new BooleanToken(true);
-	}
-	return new BooleanToken(false);
+        if (_value < doubleArg.doubleValue()) {
+            return new BooleanToken(true);
+        }
+        return new BooleanToken(false);
     }
 
     /** Return a new Token whose value is the value of this token
@@ -411,7 +411,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token multiplyReverse(Token leftFactor)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftFactor);
         double result = tmp.doubleValue() * _value;
         return new DoubleToken(result);

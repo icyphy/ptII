@@ -108,7 +108,7 @@ public class Token {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public static Token convert(Token token) throws IllegalActionException {
-	return token;
+        return token;
     }
 
     /** Return a new Token whose value is the value of this token
@@ -138,7 +138,7 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token divideReverse(Token dividend)
-	    throws  IllegalActionException {
+            throws  IllegalActionException {
         throw new IllegalActionException("Division not supported for "
                 + dividend.getClass().getName() + " divided by "
                 + this.getClass().getName() + ".");
@@ -148,7 +148,7 @@ public class Token {
      *  @return BaseType.GENERAL
      */
     public Type getType() {
-	return BaseType.GENERAL;
+        return BaseType.GENERAL;
     }
 
     /** Test for equality of the values of this Token and the argument Token.
@@ -223,7 +223,7 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token multiplyReverse(Token leftFactor)
-	    throws  IllegalActionException {
+            throws  IllegalActionException {
         throw new IllegalActionException("Multiplication not supported on "
                 + leftFactor.getClass().getName() + " by "
                 + this.getClass().getName() + ".");
@@ -275,7 +275,7 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token subtractReverse(Token leftArg)
-	    throws  IllegalActionException {
+            throws  IllegalActionException {
         throw new IllegalActionException("Subtraction not supported on "
                 + leftArg.getClass().getName() + " minus "
                 + this.getClass().getName() + ".");

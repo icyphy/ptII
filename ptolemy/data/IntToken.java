@@ -55,7 +55,7 @@ public class IntToken extends ScalarToken {
     /** Construct a token with the specified value.
      */
     public IntToken(int value) {
-	_value = value;
+        _value = value;
     }
 
     /** Construct an IntToken from the specified string.
@@ -63,11 +63,11 @@ public class IntToken extends ScalarToken {
      *   be created with the given String.
      */
     public IntToken(String init) throws IllegalArgumentException {
-	try {
-	    _value = (Integer.valueOf(init)).intValue();
-	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException(e.getMessage());
-	}
+        try {
+            _value = (Integer.valueOf(init)).intValue();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
 
@@ -79,7 +79,7 @@ public class IntToken extends ScalarToken {
      *  @return An IntToken.
      */
     public ScalarToken absolute() {
-	return _value >= 0 ? this : new IntToken(-_value);
+        return _value >= 0 ? this : new IntToken(-_value);
     }
 
     /** Return a new token whose value is the sum of this token
@@ -138,7 +138,7 @@ public class IntToken extends ScalarToken {
      *  @return A Complex.
      */
     public Complex complexValue() {
-	return new Complex((double)_value);
+        return new Complex((double)_value);
     }
 
     /** Convert the specified token into an instance of IntToken.
@@ -155,21 +155,21 @@ public class IntToken extends ScalarToken {
      *   cannot be carried out in a lossless fashion.
      */
     public static Token convert(Token token)
-	    throws IllegalActionException {
+            throws IllegalActionException {
 
-	int compare = TypeLattice.compare(new IntToken(), token);
-	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("IntToken.convert: " +
+        int compare = TypeLattice.compare(new IntToken(), token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException("IntToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
                     "is higher or incomparable with IntToken in the type " +
                     "hierarchy.");
-	}
+        }
 
-	if (token instanceof IntToken) {
-	    return token;
-	}
-	throw new IllegalActionException("cannot convert from token " +
-		"type: " + token.getClass().getName() + " to a DoubleToken");
+        if (token instanceof IntToken) {
+            return token;
+        }
+        throw new IllegalActionException("cannot convert from token " +
+                "type: " + token.getClass().getName() + " to a DoubleToken");
     }
 
     /** Return a new Token whose value is the value of this token
@@ -189,10 +189,10 @@ public class IntToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return divisor.divideReverse(this);
             } else if (divisor instanceof IntToken) {
-		return new IntToken(_value / ((IntToken)divisor).intValue());
+                return new IntToken(_value / ((IntToken)divisor).intValue());
             } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(divisor);
-		return new IntToken(_value / (tmp.intValue()));
+                return new IntToken(_value / (tmp.intValue()));
             } else {
                 throw new Exception();
             }
@@ -215,9 +215,9 @@ public class IntToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token divideReverse(Token dividend)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(dividend);
-	return new IntToken(tmp.intValue() / _value);
+        return new IntToken(tmp.intValue() / _value);
     }
 
     /** Return the value in the token as a double.
@@ -231,7 +231,7 @@ public class IntToken extends ScalarToken {
      *  @return BaseType.INT
      */
     public Type getType() {
-	return BaseType.INT;
+        return BaseType.INT;
     }
 
     /** Test the value of this Token and the argument Token for equality.
@@ -278,42 +278,42 @@ public class IntToken extends ScalarToken {
      *   is incomparable with the type of this token.
      */
     public BooleanToken isLessThan(ScalarToken arg)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, arg);
         if (typeInfo == CPO.INCOMPARABLE) {
             throw new IllegalActionException("IntToken.isLessThan: The type" +
                     " of the argument token is incomparable with the type of " +
                     "this token. argType: " + arg.getType());
-	}
+        }
 
-	if (typeInfo == CPO.LOWER) {
-	    return arg.isLessThan(this);
-	}
+        if (typeInfo == CPO.LOWER) {
+            return arg.isLessThan(this);
+        }
 
-	// Argument type is lower or equal to this token.
-	ScalarToken intArg = arg;
-	if (typeInfo == CPO.HIGHER) {
-	    intArg = (ScalarToken)convert(arg);
-	}
+        // Argument type is lower or equal to this token.
+        ScalarToken intArg = arg;
+        if (typeInfo == CPO.HIGHER) {
+            intArg = (ScalarToken)convert(arg);
+        }
 
-	if (_value < intArg.intValue()) {
-	    return new BooleanToken(true);
-	}
-	return new BooleanToken(false);
+        if (_value < intArg.intValue()) {
+            return new BooleanToken(true);
+        }
+        return new BooleanToken(false);
     }
 
     /** Return the value in the token as a int.
      *  @return The int value contained in this token.
      */
     public int intValue() {
-	return _value;
+        return _value;
     }
 
     /** Return the value in the token as a int.
      *  @return The int  value contained in this token as a long.
      */
     public long longValue() {
-	return (long)_value;
+        return (long)_value;
     }
 
     /** Return a new Token whose value is the value of this token
@@ -409,7 +409,7 @@ public class IntToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token multiplyReverse(Token leftFactor)
-	    throws IllegalActionException {
+            throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftFactor);
         int result = tmp.intValue() * _value;
         return new IntToken(result);
