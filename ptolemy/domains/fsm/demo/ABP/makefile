@@ -79,7 +79,7 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 demo: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) appletviewer ABP.html
+	CLASSPATH=$(CLASSPATH) appletviewer ABP.htm
 
 depend:
 	@echo "no dependencies in this directory"
