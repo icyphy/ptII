@@ -73,7 +73,7 @@ test PNQueueReceiver-2.1 {Check for null container in new receiver} {
 #
 test PNQueueReceiver-2.2 {Check for correct IOPort container in new receiver} {
     set rec [java::new ptolemy.domains.pn.kernel.PNQueueReceiver $port]
-    list [expr { $port == [$rec getContainer] } ]
+    list [ $port equals [$rec getContainer]]
 } {1}
 
 
@@ -118,7 +118,7 @@ test PNQueueReceiver-3.4 {Test the setting of the blocking flags} {
 test PNQueueReceiver-4.1 {Put and get token when only one token} {
     $rec setCapacity 1
     $rec put [java::new {ptolemy.data.IntToken int} 2]
-    set tok [$rec get]
+    set tok [java::cast ptolemy.data.IntToken [$rec get]]
     list [$tok intValue ]
 } {2}
 
@@ -132,9 +132,9 @@ test PNQueueReceiver-4.2 {Put and get tokens when more than one token} {
     $rec put [java::new {ptolemy.data.IntToken int} 4]
     $rec put [java::new {ptolemy.data.IntToken int} 5]
     $rec put [java::new {ptolemy.data.IntToken int} 6]
-    set tok1 [$rec get]
-    set tok2 [$rec get]
-    set tok3 [$rec get]
+    set tok1 [java::cast ptolemy.data.IntToken [$rec get]]
+    set tok2 [java::cast ptolemy.data.IntToken [$rec get]]
+    set tok3 [java::cast ptolemy.data.IntToken [$rec get]]
     list [$tok1 intValue] [$tok2 intValue] [$tok3 intValue]
 } {4 5 6}
 
