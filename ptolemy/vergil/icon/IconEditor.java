@@ -10,6 +10,7 @@ package ptolemy.vergil.icon;
 import diva.gui.BasicFrame;
 import diva.gui.AppContext;
 import diva.gui.GUIUtilities;
+import diva.gui.ExtensionFileFilter;
 import diva.util.java2d.PaintedShape;
 import diva.util.java2d.PaintedPath;
 
@@ -34,18 +35,21 @@ import javax.swing.JMenuBar;
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.awt.Paint;
+import java.awt.Shape;
 import java.awt.geom.*;
 
 import java.io.StringBufferInputStream;
@@ -66,8 +70,6 @@ import ptolemy.kernel.util.NamedObj;
  *
  */
 
-
-
 /**
  * IconEditor class.  This class is a stand-alone application that creates java2d 
  * shapes.  Future work on this class will be to integrate this application into 
@@ -77,112 +79,133 @@ import ptolemy.kernel.util.NamedObj;
 public class IconEditor {
 
     /**
-     * Construct a new instance of the icon editor.
+     * Control begins here.
      *
      */
-
-    // Control begins here.
     public static void main(String argv[]) {
+	// Make a new instance of the IconEditor class.
+	new IconEditor();
+    }
+  
+    public IconEditor() {
 
         /** 
-	 * Setup the window for the icon editor application.  This window includes 
-	 * a toolbar of shapes, a toolbar of thicknesses, a button to choose the color, 
-	 * and the main drawing window and a save button.
+	 * Setup the window for the icon editor application.  This window will include 
+	 * a toolbar of different shapes, a toolbar of different thicknesses, a button 
+	 * to choose the color, and the main drawing window.
 	 *
-	 * For drawing_board, I used a BasicFrame with a false argument, which tells 
+	 * For drawingFrame, I used a BasicFrame with a false argument, which tells 
 	 * BasicFrame not to set the size of the window or make it visible.  The string
 	 * "Edit Icon" is the name of the window.
 	 *
 	 */
-        BasicFrame drawing_board = new BasicFrame("Edit Icon", false);
-
-	// Make a new instance of the IconEditor class with the drawing_board.
-	new IconEditor(drawing_board);
-    }
+        drawingFrame = new BasicFrame("Edit Icon", false);
   
-    public IconEditor(BasicFrame drawing_board) {
-
         // Instantiate the color chooser for the color button.
         colorChooser = new JColorChooser();
       
-        // Make a canvas for the drawing_board to use for drawing.
+        // Make a canvas for the drawingFrame to use for drawing.
         canvas = new JCanvas();
-	drawing_board.getContentPane().add("Center", canvas);
+	drawingFrame.getContentPane().add("Center", canvas);
 
-	// Create the save button and add it to the drawing_board.
-	JButton but = new JButton("Save");
-	but.addActionListener(saveAction);
-	drawing_board.getContentPane().add("South", but);
-	
 
-	/** 
-	 * Listen for the delete key from the keyboard.  This doesn't do anything useful 
-	 * now, but ideally any shape selected should be removed when this action is invoked.
-	 *
-	 */
-
-	ActionListener deletionListener = new ActionListener() {
-	    public void actionPerformed(ActionEvent evt) {
-	        m.clearSelection();
-	        System.out.println("Delete!");
-	    }
-	};
-    
+	// Register the delete keyboard key press from the user and listen for it.
 	canvas.registerKeyboardAction(deletionListener, "Delete",
 				      KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
 				      JComponent.WHEN_IN_FOCUSED_WINDOW);
+	// Cut, Copy, and Paste keyboard shortcuts are registered.
+	canvas.registerKeyboardAction(cutAction, "Cut Figure", 
+				      KeyStroke.getKeyStroke(KeyEvent.VK_X, 2),
+				      JComponent.WHEN_IN_FOCUSED_WINDOW);
+	canvas.registerKeyboardAction(copyAction, "Copy Figure", 
+				      KeyStroke.getKeyStroke(KeyEvent.VK_C, 2),
+				      JComponent.WHEN_IN_FOCUSED_WINDOW);
+	canvas.registerKeyboardAction(pasteAction, "Paste Figure", 
+				      KeyStroke.getKeyStroke(KeyEvent.VK_V, 2),
+				      JComponent.WHEN_IN_FOCUSED_WINDOW);
+	// New, Open, and Save keyboard shortcuts are registered.
+	canvas.registerKeyboardAction(newIconAction, "New Icon", 
+				      KeyStroke.getKeyStroke(KeyEvent.VK_N, 2),
+				      JComponent.WHEN_IN_FOCUSED_WINDOW);
+	canvas.registerKeyboardAction(openIconAction, "Open Icon", 
+				      KeyStroke.getKeyStroke(KeyEvent.VK_O, 2),
+				      JComponent.WHEN_IN_FOCUSED_WINDOW);
+	canvas.registerKeyboardAction(saveIconAction, "Save Icon", 
+				      KeyStroke.getKeyStroke(KeyEvent.VK_S, 2),
+				      JComponent.WHEN_IN_FOCUSED_WINDOW);
 	canvas.setRequestFocusEnabled(true);
-    
 
 	/**
-	 * Make a toolbar for the colors, thickness, and shapes windows and add them to the 
-	 * frames.
+	 * Make a toolbar for the color, thicknesses, and shapes windows and add them 
+	 * to the drawingFrame frame.
 	 *
 	 */
-	
-	//	JToolBar colorToolBar = new JToolBar(JToolBar.VERTICAL);
-	//drawing_board.getContentPane().add("West", colorToolBar);
-	//colors.getContentPane().add("North", colorToolBar);
+
 	JToolBar thicknessToolBar = new JToolBar(JToolBar.VERTICAL);
-	drawing_board.getContentPane().add("East", thicknessToolBar);
-	//thickness.getContentPane().add("North", thicknessToolBar);
+	drawingFrame.getContentPane().add("East", thicknessToolBar);
 	JToolBar shapesToolBar = new JToolBar(JToolBar.HORIZONTAL);
-	drawing_board.getContentPane().add("North", shapesToolBar);
-	//shapes.getContentPane().add("North", shapesToolBar);
+	drawingFrame.getContentPane().add("North", shapesToolBar);
+	colorButton = new JButton("Colors");
+	colorButton.addActionListener(colorAction);
+	colorButton.setBackground((Color)strokeColor);
+	drawingFrame.getContentPane().add("West", colorButton);
 
+	/**
+	 * Add "New", "Open", and "Save" to the file menu.  "Exit" is already created 
+	 * by the default BasicFrame class.
+	 *
+	 */
+	JMenu menuFile = drawingFrame.getJMenuBar().getMenu(0);
+	JMenuItem itemNew = menuFile.insert(newIconAction, 0);
+	itemNew.setMnemonic('N');
+	itemNew.setToolTipText("Create a new icon and discard this one");
+	JMenuItem itemOpen = menuFile.insert(openIconAction, 1);
+	itemOpen.setMnemonic('O');
+	itemOpen.setToolTipText("Open an icon from a file");
+	JMenuItem itemSave = menuFile.insert(saveIconAction, 2);
+	itemSave.setMnemonic('S');
+	itemSave.setToolTipText("Save this icon");
+	JMenuItem itemSaveAs = menuFile.insert(saveIconAsAction, 3);
+	itemSaveAs.setMnemonic('A');
+	itemSaveAs.setToolTipText("Save as ...");
 
-	// Create the File menu on the drawing_board frame.
-	JMenuBar menuBar = drawing_board.getJMenuBar();
-	JMenu menuFile = new JMenu("Tools");
-	menuFile.setMnemonic('T');
-	menuBar.add(menuFile);
+	/**
+	 * Create an edit menu and add "Cut", "Copy", and "Paste" functions to that menu.
+	 *
+	 */
+	JMenuBar menuBar = drawingFrame.getJMenuBar();
+	JMenu menuEdit = new JMenu("Edit");
+	menuEdit.setMnemonic('E');
+	menuBar.add(menuEdit);
 
-	// A layout action which, as of now, just does the same action as clicking the save button.
-	Action action = saveAction;
-	GUIUtilities.addMenuItem(menuFile, action, 'L', 
-				 "Automatically layout the model");
+	GUIUtilities.addMenuItem(menuEdit, cutAction, 'C', 
+				 "Cut the selected shape");
+	GUIUtilities.addMenuItem(menuEdit, copyAction, 'O', 
+				 "Copy the selected shape");
+	GUIUtilities.addMenuItem(menuEdit, pasteAction, 'P',
+				 "Paste the shape previously cut or copied");
     
 
 	/** 
-	 * Set up the buttons for the multiple windows.  These buttons are instantiated
-	 * with gif image files and these files must be located in a sub-directory 
-	 * named "gifs".
+	 * Set up the buttons for the multiple toolbars.  These buttons are instantiated
+	 * with gif image files and these files must be located in a sub-directory from 
+	 * this one named "gifs".
 	 *
 	 */
 
-	String my_rectangle = "gifs/rect.gif";
-	String my_line = "gifs/line.gif";
-	String my_quad = "gifs/quad.gif";
-	String my_cubic = "gifs/cubic.gif";
-	String my_circle = "gifs/circle.gif";
-	String my_ellipse = "gifs/ellipse.gif";
-	String my_fill = "gifs/fill.gif";
-	String my_thickness1 = "gifs/my_thickness1.gif";
-	String my_thickness2 = "gifs/my_thickness2.gif";
-	String my_thickness3 = "gifs/my_thickness3.gif";
-	String my_thickness4 = "gifs/my_thickness4.gif";
-	String my_thickness5 = "gifs/my_thickness5.gif";
-						
+	String Rectangle = "gifs/rect.gif";
+	String Line = "gifs/line.gif";
+	String Quad = "gifs/quad.gif";
+	String Cubic = "gifs/cubic.gif";
+	String Circle = "gifs/circle.gif";
+	String Ellipse = "gifs/ellipse.gif";
+	String Fill = "gifs/fill.gif";
+	String thickness1 = "gifs/thickness1.gif";
+	String thickness2 = "gifs/thickness2.gif";
+	String thickness3 = "gifs/thickness3.gif";
+	String thickness4 = "gifs/thickness4.gif";
+	String thickness5 = "gifs/thickness5.gif";
+
 	/**
 	 * Now that I have the names of all the gif files, I need to make them buttons and add them  
 	 * to the appropriate toolbars in the main window.
@@ -190,41 +213,41 @@ public class IconEditor {
 	 */
 
 	GUIUtilities.addToolBarButton(shapesToolBar, rectangleAction,
-				      "Rectangle", new ImageIcon(my_rectangle));
+				      "Rectangle", new ImageIcon(Rectangle));
 	GUIUtilities.addToolBarButton(shapesToolBar, lineAction,
-				      "Straight Line", new ImageIcon(my_line));
+				      "Straight Line", new ImageIcon(Line));
 	GUIUtilities.addToolBarButton(shapesToolBar, quadraticAction,
-				      "Quadratic Curve", new ImageIcon(my_quad));
+				      "Quadratic Curve", new ImageIcon(Quad));
 	GUIUtilities.addToolBarButton(shapesToolBar, cubicAction,
-				      "Cubic Curve", new ImageIcon(my_cubic));
+				      "Cubic Curve", new ImageIcon(Cubic));
 	GUIUtilities.addToolBarButton(shapesToolBar, circleAction, 
-				      "Circle", new ImageIcon(my_circle));
+				      "Circle", new ImageIcon(Circle));
 	GUIUtilities.addToolBarButton(shapesToolBar, ellipseAction, 
-				      "Ellipse", new ImageIcon(my_ellipse));
+				      "Ellipse", new ImageIcon(Ellipse));
 	GUIUtilities.addToolBarButton(shapesToolBar, fillAction, 
-				      "Fill Shape", new ImageIcon(my_fill));
+				      "Fill Shape", new ImageIcon(Fill));
 	
 	GUIUtilities.addToolBarButton(thicknessToolBar, thickness1Action,
-				      "Thickness of Outline", new ImageIcon(my_thickness1));
+				      "Thickness of Outline", new ImageIcon(thickness1));
 	GUIUtilities.addToolBarButton(thicknessToolBar, thickness2Action,
-				      "Thickness of Outline", new ImageIcon(my_thickness2));
+				      "Thickness of Outline", new ImageIcon(thickness2));
 	GUIUtilities.addToolBarButton(thicknessToolBar, thickness3Action,
-				      "Thickness of Outline", new ImageIcon(my_thickness3));
+				      "Thickness of Outline", new ImageIcon(thickness3));
 	GUIUtilities.addToolBarButton(thicknessToolBar, thickness4Action,
-				      "Thickness of Outline", new ImageIcon(my_thickness4));
+				      "Thickness of Outline", new ImageIcon(thickness4));
 	GUIUtilities.addToolBarButton(thicknessToolBar, thickness5Action,
-				      "Thickness of Outline", new ImageIcon(my_thickness5));
-	
+				      "Thickness of Outline", new ImageIcon(thickness5));
 
-	colorButton = new JButton("Colors");
-	colorButton.addActionListener(colorAction);
-	colorButton.setBackground((Color)strokeColor);
-	drawing_board.getContentPane().add("West", colorButton);
-	
-	// OK, now let's add a few figures into the foreground of the canvas
+	/**
+	 * Now we need to get the canvas pane and foreground layer of our canvas.
+	 * Also, here is where I set the halo width (twice the distance your mouse can 
+	 * be from a figure when you click and still have the program detect that you 
+	 * are trying to click on the figure).
+	 *
+	 */
 	pane = (GraphicsPane)canvas.getCanvasPane();
 	layer = pane.getForegroundLayer();
-	layer.setPickHalo(3.0);
+	layer.setPickHalo(MOUSE_SENSITIVITY);
 	
 	// Make them draggable.
 	interactor1.addInteractor(new DragInteractor());
@@ -237,7 +260,8 @@ public class IconEditor {
 
 	/**
 	 * This is the call to getFigure() which reads in some xml code and returns
-	 * a new figure represented by the xml.
+	 * a new figure represented by the xml.  For now, I've commented this out.
+	 * I'll uncomment it when we need to integrate this program into vergil.
 	 *
 	 * Figure f = getFigure(null);
 	 * layer.add(f);
@@ -245,17 +269,22 @@ public class IconEditor {
 	 *
 	 */
 
-	// Sets the size of the window in pixels.
-	drawing_board.setSize(500, 605);
+	// Sets the size of the main window in pixels.
+	drawingFrame.setSize(WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL);
 
 	// This layout makes the windows appear in the top-left corner of the screen.
-	drawing_board.setLocation(0, 75);
+	drawingFrame.setLocation(0, 75);
 	
 	// There is no need for the user to be able to resize the window.
-	drawing_board.setResizable(false);
+	drawingFrame.setResizable(WINDOW_RESIZABLE);
 	
 	// Only set the window visible now so the user doesn't see it being constructed.
-	drawing_board.setVisible(true);
+	drawingFrame.setVisible(true);
+	
+	// Set-up the possible file extensions for opening and saving icons.
+	filter.addExtension(FILE_FORMAT_EXTENSION);
+	filter.setDescription(FILE_FORMAT_EXTENSION + " extension only.");
+	fileChooser.setFileFilter(filter);
     }
 
     /**
@@ -291,375 +320,311 @@ public class IconEditor {
      *
      */
 
+    /////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////      Private variables.       //////////////////////////////////
+
+
+    // The main frame of the icon editor application.
+    private BasicFrame drawingFrame;
+  
+    // Create the file chooser for the "Open" and "Save As" commands.
+    private JFileChooser fileChooser = new JFileChooser();
+    private ExtensionFileFilter filter = new ExtensionFileFilter("xml");
+
     // Create the object for the color chooser.
-    JButton colorButton;
-    JColorChooser colorChooser;
-    JCanvas canvas;
-    JDialog dialog;
+    private JButton colorButton;
+    private JColorChooser colorChooser;
+    private JCanvas canvas;
+    private JDialog dialog;
 
     // Here are the interactors for each shape
-    BasicSelectionModel m = new BasicSelectionModel();
-    SelectionInteractor interactor1 = new SelectionInteractor(m);
-    SelectionInteractor interactor2 = new SelectionInteractor(m);
-    SelectionInteractor interactor3 = new SelectionInteractor(m);
+    private BasicSelectionModel m = new BasicSelectionModel();
+    private SelectionInteractor interactor1 = new SelectionInteractor(m);
+    private SelectionInteractor interactor2 = new SelectionInteractor(m);
+    private SelectionInteractor interactor3 = new SelectionInteractor(m);
   
     // This is the current shape, line thickness, and paint color.
-    BasicFigure current_shape = null;
-    float outline_thickness = 1.0f;
-    Paint strokeColor = new Color(0, 170, 170);//Color.black;
+    private BasicFigure currentFigure = null;
+    private BasicFigure cutOrCopiedFigure = null;
+    private float outlineThickness = 1.0f;
+    private Paint strokeColor = new Color(0, 170, 170);
 
     // Window objects
-    GraphicsPane pane;
-    FigureLayer layer;
-    Figure figure;
+    private GraphicsPane pane;
+    private FigureLayer layer;
+    private Figure figure;
 
     /**
-     * All the actions possible from clicking all the different buttons.
-     * These actions have inner classes defined below, each class giving
-     * explicitly the action taken for each pushed button.
+     * Constants for the program.  Decreasing MOUSE_SENSITIVITY will require the user 
+     * to be more precise when trying to click on figures.
      *
      */
-    private SaveAction saveAction = new SaveAction();
-    private RectangleAction rectangleAction = new RectangleAction();
-    private LineAction lineAction = new LineAction();
-    private QuadraticAction quadraticAction = new QuadraticAction();
-    private CubicAction cubicAction = new CubicAction();
-    private CircleAction circleAction = new CircleAction();
-    private EllipseAction ellipseAction = new EllipseAction();
-    private FillAction fillAction = new FillAction();
-    private Thickness1Action thickness1Action = new Thickness1Action();
-    private Thickness2Action thickness2Action = new Thickness2Action();
-    private Thickness3Action thickness3Action = new Thickness3Action();
-    private Thickness4Action thickness4Action = new Thickness4Action();
-    private Thickness5Action thickness5Action = new Thickness5Action();
-    private ColorAction colorAction = new ColorAction();
-    private OkAction okAction = new OkAction();
-    private CancelAction cancelAction = new CancelAction();
+
+    private static final double MOUSE_SENSITIVITY = 3.0;
+    // Defines the horizontal and vertical size of the main window.
+    private static final int WINDOW_SIZE_HORIZONTAL = 500;
+    private static final int WINDOW_SIZE_VERTICAL = 605;
+    /** 
+     * Alternatively, the user can be allowed to resize the window if desired.  Now 
+     * I see no need to allow this option for the user, but it might be needed as 
+     * the program is used in different applications.
+     */
+    private static final boolean WINDOW_RESIZABLE = false;
+    // This is the extension we allow for opening and saving files within the program.
+    private static final String FILE_FORMAT_EXTENSION = "xml";
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////    Un-named Inner classes     ////////////////////////////////
 
     /**
      * Here are the definitions for all the actions that take place 
-     * when a button is clicked in one of the active windows.  Each of these 
-     * inner classes define the response for exactly one button.  Currently
-     * each response includes printing a statement to standard output for 
-     * debugging purposes.
+     * when a button is clicked in one of the active windows, or a 
+     * menu item is selected from the toolbar at the top of the 
+     * window.  Also, when you click "OK" or "Cancel" in the color 
+     * window or file window, then that action code becomes invoked.
+     * Each of these inner classes define the response for 
+     * exactly one button or selection.
      *
      */
-
-    private class SaveAction extends AbstractAction {
-        public SaveAction() {
-            super("Save");
-	}
+  
+    Action saveAction = new AbstractAction ("Save") {
         public void actionPerformed(ActionEvent e) {
 	    System.out.println("Save button!");
 	}
-    }
-
-    private class RectangleAction extends AbstractAction {
-        public RectangleAction() {
-            super("Rectangle");
-	}
+    };
+    Action rectangleAction = new AbstractAction ("Rectangle") {
         public void actionPerformed(ActionEvent e) {
-	    current_shape = new BasicFigure(new PaintedShape(new Rectangle2D.Double(8.0, 10.0, 20.0, 20.0), 
-							     outline_thickness, strokeColor));
-	    System.out.println("You have chosen a rectangle");
-	    layer.add(current_shape);
-	    current_shape.setInteractor(interactor2);
+	    currentFigure = new BasicFigure(new PaintedShape(new Rectangle2D.Double(8.0, 10.0, 20.0, 20.0), 
+							     outlineThickness, strokeColor));
+	    layer.add(currentFigure);
+	    currentFigure.setInteractor(interactor2);
 	}
-    }
-
-    private class LineAction extends AbstractAction {
-        public LineAction() {
-            super("Straight Line");
-	}
+    };
+    Action lineAction = new AbstractAction ("Line") {
         public void actionPerformed(ActionEvent e) {
-	    current_shape = new BasicFigure(new PaintedPath(new Line2D.Double(45.0, 10.0, 65.0, 30.0), 
-							     outline_thickness, strokeColor));
-	    System.out.println("You have chosen a straight line");
-	    layer.add(current_shape);
-	    current_shape.setInteractor(interactor1);
+	    currentFigure = new BasicFigure(new PaintedShape(new Line2D.Double(45.0, 10.0, 65.0, 30.0), 
+							     outlineThickness, strokeColor));
+	    layer.add(currentFigure);
+	    currentFigure.setInteractor(interactor1);
 	}
-    }
-
-    private class QuadraticAction extends AbstractAction {
-        public QuadraticAction() {
-            super("Quadratic Curve");
-	}
+    };
+    Action quadraticAction = new AbstractAction ("Quadratic Curve") {
         public void actionPerformed(ActionEvent e) {
-            current_shape = new BasicFigure(new PaintedPath(new QuadCurve2D.Double(77.0, 10.0, 87.0, 20.0, 97.0, 30.0), 
-							     outline_thickness, strokeColor));
-	    System.out.println("You have chosen a quadratic curve");
-	    layer.add(current_shape);
-	    current_shape.setInteractor(interactor1);
+	    currentFigure = new BasicFigure(new PaintedShape(new QuadCurve2D.Double(77.0, 10.0, 87.0, 20.0, 97.0, 30.0), 
+							     outlineThickness, strokeColor));
+	    layer.add(currentFigure);
+	    currentFigure.setInteractor(interactor1);
 	}
-    }
-
-    private class CubicAction extends AbstractAction {
-        public CubicAction() {
-            super("Cubic Curve");
-	}
+    };
+    Action cubicAction = new AbstractAction ("Cubic Curve") {
         public void actionPerformed(ActionEvent e) {
-            current_shape = new BasicFigure(new PaintedPath(new CubicCurve2D.Double(110.0, 10.0, 117.0, 17.0, 123.0, 23.0, 130.0, 30.0), 
-							     outline_thickness, strokeColor));
-	    System.out.println("You have chosen a cubic curve");
-	    layer.add(current_shape);
-	    current_shape.setInteractor(interactor1);
+	    currentFigure = new BasicFigure(new PaintedShape(new CubicCurve2D.Double(110.0, 10.0, 117.0, 17.0, 
+										     123.0, 23.0, 130.0, 30.0),
+							     outlineThickness, strokeColor));
+	    layer.add(currentFigure);
+	    currentFigure.setInteractor(interactor1);
 	}
-    }
-  
-    private class CircleAction extends AbstractAction {
-        public CircleAction() {
-            super("Circle");
-	}
+    };
+    Action circleAction = new AbstractAction ("Circle") {
         public void actionPerformed(ActionEvent e) {
-	    current_shape = new BasicFigure(new PaintedShape(new Ellipse2D.Double(148.0, 10.0, 20.0, 20.0), 
-							    outline_thickness, strokeColor)); 
-	    System.out.println("You have chosen a circle");
-	    layer.add(current_shape);
-	    current_shape.setInteractor(interactor3);
+	    currentFigure = new BasicFigure(new PaintedShape(new Ellipse2D.Double(148.0, 10.0, 20.0, 20.0), 
+							     outlineThickness, strokeColor)); 
+	    layer.add(currentFigure);
+	    currentFigure.setInteractor(interactor3);
 	}
-    }
-
-    private class EllipseAction extends AbstractAction {
-        public EllipseAction() {
-            super("Ellipse");
-	}
+    };
+    Action ellipseAction = new AbstractAction ("Ellipse") {
         public void actionPerformed(ActionEvent e) {
-	    current_shape = new BasicFigure(new PaintedShape(new Ellipse2D.Double(183.0, 10.0, 20.0, 30.0), 
-							     outline_thickness, strokeColor)); 
-	    System.out.println("You have chosen an ellipse");
-	    layer.add(current_shape);
-	    current_shape.setInteractor(interactor2);
+	    currentFigure = new BasicFigure(new PaintedShape(new Ellipse2D.Double(183.0, 10.0, 20.0, 30.0), 
+							     outlineThickness, strokeColor)); 
+	    layer.add(currentFigure);
+	    currentFigure.setInteractor(interactor2);
 	}
-    }
-  
-    private class FillAction extends AbstractAction {
-        public FillAction() {
-            super("Fill Shape");
-	}
+    };
+    Action fillAction = new AbstractAction ("Fill") {
         public void actionPerformed(ActionEvent e) {
-            System.out.println("You have chosen to fill a shape");
+	    BasicFigure basicFigure = (BasicFigure)m.getFirstSelection();
+	    basicFigure.setFillPaint(strokeColor);
+	    basicFigure.repaint();
 	}
-    }
-  
-    private class Thickness1Action extends AbstractAction {
-        public Thickness1Action() {
-            super("Thickness");
-	}
+    };
+    Action thickness1Action = new AbstractAction ("Thickness 1") {
         public void actionPerformed(ActionEvent e) {
-	    outline_thickness = 1.0f;
-	    System.out.println("Thickness 1");
+	    changeThickness(1.0f);
 	}
-    }
-
-    private class Thickness2Action extends AbstractAction {
-        public Thickness2Action() {
-            super("Thickness");
-	}
+    };
+    Action thickness2Action = new AbstractAction ("Thickness 2") {
         public void actionPerformed(ActionEvent e) {
-	    outline_thickness = 3.0f;
-	    System.out.println("Thickness 2");
+	    changeThickness(3.0f);
 	}
-    }
-
-    private class Thickness3Action extends AbstractAction {
-        public Thickness3Action() {
-            super("Thickness");
-	}
+    };
+    Action thickness3Action = new AbstractAction ("Thickness 3") {
         public void actionPerformed(ActionEvent e) {
-	    outline_thickness = 5.0f;
-	    System.out.println("Thickness 3");
+	    changeThickness(5.0f);
 	}
-    }
-
-    private class Thickness4Action extends AbstractAction {
-        public Thickness4Action() {
-            super("Thickness");
-	}
+    };
+    Action thickness4Action = new AbstractAction ("Thickness 4") {
         public void actionPerformed(ActionEvent e) {
-	    outline_thickness = 7.0f;
-	    System.out.println("Thickness 4");
+	    changeThickness(7.0f);
 	}
-    }
-
-    private class Thickness5Action extends AbstractAction {
-        public Thickness5Action() {
-            super("Thickness");
-	}
+    };
+    Action thickness5Action = new AbstractAction ("Thickness 5") {
         public void actionPerformed(ActionEvent e) {
-	    outline_thickness = 9.0f;
-	    System.out.println("Thickness 5");
+	    changeThickness(9.0f);
 	}
-    }
-  /*
-    private class BlackAction extends AbstractAction {
-        public BlackAction() {
-            super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    dialog = JColorChooser.createDialog(canvas, "Choose A Color", true, colorChooser, okAction, cancelAction);
-	    dialog.setVisible(true);
-	    //strokeColor = Color.black;
-	    System.out.println("Black");
-	}
-    }
-  
-    private class DarkGrayAction extends AbstractAction {
-        public DarkGrayAction() {
-            super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.darkGray;
-	    System.out.println("Dark Gray");
-	}
-    }
-  
-    private class GrayAction extends AbstractAction {
-        public GrayAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.gray;
-	    System.out.println("Gray");
-	}
-    }
-
-    private class LightGrayAction extends AbstractAction {
-        public LightGrayAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.lightGray;
-	    System.out.println("Light Gray");
-	}
-    }
-  
-    private class WhiteAction extends AbstractAction {
-        public WhiteAction() {
-            super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.white;
-	    System.out.println("White");
-	}
-    }
-
-    private class BlueAction extends AbstractAction {
-        public BlueAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.blue;
-	    System.out.println("Blue");
-	}
-  }
-  
-    private class CyanAction extends AbstractAction {
-        public CyanAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.cyan;
-	    System.out.println("Cyan");
-	}
-    }
-  
-    private class GreenAction extends AbstractAction {
-        public GreenAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.green;
-	    System.out.println("Green");
-	}
-    }
-  
-    private class MagentaAction extends AbstractAction {
-        public MagentaAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.magenta;
-	    System.out.println("Magenta");
-	}
-    }
-
-    private class OrangeAction extends AbstractAction {
-        public OrangeAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.orange;
-	    System.out.println("Orange");
-	}
-    }
-
-    private class PinkAction extends AbstractAction {
-        public PinkAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.pink;
-	    System.out.println("Pink");
-	}
-    }
-
-    private class RedAction extends AbstractAction {
-        public RedAction() {
-            super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.red;
-	    System.out.println("Red");
-	}
-    }
-
-    private class YellowAction extends AbstractAction {
-        public YellowAction() {
-	    super("Color");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    strokeColor = Color.yellow;
-	    System.out.println("Yellow");
-	}
-    }
-  */
-    private class ColorAction extends AbstractAction {
-        public ColorAction() {
-	    super("Color");
-	}
+    };
+    Action colorAction = new AbstractAction ("Color") {
         public void actionPerformed(ActionEvent e) {
 	    dialog = JColorChooser.createDialog(canvas, "Choose A Color", true, colorChooser, okAction, cancelAction);
 	    dialog.setVisible(true);
 	}
-    }
-  
-    private class OkAction extends AbstractAction {
-        public OkAction() {
-	    super("Ok");
-	}
+    };
+    Action okAction = new AbstractAction ("Ok") {
         public void actionPerformed(ActionEvent e) {
 	    Color thisColor = colorChooser.getColor();
 	    colorButton.setBackground(thisColor);
 	    colorButton.repaint();
 	    strokeColor = thisColor;
-	    System.out.println("Ok!");
+    	}
+    };
+    Action cancelAction = new AbstractAction ("Cancel") {
+        public void actionPerformed(ActionEvent e) {
+	}
+    };
+    Action cutAction = new AbstractAction ("Cut    CTRL+X") {
+        public void actionPerformed(ActionEvent e) {
+	    currentFigure = (BasicFigure)m.getFirstSelection();
+	    m.clearSelection();
+	    if (currentFigure != null) {
+		layer.remove(currentFigure);
+	    }
+	    changeCutOrCopiedFigure(true);
+	}
+    };
+    Action copyAction = new AbstractAction("Copy   CTRL+C") {
+        public void actionPerformed(ActionEvent e) {
+	    currentFigure = (BasicFigure)m.getFirstSelection();
+	    changeCutOrCopiedFigure(true);
+	}
+    };
+    Action pasteAction = new AbstractAction ("Paste  CTRL+V") {
+        public void actionPerformed(ActionEvent e) {
+	    if (cutOrCopiedFigure != null) {
+	        layer.add(cutOrCopiedFigure);
+		changeCutOrCopiedFigure(false);
+	    }
+	}
+    };
+
+    Action newIconAction = new AbstractAction ("New    CTRL+N") {
+        public void actionPerformed(ActionEvent e) {
+	    System.out.println("New");
+	}
+    };
+    Action openIconAction = new AbstractAction ("Open   CTRL+O") {
+        public void actionPerformed(ActionEvent e) {
+	    int choice = fileChooser.showOpenDialog(drawingFrame);
+	    
+	    if (choice == JFileChooser.CANCEL_OPTION) {
+	        System.out.println("You have cancelled your open file choice");
+	    }
+	    else {
+	        System.out.println("You chose to open this file: " + 
+				   fileChooser.getSelectedFile().getName());
+	    }
+	}
+    };
+
+    Action saveIconAction = new AbstractAction ("Save   CTRL+S") {
+        public void actionPerformed(ActionEvent e) {
+	    System.out.println("Save");
+	}
+    };
+
+    Action saveIconAsAction = new AbstractAction ("Save As...") {
+        public void actionPerformed(ActionEvent e) {
+	    int choice = fileChooser.showSaveDialog(drawingFrame);
+	    
+	    if (choice == JFileChooser.CANCEL_OPTION) {
+	        System.out.println("You have cancelled your save file as choice");
+	    } 
+	    else {
+	        System.out.println("You chose to save this file: " + 
+				   fileChooser.getSelectedFile().getName());
+	    }
+	}
+    };
+
+    /** 
+     * Listen for the delete key from the keyboard.  When the delete key is pressed, 
+     * the currently selected figure is removed from the layer and unselected from 
+     * the selection model.  Pressing the delete key is unlike the cut command from 
+     * the edit menu in the toolbar in that the delete command is irreversible.  
+     * "Paste" will NOT return a figure that has been deleted to the canvas.
+     *
+     */
+
+    ActionListener deletionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+	    BasicFigure basicFigure = (BasicFigure)m.getFirstSelection();
+	    if (basicFigure != null) {
+	        m.clearSelection();
+		layer.remove(basicFigure);
+	    }
+	}
+    };
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //////////////////      Private methods.            ////////////////////////////////
+
+    /**
+     * A private method to change the thickness of a selected figure.
+     *
+     * @param float newThickness The new thickness for the selected figure.
+     *
+     */
+    private void changeThickness(float newThickness) {
+        outlineThickness = newThickness;
+	BasicFigure basicFigure = (BasicFigure)m.getFirstSelection();
+	if (basicFigure != null) {
+	    ((BasicFigure)m.getFirstSelection()).setLineWidth(outlineThickness);
 	}
     }
 
-
-    private class CancelAction extends AbstractAction {
-        public CancelAction() {
-	    super("Ok");
-	}
-        public void actionPerformed(ActionEvent e) {
-	    System.out.println("Cancel!");
+    /**
+     * A private method to change the currently remembered shape for the "cut", 
+     * "copy" and "paste" functions.  This method creates a new BasicFigure 
+     * from the current one recently "cut", "copied", or "pasted".  
+     *
+     * @param boolean newCopy True if the figure is a new one to copy, false if 
+     * the figure was pasted and hence shouldn't copy the selected figure.
+     *
+     */
+    private void changeCutOrCopiedFigure(boolean newCopy) {
+        Shape newShape = null;
+	if (currentFigure != null) {
+	    if (newCopy) {
+	        cutOrCopiedFigure = currentFigure;
+	    }
+	    float lw = cutOrCopiedFigure.getLineWidth();
+	    Shape oldShape = cutOrCopiedFigure.getShape();
+	    Paint strokePaint = cutOrCopiedFigure.getStrokePaint();
+	    Paint fillPaint = cutOrCopiedFigure.getFillPaint();
+	    if (oldShape instanceof Rectangle2D.Double) {
+	        newShape = (Shape)((Rectangle2D.Double)oldShape).clone();
+	    }
+	    else if (oldShape instanceof Ellipse2D.Double) {
+	        newShape = (Shape)((Ellipse2D.Double)oldShape).clone();
+	    }
+	    else if (oldShape instanceof GeneralPath) {
+	        newShape = (Shape)((GeneralPath)oldShape).clone();
+	    }
+	    cutOrCopiedFigure = new BasicFigure(newShape, fillPaint, lw);
+	    cutOrCopiedFigure.setInteractor(currentFigure.getInteractor());
+	    cutOrCopiedFigure.setStrokePaint(currentFigure.getStrokePaint());
 	}
     }
 
 }
-
-
-
-
-
-
