@@ -40,6 +40,7 @@ include $(CONFIG)
 DIRS =
 
 EXTRA_SRCS = \
+	develsetup.html \
 	directories.html \
 	index.html \
 	javalinks.html \
