@@ -412,44 +412,29 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            }
                                    
            if (methodName.equals("booleanValue")) {
-              return new CastNode(BoolTypeNode.instance, accessedObj);
+              return accessedObj;
            } else if (methodName.equals("intValue")) {
-              return new CastNode(IntTypeNode.instance, accessedObj);
+              return accessedObj;
            } else if (methodName.equals("longValue")) {
-              return new CastNode(LongTypeNode.instance, accessedObj);
+              return accessedObj;
            } else if (methodName.equals("doubleValue")) {
-              return new CastNode(DoubleTypeNode.instance, accessedObj);
+              return accessedObj;
            } else if (methodName.equals("complexValue")) {
-              return new CastNode((TypeNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone(), 
-               accessedObj);
+              return accessedObj;
            } else if (methodName.equals("fixValue")) {
-              return new CastNode(
-               (TypeNode) PtolemyTypeIdentifier.FIX_POINT_TYPE.clone(), 
-               accessedObj);
+              return accessedObj;
            } else if (methodName.equals("booleanMatrix")) {
-              return new CastNode(
-               TypeUtility.makeArrayType(BoolTypeNode.instance, 2), 
-               accessedObj);
+              return accessedObj;
            } else if (methodName.equals("intMatrix")) {
-              return new CastNode(
-               TypeUtility.makeArrayType(IntTypeNode.instance, 2), 
-               accessedObj);
+              return accessedObj;
            } else if (methodName.equals("longMatrix")) {
-              return new CastNode(
-               TypeUtility.makeArrayType(LongTypeNode.instance, 2), 
-               accessedObj);                                         
+              return accessedObj;                                         
            } else if (methodName.equals("doubleMatrix")) {
-              return new CastNode(
-               TypeUtility.makeArrayType(DoubleTypeNode.instance, 2), 
-               accessedObj);
+              return accessedObj;
            } else if (methodName.equals("complexMatrix")) {
-              return new CastNode(
-               TypeUtility.makeArrayType(PtolemyTypeIdentifier.COMPLEX_TYPE, 2), 
-               accessedObj);
+              return accessedObj;
            } else if (methodName.equals("fixMatrix")) {
-              return new CastNode(
-               TypeUtility.makeArrayType(PtolemyTypeIdentifier.FIX_POINT_TYPE, 2), 
-               accessedObj);
+              return accessedObj;
            } else if (methodName.equals("add")) {
               return new PlusNode(accessedObj, firstArg);               
            } else if (methodName.equals("addReverse")) {
@@ -489,6 +474,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
               retval.setProperty(PtolemyTypeIdentifier.PTOLEMY_TRANSFORMED_KEY, 
                NullValue.instance);
               return retval;              
+           } else if (methodName.equals("not")) {
+              return new NotNode(accessedObj);
            } else if (methodName.equals("getColumnCount")) {
               return new ObjectFieldAccessNode( 
                new NameNode(AbsentTreeNode.instance, "length"),

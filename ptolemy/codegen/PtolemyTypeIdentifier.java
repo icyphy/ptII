@@ -77,6 +77,16 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         return encapsulatedDataType(kindOfTokenType(type));
     }
 
+    /** Return true iff the kind is a class kind. In derived classes, the
+     *  kind() may return a different number for special classes, so this
+     *  method checks if the kind is any class kind.
+     */
+    public boolean isClassKind(int kind) {
+        return (((kind >= TYPE_KIND_COMPLEX) && 
+                 (kind <= TYPE_KIND_NO_TOKEN_EXCEPTION)) ||
+                super.isClassKind(kind));
+    }
+    
     /** Return true iff the kind is that of a concrete token class. */
     public boolean isConcreteTokenKind(int kind) {
         if (!isSupportedTokenKind(kind)) {
@@ -140,7 +150,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
     /** Return an integer representing the user type that has the specified ClassDecl, 
      *  which may be a special type in Ptolemy. If the type is not a special type, 
-     *  return the integer given by super.kindOfTypeNameNode(classDecl.getDefType()).
+     *  return the integer given by super.kindOfClassDecl(classDecl).
      */     
     public int kindOfClassDecl(ClassDecl classDecl) {    
         for (int i = 0; i < _KNOWN_CLASS_DECLS.length; i++) {
@@ -148,7 +158,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                return _KNOWN_KINDS[i];
             }
         }         
-        return super.kindOfTypeNameNode(classDecl.getDefType());
+        return super.kindOfClassDecl(classDecl);
     }
     
     /** Return the kind of token that would be returned by getElementAsToken() on 
@@ -177,15 +187,6 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         }
         ApplicationUtility.error("kindOfTokenType(): type unknown, type = " + type);
         return TYPE_KIND_UNKNOWN;
-    }
-
-    /** Return an integer representing the type, which may be a special type
-     *  in Ptolemy. If the type is not a special type, return the integer given by
-     *  super.kind(type).
-     */ 
-    public int kindOfTypeNameNode(TypeNameNode type) {                       
-        ClassDecl classDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) type);
-        return kindOfClassDecl(classDecl); 
     }
         
     /** Return a new TypeNameNode corresponding to a token type in Ptolemy. 

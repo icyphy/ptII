@@ -46,6 +46,7 @@ import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.lang.*;
 import ptolemy.lang.java.*;
+import ptolemy.lang.java.extended.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A code generator for each actor in a generic system.
@@ -151,16 +152,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         Iterator unitItr = unitList.iterator();
         
         CompileUnitNode unitNode;
-                                                                                                                                
-        while (unitItr.hasNext()) {                        
-           
-           unitNode = (CompileUnitNode) unitItr.next();
-           
-           unitNode = StaticResolution.load(unitNode, 2);
-        }
-                                                        
-        unitItr = unitList.iterator();
-                                                                                                                        
+                                                                                                                                              
         while (unitItr.hasNext()) {        
                                                    
            unitNode = (CompileUnitNode) unitItr.next();
@@ -186,13 +178,72 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         _invalidateSources(classNameList);
     }
     
+    public void pass3(String sourceName) {
+
+        File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
+         
+        if (sourceFile == null) {
+           ApplicationUtility.error("regenerated source code not found for " +
+            "source file " + sourceFile);
+        }
+
+        String filename = sourceFile.toString();
+        
+        System.out.println("pass3() : sourceName = " + sourceName + 
+         ", filename = " + filename);
+                                                
+        // save the old type personality
+        TypeVisitor oldTypeVisitor = StaticResolution.getDefaultTypeVisitor();
+        
+        // set the type personality to Extended Java
+        StaticResolution.setDefaultTypeVisitor(new TypeVisitor(
+         new ExtendedJavaTypePolicy()));
+                                                                                                                                                        
+        LinkedList[] listArray = 
+         _makeUnitList(filename, StringManip.unqualifiedPart(sourceName));
+       
+        LinkedList unitList = listArray[0];
+        
+        ApplicationUtility.trace("pass3() : unitList has length " + unitList.size());
+                                                                                                
+        Iterator unitItr = unitList.iterator();
+        
+        CompileUnitNode unitNode;
+                                   
+        ExtendedJavaConverter ejConverter = new ExtendedJavaConverter();                   
+                                                                                                                        
+        while (unitItr.hasNext()) {        
+                                                   
+           unitNode = (CompileUnitNode) unitItr.next();
+           
+           unitNode.accept(ejConverter, null);
+        }
+           
+        LinkedList classNameList = listArray[1];
+        
+        // assume the references to the compile unit nodes are still valid
+        // rewrite the transformed source code
+        //_rewriteSources(unitList, classNameList);      
+        
+        // clear the compile unit nodes from the cache to free memory
+        _invalidateSources(classNameList);
+           
+        // restore the old type personality
+        StaticResolution.setDefaultTypeVisitor(oldTypeVisitor);
+    }
+    
     protected static void _invalidateSources(List classNameList) {
         Iterator classNameItr = classNameList.iterator();
         while (classNameItr.hasNext()) {
-           String filename = "c:\\users\\ctsay\\ptII\\codegen\\" +  
+           String filename = "C:\\users\\ctsay\\ptII\\codegen\\" +  
             (String) classNameItr.next() + ".java";
+            
+           System.out.println("invalidating source filename: "  + filename);
                 
-           StaticResolution.invalidateCompileUnit(filename, 2);
+           if (!StaticResolution.invalidateCompileUnit(filename, 2)) {
+              System.out.println("failed to invalidate source filename: "  
+               + filename);          
+           }
         }    
     }     
     
@@ -266,14 +317,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         classNameList.addFirst(className);       
         
         ApplicationUtility.trace("_makeUnitList() : className = " + className);
-                        
-                        
+                                                
         do {
         
            ClassDecl superDecl = (ClassDecl)
             unitNode.accept(new FindSuperClassDecl(className), null);                                
             
-           if ((superDecl == StaticResolution.OBJECT_DECL) || // just to be sure
+           if ((superDecl == StaticResolution.OBJECT_DECL) || 
                (superDecl == null)) {                         // just to be sure
                
               ApplicationUtility.trace("_makeUnitList() : super class = " + superDecl +
@@ -370,7 +420,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                             
         Iterator classNameItr = classNameList.iterator();
         while (classNameItr.hasNext()) {
-           String filename = "c:\\users\\ctsay\\ptII\\codegen\\" +  
+           String filename = "C:\\users\\ctsay\\ptII\\codegen\\" +  
             (String) classNameItr.next() + ".java";
             
            filenameList.add(filename); 
