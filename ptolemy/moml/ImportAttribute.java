@@ -44,7 +44,7 @@ This attribute represents an external file reference.
 @author  Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
-@deprecated The 'import' MoML element is deprected, use the 'source'
+@deprecated The 'import' MoML element is deprecated, use the 'source'
 attribute instead.
 */
 public class ImportAttribute extends Attribute {
