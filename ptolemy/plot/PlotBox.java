@@ -314,6 +314,13 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
+    /** Clear all legends.  This will show up on the next redraw.
+     */
+    public synchronized void clearLegends() {
+        _legendStrings = new Vector();
+        _legendDatasets = new Vector();
+    }
+
     /** Export a description of the plot.
      *  Currently, only EPS is supported.  But in the future, this
      *  may cause a dialog box to open to allow the user to select
