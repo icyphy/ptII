@@ -1,4 +1,4 @@
-/* One line description of file.
+/* Dummy source for CT
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -36,7 +36,7 @@ import ptolemy.data.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// CTDummySouce
+//// CTDummySource
 /** 
 Dummy actor for source actor. One output, no input.
 @author  Jie Liu
