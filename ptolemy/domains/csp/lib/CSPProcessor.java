@@ -30,7 +30,8 @@
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.demo.*;
+import ptolemy.domains.csp.demo.BusContention.*;
+
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.process.*;
