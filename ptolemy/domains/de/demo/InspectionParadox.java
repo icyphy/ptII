@@ -47,7 +47,7 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// InspectionParadox
 /**
-An applet that uses Ptolemy II DE domain to illustrate the inpection
+An applet that uses Ptolemy II DE domain to illustrate the inspection
 paradox.  The inspection paradox deals with Poisson arrivals of events.
 
 @author Edward A. Lee and Lukito Muliadi
