@@ -134,8 +134,6 @@ public class DEIOPort extends IOPort {
      *
      *  @param token The token to send.
      *  @param delay The time stamp of the token being broadcast.
-     *  @exception CloneNotSupportedException If there is more than one
-     *   destination and the token cannot be cloned.
      *  @exception IllegalActionException If the port is not an output.
      */
     public void broadcast(Token token, double delay) 
@@ -169,8 +167,6 @@ public class DEIOPort extends IOPort {
      *  @param channelindex The index of the channel, from 0 to width-1.
      *  @param token The token to send.
      *  @param delay The time delay of the token being sent.
-     *  @exception CloneNotSupportedException If the token cannot be cloned
-     *   and there is more than one destination.
      *  @exception IllegalActionException If the port is not an output,
      *   or if the index is out of range.
      */

@@ -134,6 +134,8 @@ public abstract class DEDirector extends Director implements Runnable {
      *  such a way that they do not expect this, this may change in the future.
      *  I.e., these events may be made visible over multiple firings rather
      *  than all at once.
+     *
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void fire() throws IllegalActionException {
       super.fire();

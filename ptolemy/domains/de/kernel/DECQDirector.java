@@ -214,6 +214,8 @@ public class DECQDirector extends DEDirector {
      *  The actor will be fired multiple times until it has consumed all tokens
      *  in all of its receivers. If the firing actor resulted from a 'pure
      *  event' then the actor will be fired exactly once.
+     *
+     *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
 		
@@ -221,16 +223,14 @@ public class DECQDirector extends DEDirector {
 	// receivers. In the case of 'pure event' the actor is fired once.
 	// 
 	boolean refire = false;
-        /*
-        System.out.println("Firing actor: " + 
-                ((Nameable)_actorToFire).description(FULLNAME|CLASSNAME) + 
-                " at time: " + 
-                _currentTime);
-        */
-        System.out.println("Firing actor: " +
-                ((Entity)_actorToFire).description(FULLNAME|CLASSNAME) +
-                           " at time: " +
-                           _currentTime);
+        
+        
+        //System.out.println("Firing actor: " +
+        //        ((Entity)_actorToFire).description(FULLNAME|CLASSNAME) +
+        //        " at time: " +
+        //        _currentTime);
+    
+
 	do {
 	    _actorToFire.fire();
 	    // check _filledReceivers to see if there's any receivers left
@@ -261,8 +261,6 @@ public class DECQDirector extends DEDirector {
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception CloneNotSupportedException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If there is a delay-free loop, or
      *   if the initialize() method of the
      *   container or one of the deeply contained actors throws it.
@@ -309,7 +307,6 @@ public class DECQDirector extends DEDirector {
      *  which will have the effect of stopping the simulation.
      *
      *  @return True if there is an actor to fire.
-     *  @exception CloneNotSupportedException If the base class throws it.
      *  @exception IllegalActionException If the base class throws it.
      *  @exception NameDuplicationException If the base class throws it.
      */
@@ -550,6 +547,7 @@ public class DECQDirector extends DEDirector {
     // to set the depth field of the DEReceiver objects.
     private void _computeDepth() {
         Object[] sort = (Object[]) _dag.topologicalSort();
+        System.out.println("*** Result of topological sort: ***");
 	for(int i=sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];
             // FIXME: Debugging topological sort

@@ -84,7 +84,7 @@ public class DEReceiver implements Receiver {
      *  exception.
      *
      *  @return A token.
-     *  @exception NoSuchItemException If there are no more tokens.
+     *  @exception NoTokenException If there are no more tokens.
      */
     public Token get() throws NoTokenException {
         if(_tokens.isEmpty()) {
@@ -224,7 +224,7 @@ public class DEReceiver implements Receiver {
      *
      *  @param token The token to make available.
      */
-    protected void _triggerEvent(Token token) throws IllegalActionException {
+    protected void _triggerEvent(Token token) {
         _tokens.insertFirst(token);
     }
 
