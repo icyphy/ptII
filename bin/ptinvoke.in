@@ -93,7 +93,7 @@ COMMAPI_PRESENT=@COMMAPI_PRESENT@
 # The location of comm.jar
 COMMAPI_JAR=""
 if [ "$COMMAPI_PRESENT" ]; then 
-    COMMAPI_JAR="${CLASSPATHSEPARATOR}file:${COMMAPI_DIR}/comm.jar"
+    COMMAPI_JAR="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
 fi
 
 #### Diva stuff
@@ -104,9 +104,9 @@ DIVA_JFLAG=
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
-ALL_JAR=${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${CLASSPATHSEPARATOR}${PTJACL_JAR}${COMMAPI_JAR}
+ALL_JAR=${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}
 
-ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${PTJACL_JFLAG}"
+ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
 # Optional jar file
 jarfile=
