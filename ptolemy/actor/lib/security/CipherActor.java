@@ -37,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 import javax.crypto.Cipher;
 
@@ -93,6 +94,7 @@ abstract public class CipherActor extends CryptographyActor {
         super(container, name);
 
         mode = new StringParameter(this, "mode");
+        mode.setVisibility(Settable.EXPERT);
         mode.setExpression("");
         mode.addChoice("");
         mode.addChoice("NONE");

@@ -139,16 +139,24 @@ public class Configurer extends JPanel implements CloseListener {
     ////                         public methods                    ////
 
 
-    /** Return true if the given settable is visible in this
-     *  configurer panel.
+    /** Return true if the given settable should be visible in a
+     *  configurer panel for the specified target. Any settable with
+     *  visibility FULL or NOT_EDITABLE will be visible.  If the target
+     *  contains an attribute named "_expertMode", then any
+     *  attribute with visibility EXPERT will also be visible.
+     *  @param target The object to be configured.
+     *  @param settable The object whose visibility is returned.
      */
-    public static boolean isVisible(Settable settable) {
-        if (settable.getVisibility() == Settable.FULL ||
-                settable.getVisibility() == Settable.NOT_EDITABLE) {
+    public static boolean isVisible(NamedObj target, Settable settable) {
+        if (settable.getVisibility() == Settable.FULL
+                || settable.getVisibility() == Settable.NOT_EDITABLE) {
             return true;
-        } else {
-            return false;
         }
+        if (target.getAttribute("_expertMode") != null
+                && settable.getVisibility() == Settable.EXPERT) {
+            return true;
+        }
+        return false;
     }
 
     /** Request restoration of the user settable attribute values to what they

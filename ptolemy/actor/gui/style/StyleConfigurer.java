@@ -30,15 +30,6 @@
 
 package ptolemy.actor.gui.style;
 
-import ptolemy.gui.Query;
-import ptolemy.gui.QueryListener;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,6 +38,18 @@ import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.SwingUtilities;
+
+import ptolemy.actor.gui.Configurer;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
+import ptolemy.gui.Top;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// StyleConfigurer
@@ -115,7 +118,7 @@ public class StyleConfigurer extends Query implements QueryListener {
         while (parameters.hasNext()) {
             Settable param = (Settable)parameters.next();
             // Skip if the parameter is not visible.
-            if (param.getVisibility() == Settable.NONE) continue;
+            if (!Configurer.isVisible(_object, param)) continue;
 
             // Get the current style.
             boolean foundOne = false;
@@ -161,6 +164,10 @@ public class StyleConfigurer extends Query implements QueryListener {
             addChoice(param.getName(), param.getName(),
                     styleArray, styleArray[defaultIndex]);
         }
+        
+        // Add the expert mode box.
+        _originalExpertMode = _object.getAttribute("_expertMode") != null;
+        addCheckBox("expertMode", "expert mode", _originalExpertMode);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -171,6 +178,27 @@ public class StyleConfigurer extends Query implements QueryListener {
      *  @param name The name of the entry.
      */
     public void changed(String name) {
+        // Treat the expertMode entry specially.
+        if (name.equals("expertMode")) {
+            Attribute previousExpert = _object.getAttribute("_expertMode");
+            boolean isExpert = previousExpert != null;
+            boolean toExpert = getBooleanValue("expertMode");
+            if (isExpert != toExpert) {
+                try {
+                    if (isExpert) {
+                        previousExpert.setContainer(null);
+                    } else {
+                        new Attribute(_object, "_expertMode");
+                    }
+                } catch (KernelException e) {
+                    // This should not occur.
+                    throw new InternalErrorException(e);
+                }
+            }
+            return;
+        }
+        
+        // Entry is not expertMode.
         ParameterEditorStyle found = null;
         Attribute param = _object.getAttribute(name);
         for (int i = 0; i < parameterStyles.length && found == null; i++) {
@@ -190,6 +218,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             style.setName(style.uniqueName("style"));
             style.setContainer(param);
         } catch (Exception ex) {
+            // FIXME: This is no way to report the error.
             System.out.println(ex.getMessage());
         }
     }
@@ -210,8 +239,26 @@ public class StyleConfigurer extends Query implements QueryListener {
         // of updates occurs when the line loses focus.
         // That notification occurs some time after the
         // window is destroyed.
-        SwingUtilities.invokeLater(new Runnable() {
+        Top.deferIfNecessary(new Runnable() {
                 public void run() {
+                    // Treat the expertMode entry specially.
+                    Attribute currentExpert = _object.getAttribute("_expertMode");
+                    boolean isExpert = currentExpert != null;
+                    if (isExpert != _originalExpertMode) {
+                        try {
+                            if (isExpert) {
+                                currentExpert.setContainer(null);
+                            } else {
+                                new Attribute(_object, "_expertMode");
+                            }
+                        } catch (KernelException e) {
+                            // This should not occur.
+                            throw new InternalErrorException(e);
+                        }
+                    }
+
+                    // FIXME: This code is nonsensical... _originalValues never
+                    // gets anything added to it!
                     Iterator entries = _originalValues.entrySet().iterator();
                     while (entries.hasNext()) {
                         Map.Entry entry = (Map.Entry)entries.next();
@@ -233,6 +280,9 @@ public class StyleConfigurer extends Query implements QueryListener {
 
     // The object that this configurer configures.
     private NamedObj _object;
+    
+    // Indicator of what the expert mode was upon entry.
+    private boolean _originalExpertMode = false;
 
     // The original values of the parameters.
     private Map _originalValues = new HashMap();

@@ -55,7 +55,7 @@ import ptolemy.util.StringUtilities;
 /**
 This class is a modal dialog box for editing the parameters of a
 target object, which is an instance of NamedObj. All attributes that
-implement the Settable interface and have visibility FULL, or
+implement the Settable interface and have visibility FULL or
 NOT_EDITABLE are included in the dialog. An instance of this class
 contains an instance of Configurer, which examines the target for
 attributes of type EditorPaneFactory.  Those attributes, if they are
@@ -113,7 +113,7 @@ public class EditParametersDialog extends ComponentDialog
             int count = 0;
             while (parameters.hasNext()) {
                 Settable parameter = (Settable)parameters.next();
-                if (Configurer.isVisible(parameter)) {
+                if (Configurer.isVisible(target, parameter)) {
                     count++;
                 }
             }
@@ -123,7 +123,7 @@ public class EditParametersDialog extends ComponentDialog
             int index = 0;
             while (parameters.hasNext()) {
                 Settable parameter = (Settable)parameters.next();
-                if (Configurer.isVisible(parameter)) {
+                if (Configurer.isVisible(target, parameter)) {
                     attributeNames[index++] = ((Attribute)parameter).getName();
                 }
             }
@@ -151,13 +151,13 @@ public class EditParametersDialog extends ComponentDialog
                 request.setUndoable(true);
                 _target.requestChange(request);
             }
-        } else if (buttonPressed().equals("Edit Styles")) {
+        } else if (buttonPressed().equals("Preferences")) {
             // Create a dialog for setting parameter styles.
             try {
                 StyleConfigurer panel = new StyleConfigurer(target);
                 ComponentDialog dialog = new ComponentDialog(
                         _owner,
-                        "Edit parameter styles for " + target.getName(),
+                        "Edit preferences for " + target.getName(),
                         panel);
                 if (!(dialog.buttonPressed().equals("OK"))) {
                     // Restore original parameter values.
@@ -282,7 +282,7 @@ public class EditParametersDialog extends ComponentDialog
         super._handleClosing();
         if (!buttonPressed().equals("Commit")
                 && !buttonPressed().equals("Add")
-                && !buttonPressed().equals("Edit Styles")
+                && !buttonPressed().equals("Preferences")
                 && !buttonPressed().equals("Help")
                 && !buttonPressed().equals("Remove")) {
             // Restore original parameter values.
@@ -345,7 +345,7 @@ public class EditParametersDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-    = {"Commit", "Add", "Remove", "Edit Styles", "Help", "Cancel"};
+    = {"Commit", "Add", "Remove", "Preferences", "Help", "Cancel"};
 
     // The owner window.
     private Frame _owner;
