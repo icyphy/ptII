@@ -210,12 +210,13 @@ public class LongToken extends ScalarToken {
      *  @exception IllegalActionException If the value is not in the
      *  range of an unsigned byte.
      */
-    public byte truncatedUnsignedByteValue() throws IllegalActionException {
+    public UnsignedByteToken truncatedUnsignedByteValue()
+            throws IllegalActionException {
         if(_value < 0 || _value > 255) {
             throw new IllegalActionException("Value cannot be represented" +
                     " as an unsigned Byte");
         } else {
-            return (byte)_value;
+            return new UnsignedByteToken((int)_value);
         }
     }
 
