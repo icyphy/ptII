@@ -1,0 +1,60 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Ptolemy II version 0.4 Release Notes</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1>Ptolemy II version 0.4 Release Notes</h1>
+Ptolemy II version 0.4 is a release of the Ptolemy II Java classes
+and the Ptolemy II design document
+
+ <p>This release is meant for programmers already familiar with Java.
+
+ <p>Ptolemy II 0.4 includes applet demonstrations of the domains, but
+it does not include a GUI.
+
+ <p>The design document describes the Ptolemy II design and the implementation
+of the Java classes.
+
+<p> The Ptolemy design document is shipped with Ptolemy 0.4, it can be found
+in <a href="design/toc.htm" target="toc">$PTII/doc/design</a>.
+
+The most recent copy of the Ptolemy II design document can be
+found online at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/doc/design.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/doc/design.html</CODE></a>
+
+
+<h2>Platforms</h2>
+
+The core of Ptolemy II 0.4 is 100% Java, so it should work on any
+platform that has JDK1.2.
+
+ <p>We developed Ptolemy II 0.4 under Solaris 2.5.1 and NT4.0sp3 and later
+with JDK1.2.1
+
+<p> Ptolemy II 0.4 will not compile under JDK1.1.x.
+
+ <p>See the <a href="install.htm#Jacl">Jacl</a> section of
+the installation page for information about the Ptolemy II test suite 
+
+<h2>Limitations</h2>
+<menu>
+
+<li> The gzipped tar file that contains the Ptolemy II distribution
+ <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
+untar this file with a checksum error because the pathnames are longer
+than 100 characters.  If you do not have GNU tar, you can obtain
+source and selected binaries from <a
+href="ftp://ptolemy.eecs.berkeley.edu/pub/gnu"><CODE>ftp://ptolemy.eecs.berkeley.edu/pub/gnu</CODE></a>.
+
+<li> Ptolemy II version 0.4 does not include a GUI.
+
+<li> The JDK1.2.1 Plug-in has a bug that causes the Netscape or Iexplorer
+process to linger after exiting.  The workaround is to turn of the JIT
+using the Java Plug-in Control Panel, see the <a href="troubleshooting.htm#jit">Troubleshooting guide</a> for details.
+
+</menu>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
