@@ -439,9 +439,10 @@ bldmastrcoverage:
 		remote1distjsall \
 		remote1distjsrestore \
 		remote1build \
-		remote1distnonjsall \
 		remote1ChangeLog \
 		remote1jnlp
+
+#		remote1distnonjsall
 
 # Remove the remote dist
 remote1nuke:
@@ -560,6 +561,7 @@ i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
