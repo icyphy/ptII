@@ -205,7 +205,7 @@ using the Matlab plotter.
 <p>A demo can be found at
 <a href="../ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml"><code>$PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml</code></a>
 
-<h4>Compiling the Matlab interface</code>
+<h4>Compiling the Matlab interface</h4>
 
 <p>The Matlab interface will only work under Windows.
 
@@ -238,36 +238,57 @@ JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
 and <CODE>lex</CODE>.
  <p>JavaCC is only necessary if you modify the expression parser in
 <CODE>ptolemy/data/expr</CODE>.
- <p>As of 1/00, Ptolemy II was using JavaCC 1.1
+ <p>As of 9/02, Ptolemy II was using JavaCC 2.1
 
  <p>To install JavaCC, follow the instructions below
 <ol>
-<li> Download JavaCC1_1.class from
-<a href="http://www.sun.com/forte/ffj/resources/contributedcontent.html" target="_top"><CODE>http://www.sun.com/forte/ffj/resources/contributedcontent.html</CODE></a>
-
-<li> Set your CLASSPATH to <CODE>.</CODE>
-<pre>
-setenv CLASSPATH .
-</pre>
-
-<li> cd to the directory where the JavaCC <CODE>.class</CODE> file
-was downloaded to.
-
-
-<li> Run <CODE>java</CODE> on the file.  Note that you should
-<B>not</B> include the <CODE>.class</CODE> suffix in the command line.
-<pre>
-java Java1_1
-</pre>
-
+<li> Download JavaCC2_1.zip from
+<a href="http://www.webgain.com/download/javacc/details.html" target="_top"><CODE>http://www.webgain.com/download/javacc/details.html</CODE></a>
 <li> <CODE>$PTII/configure</CODE> looks for JavaCC in
 the <CODE>$PTII/vendors/sun/JavaCC</CODE> directory.  If
 <CODE>configure</CODE> does not find JavaCC there, then it looks
 for the <CODE>javacc</CODE> binary your path.  You may also
 use the <CODE>--with-javacc=DIR</CODE> <CODE>configure</CODE> argument.
- <br>The best place to install JavaCC is
-<CODE>$PTII/vendors/sun/javaCC</CODE>
+<br> The best thing to do is to
+unzip <code>JavaCC2_1.zip</code>
+so that <code>$PTII/vendors/sun/JavaCC/JavaCC2_1.class</code> is created.
 
+<br><code>JavaCC2_1.class</code> is the <b>Installer</b>, not the code
+itself, so more steps are necessary
+<li> Set your CLASSPATH to <CODE>.</CODE>
+<br>Under Windows with Cygwin bash:
+<pre>
+CLASSPATH=.
+export CLASSPATH
+</pre>
+<br>Under Unix with Csh:
+<pre>
+setenv CLASSPATH .
+</pre>
+<li> cd to <code>$PTII/vendors/sun/JavaCC</code>
+
+<li> Run <CODE>java</CODE> on the file.  Note that you should
+<B>not</B> include the <CODE>.class</CODE> suffix in the command line.
+<pre>
+java Java2_1
+</pre>
+<li>During installation, change the default installation directory
+from <code>vendors/sun/JavaCC/javacc2.1</code>
+to
+<code>vendors/sun/JavaCC</code>
+<li>Rerun configure by first removing the cache files:
+<pre>
+cd $PTII
+rm config.*
+./configure
+</pre>
+The <code>configure</code> script should find JavaCC, the output should look
+something like
+<pre>
+checking for JavaCC... <i>yourpath</i>/ptII/vendors/sun/JavaCC
+checking for jjtree... $(JAVACC_DIR)/bin/jjtree
+checking for javacc... $(JAVACC_DIR)/bin/javacc
+</pre>
 </ol>
 
 
