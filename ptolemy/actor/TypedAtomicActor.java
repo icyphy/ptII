@@ -30,10 +30,17 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.graph.*;
+import ptolemy.data.Token;
 import ptolemy.data.type.Typeable;
+import ptolemy.graph.Inequality;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Workspace;
 
 import java.lang.reflect.Field;
 import java.util.Collections;

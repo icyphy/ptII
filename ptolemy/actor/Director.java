@@ -32,14 +32,24 @@ Review container relationship and new parent class.
 
 package ptolemy.actor;
 
-import ptolemy.graph.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.Token;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+
+
+//import ptolemy.graph.*;
+//import ptolemy.kernel.*;
+//import ptolemy.kernel.util.*;
+//import ptolemy.data.*;
 
 import java.util.Iterator;
-
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Director

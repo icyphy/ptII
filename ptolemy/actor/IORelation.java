@@ -31,8 +31,15 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.HashMap;
 import java.util.List;

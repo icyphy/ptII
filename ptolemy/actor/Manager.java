@@ -30,10 +30,19 @@
 
 package ptolemy.actor;
 
-import ptolemy.graph.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalitySolver;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.PtolemyThread;
+import ptolemy.kernel.util.Workspace;
+
 
 import java.util.Enumeration;
 import java.util.Collections;

@@ -30,11 +30,17 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.CompositeEntity;
 
 import java.util.Iterator;
-
 import java.util.List;
 import java.util.Enumeration;
 import java.util.LinkedList;

@@ -31,12 +31,9 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.Token;
 import ptolemy.actor.util.FIFOQueue;	/* Needed by javadoc */
-
 
 import java.util.NoSuchElementException;
 import java.util.Enumeration;

@@ -31,8 +31,12 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.util.*;
-import ptolemy.data.type.*;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.Collections;
 import java.util.Enumeration;

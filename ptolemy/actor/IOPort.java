@@ -31,12 +31,18 @@ Review vectorized methods.
 
 package ptolemy.actor;
 
-// Ptolemy imports.
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.Token;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
-// Java imports.
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collections;
@@ -545,11 +551,13 @@ public class IOPort extends ComponentPort {
                 _workspace.doneReading();
             }
 
-	    Token[] retArray = localRec[channelIndex][0].getArray(vectorLength);
+	    Token[] retArray =
+                localRec[channelIndex][0].getArray(vectorLength);
 
 
             if (retArray == null) {
-                throw new NoTokenException(this, "get: No token array to return.");
+                throw new NoTokenException(this, "get: No token array " +
+                        "to return.");
             }
             return retArray;
         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -1951,8 +1959,8 @@ public class IOPort extends ComponentPort {
 
     /** Check that a port that is not a multiport will not have too many
      *  links if a link is established with the specified relation.
-     *  @throws IllegalActionException If the port will have too many
-     *   links.
+     *  @exception IllegalActionException If the port will have too many
+     *  links.
      */
     private void _checkMultiportLink(IORelation relation)
             throws IllegalActionException {

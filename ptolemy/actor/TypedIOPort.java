@@ -29,15 +29,29 @@
 */
 
 package ptolemy.actor;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.graph.*;
+
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.StructuredType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.Typeable;
+import ptolemy.graph.CPO;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;

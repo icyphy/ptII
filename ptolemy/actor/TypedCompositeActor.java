@@ -31,10 +31,21 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.type.*;
-import ptolemy.graph.*;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.Typeable;
+import ptolemy.graph.CPO;
+import ptolemy.graph.Inequality;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.Collections;
 import java.util.Enumeration;

@@ -29,8 +29,8 @@
 */
 
 package ptolemy.actor;
-import ptolemy.data.*;
-import ptolemy.kernel.util.*;
+
+import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
@@ -86,7 +86,7 @@ public class Mailbox extends AbstractReceiver {
     public boolean hasToken() {
         return (_token != null);
     }
-    
+
     /** Put a token into the mailbox.  If the argument is null, then the
      *  mailbox will not contain a token after this returns.
      *  @param token The token to be put into the mailbox.

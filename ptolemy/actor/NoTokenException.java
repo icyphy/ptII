@@ -30,7 +30,8 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// NoTokenException
