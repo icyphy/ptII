@@ -30,7 +30,7 @@ import pt.domains.pn.kernel.*;
 import pt.kernel.*;
 import pt.data.*;
 import pt.actors.*;
-import java.util.NoSuchElementException;
+//import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNRamp
@@ -73,7 +73,7 @@ public class PNRamp extends PNActor{
             }
             System.out.println("Terminating at al "+this.getName());
             ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchItemException e) {
 	    System.out.println("Terminating "+this.getName());
             return;
         }
