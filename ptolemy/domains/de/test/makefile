@@ -52,6 +52,10 @@ TCL_SRCS =
 
 JSRCS =
 
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
+
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	dummy.tcl
