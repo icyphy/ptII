@@ -669,8 +669,8 @@ fi
 #       See if there was a command-line option for where JMF is.
 #--------------------------------------------------------------------
 
-# PTJYTHON_DIR is set to jython and used in
-# $PTII/ptolemy/actor/lib/makefile if jmf was found
+# PTJYTHON_DIR is set to python (FIXME: should be jython) and used in
+# $PTII/ptolemy/actor/lib/makefile if Jython was found.
 PTJYTHON_DIR=
 
 # Directory that contains the jython jar files
