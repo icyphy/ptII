@@ -36,6 +36,12 @@ import java.util.*;
 import java.lang.IllegalArgumentException;
 import javax.swing.*;
 
+import ptolemy.kernel.*;
+import ptolemy.kernel.event.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.*;
+
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -135,8 +141,9 @@ public class Query extends JPanel {
     public void addSlider(String name, String label, int defaultValue) {
         JLabel lbl = new JLabel(label, _alignment);
         Slider slider = new Slider();
-        slider.setValue(defaultValue);
-        _addPair(lbl, slider);
+        try {
+            slider.setNewValue(defaultValue);
+        } catch (ChangeFailedException ex) {}
     }
 
     /** FIXME: Create a slider with the specified name, label, default 
@@ -150,13 +157,14 @@ public class Query extends JPanel {
      *  @param min Minimum value of slider.
      */
     public void addSlider(String name, String label, int defaultValue,
-            double max, double min) {
+            int max, int min) {
         JLabel lbl = new JLabel(label, _alignment);
         Slider slider = new Slider();
-        slider.setNewMax(max);
-        slider.setNewMin(min);
-        slider.setNewValue(defaultValue);
-        _addPair(lbl, slider);
+        try {
+            slider.setNewMax(max);
+            slider.setNewMin(min);
+            slider.setNewValue(defaultValue);
+        } catch (ChangeFailedException ex) {}
     }
 
     /** Get the current value in the entry with the given name
