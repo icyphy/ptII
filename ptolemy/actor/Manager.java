@@ -248,6 +248,7 @@ public class Manager extends NamedObj implements Runnable {
             // Call iterate() until finish() is called or postfire()
             // returns false.
             if (_debugging) _debug("Begin to iterate.");
+
             while (!_finishRequested) {
                 if (!iterate()) break;
                 if (_pauseRequested) {
@@ -261,15 +262,17 @@ public class Manager extends NamedObj implements Runnable {
                     }
                 }
             }
+
             completedSuccessfully = true;
-        }
-        finally {
+        } finally {
             wrapup();
-            if (completedSuccessfully) {
-                _notifyListenersOfCompletion();
-            }
             if (_state != IDLE) {
                 _setState(IDLE);
+            }
+            // Reset this for the next run.
+            _finishRequested = false;
+            if (completedSuccessfully) {
+                _notifyListenersOfCompletion();
             }
         }
         // Report the execution time.
@@ -278,7 +281,8 @@ public class Manager extends NamedObj implements Runnable {
                 + (endTime - startTime) + " ms");
     }
 
-    /** Set a flag to request that execution stop and exit gracefully.
+    /** If the state is not IDLE, set a flag to request that
+     *  execution stop and exit gracefully.
      *  This will result in finish() being called on the top level
      *  CompositeActor, although not necessarily immediately.
      *  This method sets the flag, then calls stopFire() on the
@@ -291,8 +295,12 @@ public class Manager extends NamedObj implements Runnable {
      *  resume from running.
      */
     public void finish() {
-        if(_state == IDLE) return;
+        // Set this regardless of whether the model is running to
+        // avoid race conditions.  The model may not have gotten around
+        // to starting when finish is requested.
         _finishRequested = true;
+        if(_state == IDLE) return;
+
         CompositeActor container = (CompositeActor) getContainer();
         if(container == null) throw new InternalErrorException(
                 "Attempted to call finish on an executing manager with no" +
@@ -357,7 +365,6 @@ public class Manager extends NamedObj implements Runnable {
             _setState(PREINITIALIZING);
             
             _pauseRequested = false;
-            _finishRequested = false;
             _typesResolved = false;
             _iterationCount = 0;
             
@@ -679,6 +686,10 @@ public class Manager extends NamedObj implements Runnable {
             throw new IllegalActionException(this,
                     "Model is " + _state.getDescription());
         }
+        // Set this within the calling thread to avoid race conditions
+        // where finish() might be called before the spawned thread
+        // actually starts up.
+        _finishRequested = false;
         _thread = new PtolemyThread(this);
         _thread.start();
     }
