@@ -52,7 +52,7 @@ if {[info procs jdkCaptureErr] == "" } then {
 test domains.1.1 {} {
     catch {createAndExecute "auto/knownFailedTests/PNSDFtest1.xml"} errMsg
     # Sometimes it is port, sometimes port2
-    regsub -all {port[^.].} $errMsg {portXXX.} r1
+    regsub -all {port[^.]*.} $errMsg {portXXX.} r1
     list $r1
 } {{ptolemy.kernel.util.IllegalActionException: Queue size exceeds the maximum capacity in portXXX.PNSDFtest1.Topologia SDF.portXXX. Perhaps you have an unbounded queue?
   in .PNSDFtest1.PN Director}}
