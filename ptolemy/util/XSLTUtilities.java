@@ -91,7 +91,7 @@ public class XSLTUtilities {
      *       /tmp/SwimmingPool_1.xml
      * </pre>
 
-     * @args args At least three arguments:
+     * @param args At least three arguments:
      * <ul>
      * <li> The first argument is the input file name.
      * <li> The second through n-1 arguments are the names xsl files.
@@ -143,7 +143,7 @@ public class XSLTUtilities {
 
     /** Given a Document, generate a String.
      *  @param document The document to be converted to a string.
-     *  @returns A string representation of the Document.
+     *  @return A string representation of the Document.
      *  @exception Exception
      */
     public static String toString(Document document) throws Exception {
