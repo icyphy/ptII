@@ -101,7 +101,8 @@ public class JDesignTree extends JTree {
 		if(object == null) return;
 		if(object instanceof NamedObj) {
 		    PtolemyTransferable transferable =
-			new PtolemyTransferable((NamedObj)object);
+			new PtolemyTransferable();
+                    transferable.add((NamedObj)object);
 		    //initial cursor, transferable, dsource listener
 		    e.startDrag(DragSource.DefaultCopyNoDrop,
 				transferable, dsl);

@@ -36,33 +36,34 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.datatransfer.*;
 import java.io.*;
+import java.util.*;
 
 /** 
 A transferable object that contains a local JVM reference to a
-named object.  To get a reference to the object, request data with the
-data flavor given in the static namedObjFlavor variable.
-This class will also return a MoML representation of the object, if 
+number of named objects.  To get a reference to an iterator on the objects, 
+request data with the data flavor given in the static namedObjFlavor variable.
+This class will also return a MoML representation of the objects, if 
 data is requested with the DataFlavor.stringFlavor or 
 DataFlavor.plainTextFlavor.
 
-@author 	Steve Neuendorffer
-@version	$Id$
+@author Steve Neuendorffer
+@version $Id$
 */
 public class PtolemyTransferable implements Transferable {
 
     /** 
-     * Create a new transferable object with a reference to the given
-     * named object.
+     * Create a new transferable object that contains no objects.
      */
-    public PtolemyTransferable(NamedObj object) {
-	    _object = object;
+    public PtolemyTransferable() {
+        _objectList = new LinkedList();
     }
     
-    /** The flavor that requests a reference to the node.
-     */	
-    public static final DataFlavor namedObjFlavor =
-	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-		       "ptolemy.kernel.util.NamedObj", "Named Object");
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    public void add(NamedObj object) {
+        _objectList.add(object);
+    }
 
     /**
      * Return the data flavors that this transferable supports.
@@ -84,28 +85,55 @@ public class PtolemyTransferable implements Transferable {
     /**
      * Return an object that represents the data contained within this
      * transferable with the given flavor.  If the flavor is namedObjFlavor,
-     * return the named obj that this transferable refers to.  If the flavor
+     * return an iterator of the objects that this transferable refers to.
+     * If the flavor
      * is DataFlavor.plainTextFlavor, return an InputStream that contains a
-     * MoML representation of the object.  If the flavor is 
+     * MoML representation of the objects.  If the flavor is 
      * DataFlavor.stringFlavor return a string that contains the MoML
      * representation.
      *
-     * @return An object with the given data flavor. 
+     * @return An object with the given flavor.
      * @exception UnsupportedFlavorException If the given flavor is 
      * not supported.
      */
     public Object getTransferData(DataFlavor flavor)
 	throws UnsupportedFlavorException, IOException {
 	if (flavor.equals(DataFlavor.plainTextFlavor)) {
-	    return new ByteArrayInputStream(_object.exportMoML().
+	    return new ByteArrayInputStream(_getMoML().
 					    getBytes("Unicode"));
 	} else if(flavor.equals(namedObjFlavor)) {
-	    return _object;
+	    return _objectList.iterator();
 	} else if(flavor.equals(DataFlavor.stringFlavor)) {
-	    return _object.exportMoML();
+	    return _getMoML();
 	}
 	throw new UnsupportedFlavorException(flavor);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        public variables                   ////
+
+    /** 
+     * The flavor that requests a local virtual machine
+     * reference to the contained object.
+     */	
+    public static final DataFlavor namedObjFlavor =
+	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
+		       "ptolemy.kernel.util.NamedObj", "Named Object");
+
+    // Return a string with a moml description of all the objects in the list.
+    public String _getMoML() {
+        StringBuffer buffer = new StringBuffer();
+        Iterator elements = 
+            Collections.unmodifiableList(_objectList).iterator();
+        while(elements.hasNext()) {
+            NamedObj element = (NamedObj) elements.next();
+            buffer.append(element.exportMoML());
+        }
+        return buffer.toString();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The flavors that this node can return.
     private final DataFlavor[] _flavors = {
@@ -115,5 +143,5 @@ public class PtolemyTransferable implements Transferable {
     };
 
     //The object contained by this transferable.
-    private NamedObj _object;
+    private List _objectList;
 }
