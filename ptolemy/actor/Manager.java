@@ -389,6 +389,12 @@ public final class Manager extends NamedObj implements Runnable {
 
                 } // while (_keepIterating && _iterate())
             }
+            // catch errors that happen during an iteration before the finally
+            // clause.   Ensure that exception is reported before wrapup()
+            // tries to get called.
+            catch (Exception e) {
+                fireExecutionError(e);
+            }
             finally {
                 // if we are done, then always be sure to reset the flags.
                 _keepIterating = false;
