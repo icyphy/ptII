@@ -1,4 +1,4 @@
-/* An actor that scales a javax.media.jai.RenderedOp
+/* An actor that outputs frames from a video file.
 
 @Copyright (c) 2002-2003 The Regents of the University of California.
 All rights reserved.
@@ -31,6 +31,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jmf;
 
+import ptolemy.actor.lib.Source;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.net.URL;
 
 import javax.media.Buffer;
@@ -48,22 +56,15 @@ import javax.media.control.FrameGrabbingControl;
 import javax.media.control.FramePositioningControl;
 import javax.media.protocol.DataSource;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 //////////////////////////////////////////////////////////////////////////
-//// blahblah
+//// MovieReader
 /**
-   Scale a RenderedOp using the javax.media.jai.JAI class.
+   This actor loads a video file (MPEG, AVI, or Quicktime files only), and
+   outputs each frame as a JMFImageToken.
 
    @author James Yeh
    @version $Id$
-   @since Ptolemy II 3.0
+   @since Ptolemy II 3.1
 */
 
 public class MovieReader extends Source implements ControllerListener {
@@ -86,11 +87,21 @@ public class MovieReader extends Source implements ControllerListener {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The file name or URL from which to read.  This is a string with
+     *  any form accepted by File Attribute.
+     *  @see FileAttribute
+     */
     public FileAttribute fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** An attempt is made to acquire the file name.  If it is 
+     *  successful, create the DataSource that encapsulates the file.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the URL is null, or 
+     *  invalid.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -108,7 +119,13 @@ public class MovieReader extends Source implements ControllerListener {
             super.attributeChanged(attribute);
         }
     }
-    
+ 
+    /** The controller listener.  This method controls the 
+     *  initializing of the player.  It also senses when the
+     *  file is done playing, in which case it closes the 
+     *  player.
+     *  @param event The controller event.
+     */
     public void controllerUpdate(ControllerEvent event) {
         if (event instanceof ConfigureCompleteEvent ||
                 event instanceof RealizeCompleteEvent ||
@@ -125,16 +142,24 @@ public class MovieReader extends Source implements ControllerListener {
         } else if (event instanceof EndOfMediaEvent) {
             _player.close();
             _playerOpen = false;
-            // check on this in the postfire, if the processor is open
-            // return super.postfire(), otherwise return false.
         }
     }
-
+    
+    /** Send a JMFImageToken out through the output port.
+     *  @exception IllegalActionException If there's no director.
+     */
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, new JMFImageToken(_frame));
     }
 
+    /** An attempt is made to acquire both the frame grabbing and
+     *  frame positioning controls.  If both succeed, the first 
+     *  frame is acquired.
+     *  @exception IllegalActionException If the either frame
+     *  grabbing control or frame positioning control cannot
+     *  be acquired, or if a contained method throws it.
+     */   
     public void initialize() throws IllegalActionException {
         super.initialize();
         try {
@@ -188,7 +213,13 @@ public class MovieReader extends Source implements ControllerListener {
         _framePositioningControl.skip(1);
         
     }
-
+    
+    /** If the player is no longer open, then disconnect the 
+     *  datasource.  If the player is still open, acquire the next
+     *  frame.
+     *  @return false if the player is no longer open, otherwise
+     *  return super.postfire().
+     */
     public boolean postfire() throws IllegalActionException {
         if (_playerOpen == false) {
            _dataSource.disconnect(); 
@@ -200,15 +231,11 @@ public class MovieReader extends Source implements ControllerListener {
         }
     }
 
-    //public void wrapup() {
-    //    _dataSource.disconnect();
-    //}
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Block until the processor has transitioned to the given state.
-     *  Return false if the transition failed.
+     *  @return false if the transition failed.
      */
     protected boolean _waitForState(int state) throws IllegalActionException {
         synchronized (_waitSync) {
@@ -227,13 +254,31 @@ public class MovieReader extends Source implements ControllerListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The datasource that encapsulates the video file.
     private DataSource _dataSource;
+    
+    // The individual frame to be sent to the output port.
     private Buffer _frame;
+    
+    // The Frame grabbing control class that allows individual frames
+    // to be acquired from the file.
     private FrameGrabbingControl _frameGrabbingControl;
+    
+    // The Frame positioning control class that allows control over
+    // which frame is the current one.
     private FramePositioningControl _framePositioningControl;
+    
+    // The player.
     private Player _player;
+    
+    // Boolean that keeps track of whether the player is open or not.
     private boolean _playerOpen = true;
+
+    // Boolean that keeps track of whether the player initialization
+    // has gone through smoothly.
     private boolean _stateTransitionOK = true;
+    
+    // Object to allow synchronization in this actor.
     private Object _waitSync = new Object();
 
 }
