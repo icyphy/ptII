@@ -184,10 +184,10 @@ abstract public class CipherActor extends CryptographyActor {
      * <dt><code>NoPadding</code>
      * <dd>No padding (do not use padding).
      *
-     * <dt><code> OAEPWith<digest>And<mgf>Padding</code>
+     * <dt><code> OAEPWith<i>digest</i>And<i>mgf</i>Padding</code>
      * <dd>Optimal Asymmetric Encryption Padding scheme defined in
-     * PKCS #1, where <digest> should be replaced by the message
-     * digest and <mgf> by the mask generation function. Example:
+     * PKCS #1, where <i>digest</i> should be replaced by the message
+     * digest and <i>mgf</i> by the mask generation function. Example:
      * OAEPWithMD5AndMGF1Padding.
      *
      * <dt><code>PKCS5Padding</code>
@@ -279,6 +279,8 @@ abstract public class CipherActor extends CryptographyActor {
     /** The value of _cipher is updated by calling
      * javax.crypt.Cipher.getInstance() with an argument that is
      * created from the values of the _algorithm, _mode and _padding.
+     * @exception IllegalActionException if the _cipher cannot be
+     * initialized.
      */
     protected void _updateCipher() throws IllegalActionException {
         // Usually, this method is called from initialize().
@@ -319,9 +321,10 @@ abstract public class CipherActor extends CryptographyActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    Private Variables                      ////
+    ////                    Protected Variables                    ////
 
-    // Set to true if one of the parameters changed and we need to
-    // call _updateCipher().
+    /** Set to true if one of the parameters changed and we need to
+     *   call _updateCipher().
+     */
     protected boolean _updateCipherNeeded = true;
 }
