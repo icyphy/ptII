@@ -70,6 +70,7 @@ JSRCS = \
 	IFFT.java \
 	IntToBits.java\
 	LineCoder.java \
+	LMSAdaptive.java \
 	RaisedCosine.java \
 	Repeat.java \
 	SDFTransformer.java \
