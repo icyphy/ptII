@@ -350,6 +350,7 @@ public class Plot extends PlotBox {
      */
     public synchronized void clear(int dataset) {
         _checkDatasetIndex(dataset);
+        _xyInvalid = true;
         Vector points = (Vector)_points.elementAt(dataset);
         // Vector.clear() is new in JDK1.2, so we use just
         // create a new Vector here so that we can compile
@@ -1873,7 +1874,7 @@ public class Plot extends PlotBox {
     /** @serial Flag indicating validity of _xBottom, _xTop,
      *  _yBottom, and _yTop.
      */
-    private boolean _xyInvalid = false;
+    private boolean _xyInvalid = true;
 
     /** @serial Last filename seen in command-line arguments. */
     private String _filename = null;
