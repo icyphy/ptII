@@ -1,272 +1,273 @@
-/* CachedMethod provides a fast hashtable based lookup for methods
+ /* CachedMethod provides a fast hashtable based lookup for methods
 
- Copyright (c) 1998-2003 The Regents of the University of California and
- Research in Motion Limited.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+  Copyright (c) 1998-2003 The Regents of the University of California and
+  Research in Motion Limited.
+  All rights reserved.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the above
+  copyright notice and the following two paragraphs appear in all copies
+  of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+  LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+  INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+  SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+  OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+  SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+  PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+  BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+  LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+ @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+ @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
-Created : May 2002
-*/
-package ptolemy.data.expr;
+ Created : May 2002
+ */
+ package ptolemy.data.expr;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.type.*;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.MatrixToken;
+ import ptolemy.kernel.util.IllegalActionException;
+ import ptolemy.data.type.*;
+ import ptolemy.data.ArrayToken;
+ import ptolemy.data.MatrixToken;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Hashtable;
-import java.util.Iterator;
+ import java.lang.reflect.Method;
+ import java.lang.reflect.Array;
+ import java.lang.reflect.InvocationTargetException;
+ import java.util.Hashtable;
+ import java.util.Iterator;
 
-//////////////////////////////////////////////////////////////////////////
-//// CachedMethod
-/** Cache information about methods invoked from the Ptolemy expression
- parser (PtParser).  This includes both functions that are registered with
-the parser, and methods that are invoked on tokens.
+ //////////////////////////////////////////////////////////////////////////
+ //// CachedMethod
+ /** Cache information about methods invoked from the Ptolemy expression
+  parser (PtParser).  This includes both functions that are registered with
+ the parser, and methods that are invoked on tokens.
 
-Searching all the registered function classes for a method
-repetitively every time when a Parameter containing a function
-expression is evaluated becomes very expensive.  This is especially
-true when using polymorphic reflection to find methods, and automatic
-type conversions to find methods that take native types.  This class
-provides a cache of the function/method signatures already analyzed, so
-that next time when the same method with the same signature is invoked
-the search is replaced by fast hashed access to the cache.<p>
+ Searching all the registered function classes for a method
+ repetitively every time when a Parameter containing a function
+ expression is evaluated becomes very expensive.  This is especially
+ true when using polymorphic reflection to find methods, and automatic
+ type conversions to find methods that take native types.  This class
+ provides a cache of the function/method signatures already analyzed, so
+ that next time when the same method with the same signature is invoked
+ the search is replaced by fast hashed access to the cache.<p>
 
-{@link #REAL} {@link #FUNCTION}s exist in classes registered with
-PtParser.
-{@link #REAL} {@link #METHOD}s exist in various token class instances
-(Tokens or other).
-{@link #MISSING} methods are the ones for which the search
-has failed. The existence of either of these in the cache avoids
-the expensive (function) search through all the registered
-function classes, at the expense of additional memory management.
+ {@link #REAL} {@link #FUNCTION}s exist in classes registered with
+ PtParser.
+ {@link #REAL} {@link #METHOD}s exist in various token class instances
+ (Tokens or other).
+ {@link #MISSING} methods are the ones for which the search
+ has failed. The existence of either of these in the cache avoids
+ the expensive (function) search through all the registered
+ function classes, at the expense of additional memory management.
 
-The cache is cleared by PtParser.registerFunctionClass() so that any
-changes to the registered function classes cause the cache to be
-re-generated.<p>
+ The cache is cleared by PtParser.registerFunctionClass() so that any
+ changes to the registered function classes cause the cache to be
+ re-generated.<p>
 
-Note that this class maintains the cache totally using instances of
-ptolemy.data.type.Type.  While this is somewhat constraining since it
-prevents using this class for reflecting things that are not methods
-on ptolemy tokens, it makes it much easier to maintain the cache,
-perform coherent type conversions on invocation, and generate code from
-the expression language.
+ Note that this class maintains the cache totally using instances of
+ ptolemy.data.type.Type.  While this is somewhat constraining since it
+ prevents using this class for reflecting things that are not methods
+ on ptolemy tokens, it makes it much easier to maintain the cache,
+ perform coherent type conversions on invocation, and generate code from
+ the expression language.
 
-@author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
-@see ptolemy.data.expr.ASTPtFunctionNode
-@see ptolemy.data.expr.PtParser
-*/
+ @author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @see ptolemy.data.expr.ASTPtFunctionNode
+ @see ptolemy.data.expr.PtParser
+ */
 
-public class CachedMethod {
+ public class CachedMethod {
 
-    /** Construct a new CachedMethod and compute its hashcode. */
-    public CachedMethod(String methodName, Type[] argTypes,
-            Method method, ArgumentConversion[] conversions, int type) {
-        // Note clones for safety...
-        _methodName = methodName;
-        _argTypes = (Type[]) argTypes.clone();
-        _method = method;
-        if(conversions != null) {
-            _conversions = (ArgumentConversion[]) conversions.clone();
-        } else {
-            _conversions = null;
-        }
-        _type = type;
+     /** Construct a new CachedMethod and compute its hashcode. */
+     public CachedMethod(String methodName, Type[] argTypes,
+             Method method, ArgumentConversion[] conversions, int type) {
+         // Note clones for safety...
+         _methodName = methodName;
+         _argTypes = (Type[]) argTypes.clone();
+         _method = method;
+         if(conversions != null) {
+             _conversions = (ArgumentConversion[]) conversions.clone();
+         } else {
+             _conversions = null;
+         }
+         _type = type;
 
-        // compute the hashcode, based on the method name and argument types.
-        _hashcode = methodName.hashCode();
-        for (int i = 0; i < argTypes.length; i++) {
-            _hashcode += argTypes[i].hashCode();
-        }
-    }
+         // compute the hashcode, based on the method name and argument types.
+         _hashcode = methodName.hashCode();
+         for (int i = 0; i < argTypes.length; i++) {
+             _hashcode += argTypes[i].hashCode();
+         }
+     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+     ///////////////////////////////////////////////////////////////////
+     ////                         public variables                  ////
 
-    /** A "missing" method that is not real and cannot be constructed. */
-    public static final int MISSING = 1;
+     /** A "missing" method that is not real and cannot be constructed. */
+     public static final int MISSING = 1;
 
-    /** A method "constructed" by ASTPtFunctionNode by reducing argument
-        array dimensions to reach a real method . */
-    // public static final int CONSTRUCTED = 2;
+     /** A method "constructed" by ASTPtFunctionNode by reducing argument
+         array dimensions to reach a real method . */
+     // public static final int CONSTRUCTED = 2;
 
-    /** A method/function that is "real" - found in class with the
-        specified signature. */
-    public static final int REAL = 4;
+     /** A method/function that is "real" - found in class with the
+         specified signature. */
+     public static final int REAL = 4;
 
-    /** A function (could end up real/constructed or missing). */
-    public static final int FUNCTION = 8;
+     /** A function (could end up real/constructed or missing). */
+     public static final int FUNCTION = 8;
 
-    /** A method (could end up real/constructed or missing). */
-    public static final int METHOD = 16;
+     /** A method (could end up real/constructed or missing). */
+     public static final int METHOD = 16;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+     ///////////////////////////////////////////////////////////////////
+     ////                         public methods                    ////
 
-    /** Return true if the argument represents the same CachedMethod as
-        this. Required by Hashtable. */
-    public boolean equals(Object arg) {
-        boolean retval = true;
-        if(!(arg instanceof CachedMethod)) {
-            return false;
-        }
-        CachedMethod argMethod = (CachedMethod)arg;
-        if (!_methodName.equals(argMethod._methodName)) {
-            return false;
-        }
-        if ((_type & (FUNCTION+METHOD)) !=
-                (argMethod._type & (FUNCTION+METHOD)))
-            return false;
-        if (_argTypes.length != argMethod._argTypes.length)
-            return false;
-        for (int i = 0; i < _argTypes.length; i++) {
-            if (!_argTypes[i].equals(argMethod._argTypes[i]))
-                return false;
-        }
-        return true;
-    }
+     /** Return true if the argument represents the same CachedMethod as
+         this. Required by Hashtable. */
+     public boolean equals(Object arg) {
+         boolean retval = true;
+         if(!(arg instanceof CachedMethod)) {
+             return false;
+         }
+         CachedMethod argMethod = (CachedMethod)arg;
+         if (!_methodName.equals(argMethod._methodName)) {
+             return false;
+         }
+         if ((_type & (FUNCTION+METHOD)) !=
+                 (argMethod._type & (FUNCTION+METHOD)))
+             return false;
+         if (_argTypes.length != argMethod._argTypes.length)
+             return false;
+         for (int i = 0; i < _argTypes.length; i++) {
+             if (!_argTypes[i].equals(argMethod._argTypes[i]))
+                 return false;
+         }
+         return true;
+     }
 
-    public ArgumentConversion[] getConversions() {
-        return _conversions;
-    }
+     public ArgumentConversion[] getConversions() {
+         return _conversions;
+     }
 
-    /** Return the type of the token that results from an invocation
-     *  of this method.  If this method is missing, then an exception
-     *  will be thrown.
-     */
-    public Type getReturnType() throws IllegalActionException {
-        if(isMissing()) {
-            throw new IllegalActionException("The return type of the method "
-                    + toString() + " cannot be determined because "
-                    + "no matching method was found.");
-        }
-        Class returnType = _method.getReturnType();
-        Type type = ASTPtFunctionNode.convertJavaTypeToTokenType(returnType);
-        return type;
-    }
+     /** Return the type of the token that results from an invocation
+      *  of this method.  If this method is missing, then an exception
+      *  will be thrown.
+      */
+     public Type getReturnType() throws IllegalActionException {
+         if(isMissing()) {
+             throw new IllegalActionException("The return type of the method "
+                     + toString() + " cannot be determined because "
+                     + "no matching method was found.");
+         }
+         Class returnType = _method.getReturnType();
+         Type type = ASTPtFunctionNode.convertJavaTypeToTokenType(returnType);
+         return type;
+     }
 
-    /** Return the hashcode calculated when this was constructed. */
-    public int hashCode() {
-        return _hashcode;
-    }
+     /** Return the hashcode calculated when this was constructed. */
+     public int hashCode() {
+         return _hashcode;
+     }
 
-    public boolean isMissing() {
-        return (_type & MISSING) == MISSING;
-    }
-    public boolean isReal() {
-        return (_type & REAL) == REAL;
-    }
-    public boolean isFunction() {
-        return (_type & FUNCTION) == FUNCTION;
-    }
-    public boolean isMethod() {
-        return (_type & METHOD) == METHOD;
-    }
+     public boolean isMissing() {
+         return (_type & MISSING) == MISSING;
+     }
+     public boolean isReal() {
+         return (_type & REAL) == REAL;
+     }
+     public boolean isFunction() {
+         return (_type & FUNCTION) == FUNCTION;
+     }
+     public boolean isMethod() {
+         return (_type & METHOD) == METHOD;
+     }
 
-    /** Find method specified by its methodName, argument types
-     * and argument values by first checking in the method cache
-     * followed by checking the first argument's class, followed by
-     * checking all the function classes registered with PtParser.
-     */
-    public static CachedMethod findMethod(String methodName,
-            Type[] argTypes,
-            int type
-     ) throws IllegalActionException {
-        //System.out.println("findMethod(" + methodName + ")");
-        // Check to see if there is a cache already.
-        CachedMethod cachedMethod = get(methodName, argTypes, type);
-        if (cachedMethod != null) {
-            //     System.out.println("inCache");
-            return cachedMethod;
-        }
-        //  System.out.println("notInCache");
+     /** Find method specified by its methodName, argument types
+      * and argument values by first checking in the method cache
+      * followed by checking the first argument's class, followed by
+      * checking all the function classes registered with PtParser.
+      */
+     public static CachedMethod findMethod(String methodName,
+             Type[] argTypes,
+             int type
+      ) throws IllegalActionException {
+         //  System.out.println("findMethod(" + methodName + ")");
+         // Check to see if there is a cache already.
+         CachedMethod cachedMethod = get(methodName, argTypes, type);
+         if (cachedMethod != null) {
+             //   System.out.println("inCache");
+             return cachedMethod;
+         }
+         // System.out.println("notInCache");
 
-        if (type == METHOD) {
-            // Try to reflect the method.
-            int num = argTypes.length;
-            ArgumentConversion[] conversions =
-                new ArgumentConversion[num - 1];
+         if (type == METHOD) {
+             // Try to reflect the method.
+             int num = argTypes.length;
+             ArgumentConversion[] conversions =
+                 new ArgumentConversion[num - 1];
 
-            Class destTokenClass = argTypes[0].getTokenClass();
-            Type[] methodArgTypes;
-      	    if (num == 1) {
-                methodArgTypes = null;
-            } else {
-                methodArgTypes = new Type[num - 1];
-                for (int i = 1; i < num; i++) {
-                    methodArgTypes[i-1] = argTypes[i];
-                }
-            }
+             Class destTokenClass = argTypes[0].getTokenClass();
+             Type[] methodArgTypes;
+             if (num == 1) {
+                 methodArgTypes = null;
+             } else {
+                 methodArgTypes = new Type[num - 1];
+                 for (int i = 1; i < num; i++) {
+                     methodArgTypes[i-1] = argTypes[i];
+                 }
+             }
 
-            try {
-                Method method = _polymorphicGetMethod(destTokenClass,
-                        methodName, methodArgTypes, conversions);
-                if(method != null) {
-                    cachedMethod = new CachedMethod(methodName, argTypes,
-                            method, conversions, type+REAL);
-                }
-           } catch (SecurityException security) {
-                // If we are running under an Applet, then we
-                // may end up here if, for example, we try
-                // to invoke the non-existent quantize function on
-                // java.lang.Math.
-            }
+             try {
+                 Method method = _polymorphicGetMethod(destTokenClass,
+                         methodName, methodArgTypes, conversions);
+                 if(method != null) {
+                     cachedMethod = new CachedMethod(methodName, argTypes,
+                             method, conversions, type+REAL);
+                 }
+            } catch (SecurityException security) {
+                 // If we are running under an Applet, then we
+                 // may end up here if, for example, we try
+                 // to invoke the non-existent quantize function on
+                 // java.lang.Math.
+             }
 
-            if(cachedMethod == null) {
-                // Native convert the base class.
-                //  System.out.println("Checking for array map");
-                destTokenClass =
-                    ASTPtFunctionNode.convertTokenTypeToJavaType(argTypes[0]);
+             if(cachedMethod == null) {
+                 // Native convert the base class.
+                 //  System.out.println("Checking for array map");
+                 destTokenClass =
+                     ASTPtFunctionNode.convertTokenTypeToJavaType(argTypes[0]);
 
-                Method method = _polymorphicGetMethod(destTokenClass,
-                        methodName, methodArgTypes, conversions);
-                if(method != null) {
-                    cachedMethod = new BaseConvertCachedMethod(
-                            methodName, argTypes, method, NATIVE, conversions,
-                            type+REAL);
-                }
-            }
+                 Method method = _polymorphicGetMethod(destTokenClass,
+                         methodName, methodArgTypes, conversions);
+                 if(method != null) {
+                     cachedMethod = new BaseConvertCachedMethod(
+                             methodName, argTypes, method, NATIVE, conversions,
+                             type+REAL);
+                 }
+             }
 
-        } else { //if(type == FUNCTION) {
-            ArgumentConversion[] conversions =
-                new ArgumentConversion[argTypes.length];
-            // Search the registered function classes
-            Iterator allClasses =
-                PtParser.getRegisteredClasses().iterator();
-            while (allClasses.hasNext() && cachedMethod == null) {
-                Class nextClass = (Class)allClasses.next();
-                //System.out.println("ASTPtFunctionNode: " + nextClass);
-                try {
-                    Method method = _polymorphicGetMethod
-                        (nextClass, methodName, argTypes, conversions);
-                    if(method != null) {
+         } else { //if(type == FUNCTION) {
+             ArgumentConversion[] conversions =
+                 new ArgumentConversion[argTypes.length];
+             // Search the registered function classes
+             Iterator allClasses =
+                 PtParser.getRegisteredClasses().iterator();
+             while (allClasses.hasNext() && cachedMethod == null) {
+                 Class nextClass = (Class)allClasses.next();
+                 //      System.out.println("ASTPtFunctionNode: " + nextClass);
+                 try {
+                     Method method = _polymorphicGetMethod
+                         (nextClass, methodName, argTypes, conversions);
+                     if(method != null) {
+                         // System.out.println("method = " + method);
                        cachedMethod = new CachedMethod(methodName, argTypes,
                                method, conversions, type+REAL);
                     }
@@ -510,6 +511,9 @@ public class CachedMethod {
     protected static Method _polymorphicGetMethod(Class library,
             String methodName, Type[] argTypes,
             ArgumentConversion[] conversions) {
+        Method matchedMethod = null;
+        ArgumentConversion[] matchedConversions = 
+            new ArgumentConversion[conversions.length];
         while (library != null) {
             // We want to ascend the class hierarchy in a controlled way
             // so we use getDeclaredMethods() and getSuperclass()
@@ -538,7 +542,7 @@ public class CachedMethod {
                 // Check the number of arguments.
                 if (arguments.length != actualArgCount) continue;
 
-                //  System.out.println("checking method " + methods[i]);
+                //    System.out.println("checking method " + methods[i]);
                 // Check the compatability of arguments.
                 boolean match = true;
                 for (int j = 0; j < arguments.length && match; j++) {
@@ -549,14 +553,46 @@ public class CachedMethod {
                     match = match && (conversion != IMPOSSIBLE);
                     conversions[j] = conversion;
                 }
+                if (match && matchedMethod != null) {
+                    // Check to see if the new method involves
+                    // less conversion that the old one.
+                    for(int j = 0; j < actualArgCount; j++) {
+                        if(matchedConversions[j].isPreferableTo(conversions[j])) {
+                            match = false;
+                        } else if(matchedConversions[j].equals(conversions[j])) {
+                            Class matchedClass = matchedMethod.getParameterTypes()[j];
+                            Class testClass = arguments[j];
+                            try {
+                                Type matchedType =       
+                                    ASTPtFunctionNode.convertJavaTypeToTokenType(
+                                            matchedClass);
+                                Type testType =       
+                                    ASTPtFunctionNode.convertJavaTypeToTokenType(
+                                            testClass);
+                                if(TypeLattice.compare(testType, matchedType) == ptolemy.graph.CPO.HIGHER) {
+                                match = false;
+                                } else if(TypeLattice.compare(testType, matchedType) == ptolemy.graph.CPO.SAME) {
+                                    match = false;
+                                }
+                            } catch (Exception ex) {
+                                // Ignore...
+                            }
+                        }
+                    }
+                }
                 if (match) {
-                    //       System.out.println("found!");
-                    return methods[i];
+                    // If still a match, then remember the method for later.
+                    matchedMethod = methods[i];
+                    System.arraycopy(conversions, 0,
+                            matchedConversions, 0, actualArgCount);
+                    
                 }
             }
             library = library.getSuperclass();
         }
-        return null;
+        System.arraycopy(matchedConversions, 0,
+                conversions, 0, conversions.length);
+        return matchedMethod;
     }
 
     /** Return true if an instance of actual can be used as an argument to
@@ -619,6 +655,10 @@ public class CachedMethod {
                     "Cannot convert argument token " + input);
         }
 
+        public boolean isPreferableTo(ArgumentConversion conversion) {
+            return _type > conversion.getType();
+        }
+
         public String toString() {
             return "Conversion " + _type;
         }
@@ -626,33 +666,35 @@ public class CachedMethod {
         private int _type;
     }
 
+     // Note that these are ordered by preference..  IMPOSSIBLE is the
+     // least preferable conversion, and has type of zero.
     public static final ArgumentConversion IMPOSSIBLE = 
     new ArgumentConversion(0);
-    public static final ArgumentConversion IDENTITY = 
-    new ArgumentConversion(1) {
-        public Object convert(ptolemy.data.Token input)
-                throws IllegalActionException {
-            // The do nothing conversion.
-            return input;
-        }
-    };
     public static final ArgumentConversion ARRAYTOKEN = 
-    new ArgumentConversion(2) {
+    new ArgumentConversion(1) {
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
             // Convert ArrayToken to Token[]
             return ((ArrayToken)input).arrayValue();
         }
-    };
+    };    
     public static final ArgumentConversion NATIVE = 
-    new ArgumentConversion(3) {
+    new ArgumentConversion(2) {
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
             // Convert tokens to native types.
             return ASTPtFunctionNode.convertTokenToJavaType(input)[0];
         }
     };
-    
+    public static final ArgumentConversion IDENTITY = 
+    new ArgumentConversion(3) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // The do nothing conversion.
+            return input;
+        }
+    };
+
     // A cached method that converts the base as well.  This allows us to
     // invoke methods on, e.g. The ptolemy.math.Complex class and the
     // ptolemy.math.FixPoint class that are inside the corresponding tokens.

@@ -390,7 +390,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         // First try to find a signature using argument token values.
         for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
-                        _evaluateChild(node, i + 1);
+            _evaluateChild(node, i + 1);
             ptolemy.data.Token token = node.jjtGetChild(i + 1).getToken();
             argValues[i] = token;
             argTypes[i] = token.getType();
@@ -414,7 +414,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         specializer.specialize(cloneTree,
                 node.getArgumentNameList(), _scope);
                
-         // Infer the return type.
+        // Infer the return type.
         if(_typeInference == null) {
             _typeInference = new ParseTreeTypeInference();
         }
