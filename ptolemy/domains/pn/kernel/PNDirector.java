@@ -217,21 +217,25 @@ public class PNDirector extends BasePNDirector {
      */
     public void fire()
 	    throws IllegalActionException {
-	boolean urgentmut;
+	boolean mutreq;
         Workspace worksp = workspace();
 	//Loop until a real deadlock is detected.
 	while (_readBlockCount != _getActiveActorsCount()) {
 	    synchronized (this) {
+                //Sleep until a deadlock is detected or mutations are requested
 		while (!_isDeadlocked() && !_mutationsRequested) {
 		    worksp.wait(this);
 		}
-		urgentmut = _mutationsRequested;
+		mutreq = _mutationsRequested;
 	    }
-	    if (urgentmut) {
+	    if (mutreq) {
+                //Pause all processes before performing mutations
 		pause();
 		try {
+                    //Perform mutations
 		    _processTopologyRequests();
 		    synchronized(this) {
+                        //Clear the state that indicates mutations are pending
 			_mutationBlockCount = 0;
 			_mutationsRequested = false;
 			notifyAll();
@@ -240,7 +244,7 @@ public class PNDirector extends BasePNDirector {
 		    throw new IllegalActionException(
 			    "Topology change error: " + e.getMessage());
 		}
-	    } else {
+	    } else { //If deadlock, then handle it.
 		_notdone = !_handleDeadlock();
 	    }
 	}
@@ -274,6 +278,7 @@ public class PNDirector extends BasePNDirector {
 	synchronized(this) {
 	    _mutationsRequested = true;
 	    _informOfMutationBlock();
+            //Wake up the director to inform it that mutation is requested
 	    notifyAll();
 	    while(_mutationsRequested) {
 		try {
@@ -374,6 +379,7 @@ public class PNDirector extends BasePNDirector {
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
+    //This flag is set to true when mutations are pending
     private boolean _mutationsRequested = false;
 }
 

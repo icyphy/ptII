@@ -126,8 +126,11 @@ public class BasePNDirector extends ProcessDirector {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
         } catch (IllegalActionException e) {
+            //As parameter is a valid parameter, this exception is not thrown
             throw new InternalErrorException(e.toString());
         } catch (NameDuplicationException e) {
+            //As this is being called from the constructor, we cannot have 
+            //a parameter by the same name already existing in the object
             throw new InvalidStateException(e.toString());
         }
     }
@@ -147,8 +150,11 @@ public class BasePNDirector extends ProcessDirector {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
         } catch (IllegalActionException e) {
+            //As parameter is a valid parameter, this exception is not thrown
             throw new InternalErrorException(e.toString());
         } catch (NameDuplicationException e) {
+            //As this is being called from the constructor, we cannot have 
+            //a parameter by the same name already existing in the object
             throw new InvalidStateException(e.toString());
         }
     }
@@ -170,8 +176,11 @@ public class BasePNDirector extends ProcessDirector {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
         } catch (IllegalActionException e) {
+            //As parameter is a valid parameter, this exception is not thrown
             throw new InternalErrorException(e.toString());
         } catch (NameDuplicationException e) {
+            //As this is being called from the constructor, we cannot have 
+            //a parameter by the same name already existing in the object
             throw new InvalidStateException(e.toString());
         }
     }
@@ -380,8 +389,6 @@ public class BasePNDirector extends ProcessDirector {
     protected void _incrementLowestWriteCapacityPort() {
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
-        //FIXME: Should I traverse the topology and get receivers blocked on 
-        // a write or should I stick with this strategy?
 	Enumeration receivers = _writeblockedQueues.elements();
 	while (receivers.hasMoreElements()) {
 	    PNQueueReceiver queue = (PNQueueReceiver)receivers.nextElement();
@@ -595,26 +602,6 @@ public class BasePNDirector extends ProcessDirector {
 
     /** The list of receivers blocked on a write to a receiver. */
     protected LinkedList _writeblockedQueues = new LinkedList();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
-
-    /** Create a parameter "Initial_queue_capacity" of the director
-     *  and set the parameter to 1. The token created is an integer token.
-     *  This method should be called from the constructor alone as this 
-     *  parameter might be required at initialization.
-     */
-    //FIXME: DO I need this method or should I replicate the code in constr?
-    private void _createQueueCapacityParam() {
-	try {
-	    Parameter param = new Parameter(this,"Initial_queue_capacity",
-                    new IntToken(1));
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(e.toString());
-        } catch (NameDuplicationException e) {
-            throw new InvalidStateException(e.toString());
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
