@@ -40,37 +40,6 @@ import javax.swing.SwingUtilities;
  * @rating Red
  */
 public class ThreadDemo {
-    /** The mapping from Ptolemy actors to graph nodes
-     */
-    private HashMap nodeMap = new HashMap();
-
-    /** The JGraph where we display stuff
-     */
-    JGraph jgraph = new JGraph();
-
-    /** The window to display in
-     */
-    private TutorialWindow window;
-
-    /** The window to display the traces
-     */
-    private TutorialWindow traceWindow;
-
-    /** The pane displaying the trace
-     */
-    private TracePane tracePane;
-
-    /* The actors
-     */
-    PNImageSource a1;
-    MatrixUnpacker a2;
-    RLEncoder a3;
-    RLDecoder a4;
-    MatrixPacker a5;
-    PNImageSink a6;
-    ImageDisplay a7;
-    ImageDisplay a8;
-
     public static void main(String argv[]) {
         new ThreadDemo();
     }
@@ -121,7 +90,7 @@ public class ThreadDemo {
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
      */
-    public GraphModel constructThreadGraph () {
+    public GraphModel constructThreadGraph() {
         GraphModel model = new GraphModel();
 
         // nodes, with user object set to the actor
@@ -143,31 +112,31 @@ public class ThreadDemo {
         model.addNode(n7);
         model.addNode(n8);
 
-        nodeMap.put(a1,n1);
-        nodeMap.put(a2,n2);
-        nodeMap.put(a3,n3);
-        nodeMap.put(a4,n4);
-        nodeMap.put(a5,n5);
-        nodeMap.put(a6,n6);
-        nodeMap.put(a7,n7);
-        nodeMap.put(a8,n8);
+        _nodeMap.put(a1, n1);
+        _nodeMap.put(a2, n2);
+        _nodeMap.put(a3, n3);
+        _nodeMap.put(a4, n4);
+        _nodeMap.put(a5, n5);
+        _nodeMap.put(a6, n6);
+        _nodeMap.put(a7, n7);
+        _nodeMap.put(a8, n8);
 
         // Edges
-        model.createEdge(n1,n2);
-        model.createEdge(n2,n3);
-        model.createEdge(n3,n4);
-        model.createEdge(n4,n5);
-        model.createEdge(n5,n6);
+        model.createEdge(n1, n2);
+        model.createEdge(n2, n3);
+        model.createEdge(n3, n4);
+        model.createEdge(n4, n5);
+        model.createEdge(n5, n6);
 
-        model.createEdge(n1,n7);
-        model.createEdge(n5,n8);
+        model.createEdge(n1, n7);
+        model.createEdge(n5, n8);
 
         return model;
     }
 
     /** Construct the Ptolemy system
      */
-    public CompositeActor constructPtolemyModel () {
+    public CompositeActor constructPtolemyModel() {
         CompositeActor c1 = new CompositeActor();
         Manager manager = new Manager();
         // FIXME FIXME FIXME
@@ -181,10 +150,12 @@ public class ThreadDemo {
             a1 = new PNImageSource(c1, "A1");
 
             //Parameter p1 = (Parameter)a1.getAttribute("Image_file");
-            //p1.setToken(new StringToken("/users/mudit/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
+            //p1.setToken(new StringToken("/users/mudit/ptII/ptolemy" +
+            //    "/domains/pn/lib/test/ptII.pbm"));
             //String filename =
             //    "/users/mudit/_PTII/ptolemy/domains/pn/lib/test/ptII.pbm";
-            //String filename = "c:/java/ptII/ptolemy/domains/pn/demo/RunLength/ptII.pbm";
+            //String filename = "c:/java/ptII/ptolemy/domains/pn" +
+            //    "/demo/RunLength/ptII.pbm";
             String filename = "ptII.pbm";
             try {
                 FileInputStream fis = new FileInputStream(filename);
@@ -216,7 +187,7 @@ public class ThreadDemo {
             portout = (IOPort)a3.getPort("input");
             c1.connect(portin, portout);
 
-            portin =(IOPort) a2.getPort("dimensions");
+            portin = (IOPort) a2.getPort("dimensions");
             portout = (IOPort)a3.getPort("dimensionsIn");
             c1.connect(portin, portout);
 
@@ -253,13 +224,13 @@ public class ThreadDemo {
      * and then set the model once the window is showing.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-        window = new TutorialWindow("PN Thread Demo");
+        _window = new TutorialWindow("PN Thread Demo");
 
         // Display the window
-        window.getContentPane().add("Center", g);
-        window.setSize(800, 300);
-        window.setLocation(20, 20);
-        window.setVisible(true);
+        _window.getContentPane().add("Center", g);
+        _window.setSize(800, 300);
+        _window.setLocation(20, 20);
+        _window.setVisible(true);
 
         // Make sure we have the right renders and then
         // display the graph
@@ -295,21 +266,21 @@ public class ThreadDemo {
      * Construct the trace display.
      */
     public void displayTrace(TraceModel traceModel) {
-        traceWindow = new TutorialWindow("PN Thread Trace");
-        tracePane = new TracePane();
-        JCanvas traceWidget = new JCanvas(tracePane);
+        _traceWindow = new TutorialWindow("PN Thread Trace");
+        _tracePan = new TracePane();
+        JCanvas traceWidget = new JCanvas(_tracePan);
 
         // Configure the view
-        TraceView traceView = tracePane.getTraceView();
+        TraceView traceView = _tracePan.getTraceView();
         traceView.setTimeScale(0.02);
-        traceView.setLayout(10,10,500,30,5);
+        traceView.setLayout(10, 10, 500, 30, 5);
         traceView.setTraceModel(traceModel);
 
         // Display the window
-        traceWindow.getContentPane().add("Center", traceWidget);
-        traceWindow.setSize(800, 300);
-        traceWindow.setLocation(300, 300);
-        traceWindow.setVisible(true);
+        _traceWindow.getContentPane().add("Center", traceWidget);
+        _traceWindow.setSize(800, 300);
+        _traceWindow.setLocation(300, 300);
+        _traceWindow.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -336,14 +307,14 @@ public class ThreadDemo {
 
         /* Create a listener on the given graph pane
          */
-        public StateListener (GraphPane pane) {
+        public StateListener(GraphPane pane) {
             _graphPane = pane;
 
             // Set system "start" time
             _start = System.currentTimeMillis();
 
             // Initial elements of all traces
-            TraceModel model = tracePane.getTraceModel();
+            TraceModel model = _tracePan.getTraceModel();
             _currentElement = new TraceModel.Element[model.size()];
 
             for (int i = 0; i < model.size(); i++ ) {
@@ -357,8 +328,8 @@ public class ThreadDemo {
 
                 try {
                     SwingUtilities.invokeAndWait(new Runnable() {
-                        public void run () {
-                            tracePane.getTraceView().drawTraceElement(element);
+                        public void run() {
+                            _tracePan.getTraceView().drawTraceElement(element);
                         }
                     });
                 }
@@ -374,7 +345,7 @@ public class ThreadDemo {
             Actor actor = event.getActor();
 
             // Get the corresponding graph node and its figure
-            Node node = (Node) nodeMap.get(actor);
+            Node node = (Node) _nodeMap.get(actor);
             LabelWrapper wrapper = (LabelWrapper)
                 _graphPane.getGraphView().getNodeFigure(node);
             final BasicFigure figure = (BasicFigure)
@@ -383,7 +354,7 @@ public class ThreadDemo {
             // Color the graph node!
             try {
                 SwingUtilities.invokeAndWait(new Runnable () {
-                    public void run () {
+                    public void run() {
                         switch (state) {
                         case PNProcessEvent.PROCESS_BLOCKED:
                             figure.setFillPaint(Color.red);
@@ -412,11 +383,12 @@ public class ThreadDemo {
             // Get the trace and element figure
             ComponentEntity ce = (ComponentEntity) actor;
             String name = ce.getName();
-            TraceModel model = tracePane.getTraceView().getTraceModel();
+            TraceModel model = _tracePan.getTraceView().getTraceModel();
             TraceModel.Trace trace = model.getTrace(name);
             int id = trace.getID();
 
-            // OK, this is nasty, but get the color "state" from the process state
+            // OK, this is nasty, but get the 
+            // color "state" from the process state
             int colorState = 3;
             switch (state) {
             case PNProcessEvent.PROCESS_BLOCKED:
@@ -457,8 +429,8 @@ public class ThreadDemo {
 
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
-                    public void run () {
-                        TraceView v = tracePane.getTraceView();
+                    public void run() {
+                        TraceView v = _tracePan.getTraceView();
                         for (int i = 0; i < msize; i++) {
                             v.updateTraceElement(temp[i]);
                         }
@@ -497,7 +469,7 @@ public class ThreadDemo {
         /**
          * Return the rendered visual representation of this node.
          */
-        public Figure render (Node n) {
+        public Figure render(Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse =
@@ -519,4 +491,38 @@ public class ThreadDemo {
             return w;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The mapping from Ptolemy actors to graph nodes
+     */
+    private HashMap _nodeMap = new HashMap();
+
+    /** The JGraph where we display stuff
+     */
+    JGraph jgraph = new JGraph();
+
+    /** The window to display in
+     */
+    private TutorialWindow _window;
+
+    /** The window to display the traces
+     */
+    private TutorialWindow _traceWindow;
+
+    /** The pane displaying the trace
+     */
+    private TracePane _tracePan;
+
+    /* The actors
+     */
+    PNImageSource a1;
+    MatrixUnpacker a2;
+    RLEncoder a3;
+    RLDecoder a4;
+    MatrixPacker a5;
+    PNImageSink a6;
+    ImageDisplay a7;
+    ImageDisplay a8;
 }
