@@ -104,7 +104,7 @@ public class CharonProcessor {
   // Process the agent from the first elemnet of the agents list
   private void _constructor() throws IllegalActionException {
     System.out.println(agentsList.size() + " ********* " + modesList.size());
-    if(agentsList.size() > 0) {
+    if (agentsList.size() > 0) {
       Agent agent = (Agent) agentsList.get(0);
       _topLevel = agent.constructor(new Workspace());
     } else {

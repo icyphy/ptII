@@ -106,7 +106,7 @@ if (((IntToken)((period).getToken())).intValue() < 0) {
 		if (((IntToken)((delay).getToken())).intValue() < 0) {
 			throw new IllegalActionException(this, "Delay must be non-negative");
 		}
-		if (((IntToken)((period).getToken())).intValue() == 0){
+		if (((IntToken)((period).getToken())).intValue() == 0) {
 			count = - ((IntToken)((delay).getToken())).intValue();
 		}
 		else {

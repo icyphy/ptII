@@ -276,11 +276,11 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             // code for, then inline it.
                             if (type.getSootClass().isApplicationClass()) {
                                 SootMethod inlinee = null;
-                                if(r instanceof VirtualInvokeExpr) {
+                                if (r instanceof VirtualInvokeExpr) {
                                     inlinee = SootUtilities.resolveVirtualInvokationForInlining(
                                             type.getSootClass(), 
                                             PtolemyUtilities.attributeChangedMethod);
-                                } else if(r instanceof SpecialInvokeExpr) {
+                                } else if (r instanceof SpecialInvokeExpr) {
                                     inlinee = SootUtilities.resolveSpecialInvokationForInlining((SpecialInvokeExpr)r, method);
                                 }
                                 if (inlinee.equals(method)) {
@@ -590,11 +590,11 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 // FIXME: for PortParameters.
                                 // Now inline the resulting call.
                                 SootMethod inlinee = null;
-                                if(r instanceof VirtualInvokeExpr) {
+                                if (r instanceof VirtualInvokeExpr) {
                                     inlinee = SootUtilities.resolveVirtualInvokationForInlining(
                                             type.getSootClass(), 
                                             PtolemyUtilities.portParameterUpdateMethod);
-                                } else if(r instanceof SpecialInvokeExpr) {
+                                } else if (r instanceof SpecialInvokeExpr) {
                                     inlinee = SootUtilities.resolveSpecialInvokationForInlining((SpecialInvokeExpr)r, method);
                                 }
                                 SiteInliner.inlineSite(inlinee, stmt, method);

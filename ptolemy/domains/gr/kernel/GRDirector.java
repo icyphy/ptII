@@ -346,7 +346,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         // Set the view screen for all the actors.
         actors = container.deepEntityList().iterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             NamedObj actor = (NamedObj)actors.next();
             if (actor instanceof GRActor) {
             	((GRActor)actor)._setViewScreen((GRActor)viewScreen);

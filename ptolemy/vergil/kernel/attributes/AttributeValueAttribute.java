@@ -107,7 +107,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
             throws IllegalActionException {
         if (attribute == attributeName) {
             _setAttributeName(attributeName.getExpression());
-        } else if(attribute == displayWidth) {
+        } else if (attribute == displayWidth) {
             _displayWidth =
                 ((IntToken) displayWidth.getToken()).intValue();
             _icon.setText(_getText());
@@ -121,7 +121,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
     public void valueChanged(Settable settable) {
         try {
             _setAttributeName(attributeName.getExpression());
-        } catch(IllegalActionException ex) {
+        } catch (IllegalActionException ex) {
             // Ignore?  or reset attribute?
         }
     }
@@ -214,11 +214,11 @@ public class AttributeValueAttribute extends AbstractTextAttribute
         if (container != null) {
             Attribute newAttribute = ModelScope.getScopedVariable(
                     null, container, attributeName);
-            if(_attribute != newAttribute) {
-                if(_attribute != null) {
+            if (_attribute != newAttribute) {
+                if (_attribute != null) {
                     _attribute.removeValueListener(this);
                 }
-                if(newAttribute instanceof Settable) {
+                if (newAttribute instanceof Settable) {
                     _attribute = (Settable)newAttribute;
                     _attribute.addValueListener(this);
                 } else {

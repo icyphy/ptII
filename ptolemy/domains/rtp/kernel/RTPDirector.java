@@ -149,7 +149,7 @@ public class RTPDirector extends ProcessDirector
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
         Time timeNow = getModelTime();
-        if (time.compareTo(timeNow) > 0){
+        if (time.compareTo(timeNow) > 0) {
             long delay = (long) (time.subtract(timeNow)).getDoubleValue();
             try {
                 if (_debugging) _debug("Sleep " + delay);

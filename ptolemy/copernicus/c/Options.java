@@ -180,7 +180,7 @@ public class Options {
                || string.equals("compulsoryMethods")
                || string.equals("cFlags")
                || string.equals("reportEntities")
-               ){
+               ) {
              return true;
          }
          else {

@@ -248,7 +248,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         throws IllegalActionException {
         String retVal = "";
         Parameter initVal = (Parameter)port.getAttribute("initialOutputValue");
-        if(initVal != null) {
+        if (initVal != null) {
             retVal = initVal.getToken().toString();
         }
         return retVal;
@@ -260,7 +260,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         throws IllegalActionException {
         String retVal = "";
         Parameter initVal = (Parameter)port.getAttribute("arrayLength");
-        if(initVal != null) {
+        if (initVal != null) {
             retVal = initVal.getToken().toString();
         }
         else {
@@ -356,7 +356,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             
         codeString += "// Datatype Declarations" + _endLine;
         Iterator dataType = dataTypes.iterator();
-        while(dataType.hasNext()) {
+        while (dataType.hasNext()) {
             String type = (String)dataType.next();
             if (type.endsWith("array")) {
             codeString += "typedef " + type.substring(0, type.length()-5 /* Length of "array" */) + " *"
@@ -612,7 +612,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         FCoutDriversImplString += "// Output drivers to copy values from the local to the global stage"
                     + _endLine;
         Iterator dataType = dataTypes.iterator();
-        while(dataType.hasNext()) {
+        while (dataType.hasNext()) {
             String type = (String)dataType.next();
             FCoutDriversImplString += "inline void"
                         + " copy_" + type

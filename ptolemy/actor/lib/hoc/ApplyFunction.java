@@ -126,7 +126,7 @@ public class ApplyFunction extends TypedAtomicActor{
         Iterator ports = inputPortList().iterator();
         // Skip the function port.
         ports.next();
-        while(ports.hasNext()) {
+        while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort)ports.next();
             arguments[i++] = port.get(0);
         }
@@ -142,9 +142,9 @@ public class ApplyFunction extends TypedAtomicActor{
         Iterator ports = inputPortList().iterator();
         // Skip the function port.
         ports.next();
-        while(ports.hasNext()) {
+        while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort)ports.next();
-            if(!port.hasToken(0)) {
+            if (!port.hasToken(0)) {
                 return false;
             }
         }

@@ -291,7 +291,7 @@ public class ApplyFilterOverArray
             int j = 0;
             LinkedList list = new LinkedList();
             ArrayToken array = (ArrayToken) inputArray.get(0);
-            while(i < _outputLength && j < array.length()) {
+            while (i < _outputLength && j < array.length()) {
                 Token t = (Token) array.getElement(j);
                 _updateParameter(t);
                 if (_debugging) {
@@ -303,7 +303,7 @@ public class ApplyFilterOverArray
                     throw new IllegalActionException(this, ex,
                             "Execution failed.");
                 }       
-                if (_getResult()){
+                if (_getResult()) {
                     i++;
                     list.add(t);
                 }
@@ -311,7 +311,7 @@ public class ApplyFilterOverArray
             }
             
             Token[] result = new Token[list.size()];
-            for(i = 0; i < list.size(); i++) {
+            for (i = 0; i < list.size(); i++) {
                 result[i] = (Token) list.get(i);
             }
 

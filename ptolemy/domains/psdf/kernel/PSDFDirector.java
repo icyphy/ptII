@@ -138,8 +138,8 @@ public class PSDFDirector extends SDFDirector {
         // kill them, then the manager might complain that they cannot
         // be evaluated.
         CompositeEntity container = (CompositeEntity)getContainer();
-        if(container != null) {
-            for(Iterator entities = container.deepEntityList().iterator();
+        if (container != null) {
+            for (Iterator entities = container.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity actor = (Entity)entities.next();
                 Variable parameter = (Variable)actor.getAttribute("firingCount");

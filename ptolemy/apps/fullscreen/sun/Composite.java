@@ -98,7 +98,7 @@ public class Composite extends JApplet implements ItemListener {
  * to the Choice whose state is changed.  Invokes changeRule in CompPanel with the current
  * alpha and composite rules.
 */
-    public void itemStateChanged(ItemEvent e){
+    public void itemStateChanged(ItemEvent e) {
         if ( e.getStateChange() != ItemEvent.SELECTED ) {
             return;
         }
@@ -142,7 +142,7 @@ class CompPanel extends JPanel {
     }
 
 // Gets the requested compositing rule.
-    public int getRule(int rule){
+    public int getRule(int rule) {
         int alphaComp = 0;
         switch ( rule ) {
         case 0: alphaComp = AlphaComposite.SRC; break;

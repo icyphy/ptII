@@ -290,10 +290,10 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 // FIXME: Correct?
                 ptolemy.data.type.Type specializedType = 
                     typeAnalysis.getSpecializedType(field);
-                if(specializedType != BaseType.UNKNOWN &&
+                if (specializedType != BaseType.UNKNOWN &&
                    specializedType != BaseType.GENERAL &&
                    specializedType.isInstantiable()) {
-                    if(debug) System.out.println(
+                    if (debug) System.out.println(
                             "updating type tag of " + field 
                             + " to " + typeAnalysis.getSpecializedType(field));
                     field.removeTag("_CGType");

@@ -63,9 +63,9 @@ public class ScratchpadMemory {
      *   or zero.
      */
     public ScratchpadMemory(int memorySize) throws IllegalActionException{
-        if(memorySize < 0) throw new IllegalActionException("Can't define" 
+        if (memorySize < 0) throw new IllegalActionException("Can't define" 
                 + " a negative scratchpad memory size.");
-        else if(memorySize == 0) throw new IllegalActionException("Can't"
+        else if (memorySize == 0) throw new IllegalActionException("Can't"
                 + " define a scratchpad memory of zero size.");
         // Initialize _totalSpace, _usedSpace
         _totalSpace = memorySize;
@@ -82,11 +82,11 @@ public class ScratchpadMemory {
      *  @exception IllegalActionException If the scratchpad memory is full.
      */
     public void add(Object address) throws IllegalActionException{
-        if(address == null) {
+        if (address == null) {
             throw new IllegalArgumentException("Attempt to insert a null"
                     + " element");
         }
-        else if((_totalSpace - _usedSpace) > 0 ) {
+        else if ((_totalSpace - _usedSpace) > 0 ) {
             _scratchpadContents.add(address);
             _usedSpace++;
         }
@@ -119,7 +119,7 @@ public class ScratchpadMemory {
      *   present in the scratchpad memory.
      */
     public void evict(Object address) throws IllegalActionException{
-        if(_scratchpadContents.contains(address)) {
+        if (_scratchpadContents.contains(address)) {
             int tempVar = _scratchpadContents.indexOf(address);
             _scratchpadContents.remove(tempVar);
             _usedSpace--;
@@ -147,7 +147,7 @@ public class ScratchpadMemory {
      *  @return True if the scratchpad memory is full else False. 
      */
     public boolean isFull() throws IllegalActionException {
-        if(_usedSpace < _totalSpace) return false;
+        if (_usedSpace < _totalSpace) return false;
         else if (_usedSpace == _totalSpace) return true;
         // The control should never go to this else loop. If it does, it means
         // there is something wrong with the add/remove code.

@@ -81,7 +81,7 @@ public class GraphicsDevices extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
         Token array[] = new Token[graphicsDevices.length];
-        for(int i = 0; i < graphicsDevices.length; i++) {
+        for (int i = 0; i < graphicsDevices.length; i++) {
             array[i] = new ObjectToken(graphicsDevices[i]);
         }
         output.send(0, new ArrayToken(array));

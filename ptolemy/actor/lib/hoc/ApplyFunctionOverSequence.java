@@ -108,9 +108,9 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
         Iterator ports = inputPortList().iterator();
         // Skip the function port.
         ports.next();
-        while(ports.hasNext()) {
+        while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort)ports.next();
-            if(_rate[i] == -1) {
+            if (_rate[i] == -1) {
                 arguments[i] = port.get(0);
             } else {
                 Token[] tokens = port.get(0, _rate[i]); 
@@ -119,7 +119,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
             i++;
         }
         Token result = functionValue.apply(arguments);
-        if(_outputRate == -1) {
+        if (_outputRate == -1) {
             output.broadcast(result);
         } else {
             // FIXME: Check size.
@@ -137,14 +137,14 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
         int i = 0;
         // Skip the function port.
         ports.next();
-        while(ports.hasNext()) {
+        while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort)ports.next();
-            if(_rate[i] == -1) {
-                if(!port.hasToken(0)) {
+            if (_rate[i] == -1) {
+                if (!port.hasToken(0)) {
                     return false;
                 } 
             } else {
-                if(!port.hasToken(0, _rate[i])) {
+                if (!port.hasToken(0, _rate[i])) {
                     return false;
                 }
             }
@@ -158,7 +158,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         FunctionType type = (FunctionType)function.getType();
-        if(type.getReturnType() instanceof ArrayType) {
+        if (type.getReturnType() instanceof ArrayType) {
             output.setTypeEquals(
                     ((ArrayType)type.getReturnType()).getElementType());
             _outputRate = DFUtilities.getTokenProductionRate(output);
@@ -172,10 +172,10 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
         Iterator ports = inputPortList().iterator();
         // Skip the function port.
         ports.next();
-        while(ports.hasNext()) {
+        while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort)ports.next();
             Type portType = type.getArgType(i);
-            if(portType instanceof ArrayType) {
+            if (portType instanceof ArrayType) {
                 port.setTypeEquals(((ArrayType)portType).getElementType());
                 _rate[i] = DFUtilities.getTokenConsumptionRate(port);
             } else {

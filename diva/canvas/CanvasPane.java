@@ -457,7 +457,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      */
     private void updateRangeModel()
     {
-      if(_canvas.getCanvasPane() == this)
+      if (_canvas.getCanvasPane() == this)
       { //make sure this pane is the top one.
         DefaultBoundedRangeModel _horizontalRangeModel = 
             (DefaultBoundedRangeModel)_canvas.getHorizontalRangeModel();

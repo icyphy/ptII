@@ -100,7 +100,7 @@ public class AttributeExpressionAttribute extends AbstractTextAttribute {
         if (attribute == attributeName) {
             _attributeName = attributeName.getExpression();
             _icon.setText(_getText());
-        } else if(attribute == displayWidth) {
+        } else if (attribute == displayWidth) {
             _displayWidth =
                 ((IntToken) displayWidth.getToken()).intValue();
             _icon.setText(_getText());

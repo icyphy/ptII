@@ -54,7 +54,7 @@ public class TextView extends AbstractView {
         return (TextDocument)getDocument();
     }
     public JComponent getComponent() {
-        if(_scrollPane == null) {
+        if (_scrollPane == null) {
             TextDocument td = (TextDocument)getDocument();
             _editorPane = new JEditorPane();
             _editorPane.setText(td.getText());

@@ -179,7 +179,7 @@ public class ConstVariableModelAnalysis {
      */
     public Token getConstantValue(Variable variable) 
             throws IllegalActionException {
-        if(!isConstant(variable)) {
+        if (!isConstant(variable)) {
             throw new IllegalActionException(variable,
                     "This variable does not have a constant value.");
         }
@@ -218,11 +218,11 @@ public class ConstVariableModelAnalysis {
      */
     public Set getVariablesWithChangeContext(NamedObj container) {
         Set variableSet = new HashSet();
-        for(Iterator i = _variableToChangeContext.keySet().iterator();
+        for (Iterator i = _variableToChangeContext.keySet().iterator();
             i.hasNext();) {
             Object key = i.next();
             Object value = _variableToChangeContext.get(key);
-            if(value == container) {
+            if (value == container) {
                 variableSet.add(key);
             }
         }
@@ -241,7 +241,7 @@ public class ConstVariableModelAnalysis {
      *  and it depends on no other parameters.
      */
     public boolean isIndependent(Variable variable) {
-        if(_dependencyGraph.backwardReachableNodes(
+        if (_dependencyGraph.backwardReachableNodes(
                    _dependencyGraph.node(variable)).size() > 0) {
             return false;
         } else {

@@ -159,7 +159,7 @@ public class TextDocument extends AbstractDocument {
      * different from the previously contained text, then set the dirty flag.
      */
     public void setText(String text) {
-        if(_text != text) {
+        if (_text != text) {
             setDirty(true);
             _text = text;
         }

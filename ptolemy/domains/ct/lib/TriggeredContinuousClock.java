@@ -126,7 +126,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
         // be reset.
         if (start.getWidth() > 0) {
             if (start.hasToken(0)) {
-                if (_debugging){
+                if (_debugging) {
                     _debug("Received a start input.");
                 }
                 start.get(0);
@@ -143,7 +143,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
         // Check stop
         if (stop.getWidth() > 0) {
             if (stop.hasToken(0)) {
-                if (_debugging){
+                if (_debugging) {
                     _debug("Received a stop input.");
                 }
                 stop.get(0);

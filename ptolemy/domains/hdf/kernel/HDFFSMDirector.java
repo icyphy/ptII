@@ -320,7 +320,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
         }
-        if(!_embeddedInHDF) {
+        if (!_embeddedInHDF) {
             return super.getContext();
         } else {
             return (Entity)toplevel();
@@ -653,14 +653,14 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 refinementRateVariables);
         boolean isConstantAndIdentical = true;
         Token value = null;
-        for(Iterator variables = refinementRateVariables.iterator();
+        for (Iterator variables = refinementRateVariables.iterator();
             variables.hasNext() && isConstantAndIdentical;) {
             Variable rateVariable = (Variable)variables.next();
             isConstantAndIdentical = isConstantAndIdentical &&
                 (analysis.getChangeContext(rateVariable) == null);
-            if(isConstantAndIdentical) {
+            if (isConstantAndIdentical) {
                 Token newValue = analysis.getConstantValue(rateVariable);
-                if(value == null) {
+                if (value == null) {
                     value = newValue;
                 } else {
                     isConstantAndIdentical = isConstantAndIdentical &&
@@ -668,7 +668,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 }
             }
         }
-        if(!isConstantAndIdentical) {
+        if (!isConstantAndIdentical) {
             // Has this as ChangeContext.
             // System.out.println("Found rate parameter " + parameterName + " of port " + port.getFullName() + " that changes.");
             // FIXME: Declare this somehow so that we can check it.
@@ -682,12 +682,12 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             IOPort port, String parameterName)
             throws IllegalActionException {
         List list = new LinkedList();
-        for(Iterator insidePorts = port.deepInsidePortList().iterator();
+        for (Iterator insidePorts = port.deepInsidePortList().iterator();
             insidePorts.hasNext();) {
             IOPort insidePort = (IOPort)insidePorts.next();
             Variable variable = (Variable)
                 DFUtilities.getRateVariable(insidePort, parameterName);
-            if(variable != null) {
+            if (variable != null) {
                 list.add(variable);
             }
         }

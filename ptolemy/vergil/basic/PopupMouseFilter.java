@@ -72,7 +72,7 @@ public class PopupMouseFilter extends ExtendedMouseFilter {
      * Test whether the given MouseEvent passes the filter.
      */
     public boolean accept(MouseEvent event) {
-        if(VergilUtilities.macOSLookAndFeel()) {
+        if (VergilUtilities.macOSLookAndFeel()) {
             return event.isPopupTrigger();
         } else {
             return super.accept(event);

@@ -217,7 +217,7 @@ StringBuffer out = new StringBuffer("    system(\"");
         
 addDeclaration("    FILE* $starSymbol(fp);");
                 addInclude("<stdio.h>");
-StringBuffer w = new StringBuffer("    if(!($starSymbol(fp) = fopen(\"");
+StringBuffer w = new StringBuffer("    if (!($starSymbol(fp) = fopen(\"");
 		w.append(target()->name()  + "_$starSymbol(temp)");
 		w.append("\",\"w\")))");
 		addCode(w); 

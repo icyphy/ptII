@@ -110,7 +110,7 @@ public class TypeSpecializerAnalysis {
      *  the typing algorithm.
      */
     public TypeSpecializerAnalysis(SootClass theClass, Set unsafeLocals) {
-        if(_debug) System.out.println("Starting type specialization");
+        if (_debug) System.out.println("Starting type specialization");
         
         _unsafeLocals = unsafeLocals;
 
@@ -120,7 +120,7 @@ public class TypeSpecializerAnalysis {
 
         // Get the variables.
         //  _collectVariables(theClass, _debug);
-        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass applicationClass = (SootClass)classes.next();
             _collectVariables(applicationClass, _debug);
@@ -168,7 +168,7 @@ public class TypeSpecializerAnalysis {
      *  @param list A list of SootClass.
      */
     public TypeSpecializerAnalysis(List list, Set unsafeLocals) {
-        if(_debug) System.out.println("Starting type specialization list");
+        if (_debug) System.out.println("Starting type specialization list");
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(new JavaTypeLattice());//TypeLattice.lattice());
@@ -379,7 +379,7 @@ public class TypeSpecializerAnalysis {
             // constrain the type more.
             TypeTag tag = (TypeTag)field.getTag("_CGType");
             if (tag != null) {
-                if(debug) {
+                if (debug) {
                     System.out.println("tagged with type = " + tag.getType());
                 }
                 _addInequality(debug, _solver,
@@ -660,7 +660,7 @@ public class TypeSpecializerAnalysis {
                     InequalityTerm returnValueTerm = new MonotonicFunction() {
                             public Object getValue() 
                                     throws IllegalActionException{
-                                if(firstArgTerm.getValue().equals(
+                                if (firstArgTerm.getValue().equals(
                                            TypeLattice.lattice().bottom()) ||
                                         finalBaseTerm.getValue().equals(
                                                 TypeLattice.lattice().bottom())) {
@@ -672,10 +672,10 @@ public class TypeSpecializerAnalysis {
                             }
                             public InequalityTerm[] getVariables() {
                                 ArrayList list = new ArrayList();
-                                if(firstArgTerm.isSettable()) {
+                                if (firstArgTerm.isSettable()) {
                                     list.add(firstArgTerm);
                                 }
-                                if(finalBaseTerm.isSettable()) {
+                                if (finalBaseTerm.isSettable()) {
                                     list.add(finalBaseTerm);
                                 }
                                 InequalityTerm terms[] = 
@@ -1134,9 +1134,9 @@ public class TypeSpecializerAnalysis {
          *   specified Objects is not an element of this CPO.
          */
         public int compare(Object e1, Object e2) {
-            if(e1.equals(e2)) { 
+            if (e1.equals(e2)) { 
                 return SAME;
-            } else if(((ptolemy.data.type.Type)e1).isInstantiable() &&
+            } else if (((ptolemy.data.type.Type)e1).isInstantiable() &&
                     !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
                     ((ptolemy.data.type.Type)e2).isInstantiable() &&
                     !((ptolemy.data.type.Type)e2).equals(BaseType.GENERAL)) {
@@ -1203,9 +1203,9 @@ public class TypeSpecializerAnalysis {
          *   specified Objects is not an element of this CPO.
          */
         public Object greatestLowerBound(Object e1, Object e2) {
-            if(e1.equals(e2)) { 
+            if (e1.equals(e2)) { 
                 return e1;
-            } else if(((ptolemy.data.type.Type)e1).isInstantiable() &&
+            } else if (((ptolemy.data.type.Type)e1).isInstantiable() &&
                     !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
                     ((ptolemy.data.type.Type)e2).isInstantiable() &&
                     !((ptolemy.data.type.Type)e2).equals(BaseType.GENERAL)) {
@@ -1227,8 +1227,8 @@ public class TypeSpecializerAnalysis {
          */
         public Object greatestLowerBound(Object[] subset) {
             Object returnValue = null;
-            for(int i = 0; i < subset.length; i++) {
-                if(returnValue == null) {
+            for (int i = 0; i < subset.length; i++) {
+                if (returnValue == null) {
                     returnValue = subset[i];
                 } else {
                     returnValue = greatestLowerBound(returnValue, subset[i]);
@@ -1282,9 +1282,9 @@ public class TypeSpecializerAnalysis {
          *   specified Objects is not an element of this CPO.
          */
         public Object leastUpperBound(Object e1, Object e2) {
-            if(e1.equals(e2)) { 
+            if (e1.equals(e2)) { 
                 return e1;
-            } else if(((ptolemy.data.type.Type)e1).isInstantiable() &&
+            } else if (((ptolemy.data.type.Type)e1).isInstantiable() &&
                     !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
                     ((ptolemy.data.type.Type)e2).isInstantiable() &&
                     !((ptolemy.data.type.Type)e2).equals(BaseType.GENERAL)) {
@@ -1306,8 +1306,8 @@ public class TypeSpecializerAnalysis {
          */
         public Object leastUpperBound(Object[] subset) {
             Object returnValue = null;
-            for(int i = 0; i < subset.length; i++) {
-                if(returnValue == null) {
+            for (int i = 0; i < subset.length; i++) {
+                if (returnValue == null) {
                     returnValue = subset[i];
                 } else {
                     returnValue = leastUpperBound(returnValue, subset[i]);

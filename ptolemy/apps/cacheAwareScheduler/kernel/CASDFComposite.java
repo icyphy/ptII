@@ -155,17 +155,17 @@ public class CASDFComposite extends TypedCompositeActor {
         ExperimentalActor[] actors = new ExperimentalActor[totalActors];
 
         try {
-            for(int i = 0; i < totalActors; i++) {
+            for (int i = 0; i < totalActors; i++) {
                 // Instantiate a new actor of type ExperimentalActor
                 actors[i] = new ExperimentalActor(this, "actor" + (i+1));
                 
                 // Randomly assign production and consumption rates to it
-                if(i == 0) {
+                if (i == 0) {
                     actors[i].input_tokenConsumptionRate.setToken("0");
                 } else {
                     actors[i].input_tokenConsumptionRate.setToken("1 + roundToInt(random()*9)");
                 }
-                if(i == (totalActors - 1)) {
+                if (i == (totalActors - 1)) {
                     actors[i].output_tokenProductionRate.setToken("0");
                 } else {
                     actors[i].output_tokenProductionRate.setToken("1 + roundToInt(random()*9)");
@@ -174,14 +174,14 @@ public class CASDFComposite extends TypedCompositeActor {
                 // Connect the input and output ports to the previous and next
                 // actor in chain respectively. No connections need to be 
                 // made to the input of first actor and output of last actor.
-                if(!(i == 0)) {
+                if (!(i == 0)) {
                     TypedIORelation relation = 
                         new TypedIORelation(this, "actor" + i + "output");
                     actors[i-1].output.link(relation);
                     actors[i].input.link(relation);
-                }   // end of if(1(i ==0))
+                }   // end of if (1(i ==0))
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             //  System.out.println("Exception Caught while generating the random " + "graph. It is " + ex);
         }
         

@@ -87,7 +87,7 @@ public class LempelZivDecoder extends Transformer {
         String current = (String)_decodeBook.get(oldPhase);
         if (bit == 0) {
             current = current + "0";
-        } else if (bit == 1){
+        } else if (bit == 1) {
             current = current + "1";
         } else {
             throw new IllegalActionException(this,

@@ -940,7 +940,7 @@ public class PtolemyUtilities {
                 }
             } else if (value instanceof InstanceInvokeExpr) {
                 InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                if(r.getMethod().getName().equals("getElementType")) {
+                if (r.getMethod().getName().equals("getElementType")) {
                     ptolemy.data.type.ArrayType arrayType =
                         (ptolemy.data.type.ArrayType)
                         getTypeValue(method, (Local)r.getBase(),
@@ -1063,7 +1063,7 @@ public class PtolemyUtilities {
     /** Return true if the given type is an exact token type.
      */
     public static boolean isExactTokenType(ptolemy.data.type.Type type) {
-        if(type.equals(BaseType.UNKNOWN) ||
+        if (type.equals(BaseType.UNKNOWN) ||
                 type.equals(BaseType.GENERAL) ||
                 !type.isInstantiable()) {
             return false;

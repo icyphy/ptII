@@ -238,7 +238,7 @@ StringBuffer s = new StringBuffer("FILE* $starSymbol(fp)[");
                 addDeclaration(s);
                 addInclude("<stdio.h>");
 		for (int i = 0; i < input.numberPorts(); i++) {
-StringBuffer w = new StringBuffer("if(!($starSymbol(fp)[");
+StringBuffer w = new StringBuffer("if (!($starSymbol(fp)[");
 			w.append(i <<  "] = fopen(\"");
 			w.append(target()->name()  + "_$starSymbol(temp)");
 			w.append(i  + "\",\"w\")))");

@@ -130,22 +130,22 @@ public class MetaNodeController extends CompositeEntity
      */
     public void clearNode(Object node) {
         GraphModel model = getController().getGraphModel();
-        for(Iterator i = model.outEdges(node); i.hasNext(); ) {
+        for (Iterator i = model.outEdges(node); i.hasNext(); ) {
             Object edge = i.next();
             getController().clearEdge(edge);
         }
-        for(Iterator i = model.inEdges(node); i.hasNext(); ) {
+        for (Iterator i = model.inEdges(node); i.hasNext(); ) {
             Object edge = i.next();
             getController().clearEdge(edge);
         }
         Figure f = getController().getFigure(node);
-        if(f != null) {
+        if (f != null) {
             CanvasComponent container = f.getParent();
             f.setUserObject(null);
             getController().setFigure(node, null);
-            if(container instanceof FigureLayer) {
+            if (container instanceof FigureLayer) {
                 ((FigureLayer)container).remove(f);
-            } else if(container instanceof CompositeFigure) {
+            } else if (container instanceof CompositeFigure) {
                 ((CompositeFigure)container).remove(f);
             }
         }
@@ -161,7 +161,7 @@ public class MetaNodeController extends CompositeEntity
 
         // Infer the location for the new node.
         Point2D center;
-        if(oldFigure != null) {
+        if (oldFigure != null) {
             center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
             clearNode(node);
         } else {
@@ -177,7 +177,7 @@ public class MetaNodeController extends CompositeEntity
         // Now draw the contained nodes, letting them go where they want to.
         _drawChildren(node);
 
-        if(center != null) {
+        if (center != null) {
             // place the new figure where the old one was, if there
             // was an old figure.
             CanvasUtilities.translateTo(newFigure,
@@ -222,7 +222,7 @@ public class MetaNodeController extends CompositeEntity
      */
     public Interactor getNodeInteractor() {
         List list = entityList(Interactor.class);
-        if(list.size() > 0) {
+        if (list.size() > 0) {
             return (Interactor)list.get(0);
         }
         return null;
@@ -233,7 +233,7 @@ public class MetaNodeController extends CompositeEntity
      */
     public NodeRenderer getNodeRenderer() {
         List list = entityList(NodeRenderer.class);
-        if(list.size() > 0) {
+        if (list.size() > 0) {
             System.out.println("NodeRenderer = " + list.get(0));
             return (NodeRenderer)list.get(0);
         }
@@ -265,8 +265,8 @@ public class MetaNodeController extends CompositeEntity
             (MutableGraphModel) getController().getGraphModel();
         // clearing the nodes is responsible for clearing any edges that are
         // connected
-        if(model.isComposite(node)) {
-            for(Iterator i = model.nodes(node); i.hasNext(); ) {
+        if (model.isComposite(node)) {
+            for (Iterator i = model.nodes(node); i.hasNext(); ) {
                 Object insideNode = i.next();
                 getController().clearNode(insideNode);
             }
@@ -281,12 +281,12 @@ public class MetaNodeController extends CompositeEntity
      * Set the node interactor for this controller
      */
     public void setNodeInteractor(Interactor interactor) {
-        if(!(interactor instanceof ComponentEntity))
+        if (!(interactor instanceof ComponentEntity))
             throw new RuntimeException("Interactor " + interactor
                     + " is not a component entity");
         try {
             Iterator iterator = entityList(Interactor.class).iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 ((ComponentEntity)iterator.next()).setContainer(null);
             }
             ((ComponentEntity)interactor).setContainer(this);
@@ -301,12 +301,12 @@ public class MetaNodeController extends CompositeEntity
      * Set the node renderer for this controller
      */
     public void setNodeRenderer(NodeRenderer renderer) {
-        if(!(renderer instanceof ComponentEntity))
+        if (!(renderer instanceof ComponentEntity))
             throw new RuntimeException("Renderer " + renderer
                     + " is not a component entity");
         try {
             Iterator iterator = entityList(NodeRenderer.class).iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 ((ComponentEntity)iterator.next()).setContainer(null);
             }
             ((ComponentEntity)renderer).setContainer(this);
@@ -334,9 +334,9 @@ public class MetaNodeController extends CompositeEntity
      */
     protected void _drawChildren(Object node) {
         GraphModel model = getController().getGraphModel();
-        if(model.isComposite(node)) {
+        if (model.isComposite(node)) {
             Iterator children = model.nodes(node);
-            while(children.hasNext()) {
+            while (children.hasNext()) {
                 Object child = children.next();
                 getController().drawNode(child, node);
             }

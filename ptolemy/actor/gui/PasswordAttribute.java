@@ -73,7 +73,7 @@ public class PasswordAttribute extends StringParameter {
      *  @return The password.
      */
     public char[] getPassword() {
-        if(_password == null) {
+        if (_password == null) {
             //FIXME: this need to be done in the swing thread...
             new EditParametersDialog(null, this);
         } 

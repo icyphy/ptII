@@ -151,7 +151,7 @@ public class ApplicationTutorial extends AbstractApplication {
      TextDocument document = (TextDocument) d;
      System.out.println("displaying");
 
-     if(_displayedDocument != null) {
+     if (_displayedDocument != null) {
      // Pull the text out of the editor and stuff it back into the
      // document.
      _displayedDocument.setText(_editorPane.getText());
@@ -159,7 +159,7 @@ public class ApplicationTutorial extends AbstractApplication {
 
      _displayedDocument = document;
 
-     if(document != null) {
+     if (document != null) {
      // Pull the text out of the new document and stuff it
      // into the editor.
      _editorPane.setText(document.getText());

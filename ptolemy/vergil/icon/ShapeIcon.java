@@ -162,7 +162,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setCentered(boolean centered) {
         // Avoid calling swing if things haven't actually changed.
-        if(_centered == centered) {
+        if (_centered == centered) {
             return;
         }
 
@@ -192,7 +192,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setFillColor(Color fillColor) {
         // Avoid calling swing if things haven't actually changed.
-        if(_fillColor != null && _fillColor.equals(fillColor)) {
+        if (_fillColor != null && _fillColor.equals(fillColor)) {
             return;
         }
 
@@ -222,7 +222,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setLineColor(Color lineColor) {
         // Avoid calling swing if things haven't actually changed.
-        if(_lineColor != null && _lineColor.equals(lineColor)) {
+        if (_lineColor != null && _lineColor.equals(lineColor)) {
             return;
         }
 
@@ -252,7 +252,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setLineWidth(float lineWidth) {
         // Avoid calling swing if things haven't actually changed.
-        if(_lineWidth == lineWidth) {
+        if (_lineWidth == lineWidth) {
             return;
         }
 

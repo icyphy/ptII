@@ -71,7 +71,7 @@ public class MetaGraphTableau extends Tableau {
     }
 
     public void show() {
-        if(getFrame() == null) {
+        if (getFrame() == null) {
             CompositeEntity entity = (CompositeEntity)
                 ((PtolemyEffigy)getContainer()).getModel();
 
@@ -125,7 +125,7 @@ public class MetaGraphTableau extends Tableau {
          *  tableau.
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
-            if(effigy instanceof PtolemyEffigy) {
+            if (effigy instanceof PtolemyEffigy) {
                 MetaGraphTableau tableau =
                     (MetaGraphTableau)effigy.getEntity("Meta Tableau");
                 if (tableau == null) {

@@ -307,7 +307,7 @@ public class SelectionDragger extends DragInteractor {
                 if (r != null &&
                         r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor)r;
-                    if(_selectionModels.contains(
+                    if (_selectionModels.contains(
                                interactor.getSelectionModel())) {
                         expandSelection((SelectionInteractor) r, f);
                     }
@@ -322,7 +322,7 @@ public class SelectionDragger extends DragInteractor {
                 if (r != null &&
                         r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor)r;
-                    if(_selectionModels.contains(
+                    if (_selectionModels.contains(
                                interactor.getSelectionModel())) {
                         contractSelection((SelectionInteractor) r, f);
                     }
@@ -339,7 +339,7 @@ public class SelectionDragger extends DragInteractor {
                 if (r != null &&
                         r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor)r;
-                    if(_selectionModels.contains(
+                    if (_selectionModels.contains(
                                interactor.getSelectionModel())) {
                         if (interactor.getSelectionModel().containsSelection(f)) {
                             contractSelection(interactor, f);

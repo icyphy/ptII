@@ -139,7 +139,7 @@ public class LocatableNodeController extends BasicNodeController {
                 double[] location = getLocation(node);
                 CanvasUtilities.translateTo(nf, location[0], location[1]);
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             // FIXME: Ignore if there is no valid location.  This
             // happens occasionally due to a race condition in the
             // Bouncer demo.  Occasionally, the repaint thread will
@@ -222,11 +222,11 @@ public class LocatableNodeController extends BasicNodeController {
             // TerminalFigure, and that there is nothing in the API
             // that enforces that a CompositeFigure is returned.
             // *sigh*
-            if(nf instanceof CompositeFigure) {
+            if (nf instanceof CompositeFigure) {
                 cf = (CompositeFigure)nf;
-            } else if(nf instanceof TerminalFigure) {
+            } else if (nf instanceof TerminalFigure) {
                 Figure f = ((TerminalFigure)nf).getFigure();
-                if(f instanceof CompositeFigure) {
+                if (f instanceof CompositeFigure) {
                     cf = (CompositeFigure)f;
                 } else {
                     cf = null;

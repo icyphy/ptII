@@ -94,7 +94,7 @@ public class CGCReciprocal extends ClassicCGCActor {
      */
     public void  generateFireCode() {
         
-if(((DoubleToken)((magLimit).getToken())).doubleValue() == 0.0)
+if (((DoubleToken)((magLimit).getToken())).doubleValue() == 0.0)
 		addCode(reciprocal); 
 	    else
 		addCode(satrec); 
@@ -106,7 +106,7 @@ if(((DoubleToken)((magLimit).getToken())).doubleValue() == 0.0)
         "	$ref(output) = 1/$ref(input);\n";
 
     public String satrec = 
-        "	if($ref(input) == 0.0)\n"
+        "	if ($ref(input) == 0.0)\n"
         + "	    $ref(output) = $val(magLimit);\n"
         + "	else {\n"
         + "	    double t;\n"

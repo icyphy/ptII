@@ -92,7 +92,7 @@ public class GraphicsDevicesToString extends Transformer {
                                    + "width: " + width + " token length:"
                                    + inputArray.length);
 
-                for( int graphicsDeviceCount = 0;
+                for ( int graphicsDeviceCount = 0;
                      graphicsDeviceCount < inputArray.length;
                      graphicsDeviceCount++) {
 

@@ -226,7 +226,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  in the super class or the refiring can not be granted.
      */
     public boolean postfire() throws IllegalActionException {
-        if (!_isTopLevel()){
+        if (!_isTopLevel()) {
             // Because this director runs ahead of time, this director has to
             // register the current time as a breakpoint such that the executive
             // director will fire the container again at the current time.

@@ -126,13 +126,13 @@ public class CGCParametricEq extends CGCBiquad {
         addProcedure(setfiltertaps, "CGCParametricEq_setfiltertaps");
         addProcedure(selectFilter, "CGCParametricEq_selectFilter");
         addCode("$sharedSymbol(CGCParametricEq,setparams)(&$starSymbol(parametric),$ref(sampleFreq), $ref(passFreq), $ref(centerFreq), $ref(bandwidth), $ref(gain));");
-        if (strcasecmp(filtertype, "LOW") == 0){
+        if (strcasecmp(filtertype, "LOW") == 0) {
 	    addCode("$sharedSymbol(CGCParametricEq,lowpass)(&$starSymbol(parametric),$starSymbol(filtercoeff));");
         }
-        else if (strcasecmp(filtertype, "HI") == 0){
+        else if (strcasecmp(filtertype, "HI") == 0) {
 	    addCode("$sharedSymbol(CGCParametricEq,hipass)(&$starSymbol(parametric),$starSymbol(filtercoeff));");
         }
-        else if (strcasecmp(filtertype, "BAND") == 0){
+        else if (strcasecmp(filtertype, "BAND") == 0) {
 	    addCode("$sharedSymbol(CGCParametricEq,bandpass)(&$starSymbol(parametric),$starSymbol(filtercoeff));");
         }
         addCode("$sharedSymbol(CGCParametricEq,setfiltertaps)(&$starSymbol(parametric),$starSymbol(filtercoeff),$starSymbol(filtertaps));");
@@ -164,7 +164,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	      parametric->gainflag = 1;\n"
     + "	      gaintmp=gain/20.0;\n"
     + "	    }\n"
-    + "	    else{\n"
+    + "	    else {\n"
     + "	      parametric->gainflag = 0;\n"
     + "	      gaintmp=gain/-20.0;\n"
     + "	    }\n"
@@ -186,7 +186,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	      x1 = x0 -	fval/fprimeval;\n"
     + " \n"
     + "	      i = 0;\n"
-    + "	      while((fabs(x1-x0) > tol) & (i < niter)){\n"
+    + "	      while ((fabs(x1-x0) > tol) & (i < niter)){\n"
     + "		x0 = x1;\n"
     + "		fval = -bw/2+atan(x0*wc/2)-atan(wc/(2*x0));\n"
     + "		fprimeval = (wc/2)/(1+(x0*wc/2)*(x0*wc/2)) +\n"
@@ -311,7 +311,7 @@ public class CGCParametricEq extends CGCBiquad {
     + "	      filtertaps[3]=filtercoeff[4]*filtercoeff[0];\n"
     + "	      filtertaps[4]=filtercoeff[4]*filtercoeff[1];\n"
     + "	    }\n"
-    + "	    else{\n"
+    + "	    else {\n"
     + "	      filtertaps[0]=filtercoeff[0];\n"
     + "	      filtertaps[1]=filtercoeff[1];\n"
     + "	      filtertaps[2]=1/filtercoeff[4];\n"

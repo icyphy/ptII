@@ -122,7 +122,7 @@ super.initCode();
     /* Open file for writing data */
     addCode(openFileForWriting); 	
     /* Set the audio driver if file is "/dev/audio" */
-    if(strcasecmp(fileName, "/dev/audio") == 0)
+    if (strcasecmp(fileName, "/dev/audio") == 0)
       {
 	/* audio_setup : to set encodingType, sampleRate and channels */
 StringBuffer setupParameters = new StringBuffer("$sharedSymbol(CGCAudioBase,audio_setup)");
@@ -147,7 +147,7 @@ StringBuffer controlParameters = new StringBuffer("$sharedSymbol(CGCAudioBase,au
      */
     public void  generateInitializeCode() throws IllegalActionException {
         
-if(homogeneous == 1) {
+if (homogeneous == 1) {
       left.setSDFParams(1);
       right.setSDFParams(1);
     }
@@ -161,9 +161,9 @@ if(homogeneous == 1) {
      */
     public void  generateFireCode() {
         
-if(homogeneous == 1) {
+if (homogeneous == 1) {
       addCode(homogeneousConvert); 
-      addCode("if($starSymbol(counter) == ($val(blockSize)/4)) {\n"); 
+      addCode("if ($starSymbol(counter) == ($val(blockSize)/4)) {\n"); 
       addCode(setbufptr); 
       addCode(write); 
       addCode("$starSymbol(counter) = 0; \n");

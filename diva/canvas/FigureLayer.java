@@ -260,7 +260,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      */
     public Figure getCurrentFigure() {
         LayerEvent e = _lastLayerEvent;
-        if(e != null && e.getID() != MouseEvent.MOUSE_EXITED) {
+        if (e != null && e.getID() != MouseEvent.MOUSE_EXITED) {
             return getFigure(e);
         } else {
             return null;

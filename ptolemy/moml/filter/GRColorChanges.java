@@ -95,9 +95,9 @@ public class GRColorChanges implements MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName)
             throws Exception {
-        if(_foundOne) {
+        if (_foundOne) {
             _foundOne = false;
-            if(elementName != null
+            if (elementName != null
                     && elementName.equals("property")
                     && container.getName().equals("diffuseColor")
                     && ((Settable)container).getExpression().trim()

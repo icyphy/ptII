@@ -141,7 +141,7 @@ public class RatingTaglet implements Taglet {
         String color = tag.text();
         // Assume the first thing on the line is the color.
         int spaceIndex = color.indexOf(' ');
-        if(spaceIndex != -1) {
+        if (spaceIndex != -1) {
             // Deal with the fact that somebody might just have put a
             // color.
             color = color.substring(0, spaceIndex);
@@ -164,7 +164,7 @@ public class RatingTaglet implements Taglet {
         String color = tags[0].text();
         // Assume the first thing on the line is the color.
         int spaceIndex = color.indexOf(' ');
-        if(spaceIndex != -1) {
+        if (spaceIndex != -1) {
             // Deal with the fact that somebody might just have put a
             // color.
             color = color.substring(0, spaceIndex);

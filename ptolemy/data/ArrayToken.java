@@ -284,7 +284,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     public static Type elementMultiplyReturnType(
             Type type1, Type type2) throws IllegalActionException {
-        if(type1 instanceof ArrayType) {
+        if (type1 instanceof ArrayType) {
             return new ArrayType(
                     TypeLattice.leastUpperBound(
                             ((ArrayType)type1).getElementType(), 

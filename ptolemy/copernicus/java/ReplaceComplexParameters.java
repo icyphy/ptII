@@ -135,7 +135,7 @@ public class ReplaceComplexParameters extends SceneTransformer
     }
 
     public void copyAttributesOtherThanVariable(NamedObj object) {
-        if(object instanceof CompositeActor) {
+        if (object instanceof CompositeActor) {
             CompositeActor model = (CompositeActor)object;
             // Loop over all the model instance classes.
             for (Iterator entities = model.deepEntityList().iterator();
@@ -147,7 +147,7 @@ public class ReplaceComplexParameters extends SceneTransformer
         }
         // Don't copy attributes in ports, because ports don't have
         // classes, so there is no container class.
-//         if(object instanceof Entity) {
+//         if (object instanceof Entity) {
 //             Entity entity = (Entity)object;
 //             for (Iterator ports = entity.portList().iterator();
 //                  ports.hasNext();) {
@@ -156,7 +156,7 @@ public class ReplaceComplexParameters extends SceneTransformer
 //             }
 //         }
                       
-        if(object instanceof Attribute) {
+        if (object instanceof Attribute) {
             Attribute attribute = (Attribute)object;
     
             // Ignore attributes that are ignorable.
@@ -178,7 +178,7 @@ public class ReplaceComplexParameters extends SceneTransformer
                             !attribute.getClass().equals(Parameter.class))) {
                 String className = attribute.getClass().getName();
                 
-                if(_debug) {
+                if (_debug) {
                     System.out.println("ComplexAttribute = " + attribute
                             + " Class = " + className);
                 }

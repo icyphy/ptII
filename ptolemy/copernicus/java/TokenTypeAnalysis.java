@@ -482,11 +482,11 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     // Update the type of the locals or values in leftOp according to the 
     private void _updateTypeInAssignment(
             Value leftOp, Object rightType, Map out) {
-        if(leftOp instanceof Local) {
+        if (leftOp instanceof Local) {
             out.put(leftOp, rightType);
-        } else if(leftOp instanceof ArrayRef) {
+        } else if (leftOp instanceof ArrayRef) {
             out.put(((ArrayRef)leftOp).getBase(), rightType);
-        } else if(leftOp instanceof FieldRef) {
+        } else if (leftOp instanceof FieldRef) {
             out.put(((FieldRef)leftOp).getField(), rightType);
         } else {
             throw new RuntimeException("unknown lefthand side:" + leftOp);

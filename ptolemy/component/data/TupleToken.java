@@ -230,7 +230,7 @@ public class TupleToken extends Token {
     ////                         private methods                   ////
 
     // Initialize this token using the specified array.
-    private void _initialize(Token[] value){
+    private void _initialize(Token[] value) {
         int length = value.length;
         _value = new Token[length];
         for (int i = 0; i < length; i++) {

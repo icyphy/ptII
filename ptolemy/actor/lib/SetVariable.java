@@ -157,7 +157,7 @@ public class SetVariable extends TypedAtomicActor
      */
     public Entity getContext() {
         try {
-            if(delayed.getToken().equals(BooleanToken.TRUE)) {
+            if (delayed.getToken().equals(BooleanToken.TRUE)) {
                 return (Entity)toplevel();
             } else {
                 return this;
@@ -220,7 +220,7 @@ public class SetVariable extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             final Token value = input.get(0);
-            if(delayed.getToken().equals(BooleanToken.TRUE)) {
+            if (delayed.getToken().equals(BooleanToken.TRUE)) {
                 ChangeRequest request =
                     new ChangeRequest(this, "SetVariable change request") {
                         protected void _execute() throws IllegalActionException {

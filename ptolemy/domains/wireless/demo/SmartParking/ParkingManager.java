@@ -22,7 +22,7 @@ public class ParkingManager {
     public synchronized void update(RecordToken updateMsg) {
         String lot = ((StringToken) updateMsg.get("lot")).stringValue();
         int state = ((IntToken) updateMsg.get("state")).intValue();
-        if(state == 0) { //use 0 to represent the lot is free.
+        if (state == 0) { //use 0 to represent the lot is free.
             AvailableLots.add(lot);
             ParkedLots.remove(lot);
         } else if (state == 1) {

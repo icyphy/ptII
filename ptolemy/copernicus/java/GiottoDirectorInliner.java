@@ -452,7 +452,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
                 
                 Parameter initialValueParameter = (Parameter)
                     ((NamedObj) port).getAttribute("initialValue");
-                if(initialValueParameter != null) {
+                if (initialValueParameter != null) {
                     String initialValueNameInContext = 
                         initialValueParameter.getName(entity);
                     

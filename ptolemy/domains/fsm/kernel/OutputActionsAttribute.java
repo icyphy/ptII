@@ -189,7 +189,7 @@ public class OutputActionsAttribute
                             if (isInput) {
                                 // If the destination is both input and output, 
                                 // also send the tokens to local receivers.
-                                for(int i = 0; i < localReceivers.length; i++) {
+                                for (int i = 0; i < localReceivers.length; i++) {
                                     localReceivers[i][0].put(token);
                                 }
                             }

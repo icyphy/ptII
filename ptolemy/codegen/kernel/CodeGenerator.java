@@ -164,7 +164,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             Writer writer = codeDirectory.openForWriting();
             writer.write(code.toString());
             codeDirectory.close();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
     }
@@ -317,7 +317,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
         
-        if(_helperStore.containsKey(component))
+        if (_helperStore.containsKey(component))
             return (ComponentCodeGenerator)_helperStore.get(component);   
            
         String packageName = generatorPackage.stringValue();

@@ -134,7 +134,7 @@ public class MetaEdgeController extends CompositeEntity
             // If we have any terminals, then return the connection
             //  site of the terminal instead of a new perimeter site.
             public Site getHeadSite(Figure f, double x, double y) {
-                if(f instanceof Terminal) {
+                if (f instanceof Terminal) {
                     Site site = ((Terminal)f).getConnectSite();
                     return site;
                 } else {
@@ -175,7 +175,7 @@ public class MetaEdgeController extends CompositeEntity
             //Attach the appropriate end of the edge to the node.
             if (end == ConnectorEvent.TAIL_END) {
                 tailSite = getConnectorTarget().getTailSite(c, nf, x, y);
-                if(tailSite == null) {
+                if (tailSite == null) {
                     throw new RuntimeException("Invalid connector target: " +
                         "no valid site found for tail of new connector.");
                 }
@@ -183,7 +183,7 @@ public class MetaEdgeController extends CompositeEntity
                 c.setTailSite(tailSite);
             } else {
                 headSite = getConnectorTarget().getHeadSite(c, nf, x, y);
-                if(headSite == null) {
+                if (headSite == null) {
                     throw new RuntimeException("Invalid connector target: " +
                         "no valid site found for head of new connector.");
                 }
@@ -217,13 +217,13 @@ public class MetaEdgeController extends CompositeEntity
      */
     public void clearEdge(Object edge) {
         Figure f = getController().getFigure(edge);
-        if(f != null) {
+        if (f != null) {
             CanvasComponent container = f.getParent();
             f.setUserObject(null);
             getController().setFigure(edge, null);
-            if(container instanceof FigureLayer) {
+            if (container instanceof FigureLayer) {
                 ((FigureLayer)container).remove(f);
-            } else if(container instanceof CompositeFigure) {
+            } else if (container instanceof CompositeFigure) {
                 ((CompositeFigure)container).remove(f);
             }
         }
@@ -249,9 +249,9 @@ public class MetaEdgeController extends CompositeEntity
         Site tailSite;
         Site headSite;
         // If the tail is not attached,
-        if(tailFigure == null) {
+        if (tailFigure == null) {
             // Then try to find the old tail site.
-            if(connector != null) {
+            if (connector != null) {
                 tailSite = connector.getTailSite();
             } else {
                 // FIXME try to manufacture a site.
@@ -267,9 +267,9 @@ public class MetaEdgeController extends CompositeEntity
         }
 
         // If the head is not attached,
-        if(headFigure == null) {
+        if (headFigure == null) {
             // Then try to find the old head site.
-            if(connector != null) {
+            if (connector != null) {
                 headSite = connector.getHeadSite();
             } else {
                 // FIXME try to manufacture a site.
@@ -285,7 +285,7 @@ public class MetaEdgeController extends CompositeEntity
         }
 
         // If we did have an old figure, throw it away.
-        if(connector != null) {
+        if (connector != null) {
             clearEdge(edge);
         }
 
@@ -316,7 +316,7 @@ public class MetaEdgeController extends CompositeEntity
      */
     public Interactor getEdgeInteractor () {
         List list = entityList(Interactor.class);
-        if(list.size() > 0) {
+        if (list.size() > 0) {
             return (Interactor)list.get(0);
         }
         return null;
@@ -327,7 +327,7 @@ public class MetaEdgeController extends CompositeEntity
      */
     public EdgeRenderer getEdgeRenderer() {
         List list = entityList(NodeRenderer.class);
-        if(list.size() > 0) {
+        if (list.size() > 0) {
             return (EdgeRenderer)list.get(0);
         }
         return null;
@@ -379,12 +379,12 @@ public class MetaEdgeController extends CompositeEntity
      * Set the interactor given to edge figures.
      */
     public void setEdgeInteractor (Interactor interactor) {
-        if(!(interactor instanceof ComponentEntity))
+        if (!(interactor instanceof ComponentEntity))
             throw new RuntimeException("Interactor " + interactor
                     + " is not a component entity");
         try {
             Iterator iterator = entityList(Interactor.class).iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 ((ComponentEntity)iterator.next()).setContainer(null);
             }
             ((ComponentEntity)interactor).setContainer(this);
@@ -399,12 +399,12 @@ public class MetaEdgeController extends CompositeEntity
      * Set the edge renderer for this view.
      */
     public void setEdgeRenderer(EdgeRenderer renderer) {
-        if(!(renderer instanceof ComponentEntity))
+        if (!(renderer instanceof ComponentEntity))
             throw new RuntimeException("Renderer " + renderer
                     + " is not a component entity");
         try {
             Iterator iterator = entityList(EdgeRenderer.class).iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 ((ComponentEntity)iterator.next()).setContainer(null);
             }
             ((ComponentEntity)renderer).setContainer(this);
@@ -462,7 +462,7 @@ public class MetaEdgeController extends CompositeEntity
                 SelectionModel selectionModel =
                     getController().getSelectionModel();
                 // If it is illegal then blow away the edge.
-                if(selectionModel.containsSelection(c)) {
+                if (selectionModel.containsSelection(c)) {
                     selectionModel.removeSelection(c);
                 }
                 removeEdge(edge);

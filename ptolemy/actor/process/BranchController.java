@@ -100,7 +100,7 @@ public class BranchController implements Runnable {
             branchesCopy = new LinkedList(_branches);
         }
         Iterator branches = branchesCopy.iterator();
-        while(branches.hasNext()) {
+        while (branches.hasNext()) {
             Branch branch = (Branch)branches.next();
             branch.run();
         }
@@ -297,7 +297,7 @@ public class BranchController implements Runnable {
                     _getDirector()._controllerUnBlocked(this);
                 }
             }
-        } catch(InterruptedException e ) {
+        } catch (InterruptedException e ) {
             // FIXME: Do something
         }
     }

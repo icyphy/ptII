@@ -58,11 +58,11 @@ awk '{  t[NR] = $1;
 	f[NR] = substr($6, 0, length($6) - 1);
      }
  END {  print "dataset: time (ms)";
-	for(i=1;i<=NR;i++) {print i, t[i]};
+	for (i=1;i<=NR;i++) {print i, t[i]};
 	print "dataset: memory (K)";
-	for(i=1;i<=NR;i++) {print i, m[i]};
+	for (i=1;i<=NR;i++) {print i, m[i]};
 	print "dataset: free (K)";
-	for(i=1;i<=NR;i++) {print i, f[i]};
+	for (i=1;i<=NR;i++) {print i, f[i]};
      }' /tmp/t > /tmp/t.plt
 
 <pre>

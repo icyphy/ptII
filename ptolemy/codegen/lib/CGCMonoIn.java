@@ -90,7 +90,7 @@ super.wrapup();
         
 super.initCode();
     /* Declare buffer type and size depending on the encoding */
-    if (encodingType.equalsIgnoreCase("linear16")){
+    if (encodingType.equalsIgnoreCase("linear16")) {
       addDeclaration(declarations("short", ((IntToken)((blockSize).getToken())).intValue()/2));
     }
     else {
@@ -99,7 +99,7 @@ super.initCode();
     }
     /* Open file for reading data */
     addCode(openFileForReading); 	
-    if(strcasecmp(fileName, "/dev/audio") == 0)
+    if (strcasecmp(fileName, "/dev/audio") == 0)
       {
 	/* audio_setup : to set encodingType, sampleRate and channels */
 	addCode("$sharedSymbol(CGCAudioBase,audio_setup)($starSymbol(file), $ref(encodingType), $ref(sampleRate), $ref(channels)); ");
@@ -113,7 +113,7 @@ super.initCode();
      */
     public void  generateInitializeCode() throws IllegalActionException {
         
-if (encodingType.equalsIgnoreCase("ulaw8")){
+if (encodingType.equalsIgnoreCase("ulaw8")) {
       output.setSDFParams(((IntToken)((blockSize).getToken())).intValue(), ((IntToken)((blockSize).getToken())).intValue()-1);
     }
     else {

@@ -572,7 +572,7 @@ public class ModelTransformer extends SceneTransformer
             Stmt insertPoint = Jimple.v().newReturnVoidStmt();
             body.getUnits().add(insertPoint);
             
-            if(_constAnalysis.getConstVariables(namedObj).contains(attribute)) {
+            if (_constAnalysis.getConstVariables(namedObj).contains(attribute)) {
                 Local local = SootUtilities.createRuntimeException(
                         body, insertPoint, 
                       "Parameter is constant and should not be re-evaluated");
@@ -2050,9 +2050,9 @@ public class ModelTransformer extends SceneTransformer
                 _constAnalysis.getVariablesWithChangeContext(entity);
             // Filter out any attribute that is independent (and might
             // be modified).
-            for(Iterator i = locallyModifiedAttributeSet.iterator();
+            for (Iterator i = locallyModifiedAttributeSet.iterator();
                 i.hasNext();) {
-                if(_constAnalysis.isIndependent((Variable)i.next())) {
+                if (_constAnalysis.isIndependent((Variable)i.next())) {
                     i.remove();
                 }
             }
@@ -2083,7 +2083,7 @@ public class ModelTransformer extends SceneTransformer
             body.getLocals().add(containerLocal);
                             
             // Invoke the method to compute each attribute, in order.
-            for(Iterator attributes = locallyModifiedAttributeList.iterator();
+            for (Iterator attributes = locallyModifiedAttributeList.iterator();
                 attributes.hasNext();) {
                 Attribute attribute = (Attribute)attributes.next();
                 Entity attributeContainer = 

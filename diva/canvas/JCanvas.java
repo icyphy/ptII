@@ -426,7 +426,7 @@ public class JCanvas extends JComponent implements Printable {
         internalProcessMouseEvent(e);
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it prevents popup menus from being created...
-        if(!e.isConsumed()) {
+        if (!e.isConsumed()) {
             super.processMouseEvent(e);
         }
     }
@@ -441,7 +441,7 @@ public class JCanvas extends JComponent implements Printable {
         internalProcessMouseEvent(e);
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it is probably necessary (see above).
-        if(!e.isConsumed()) {
+        if (!e.isConsumed()) {
             super.processMouseMotionEvent(e);
         }
     }

@@ -157,7 +157,7 @@ public class MultiBufferTest {
                 //Graphics2D g = (Graphics2D) mainFrame.getGraphics();
                 System.out.println("buffer: " + i);
                 if (!bufferStrategy.contentsLost()) {
-                    //if(true) {
+                    //if (true) {
                     //Color backgroundColor = _COLORS.[i];
                     Color backgroundColor = Color.black;
                     // Fade to black
@@ -242,7 +242,7 @@ public class MultiBufferTest {
 
                     int alphaCount = 100;
 
-                    for( int m = 0; m < alphaCount; m++) {
+                    for ( int m = 0; m < alphaCount; m++) {
                         //float alpha = (float)m / (float)alphaCount;
                         float alpha = 0.05f
                             + ((float)m / (float)alphaCount) * 0.5f;

@@ -120,7 +120,7 @@ return ((IntToken)((runTime).getToken())).intValue();
      */
     public void  generatePreinitializeCode() {
         
-for(int i = 0; i < include.size(); i++)
+for (int i = 0; i < include.size(); i++)
 	    addInclude(include[i]);
      }
 

@@ -169,7 +169,7 @@ public class CGCWaveForm extends ClassicCGCActor {
     + "		$ref(output) = $ref(value)[$ref(pos)++];\n"
     + "	}\n"
     + "	if ($val(periodic))\n"
-    + "	    if($val(period) <= 0 && $ref(pos) >= $val(size)) \n"
+    + "	    if ($val(period) <= 0 && $ref(pos) >= $val(size)) \n"
     + "		$ref(pos) = 0;\n"
     + "	    else if ($val(period) > 0 && $ref(pos) >= $val(period)) \n"
     + "		$ref(pos) = 0;\n";

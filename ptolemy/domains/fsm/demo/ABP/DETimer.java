@@ -95,7 +95,7 @@ public class DETimer extends TypedAtomicActor {
             //System.out.println("Reset DETimer " + this.getFullName() +
             //        " to expire at " + _expireTime);
 
-        } else if (now.equals(_expireTime)){
+        } else if (now.equals(_expireTime)) {
             // timer expires
             expired.broadcast(_outToken);
 

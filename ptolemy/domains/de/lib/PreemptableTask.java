@@ -213,7 +213,7 @@ public class PreemptableTask extends DETransformer {
         Time currentTime = director.getModelTime();
 
         if (_executing && !_interrupted) {
-            if (currentTime.compareTo(_outputTime) >= 0){
+            if (currentTime.compareTo(_outputTime) >= 0) {
                 output.send(0, (Token)_tokenList.removeFirst());
                 _executing = false;
             }

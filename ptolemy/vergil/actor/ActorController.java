@@ -484,7 +484,7 @@ public abstract class ActorController extends AttributeController {
                     } catch (Exception ex) {
                         // Ignore.
                     }
-                    if(showRate) {
+                    if (showRate) {
                         // Infer the rate.  See DFUtilities.
                         String rateString = "";
                         Variable rateParameter = null;
@@ -503,7 +503,7 @@ public abstract class ActorController extends AttributeController {
                                 rateParameter = (Variable)port.getAttribute(altName);
                             }  
                         } 
-                        if(rateParameter != null) {
+                        if (rateParameter != null) {
                             try {
                                 rateString = rateParameter.getToken().toString();
                             } catch (KernelException ex) {

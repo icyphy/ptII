@@ -191,7 +191,7 @@ public class SDFDirectorInliner implements DirectorInliner {
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
-            if(iterationLimit > 0) {
+            if (iterationLimit > 0) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newInstanceFieldRef(
@@ -311,7 +311,7 @@ public class SDFDirectorInliner implements DirectorInliner {
             for (Iterator ports = model.inputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                if(port instanceof ParameterPort) {
+                if (port instanceof ParameterPort) {
                     continue;
                 }
                 int rate;

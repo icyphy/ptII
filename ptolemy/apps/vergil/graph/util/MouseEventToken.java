@@ -65,7 +65,7 @@ public class MouseEventToken extends Token {
      *  @exception IllegalActionException If the token is not a MouseEventToken.
      */
     public static Token convert(Token token) throws IllegalActionException {
-        if(token instanceof MouseEventToken) {
+        if (token instanceof MouseEventToken) {
             return token;
         } else {
             throw new IllegalActionException("Attempt to convert token "
@@ -95,7 +95,7 @@ public class MouseEventToken extends Token {
      *  @return A BooleanToken which contains the result of the test.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        if(token instanceof MouseEventToken) {
+        if (token instanceof MouseEventToken) {
             return new BooleanToken(this == token);
         } else
             throw new IllegalActionException(

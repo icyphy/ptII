@@ -123,7 +123,7 @@ public class SRReceiver extends AbstractReceiver
         // SRReceiver in the unknown state means changing its state to
         // known. Without that, you can get a nondeterministic
         // behavior.
-        if(!isKnown()) {
+        if (!isKnown()) {
             // If we don't check !isKnown(), then we get a hang in 
             // sr/lib/test/auto/EnabledComposite.xml
             // If we don't call receiverChanged, then SendClearTest fails.
@@ -298,7 +298,7 @@ public class SRReceiver extends AbstractReceiver
                                 "SRReceiver cannot receive two tokens " +
                                 "that differ.");
                     }
-                } catch(IllegalActionException ex) {
+                } catch (IllegalActionException ex) {
                     // Should never happen.
                     throw new InternalErrorException("SRReceiver cannot " +
                             "determine whether the two tokens received are " +

@@ -519,7 +519,7 @@ public class DEDirector extends Director implements TimedDirector {
                         }
                     }
                 }
-            } while (refire); // close the do{...}while() loop
+            } while (refire); // close the do {...} while () loop
 
             // The following code enforces that a firing of a
             // DE director only handles events with the same tag.
@@ -1213,7 +1213,7 @@ public class DEDirector extends Director implements TimedDirector {
         LinkedList actors = (LinkedList)container.deepEntityList();
         _actorToDepth = new Hashtable(actors.size());
         Iterator actorsIterator = actors.iterator();
-        while(actorsIterator.hasNext()) {
+        while (actorsIterator.hasNext()) {
             Actor actor = (Actor)actorsIterator.next();
             // Calculate the depth of the given actor, which is the
             // smallest depth of all the input and output ports.
@@ -1254,7 +1254,7 @@ public class DEDirector extends Director implements TimedDirector {
             // Setup a temporary repository for the existing events
             // in the queue.
             LinkedList updatedEventList = new LinkedList();
-            while(!_eventQueue.isEmpty()) {
+            while (!_eventQueue.isEmpty()) {
                 DEEvent event = _eventQueue.take();
                 IOPort ioPort = event.ioPort();
                 Actor actor = event.actor();

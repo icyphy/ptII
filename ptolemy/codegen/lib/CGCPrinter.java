@@ -92,7 +92,7 @@ return 6;	/* unreliable data */
      */
     public void  wrapup() {
         
-if(fileOutput)
+if (fileOutput)
 		addCode("\tfclose($starSymbol(fp)); \n");
      }
 
@@ -104,7 +104,7 @@ Stringfn = fileName;
 	    fileOutput = ! ( fn==null
 	      || strcmp(fn, "cout")==0 || strcmp(fn, "stdout")==0
 	      || strcmp(fn, "<cout>")==0 || strcmp(fn, "<stdout>")==0);
-	    if(fileOutput) {
+	    if (fileOutput) {
 		StringBuffer s = new StringBuffer();
 		s.append("    FILE* $starSymbol(fp);");
 		addDeclaration(s);
@@ -119,7 +119,7 @@ Stringfn = fileName;
         
 for (int i = 1; i <= input.numberPorts(); i++) {
 		index = i;
-		if(fileOutput) {
+		if (fileOutput) {
 			addCode(
 "\tfprintf($starSymbol(fp),\"%f\\t\", (double) ($ref(input#index)));\n");
 		} else {
@@ -137,7 +137,7 @@ for (int i = 1; i <= input.numberPorts(); i++) {
     ////                     Codeblocks                     ////
 
     public String openfile = 
-        "    if(!($starSymbol(fp)=fopen(\"$val(fileName)\",\"w\"))) {\n"
+        "    if (!($starSymbol(fp)=fopen(\"$val(fileName)\",\"w\"))) {\n"
         + "	fprintf(stderr,\"ERROR: cannot open output file for Printer star.\\n\");\n"
         + "    	exit(1);\n"
         + "    }\n";

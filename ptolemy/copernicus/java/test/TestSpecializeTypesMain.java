@@ -55,7 +55,7 @@ public class TestSpecializeTypesMain {
         theClass.setApplicationClass();
         TypeSpecializerAnalysis analysis = 
             new TypeSpecializerAnalysis(theClass, new HashSet());
-        for(Iterator variables = analysis.getSolverVariables();
+        for (Iterator variables = analysis.getSolverVariables();
             variables.hasNext();) {
             System.out.println(variables.next().toString());
         }

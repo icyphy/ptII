@@ -851,7 +851,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                 if (useDummies) {
                     levelWidth = nodes.size();
                 }
-                else{
+                else {
                     // HH, use the number of real nodes (no dummies) to
                     // determine the step size in the x direction.
                     levelWidth = 0;
@@ -893,7 +893,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                 if (useDummies) {
                     levelWidth = nodes.size();
                 }
-                else{
+                else {
                     // HH, use the number of real nodes (no dummies) to
                     // determine the step size in the x direction.
                     levelWidth = 0;

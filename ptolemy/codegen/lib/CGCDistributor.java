@@ -95,10 +95,10 @@ int n = output.numberPorts();
     public void  generateFireCode() {
         
 StringBuffer out = new StringBuffer();
-		if(((IntToken)((blockSize).getToken())).intValue() > 1) out.append("\tint j;\n");
+		if (((IntToken)((blockSize).getToken())).intValue() > 1) out.append("\tint j;\n");
 		for (int i = output.numberPorts() - 1; i >= 0; i--) {
 		   int port = output.numberPorts() - i;
-		   if(((IntToken)((blockSize).getToken())).intValue() > 1) {
+		   if (((IntToken)((blockSize).getToken())).intValue() > 1) {
 			out  + "\tfor (j = " + ((IntToken)((blockSize).getToken())).intValue()-1
 			     + "; j >= 0; j--)\n" + "\t\t$ref2(output#"
 			    << port  + ",j) = $ref2(input,j+"

@@ -126,7 +126,7 @@ public abstract class MDIApplication extends AbstractApplication {
      */
     public void setCurrentView (View v) {
         super.setCurrentView(v);
-        if(v != null) {
+        if (v != null) {
             getMDIContext().setCurrentContentPane(v.getComponent());
         }
     }
@@ -139,7 +139,7 @@ public abstract class MDIApplication extends AbstractApplication {
             //        a view also causes that view
             //        to be selected after it is
             //        closed?
-            if(viewList().contains(view)) {
+            if (viewList().contains(view)) {
                 // Prevent recursion
                 if (getCurrentView() != view) {
                     setCurrentView(view);
@@ -154,7 +154,7 @@ public abstract class MDIApplication extends AbstractApplication {
             // file is closed from the menu,
             // rather than by clicking the X in
             // the internal pane
-            if(viewList().contains(view)) {
+            if (viewList().contains(view)) {
                 closeView(view);
                 //workaround for combobox model bug
                 setCurrentView(getCurrentView());

@@ -114,7 +114,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
     /**
      * Return the graph controller.
      */
-    public GraphController getGraphController(){
+    public GraphController getGraphController() {
         return ((NodeController)getContainer()).getController();
     }
 
@@ -138,7 +138,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
     public Figure render(Object node) {
         GraphModel model = getGraphController().getGraphModel();
         Shape shape = (model.isComposite(node)) ? _compositeShape : _nodeShape;
-        if(shape instanceof RectangularShape) {
+        if (shape instanceof RectangularShape) {
             RectangularShape r = (RectangularShape)shape;
             shape = (Shape)(r.clone());
         }
@@ -150,7 +150,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
         BasicFigure bf = new BasicFigure(shape);
         bf.setFillPaint(fill);
 
-        if(model.isComposite(node)) {
+        if (model.isComposite(node)) {
             CompositeFigure rep = new CompositeFigure(bf);
             double scale = getCompositeScale();
             rep.getTransformContext().getTransform().scale(scale, scale);
@@ -176,7 +176,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
      * (XXX document this).
      */
     public void setCompositeScale(double scale) {
-        if((scale <= 0) || (scale > 1)) {
+        if ((scale <= 0) || (scale > 1)) {
             String err = "Scale must be between > 0 and <= 1.";
             throw new IllegalArgumentException(err);
         }

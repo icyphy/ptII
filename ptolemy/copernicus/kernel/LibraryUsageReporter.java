@@ -165,7 +165,7 @@ public class LibraryUsageReporter extends SceneTransformer
                             if (castType instanceof RefType) {
                                 SootClass castClass =
                                     ((RefType)castType).getSootClass();
-                                if(castClass.isInterface()) {
+                                if (castClass.isInterface()) {
                                     necessaryClasses.add(castClass);
                                 } else {
                                     necessaryClasses.addAll(

@@ -107,7 +107,7 @@ super.initCode();
 	addCode("$starSymbol(count) = 0; ");
        }
     /* Declare buffer type and size depending on the encoding */
-    if (encodingType.equalsIgnoreCase("linear16")){
+    if (encodingType.equalsIgnoreCase("linear16")) {
       addDeclaration(declarations("short", ((IntToken)((blockSize).getToken())).intValue()/2));
     } else {
       addDeclaration(declarations("unsigned char", ((IntToken)((blockSize).getToken())).intValue()));
@@ -116,7 +116,7 @@ super.initCode();
     /* Open file for writing data */
     addCode(openFileForWriting); 	
     /* Setting the audio driver if the output file is /dev/audio */
-    if(strcasecmp(fileName, "/dev/audio") == 0)
+    if (strcasecmp(fileName, "/dev/audio") == 0)
       {
 	/* audio_setup : to set encodingType, sampleRate and channels */
 	addCode("$sharedSymbol(CGCAudioBase,audio_setup)($starSymbol(file), $ref(encodingType), $ref(sampleRate), $ref(channels)); ");
@@ -130,7 +130,7 @@ super.initCode();
      */
     public void  generateInitializeCode() throws IllegalActionException {
         
-if (encodingType.equalsIgnoreCase("linear16")){
+if (encodingType.equalsIgnoreCase("linear16")) {
       input.setSDFParams(int(blockSize/2), int(blockSize/2)-1);
     } else {
       input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(), ((IntToken)((blockSize).getToken())).intValue()-1);
@@ -177,7 +177,7 @@ if (encodingType.equalsIgnoreCase("linear16")) {
         "{\n"
         + "    /* convert floating-point to 8-bit u-law encoding */\n"
         + "    int i;\n"
-        + "    for(i = 0; i < $val(blockSize); i++) {\n"
+        + "    for (i = 0; i < $val(blockSize); i++) {\n"
         + "      /* Convert from floating point [-1.0,1.0] to 16-bit sample */\n"
         + "      short sample16 = (short)($ref(input,i) * 32767.0);\n"
         + "      /* Convert 16-bit sample to PCM mu-law */\n"

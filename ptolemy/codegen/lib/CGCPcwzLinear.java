@@ -96,7 +96,7 @@ public class CGCPcwzLinear extends ClassicCGCActor {
         
 // Check to make sure that x values are increasing
 	  double previous = breakpoints[0].real();
-	  for(int i = 1; i < breakpoints.size(); i++) {
+	  for (int i = 1; i < breakpoints.size(); i++) {
 	    if (breakpoints[i].real() <= previous) {
 	      throw new IllegalActionException(this,"Breakpoints are not increasing in x");
 	      return;

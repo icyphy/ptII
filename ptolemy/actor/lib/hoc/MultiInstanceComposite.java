@@ -270,7 +270,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                     ||
                                     port.isOutput() && 
                                     (!isInsideLinked && otherPort.isInput() 
-                                    || isInsideLinked && otherPort.isOutput())){
+                                    || isInsideLinked && otherPort.isOutput())) {
                                 if (otherPort.isMultiport()) {
                                     if (!isRelationCreated) {
                                         relation = new TypedIORelation

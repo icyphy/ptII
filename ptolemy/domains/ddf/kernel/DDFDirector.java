@@ -246,7 +246,7 @@ public class DDFDirector extends Director {
     public void fire() throws IllegalActionException {
 
         boolean repeatBasicIteration = true;
-        while(repeatBasicIteration && !_stopRequested) {
+        while (repeatBasicIteration && !_stopRequested) {
 
             // The default value indicates basic iteration will not
             // be repeated until proved otherwise.
@@ -306,7 +306,7 @@ public class DDFDirector extends Director {
 
             // If still no actor has been fired, declare deadlock unless
             // the parameter runUntilDeadlock is true.
-            if(!_firedOne && !_runUntilDeadlock ) {
+            if (!_firedOne && !_runUntilDeadlock ) {
                 _isDeadlocked = true;
                 if (_debugging) {
                     _debug("deadlock detected");
@@ -381,7 +381,7 @@ public class DDFDirector extends Director {
                 getAttribute("requiredFiringsPerIteration");
             if (requiredFiringsPerIteration != null) {
                 Token token = requiredFiringsPerIteration.getToken();
-                if(token instanceof IntToken) {
+                if (token instanceof IntToken) {
                     int value = ((IntToken)token).intValue();
                     if (value > 0) {
                         flags[_REQUIRED_FIRINGS_PER_ITERATION] = value;
@@ -402,7 +402,7 @@ public class DDFDirector extends Director {
      *  override the base class method to skip invalidating resolved types.
      */
     public void invalidateResolvedTypes() {
-        if(!_isTypeResolutionDisabled) {
+        if (!_isTypeResolutionDisabled) {
             super.invalidateResolvedTypes();
         }
     }
@@ -684,8 +684,8 @@ public class DDFDirector extends Director {
             while (outputPorts.hasNext()) {
                 IOPort outputPort = (IOPort)outputPorts.next();
                 Receiver[][] Receivers = outputPort.getRemoteReceivers();
-                for(int i = 0; i < Receivers.length; i++)
-                    for(int j = 0; j < Receivers[i].length; j++) {
+                for (int i = 0; i < Receivers.length; i++)
+                    for (int j = 0; j < Receivers[i].length; j++) {
                         SDFReceiver receiver = (SDFReceiver)Receivers[i][j];
                         if (receiver.size() > maximumCapacity) {
                             throw new IllegalActionException(this,

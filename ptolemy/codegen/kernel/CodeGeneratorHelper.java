@@ -469,7 +469,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         tokenizer.nextToken();
         if (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
-            if (token.equals("#")){
+            if (token.equals("#")) {
                 int channel = new Integer(tokenizer.nextToken().trim())
                         .intValue();
                 if (channel < 0) {

@@ -489,7 +489,7 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
         } else {
         }
 
-      } else if (!(_container instanceof ModalModel)){
+      } else if (!(_container instanceof ModalModel)) {
         // topLevel should have a CTMixedSignalDirector
         _director = new CTMixedSignalDirector(_container, "CT Director");
 
@@ -641,7 +641,7 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
           // It is presumed that there is only one output for one agent.
           if (getOutputs().size() > 1) throw new IllegalActionException ("Can not handle actor with more than one output.");
 
-          while(outputs.hasNext()) {
+          while (outputs.hasNext()) {
             String outputStr = (String) outputs.next();
             TypedIOPort containerOutput = new TypedIOPort(_container, outputStr, false, true);
             // Usually there is direct connection between the integrator output port
@@ -654,7 +654,7 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
 
 
           ListIterator inputs = getInputs().listIterator();
-          while(inputs.hasNext()) {
+          while (inputs.hasNext()) {
             String inputStr = (String) inputs.next();
             TypedIOPort _containerInput = new TypedIOPort(_container, inputStr, true, false);
 
@@ -742,14 +742,14 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
 
             // Construct the input and output ports for the modal model.
           ListIterator outputs = getOutputs().listIterator();
-          while(outputs.hasNext()) {
+          while (outputs.hasNext()) {
             String outputStr = (String) outputs.next();
             ModalPort _containerOutput = (ModalPort) _container.newPort(outputStr);
             _containerOutput.setOutput(true);
           }
 
           ListIterator inputs = getInputs().listIterator();
-          while(inputs.hasNext()) {
+          while (inputs.hasNext()) {
             String inputStr = (String) inputs.next();
             ModalPort _containerInput = (ModalPort) _container.newPort(inputStr);
             _containerInput.setInput(true);
@@ -760,14 +760,14 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
         // An composite agent contains several sub agents.
         ListIterator outputs = getOutputs().listIterator();
         if (getOutputs().size() > 1) throw new IllegalActionException ("Can not handle actor with more than one output.");
-        while(outputs.hasNext()) {
+        while (outputs.hasNext()) {
           String outputStr = (String) outputs.next();
           TypedIOPort _containerOutput = new TypedIOPort(_container, outputStr, false, true);
 
         }
 
         ListIterator inputs = getInputs().listIterator();
-        while(inputs.hasNext()) {
+        while (inputs.hasNext()) {
           String inputStr = (String) inputs.next();
           TypedIOPort _containerInput = new TypedIOPort(_container, inputStr, true, false);
         }
@@ -810,7 +810,7 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
         while (inputs.hasNext()) {
           TypedIOPort input = (TypedIOPort) inputs.next();
           System.out.println("      Input port name: " + input.getFullName());
-          if(input.linkedRelationList().size() > 0)
+          if (input.linkedRelationList().size() > 0)
             continue;
 
           TypedIOPort source = _searchSource(input);
@@ -829,7 +829,7 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
             }
 
             System.out.println("      Source port name: " + source.getFullName() + " " + relations.size());
-            if(relations.size() > 1) {
+            if (relations.size() > 1) {
               throw new IllegalActionException("port has two relations!");
             } else if (relations.size() == 1) {
               relation = (TypedIORelation) relations.get(0);
@@ -873,7 +873,7 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
               while (outputs.hasNext()) {
                 TypedIOPort output = (TypedIOPort) outputs.next();
                 System.out.println("      Refinement Output port name: " + output.getFullName());
-                if(output.linkedRelationList().size() > 0) {
+                if (output.linkedRelationList().size() > 0) {
                   ListIterator orelations = output.linkedRelationList().listIterator();
                   while (orelations.hasNext()) {
 //                    System.out.println(orelations.next());
@@ -902,7 +902,7 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
           if (source != null) {
             List relations = source.linkedRelationList();
             System.out.println("      Source port name: " + source.getFullName() + " " + relations.size());
-            if(relations.size() > 1) {
+            if (relations.size() > 1) {
               throw new IllegalActionException("port has two relations!");
             } else if (relations.size() == 1) {
               relation = (TypedIORelation) relations.get(0);

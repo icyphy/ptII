@@ -279,7 +279,7 @@ public class ComponentActor extends TypedCompositeActor
             
             int iter = iterate(1);
             //System.out.println("the iterate return is: " + iter);
-            if(iter == Executable.COMPLETED) {
+            if (iter == Executable.COMPLETED) {
                 return output.call();
             } else {
                 return TupleToken.VOID;
@@ -465,7 +465,7 @@ public class ComponentActor extends TypedCompositeActor
                 Iterator ports = this.deepInsidePortList().iterator();
                 IOPort port = (IOPort) ports.next();
                 Receiver[][] receivers = port.getReceivers();
-                for(int i = 0; i < l; i++ ) {
+                for (int i = 0; i < l; i++ ) {
                     Token t = token.getElement(i);
                     //assume not multiple port.
                     receivers[0][0].put(t);
@@ -502,7 +502,7 @@ public class ComponentActor extends TypedCompositeActor
             boolean output = isOutput();
             if (output) {
                 Iterator insideRelations = insideRelationList().iterator();
-                if(insideRelations.hasNext()) {
+                if (insideRelations.hasNext()) {
                         _insideReceivers = new Receiver[1][1];
                         _insideReceivers[0][0] = _newInsideReceiver();
                 }

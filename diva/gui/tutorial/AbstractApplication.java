@@ -175,7 +175,7 @@ public abstract class AbstractApplication implements Application {
      * @deprecated Use method in GUIUtilities instead.
      */
     public JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon){
+            String tooltip, Icon icon) {
         return GUIUtilities.addToolBarButton(toolbar, action, tooltip, icon);
     }
 
@@ -228,7 +228,7 @@ public abstract class AbstractApplication implements Application {
                     + " is already known by application " + this);
         }
         List l = (List)_documentMap.get(v.getDocument());
-        if(l == null) {
+        if (l == null) {
             l = new LinkedList();
             _documentMap.put(v.getDocument(), l);
         }
@@ -269,7 +269,7 @@ public abstract class AbstractApplication implements Application {
      */
     public boolean closeView(View v) {
         List views = (List)_documentMap.get(v.getDocument());
-        if(views.size() > 0 || closeDocument(v.getDocument())) {
+        if (views.size() > 0 || closeDocument(v.getDocument())) {
             removeView(v);
             return true;
         }
@@ -363,7 +363,7 @@ public abstract class AbstractApplication implements Application {
         }
         _documents.removeElement(d);
         List views = (List)_documentMap.get(d);
-        for(Iterator i = views.iterator(); i.hasNext(); ) {
+        for (Iterator i = views.iterator(); i.hasNext(); ) {
             View v = (View)i.next();
             i.remove();
             removeView(v);
@@ -385,7 +385,7 @@ public abstract class AbstractApplication implements Application {
         }
         _views.removeElement(v);
         List views = (List)_documentMap.get(v.getDocument());
-        if(views != null) {
+        if (views != null) {
             views.remove(v);
         }
     }
@@ -479,7 +479,7 @@ public abstract class AbstractApplication implements Application {
      */
     public List viewList (Document d) {
         List list = (List)_documentMap.get(d);
-        if(list == null)
+        if (list == null)
             list = new LinkedList();
         return list;
     }

@@ -1309,7 +1309,7 @@ public class SDFPortInliner implements PortInliner {
 //                     channel = new $tokenType[$(port.getWidth())]; // int expression
 //                     $bufferField = channelLocal;> // SootField
 //             int channel = 0; 
-//             for(Iterator relations = port.linkedRelationList().iterator();
+//             for (Iterator relations = port.linkedRelationList().iterator();
 //                 relations.hasNext();) {
 //                 TypedIORelation relation = (TypedIORelation)relations.next();
 //                 for (int i = 0; i < relation.getWidth(); i++, channel++) {
@@ -1341,7 +1341,7 @@ public class SDFPortInliner implements PortInliner {
 
 
 //             int channel = 0; 
-//             for(Iterator relations = port.linkedRelationList().iterator();
+//             for (Iterator relations = port.linkedRelationList().iterator();
 //                 relations.hasNext();) {
 //                 TypedIORelation relation = (TypedIORelation)relations.next();
 //                 for (int i = 0; i < relation.getWidth(); i++, channel++) {

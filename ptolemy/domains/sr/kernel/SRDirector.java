@@ -345,7 +345,7 @@ public class SRDirector extends StaticSchedulingDirector {
         // FIXME: Introduces dependency on sdf
         if (fatherDirector instanceof SDFDirector) {
             Iterator outputPorts = actor.outputPortList().iterator();
-            while(outputPorts.hasNext()) {
+            while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 // FIXME: Introduces dependency on sdf
                 int initialToken = DFUtilities.getTokenInitProduction(port);
@@ -823,20 +823,20 @@ public class SRDirector extends StaticSchedulingDirector {
 
             newScheduler = (Scheduler)
                 schedulerConstructor.newInstance(constructorArguments);
-        } catch(ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             throw new IllegalActionException(this, "Scheduler: "+
                     className + " not found.");
-        } catch(InstantiationException e) {
+        } catch (InstantiationException e) {
             throw new IllegalActionException(this, "Scheduler: "+
                     className + " instantiation failed.");
-        } catch(IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             throw new IllegalActionException(this, "Scheduler: "+
                     className + " not accessible.");
-        } catch(NoSuchMethodException e) {
+        } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, "Scheduler: "+
                     className + " has no constructor that takes a "+
                     "Director and a String.");
-        } catch(InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             throw new IllegalActionException(this, "Scheduler: "+
                     className + " constructor threw exception: "+
                     e.getMessage());

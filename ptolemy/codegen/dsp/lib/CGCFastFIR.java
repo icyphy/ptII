@@ -121,7 +121,7 @@ public class CGCFastFIR extends ClassicCGCActor {
 
     public String initialize = 
     "	  currentValue = 0;\n"
-    + "	  for(i=0;i<$val(tapSize);i++){\n"
+    + "	  for (i=0;i<$val(tapSize);i++){\n"
     + "	    fir[i]=$ref2(taps,i);\n"
     + "	    src[i] = 0.0;\n"
     + "	  }\n";
@@ -132,7 +132,7 @@ public class CGCFastFIR extends ClassicCGCActor {
 
     public String body = 
     "\n"
-    + "	  if(currentValue > $val(tapSize)-1){\n"
+    + "	  if (currentValue > $val(tapSize)-1){\n"
     + "	    currentValue -= $val(tapSize);\n"
     + "	  }\n"
     + "	  \n"

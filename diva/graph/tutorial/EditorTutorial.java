@@ -163,7 +163,7 @@ public class EditorTutorial {
             add(_applyBtn);
             add(_layoutList);
 
-            if(useDefaults) {
+            if (useDefaults) {
                 initDefaultLayouts();
             }
         }

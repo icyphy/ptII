@@ -253,7 +253,7 @@ public class Time implements Comparable {
             } else {
                 return NEGATIVE_INFINITY;
             }
-        } else if (time.isPositiveInfinite()){
+        } else if (time.isPositiveInfinite()) {
             // the time object has a positive infinity time value
             if (isNegativeInfinite()) {
                 throw new InternalErrorException(
@@ -333,7 +333,7 @@ public class Time implements Comparable {
      *  @return The double representation of the time value.
      */
     public double getDoubleValue() {
-        if (isPositiveInfinite()){
+        if (isPositiveInfinite()) {
             return Double.POSITIVE_INFINITY;
         } else if (isNegativeInfinite()) {
             return Double.NEGATIVE_INFINITY;
@@ -369,7 +369,7 @@ public class Time implements Comparable {
     public int hashCode() {
         if (isNegativeInfinite()) {
             return Integer.MIN_VALUE;
-        } else if (isPositiveInfinite()){
+        } else if (isPositiveInfinite()) {
             return Integer.MAX_VALUE;
         } else {
             if (_usingDouble) {
@@ -429,7 +429,7 @@ public class Time implements Comparable {
             } else {
                 return POSITIVE_INFINITY;
             }
-        } else if (time.isPositiveInfinite()){
+        } else if (time.isPositiveInfinite()) {
             // the time object has a positive infinity time value
             if (isPositiveInfinite()) {
                 throw new InternalErrorException(

@@ -119,14 +119,14 @@ public class TestApplication implements ChangeListener {
 
         // FIXME: nearly duplicate code in kernel/KernelMain.java
         SDFDirector director = (SDFDirector)toplevel.getDirector();
-        if(director != null) {
+        if (director != null) {
             Parameter iterations =
                 (Parameter) director.getAttribute("iterations");
             Parameter copernicus_iterations = 
                 (Parameter) director.getAttribute("copernicus_iterations");
             // Set to be a large number of iterations, unless
             // copernicus_iterations is set.
-            if(copernicus_iterations != null) {
+            if (copernicus_iterations != null) {
                 iterations.setToken(copernicus_iterations.getToken());
             } else {
                 iterations.setToken(new IntToken(100000));

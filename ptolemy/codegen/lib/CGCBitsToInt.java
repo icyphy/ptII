@@ -118,7 +118,7 @@ addCode(readNwrite);
     public String readNwrite = 
         "	int i;\n"
         + "	int word = 0;\n"
-        + "	for(i=$val(nBits)-1;i>=0;i--) {\n"
+        + "	for (i=$val(nBits)-1;i>=0;i--) {\n"
         + "	    /* shift new bits into the shift register */\n"
         + "	    word <<= 1;\n"
         + "	    if ($ref(input,i)) word += 1;\n"

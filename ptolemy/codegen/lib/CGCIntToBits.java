@@ -115,7 +115,7 @@ addCode(readNwrite);
         "	int word;\n"
         + "	int i = 0;\n"
         + "	word = $ref(input);\n"
-        + "	for(; i < $val(nBits); i++) {\n"
+        + "	for (; i < $val(nBits); i++) {\n"
         + " 	    $ref(output,i) = (word & 1);\n"
         + "	    word >>= 1;\n"
         + "	}\n";

@@ -96,7 +96,7 @@ public class CGCGGAL extends CGCGAL {
     + "	    int m;\n"
     + "\n"
     + "	    F = $ref(synthIn);\n"
-    + "	    for(m = $val(order)-1; m >= 0; m--)\n"
+    + "	    for (m = $val(order)-1; m >= 0; m--)\n"
     + "	    {\n"
     + "		F += $ref(k,m+1) * $ref(B,m);\n"
     + "		$ref(B,m+1) = $ref(B,m) - $ref(k,m+1) * F;\n"

@@ -105,7 +105,7 @@ public class ArrayType extends StructuredType {
         }
 
         ArrayToken argumentArrayToken = (ArrayToken)token;
-        if(getElementType().equals(argumentArrayToken.getElementType())) {
+        if (getElementType().equals(argumentArrayToken.getElementType())) {
             return token;
         }
         Token[] argumentArray = argumentArrayToken.arrayValue();

@@ -908,7 +908,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         try {
             inverse = current.createInverse();
         }
-        catch(NoninvertibleTransformException e) {
+        catch (NoninvertibleTransformException e) {
             throw new RuntimeException(e.toString());
         }
         Rectangle2D visibleRect = getVisibleRectangle();
@@ -2088,7 +2088,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     public void actionPerformed(ActionEvent e) {
                         try {
                             getConfiguration().openModel(object);
-                        } catch(KernelException ex) {
+                        } catch (KernelException ex) {
                             MessageHandler.error("Open failed.", ex);
                         }
                     }
@@ -2316,7 +2316,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
       int index = 0;
       while (true) {
         index = moml.indexOf("<property name=\"_location\"", index + 1);
-        if(index == -1) {
+        if (index == -1) {
             //look for all _locations, and break when there are no more
             break;
         }

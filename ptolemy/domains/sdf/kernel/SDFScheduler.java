@@ -1047,7 +1047,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         
         // Get the rate of this port.
         int currentRate;
-        if(currentActor == model) {
+        if (currentActor == model) {
             currentRate = 1;
         } else {
             currentRate = DFUtilities.getRate(currentPort);
@@ -1093,7 +1093,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
 
             int connectedRate;
-            if(connectedActor == model) {
+            if (connectedActor == model) {
                 connectedRate = 1;
             } else {
                 connectedRate = DFUtilities.getRate(connectedPort);
