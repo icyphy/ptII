@@ -623,6 +623,13 @@ public class PtolemyModule implements Module {
     private class PtolemyLayout extends LevelLayout {
 	
 	/**
+	 * Construct a new levelizing layout with a vertical orientation.
+	 */
+	public PtolemyLayout(LayoutTarget target) {
+	    super(target);
+	}
+
+	/**
 	 * Copy the given graph and make the nodes/edges in the copied
 	 * graph point to the nodes/edges in the original.
 	 */ 
@@ -813,12 +820,12 @@ public class PtolemyModule implements Module {
 	    jgraph.getGraphPane().getGraphController();
         LayoutTarget target = new PtolemyLayoutTarget(controller);
         GraphModel model = controller.getGraphModel();
-        PtolemyLayout layout = new PtolemyLayout();
+        PtolemyLayout layout = new PtolemyLayout(target);
 	layout.setOrientation(LevelLayout.HORIZONTAL);
 	layout.setRandomizedPlacement(false);
         // Perform the layout and repaint
         try {
-            layout.layout(target, model.getRoot());
+            layout.layout(model.getRoot());
         } catch (Exception e) {
             getApplication().showError("Layout failed", e);
         }

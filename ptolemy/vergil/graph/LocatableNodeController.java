@@ -95,7 +95,7 @@ public class LocatableNodeController extends NodeController {
      */
     public Figure drawNode(Object n) {
         Figure nf = super.drawNode(n);
-        locateFigure(n);
+	locateFigure(n);
         return nf;
     }
 

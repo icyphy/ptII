@@ -41,6 +41,8 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
+import diva.graph.basic.*;
+import diva.graph.layout.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -83,7 +85,6 @@ public class EntityController extends LocatableNodeController {
     public EntityController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new EntityRenderer());
-	setPortController(new EntityPortController(controller));
 
 	SelectionModel sm = controller.getSelectionModel();
         NodeInteractor interactor =
@@ -105,13 +106,103 @@ public class EntityController extends LocatableNodeController {
 	_menuCreator = 
 	    new MenuCreator(new EntityContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
+
+	// The filter for the layout algorithm of the ports within this
+	// entity.
+	Filter portFilter = new Filter() {
+	    public boolean accept(Object o) {
+		if(o instanceof Port) {
+		    return true;
+		} else {
+		    return false;
+		}
+	    }
+	};
+
+	// Anytime we add a port to an entity, we want to layout all the
+	// ports within that entity.
+	GlobalLayout layout = new EntityLayout();
+	controller.addGraphViewListener(new IncrementalLayoutListener(
+	     new IncrLayoutAdapter(layout), portFilter));
     }
 
+    /** This layout algorithm is responsible for laying out the ports
+     * within an entity.
+     */    
+    public class EntityLayout extends AbstractGlobalLayout {
+	public EntityLayout() {
+	    super(new BasicLayoutTarget(getController()));
+	}
+	
+	public void layout(Object node) {
+	    GraphModel model = getController().getGraphModel();
+	    Iterator nodes = model.nodes(node);
+	    LinkedList inputs = new LinkedList();
+	    LinkedList outputs = new LinkedList();
+	    LinkedList inouts = new LinkedList();
+	    int inCount = 0;
+	    int outCount = 0;
+	    int inOutCount = 0;
+	    
+	    while(nodes.hasNext()) {
+		Port port = (Port) nodes.next();
+		if(!(port instanceof IOPort)) {
+		    inOutCount++;
+		    inouts.addLast(port);
+		} else {
+		    IOPort ioport = (IOPort) port;
+		    if(ioport.isInput() && ioport.isOutput()) {
+			inOutCount++;
+			inouts.addLast(port);
+		    } else if(ioport.isInput()) {
+			inCount++;
+			inputs.addLast(port);
+		    } else if(ioport.isOutput()) {
+			outCount++;
+			outputs.addLast(port);
+		    }
+		}
+	    }
+	    CompositeFigure figure = 
+		(CompositeFigure)getLayoutTarget().getVisualObject(node);
+	    
+	    _placePortFigures(figure, inputs, inCount,
+			      SwingConstants.WEST);
+	    _placePortFigures(figure, outputs, outCount,
+			      SwingConstants.EAST);
+	    _placePortFigures(figure, inouts, inOutCount,
+			      SwingConstants.SOUTH);
+	    
+	}
+	
+	private void _placePortFigures(CompositeFigure figure, List portList, 
+					int count, int direction) {
+	    Iterator ports = portList.iterator();
+	    int number = 0;
+	    while(ports.hasNext()) {
+		number ++;
+		Object port = ports.next();
+		Figure portFigure = getController().getFigure(port);
+		// If there is no figure, then ignore this port.  This may
+		// happen if the port hasn't been rendered yet.
+		if(portFigure == null) continue;
+		Rectangle2D portBounds = 
+		    portFigure.getBounds();
+		BoundsSite site = 
+		    new BoundsSite(figure.getBackgroundFigure(), 0, 
+				   direction, 
+				   100.0 * number / (count+1));
+		CanvasUtilities.translateTo(portFigure, 
+					    site.getX(), site.getY());
+	    }		    
+	}	    
+    }
+    
     /** Draw the node and all the ports contained within the node.
      */
     public Figure drawNode(Object n) {
         Figure nf = super.drawNode(n);
-	LinkedList inputs = new LinkedList();
+	/*	LinkedList inputs = new LinkedList();
 	LinkedList outputs = new LinkedList();
 	LinkedList inouts = new LinkedList();
 	int inCount = 0;
@@ -147,6 +238,7 @@ public class EntityController extends LocatableNodeController {
                 SwingConstants.EAST);
 	_createPortFigures((Icon)n, inouts, inOutCount,
                 SwingConstants.SOUTH);
+	*/
         return nf;
     }
 
@@ -157,46 +249,16 @@ public class EntityController extends LocatableNodeController {
         return _menuCreator.getMenuFactory();
     }
 
-    /** Get the controller for the ports of this entity.
-     */
-    public NodeController getPortController() {
-	return _portController;
-    }
-
-    /**
-     * Remove all the ports in this entity, all the edges connected to those
-     * ports and this node.
-     */
-    public void removeNode(Object node) {
-	// This code sucks because we need a list iterator.
-	List nodeList = new LinkedList();
-	Iterator i = getController().getGraphModel().nodes(node);
-	while(i.hasNext()) {
-	    nodeList.add(i.next());
-	}
-	Object nodes[] = nodeList.toArray();
-	for(int j = 0; j < nodes.length; j++) {
-	    _portController.removeNode(nodes[j]);
-	}
-	super.removeNode(node);
-    }
-
     /** Set the menu factory that will create menus for this Entity.
      */
     public void setMenuFactory(MenuFactory factory) {
         _menuCreator.setMenuFactory(factory);
     }
 
-    /** Set the controller for the ports of this entity.
-     */
-    public void setPortController(NodeController controller) {
-	_portController = (EntityPortController)controller;
-    }
-
     /** Create figures for each node in the node list.  Place them on the
      * side of the composite given by direction.
      * Count must be the number of nodes in the list.
-     */
+     
     protected void _createPortFigures(Icon container,
             LinkedList nodeList, int count,
             int direction) {
@@ -209,6 +271,7 @@ public class EntityController extends LocatableNodeController {
                     100.0*nodeNumber/(count+1));
 	}
     }
+    */
 
     /**
      * The factory for creating context menus on entities.

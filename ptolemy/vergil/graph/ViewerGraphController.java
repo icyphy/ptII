@@ -78,6 +78,7 @@ public class ViewerGraphController extends CompositeGraphController {
      * terminal and edge interactors.
      */
     public ViewerGraphController() {
+	_entityPortController = new EntityPortController(this);
 	_entityController = new EntityController(this);
 	_portController = new PortController(this);
 	_relationController = new RelationController(this);
@@ -98,6 +99,13 @@ public class ViewerGraphController extends CompositeGraphController {
      */
     public PortController getPortController() {
 	return _portController;
+    }
+
+    /**
+     * Return the controller for ports
+     */
+    public EntityPortController getEntityPortController() {
+	return _entityPortController;
     }
 
     /**
@@ -151,7 +159,10 @@ public class ViewerGraphController extends CompositeGraphController {
         } else if(object instanceof ptolemy.moml.Icon) {
             return _entityController;
 	} else if(object instanceof Port) {
-            return _portController;
+	    if(getGraphModel().getParent(object) == getGraphModel().getRoot())
+		return _portController;
+	    else 
+		return _entityPortController;
         } else
             throw new RuntimeException(
                     "Node with unknown semantic object: " + object);
@@ -169,6 +180,13 @@ public class ViewerGraphController extends CompositeGraphController {
      */
     public void setEntityController(EntityController controller) {
 	_entityController = controller;
+    }
+
+    /**
+     * Set the controller for relations
+     */
+    public void setEntityPortController(EntityPortController controller) {
+	_entityPortController = controller;
     }
 
     /**
@@ -205,6 +223,7 @@ public class ViewerGraphController extends CompositeGraphController {
 
     // The controllers
     private EntityController _entityController;
+    private EntityPortController _entityPortController;
     private PortController _portController;
     private RelationController _relationController;
     private LinkController _linkController;

@@ -86,7 +86,7 @@ public class EntityPortController extends NodeController {
     ////                         public methods                    ////
 
     /** Given a node, add it to the given parent.
-     */
+     
     public void drawNode(Port port, Icon parent, int direction,
             double fraction) {
 
@@ -118,6 +118,7 @@ public class EntityPortController extends NodeController {
 
 	parentFigure.add(figure);
     }
+    */
 
     public static class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Object n) {

@@ -131,7 +131,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 		count++;
 	    }
 	    
-	    // If there are no verticies, and the relation has
+	    // If there are no vertecies, and the relation has
 	    // two connections, then create a direct link.
 	    if(rootVertex == null && count == 2) {
 		links = relation.linkedPorts();
@@ -376,8 +376,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * event.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
-	if(edge instanceof ComponentRelation) {
-	    disconnectEdge(eventSource, (ComponentRelation)edge);
+	if(edge instanceof Link) {
+	    disconnectEdge(eventSource, (Link)edge);
 	} else {
 	    throw new InternalErrorException(
                     "Ptolemy Graph Model only handles " +
@@ -809,11 +809,11 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public void removeNode(Object eventSource, Object node) {
 	Object parent = getParent(node);
 	if(node instanceof ComponentPort) {
-	    removeNode((ComponentPort)node);
+	    removeNode(eventSource, (ComponentPort)node);
 	} else if(node instanceof Icon) {
-	    removeNode((Icon)node);
+	    removeNode(eventSource, (Icon)node);
 	} else if(node instanceof Vertex) {
-	    removeNode((Vertex)node);
+	    removeNode(eventSource, (Vertex)node);
 	} else {
 	    throw new InternalErrorException(
                     "Ptolemy Graph Model only handles " +
@@ -828,7 +828,12 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Delete a node from its parent graph and notify
      * graph listeners with a NODE_REMOVED event.
      */
-    public void removeNode(ComponentPort port) {
+    public void removeNode(Object eventSource, ComponentPort port) {
+	// remove any connected edges first.
+	
+	_removeConnectedEdges(eventSource, port);
+	
+	
 	_doChangeRequest(new RemovePort(port, port));
     }
 	
@@ -836,11 +841,28 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Delete a node from its parent graph and notify
      * graph listeners with a NODE_REMOVED event.
      */
-    public void removeNode(Icon icon) {
+    public void removeNode(Object eventSource, Icon icon) {
+	Iterator nodes = nodes(icon);
+	while(nodes.hasNext()) {
+	    _removeConnectedEdges(eventSource, (ComponentPort)nodes.next());
+	}
+	
 	final ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	_doChangeRequest(new RemoveActor(icon, entity));
 
     }  
+
+    private void _removeConnectedEdges(Object eventSource, 
+				       ComponentPort port) {
+	for(Iterator edges = outEdges(port); edges.hasNext(); ) {
+	    Object edge = edges.next();
+	    disconnectEdge(eventSource, edge);
+	}
+	for(Iterator edges = inEdges(port); edges.hasNext(); ) {
+	    Object edge = edges.next();
+	    disconnectEdge(eventSource, edge);
+	}
+    }
 
     /**
      * Delete a node from its parent graph and notify
