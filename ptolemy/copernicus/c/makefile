@@ -42,8 +42,8 @@ CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Don't include the test directory yet
-# DIRS =		test
+# Test directory
+DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -78,8 +78,9 @@ install: all
 depend:
 	@echo "no dependencies in this directory"
 
-demo: jclass
-	(cd demo/SimpleAdd; $(MAKE) demo)
+# Leave out the demo for now. Tests are in test/.
+# demo: jclass
+# (cd demo/SimpleAdd; $(MAKE) demo)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
