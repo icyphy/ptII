@@ -162,6 +162,10 @@ public class Transition extends ComponentRelation {
         exitAngle.setVisibility(Settable.NONE);
         exitAngle.setExpression("PI/5.0");
 	exitAngle.setTypeEquals(BaseType.DOUBLE);
+        gamma = new Parameter(this, "gamma");
+        gamma.setVisibility(Settable.NONE);
+        gamma.setExpression("0.0");
+	gamma.setTypeEquals(BaseType.DOUBLE);
         reset = new Parameter(this, "reset");
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setToken(BooleanToken.FALSE);
@@ -185,6 +189,12 @@ public class Transition extends ComponentRelation {
      *  to lie within this range.
      */
     public Parameter exitAngle;
+
+    /** Attribute giving the orientation of a self-loop. This is equal to
+     * the tangent at the midpoint (more or less).
+     *  This parameter contains a DoubleToken, initially with value 0.0.
+     */
+    public Parameter gamma;
 
     /** Attribute specifying the guard expression.
      */
