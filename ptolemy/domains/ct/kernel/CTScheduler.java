@@ -39,7 +39,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.StateReceiver;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
@@ -207,7 +206,6 @@ public class CTScheduler extends Scheduler {
     public static final CTReceiver.SignalType UNKNOWN =
     CTReceiver.UNKNOWN;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -354,6 +352,7 @@ public class CTScheduler extends Scheduler {
         LinkedList continuousActors = new LinkedList();
         LinkedList ctSubsystems = new LinkedList();
         LinkedList nonCTSubsystems = new LinkedList();
+        LinkedList stateTransitionActors = new LinkedList();
 
         Schedule discreteActorSchedule = new Schedule();
         Schedule continuousActorSchedule = new Schedule();
@@ -754,21 +753,6 @@ public class CTScheduler extends Scheduler {
             discreteActorSchedule.add(new Firing(actor));
         }
 
-        // NOTE: So far, 
-        // Actors remain in the continuousActors list are purely continuous
-        // actor. The normal (CT) scheduling should only apply to them.
-
-        // Now we check whether there are any sequence actors or discrete
-        // composite actors in the continuous part of the system.
-        // Add all continuous actors in the continuous actors schedule.
-        Iterator continuousIterator = continuousActors.iterator();
-        while (continuousIterator.hasNext()) {
-            Actor actor = (Actor)continuousIterator.next();
-            // only pure continuous actors (continuous -> continuous) and 
-            // ct composite actors are added into the continuousActorSchedule
-            continuousActorSchedule.add(new Firing(actor));
-        }
-
         // Create waveformGeneratorSchedule.
         Iterator generators = waveformGenerators.iterator();
         while (generators.hasNext()) {
@@ -786,6 +770,26 @@ public class CTScheduler extends Scheduler {
             }
         }
 
+        // NOTE: So far, 
+        // Actors remain in the continuousActors list are purely continuous
+        // actor. The normal (CT) scheduling should only apply to them.
+
+        // NOTE: Event generators are sink actors from the 
+        // continuous execution phase point of view. 
+        // NOTE: this will not affect the schedule of dynamic actors and 
+        // state transition actors, but it does affect the output actor
+        // schedule and continuous actor schedule.
+        continuousActors.addAll(eventGenerators);
+        
+        // Add all continuous actors in the continuous actors schedule.
+        Iterator continuousIterator = continuousActors.iterator();
+        while (continuousIterator.hasNext()) {
+            Actor actor = (Actor)continuousIterator.next();
+            // only pure continuous actors (continuous -> continuous) and 
+            // ct composite actors are added into the continuousActorSchedule
+            continuousActorSchedule.add(new Firing(actor));
+        }
+
         // Now schedule dynamic actors and state transition actors.
         // Manipulate on the arithmeticGraph and the dynamicGraph within
         // the continuous actors.
@@ -800,37 +804,55 @@ public class CTScheduler extends Scheduler {
             // Dynamic actors are reverse ordered in the schedule.
             Object[] xSorted = dynamicGraph.topologicalSort(dynamicArray);
             for (int i = 0; i < xSorted.length; i++) {
-                Actor a = (Actor)xSorted[i];
+                Actor dynamicActor = (Actor)xSorted[i];
                 // Looping on add(0, a) will reverse the order.
-                dynamicActorSchedule.add(0, new Firing(a));
-                stateRelatedActors.add(a);
-                if (a instanceof CTStepSizeControlActor) {
+                dynamicActorSchedule.add(0, new Firing(dynamicActor));
+                stateRelatedActors.add(dynamicActor);
+                if (dynamicActor instanceof CTStepSizeControlActor) {
                     // NOTE: they are not ordered, but addFirst() is
                     // considered more efficient.
-                    stateSSCActorSchedule.add(new Firing(a));
+                    stateSSCActorSchedule.add(new Firing(dynamicActor));
                 }
-            }
 
-            // State transition schedule
-            Object[] fx = arithmeticGraph.backwardReachableNodes(dynamicArray);
-            Object[] fxSorted = arithmeticGraph.topologicalSort(fx);
-            for (int i = 0; i < fxSorted.length; i++) {
-                Actor a = (Actor)fxSorted[i];
-                stateTransitionSchedule.add(new Firing(a));
-                stateRelatedActors.add(a);
-                if (a instanceof CTStepSizeControlActor) {
-                    // NOTE: they are not ordered, but we try to keep
-                    // a topological order anyway.
-                    stateSSCActorSchedule.add(new Firing(a));
+                // find state transition actors
+                Object[] fx;
+                fx = arithmeticGraph.backwardReachableNodes(dynamicActor);
+                Object[] fxSorted = arithmeticGraph.topologicalSort(fx);
+                for (int fxi = 0; fxi < fxSorted.length; fxi++) {
+                    Actor actor = (Actor)fxSorted[fxi];
+                    if (stateTransitionActors.contains(actor)) {
+                        continue;
+                    }
+                    stateTransitionActors.add(actor);
+                    stateRelatedActors.add(actor);
+                    if (actor instanceof CTStepSizeControlActor) {
+                        // NOTE: they are not ordered, but we try to keep
+                        // a topological order anyway.
+                        stateSSCActorSchedule.add(new Firing(actor));
+                    }
                 }
-            }
+                // A CTCompositeActor can also be served as a state transition
+                // actor. To preserve topological order, append it to the
+                // end of found state transition actors.
+                if ((dynamicActor instanceof CTCompositeActor) &&
+                    !stateTransitionActors.contains(dynamicActor)) {
+                    stateTransitionActors.add(dynamicActor);
+                }
+            }            
+        }
+
+        // Create StateTransitionActorSchedule.
+        Iterator stActors = stateTransitionActors.iterator();
+        while (stActors.hasNext()) {
+            Actor stActor = (Actor)stActors.next();
+            stateTransitionSchedule.add(new Firing(stActor));
         }
 
         // Construct sink actors.
         sinkActors = (LinkedList) continuousActors.clone();
         sinkActors.removeAll(stateRelatedActors);
-        // NOTE: Sink actors also include CT subsystems, in order to avoid
-        // duplication of CT subsystems:
+        // NOTE: Sink actors also include all the CT subsystems. To avoid
+        // duplication of CT subsystems, here is the trick.
         sinkActors.removeAll(ctSubsystems); 
         sinkActors.addAll(ctSubsystems); 
 
