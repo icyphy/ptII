@@ -35,6 +35,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -45,4 +49,6 @@ test MoMLToJava-1.1 {} {
     set MoMLToJava [java::new ptolemy.codegen.saveasjava.MoMLToJava]
     $MoMLToJava convert rampFileWriter.xml
     exec javac -classpath ../../../.. rampFileWriter.java
-} {}
+    set r [exec java -classpath ../../../..[java::field java.io.File pathSeparator]. ptolemy.actor.gui.CompositeActorApplication -class rampFileWriter -iterations 5] 
+    list [lrange $r 1 4]
+} {{1 2 3 4}}
