@@ -391,8 +391,7 @@ fi
 #--------------------------------------------------------------------
 
 # PTJHDL_DIR is set to jhdl and used in
-# $PTII/ptolemy/apps/makefile if jhdl was found
-# FIXME: we are not using PTJHDL_DIR yet
+# $PTII/ptolemy/codegen/makefile if jhdl was found
 PTJHDL_DIR=
 
 # Directory that contains the jhdl jar files
