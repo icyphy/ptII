@@ -71,23 +71,17 @@ The application is implemented by the
 includes support for printing and generating HTML for use with the
 <CODE>Plot</CODE> applet.
 
- <P>
-Unix users can invoke the
-<A HREF="pxgraph"><CODE>pxgraph</CODE></A> Bourne Shell script to 
-simulate the <CODE>pxgraph</CODE> X11 binary 
-on machines where the X Window System is not available.
-See the 
-<A HREF="doc/codeDoc/ptplot.Pxgraph.html#Installation Instructions"><CODE>Pxgraph</CODE></A>
-class documentation for <CODE>pxgraph</CODE> script installation instructions
-under Unix.  
-
-Windows users can invoke the <A HREF="pxgraph.bat"><CODE>pxgraph.bat</CODE></A> DOS batch file.
- <P>
-<CODE>pxgraph</CODE> is a slight extension to <CODE>xgraph</CODE> which
-reads binary files as well as ASCII.
-This code owes a heavy debt to David Harrison, the original author of
-<CODE>xgraph</CODE>.
-The extensions in <CODE>pxgraph</CODE> were written by Joe Buck.
+ <P>This code owes a heavy debt to David Harrison, the original author
+of <CODE>xgraph</CODE>, which runs under the X window system on Unix
+platforms.  An extension to <CODE>xgraph</CODE> called
+<CODE>pxgraph</CODE>, written by Joe Buck, reads binary files as well
+as ASCII.  For compatibility with these programs, we have provided a
+Bourne Shell script called <CODE>pxgraph</CODE> that is a drop-in
+replacement for either <CODE>xgraph</CODE> or <CODE>pxgraph</CODE>.
+Unlike the original program, however, the Java implementation does not
+depend on the X window system.  We have provided a DOS batch file
+called <CODE>pxgraph.bat</CODE> that brings <CODE>pxgraph</CODE>
+capability to Windows platforms.
 
  <P>
  <hr>
