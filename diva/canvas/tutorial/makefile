@@ -104,13 +104,10 @@ install: all jars
 
 doc-files:
 	if [ ! -d doc-files ]; then \
-	    @echo "Updating doc-files directory for javadoc"; \
+	    echo "Updating doc-files directory for javadoc"; \
 	    mkdir doc-files; \
-	    cp ../../doc/packages/canvas/tutorial/images/* doc-files; \
+	    cp ../../doc/packages/canvas/tutorial/images/*.gif doc-files; \
 	fi
-
-# 'make clean' removes files listed in KRUFT
-KRUFT = doc-files
 
 DEMOS = $(JSRCS:%.java=%)
 demos: $(DEMOS)
