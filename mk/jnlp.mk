@@ -191,8 +191,14 @@ COPERNICUS_JARS = \
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
+	ptolemy/actor/gui/exec/exec.jar \
+	ptolemy/actor/gui/ptjacl/ptjacl.jar \
+	lib/ptjacl.jar \
+	ptolemy/actor/gui/python/python.jar \
+	vendors/jython/jython.jar \
 	ptolemy/actor/lib/comm/comm.jar \
 	ptolemy/domains/experimentalDomains.jar \
+	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
