@@ -78,6 +78,8 @@ JSRCS = \
 	QueueReceiver.java \
 	Receiver.java \
 	StreamExecutionListener.java \
+	TimedActor.java \
+	TimedDirector.java \
 	TypeAttribute.java \
 	TypeConflictException.java \
 	TypedActor.java \
