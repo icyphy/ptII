@@ -138,7 +138,7 @@ public final class ImageSequence extends SDFAtomicActor {
         // This is necessary to convert from bytes to ints
         for(i = 0, n = 0; i < ysize; i++) {
             for(j = 0; j < xsize; j++, n++)
-                frame[n] = frames[framenumber][n];
+                frame[n] = ((int) frames[framenumber][n]) & 255;
         }
 
         IntMatrixToken message = new IntMatrixToken(frame, ysize, xsize);

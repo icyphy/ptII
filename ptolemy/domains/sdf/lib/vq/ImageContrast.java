@@ -38,8 +38,13 @@ import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageContrast
-/**
-@author Steve Neuendorffer
+/** 
+This actor change the contrast of an image. i.e.
+if the input image has a lot of pixels with the same or similar color,
+we can evenly distribute the color of the image with this actor using the 
+Gray Scale Equalization. 
+ 
+@author Michael Leung
 @version $Id$
 */
 
@@ -47,79 +52,129 @@ public final class ImageContrast extends SDFAtomicActor {
     public ImageContrast(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
-        super(container, name);
+        super(container,name);
     
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
-        new Parameter(this, "outmax", new IntToken("255"));
-        new Parameter(this, "outmin", new IntToken("0"));
- 
-        SDFIOPort outputport = (SDFIOPort) newPort("contrast");
+        
+        SDFIOPort outputport = (SDFIOPort) newPort("outcontrast");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
         outputport.setDeclaredType(IntMatrixToken.class);
-
-        SDFIOPort inputport = (SDFIOPort) newPort("figure");
+        
+        SDFIOPort inputport = (SDFIOPort) newPort("incontrast");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
         inputport.setDeclaredType(IntMatrixToken.class);
     }
-
+    
+    /** Initialize the actor.
+     *  Get the values of all parameters.
+     *  @exception IllegalActionException if xframesize is less than one,
+     *  or yframesize is less than one.
+     */
+    
     public void initialize() throws IllegalActionException {
+        
 	Parameter p;
-	p = (Parameter) getAttribute("XFramesize");
+	
+        p = (Parameter) getAttribute("XFramesize");
         xframesize = ((IntToken)p.getToken()).intValue();
+        if(xframesize < 0) 
+            throw new IllegalActionException(
+                    "The value of the xframesize parameter(" + xframesize +
+                    ") must be greater than zero.");
+       
         p = (Parameter) getAttribute("YFramesize");
         yframesize = ((IntToken)p.getToken()).intValue();
-
+         if(yframesize < 0) 
+            throw new IllegalActionException(
+                    "The value of the yframesize parameter(" + yframesize + 
+                    ") must be greater than zero.");
+    
     }
+    
+    /** Fire the actor.
+     *  Consume one image on the input port.  
+     *  
+     *  Summary:
+     *  Contrast the image so that  
+     *  an more evenly color distributed image can be obtained. 
+     *  Assume that color is bounded from 0 to 255 inclusively.
+     *  @exception IllegalActionException if image color is out-of-bound.
+     *  
+     *  Algorithm:
+     *  Construct a color histogram for the input image. 
+     *  Construct a cdf for the color histogram.
+     *  Using Gray Scale Equalization, re-map each image pixel color. 
+     *
+     *  Send the new image out the output port.
+     */
 
     public void fire() throws IllegalActionException {
-        int i, j;
-	
-        int a;
         
-        int inMin, inMax;
-        int frameElement;
-        SDFIOPort outputport = (SDFIOPort) getPort("contrast");
-        SDFIOPort inputport = (SDFIOPort) getPort("figure");
-       
-        //for just now, we used inMax = 255 and inMin =0
-        inMax = 255;
-        inMin = 0;
+        int i, j;
+        int colorHistogram[] = new int[256] ;
+        
+        SDFIOPort outputport = (SDFIOPort) getPort("outcontrast");
+        SDFIOPort inputport = (SDFIOPort) getPort("incontrast");
+        
         message = (IntMatrixToken) inputport.get(0);
         frame = message.intArray();
-
+               
+        //Constract a color distribution histogram for the input image:
+        //Assuming the color bound for the input 0 and 255. If color detected
+        //that has color either bigger than 255 OR small than 0, then throw an
+        //illegal action exception.
+        
+        for(i = 0; i < 256; i ++) 
+            colorHistogram[i] = 0;
+        
         for(j = 0; j < yframesize; j ++) 
             for(i = 0; i < xframesize; i ++) {    
                 frameElement = frame[xframesize*j+i];
-                if (frameElement >= inMax)
-                    inMax = frameElement;
-                if (frameElement <= inMin)
-                    inMin = frameElement;
+                if ((frameElement < 0) || (frameElement > 255 ))
+                    throw new IllegalActionException("ImageContrast:"+
+                            "input image pixel contains at" + i + "," + j +
+                            "with value" + frame[xframesize*j+i] +
+                            "that is out of bounds." +
+                            "Not between 0 and 255.");
+                colorHistogram[frame[xframesize*j+i]]++;
             }
         
-        //if the (inMax != inMin), inMax and inMin is not the default
-        //value 255 and 0, then do the image contrast. If not, don't do
-        // anything             
+        //Construct the cdf of the color distribution histogram
+        //colorHistogram[0]= colorHistogram[0]
+        
+        for(i = 1; i < 256; i ++)   
+            colorHistogram[i] = colorHistogram[i-1] + colorHistogram[i];
+        
+        // Search each pixel in the image and re-map it to a new 
+        // color number to make a new relatively even color distrubution
+        // image.
 
-        if ((inMax != inMin) && !((inMax == 255) && (inMin == 0))) 
-            for (j = 0; j < yframesize; j ++)
-                for(i = 0; i < xframesize; i ++) {
-                    frameElement = frame[xframesize*j+i];
-                    frameElement = (frameElement - inMin)* 255 / (inMax-inMin);                 }
+        int distributionConstant = xframesize*yframesize/255;
+
+        for(j = 0; j < yframesize; j ++) 
+            for(i = 0; i < xframesize; i ++) {
+                frameElement = frame[xframesize*j+i];
+                frame[xframesize*j+i] = colorHistogram[frameElement] /
+                    distributionConstant;
+            }
+                            
         message = new IntMatrixToken(frame, yframesize, xframesize);
         outputport.send(0, message);
 	
     } 
-
+    
     IntMatrixToken message;
- 
+    
     private int part[];
     private int frame[];
     private int xframesize;
     private int yframesize;
-         
+    private int frameElement;
+    private int colorHistogram[];
+    private int distributionConstant;
 }
 
 
