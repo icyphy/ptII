@@ -1386,7 +1386,7 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getWriteAccess();
             Relation toDelete = (Relation)_relationsList.get(index);
-            if (toDelete != null) {
+            if (toDelete != null && _localReceiversTable != null) {
                 _localReceiversTable.remove(toDelete);
             }
             super.unlink(index);
@@ -1485,7 +1485,9 @@ public class IOPort extends ComponentPort {
             _workspace.getWriteAccess();
             Relation toDelete = (Relation)_insideLinks.get(index);
             if (toDelete != null) {
-                _localReceiversTable.remove(toDelete);
+                if (_localReceiversTable != null) {
+                    _localReceiversTable.remove(toDelete);
+                }
             }
             super.unlinkInside(index);
         } finally {
