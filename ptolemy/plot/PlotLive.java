@@ -94,7 +94,11 @@ public abstract class PlotLive extends Plot implements Runnable {
      * However, the plot will also be somewhat less responsive to user
      * inputs such as zooming, filling, or stopping.
      */
-    public synchronized abstract void addPoints();
+    public synchronized /*abstract*/ void addPoints() {
+        // JDK1.2bet2 does not allow us to have a synchronized abstract
+        // see Java Language Specification 8.4.3 Method Modifiers
+        // http://java.sun.com/docs/books/jls/html/8.doc.html#78188
+    }
 
     /**
      * Create a start and stop buttons, by which the user can invoke
