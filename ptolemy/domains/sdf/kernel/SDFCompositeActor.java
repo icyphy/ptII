@@ -1,6 +1,6 @@
 /* A composite executable entity in the SDF domain.
 
- Copyright (c) 1997-1998 The Regents of the University of California.
+ Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,7 +44,7 @@ A CompositeActor that can exist in an SDF-scheduled domain.   Implements
 rated ports via the DataflowActor interface.
 
 @author Stephen Neuendorffer
-@version @(#)SDFCompositeActor.java	1.3 10/12/98
+@version $Id$
 @see ptolemy.actors.CompositeActor
 @see ptolemy.actors.IOPort
 */
