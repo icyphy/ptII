@@ -1,4 +1,6 @@
+#include <stdio.h>
 double testDeux(int in, float inout) {
+  printf("testDeux.c: %d, %d\n", in, inout);
   //in= 0 -> on fait rien                                                 
   if(in==0) {
     inout =-1;
