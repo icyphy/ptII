@@ -484,7 +484,7 @@ public abstract class GraphFrame extends PtolemyFrame
      * support such an operation, then do nothing.  This method is responsible
      * for copying the data.
      */
-    public void paste () {
+    public void paste() {
 	Clipboard clipboard =
 	    java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
 	Transferable transferable = clipboard.getContents(this);
@@ -496,9 +496,9 @@ public abstract class GraphFrame extends PtolemyFrame
 	    return;
 	try {
 	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
-	    String space = toplevel.uniqueName("");
-	    StringBuffer moml = new StringBuffer();
-	    moml.append("<group name=\"" + space + "\">\n");
+            StringBuffer moml = new StringBuffer();
+	    moml.append("<group name=\"Copy" + _copyNumber + "\">\n");
+            _copyNumber++;
 	    moml.append((String)
                     transferable.getTransferData(DataFlavor.stringFlavor));
 	    moml.append("</group>\n");
@@ -666,6 +666,10 @@ public abstract class GraphFrame extends PtolemyFrame
 
     // The library.
     protected CompositeEntity _topLibrary;
+
+    // The number that will be used to create a unique name
+    // for the next copy operation.
+    private int _copyNumber = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
@@ -919,6 +923,7 @@ public abstract class GraphFrame extends PtolemyFrame
     // an external output port.  The copying operation also flattens
     // the graph, because the level layout algorithm doesn't understand
     // how to layout hierarchical nodes.
+    // FIXME: input ports should be on left, and output ports on right.
     private class PtolemyLayout extends LevelLayout {
 
 	/**
