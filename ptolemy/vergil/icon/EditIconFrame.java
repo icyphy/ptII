@@ -71,6 +71,13 @@ import diva.graph.GraphPane;
 //// EditIconFrame
 /**
 This is an icon editor frame for Ptolemy II models.
+<p>
+One aspect in which this editor differs from the base class is that it
+does not support the "drop into" feature, where if you drop a new instance
+onto an instance of NamedObj, that instance of NamedObj becomes the container
+of the new object.  This feature is not useful for icon editing, and results
+in visual elements mysteriously disappearing when they are dropped.
+
 FIXME: More information.
 
 @author  Edward A. Lee
@@ -113,6 +120,8 @@ public class EditIconFrame extends BasicGraphFrame {
             Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
+        
+        _dropTarget.setDropIntoEnabled(false);
 
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilGraphEditorHelp.htm";
