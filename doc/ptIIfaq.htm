@@ -59,7 +59,8 @@ This FAQ can be found at:
 <li> <a href="#ptolemy II faq: using Ptolemy II"><b>4. Using Ptolemy II</b></a>
 	<menu>
 	<li> <a href="#invoking Ptolemy II?"><b>4.1 How do I invoke Ptolemy II?</b></a>
-	<li> <a href="#reading data from files?"><b>4.2 How do I read data from a file?</b></a>
+	<li> <a href="#stacktrace?"><b>4.2 Ptolemy II is hanging, how do I get a stack trace?</b></a>
+	<li> <a href="#reading data from files?"><b>4.3 How do I read data from a file?</b></a>
 	</menu>
 
 <li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
@@ -527,9 +528,10 @@ Vergil uses the following jar files
 	</ul>
 The directory where Ptolemy II is installed should also be in the classpath.
 
- <p>To start Vergil by hand in when the Ptolemy II was installed from
-the Windows installer, try starting up by cd'ing to where the release
-is installed and typing in the following (all on one line)
+ <p><a name="invokebyhand">To start Vergil by hand</a> when the
+Ptolemy II was installed fromthe Windows installer, try starting up by
+cd'ing to where the release is installed and typing in the following
+(all on one line)
 
  <!-- Split this into multiple lines so that the display does not
 have a horizontal scroll bar because of the length of the line. -->
@@ -542,7 +544,87 @@ java -classpath ".;./ptolemy/ptsupport.jar;\
 </pre>
 
 
-<dt> <a name="reading data from files?"><b>4.2 How do I read data from a file?</b></a>
+<dt>
+<a name="stacktrace?"><b>4.2 Ptolemy II is hanging, how do I get a stack trace?</b></a>
+<dd>
+If Ptolemy II is hanging, try generating a stack trace using
+one of the following methods:
+
+ <p>Under Windows, when you have built from source, try using
+"Control-Backslash", that is holding the Control key down and hitting
+the backslash key.  Note that the Window that started the java process
+should have the focus when you hit Control-Backslash.  Sometimes
+Function-Break or Control-Break will also work.
+
+ <p>Under Unix, try using <CODE>kill -3</CODE> on the Java 
+process id.  To get the Java process id, use the <CODE>ps</CODE>
+command.  For example:
+<pre>
+$PTII/bin/vergil
+ps | grep java
+<I>Note the process id (pid) of the java process</I>
+kill -3 <I>pid</I>
+</pre>
+
+
+ <p>If you are running Ptolemy II using the Windows installer,
+then standard out and standard error will be hidden.  To
+work around this:
+<ol>
+<li> Go to the directory where Ptolemy II is
+located and open the corresponding <CODE>.lax</CODE>
+file.  
+ <br>For example, Ptolemy II 4.0.1 is usually installed
+in <CODE>c:/Ptolemy/ptII4.0.1</CODE> and there
+is <CODE>vergil-full.lax</CODE> file that is read when
+<CODE>vergil-full.exe</CODE> is run.  So, 
+<CODE>vergil-full.lax</CODE> is the file to edit.
+
+<li>In the <CODE>.lax</CODE> file, change
+<pre>
+lax.stderr.redirect=
+</pre>
+to
+<pre>
+lax.stderr.redirect=console
+</pre>
+
+and
+
+<pre>
+lax.stdout.redirect=
+</pre>
+to
+<pre>
+lax.stdout.redirect=console
+</pre>
+
+
+<li> Start up vergil-full and two windows will appear, one is the regular
+vergil splash screen, the other is a window titled
+<CODE>vergil-full.exe</CODE> that contains the console output.
+
+<li> Click on the <CODE>vergil-full.exe</CODE> window and hit
+Control-Backslash.  If that does not work, try Control-Break and 
+Function-Break.
+
+<li> The stacktrace should appear in window.
+If it does not, try <a href="#invokingbyhand">invoking Ptolemy II by hand</a>
+
+<li> To copy the stack trace from the <CODE>vergil-full.exe</CODE>
+window, click on the small Mr. Ptolemy Icon on the upper left
+side of the Window title bar, select Properties -&gt; Options -&gt;
+Quick Edit Mode. Then click OK twice to close the dialog.
+ <br>In the <CODE>vergil-full.exe</CODE> window, drag the mouse
+over the text and hit return.  Then paste the text into a file.
+
+
+</ol>
+
+
+
+
+<dt> <a name="reading data from files?"><b>4.3 How do I read data from a file?</b></a>
 <dd> 
 
  <p>Actors that read and write data are visible in Vergil under 
