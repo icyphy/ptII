@@ -90,7 +90,7 @@ public class StateSampler extends DETransformer {
      *   actor with this name.
      */
     public StateSampler(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
@@ -99,13 +99,13 @@ public class StateSampler extends DETransformer {
         trigger.setTypeEquals(BaseType.GENERAL);
 
         _attachText("_iconDescription", "<svg>\n" +
-                    "<rect x=\"-30\" y=\"-20\" "
-                    + "width=\"60\" height=\"40\" "
-                    + "style=\"fill:white\"/>\n"
-                    + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
-                    + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
-                    + "<polyline points=\"10,0 30,0\"/>\n"
-                    + "</svg>\n");
+                "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
+                + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
+                + "<polyline points=\"10,0 30,0\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,7 +128,7 @@ public class StateSampler extends DETransformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-        throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         StateSampler newObject = (StateSampler)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         _lastInputs = null;
