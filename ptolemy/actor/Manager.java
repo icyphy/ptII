@@ -102,8 +102,9 @@ public final class Manager extends NamedObj implements Runnable {
      *  string. The manager is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param name Name of this Manager.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public Manager(String name) {
+    public Manager(String name) throws IllegalActionException {
         super(name);
     }
 
@@ -115,8 +116,10 @@ public final class Manager extends NamedObj implements Runnable {
      *
      *  @param workspace Object for synchronization and version tracking.
      *  @param name Name of this Manager.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public Manager(Workspace workspace, String name) {
+    public Manager(Workspace workspace, String name)
+            throws IllegalActionException {
         super(workspace, name);
     }
 

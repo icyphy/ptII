@@ -101,7 +101,7 @@ public class Director extends NamedObj implements Executable {
      *  @param workspace The workspace of this object.
      */
     public Director(Workspace workspace) {
-        super(workspace, "");
+        super(workspace);
     }
 
     /** Construct a director in the given container with the given name.
@@ -112,8 +112,8 @@ public class Director extends NamedObj implements Executable {
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the nane has a period in it, or
+     *   the director is not compatible with the specified container.
      */
     public Director(CompositeActor container, String name)
             throws IllegalActionException {

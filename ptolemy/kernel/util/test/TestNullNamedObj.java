@@ -48,16 +48,18 @@ public class TestNullNamedObj extends NamedObj {
     /** Construct an object in the default workspace with an empty string
      *  as its name. The object is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @exception IllegalActionException Not thrown.
      */
-    public TestNullNamedObj() {
+    public TestNullNamedObj() throws IllegalActionException {
         super(_defaultWorkspace, "");
     }
 
     /** Construct an object in the default workspace with an empty string
      *  as its name. The object is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public TestNullNamedObj(String name) {
+    public TestNullNamedObj(String name) throws IllegalActionException {
         super(_defaultWorkspace, name);
     }
 

@@ -56,14 +56,23 @@ public class IconLibrary extends Entity {
      * The library will have an empty string for the description and version.
      */
     public IconLibrary() {
-        this("IconLibrary");
+        super();
+        _sublibraries = (NamedList) new NamedList();
+        _icons = (NamedList) new NamedList();
+        _terminalstyles = (NamedList) new NamedList();
+        try {
+            setName("IconLibrary");
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
     /** 
      * Create an IconLibrary object with the given name.
      * The library will have an empty string for the description and version.
+     * @throws IllegalActionException If the name contains a period.
      */
-    public IconLibrary(String name) {
+    public IconLibrary(String name) throws IllegalActionException {
         super(name);
         _sublibraries = (NamedList) new NamedList();
         _icons = (NamedList) new NamedList();

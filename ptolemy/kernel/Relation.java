@@ -77,8 +77,9 @@ public class Relation extends NamedObj {
      *  Increment the version number of the workspace.
      *  The object is added to the workspace directory.
      *  @param name Name of this object.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public Relation(String name) {
+    public Relation(String name) throws IllegalActionException {
 	super(name);
         try {
             _portList = new CrossRefList(this);
@@ -90,6 +91,24 @@ public class Relation extends NamedObj {
         }
     }
 
+    /** Construct a relation in the given workspace with an empty string
+     *  as a name.
+     *  If the workspace argument is null, use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version of the workspace.
+     *  @param workspace The workspace for synchronization and version tracking.
+     */
+    public Relation(Workspace workspace) {
+	super(workspace);
+        try {
+            _portList = new CrossRefList(this);
+        } catch (IllegalActionException ex) {
+            // Should not be thrown because "this" cannot be null.
+            throw new InternalErrorException(
+                    "Internal error in Relation constructor!");
+        }
+    }
+
     /** Construct a relation in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
      *  If the name argument is null, then the name is set to the empty string.
@@ -97,8 +116,10 @@ public class Relation extends NamedObj {
      *  Increment the version of the workspace.
      *  @param workspace Workspace for synchronization and version tracking
      *  @param name Name of this object.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public Relation(Workspace workspace, String name) {
+    public Relation(Workspace workspace, String name)
+           throws IllegalActionException {
 	super(workspace, name);
         try {
             _portList = new CrossRefList(this);

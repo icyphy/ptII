@@ -33,8 +33,11 @@ package ptolemy.kernel.util;
 import ptolemy.kernel.CompositeEntity;		/* Needed by javadoc */
 
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Enumeration;
-import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
@@ -99,7 +102,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  the workspace. Increment the version number of the workspace.
      */
     public NamedObj() {
-        this(_defaultWorkspace, "");
+        this((Workspace)null);
     }
 
     /** Construct an object in the default workspace with the given name.
@@ -107,10 +110,49 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  string. The object is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param name Name of this object.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public NamedObj(String name) {
-        this(_defaultWorkspace, name);
+    public NamedObj(String name)
+             throws IllegalActionException {
+        this(_DEFAULT_WORKSPACE, name);
     }
+
+    /** Construct an object in the specified workspace with an empty string
+     *  as its name. The object is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     */
+    public NamedObj(Workspace workspace) {
+        // NOTE: Can't call the constructor below, which has essentially
+        // the same code, without also spuriously throwing
+        // IllegalActionException.
+        if (workspace == null) {
+            workspace = _DEFAULT_WORKSPACE;
+        }
+        _workspace = workspace;
+        // Exception cannot occur, so we ignore. The object does not
+        // have a container, and is not already on the workspace list.
+        // NOTE: This does not need to be write-synchronized on the workspace
+        // because the only side effect is adding to the directory,
+        // and methods for adding and reading from the directory are
+        // synchronized.
+        try {
+            workspace.add(this);
+        } catch (IllegalActionException ex) {
+            // This exception should not be thrown.
+            throw new InternalErrorException(
+                    "Internal error in NamedObj constructor!"
+                    + ex.getMessage());
+        }
+        try {
+            setName("");
+        } catch (KernelException ex) {
+            // This exception should not be thrown.
+            throw new InternalErrorException(
+                    "Internal error in NamedObj constructor!"
+                    + ex.getMessage());
+        }
+    }
+
 
     /** Construct an object in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
@@ -119,10 +161,12 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  empty string. Increment the version number of the workspace.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this object.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public NamedObj(Workspace workspace, String name) {
+    public NamedObj(Workspace workspace, String name)
+             throws IllegalActionException {
         if (workspace == null) {
-            workspace = _defaultWorkspace;
+            workspace = _DEFAULT_WORKSPACE;
         }
         _workspace = workspace;
         // Exception cannot occur, so we ignore. The object does not
@@ -160,11 +204,12 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
         } else {
-            if (_debugListeners.includes(listener)) {
+            if (_debugListeners.contains(listener)) {
                 return;
             }
         }
-        _debugListeners.insertLast(listener);
+        _debugListeners.add(listener);
+        _debugging = true;
     }
 
     /** React to a change in an attribute.  This method is called by
@@ -239,11 +284,13 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                             getFullName() + ": " + ex.getMessage());
                 }
             }
-            if (ws == null) {
-                _debug("Cloned " + getFullName() + " into default workspace.");
-            } else {
-                _debug("Cloned " + getFullName() + " into workspace: "
-                        + ws.getFullName());
+            if (_debugging) {
+                if (ws == null) {
+                    _debug("Cloned", getFullName(), "into default workspace.");
+                } else {
+                    _debug("Cloned", getFullName(), "into workspace:",
+                    ws.getFullName());
+                }
             }
             return newobj;
         } finally {
@@ -303,7 +350,9 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         return _description(detail, 0, 0);
     }
 
-    /** Get the attribute with the given name.
+    /** Get the attribute with the given name. The name may be compound,
+     *  with fields separated by periods, in which case the attribute
+     *  returned is contained by a (deeply) contained attribute.
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired attribute.
      *  @return The requested attribute if it is found, null otherwise.
@@ -315,7 +364,17 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 // No attribute has been added to this NamedObj yet.
                 return null;
             } else {
-                return (Attribute) _attributes.get(name);
+                String[] subnames = _splitName(name);
+                if (subnames[1] == null) {
+                    return (Attribute) _attributes.get(name);
+                } else {
+                    Attribute match = (Attribute)_attributes.get(subnames[0]);
+                    if (match == null) {
+                        return null;
+                    } else {
+                        return match.getAttribute(subnames[1]);
+                    }
+                }
             }
         } finally {
             workspace().doneReading();
@@ -368,12 +427,12 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             // NOTE: For improved performance, the full name could be cached.
             String fullName = getName();
             // Use a linked list to keep track of what we've seen already.
-            LinkedList visited = new LinkedList();
-            visited.insertFirst(this);
+            Set visited = new HashSet();
+            visited.add(this);
             Nameable container = getContainer();
 
             while (container != null) {
-                if (visited.firstIndexOf(container) >= 0) {
+                if (visited.contains(container)) {
                     // Cannot use "this" as a constructor argument to the
                     // exception or we'll get stuck infinitely
                     // calling this method, since this method is used to report
@@ -383,7 +442,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                             "Container contains itself!");
                 }
                 fullName = container.getName() + "." + fullName;
-                visited.insertFirst(container);
+                visited.add(container);
                 container = container.getContainer();
             }
             return workspace().getName() + "." + fullName;
@@ -409,7 +468,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         if (_debugListeners == null) {
             return;
         }
-        _debugListeners.exclude(listener);
+        _debugListeners.remove(listener);
+        if (_debugListeners.size() == 0) {
+            _debugging = false;
+        }
         return;
     }
 
@@ -418,14 +480,21 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  Increment the version of the workspace.
      *  This method is write-synchronized on the workspace.
      *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period.
      *  @exception NameDuplicationException Not thrown in this base
      *   class. May be thrown by derived classes if the container
      *   already contains an object with this name.
      */
-    public void setName(String name) throws NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         String oldName = getFullName();
         if (name == null) {
             name = new String("");
+        }
+        int period = name.indexOf(".");
+        if (period >= 0) {
+            throw new IllegalActionException(this,
+            "Cannot set a name with a period: " + name);
         }
         try {
             workspace().getWriteAccess();
@@ -433,7 +502,9 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         } finally {
             workspace().doneWriting();
         }
-        _debug("Changed name from " + oldName + " to " + getFullName());
+        if (_debugging) {
+            _debug("Changed name from", oldName, "to", getFullName());
+        }
     }
 
     /** Return the class name and the full name of the object,
@@ -527,7 +598,9 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                         "Internal error in NamedObj _addAttribute() method!"
                         + ex.getMessage());
             }
-            _debug("Added attribute " + p.getName() + " to " + getFullName());
+            if (_debugging) {
+                _debug("Added attribute", p.getName(), "to", getFullName());
+            }
         } finally {
             workspace().doneWriting();
         }
@@ -539,12 +612,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @param message The message.
      */
     protected final void _debug(String message) {
-        if (_debugListeners == null) {
-            return;
-        } else {
-            Enumeration listeners = _debugListeners.elements();
-            while (listeners.hasMoreElements()) {
-                ((DebugListener)listeners.nextElement()).message(message);
+        if (_debugging) {
+            Iterator listeners = _debugListeners.iterator();
+            while (listeners.hasNext()) {
+                ((DebugListener)listeners.next()).message(message);
             }
         }
     }
@@ -558,9 +629,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @param part2 The second part of the message.
      */
     protected final void _debug(String part1, String part2) {
-        if (_debugListeners == null) {
-            return;
-        } else {
+        if (_debugging) {
             _debug(part1 + " " + part2);
         }
     }
@@ -575,9 +644,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @param part3 The third part of the message.
      */
     protected final void _debug(String part1, String part2, String part3) {
-        if (_debugListeners == null) {
-            return;
-        } else {
+        if (_debugging) {
             _debug(part1 + " " + part2 + " " + part3);
         }
     }
@@ -594,9 +661,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     protected final void _debug(String part1, String part2,
             String part3, String part4) {
-        if (_debugListeners == null) {
-            return;
-        } else {
+        if (_debugging) {
             _debug(part1 + " " + part2 + " " + part3 + " " + part4);
         }
     }
@@ -677,12 +742,39 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         try {
             workspace().getWriteAccess();
             _attributes.remove((Nameable)param);
-            _debug("Removed attribute " + param.getName() + " from "
-                    + getFullName());
+            if (_debugging) {
+                _debug("Removed attribute", param.getName(), "from",
+                getFullName());
+            }
         } finally {
             workspace().doneWriting();
         }
     }
+
+    /** Split the specified name at the first period and return the
+     *  two parts as a two-element array.  If there is no period, the second
+     *  element is null.
+     *  @param name The name to split.
+     *  @return The name before and after the first period as a two-element
+     *   array.
+     */
+    protected static final String[] _splitName(String name) {
+        String[] result = new String[2];
+        int period = name.indexOf(".");
+        if (period < 0) {
+            result[0] = name;
+        } else {
+            result[0] = name.substring(0, period);
+            result[1] = name.substring(period + 1);
+        }
+        return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** @serial Flag that is true if there are debug listeners. */
+    protected boolean _debugging = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -693,7 +785,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     /** @serial Instance of a workspace that can be used if no other
      *  is specified.
      */
-    private static Workspace _defaultWorkspace = new Workspace();
+    private static Workspace _DEFAULT_WORKSPACE = new Workspace();
 
     /** @serial The name */
     private String _name;

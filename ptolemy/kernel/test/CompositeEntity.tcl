@@ -145,9 +145,11 @@ test CompositeEntity-3.3 {Test getEntity by name} {
     set b [java::new ptolemy.kernel.CompositeEntity $a B]
     set c [java::new ptolemy.kernel.CompositeEntity $b C]
     set d [java::new ptolemy.kernel.ComponentEntity $c D]
-    set e [$c getEntity D]
-    $e getFullName
-} {.A.B.C.D}
+    set e1 [$c getEntity D]
+    set e2 [$b getEntity C.D]
+    set e3 [$a getEntity B.C.D]
+    list [$e1 getFullName] [$e2 getFullName] [$e3 getFullName]
+} {.A.B.C.D .A.B.C.D .A.B.C.D}
 
 ######################################################################
 ####
@@ -858,3 +860,54 @@ test CompositeEntity-14.1 {Test _uniqueEntityName} {
 	    [$a uniqueEntityName] \
 	    [$a getFullName]
 } {.A _E0 _E1 .A}
+
+######################################################################
+####
+#
+test CompositeEntity-15.0 {test getAttribute} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set a [java::new ptolemy.kernel.util.Attribute $e2 "a"]
+    set r [$e1 getAttribute e2.a]
+    $r getFullName
+} {.e1.e2.a}
+
+test CompositeEntity-15.1 {test getAttribute} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set e2 [java::new ptolemy.kernel.ComponentRelation $e1 "e2"]
+    set a [java::new ptolemy.kernel.util.Attribute $e2 "a"]
+    set r [$e1 getAttribute e2.a]
+    $r getFullName
+} {.e1.e2.a}
+
+######################################################################
+####
+#
+test CompositeEntity-16.0 {test getRelation} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
+    set a [java::new ptolemy.kernel.ComponentRelation $e2 "a"]
+    set r [$e1 getRelation e2.a]
+    $r getFullName
+} {.e1.e2.a}
+
+######################################################################
+####
+#
+test CompositeEntity-17.0 {test getPort} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set a [java::new ptolemy.kernel.ComponentPort $e2 "a"]
+    set r [$e1 getPort e2.a]
+    $r getFullName
+} {.e1.e2.a}
+
+

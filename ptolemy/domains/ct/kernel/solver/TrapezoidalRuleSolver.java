@@ -50,7 +50,13 @@ public class TrapezoidalRuleSolver extends ODESolver{
      *  the workspace. Increment the version number of the workspace.
      */
     public TrapezoidalRuleSolver() {
-        super(_name);
+        super();
+        try {
+            setName(_DEFAULT_NAME);
+        } catch (KernelException e) {
+            // this should never happen.
+            throw new InternalErrorException(e.toString());
+        }
     }
 
     /** Construct a solver in the given workspace with the given name.
@@ -63,7 +69,13 @@ public class TrapezoidalRuleSolver extends ODESolver{
      *  @param name Name of this solver.
      */
     public TrapezoidalRuleSolver(Workspace workspace) {
-        super(workspace, _name);
+        super(workspace);
+        try {
+            setName(_DEFAULT_NAME);
+        } catch (KernelException e) {
+            // this should never happen.
+            throw new InternalErrorException(e.toString());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -260,7 +272,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
     ////                         private variables                      ////
 
     /** Name of this Solver. */
-    private static final String _name="CT_Trapezoidal_Rule_Solver" ;
+    private static final String _DEFAULT_NAME="CT_Trapezoidal_Rule_Solver" ;
 
     /** @serial True if all the votes are true. */
     private boolean _converge;

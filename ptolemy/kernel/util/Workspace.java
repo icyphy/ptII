@@ -31,10 +31,11 @@
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Enumeration;
-import collections.LinkedList;
-import collections.HashedSet;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Workspace
@@ -158,11 +159,11 @@ public final class Workspace implements Nameable, Serializable {
                     "Cannot add an object with a container to a workspace " +
                     "directory.");
         }
-        if (_directory.firstIndexOf(item) >= 0) {
+        if (_directory.indexOf(item) >= 0) {
             throw new IllegalActionException(this, item,
                     "Object is already listed in the workspace directory.");
         }
-        _directory.insertLast(item);
+        _directory.add(item);
         incrVersion();
     }
 
@@ -195,12 +196,21 @@ public final class Workspace implements Nameable, Serializable {
         return _description(detail, 0, 0);
     }
 
+    /** Return an unmodifiable list of the items in the directory,
+     *  in the order in which they were added.
+     *  @return A list of instances of NamedObj.
+     */
+    public synchronized List directoryList() {
+        return Collections.unmodifiableList(_directory);
+    }
+
     /** Enumerate the items in the directory, in the order in which
      *  they were added.
+     *  @deprecated Use directoryList() instead.
      *  @return An enumeration of NamedObj objects.
      */
     public synchronized Enumeration directory() {
-        return _directory.elements();
+        return Collections.enumeration(_directory);
     }
 
     /** Indicate that the calling thread is finished reading.
@@ -497,7 +507,7 @@ public final class Workspace implements Nameable, Serializable {
      *  Increment the version number.
      */
     public synchronized void remove(NamedObj item) {
-        _directory.removeOneOf(item);
+        _directory.remove(item);
         incrVersion();
     }
 

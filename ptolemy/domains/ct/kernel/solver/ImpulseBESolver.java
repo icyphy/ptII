@@ -56,6 +56,7 @@ a breakpoint solver in CTMultiSolverDirector.
 @version $Id$
 */
 public class ImpulseBESolver extends BackwardEulerSolver {
+
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -63,11 +64,10 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     public ImpulseBESolver() {
         super();
         try {
-            setName(_name);
-        } catch (NameDuplicationException e) {
+            setName(_DEFAULT_NAME);
+        } catch (KernelException e) {
             // this should never happen.
-            throw new InternalErrorException(
-                    "internal error when set name to an ImpulseBESolver.");
+            throw new InternalErrorException(e.toString());
         }
     }
 
@@ -83,11 +83,10 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     public ImpulseBESolver(Workspace workspace) {
         super(workspace);
         try {
-            setName(_name);
-        } catch (NameDuplicationException e) {
+            setName(_DEFAULT_NAME);
+        } catch (KernelException e) {
             // this should never happen.
-            throw new InternalErrorException(
-                    "internal error when set name to an ImpulseBESolver.");
+            throw new InternalErrorException(e.toString());
         }
     }
 
@@ -126,6 +125,6 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     ////                         private variables                 ////
 
     // The static name.
-    private static final String _name="CT_ImpulseBE_Solver" ;
+    private static final String _DEFAULT_NAME="CT_ImpulseBE_Solver" ;
 
 }

@@ -80,7 +80,7 @@ public class ComponentRelation extends Relation {
      *  @param workspace The workspace that will list the relation.
      */
     public ComponentRelation(Workspace workspace) {
-	super(workspace, "");
+	super(workspace);
     }
 
     /** Construct a relation with the given name contained by the specified
@@ -222,10 +222,12 @@ public class ComponentRelation extends Relation {
     /** Set the name of the ComponentRelation. If there is already
      *  a ComponentRelation of the container with the same name, throw an
      *  exception.
+     *  @exception IllegalActionException If the name has a period.
      *  @exception NameDuplicationException If there is already a relation
      *   with the same name in the container.
      */
-    public void setName(String name) throws NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = new String("");
         }

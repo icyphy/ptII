@@ -62,7 +62,7 @@ public class Attribute extends NamedObj {
      *  @param workspace The workspace that will list the attribute.
      */
     public Attribute(Workspace workspace) {
-	super(workspace, "");
+	super(workspace);
     }
 
     /** Construct an attribute with the given name contained by the specified
@@ -77,7 +77,7 @@ public class Attribute extends NamedObj {
 
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container.
+     *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -171,11 +171,12 @@ public class Attribute extends NamedObj {
     /** Set the name of the attribute. If there is already an attribute
      *  of the container with the same name, then throw a
      *  NameDuplicationException.
-     *
+     *  @exception IllegalActionException If the name contains a period.
      *  @exception NameDuplicationException If there is already an
      *       attribute with the same name in the container.
      */
-    public void setName(String name) throws NameDuplicationException{
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = new String("");
         }

@@ -90,9 +90,9 @@ test NamedObj-2.2 {Create a NamedObj, set the name, change it} {
 test NamedObj-2.3 { Check names with dots} {
     # In early versions of the kernel, we prohibited names with dots
     # Now, dots are permitted.
-    set n [java::new ptolemy.kernel.util.NamedObj "This.name.has.dots"]
-    list [ $n getName]
-} {This.name.has.dots}
+    catch {java::new ptolemy.kernel.util.NamedObj "This.name.has.dots"} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .null: Cannot set a name with a period: This.name.has.dots}}
 
 ######################################################################
 ####
@@ -336,3 +336,14 @@ test NamedObj-9.2 {Test StreamListener: ByteArrayOutputStream} {
 Changed name from .B to .C
 }}
 
+######################################################################
+####
+#
+test NamedObj-10.1 {Test getAttribute} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
+    set gotten [$a getAttribute "A1.A2"]
+    $gotten getFullName
+} {N.A.A1.A2}

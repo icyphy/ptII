@@ -86,9 +86,22 @@ public class Entity extends NamedObj {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param name The name of this object.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public Entity(String name) {
+    public Entity(String name) throws IllegalActionException {
 	super(name);
+        _portList = new NamedList(this);
+    }
+
+    /** Construct an entity in the given workspace with an empty string
+     *  as a name.
+     *  If the workspace argument is null, use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version of the workspace.
+     *  @param workspace The workspace for synchronization and version tracking.
+     */
+    public Entity(Workspace workspace) {
+	super(workspace);
         _portList = new NamedList(this);
     }
 
@@ -100,8 +113,10 @@ public class Entity extends NamedObj {
      *  Increment the version of the workspace.
      *  @param workspace The workspace for synchronization and version tracking.
      *  @param name The name of this object.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public Entity(Workspace workspace, String name) {
+    public Entity(Workspace workspace, String name)
+            throws IllegalActionException {
 	super(workspace, name);
         _portList = new NamedList(this);
     }
@@ -183,6 +198,33 @@ public class Entity extends NamedObj {
      *  connections.
      */
     public void connectionsChanged(Port port) {
+    }
+
+    /** Get the attribute with the given name. The name may be compound,
+     *  with fields separated by periods, in which case the attribute
+     *  returned is (deeply) contained by a contained attribute or port.
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired attribute.
+     *  @return The requested attribute if it is found, null otherwise.
+     */
+    public Attribute getAttribute(String name) {
+        try {
+            workspace().getReadAccess();
+            Attribute result = super.getAttribute(name);
+            if (result == null) {
+                // Check ports.
+                String[] subnames = _splitName(name);
+                if (subnames[1] != null) {
+                    Port match = getPort(subnames[0]);
+                    if (match != null) {
+                        result = match.getAttribute(subnames[1]);
+                    }
+                }
+            }
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Return the port contained by this entity that has the specified name.

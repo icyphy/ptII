@@ -31,8 +31,6 @@
 
 package ptolemy.kernel.util;
 
-import collections.CorruptedEnumerationException;
-
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import java.io.Serializable;
@@ -346,7 +344,8 @@ public final class CrossRefList implements Serializable  {
         /** Return true if there are more elements to enumerate. */
         public boolean hasMoreElements() {
             if(_enumeratorVersion != _listVersion) {
-                throw new CorruptedEnumerationException();
+                throw new InvalidStateException(
+                "CrossRefList.hasMoreElements(): The list has been modified.");
             }
 
             if (_ref == null)
@@ -361,7 +360,8 @@ public final class CrossRefList implements Serializable  {
         public Object nextElement()
                 throws NoSuchElementException {
             if(_enumeratorVersion != _listVersion) {
-                throw new CorruptedEnumerationException();
+                throw new InvalidStateException(
+                "CrossRefList.nextElement(): The list has been modified.");
             }
 
             if (_ref == null) {

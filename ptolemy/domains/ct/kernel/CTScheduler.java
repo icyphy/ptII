@@ -103,8 +103,8 @@ public class CTScheduler extends Scheduler{
     public CTScheduler() {
         super();
         try {
-            setName(_staticname);
-        } catch (NameDuplicationException ex) {
+            setName(_STATIC_NAME);
+        } catch (KernelException ex) {
             throw new InternalErrorException(
                     "Internal error when setName to a CTScheduler");
         }
@@ -118,8 +118,8 @@ public class CTScheduler extends Scheduler{
     public CTScheduler(Workspace ws) {
         super(ws);
         try {
-            setName(_staticname);
-        } catch (NameDuplicationException ex) {
+            setName(_STATIC_NAME);
+        } catch (KernelException ex) {
             throw new InternalErrorException(
                     "Internal error when setName to a CTScheduler");
         }
@@ -801,7 +801,7 @@ public class CTScheduler extends Scheduler{
     ////                         private variables                 ////
 
     // The static name of the scheduler.
-    private static final String _staticname = "CTScheduler";
+    private static final String _STATIC_NAME = "CTScheduler";
     // schedule version
     private LinkedList _stateschedule;
     private LinkedList _transitionschedule;

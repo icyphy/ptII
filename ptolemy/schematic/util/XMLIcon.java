@@ -65,8 +65,9 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * representations.
      */
     public XMLIcon (Entity container) 
-        throws NameDuplicationException, IllegalActionException {
-        super(container, "_icon");
+            throws NameDuplicationException, IllegalActionException {
+        super(container);
+        setName("_icon");
         _graphics = (CircularList) new CircularList();
     }
 

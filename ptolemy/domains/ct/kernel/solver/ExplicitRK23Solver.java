@@ -66,7 +66,12 @@ public class ExplicitRK23Solver extends ODESolver{
      *  the workspace. Increment the version number of the workspace.
      */
     public ExplicitRK23Solver() {
-        super(_name);
+        super();
+        try {
+            setName(_DEFAULT_NAME);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
     /** Construct a solver in the given workspace with the given name.
@@ -79,7 +84,12 @@ public class ExplicitRK23Solver extends ODESolver{
      *  @param name Name of this solver.
      */
     public ExplicitRK23Solver(Workspace workspace) {
-        super(workspace, _name);
+        super(workspace);
+        try {
+            setName(_DEFAULT_NAME);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
 
@@ -273,7 +283,7 @@ public class ExplicitRK23Solver extends ODESolver{
     ////                         private variables                 ////
 
     //name
-    private static final String _name = "CT_Runge_Kutta_2_3_Solver";
+    private static final String _DEFAULT_NAME = "CT_Runge_Kutta_2_3_Solver";
 
     // time increase value.
     private static final double[] _timeInc = {0.5, 0.25, 0.25};

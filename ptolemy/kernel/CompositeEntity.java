@@ -361,11 +361,48 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Get a contained entity by name. If the name contains one or more
-     *  periods, then it is assumed to be the relative name of an
-     *  entity contained by one of the contained entities.  The
-     *  strings between the periods are the names of the entities
-     *  in the hierarchy.
+    /** Get the attribute with the given name. The name may be compound,
+     *  with fields separated by periods, in which case the attribute
+     *  returned is contained by a (deeply) contained attribute, port,
+     *  relation, or entity.
+     *  If the name contains one or more periods, then it is assumed
+     *  to be the relative name of an attribute contained by one of
+     *  the contained attributes, ports, entities or relations. 
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired attribute.
+     *  @return The requested attribute if it is found, null otherwise.
+     */
+    public Attribute getAttribute(String name) {
+        try {
+            workspace().getReadAccess();
+            // Check attributes and ports first.
+            Attribute result = super.getAttribute(name);
+            if (result == null) {
+                // Check entities first.
+                String[] subnames = _splitName(name);
+                if (subnames[1] != null) {
+                    ComponentEntity entity = getEntity(subnames[0]);
+                    if (entity != null) {
+                        result = entity.getAttribute(subnames[1]);
+                    }
+                    if (result == null) {
+                        // Check relations.
+                        ComponentRelation relation = getRelation(subnames[0]);
+                        if (relation != null) {
+                            result = relation.getAttribute(subnames[1]);
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Get a contained entity by name. The name may be compound,
+     *  with fields separated by periods, in which case the entity
+     *  returned is contained by a (deeply) contained entity.
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired entity.
      *  @return An entity with the specified name, or null if none exists.
@@ -373,18 +410,16 @@ public class CompositeEntity extends ComponentEntity {
     public ComponentEntity getEntity(String name) {
         try {
             workspace().getReadAccess();
-            int period = name.indexOf(".");
-            if (period < 0) {
+            String[] subnames = _splitName(name);
+            if (subnames[1] == null) {
                 return (ComponentEntity)_containedEntities.get(name);
             } else {
-                Object match = _containedEntities.get(
-                        name.substring(0, period));
+                Object match = _containedEntities.get(subnames[0]);
                 if (match == null) {
                     return null;
                 } else {
                     if (match instanceof CompositeEntity) {
-                        return ((CompositeEntity)match).getEntity(
-                                name.substring(period + 1));
+                        return ((CompositeEntity)match).getEntity(subnames[1]);
                     } else {
                         return null;
                     }
@@ -415,7 +450,36 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Get a contained relation by name.
+    /** Get a contained port by name. The name may be compound,
+     *  with fields separated by periods, in which case the port returned is
+     *  contained by a (deeply) contained entity.
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired port.
+     *  @return A port with the specified name, or null if none exists.
+     */
+    public Port getPort(String name) {
+        try {
+            workspace().getReadAccess();
+            String[] subnames = _splitName(name);
+            if (subnames[1] == null) {
+                return super.getPort(name);
+            } else {
+                ComponentEntity match =
+                        (ComponentEntity)_containedEntities.get(subnames[0]);
+                if (match == null) {
+                    return null;
+                } else {
+                    return match.getPort(subnames[1]);
+                }
+            }
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Get a contained relation by name. The name may be compound,
+     *  with fields separated by periods, in which case the relation
+     *  returned is contained by a (deeply) contained entity.
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired relation.
      *  @return A relation with the specified name, or null if none exists.
@@ -423,7 +487,22 @@ public class CompositeEntity extends ComponentEntity {
     public ComponentRelation getRelation(String name) {
         try {
             workspace().getReadAccess();
-            return (ComponentRelation)_containedRelations.get(name);
+            String[] subnames = _splitName(name);
+            if (subnames[1] == null) {
+                return (ComponentRelation)_containedRelations.get(name);
+            } else {
+                Object match = _containedEntities.get(subnames[0]);
+                if (match == null) {
+                    return null;
+                } else {
+                    if (match instanceof CompositeEntity) {
+                        return ((CompositeEntity)match)
+                                .getRelation(subnames[1]);
+                    } else {
+                        return null;
+                    }
+                }
+            }
         } finally {
             workspace().doneReading();
         }

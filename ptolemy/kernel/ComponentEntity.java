@@ -73,7 +73,7 @@ public class ComponentEntity extends Entity {
      *  @param workspace The workspace that will list the entity.
      */
     public ComponentEntity(Workspace workspace) {
-	super(workspace, "");
+	super(workspace);
     }
 
     /** Construct an entity with the given name contained by the specified
@@ -236,10 +236,12 @@ public class ComponentEntity extends Entity {
     /** Set the name of the ComponentEntity. If there is already
      *  a ComponentEntity of the container with the same name, throw an
      *  exception.
+     *  @exception IllegalActionException If the name has a period.
      *  @exception NameDuplicationException If there already is an entity
      *   in the container with the same name.
      */
-    public void setName(String name) throws NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = new String("");
         }

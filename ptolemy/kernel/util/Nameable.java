@@ -87,8 +87,10 @@ public interface Nameable {
     /** Set or change the name. By convention, if the argument is null,
      *  the name should be set to an empty string rather than to null.
      *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period.
      *  @exception NameDuplicationException If the container already
      *   contains an object with this name.
      */
-    public void setName(String name) throws NameDuplicationException;
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException;
 }

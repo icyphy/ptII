@@ -300,3 +300,24 @@ test Entity-9.2 {Test connectedPorts} {
     # NOTE: Uses the setup constructed in 9.0
     enumToNames [$e1 connectedPorts]
 } {P2 P1}
+
+######################################################################
+####
+#
+test Entity-10.0 {test getAttribute} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e [java::new ptolemy.kernel.Entity $w "e"]
+    set p [java::new ptolemy.kernel.Port $e "p"]
+    set a [java::new ptolemy.kernel.util.Attribute $p "a"]
+    set r [$e getAttribute p.a]
+    $r getFullName
+} {.e.p.a}
+
+test Entity-10.1 {test getAttribute} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e [java::new ptolemy.kernel.Entity $w "e"]
+    set p [java::new ptolemy.kernel.util.Attribute $e "p"]
+    set a [java::new ptolemy.kernel.util.Attribute $p "a"]
+    set r [$e getAttribute p.a]
+    $r getFullName
+} {.e.p.a}

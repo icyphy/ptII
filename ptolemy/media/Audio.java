@@ -33,9 +33,7 @@ package ptolemy.media;
 
 import java.lang.*;
 import java.util.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,6 +91,7 @@ public class Audio {
      */
     public Audio(byte[] audio) {
         String ptinfo = "Ptolemy audio";
+        // NOTE: This uses the platform encoding, which is probably wrong.
         info = ptinfo.getBytes();
         offset = 24 + info.length;
         size = audio.length;
@@ -113,6 +112,7 @@ public class Audio {
      */
   public Audio(double[] audio) {
         String ptinfo = "Ptolemy audio";
+        // NOTE: This uses the platform encoding, which is probably wrong.
         info = ptinfo.getBytes();
         offset = 24 + info.length;
         size = audio.length;

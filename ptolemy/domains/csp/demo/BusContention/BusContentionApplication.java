@@ -111,22 +111,21 @@ public class BusContentionApplication implements ActionListener {
     ////                          main method                      ////
 
     public static void main(String argv[]) {
-	Manager manager = new Manager("manager");
-	TypedCompositeActor topLevel = new TypedCompositeActor();
-
 	try {
+            Manager manager = new Manager("manager");
+            TypedCompositeActor topLevel = new TypedCompositeActor();
+
             topLevel.setName("topLevel");
             topLevel.setManager(manager);
+            BusContentionApplication app =
+                    new BusContentionApplication( manager, topLevel );
+
+	    Panel nullAppletPanel = null;
+            app.initializeDemo(nullAppletPanel);
 	} catch( KernelException e ) {
             // This should not occur.
 	    throw new InternalErrorException(e.toString());
 	}
-
-        BusContentionApplication app =
-            new BusContentionApplication( manager, topLevel );
-
-	Panel nullAppletPanel = null;
-	app.initializeDemo(nullAppletPanel);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -88,7 +88,7 @@ public class Port extends NamedObj {
      *  @param workspace The workspace that will list the port.
      */
     public Port(Workspace workspace) {
-	super(workspace, "");
+	super(workspace);
         try {
             _relationsList = new CrossRefList(this);
         } catch (IllegalActionException ex) {
@@ -322,10 +322,12 @@ public class Port extends NamedObj {
     /** Set the name of the port. If there is already an port
      *  of the container entity with the same name, then throw an
      *  exception.
+     *  @exception IllegalActionException If the name has a period.
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
-    public void setName(String name) throws NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = new String("");
         }

@@ -79,7 +79,13 @@ public class Scheduler extends NamedObj {
      *  "Scheduler".
      */
     public Scheduler() {
-        super(_DEFAULT_SCHEDULER_NAME);
+        super();
+        try {
+            setName(_DEFAULT_SCHEDULER_NAME);
+        } catch (KernelException ex) {
+            // Should not be thrown.
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
     /** Construct a scheduler in the given workspace with the name
@@ -87,11 +93,16 @@ public class Scheduler extends NamedObj {
      *  If the workspace argument is null, use the default workspace.
      *  The scheduler is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *
      *  @param workspace Object for synchronization and version tracking.
      */
     public Scheduler(Workspace ws) {
-        super(ws, _DEFAULT_SCHEDULER_NAME);
+        super(ws);
+        try {
+            setName(_DEFAULT_SCHEDULER_NAME);
+        } catch (KernelException ex) {
+            // Should not be thrown.
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -84,9 +84,21 @@ public abstract class ODESolver extends NamedObj {
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param name Name of this solver.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public ODESolver(String name) {
+    public ODESolver(String name) throws IllegalActionException {
         super(name);
+    }
+
+    /** Construct a solver in the given workspace with a null string name.
+     *  If the workspace argument is null, use the default workspace.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *
+     *  @param workspace Object for synchronization and version tracking
+     */
+    public ODESolver(Workspace workspace) {
+        super(workspace);
     }
 
     /** Construct a solver in the given workspace with the given name.
@@ -97,8 +109,10 @@ public abstract class ODESolver extends NamedObj {
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this solver.
+     *  @exception IllegalActionException If the name has a period.
      */
-    public ODESolver(Workspace workspace, String name) {
+    public ODESolver(Workspace workspace, String name)
+            throws IllegalActionException {
         super(workspace, name);
     }
 

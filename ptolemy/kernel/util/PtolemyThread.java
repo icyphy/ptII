@@ -34,8 +34,6 @@ package ptolemy.kernel.util;
 import java.io.Serializable;
 import java.util.Hashtable;
 
-import collections.LinkedList;
-
 //////////////////////////////////////////////////////////////////////////
 ////
 /** PtolemyThread

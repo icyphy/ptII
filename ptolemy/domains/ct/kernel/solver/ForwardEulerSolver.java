@@ -47,14 +47,19 @@ No error control is performed.<BR>
 @author  Jie Liu
 @version $Id$
 */
-public class ForwardEulerSolver extends FixedStepSolver{
+public class ForwardEulerSolver extends FixedStepSolver {
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
     public ForwardEulerSolver() {
-        super(_name);
+        super();
+        try {
+            setName(_DEFAULT_NAME);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
     /** Construct a solver in the given workspace with the given name.
@@ -67,7 +72,12 @@ public class ForwardEulerSolver extends FixedStepSolver{
      *  @param name Name of this solver.
      */
     public ForwardEulerSolver(Workspace workspace) {
-        super(workspace, _name);
+        super(workspace);
+        try {
+            setName(_DEFAULT_NAME);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -150,5 +160,5 @@ public class ForwardEulerSolver extends FixedStepSolver{
     ////                         private variables                 ////
 
     // static name.
-    private static final String _name="CT_Forward_Euler_Solver" ;
+    private static final String _DEFAULT_NAME="CT_Forward_Euler_Solver" ;
 }

@@ -53,9 +53,12 @@ to an FSMTransition whose destination state has a CT subsystem as refinement.
 */
 public class HSInit extends NamedObj implements TransitionAction {
 
+    /** FIXME
+     *  @exception IllegalActionException If the integrator name has a period.
+     */
     public HSInit(FSMTransition container, String integratorName,
-            String expression) {
-        super(container.workspace(), container.getFullName() + ".init."
+            String expression) throws IllegalActionException {
+        super(container.workspace(), container.getName() + "_init_"
                 + integratorName);
         _container = container;
         _container.addTransitionAction(this);

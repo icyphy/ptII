@@ -35,6 +35,7 @@ import ptolemy.plot.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URL;
 import sun.audio.AudioPlayer;
 import java.util.StringTokenizer;
 
@@ -53,12 +54,7 @@ public class AudioViewer extends PlotApplication {
      *  @exception Exception Not thrown.
      */
     public AudioViewer() throws Exception {
-        super();
-        MenuItem play = new MenuItem("Play", new MenuShortcut(KeyEvent.VK_H));
-        play.setActionCommand("Play");
-        PlayListener playlistener = new PlayListener();
-        play.addActionListener(playlistener);
-        _specialMenu.add(play);
+        this(null);
     }
 
     /** Construct an audio plot with no command-line arguments.
@@ -71,6 +67,31 @@ public class AudioViewer extends PlotApplication {
         PlayListener playlistener = new PlayListener();
         play.addActionListener(playlistener);
         _specialMenu.add(play);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Create a new plot window and map it to the screen.
+     */
+    public static void main(String args[]) {
+        try {
+            AudioViewer plot = new AudioViewer(args);
+            plot.setTitle("Ptolemy Audio Viewer");
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        }
+
+        // If the -test arg was set, then exit after 2 seconds.
+        if (_test) {
+            try {
+                Thread.currentThread().sleep(2000);
+            }
+            catch (InterruptedException e) {
+            }
+            System.exit(0);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,35 +118,19 @@ public class AudioViewer extends PlotApplication {
         message.setTitle("Usage of Ptolemy AudioViewer");
     }
 
-    /** Open a new file and plot its data.
+    /** Read the specified stream.  This method checks to see whether
+     *  the data is PlotML data, and if so, creates a parser to read it.
+     *  If not, it defers to the parent class to read it.
+     *  @param base The base for relative file references, or null if
+     *   there are not relative file references.
+     *  @param in The input stream.
+     *  @exception IOException If the stream cannot be read.
      */
-    protected void _open() {
-        FileDialog filedialog = new FileDialog(this, "Select a sound file");
-        filedialog.setFilenameFilter(new AudioViewerFilenameFilter());
-        if (_directory != null) {
-            filedialog.setDirectory(_directory);
-        }
-        filedialog.setVisible(true);
-        String filename = filedialog.getFile();
-        if (filename == null) return;
-        _directory = filedialog.getDirectory();
-        File file = new File(_directory, filename);
-        _filename = null;
-        try {
-            _sound = new Audio(
-                    new DataInputStream( new FileInputStream(file)));
-        } catch (FileNotFoundException ex) {
-            Message msg = new Message("File not found: " + ex);
-        } catch (IOException ex) {
-            Message msg = new Message("Error reading input: " + ex);
-        }
-        _filename = filename;
-
+    protected void _read(URL base, InputStream in) throws IOException {
+        _sound = new Audio(new DataInputStream(in));
         // Configure the plot.
         Plot plt = (Plot)plot;
         plt.clear(true);
-        plt.setTitle(new String(_sound.info));
-        setTitle(filename);
         plt.setXRange(0, (_sound.size - 1)/8000.0);
         plt.setXLabel("Time in seconds");
         plt.setYRange(-1.0, 1.0);
@@ -200,15 +205,6 @@ public class AudioViewer extends PlotApplication {
             if (actionCommand.equals("Play")) {
                 _play();
             }
-        }
-    }
-
-    // FIXME: This filter doesn't work.  Why?
-    private class AudioViewerFilenameFilter implements FilenameFilter {
-        public boolean accept(File dir, String name) {
-            name = name.toLowerCase();
-            if (name.endsWith(".au")) return true;
-            return false;
         }
     }
 }
