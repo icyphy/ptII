@@ -119,6 +119,7 @@ public class PlotApplet extends Applet implements Runnable {
             Color background = Color.white;
             background = PlotBox.getColorByName(getParameter("background"));
             setBackground(background);
+            plot().setBackground(background);
         } catch (NullPointerException e) {}
 
         // Process the foreground parameter.
@@ -126,6 +127,7 @@ public class PlotApplet extends Applet implements Runnable {
             Color foreground = Color.white;
             foreground = PlotBox.getColorByName(getParameter("foreground"));
             setForeground(foreground);
+            plot().setForeground(foreground);
         } catch (NullPointerException e) {}
 
         // Process the dataurl parameter.
