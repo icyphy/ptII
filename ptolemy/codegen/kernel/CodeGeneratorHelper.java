@@ -183,6 +183,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     result.append(port.getFullName().replace('.', '_'));
                     int[] channelAndOffset = _getChannelAndOffset(name);
                     if (channelAndOffset[0] >= 0) {
+                        // Channel number specified. This must be a multiport.
                         result.append("[");
                         result.append(new Integer(channelAndOffset[0])
                                 .toString());
@@ -262,7 +263,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     
     /** Return a list that contains the parameters referenced in the code.
      * @return The list.
-     * @throws IllegalActionException
      */
     public HashSet getReferencedParameter() {
         return _referencedParameters;
@@ -284,7 +284,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             = (outputPort.getRemoteReceivers());
        
         if (remoteReceivers.length == 0) {
-            // This is a escape method. This class will not call this
+            // This is an escape method. This class will not call this
             // method if the output port does not have a remote receiver.
             return "";
         }

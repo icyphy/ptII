@@ -169,7 +169,9 @@ public class StaticSchedulingCodeGenerator
         }
     }
     
-    /** Return the buffer capacity associated with the given port.
+    /** Return the buffer capacity associated with the given port,
+     *  This method overides the base class by computing the total
+     *  number of tokens transferred in one iteration.
      * @param port The given port.
      * @return the buffer capacity associated with the given port.
      */
@@ -187,9 +189,11 @@ public class StaticSchedulingCodeGenerator
     }
     
     /** Set the container of this object to be the given container.
+     *  This method overrides the base class to ensure that that the
+     *  container is an Actor.
      *  @param container The given container.
      *  @exception IllegalActionException if the given container
-     *   is not null and not an instance of CompositeEntity.
+     *   is not null and not an instance of CompositeActor.
      */
     public void setContainer(NamedObj container) 
             throws IllegalActionException, NameDuplicationException {
@@ -221,5 +225,4 @@ public class StaticSchedulingCodeGenerator
         return helperObject;
     }
     
-    // FIXME: Override setContainer to ensure that the container is an Actor.
 }
