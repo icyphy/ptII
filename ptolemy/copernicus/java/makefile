@@ -65,6 +65,7 @@ JSRCS = \
 	ModelTransformer.java \
 	NamedObjEliminator.java \
 	NamedObjEqualityEliminator.java \
+	ParseTreeCodeGenerator.java \
 	TestApplication.java \
 	TokenConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \

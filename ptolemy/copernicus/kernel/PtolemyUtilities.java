@@ -1001,6 +1001,9 @@ public class PtolemyUtilities {
     // ptolemy.kernel.Entity.getPort
     public static SootMethod getPortMethod;
 
+    // SootMethod representing ptolemy.actor.IOPort.hasToken(int).
+    public static SootMethod hasTokenMethod;
+
     // SootMethod representing ptolemy.kernel.ComponentPort.insertLink().
     public static SootMethod insertLinkMethod;
 
@@ -1050,6 +1053,11 @@ public class PtolemyUtilities {
     // Soot Class representing the ptolemy.kernel.ComponentRelation class.
     public static SootClass relationClass;
 
+    // Soot class representing the ptolemy.data.RecordToken class.
+    public static SootClass recordTokenClass;
+    // Soot Method representing the RecordToken(String[], Token[]) constructor.
+    public static SootMethod recordTokenConstructor;
+
     // Soot Class representing the ptolemy.data.type.RecordType class.
     public static SootClass recordTypeClass;
 
@@ -1092,6 +1100,23 @@ public class PtolemyUtilities {
 
     // Soot class representing the ptolemy.data.Token class.
     public static SootClass tokenClass;
+    public static SootMethod tokenAddMethod;
+    public static SootMethod tokenSubtractMethod;
+    public static SootMethod tokenModuloMethod;
+    public static SootMethod tokenMultiplyMethod;
+    public static SootMethod tokenDivideMethod;
+    public static SootMethod tokenEqualsMethod;
+    public static SootMethod tokenIsLessThanMethod;
+    public static SootMethod tokenNotMethod;
+    public static SootMethod tokenBitwiseAndMethod;
+    public static SootMethod tokenBitwiseOrMethod;
+    public static SootMethod tokenBitwiseXorMethod;
+    public static SootMethod tokenBitwiseNotMethod;
+    public static SootMethod tokenLeftShiftMethod;
+    public static SootMethod tokenRightShiftMethod;
+    public static SootMethod tokenLogicalRightShiftMethod;
+    public static SootMethod tokenIntValueMethod;
+    public static SootMethod tokenZeroMethod;
 
     // Soot Type representing the ptolemy.data.Token class.
     public static BaseType tokenType;
@@ -1227,17 +1252,40 @@ public class PtolemyUtilities {
         setMultiportMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void setMultiport(boolean)>");
         getMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: ptolemy.data.Token get(int)>");
         getInsideMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: ptolemy.data.Token getInside(int)>");
+        hasTokenMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: boolean hasToken(int)>");
         sendMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void send(int,ptolemy.data.Token)>");
         sendInsideMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void sendInside(int,ptolemy.data.Token)>");
 
         tokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.Token");
         tokenType = RefType.v(tokenClass);
-
+        tokenZeroMethod = Scene.v().getMethod("<ptolemy.data.Token: ptolemy.data.Token zero()>");
+        tokenAddMethod = Scene.v().getMethod("<ptolemy.data.Token: ptolemy.data.Token add(ptolemy.data.Token)>");
+        tokenSubtractMethod = Scene.v().getMethod("<ptolemy.data.Token: ptolemy.data.Token subtract(ptolemy.data.Token)>");
+        tokenModuloMethod = Scene.v().getMethod("<ptolemy.data.Token: ptolemy.data.Token modulo(ptolemy.data.Token)>");
+        tokenMultiplyMethod = Scene.v().getMethod("<ptolemy.data.Token: ptolemy.data.Token multiply(ptolemy.data.Token)>");
+        tokenDivideMethod = Scene.v().getMethod("<ptolemy.data.Token: ptolemy.data.Token divide(ptolemy.data.Token)>");
+        tokenEqualsMethod = Scene.v().getMethod("<ptolemy.data.Token: ptolemy.data.BooleanToken isEqualTo(ptolemy.data.Token)>");
+        tokenIsLessThanMethod = Scene.v().getMethod("<ptolemy.data.ScalarToken: ptolemy.data.BooleanToken isLessThan(ptolemy.data.ScalarToken)>");
+        tokenNotMethod = Scene.v().getMethod("<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken not()>");
+        tokenBitwiseAndMethod = Scene.v().getMethod("<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseAnd(ptolemy.data.Token)>");
+        tokenBitwiseOrMethod = Scene.v().getMethod("<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseOr(ptolemy.data.Token)>");
+        tokenBitwiseXorMethod = Scene.v().getMethod("<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseXor(ptolemy.data.Token)>");
+        tokenBitwiseNotMethod = Scene.v().getMethod("<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseNot()>");
+        tokenLeftShiftMethod = Scene.v().getMethod("<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken leftShift(int)>");
+        tokenRightShiftMethod = Scene.v().getMethod("<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken rightShift(int)>");
+        tokenLogicalRightShiftMethod = Scene.v().getMethod("<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken logicalRightShift(int)>");
+        tokenIntValueMethod = Scene.v().getMethod("<ptolemy.data.ScalarToken: int intValue()>");
+        
         arrayTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.ArrayToken");
         arrayTokenConstructor =
             arrayTokenClass.getMethod("void <init>(ptolemy.data.Token[])");
+
+        recordTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.RecordToken");
+        recordTokenConstructor =
+            recordTokenClass.getMethod("void <init>(java.lang.String[],ptolemy.data.Token[])");
 
         doubleTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.DoubleToken");
