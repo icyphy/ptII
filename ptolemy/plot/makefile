@@ -54,10 +54,13 @@ SRCDIRS = 	demo
 
 DIRS = 		$(SRCDIRS) doc test
 
-# Java Sources
+# Java Sources, keep these alphabetical,
 JSRCS = \
 	CmdLineArgException.java \
 	EPSGraphics.java \
+	LogicAnalyzer.java \
+	LogicAnalyzerFrame.java \
+	Message.java \
 	Plot.java \
 	PlotApplet.java \
 	PlotApplication.java \
@@ -67,13 +70,17 @@ JSRCS = \
 	PlotLive.java \
 	PlotLiveApplet.java \
 	PlotPoint.java \
-	LogicAnalyzer.java \
-	LogicAnalyzerFrame.java \
-	Message.java \
+	PtolemyGraphics.java \
 	Pxgraph.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = $(JSRCS) ptplot pxgraph.bat index.html copyright.txt
+EXTRA_SRCS = $(JSRCS) \
+	PtolemyGraphics1_1.java \
+	PtolemyGraphics1_2.java \
+	copyright.txt \
+	index.html \
+	ptplot \
+	pxgraph.bat 
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = test #bean
@@ -89,6 +96,7 @@ OPTIONAL_FILES = \
 	ptolemy.plot$(JVERSION).tar.gz \
 	ptolemy.plot$(JVERSION).zip \
 	ptolemy.plotapplet.jar \
+	PtolemyGraphics.java \
 	'Message$$1.class' \
 	'Message$$2.class' \
 	'PlotBox$$DragListener.class' \
@@ -121,6 +129,24 @@ install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
+
+# FIXME: this is ugly, dangerous, and unportable.
+# Don't use GNU make only directives here, since that will make the problem
+# even  worse.
+# See the class comment in PtolemyGraphics1_2 for the complete story
+PtolemyGraphics.java: PtolemyGraphics1_1.java PtolemyGraphics1_2.java \
+				$(ROOT)/mk/ptII.mk
+	@if [ "$(JVERSION)" = "1.2 " ]; then \
+	    echo "configure determined that java.version=$(JVERSION)"; \
+	    echo 'Copying PtolemyGraphics1_2.java to PtolemyGraphics.java'; \
+	    cp PtolemyGraphics1_2.java PtolemyGraphics.java; \
+	else \
+	    echo "configure determined that java.version=$(JVERSION)"; \
+	    echo " which is not equal to 1.2 ."; \
+	    echo 'Copying PtolemyGraphics1_1.java to PtolemyGraphics.java'; \
+	    cp PtolemyGraphics1_1.java PtolemyGraphics.java; \
+	fi
+
 
 ptplot: ptplot.in ../../config.status
 	(cd ../..; ./config.status)
