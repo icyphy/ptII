@@ -44,7 +44,7 @@ setting and getting types and type constraints. Type constraints are
 represented as inequalities between Typeable objects.
 
 @author Yuhong Xiong, Xiaojun Liu, Edward A. Lee
-$Id$
+@version $Id$
 @see ptolemy.graph.InequalityTerm
 */
 
