@@ -68,7 +68,7 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 testapplet:
-	appletviewer testapplet.htm
+	CLASSPATH=$(CLASSPATH) appletviewer testapplet.htm
 
 depend:
 	@echo "no dependencies in this directory"
