@@ -97,7 +97,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  the workspace. Increment the version number of the workspace.
      */
     public NamedObj() {
-        this(_defaultworkspace, "");
+        this(_defaultWorkspace, "");
     }
 
     /** Construct an object in the default workspace with the given name.
@@ -107,7 +107,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @param name Name of this object.
      */
     public NamedObj(String name) {
-        this(_defaultworkspace, name);
+        this(_defaultWorkspace, name);
     }
 
     /** Construct an object in the given workspace with the given name.
@@ -120,7 +120,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public NamedObj(Workspace workspace, String name) {
         if (workspace == null) {
-            workspace = _defaultworkspace;
+            workspace = _defaultWorkspace;
         }
         _workspace = workspace;
         // Exception cannot occur, so we ignore. The object does not
@@ -626,7 +626,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     private LinkedList _debugListeners = null;
 
     // Instance of a workspace that can be used if no other is specified.
-    private static Workspace _defaultworkspace = new Workspace();
+    private static Workspace _defaultWorkspace = new Workspace();
 
     // The name
     private String _name;
