@@ -103,7 +103,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("jtp").add(new Transform("jtp.uce",
                 UnreachableCodeEliminator.v()));
 	Scene.v().getPack("jtp").add(new Transform("jtp.cp",
-                  CopyPropagator.v()));
+                CopyPropagator.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
                 DeadAssignmentEliminator.v()));
 
