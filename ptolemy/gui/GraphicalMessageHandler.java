@@ -44,7 +44,7 @@ import javax.swing.JTextArea;
 This is a message handler that reports errors in a graphical dialog box.
 When an applet or application starts up, it should call setContext()
 to specify a component with respect to which the display window
-should be created.  This ensures that if the application is iconfied
+should be created.  This ensures that if the application is iconified
 or deiconified, that the display window goes with it. If the context
 is not specified, then the display window is centered on the screen,
 but iconifying and deiconifying may not work as desired.
@@ -61,7 +61,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     /** Get the component set by a call to setContext(), or null if none.
      *  @see #setContext(Component)
      *  @return The component with respect to which the display window
-     *   is iconfied, or null if none has been specified.
+     *   is iconified, or null if none has been specified.
      */
     public static Component getContext() {
         return _context;
