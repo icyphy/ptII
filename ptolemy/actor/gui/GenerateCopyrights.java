@@ -96,6 +96,10 @@ public class GenerateCopyrights {
 
         // Alphabetical by className.
         _addIfPresent(copyrightsMap,
+                "caltrop.ptolemy.actors.CalInterpreter",
+                "ptolemy/cal/saxon-copyright.htm")
+
+        _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.joystick.Joystick",
                 "ptolemy/actor/lib/joystick/copyright.htm");
 
