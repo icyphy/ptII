@@ -41,6 +41,8 @@ ME =		java/pt/graph
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+JAVAHOME = /opt/jdk1.2latest
+
 # Flags to pass to javadoc. (Override value in tycho.mk)
 JDOCFLAGS = 	-author -version -public
 
@@ -59,6 +61,10 @@ JARFILE = 	$(TYPACKAGE).jar
 
 
 JSRCS = \
+	Cpo.java \
+	DirectedGraph.java \
+	FiniteCpo.java \
+	Graph.java \
         InvalidGraphException.java \
 	StaticGraph.java \
 	IllegalTopologyException.java \
