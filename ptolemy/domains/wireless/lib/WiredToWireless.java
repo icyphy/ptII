@@ -40,6 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// WiredToWireless
@@ -115,6 +116,22 @@ public class WiredToWireless extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
  
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then resets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        WiredToWireless newObject = (WiredToWireless)(super.clone(workspace));
+
+        // set the type constraints
+        newObject.output.setTypeSameAs(newObject.data);
+        return newObject;
+    }
+    
     /** Read at most one token from the <i>data</i> and <i>properties</i>
      *  ports and transmit the data on the <i>output</i> port with the
      *  specified properties.  If there are no properties, then send with
