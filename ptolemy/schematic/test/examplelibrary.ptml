@@ -1,12 +1,13 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE ptolemyicon SYSTEM "ptolemyicon.dtd">
-<library name="SDF" path="domains/sdf/lib/icons" version="1.0">
+<iconlibrary name="SDF" path="domains/sdf/lib/icons" version="1.0">
 <header>
 <description>Icons for use within SDF</description>
 <sublibrary file="domains/sdf/lib/icons/htvq.pti"/>
 <sublibrary file="domains/sdf/lib/icons/communication.pti"/>
 </header>
-<icon name="loadimage" ports="2">
+<icon>
+<entitytype name="loadimage" ports="2"/>
 <description>Load an image from a file</description>
 <port name="filename" direction="input" type="&string;"/>
 <port name="image" direction="output" type="&doubleArray;"/>
@@ -18,10 +19,8 @@
 <port name="filename" direction="input" type="&string;"/>
 <port name="image" direction="input" type="&doubleArray;"/>
 <graphic format="xml">
-<linestyle width="2" color="red">
 <line style="dotted" width="5" points="0 0 10 10"/>
 <rect color="blue" fill="hatch" points="0 0 10 10"/>
-</linestyle>
 <!-- ovals are described in terms of a bounding box -->
 <ellipse fill="blue" points="0 0 10 10"/>
 <polygon points="0 0 10 10 15 10 15 0"/>
@@ -34,5 +33,5 @@ Hello! This is a nice big text box in a ptolemy icon.
 <image format="gif" compression="zip" file="icon.gif" points="0 0 100 100"/>
 </graphic>
 </icon>
-</library>
+</iconlibrary>
 
