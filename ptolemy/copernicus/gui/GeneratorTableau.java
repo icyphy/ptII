@@ -48,6 +48,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
+import ptolemy.data.expr.Variable;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.SwingWorker;
@@ -251,14 +252,11 @@ public class GeneratorTableau extends Tableau {
                         model, "_generator");
             }
 
-	    // Adjust parameters accordingly.
-	    //Parameter modelName = (Parameter)attribute.getAttribute("model");
-	    //modelName.setExpression(StringUtilities
-	    //			    .sanitizeName(model.getName()));
-
+	    attribute.sanityCheckAndUpdateParameters();
 
             Configurer configurer = new Configurer(attribute);
             final GeneratorAttribute options = attribute;
+
 
             JPanel controlPanel = new JPanel();
             controlPanel.add(configurer);
@@ -333,7 +331,7 @@ public class GeneratorTableau extends Tableau {
 								    
 			    String targetPath =
 				((StringToken)
-				 ((Parameter)options
+				 ((Variable)options
 				  .getAttribute("targetPath"))
 				 .getToken()).stringValue();
 
@@ -590,9 +588,9 @@ public class GeneratorTableau extends Tableau {
 
 
 	try {
-	    Copernicus.updateModelPathAndModel(generatorAttribute,
-					       temporaryMoMLFile.getPath());
-	} catch (IOException ex) {
+	    generatorAttribute
+		.updateModelPathAndModel(temporaryMoMLFile.getPath());
+	} catch (Exception ex) {
 	    throw new InternalErrorException(model, ex,
 					     "Failed to update modelPath "
 					     + " or model");

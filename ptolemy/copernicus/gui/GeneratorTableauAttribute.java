@@ -76,12 +76,6 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
     public GeneratorTableauAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
-                + "style=\"fill:blue\"/>"
-                + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\ngenerate code.</text></svg>");
         new SingletonAttribute(this, "_hideName");
         new GeneratorTableauEditorFactory(this, "_editorFactory");
     }
