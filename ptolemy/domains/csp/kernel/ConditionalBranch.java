@@ -213,7 +213,7 @@ public abstract class ConditionalBranch {
     private boolean _alive = true;
 
     // the guard for this guarded communication statement.
-    private boolean _guard;
+    protected boolean _guard;
 
     // The parent this thread is trying to perform a conditional
     // rendezvous for.

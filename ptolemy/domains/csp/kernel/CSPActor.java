@@ -36,6 +36,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.TerminateProcessException;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.event.*;
 import collections.LinkedList;
 import java.util.Enumeration;
 
@@ -168,6 +169,16 @@ public class CSPActor extends AtomicActor {
             throw new TerminateProcessException("CSPActor interrupted " + 
                     "while delayed." );
         }
+    }
+
+
+    /** Call to terminate the actor process normally.
+     */
+    public void finish() {
+        TopologyChangeRequest r = _makeFinishRequest();
+        getDirector().queueTopologyChangeRequest(r);
+        System.out.println(getName() +":Queued TopologyChange");
+        delay();
     }
 
     /** Default implementation for CSPActors is to return false. If an 
@@ -446,6 +457,24 @@ public class CSPActor extends AtomicActor {
             _getInternalLock().notifyAll();
         }
     }
+
+    /*  Create and return a new TopologyChangeRequest object that 
+     *  removes this actor from the simulation.
+     */
+    private TopologyChangeRequest _makeFinishRequest() {
+        final CSPActor tmp = this;
+        TopologyChangeRequest request = new TopologyChangeRequest(this) {
+
+            public void constructEventQueue() {
+                System.out.println("Removing process: " + tmp.getName() +
+                        " from the simulation");
+                CompositeActor container =  (CompositeActor)getContainer();
+                queueEntityRemovedEvent(container, tmp);
+            }
+        };
+        return request;
+    }
+
 
     /** Release the calling branches status as the first branch to
      *  try to rendezvous. The branch was obviously not able to complete

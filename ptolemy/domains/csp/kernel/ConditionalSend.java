@@ -152,7 +152,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                          "of type CSPReceiver." );
              }
              _receiver = (CSPReceiver)receivers[channel][0];
-	 } finally {
+	 } catch (IllegalActionException ex) {
+             _guard = false;
+         } finally {
              port.workspace().doneReading();
 	 }
 	 _token = t;

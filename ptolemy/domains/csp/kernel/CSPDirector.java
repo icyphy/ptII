@@ -409,9 +409,12 @@ public class CSPDirector extends ProcessDirector {
                             _threadList.insertFirst(p);
                     }
                     _topologyChangesPending = false;
-                    _checkForDeadlock();
-                    System.out.println("Finished dealing with " +
-                            "changes to the topology.");
+                    
+                    // Note that we return here so that this method does 
+                    // not wait. This is because the result of the 
+                    // topology change might not resolve the deadlock 
+                    // that caused these changes to be carried out.
+                    return false;
                 } else if (_actorsDelayed > 0) {
                     // Time deadlock.
                     System.out.println("TIME DEADLOCK!!");
