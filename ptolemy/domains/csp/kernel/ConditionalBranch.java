@@ -91,7 +91,7 @@ public abstract class ConditionalBranch {
      *  @return The identification number of this branch.
      */
     public int getID() {
-        return _branchNumber;
+        return _branchID;
     }
 
     /** Return the CSPActor that created this branch.
