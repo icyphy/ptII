@@ -710,7 +710,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 continue;
             }
             if (result != null) {
-                throw new IllegalActionException(currentState(),
+                throw new MultipleEnabledTransitionsException(currentState(),
                         "Multiple enabled transitions: "
                         + result.getName() + " and "
                         + transition.getName() + ".");

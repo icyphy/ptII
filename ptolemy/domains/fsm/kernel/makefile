@@ -59,6 +59,7 @@ JSRCS = \
 	HSDirector.java \
 	InterfaceAutomaton.java \
 	InterfaceAutomatonTransition.java \
+	MultipleEnabledTransitionsException.java \
 	OutputActionsAttribute.java \
 	ParseTreeEvaluatorForGuardExpression.java \
 	RelationList.java \

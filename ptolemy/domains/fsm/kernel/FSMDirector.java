@@ -33,6 +33,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.lib.InvariantViolationException;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
@@ -406,26 +407,43 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             IllegalActionException exception)
             throws IllegalActionException {
 
-        FSMActor fsm = getController();
-        fsm._setInputsFromRefinement();
-        State st = fsm.currentState();
-        Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());
-
-        if (tr == null) {
-            ModelErrorHandler container = getContainer();
-            if (container != null) {
-                //The following statement leads to dead loop
-                // because the container will call this method again.
-                //return container.handleModelError(context, exception);
-
-                throw exception;
+        // If the exception is a MultipleEnabledTransitionsException
+        // exception, handle it by refining the step size.
+        if (exception instanceof MultipleEnabledTransitionsException) {
+            // FIXME: handle the multiple enabled transitions
+            throw exception;
+        }
+        
+        // If the exception is an InvariantViolationException
+        // exception, check if any transition is enabled.
+        if (exception instanceof InvariantViolationException) {
+        
+            FSMActor fsm = getController();
+            fsm._setInputsFromRefinement();
+            State st = fsm.currentState();
+            Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());
+   
+            if (tr == null) {
+                ModelErrorHandler container = getContainer();
+                if (container != null) {
+                    
+                    //The following statement leads to dead loop
+                    // because the container will call this method again.
+                    //return container.handleModelError(context, exception);
+    
+                    throw exception;
+                }
             }
+
+            if (_debugging) {
+                _debug("ModelError: " + exception.getMessage() 
+                     + " is handled and discarded.");
+            }
+            return true;
         }
 
-        if (_debugging) {
-            _debug("ModelError: " + exception.getMessage() + " is discarded.");
-        }
-        return true;
+        // else delegate the exception to upper level.
+        return false;
     }
 
     /** Initialize the mode controller and all the refinements. Set the

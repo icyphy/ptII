@@ -48,7 +48,7 @@ The inputs are read and checked in the postfire() method only.
 A model error is an exception that is passed up the containment
 hierarchy rather than being immediately thrown. Any container
 in the containment hierarchy may choose to handle the error.
-By default, containers will pass delegate the error to their
+By default, containers will pass and delegate the error to their
 container, if they have one, and throw an exception if they
 don't. But some containers might do more with the error.
 
@@ -105,8 +105,15 @@ public class ThrowModelError extends Sink {
             }
         }
         if (result) {
+            //FIXME: instead of throw an IllegalActionException, 
+            // an InvariantViolationException is thrown. Should we
+            // configure the "model error" type?
+            
+            //handleModelError(this,
+            //        new IllegalActionException(this, message.getExpression()));
             handleModelError(this,
-                    new IllegalActionException(this, message.getExpression()));
+                    new InvariantViolationException(this, message.getExpression()));
+            
         }
         return super.postfire();
     }
