@@ -1,4 +1,4 @@
-/* ListenFork is an extension of DDEDoubleFork with listeners.
+/* ListenFork is an extension of DoubleFork with listeners.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ListenFork
 /**
-ListenFork is an extension of DDEDoubleFork with listeners. The addition
+ListenFork is an extension of DoubleFork with listeners. The addition
 of listener facilities allows this actor to interact with Diva via simple
 animations.
 
@@ -53,7 +53,7 @@ animations.
 
 */
 
-public class ListenFork extends DDEDoubleFork {
+public class ListenFork extends DoubleFork {
 
     /** Construct a ListenFork actor with the specified container
      *  and name.
