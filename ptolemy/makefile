@@ -57,7 +57,9 @@ PTAUXALLJARS = \
 		plot/plotapplet.jar \
 		graph/graph.jar \
 		data/data.jar \
-		actor/actor.jar
+		actor/actor.jar \
+		math/math.jar \
+		media/media.jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTAUXALLJAR =	ptsupport.jar
