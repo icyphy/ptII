@@ -322,9 +322,12 @@ fixtmpdist:
 	@echo "Create bin/makefile"
 	echo "ME =		bin" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "ROOT =		.." >> 	$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "CONFIG =	\$(ROOT)/mk/ptII.mk" >> \
+	echo "foo" | \
+		awk '{printf("CONFIG =	%c(ROOT)/mk/ptII.mk\n",36)}' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "include \$(CONFIG)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "foo" | \
+		awk '{printf("include %c(CONFIG)\n",36)}' >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "SHELL_FILES = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	histogram \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	ptplot \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
@@ -365,7 +368,8 @@ fixtmpdist:
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "# Get the rest of the rules" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "include \$(ROOT)/mk/ptcommon.mk" >> \
+	echo "foo" | \
+		 awk '{printf("include %c(ROOT)/mk/ptcommon.mk\n",36)}' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
