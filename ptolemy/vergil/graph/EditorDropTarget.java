@@ -152,7 +152,7 @@ public class EditorDropTarget extends DropTarget {
                     entity.setName(container.uniqueName(
                             sourceEntity.getName()));
 		    ((EditorGraphController) gc).getEntityController()
-                         .addNode(icon, p.x, p.y);
+                        .addNode(icon, p.x, p.y);
 		}
                 catch (Exception ex) {
                     ex.printStackTrace();

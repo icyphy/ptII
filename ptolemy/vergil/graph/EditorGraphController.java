@@ -87,27 +87,27 @@ public class EditorGraphController extends ViewerGraphController {
      * anchored to it's head and tail node, and does not have a regular edge
      * interactor.
 
-    public void addAnchoredEdge(Edge edge, Node head, Node tail,
-				double x, double y) {
-        Figure hf = (Figure) head.getVisualObject();
-        Figure tf = (Figure) tail.getVisualObject();
-        FigureLayer layer = getGraphPane().getForegroundLayer();
-        Site headSite, tailSite;
+     public void addAnchoredEdge(Edge edge, Node head, Node tail,
+     double x, double y) {
+     Figure hf = (Figure) head.getVisualObject();
+     Figure tf = (Figure) tail.getVisualObject();
+     FigureLayer layer = getGraphPane().getForegroundLayer();
+     Site headSite, tailSite;
 
-	tailSite = getConnectorTarget().getTailSite(tf, x, y);
-	getGraphImpl().setEdgeTail(edge, tail);
-	headSite = getConnectorTarget().getHeadSite(hf, x, y);
-	getGraphImpl().setEdgeHead(edge, head);
+     tailSite = getConnectorTarget().getTailSite(tf, x, y);
+     getGraphImpl().setEdgeTail(edge, tail);
+     headSite = getConnectorTarget().getHeadSite(hf, x, y);
+     getGraphImpl().setEdgeHead(edge, head);
 
-        Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
+     Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
 
-        // Add to the view
-        ef.setUserObject(edge);
-        edge.setVisualObject(ef);
-        layer.add(ef);
+     // Add to the view
+     ef.setUserObject(edge);
+     edge.setVisualObject(ef);
+     layer.add(ef);
 
-	ef.route();
-    }
+     ef.route();
+     }
     */
 
     /**
@@ -144,9 +144,9 @@ public class EditorGraphController extends ViewerGraphController {
 
 
         /*        // Create the interactor that drags new edges.
-	_connectedVertexCreator = new ConnectedVertexCreator();
-        _connectedVertexCreator.setMouseFilter(_shiftFilter);
-        getNodeInteractor().addInteractor(_connectedVertexCreator);
+                  _connectedVertexCreator = new ConnectedVertexCreator();
+                  _connectedVertexCreator.setMouseFilter(_shiftFilter);
+                  getNodeInteractor().addInteractor(_connectedVertexCreator);
         */
     }
 
@@ -228,10 +228,10 @@ public class EditorGraphController extends ViewerGraphController {
 
 	    // Add it to the editor
 	    Edge edge = getLinkController().addEdge(null,
-				    sourcenode,
-				    ConnectorEvent.TAIL_END,
-				    e.getLayerX(),
-				    e.getLayerY());
+                    sourcenode,
+                    ConnectorEvent.TAIL_END,
+                    e.getLayerX(),
+                    e.getLayerY());
 
 	    // Add it to the selection so it gets a manipulator, and
 	    // make events go to the grab-handle under the mouse
@@ -275,7 +275,7 @@ public class EditorGraphController extends ViewerGraphController {
 		//	sourcenode,
 		//ConnectorEvent.TAIL_END,
 		//	e.getLayerX(),
-			//e.getLayerY());
+                //e.getLayerY());
 
 		// Add it to the selection so it gets a manipulator, and
 		// make events go to the grab-handle under the mouse

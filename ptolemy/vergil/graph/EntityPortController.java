@@ -98,7 +98,7 @@ public class EntityPortController extends NodeController {
     /** Given a node, add it to the given parent.
      */
     public void drawNode(Node node, CompositeNode parentNode, int direction,
-			double fraction) {
+            double fraction) {
         // Create a figure for it
 	//System.out.println("adding port");
 	Figure nf = getNodeRenderer().render(node);

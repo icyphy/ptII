@@ -147,7 +147,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    Entity entity = (Entity) icon.getContainer();
 	    if(entity == null)
 		throw new GraphException("Icon must be contained " +
-					 "in an entity");
+                        "in an entity");
 	    Iterator ports = entity.portList().iterator();
 	    while(ports.hasNext()) {
 		Port port = (Port) ports.next();
@@ -178,8 +178,8 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		    }
 		    catch (Exception e) {
 			throw new InternalErrorException("Failed to create " +
-			    "icon, even though one does not exist:" +
-							 e.getMessage());
+                                "icon, even though one does not exist:" +
+                                e.getMessage());
 		    }
 		}
 		addNode(createCompositeNode(icon), g);
@@ -205,13 +205,13 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		if(rootVertex == null) {
 		    try {
 			Vertex v = new Vertex(relation,
-					      relation.uniqueName("Vertex"));
+                                relation.uniqueName("Vertex"));
 			rootVertex = createNode(v);
 		    }
 		    catch (Exception e) {
 			throw new InternalErrorException("Failed to create " +
-			    "new vertex, even though one does not " +
-			    "already exist:" + e.getMessage());
+                                "new vertex, even though one does not " +
+                                "already exist:" + e.getMessage());
 		    }
 		    addNode(rootVertex, g);
 		}
@@ -296,12 +296,12 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	Vertex vertex;
         if(head == null || tail == null) return;
 	if(tail.getSemanticObject() instanceof Port &&
-	   head.getSemanticObject() instanceof Vertex) {
+                head.getSemanticObject() instanceof Vertex) {
 	    vertex = (Vertex)head.getSemanticObject();
 	    port = (Port)tail.getSemanticObject();
 	    relation = (Relation)vertex.getContainer();
 	} else if(tail.getSemanticObject() instanceof Vertex &&
-		  head.getSemanticObject() instanceof Port) {
+                head.getSemanticObject() instanceof Port) {
 	    vertex = (Vertex)tail.getSemanticObject();
 	    port = (Port)head.getSemanticObject();
 	    relation = (Relation)vertex.getContainer();
@@ -320,12 +320,12 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	Vertex vertex;
         if(head == null || tail == null) return;
 	if(tail.getSemanticObject() instanceof Port &&
-	   head.getSemanticObject() instanceof Vertex) {
+                head.getSemanticObject() instanceof Vertex) {
 	    vertex = (Vertex)head.getSemanticObject();
 	    port = (Port)tail.getSemanticObject();
 	    relation = (Relation)vertex.getContainer();
 	} else if(tail.getSemanticObject() instanceof Vertex &&
-		  head.getSemanticObject() instanceof Port) {
+                head.getSemanticObject() instanceof Port) {
 	    vertex = (Vertex)tail.getSemanticObject();
 	    port = (Port)head.getSemanticObject();
 	    relation = (Relation)vertex.getContainer();

@@ -145,11 +145,11 @@ public class EntityController extends LocatableNodeController {
 	int nodeNumber = 0;
 
 	_createPortFigures((CompositeNode)n, inputs, inCount,
-			   SwingConstants.WEST);
+                SwingConstants.WEST);
 	_createPortFigures((CompositeNode)n, outputs, outCount,
-			   SwingConstants.EAST);
+                SwingConstants.EAST);
 	_createPortFigures((CompositeNode)n, inouts, inOutCount,
-			   SwingConstants.SOUTH);
+                SwingConstants.SOUTH);
         return nf;
     }
 
@@ -189,15 +189,15 @@ public class EntityController extends LocatableNodeController {
      * Count must be the number of nodes in the list.
      */
     protected void _createPortFigures(CompositeNode node,
-				   LinkedList nodeList, int count,
-				   int direction) {
+            LinkedList nodeList, int count,
+            int direction) {
 	int nodeNumber = 0;
 	Iterator nodes = nodeList.iterator();
 	while(nodes.hasNext()) {
 	    nodeNumber ++;
 	    Node portNode = (Node) nodes.next();
 	    _portController.drawNode(portNode, node, direction,
-	    		    100.0*nodeNumber/(count+1));
+                    100.0*nodeNumber/(count+1));
 	}
     }
 

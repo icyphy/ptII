@@ -107,7 +107,7 @@ public class ViewerGraphController extends CompositeGraphController {
     /**
      * Return the controller for links
      */
-   public LinkController getLinkController() {
+    public LinkController getLinkController() {
         return _linkController;
     }
 
@@ -124,13 +124,13 @@ public class ViewerGraphController extends CompositeGraphController {
         // Create and set up the selection dragger
 	SelectionDragger _selectionDragger = new SelectionDragger(pane);
 	_selectionDragger.addSelectionInteractor(
-	    (SelectionInteractor)_entityController.getNodeInteractor());
+                (SelectionInteractor)_entityController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
-	    (SelectionInteractor)_relationController.getNodeInteractor());
+                (SelectionInteractor)_relationController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
-	    (SelectionInteractor)_portController.getNodeInteractor());
+                (SelectionInteractor)_portController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
-	    (SelectionInteractor)_linkController.getEdgeInteractor());
+                (SelectionInteractor)_linkController.getEdgeInteractor());
 
         // MenuCreator
         _menuCreator = new MenuCreator(new SchematicContextMenuFactory());
