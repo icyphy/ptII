@@ -146,7 +146,7 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     set scope1 [[$guard getScope] elementList]
     set scope2 [[$trigger getScope] elementList]
     list [listToNames $scope1] [listToNames $scope2]
-} {{preemptive _trigger _actions p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1} {preemptive _guard _actions p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}}
+} {{preemptive reset _trigger p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1} {preemptive reset _guard p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}}
 
 test Transition-3.2 {test setting guard and trigger expression} {
     $t0 setGuardExpression "p0 > 0"
@@ -198,12 +198,5 @@ test Transition-5.1 {test listing choice and commit actions} {
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     set re0 [listToNames [$t0 choiceActionList]]
     set re1 [listToNames [$t0 commitActionList]]
-    set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act1]
-    set act2 [java::new ptolemy.domains.fsm.kernel.SetVariable $t0 act2]
-    set re2 [listToNames [$t0 choiceActionList]]
-    set re3 [listToNames [$t0 commitActionList]]
-    $act0 setContainer [java::null]
-    set re4 [listToNames [$t0 choiceActionList]]
-    list $re0 $re1 $re2 $re3 $re4
-} {{} actions {act0 act1} {actions act2} act1}
+    list $re0 $re1
+} {outputActions setActions}

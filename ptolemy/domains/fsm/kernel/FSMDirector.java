@@ -327,13 +327,17 @@ public class FSMDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
-
+	Nameable container = getContainer();
+	Director executiveDirector = null;
+	if (container instanceof CompositeActor) {
+	    executiveDirector =
+	            ((CompositeActor)container).getExecutiveDirector();
+	}
         boolean result = true;
         if (_fireRefinement) {
             result = ctrl.currentState().getRefinement().postfire();
-            Nameable container = getContainer();
-            if (container instanceof CompositeActor &&
-                    ((CompositeActor)container).getExecutiveDirector() != null) {
+
+            if (executiveDirector != null) {
                 // Not at the top level, ignore the return value from
                 // the current refinement.
                 result = true;
@@ -341,7 +345,8 @@ public class FSMDirector extends Director {
             // Otherwise, 'and' the refinement.postfire()
             // with controller.postfire()
         }
-        result = result && ctrl.postfire();
+	boolean ctrlPostfire = ctrl.postfire();
+        result = result && ctrlPostfire;
         _currentLocalReceiverMap =
             (Map)_localReceiverMaps.get(ctrl.currentState());
         return result;

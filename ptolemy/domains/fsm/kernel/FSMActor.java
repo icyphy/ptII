@@ -52,6 +52,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedCompositeActor;
@@ -713,7 +714,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Execute all commit actions contained by the transition chosen
      *  during the last call to _chooseTransition(). Change current state
-     *  to the destination state of the transition.
+     *  to the destination state of the transition. Reset the refinement
+     *  of the destination state if the <i>reset</i> parameter of the
+     *  transition is true.
      *  @exception IllegalActionException If any commit action throws it.
      */
     protected void _commitLastChosenTransition()
@@ -721,12 +724,21 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         if (_lastChosenTransition == null) {
             return;
         }
+
         Iterator actions = _lastChosenTransition.commitActionList().iterator();
         while (actions.hasNext()) {
             Action action = (Action)actions.next();
             action.execute();
         }
         _currentState = _lastChosenTransition.destinationState();
+	BooleanToken resetToken =
+	        (BooleanToken)_lastChosenTransition.reset.getToken();
+	if (resetToken.booleanValue()) {
+	    Actor ref = _currentState.getRefinement();
+	    if (ref != null) {
+		ref.initialize();
+	    }
+	}
         _setCurrentConnectionMap();
     }
 

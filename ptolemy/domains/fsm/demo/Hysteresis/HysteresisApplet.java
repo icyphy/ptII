@@ -150,12 +150,12 @@ public class HysteresisApplet extends PtolemyApplet {
         Transition ctrlTrs0Tos1 = new Transition(ctrl, "ctrlTrs0Tos1");
         ctrls0.outgoingPort.link(ctrlTrs0Tos1);
         ctrls1.incomingPort.link(ctrlTrs0Tos1);
-        ctrlTrs0Tos1.setGuardExpression("dataIn_V < -0.3");
+        ctrlTrs0Tos1.setGuardExpression("dataIn < -0.3");
 
         Transition ctrlTrs1Tos0 = new Transition(ctrl, "ctrlTrs1Tos0");
         ctrls0.incomingPort.link(ctrlTrs1Tos0);
         ctrls1.outgoingPort.link(ctrlTrs1Tos0);
-        ctrlTrs1Tos0.setGuardExpression("dataIn_V > 0.3");
+        ctrlTrs1Tos0.setGuardExpression("dataIn > 0.3");
 
         // The HDF director
         HDFFSMDirector sdrDir = new HDFFSMDirector(hdfActor, "hdfActorDirector");

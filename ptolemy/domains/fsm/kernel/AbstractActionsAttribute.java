@@ -106,7 +106,7 @@ public abstract class AbstractActionsAttribute extends Action {
      *  @exception IllegalActionException If a destination is not found.
      */
     public void execute() throws IllegalActionException {
-        if (_destinationsNeedUpdating) {
+        if (_destinationsListVersion != workspace().getVersion()) {
             _updateDestinations();
         }
     }
@@ -131,7 +131,7 @@ public abstract class AbstractActionsAttribute extends Action {
         // Indicate that the _destinations list is invalid.  We defer
         // determination of the destinations because the destinations
         // may not have been created yet.
-        _destinationsNeedUpdating = true;
+        _destinationsListVersion = -1;
 
         StringTokenizer commands = new StringTokenizer(expression, ";");
         while (commands.hasMoreTokens()) {
@@ -246,13 +246,14 @@ public abstract class AbstractActionsAttribute extends Action {
     // List of variables.
     protected List _variables;
 
-    // Indicator that the _destinations list needs updating.
-    protected boolean _destinationsNeedUpdating = false;
+    // The workspace version number when the _destinations list is last
+    // updated.
+    protected long _destinationsListVersion = -1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** For each destination in the _destinationNames list,
+    /*  For each destination in the _destinationNames list,
      *  create a corresponding
      *  entry in the _destinations list that refers to the destination.
      *  @exception IllegalActionException If the associated FSMActor
@@ -262,16 +263,25 @@ public abstract class AbstractActionsAttribute extends Action {
         try {
             workspace().getReadAccess();
             FSMActor fsm = (FSMActor)getContainer().getContainer();
-            _destinations = new LinkedList();
             if(_destinationNames != null) {
+		_destinations = new LinkedList();
                 Iterator destinationNames = _destinationNames.iterator();
                 while(destinationNames.hasNext()) {
                     String destinationName = (String)destinationNames.next();
                     NamedObj destination = _getDestination(destinationName);
                     _destinations.add(destination);
                 }
-            }
-            _destinationsNeedUpdating = false;
+	    }
+	    if (_variables != null) {
+		Iterator vars = _variables.iterator();
+		_variables = new LinkedList();
+		while (vars.hasNext()) {
+		    Variable var = (Variable)vars.next();
+		    Transition container = (Transition)getContainer();
+		    _variables.add(container.getAttribute(var.getName()));
+		}
+	    }
+            _destinationsListVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
         }

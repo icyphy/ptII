@@ -66,14 +66,8 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="next">
-            </property>
-        </property>
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="next = true">
+	</property>
     </relation>
     <relation name="ctrlTr2" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="error_isPresent">
@@ -81,8 +75,6 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
     </relation>
     <link port="Connecting.outgoingPort" relation="ctrlTr1"/>

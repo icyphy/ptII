@@ -164,15 +164,12 @@ test FSMDirector-4.1 {test action methods} {
     $t1 setGuardExpression "p1 > 0"
     [java::field $t2 preemptive] setExpression "true"
     $t2 setGuardExpression "p1 > 5"
-    set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    [java::field $act0 portName] setExpression p2
-    [java::field $act0 expression] setExpression 1
-    set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t1 act1]
-    [java::field $act1 portName] setExpression p2
-    [java::field $act1 expression] setExpression p1
-    set act2 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t2 act2]
-    [java::field $act2 portName] setExpression p2
-    [java::field $act2 expression] setExpression 0
+    set act0 [java::field $t0 outputActions]
+    $act0 setExpression "p2 = 1"
+    set act1 [java::field $t1 outputActions]
+    $act1 setExpression "p2 = p1"
+    set act2 [java::field $t2 outputActions]
+    $act2 setExpression "p2 = 0"
 
     [$e0 getManager] execute
     listToStrings [$rec getHistory 0]
@@ -208,9 +205,8 @@ test FSMDirector-5.1 {test fireAt} {
     [java::field $s0 outgoingPort] link $t0
     [java::field $s1 incomingPort] link $t0
     $t0 setGuardExpression "true"
-    set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    [java::field $act0 portName] setExpression p2
-    [java::field $act0 expression] setExpression -1000
+    set act0 [java::field $t0 outputActions]
+    $act0 setExpression "p2 = -1000"
 
     set mag [$e0 getManager]
     $mag initialize
@@ -347,15 +343,12 @@ test FSMDirector-7.1 {test clone a modal model} {
     $t1 setGuardExpression "p1 > 0"
     [java::field $t2 preemptive] setExpression "true"
     $t2 setGuardExpression "p1 > 5"
-    set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    [java::field $act0 portName] setExpression p2
-    [java::field $act0 expression] setExpression 1
-    set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t1 act1]
-    [java::field $act1 portName] setExpression p2
-    [java::field $act1 expression] setExpression p1
-    set act2 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t2 act2]
-    [java::field $act2 portName] setExpression p2
-    [java::field $act2 expression] setExpression 0
+    set act0 [java::field $t0 outputActions]
+    $act0 setExpression "p2 = 1"
+    set act1 [java::field $t1 outputActions]
+    $act1 setExpression "p2 = p1"
+    set act2 [java::field $t2 outputActions]
+    $act2 setExpression "p2 = 0"
 
     set e1clone [java::cast ptolemy.actor.TypedCompositeActor \
             [$e1 clone]]

@@ -88,37 +88,9 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="sendTr1Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
-            </property>
-        </property>
-        <property name="sendTr1Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="monitor">
-            </property>
-        </property>
-        <property name="sendTr1Act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
-            </property>
-        </property>
-        <property name="sendTr1Act4" class="ptolemy.domains.fsm.kernel.SetVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="trying">
-            </property>
-        </property>
-        <property name="sendTr1Act5" class="ptolemy.domains.fsm.kernel.SetVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="msg">
-            </property>
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msgIn * 2; monitor = 0; setTimer = 5.0">
+	</property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="trying = true; msg = msgIn">
         </property>
     </relation>
     <relation name="sendTr2" class="ptolemy.domains.fsm.kernel.Transition">
@@ -128,81 +100,29 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="sendTr2Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
-            </property>
-        </property>
-        <property name="sendTr2Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="monitor">
-            </property>
-        </property>
-        <property name="sendTr2Act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
-            </property>
-        </property>
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msg * 2; monitor = 0; setTimer = 5.0">
+	</property>
     </relation>
     <relation name="sendTr3" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : 0) != 0 &amp;&amp; expired_isPresent &amp;&amp; trying">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack != 0 &amp;&amp; expired_isPresent &amp;&amp; trying">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="sendTr3Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
-            </property>
-        </property>
-        <property name="sendTr3Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="monitor">
-            </property>
-        </property>
-        <property name="sendTr3Act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
-            </property>
-        </property>
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msg * 2; monitor = 0; setTimer = 5.0">
+	</property>
     </relation>
     <relation name="sendTr4" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : -1) == 0 &amp;&amp; trying">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack == 0 &amp;&amp; trying">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="sendTr4Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1.0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
-            </property>
-        </property>
-        <property name="sendTr4Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="next">
-            </property>
-        </property>
-        <property name="sendTr4Act3" class="ptolemy.domains.fsm.kernel.SetVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="false">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="trying">
-            </property>
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="setTimer = -1.0; next = true">
+	</property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="trying = false">
         </property>
     </relation>
     <relation name="sendTr5" class="ptolemy.domains.fsm.kernel.Transition">
@@ -212,38 +132,10 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msg * 2 + 1; monitor = 1; setTimer = 5.0">
         </property>
-        <property name="sendTr5Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
-            </property>
-        </property>
-        <property name="sendTr5Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="monitor">
-            </property>
-        </property>
-        <property name="sendTr5Act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
-            </property>
-        </property>
-        <property name="sendTr5Act4" class="ptolemy.domains.fsm.kernel.SetVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="trying">
-            </property>
-        </property>
-        <property name="sendTr5Act5" class="ptolemy.domains.fsm.kernel.SetVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="msg">
-            </property>
-        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="trying = true; msg = msgIn">
+	</property>
     </relation>
     <relation name="sendTr6" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; trying">
@@ -252,82 +144,30 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="sendTr6Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
-            </property>
-        </property>
-        <property name="sendTr6Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="monitor">
-            </property>
-        </property>
-        <property name="sendTr6Act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
-            </property>
-        </property>
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msg * 2 + 1; monitor = 1; setTimer = 5.0">
+	</property>
     </relation>
     <relation name="sendTr7" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : 1) != 1 &amp;&amp; expired_isPresent &amp;&amp; trying">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack != 1 &amp;&amp; expired_isPresent &amp;&amp; trying">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="sendTr7Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
-            </property>
-        </property>
-        <property name="sendTr7Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="monitor">
-            </property>
-        </property>
-        <property name="sendTr7Act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
-            </property>
-        </property>
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msg * 2 + 1; monitor = 1; setTimer = 5.0">
+	</property>
     </relation>
     <relation name="sendTr8" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : -1) == 1 &amp;&amp; trying">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack == 1 &amp;&amp; trying">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="sendTr8Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1.0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
-            </property>
-        </property>
-        <property name="sendTr8Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="next">
-            </property>
-        </property>
-        <property name="sendTr8Act3" class="ptolemy.domains.fsm.kernel.SetVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="false">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="trying">
-            </property>
-        </property>
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="setTimer = -1.0; next = true">
+	</property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="trying = false">
+	</property>
     </relation>
     <link port="S0.incomingPort" relation="sendTr1"/>
     <link port="S0.incomingPort" relation="sendTr2"/>

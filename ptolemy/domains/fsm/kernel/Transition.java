@@ -60,9 +60,10 @@ to a boolean value. The trigger of a transition must be true whenever the
 guard is true. A transition is enabled and can be taken when its guard is true.
 A transition is triggered and must be taken when its trigger is true.
 <p>
-A transition can contain actions.  The simplest way to specify actions
-is to the set the value of the <i>actions</i> parameter.
-The value of this parameter is a string of the form:
+A transition can contain actions. The way to specify actions is to give
+value to the <i>outputActions</i> parameter and the <i>setActions</i>
+parameter.
+The value of these parameters is a string of the form:
 <pre>
      <i>command</i>; <i>command</i>; ...
 </pre>
@@ -70,7 +71,7 @@ where each <i>command</i> has the form:
 <pre>
      <i>destination</i> = <i>expression</i>
 </pre>
-where <i>destination</i> is either
+For the <i>outputActions</i> parameter, <i>destination</i> is either
 <pre>
      <i>portName</i>
 </pre>
@@ -78,38 +79,34 @@ or
 <pre>
      <i>portName</i>(<i>channelNumber</i>)
 </pre>
-or
-<pre>
-     <i>variableName</i>
-</pre>
 Here, <i>portName</i> is the name of a port of the FSM actor,
 If no <i>channelNumber</i> is given, then the value
 is broadcast to all channels of the port.
-Also, <i>variableName</i> is either a variable or parameter of
-the FSM actor, or a variable or parameter of a refinement state.
-To give a variable of a refinement state, use a dotted name,
-as follows:
-<pre>
-     <i>refinementStateName</i>.<i>variableName</i>
-</pre>
-If destination name is given where there is both a port and a variable
-with that name, then the port will be used.
 <p>
+For the <i>setActions</i> parameter, <i>destination</i> is
+<pre>
+     <i>variableName</i>
+</pre>
+<i>variableName</i> identifies either a variable or parameter of
+the FSM actor, or a variable or parameter of the refinement of the
+destination state of the transition. To give a variable of the
+refinement, use a dotted name, as follows:
+<pre>
+     <i>refinementName</i>.<i>variableName</i>
+</pre>
 The <i>expression</i> is a string giving an expression in the usual
-Ptolemy II expression language.  The expression may include references
+Ptolemy II expression language. The expression may include references
 to variables and parameters contained by the FSM actor.
 <p>
-The <i>actions</i> parameter is not the only way to specify actions.
-In fact, you can add action attributes that are instances of any
-class that extends the abstract base class Action.
+The <i>outputActions</i> and <i>setActions</i> parameters are not the only
+ways to specify actions. In fact, you can add action attributes that are
+instances of any class that extends the abstract base class Action.
 (Use the Add button in the Edit Parameters dialog).
-The <i>actions</i> parameter is an instance of CommitActionsAttribute,
-which implements a particular kind of action.
 <p>
-An action is either a ChoiceAction
-or a CommitAction. The <i>actions</i> parameter is a CommitAction.
-A commit action is executed when the transition is taken to change
-the state of the FSM, in the postfire() method of FSMActor.
+An action is either a ChoiceAction or a CommitAction. The <i>setActions</i>
+parameter is a CommitAction, whereas the <i>outputActions</i> parameter is a
+ChoiceAction. A commit action is executed when the transition is taken to
+change the state of the FSM, in the postfire() method of FSMActor.
 A choice action, by contrast, is executed in the fire() method
 of the FSMActor when the transition is chosen, but not yet taken.
 The difference is subtle, and for most domains, irrelevant.
@@ -118,12 +115,16 @@ where the fire() method may be invoked several times before the
 transisition is taken (committed). For such domains, it is useful
 to have actions that implement the ChoiceAction interface.
 Such actions participate in the search for a fixed point, but
-do not change the state of the FSM.  The class OutputActionsAttribute
-implements this interface.
+do not change the state of the FSM.
 <p>
 A transition can be preemptive or non-preemptive. When a preemptive transition
 is chosen, the refinement of its source state is not fired. A non-preemptive
-transition is only chosen after the refinement of its source State is fired.
+transition is only chosen after the refinement of its source state is fired.
+<p>
+The <i>reset</i> parameter specifies whether the refinement of the destination
+state is reset when the transition is taken. There is no reset() method in the
+Actor interface, so the initialize() method of the refinement is called. Please
+note that this feature is still under development.
 
 @author Xiaojun Liu and Edward A. Lee
 @version $Id$
@@ -156,29 +157,43 @@ public class Transition extends ComponentRelation {
         preemptive = new Parameter(this, "preemptive");
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setToken(BooleanToken.FALSE);
+        reset = new Parameter(this, "reset");
+        reset.setTypeEquals(BaseType.BOOLEAN);
+        reset.setToken(BooleanToken.FALSE);
         triggerExpression = new StringAttribute(this, "triggerExpression");
         _guard = new Variable(this, "_guard");
         _guard.setTypeEquals(BaseType.BOOLEAN);
         _trigger = new Variable(this, "_trigger");
         _trigger.setTypeEquals(BaseType.BOOLEAN);
 
-        actions = new CommitActionsAttribute(this, "actions");
+        setActions = new CommitActionsAttribute(this, "setActions");
+	outputActions = new OutputActionsAttribute(this, "outputActions");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The action commands to be taken when the transition is taken.
-     */
-    public CommitActionsAttribute actions;
 
     /** Attribute specifying the guard expression.
      */
     public StringAttribute guardExpression = null;
 
+    /** The action commands that produce outputs when the transition is taken.
+     */
+    public OutputActionsAttribute outputActions;
+
     /** Parameter specifying whether this transition is preemptive.
      */
     public Parameter preemptive = null;
+
+    /** Parameter specifying whether the refinement of the destination
+     *  state is reset when the transition is taken.
+     */
+    public Parameter reset = null;
+
+    /** The action commands that set parameters when the transition is taken.
+     */
+    public CommitActionsAttribute setActions;
 
     /** Attribute specifying the trigger expression.
      */
@@ -207,6 +222,11 @@ public class Transition extends ComponentRelation {
             preemptive.getToken();
             workspace().incrVersion();
         }
+	// The guard and trigger expressions can only be evaluated at run
+	// time, because the input variables they can reference are created
+	// at run time. guardExpression and triggerExpression are string
+	// attributes used to convey expressions without being evaluated.
+	// _guard and _trigger are the variables that do the evaluation.
         if (attribute == guardExpression) {
             String expr = guardExpression.getExpression();
             _guard.setExpression(expr);
@@ -294,6 +314,9 @@ public class Transition extends ComponentRelation {
      */
     public boolean isEnabled() throws IllegalActionException {
         Token tok = _guard.getToken();
+if (tok == null) {
+    System.out.println("transition: " + getFullName() + " enable null");
+}
         return ((BooleanToken)tok).booleanValue();
     }
 

@@ -51,7 +51,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	AbstractActionsAttribute.java \
 	Action.java \
-	BroadcastOutput.java \
 	ChoiceAction.java \
 	CommitAction.java \
 	CommitActionsAttribute.java \
@@ -59,10 +58,6 @@ JSRCS = \
 	FSMDirector.java \
 	HSDirector.java \
 	OutputActionsAttribute.java \
-	ProduceOutput.java \
-	ResetRefinement.java \
-	SetVariable.java \
-	SetRefinementVariable.java \
 	State.java \
 	Transition.java \
 	HDFFSMDirector.java \

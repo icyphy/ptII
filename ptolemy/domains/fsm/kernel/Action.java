@@ -51,12 +51,6 @@ of the actor is committed. The commit actions contained by the transition
 are executed and the current state of the actor is set to the destination
 state of the transition. An action is a commit action if it implements the
 CommitAction marker interface.
-<p>
-An action creates a variable in the transition containing the action. The
-variable can be used by derived classes for expression evaluation. The name
-of the variable is obtained by prepending an underscore to the name of the
-action. The scope of the variable includes all the variables and parameters
-in the FSMActor containing the transition that contains the action.
 
 @author Xiaojun Liu
 @version $Id$
@@ -73,9 +67,7 @@ public abstract class Action extends StringAttribute {
      *  null, or a NullPointerException will be thrown. This action
      *  will use the workspace of the transition for synchronization
      *  and version counts. If the name argument is null, then the
-     *  name is set to the empty string. A variable is created in
-     *  the transition. The name of the variable is obtained by
-     *  prepending an underscore to the name of this action.
+     *  name is set to the empty string.
      *  Increment the version of the workspace.
      *  @param transition The transition.
      *  @param name The name of this action.
@@ -83,33 +75,15 @@ public abstract class Action extends StringAttribute {
      *   acceptable class for the container, or if the name contains
      *   a period.
      *  @exception NameDuplicationException If the transition already
-     *   has an attribute with the name or that obtained by prepending
-     *   an underscore to the name.
+     *   has an attribute with the name.
      */
     public Action(Transition transition, String name)
             throws IllegalActionException, NameDuplicationException {
         super(transition, name);
-        _evalVar = new Variable(transition, "_" + name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Clone the action into the specified workspace by calling the
-     *  base class clone() method. This does not clone the variable
-     *  for expression evaluation. It is cloned when the transition
-     *  containing this action is cloned.
-     *  @param workspace The workspace for the new action.
-     *  @return A new action.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Action newObject = (Action)super.clone(workspace);
-        newObject._evalVar = null;
-        return newObject;
-    }
 
     /** Execute the action.
      *  @exception IllegalActionException If the action cannot be
@@ -117,12 +91,10 @@ public abstract class Action extends StringAttribute {
      */
     abstract public void execute() throws IllegalActionException;
 
-    /** Set the container of this action and make the variable for
-     *  expression evaluation be contained by the proposed container.
-     *  The proposed container must be an instance of Transition or
-     *  null, otherwise an IllegalActionException will be thrown. A
-     *  null argument will remove the action and the variable for
-     *  expression evaluation from their container.
+    /** Set the container of this action. The proposed container must
+     *  be an instance of Transition or null, otherwise an
+     *  IllegalActionException will be thrown. A null argument will
+     *  remove the action from its container.
      *
      *  @param container The proposed container.
      *  @exception IllegalActionException If setting the container
@@ -130,8 +102,7 @@ public abstract class Action extends StringAttribute {
      *   action and container are not in the same workspace, or if the
      *   argument is not an instance of Transition or null.
      *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this action or the variable for
-     *   expression evaluation.
+     *   an attribute with the name of this action.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
@@ -142,75 +113,6 @@ public abstract class Action extends StringAttribute {
                     "Transition.");
         }
         super.setContainer(container);
-        if (_evalVar != null) {
-            _evalVar.setContainer(container);
-        }
     }
-
-    /** Set the name of this action. If a null argument is given the
-     *  name is set to an empty string. Change the name of the variable
-     *  for expression evaluation to that obtained by prepending an
-     *  underscore to the name.
-     *  Increment the version of the workspace.
-     *  This method is write-synchronized on the workspace.
-     *  @param name The new name.
-     *  @exception IllegalActionException If the name contains a period.
-     *  @exception NameDuplicationException If the container of this
-     *   action already contains an attribute with the name or that
-     *   obtained by prepending an underscore to the name.
-     */
-    public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
-        super.setName(name);
-        if (_evalVar != null) {
-            _evalVar.setName("_" + name);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return the variable for expression evaluation. If there is a
-     *  variable in the transition containing this action with name
-     *  obtained by prepending an underscore to the name of this action,
-     *  return that variable. Otherwise create and return a variable
-     *  with the obtained name.
-     *  @return The variable for expression evaluation.
-     */
-    protected Variable _evaluationVariable() {
-        if (_evalVar != null) {
-            return _evalVar;
-        }
-        try {
-            Transition cont = (Transition)getContainer();
-            String vname = "_" + getName();
-            if (cont == null) {
-                // Create the variable for expression evaluation.
-                _evalVar = new Variable(workspace());
-                _evalVar.setName(vname);
-            } else {
-                Attribute attr = cont.getAttribute(vname);
-                if (attr instanceof Variable) {
-                    _evalVar = (Variable)attr;
-                } else {
-                    if (attr != null) {
-                        attr.setContainer(null);
-                    }
-                    _evalVar = new Variable(cont, vname);
-                }
-            }
-        } catch (KernelException ex) {
-            throw new InternalErrorException(getFullName()
-                    + " cannot create variable for expression"
-                    + " evaluation: " + ex.getMessage());
-        }
-        return _evalVar;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The variable for expression evaluation.
-    private Variable _evalVar = null;
 
 }

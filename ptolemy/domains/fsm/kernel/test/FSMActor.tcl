@@ -176,10 +176,9 @@ test FSMActor-6.1 {test action methods} {
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     [java::field $s0 outgoingPort] link $t0
     [java::field $s1 incomingPort] link $t0
-    $t0 setGuardExpression "(p1_0_isPresent ? p1_0 : 0) > 5"
-    set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    [java::field $act0 portName] setExpression p2
-    [java::field $act0 expression] setExpression "p1_0 + 1"
+    $t0 setGuardExpression "p1_0_isPresent && p1_0 > 5"
+    set act0 [java::field $t0 outputActions]
+    $act0 setExpression "p2 = p1_0 + 1"
     set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
     $p1 setInput true
     $p1 setMultiport true
@@ -340,11 +339,7 @@ test FSMActor-9.1 {test working with MoML} {
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="act0" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
-                </property>
-                <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
-                </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
             </property>
         </relation>
         <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
@@ -354,11 +349,7 @@ test FSMActor-9.1 {test working with MoML} {
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
-                </property>
-                <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
-                </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 0">
             </property>
         </relation>
         <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
@@ -368,11 +359,7 @@ test FSMActor-9.1 {test working with MoML} {
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
-                </property>
-                <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
-                </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
             </property>
         </relation>
         <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
@@ -382,11 +369,7 @@ test FSMActor-9.1 {test working with MoML} {
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
-                </property>
-                <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
-                </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 0">
             </property>
         </relation>
         <link port="plusOne.incomingPort" relation="t2"/>
