@@ -54,7 +54,6 @@ JSRCS = \
 	GenericPort.java \
 	GraphElement.java \
 	HasValue.java \
-	InitInterface.java \
 	IntervalTag.java \
 	IntParam.java \
 	MultiPort.java \
