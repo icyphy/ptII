@@ -269,14 +269,14 @@ public class FSMDirector extends Director {
                         actors[i].postfire();
                     }
                 }
+                ctrl._setInputsFromRefinement();       
+                //execute the output actions
+                Iterator actions = tr.choiceActionList().iterator();
+                while (actions.hasNext()) {
+                    Action action = (Action)actions.next();
+                    action.execute();
+                }
             }
-            //execute the output actions
-            Iterator actions = tr.choiceActionList().iterator();
-            while (actions.hasNext()) {
-                Action action = (Action)actions.next();
-                action.execute();
-            }
-            ctrl._setInputsFromRefinement();       
         }
         return;
     }
