@@ -31,6 +31,7 @@
 package ptolemy.actor.util;
 
 import collections.*;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CalendarQueue
@@ -137,18 +138,18 @@ public class CalendarQueue {
 
     /** Return the key associated with the object that's at the head of the
      *  queue (i.e. the one that would be obtained on the next take).
-     *  If the queue is empty, then an IllegalAccessException will be thrown.
+     *  If the queue is empty, then an IllegalActionException will be thrown.
      *
      *  NOTE: due to implementation detail, this method is less efficient
      *  than the similar method getPreviousKey(). Therefore, it is
      *  recommended to use getPreviousKey() whenever possible.
      * @return Object The smallest sort-key in the queue.
-     * @exception IllegalAccessException If invoked when the queue is empty.
+     * @exception IllegalActionException If invoked when the queue is empty.
      */
-    public Object getNextKey() throws IllegalAccessException {
+    public Object getNextKey() throws IllegalActionException {
         // first check if the queue is empty, if it is, return null
         if (_qSize == 0) {
-            throw new IllegalAccessException("Invoking getNextKey() on "+
+            throw new IllegalActionException("Invoking getNextKey() on "+
                     "empty queue is not allowed.");
         }
         // Search buckets starting from index: _minBucket
@@ -251,14 +252,14 @@ public class CalendarQueue {
      *
      * @return The sort key associated with the last entry dequeued by the
      *  take() method.
-     * @exception IllegalAccessException If invoked when the queue is empty.
+     * @exception IllegalActionException If invoked when the queue is empty.
      */
-    public Object getPreviousKey() throws IllegalAccessException {
+    public Object getPreviousKey() throws IllegalActionException {
         // First check if _takenKey == null which means either the last take()
         // threw an exception or take() has never been called. If it is then
         // thrown an exception.
         if (_takenKey == null) {
-            throw new IllegalAccessException("No take() or valid take()" +
+            throw new IllegalActionException("No take() or valid take()" +
                     " precedes this operation");
         }
         return _takenKey;
@@ -441,16 +442,16 @@ public class CalendarQueue {
      *  permitted to be null, this method could return null.
      *  <p>
      *  If this method is called while the queue is empty, then an
-     *  IllegalAccessException is thrown.
+     *  IllegalActionException is thrown.
      * @return The value associated with the smallest key.
-     * @exception IllegalAccessException If invoked when the queue is empty.
+     * @exception IllegalActionException If invoked when the queue is empty.
      */
-    public synchronized Object take() throws IllegalAccessException {
+    public synchronized Object take() throws IllegalActionException {
         // first check if the queue is empty, if it is, return null
         if (_qSize == 0) {
             _takenKey = null;
             _minKey = null;
-            throw new IllegalAccessException("Invoking take() on empty"+
+            throw new IllegalActionException("Invoking take() on empty"+
                     " queue is not allowed.");
         }
 
@@ -609,12 +610,12 @@ public class CalendarQueue {
         for (int i = 0; i < nSamples; ++i) {
             try {
                 sampledData[i] = take();
-            } catch (IllegalAccessException e) {
+            } catch (IllegalActionException e) {
                 // do nothing
             }
             try {
                 sampledKey[i] = getPreviousKey();
-            } catch (IllegalAccessException e) {
+            } catch (IllegalActionException e) {
                 // do nothing
             }
         }
