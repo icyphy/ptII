@@ -30,19 +30,25 @@ package pt.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// Relation
 /** 
-A Relation is an arc in a hierarchical graph.
+A Relation is an arc in a hierarchical graph. Relations serve as a general 
+notion of connection and can be point-to-point connections or nets. 
+<A HREF="pt.kernel.Particles.html#_top_">Particles</A> reside in in Relations 
+during transit. 
 @author John S. Davis, II
 @version $Id$
 */
 public class Relation extends NamedObj {
-    /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** 
      */	
     public Relation() {
+	 super();
+    }
+
+    /** 
+     * @param name The name of the Relation.
+     */	
+    public Relation(String name) {
+	 super(name);
     }
 
     //////////////////////////////////////////////////////////////////////////
