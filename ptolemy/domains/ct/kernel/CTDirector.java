@@ -53,6 +53,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     public static final boolean VERBOSE = true;
     public static final boolean DEBUG = true;
+    public static int NSTEP = 0;
+    public static int NFUNC = 0;
+    public static int NFAIL = 0;
+
 
     /** Construct a CTDirector with no name and no Container.
      *  The default startTime and stopTime are all zeros. There's no

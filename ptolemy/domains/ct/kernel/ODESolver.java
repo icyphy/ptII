@@ -89,6 +89,16 @@ public abstract class ODESolver extends NamedObj {
      */
     public abstract void resolveStates() throws IllegalActionException;
 
+    /** Abstract method for resolveing the next step size if the current
+     *  step is a success.
+     *  Different solver may implement it differently.
+     * 
+     * @exception IllegalActionException Not thrown in this base
+     *  class. May be needed by the derived class.
+     */
+    public abstract void resolveNextStepSize();
+
+
     /** Increase the round counter by one. Round counter is a counter
      *  for the number of fire() rounds in one iteration. Some 
      *  CTActors (like the integrator) may behaves differently under
@@ -153,6 +163,7 @@ public abstract class ODESolver extends NamedObj {
         while(true) {
             resolveStates();
             if(errorTolerable()){
+                resolveNextStepSize();
                 break;
             }
             startOverLastStep();

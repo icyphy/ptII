@@ -141,6 +141,7 @@ public class CTSingleSolverDirector extends CTDirector {
         // set time
         setCurrentTime(getStartTime());
         setSuggestedNextStepSize(getInitialStepSize());
+        fireAfterDelay(null, getStopTime()-getStartTime());
         sch.setValid(false);
         _first = true;
         if (VERBOSE) {
@@ -169,8 +170,11 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception NameDuplicationException If thrown by a contained actor.
      */
     public boolean prefire() throws IllegalActionException {
-         if (VERBOSE) {
+        if (VERBOSE) {
             System.out.println("Director prefire.");
+        }
+        if(DEBUG) {
+            NSTEP++;
         }
         if(!scheduleValid()) {
             // mutation occured, redo the schedule;
@@ -184,7 +188,9 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         updateParameters();
         setCurrentODESolver(_defaultSolver);
-        setCurrentStepSize(getSuggestedNextStepSize());
+        double nearestBP = ((Double)getBreakPoints().first()).doubleValue() -
+                           getCurrentTime();
+        setCurrentStepSize(Math.min(nearestBP, getSuggestedNextStepSize()));
         // prefire all the actors.
         boolean ready = true;
         CompositeActor ca = (CompositeActor) getContainer();
@@ -232,18 +238,31 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
 
-    /** test if the current time is the stop time. 
+    /** Test if the current time is the stop time. 
      *  If so, return false ( for stop further simulaiton).
      *  @return false If the simulation time expires.
      *  @exception IllegalActionException If there is no ODE solver, or
      *        thrown by the solver.
      */
     public boolean postfire() throws IllegalActionException {
-        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()){
+        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {    
             return false;
         }
         return true;
     }
+
+    /** wrapup . Show the statistics.
+     */
+    public void wrapup() throws IllegalActionException{
+        if(DEBUG) {
+            System.out.println("**************STATISTICS***************");
+            System.out.println("Total # of STEPS "+NSTEP);
+            System.out.println("Total # of Function Evaluation "+NFUNC);
+            System.out.println("Total # of Failed Steps "+NFAIL);
+        }
+        super.wrapup();
+    }
+                
 
     /** produce outputs
      *  @exception IllegalActionException If the actor on the output
