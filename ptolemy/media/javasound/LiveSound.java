@@ -248,16 +248,52 @@ public class LiveSound {
         return _channels;
     }
 
-    /** Return the size of the internal capture and playback
-     *  audio buffers, in samples per channel. This parameter
-     *  is set by the setBufferSize() method. The default
-     *  value of this parameter is 4096.
+    /** Return the suggested size of the internal capture and playback audio
+     *  buffers, in samples per channel. This parameter is set by the
+     *  setBufferSize() method.  There is no guarantee that the value returned
+     *  is is the actual buffer size used for capture and playback.
+     *  Furthermore, the buffers used for capture and playback may have
+     *  different sizes.  The default value of this parameter is 4096.
      *
-     *  @return The internal buffer size in samples per
+     *  @return The suggested internal buffer size in samples per
      *   channel.
      */
     public static int getBufferSize() {
         return _bufferSize;
+    }
+
+    /** Return the size of the internal capture audio buffer, in samples per
+     *  channel.
+     *
+     *  @return The internal buffer size in samples per channel.
+     * 
+     *  @exception IllegalStateException If audio capture is inactive.
+     */
+    public static int getBufferSizeCapture() throws IllegalStateException {
+        if (_targetLine != null) {
+            return _targetLine.getBufferSize() * _frameSizeInBytes;
+        } else {
+            throw new IllegalStateException("LiveSound: " + 
+                    "getBufferSizeCapture(), capture is probably inactive." +
+                    "Try to startCapture().");
+        }
+    }
+
+    /** Return the size of the internal playback audio buffer, in samples per
+     *  channel.
+     *
+     *  @return The internal buffer size in samples per channel.
+     * 
+     *  @exception IllegalStateException If audio playback is inactive.
+     */
+    public static int getBufferSizePlayback() {
+        if (_targetLine != null) {
+            return _sourceLine.getBufferSize() * _frameSizeInBytes;
+        } else {
+            throw new IllegalStateException("LiveSound: " + 
+                    "getBufferSizePlayback(), playback is probably inactive." +
+                    "Try to startCapture().");
+        }
     }
 
     /** Return true if audio capture is currently active.
@@ -442,12 +478,12 @@ public class LiveSound {
         }
     }
 
-    /** Set the size of the internal capture and playback
-     *  audio buffers, in samples per channel and notify an
+    /** Request that the internal capture and playback
+     *  audio buffers have bufferSize samples per channel and notify the
      *  registered listeners of the change. If this method
      *  is not invoked, the default value of 4096 is used.
      *
-     *  @param bufferSize The size of the internal capture and
+     *  @param bufferSize The suggested size of the internal capture and
      *   playback audio buffers, in samples per channel.
      *  @exception IOException If the specified number of channels is
      *   not supported by the audio hardware or by Java.
