@@ -651,25 +651,23 @@ public class ProcessDirector extends Director {
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
-    protected synchronized void _informOfReadBlock(ProcessReceiver rcvr,
-    	    boolean internal) {
+    protected synchronized void _actorReadBlocked(boolean internal) {
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
-    protected synchronized void _informOfReadUnBlock(ProcessReceiver rcvr,
-    	    boolean internal) {
+    protected synchronized void _actorReadUnBlocked(boolean internal) {
     }
 
     /** Implementations of this method must be synchronized.
      */
-    protected synchronized void _informOfWriteBlock(ProcessReceiver rcvr) {
+    protected synchronized void _actorWriteBlocked(ProcessReceiver rcvr) {
     }
 
     /** Implementations of this method must be synchronized.
      */
-    protected synchronized void _informOfWriteUnBlock(ProcessReceiver rcvr) {
+    protected synchronized void _actorWriteUnBlocked(ProcessReceiver rcvr) {
     }
 
     ///////////////////////////////////////////////////////////////////
