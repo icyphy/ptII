@@ -31,14 +31,15 @@
 
 ME =		ptolemy/apps
 
-
+# Alphabetical, please:
 # PTKVM_DIR is set to kvm by configure if the kvm runtime was found
 #
 # $PTII/configure looks for the Java Communications API and sets
 # PTLEGO_DIR in $PTII/mk/ptII.mk to lego if the commapi was found.
 #  Otherwise, PTLEGO_DIR is empty
+# PTWABA_DIR is set to waba by configure if waba was found
 #
-DIRS =		 agilent $(PTKVM_DIR) $(PTLEGO_DIR)
+DIRS =		 agilent $(PTKVM_DIR) $(PTLEGO_DIR) $(WABA_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
