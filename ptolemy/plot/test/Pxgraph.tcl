@@ -71,7 +71,7 @@ proc pxgraphTest { args } {
 ######################################################################
 ####
 #
-test Pxgraph-1.1 {} {
+test Pxgraph-1.1 {Test set labeling} {
     global pxgraphfile1 pxgraphfile2
     pxgraphTest  -0 '' -binary ../demo/data/bin.plt
     pxgraphTest  $pxgraphfile1 $pxgraphfile2
@@ -85,15 +85,21 @@ test Pxgraph-1.1 {} {
 
     pxgraphTest  -bar -0 "first data set" -1 "second data set" \
 	    $pxgraphfile1 $pxgraphfile2
+} {}
 
-    # Test out Flags in order
+######################################################################
+####
+#
+test Pxgraph-2.1 {Test out Flags in order} {
     pxgraphTest  $pxgraphfile1
     pxgraphTest  -bar $pxgraphfile1
     pxgraphTest  -bb $pxgraphfile1
+    pxgraphTest  -bigendian ../demo/data/bin.plt
     pxgraphTest  -binary ../demo/data/bin.plt
     pxgraphTest  -bar -binary ../demo/data/bin.plt
     pxgraphTest  -db $pxgraphfile1
-    pxgraphTest -help $pxgraphfile1
+    #pxgraphTest -help $pxgraphfile1
+    pxgraphTest  -littleendian ../demo/data/bin.plt
     pxgraphTest  -lnx $pxgraphfile1
     pxgraphTest  -lny $pxgraphfile1
     pxgraphTest  -m $pxgraphfile1
@@ -107,8 +113,12 @@ test Pxgraph-1.1 {} {
     pxgraphTest  -rv $pxgraphfile1
     pxgraphTest  -tk $pxgraphfile1
     pxgraphTest  -v $pxgraphfile1
+} {}
 
-    # Test out Options in order
+######################################################################
+####
+#
+test Pxgraph-3.1 {Test out Options in order} {
     pxgraphTest  -bd blue $pxgraphfile1
     pxgraphTest  -bg red $pxgraphfile1
     pxgraphTest  -brb 1.0 -bar $pxgraphfile1
@@ -125,19 +135,25 @@ test Pxgraph-1.1 {} {
     pxgraphTest  -zg Yellow $pxgraphfile1
     pxgraphTest  -zw 5 $pxgraphfile1
 
-    file delete -force $pxgraphfile1 $pxgraphfile2
-
     # Test out stdin
     #pxgraphTest  < ../demo/data.plt
-
+} {}
+######################################################################
+####
+#
+test Pxgraph-4.1 {Test out file args} {
     # Test out file args
     pxgraphTest  ../demo/bargraph.plt
     pxgraphTest  http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
+} {}
 
-    # Sample run from Ptolemy
+######################################################################
+####
+#
+test Pxgraph-5.1 {Ptolemy Example} {
     pxgraphTest  -binary -t "Integrator Demo" -P \
 	    -x n =800x400+0+0 -1 control -0 final \
 	    ../demo/data/integrator1.plt demo/data/integrator2.plt
-   
 } {}
 
+file delete -force pxgraphfile1 pxgraphfile2
