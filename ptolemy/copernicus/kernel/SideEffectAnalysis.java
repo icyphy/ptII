@@ -70,12 +70,13 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
      */
     public boolean hasSideEffects(SootMethod method) {
         EffectFlow flow = (EffectFlow)getFlowBefore(method);
+        EffectFlow flow2 = (EffectFlow)getFlowBefore(method);
         if(flow == null) {
             if(_debug) System.out.println(
                     "SideEffectAnalysis: Method not found: " + method);
             return true;
         }
-        return flow.hasEffects();
+        return flow.hasEffects() || flow2.hasEffects();
     }
 
     /** Return true if the given method has any side effects 
@@ -104,15 +105,14 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         EffectFlow out = (EffectFlow)outValue;
         SootMethod method = (SootMethod)d;
  
+
         if(_debug) System.out.println(
                 "SideEffectAnalysis: method = " + method);
-
-        // If the input has unknown side effects, then don't
-        // bother going through all the methods.
-        if(in.hasUnknownSideEffects()) {
-            out.setUnknownSideEffects();
-        }
-
+        if(_debug) System.out.println(
+                "input flow = " + in.effectSet());
+        
+        out.setEffectFlow(in1);
+  
         // A method that is a context class is assumed to have side effects,
         // since we can't get it's method body.  Note that we could do better
         // by handling each method specifically.  
@@ -123,6 +123,9 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
             out.setUnknownSideEffects();
             return;
         }
+
+        if(_debug) System.out.println(
+                "output flow = " + out.hasEffects() + " " + out.effectSet());
         
         // A method has side effects if it sets the values of any fields.
         Body body = method.retrieveActiveBody();
@@ -198,6 +201,9 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                 }
             }
         }
+        if(_debug) System.out.println(
+                "output flow = " + out.hasEffects() + " " + out.effectSet());
+
     }
 
     protected void copy(Object inValue, Object outValue) {
@@ -256,7 +262,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                 // have unknown effects.
                 setUnknownSideEffects();
             } else if(!flow.hasEffects()) {
-                // If the flow have no effects, then we have no
+                // If the flow has no effects, then we have no
                 // change.
                 return;
             } else if(_hasEffects) {
@@ -292,7 +298,12 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
 
         public void setEffectFlow(EffectFlow flow) {
             _hasEffects = flow.hasEffects();
-            _effectSet = flow.effectSet();
+            if(flow.effectSet() == null) {
+                _effectSet = null;
+            } else {
+                _effectSet = new HashSet();
+                _effectSet.addAll(flow.effectSet());
+            }
         }
 
         public void setUnknownSideEffects() {
@@ -301,11 +312,11 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         }
 
         public boolean hasUnknownSideEffects() {
-            return (_hasEffects == true && _effectSet == null);
+            return (_hasEffects && _effectSet == null);
         }
 
         private boolean _hasEffects;
         private Set _effectSet;
     }
-    private boolean _debug = false;
+    private boolean _debug = true;
 }

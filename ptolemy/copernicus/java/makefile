@@ -64,6 +64,7 @@ JSRCS = \
 	Main.java \
 	ModelTransformer.java \
 	NamedObjEliminator.java \
+	NamedObjEqualityEliminator.java \
 	TestApplication.java \
 	TokenConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \
@@ -158,6 +159,7 @@ compileDemo: $(JCLASS)
 		-p wjtp.ttn disabled,debug,targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ts targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.noe targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.nee targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.snapshot1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
 		-p wjtp.snapshot2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
 		-p wjtp.snapshot3 outDir:$(ROOT)/$(TARGETPATH)/jimple3 \

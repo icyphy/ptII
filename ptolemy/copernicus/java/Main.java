@@ -261,9 +261,17 @@ public class Main extends KernelMain {
         // determined.  The generated code ends up with alot of
         // these that are really just dead code (usually from
         // inlining the attributeChanged method).
+        // A general analysis is expensive...  Let's see if we can get away
+        // with a cheaper analysis.
+        //        Scene.v().getPack("wjtp").add(
+        //        new Transform("wjtp.iee", InstanceEqualityEliminator.v()));
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.iee", InstanceEqualityEliminator.v()));
-        
+                new Transform("wjtp.ta",
+                        new TransformerAdapter(TypeAssigner.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.nee",
+                        NamedObjEqualityEliminator.v(_toplevel)));
+
         // Remove casts and instanceof Checks.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.cie",
@@ -306,10 +314,10 @@ public class Main extends KernelMain {
         
         // Remove other useless getFoo() methods.
         // FIXME: This has bugs...
-        // Scene.v().getPack("wjtp").add(
-        //         new Transform("wjtp.smr",
-        //                SideEffectFreeInvocationRemover.v()));
-        
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.smr",
+                        SideEffectFreeInvocationRemover.v()));
+       
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can
         // have access to the result.
@@ -317,12 +325,13 @@ public class Main extends KernelMain {
 
       
         // Remove references to named objects.
-        Scene.v().getPack("wjtp").add(
+        /*Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
                         ExceptionEliminator.v(_toplevel)));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.noe",
-                        NamedObjEliminator.v(_toplevel)));
+          NamedObjEliminator.v(_toplevel)));*/
+        
         // We REALLY need to cleanup here or the code is not correct..
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
@@ -335,9 +344,9 @@ public class Main extends KernelMain {
 
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
         //         TypeSpecializer.v(_toplevel)));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ttn",
-                        TokenToNativeTransformer.v(_toplevel)));
+        //        Scene.v().getPack("wjtp").add(
+        //        new Transform("wjtp.ttn",
+        //                TokenToNativeTransformer.v(_toplevel)));
  
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",

@@ -104,9 +104,10 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         }
     }
 
-    /** Remove any calls to other methods from the given method that have no
-     *  side effects and whose return value is dead.  A method has no side effects
-     *  if it does not assign the value to any fields.
+    /** Remove any calls to other methods from the given method that
+     *  have no side effects and whose return value is dead.  A method
+     *  has no side effects if it does not assign the value to any
+     *  fields.
      */
     public static void _removeSideEffectFreeMethodCalls(SootMethod method,
             InvokeGraph invokeGraph, SideEffectAnalysis analysis) {
@@ -139,22 +140,24 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             }
            
             // Special invokes don't get removed.  This is because
-            // special invokes are used for super method calls.
-            // We really do want to get rid of constructors to objects
-            // that aren't used, but we have to be smarter about the 
-            // whole business (we have to remove the New as well, for instance)
+            // special invokes are used for super method calls.  We
+            // really do want to get rid of constructors to objects
+            // that aren't used, but we have to be smarter about the
+            // whole business (we have to remove the New as well, for
+            // instance)
             if(useValue instanceof VirtualInvokeExpr ||
                useValue instanceof StaticInvokeExpr) {
                 InvokeExpr invokeExpr = (InvokeExpr)useValue;
                   
-                // If any targets of the invocation have side effects, then they
-                // cannot be removed.
+                // If any targets of the invocation have side effects,
+                // then they cannot be removed.
                 boolean removable = true;
                 for(Iterator i = invokeGraph.getTargetsOf(
                         (Stmt)unit).iterator();
                     i.hasNext() && removable;) {
                     
                     SootMethod targetMethod = (SootMethod)i.next();
+                    System.out.println("Checking Target = " + targetMethod);
                     if(analysis.hasSideEffects(targetMethod)) {
                         removable = false;
                     }
