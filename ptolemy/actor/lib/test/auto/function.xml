@@ -2,10 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="function" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
@@ -81,9 +85,9 @@
         </port>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
-        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const={value=&quot;function(a0:int) int&quot;}, Ramp={firingCountLimit=&quot;int&quot;, init=&quot;int&quot;, step=&quot;int&quot;}}">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const={value=&quot;(function(a0:int) int)&quot;}, Ramp={firingCountLimit=&quot;int&quot;, init=&quot;int&quot;, step=&quot;int&quot;}}">
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;function(a0:int) int&quot;, trigger=&quot;unknown&quot;}, Expression={f=&quot;function(a0:int) int&quot;, output=&quot;int&quot;, x=&quot;int&quot;}, Ramp={output=&quot;int&quot;, step=&quot;int&quot;, trigger=&quot;unknown&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;(function(a0:int) int)&quot;, trigger=&quot;unknown&quot;}, Expression={f=&quot;(function(a0:int) int)&quot;, output=&quot;int&quot;, x=&quot;int&quot;}, Ramp={output=&quot;int&quot;, step=&quot;int&quot;, trigger=&quot;unknown&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
