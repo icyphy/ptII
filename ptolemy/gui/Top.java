@@ -153,6 +153,21 @@ public abstract class Top extends JFrame {
         GraphicalMessageHandler.setContext(this);
     }
 
+    /** Return the most recently entered URL in the most recently
+     *	invoked Open URL dialog box.
+     *  Note that each Top has its own last url, this method returns
+     *  the value of the last Open URL dialog.
+     *  If the Open URL menu choice has not yet been invoked, then
+     *  return null.
+     *  @return the most recently entered URL in the most recently
+     *  invoked Open URL dialog box.
+     */
+    public static String getLastOverallURL() {
+	// This method is static so that we can get at it from
+	// MoMLParser.
+	return _lastOverallURL;
+    }
+
     /** Return true if the data associated with this window has been
      *  modified since it was first read or last saved.  This returns
      *  the value set by calls to setModified(), or false if that method
@@ -462,6 +477,7 @@ public abstract class Top extends JFrame {
         ComponentDialog dialog = new ComponentDialog(this, "Open URL", query);
         if (dialog.buttonPressed().equals("OK")) {
             _lastURL = query.stringValue("url");
+	    _lastOverallURL = _lastURL;
             try {
                 URL url = new URL(_lastURL);
                 _read(url);
@@ -619,6 +635,9 @@ public abstract class Top extends JFrame {
 
     // The most recently entered URL in Open URL.
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
+
+    // The most recently entered URL in any Open URL.
+    private static String _lastOverallURL = null;
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
