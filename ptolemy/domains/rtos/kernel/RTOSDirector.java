@@ -36,10 +36,13 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.gui.MessageHandler;
+import ptolemy.gui.CancelException;
 
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// RTOSDirector
@@ -132,7 +135,13 @@ public class RTOSDirector extends DEDirector {
         //FIXME: Should maintain a colletions of Timers and kill them
         //when stopFire() or wrapup is called.
         Timer timer = new Timer();
-        timer.schedule(actorTask, requestTime - System.currentTimeMillis());
+        try {
+            timer.schedule(actorTask, requestTime - 
+                    System.currentTimeMillis());
+        } catch (IllegalArgumentException ex) {
+            _debug("Missed the real time deadline. Still execute the task");
+            actorTask.run();
+        }
     }
         
 
