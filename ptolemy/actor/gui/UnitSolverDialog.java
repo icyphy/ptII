@@ -29,9 +29,12 @@
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
@@ -40,6 +43,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -129,16 +133,18 @@ public class UnitSolverDialog
             _relations = new Vector();
         }
 
-        JPanel solversPanel = new JPanel();
-        solversPanel.setLayout(new BoxLayout(solversPanel, BoxLayout.Y_AXIS));
-        solversPanel.setBorder(
+        JPanel fullSolverPanel = new JPanel();
+        fullSolverPanel.setLayout(
+            new BoxLayout(fullSolverPanel, BoxLayout.Y_AXIS));
+        fullSolverPanel.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Solvers"),
+                BorderFactory.createTitledBorder("Full Solver"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        solversPanel.add(_partialSolverButton);
-        _partialSolverButton.addActionListener(this);
-        solversPanel.add(_completeSolverButton);
-        _completeSolverButton.addActionListener(this);
+        _runFullSolverButton.addActionListener(this);
+        fullSolverPanel.add(_runFullSolverButton);
+        _fullSolutionResult.setOpaque(true);
+        _fullSolutionResult.setBackground(Color.white);
+        fullSolverPanel.add(_fullSolutionResult);
 
         JPanel membersPanel = new JPanel();
         membersPanel.setLayout(new BoxLayout(membersPanel, BoxLayout.Y_AXIS));
@@ -146,39 +152,37 @@ public class UnitSolverDialog
             BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Members"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        membersPanel.add(_addSelectedButton);
-        _addSelectedButton.addActionListener(this);
-        membersPanel.add(_removeSelected);
-        _removeSelected.addActionListener(this);
+        _setToSelected.setEnabled(false);
+        membersPanel.add(_setToSelected);
+        _setToSelected.addActionListener(this);
         membersPanel.add(_showMembers);
         _showMembers.addActionListener(this);
 
-        JPanel setupPanel = new JPanel();
-        setupPanel.setLayout(new BoxLayout(setupPanel, BoxLayout.X_AXIS));
-        setupPanel.add(solversPanel);
-        setupPanel.add(membersPanel);
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+        topPanel.add(fullSolverPanel);
+        topPanel.add(membersPanel);
 
-        JPanel solutionsPanel = new JPanel(new BorderLayout());
-        solutionsPanel.setBorder(
+        JPanel minimalSpanPanel = new JPanel(new BorderLayout());
+        minimalSpanPanel.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Solutions"),
+                BorderFactory.createTitledBorder("Minimal Spanning Solver"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        minimalSpanPanel.add(_runMinimalSpanSolverButton, BorderLayout.NORTH);
+        _runMinimalSpanSolverButton.addActionListener(this);
         _solutionsListModel = new SolutionListModel();
         _solutionsList = new JList(_solutionsListModel);
         _solutionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         _solutionsList.addListSelectionListener(this);
         JScrollPane scrollPane = new JScrollPane(_solutionsList);
-        solutionsPanel.add(scrollPane, BorderLayout.CENTER);
+        minimalSpanPanel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel mainPane = new JPanel();
         mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.Y_AXIS));
-        mainPane.add(setupPanel);
-        mainPane.add(solutionsPanel);
+        mainPane.add(topPanel);
+        mainPane.add(minimalSpanPanel);
         setContents(mainPane);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -189,18 +193,18 @@ public class UnitSolverDialog
     // isn't meant to be invoked by the developer there is no javadoc.
     public void actionPerformed(ActionEvent aEvent) {
         String command = aEvent.getActionCommand();
-        if (aEvent.getSource() == _partialSolverButton) {
+        if (aEvent.getSource() == _runMinimalSpanSolverButton) {
             _uConstraints = new UnitConstraints(_model, _entities, _relations);
-            _solutions = _uConstraints.partialSolve();
+            _solutions = _uConstraints.minimalSpanSolution();
             _solutionsListModel.setSolutions(_solutions);
-        } else if (aEvent.getSource() == _completeSolverButton) {
+            _solutionsList.setModel(_solutionsListModel);
+        } else if (aEvent.getSource() == _runFullSolverButton) {
+            _solutionsList.clearSelection();
             _uConstraints = new UnitConstraints(_model, _entities, _relations);
-            _solutions = _uConstraints.completeSolve();
-            _solutionsListModel.setSolutions(_solutions);
-        } else if (aEvent.getSource() == _addSelectedButton) {
-            _addSelectedMembers();
-        } else if (aEvent.getSource() == _removeSelected) {
-            _removeSelectedMembers();
+            Solver solution = _uConstraints.completeSolve();
+            _fullSolutionResult.setText(solution.getStateDesc());
+        } else if (aEvent.getSource() == _setToSelected) {
+            _setSelectedMembers();
         } else if (aEvent.getSource() == _showMembers) {
             _showMembers();
         } else {
@@ -209,51 +213,26 @@ public class UnitSolverDialog
     }
 
     /* (non-Javadoc)
-     * @see diva.canvas.interactor.SelectionListener#selectionChanged(diva.canvas.interactor.SelectionEvent)
+     * @see diva.canvas.interactor
+     *                 .SelectionListener#selectionChanged(SelectionEvent)
      */
     public void selectionChanged(SelectionEvent e) {
-        Iterator added = e.getSelectionAdditions();
-        if (!added.hasNext()) {
-            _addSelectedButton.setEnabled(false);
-            _removeSelected.setEnabled(false);
-        } else {
-            Vector entities = _getSelectedNodes();
-            Vector relations = _getSelectedRelations();
-            boolean intersect = false;
-            boolean contains = true;
-            for (int i = 0; i < entities.size(); i++) {
-                if (_entities.contains(entities.elementAt(i))) {
-                    intersect = true;
-                } else {
-                    contains = false;
-                }
-            }
-            for (int i = 0; i < relations.size(); i++) {
-                if (_relations.contains(relations.elementAt(i))) {
-                    intersect = true;
-                } else {
-                    contains = false;
-                }
-            }
-            if (intersect) {
-                _removeSelected.setEnabled(true);
-            }
-            if (!contains) {
-                _addSelectedButton.setEnabled(true);
-            }
-        }
+        _setToSelected.setEnabled(true);
     }
 
     /* (non-Javadoc)
-     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     * @see javax.swing.event
+     *               .ListSelectionListener#valueChanged(ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting())
             return;
         int index = _solutionsList.getSelectedIndex();
-        Solver solution = (Solver) (_solutions.elementAt(index));
-        _showMembers();
-        solution.annotateGraph();
+        if (index >= 0) {
+            _showMembers();
+            Solver solution = (Solver) (_solutions.elementAt(index));
+            solution.annotateGraph();
+        }
     }
 
     public class SolutionListModel extends AbstractListModel {
@@ -269,6 +248,9 @@ public class UnitSolverDialog
             _solutions = s;
             fireContentsChanged(this, 0, _solutions.size());
         }
+        public void clear() {
+            _solutions = new Vector();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -280,9 +262,16 @@ public class UnitSolverDialog
     }
 
     /* (non-Javadoc)
-     * @see ptolemy.actor.gui.PtolemyDialog#_createExtendedButtons(javax.swing.JPanel)
+     * @see ptolemy.actor.gui.PtolemyDialog#_createExtendedButtons(JPanel)
      */
     protected void _createExtendedButtons(JPanel _buttons) {
+    }
+
+    protected URL _getHelpURL() {
+        URL helpURL =
+            getClass().getClassLoader().getResource(
+                "ptolemy/actor/gui/doc/unitConstraintsSolver.htm");
+        return helpURL;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -290,24 +279,6 @@ public class UnitSolverDialog
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /**
-     *
-     */
-    private void _addSelectedMembers() {
-        Vector entities = _getSelectedNodes();
-        Vector relations = _getSelectedRelations();
-        for (int i = 0; i < entities.size(); i++) {
-            if (!_entities.contains(entities.elementAt(i))) {
-                _entities.add(entities.elementAt(i));
-            }
-        }
-        for (int i = 0; i < relations.size(); i++) {
-            if (!_relations.contains(relations.elementAt(i))) {
-                _relations.add(relations.elementAt(i));
-            }
-        }
-    }
 
     /** Create a Vector of selected odes in a Tableau. This method really
      *  belongs elsewhere and will be moved there at some point.
@@ -360,24 +331,23 @@ public class UnitSolverDialog
     /**
      *
      */
-    private void _removeSelectedMembers() {
+    private void _setSelectedMembers() {
         Vector entities = _getSelectedNodes();
         Vector relations = _getSelectedRelations();
+        _entities = new Vector();
+        _relations = new Vector();
         for (int i = 0; i < entities.size(); i++) {
-            if (_entities.contains(entities.elementAt(i))) {
-                _entities.remove(entities.elementAt(i));
-            }
+            _entities.add(entities.elementAt(i));
         }
         for (int i = 0; i < relations.size(); i++) {
-            if (_relations.contains(relations.elementAt(i))) {
-                _relations.remove(relations.elementAt(i));
-            }
+            _relations.add(relations.elementAt(i));
         }
+        _setToSelected.setEnabled(false);
     }
 
     /**
-     *
-     */
+    *
+    */
     private void _showMembers() {
         _selectionModel.clearSelection();
         Iterator nodes = _graphModel.nodes(_model);
@@ -484,10 +454,10 @@ public class UnitSolverDialog
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    JButton _addSelectedButton = new JButton("Add Selected");
     GraphController _controller = null;
     Vector _entities = null;
-    JButton _removeSelected = new JButton("Remove Selected");
+    JLabel _fullSolutionResult = new JLabel("Not Run");
+    JButton _setToSelected = new JButton("Set To Selected");
     JButton _showMembers = new JButton("Show Members");
     TypedCompositeActor _model = null;
     SelectionModel _selectionModel = null;
@@ -496,8 +466,8 @@ public class UnitSolverDialog
     Vector _solutions = new Vector();
     JList _solutionsList = null;
     SolutionListModel _solutionsListModel = null;
-    JButton _partialSolverButton = new JButton("Partial");
-    JButton _completeSolverButton = new JButton("Complete");
+    JButton _runMinimalSpanSolverButton = new JButton("Run");
+    JButton _runFullSolverButton = new JButton("Run");
     Tableau _tableau = null;
     UnitConstraints _uConstraints = null;
 

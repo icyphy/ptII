@@ -31,6 +31,7 @@ package ptolemy.actor.gui;
 
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.net.URL;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
@@ -99,14 +100,14 @@ public class UnitConstraintsDialog
             for (int i = 0; i < _constraintExpressions.size(); i++) {
                 UnitEquation uEq =
                     (UnitEquation) (_constraintExpressions.get(i));
-                String commonDesc = uEq.commonDesc();
+                String commonDesc = uEq.commonExpression();
                 System.out.println("_constraint " + commonDesc);
                 _constraintExpression.add(commonDesc);
             }
         }
         _unitsTable = new JTable();
         _unitsTable.setPreferredScrollableViewportSize(new Dimension(500, 70));
-        setContents(_unitsTable);
+        setScrollableContents(_unitsTable);
         ListSelectionModel rowSM = _unitsTable.getSelectionModel();
         rowSM.addListSelectionListener(_rowSelectionListener);
         // Create the TableModel and set certain cell editors and renderers
@@ -230,6 +231,13 @@ public class UnitConstraintsDialog
 
     protected void _enableApplyButton(boolean e) {
         _applyButton.setEnabled(e);
+    }
+
+    protected URL _getHelpURL() {
+        URL helpURL =
+            getClass().getClassLoader().getResource(
+                "ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
+        return helpURL;
     }
 
     // The button semantics are

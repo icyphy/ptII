@@ -54,7 +54,11 @@ OTHER_FILES_TO_BE_JARED = \
 	portDialog.htm \
 	portConfigurerDialog.htm \
 	portConfigurerDialog1.gif \
-	portConfigurerDialog2.gif
+	portConfigurerDialog2.gif \
+	unitConstraintsDialog.htm \
+	unitConstraintsDialog1.gif \
+	unitConstraintsSolver.htm \
+	unitConstraintsSolver1.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
