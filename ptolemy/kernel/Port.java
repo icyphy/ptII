@@ -69,10 +69,14 @@ public class Port extends NamedObj {
      */
     public Port() {
 	super();
-        // Ignore exception because "this" cannot be null.
         try {
             _relationsList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {}
+        } catch (IllegalActionException ex) {
+            // Should not be thrown because "this" cannot be null.
+            throw new InternalErrorException(
+                "Internal error in Port constructor!"
+                + ex.getMessage());
+        }
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -85,10 +89,14 @@ public class Port extends NamedObj {
      */
     public Port(Workspace workspace) {
 	super(workspace, "");
-        // Ignore exception because "this" cannot be null.
         try {
             _relationsList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {}
+        } catch (IllegalActionException ex) {
+            // Should not be thrown because "this" cannot be null.
+            throw new InternalErrorException(
+                "Internal error in Port constructor!"
+                + ex.getMessage());
+        }
     }
 
     /** Construct a port with the given name contained by the specified
@@ -110,27 +118,39 @@ public class Port extends NamedObj {
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
-        // Ignore exception because "this" cannot be null.
         try {
             _relationsList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {}
+        } catch (IllegalActionException ex) {
+            // Should not be thrown because "this" cannot be null.
+            throw new InternalErrorException(
+                "Internal error in Port constructor!"
+                + ex.getMessage());
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object into the specified workspace and list the clone
-     *  in the directory of that workspace.
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
      *  The result is a new port with no connections and no container.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      *  @return A new Port.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        // NOTE: It is not actually necessary to override the base class
-        // method, but we do it anyway so that the exact behavior of this
-        // method is documented with the class.
-        return super.clone(ws);
+        Port newobj = (Port)super.clone(ws);
+        try {
+            newobj._relationsList = new CrossRefList(newobj);
+        } catch (IllegalActionException ex) {
+            // This exception should not occur because newobj is not null.
+            throw new InternalErrorException(
+                "Internal error in Port clone() method!"
+                + ex.getMessage());
+        }
+        newobj._container = null;
+        return newobj;
     }
 
     /** Enumerate the connected ports.  Note that a port may be listed
@@ -140,7 +160,7 @@ public class Port extends NamedObj {
      */
     public Enumeration connectedPorts() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             LinkedList result = new LinkedList();
             Enumeration relations = linkedRelations();
             while (relations.hasMoreElements()) {
@@ -166,7 +186,7 @@ public class Port extends NamedObj {
      */
     public Nameable getContainer() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return _container;
         } finally {
             workspace().doneReading();
@@ -179,7 +199,7 @@ public class Port extends NamedObj {
      */
     public boolean isLinked(Relation r) {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return _relationsList.isLinked(r);
         } finally {
             workspace().doneReading();
@@ -193,7 +213,7 @@ public class Port extends NamedObj {
      */
     public Enumeration linkedRelations() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return _relationsList.getLinks();
         } finally {
             workspace().doneReading();
@@ -226,7 +246,7 @@ public class Port extends NamedObj {
                     "Cannot link because workspaces are different.");
         }
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             Nameable container = getContainer();
             if (container != null) {
                 if (container.getContainer() != relation.getContainer()) {
@@ -246,7 +266,7 @@ public class Port extends NamedObj {
      */
     public int numLinks() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return _relationsList.size();
         } finally {
             workspace().doneReading();
@@ -282,7 +302,7 @@ public class Port extends NamedObj {
                     "Cannot set container because workspaces are different.");
         }
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             Entity prevcontainer = (Entity)getContainer();
             if (prevcontainer == entity) return;
             // Do this first, because it may throw an exception.
@@ -312,7 +332,7 @@ public class Port extends NamedObj {
      */
     public void unlink(Relation relation) {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             _relationsList.unlink(relation);
         } finally {
             workspace().doneWriting();
@@ -325,7 +345,7 @@ public class Port extends NamedObj {
      */
     public void unlinkAll() {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             _relationsList.unlinkAll();
             workspace().incrVersion();
         } finally {
@@ -336,36 +356,32 @@ public class Port extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Clear references that are not valid in a cloned object.  The clone()
-     *  method makes a field-by-field copy, which results
-     *  in invalid references to objects.
-     *  In this class, this method resets the private members _relationsList
-     *  and _container.
-     *  @param ws The workspace the cloned object is to be placed in.
-     */
-    protected void _clearAndSetWorkspace(Workspace ws) {
-        super._clearAndSetWorkspace(ws);
-        // Ignore exception because "this" cannot be null.
-        try {
-            _relationsList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {}
-        _container = null;
-    }
-
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.  Lines are indented according to
-     *  to the level argument using the protected method _indent().
+     *  defined in the NamedObj class.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is speicified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
      *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int detail, int indent) {
+    protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().read();
-            String result = super._description(detail, indent);
+            workspace().getReadAccess();
+            String result;
+            if (bracket == 1 || bracket == 2) {
+                result = super._description(detail, indent, 1);
+            } else {
+                result = super._description(detail, indent, 0);
+            }
             if ((detail & LINKS) != 0) {
-                if (result.length() > 0) {
+                if (result.trim().length() > 0) {
                     result += " ";
                 }
                 // To avoid infinite loop, turn off the LINKS flag
@@ -375,11 +391,11 @@ public class Port extends NamedObj {
                 Enumeration enum = linkedRelations();
                 while (enum.hasMoreElements()) {
                     Relation rel = (Relation)enum.nextElement();
-                    result = result +
-                        rel._description(detail, indent+1) + "\n";
+                    result += rel._description(detail, indent+1, 2) + "\n";
                 }
-                result = result + _indent(indent) + "}";
+                result += _getIndentPrefix(indent) + "}";
             }
+            if (bracket == 2) result += "}";
             return result;
         } finally {
             workspace().doneReading();

@@ -134,8 +134,9 @@ public class CompositeEntity extends ComponentEntity {
         _levelCrossingConnectAllowed = boole;
     }
 
-    /** Clone the object into the specified workspace and add the clone
-     *  to the directory of that workspace.
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
      *  NOTE: This will not work if there are level-crossing transitions.
      *  The result is an entity with clones of the ports of the original
      *  entity, the contained entities, and the contained relations.
@@ -149,6 +150,9 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CompositeEntity newentity = (CompositeEntity)super.clone(ws);
+
+        newentity._containedEntities = new NamedList(newentity);
+        newentity._containedRelations = new NamedList(newentity);
 
         // Clone the contained relations.
         Enumeration relations = getRelations();
@@ -237,11 +241,13 @@ public class CompositeEntity extends ComponentEntity {
      */
     public ComponentRelation connect(ComponentPort port1, ComponentPort port2)
             throws IllegalActionException {
-        // Catch and ignore duplicate name exception.  Not thrown.
         try {
             return connect(port1, port2, _uniqueRelationName());
         } catch (NameDuplicationException ex) {
-            return null;
+            // This exception should not be thrown.
+            throw new InternalErrorException(
+                "Internal error in ComponentRelation connect() method!"
+                + ex.getMessage());
         }
     }
 
@@ -276,7 +282,7 @@ public class CompositeEntity extends ComponentEntity {
                     "Cannot connect ports because workspaces are different.");
         }
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             ComponentRelation ar = newRelation(relationname);
             if (_levelCrossingConnectAllowed) {
                 port1.liberalLink(ar);
@@ -308,7 +314,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Enumeration deepGetEntities() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             Enumeration enum = _containedEntities.getElements();
             // Construct a linked list and then return an enumeration of it.
             LinkedList result = new LinkedList();
@@ -335,7 +341,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public ComponentEntity getEntity(String name) {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return (ComponentEntity)_containedEntities.get(name);
         } finally {
             workspace().doneReading();
@@ -352,7 +358,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Enumeration getEntities() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             // Copy the list so we can create a static enumeration.
             NamedList entitiesCopy = new NamedList(_containedEntities);
             Enumeration entities = entitiesCopy.getElements();
@@ -369,7 +375,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public ComponentRelation getRelation(String name) {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return (ComponentRelation)_containedRelations.get(name);
         } finally {
             workspace().doneReading();
@@ -385,7 +391,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Enumeration getRelations() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             // Copy the list so we can create a static enumeration.
             NamedList relationsCopy = new NamedList(_containedRelations);
             Enumeration relations = relationsCopy.getElements();
@@ -419,7 +425,7 @@ public class CompositeEntity extends ComponentEntity {
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             ComponentRelation rel = new ComponentRelation(this, name);
             return rel;
         } finally {
@@ -433,7 +439,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public int numEntities() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return _containedEntities.size();
         } finally {
             workspace().doneReading();
@@ -446,7 +452,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public int numRelations() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return _containedRelations.size();
         } finally {
             workspace().doneReading();
@@ -460,7 +466,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public void removeAllEntities() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             // Have to copy list to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this due to a bug in
             // NamedList?
@@ -473,7 +479,11 @@ public class CompositeEntity extends ComponentEntity {
                 try {
                     entity.setContainer(null);
                 } catch (KernelException ex) {
-                    // Ignore exceptions that can't occur.
+                    // This exception should not be thrown.
+                    throw new InternalErrorException(
+                        "Internal error in ComponentRelation "
+                        + "removeAllEntities() method!"
+                        + ex.getMessage());
                 }
             }
         } finally {
@@ -488,7 +498,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public void removeAllRelations() {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             // Have to copy list to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this due to a bug in
             // NamedList?
@@ -501,7 +511,11 @@ public class CompositeEntity extends ComponentEntity {
                 try {
                     relation.setContainer(null);
                 } catch (KernelException ex) {
-                    // Ignore exceptions that can't occur.
+                    // This exception should not be thrown.
+                    throw new InternalErrorException(
+                        "Internal error in ComponentRelation "
+                        + "removeAllRelations() method!"
+                        + ex.getMessage());
                 }
             }
         } finally {
@@ -553,33 +567,32 @@ public class CompositeEntity extends ComponentEntity {
         _containedRelations.append(relation);
     }
 
-    /** Clear references that are not valid in a cloned object.  The clone()
-     *  method makes a field-by-field copy, which results
-     *  in invalid references to objects.
-     *  In this class, this method resets the private members
-     *  _containedEntities and _containedRelations.
-     *  @param ws The workspace the cloned object is to be placed in.
-     */
-    protected void _clearAndSetWorkspace(Workspace ws) {
-        super._clearAndSetWorkspace(ws);
-        _containedEntities = new NamedList();
-        _containedRelations = new NamedList();
-    }
-
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.  Lines are indented according to
-     *  to the level argument using the protected method _indent().
+     *  defined in the NamedObj class.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is speicified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
      *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int detail, int indent){
+    protected String _description(int detail, int indent, int bracket){
         try {
-            workspace().read();
-            String result = super._description(detail, indent);
+            workspace().getReadAccess();
+            String result;
+            if (bracket == 1 || bracket == 2) {
+                result = super._description(detail, indent, 1);
+            } else {
+                result = super._description(detail, indent, 0);
+            }
             if ((detail & CONTENTS) != 0) {
-                if (result.length() > 0) {
+                if (result.trim().length() > 0) {
                     result += " ";
                 }
                 result += "entities {\n";
@@ -587,18 +600,18 @@ public class CompositeEntity extends ComponentEntity {
                 while (enume.hasMoreElements()) {
                     ComponentEntity entity =
                         (ComponentEntity)enume.nextElement();
-                    result = result +
-                        entity._description(detail, indent+1) + "\n";
+                    result +=
+                            entity._description(detail, indent+1, 2) + "\n";
                 }
-                result = result + _indent(indent) + "} relations {\n";
+                result += _getIndentPrefix(indent) + "} relations {\n";
                 Enumeration enum = getRelations();
                 while (enum.hasMoreElements()) {
                     Relation relation = (Relation)enum.nextElement();
-                    result = result +
-                        relation._description(detail, indent+1) + "\n";
+                    result += relation._description(detail, indent+1, 2) + "\n";
                 }
-                result = result + _indent(indent) + "}";
+                result += _getIndentPrefix(indent) + "}";
             }
+            if (bracket == 2) result += "}";
             return result;
         } finally {
             workspace().doneReading();
@@ -666,10 +679,10 @@ public class CompositeEntity extends ComponentEntity {
     ////                         private variables                        ////
 
     // List of contained entities.
-    private NamedList _containedEntities = new NamedList();
+    private NamedList _containedEntities = new NamedList(this);
 
     // List of contained ports.
-    private NamedList _containedRelations = new NamedList();
+    private NamedList _containedRelations = new NamedList(this);
 
     // Count of automatic names generated for entities and relations.
     private int _entitynamecount = 0;

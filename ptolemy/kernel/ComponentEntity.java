@@ -94,7 +94,7 @@ public class ComponentEntity extends Entity {
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             container._addEntity(this);
             // "super" call above puts this on the workspace list. Remove it.
             workspace().remove(this);
@@ -107,8 +107,9 @@ public class ComponentEntity extends Entity {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object into the specified workspace and add the clone to
-     *  the directory of that workspace.
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
      *  The result is a new entity with the same ports as the original, but
      *  no connections.
      *  @param ws The workspace in which to place the cloned object.
@@ -117,10 +118,9 @@ public class ComponentEntity extends Entity {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        // NOTE: It is not actually necessary to override the base class
-        // method, but we do it anyway so that the exact behavior of this
-        // method is documented with the class.
-        return super.clone(ws);
+        ComponentEntity newobj = (ComponentEntity)super.clone(ws);
+        newobj._container = null;
+        return newobj;
     }
 
     /** Get the container entity.
@@ -159,7 +159,7 @@ public class ComponentEntity extends Entity {
     public Port newPort(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             Port port = new ComponentPort(this, name);
             return port;
         } finally {
@@ -197,7 +197,7 @@ public class ComponentEntity extends Entity {
                     "Cannot set container because workspaces are different.");
         }
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             // NOTE: The following code is quite tricky.  It is very careful
             // to leave a consistent state even in the face of unexpected
             // exceptions.  Be very careful if modifying it.
@@ -257,17 +257,6 @@ public class ComponentEntity extends Entity {
                     "Incompatible port class for this entity.");
         }
         super._addPort(port);
-    }
-
-    /** Clear references that are not valid in a cloned object.  The clone()
-     *  method makes a field-by-field copy, which results
-     *  in invalid references to objects.
-     *  In this class, this method resets the private member _container.
-     *  @param ws The workspace the cloned object is to be placed in.
-     */
-    protected void _clearAndSetWorkspace(Workspace ws) {
-        super._clearAndSetWorkspace(ws);
-        _container = null;
     }
 
     /////////////////////////////////////////////////////////////////////////

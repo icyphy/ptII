@@ -102,7 +102,7 @@ public class ComponentRelation extends Relation {
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             container._addRelation(this);
             // "super" call above puts this on the workspace list.  Remove it.
             workspace().remove(this);
@@ -116,18 +116,18 @@ public class ComponentRelation extends Relation {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object into the specified workspace and add the clone to
-     *  the directory of that workspace.
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
      *  The result is a new relation with no links and no container.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      *  @return A new ComponentRelation.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        // NOTE: It is not actually necessary to override the base class
-        // method, but we do it anyway so that the exact behavior of this
-        // method is documented with the class.
-        return super.clone(ws);
+        ComponentRelation newobj = (ComponentRelation)super.clone(ws);
+        newobj._container = null;
+        return newobj;
     }
 
     /** Deeply enumerate the ports linked to this relation. Look through
@@ -137,7 +137,7 @@ public class ComponentRelation extends Relation {
      */
     public Enumeration deepLinkedPorts() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             if (_deeplinkedportsversion == workspace().getVersion()) {
                 // Cache is valid.  Use it.
                 return _deeplinkedports.elements();
@@ -205,7 +205,7 @@ public class ComponentRelation extends Relation {
                     "Cannot set container because workspaces are different.");
         }
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             CompositeEntity prevcontainer = (CompositeEntity)getContainer();
             if (prevcontainer == container) return;
             // Do this first, because it may throw an exception.
@@ -241,18 +241,6 @@ public class ComponentRelation extends Relation {
             throw new IllegalActionException(this, port,
                     "ComponentRelation can only link to a ComponentPort.");
         }
-    }
-
-    /** Clear references that are not valid in a cloned object.  The clone()
-     *  method makes a field-by-field copy, which results
-     *  in invalid references to objects.
-     *  In this class, this method reinitializes the private member
-     *  _container.
-     *  @param ws The workspace the cloned object is to be placed in.
-     */
-    protected void _clearAndSetWorkspace(Workspace ws) {
-        super._clearAndSetWorkspace(ws);
-        _container = null;
     }
 
     /////////////////////////////////////////////////////////////////////////

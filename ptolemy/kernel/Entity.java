@@ -108,8 +108,9 @@ public class Entity extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object into the specified workspace and list the clone
-     *  in the directory of that workspace.
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
      *  The result is a new entity with clones of the ports of the original
      *  entity.  The ports are not connected to anything.
      *  @param ws The workspace in which to place the cloned object.
@@ -119,6 +120,7 @@ public class Entity extends NamedObj {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Entity newentity = (Entity)super.clone(ws);
+        newentity._portList = new NamedList(newentity);
         // Clone the ports.
         Enumeration ports = getPorts();
         while (ports.hasMoreElements()) {
@@ -126,11 +128,12 @@ public class Entity extends NamedObj {
             Port newport = (Port)port.clone(ws);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally (the original was successfully
-            // incorporated, so this one should be too).  If they do, throw a
+            // incorporated, so this one should be too).  If they do, throw an
             // InvalidStateException.
             try {
                 newport.setContainer(newentity);
             } catch (KernelException ex) {
+                ws.remove(newentity);
                 throw new InvalidStateException(this,
                         "Failed to clone an Entity: " + ex.getMessage());
             }
@@ -149,7 +152,7 @@ public class Entity extends NamedObj {
      */
     public Enumeration connectedPorts() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             // This works by constructing a linked list and then enumerating it.
             // While this may seem costly, it means that the returned
             // enumeration is robust.  It will not be corrupted by changes
@@ -180,7 +183,7 @@ public class Entity extends NamedObj {
      */
     public Port getPort(String name) {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return (Port)_portList.get(name);
         } finally {
             workspace().doneReading();
@@ -194,7 +197,7 @@ public class Entity extends NamedObj {
      */
     public Enumeration getPorts() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return _portList.getElements();
         } finally {
             workspace().doneReading();
@@ -208,7 +211,7 @@ public class Entity extends NamedObj {
      */
     public Enumeration linkedRelations() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             // This method constructs a list and then enumerates it.
             // The list is cached for efficiency.
             if (workspace().getVersion() != _linkedrelationsversion) {
@@ -245,7 +248,7 @@ public class Entity extends NamedObj {
     public Port newPort(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             Port port = new Port(this, name);
             return port;
         } finally {
@@ -260,7 +263,7 @@ public class Entity extends NamedObj {
      */
     public void removeAllPorts() {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             // Have to copy _portList to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this a bug in in NamedList?
             NamedList portListCopy = new NamedList(_portList);
@@ -271,7 +274,10 @@ public class Entity extends NamedObj {
                 try {
                     port.setContainer(null);
                 } catch (KernelException ex) {
-                    // Ignore exceptions that can't occur.
+                    // Should not be thrown.
+                    throw new InternalErrorException(
+                        "Internal error in Port constructor!"
+                        + ex.getMessage());
                 }
             }
         } finally {
@@ -303,43 +309,43 @@ public class Entity extends NamedObj {
         _portList.append(port);
     }
 
-    /** Clear references that are not valid in a cloned object.  The clone()
-     *  method in Object makes a field-by-field copy, which results
-     *  in invalid references to objects.
-     *  In this class, this method reinitializes the private member
-     *  _portList.
-     *  @param ws The workspace the cloned object is to be placed in.
-     */
-    protected void _clearAndSetWorkspace(Workspace ws) {
-        super._clearAndSetWorkspace(ws);
-        _portList = new NamedList(this);
-    }
-
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.  Lines are indented according to
-     *  to the level argument using the protected method _indent().
+     *  defined in the NamedObj class.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is speicified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
      *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int detail, int indent) {
+    protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().read();
-            String result = super._description(detail, indent);
+            workspace().getReadAccess();
+            String result;
+            if (bracket == 1 || bracket == 2) {
+                result = super._description(detail, indent, 1);
+            } else {
+                result = super._description(detail, indent, 0);
+            }
             if ((detail & CONTENTS) != 0 || (detail & LINKS) != 0) {
-                if (result.length() > 0) {
+                if (result.trim().length() > 0) {
                     result += " ";
                 }
                 result += "ports {\n";
                 Enumeration enum = getPorts();
                 while (enum.hasMoreElements()) {
                     Port port = (Port)enum.nextElement();
-                    result = result +
-                        port._description(detail, indent+1) + "\n";
+                    result += port._description(detail, indent+1, 2) + "\n";
                 }
-                result = result + _indent(indent) + "}";
+                result += _getIndentPrefix(indent) + "}";
             }
+            if (bracket == 2) result += "}";
             return result;
         } finally {
             workspace().doneReading();
