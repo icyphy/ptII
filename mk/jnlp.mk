@@ -84,7 +84,7 @@ CORE_JNLP_JARS = \
 	ptolemy/domains/domains.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
-	$(DOC_CODEDOC_JAR)
+	$(DOC_CODEDOC_JAR) \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
 	ptolemy/actor/parameters/demo/demo.jar
