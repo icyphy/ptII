@@ -184,11 +184,76 @@ GCJ_JAR = /usr/local/share/java/libgcj-3.3.2.jar
 #GCJ_FLAGS =    -static                                                        
 #GCJ_FLAGS =    -pg -g0 -O3 -fno-bounds-check --classpath=$(GCJ_JAR)           
 GCJ_FLAGS =     -g -O3 -fno-bounds-check --classpath=$(GCJ_JAR)
+GCJ_FLAGS =     -g
 
 gcj:
-	"$(GCJ)" $(GCJ_FLAGS) \
-		--main=ptolemy.actor.gui.CompositeActorApplication \
-		-o cruiseControl_gcj cruiseControl.jar
+	"$(GCJ)" -v $(GCJ_FLAGS) \
+		--main=ptolemy.actor.gui.MoMLSimpleApplication \
+		-o cruiseControl_gcj -L$(PTII)/ptolemy/moml -LMoML cruiseControl.jar
+
+run:
+	$(JAVA) -verbose \
+		 -classpath $(PTII) ptolemy.actor.gui.MoMLSimpleApplication \
+		cruiseControlECSL.moml
+# Ptolemy II dirs
+dirs:
+	jar -tvf cruiseControl.jar | awk '{ print $$NF}' | awk -F / '{printf("%s", $$1); for(i=2;i<NF;i++){printf("/%s", $$i)} printf("\n")}' | sort | uniq
+
+JDIRS = \
+	com/microstar/xml \
+	ptolemy/actor \
+	ptolemy/actor/gui \
+	ptolemy/actor/gui/style \
+	ptolemy/actor/lib \
+	ptolemy/actor/sched \
+	ptolemy/actor/util \
+	ptolemy/data \
+	ptolemy/data/expr \
+	ptolemy/data/type \
+	ptolemy/data/unit \
+	ptolemy/domains/ct/kernel \
+	ptolemy/domains/ct/kernel/solver \
+	ptolemy/domains/ct/kernel/util \
+	ptolemy/domains/ct/lib \
+	ptolemy/graph \
+	ptolemy/graph/analysis \
+	ptolemy/graph/analysis/analyzer \
+	ptolemy/graph/analysis/strategy \
+	ptolemy/kernel \
+	ptolemy/kernel/attributes \
+	ptolemy/kernel/undo \
+	ptolemy/kernel/util \
+	ptolemy/math \
+	ptolemy/moml \
+	ptolemy/moml/filter \
+	ptolemy/util \
+	vendors/ecsl_dp/ptolemy
+
+gcj_dirs:
+		set $(JDIRS); \
+		for x do \
+		    if [ -w $(PTII)/$$x ] ; then \
+			( cd $(PTII)/$$x ; \
+			echo running gcj in $(PTII)/$$x ; \
+			$(GCJ) -c -I$(PTII) $(GCJ_FLAGS) *.java ;\
+			) \
+		    fi ; \
+		done ; \
+
+
+# Find the names of missing files
+missing:
+	grep "undefined reference" vendors/ecsl_dp/ptolemy/gcj2.out | grep ::class | awk '{print substr($$5, 2, length($$5)-2)}' | sed -e 's@::class\$$@.class@' -e 's@::@/@g' | sort | uniq 
+
+update_jar:
+	cp c.jar cruiseControl.jar
+	$(JAR) -uf cruiseControl.jar \
+		org/w3c/dom/Document.class \
+		ptolemy/actor/gui/PtolemyQuery.class \
+		ptolemy/gui/Top.class \
+		ptolemy/data/expr/XMLParser.class
+	(cd $(PTII); $(JAR) -uf vendors/ecsl_dp/ptolemy/cruiseControl.jar `cat u3`)
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

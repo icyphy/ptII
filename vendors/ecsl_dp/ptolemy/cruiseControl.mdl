@@ -34,10 +34,10 @@ Model {
   Created		  "Tue Nov 05 09:56:31 2002"
   UpdateHistory		  "UpdateHistoryNever"
   ModifiedByFormat	  "%<Auto>"
-  LastModifiedBy	  "eal"
+  LastModifiedBy	  "cxh"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Fri Oct 22 10:28:30 2004"
-  ModelVersionFormat	  "1.%<AutoIncrement:21>"
+  LastModifiedDate	  "Thu Oct 28 15:12:07 2004"
+  ModelVersionFormat	  "1.%<AutoIncrement:22>"
   ConfigurationManager	  "None"
   SimParamPage		  "Solver"
   LinearizationMsg	  "none"
@@ -258,7 +258,7 @@ Model {
   }
   System {
     Name		    "cruisecontrol"
-    Location		    [41, 123, 541, 408]
+    Location		    [161, 109, 676, 300]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -272,19 +272,19 @@ Model {
     Block {
       BlockType		      Gain
       Name		      "  Controller\n(simple gain)"
-      Position		      [155, 105, 185, 135]
+      Position		      [155, 50, 185, 80]
       Gain		      "1000"
     }
     Block {
       BlockType		      Gain
       Name		      " Convert to\nmiles per hour\n(x 3600)"
-      Position		      [395, 165, 425, 195]
+      Position		      [395, 110, 425, 140]
       Gain		      "3600"
     }
     Block {
       BlockType		      Gain
       Name		      "1/mass"
-      Position		      [230, 105, 260, 135]
+      Position		      [230, 50, 260, 80]
       Gain		      "1/1000"
       Port {
 	PortNumber		1
@@ -304,7 +304,7 @@ Model {
     Block {
       BlockType		      Step
       Name		      "Desired\nspeed\n(0 to 60\nat time 1)"
-      Position		      [20, 105, 50, 135]
+      Position		      [20, 50, 50, 80]
       After		      "60/3600"
       SampleTime	      "0"
     }
@@ -312,19 +312,19 @@ Model {
       BlockType		      Integrator
       Name		      "Integrator"
       Ports		      [1, 1]
-      Position		      [320, 105, 350, 135]
+      Position		      [320, 50, 350, 80]
     }
     Block {
       BlockType		      Integrator
       Name		      "Integrator1"
       Ports		      [1, 1]
-      Position		      [405, 105, 435, 135]
+      Position		      [405, 50, 435, 80]
     }
     Block {
       BlockType		      Scope
       Name		      "Position"
       Ports		      [1]
-      Position		      [465, 104, 495, 136]
+      Position		      [465, 49, 495, 81]
       Location		      [105, 514, 429, 753]
       Open		      on
       NumInputPorts	      "1"
@@ -346,7 +346,7 @@ Model {
       BlockType		      Scope
       Name		      "Speed"
       Ports		      [1]
-      Position		      [465, 164, 495, 196]
+      Position		      [465, 109, 495, 141]
       Location		      [574, 520, 898, 759]
       Open		      on
       NumInputPorts	      "1"
@@ -367,7 +367,7 @@ Model {
       BlockType		      SubSystem
       Name		      "Subsystem"
       Ports		      []
-      Position		      [217, 87, 451, 162]
+      Position		      [217, 32, 451, 107]
       ForegroundColor	      "yellow"
       BackgroundColor	      "yellow"
       ShowName		      off
@@ -390,7 +390,7 @@ Model {
       BlockType		      Sum
       Name		      "Sum"
       Ports		      [2, 1]
-      Position		      [70, 110, 90, 130]
+      Position		      [70, 55, 90, 75]
       ShowName		      off
       IconShape		      "round"
       Inputs		      "|+-"
@@ -456,19 +456,19 @@ Model {
     }
     Annotation {
       Name		      "Simple Cruise Control System"
-      Position		      [266, 215]
+      Position		      [266, 160]
     }
     Annotation {
       Name		      "Car model (F = ma)"
-      Position		      [271, 76]
+      Position		      [271, 21]
     }
     Annotation {
       Name		      "a\n(acceleration)"
-      Position		      [286, 100]
+      Position		      [286, 45]
     }
     Annotation {
       Name		      "F\n(force)"
-      Position		      [197, 104]
+      Position		      [197, 49]
     }
   }
 }
