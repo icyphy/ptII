@@ -180,7 +180,7 @@ public class RecursiveLattice extends Transformer {
             double k;
             int M = _backward.length - 1;
             // Forward prediction error
-            _forward[0] = in.doubleValue();   // _forward(0)=x(n)
+            _forward[0] = in.doubleValue();   // _forward(0) = x(n)
             for (int i = 1; i <= M; i++) {
                 k = _reflectionCoefs[M-i];
                 _forward[i] = k * _backward[i] + _forward[i-1];

@@ -1,4 +1,4 @@
-/* An FIR lattice filter.
+* An FIR lattice filter.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -163,7 +163,7 @@ public class Lattice extends Transformer {
             double k;
             int M = _backward.length;
             // Forward prediction error
-            _forward[0] = in.doubleValue();   // _forward(0)=x(n)
+            _forward[0] = in.doubleValue();   // _forward(0) = x(n)
             for (int i = 1; i <= M; i++) {
                 k = - _reflectionCoefs[i-1];
                 _forward[i] = k * _backward[i-1] + _forward[i-1];
@@ -175,7 +175,7 @@ public class Lattice extends Transformer {
                 k = - _reflectionCoefs[i-1];
                 _backward[i] = k * _forward[i-1] + _backward[i-1];
             }
-            _backward[0] = _forward[0];   // _backward[0]=x[n]
+            _backward[0] = _forward[0];   // _backward[0] = x[n]
         }
     }
 
