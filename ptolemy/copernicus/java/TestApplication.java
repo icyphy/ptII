@@ -41,6 +41,8 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.StreamErrorHandler;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.moml.filter.BackwardCompatibility;
 
 import java.io.File;
 
@@ -63,6 +65,16 @@ public class TestApplication implements ChangeListener {
      */
     public TestApplication(String xmlFilename) throws Exception{
         MoMLParser parser = new MoMLParser();
+
+        // The test suite calls MoMLSimpleApplication multiple times,
+        // and the list of filters is static, so we reset it each time
+        // so as to avoid adding filters every time we run an auto test.
+
+	// We set the list of MoMLFilters to handle Backward Compatibility. 
+        parser.setMoMLFilters(BackwardCompatibility.allFilters());
+
+	// Filter out any graphical classes.
+	parser.addMoMLFilter(new RemoveGraphicalClasses());
 
         parser.setErrorHandler(new StreamErrorHandler());
 
