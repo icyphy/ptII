@@ -66,11 +66,13 @@ JSRCS = \
 	MoMLViewerApplet.java \
 	Module.java \
 	Service.java \
-	VergilApplet.java \
 	VergilApplication.java \
 	VergilDocument.java \
 	VergilDocumentFactory.java \
 	VisualNotation.java 
+
+# FIXME: Needs work
+#	VergilApplet.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	TODO.txt \

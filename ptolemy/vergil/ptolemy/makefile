@@ -57,15 +57,11 @@ PTCLASSALLJAR = ptolemy.jar
 JSRCS = \
 	CompaanNotation.java \
 	CompaanPerformance.java \
-	DirectorService.java \
 	FrameAttribute.java \
 	GraphFrame.java \
 	PtolemyDocument.java \
 	PtolemyGraphView.java \
 	PtolemyNotation.java \
-	PtolemyModule.java
-
-#	GraphTableau.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -81,31 +77,19 @@ OPTIONAL_FILES = \
 	'CompaanNotation$$CompaanEdgeRenderer.class' \
 	'CompaanNotation$$CompaanEntityRenderer.class' \
 	'CompaanNotation$$CompaanListener.class' \
-	'DirectorService$$1.class' \
-	'DirectorService$$2.class' \
-	'DirectorService$$3.class' \
 	'Ptolemy.properties PtolemyDocument$$FSMFactory.class' \
 	'PtolemyDocument$$Factory.class' \
 	'PtolemyDocument$$IsDirtyListener.class' \
+	'GraphFrame$$CopyAction.class' \
+	'GraphFrame$$CutAction.class' \
+	'GraphFrame$$EditIconAction.class' \
+	'GraphFrame$$ExecuteSystemAction.class' \
+	'GraphFrame$$LayoutAction.class' \
+	'GraphFrame$$PasteAction.class' \
+	'GraphFrame$$PtolemyLayout.class' \
+	'GraphFrame$$PtolemyLayoutTarget.class' \
 	'PtolemyGraphView$$PtolemyLayout.class' \
 	'PtolemyGraphView$$PtolemyLayoutTarget.class' \
-	'PtolemyModule$$1.class' \
-	'PtolemyModule$$2.class' \
-	'PtolemyModule$$3.class' \
-	'PtolemyModule$$4.class' \
-	'PtolemyModule$$5.class' \
-	'PtolemyModule$$LayoutAction.class' \
-	'PtolemyModule$$PaletteInitializer.class' \
-	'PtolemyModule$$PtolemyLayout.class' \
-	'PtolemyModule$$PtolemyLayoutTarget.class' \
-	'PtolemyModule$$VergilExecutionListener.class' \
-	'PtolemyModule$$editIconAction.class' \
-	'PtolemyModule$$executeSystemAction.class' \
-	'PtolemyModule$$getDocumentationAction.class' \
-	'PtolemyModule$$layoutAction.class' \
-	'PtolemyModule$$lookInsideAction.class' \
-	'PtolemyModule$$newPortAction.class' \
-	'PtolemyModule$$newRelationAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
