@@ -349,7 +349,7 @@ public class PlotBox extends Applet {
             // System.out.println("-999.0001 integer digits: " +
 	    //                    _numIntDigits(999.0001));
 
-            for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
+            for (double ypos=yStart; ypos <= _ytickMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 String yl = _formatNum(ypos, numfracdigits);
@@ -1293,9 +1293,9 @@ public class PlotBox extends Applet {
     protected boolean _yRangeGiven = false;
     // The minimum and maximum values registered so far, for auto ranging.
     protected double _xBottom = Double.MAX_VALUE;
-    protected double _xTop = Double.MIN_VALUE;
+    protected double _xTop = - Double.MAX_VALUE;
     protected double _yBottom = Double.MAX_VALUE;
-    protected double _yTop = Double.MIN_VALUE;
+    protected double _yTop = - Double.MAX_VALUE;
     
     // Whether to draw a background grid.
     protected boolean _grid = true;
