@@ -152,6 +152,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }                
         
         _generateMain();
+
+        renamedSourceItr = renamedSourceList.iterator();
+        
+        while (renamedSourceItr.hasNext()) {              
+             String renamedSource = (String) renamedSourceItr.next(); 
+                                                   
+             actorCodeGen.pass3(renamedSource);
+        }                                
     }
 
     /** Generate the main class. */
@@ -379,7 +387,6 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }     
     }
 
-
     /** Given the name of an object, return a globally unique Java identifier 
      *  containing
      *  the name, in the format "_cg_NAME_#" where NAME is the argument value
@@ -390,7 +397,6 @@ public class SDFCodeGenerator extends CompositeActorApplication
         labelNum++;
         return retval;
     }
-
     
     public static void main(String[] args) {
         SDFCodeGenerator codeGen = null;

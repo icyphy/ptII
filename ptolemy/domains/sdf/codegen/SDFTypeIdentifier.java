@@ -51,6 +51,16 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
         super();
     }
     
+    /** Return true iff the kind is a class kind. In derived classes, the
+     *  kind() may return a different number for special classes, so this
+     *  method checks if the kind is any class kind.
+     */
+    public boolean isClassKind(int kind) {
+        return ((kind == TYPE_KIND_SDF_ATOMIC_ACTOR) ||
+                (kind == TYPE_KIND_SDF_IO_PORT) ||           
+                super.isClassKind(kind));               
+    }
+        
     public boolean isSupportedActorKind(int kind) {
         return  ((kind == TYPE_KIND_SDF_ATOMIC_ACTOR) || 
                  super.isSupportedActorKind(kind));
