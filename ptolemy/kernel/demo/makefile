@@ -47,7 +47,8 @@ TCL_SRCS = \
 	HelloTcl.tcl
 
 JSRCS = \
-	HelloTcl.java 
+	HelloTcl.java \
+	ExampleSystem.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
@@ -66,7 +67,8 @@ install: sources jclass javadocs $(JZIP)
 docs: javadocs
 
 tests:: $(EXTRA_SRCS)
-	echo "Sorry no automatic Java tests yet"
+	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSystem
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
