@@ -40,9 +40,29 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// DEThreadActor
 /**
-A base class for threaded DE domain actor. EXPERIMENTAL.
+A base class for threaded DE domain actor. 
+<P>
+FIXME: EXPERIMENTAL.
+<P>
+This actor, upon its initialization, will start another thread.
+The thread communicate with the DEDirector thread by placing
+events into the DEEventQueue ashynchronously.
+<P>
+Subclass of this class should implement the run() method. 
+The subclass is executed in an event driven way. More precisely,
+the implementation of the run() method should call 
+waitForNewInputs() after processing all current events. The
+calls are blocked until the next time fire() is called. 
+Recall that the Director (after puting events into the
+receiver of the input ports) will call fire() on the actor.
+NOTE: The synchronization mechanism is implemented in DECQEventQueue
+to ensure the correct multi-threading behaviour.
+<P>
+This implementation does not change the semantics of DEReceiver,
+but still supports an asynchronous message passing type of
+concurrency. 
 
-@author Lukito Muliadi, Jie Liu
+@author Lukito Muliadi
 @version $Id$
 @see DEActor
 */
@@ -68,7 +88,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     ////                         public methods                    ////
 
 
-    /** Start a thread to execute this actor.
+    /** Create a thread for the actor and start the thread.
      */
     public void initialize() {
         // start a thread.
@@ -89,7 +109,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
         while (!_isWaiting) {
             synchronized(_monitor) {
                 try {
-                    _monitor.wait();
+                     _monitor.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -167,6 +187,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     ////                         private methods                   ////
 
     // Empty all receivers of all input ports.
+    // FIXME: Shouldn't this be guaranteed by the run() of the actor?
     private void _emptyPorts() {
         Iterator ports = inputPortList().iterator();
         while (ports.hasNext()) {

@@ -23,18 +23,26 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.actor.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.TimedActor;
 import ptolemy.domains.de.kernel.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+//import ptolemy.kernel.util.*;
+
+
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DEActor
@@ -64,4 +72,34 @@ public abstract class DEActor extends TypedAtomicActor
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+    
+    /** Return a new DEIOPort with the specified name.
+     *  The container of the port is set to this actor.
+     *  This method is write-synchronized on the workspace.
+     *  Normally this method is not called directly by actor code.
+     *  Instead, a change request should be queued with the director.
+     *
+     *  @param name The name for the new port.
+     *  @return The new DEIOPort.
+     *  @exception NameDuplicationException If this actor already has a port
+     *   with the specified name.
+     */
+    public Port newPort(String name) throws NameDuplicationException {
+        try {
+            _workspace.getWriteAccess();
+            DEIOPort port = new DEIOPort(this, name);
+            return port;
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(
+                    "AtomicActor.newPort: Internal error: " + ex.getMessage());
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
 }

@@ -97,7 +97,7 @@ public class DEApplet extends PtolemyApplet {
         try {
             // Initialization
             _director = new DEDirector(_toplevel, "DEDirector");
-            _director.setStopTime(stopTime);
+            _director.stopTime.setToken(new DoubleToken(stopTime));
         } catch (Exception ex) {
             report("Failed to setup director:\n", ex);
             _setupOK = false;
@@ -162,7 +162,7 @@ public class DEApplet extends PtolemyApplet {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
-        _director.setStopTime(_getStopTime());
+        _director.stopTime.setToken(new DoubleToken(_getStopTime()));
         super._go();
     }
 

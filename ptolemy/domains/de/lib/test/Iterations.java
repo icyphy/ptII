@@ -37,6 +37,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.data.Token;
+import ptolemy.data.DoubleToken;
 
 import java.util.List;
 import java.util.Iterator;
@@ -68,7 +69,7 @@ public class Iterations {
         toplevel.connect(source1.output, source2.input);
         toplevel.connect(source2.output, _recorder.input);
 
-        director.setStopTime(1000.0);
+        director.stopTime.setToken(new DoubleToken(1000.0));
         manager.initialize();
         manager.iterate();
         manager.iterate();

@@ -37,6 +37,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.domains.de.lib.Merge;
+import ptolemy.data.DoubleToken;
 
 //////////////////////////////////////////////////////////////////////////
 //// Time
@@ -76,7 +77,7 @@ public class Time {
 
         toplevel.connect(merge.output, recorder.input);
 
-        director.setStopTime(1000.0);
+        director.stopTime.setToken(new DoubleToken(1000.0));
         manager.run();
         manager.run();
         System.out.println("Total number of events seen by Recorder: "

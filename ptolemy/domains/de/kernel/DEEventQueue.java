@@ -32,6 +32,7 @@ package ptolemy.domains.de.kernel;
 
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEventQueue
@@ -63,9 +64,9 @@ public interface DEEventQueue extends Debuggable {
     /** Return the event associated with the earliest tag in this
      *  event queue. Note that the event is not dequeued.
      *  @return The earliest event.
-     *  @exception IllegalActionException If the queue is empty.
+     *  @exception InvalidStateException If the queue is empty.
      */
-    public DEEvent get() throws IllegalActionException;
+    public DEEvent get() throws InvalidStateException;
 
     /** Return true if this event queue is empty.
      *  @return True if this queue is empty, false otherwise.
@@ -82,7 +83,7 @@ public interface DEEventQueue extends Debuggable {
     /** Dequeue the earliest event in this event queue.
      *  @return The DEEvent object associated with the earliest event in
      *    the queue.
-     *  @exception IllegalActionException If the queue is empty.
+     *  @exception InvalidStateException If the queue is empty.
      */
-    public DEEvent take() throws IllegalActionException;
+    public DEEvent take() throws InvalidStateException;
 }

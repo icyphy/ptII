@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -37,20 +37,20 @@ import ptolemy.actor.util.CalendarQueue;
 
 //////////////////////////////////////////////////////////////////////////
 //// DECQEventQueue
-//
+
 /** A calendar queue implementation of the DE event queue. This stores DE
  *  events in the order of their time stamps, microstep and the depth
  *  of the destination actor. One DEEvent is said to be earlier than
- *  another, if it has
- *  a smaller time stamp, or when the time stamps are identical
+ *  another if it has
+ *  a smaller time stamp, or when the time stamps are identical and
  *  it has a smaller microstep, or when both time stamps and
- *  microsteps are identical it has a smaller depth.
+ *  microsteps are identical and it has a smaller depth.
  *  <P>
  *  Its complexity is
  *  theoretically O(1) for both enqueue and dequeue operations, assuming
  *  a reasonable distribution of time stamps.
  *
- *  @author Lukito Muliadi, Jie Liu
+ *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
  *  @version $Id$
  *  @see DEReceiver
  *  @see ptolemy.actor.util.CalendarQueue
@@ -104,16 +104,16 @@ public class DECQEventQueue implements DEEventQueue {
      *  This method is synchronized since there
      *  may be actors running under different threads in the DE domain.
      *  @return The smallest event in the queue.
-     *  @exception IllegalActionException If the queue is empty.
+     *  @exception InvalidStateException If the queue is empty.
      */
-    public synchronized final DEEvent get() throws IllegalActionException {
+    public synchronized final DEEvent get() {
         return (DEEvent)_cQueue.get();
     }
 
     /** Return true if this event queue is empty.
      *  This method is synchronized since there
      *  may be actors running under different threads in the DE domain.
-     *  @return True if the queue is empty.
+     *  @return True if there are no event in the queue.
      */
     public synchronized final boolean isEmpty() {
         return _cQueue.isEmpty();
@@ -143,9 +143,9 @@ public class DECQEventQueue implements DEEventQueue {
      *  This method is synchronized since there
      *  may be actors running under different threads in the DE domain.
      *  @return The earliest event in the queue.
-     *  @exception IllegalActionException If the queue is empty.
+     *  @exception InvalidStateException If the queue is empty.
      */
-    public synchronized final DEEvent take() throws IllegalActionException {
+    public synchronized final DEEvent take() {
         return (DEEvent)_cQueue.take();
     }
 
@@ -153,12 +153,15 @@ public class DECQEventQueue implements DEEventQueue {
     ////                         private inner class               ////
 
     // An implementation of the CQComparator interface for use with
-    // calendar queue that compares two DEEvents according to there
+    // calendar queue that compares two DEEvents according to their
     // time stamps, microstep, and depth in that order.
     // One DEEvent is said to be earlier than another, if it has
     // a smaller time stamp, or when the time stamps are identical,
     // it has a smaller microstep, or when both time stamps and
     // microsteps are identical, it has a smaller depth.
+    //
+    // The default binWidth is 1.0, and the default zeroReference is 0.0.
+    //
     private class DECQComparator implements CQComparator {
 
 	/** Compare the two argument for order. Return a negative integer,
@@ -184,10 +187,11 @@ public class DECQEventQueue implements DEEventQueue {
 	 *  If the argument is not an instance of DEEvent, then a
 	 *  ClassCastException will be thrown.  Only the time stamp
          *  of the arguments is used.  The quantity returned is the
-         *  difference between the time stamp of the key and that of
-         *  the zero reference divided by the time stamp of the bin width.
+         *  quantized time stamp, i.e. the 
+         *  difference between the time stamp of the event and that of
+         *  the zero reference, divided by the time stamp of the bin width.
 	 *  @param event The event.
-	 *  @return The index of the virtual bin containing the key.
+	 *  @return The index of the virtual bin containing the event.
 	 *  @exception ClassCastException If the argument is not
          *   an instance of DEEvent.
 	 */
@@ -200,11 +204,12 @@ public class DECQEventQueue implements DEEventQueue {
 	 *  width. This method assumes that the
          *  entries provided are all different, and are in increasing order.
          *  Note, however, that the time stamps may not be increasing.
-         *  It may instead be the receiver depth that is increasing.
+         *  It may instead be the receiver depth that is increasing,
+         *  or the microsteps that are increasing.
          *  This method attempts to choose the bin width so that
 	 *  the average number of entries in a bin is one.
 	 *  If the argument is null or is an array with length less
-         *  than two, return the default bin width, which is 1.0
+         *  than two, set the bin width to the default, which is 1.0
 	 *  for this implementation.
 	 *
 	 *  @param entryArray An array of DEEvent objects.
@@ -220,33 +225,34 @@ public class DECQEventQueue implements DEEventQueue {
 
 	    double[] diff = new double[entryArray.length - 1];
 
-	    double average = 0.0;
+	    double average =
+                (((DEEvent)entryArray[entryArray.length - 1]).timeStamp() - 
+                ((DEEvent)entryArray[0]).timeStamp()) / (entryArray.length-1);
+            double effectiveAverage = 0.0;
+	    int effectiveSamples = 0;
 	    for (int i = 0; i < entryArray.length - 1; ++i) {
 		diff[i] = ((DEEvent)entryArray[i+1]).timeStamp() -
 		    ((DEEvent)entryArray[i]).timeStamp();
-		average += diff[i];
-	    }
-	    average /= diff.length;
-	    double effAverage = 0.0;
-	    int nEffSamples = 0;
-	    for (int i = 0; i < entryArray.length - 1; ++i) {
-		if (diff[i] < 2*average) {
-		    nEffSamples++;
-		    effAverage = effAverage + diff[i];
+                if (diff[i] < 2.0 * average) {
+		    effectiveSamples++;
+		    effectiveAverage += diff[i];
 		}
 	    }
-            // To avoid returning NaN or 0.0
-            // for the width, apparently due to simultaneous events,
-            // we leave it unchanged instead.
-            if (effAverage == 0.0 || nEffSamples == 0) {
+            
+            if (effectiveAverage == 0.0 || effectiveSamples == 0) {
+                // To avoid setting NaN or 0.0
+                // for the width, apparently due to simultaneous events,
+                // we leave it unchanged instead.
                 return;
             }
-	    effAverage = effAverage / nEffSamples;
-            _binWidth = new DEEvent(null, 3.0 * effAverage, 0, 0);
+	    effectiveAverage /= (double)effectiveSamples;
+            _binWidth = new DEEvent(null, 3.0 * effectiveAverage, 0, 0);
 	}
 
         /** Set the zero reference, to be used in calculating the virtual
-         *  bin number.
+         *  bin number. The argument should be a DEEvent, otherwise a
+         *  ClassCastException will be thrown.
+         *  
          *  @exception ClassCastException If the argument is not an instance
          *   of DEEvent.
          */
@@ -269,5 +275,5 @@ public class DECQEventQueue implements DEEventQueue {
     ////                         private variables                 ////
 
     // The instance of CalendarQueue used for sorting.
-    private CalendarQueue _cQueue = new CalendarQueue(new DECQComparator());
+    private CalendarQueue _cQueue;
 }

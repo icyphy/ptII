@@ -34,10 +34,12 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -136,10 +138,12 @@ import java.util.Iterator;
  *  returns false in prefire(), then it will not be invoked again
  *  in the same iteration even if there are events in its receivers.
  *  <p>
+ *  A model starts from the time specified by <i>startTime</i>, which
+ *  has default value 0.0
+ *  <P>
  *  The stop time of the execution can be set using the 
- *  <i>stopTime</i> parameter, or by directly calling
- *  setStopTime().  If the stop time is not explicitly set, then it
- *  defaults to Double.MAX_VALUE, resulting in a model that stops
+ *  <i>stopTime</i> parameter. The parameter has default value 
+ *  Double.MAX_VALUE, which means the execution stops
  *  only when the model time reaches that (rather large) number.
  *  <P>
  *  Execution of a DE model ends when the time stamp of the oldest events
@@ -225,6 +229,11 @@ public class DEDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+
+    /** The start time of model. This parameter must contain a
+     *  DoubleToken.  The value defaults to 0.0.
+     */
+    public Parameter startTime;
 
     /** The stop time of the model.  This parameter must contain a
      *  DoubleToken.  The value defaults to Double.MAX_VALUE.
@@ -417,7 +426,7 @@ public class DEDirector extends Director {
             } while (refire);
 
             // Check whether the next time stamp is equal to current time.
-            try {
+            if(!_eventQueue.isEmpty()) {
                 DEEvent next = _eventQueue.get();
                 // If the next event is in the future, proceed to postfire().
                 if (next.timeStamp() > getCurrentTime()) {
@@ -427,8 +436,8 @@ public class DEDirector extends Director {
                             "fire(): the next event has smaller time stamp" +
                             " than the current time!");
                 }
-            } catch (IllegalActionException e) {
-                // The queue is empty. Proceed to postfire().
+            } else {
+                // The queue is empty, proceed to postfire().
                 break;
             }
         }
@@ -486,7 +495,9 @@ public class DEDirector extends Director {
         // So we will keep the current design unless there's prove that
         // the new design can improve (or at least does not ruin) the 
         // performance under regular uses.
-        try {
+        if (_eventQueue.isEmpty()) {
+            return getStopTime();
+        } else {
             DEEvent next = _eventQueue.get();
             double nextTime = next.timeStamp();
             // The next event on the queue may have the current time.
@@ -495,21 +506,27 @@ public class DEDirector extends Director {
             LinkedList eventsToPutBack = new LinkedList();
             while (nextTime <= getCurrentTime()) {
                 if(_debugging) _debug("Temporarily remove event.");
+                // take() is safe, since the queue is not empty.
                 eventsToPutBack.add(_eventQueue.take());
-                next = _eventQueue.get();
-                nextTime = next.timeStamp();
+                if (!_eventQueue.isEmpty()) {
+                    next = _eventQueue.get();
+                    nextTime = next.timeStamp();
+                } else {
+                    nextTime = getStopTime();
+                    break;
+                }
             }
             // Put back events that need to be put back.
             Iterator events = eventsToPutBack.iterator();
             while (events.hasNext()) {
                 if(_debugging) _debug("Put dequeued current event back.");
-                _eventQueue.put((DEEvent)events.next());
+                try {
+                    _eventQueue.put((DEEvent)events.next());
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex.getMessage());
+                }
             }
             return nextTime;
-        } catch (IllegalActionException e) {
-            // The queue is empty.
-            //System.out.println(e.getMessage());
-            return getStopTime();
         }
     }
 
@@ -524,15 +541,22 @@ public class DEDirector extends Director {
         return _realStartTime;
     }
 
-    /** Return the time of the earliest event seen in the model.
-     *  Before execution begins, this is java.lang.Double.MAX_VALUE.
+    /** Return the time of the start time in the model as set by the 
+     *  <i>startTime</i> parameter.
      *  @return The start time of the execution.
      */
     public double getStartTime() {
-        return _startTime;
+        try {
+            return ((DoubleToken)(startTime.getToken())).doubleValue();
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(
+                    "Cannot read startTime parameter:\n" +
+                    e.getMessage());
+        }
     }
 
-    /** Return the stop time of the execution as set by setStopTime().
+    /** Return the stop time of the execution as set by the <i>stopTime</i>
+     *  parameter.
      *  @return The stop time of the execution.
      */
     public double getStopTime() {
@@ -545,21 +569,6 @@ public class DEDirector extends Director {
         }
     }
 
-    
-    /** FIXEM: setStopTime.
-     *  @return The stop time of the execution.
-     
-    public void setStopTime(double time) {
-        try {
-            stopTime.setToken(new DoubleToken(time));
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(
-                    "Cannot read stopTime parameter:\n" +
-                    e.getMessage());
-        }
-        }
-    */
-    
     /** Invoke the initialize() method of each deeply contained actor,
      *  and then check the event queue for any events. If there are any,
      *  and the director is embedded in an opaque composite actor, then
@@ -659,12 +668,11 @@ public class DEDirector extends Director {
             }
         }
         _disabledActors = null;
-        _currentTime = 0.0;
+        // use the protected variable directly, since time can go backward.
+        // This is the only place in DE where time can go backward.
+        _currentTime = getStartTime();
         _noMoreActorsToFire = false;
         _microstep = 0;
-
-        // Haven't seen any events yet, so...
-        _startTime = Double.MAX_VALUE;
 
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
@@ -697,20 +705,6 @@ public class DEDirector extends Director {
         }
         super.stopFire();
     }
-
-    /** Specify whether the simulation should be stopped when there are no
-     *  more events in the event queue. By default, an execution will stop
-     *  in that case. Calling this method with a <i>false</i> argument
-     *  causes the director to wait on the queue in the fire() method when
-     *  it discovers that the queue is empty.  Another thread must insert
-     *  an event into the queue to get the director going again.  This would
-     *  be typically used when events are generated at a user interface.
-     *  @param flag False to prevent the director from halting when there are
-     *   no more events.
-     *
-    public void stopWhenQueueIsEmpty(boolean flag) {
-        _stopWhenQueueIsEmpty = flag;
-        }*/
 
     /** Advance current time to the current time of the executive director,
      *  and then call the superclass method.  The port argument must
@@ -780,15 +774,12 @@ public class DEDirector extends Director {
             throws IllegalActionException {
 
         int microstep = 0;
-        if (_startTime != Double.MAX_VALUE) {
-            // At least one firing has occurred, so current time has
-            // some meaning.
-            if (time == getCurrentTime()) {
-                microstep = _microstep + 1;
-            } else if ( time < getCurrentTime()) {
-                throw new IllegalActionException((Nameable)actor,
-                        "Attempt to queue an event in the past.");
-            }
+        
+        if (time == getCurrentTime()) {
+            microstep = _microstep + 1;
+        } else if ( time < getCurrentTime()) {
+            throw new IllegalActionException((Nameable)actor,
+                    "Attempt to queue an event in the past.");
         }
         int depth = _getDepth(actor);
         if(_debugging) _debug("enqueue a pure event: ",
@@ -817,17 +808,15 @@ public class DEDirector extends Director {
             double time) throws IllegalActionException {
 
         int microstep = 0;
-        if (_startTime != Double.MAX_VALUE) {
-            // At least one firing has occurred, so current time has
-            // some meaning.
-            if (time == getCurrentTime()) {
-                microstep = _microstep;
-            } else if ( time < getCurrentTime()) {
-                Nameable destination = receiver.getContainer();
-                throw new IllegalActionException(destination,
-                        "Attempt to queue an event in the past.");
-            }
+        
+        if (time == getCurrentTime()) {
+            microstep = _microstep;
+        } else if ( time < getCurrentTime()) {
+            Nameable destination = receiver.getContainer();
+            throw new IllegalActionException(destination,
+                    "Attempt to queue an event in the past.");
         }
+        
         Actor destn = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destn);
         if(_debugging) _debug("enqueue event: to",
@@ -844,24 +833,15 @@ public class DEDirector extends Director {
      *  microstep. The depth is the depth of the actor.
      *  This method is used by actors that declare that they
      *  introduce delay, but where the value of the delay is zero.
-     *  This method must not be used before any firings have occurred
-     *  (i.e. in the initialize() method) because current time has no
-     *  meaning there.
      *
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
      *  @param depth The depth.
-     *  @exception IllegalActionException If the delay is negative, or if
-     *   current time has not been set.
+     *  @exception IllegalActionException If the delay is negative.
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token)
             throws IllegalActionException {
 
-        if (_startTime == Double.MAX_VALUE) {
-            Nameable destination = receiver.getContainer();
-            throw new IllegalActionException(destination, "Attempt to queue an"
-                    + " event at the current time before current time is set.");
-        }
         Actor destn = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destn);
         _eventQueue.put(new DEEvent(receiver, token,
@@ -909,11 +889,11 @@ public class DEDirector extends Director {
         while (true) {
             // Get the next event off the event queue.
             if (_stopWhenQueueIsEmpty) {
-                try {
-                    nextEvent = (DEEvent)_eventQueue.get();
-                } catch (IllegalActionException ex) {
+                if (_eventQueue.isEmpty()) {
                     // Nothing more to read from queue.
                     break;
+                } else {
+                    nextEvent = (DEEvent)_eventQueue.get();
                 }
             } else {
                 // In this case we want to do a blocking read of the queue,
@@ -939,22 +919,19 @@ public class DEDirector extends Director {
                         }
                     }
                 }
-                try {
-                    nextEvent = (DEEvent)_eventQueue.get();
-                } catch (IllegalActionException ex) {
+                if (_eventQueue.isEmpty()) {
                     // Nothing more to read from queue.
                     break;
-                }
+                } else {
+                    nextEvent = (DEEvent)_eventQueue.get();
+                } 
             }
 
             if (actorToFire == null) {
                 // No previously seen event at this tag, so
                 // always accept the event.  Consume it from the queue.
-                try {
-                    _eventQueue.take();
-                } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(ex.toString());
-                }
+                _eventQueue.take();
+                
                 currentEvent = nextEvent;
                 actorToFire = currentEvent.actor();
 
@@ -1009,14 +986,6 @@ public class DEDirector extends Director {
                     throw new InternalErrorException(ex.toString());
                 }
 
-                // Note: The following comparison is true
-                // only during the first firing, before the start time
-                // is initialized to the smallest time stamp in the
-                // event queue.
-                if (currentTime < _startTime) {
-                    _startTime = currentTime;
-                }
-
                 currentDepth = currentEvent.depth();
                 _microstep = currentEvent.microstep();
 
@@ -1048,12 +1017,9 @@ public class DEDirector extends Director {
                 if (nextEvent.isSimultaneousWith(currentEvent) &&
                         nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
-                    try {
-                        _eventQueue.take();
-                    } catch (IllegalActionException ex) {
-                        throw new InternalErrorException(ex.toString());
-                    }
-
+                    
+                    _eventQueue.take();
+                    
                     // Transfer the event into the receiver.
                     DEReceiver rec = nextEvent.receiver();
                     // If rec is null, then it's a 'pure event' and
@@ -1210,6 +1176,10 @@ public class DEDirector extends Director {
     // values.
     private void _initParameters() {
         try {
+            startTime = new Parameter(this, "startTime",
+                    new DoubleToken(0.0));
+	    startTime.setTypeEquals(BaseType.DOUBLE);
+            
             stopTime = new Parameter(this, "stopTime",
                     new DoubleToken(Double.MAX_VALUE));
 	    stopTime.setTypeEquals(BaseType.DOUBLE);
@@ -1243,6 +1213,7 @@ public class DEDirector extends Director {
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
+    // If the queue is empty, then throw an InvalidStateException
     private void _requestFiring() throws IllegalActionException {
         DEEvent nextEvent = null;
         nextEvent = _eventQueue.get();
@@ -1273,9 +1244,6 @@ public class DEDirector extends Director {
 
     // The real time at which the model begins executing.
     private long _realStartTime = 0;
-
-    // The time of the earliest event seen in the current simulation.
-    private double _startTime = Double.MAX_VALUE;
 
     // Flag that indicates that a stop has been requested.
     private boolean _stopRequested = false;
