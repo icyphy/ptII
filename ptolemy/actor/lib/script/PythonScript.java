@@ -79,8 +79,8 @@ licensing, downloads, etc.
 @author Xiaojun Liu
 @version $Id$
 @since Ptolemy II 2.3
-@see <a href="http://www.python.org">Python</a>
-@see <a href="http://www.jython.org">Jython</a>
+@see <a href="http://www.python.org" target="_top">Python</a>
+@see <a href="http://www.jython.org" target="_top">Jython</a>
 */
 public class PythonScript extends TypedAtomicActor {
 

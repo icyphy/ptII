@@ -51,7 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = PythonScript.java
 
 OTHER_FILES_TO_BE_JARED = \
-	io.xml
+	script.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
