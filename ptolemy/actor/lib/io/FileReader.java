@@ -37,12 +37,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 
-import java.io.IOException;
 import java.io.BufferedReader;
 
 //////////////////////////////////////////////////////////////////////////
