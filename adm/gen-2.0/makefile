@@ -249,8 +249,9 @@ nightly: ptclean ptbuild \
 	clean all \
 	glimpse \
 	findchanges \
-	remote4 \
-	jnlp
+	jnlp \
+	nonjsall \
+	remote4
 
 ####################################
 # Rules that operate in ~ptII
@@ -293,6 +294,39 @@ FINDCHANGEFILE = changedfiles.html
 findchanges:
 	rm -f $(FINDCHANGEFILE)
 	$(PTIIADM)/bin/findchanges > $(FINDCHANGEFILE)
+
+# Build jnlp installers
+jnlp:
+	@echo "#"
+	@echo "# Now running make jnlp in $(PTIIHOME)"
+	@echo "# on  `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(PTIIHOME);	PTII=$(PTIIHOME) \
+		$(MAKE) -k jnlp_clean jnlp_all PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree)
+
+# Run tests outside of Javascope
+nonjsall:
+	@echo "#"
+	@echo "# Now running make non Javascope tests in $(PTIIHOME)"
+	@echo "# on  `hostname`"
+	@echo "# To add to the list of directories, edit "
+	@echo "# ~ptII/adm/gen-latest/makefile"
+	@echo "#"
+	@echo "$@ `date`"
+	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
+		set $(NONJSALLDIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $(PTIIHOME)/$$x ; \
+			echo making tests  in $(PTIIHOME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				tests \
+			);  \
+		    fi ; \
+		done ; \
+	fi
+
 
 # Logdir
 GENLOGDIR = $(GENDIR)/logs
@@ -491,8 +525,8 @@ JSALLDIRS = \
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/java \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/shallow
+	ptolemy/copernicus/java \
+	ptolemy/copernicus/shallow
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
@@ -870,7 +904,6 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
-		remote4distnonjsall \
 		 >& $(REMOTE4LOG)" &
 
 
@@ -917,30 +950,8 @@ remote4build:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast all install)
+	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) sources all install)
 
-
-# Run tests outside of Javascope
-remote4distnonjsall:
-	@echo "#"
-	@echo "# Now running make non Javascope tests in $(REMOTE1PTIIDIST)"
-	@echo "# on  `hostname`"
-	@echo "# To add to the list of directories, edit "
-	@echo "# ~ptII/adm/gen-latest/makefile"
-	@echo "#"
-	@echo "$@ `date`"
-	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
-		set $(NONJSALLDIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making tests  in $$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				tests \
-			);  \
-		    fi ; \
-		done ; \
-	fi
 
 ###########################################################################
 # Rules for cleaning up the distribution
