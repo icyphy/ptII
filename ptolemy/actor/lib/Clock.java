@@ -110,6 +110,7 @@ public class Clock extends TimedSource {
         super(container, name);
 
         period = new Parameter(this, "period", new DoubleToken(2.0));
+        period.setTypeEquals(DoubleToken.class);
 
         double defaultOffsets[][] = {{0.0, 1.0}};
         offsets = new Parameter(this, "offsets",
