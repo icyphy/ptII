@@ -1059,7 +1059,5 @@ public class Director extends Attribute implements Executable {
     }
 
     /** The time resolution of the model. */
-    // FIXME: this variable will be only used by CT domain. 
-    // It will be moved into CT director.
     private double _timeResolution = 1.0e-10;
 }
