@@ -114,6 +114,7 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
         }
 
         if (node.getBody() != AbsentTreeNode.instance) {
+            // FIXME: Why is this marked as native?
             node.setModifiers(modifiers | NATIVE_MOD);
             node.setBody(AbsentTreeNode.instance);
         }
