@@ -234,7 +234,7 @@ public class ConstVariableModelAnalysis {
      *  this analysis was created with.
      */
     public boolean isConstant(Variable variable) {
-        return _variableToChangeContext.keySet().contains(variable);
+        return !_variableToChangeContext.keySet().contains(variable);
     }
     
     /** Return true if the variable has been analyzed by this analysis
