@@ -1091,24 +1091,47 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** Request that given change request be executed.   In this base
      *  class, defer the change request to the container, if there is one.
      *  If there is no container, then execute the request immediately.
-     *  In other words, the request will get passed up to the top level
-     *  of the hierarchy and then executed.  Subclasses can override
-     *  this to queue the change request and execute it at an appropriate time.
+     *  If this object is already in the middle of executing a change
+     *  request, then that execution is finished before this one is performed. 
+     *  Subclasses can override  this to queue the change request and
+     *  execute it at an appropriate time.
      *  Change listeners will be notified of success (or failure) of the
      *  request.
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
         NamedObj container = (NamedObj) getContainer();
-        if (container == null) {
-            // Make sure the list of listeners is not being concurrently
-            // modified by making this synchronized.
-            synchronized(this) {
-                change.setListeners(_changeListeners);
-            }
-            change.execute();
-        } else {
+        if (container != null) {
             container.requestChange(change);
+        } else {
+            if (_inChangeRequest) {
+                // We are in the middle of a change request.
+                // Queue the request.
+                // Create the list of requests if it doesn't already exist
+                if (_changeRequests == null) {
+                    _changeRequests = new LinkedList();
+                }
+                _changeRequests.add(change);
+            } else {
+                try {
+                    // Make sure the list of listeners is not being concurrently
+                    // modified by making this synchronized.
+                    synchronized(this) {
+                        change.setListeners(_changeListeners);
+                    }
+                    _inChangeRequest = true;
+                    change.execute();
+                } finally {
+                    _inChangeRequest = false;
+                }
+                // Change requests may have been queued during the execute.
+                // Execute those by a recursive call.
+                if (_changeRequests != null && _changeRequests.size() > 0) {
+                    ChangeRequest pending
+                            = (ChangeRequest)_changeRequests.remove(0);
+                    requestChange(pending);
+                }
+            }
         }
     }
 
@@ -1694,6 +1717,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
     /** A list of change listeners. */
     protected List _changeListeners;
+    
+    /** A list of pending change requests. */
+    protected List _changeRequests;
 
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
@@ -1703,6 +1729,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  never be reset to null after the first list is created.
      */
     protected LinkedList _debugListeners = null;
+    
+    /** Flag indicating that we are in the middle of a change request. */
+    protected transient boolean _inChangeRequest = false;
 
     /** @serial The workspace for this object.
      * This should be set by the constructor and never changed.

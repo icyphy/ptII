@@ -32,6 +32,12 @@ requestInitialization is pickier about what actors are initialized
 
 package ptolemy.actor;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -40,13 +46,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// Manager
@@ -705,14 +704,39 @@ public class Manager extends NamedObj implements Runnable {
     /** Queue a change request, or if the model is idle, execute it
      *  immediately.  If the request is queued, then it will be executed
      *  at the next opportunity, between top-level iterations of the model.
+     *  If we are in the middle of already executing a change request,
+     *  then complete that change request before executing the new one,
+     *  even if the model is IDLE.
      *  Notify any change listeners when the change is executed.
+     *  <p>
+     *  For the benefit of process-oriented domains, which may not have finite
+     *  iterations, if the request is queued, then
+     *  this method calls stopFire() on the top-level
+     *  composite actor, requesting that directors in such domains
+     *  return from their fire() method (concluding the current
+     *  iteration) as soon as practical, at which time the specified
+     *  change will be executed.
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
+        if (_debugging) {
+            _debug("Requesting change: " + change.getDescription());
+        }
         // If the model is idle (i.e., initialize() has not yet been
         // invoked), then process the change request right now.
-        if (_state == IDLE) {
-            change.execute();
+        if (_state == IDLE && !_inChangeRequest) {
+            try {
+                _inChangeRequest = true;
+                change.execute();
+            } finally {
+                _inChangeRequest = false;
+            }
+            // Change requests may have been queued during the execute.
+            // Execute those by a recursive call.
+            if (_changeRequests != null && _changeRequests.size() > 0) {
+                ChangeRequest pending = (ChangeRequest)_changeRequests.remove(0);
+                requestChange(pending);
+            }
         } else {
             // Otherwise, we must be executing, so queue the request
             // to happen later.
@@ -1196,9 +1220,6 @@ public class Manager extends NamedObj implements Runnable {
     // A list of actors with pending initialization.
     private List _actorsToInitialize = new LinkedList();
 
-    // A list of pending changes.
-    private List _changeRequests;
-
     // The top-level CompositeActor that contains this Manager
     private CompositeActor _container = null;
 
@@ -1207,7 +1228,7 @@ public class Manager extends NamedObj implements Runnable {
 
     // Flag indicating that finish() has been called.
     private boolean _finishRequested = false;
-
+    
     // Count the number of iterations completed.
     private int _iterationCount;
 

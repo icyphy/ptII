@@ -735,32 +735,21 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  immediately.  Any listeners that have been registered using
      *  addChangeListener() will be notified of success (or failure) of
      *  the request.
-     *  <p>
-     *  For the benefit of process-oriented domains, which may not have finite
-     *  iterations, this method also calls stopFire() on the top-level
-     *  composite actor, requesting that directors in such domains
-     *  return from their fire() method (concluding the current
-     *  iteration) as soon as practical, at which time the specified
-     *  change will be executed.
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
-        if (_debugging) {
-            _debug("Requesting change: " + change.getDescription());
-        }
-        Nameable container = getContainer();
-        if (container instanceof NamedObj) {
-            ((NamedObj)container).requestChange(change);
+        Manager manager = getManager();
+        if (manager == null) {
+            super.requestChange(change);
         } else {
-            change.setListeners(_changeListeners);
-            Manager manager = getManager();
-            if (manager == null) {
-                change.execute();
-            } else {
-                manager.requestChange(change);
+            // Make sure the list of listeners is not being concurrently
+            // modified by making this synchronized.
+            synchronized(this) {
+                change.setListeners(_changeListeners);
             }
+            manager.requestChange(change);
         }
-    }
+   }
 
     /** Override the base class to invalidate the schedule and
      *  resolved types of the director.
