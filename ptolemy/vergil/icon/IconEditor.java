@@ -73,11 +73,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.CubicCurve2D.Double;
-import java.awt.geom.Ellipse2D.Double;
-import java.awt.geom.Line2D.Double;
-import java.awt.geom.QuadCurve2D.Double;
-import java.awt.geom.Rectangle2D.Double;
 import java.net.URL;
 
 // Java imports.
