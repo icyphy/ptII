@@ -130,33 +130,44 @@ public class DDEDirector extends ProcessDirector {
 	    time = tk.getCurrentTime();
 	}
         System.out.println(name+": Added read block at time " + time + ".");
-        /*
-        */
         _readBlocks++;
-	notifyAll();
+	if( _isDeadlocked() ) {
+	    notifyAll();
+	}
     }
 
-    /** 
-     */
-    public synchronized void registerWriteBlock(DDEReceiver rcvr) {
-        _writeBlocks++;
-	if( _writeBlockedQs == null ) {
-	    _writeBlockedQs = new LinkedList();
-	} 
-        _writeBlockedQs.insertFirst(rcvr);
-    }
-    
     /** Increment the count of actors blocked on a write.
-     *  FIXME
+     * @param rcvr The DDEReceiver that has a write block.
      */
     synchronized void addWriteBlock(DDEReceiver rcvr) {
-        // System.out.println("Added write block.");
         _writeBlocks++;
+        System.out.println("Added write block. Count = " + _writeBlocks);
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	} 
 	_writeBlockedQs.insertFirst(rcvr);
-	notifyAll();
+	if( _isDeadlocked() ) {
+	    notifyAll();
+	}
+    }
+
+    /** Decrease by one the count of active processes under the control of
+     *  this director. Also check whether the model is now paused
+     *  if a pause was requested.
+     *  This method should be called only when an active thread that was
+     *  registered using _increaseActiveCount() is terminated.
+     *  This count is used to detect deadlocks for termination and other
+     *  reasons.
+     *  FIXME: This is only here for testing. Remove it so that it 
+     *  doesn't override the superclass method.
+     */
+    protected synchronized void _decreaseActiveCount() {
+	Thread thr = Thread.currentThread();
+	if( thr instanceof DDEThread ) {
+	    String name = ((Nameable)((DDEThread)thr).getActor()).getName();
+	    System.out.println(name+": called _decreaseActiveCount");
+	}
+	super._decreaseActiveCount();
     }
 
     /** Execute all deeply contained actors that are governed by this
@@ -284,7 +295,7 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Decrement the count of actors blocked on a write.
-     *  FIXME
+     * @param rcvr The DDEReceiver that is no longer write blocked.
      */
     public synchronized void removeWriteBlock(DDEReceiver rcvr) {
         // System.out.println("Removed write block.");
@@ -370,13 +381,14 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Increment the port capacity's according to Tom Parks' 
-     *  algorithm.
-     *  FIXME
+     *  algorithm. Select the port with the smallest capacity 
+     *  and double the capacity. 
      * @exceptions IllegalActionException If there is an error
      *  while attempting to set the capacity of a DDE receiver.
      */
     protected void incrementLowestCapacityPort() 
             throws IllegalActionException {
+	System.out.println("Call to incrementLowestCapacityPort()");
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	} 
