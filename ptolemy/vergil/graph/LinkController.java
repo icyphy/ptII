@@ -93,19 +93,30 @@ public class LinkController extends EdgeController {
     }
 
     public class LinkTarget extends PerimeterTarget {
-        public boolean accept(Figure f) {
+        public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
             if(object instanceof Node) {
                 Node node = (Node) object;
                 object = node.getSemanticObject();
-                if(object instanceof Port) return true;
-                if(object instanceof Vertex) return true;
+                if(object instanceof Port) return super.acceptHead(c, f);
+                if(object instanceof Vertex) return super.acceptHead(c, f);
+            }
+            return false;
+        }
+
+        public boolean acceptTail(Connector c, Figure f) {
+            Object object = f.getUserObject();
+            if(object instanceof Node) {
+                Node node = (Node) object;
+                object = node.getSemanticObject();
+                if(object instanceof Port) return super.acceptTail(c, f);
+                if(object instanceof Vertex) return super.acceptTail(c, f);
             }
             return false;
         }
 
         public Site getHeadSite(Figure f, double x, double y) {
-	    if(f instanceof Terminal) {
+            if(f instanceof Terminal) {
 		Site site = ((Terminal)f).getConnectSite();
 		return site;
             } else {

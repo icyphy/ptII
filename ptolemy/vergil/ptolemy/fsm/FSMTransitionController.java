@@ -109,8 +109,18 @@ public class FSMTransitionController extends EdgeController {
             return false;
         }
 
-        public Site getHeadSite(Figure f, double x, double y) {
-	    Object object = f.getUserObject();
+        public Site getHeadSite(Connector c, Figure f, double x, double y) {
+            Object object = f.getUserObject();
+            if(object instanceof Node) {
+		Site site = new PerimeterSite(f, 0);
+		return site;
+            } else {
+		throw new RuntimeException("unknown figure: " + f);
+	    }
+        }  
+        
+        public Site getTailSite(Connector c, Figure f, double x, double y) {
+            Object object = f.getUserObject();
             if(object instanceof Node) {
 		Site site = new PerimeterSite(f, 0);
 		return site;
