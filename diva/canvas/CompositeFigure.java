@@ -155,7 +155,13 @@ public class CompositeFigure extends AbstractFigureContainer {
         return _children.get(index);
     }
 
-    /** Get the background figure.
+    /** Get the background figure. The background figure
+     *  is treated specially; its shape is the one returned by
+     *  getShape(), and most of the methods that return iterators
+     *  over figures (such as figures()) do not include the background
+     *  figure.
+     *  @see #figures()
+     *  @see #setBackgroundFigure(Figure)
      */
     public Figure getBackgroundFigure () {
         return _background;
@@ -389,7 +395,13 @@ public class CompositeFigure extends AbstractFigureContainer {
         super.repaint(d);
     }
 
-    /** Set the background figure.
+    /** Set the background figure.  The background figure
+     *  is treated specially; its shape is the one returned by
+     *  getShape(), and most of the methods that return iterators
+     *  over figures (such as figures()) do not include the background
+     *  figure.
+     *  @see #figures()
+     *  @see #getBackgroundFigure()
      */
     public void setBackgroundFigure (Figure background) {
         if (background != null) {
