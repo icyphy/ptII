@@ -1,4 +1,4 @@
-/* Exception thrown on detecting a type conflict.
+/* Exception thrown on detecting type conflicts.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -29,49 +29,66 @@
 package ptolemy.actor;
 
 import ptolemy.kernel.util.KernelException;
+import collections.LinkedList;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeConflictException
 /**
-Thrown on detecting a type conflict.
+Thrown on detecting type conflicts.
+This class contains all the TypedIOPorts where type conflicts occured.
+There are several kinds of type conflicts: (1) Two TypedIOPorts
+with declared types are connected, but the type of the port at the
+source end of the connection is not less than or equal to the type of
+the port at the destination end. In this case, both ports should be
+included in this exception; (2) A type constraint cannot be satisfied
+in type resolution. In this case, all the ports whose types are
+involved in that constraint should be included in this exception;
+(3) After type resolution, the type of a port is resolved to NaT (not
+a type), or a type corresponding to an abstract token class or interface.
 
 @author Yuhong Xiong
 @version $Id$
 */
 public class TypeConflictException extends KernelException {
 
-    /** Constructs an Exception with a detail message.
-     *  @param detail The message.
+    /** Construct an Exception with an Enumeration of TypedIOPorts.
+     *  The ports are the places where type conflicts
+     *  occured.  The detailed message of this Exception will be
+     *  the string "type conflict.".
+     *  @param ports an Enumeration of TypedIOPorts.
      */
-    public TypeConflictException(String detail) {
-        this(null, null, detail);
+    public TypeConflictException(Enumeration ports) {
+	this(ports, "type conflict.");
     }
 
-    /** Constructs an Exception with a TypedIOPort and a message.
-     *  The port is the place where type conflict occured. The detailed
-     *  message of this Exception will include the name of the port and
+    /** Construct an Exception with an Enumeration of TypedIOPorts
+     *  and a message. The ports are the places where type conflicts
+     *  occured.  The detailed message of this Exception will be
      *  the specified message.
-     *  @param port a TypedIOPort with type conflict.
+     *  @param ports an Enumeration of TypedIOPorts.
      *  @param detail a message.
      */
-    public TypeConflictException(TypedIOPort port, String detail) {
-        this(port, null, detail);
+    public TypeConflictException(Enumeration ports, String detail) {
+	_portList.appendElements(ports);
+	_setMessage(detail);
     }
 
-    /** Constructs an Exception with two TypedIOPorts and a message.
-     *  The ports usually represent a type constraint that require
-     *  the type of the first port to be less than or equal to the type
-     *  of the second port. Throwing an Exception using this constructor
-     *  means that this constraint is not satisfied.
-     *  The detailed message of this Exception will include the names
-     *  of both ports and the specified message.
-     *  @param port1 a TypedIOPort.
-     *  @param port2 a TypedIOPort.
-     *  @param detail a message.
+    ///////////////////////////////////////////////////////////////////
+    ////                          public methods                   ////
+
+    /** Return an Enumeration of TypedIOPorts where type conflicts
+     *  occured. The ports are those specified in the Enumeration
+     *  argument of the constructor.
+     *  @return An Enumeration.
      */
-    public TypeConflictException(TypedIOPort port1, TypedIOPort port2,
-            String detail) {
-        super(port1, port2, detail);
+    public Enumeration getPorts() {
+	return _portList.elements();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private LinkedList _portList = new LinkedList();
 }
 
