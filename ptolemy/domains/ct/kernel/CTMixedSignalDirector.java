@@ -175,7 +175,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         while(!endOfFire) {
             if(!_isTopLevel()) {
                 if(knownGood) {
-                    _saveStates();
+                    _markStates();
                     knownGood = false;
                 }
             }
@@ -246,16 +246,16 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 ready = ready && a.prefire();
             }
             if(ready) {
-                while(true) {
-                    getCurrentODESolver().proceedOneStep();
-                    _detectEvent();
-                    if(_hasMissedEvent()) {
-                        setCurrentTime(getCurrentTime()-getCurrentStepSize());
-                        setCurrentStepSize(getRefineStepSize());
-                    } else {
-                        break;
-                    }
-                }
+                // while(true) {
+                //    getCurrentODESolver().proceedOneStep();
+                    //_detectEvent();
+                    //if(_hasMissedEvent()) {
+                    //   setCurrentTime(getCurrentTime()-getCurrentStepSize());
+                    //    setCurrentStepSize(getRefineStepSize());
+                    //} else {
+                    //    break;
+                    //}
+                //}
                 produceOutput();
             }
             // one iteration finished.
@@ -338,6 +338,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         if (VERBOSE) {
             System.out.println("Director.super initialize.");
         }
+        super.initialize();
         // update parameter is called in _initialize. But if this is 
         // not a top-level director, the parameter should already be
         // processed by the code above. So the updateParameters() in
@@ -355,21 +356,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      */
     public boolean postfire() throws IllegalActionException {
         if(_isTopLevel()) {
-            if(Math.abs(getCurrentTime()-getStopTime()) 
-                    < getTimeResolution()) {
-                updateStates(); // call postfire on all actors
-                return false;
-            }
-            if(getStopTime() < getCurrentTime()) {
-                throw new InvalidStateException(this,
-                " stop time is less than the current time.");
-            }
-            if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
-                fireAt(null, getStopTime());
-            }
+            return super.postfire();
+        } else {
+            return true;
         }
-
-        return true;
     }
 
     /** Returns true always, indicating that the (sub)system is always ready
@@ -404,23 +394,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      *       or thrown by a directed actor.
      */
     public boolean prefire() throws IllegalActionException {
-        if (VERBOSE) {
-            System.out.println("Director prefire.");
-        }
-        if(DEBUG) {
-            NSTEP++;
-        }
-        if(!scheduleValid()) {
-            // mutation occurred, redo the schedule;
-            CTScheduler scheduler = (CTScheduler)getScheduler();
-            if (scheduler == null) {
-                throw new IllegalActionException (this,
-                "does not have a Scheuler.");
-            }
-            scheduler.schedule();
-            setScheduleValid(true);
-        }
-        updateParameters();
+        super.prefire(); // always returns true.
         if(!_isTopLevel()) {
             // synchronize time.
             CompositeActor ca = (CompositeActor) getContainer();
@@ -433,6 +407,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             double timeAcc = getTimeResolution();
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
+            // synchronization, handle round up error.
             if((runlength != 0.0)&& (runlength < timeAcc)) {
                 exe.fireAt(ca, nextIterTime);
                 if(DEBUG) {
@@ -513,67 +488,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Detect events. Fire all the actors according to the event generating 
-     *  schedule. 
-     *  @exception IllegalActionException If thrown by an actor being fired.
-     */
-    protected void _detectEvent() throws IllegalActionException{
-        if(VERBOSE) {
-            System.out.println( "Detecting event...");
-        }
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration integrators = scheduler.dynamicActorSchedule();
-        while(integrators.hasMoreElements()) {
-            CTDynamicActor integrator=
-                (CTDynamicActor)integrators.nextElement();
-            if(VERBOSE) {
-                System.out.println("Excite State..."+
-                    ((Nameable)integrator).getName());
-            }
-            integrator.emitTentativeOutputs();
-        }
-        // outputSchdule.fire()
-        Enumeration edactors = scheduler.eventGenerationSchedule();
-        while(edactors.hasMoreElements()) {
-            Actor nextactor = (Actor)edactors.nextElement();
-            if(VERBOSE) {
-                System.out.println("Fire event detection path..."+
-                    ((Nameable)nextactor).getName());
-            }
-            nextactor.fire();
-        }
-    }
-
-    /** Return true if any of the event detectors has a missed event in
-     *  the last step.
-     *  @return True if any of the event detectors has a missed event in
-     *  the last step.
-     */
-    protected boolean _hasMissedEvent() {
-        boolean result = false;
-        _refineStepSize = getCurrentStepSize();
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration edators = scheduler.eventGenerators();
-        while(edators.hasMoreElements()) {
-            CTEventGenerator ed=
-                (CTEventGenerator)edators.nextElement();
-            if(DEBUG) {
-                System.out.println("Ask for missed event from..."+
-                    ((Nameable)ed).getName());
-            }
-            boolean answer = true; //ed.hasMissedEvent();
-            if(DEBUG) {
-                System.out.println("Answer is: " + answer);
-            }
-            if(answer == true) {
-                result = true;
-                //   _refineStepSize = Math.min(_refineStepSize, 
-                //       ed.refineStepSize()); 
-            }
-        }
-        return result;
-    }
-
     /**Return true if this is a top-level director. A syntax sugar.
      */
     protected boolean _isTopLevel() {
@@ -617,11 +531,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         setCurrentTime(_knownGoodTime);
     }
 
-    /** Save the current state as the known good state. Call the
-     *  saveStates() method on all CTStatefulActors. Save the current time
+    /** Mark the current state as the known good state. Call the
+     *  markStates() method on all CTStatefulActors. Save the current time
      *  as the "known good" time.
      */
-    protected void _saveStates() {
+    protected void _markStates() {
         CTScheduler scheduler = (CTScheduler) getScheduler();
         Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
