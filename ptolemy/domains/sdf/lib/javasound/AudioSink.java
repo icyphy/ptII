@@ -45,16 +45,9 @@ import java.util.*;
 import java.util.Enumeration;
 import collections.LinkedList;
 
-import ptolemy.media.*;
-import javax.media.sound.sampled.AudioStream;
-import javax.media.sound.sampled.AudioSystem;
-import javax.media.sound.sampled.AudioFormat;
-import javax.media.sound.sampled.AudioFormat.Encoding;
-import javax.media.sound.sampled.FileStream;
-import javax.media.sound.sampled.OutputChannel;
-import javax.media.sound.sampled.Channel;
-import javax.media.sound.sampled.Mixer;
-import javax.media.sound.sampled.AudioUnavailableException;
+//import ptolemy.media.*;
+import javax.media.sound.sampled.*;
+import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// AudioSink
@@ -81,14 +74,16 @@ parameter. The default sample size is 16 bits.
 @author  Brian K. Vogel
 @version 
 */
-public class AudioSink extends Sink {
+public class AudioSink extends SDFAtomicActor {
 
     public AudioSink(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // Set the type of the input port.
+        input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(DoubleToken.class);
+	// FIXME: Allow this to be set as parameter.
+	consumptionRate = 128;
+	input.setTokenConsumptionRate(consumptionRate);
 
         fileName = new Parameter(this, "fileName", new StringToken("audioFile.au"));
         fileName.setTypeEquals(StringToken.class);
@@ -108,6 +103,9 @@ public class AudioSink extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** The input port. */
+    public SDFIOPort input;
 
     /** The name of the file to write to. This parameter contains
      *  a StringToken.
@@ -139,13 +137,20 @@ public class AudioSink extends Sink {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-        AudioSink newobj = (AudioSink)super.clone(ws);
-        newobj.fileName = (Parameter)newobj.getAttribute("fileName");
-        newobj.sampRate = (Parameter)newobj.getAttribute("sampRate");
-        newobj.playAudio = (Parameter)newobj.getAttribute("playAudio");
-        newobj.saveAudio = (Parameter)newobj.getAttribute("saveAudio");
-        newobj.sampleSizeInBits = (Parameter)newobj.getAttribute("sampleSizeInBits");
-        return newobj;
+        try {
+            AudioSink newobj = (AudioSink)super.clone(ws);
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.fileName = (Parameter)newobj.getAttribute("fileName");
+            newobj.sampRate = (Parameter)newobj.getAttribute("sampRate");
+            newobj.playAudio = (Parameter)newobj.getAttribute("playAudio");
+            newobj.saveAudio = (Parameter)newobj.getAttribute("saveAudio");
+            newobj.sampleSizeInBits = (Parameter)newobj.getAttribute("sampleSizeInBits");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /** Read at most one token from each input channel and write its
@@ -165,14 +170,20 @@ public class AudioSink extends Sink {
             }
         }
 	*/
-        if (input.hasToken(0)) {
-	  // Read in a single sample.
-	  DoubleToken token = (DoubleToken)input.get(0);
-	  // Put the sample at the end of the AudioQueue
-	  na.putSample(token.doubleValue());
-	}
+        DoubleToken[] audioTokenArray = new DoubleToken[consumptionRate];
+        input.getArray(0, audioTokenArray);
+        // Convert to double[].
+        double[] audioInDoubleArray = new double[consumptionRate];
+        int i;
+        for (i = 0; i < consumptionRate; i++) {
+            audioInDoubleArray[i] = audioTokenArray[i].doubleValue();
+        }
+        // Now write the array to output device/file.
+        audioOutByteArray = _doubleArrayToByteArray(audioInDoubleArray,
+						       frameSizeInBytes);
 
-
+        sourceLine.write(audioOutByteArray, 0, consumptionRate);
+				        
 	return true;
     }
 
@@ -187,19 +198,46 @@ public class AudioSink extends Sink {
         int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
         int channels = 1; // If change this, then need to change 
         // frameSizeInBits and frameRate accordingly.
-        int frameSizeInBits = sampleSizeInBitsInt;
-        double frameRate = samplingRate;
-        //try {
-        AudioFormat af = new   AudioFormat(Encoding.PCM_SIGNED_BIG_ENDIAN, samplingRate, sampleSizeInBitsInt, channels, frameSizeInBits, frameRate);
-	      
-        na  = new NewAudio(af);
+        boolean signed = true;
+        boolean bigEndian = true;
 
+        AudioFormat format = new AudioFormat((float)samplingRate,
+					      sampleSizeInBitsInt,
+					      channels, signed, bigEndian);
+        frameSizeInBytes = format.getFrameSize();
+        
+        DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
+					 null, null,
+					 new Class[0], format,
+					 AudioSystem.NOT_SPECIFIED);
+        
+        // get and open the source data line for playback.
+	try {
+	    sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
+            // Request a JavaSound internal buffer size of 8*consumptionRate
+            // sample frames. Will write to the buffer in consumptionRate
+            // size chunks.
+	    sourceLine.open(format, consumptionRate*8);
+	} catch (LineUnavailableException ex) { 
+            System.err.println("LineUnavailableException " + ex);
+	    return;
+	}
+
+        // start the source data line
+	sourceLine.start();
     }
 
 
   /** Close the specified file, if any.
    */
   public void wrapup() throws IllegalActionException {
+
+
+      sourceLine.stop();
+      sourceLine.close();
+      sourceLine = null;
+
+      /*
   	try {
 	  String fileToSave = ((StringToken)fileName.getToken()).stringValue();
 
@@ -246,10 +284,45 @@ public class AudioSink extends Sink {
 	} catch (AudioUnavailableException e) {
 	    System.err.println("Audio is Unavailable" + e);
 	}
+      */
   }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
+    ////                         private methodes                  ////
 
-  private NewAudio na;
+    /* Convert a double array of audio samples in linear signed pcm big endian
+     * format into a byte array of audio samples (-1,1) range.
+     * FIXME: This method only works for mono (single channel) audio.
+     */
+    private byte[] _doubleArrayToByteArray(double[] doubleArray,
+					   int _bytesPerSample) {
+
+	//System.out.println("_bytesPerSample = " + _bytesPerSample);
+	int lengthInSamples = doubleArray.length;
+	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1);
+	byte[] byteArray = new byte[lengthInSamples * _bytesPerSample];
+	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
+	    long l = Math.round((doubleArray[currSamp] * mathDotPow));
+	    byte[] b = new byte[_bytesPerSample];
+	    for (int i = 0; i < _bytesPerSample; i += 1, l >>= 8)
+		b[_bytesPerSample - i - 1] = (byte) l;
+	    for (int i = 0; i < _bytesPerSample; i += 1) {
+		//if (_isBigEndian)
+		     byteArray[currSamp*_bytesPerSample + i] = b[i];
+	    //else put(b[_bytesPerSample - i - 1]);
+	    }
+	}
+	return byteArray;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+    private int frameSizeInBytes;
+
+    private SourceDataLine sourceLine;
+
+    private byte[] audioOutByteArray;
+
+    private int consumptionRate;
 }
