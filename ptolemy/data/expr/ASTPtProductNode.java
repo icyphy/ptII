@@ -50,8 +50,8 @@ public class ASTPtProductNode extends ASTPtRootNode {
 
     protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
-        int num =  jjtGetNumChildren();
-        if (num ==1) {
+        int num = jjtGetNumChildren();
+        if (num == 1) {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
@@ -63,7 +63,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
         String op = "";
         int i = 1;
         try {
-            for (i=1; i<num; i++) {
+            for (i = 1; i < num; i++) {
                 // When start using 1.2 will change this
                 // remove from the front, add to the back
                 Token x = (Token)_lexicalTokens.take();
