@@ -42,7 +42,8 @@ public interface Executable {
     ////                         public methods                           ////
 
     /** This fires an actor and maybe invoked several times between 
-     *  invocations of prefire() and postfire()
+     *  invocations of prefire() and postfire().
+     * @exception IllegalActionException Throw by derived classes.
      */
     public void fire() throws IllegalActionException;
 
