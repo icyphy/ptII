@@ -410,7 +410,7 @@ public class HeaderFileGenerator extends CodeGenerator {
             if (field.isPrivate()
                 && !(Modifier.isStatic(field.getModifiers()))
                 // We should not generate inherited fields here. They are
-                // handled seperately.
+                // handled separately.
                 && (!_inheritedFields.contains(CNames.fieldNameOf(field)))
                 )
                 {
