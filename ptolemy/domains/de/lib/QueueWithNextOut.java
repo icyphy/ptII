@@ -94,8 +94,8 @@ public class QueueWithNextOut extends DETransformer {
      */
     public TypedIOPort trigger;
 
-    /** The nextOut port, which has type Token.  Gives a preview 
-     *  of the next token that will come out of the queue.  Produces 
+    /** The nextOut port, which has type Token.  Gives a preview
+     *  of the next token that will come out of the queue.  Produces
      *  an output only when a new token is next up in the queue.
      */
     public TypedIOPort nextOut;
@@ -124,10 +124,10 @@ public class QueueWithNextOut extends DETransformer {
      *  port.  If there has been no input token, or there is no token
      *  on the <i>trigger</i> port, emit nothing on the <i>output</i>
      *  port.  If a new token is next to come out, either because the
-     *  just received its first event or because one was emitted and 
-     *  at least one remains, then output a preview of this token at 
+     *  just received its first event or because one was emitted and
+     *  at least one remains, then output a preview of this token at
      *  the <i>nextOut</i> port.
-     *  @exception IllegalActionException If there is no director.  
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         if(input.hasToken(0)) {
@@ -156,7 +156,7 @@ public class QueueWithNextOut extends DETransformer {
      *  has input, return false, indicating that this actor does not
      *  want to fire.  This has the effect of leaving input values in
      *  the input ports, if there are any.
-     *  @exception IllegalActionException If there is no director.  
+     *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
         // If the trigger input is not connected, never fire.

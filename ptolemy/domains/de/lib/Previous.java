@@ -99,7 +99,7 @@ public class Previous extends Transformer {
             output.send(0, _previous);
             _previous = null;
         }
-        if (input.hasToken(0)) {        
+        if (input.hasToken(0)) {
             _previous = input.get(0);
         }
     }
