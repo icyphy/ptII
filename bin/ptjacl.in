@@ -82,6 +82,8 @@ case "${OSTYPE-no}" in
     fi;;
     cygwin32*)
 	windows=yes;;
+    WindowsNT)
+	windows=yes;;
 esac
 
 if [ -z "$JAVAHOME" ]; then
