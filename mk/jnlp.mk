@@ -162,6 +162,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 PTINY_ONLY_JNLP_JARS = \
 	lib/jython.jar \
 	ptolemy/actor/lib/comm/demo/demo.jar \
+	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
@@ -227,7 +228,6 @@ FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
 	$(PTJACL_JARS) \
-	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	ptolemy/actor/lib/jai/jai.jar \
@@ -735,7 +735,7 @@ jnlp_dist_update:
 		(cd $(DIST_DIR); tar -xpf -)
 	cp doc/webStartHelp.htm $(DIST_DIR)
 
-#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp jnlp_sign
+#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
 jnlp_dist_update_remote:
 	scp doc/webStartHelp.htm messier:$(DIST_DIR)
