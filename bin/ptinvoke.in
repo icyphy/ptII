@@ -181,8 +181,10 @@ case "`basename $0`" in
 	# Ptolemy II Application
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
-	jarfile=$ALL_JAR
-	javaflag=$ALL_JFLAG
+	# Please don't add jini or commapi to ptolemy.
+	# If you want to start up jini or commapi, the run ptjini -cxh 7/00
+	jarfile=${DIVA_JAR}
+	javaflag=${DIVA_JFLAG}
 	;;
     ptplot)
 	# Signal Plotter
