@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -61,17 +61,17 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     public PtolemyDialog(
         String title,
-        DialogTableau tableau,
+        DialogTableau dialogTableau,
         Frame owner,
         Entity target,
         Configuration configuration) {
 
         super(title);
         _owner = owner;
-        _tableau = tableau;
+        _dialogTableau = dialogTableau;
         _target = target;
         _configuration = configuration;
-        _tableau.setTitle(title);
+        _dialogTableau.setTitle(title);
 
         // This JDialog consists of two components. On top is a JComponent
         // inside of a JScrolPane that displays the ports and their attributes.
@@ -115,7 +115,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
      * @return The DialogTableau
      */
     public DialogTableau getDialogTableau() {
-        return _tableau;
+        return _dialogTableau;
     }
 
     /** Return the target.
@@ -144,17 +144,11 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
 
-    protected abstract void _apply();
-
     protected void _cancel() {
         dispose();
     }
 
     protected abstract void _createExtendedButtons(JPanel _buttons);
-
-    protected void _enableApplyButton(boolean e) {
-        _applyButton.setEnabled(e);
-    }
 
     protected boolean _isDirty() {
         return _dirty;
@@ -169,12 +163,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
      */
 
     protected void _processButtonPress(String button) {
-        if (button.equals("Apply")) {
-            _apply();
-        } else if (button.equals("Commit")) {
-            _apply();
-            _cancel();
-        } else if (button.equals("Help")) {
+        if (button.equals("Help")) {
             {
                 URL toRead =
                     getClass().getClassLoader().getResource(
@@ -217,10 +206,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     private JPanel _createButtonsPanel() {
         JPanel _buttons = new JPanel();
-        _commitButton = new JButton("Commit");
-        _buttons.add(_commitButton);
-        _applyButton = new JButton("Apply");
-        _buttons.add(_applyButton);
+
         _createExtendedButtons(_buttons);
         _helpButton = new JButton("Help");
         _buttons.add(_helpButton);
@@ -243,13 +229,13 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    private JButton _applyButton, _commitButton, _helpButton, _cancelButton;
+    private JButton _helpButton, _cancelButton;
     private Configuration _configuration;
     private JComponent _contents;
     // The following is true if any of the values have been changed but not
     // applied.
     private boolean _dirty = false;
     private Frame _owner;
-    private DialogTableau _tableau;
+    private DialogTableau _dialogTableau;
     private Entity _target;
 }

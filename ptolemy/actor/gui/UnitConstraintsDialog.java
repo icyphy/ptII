@@ -49,6 +49,7 @@ import ptolemy.data.unit.UnitEquation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitConstraintsDialog
@@ -58,8 +59,8 @@ import ptolemy.kernel.util.ChangeRequest;
 @since Ptolemy II 3.1
 */
 public class UnitConstraintsDialog
-        extends
-            PtolemyDialog implements ChangeListener {
+    extends PtolemyDialog
+    implements ChangeListener {
 
     /**
      * Construct a dialog that presents Unit constraints as a table. Each row
@@ -79,18 +80,25 @@ public class UnitConstraintsDialog
      *            The configuration to use to open the help screen (or null if
      *            help is not supported).
      */
-    public UnitConstraintsDialog(DialogTableau tableau, Frame owner,
-            Entity target, Configuration configuration) {
-        super("Configure units for " + target.getName(), tableau, owner,
-                target, configuration);
+    public UnitConstraintsDialog(
+        DialogTableau tableau,
+        Frame owner,
+        Entity target,
+        Configuration configuration) {
+        super(
+            "Configure units for " + target.getName(),
+            tableau,
+            owner,
+            target,
+            configuration);
         Vector _constraintExpression = new Vector();
-        UnitAttribute _unitConstraints = (UnitAttribute) target
-                .getAttribute("_unitConstraints");
+        UnitAttribute _unitConstraints =
+            (UnitAttribute) target.getAttribute("_unitConstraints");
         if (_unitConstraints != null) {
             Vector _constraintExpressions = _unitConstraints.getUnitEquations();
             for (int i = 0; i < _constraintExpressions.size(); i++) {
-                UnitEquation uEq = (UnitEquation) (_constraintExpressions
-                        .get(i));
+                UnitEquation uEq =
+                    (UnitEquation) (_constraintExpressions.get(i));
                 String commonDesc = uEq.commonDesc();
                 System.out.println("_constraint " + commonDesc);
                 _constraintExpression.add(commonDesc);
@@ -108,9 +116,7 @@ public class UnitConstraintsDialog
         setVisible(true);
     }
     // The table model for the table.
-    class UnitsTableModel
-            extends
-                AbstractTableModel {
+    class UnitsTableModel extends AbstractTableModel {
 
         Vector _unitsDataTable;
 
@@ -138,7 +144,6 @@ public class UnitConstraintsDialog
             _unitsDataTable.add("");
             // Now tell the GUI so that it can update itself.
             fireTableRowsInserted(getRowCount(), getRowCount());
-            // TODO Auto-generated method stub
         }
 
         public boolean isCellEditable(int arg0, int arg1) {
@@ -149,6 +154,17 @@ public class UnitConstraintsDialog
             _unitsDataTable.set(row, value);
             _enableApplyButton(true);
             _setDirty(true);
+        }
+
+        public String toString() {
+            StringBuffer retv = new StringBuffer("");
+            if (_unitsDataTable.size() > 0) {
+                retv.append((String) (_unitsDataTable.elementAt(0)));
+                for (int i = 1; i < _unitsDataTable.size(); i++) {
+                    retv.append(";" + (String) (_unitsDataTable.elementAt(i)));
+                }
+            }
+            return retv.toString();
         }
     }
 
@@ -177,7 +193,22 @@ public class UnitConstraintsDialog
      * @see ptolemy.actor.gui.PtolemyDialog#_apply()
      */
     protected void _apply() {
-        // TODO Auto-generated method stub
+        String expr = _unitsTableModel.toString();
+        String moml =
+            "<property name=\"_unitConstraints\" "
+                + "class = \"ptolemy.data.unit.UnitAttribute\" "
+                + "value = \""
+                + expr
+                + "\"/>";
+
+        MoMLChangeRequest request =
+            new MoMLChangeRequest(this, getTarget(), moml, null);
+        request.setUndoable(true);
+        // NOTE: There is no need to listen for completion
+        // or errors in this change request, since, in theory,
+        // it will just work. Will someone report the error
+        // if one occurs? I hope so...
+        getTarget().requestChange(request);
     }
 
     /*
@@ -186,6 +217,10 @@ public class UnitConstraintsDialog
      * @see ptolemy.actor.gui.PtolemyDialog#_createExtendedButtons()
      */
     protected void _createExtendedButtons(JPanel _buttons) {
+        _commitButton = new JButton("Commit");
+        _buttons.add(_commitButton);
+        _applyButton = new JButton("Apply");
+        _buttons.add(_applyButton);
         _addButton = new JButton("Add");
         _buttons.add(_addButton);
         _removeButton = new JButton("Remove           ");
@@ -193,11 +228,17 @@ public class UnitConstraintsDialog
         _buttons.add(_removeButton);
     }
 
+    protected void _enableApplyButton(boolean e) {
+        _applyButton.setEnabled(e);
+    }
+
     // The button semantics are
     // Add - Add a new port.
     protected void _processButtonPress(String button) {
         if (button.equals("Add")) {
             _unitsTableModel.addNewConstraint();
+        } else if (button.equals("Apply")) {
+            _apply();
         } else {
             super._processButtonPress(button);
         }
@@ -206,11 +247,11 @@ public class UnitConstraintsDialog
     private void _setupTableModel(Vector constraintExpressions) {
         _unitsTableModel = new UnitsTableModel(constraintExpressions);
         _unitsTable.setModel(_unitsTableModel);
-        TableColumn _constraintColumn = ((TableColumn) (_unitsTable
-                .getColumnModel().getColumn(0)));
+        TableColumn _constraintColumn =
+            ((TableColumn) (_unitsTable.getColumnModel().getColumn(0)));
         JTextField textField = new JTextField();
-        final DefaultCellEditor constraintEditor = new DefaultCellEditor(
-                textField);
+        final DefaultCellEditor constraintEditor =
+            new DefaultCellEditor(textField);
         constraintEditor.setClickCountToStart(1);
         _constraintColumn.setCellEditor(constraintEditor);
         //        textField.addFocusListener(new FocusAdapter() {
@@ -222,13 +263,13 @@ public class UnitConstraintsDialog
     }
     ///////////////////////////////////////////////////////////////////
     //// private variables ////
-    private JButton _addButton, _removeButton;
+    private JButton _addButton, _applyButton, _commitButton, _removeButton;
     private ListSelectionListener _rowSelectionListener =
-                 new ListSelectionListener() {
+        new ListSelectionListener() {
 
-        ///////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////
         //// inner class ////
-        public void valueChanged(ListSelectionEvent e) {
+    public void valueChanged(ListSelectionEvent e) {
             if (e.getValueIsAdjusting())
                 return;
             //Ignore extra messages.

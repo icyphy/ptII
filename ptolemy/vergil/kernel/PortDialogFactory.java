@@ -44,6 +44,7 @@ import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.UnitConstraintsDialog;
+import ptolemy.actor.gui.UnitSolverDialog;
 import ptolemy.data.unit.UnitConstraints;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
@@ -82,7 +83,8 @@ public class PortDialogFactory implements MenuItemFactory {
         final NamedObj target = object;
 
         // ensure that we actually have a target, and that it's an Entity.
-        if (!(target instanceof Entity)) return null;
+        if (!(target instanceof Entity))
+            return null;
         // Create a dialog for configuring the object.
         // First, identify the top parent frame.
         // Normally, this is a Frame, but just in case, we check.
@@ -98,10 +100,13 @@ public class PortDialogFactory implements MenuItemFactory {
                     parent = parent.getParent();
                 }
                 if (parent instanceof Frame) {
-                    DialogTableau dialogTableau = DialogTableau.createDialog(
-                            (Frame) parent, _configuration,
+                    DialogTableau dialogTableau =
+                        DialogTableau.createDialog(
+                            (Frame) parent,
+                            _configuration,
                             ((TableauFrame) parent).getEffigy(),
-                            PortConfigurerDialog.class, (Entity) target);
+                            PortConfigurerDialog.class,
+                            (Entity) target);
                     if (dialogTableau != null) {
                         dialogTableau.show();
                     }
@@ -118,10 +123,13 @@ public class PortDialogFactory implements MenuItemFactory {
                     parent = parent.getParent();
                 }
                 if (parent instanceof Frame) {
-                    DialogTableau dialogTableau = DialogTableau.createDialog(
-                            (Frame) parent, _configuration,
+                    DialogTableau dialogTableau =
+                        DialogTableau.createDialog(
+                            (Frame) parent,
+                            _configuration,
                             ((ActorGraphFrame) parent).getEffigy(),
-                            UnitConstraintsDialog.class, (Entity) target);
+                            UnitConstraintsDialog.class,
+                            (Entity) target);
                     if (dialogTableau != null) {
                         dialogTableau.show();
                     }
@@ -130,7 +138,7 @@ public class PortDialogFactory implements MenuItemFactory {
         };
         retv = menu.add(configUnitsAction, _configUnits);
 
-        Action solveUnitsAction = new AbstractAction(_solveUnits) {
+        Action solveUnitsDialogAction = new AbstractAction(_solveUnitsDialog) {
 
             public void actionPerformed(ActionEvent e) {
                 Component parent = menu.getInvoker();
@@ -138,12 +146,20 @@ public class PortDialogFactory implements MenuItemFactory {
                     parent = parent.getParent();
                 }
                 if (parent instanceof Frame) {
-                    Tableau tableau = ((ActorGraphFrame) parent).getTableau();
-                    UnitConstraints.solve(tableau, target);
+                    DialogTableau dialogTableau =
+                        DialogTableau.createDialog(
+                            (Frame) parent,
+                            _configuration,
+                            ((TableauFrame) parent).getEffigy(),
+                            UnitSolverDialog.class,
+                            (Entity) target);
+                    if (dialogTableau != null) {
+                        dialogTableau.show();
+                    }
                 }
             }
         };
-        retv = menu.add(solveUnitsAction, _solveUnits);
+        retv = menu.add(solveUnitsDialogAction, _solveUnitsDialog);
 
         return retv;
     }
@@ -168,5 +184,5 @@ public class PortDialogFactory implements MenuItemFactory {
 
     private Configuration _configuration;
 
-    private static String _solveUnits = "Solve Unit Constraints";
+    private static String _solveUnitsDialog = "UnitConstraints Solver";
 }
