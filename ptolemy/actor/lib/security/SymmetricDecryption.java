@@ -137,14 +137,14 @@ public class SymmetricDecryption extends CipherActor {
      */
     public void fire() throws IllegalActionException {
         try{
-            if(keyIn.hasToken(0)){
+            if (keyIn.hasToken(0)) {
                 _secretKey =
                     (SecretKey)_bytesToKey(_arrayTokenToUnsignedByteArray(
                             (ArrayToken)keyIn.get(0)));
             }
 
-            if(parameters.hasToken(0)){
-                if(_provider.equalsIgnoreCase("SystemDefault")){
+            if (parameters.hasToken(0)) {
+                if (_provider.equalsIgnoreCase("SystemDefault")) {
                     _algParams = AlgorithmParameters.getInstance(_algorithm);
                 } else {
                     _algParams =
@@ -157,7 +157,7 @@ public class SymmetricDecryption extends CipherActor {
                 _algParams.init(encodedAP);
             }
 
-            if(_secretKey !=null){
+            if (_secretKey !=null) {
                 super.fire();
             }
         } catch (IOException e) {
@@ -196,19 +196,19 @@ public class SymmetricDecryption extends CipherActor {
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
             return byteArrayOutputStream.toByteArray();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidAlgorithmParameterException e){
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
         }

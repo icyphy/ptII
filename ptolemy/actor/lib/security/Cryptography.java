@@ -178,7 +178,7 @@ public class Cryptography extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         try{
-            if(input.hasToken(0)){
+            if (input.hasToken(0)) {
                 byte[] dataBytes =
                     _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
                 dataBytes=_crypt(dataBytes);
@@ -209,14 +209,14 @@ public class Cryptography extends TypedAtomicActor {
         _padding = ((StringToken)padding.getToken()).stringValue();
         _mode = ((StringToken)mode.getToken()).stringValue();
         _keySize = ((IntToken)keySize.getToken()).intValue();
-        if(_keySize == 0){
+        if (_keySize == 0) {
             _defaultKeySize();
         }
 
         try{
             _cipher =
                 Cipher.getInstance(_algorithm+"/"+mode+"/"+padding, _provider);
-        } catch(NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
@@ -235,7 +235,7 @@ public class Cryptography extends TypedAtomicActor {
      * @param dataArrayToken to be converted to a unsigned byte array.
      * @return dataBytes the resulting unsigned byte array.
      */
-    protected byte[] _arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken){
+    protected byte[] _arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken =
@@ -267,30 +267,30 @@ public class Cryptography extends TypedAtomicActor {
      *          does not exist in the list below.
      */
     protected void _defaultKeySize() throws IllegalActionException{
-        if (_algorithm=="Blowfish"){
+        if (_algorithm=="Blowfish") {
             // valid values are: starting from 40bit up to
             // 448 in 8-bit increments
             _keySize=448;
         }
-        else if (_algorithm=="CAST5"){
+        else if (_algorithm=="CAST5") {
             //valid values are: starting from 40bit up to 128bit using
             // 8bit steps.
             _keySize=128;
         }
-        else if (_algorithm=="DES"){
+        else if (_algorithm=="DES") {
             _keySize=56;
         }
-        else if (_algorithm=="TripleDES"||_algorithm=="DESede"){
+        else if (_algorithm=="TripleDES"||_algorithm=="DESede") {
             _keySize=3*56;
         }
-        else if (_algorithm=="Rijndael"){
+        else if (_algorithm=="Rijndael") {
             _keySize=256; //valid values are: 128, 192, 256
         }
-        else if (_algorithm=="SKIPJACK"){
+        else if (_algorithm=="SKIPJACK") {
             // fixed size: 80 bits
             _keySize=80;
         }
-        else if (_algorithm=="Square"){
+        else if (_algorithm=="Square") {
             _keySize=128;
         }
         else{

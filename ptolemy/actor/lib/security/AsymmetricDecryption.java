@@ -160,8 +160,8 @@ public class AsymmetricDecryption extends CipherActor {
             _cipher.init(Cipher.DECRYPT_MODE, _privateKey);
             int blockSize = _cipher.getBlockSize();
             int length = 0;
-            for(int i = 0; i < dataBytes.length; i += blockSize){
-                if(dataBytes.length-i <= blockSize){
+            for (int i = 0; i < dataBytes.length; i += blockSize) {
+                if (dataBytes.length-i <= blockSize) {
                     length = dataBytes.length-i;
                 } else{
                     length = blockSize;

@@ -131,7 +131,7 @@ public class SymmetricEncryption extends CipherActor {
     public void fire() throws IllegalActionException {
 
         keyOut.send(0, _unsignedByteArrayToArrayToken(_keyToBytes(_secretKey)));
-        if(_algParams != null){
+        if (_algParams != null) {
             try {
 
                 parameters.send(0, _unsignedByteArrayToArrayToken(_algParams.getEncoded()));
@@ -148,7 +148,7 @@ public class SymmetricEncryption extends CipherActor {
             }
         }
 
-        //            if(FIRST_RUN == true){
+        //            if (FIRST_RUN == true) {
         //                _byteArrayOutputStream = new ByteArrayOutputStream();
         //                try {
         //
@@ -196,7 +196,7 @@ public class SymmetricEncryption extends CipherActor {
             _cipher.init(Cipher.ENCRYPT_MODE, _secretKey);
 
             _algParams = _cipher.getParameters();
-            //if(_algParams != null){
+            //if (_algParams != null) {
             //    parameters.send(0, _unsignedByteArrayToArrayToken(_algParams.getEncoded()));
             //}
 
@@ -249,7 +249,7 @@ public class SymmetricEncryption extends CipherActor {
         //                _cos.write(buffer, 0, length);
         //            }
         //            _cos.flush();
-        //        } catch (IOException e){
+        //        } catch (IOException e) {
         //            e.printStackTrace();
         //            throw new IllegalActionException(this.getName()+e.getMessage());
         //        }

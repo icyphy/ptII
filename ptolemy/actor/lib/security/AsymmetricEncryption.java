@@ -52,28 +52,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// AsymmetricEncryption
 /**
-This actor takes an unsigned byte array at the input and encrypts the message
-using the public key retrieved from the AsymmetricDecyption actor.
-The resulting output is an unsigned byte array. Various ciphers that are
-implemented by "providers" and installed on the system maybe used by specifying
-the algorithm in the <i>algorithm</i> parameter. The algorithm specified must be
-asymmetric. The mode and padding can also be specified in the <i>mode</i> and
-<i>padding</i> parameters. In case a provider specific instance of an algorithm is
-needed the provider may also be specified in the <i>provider</i> parameter.
 
-The following actor relies on the Java Cryptography Architecture (JCA) and Java
+This actor takes an unsigned byte array at the input and encrypts the
+message using the public key retrieved from the AsymmetricDecyption
+actor.  The resulting output is an unsigned byte array. Various
+ciphers that are implemented by "providers" and installed on the
+system maybe used by specifying the algorithm in the <i>algorithm</i>
+parameter. The algorithm specified must be asymmetric. The mode and
+padding can also be specified in the <i>mode</i> and <i>padding</i>
+parameters. In case a provider specific instance of an algorithm is
+needed the provider may also be specified in the <i>provider</i>
+parameter.
+
+<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
-
-TODO: include sources of information on JCE cipher and algorithms
-
-TODO: Use cipher streaming to allow for easier file input reading.
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class AsymmetricEncryption extends CipherActor {
+
+    // TODO: include sources of information on JCE cipher and algorithms
+    // TODO: Use cipher streaming to allow for easier file input reading.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -115,10 +116,11 @@ public class AsymmetricEncryption extends CipherActor {
      *
      */
     public void fire() throws IllegalActionException {
-        if(keyIn.hasToken(0)){
-            _publicKey = (PublicKey)_bytesToKey(_arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
+        if (keyIn.hasToken(0)) {
+            _publicKey = (PublicKey)_bytesToKey(
+                    _arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
         }
-        if(_publicKey != null){
+        if (_publicKey != null) {
             super.fire();
         }
     }
@@ -131,44 +133,31 @@ public class AsymmetricEncryption extends CipherActor {
      *
      * @param dataBytes the data to be encrypted.
      * @return byte[] the encrypted data.
-     * @exception IllegalActionException if an exception below is thrown.
-     * @exception IOException when error occurs in ByteArrayOutputStream.
-     * @exception InvalideKeyException when key is invalid.
-     * @exception BadPaddingException when padding is bad.
-     * @exception IllegalBockSizeException for illegal block sizes.
+     * @exception IllegalActionException if an error occurs while
+     * creating the output stream, the key is invalid, the padding is pad
+     * or if there is an illegal block size
      */
     protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         try{
             _cipher.init(Cipher.ENCRYPT_MODE, _publicKey);
             int blockSize = _cipher.getBlockSize();
             int length = 0;
-            for(int i = 0; i<dataBytes.length; i+=blockSize){
-                if(dataBytes.length-i <= blockSize){
+            for (int i = 0; i < dataBytes.length; i += blockSize) {
+                if (dataBytes.length-i <= blockSize) {
                     length = dataBytes.length-i;
                 } else{
                     length = blockSize;
                 }
-                baos.write(_cipher.doFinal(dataBytes, i, length));
+                byteOutputStream.write(_cipher.doFinal(dataBytes, i, length));
             }
-            baos.flush();
-            baos.close();
-
-
-        } catch (IOException e){
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e){
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (BadPaddingException e){
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (IllegalBlockSizeException e){
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
+            byteOutputStream.flush();
+            byteOutputStream.close();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Probles processing data, cipher was " + _cipher);
         }
-        return baos.toByteArray();
+        return byteOutputStream.toByteArray();
     }
 
     ///////////////////////////////////////////////////////////////////

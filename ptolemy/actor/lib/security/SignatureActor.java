@@ -91,12 +91,12 @@ public class SignatureActor extends CryptographyActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         try{
-            if(_provider.equalsIgnoreCase("SystemDefault")){
+            if (_provider.equalsIgnoreCase("SystemDefault")) {
                 _signature = Signature.getInstance(_algorithm);
             } else{
                 _signature = Signature.getInstance(_algorithm, _provider);
             }
-        } catch(NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchProviderException e) {
             e.printStackTrace();

@@ -123,7 +123,7 @@ public class ServiceInformation extends TypedAtomicActor {
             if (request.equals("Cipher") || request.equals("Signature")
                     || request.equals("MessageDigest")
                     || request.equals("KeyGenerator")
-                    || request.equals("KeyPairGenrator")){
+                    || request.equals("KeyPairGenrator")) {
 
                 Iterator it = (Security.getAlgorithms("Request")).iterator();
                 int i = 0;
@@ -131,7 +131,7 @@ public class ServiceInformation extends TypedAtomicActor {
                     output.send(i, new StringToken((String)it.next()));
                     i++;
                 }
-            } else if(request.equals("Providers")){
+            } else if (request.equals("Providers")) {
                 Provider [] providers = Security.getProviders();
                 for (int i = 0; i < providers.length; i++) {
                     output.send(i, new StringToken(providers[i].getName()));

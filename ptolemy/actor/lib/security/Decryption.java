@@ -210,9 +210,9 @@ public class Decryption extends TypedAtomicActor {
         if (attribute == cryptoMode) {
             String function = cryptoMode.getExpression();
 
-            if (function.equals("asymmetric")){
+            if (function.equals("asymmetric")) {
                 _keyMode = _ASYMMETRIC;
-            }else if (function.equals("symmetric")){
+            }else if (function.equals("symmetric")) {
                 _keyMode = _SYMMETRIC;
             }
         } else super.attributeChanged(attribute);
@@ -227,13 +227,13 @@ public class Decryption extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         try{
-            if(input.hasToken(0)){
+            if (input.hasToken(0)) {
                 byte[] dataBytes = _ArrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
                 dataBytes=_crypt(dataBytes);
                 output.send(0, _UnsignedByteArrayToArrayToken(dataBytes));
             }
 
-            if (_keyMode == _ASYMMETRIC){
+            if (_keyMode == _ASYMMETRIC) {
                 keyOut.send(0, new ObjectToken(_publicKey));
             } else {
                 keyOut.send(0, new ObjectToken(_secretKey));
@@ -259,7 +259,7 @@ public class Decryption extends TypedAtomicActor {
         super.initialize();
         try{
             _cipher = Cipher.getInstance(_algo, _provider);
-        } catch(NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
@@ -267,7 +267,7 @@ public class Decryption extends TypedAtomicActor {
             e.printStackTrace();
         }
 
-        if (_keyMode == _ASYMMETRIC){
+        if (_keyMode == _ASYMMETRIC) {
             keyOut.send(0, new ObjectToken(_publicKey));
         } else {
             keyOut.send(0, new ObjectToken(_secretKey));
@@ -299,7 +299,7 @@ public class Decryption extends TypedAtomicActor {
      * @param dataArrayToken
      * @return dataBytes
      */
-    protected byte[] _ArrayTokenToUnsignedByteArray( ArrayToken dataArrayToken){
+    protected byte[] _ArrayTokenToUnsignedByteArray( ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken =
@@ -335,7 +335,7 @@ public class Decryption extends TypedAtomicActor {
      * @exception ThrowsIllegalActionException
      */
     protected byte[] _createKeys() throws IllegalActionException {
-        switch(_keyMode){
+        switch(_keyMode) {
         case _ASYMMETRIC:
             _createAsymmetricKeys();
             //_cipher.init(Cipher.WRAP_MODE, _privateKey);
@@ -359,10 +359,10 @@ public class Decryption extends TypedAtomicActor {
             KeyGenerator keyGen = KeyGenerator.getInstance(_algo, _provider);
             keyGen.init(56, new SecureRandom());
             _secretKey = keyGen.generateKey();
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName() + e.getMessage());
-        } catch (NoSuchProviderException e){
+        } catch (NoSuchProviderException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName() + e.getMessage());
         }
@@ -385,17 +385,17 @@ public class Decryption extends TypedAtomicActor {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Key key;
         try{
-            if (_keyMode == _SYMMETRIC){
+            if (_keyMode == _SYMMETRIC) {
                 key = _secretKey;
                 _cipher.init(Cipher.DECRYPT_MODE, key);
                 byteArrayOutputStream.write(_cipher.doFinal(initialData));
-            } else if (_keyMode == _ASYMMETRIC){
+            } else if (_keyMode == _ASYMMETRIC) {
                 key = _privateKey;
                 _cipher.init(Cipher.DECRYPT_MODE, key);
                 int blockSize = _cipher.getBlockSize();
                 int length = 0;
-                for(int i = 0; i<initialData.length; i+=blockSize){
-                    if(initialData.length-i <= blockSize){
+                for (int i = 0; i<initialData.length; i+=blockSize) {
+                    if (initialData.length-i <= blockSize) {
                         length = initialData.length-i;
                     } else{
                         length = blockSize;
@@ -405,16 +405,16 @@ public class Decryption extends TypedAtomicActor {
                 byteArrayOutputStream.flush();
                 byteArrayOutputStream.close();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
         }

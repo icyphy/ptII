@@ -117,10 +117,10 @@ public class SignatureVerifier extends SignatureActor {
      *  @exception IllegalActionException if base thrown by base class.
      */
     public void fire() throws IllegalActionException {
-        if(keyIn.hasToken(0)){
+        if (keyIn.hasToken(0)) {
             _publicKey = (PublicKey)_bytesToKey(_arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
         }
-        if(input.hasToken(0) && data.hasToken(0) && _publicKey!=null){
+        if (input.hasToken(0) && data.hasToken(0) && _publicKey!=null) {
             _data = _arrayTokenToUnsignedByteArray((ArrayToken)data.get(0));
             super.fire();
         }
@@ -149,15 +149,15 @@ public class SignatureVerifier extends SignatureActor {
             _signature.initVerify(_publicKey);
             _signature.update(_data);
             boolean verify = _signature.verify(signatureData);
-            if(verify){
+            if (verify) {
                 return _data;
             } else {
                 return new String("Signature verification failed").getBytes();
             }
-        } catch (SignatureException e){
+        } catch (SignatureException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
         }

@@ -160,7 +160,7 @@ public class CryptographyActor extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         try{
-            if(input.hasToken(0)){
+            if (input.hasToken(0)) {
                 byte[] dataBytes =
                     _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
                 dataBytes=_process(dataBytes);
@@ -198,7 +198,7 @@ public class CryptographyActor extends TypedAtomicActor {
      * @param dataArrayToken to be converted to a unsigned byte array.
      * @return dataBytes the resulting unsigned byte array.
      */
-    protected byte[] _arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken){
+    protected byte[] _arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken =
@@ -225,10 +225,10 @@ public class CryptographyActor extends TypedAtomicActor {
             objectInputStream = new ObjectInputStream(byteArrayInputStream);
             key =(Key)objectInputStream.readObject();
             return key;
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName() + e.getMessage());
-        }catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName() + e.getMessage());
         }
@@ -242,7 +242,7 @@ public class CryptographyActor extends TypedAtomicActor {
     protected KeyPair _createAsymmetricKeys()throws IllegalActionException{
         try{
             KeyPairGenerator keyPairGen;
-            if(_provider.equalsIgnoreCase("SystemDefault")){
+            if (_provider.equalsIgnoreCase("SystemDefault")) {
                 keyPairGen = KeyPairGenerator.getInstance(_keyAlgorithm);
             } else {
                 keyPairGen = KeyPairGenerator.getInstance(_keyAlgorithm, _provider);
@@ -267,7 +267,7 @@ public class CryptographyActor extends TypedAtomicActor {
     protected Key _createSymmetricKey() throws IllegalActionException{
         try{
             KeyGenerator keyGen;
-            if(_provider.equalsIgnoreCase("SystemDefault")){
+            if (_provider.equalsIgnoreCase("SystemDefault")) {
                 keyGen = KeyGenerator.getInstance(_keyAlgorithm);
             } else {
                 keyGen = KeyGenerator.getInstance(_keyAlgorithm, _provider);
@@ -275,10 +275,10 @@ public class CryptographyActor extends TypedAtomicActor {
             keyGen.init(_keySize, new SecureRandom());
             return keyGen.generateKey();
 
-        }catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName() + e.getMessage());
-        }catch (NoSuchProviderException e){
+        } catch (NoSuchProviderException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName() + e.getMessage());
         }
@@ -296,7 +296,7 @@ public class CryptographyActor extends TypedAtomicActor {
             ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
             oos.writeObject(key);
             return byteArrayOutputStream.toByteArray();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName() + e.getMessage());
         }

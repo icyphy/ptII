@@ -170,10 +170,10 @@ public class SignatureSigner extends SignatureActor {
             _signature.initSign(_privateKey);
             _signature.update(dataBytes);
             return _signature.sign();
-        } catch (SignatureException e){
+        } catch (SignatureException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
         }
