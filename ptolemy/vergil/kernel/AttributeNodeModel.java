@@ -48,9 +48,25 @@ This is used for visible attributes.
 */
 public class AttributeNodeModel extends NamedObjNodeModel {
 
+    /** Return a MoML String that will delete the given node from the
+     *  Ptolemy model.
+     *  @return A valid MoML string.
+     */
+    public String getDeleteNodeMoML(Object node) {
+        NamedObj attribute = (NamedObj)((Locatable)node).getContainer();
+        
+        NamedObj container = _getChangeRequestParent((NamedObj)getParent(node));
+        
+        StringBuffer moml = new StringBuffer();
+        moml.append("<deleteProperty name=\"" +
+                attribute.getName(container) +
+                "\"/>\n");
+        return moml.toString();
+    }
+
     /** Return the graph parent of the given node.
      *  @param node The node, which is assumed to be an instance of Locatable.
-     *  @return The container of the location's container, which should be
+     *  @return The container of th location's container, which should be
      *   the root of the graph.
      */
     public Object getParent(Object node) {

@@ -106,6 +106,28 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         }
     }
 
+    /** Return a MoML String that will delete the given edge from the
+     *  Ptolemy model.
+     *  @return A valid MoML string.
+     */
+    public String getDeleteEdgeMoML(Object edge) {
+        // Note: the abstraction here is rather broken.  Ideally this
+        // should look like getDeleteNodeMoML()
+        if (!(getEdgeModel(edge) instanceof ArcModel)) return "";
+	ArcModel model = (ArcModel)getEdgeModel(edge);
+	return model.getDeleteEdgeMoML(edge);
+    }
+
+    /** Return a MoML String that will delete the given node from the
+     *  Ptolemy model.
+     *  @return A valid MoML string.
+     */
+    public String getDeleteNodeMoML(Object node) {
+	if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return "";
+	NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
+	return model.getDeleteNodeMoML(node);
+    }
+
     /** Return the model for the given edge object.  If the object is not
      *  an edge, then return null.
      *  @param edge An object which is assumed to be in this graph model.
@@ -358,6 +380,26 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	public Object getHead(Object edge) {
 	    return ((Arc)edge).getHead();
 	}
+
+        /** Return a MoML String that will delete the given edge from the
+         *  Ptolemy model.
+         *  @return A valid MoML string.
+         */
+        public String getDeleteEdgeMoML(Object edge) {
+	    final Arc link = (Arc)edge;
+	    NamedObj linkHead = (NamedObj)link.getHead();
+            NamedObj linkTail = (NamedObj)link.getTail();
+	    Relation linkRelation = (Relation)link.getRelation();
+	    // This moml is parsed to execute the change
+	    StringBuffer moml = new StringBuffer();
+            // Make the request in the context of the container.
+            // JDK1.2.2 fails to compile the next line.
+            CompositeEntity container =
+                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+
+            moml.append(_deleteRelation(container, linkRelation));
+            return moml.toString();
+        }
 
 	/** Return the tail node of the specified edge.
 	 *  @param edge The edge, which is assumed to be an instance of Arc.
@@ -879,6 +921,20 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     /** The model for external ports.
      */
     public class PortModel extends NamedObjNodeModel {
+        /** Return a MoML String that will delete the given node from the
+         *  Ptolemy model.
+         *  @return A valid MoML string.
+         */
+        public String getDeleteNodeMoML(Object node) {
+	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+           
+            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+
+            String moml = "<deletePort name=\""
+                    + deleteObj.getName(container) + "\"/>\n";
+            return moml;
+        }
+
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be an icon contained in
@@ -970,6 +1026,20 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     /** The model for an icon that represent states.
      */
     public class StateModel extends NamedObjNodeModel {
+        /** Return a MoML String that will delete the given node from the
+         *  Ptolemy model.
+         *  @return A valid MoML string.
+         */
+        public String getDeleteNodeMoML(Object node) {
+            // FIXME: Delete the relations as well.
+	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+           
+            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+
+            String moml = "<deleteEntity name=\""
+                    + deleteObj.getName(container) + "\"/>\n";
+            return moml;
+        }
 
 	/** Return the graph parent of the given node.
 	 *  @param node The node, which is assumed to be a location.
