@@ -76,9 +76,9 @@ public class ASTPtUnaryNode extends ASTPtSimpleNode {
                  if (result instanceof IntToken) {
                      int tmp = ~(((IntToken)result).getValue());
                      return new IntToken(tmp);
-                 } else if (result instanceof LongToken) {
+                     /*                 } else if (result instanceof LongToken) {
                      long tmp = ~(((LongToken)result).getValue());
-                     return new LongToken(tmp);
+                     return new LongToken(tmp);*/
                  } else { 
                      String str = "Cannot apply bitwise NOT \"~\" to  ";
                      str = str + "non-Integer type: " + result.toString();
