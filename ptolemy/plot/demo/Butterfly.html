@@ -17,12 +17,18 @@ floating point X,Y pairs.
     archive="ptplot/ptplotapplet.jar"
     alt="If you had a java-enabled browser, you would see an applet here."
 >
-<param name="pxgraphargs" value="-binary -t Butterfly -0 xy -tk data/butterfly.plt">
+<param name="pxgraphargs" value="-bigendian -t Butterfly -0 xy -tk data/butterfly.plt">
 <param name="background" value="faf0e6">
    <hr>If your browser recognized the applet tag,
     you would see an applet here.<hr>
 </applet>
 <p>
+For information about the binary format, see the
+<A HREF="../doc/codeDoc/ptplot.Pxgraph.html">Pxgraph</A> Java class
+documentation.
+For information about endian issues, see the
+<a href="Endian.html">Endian Examples</a>.
+
 <HR>
 <A HREF="index.html">Up</A> to the Example index -
 <A HREF="Binary.html">Back</A> to a plot of binary data -
