@@ -36,39 +36,39 @@ import ptolemy.kernel.util.KernelRuntimeException;
 /**
  *  Superclass of all the exceptions to be thrown in AST analysis and
  *  manipulation.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
  *  @Pt.ProposedRating Red (tfeng)
  */
 public class ASTRuntimeException extends KernelRuntimeException {
-    
+
     /** Create an exception with no message or cause.
      */
     public ASTRuntimeException() {
         super();
     }
-    
+
     /** Create an exception with a message.
-     * 
+     *
      *  @param message The message.
      */
     public ASTRuntimeException(String message) {
         super(message);
     }
-    
+
     /** Create an exception with a message and a cause.
-     * 
+     *
      *  @param message The message.
      *  @param cause The cause.
      */
     public ASTRuntimeException(String message, Throwable cause) {
         super(cause, message);
     }
-    
+
     /** Create an exception with a cause.
-     * 
+     *
      *  @param cause The cause.
      */
     public ASTRuntimeException(Throwable cause) {

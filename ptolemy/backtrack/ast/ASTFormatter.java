@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 */
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -145,7 +145,7 @@ import org.eclipse.jdt.core.dom.WildcardType;
  *  (usually a {@link CompilationUnit} object), and outputs the formatted
  *  Java source code. It is modified from {@link
  *  org.eclipse.jdt.core.dom.NaiveASTFlattener}.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
@@ -153,29 +153,29 @@ import org.eclipse.jdt.core.dom.WildcardType;
  *  @see org.eclipse.jdt.core.dom.NaiveASTFlattener
  */
 public class ASTFormatter extends ASTVisitor {
-    
+
     /** Construct an AST formatter with a {@link StringBuffer} where the
      *  formatter output will be added.
-     *  
+     *
      *  @param buffer The string buffer to be used.
      */
     public ASTFormatter(StringBuffer buffer) {
         _buffer = buffer;
     }
-    
+
     /** Construct an AST formatter with a writer to which the formatted
      *  output will be written.
-     * 
+     *
      *  @param writer The writer to write to.
      */
     public ASTFormatter(Writer writer) {
         _writer = writer;
     }
-    
+
     /** Read in one or more Java source files, parse them with the
      *  Eclipse parser, format their AST, and print out to the standard
      *  output.
-     *  
+     *
      *  @param args The names of Java source files.
      */
     public static void main(String[] args) throws Exception {
@@ -192,7 +192,7 @@ public class ASTFormatter extends ASTVisitor {
             writer.close();
         }
     }
-    
+
     /*
      * @see ASTVisitor#visit(AnnotationTypeDeclaration)
      */
@@ -212,7 +212,7 @@ public class ASTFormatter extends ASTVisitor {
         _closeBrace();
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(AnnotationTypeMemberDeclaration)
      * @since 3.0
@@ -234,7 +234,7 @@ public class ASTFormatter extends ASTVisitor {
         _output(";\n");
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(AnonymousClassDeclaration)
      */
@@ -342,7 +342,7 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(Block node) {
         boolean newLineAfterBlock = _newLineAfterBlock;
-        
+
         _openBrace();
         for (Iterator it = node.statements().iterator(); it.hasNext(); ) {
             Statement s = (Statement) it.next();
@@ -637,7 +637,7 @@ public class ASTFormatter extends ASTVisitor {
                     // enum constant declarations are separated by commas
                     _output(", ");
                 } else {
-                    // semicolon separates last enum constant declaration from 
+                    // semicolon separates last enum constant declaration from
                     // first class body declarations
                     _output("; ");
                 }
@@ -726,7 +726,7 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(IfStatement node) {
         Statement thenStatement = node.getThenStatement();
         Statement elseStatement = node.getElseStatement();
-        
+
         if (_indentIfStatement)
             _output(_indent);
         else
@@ -734,7 +734,7 @@ public class ASTFormatter extends ASTVisitor {
         _output("if (");
         node.getExpression().accept(this);
         _output(")");
-        
+
         if (thenStatement instanceof Block) {
             _output(" ");
             _newLineAfterBlock = elseStatement == null;
@@ -745,8 +745,8 @@ public class ASTFormatter extends ASTVisitor {
             node.getThenStatement().accept(this);
             _decreaseIndent();
         }
-        
-        
+
+
         if (elseStatement != null) {
             if (thenStatement instanceof Block) {
                 _output(" ");
@@ -875,7 +875,7 @@ public class ASTFormatter extends ASTVisitor {
         node.getTypeName().accept(this);
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(MemberRef)
      * @since 3.0
@@ -888,7 +888,7 @@ public class ASTFormatter extends ASTVisitor {
         node.getName().accept(this);
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(MemberValuePair)
      * @since 3.0
@@ -899,7 +899,7 @@ public class ASTFormatter extends ASTVisitor {
         node.getValue().accept(this);
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(MethodRef)
      * @since 3.0
@@ -921,7 +921,7 @@ public class ASTFormatter extends ASTVisitor {
         _output(")");
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(MethodRefParameter)
      * @since 3.0
@@ -934,7 +934,7 @@ public class ASTFormatter extends ASTVisitor {
         }
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(MethodDeclaration)
      */
@@ -986,7 +986,7 @@ public class ASTFormatter extends ASTVisitor {
         _output(")");
         for (int i = 0; i < node.getExtraDimensions(); i++) {
             _output("[]");
-        }       
+        }
         if (!node.thrownExceptions().isEmpty()) {
             _output(" throws ");
             for (Iterator it = node.thrownExceptions().iterator(); it.hasNext(); ) {
@@ -1048,7 +1048,7 @@ public class ASTFormatter extends ASTVisitor {
         _output(node.getKeyword().toString());
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(NormalAnnotation)
      * @since 3.0
@@ -1067,7 +1067,7 @@ public class ASTFormatter extends ASTVisitor {
         _output(")");
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(NullLiteral)
      */
@@ -1222,7 +1222,7 @@ public class ASTFormatter extends ASTVisitor {
         _output(")");
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(SingleVariableDeclaration)
      */
@@ -1243,7 +1243,7 @@ public class ASTFormatter extends ASTVisitor {
         node.getName().accept(this);
         for (int i = 0; i < node.getExtraDimensions(); i++) {
             _output("[]");
-        }           
+        }
         if (node.getInitializer() != null) {
             _output(" = ");
             node.getInitializer().accept(this);
@@ -1425,7 +1425,7 @@ public class ASTFormatter extends ASTVisitor {
         }
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(TextElement)
      * @since 3.0
@@ -1434,7 +1434,7 @@ public class ASTFormatter extends ASTVisitor {
         _output(node.getText());
         return false;
     }
-    
+
     /*
      * @see ASTVisitor#visit(ThisExpression)
      */
@@ -1555,7 +1555,7 @@ public class ASTFormatter extends ASTVisitor {
                     // enum constant declarations are separated by commas
                     _output(", ");
                 } else {
-                    // semicolon separates last enum constant declaration from 
+                    // semicolon separates last enum constant declaration from
                     // first class body declarations
                     _output("; ");
                 }
@@ -1697,11 +1697,11 @@ public class ASTFormatter extends ASTVisitor {
         node.getBody().accept(this);
         return false;
     }
-    
+
     /** Output a message. If a {@link StringBuffer} is used, the output
      *  is appended to the buffer; if a {@link Writer} is provided, the
      *  output is written to the writer.
-     *  
+     *
      *  @param message The message to be output.
      *  @exception ASTIORuntimeException Thrown when a writer is provided and
      *   IO exception occurs when trying to write to the writer.
@@ -1716,11 +1716,11 @@ public class ASTFormatter extends ASTVisitor {
                 throw new ASTIORuntimeException(e);
             }
     }
-    
+
     /** Output a message. If a {@link StringBuffer} is used, the output
      *  is appended to the buffer; if a {@link Writer} is provided, the
      *  output is written to the writer.
-     *  
+     *
      *  @param message The message to be output.
      *  @exception ASTIORuntimeException Thrown when a writer is provided and
      *   IO exception occurs when trying to write to the writer.
@@ -1735,11 +1735,11 @@ public class ASTFormatter extends ASTVisitor {
                 throw new ASTIORuntimeException(e);
             }
     }
-    
+
     /**
      * Appends the text representation of the given modifier flags, followed by a single space.
      * Used for 3.0 modifiers and annotations.
-     * 
+     *
      * @param ext the list of modifier and annotation nodes
      * (element type: <code>IExtendedModifiers</code>)
      */
@@ -1749,12 +1749,12 @@ public class ASTFormatter extends ASTVisitor {
             p.accept(this);
             _output(" ");
         }
-    }       
-    
+    }
+
     /**
      * Appends the text representation of the given modifier flags, followed by a single space.
      * Used for JLS2 modifiers.
-     * 
+     *
      * @param modifiers the modifier flags
      */
     private void _outputModifiers(int modifiers) {
@@ -1791,16 +1791,16 @@ public class ASTFormatter extends ASTVisitor {
         if (Modifier.isTransient(modifiers)) {
             _output("transient ");
         }
-    }       
-    
+    }
+
     /** Output an open brace and increase the indent amount.
      */
     private void _openBrace() {
         _indent.append("    ");
         _output("{\n");
     }
-    
-    
+
+
     /** Output a closing brase and a new line character after it, and
      *  also decrease the indent amount.
      *  <p>
@@ -1809,11 +1809,11 @@ public class ASTFormatter extends ASTVisitor {
     private void _closeBrace() {
         _closeBrace(true);
     }
-    
+
     /** Output a closing brase and a new line character after it if
      *  <tt>newLineAfter</tt> is true, and also decrease the indent
      *  amount.
-     *  
+     *
      *  @param newLineAfter Whether to output a new line character
      *   after the closing brace.
      */
@@ -1824,40 +1824,39 @@ public class ASTFormatter extends ASTVisitor {
         if (newLineAfter)
             _output("\n");
     }
-    
+
     /** Increase the indent amount.
      */
     private void _increaseIndent() {
         _indent.append("    ");
     }
-    
+
     /** Decrease the indent amount.
      */
     private void _decreaseIndent() {
         _indent.setLength(_indent.length() - 4);
     }
-    
+
     /** The current indentation, a string of spaces.
      */
     private StringBuffer _indent = new StringBuffer();
-    
+
     /** The string buffer, where the output is added to.
      */
     private StringBuffer _buffer;
-    
+
     /** The writer, where the output is written to.
      */
     private Writer _writer;
-    
+
     /** Whether to indent the next if statement. It is
      *  <tt>false</tt> if the if statement is preceded by
      *  an "else".
      */
     private boolean _indentIfStatement = true;
-    
+
     /** Whether to output a new line character after the
      *  next block. It is <tt>false</tt> if the block is
      *  followed by "catch", "finally" and so on.
      */
     private boolean _newLineAfterBlock = true;
-}

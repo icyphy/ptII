@@ -44,7 +44,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  *  Syntax Trees) from Java source files.
  *  <p>
  *  Currently only Java 1.4 source files are accepted.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
@@ -54,7 +54,7 @@ public class ASTBuilder {
 
     /** Parse a Java source file given by its name, and return the
      *  root of the AST.
-     *  
+     *
      *  @param fileName The Java source file name.
      *  @return The root of the AST.
      *  @exception FileNotFoundException Thrown when the source file
@@ -76,11 +76,11 @@ public class ASTBuilder {
         } catch (ASTMalformedException e) {
             throw new ASTMalformedException(fileName);
         }
-    }   
+    }
 
     /** Parse the Java source code given in the source buffer, and
      *  return the root of the AST.
-     * 
+     *
      *  @param source The <tt>char</tt> array that contains the
      *   source code in a single Java source file.
      *  @return The root of the AST.

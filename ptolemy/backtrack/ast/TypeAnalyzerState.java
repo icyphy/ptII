@@ -34,8 +34,8 @@ import java.util.Stack;
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnalyzerState
 /**
- *  
- * 
+ *
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
@@ -87,20 +87,20 @@ public class TypeAnalyzerState {
     public void setPreviousClasses(Stack previousClasses) {
         _previousClasses = previousClasses;
     }
-    
+
     public void enterClass(Class c) {
         _previousClasses.push(_currentClass);
         _currentClass = c;
         _loader.setCurrentClass(_currentClass, false);
     }
-    
+
     public void leaveClass() {
         _currentClass = (Class)_previousClasses.pop();
         _loader.setCurrentClass(_currentClass, false);
     }
-    
+
     /**
-     * 
+     *
      *  @param name
      *  @param type
      */
@@ -108,9 +108,9 @@ public class TypeAnalyzerState {
         Hashtable table = (Hashtable)_variableStack.peek();
         table.put(name, type);
     }
-    
-    /** 
-     * 
+
+    /**
+     *
      *  @param name
      *  @return
      */
@@ -118,11 +118,11 @@ public class TypeAnalyzerState {
         int i = _variableStack.size() - 1;
         if (i == -1)
             return null;
-        
+
         Hashtable table = (Hashtable)_variableStack.peek();
         while (!table.containsKey(name) && i >= 1)
             table = (Hashtable)_variableStack.get(--i);
-        
+
         return (Type)table.get(name);
     }
 
@@ -149,18 +149,18 @@ public class TypeAnalyzerState {
      *  corresponding variables.
      */
     private Stack _variableStack = new Stack();
-    
+
     /** The class loader used to load classes.
      */
     private LocalClassLoader _loader;
-    
+
     /** The class currently being analyzed, whose declaration is opened
      *  most recently. <tt>null</tt> only when the analyzer is analyzing
      *  the part of source code before any class definition ("package"
      *  and "import").
      */
     private Class _currentClass;
-    
+
     /** The stack of previously opened class, which has not been closed
      *  yet.
      */

@@ -63,7 +63,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
  *  expression or sub-expression in the Java program, it creates a type and
  *  associates it with that node with {@link #setType(ASTNode, Type)}. This
  *  information can be extracted with {@link #getType(ASTNode)}.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
@@ -78,7 +78,7 @@ public class Type {
      *  If this type object is primitive, the return type is a primitive array
      *  as an object type. If this type object is <tt>null</tt> type, the return
      *  type is also <tt>null</tt> type.
-     * 
+     *
      *  @return The new type with one dimension added.
      *  @see #dimensions()
      *  @see #removeOneDimension()
@@ -95,7 +95,7 @@ public class Type {
             else
                 return createType(_fullName + "[]");
     }
-    
+
     /** Compute the compatibility rating between this type and another formal
      *  type. If the result is larger than or equal to 0, the two types are
      *  compatible. An object of this type can be assigned to the given formal
@@ -106,7 +106,7 @@ public class Type {
      *  When it is a natural number, it denotes how compatible the two types
      *  are. The smaller this natural number is, the more compatible this
      *  type is with the given formal type.
-     * 
+     *
      *  @param formalType The formal type to be evaluated.
      *  @param loader The {@link ClassLoader} object to be used when the
      *   classes of types are resolved. This functioon uses this loader to
@@ -120,15 +120,15 @@ public class Type {
             throws ClassNotFoundException {
         if (equals(formalType))
             return 0;
-        
+
         // Null type is always compatible with object types.
         if (_primitiveNum == NULL_NUM && !formalType.isPrimitive())
             return 0;
-        
+
         // Check primitive types.
         if (isPrimitive() != formalType.isPrimitive())
             return -1;
-        
+
         if (isPrimitive())
             if (formalType.isPrimitive())
                 if (_primitiveNum == CHAR_NUM)
@@ -229,7 +229,7 @@ public class Type {
                 return -1;
         }
     }
-    
+
     /** Create a type with a full name of a primitive type or a class. Users
      *  cannot directly create a type object with <tt>new</tt>. Instead, they
      *  should always use this function.
@@ -238,7 +238,7 @@ public class Type {
      *  well as <tt>null</tt> or <tt>void</tt>. When it is the name of an array
      *  type, both source representation (as "<tt>char[]</tt>") or run-time
      *  representation (as "<tt>[C<tt>") are accepted.
-     * 
+     *
      *  @param fullName The full name of the type.
      *  @return The type object with the given name. No error is returned when
      *   the name is incorrect.
@@ -257,9 +257,9 @@ public class Type {
             return type;
         }
     }
-    
+
     /** Count the number of dimensions of an array type.
-     * 
+     *
      *  @return The number of dimensions (>1) if the type is an array;
      *   otherwise, return 1 (scalar).
      */
@@ -272,9 +272,9 @@ public class Type {
         }
         return dim;
     }
-    
+
     /** Test if this type is semantically equal to the given type.
-     * 
+     *
      *  @param type The type to be tested.
      *  @return <tt>true</tt> if the two types equal; <tt>false</tt>
      *   otherwise.
@@ -283,7 +283,7 @@ public class Type {
         return _primitiveNum == type._primitiveNum &&
                 _fullName.equals(type._fullName);
     }
-    
+
     /** Get the common type of two types when they appear in an
      *  expression. The following rules are followed:
      *  <ol>
@@ -302,7 +302,7 @@ public class Type {
      *      store more information.
      *    </li>
      *  </ol>
-     *  
+     *
      *  @param type1 One of the types to be evaluated.
      *  @param type2 The other of the types to be evaluated.
      *  @return The common type of the two if any, or <tt>null</tt>
@@ -325,17 +325,17 @@ public class Type {
         }
         return null;
     }
-    
+
     /** Get the name of this type.
-     * 
+     *
      *  @return The name.
      */
     public String getName() {
         return _fullName;
     }
-    
+
     /** Get the type associated with an AST node.
-     * 
+     *
      *  @param node The node with a type associated with it.
      *  @return The type. <tt>null</tt> if the node has no type
      *   associated with it.
@@ -346,32 +346,32 @@ public class Type {
     }
 
     /** Test if this type is an array type.
-     * 
+     *
      *  @return <tt>true</tt> if this type is an array type;
      *   <tt>false</tt> otherwise.
      */
     public boolean isArray() {
         return _fullName.indexOf("[") >= 0;
     }
-    
+
     /** Test if this type is primitive (<tt>boolean</tt>,
      *  <tt>byte</tt>, <tt>char</tt>, <tt>double</tt>, <tt>float</tt>,
      *  <tt>int</tt>, <tt>long</tt>, <tt>short</tt>, and
      *  <tt>null</tt>).
-     *  
+     *
      *  @return <tt>true</tt> if this type is primitive; <tt>false</tt>
      *   otherwise.
      */
     public boolean isPrimitive() {
         return _primitiveNum >= 0;
     }
-    
+
     /** Test if the type given by the name is primitive. Name of
      *  primitive types include ("<tt>boolean</tt>",
      *  "<tt>byte</tt>", "<tt>char</tt>", "<tt>double</tt>", "<tt>float</tt>",
      *  "<tt>int</tt>", "<tt>long</tt>", "<tt>short</tt>", "<tt>null</tt>",
      *  and "<tt>void</tt>").
-     *  
+     *
      *  @param typeName The name of the type.
      *  @return <tt>true</tt> if the type is primitive; <tt>false</tt>
      *   otherwise.
@@ -379,19 +379,19 @@ public class Type {
     public static boolean isPrimitive(String typeName) {
         return PRIMITIVE_TYPES.containsKey(typeName);
     }
-    
+
     /** Copy the type annotation from a type to another.
-     * 
+     *
      *  @param nTo The node whose type is updated.
      *  @param nFrom The node whose type is fetched.
      */
     public static void propagateType(ASTNode nTo, ASTNode nFrom) {
         setType(nTo, getType(nFrom));
     }
-    
+
     /** Remove one dimension from this type object. The resulting type
      *  may not be an array type.
-     *  
+     *
      *  @return The array type with the one dimension removed. If this
      *   type is not an array type, this function returns this type
      *   itself.
@@ -404,7 +404,7 @@ public class Type {
     public Type removeOneDimension() throws ClassNotFoundException {
         if (!isArray())
             return this;
-        
+
         String newName = _fullName.substring(1);
         int length = newName.length();
         if (length == 1) {
@@ -421,17 +421,17 @@ public class Type {
             return createType(newName);
         throw new ClassNotFoundException(newName);
     }
-    
+
     /** Remove the type associated with a node.
-     * 
+     *
      *  @param node The node associated with a type.
      */
     public static void removeType(ASTNode node) {
         node.setProperty("type", null);
     }
-    
+
     /** Get the type object associated with a node.
-     * 
+     *
      *  @param node The node associated with a type.
      *  @param type The type associated with the node. If no type
      *   is associated with the node, <tt>null</tt> is returned.
@@ -440,7 +440,7 @@ public class Type {
     public static void setType(ASTNode node, Type type) {
         node.setProperty("type", type);
     }
-    
+
     /** Convert the name of an array type to the Java run-time
      *  representation. In this representation, "["s are always placed
      *  before the name of the element type. Arrays of primitive types
@@ -451,7 +451,7 @@ public class Type {
      *  <p>
      *  This function does nothing if the input type is already Java
      *  run-time form.
-     *  
+     *
      *  @param type The type name to be converted.
      *  @return The transformed type name.
      */
@@ -472,7 +472,7 @@ public class Type {
                 buffer.insert(0, '[');
             }
             buffer.setLength(length);
-            
+
             String elementType = buffer.substring(dims, length);
             if (PRIMITIVE_TYPES.containsKey(elementType)) {
                 if (elementType.equals("null"))
@@ -488,7 +488,7 @@ public class Type {
     }
 
     /** Convert this type to a {@link Class} object.
-     * 
+     *
      *  @param loader The {@link ClassLoader} object to be used to resolve
      *   the type.
      *  @return The class object.
@@ -508,66 +508,66 @@ public class Type {
             return _classObject;
         }
     }
-    
+
     /** Convert this type to {@link String}. This function is the same
      *  as {@link #getName()}.
-     *  
+     *
      *  @return The string as the name of this type.
      *  @see #getName()
      */
     public String toString() {
         return _fullName;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      public fields                        ////
 
     ///////////////////////////////////////////////////////////////////
     ////              identifiers of primitive types               ////
-    
+
     /** The integer identifier of <tt>null</tt> type.
      */
     public static final int NULL_NUM    = 0;
-    
+
     /** The integer identifier of <tt>boolean</tt> type.
      */
     public static final int BOOLEAN_NUM = 1;
-    
+
     /** The integer identifier of <tt>byte</tt> type.
      */
     public static final int BYTE_NUM    = 2;
-    
+
     /** The integer identifier of <tt>char</tt> type.
      */
     public static final int CHAR_NUM    = 3;
-    
+
     /** The integer identifier of <tt>double</tt> type.
      */
     public static final int DOUBLE_NUM  = 4;
-    
+
     /** The integer identifier of <tt>float</tt> type.
      */
     public static final int FLOAT_NUM   = 5;
-    
+
     /** The integer identifier of <tt>int</tt> type.
      */
     public static final int INT_NUM     = 6;
-    
+
     /** The integer identifier of <tt>long</tt> type.
      */
     public static final int LONG_NUM    = 7;
-    
+
     /** The integer identifier of <tt>short</tt> type.
      */
     public static final int SHORT_NUM   = 8;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////             type objects of primitive types               ////
 
     /** The type object of <tt>null</tt> type.
      */
     public static final Type NULL    = new Type(NULL_NUM, "null");
-    
+
     /** The type object of <tt>boolean</tt> type.
      */
     public static final Type BOOLEAN = new Type(BOOLEAN_NUM, "boolean");
@@ -591,7 +591,7 @@ public class Type {
     /** The type object of <tt>int</tt> type.
      */
     public static final Type INT     = new Type(INT_NUM, "int");
-    
+
     /** The type object of <tt>long</tt> type.
      */
     public static final Type LONG    = new Type(LONG_NUM, "long");
@@ -606,7 +606,7 @@ public class Type {
     /** Construct a {@link Type} object. Users should not directly
      *  <tt>new</tt> an object but use {@link #createType(String)} to
      *  create it.
-     * 
+     *
      *  @param primitiveNum The integer identifier of primitive types;
      *   -1 if the type to be obtained is not primitive.
      *  @param fullName The full name of the type. If it is an array,
@@ -617,13 +617,13 @@ public class Type {
         _primitiveNum = primitiveNum;
         _fullName = fullName;
     }
-    
+
     /** Construct a {@link Type} object. Users should not directly
      *  <tt>new</tt> an object but use {@link #createType(String)} to
      *  create it. The type constructed by this constructor is never
      *  primitive, even if the full name is a primitive name by
      *  mistake.
-     *  
+     *
      *  @param fullName The full name of the type. If it is an array,
      *   it must be converted to the run-time representation (with
      *   leading "[").
@@ -632,7 +632,7 @@ public class Type {
         _primitiveNum = -1;
         _fullName = fullName;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      private fields                       ////
 
@@ -640,32 +640,32 @@ public class Type {
      *  does not represent a primitive type.
      */
     private int _primitiveNum;
-    
+
     /** The full name of this type, using run-time representation.
      */
     private String _fullName;
-    
+
     /** The {@link Class} object corresponding to this type.
      */
     private Class _classObject;
-    
+
     /** The table of created {@link Type} objects, indexed by
      *  their full name. When a user creates a type object
      *  with the same name again, the first one created and
      *  stored in this table is returned.
      */
     private static Hashtable _typeObjects = new Hashtable();
-    
+
     /** Table of primitive types. Keys are names of primitive
      *  types; values are primitive {@link Type} objects.
      */
     private static final Hashtable PRIMITIVE_TYPES = new Hashtable();
-    
+
     /** Table of primitive {@link Class} objects. Each primitive
      *  type has a {@link Class} object to represent it.
      */
     private static final Hashtable PRIMITIVE_CLASSES = new Hashtable();
-    
+
     /** Array nicknames for primitive element types. Keys are
      *  names of primitive types; keys are compact run-time
      *  representations.
@@ -684,7 +684,7 @@ public class Type {
         PRIMITIVE_TYPES.put("int", INT);
         PRIMITIVE_TYPES.put("long", LONG);
         PRIMITIVE_TYPES.put("short", SHORT);
-        
+
         PRIMITIVE_CLASSES.put("boolean", boolean.class);
         PRIMITIVE_CLASSES.put("byte", byte.class);
         PRIMITIVE_CLASSES.put("char", char.class);
@@ -703,5 +703,5 @@ public class Type {
         PRIMITIVE_ARRAY_TYPES.put("long", "J");
         PRIMITIVE_ARRAY_TYPES.put("short", "S");
     }
-    
+
 }

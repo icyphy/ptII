@@ -36,7 +36,7 @@ import java.io.FileFilter;
 /**
  *  This class provides a tool to set up customized class paths from which
  *  class are loaded with {@link LocalClassLoader}.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
@@ -47,7 +47,7 @@ public class PathFinder {
     /** Return the class paths containing the root of the Ptolemy tree,
      *  and the Jar files in sub-directories <tt>lib/</tt>,
      *  <tt>vendors/sun/commapi/</tt> and <tt>vendors/sun/jxta</tt>.
-     *  
+     *
      *  @return The class paths.
      */
     public static String[] getPtClassPaths() {
@@ -63,14 +63,14 @@ public class PathFinder {
             files[i] = new File(PTII + "/" + subdirs[i]).listFiles(new JarFileFilter());
             totalNumber += files[i].length;
         }
-        
+
         String[] classPaths = new String[totalNumber + 1];
         classPaths[0] = PTII;
         int currentNumber = 1;
         for (int i=0; i<files.length; i++)
             for (int j=0; j<files[i].length; j++)
                 classPaths[currentNumber++] = files[i][j].getPath();
-        
+
         return classPaths;
     }
 
@@ -79,16 +79,16 @@ public class PathFinder {
     /**
      *  Filter out all the files in a directory, except for those with
      *  "<tt>.jar</tt>" postfix.
-     * 
+     *
      *  @author Thomas Feng
      *  @version $Id$
      *  @since Ptolemy II 4.1
      *  @Pt.ProposedRating Red (tfeng)
      */
     private static class JarFileFilter implements FileFilter {
-        
+
         /** Accept only files with names ending with "<tt>.jar</tt>".
-         * 
+         *
          *  @param pathname The full name of a file.
          *  @return <tt>true</tt> if the file has "<tt>.jar</tt>"
          *   postfix.

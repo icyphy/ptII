@@ -47,7 +47,7 @@ package ptolemy.backtrack.ast;
 public class ASTResolutionException extends ASTRuntimeException {
 
     /** Construct an exception representing a name resolution failure.
-     * 
+     *
      *  @param className The name of the class that contains the erroneous
      *   identifier.
      *  @param fieldOrMethodName The identifier in the class that cannot
@@ -56,5 +56,5 @@ public class ASTResolutionException extends ASTRuntimeException {
     public ASTResolutionException(String className, String fieldOrMethodName) {
         super("Cannot resolve field or method \"" + fieldOrMethodName + "\" in class \"" + className + "\".");
     }
-    
+
 }

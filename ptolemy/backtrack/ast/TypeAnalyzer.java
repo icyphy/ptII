@@ -115,17 +115,17 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
  *  classes indirectly referred to) have been compiled with the Java
  *  compiler. It does not check for type errors in the AST, but it mimics
  *  the typing semantics of the Java compiler.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
  *  @Pt.ProposedRating Red (tfeng)
  */
 public class TypeAnalyzer extends ASTVisitor {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
-    
+
     /** Construct an analyzer with no explicit class path for its
      *  class loader (an instanceof {@link LocalClassLoader}). Such
      *  a class loader cannot resolve classes other than Java
@@ -134,7 +134,7 @@ public class TypeAnalyzer extends ASTVisitor {
     public TypeAnalyzer() {
         this(null);
     }
-    
+
     /** Construct an analyzer with with an array of explicit class
      *  paths for its class loader (an instanceof {@link
      *  LocalClassLoader}).
@@ -149,7 +149,7 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Take a list of Java files as input and type-check all of them.
      *  The result of the type-checking is written to the standard
      *  output.
-     * 
+     *
      *  @param args Command-line arguments, which is a list of Java files.
      *  @exception Exception Thrown when error occurs.
      */
@@ -162,50 +162,50 @@ public class TypeAnalyzer extends ASTVisitor {
             for (int i=0; i<args.length; i++) {
                 String fileName = args[i];
                 CompilationUnit root = ASTBuilder.parse(fileName);
-                
+
                 TypeAnalyzer analyzer = new TypeAnalyzer(paths);
                 root.accept(analyzer);
-                
+
                 ASTDump dump = new ASTDump(writer);
                 root.accept(dump);
             }
             writer.close();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                          literals                         ////
 
     /** Visit a literal node and set its type to be the same type as the
      *  literal.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(BooleanLiteral node) {
         Type.setType(node, Type.BOOLEAN);
     }
-    
+
     /** Visit a literal node and set its type to be the same type as the
      *  literal.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(CharacterLiteral node) {
         Type.setType(node, Type.CHAR);
     }
-    
+
     /** Visit a literal node and set its type to be the same type as the
      *  literal.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(NullLiteral node) {
         Type.setType(node, Type.NULL);
     }
-    
+
     /** Visit a literal node and set its type to be the same type as the
      *  literal.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(NumberLiteral node) {
@@ -225,44 +225,44 @@ public class TypeAnalyzer extends ASTVisitor {
                 Type.setType(node, Type.INT);
         }
     }
-    
+
     /** Visit a literal node and set its type to be the same type as the
      *  literal.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(StringLiteral node) {
         Type.setType(node, Type.createType("java.lang.String"));
     }
-    
+
     /** Visit a literal node and set its type to be the same type as the
      *  literal.
      *  <p>
      *  A type literal is of the form "<tt>CLASSNAME.class</tt>", so its
      *  type is always {@link Class}.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(TypeLiteral node) {
         Type.setType(node, Type.createType("java.lang.Class"));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                           types                           ////
-    
+
     /** Visit a primitive type node and set its type to be the corresponding
      *  primitive type.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(PrimitiveType node) {
         String typeName = node.getPrimitiveTypeCode().toString();
         Type.setType(node, Type.createType(typeName));
     }
-    
+
     /** Visit an array type node and set its type to be the type with one
      *  more dimension than its component type.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ArrayType node) {
@@ -270,22 +270,22 @@ public class TypeAnalyzer extends ASTVisitor {
         Type newType = componentType.addOneDimension();
         Type.setType(node, newType);
     }
-    
+
     /** Visit a simple type node and set its type to be the same as the
      *  type associated with its name.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(SimpleType node) {
         Type.propagateType(node, node.getName());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        expressions                        ////
-    
+
     /** Visit an array access node and set its type to be the type with one
      *  less dimension.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ArrayAccess node) {
@@ -296,71 +296,71 @@ public class TypeAnalyzer extends ASTVisitor {
             throw new UnknownASTException();
         }
     }
-    
+
     /** Propagate the type of the array to this node.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ArrayCreation node) {
         Type.propagateType(node, node.getType());
     }
-    
+
     /** Propagate the type of the left-hand side of the assignment
      *  to this node.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(Assignment node) {
         Type.propagateType(node, node.getLeftHandSide());
     }
-    
+
     /** Propagate the type of the cast class to this node.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(CastExpression node) {
         Type.propagateType(node, node.getType());
     }
-    
+
     /** Propagate the type of the instantiated class to this node.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ClassInstanceCreation node) {
         Type.propagateType(node, node.getName());
     }
-    
+
     /** Visit a conditional expression node and set its type to be
      *  the type that is compatible with both the then expression and
      *  the else expression.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ConditionalExpression node) {
         Type type1 = Type.getType(node.getThenExpression());
         Type type2 = Type.getType(node.getElseExpression());
-        
+
         Type commonType = Type.getCommonType(type1, type2);
         try {
             if (commonType == null && type1.compatibility(type2, _state.getClassLoader()) >= 0)
                 commonType = type2;
         } catch (ClassNotFoundException e) {
         }
-        
+
         try {
             if (commonType == null && type2.compatibility(type1, _state.getClassLoader()) >= 0)
                 commonType = type1;
         } catch (ClassNotFoundException e) {
         }
-        
+
         if (commonType == null)
             throw new UnknownASTException();
-        
+
         Type.setType(node, commonType);
     }
-    
+
     /** Visit an infix expression and compute the type for it.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(InfixExpression node) {
@@ -369,7 +369,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Expression rightHand = node.getRightOperand();
         List extendedOps = node.extendedOperands();
         Type type = null;
-        
+
         if (operator.equals(InfixExpression.Operator.PLUS) ||
                 operator.equals(InfixExpression.Operator.MINUS) ||
                 operator.equals(InfixExpression.Operator.TIMES) ||
@@ -396,51 +396,51 @@ public class TypeAnalyzer extends ASTVisitor {
             type = Type.BOOLEAN;
         else
             throw new UnknownASTException();
-        
+
         if (type == null)
             throw new UnknownASTException();
-        
+
         Type.setType(node, type);
     }
-    
+
     /** Visit an <tt>instanceof</tt> expression and set its type to
      *  be boolean.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(InstanceofExpression node) {
         Type.setType(node, Type.BOOLEAN);
     }
-    
+
     /** Propagate the type of the expression between the parentheses
      *  to this node.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ParenthesizedExpression node) {
         Type.propagateType(node, node.getExpression());
     }
-    
+
     /** Propagate the type of the its sub-expression to this node.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(PrefixExpression node) {
         Type.propagateType(node, node.getOperand());
     }
-    
+
     /** Propagate the type of the its sub-expression to this node.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(PostfixExpression node) {
         Type.propagateType(node, node.getOperand());
     }
-    
+
     /** Visit a <tt>this</tt> expression, and set its type to be
      *  the class preceding it (if any) or the class currently being
      *  inspected.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ThisExpression node) {
@@ -450,13 +450,13 @@ public class TypeAnalyzer extends ASTVisitor {
         else
             Type.setType(node, Type.createType(_state.getCurrentClass().getName()));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      name resolving                       ////
-    
+
     /** Visit a method invocation node and resolve the invoked method. The
      *  type of the node is set to the return type of the method.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(MethodInvocation node) {
@@ -471,7 +471,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 throw new ASTClassNotFoundException(ownerType);
             }
         }
-        
+
         Type[] types = argumentsToTypes(node.arguments());
         Type returnType = _resolveMethod(owner, node.getName().getIdentifier(), types);
         if (returnType == null)
@@ -483,23 +483,23 @@ public class TypeAnalyzer extends ASTVisitor {
             Type.setType(node.getName(), returnType);
         }
     }
-    
+
     /** Visit a qualified name, resolve it in the current scope, and set
      *  its type to be the type of object referred to by that name.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(QualifiedName node) {
         Name qualifier = node.getQualifier();
         SimpleName name = node.getName();
         Type owner;
-        
+
         if (qualifier instanceof SimpleName) {
             owner = _resolveName(((SimpleName)qualifier).getIdentifier(), null);
             Type.setType(qualifier, owner);
         } else
             owner = Type.getType(qualifier);
-        
+
         Type nodeType;
         String resolveName;
         if (owner == null)
@@ -507,7 +507,7 @@ public class TypeAnalyzer extends ASTVisitor {
         else
             resolveName = name.getIdentifier();
         nodeType = _resolveName(resolveName, owner);
-        
+
         // FIXME: Check for correctness.
         if (nodeType == null &&
                 !(node.getParent() instanceof QualifiedName))
@@ -521,13 +521,13 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Visit a simple name, and resolve it if possible. Some simple names
      *  are not resolved, such as the name of a class to be declared, and the
      *  name of a local variable in its definition.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(SimpleName node) {
         ASTNode parent = node.getParent();
         Type owner = null;
-        
+
         // Do not type check some simple names.
         if (parent instanceof BodyDeclaration ||
                 parent instanceof QualifiedName)
@@ -548,19 +548,19 @@ public class TypeAnalyzer extends ASTVisitor {
         else if (parent instanceof SuperFieldAccess &&
                 ((SuperFieldAccess)parent).getName() == node)
             return;
-        
+
         String name = node.getIdentifier();
         Type type = _resolveName(name, owner);
         if (type == null)
             throw new ASTResolutionException(_state.getCurrentClass().getName(), name);
         Type.setType(node, type);
     }
-    
+
     /** Visit a super field access node (<tt>super.FieldName</tt>), and
      *  resolve the field from the superclass of the given class name
      *  (if any, like <tt>ClassName.super.FieldName</tt>) or from the
      *  superclass of the class being inspected.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(SuperFieldAccess node) {
@@ -577,10 +577,10 @@ public class TypeAnalyzer extends ASTVisitor {
         } else
             owner = _state.getCurrentClass();
         owner = owner.getSuperclass();
-        
+
         if (owner == null)
             throw new UnknownASTException();
-        
+
         Type type = _resolveName(node.getName().getIdentifier(), Type.createType(owner.getName()));
         if (type == null)
             throw new ASTResolutionException(
@@ -589,13 +589,13 @@ public class TypeAnalyzer extends ASTVisitor {
         else
             Type.setType(node, type);
     }
-    
+
     /** Visit a super method invocation node (<tt>super.method(...)</tt>),
      *  resolve the method from the superclass of the given class name
      *  (if any, like <tt>ClassName.super.FieldName</tt>) or from the
      *  superclass of the class being inspected. The type of the node is
      *  set to be the same as the return type of the method.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(SuperMethodInvocation node) {
@@ -612,10 +612,10 @@ public class TypeAnalyzer extends ASTVisitor {
         } else
             owner = _state.getCurrentClass();
         owner = owner.getSuperclass();
-        
+
         if (owner == null)
             throw new UnknownASTException();
-        
+
         Type[] types = argumentsToTypes(node.arguments());
         Type returnType = _resolveMethod(owner, node.getName().getIdentifier(), types);
         if (returnType == null)
@@ -627,14 +627,14 @@ public class TypeAnalyzer extends ASTVisitor {
             Type.setType(node.getName(), returnType);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                          scopes                           ////
-    
+
     /** Visit an anonymous class declaration and set the current class to
      *  be the {@link Class} object loaded with the same internal name. A
      *  scope is opened for field declarations in it.
-     *  
+     *
      *  @param node The node to be visited.
      *  @return The return value of the overriden function.
      */
@@ -652,17 +652,17 @@ public class TypeAnalyzer extends ASTVisitor {
         } catch (ClassNotFoundException e) {
             throw new ASTClassNotFoundException(currentName.toString());
         }
-        
+
         // A class declaration starts a new scope.
         _state.getVariableStack().push(new Hashtable());
         _recordFields();
-        
+
         // Sort body declarations.
         _sortBodyDeclarations(node);
 
         return super.visit(node);
     }
-    
+
     /** End the visit of an anonymous class declaration and close its
      *  scope. The current class is set back to the last visited class.
      *  @param node
@@ -671,9 +671,9 @@ public class TypeAnalyzer extends ASTVisitor {
         _state.getVariableStack().pop();
         _state.leaveClass();
     }
-    
+
     /** Visit a block and open a scope for variable declarations in it.
-     * 
+     *
      *  @param node The node to be visited.
      *  @return The return value of the overriden function.
      */
@@ -681,19 +681,19 @@ public class TypeAnalyzer extends ASTVisitor {
         _openScope();
         return super.visit(node);
     }
-    
+
     /** End the visit of a block node and close the scope opened by the
      *  previous visit function.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(Block node) {
         _closeScope();
     }
-    
+
     /** Visit an enhanced for statement and open a scope for variable
      *  declarations in it.
-     * 
+     *
      *  @param node The node to be visited.
      *  @return The return value of the overriden function.
      */
@@ -701,19 +701,19 @@ public class TypeAnalyzer extends ASTVisitor {
         _openScope();
         return super.visit(node);
     }
-    
+
     /** End the visit of an enhanced for statement and close the scope
      *  opened by the previous visit function.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(EnhancedForStatement node) {
         _closeScope();
     }
-    
+
     /** Visit a for statement and open a scope for variable declarations
      *  in it.
-     * 
+     *
      *  @param node The node to be visited.
      *  @return The return value of the overriden function.
      */
@@ -721,19 +721,19 @@ public class TypeAnalyzer extends ASTVisitor {
         _openScope();
         return super.visit(node);
     }
-    
+
     /** End the visit of a for statement and close the scope opened by
      *  the previous visit function.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ForStatement node) {
         _closeScope();
     }
-    
+
     /** Visit a method declaration and open a scope for variable
      *  declarations in it.
-     * 
+     *
      *  @param node The node to be visited.
      *  @return The return value of the overriden function.
      */
@@ -741,22 +741,22 @@ public class TypeAnalyzer extends ASTVisitor {
         _openScope();
         return super.visit(node);
     }
-    
+
     /** End the visit of a method declaration and close the scope
      *  opened by the previous visit function. The type of the method
      *  declaration is set to be the same as the return type.
-     * 
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(MethodDeclaration node) {
         _closeScope();
         Type.propagateType(node, node.getReturnType());
     }
-    
+
     /** Visit an type declaration and set the current class to be the
      *  {@link Class} object loaded with the same (internal) name. A
      *  scope is opened for field declarations in it.
-     *  
+     *
      *  @param node The node to be visited.
      *  @return The return value of the overriden function.
      */
@@ -774,33 +774,33 @@ public class TypeAnalyzer extends ASTVisitor {
         } catch (ClassNotFoundException e) {
             throw new ASTClassNotFoundException(typeName);
         }
-        
+
         // A class declaration starts a new scope.
         _state.getVariableStack().push(new Hashtable());
         _recordFields();
-        
+
         // Sort body declarations.
         _sortBodyDeclarations(node);
-        
+
         // Tell calling function not to visit the children again.
         return super.visit(node);
     }
-    
+
     /** End the visit of a type declaration and close its scope. The
      *  current class is set back to the last visited class.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(TypeDeclaration node) {
         _state.leaveClass();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         variables                         ////
-    
+
     /** Visit a single variable declaration and set its type to be the
      *  declared type. The variable is recorded in the current scope.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(SingleVariableDeclaration node) {
@@ -810,20 +810,20 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.setType(node, type);
         _state.addVariable(node.getName().getIdentifier(), type);
     }
-    
+
     /** Visit a variable declaration expression and set its type to be
      *  the declared type.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(VariableDeclarationExpression node) {
         Type.propagateType(node, node.getType());
     }
-    
+
     /** Visit a variable declaration fragment and set its type to be the
      *  declared type of the node's parent (a variable declaration or field
      *  declaration). The variable is recorded in the current scope.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(VariableDeclarationFragment node) {
@@ -837,20 +837,20 @@ public class TypeAnalyzer extends ASTVisitor {
             type = Type.getType(((VariableDeclarationExpression)parent).getType());
         else
             throw new UnknownASTException();
-        
+
         for (int i = 0; i < node.getExtraDimensions(); i++)
             type = type.addOneDimension();
         Type.setType(node, type);
         Type.setType(node.getName(), type);
         _state.addVariable(node.getName().getIdentifier(), type);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      other statements                     ////
-    
+
     /** Override the behavior of visiting a package declaration. Its
      *  children (simple names and qualified names) are not visited.
-     *  
+     *
      *  @param node The node to be visited.
      *  @return Always <tt>false</tt>.
      */
@@ -858,19 +858,19 @@ public class TypeAnalyzer extends ASTVisitor {
         // Do not visit children.
         return false;
     }
-    
+
     /** End the visit of a package declaration and set the current package
      *  to be the full name of that declared package.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(PackageDeclaration node) {
         _state.getClassLoader().setCurrentPackage(node.getName().toString());
     }
-    
+
     /** Override the behavior of visiting an importation declaration.
      *  Its children (simple names and qualified names) are not visited.
-     *  
+     *
      *  @param node The node to be visited.
      *  @return Always <tt>false</tt>.
      */
@@ -878,12 +878,12 @@ public class TypeAnalyzer extends ASTVisitor {
         // Do not visit children.
         return false;
     }
-    
+
     /** End the visit of an importation declaration and record the
      *  imported class or package in the class loader. If a class is
      *  imported, it is loaded immediately and put in a hash table to
      *  enable fast class lookup.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(ImportDeclaration node) {
@@ -895,15 +895,15 @@ public class TypeAnalyzer extends ASTVisitor {
             _importClass(importName);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-    
+
     /** Get the type of a field in a class by its name. If not found
      *  in the class definition, this function also searches the
      *  superclasses of that class, as well as the interfaces that
      *  the class and its superclasses implement.
-     *  
+     *
      *  @param c The class from which the field name is resolved.
      *  @param name The name of the field.
      *  @return The type of the field if found; otherwise, <tt>null</tt>.
@@ -913,22 +913,22 @@ public class TypeAnalyzer extends ASTVisitor {
         // Try to resolve special field "length" of arrays.
         if (c.isArray() && name.equals("length"))
             return Type.INT;
-        
+
         // Find the field with reflection.
         Field field;
         List workList = new LinkedList();
         Set handledSet = new HashSet();
         workList.add(c);
-        
+
         while (!workList.isEmpty()) {
             Class topClass = (Class)workList.remove(0);
-            
+
             try {
                 field = topClass.getDeclaredField(name);
                 return Type.createType(field.getType().getName());
             } catch (NoSuchFieldException e1) {
             }
-            
+
             handledSet.add(topClass);
             Class superClass = topClass.getSuperclass();
             if (superClass == null && !topClass.getName().equals("java.lang.Object"))
@@ -942,7 +942,7 @@ public class TypeAnalyzer extends ASTVisitor {
         }
         return null;
     }
-    
+
     /** Get the type of a method in a class by its name and types of
      *  actural arguments. If not found in the class definition, this
      *  function also searches the superclasses of that class, as well
@@ -954,7 +954,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  accomplished by computing the compatibility rating between each
      *  pair of formal argument and actural argument, and sum those
      *  numbers together.
-     *  
+     *
      *  @param c The class from which the method is resolved.
      *  @param name The name of the field.
      *  @param args The types of actural arguments for a call.
@@ -970,18 +970,18 @@ public class TypeAnalyzer extends ASTVisitor {
         List workList = new LinkedList();
         Set handledSet = new HashSet();
         workList.add(c);
-        
+
         while (!workList.isEmpty()) {
             Class topClass = (Class)workList.remove(0);
             methods = topClass.getDeclaredMethods();
-            
+
             for (int i=0; i<methods.length; i++) {
                 Method method = methods[i];
-                
+
                 // FIXME: Ignore volatile methods.
                 if (Modifier.isVolatile(method.getModifiers()))
                     continue;
-                
+
                 if (method.getName().equals(name)) {
                     Class[] formalParams = method.getParameterTypes();
                     if (formalParams.length == args.length) {
@@ -1010,10 +1010,10 @@ public class TypeAnalyzer extends ASTVisitor {
                     }
                 }
             }
-            
+
             if (best_compatibility == 0)    // The best found.
                 break;
-            
+
             handledSet.add(topClass);
             Class superClass = topClass.getSuperclass();
             if (superClass == null && !topClass.getName().equals("java.lang.Object"))
@@ -1025,13 +1025,13 @@ public class TypeAnalyzer extends ASTVisitor {
                 if (!handledSet.contains(interfaces[i]))
                     workList.add(interfaces[i]);
         }
-        
+
         if (best_compatibility != -1)
             return Type.createType(best_method.getReturnType().getName());
         else
             return null;
     }
-    
+
     /** Sort the body declarations of an abstract type declaration. The
      *  resulting order conforms to the Java compiler.
      *  <p>
@@ -1046,14 +1046,14 @@ public class TypeAnalyzer extends ASTVisitor {
      *  different because different numbers are assigned to them. This
      *  function sorts the declarations in a class in the same order as
      *  the Java compiler uses.
-     *  
+     *
      *  @param node The abstract type declaration whose members are to be
      *   sorted.
      */
     protected static void _sortBodyDeclarations(AbstractTypeDeclaration node) {
         _sortBodyDeclarations(node.bodyDeclarations());
     }
-    
+
     /** Sort the body declarations of an anonymous class declaration. The
      *  resulting order conforms to the Java compiler.
      *  <p>
@@ -1068,21 +1068,21 @@ public class TypeAnalyzer extends ASTVisitor {
      *  different because different numbers are assigned to them. This
      *  function sorts the declarations in a class in the same order as
      *  the Java compiler uses.
-     *  
+     *
      *  @param node The anonymous class declaration whose members are to be
      *   sorted.
      */
     protected static void _sortBodyDeclarations(AnonymousClassDeclaration node) {
         _sortBodyDeclarations(node.bodyDeclarations());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
-    
+
     /** Convert a list of arguments into an array of types of those arguments.
      *  Each argument in the list is an {@link ASTNode} with type associated
      *  to it.
-     *  
+     *
      *  @param arguments The argument list.
      *  @return The array of types of the arguments.
      */
@@ -1093,12 +1093,12 @@ public class TypeAnalyzer extends ASTVisitor {
             types[i] = Type.getType((ASTNode)argIter.next());
         return types;
     }
-    
+
     /** Lookup a class with a partially given name as may
      *  appear in Java source code. The name may be relative
      *  to the current class and its enclosing classes. It
      *  may also be a full name.
-     *  
+     *
      *  @param partialSimpleName The partially given class
      *   name.
      *  @return The class; <tt>null</tt> is returned if the
@@ -1112,7 +1112,7 @@ public class TypeAnalyzer extends ASTVisitor {
         else
             simpleName = partialSimpleName.substring(0, dotPos);
         Class result = null;
-        
+
         Stack previousClasses = _state.getPreviousClasses();
         int previousNumber = previousClasses.size();
         for (int i=previousNumber; i>=0; i--) {
@@ -1133,11 +1133,11 @@ public class TypeAnalyzer extends ASTVisitor {
                     break;
             }
         }
-        
+
         // Look for imported classes.
         if (result == null && _importedClasses.containsKey(simpleName))
             result = (Class)_importedClasses.get(simpleName);
-        
+
         // A result is found for simpleName.
         if (result != null && dotPos >= 0)
             try {
@@ -1152,14 +1152,14 @@ public class TypeAnalyzer extends ASTVisitor {
                 result = _state.getClassLoader().searchForClass(partialSimpleName);
             } catch (ClassNotFoundException e) {
             }
-        
+
         return result;
     }
-    
+
     /** Get the simple class name of a class (not including any
      *  "." or "$"). The same function is provided in {@link
      *  Class} class in Java 1.5.
-     *  
+     *
      *  @param c The class object.
      *  @return The simple name of the class object.
      */
@@ -1171,12 +1171,12 @@ public class TypeAnalyzer extends ASTVisitor {
             lastSeparator1 >= lastSeparator2 ? lastSeparator1 : lastSeparator2;
         return name.substring(lastSeparator + 1);
     }
-    
+
     /** Import a class with its full name, using "." instead
      *  of "$" to separate names of nested classes when they
      *  are refered to. The imported class is added to a
      *  {@link Hashtable} to be looked up in name resolving.
-     *  
+     *
      *  @param classFullName The full name of the class to be
      *   imported.
      */
@@ -1189,22 +1189,22 @@ public class TypeAnalyzer extends ASTVisitor {
             throw new ASTClassNotFoundException(classFullName);
         }
     }
-    
+
     /** Open a new scope.
      */
     private void _openScope() {
         _state.getVariableStack().push(new Hashtable());
     }
-    
+
     /** Close the last opened scope. All the variables defined in that scope
      *  are forgotten.
      */
     private void _closeScope() {
         _state.getVariableStack().pop();
     }
-    
+
     /** Record all the fields of the currently inspecting class
-     *  in the variable table on the top of the variable stack. 
+     *  in the variable table on the top of the variable stack.
      */
     private void _recordFields() {
         Class c = _state.getCurrentClass();
@@ -1213,18 +1213,18 @@ public class TypeAnalyzer extends ASTVisitor {
             Field[] fields = c.getDeclaredFields();
             for (int i=0; i<fields.length; i++) {
                 Field field = fields[i];
-                
+
                 // FIXME: Ignore volatile fields.
                 if (Modifier.isVolatile(field.getModifiers()))
                     continue;
-                
+
                 String fieldName = field.getName();
                 if (!table.containsKey(fieldName)) {
                     Class fieldType = field.getType();
                     table.put(fieldName, Type.createType(fieldType.getName()));
                 }
             }
-            
+
             Class[] interfaces = c.getInterfaces();
             for (int i=0; i<interfaces.length; i++) {
                 fields = interfaces[i].getDeclaredFields();
@@ -1236,17 +1236,17 @@ public class TypeAnalyzer extends ASTVisitor {
                     }
                 }
             }
-            
+
             Class superclass = c.getSuperclass();
             if (superclass == null && !c.getName().equals("java.lang.Object"))
                 superclass = Object.class;
             c = superclass;
         }
     }
-    
+
     /** Resolve a simple name within the scope of the given type. The name can
      *  be a variable name, a field name, or a class relative to that type. If
-     *  
+     *
      *  @param name The simple name to be resolved.
      *  @param lastType The type from which the name is resolved. It is used as
      *   the scope for the name. If it is null, the name is resolved in the
@@ -1256,17 +1256,17 @@ public class TypeAnalyzer extends ASTVisitor {
         // Not in a class yet.
         if (_state.getCurrentClass() == null)
             return null;
-        
+
         if (lastType == null) {
             Type variableType = _state.getVariable(name);
             if (variableType != null)
                 return variableType;
-            
+
             Class c = _lookupClass(name);
             if (c != null)
                 return Type.createType(c.getName());
         }
-        
+
         Type type;
         if (lastType == null)
             type = _resolveNameFromClass(_state.getCurrentClass(), name);
@@ -1276,8 +1276,8 @@ public class TypeAnalyzer extends ASTVisitor {
             } catch (ClassNotFoundException e) {
                 throw new ASTClassNotFoundException(lastType);
             }
-        
-        
+
+
         if (type == null && lastType == null) {
             Stack previousClasses = _state.getPreviousClasses();
             int previousNumber = previousClasses.size() - 1;
@@ -1289,9 +1289,9 @@ public class TypeAnalyzer extends ASTVisitor {
         }
         return type;
     }
-    
+
     /** Resolve a method in the given class with an array of arguments.
-     * 
+     *
      *  @param owner The class where the method belongs to. If it is null,
      *   the current class is assumed, and all the enclosing classes are
      *   searched, if necessary.
@@ -1308,7 +1308,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Class oldOwner = owner;
         if (owner == null)
             owner = _state.getCurrentClass();
-        
+
         do {
             Type type = _getMethodType(owner, methodName, arguments);
             if (type != null)
@@ -1324,10 +1324,10 @@ public class TypeAnalyzer extends ASTVisitor {
         } while (owner != null);
         return null;
     }
-    
+
     /** Resolve a name from a class. The name can be a field name, or the
      *  name of a class nested in the given class.
-     *  
+     *
      *  @param owner The class to be searched.
      *  @param name The name to search for.
      *  @return The type of the field or class if found, or <tt>null</tt>
@@ -1338,7 +1338,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Type type = _getFieldType(owner, name);
         if (type != null)
             return type;
-        
+
         // Try class name resolution.
         try {
             Class c = _state.getClassLoader().searchForClass(new StringBuffer(name), owner);
@@ -1347,10 +1347,10 @@ public class TypeAnalyzer extends ASTVisitor {
             return null;
         }
     }
-    
+
     /** Sort a list or body declarations according to the Java compiler
      *  convention.
-     *  
+     *
      *  @param bodyDeclarations The list of body declarations.
      *  @see #_sortBodyDeclarations(AbstractTypeDeclaration)
      *  @see #_sortBodyDeclarations(AnonymousClassDeclaration)
@@ -1361,7 +1361,7 @@ public class TypeAnalyzer extends ASTVisitor {
             public int compare(Object o1, Object o2) {
                 if (o1.getClass().isInstance(o2))
                     return 0;
-                
+
                 Class[] classes = new Class[] {
                         FieldDeclaration.class,
                         TypeDeclaration.class,
@@ -1378,17 +1378,17 @@ public class TypeAnalyzer extends ASTVisitor {
         bodyDeclarations.clear();
         bodyDeclarations.addAll(Arrays.asList(bodyArray));
     }
-    
+
     /** Table of all the explicitly imported classes (not including
      *  package importations). Keys are class names; values are {@link
      *  Class} objects.
      */
     private Hashtable _importedClasses = new Hashtable();
-    
+
     /** The current state of the analyzer.
      */
     private TypeAnalyzerState _state = new TypeAnalyzerState();
-    
+
     /** The counter for anonymous classes.
      */
     private int _anonymousCount = 0;

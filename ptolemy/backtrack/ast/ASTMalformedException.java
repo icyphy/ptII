@@ -35,14 +35,14 @@ package ptolemy.backtrack.ast;
  *  source file is malformed, either because the source file do not conform
  *  to the Java grammar, or because some unknown error occurs in the
  *  Eclipse parser.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
  *  @Pt.ProposedRating Red (tfeng)
  */
 public class ASTMalformedException extends ASTException {
-    
+
     /** Create an exception without identifying the name of the source file
      *  that causes it.
      */
@@ -51,7 +51,7 @@ public class ASTMalformedException extends ASTException {
     }
 
     /** Create an exception with the name of the source file that causes it.
-     * 
+     *
      *  @param sourceFileName The name of the problematic source file, or
      *   <tt>null</tt> if the file name is missing.
      */
@@ -60,5 +60,5 @@ public class ASTMalformedException extends ASTException {
                 (sourceFileName == null ? "" : " of Java file \"" + sourceFileName + "\"") +
                 " is malformed.");
     }
-    
+
 }

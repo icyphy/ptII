@@ -36,7 +36,7 @@ package ptolemy.backtrack.ast;
  *  Because most AST visitors are not declared to raise exception, an
  *  {@link IOException} must be wrapped with this class, a descendant from
  *  {@link RuntimeException}.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
@@ -46,7 +46,7 @@ public class ASTIORuntimeException extends ASTRuntimeException {
 
     /** Create an exception with an other exception that causes this
      *  exception to be raised.
-     *  
+     *
      *  @param cause The exception that causes this exception.
      */
     public ASTIORuntimeException(Throwable cause) {

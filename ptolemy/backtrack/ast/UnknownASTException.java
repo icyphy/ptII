@@ -32,7 +32,7 @@ package ptolemy.backtrack.ast;
 //// UnknownASTException
 /**
  *  Thrown during AST analysis notifying that an unknown error occurs.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
@@ -45,5 +45,5 @@ public class UnknownASTException extends ASTRuntimeException {
     public UnknownASTException() {
         super("Unknown AST exception.");
     }
-    
+
 }

@@ -43,11 +43,11 @@ package ptolemy.backtrack.ast;
 public class ASTException extends Exception {
 
     /** Construct an AST exception with a message.
-     * 
+     *
      *  @param errorMessage The message.
      */
     public ASTException(String message) {
         super(message);
     }
-    
+
 }

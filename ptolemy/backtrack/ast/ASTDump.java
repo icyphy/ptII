@@ -44,36 +44,36 @@ import org.eclipse.jdt.internal.core.dom.rewrite.GenericVisitor;
 /**
  *  This class is an Eclipse AST (Abstract Syntax Tree) visitor that
  *  traverses an AST and output its structure.
- * 
+ *
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
  *  @Pt.ProposedRating Red (tfeng)
  */
 public class ASTDump extends GenericVisitor {
-    
+
     /** Construct an AST dump with a {@link StringBuffer} where the
      *  output will be added.
-     *  
+     *
      *  @param buffer The string buffer to be used.
      */
     public ASTDump(StringBuffer buffer) {
         _buffer = buffer;
     }
-    
+
     /** Construct an AST dump with a writer to which the
      *  output will be written.
-     * 
+     *
      *  @param writer The writer to write to.
      */
     public ASTDump(Writer writer) {
         _writer = writer;
     }
-    
+
     /** Read in one or more Java source files, parse them with the
      *  Eclipse parser, and output their AST structure to standard
      *  output.
-     *  
+     *
      *  @param args The names of Java source files.
      */
     public static void main(String[] args) throws Exception {
@@ -90,12 +90,12 @@ public class ASTDump extends GenericVisitor {
             writer.close();
         }
     }
-    
+
     /** Visit a node in the AST and output it. If the node is an {@link
      *  Expression}, its content is also output. If the AST has been
      *  type-checked with {@link TypeAnalyzer}, the type (if any)
      *  associated with each node is also output.
-     *  
+     *
      *  @param node The node to be visited.
      *  @return The return value of the overridden function.
      */
@@ -104,23 +104,23 @@ public class ASTDump extends GenericVisitor {
             TypeAnalyzer._sortBodyDeclarations((AbstractTypeDeclaration)node);
         else if (node instanceof AnonymousClassDeclaration)
             TypeAnalyzer._sortBodyDeclarations((AnonymousClassDeclaration)node);
-        
+
         _output(_indent);
-        
+
         _output(_getShortName(node.getClass()));
-        
+
         Type type = Type.getType(node);
         if (type != null) {
             _output(":");
             _output(type.getName());
         }
-        
+
         if (node instanceof Expression) {
             _output(" (");
             _output(node.toString());
             _output(")");
         }
-        
+
         _output("\n");
         _increaseIndent();
         return super.visitNode(node);
@@ -128,17 +128,17 @@ public class ASTDump extends GenericVisitor {
 
     /** End the visiting of a node (and all its children), and decrease
      *  the indent amount.
-     * 
+     *
      *  @param node The node that have been visited.
      */
     protected void endVisitNode(ASTNode node) {
         _decreaseIndent();
         super.endVisitNode(node);
     }
-    
+
     /** Get the simple name (the last part of its full name, without any
      *  '$' or '.' in it) of a {@link Class} object.
-     * 
+     *
      *  @param c The class object.
      *  @return The simple name.
      */
@@ -155,7 +155,7 @@ public class ASTDump extends GenericVisitor {
     /** Output a message. If a {@link StringBuffer} is used, the output
      *  is appended to the buffer; if a {@link Writer} is provided, the
      *  output is written to the writer.
-     *  
+     *
      *  @param message The message to be output.
      *  @exception ASTIORuntimeException Thrown when a writer is provided and
      *   IO exception occurs when trying to write to the writer.
@@ -170,11 +170,11 @@ public class ASTDump extends GenericVisitor {
                 throw new ASTIORuntimeException(e);
             }
     }
-    
+
     /** Output a message. If a {@link StringBuffer} is used, the output
      *  is appended to the buffer; if a {@link Writer} is provided, the
      *  output is written to the writer.
-     *  
+     *
      *  @param message The message to be output.
      *  @exception ASTIORuntimeException Thrown when a writer is provided and
      *   IO exception occurs when trying to write to the writer.
@@ -189,27 +189,27 @@ public class ASTDump extends GenericVisitor {
                 throw new ASTIORuntimeException(e);
             }
     }
-    
+
     /** Increase the current indentation by a unit (four spaces).
      */
     private void _increaseIndent() {
         _indent.append("    ");
     }
-    
+
     /** Decrease the current indentation by a unit (four spaces).
      */
     private void _decreaseIndent() {
         _indent.setLength(_indent.length() - 4);
     }
-    
+
     /** The current indentation, a string of spaces.
      */
     private StringBuffer _indent = new StringBuffer();
-    
+
     /** The string buffer, where the output is added to.
      */
     private StringBuffer _buffer;
-    
+
     /** The writer, where the output is written to.
      */
     private Writer _writer;
