@@ -84,6 +84,8 @@ all: ptinvoke
 	ln -s ptinvoke ptjacl
 	rm -f ptjaclapp
 	ln -s ptinvoke ptjaclapp
+	rm -f ptstartjini
+	ln -s ptinvoke ptstartjini
 	rm -f ptjini
 	ln -s ptinvoke ptjini
 	rm -f ptolemy

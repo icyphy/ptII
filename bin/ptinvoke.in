@@ -109,6 +109,12 @@ case "`basename $0`" in
 	jarfile=$PTJACL_JAR
 	javaflag="$PTJACL_FLAG $javaflag"
 	;;
+    ptstartjini)
+	# Ptolemy II Application that starts up Jini
+	javastartupclass=com.sun.jini.example.service.StartService 
+	javasourcedir=ptolemy/actor/gui
+	jarfile=$JINI_LIB/jini-examples.jar
+	;;
     ptjini)
 	# Ptolemy II Application that uses Jini
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
