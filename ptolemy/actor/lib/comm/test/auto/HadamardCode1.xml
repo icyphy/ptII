@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
     </property>
-    <property name="x" class="ptolemy.data.expr.Parameter" value="8">
+    <property name="codeLength" class="ptolemy.data.expr.Parameter" value="2^order">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -30,10 +30,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 80.0">
         </property>
     </property>
-    <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+    <property name="order" class="ptolemy.data.expr.Parameter" value="4">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -45,37 +45,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 95.0">
-        </property>
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">For convenience to change parameters and see other Hadamard matrices:
-Set x to be the matrix dimension (codeword length), and set y to be log base 2 of x.
-The parameters in the above actors will be set to the new values.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 105.0">
         </property>
     </property>
     <entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode">
         <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <property name="log2Length" class="ptolemy.data.expr.Parameter" value="y">
+        <property name="log2Length" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 325.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -89,15 +67,15 @@ The parameters in the above actors will be set to the new values.</text></svg></
         </port>
     </entity>
     <entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix">
-        <property name="rows" class="ptolemy.data.expr.Parameter" value="x">
+        <property name="rows" class="ptolemy.data.expr.Parameter" value="codeLength">
         </property>
-        <property name="columns" class="ptolemy.data.expr.Parameter" value="x">
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="codeLength">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 325.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="64">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -115,7 +93,7 @@ The parameters in the above actors will be set to the new values.</text></svg></
         </port>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="repeat(x, in)">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="repeat(codeLength, in)">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -123,7 +101,7 @@ The parameters in the above actors will be set to the new values.</text></svg></
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -135,11 +113,11 @@ The parameters in the above actors will be set to the new values.</text></svg></
         </port>
     </entity>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="x">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="codeLength">
         </property>
         <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 185.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -156,7 +134,7 @@ The parameters in the above actors will be set to the new values.</text></svg></
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="8">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="16">
             </property>
         </port>
     </entity>
@@ -168,7 +146,7 @@ The parameters in the above actors will be set to the new values.</text></svg></
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -190,7 +168,7 @@ The parameters in the above actors will be set to the new values.</text></svg></
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 325.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -204,13 +182,13 @@ The parameters in the above actors will be set to the new values.</text></svg></
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[8.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 8.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 8.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 8.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 8.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 8.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 8.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 8.0]}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.0]}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="730.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="585.0, 325.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -229,7 +207,9 @@ The parameters in the above actors will be set to the new values.</text></svg></
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="485.0, 325.0">
+        </vertex>
     </relation>
     <link port="HadamardCode.output" relation="relation3"/>
     <link port="HadamardCode.index" relation="relation6"/>
@@ -240,7 +220,7 @@ The parameters in the above actors will be set to the new values.</text></svg></
     <link port="ArrayToSequence.input" relation="relation5"/>
     <link port="ArrayToSequence.output" relation="relation6"/>
     <link port="Ramp.output" relation="relation2"/>
-    <link port="Expression2.output" relation="relation7"/>
+    <link port="Expression2.output" relation="relation4"/>
     <link port="Expression2.in" relation="relation"/>
-    <link port="NonStrictTest.input" relation="relation7"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
 </entity>
