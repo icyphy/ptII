@@ -4,7 +4,7 @@
 <entity name="ResistantPilot" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[737, 450]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[36, 102]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[15, 100]">
     </property>
     <property name="speed" class="ptolemy.data.expr.Parameter" value="300.0">
     </property>
@@ -413,9 +413,11 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>XYPlotter</title>
-<xRange min="0.0" max="5305.106586703865"/>
-<yRange min="0.0" max="4156.760116131512"/>
+<title>Plane Position</title>
+<xLabel>x</xLabel>
+<yLabel>y</yLabel>
+<xRange min="0.0" max="4006.977726572595"/>
+<yRange min="0.0" max="6898.4970482836"/>
 </plot>?>
         </configure>
     </entity>
@@ -557,12 +559,6 @@
             <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.moml.Location" value="125.0, 60.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -619,6 +615,31 @@
         <link port="Limiter.input" relation="relation3"/>
         <link port="Limiter.output" relation="relation4"/>
     </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="665.0, 305.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Sin of Heading</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="30.0"/>
+<yRange min="0.5001687328140675" max="1.0"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -651,8 +672,6 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="620.0, 290.0">
         </vertex>
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
@@ -663,6 +682,10 @@
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="200.0, 135.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="610.0, 315.0">
         </vertex>
     </relation>
     <link port="Aircraft.headingDot" relation="relation"/>
@@ -685,11 +708,11 @@
     <link port="CartesianToPolar.y" relation="relation4"/>
     <link port="CartesianToPolar.angle" relation="relation25"/>
     <link port="MultiplyDivide.multiply" relation="relation5"/>
-    <link port="MultiplyDivide.multiply" relation="relation8"/>
     <link port="MultiplyDivide.multiply" relation="relation11"/>
+    <link port="MultiplyDivide.multiply" relation="relation2"/>
     <link port="MultiplyDivide.output" relation="relation22"/>
     <link port="sin.input" relation="relation25"/>
-    <link port="sin.output" relation="relation8"/>
+    <link port="sin.output" relation="relation2"/>
     <link port="Scale.input" relation="relation17"/>
     <link port="Scale.output" relation="relation11"/>
     <link port="AddSubtract.plus" relation="relation24"/>
@@ -697,4 +720,5 @@
     <link port="AddSubtract.output" relation="relation26"/>
     <link port="ResistantPilot.pilotsHeadingDot" relation="relation24"/>
     <link port="ResistantPilot.ContrlHeadingDot" relation="relation22"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
 </entity>
