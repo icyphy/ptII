@@ -87,6 +87,8 @@ import ptolemy.actor.gui.RunTableau;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -352,6 +354,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _layoutAction = new LayoutAction();
         _saveInLibraryAction = new SaveInLibraryAction();
         _importLibraryAction = new ImportLibraryAction();
+        _instantiateClassAction = new InstantiateClassAction();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1420,6 +1423,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
         GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
+        GUIUtilities.addMenuItem(_graphMenu, _instantiateClassAction);
+        GUIUtilities.addHotKey(_jgraph, _instantiateClassAction);
         _graphMenu.addSeparator();
         diva.gui.GUIUtilities.addHotKey(_jgraph, _createHierarchyAction);
         diva.gui.GUIUtilities.addMenuItem(_graphMenu, _createHierarchyAction);
@@ -1583,6 +1588,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected Action _layoutAction;
     protected Action _saveInLibraryAction;
     protected Action _importLibraryAction;
+    protected Action _instantiateClassAction;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1638,6 +1644,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The most recent class name for instantiating a class. */
+    private String _lastClassName = "ptolemy.actor.lib.Ramp";
 
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
@@ -1868,6 +1877,69 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 } catch (Exception ex) {
                     MessageHandler.error("Library import failed.", ex);
                 }
+            }
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////
+    //// InstantiateClassAction
+
+    /** An action to import a library of components. */
+    private class InstantiateClassAction extends AbstractAction {
+
+        /** Create a new action to import a library of components. */
+        public InstantiateClassAction() {
+            super("Instantiate Class");
+            putValue("tooltip", "Instantiate a class by name");
+            putValue(GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_C));
+        }
+
+        /** Instantiate a class by first opening a dialog to get
+         *  a class name and then issuing a change request.
+         */
+        public void actionPerformed(ActionEvent e) {
+            Query query = new Query();
+            query.setTextWidth(60);
+            query.addLine("class", "Class name", _lastClassName);
+            ComponentDialog dialog = new ComponentDialog(BasicGraphFrame.this, "Open URL", query);
+            if (dialog.buttonPressed().equals("OK")) {
+                // Get the associated Ptolemy model.
+                GraphController controller =
+                        _jgraph.getGraphPane().getGraphController();
+                AbstractBasicGraphModel model =
+                        (AbstractBasicGraphModel)controller.getGraphModel();
+                CompositeEntity context = model.getPtolemyModel();
+
+                _lastClassName = query.getStringValue("class");
+                
+                // Find the root for the instance name.
+                String rootName = _lastClassName;
+                int period = rootName.lastIndexOf(".");
+                if (period >= 0 && (rootName.length() > period + 1)) {
+                    rootName = rootName.substring(period + 1);
+                }
+                
+                // Use the center of the screen as a location.
+                Rectangle2D bounds = getVisibleCanvasRectangle();
+                double x = bounds.getWidth()/2.0;
+                double y = bounds.getHeight()/2.0;
+                
+                // Use the "auto" namespace group so that name collisions
+                // are automatically avoided by appending a suffix to the name.
+                String moml = "<group name=\"auto\"><entity name=\""
+                       + rootName
+                       + "\" class=\""
+                       + _lastClassName
+                       + "\"><property name=\"_location\" "
+                       + "class=\"ptolemy.kernel.util.Location\" value=\""
+                       + x
+                       + ", "
+                       + y
+                       + "\"></property></entity></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
+                context.requestChange(request);
+                // FIXME: Listen for errors?
             }
         }
     };
