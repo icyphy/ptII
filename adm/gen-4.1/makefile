@@ -801,7 +801,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/comm \
