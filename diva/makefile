@@ -49,6 +49,7 @@ PTCLASSALLJARS = \
 		canvas/canvas.jar \
 		graph/graph.jar \
 		gui/gui.jar \
+		resource/resource.jar \
 		util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
