@@ -1,4 +1,4 @@
-# Tests for the SDFDirector class
+# Tests for the PBODirector class
 #
 # @Author: Stephen Neuendorffer
 #
@@ -102,10 +102,14 @@ test PBODirector-5.1 {Test action methods} {
     set a1 [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
     set p1 [java::new ptolemy.data.expr.Parameter $a1 firingPeriod]
     _testSetToken $p1 [java::new ptolemy.data.DoubleToken 1.0]
+    set p1 [java::new ptolemy.data.expr.Parameter $a1 delay]
+    _testSetToken $p1 [java::new ptolemy.data.DoubleToken 0.4]
 
     set a2 [java::new ptolemy.actor.lib.Recorder $e0 Recorder]
     set p2 [java::new ptolemy.data.expr.Parameter $a2 firingPeriod]
     _testSetToken $p2 [java::new ptolemy.data.DoubleToken 1.2]
+    set p2 [java::new ptolemy.data.expr.Parameter $a2 delay]
+    _testSetToken $p2 [java::new ptolemy.data.DoubleToken 0.4]
 
     $e0 connect \
 	    [java::field [java::cast ptolemy.actor.lib.Source $a1] output]\

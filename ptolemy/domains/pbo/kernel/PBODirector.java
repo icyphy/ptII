@@ -55,12 +55,13 @@ systems.
 
 Communication between port-based objects is *NOT* based on FIFO queues!
 Instead, the processes have a concept of a shared memory.   The shared
-memory is synchronized across processes that may be happening concurrently,
+memory is synchronized across processes that may be executing concurrently,
 so that an object is always guaraunteed to have the most recent consistent
 available state of its inputs when it fires.   Note that in this communication
 model, data may be lost!
 
-Port-based objects are normally associated with independant .  However, 
+Port-based objects are normally associated with independant processes.  
+However, 
 unlike Process Networks, the threads are time-driven, instead of data-driven.
 Each actor has an associated firing period, which determines how often
 it will execute.  When a process is scheduled, it reads the current state
@@ -177,27 +178,34 @@ public class PBODirector extends Director {
      *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
-	// advance the current time.
-	setCurrentTime(getNextIterationTime());
+	// advance the current time, if necessary.
+	if(getNextIterationTime() > getCurrentTime()) 
+	    setCurrentTime(getNextIterationTime());
+	
 	_debug("Starting iteration at " + getCurrentTime());
+	double firingTime = getCurrentTime();
+	double desiredFiringTime = 
+	    ((Double)_startQueue.getNextKey()).doubleValue();
 	boolean postfireReturns;
 	// get the next actor to fire.
-	Actor actor = (Actor)_eventQueue.take();
+	Actor actor = (Actor)_startQueue.take();
 	if(actor.prefire()) {
-	    _debug("Firing actor " + ((Entity) actor).getFullName());
+	    _debug("Firing actor " + ((Entity) actor).getFullName() + 
+		   " at " + firingTime);
 	    actor.fire();
-	    _debug("Postfiring actor");
+	    // This is the time that the actor next wants to get fired.
+	    Double refireTime = new Double(desiredFiringTime + 
+					   _getFiringPeriod(actor));
+	    
+	    setCurrentTime(firingTime + _getDelay(actor));
+	    _debug("Postfiring actor at " + getCurrentTime());
 	    postfireReturns = actor.postfire();
 	    _debug("done firing");
 	    
 	    if(postfireReturns) {
-		_debug("Rescheduling actor");
+		_debug("Rescheduling actor at " + refireTime);
 		// reschedule the actor's next firing.
-		_eventQueue.put(new Double(getCurrentTime() + 
-				       _getFiringPeriod(actor)), 
-				actor);
-		_debug("Rescheduled actor");
-		_debug("Event Queue = " + _eventQueue.toString());
+		_startQueue.put(refireTime, actor);
 	    }
 	}
 
@@ -243,10 +251,10 @@ public class PBODirector extends Director {
      */
     public double getNextIterationTime() {
 	try {
-	    return ((Double) _eventQueue.getNextKey()).doubleValue();
+	    return ((Double) _startQueue.getNextKey()).doubleValue();
 	}
 	catch (IllegalActionException e) {
-	    // This should never happen, becakse there should always be stuff
+	    // This should never happen, because there should always be stuff
 	    // in the event queue, but it is always safe to return current
 	    // time, so just do that.
 	    _debug("PBODirector.getNextIterationTime: " +
@@ -277,7 +285,7 @@ public class PBODirector extends Director {
 	    Enumeration allActors = container.deepGetEntities();
 	    while(allActors.hasMoreElements()) {
 		Actor actor = (Actor) allActors.nextElement();
-		_eventQueue.put(new Double(0.0), actor);
+		_startQueue.put(new Double(0.0), actor);
 	    }
 	} else {
 	    throw new IllegalActionException("Cannot fire this director " +
@@ -377,7 +385,7 @@ public class PBODirector extends Director {
      *  This is called from the constructors for this object.
      */
     private void _init() {
-	_eventQueue = new CalendarQueue(new DoubleCQComparator());
+	_startQueue = new CalendarQueue(new DoubleCQComparator());
 	try {
 	    stopTime = new Parameter(this, "stopTime", new DoubleToken(10.0));
 	}
@@ -409,5 +417,30 @@ public class PBODirector extends Director {
 	return ((DoubleToken)param.getToken()).doubleValue();
     }
 
-    private CalendarQueue _eventQueue;
+    /** Get the delay between the inputs and the outputs for a given actor.
+     *  When the actor is fired, it is considered to be "active" for this
+     *  amount of time, after which it will create new output values and 
+     *  pause execution.
+     *
+     *  @exception IllegalActionException If the Actor does not implement
+     *  the nameable interface, if the delay
+     *  parameter does not exist, or it has an invalid expression.
+     */
+    private double _getDelay(Actor a)
+            throws IllegalActionException {
+	if(!(a instanceof Nameable)) 
+	    throw new IllegalActionException(
+		"Cannot get the delay for an actor that is not " +
+		"an entity.");
+        Parameter param = 
+	    (Parameter)((ComponentEntity)a).getAttribute("delay");
+	if(param == null) {
+	    throw new IllegalActionException("Actor does not have a " +
+		"delay parameter.");
+	}		     
+	return ((DoubleToken)param.getToken()).doubleValue();
+    }
+
+    private CalendarQueue _startQueue;
+    private CalendarQueue _stopQueue;
 }
