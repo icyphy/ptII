@@ -17,7 +17,7 @@
 # $PTII/adm/bin/jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/ptsupport.jar" "$PTII/ptolemy/ptsupport.jar"
 
 # or
-# $PTII/adm/bin/jardiff /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0/ptII1.0/ptolemy/ptsupport.jar $PTII/ptolemy/ptsupport.jar
+# $PTII/adm/bin/jardiff {/vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0/ptII1.0/ptolemy,$PTII/adm/dists/ptII2.0devel/ptolemy}/actor/lib/lib.jar
 
 if [ $# -ne 2 ]; then
     echo "$0: Wrong number of arguments, got $#, expected 2"
@@ -65,14 +65,21 @@ echo "# Print a . for .class files that had the same javap output"
 description1=${tmpfile}_desc1
 description2=${tmpfile}_desc2
 files=`comm -12 $contents1 $contents2`
+
+echo=/bin/echo
+
+if [ -f /usr/ucb/echo ]; then
+    echo=/usr/ucb/echo
+fi
+
 for file in $files
 do
     if [ "`basename $file`" = "`basename $file .class`" ]; then 
 	# $file does not end with .class
-        /bin/echo -n "+"
+        $echo -n "+"
 	continue
     fi
-    /bin/echo -n "."
+    $echo -n "."
     class=`echo $file | sed -e 's@/@.@g' -e 's@.class@@'`
     # FIXME: note that we could have problems here if the kernel
     # has changed signicantly and we are not comparing ptsupport.jar
