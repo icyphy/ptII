@@ -117,7 +117,7 @@ install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptolemy.plotappl
 
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
-ptolemy.plotapplet.jar:
+ptolemy.plotapplet.jar: $(JSRCS) $(JCLASS)
 	(cd $(CLASSPATH); $(JAR) cfm $(TYPACKAGE_DIR)/ptolemy.plotapplet.jar \
 		$(TYPACKAGE_DIR)/CmdLineArgException.class \
 		$(TYPACKAGE_DIR)/Plot.class \
