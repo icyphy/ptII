@@ -23,8 +23,8 @@ they are updated during type resolution.
 //--></SCRIPT>
     <COMMENT>
         <SCRIPT LANGUAGE="JavaScript1.1"><!--
+        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
         var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-        var _ns6 = ((_ns == true) && (_info.indexOf("Mozilla/5") >= 0));
 //--></SCRIPT>
     </COMMENT>
 
@@ -34,14 +34,14 @@ they are updated during type resolution.
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
             width = "800" \
             height = "600"  \
-            codebase="http://java.sun.com/products/plugin/1.3.1/jinstall-131-win32.cab#Version=1,3,1,0"> \
+            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_1_02-windows-i586.cab#Version=1,4,1,02"> \
             <PARAM NAME = "code" \
                    VALUE = "ptolemy.vergil.TypeAnimatorApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
 	    <PARAM NAME = "archive" \
                    VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" > \
             <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;jpi-version=1.3.1" > \
+                   VALUE = "application/x-java-applet;jpi-version=1.4.1_02" > \
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "name" VALUE = "Type" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
@@ -52,11 +52,11 @@ they are updated during type resolution.
             <a href="Type.xml">MoML specification for this model.</a> \
         </OBJECT> \
         ');
-    else if (_ns == true && _ns6 == false)
+    else if (_ns == true || _ns6 == true)
          document.writeln('\
         <COMMENT> \
           <EMBED \
-            type = "application/x-java-applet;jpi-version=1.3.1" \
+            type = "application/x-java-applet;jpi-version=1.4.1_02" \
             code = "ptolemy.vergil.TypeAnimatorApplet" \
             codebase = "../../../../.." \
             archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
@@ -64,7 +64,7 @@ they are updated during type resolution.
             height = "600" \
             name = "Type" background = "#faf0e6" modelURL = "Type.xml" orientation = "horizontal" controls = "buttons, topParameters" includeRunPanel = "true"  \
             scriptable = "false" \
-            pluginspage = "http://java.sun.com/products/plugin/1.3.1/plugin-install.html"> \
+            pluginspage = "http://java.sun.com/j2se/1.4.1/download.html"> \
               <NOEMBED> \
               <a href="Type.xml">MoML specification for this model.</a> \
               </NOEMBED> \
