@@ -33,9 +33,11 @@ package ptolemy.actor;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
+import ptolemy.graph.Edge;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.lang.String;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -51,7 +53,7 @@ concurrent modeling and design in Java</em>, Technical report,
 Electronics Research Laboratory, University of California at Berkeley,
 March 2001.
 
-@author Shuvra S. Bhattacharyya
+@author Shuvra S. Bhattacharyya, Chia-Jui Hsu
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -74,28 +76,30 @@ public class GraphReader {
      *  {@link ptolemy.actor.GraphReader#_computeEdgeWeight(IOPort sourcePort, 
      *  IOPort sinkPort)}
      *  methods.
+     *  This method will convert low level CompositeActor as a node.
      *  @param compositeActor The composite actor to convert.
      *  @return the directed, weighted graph.
      *  @exception RuntimeException If the deep entity list of the
      *  composite actor contains an entry that is not an AtomicActor.
      */
     public Graph convert(CompositeActor compositeActor) {
-
+        
         // Instantiate an empty graph.
         Graph graph = _initializeGraph(compositeActor);
 
         // Add all deeply-contained actors to the graph
         Iterator actors = compositeActor.deepEntityList().iterator();
         while (actors.hasNext()) {
-            Object nextEntity  = actors.next();
-            if (!(nextEntity instanceof AtomicActor))
+            Object entity = actors.next();
+            if(entity instanceof AtomicActor || 
+                    entity instanceof CompositeActor) {
+                Actor actor = (Actor)entity;
+                Node newNode = graph.addNodeWeight(_computeNodeWeight(actor));
+                _actorMap.put(actor, newNode);
+            } else {
                 throw new RuntimeException("Unsupported deep entity type: "
-                        + nextEntity.getClass().getName()
-                        + " (value = " + nextEntity + ")");
-            else {
-                Object nodeWeight = _computeNodeWeight((AtomicActor)nextEntity);
-                Node newNode = graph.addNodeWeight(nodeWeight);
-                _actorMap.put(nextEntity, newNode);
+                        + entity.getClass().getName()
+                        + " (value = " + entity + ")");
             }
         }
 
@@ -116,6 +120,7 @@ public class GraphReader {
                     if (graph.containsNode((Node)(_actorMap.get(sink)))) {
                         if (_debug) System.out.println("Adding edge from "
                                 + source + " to " + sink);
+
                         graph.addEdge((Node)(_actorMap.get(source)),
                                 (Node)(_actorMap.get(sink)),
                                 _computeEdgeWeight(outPort, inPort));
@@ -124,18 +129,8 @@ public class GraphReader {
             }
         }
 
-        if (_debug) {
-            System.out.println("A dump of the graph before global "
-                    + "transformation:\n" + graph.toString() + "\n");
-        }
-
         // Perform global graph transformations.
         _transformTopology(graph);
-
-        if (_debug) {
-            System.out.println("A dump of the graph after global "
-                    + "transformation:\n" + graph.toString() + "\n");
-        }
 
         // Return the filled-in Graph.
         return graph;
@@ -143,7 +138,7 @@ public class GraphReader {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
+    
     /** Determine the weight to be assigned to the weighted graph edge that
      *  represents a given connection in a Ptolemy II model.
      *  This method returns the input port as the edge weight.
@@ -166,7 +161,7 @@ public class GraphReader {
      *  @param actor the actor whose node weight is to be determined.
      *  @return the weight of the node.
      */
-    protected Object _computeNodeWeight(AtomicActor actor) {
+    protected Object _computeNodeWeight(Actor actor) {
         return actor;
     }
 
@@ -191,16 +186,36 @@ public class GraphReader {
      *  edges).
      *  @param graph the graph.
      */
-    protected void _transformTopology(Graph graph) {
+    protected void _transformTopology(Graph graph) {        
+        if (_debug) {
+            System.out.println("A dump of the graph before global "
+                    + "transformation:\n" + graph.toString() + "\n");
+        }
+        
+        //write transform strategy here.        
+        
+        if (_debug) {
+            System.out.println("A dump of the graph after global "
+                    + "transformation:\n" + graph.toString() + "\n");
+        }
     }
-
+    
+    /** Set debug mode and let the class display conversion information.
+     * @param debug True will turn on debug mode, false will turn off debug
+     * mode.
+     */
+    protected void _setDebug(boolean  debug) {
+        _debug = debug;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Flag for turning local debugging output on and off.
-    private static boolean _debug = true;
+    private static boolean _debug = false;
 
     // Map from actors to the generic graph nodes that represent them.
     // Keys are instances of AtomicActor, and values are instances of Node.
     private HashMap _actorMap;
+
 }
