@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# Guess values for system-dependent variables and create Makefiles. 
+# Guess values for system-dependent variables and create Makefiles.
 # Generated automatically using autoconf version 2.13 
 # Copyright (C) 1992, 93, 94, 95, 96 Free Software Foundation, Inc.
 #
@@ -1377,8 +1377,8 @@ fi
 #       See if there was a command-line option for where JMF is.
 #--------------------------------------------------------------------
 
-# PTJYTHON_DIR is set to jython and used in
-# $PTII/ptolemy/actor/lib/makefile if jmf was found
+# PTJYTHON_DIR is set to python (FIXME: should be jython) and used in
+# $PTII/ptolemy/actor/lib/makefile if Jython was found.
 PTJYTHON_DIR=
 
 # Directory that contains the jython jar files
