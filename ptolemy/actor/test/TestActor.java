@@ -77,7 +77,7 @@ public class TestActor extends AtomicActor {
             public void perform() {
                 try {
                     _testactor =
-                    new TestActor((CompositeActor)getContainer(), name);
+                        new TestActor((CompositeActor)getContainer(), name);
                 } catch (Exception ex) {
                     // Ignore exceptions
                 }
