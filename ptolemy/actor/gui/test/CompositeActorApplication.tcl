@@ -42,9 +42,9 @@ set testCase {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" value="2"/>
-    </director>
+    </propery>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp"></entity>
     <entity name="rec" class="ptolemy.actor.lib.Recorder"></entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation"/>
