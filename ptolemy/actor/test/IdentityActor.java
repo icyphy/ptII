@@ -30,7 +30,6 @@ package ptolemy.actor.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 
@@ -96,3 +95,5 @@ public class IdentityActor extends AtomicActor {
     public IOPort output;
 
 }
+
+

@@ -31,7 +31,7 @@ package ptolemy.actor.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.*;
+import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ A TestActor is a simple atomic actor that is used for testing the actor
 package. It overrides the action methods with methods that record their
 invocation in a list.
 
-@author Edward A. Lee
+@author Edward A. Lee, Mudit Goel
 @version $Id$
 */
 public class TestActor extends AtomicActor {
@@ -72,26 +72,22 @@ public class TestActor extends AtomicActor {
      *  @return The new actor.
      */
     public void addActor(final String name) {
-        Mutation m = new Mutation() {
+        TopologyChangeRequest m = new TopologyChangeRequest(this) {
             // Create the mutation
-            public void perform() {
+            public void constructEventQueue() {
+                TestActor testactor = null;
                 try {
-                    _testactor =
+                    testactor =
                         new TestActor((CompositeActor)getContainer(), name);
                 } catch (Exception ex) {
                     // Ignore exceptions
                 }
+                queueEntityAddedEvent((CompositeEntity)getContainer(), testactor);
             }
-            public void update(MutationListener listener) {
-                listener.addEntity((CompositeEntity)getContainer(), _testactor);
-
-            }
-            // Test actor generated in by perform().
-            private TestActor _testactor = null;
         };
         Director dir = getDirector();
         if (dir != null) {
-            dir.queueMutation(m);
+            dir.queueTopologyChangeRequest(m);
         }
     }
 
