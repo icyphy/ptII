@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.gui;
 
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
+
 import java.awt.Frame;
 import java.net.URL;
 
@@ -62,26 +65,34 @@ public class QueryUtilities {
         // misnamed, it is really a ParameterQuery.  We could make
         // this class extend Query and have other classes extend it 
 
-        // Note: call Thread.currentThread() so this works in Web Start
-        URL doc = Thread.currentThread().getContextClassLoader().getResource(
-                urlName);
-        // Try to use the configuration, if we can.
-        boolean success = false;
-        if (owner instanceof TableauFrame) {
-            Configuration configuration
-                = ((TableauFrame)owner).getConfiguration();
-            if (configuration != null) {
-                configuration.openModel(
-                        null, doc, doc.toExternalForm());
-                success = true;
+        try {
+            // Note: call Thread.currentThread() so this works in Web Start
+            URL doc = Thread.currentThread().getContextClassLoader()
+                .getResource(urlName);
+            // Try to use the configuration, if we can.
+            boolean success = false;
+            if (owner instanceof TableauFrame) {
+                Configuration configuration
+                    = ((TableauFrame)owner).getConfiguration();
+                if (configuration != null) {
+                    configuration.openModel(
+                            null, doc, doc.toExternalForm());
+                    success = true;
+                }
             }
-        }
-        if (!success) {
-            // Just open an HTML page.
-            HTMLViewer viewer = new HTMLViewer();
-            viewer.setPage(doc);
-            viewer.pack();
-            viewer.show();
+            if (!success) {
+                // Just open an HTML page.
+                HTMLViewer viewer = new HTMLViewer();
+                viewer.setPage(doc);
+                viewer.pack();
+                viewer.show();
+            }
+        } catch (Exception ex) {
+            try {
+                MessageHandler.warning("Cannot open '" + urlName + "'", ex);
+            } catch (CancelException exception) {
+                // Ignore the cancel.
+            }
         }
     }
 }
