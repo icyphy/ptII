@@ -52,9 +52,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    number of rows in the matrix dictates how many bands there are in the
    output image.  For example, to swap the second and third bands in a
    three banded image, the following matrix can be used:
+   <pre>
    1 0 0 0
    0 0 1 0
    0 1 0 0
+   </pre>
 
    @see JAIBandSelect
    @author James Yeh
@@ -118,7 +120,16 @@ public class JAIBandCombine extends Transformer {
 
         parameters.addSource(oldImage);
         parameters.add(_matrixValue);
-        RenderedOp newImage = JAI.create("bandCombine", parameters);
+        RenderedOp newImage;
+        try {
+            newImage = JAI.create("bandCombine", parameters);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to band combine the image\n"
+                    + ex.getMessage() 
+                    + "\n  Number of bands: " + oldImage.getNumBands()
+                    + "\n  Image: " + oldImage.toString());
+        }
         output.send(0, new JAIImageToken(newImage));
     }
 
