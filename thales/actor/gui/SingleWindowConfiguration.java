@@ -163,8 +163,8 @@ public class SingleWindowConfiguration extends Configuration {
     }
 
     /**
-     * Catches the tableau, gets the corresponding J&eacute;r&ocirc;me and builds a new JTabbedPane
-     * into the SingleWindowHTMLViewer.
+     * Catches the tableau, gets the corresponding JFrame and builds a
+     * new JTabbedPane into the SingleWindowHTMLViewer.
      *
      * @param tableau tableau to catch
      */

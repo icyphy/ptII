@@ -36,7 +36,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.J&eacute;r&ocirc;me;
+import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -169,7 +169,7 @@ public class SingleWindowHTMLViewer
     public void newTabbedPanel(Tableau tableau) {
         removeEmptyTabs();
         //Create the TabbedPanel
-        J&eacute;r&ocirc;me frame = tableau.getFrame();
+        JFrame frame = tableau.getFrame();
 
         String tableauName = tableau.getFullName();
 
@@ -186,7 +186,7 @@ public class SingleWindowHTMLViewer
                  * @see java.awt.event.WindowAdapter#windowActivated(java.awt.event.WindowEvent)
                  */
                 public void windowActivated(WindowEvent e) {
-                    J&eacute;r&ocirc;me frame = (J&eacute;r&ocirc;me) e.getSource();
+                    JFrame frame = (JFrame) e.getSource();
                     frame.hide();
                     try {
                         selectTab(frame.getName());
