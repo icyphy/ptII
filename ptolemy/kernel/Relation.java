@@ -51,6 +51,7 @@ public class Relation extends NamedObj {
      */	
     public Relation() {
 	 super();
+         _isSourceOrDestination = 0;
     }
 
     /** 
@@ -58,10 +59,51 @@ public class Relation extends NamedObj {
      */	
     public Relation(String name) {
 	 super(name);
+         _isSourceOrDestination = 0;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
+
+    /** A Relation must be set as either a Source or Destination relation.
+     * @return Return true if this Relation has been set as a Source or
+     * Destination relation. Return false otherwise.
+     */	
+    public boolean isRelationTypeSet() {
+	if( _isSourceOrDestination <= 0 || _isSourceOrDestination >= 3 )
+	{
+	     return true;
+	}
+        return false;
+    }
+
+    /** Make this Relation a Source if it has not already been set to a
+     *  Destination
+     * @return Return true if successful. Return false if this Relation
+     * was previously set as a Destination.
+     */	
+    public boolean makeSourceRelation() {
+	if( _isSourceOrDestination != 2 )
+	{
+	     _isSourceOrDestination = 1;
+	     return true;
+	}
+        return false;
+    }
+
+    /** Make this Relation a Destination if it has not already been set to a
+     *  Destination
+     * @return Return true if successful. Return false if this Relation
+     * was previously set as a Source.
+     */	
+    public boolean makeDestinationRelation() {
+	if( _isSourceOrDestination != 1 )
+	{
+	     _isSourceOrDestination = 2;
+	     return true;
+	}
+        return false;
+    }
 
     /** Description
      * @see full-classname#method-name()
@@ -121,10 +163,10 @@ public class Relation extends NamedObj {
      */
     private UpdatableSeq _destinationPorts;
 
-    /* Private variables should not have doc comments, they should
-       have regular comments.
+    /* Set to 1 if this is an source relation. Set to 2 if this is a 
+     * destination relation. Set to 0 by the constructor to indicate null. 
      */
-    private boolean _isSourceOrDestination;
+    private int _isSourceOrDestination;
 
     /* Private variables should not have doc comments, they should
        have regular comments.
