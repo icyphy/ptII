@@ -152,6 +152,7 @@ JSRCS = \
 	Sequencer.java \
 	SequenceSource.java \
 	SequentialClock.java \
+	SetVariable.java \
 	Sink.java \
 	Sleep.java \
 	Source.java \
