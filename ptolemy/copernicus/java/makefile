@@ -162,26 +162,47 @@ compileDemo: $(JCLASS)
 # Directories that contain snapshots
 SNAPSHOTS=jimple1 jimple2 jimple3 jimple4 jimple5
 
+STATSFILE=runSnapShot.stats
 # Run the simulation in each snapshot directory
 runSnapshots:
 	@echo "Run without codegen"
-	CLASSPATH="$(CLASSPATH)" \
-		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
-		-class $(SOURCECLASS) \
-		-iterations $(ITERATIONS) | tail -1
+	rm -f  $(STATSFILE)
+	for repeat in 1 2 3 4; \
+	do \
+		CLASSPATH="$(CLASSPATH)" \
+			$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
+			-class $(SOURCECLASS) \
+			-iterations $(ITERATIONS) | tail -1 | \
+			tee -a $(STATSFILE); \
+	done
+	$(ROOT)/util/testsuite/memorystats "$(MODEL) interpreted" < $(STATSFILE); \
+
 	@echo "Run the snapshots"
 	for snapshot in $(SNAPSHOTS); \
 	do \
 		echo "Running the code from $(TARGETPATH)/$$snapshot"; \
-		$(JAVA) \
-			-Xfuture -classpath \
+		rm -f  $(STATSFILE); \
+		for repeat in 1 2 3 4; \
+		do \
+			$(JAVA) \
+				-Xfuture -classpath \
 	"$(ROOT)/$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
-			$(TARGETPACKAGE).Main | tail -1 ; \
+				$(TARGETPACKAGE).Main | tail -1 | \
+			tee -a $(STATSFILE); \
+		done; \
+		$(ROOT)/util/testsuite/memorystats "$(MODEL) $$snapshot" < $(STATSFILE); \
 	done
 	@echo "Run the final version"
-	$(JAVA) \
-		-Xfuture -classpath "$(CLASSPATH)" \
-		$(TARGETPACKAGE).Main | tail -1 
+	rm -f  $(STATSFILE)
+	for repeat in 1 2 3 4; \
+	do \
+		$(JAVA) \
+			-Xfuture -classpath "$(CLASSPATH)" \
+			$(TARGETPACKAGE).Main | tail -1 | \
+			tee -a $(STATSFILE); \
+	done
+	$(ROOT)/util/testsuite/memorystats "$(MODEL) codegen" < $(STATSFILE); \
+	rm -f $(STATSFILE)
 
 runDemo:
 	@echo "Run the deep model"
