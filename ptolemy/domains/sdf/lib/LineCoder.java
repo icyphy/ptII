@@ -60,10 +60,10 @@ public class LineCoder extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new TypedIOPort(this, "input", true, false);
+        input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(BooleanToken.class);
 
-        output = new TypedIOPort(this, "output", false, true);
+        output = new SDFIOPort(this, "output", false, true);
         // FIXME: Type should be inferred from the code table.
         output.setTypeEquals(DoubleToken.class);
 
@@ -76,10 +76,10 @@ public class LineCoder extends SDFAtomicActor {
     ////                         public variables                  ////
 
     /** The input port. */
-    public TypedIOPort input;
+    public SDFIOPort input;
 
     /** The output port. */
-    public TypedIOPort output;
+    public SDFIOPort output;
 
     /** The code table.  Its value is a token of type DoubleMatrixToken.
      *  The table contains a row vector (a matrix with only one row)
@@ -120,8 +120,8 @@ public class LineCoder extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             LineCoder newobj = (LineCoder)(super.clone(ws));
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
             newobj.table = (Parameter)newobj.getAttribute("table");
             newobj.wordlength = (Parameter)newobj.getAttribute("wordlength");
             return newobj;
@@ -141,7 +141,7 @@ public class LineCoder extends SDFAtomicActor {
 
         // FIXME: Handle mutations.
         _wordlength = ((IntToken)(wordlength.getToken())).intValue();
-        setTokenConsumptionRate(input, _wordlength);
+        input.setTokenConsumptionRate(_wordlength);
 
         DoubleMatrixToken tabletoken = (DoubleMatrixToken)(table.getToken());
         if (tabletoken.getRowCount() != 1) {

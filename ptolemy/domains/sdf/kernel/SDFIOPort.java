@@ -117,9 +117,8 @@ public final class SDFIOPort extends TypedIOPort {
             boolean isinput, boolean isoutput)
             throws IllegalActionException, NameDuplicationException {
         this(container, name);
-        setInput(isinput);
+	setInput(isinput);
         setOutput(isoutput);
-	_initialize();
     }
 
     public Parameter tokenConsumptionRate;

@@ -96,10 +96,10 @@ public class FIR extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new TypedIOPort(this, "input", true, false);
+        input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(DoubleToken.class);
 
-        output = new TypedIOPort(this, "output", false, true);
+        output = new SDFIOPort(this, "output", false, true);
         output.setTypeEquals(DoubleToken.class);
 
         taps = new Parameter(this, "taps", new DoubleMatrixToken());
@@ -112,10 +112,10 @@ public class FIR extends SDFAtomicActor {
     ////                         public variables                  ////
 
     /** The input port. */
-    public TypedIOPort input;
+    public SDFIOPort input;
 
     /** The output port. */
-    public TypedIOPort output;
+    public SDFIOPort output;
 
     /** The interpolation ratio of the filter. This must contain an
      *  IntToken, and by default it has value one.
@@ -142,8 +142,8 @@ public class FIR extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             FIR newobj = (FIR)(super.clone(ws));
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
             newobj.interpolation =
                 (Parameter)newobj.getAttribute("interpolation");
             newobj.taps = (Parameter)newobj.getAttribute("taps");
@@ -170,8 +170,8 @@ public class FIR extends SDFAtomicActor {
 
         // FIXME: Does the SDF infrastructure support accessing past samples?
         // FIXME: Handle mutations.
-        setTokenConsumptionRate(input, _dec);
-        setTokenProductionRate(output, _interp);
+        input.setTokenConsumptionRate(_dec);
+        output.setTokenProductionRate(_interp);
         if (_decPhase >= _dec) {
             throw new IllegalActionException(this,"decimationPhase too large");
         }

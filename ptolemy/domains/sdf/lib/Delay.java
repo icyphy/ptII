@@ -52,16 +52,16 @@ public class Delay extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            input = (TypedIOPort)newPort("input");
+            input = (SDFIOPort)newPort("input");
             input.setInput(true);
-            setTokenConsumptionRate(input, 1);
+            input.setTokenConsumptionRate(1);
             input.setTypeEquals(Token.class);
 
-            output = (TypedIOPort)newPort("output");
+            output = (SDFIOPort)newPort("output");
             output.setOutput(true);
-            setTokenProductionRate(output, 1);
+            output.setTokenProductionRate(1);
             output.setTypeEquals(Token.class);
-            setTokenInitProduction(output, 1);
+            output.setTokenInitProduction(1);
         }
         catch (IllegalActionException e1) {
             System.out.println("Delay: constructor error");
@@ -70,8 +70,8 @@ public class Delay extends SDFAtomicActor {
         }
     }
 
-    public TypedIOPort input;
-    public TypedIOPort output;
+    public SDFIOPort input;
+    public SDFIOPort output;
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -82,8 +82,8 @@ public class Delay extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             Delay newobj = (Delay)(super.clone(ws));
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -102,7 +102,7 @@ public class Delay extends SDFAtomicActor {
         super.initialize();
         // Create the Delay token.
         IntToken token = new IntToken();
-        TypedIOPort output = (TypedIOPort)getPort("output");
+        SDFIOPort output = (SDFIOPort)getPort("output");
         output.send(0, token);
     }
 
