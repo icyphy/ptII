@@ -157,7 +157,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
      *  in an array of length 2.
      */
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        TNLManip.traverseList(this, node, null, node.getDefTypes());
+        TNLManip.traverseList(this, null, node.getDefTypes());
 
         return new Object[] { _solver, _declToTermMap };
     }
@@ -201,7 +201,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
         // make sure we process the parameters first
-        TNLManip.traverseList(this, node, null, node.getParams());
+        TNLManip.traverseList(this, null, node.getParams());
 
         node.getBody().accept(this, null);
 
@@ -210,7 +210,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
         // make sure we process the parameters first
-        TNLManip.traverseList(this, node, null, node.getParams());
+        TNLManip.traverseList(this, null, node.getParams());
 
         node.getBody().accept(this, null);
 
@@ -264,7 +264,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         InequalityTerm retval =
             (InequalityTerm) _makeConstantTerm(returnType, null);
 
-        List argTerms = TNLManip.traverseList(this, node, null, node.getArgs());
+        List argTerms = TNLManip.traverseList(this, null, node.getArgs());
 
         FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
 

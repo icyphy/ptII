@@ -188,13 +188,13 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         }
 
         node.setParams(
-                TNLManip.traverseList(this, node, args, node.getParams()));
+                TNLManip.traverseList(this, args, node.getParams()));
 
         node.setBody((TreeNode) node.getBody().accept(this, args));
 
         // eliminate declared, throwable Ptolemy exceptions
         node.setThrowsList(_eliminatePtolemyExceptionList(
-                TNLManip.traverseList(this, node, args, node.getThrowsList())));
+                TNLManip.traverseList(this, args, node.getThrowsList())));
 
         node.setReturnType((TypeNode) node.getReturnType().accept(this, args));
 
@@ -218,7 +218,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         // eliminate declared, throwable Ptolemy exceptions
         node.setThrowsList(_eliminatePtolemyExceptionList(
-                TNLManip.traverseList(this, node, args, node.getThrowsList())));
+                TNLManip.traverseList(this, args, node.getThrowsList())));
 
         return node;
     }
@@ -241,7 +241,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
         node.setStmts(_makeStmtList(
-                TNLManip.traverseList(this, node, args, node.getStmts())));
+                TNLManip.traverseList(this, args, node.getStmts())));
 
         return node;
     }
@@ -267,7 +267,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitSwitchBranchNode(SwitchBranchNode node, LinkedList args) {
         node.setStmts(_makeStmtList(
-                TNLManip.traverseList(this, node, args, node.getStmts())));
+                TNLManip.traverseList(this, args, node.getStmts())));
 
         return node;
     }
@@ -292,12 +292,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitForNode(ForNode node, LinkedList args) {
         node.setInit(
-                TNLManip.traverseList(this, node, args, node.getInit()));
+                TNLManip.traverseList(this, args, node.getInit()));
 
         node.setTest((ExprNode) node.getTest().accept(this, args));
 
         node.setUpdate(
-                TNLManip.traverseList(this, node, args, node.getUpdate()));
+                TNLManip.traverseList(this, args, node.getUpdate()));
 
         node.setStmt(_makeStmt(node.getStmt().accept(this, args)));
 
@@ -356,7 +356,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // CHECK ME : are we handling the finally clause correctly here?
 
         Iterator catchNodeItr =
-            TNLManip.traverseList(this, node, args, node.getCatches()).iterator();
+            TNLManip.traverseList(this, args, node.getCatches()).iterator();
 
         LinkedList newCatchNodeList = new LinkedList();
 
@@ -421,7 +421,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
             // transform the arguments
             List methodArgs =
-                TNLManip.traverseList(this, null, args, node.getArgs());
+                TNLManip.traverseList(this, args, node.getArgs());
 
             node.setArgs(methodArgs);
 
@@ -630,7 +630,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     // return a list of the transformed arguments
                     // so that side effects are preserved
                     // the list will be processed by visitBlockNode()
-                    return TNLManip.traverseList(this, null, args, node.getArgs());
+                    return TNLManip.traverseList(this, args, node.getArgs());
                 }
             }
         } else if (_typeID.isSupportedPortKind(accessedObjKind)) {
@@ -649,7 +649,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             (MethodDecl) node.getDefinedProperty(DECL_KEY);
 
         List constructorArgs =
-            TNLManip.traverseList(this, null, null, node.getArgs());
+            TNLManip.traverseList(this, null, node.getArgs());
 
         node.setArgs(constructorArgs);
 
@@ -1090,7 +1090,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         List memberList = node.getMembers();
 
-        memberList = TNLManip.traverseList(this, node, null, memberList);
+        memberList = TNLManip.traverseList(this, null, memberList);
 
         Iterator memberItr = memberList.iterator();
 
@@ -1469,7 +1469,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         ExprNode accessedObj =
             (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
 
-        node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
+        node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
 
         // we can only handle ports that are fields of the actor
         if (accessedObj.classID() != THISFIELDACCESSNODE_ID) return node;
