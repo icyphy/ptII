@@ -75,11 +75,11 @@ test StaticSchedulingDirector-3.1 {Test clone} {
 #
 test StaticSchedulingDirector-4.1 {Test setScheduler and getScheduler} {
     # NOTE: Uses the setup above
-    set s0 [java::new pt.actor.Scheduler S0]
+    set s0 [java::new pt.actor.Scheduler]
     $d1 setScheduler $s0
     set s1 [$d1 getScheduler]
     list [$s0 getFullName] [$s1 getFullName]
-} {.D1.S0 .D1.S0}
+} {{.D1.Basic Scheduler} {.D1.Basic Scheduler}}
 
 ######################################################################
 ####
