@@ -38,16 +38,19 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-// import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
@@ -187,14 +190,12 @@ public class SDFScheduler extends Scheduler implements ValueListener {
         return _getFiringCount(entity);
     }
 
-    /** Get the number of tokens that are consumed
-     *  on the given port.  If the port is not an
-     *  input port, then return zero.  Otherwise, return the value of
-     *  the port's <i>tokenConsumptionRate</i> parameter.   If the parameter
-     *  does not exist, then check for a parameter named
-     *  <i>_tokenConsumptionRate</i>, which might have been created
-     *  by an inside SDF model.  If this one also does not exist,
-     *  then assume the actor is homogeneous and return one.
+    /** Get the number of tokens that are consumed on the given port.
+     *  If the port is not an input port, then return zero.
+     *  Otherwise, return the value of the port's
+     *  <i>tokenConsumptionRate</i> parameter.  If this parameter does
+     *  not exist, then assume the actor is homogeneous and return
+     *  one.
      *  @return The number of tokens the scheduler believes will be consumed
      *  from the given input port during each firing.
      *  @exception IllegalActionException If the tokenConsumptionRate
@@ -229,14 +230,12 @@ public class SDFScheduler extends Scheduler implements ValueListener {
         }
     }
     
-    /** Get the number of tokens that are produced
-     *  on the given port.  If the port is not an
-     *  output port, then return zero.  Otherwise, return the value of
-     *  the port's <i>tokenProductionRate</i> parameter. If the parameter
-     *  does not exist, then check for a parameter named
-     *  <i>_tokenProductionRate</i>, which might have been created
-     *  by an inside SDF model.  If this one also does not exist,
-     *  then assume the actor is homogeneous and return a rate of one.
+    /** Get the number of tokens that are produced on the given port.
+     *  If the port is not an output port, then return zero.
+     *  Otherwise, return the value of the port's
+     *  <i>tokenProductionRate</i> parameter. If the parameter does
+     *  not exist, then assume the actor is homogeneous and return a
+     *  rate of one.
      *  @return The number of tokens the scheduler believes will be produced
      *   from the given output port during each firing.
      *  @exception IllegalActionException If the tokenProductionRate
@@ -317,6 +316,7 @@ public class SDFScheduler extends Scheduler implements ValueListener {
 //             Variable variable = (Variable)variables.next();
 //             variable.removeValueListener(this);
 //         }
+        System.out.println("rate value changed: " + settable.getFullName());
         _rateVariables.clear();
         setValid(false);
     }
@@ -346,13 +346,43 @@ public class SDFScheduler extends Scheduler implements ValueListener {
      */
     protected Schedule _getSchedule()
             throws NotSchedulableException, IllegalActionException {
-        StaticSchedulingDirector director =
-            (StaticSchedulingDirector)getContainer();
+        SDFDirector director =
+            (SDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
-        /*
+        
+        List schedulingParameters = new LinkedList();
+        // Collect scheduling dependencies.
+        for(Iterator entities = model.deepEntityList().iterator();
+            entities.hasNext();) {
+            Entity entity = (Entity)entities.next();
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port) ports.next();
+                Variable variable;
+                variable = (Variable)_getRateVariable(port, 
+                        "tokenProductionRate");
+                if(variable != null) {
+                    schedulingParameters.add(variable);
+                }
+                variable = (Variable)_getRateVariable(port, 
+                        "tokenConsumptionRate");
+                if(variable != null) {
+                    schedulingParameters.add(variable);
+                }
+                variable = (Variable)_getRateVariable(port,
+                        "tokenInitProduction");
+                if(variable != null) {
+                    schedulingParameters.add(variable);
+                }
+            }
+        }
+
+        boolean allowRateChanges = ((BooleanToken)
+                director.allowRateChanges.getToken()).booleanValue();
+        
         // Check for rate parameters which are dynamic.
         ConstVariableModelAnalysis analysis =
-            new ConstVariableModelAnalysis((Entity)toplevel());
+            ConstVariableModelAnalysis.getAnalysis(director);
         Entity scheduleChangeContext = (Entity)toplevel();
         for(Iterator entities = model.deepEntityList().iterator();
             entities.hasNext();) {
@@ -368,13 +398,22 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                     if(name.equals("tokenInitProduction") ||
                             name.equals("tokenProductionRate") ||
                             name.equals("tokenConsumptionRate")) {
-                        System.out.println(
-                                "Warning: Port " + port.getFullName() + 
-                                " has rate parameter that may change.");
-                        // The schedule depends on the rate parameter.
-                        if(!_rateVariables.contains(variable)) {
-                            variable.addValueListener(this);
-                            _rateVariables.add(variable);
+                        if(allowRateChanges) {
+                            // The schedule depends on the rate parameter.
+                            if(!_rateVariables.contains(variable)) {
+                                variable.addValueListener(this);
+                                _rateVariables.add(variable);
+                            }
+                        } else {
+                            throw new IllegalActionException(director,
+                                    "Port " + port.getFullName() + 
+                                    " has a rate parameter that may change." + 
+                                    " This is not allowed in SDF models " +
+                                    "that will be run through the code " +
+                                    "generator.  If you don't care about " +
+                                    "code generation, then you might " +
+                                    "consider setting the allowRateChanges " +
+                                    "parameter of the SDF director to false.");
                         }
                     }
                     Entity changeContext = 
@@ -382,18 +421,15 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                     if(!model.getFullName().startsWith(
                                changeContext.getFullName())) {
                         throw new IllegalActionException(
-                                "Rate parameter of port " + port.getFullName() 
-                                + " might change during execution of the model.");
-                    } else if(changeContext.getFullName().startsWith(
-                                      scheduleChangeContext.getFullName())) {
-                        // Save the change context;
-                        scheduleChangeContext = changeContext;
+                                "Rate parameter of port "
+                                + port.getFullName() 
+                                + " might change during iteration " 
+                                + "of the containing model.");
                     }
                 }
             }
         }
-         */
-
+        
         int vectorizationFactor = 1;
         if (director instanceof SDFDirector) {
             Token token =
@@ -516,13 +552,32 @@ public class SDFScheduler extends Scheduler implements ValueListener {
 
         // Set the rate parameters of any external ports.
         _saveContainerRates(externalRates);
+
+        // Declare the dependencies of rate parameters of external
+        // ports.
+        for(Iterator ports = model.portList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
+            if(!(port instanceof ParameterPort)) {
+                if(port.isInput()) {
+                    _declareDependency(analysis, port, "tokenConsumptionRate",
+                            schedulingParameters);
+                } 
+                if(port.isOutput()) {
+                    _declareDependency(analysis, port, "tokenProductionRate",
+                            schedulingParameters);
+                    _declareDependency(analysis, port, "tokenInitProduction",
+                            schedulingParameters);
+                }
+            }
+        }
                         
         // Set the schedule to be valid.
         setValid(true);
         _externalRates = externalRates;
         return result;
     }
-
+    
     /** Initialize the local data members of this object.
      */
     protected void _localMemberInitialize() {
@@ -806,6 +861,33 @@ public class SDFScheduler extends Scheduler implements ValueListener {
         return count;
     }
 
+    /** Add a DependencyDeclaration (with the name
+     * "_SDFRateDependencyDeclaration") to the variable with the given
+     * name in the given port that declares the variable is dependent
+     * on the given list of variables.  If a dependency declaration
+     * with that name already exists, then simply set its dependents
+     * list to the given list.
+     */
+    private void _declareDependency(ConstVariableModelAnalysis analysis,
+            Port port, String name, List dependents) 
+            throws IllegalActionException {
+        Variable variable = (Variable)_getRateVariable(port, name);
+        DependencyDeclaration declaration = (DependencyDeclaration)
+            variable.getAttribute(
+                    "_SDFRateDependencyDeclaration", 
+                    DependencyDeclaration.class);
+        if(declaration == null) {
+            try {
+                declaration = new DependencyDeclaration(variable, 
+                        "_SDFRateDependencyDeclaration");
+            } catch (NameDuplicationException ex) {
+                // Ignore... should not happen.
+            }
+        }
+        declaration.setDependents(dependents);
+        analysis.addDependencyDeclaration(declaration);
+    }
+
     /** Find the channel number of the given port that corresponds to the
      *  given receiver.  If the receiver is not contained within the port,
      *  throw an InternalErrorException.
@@ -896,11 +978,28 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                     + " allowed in SDF.");
         }
     }
+    
+    /** Get the Variable with the specified name in the given port, or
+     *  with the specified name preceded by an underscore.  If there
+     *  is no such variable, return null;
+     *  @param port The port.
+     *  @param name The name of the variable.
+     */
+    private static Variable _getRateVariable(
+            Port port, String name)
+            throws IllegalActionException {
+        Variable parameter = (Variable)port.getAttribute(name);
+        if (parameter == null) {
+            String altName = "_" + name;
+            parameter = (Variable)port.getAttribute(altName);
+        }
+    
+        return parameter;
+    }
 
-    /** Get the integer value stored in the Variable with the specified
-     *  name. If there is no such variable, then check for a variable
-     *  with the name preceded by an underscore.  If there is still no
-     *  such variable, then return the specified default.
+    /** Get the integer value stored in the Variable with the
+     *  specified name.  If there is still no such variable, then
+     *  return the specified default.
      *  @param port The port.
      *  @param name The name of the variable.
      *  @param defaultValue The default value of the variable.
@@ -909,13 +1008,9 @@ public class SDFScheduler extends Scheduler implements ValueListener {
     private static int _getRateVariableValue(
             Port port, String name, int defaultValue)
             throws IllegalActionException {
-        Variable parameter = (Variable)port.getAttribute(name);
+        Variable parameter = _getRateVariable(port, name);
         if (parameter == null) {
-            String altName = "_" + name;
-            parameter = (Variable)port.getAttribute(altName);
-            if (parameter == null) {
-                return defaultValue;
-            }
+            return defaultValue;
         }
         Token token = parameter.getToken();
   
@@ -1804,26 +1899,27 @@ public class SDFScheduler extends Scheduler implements ValueListener {
         container.requestChange(request);
     }
 
-    /** If the specified Variable does not exist, then create a variable
-     *  with the same name preceded by an underscore and set the value
-     *  of that variable to the specified value. The resulting variable
-     *  is not persistent and not editable, but will be visible to the user.
+    /** If a variable with the given name does not exist, then create
+     *  a variable with the given name and set the value of that
+     *  variable to the specified value. The resulting variable is not
+     *  persistent and not editable, but will be visible to the user.
      *  @param port The port.
      *  @param name Name of the variable.
      *  @param value The value.
      */
-    private static void _setIfNotDefined(Port port, String name, int value) {
+    private static void _setIfNotDefined(Port port, String name, int value) 
+            throws IllegalActionException {
         Variable rateParameter = (Variable)port.getAttribute(name);
         if (rateParameter == null) {
-            String altName = "_" + name;
-            rateParameter = (Variable)port.getAttribute(altName);
             try {
-                if (rateParameter == null) {
-                    rateParameter = new Variable(port, altName);
+                String altName = "_" + name;
+                rateParameter = (Variable)port.getAttribute(altName);
+                if(rateParameter == null) {
+                    rateParameter = new Parameter(port, altName);
                     rateParameter.setVisibility(Settable.NOT_EDITABLE);
                     rateParameter.setPersistent(false);
                 }
-                rateParameter.setToken(new IntToken(value));
+                rateParameter.setToken(new IntToken(value)); 
             } catch (KernelException ex) {
                 // Should not occur.
                 throw new InternalErrorException(ex.toString());

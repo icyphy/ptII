@@ -189,6 +189,19 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public Parameter allowDisconnectedGraphs;
 
+    /** A parameter representing whether dynamic rate changes are
+     *  permitted.  An SDF model may constructed such that the values
+     *  of rate parameters are modified during the execution of the
+     *  system.  If this parameter is false, then such models are
+     *  valid and this class dynamically computes a new schedule at
+     *  runtime.  If this parameter is true, then the SDF domain
+     *  performs a static check to disallow such models.  Note that in
+     *  order to generate code from an SDF model, this parameter must
+     *  be set to true.  The default value is a BooleanToken with the
+     *  value true.
+     */
+    public Parameter allowRateChanges;
+
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in postfire,
@@ -312,8 +325,6 @@ public class SDFDirector extends StaticSchedulingDirector {
                 _debug("Threshold = " + threshold);
             }
 
-            // This used to bypass the port and go directly to the
-            // receivers. Why?  EAL 7/25/02.
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
                 if (threshold > 0
                         && !inputPort.hasToken(channel, threshold)) {
@@ -344,7 +355,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-                
+               
         Scheduler scheduler = getScheduler();
         if (scheduler == null)
             throw new IllegalActionException("Attempted to initialize " +
@@ -511,6 +522,10 @@ public class SDFDirector extends StaticSchedulingDirector {
         allowDisconnectedGraphs = new Parameter(this,
                 "allowDisconnectedGraphs", new BooleanToken(false));
         allowDisconnectedGraphs.setTypeEquals(BaseType.BOOLEAN);
+
+        allowRateChanges = new Parameter(this,
+                "allowRateChanges", new BooleanToken(false));
+        allowRateChanges.setTypeEquals(BaseType.BOOLEAN);
 
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
