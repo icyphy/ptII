@@ -86,7 +86,7 @@ class PNinPN {
         //queue = (IORelation)myUniverse.connect(portin, portout, "QY");
 
 
-        portout =(IOPort)_redirect1.getPort("output");
+        portout = (IOPort)_redirect1.getPort("output");
         myUniverse.connect(inport2, portout);
         portin = (IOPort)_interleave.getPort("input");
         inner.connect(portin, inport2);
