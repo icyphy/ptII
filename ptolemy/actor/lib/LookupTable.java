@@ -49,6 +49,13 @@ Output to the <i>output</i> port the value in the array specified by the
 All ports are single ports.  The index must be an integer.  If the index is
 out of range, no token is output.
 
+<p>LookupTable is different from ArrayElement in that in
+ArrayElement, the array is read in as input, and the index is a parameter,
+In LookupTable, the array is a parameter, and the index is read
+in as an input.
+
+@see ArrayElement
+
 @author Paul Whitaker
 @version $Id$
 */
@@ -68,10 +75,10 @@ public class LookupTable extends Transformer {
         super(container, name);
 
         // Set parameters.
-        data = new Parameter(this, "index");
+        data = new Parameter(this, "data");
         data.setExpression("{1, 2, 4, 8, 16}");
 
-	// set type constraints.
+	// Set type constraints.
         input.setTypeEquals(BaseType.INT);
 	data.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 	ArrayType dataType = (ArrayType)data.getType();
@@ -82,7 +89,8 @@ public class LookupTable extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The data array.
+    /** The data array that we lookup elements in.
+     *  The initial default value is {1, 2, 4, 8, 16}.
      */
     public Parameter data;
 
