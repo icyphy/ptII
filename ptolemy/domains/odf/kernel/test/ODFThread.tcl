@@ -2,7 +2,7 @@
 #
 # @Author: John S. Davis II
 #
-# @Version: %W%	%G%
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
