@@ -77,7 +77,28 @@ public class Query extends JPanel {
         _entries.put(name, checkbox);
         // Add the listener last so that there is no notification
         // of the first value.
-        checkbox.addItemListener(new CheckBoxListener(name));
+        checkbox.addItemListener(new QueryItemListener(name));
+    }
+
+    /** Create a choice menu.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param values The list of possible choices.
+     *  @param defaultValue Default value (true for on).
+     */
+    public void addChoice(String name, String label,
+            String[] values, String defaultValue) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+        JComboBox combobox = new JComboBox(values);
+        combobox.setEditable(false);
+        combobox.setBackground(Color.white);
+        combobox.setSelectedItem(defaultValue);
+        _addPair(lbl, combobox);
+        _entries.put(name, combobox);
+        // Add the listener last so that there is no notification
+        // of the first value.
+        combobox.addItemListener(new QueryItemListener(name));
     }
 
     /** Create a simple one-line text display, a non-editable value that
@@ -221,8 +242,9 @@ public class Query extends JPanel {
     }
 
     /** Get the current value in the entry with the given name
-     *  and return as an integer.  If the entry is not a line or
-     *  a slider, then throw an exception.
+     *  and return as an integer.  If the entry is not a line,
+     *  choice, or slider, then throw an exception.
+     *  If it is a choice, then return the index of the selected choice.
      *  @return The value currently in the entry as an integer.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -231,7 +253,7 @@ public class Query extends JPanel {
      *   be converted to an integer.  This is a runtime exception, so it
      *   need not be declared explicitly.
      *  @exception IllegalArgumentException If the entry is not a
-     *   line or a slider.  This is a runtime exception, so it
+     *   choice, line, or slider.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
     public int intValue(String name)
@@ -246,6 +268,8 @@ public class Query extends JPanel {
             return (new Integer(((JTextField)result).getText())).intValue();
         } else if (result instanceof JSlider) {
             return (new Integer(((JSlider)result).getValue())).intValue();
+        } else if (result instanceof JComboBox) {
+            return ((JComboBox)result).getSelectedIndex();
         } else {
             throw new IllegalArgumentException("Item named \"" +
             name + "\" is not a text line or slider, and hence "
@@ -339,6 +363,8 @@ public class Query extends JPanel {
             }
         } else if (result instanceof JSlider) {
             return (new Integer(((JSlider)result).getValue())).toString();
+        } else if (result instanceof JComboBox) {
+            return (String)(((JComboBox)result).getSelectedItem());
         } else {
             throw new IllegalArgumentException("Query class cannot generate"
             + " a string representation for entries of type "
@@ -429,8 +455,8 @@ public class Query extends JPanel {
 
     /** Listener for "CheckBox" entries.
      */
-    class CheckBoxListener implements ItemListener {
-        public CheckBoxListener(String name) {
+    class QueryItemListener implements ItemListener {
+        public QueryItemListener(String name) {
             _name = name;
         }
 
