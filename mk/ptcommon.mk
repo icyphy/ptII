@@ -357,7 +357,7 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 	rm -rf $(PTJAR_TMPDIR)
 
 
-# Occaisionally, we need to build a second jar file that includes
+# Occasionally, we need to build a second jar file that includes
 # a subset of all of the subjars included in PTCLASSALLJAR above.
 # ptolemy/ptsupport.jar is an example
 $(PTAUXALLJAR): $(PTAUXALLJARS)
