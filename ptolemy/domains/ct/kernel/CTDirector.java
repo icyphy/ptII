@@ -639,7 +639,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             if (_debugging) _debug("Fire output actor: "+
-                ((Nameable)actor).getName());
+                    ((Nameable)actor).getName());
             actor.fire();
         }
     }

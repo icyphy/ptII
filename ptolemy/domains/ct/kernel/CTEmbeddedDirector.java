@@ -98,8 +98,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public CTEmbeddedDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-      super(container, name);
-      //addDebugListener(new StreamListener());
+        super(container, name);
+        //addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -280,10 +280,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void preinitialize() throws IllegalActionException {
         if(!(getContainer() instanceof CTStepSizeControlActor)) {
             throw new IllegalActionException(this, "can only be contained by "
-                + "a composite actor that implements "
-                + "the CTStepSizeControlActor "
-                + "interface, for example, the continuous "
-                + "time composite actor or the modal model.");
+                    + "a composite actor that implements "
+                    + "the CTStepSizeControlActor "
+                    + "interface, for example, the continuous "
+                    + "time composite actor or the modal model.");
         }
         super.preinitialize();
     }

@@ -137,14 +137,14 @@ public class CTReceiver extends Mailbox {
                 return super.get();
             } else {
                 throw new InvalidStateException( getContainer(),
-                    "get() is called before the signal type of this port has"
-                    + " been set. This may indicate an error in CTScheduler.");
+                        "get() is called before the signal type of this port has"
+                        + " been set. This may indicate an error in CTScheduler.");
             }
         } else {
             throw new NoTokenException(getContainer(),
-                "Attempt to get data from an empty discrete CTReceiver.\n"
-                + "Are you trying to use a discrete signal "
-                + "to drive a continuous port?\n");
+                    "Attempt to get data from an empty discrete CTReceiver.\n"
+                    + "Are you trying to use a discrete signal "
+                    + "to drive a continuous port?\n");
         }
 
     }
@@ -153,7 +153,7 @@ public class CTReceiver extends Mailbox {
      *  @return The signal type of the receiver.
      */
     public SignalType getSignalType() {
-      return _type;
+        return _type;
     }
 
 
