@@ -9,9 +9,9 @@ package ptolemy.domains.ct.demo.Corba.util;
 */
 
 
-/* A CORBA compatible interface that implements the execution 
+/* A CORBA compatible interface that implements the execution
 	 * methods of Ptolemy II.
 	 */
-public interface CorbaActor extends CorbaActorOperations, org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity 
+public interface CorbaActor extends CorbaActorOperations, org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity
 {
 } // interface CorbaActor

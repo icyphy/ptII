@@ -210,7 +210,7 @@ public class PolyCylinder3D extends GRShadedShape {
     private float[] _getPolygon() throws IllegalActionException {
         DoubleMatrixToken matrixToken =
                                    ((DoubleMatrixToken) polygon.getToken());
-                                   
+
         int numberOfElements = matrixToken.getColumnCount()/2;
         float[] data = new float[numberOfElements*18];
         int i=0;

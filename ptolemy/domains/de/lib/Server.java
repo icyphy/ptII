@@ -122,7 +122,7 @@ public class Server extends DETransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serviceTime) {
-            double time = 
+            double time =
                     ((DoubleToken)(serviceTime.getToken())).doubleValue();
             if (time < 0.0) {
                 throw new IllegalActionException(this,

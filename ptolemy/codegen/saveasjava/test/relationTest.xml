@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RelationTest" class="ptolemy.actor.TypedCompositeActor">
     <doc>A simple demo to test relation
-	connectivity handling in the save as Java 
+	connectivity handling in the save as Java
          implementation</doc>
     <property name="SDF0" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="500">

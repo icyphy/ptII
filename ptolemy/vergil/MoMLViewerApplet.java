@@ -114,7 +114,7 @@ then no visual elements are placed.
 */
 public class MoMLViewerApplet extends MoMLApplet {
 
-    // FIXME: this is a total hack as a placeholder for a general 
+    // FIXME: this is a total hack as a placeholder for a general
     // implementation going through configurations.
 
     // FIXME: Perhaps the context menu
@@ -185,7 +185,7 @@ public class MoMLViewerApplet extends MoMLApplet {
                     new ObjectContextMenuFactory(controller));
   	    controller.getLinkController().setMenuFactory(
                     new ObjectContextMenuFactory(controller));
-      
+
             pane = new GraphPane(controller, model);
         }
         JGraph modelViewer = new JGraph(pane);
@@ -225,7 +225,7 @@ public class MoMLViewerApplet extends MoMLApplet {
         if (panelFlag != null
                 && panelFlag.trim().toLowerCase().equals("true")) {
             // FIXME: Create a separator?
-            super._createView();    
+            super._createView();
         }
     }
 
@@ -257,7 +257,7 @@ public class MoMLViewerApplet extends MoMLApplet {
             } catch (IOException ex) {
                 try {
                     MessageHandler.warning(
-                            "Could not find any documentation for\n" + 
+                            "Could not find any documentation for\n" +
                             className);
                 } catch (CancelException exception) {}
             }

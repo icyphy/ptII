@@ -98,7 +98,7 @@ public class TimedScope extends TimedPlotter {
     ////                         public methods                    ////
 
     /** Notify this that an attribute has changed.  If either parameter
-     *  is changed, then this actor updates the configuration of the 
+     *  is changed, then this actor updates the configuration of the
      *  visible plot.
      *  @exception IllegalActionException If the expression of the
      *  attribute cannot be parsed or cannot be evaluated.
@@ -117,7 +117,7 @@ public class TimedScope extends TimedPlotter {
         }
     }
 
-    /** Initialize this actor.  This method configures the plotter 
+    /** Initialize this actor.  This method configures the plotter
      *  using the current parameter values.
      *  @exception IllegalActionException If the parent class throws it.
      */
@@ -137,7 +137,7 @@ public class TimedScope extends TimedPlotter {
 
     /** Call the base class postfire() method, then yield this
      *  thread so that the event thread gets a chance.  This is necessary,
-     *  because otherwise the swing thread may be starved and accumulate a 
+     *  because otherwise the swing thread may be starved and accumulate a
      *  large number of points waiting to be plotted.
      *  @exception IllegalActionException If there is no director,
      *   or if the base class throws it.

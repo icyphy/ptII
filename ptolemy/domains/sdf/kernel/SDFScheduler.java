@@ -128,7 +128,7 @@ public class SDFScheduler extends Scheduler {
     }
 
     /** Get the number of tokens that are consumed
-     *  on the given port.  If the actor is not an 
+     *  on the given port.  If the actor is not an
      *  input port, then return 0.  Otherwise, return the value of
      *  the port's "tokenConsumptionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
@@ -139,7 +139,7 @@ public class SDFScheduler extends Scheduler {
     public static int getTokenConsumptionRate(IOPort p)
             throws IllegalActionException {
         if(p.isInput()) {
-            Parameter param = 
+            Parameter param =
                 (Parameter)p.getAttribute("tokenConsumptionRate");
             if(param == null) {
                 return 1;
@@ -148,18 +148,18 @@ public class SDFScheduler extends Scheduler {
                 if(token instanceof IntToken) {
                     return ((IntToken)token).intValue();
                 } else {
-                    throw new IllegalActionException("Parameter " 
+                    throw new IllegalActionException("Parameter "
                             + param.getFullName() + " was expected "
                             + "to contain an IntToken, but instead "
                             + "contained a " + token.getType() + ".");
                 }
             }
-        } else 
+        } else
             return 0;
     }
 
     /** Get the number of tokens that are produced on the given port
-     *  during initialization.  If the actor is not an 
+     *  during initialization.  If the actor is not an
      *  output port, then return 0.  Otherwise, return the value of
      *  the port's "tokenInitProduction" Parameter.   If the parameter
      *  does not exist, then assume the actor is zero-delay and return
@@ -170,7 +170,7 @@ public class SDFScheduler extends Scheduler {
     public static int getTokenInitProduction(IOPort p)
             throws IllegalActionException {
         if(p.isOutput()) {
-            Parameter param = 
+            Parameter param =
                 (Parameter)p.getAttribute("tokenInitProduction");
             if(param == null) {
                 return 0;
@@ -179,29 +179,29 @@ public class SDFScheduler extends Scheduler {
                 if(token instanceof IntToken) {
                     return ((IntToken)token).intValue();
                 } else {
-                    throw new IllegalActionException("Parameter " 
+                    throw new IllegalActionException("Parameter "
                             + param.getFullName() + " was expected "
                             + "to contain an IntToken, but instead "
                             + "contained a " + token.getType() + ".");
                 }
             }
-        } else 
+        } else
             return 0;
     }
 
     /** Get the number of tokens that are produced
-     *  on the given port.  If the actor is not an 
+     *  on the given port.  If the actor is not an
      *  output port, then return 0.  Otherwise, return the value of
      *  the port's "tokenProductionRate" Parameter.  If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
      *  @exception IllegalActionException If the tokenProductionRate
-     *  parameter has an invalid expression. 
+     *  parameter has an invalid expression.
      */
     public static int getTokenProductionRate(IOPort p)
             throws IllegalActionException {
         if(p.isOutput()) {
-            Parameter param = 
+            Parameter param =
                 (Parameter)p.getAttribute("tokenProductionRate");
             if(param == null) {
                 return 1;
@@ -210,13 +210,13 @@ public class SDFScheduler extends Scheduler {
                 if(token instanceof IntToken) {
                     return ((IntToken)token).intValue();
                 } else {
-                    throw new IllegalActionException("Parameter " 
+                    throw new IllegalActionException("Parameter "
                             + param.getFullName() + " was expected "
                             + "to contain an IntToken, but instead "
                             + "contained a " + token.getType() + ".");
                 }
             }
-        } else 
+        } else
             return 0;
     }
 
@@ -227,7 +227,7 @@ public class SDFScheduler extends Scheduler {
     public static void setTokenConsumptionRate(IOPort port, int rate)
             throws IllegalActionException {
         if(rate < 0) throw new IllegalActionException(
-                "tokenConsumptionRate cannot be set to " + rate 
+                "tokenConsumptionRate cannot be set to " + rate
                 + " which is negative");
         Parameter param = (Parameter)
             port.getAttribute("tokenConsumptionRate");
@@ -248,15 +248,15 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-    /** Set the tokenInitProduction parameter of the given port to 
+    /** Set the tokenInitProduction parameter of the given port to
      *  the given rate.  The port is assumedly an output port.
      *  @exception IllegalActionException If the production is negative.
      */
     public static void setTokenInitProduction(IOPort port, int rate)
             throws IllegalActionException {
         if(rate < 0) throw new IllegalActionException(
-                "tokenInitProduction cannot be set to " + rate 
-                + " which is negative"); 
+                "tokenInitProduction cannot be set to " + rate
+                + " which is negative");
         Parameter param = (Parameter)
             port.getAttribute("tokenInitProduction");
         try {
@@ -276,15 +276,15 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-    /** Set the tokenProductionRate parameter of the given port 
+    /** Set the tokenProductionRate parameter of the given port
      *  to the given rate.  The port is assumedly an output port.
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenProductionRate(IOPort port, int rate)
             throws IllegalActionException {
         if(rate < 0) throw new IllegalActionException(
-                "tokenInitProduction cannot be set to " + rate 
-                + " which is negative."); 
+                "tokenInitProduction cannot be set to " + rate
+                + " which is negative.");
         Parameter param = (Parameter)
             port.getAttribute("tokenProductionRate");
         try {
@@ -383,7 +383,7 @@ public class SDFScheduler extends Scheduler {
             firings = _solveBalanceEquations(AllActors);
         } catch (IllegalActionException ex) {
             throw new NotSchedulableException(this, "Check expression of "
-                    + "rate and initial production parameters:\n" 
+                    + "rate and initial production parameters:\n"
                     + ex.getMessage() + ".");
         }
         _normalizeFirings(firings);
@@ -1033,7 +1033,7 @@ public class SDFScheduler extends Scheduler {
             while(connectedports.hasNext()) {
                 IOPort cport = (IOPort) connectedports.next();
                 // FIXME: This connected port might also be an external port,
-                // in which case the code below won't work and 
+                // in which case the code below won't work and
                 // NullPointerException is thrown.
                 if(cport.isInput()) {
                     connectedInputPortList.add(cport);

@@ -345,7 +345,7 @@ public final class ASTReflect {
 
             // Ok, try the SearchPath
             // FIXME: This will not work if a jar file or zip file
-            // is in the CLASSPATH. 
+            // is in the CLASSPATH.
             for (int i = 0; i < SearchPath.NAMED_PATH.size(); i++) {
                 String candidate = (String) SearchPath.NAMED_PATH.get(i);
                 System.out.println("ASTReflect.lookupClass: SearchPath: '"

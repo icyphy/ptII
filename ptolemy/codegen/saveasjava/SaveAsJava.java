@@ -41,7 +41,7 @@ import java.util.*;
 This class constructs standalone Java specifications of Ptolemy II
 models.
 @author Shuvra S. Bhattacharyya and Edward A. Lee
-@version $Id$ 
+@version $Id$
 */
 
 class SaveAsJava {
@@ -50,22 +50,22 @@ class SaveAsJava {
     ////                         public methods                    ////
 
     /** Return the java code associated with a top level Ptolemy II
-     *  object and all of its descendants. 
+     *  object and all of its descendants.
      *  @param toplevel The root object of the topology to be saved.
      *  @return The generated java code.
      */
     public String generate(NamedObj toplevel) throws IllegalActionException {
 
         // Data associated with a given class under consideration
-        String className = toplevel.getClass().getName();  
+        String className = toplevel.getClass().getName();
 
-        // String to hold the generated Java code 
+        // String to hold the generated Java code
         String code = new String();
 
         // String to hold the import declarations for the generated code
         String importCode = new String();
 
-        // More specific representation of the root topology object 
+        // More specific representation of the root topology object
         CompositeEntity compositeModel;
 
         // Initialize the list of classes to import in the generated
@@ -74,7 +74,7 @@ class SaveAsJava {
 
         // Check that the argument is a composite entity.
         if (!(toplevel instanceof CompositeEntity)) {
-            throw new IllegalActionException(toplevel, 
+            throw new IllegalActionException(toplevel,
             "SavaAsJava feature only operates on composite entities");
         }
         compositeModel = (CompositeEntity)toplevel;
@@ -86,9 +86,9 @@ class SaveAsJava {
                 + " extends "
                 + _getClassName(compositeModel)
                 + " {\n\n" + _indent(1)
-                + "public " + sanitizedName 
+                + "public " + sanitizedName
                 + "(Workspace w) throws"
-                + " IllegalActionException {\n" + _indent(2) 
+                + " IllegalActionException {\n" + _indent(2)
                 + "super(w);\n\n" + _indent(2) + "try {\n";
 
         // When exporting MoML, we want to identify the class
@@ -106,16 +106,16 @@ class SaveAsJava {
         code += _generateComponents(compositeModel);
 
         // Generate trailer code for the composite actor constructor
-        code +=  
+        code +=
         _indent(2) + "} catch (NameDuplicationException e) {\n" +
         _indent(3) + "throw new RuntimeException(e.toString());\n" +
         _indent(2) + "}\n" +
         _indent(1) + "}\n" +
         "}\n";
-         
+
         // Generate statements for importing classes.
         _insertIfUnique("ptolemy.kernel.util.Workspace", _importList);
-        _insertIfUnique("ptolemy.kernel.util.IllegalActionException", 
+        _insertIfUnique("ptolemy.kernel.util.IllegalActionException",
                         _importList);
         _insertIfUnique("ptolemy.kernel.util.NameDuplicationException",
                         _importList);
@@ -125,13 +125,13 @@ class SaveAsJava {
                 String p = (String)(iter.next());
                 importCode += "import " + p + ";\n";
             }
-            code = importCode + "\n" + code; 
+            code = importCode + "\n" + code;
         } catch (Exception ex) {
            throw new IllegalActionException(ex.getMessage()
-           + "Exception raised while creating the import list '" 
+           + "Exception raised while creating the import list '"
            + importCode + "'.\n");
         }
-  
+
         return code;
     }
 
@@ -162,7 +162,7 @@ class SaveAsJava {
         // of an attribute in the generated code.
         String nameAsContainer;
         if (object.getContainer() == null) nameAsContainer = "this";
-        else nameAsContainer = _name(object); 
+        else nameAsContainer = _name(object);
 
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
@@ -200,7 +200,7 @@ class SaveAsJava {
                         result.append("\");\n");
                     }
                 }
-                // Recursively generate any nested attributes 
+                // Recursively generate any nested attributes
                 result.append(_generateAttributes(attribute));
             }
         }
@@ -209,16 +209,16 @@ class SaveAsJava {
 
     /** Generate Ptolemy II Java code to instantiate a component,
      *  and for a composite component, the code to instantiate and
-     *  connect all components that are nested within the component. 
+     *  connect all components that are nested within the component.
      *
      *  @param model The component for which code is to be generated.
      *  @return The generated Ptolemy II Java code for implementing
      *   the component.
      */
-    protected String _generateComponents(ComponentEntity model) 
+    protected String _generateComponents(ComponentEntity model)
             throws IllegalActionException {
         // FIXME: Use StringBuffer, not String.
-        String code = new String(); 
+        String code = new String();
         String className = _getClassName(model);
         String sanitizedName = _name(model);
         CompositeEntity container;
@@ -255,7 +255,7 @@ class SaveAsJava {
                      .entityList().iterator();
              while (components.hasNext()) {
                  code += _generateComponents((ComponentEntity)
-                         (components.next())); 
+                         (components.next()));
              }
 
              // Instantiate the connections between actors
@@ -283,9 +283,9 @@ class SaveAsJava {
                              + _name(port2)
                              + ");\n";
                  }
-                 // Explicitly instantiate the relation, 
+                 // Explicitly instantiate the relation,
                  // generate code to set relevant attributes of the
-                 // relation, and generate 
+                 // relation, and generate
                  // a link() call for each port associated with the relation.
                  else {
                      String relationClassName = _getClassName(relation);
@@ -307,21 +307,21 @@ class SaveAsJava {
                                  + _name(p)
                                  + ".link("
                                  + _name(relation)
-                                 + ");\n"; 
+                                 + ");\n";
                      }
                  }
              }
-           
+
         }
-    
+
         return code;
-       
+
     }
 
     /** Generate Java code that defines ports, if necessary, and
      *  that sets up the attributes of each port.
      *  Ports are defined if they are not public members of the specified
-     *  component. 
+     *  component.
      *  @param component The component with ports.
      *  @return The Java code defining ports for the specified
      *   component.
@@ -334,13 +334,13 @@ class SaveAsJava {
         String nameAsContainer;
 
         if (component.getContainer() == null) nameAsContainer = "this";
-        else nameAsContainer = _name(component); 
+        else nameAsContainer = _name(component);
 
         while (ports.hasNext()) {
             Port port = (Port)ports.next();
             // Create an instance of the port if there
             // is no matching public member.
-            if (!_isPublicMember(port, component)) { 
+            if (!_isPublicMember(port, component)) {
                 // Port does not appear as a public member.
                 String portClass = _getClassName(port);
                 String portName = _name(port);
@@ -383,7 +383,7 @@ class SaveAsJava {
 
     //  Insert the specified name into the specified list
     //  if the name does not already exist in the list.
-    private void _insertIfUnique(String name, LinkedList list) 
+    private void _insertIfUnique(String name, LinkedList list)
       throws IndexOutOfBoundsException {
        if (!list.contains(name)) {
          list.add(0, name);
@@ -395,14 +395,14 @@ class SaveAsJava {
     // level is four characters wide.
     private String _indent(int level) {
         String indent = new String();
-        int i; 
+        int i;
         for (i = 0; i < level; i++) {
 	    indent += "    ";
 	}
         return indent;
     }
 
-    // Return the class name associated with a named object. Also, 
+    // Return the class name associated with a named object. Also,
     // if it does not already exist in the list of classes to be
     // imported in the generated Java code, insert the class name
     // (fully qualified) into this list.
@@ -432,7 +432,7 @@ class SaveAsJava {
         } catch (NoSuchFieldException ex) {
             return false;
         }
-        return true; 
+        return true;
     }
 
     // Sanitize the name of the specified object so that it is a

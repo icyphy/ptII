@@ -81,7 +81,7 @@ public class PortConfigurer extends Query implements QueryListener {
 	Iterator ports = _object.portList().iterator();
         while (ports.hasNext()) {
             Object candidate = ports.next();
-            if (candidate instanceof IOPort) {            
+            if (candidate instanceof IOPort) {
                 IOPort port = (IOPort)candidate;
                 Set optionsDefault = new HashSet();
                 if (port.isInput()) optionsDefault.add("input");

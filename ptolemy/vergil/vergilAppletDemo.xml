@@ -39,7 +39,7 @@ signal frequency. The sample rate is assumed to be 8kHz.</text>
             <configure>
            <svg>
            <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The blocks with red outlines are hierarchical.
-These generate sinusoids, one for the 
+These generate sinusoids, one for the
 signal and the other for the carrier.</text>
            </svg>
            </configure>
@@ -66,7 +66,7 @@ Right click and select "Edit Parameters" to see the expression.</text>
            <text x="20" style="font-size:14; font-family:sanserif; fill:red" y="20">Note that this applet does not have the full set of commands that are
 available in the Vergil application.  For example, it is not possible to
 browse the hierarchy of the model.  We anticipate enriching this so that
-the full Vergil application (given Applet security constraints) 
+the full Vergil application (given Applet security constraints)
 is accessible from within an Applet.  To access all the functionality of
 Vergil, add $PTII/bin to your path and run vergil from the command line.
 Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>

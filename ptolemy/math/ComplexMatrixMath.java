@@ -367,7 +367,7 @@ public class ComplexMatrixMath {
      *  first matrix is divided by the corresponding element of the
      *  second matrix.
      *  If the two matrices are not the same size, throw an
-     *  IllegalArgumentException. 
+     *  IllegalArgumentException.
      */
     public static final Complex[][] divideElements(final Complex[][] matrix1,
             final Complex[][] matrix2) {

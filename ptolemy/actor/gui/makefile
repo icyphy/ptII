@@ -154,9 +154,9 @@ install: jclass jars
 
 demo: all demo_ptolemy demo_vergil demo_caa
 demo_ptolemy: all
-	$(ROOT)/bin/ptolemy $(ROOT)/ptolemy/moml/demo/modulation.xml 
+	$(ROOT)/bin/ptolemy $(ROOT)/ptolemy/moml/demo/modulation.xml
 demo_vergil: all
-	$(ROOT)/bin/vergil $(ROOT)/ptolemy/moml/demo/modulation.xml 
+	$(ROOT)/bin/vergil $(ROOT)/ptolemy/moml/demo/modulation.xml
 
 # Demonstrate CompositeActorApplication
 demo_caa: all

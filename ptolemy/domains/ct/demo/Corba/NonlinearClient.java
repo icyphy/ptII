@@ -58,7 +58,7 @@ public class NonlinearClient extends TypedCompositeActor {
 
     public NonlinearClient(Workspace workspace)
 	    throws IllegalActionException, NameDuplicationException {
-    
+
         super(workspace);
         setName( "NonlinearSystem");
 
@@ -69,7 +69,7 @@ public class NonlinearClient extends TypedCompositeActor {
         stopTime = new Parameter(this, "stopTime",
                 new DoubleToken(6.0));
 
-        CTMultiSolverDirector director = 
+        CTMultiSolverDirector director =
             new CTMultiSolverDirector(this, "CTMultiSolverDirector");
 	setDirector(director);
         director.STAT = true;
@@ -82,7 +82,7 @@ public class NonlinearClient extends TypedCompositeActor {
         Scale gain1 = new Scale(this, "Gain1");
         Scale gain2 = new Scale(this, "Gain2");
         Scale gain3 = new Scale(this, "Gain3");
-        CorbaActorClient client = 
+        CorbaActorClient client =
             new CorbaActorClient(this, "NonliearClient");
         //client.addDebugListener(new StreamListener());
         client.ORBInitProperties.setExpression("ORBInitProperties");
@@ -109,13 +109,13 @@ public class NonlinearClient extends TypedCompositeActor {
         IORelation r6 = (IORelation)connect(gain2.output, add1.plus, "R6");
         IORelation r7 = (IORelation)connect(gain3.output, add1.plus, "R7");
         myplot.input.link(r1);
-        
+
         director.startTime.setToken(new DoubleToken(0.0));
-        
+
         director.initStepSize.setToken(new DoubleToken(0.0001));
-        
+
         director.minStepSize.setToken(new DoubleToken(1e-6));
-        
+
         sqwv.period.setToken(new DoubleToken(4));
         double offsets[][] = {{0.0, 2.0}};
         sqwv.offsets.setToken(new DoubleMatrixToken(offsets));
@@ -123,16 +123,16 @@ public class NonlinearClient extends TypedCompositeActor {
         sqwv.values.setToken(new DoubleMatrixToken(values));
 
         gain1.factor.setToken(new DoubleToken(500.0));
-        
+
         gain2.factor.setToken(new DoubleToken(-10.0));
-        
+
         gain3.factor.setToken(new DoubleToken(-1000.0));
-        
+
     }
 
     /////////////////////////////////////////////////////////////////
     ////                           parameters                    ////
-    
+
     public Parameter ORBInitProperties;
 
     public Parameter remoteActorName;

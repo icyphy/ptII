@@ -105,7 +105,7 @@ public class ExplicitRK23Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 4 to indicate that four auxiliary variables are 
+    /** Return 4 to indicate that four auxiliary variables are
      *  needed by this solver.
      *  @return 4.
      */
@@ -217,7 +217,7 @@ public class ExplicitRK23Solver extends ODESolver {
         double tolerance = dir.getErrorTolerance();
         double newh = 5.0*h;
         if(error > dir.getValueResolution()) {
-            newh = h* 
+            newh = h*
                 Math.max(0.5, 0.8*Math.pow((tolerance/error), 1.0/_order));
         }
         _debug("integrator: " + integrator.getName() +
@@ -225,7 +225,7 @@ public class ExplicitRK23Solver extends ODESolver {
         return newh;
     }
 
-    /** Advance the current time by the current step size, and 
+    /** Advance the current time by the current step size, and
      *  resolve the state of the integrators at that time.
      *  This method always returns true since this class implements
      *  an explicit method. xIt gets the state transition

@@ -116,7 +116,7 @@ public class ImageContrast extends Transformer {
                 frameElement = frame[i][j];
                 if ((frameElement < 0) || (frameElement > 255 )) {
                     throw new IllegalActionException("ImageContrast:"
-                            + "input image pixel contains at" 
+                            + "input image pixel contains at"
                             + j + "," + i
                             + "with value" + frameElement
                             + "that is out of bounds."

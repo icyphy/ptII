@@ -104,7 +104,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         return 2;
     }
 
-    /** Return 0 to indicate that this solver needs no 
+    /** Return 0 to indicate that this solver needs no
      *  history information.
      *  @return 0.
      */
@@ -127,7 +127,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
         // Tf there's no enough history, use the derivative resolver
         // to start the method.
-            
+
         double f1 = integrator.getDerivative();
         double h = dir.getCurrentStepSize();
         double tentativeState;
@@ -140,7 +140,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
             //correction
             double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
             tentativeState = integrator.getState() + (h*(f1+f2))/(double)2.0;
-            double error = 
+            double error =
                 Math.abs(tentativeState-integrator.getTentativeState());
             if( !(error < dir.getValueResolution())) {
                 _voteForConvergence(false);
@@ -152,7 +152,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
     }
 
     /** Perform the isThisStepAccurate() test for the integrator under
-     *  this solver. This method calculates the tentative state 
+     *  this solver. This method calculates the tentative state
      *  and test whether the local
      *  truncation error (an estimation of the local error) is less
      *  than the error tolerance
@@ -163,7 +163,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         CTDirector dir = (CTDirector)getContainer();
         double tolerance = dir.getErrorTolerance();
         double[] k = integrator.getAuxVariables();
-        double localError = 
+        double localError =
             0.1*Math.abs(integrator.getTentativeState() - k[0]);
         integrator.setAuxVariables(1, localError);
         _debug("Integrator: "+ integrator.getName() +
@@ -196,7 +196,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         double tolerance = dir.getErrorTolerance();
         double newh = h;
         if(localError/tolerance < 0.1) {
-            newh = 
+            newh =
                 h* Math.min(2, Math.pow((3.0*tolerance/localError), 1.0/3.0));
         }
         _debug("integrator: " + integrator.getName() +

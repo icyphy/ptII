@@ -65,7 +65,7 @@ public interface CTTransparentDirector {
      */
     public double predictedStepSize();
 
-    /** Implementations of this method should return 
+    /** Implementations of this method should return
      *  the refined step size if this step is not accurate.
      *  @return The refined step size.
      */

@@ -13,7 +13,7 @@ Here are some tips for running the stock price demo
 4) You can start as many servers and readers as you like.
    But please don't start servers with the same stock name.
 
-5) Don't forget to run 
+5) Don't forget to run
    $PTII/ptolemy/actor/lib/jspaces/util/cleanspace
    between two runs of the demo.
 

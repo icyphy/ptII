@@ -360,7 +360,7 @@ public class MoMLApplication {
                 if (arg.trim().startsWith("-")) {
                     if(i >= args.length - 1) {
                        throw new IllegalActionException("Cannot set " +
-                               "parameter " + arg + " when no value is " + 
+                               "parameter " + arg + " when no value is " +
                                "given.");
                     }
                     // Save in case this is a parameter name and value.

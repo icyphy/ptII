@@ -202,7 +202,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                     ptolemy.actor.corba.util.CorbaActorHelper.narrow(
                             ncRef.resolve(path));
                 if(_remoteActor == null) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             " can not find the remote actor.");
                 }
             } catch (UserException ex) {

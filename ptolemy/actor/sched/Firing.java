@@ -46,7 +46,7 @@ import java.util.ConcurrentModificationException;
 This class is a schedule element that contains a reference to an actor.
 This class is used together with Schedule to construct a static schedule.
 This class contains a reference to an actor, and is used to represent an
-actor term of a schedule loop. The setActor() method is used to create 
+actor term of a schedule loop. The setActor() method is used to create
 the reference to an actor. The getActor() method will return a reference
 to this actor.
 
@@ -147,7 +147,7 @@ public class Firing extends ScheduleElement {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
- 
+
     /** An adapter class for iterating over the elements of this
      *  schedule. An exception is thrown if the schedule structure
      *  changes while this iterator is active.

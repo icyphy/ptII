@@ -85,7 +85,7 @@ public class ResetRefinement extends Action implements CommitAction {
      *  initialize() method. An
      *  exception is thrown if the destination state has no refinement.
      *  @exception IllegalActionException If the destination state has
-     *   no refinement, or if thrown by the preinitialize() and the 
+     *   no refinement, or if thrown by the preinitialize() and the
      *   initialize() method of the refinement.
      */
     public void execute() throws IllegalActionException {

@@ -370,7 +370,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	SelectionModel model = controller.getSelectionModel();
 	GraphModel graphModel = controller.getGraphModel();
 	Object selection[] = model.getSelectionAsArray();
-        // A set, because some objects may represent the same 
+        // A set, because some objects may represent the same
         // ptolemy object.
         HashSet namedObjSet = new HashSet();
 	HashSet nodeSet = new HashSet();
@@ -390,7 +390,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    if(selection[i] instanceof Figure) {
 		Object userObject = ((Figure)selection[i]).getUserObject();
                 if(graphModel.isEdge(userObject)) {
-                    // Check to see if the head and tail are both being 
+                    // Check to see if the head and tail are both being
                     // copied.  Only if so, do we actually take the edge.
                     Object head = graphModel.getHead(userObject);
                     Object tail = graphModel.getTail(userObject);
@@ -739,7 +739,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    }
 	}
     }
-            
+
     private class SaveInLibraryAction extends AbstractAction {
 	public SaveInLibraryAction() {
 	    super("Save In Library");
@@ -768,7 +768,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
     }
 
-// 'Edit Icon' pop up menu not shipped with PtII1.0.  
+// 'Edit Icon' pop up menu not shipped with PtII1.0.
 // See also ptolemy/vergil/ptolemy/kernel/KernelGraphFrame.java
 //     public class EditIconAction extends FigureAction {
 // 	public EditIconAction() {
@@ -910,7 +910,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    }
 	}
     };
-        
+
     // A layout algorithm for laying out ptolemy graphs.  Since our edges
     // are undirected, this layout algorithm turns them into directed edges
     // aimed consistently. i.e. An edge should always be "out" of an
@@ -1070,7 +1070,7 @@ public abstract class GraphFrame extends PtolemyFrame
  	    }
 	}
     }
-        
+
     private class DeletionListener implements ActionListener {
 	/**
 	 * Delete any nodes or edges from the graph that are currently
@@ -1096,8 +1096,8 @@ public abstract class GraphFrame extends PtolemyFrame
                     userObjects[i] = ((Figure)selection[i]).getUserObject();
                     model.removeSelection(selection[i]);
                 }
-                
-                // Remove all the edges first, 
+
+                // Remove all the edges first,
                 // since if we remove the nodes first,
                 // then removing the nodes might remove some of the edges.
                 for(int i = 0; i < userObjects.length; i++) {
@@ -1115,8 +1115,8 @@ public abstract class GraphFrame extends PtolemyFrame
             } finally {
                 graphModel.setDispatchEnabled(true);
                 graphModel.dispatchGraphEvent(new GraphEvent(
-                        this, 
-                        GraphEvent.STRUCTURE_CHANGED, 
+                        this,
+                        GraphEvent.STRUCTURE_CHANGED,
                         graphModel.getRoot()));
             }
 	}

@@ -67,7 +67,7 @@
         <?moml
           <group>
     <!-- Blank composite actor. -->
-    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/> 
+    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
     <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
@@ -76,7 +76,7 @@
             </entity>
           </configure>
         </property>
-    </entity> 
+    </entity>
           </group>
         ?>
       </configure>

@@ -116,14 +116,14 @@ public class ThresholdMonitor extends TypedAtomicActor
      *  @exception IllegalActionException If there is no token in the
      *  parameter.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == thresholdCenter || attribute == thresholdWidth) {
-            _thCenter = 
+            _thCenter =
                 ((DoubleToken)thresholdCenter.getToken()).doubleValue();
             _thWidth = Math.abs(
                     ((DoubleToken)thresholdWidth.getToken()).doubleValue());
-            
+
             _lowerBound = _thCenter - _thWidth/(double)2.0;
             _upperBound = _thCenter + _thWidth/(double)2.0;
         } else {

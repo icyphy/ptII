@@ -234,7 +234,7 @@ public class ViewScreen extends GRActor implements Placeable {
         simpleU.addBranchGraph(lightRoot);
     }
 
-    
+
     public void addChild(Node node) {
         _userTransformation.addChild(node);
     }

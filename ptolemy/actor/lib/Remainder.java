@@ -52,11 +52,11 @@ is the mathematical integer closest to the exact mathematical value
 of the quotient f1/f2, and if two mathematical integers are equally
 close to f1/f2, then n is the integer that is even. If the
 remainder is zero, its sign is the same as the sign of the first
-argument. Special cases: 
+argument. Special cases:
 <ul>
 <li> If either argument is NaN, or the first argument is infinite,
      or the second argument is positive zero or negative zero,
-     then the result is NaN. 
+     then the result is NaN.
 <li> If the first argument is finite and the second argument is
      infinite, then the result is the same as the first argument."
 </ul>

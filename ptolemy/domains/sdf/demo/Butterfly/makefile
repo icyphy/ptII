@@ -82,7 +82,7 @@ demo_applet: $(PTCLASSJAR)
 demo_application: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)" \
 	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
-		-class ptolemy.domains.sdf.demo.Butterfly.Butterfly 
+		-class ptolemy.domains.sdf.demo.Butterfly.Butterfly
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Butterfly.xml

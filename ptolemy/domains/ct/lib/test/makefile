@@ -48,13 +48,13 @@ TCL_SRCS = \
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = 
+JSIMPLE_TESTS =
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = 
+JGRAPHICAL_TESTS =
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
@@ -73,7 +73,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple test_auto 
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple test_auto
 
 test_java: jclass
 

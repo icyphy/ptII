@@ -164,7 +164,7 @@ public class Configuration extends CompositeEntity {
             } catch (Exception ex) {
                 // Note that we can't rethrow the exception here because
                 // removing the effigy may result in the application exiting.
-                MessageHandler.error("Attempt to open model from " 
+                MessageHandler.error("Attempt to open model from "
                         + in + " failed.", ex);
                 effigy.setContainer(null);
             }

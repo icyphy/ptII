@@ -53,21 +53,21 @@ form as the following equation:
     y(s)    b(1)*s^(m-1) + b(2)*s^(m-2) + ... + b(m)
    ----- = -------------------------------------------
     u(s)    a(1)*s^(n-1) + a(2)*s^(n-2) + ... + a(n)
-</pre> 
-where m and n are the number of numerator and denominator coefficients, 
+</pre>
+where m and n are the number of numerator and denominator coefficients,
 respectively. This actors has two parameters -- numerator and denominator --
-containing the coefficients of the numerator and denominator in 
+containing the coefficients of the numerator and denominator in
 descending powers of s. These coefficents are double numbers.
 The order of the denominator (n) must be greater
 than or equal to the order of the numerator (m).
 <p>
-This actor extends TypedCompositeActor and works as a higher-order function. 
+This actor extends TypedCompositeActor and works as a higher-order function.
 Whenever the parameters are changed, the actor will build a transparent
 subsystem inside it using integrators, adders, and scales. This is called
 a realization of the transfer function. Notice that there are infinite
 number of realizations of a transfter function, and they are equivalent if and
 only if the initial conditions are all zero. Here we choose the controllable
-canonical form and preset all initial states of the integrators to zero. 
+canonical form and preset all initial states of the integrators to zero.
 These initial states should not be changed.
 If you need to specify initial conditions, you have to build the system
 from scratch using individual integrators. We will later suport state-
@@ -95,15 +95,15 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         output = new TypedIOPort(this, "output", false, true);
         _opaque = true;
         double[][] b = {{1.0}};
-        numerator = new Parameter(this, "numerator", 
+        numerator = new Parameter(this, "numerator",
                 new DoubleMatrixToken(b));
         numerator.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        denominator = new Parameter(this, "denominator", 
+        denominator = new Parameter(this, "denominator",
                 new DoubleMatrixToken(b));
         denominator.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        getMoMLInfo().className = 
+        getMoMLInfo().className =
             "ptolemy.domains.ct.lib.ContinuousTransferFunction";
 
         // icon
@@ -121,41 +121,41 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
 
     /////////////////////////////////////////////////////////////////////
     ////                        ports and parameters                 ////
- 
+
     /** Single input port.
      */
     public TypedIOPort input;
-    
+
     /** Single output port.
      */
     public TypedIOPort output;
-    
+
     /** The coefficients of the numerator, containing a DoubleMatrixToken.
      *  The DoubleMatrix can only be a row vector.
      *  The default value is [1.0].
      */
     public Parameter numerator;
-    
+
     /** The coefficients of the denominator, containing a DoubleMatrixToken.
      *  The DoubleMatrix can only be a row vector will length greater
      *  than or equal to the length of the numerator.
      *  The default value is [1.0].
      */
     public Parameter denominator;
-    
+
     //////////////////////////////////////////////////////////////////////
     ////                      public methods                          ////
-    
+
     /** If the argument is the <i>numerator</i> or the <i>denominator</i>
-     *  parameters, check that 
+     *  parameters, check that
      *  they have the right dimensions,
      *  and request for initialization from the director if there is one.
-     *  Other sanity checks like the denominator must have a higher 
+     *  Other sanity checks like the denominator must have a higher
      *  order than that of the numerator, and the first element of the
      *  denominator should not be zero are done in
      *  the preinitialize() method.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the numerator and the 
+     *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
@@ -209,7 +209,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
 
     /** Sanity check the parameters; if the parameters are legal
      *  create a continuous-time subsystem that implement the transfer
-     *  function, preinitialize all the actors in the subsystem, 
+     *  function, preinitialize all the actors in the subsystem,
      *  and set the opaqueness of this actor to true.
      *  This method need the write access on the workspace.
      *  @throws IllegalActionException If there is no CTDirector,
@@ -249,7 +249,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                     scaleD.factor.setToken(new DoubleToken(b[0]/a[0]));
                     connect(input, scaleD.input);
                     connect(output, scaleD.output);
-                }                                     
+                }
             } else {
                 double d = b[0]/a[0];
                 int order = n-1;
@@ -268,7 +268,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                     feedforward[i].factor.setToken(new
                             DoubleToken((b[i+1] - d * a[i+1])/a[0]));
                     // connections
-                    nodes[i] = (IORelation)connect(integrators[i].output, 
+                    nodes[i] = (IORelation)connect(integrators[i].output,
                                 feedforward[i].input, "node" + i);
                     feedback[i].input.link(nodes[i]);
                     connect(feedback[i].output, inputAdder.plus);
@@ -315,7 +315,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
             return getExecutiveDirector();
         }
     }
-    
+
     /** Wrapup.
      */
     public void wrapup() throws IllegalActionException {

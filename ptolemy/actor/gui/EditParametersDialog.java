@@ -156,7 +156,7 @@ public class EditParametersDialog extends ComponentDialog
 
             } catch (IllegalActionException ex) {
                 MessageHandler.error("Edit Parameter Styles failed", ex);
-            }         
+            }
         }
     }
 

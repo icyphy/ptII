@@ -73,7 +73,7 @@ public class UtilityFunctions {
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist.
      *  See the javadoc page for java.util.System.getProperties() for
-     *  a list of system properties.  An example property is 
+     *  a list of system properties.  An example property is
      *  "java.version", which returns the version of the JDK.
      *
      *  @param propertyName The name of property.
@@ -181,7 +181,7 @@ public class UtilityFunctions {
 
             _matrixParser.ReInit( fin );
             k = _matrixParser.readMatrix( );
-            
+
             if ( column == -1 ) {
                 // The column size of the matrix
                 column = k.size();
@@ -210,7 +210,7 @@ public class UtilityFunctions {
                 posRow=1;
                 posColumn++;
             }
-            
+
             // Vectors have now become obsolete, data is stored
             // in double[][].
             k.removeAll(k);

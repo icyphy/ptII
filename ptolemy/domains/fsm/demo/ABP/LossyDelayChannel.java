@@ -50,35 +50,35 @@ public class LossyDelayChannel extends TypedCompositeActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        
+
         // Parameters.
         minimumDelay = new Parameter(this, "minimumDelay");
         minimumDelay.setExpression("0.0");
-        
+
         maximumDelay = new Parameter(this, "maximumDelay");
         maximumDelay.setExpression("1.0");
-        
+
         lossProbability = new Parameter(this, "lossProbability");
         lossProbability.setExpression("0.1");
-        
+
         // Ports.
         input = new TypedIOPort(this, "input", true, false);
         control = new TypedIOPort(this, "control", true, false);
         output = new TypedIOPort(this, "output", false, true);
-        
+
         Uniform uniform = new Uniform(this, "uniform");
         uniform.lowerBound.setExpression("minimumDelay");
         uniform.upperBound.setExpression("maximumDelay");
-        
+
         VariableDelay variableDelay = new VariableDelay(this, "variableDelay");
         variableDelay.defaultDelay.setExpression("1.0");
 
         Switch loser = new Switch(this, "loser");
-        
+
         DiscreteRandomSource loss = new DiscreteRandomSource(this, "loss");
         loss.pmf.setExpression("[(1.0 - lossProbability) , lossProbability]");
         loss.values.setExpression("{0, 1}");
-        
+
         // Connections.
         TypedIORelation relation3 = new TypedIORelation(this, "relation3");
         input.link(relation3);
@@ -100,12 +100,12 @@ public class LossyDelayChannel extends TypedCompositeActor {
      *  to 0.0.
      */
     public Parameter minimumDelay;
-        
+
     /** The maximum delay.  This parameter has type double, and defaults
      *  to 1.0.
      */
     public Parameter maximumDelay;
-        
+
     /** The loss probability.  This parameter has type double, and defaults
      *  to 0.1.
      */

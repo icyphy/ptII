@@ -50,15 +50,15 @@ import java.util.*;
 
 <h1>GR overview</h1>
 GR is a domain/infrastructure for displaying three-dimensional graphics in
-Ptolemy II.  GR. is an untimed domain that follows loop-less 
+Ptolemy II.  GR. is an untimed domain that follows loop-less
 synchronous/reactive (SR) semantics.
 
-The basic idea behind the GR domain is to arrange geometry and transform 
+The basic idea behind the GR domain is to arrange geometry and transform
 actors in a directed-acyclic-graph to represent the location and orientation
-of objects in a natural world scene. This topology of connected GR actors 
+of objects in a natural world scene. This topology of connected GR actors
 form what is commonly called in computer graphics literature as a scene graph.
 The GR director converts the GR scene graph into a Java3D representation for
-rendering on the computer screen. 
+rendering on the computer screen.
 
 @see ptolemy.domains.gr.kernel.GRReceiver
 @see ptolemy.domains.gr.kernel.GRActor

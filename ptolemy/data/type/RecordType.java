@@ -374,11 +374,11 @@ public class RecordType extends StructuredType {
 		    " argument: " + newType.toString());
             }
 	}
-	
+
 	// This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("RecordType.updateType: "
-                    + "Cannot update this type to the new type."); 
+                    + "Cannot update this type to the new type.");
         }
 
         Iterator iter = _fields.keySet().iterator();

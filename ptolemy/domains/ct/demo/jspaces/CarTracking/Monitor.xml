@@ -7,36 +7,36 @@
         <property name="stopWhenQueueIsEmpty" value="false">
 	</property>
     </property>
-    
+
     <!-- Define the actors -->
-    <entity name="leadingCar" 
+    <entity name="leadingCar"
         class="ptolemy.domains.ct.demo.jspaces.CarTracking.DERealTimeSubscriber">
 	<property name="entryName" value="&quot;A&quot;">
 	</property>
       	<port name="output"></port>
     </entity>
-    <entity name="followingCar" 
+    <entity name="followingCar"
         class="ptolemy.domains.ct.demo.jspaces.CarTracking.DERealTimeSubscriber">
 	<property name="entryName" value="&quot;B&quot;">
 	</property>
       	<port name="output"></port>
     </entity>
-    <entity name="alarm" 
+    <entity name="alarm"
         class="ptolemy.domains.ct.demo.jspaces.CarTracking.TrackingAlarm">
 	<port name="leaderPosition"></port>
       	<port name="followerPosition"></port>
 	<port name="tooClose"></port>
 	<port name="tooClose"></port>
     </entity>
-    <entity name="closePublisher" 
+    <entity name="closePublisher"
         class="ptolemy.domains.ct.demo.jspaces.CarTracking.RealTimePublisher">
-	<property name="entryName" 
+	<property name="entryName"
 	    value="&quot;TooClose&quot;"></property>
 	<port name="input"></port>
     </entity>
-    <entity name="farPublisher" 
+    <entity name="farPublisher"
         class="ptolemy.domains.ct.demo.jspaces.CarTracking.RealTimePublisher">
-	<property name="entryName" 
+	<property name="entryName"
 	    value="&quot;TooFar&quot;"></property>
 	<port name="input"></port>
     </entity>

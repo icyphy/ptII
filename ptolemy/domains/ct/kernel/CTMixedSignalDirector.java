@@ -72,7 +72,7 @@ the executive director time, then the directed system will rollback to a
 "known good" state.
 <LI> The "known good" state is the state of the system at the time when
 local time is equal to the current time of the executive director.
-<LI> At the fire stage, the director will stop at the first of the 
+<LI> At the fire stage, the director will stop at the first of the
 following two times, the fire end time and the first detected event time.
 </UL>
 
@@ -137,12 +137,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             throws IllegalActionException {
         if(attribute == runAheadLength) {
             if(_debugging) _debug("run ahead length updating.");
-            double value = 
+            double value =
                 ((DoubleToken)runAheadLength.getToken()).doubleValue();
             if(value < 0) {
                 throw new IllegalActionException(this,
                         " runAheadLength cannot be negative.");
-            }                        
+            }
             _runAheadLength = value;
         } else {
             super.attributeChanged(attribute);
@@ -159,7 +159,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Clone the director into the specified workspace. This calls the
      *  base class and then copies the parameter of this director.  The new
      *  actor will have the same parameter values as the old.
-     *  Note that ODE solvers are stateless, so we only clone the class 
+     *  Note that ODE solvers are stateless, so we only clone the class
      *  name of the solvers.
      *  @param workspace The workspace for the new object.
      *  @return A new director.
@@ -168,9 +168,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        CTMixedSignalDirector newobj = 
+        CTMixedSignalDirector newobj =
             (CTMixedSignalDirector)(super.clone(workspace));
-        newobj.runAheadLength = 
+        newobj.runAheadLength =
             (Parameter)newobj.getAttribute("runAheadLength");
         return newobj;
     }
@@ -217,7 +217,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             return;
         }
         CompositeActor container = (CompositeActor) getContainer();
-        Director exe = container.getExecutiveDirector(); 
+        Director exe = container.getExecutiveDirector();
         // It must not be null.
         if (_isEventPhase()) {
             if(_debugging) _debug(getFullName(),
@@ -343,7 +343,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *       or thrown by a directed actor.
      */
     public boolean prefire() throws IllegalActionException {
-        
+
         super.prefire(); // always returns true.
         if(!_isTopLevel()) {
             // synchronize time.
@@ -380,7 +380,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             if(aheadLength < timeResolution) {
                 exe.fireAt(container, nextIterationTime);
                 if(_debugging) _debug("Next iteration is too close" +
-                        " (but not sync). Request a refire at: " 
+                        " (but not sync). Request a refire at: "
                         + nextIterationTime);
                 return false;
             }
@@ -391,7 +391,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
             if (_outsideTime > getCurrentTime()) {
                 throw new InvalidStateException(this, exe,
-                        "Outside time is later than the CT time. " + 
+                        "Outside time is later than the CT time. " +
                         "This should never happen in mixed-signal modeling");
             }
             // Check for rollback.
@@ -425,7 +425,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored. The execution
      *  phase is set to event phase if there's any data transferred.
-     *  In an event phase, discrete events will be produced or 
+     *  In an event phase, discrete events will be produced or
      *  consumed.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
@@ -444,7 +444,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Show the statistics of the simulation if requested and wrapup
      *  call actors. The statistics,
      *  in addition to those in CTDirector, is the number of rollbacks.
-     *  
+     *
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -453,7 +453,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         if(STAT) {
             if(_debugging) {
                 _debug(getName() + ": Total # of ROLLBACK " + _Nroll);
-                
+
             }
         }
     }
@@ -627,7 +627,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
+
     /** The number of rollbacks. Used for statistics.
      */
     protected int _Nroll = 0;

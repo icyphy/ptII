@@ -57,9 +57,9 @@ import ptolemy.plot.Plot;
 */
 public class StickyMasses extends TypedCompositeActor {
 
-    public StickyMasses(Workspace workspace) 
+    public StickyMasses(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
-        
+
         super(workspace);
         setName("HybridSystem");
 
@@ -77,7 +77,7 @@ public class StickyMasses extends TypedCompositeActor {
         Const source2 = new Const(this, "source2");
         source2.value.setToken(new DoubleToken(0.0));
 
-        // the plot        
+        // the plot
         TimedPlotter responsePlot = new TimedPlotter(this, "plot");
         responsePlot.plot = new Plot();
         responsePlot.plot.setGrid(true);
@@ -112,7 +112,7 @@ public class StickyMasses extends TypedCompositeActor {
         TypedIOPort hsout2 = (TypedIOPort)hs.newPort("P2");
         hsout2.setOutput(true);
         hsout2.setTypeEquals(BaseType.DOUBLE);
-        
+
         //System.out.println("Building the FSM controller.");
         FSMActor ctrl = new FSMActor(hs, "Controller");
         State ctrlInit = new State(ctrl, "Init");
@@ -137,7 +137,7 @@ public class StickyMasses extends TypedCompositeActor {
         TypedIOPort ctrlInT = new TypedIOPort(ctrl, "touched");
         ctrlInT.setInput(true);
         ctrlInT.setTypeEquals(BaseType.DOUBLE);
-        
+
         Transition ctrlTr0 = new Transition(ctrl, "Tr0");
         ctrlInit.outgoingPort.link(ctrlTr0);
         ctrlInc.incomingPort.link(ctrlTr0);
@@ -146,22 +146,22 @@ public class StickyMasses extends TypedCompositeActor {
         ctrlTr0.preemptive.setExpression("true");
 
         // Actions on Tr0, setting integrator initial states.
-        SetRefinementVariable act0 = 
+        SetRefinementVariable act0 =
             new SetRefinementVariable(ctrlTr0, "act0");
         act0.variableName.setExpression("P1.initialState");
         act0.expression.setExpression("0.0");
 
-        SetRefinementVariable act1 = 
+        SetRefinementVariable act1 =
             new SetRefinementVariable(ctrlTr0, "act1");
         act1.variableName.setExpression("V1.initialState");
         act1.expression.setExpression("0.0");
 
-        SetRefinementVariable act2 = 
+        SetRefinementVariable act2 =
             new SetRefinementVariable(ctrlTr0, "act2");
         act2.variableName.setExpression("P2.initialState");
         act2.expression.setExpression("3.0");
 
-        SetRefinementVariable act3 = 
+        SetRefinementVariable act3 =
             new SetRefinementVariable(ctrlTr0, "act3");
         act3.variableName.setExpression("V2.initialState");
         act3.expression.setExpression("0.0");
@@ -190,7 +190,7 @@ public class StickyMasses extends TypedCompositeActor {
         hsinit0.variableName.setExpression("STI.initialState");
         hsinit0.expression.setExpression("10.0");
         ResetRefinement reset1 = new ResetRefinement(ctrlTr1, "reset1");
-        
+
         Transition ctrlTr2 = new Transition(ctrl, "Tr2");
         ctrlDec.outgoingPort.link(ctrlTr2);
         ctrlInc.incomingPort.link(ctrlTr2);
@@ -217,21 +217,21 @@ public class StickyMasses extends TypedCompositeActor {
         hsinit6.variableName.setExpression("V2.initialState");
         hsinit6.expression.setExpression("V1");
         ResetRefinement reset2 = new ResetRefinement(ctrlTr2, "reset2");
-        
+
         // the hybrid system director
         HSDirector hsdir = new HSDirector(hs, "HSDirector");
         //hs.setDirector(hsdir);
         //hsdir.setController(ctrl);
         hsdir.controllerName.setExpression("Controller");
-        
+
         //StreamListener dbl = new StreamListener();
         //hsdir.addDebugListener(dbl);
         //ctrl.addDebugListener(dbl);
-        
+
         //System.out.println("Building the dynamics of "
         //        + "two separate balls.");
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Separate");
-        
+
         //ZeroOrderHold ctIncH1 = new ZeroOrderHold(ctInc, "Hold1");
         Integrator ctIncV1 = new Integrator(ctInc, "V1");
         Integrator ctIncP1 = new Integrator(ctInc, "P1");
@@ -247,7 +247,7 @@ public class StickyMasses extends TypedCompositeActor {
         // The expression is:
         // (K1*Y1 + In - K1*P1)/M1
         ctIncE1.expression.setExpression("1.0*1.0 + In - 1.0*P1");
-        
+
         //ZeroOrderHold ctIncH2 = new ZeroOrderHold(ctInc, "Hold2");
         Integrator ctIncV2 = new Integrator(ctInc, "V2");
         Integrator ctIncP2 = new Integrator(ctInc, "P2");
@@ -262,7 +262,7 @@ public class StickyMasses extends TypedCompositeActor {
         // The expression is:
         // (K2*Y2 + In - K2*P2)/M2
         ctIncE2.expression.setExpression("2.0*2.0 + In - 2.0*P2");
-        
+
         AddSubtract ctIncE3 = new AddSubtract(ctInc, "E3");
         ZeroCrossingDetector ctIncD =
             new ZeroCrossingDetector(ctInc, "ZD");
@@ -296,7 +296,7 @@ public class StickyMasses extends TypedCompositeActor {
         TypedIOPort ctIncOV2 = (TypedIOPort)ctInc.newPort("V2");
         ctIncOV2.setOutput(true);
         ctIncOV2.setTypeEquals(BaseType.DOUBLE);
-        
+
         // connect ctInc
         //ctInc.connect(ctIncF1, ctIncH1.input);
         //ctInc.connect(ctIncH1.output, ctIncE1In);
@@ -306,7 +306,7 @@ public class StickyMasses extends TypedCompositeActor {
         ctIncOV1.link(ctIncRB0);
         Relation ctIncRB1 = ctInc.connect(ctIncP1.output, ctIncE1P1);
         ctIncOP1.link(ctIncRB1);
-        
+
         //ctInc.connect(ctIncF2, ctIncH2.input);
         //ctInc.connect(ctIncH2.output, ctIncE2In);
         ctInc.connect(ctIncF2, ctIncE2In);
@@ -315,14 +315,14 @@ public class StickyMasses extends TypedCompositeActor {
         ctIncOV2.link(ctIncRB3);
         Relation ctIncRB2 = ctInc.connect(ctIncP2.output, ctIncE2P2);
         ctIncOP2.link(ctIncRB2);
-        
+
         ctIncE3.plus.link(ctIncRB1);
         ctIncE3.minus.link(ctIncRB2);
         Relation ctIncTr = ctInc.connect(
                 ctIncD.trigger, ctIncE3.output);
         ctIncD.input.link(ctIncTr);
         ctInc.connect(ctIncD.output, ctIncTouched);
-        
+
         CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(
                 ctInc, "CTIncDir");
         //ctIncDir.addDebugListener(new StreamListener());
@@ -337,7 +337,7 @@ public class StickyMasses extends TypedCompositeActor {
         Integrator ctDecSTI = new Integrator(ctDec, "STI");
         Scale ctGain = new Scale(ctDec, "Gain");
         ctGain.factor.setExpression("stickiness");
-        
+
         Expression ctDecE1 = new Expression(ctDec, "E1");
         TypedIOPort ctDecE1P1 = (TypedIOPort)ctDecE1.newPort("P1");
         ctDecE1P1.setInput(true);
@@ -356,7 +356,7 @@ public class StickyMasses extends TypedCompositeActor {
         // (K1*Y1 - K2*Y2 - K1*P1 + K2*P1)
         ctDecE2.expression.setExpression(
                 "1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1");
-        
+
         // Sticky force
         TypedIOPort ctDecOSTI = (TypedIOPort)ctDec.newPort("STI");
         ctDecOSTI.setOutput(true);
@@ -376,12 +376,12 @@ public class StickyMasses extends TypedCompositeActor {
         TypedIOPort ctDecOV1 = (TypedIOPort)ctDec.newPort("V1");
         ctDecOV1.setOutput(true);
         ctDecOV1.setTypeEquals(BaseType.DOUBLE);
-        
+
         // connect
         ctDec.connect(ctDecSTI.input, ctGain.output);
         Relation ctDecR1 = ctDec.connect(ctDecSTI.output, ctGain.input);
         ctDecOSTI.link(ctDecR1);
-        
+
         ctDec.connect(ctDecE1.output, ctDecV1.input);
         Relation ctDecR3 = ctDec.connect(ctDecV1.output, ctDecP1.input);
         ctDecOV1.link(ctDecR3);
@@ -393,7 +393,7 @@ public class StickyMasses extends TypedCompositeActor {
         CTEmbeddedDirector ctDecDir = new CTEmbeddedDirector(
                 ctDec, "CTDecDir");
         //ctDecDir.addDebugListener(new StreamListener());
-        
+
         // connect the hybrid system
         ctrlInc.refinementName.setExpression("Separate");
         ctrlDec.refinementName.setExpression("Together");
@@ -414,30 +414,30 @@ public class StickyMasses extends TypedCompositeActor {
         ctDecOV1.link(hsV1);
         hsout1.link(hsR1);
         hsout2.link(hsR2);
-        
+
         TypedIORelation hsF = new TypedIORelation(hs, "HSF");
         ctDecOF.link(hsF);
         ctrlInF.link(hsF);
         TypedIORelation hsSTI = new TypedIORelation(hs, "HSSTI");
         ctDecOSTI.link(hsSTI);
         ctrlInSTI.link(hsSTI);
-        
+
             // connect the top-level system
         this.connect(source1.output, hsin1);
         this.connect(source2.output, hsin2);
         this.connect(hsout1, responsePlot.input);
         this.connect(hsout2, responsePlot.input);
-        
+
         //System.out.println("Set parameters.");
         // try to run the system
         topdir.startTime.setToken(new DoubleToken(0.0));
         topdir.stopTime.setToken(new DoubleToken(50.0));
-        
+
         // CT embedded director 1 parameters
         ctIncDir.initStepSize.setToken(new DoubleToken(0.01));
-        
+
         ctIncDir.minStepSize.setToken(new DoubleToken(1e-5));
-        
+
         StringToken tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
         ctIncDir.breakpointODESolver.setToken(tok);
@@ -445,7 +445,7 @@ public class StickyMasses extends TypedCompositeActor {
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         ctIncDir.ODESolver.setToken(tok);
-        
+
         // CT embedded director 2  parameters
         ctDecDir.initStepSize.setToken(new DoubleToken(0.01));
         ctDecDir.minStepSize.setToken(new DoubleToken(1e-5));
@@ -455,7 +455,7 @@ public class StickyMasses extends TypedCompositeActor {
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         ctDecDir.ODESolver.setToken(tok);
-        
+
         // CT director parameters
         topdir.initStepSize.setToken(new DoubleToken(0.01));
         topdir.minStepSize.setToken(new DoubleToken(1e-5));
@@ -466,7 +466,7 @@ public class StickyMasses extends TypedCompositeActor {
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         topdir.ODESolver.setToken(tok);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -45,8 +45,8 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// DerivativeResolver
 /**
-This solver finds the derivatives of the state variables of an ODE 
-with respect to the current time. 
+This solver finds the derivatives of the state variables of an ODE
+with respect to the current time.
 For example, if the ODE is
 <pre>
     x' = f(x, t)
@@ -62,19 +62,19 @@ This method calculate
 
 <P>
 The derivative is obtained by firing the system for one iteration.
-This is used for preparing the history for other methods. 
+This is used for preparing the history for other methods.
 Note that time does not progress under this solver.
 So, this class implements BreakpointODESolver and can only be
 used as a breakpoint solver.
 It assumes that the state variable is continuous after the breakpoint.
 This may not be true if there are impulses in the system.
-In that case, use ImpulseBESolver as the breakpoint solver for a 
+In that case, use ImpulseBESolver as the breakpoint solver for a
 better result.
 
 @author Jie Liu
 @version $Id$
 */
-public class DerivativeResolver extends ODESolver 
+public class DerivativeResolver extends ODESolver
     implements BreakpointODESolver {
 
     /** Construct a solver in the default workspace with the name
@@ -114,7 +114,7 @@ public class DerivativeResolver extends ODESolver
         return 0;
     }
 
-    /** Return 0 to indicate that no history information is needed 
+    /** Return 0 to indicate that no history information is needed
      *  by this solver.
      *  @return 0.
      */

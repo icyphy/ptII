@@ -47,25 +47,25 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// DifferentialSystem
 /**
-The differential system  model implements a system whose behavior 
+The differential system  model implements a system whose behavior
 is defined by:
 <pre>
     dx/dt = f(x, u, t)
         y = g(x, u, t)
      x(0) = x0
 </pre>
-where x is the state vector, u is the input vector, and y is the output 
+where x is the state vector, u is the input vector, and y is the output
 vector, t is the time. Users must give the name of the variables
 by filling in parameters
 <P>
-The actor, upon creation, has no input and no output. Users must 
-manually create the inputs/outputs, and fill in their name in the 
+The actor, upon creation, has no input and no output. Users must
+manually create the inputs/outputs, and fill in their name in the
 <i>inputVariableNames</i>/<i>outputVariableNames</i> parameters.
 The name of the state variables are manually added by filling in
 the <i>stateVariableNames</i> parameter.
 <P>
 The state equations and output maps must be manually created by users.
-If there are <i>n</i> state variables <i>x</i><sub>1</sub>, ... 
+If there are <i>n</i> state variables <i>x</i><sub>1</sub>, ...
 <i>x</i><sub>n</sub>,
 then users must create <i>n</i> additional parameters, one
 for each state equation. And the parameters must be named as:
@@ -77,7 +77,7 @@ parameters for output maps. These parameters should be named
 <P>
 This actor works like a higher-order function. Upon preinitialization,
 the actor will create a subsystem using integrators and expressions.
-After that, the actor becomes transparent, and the director 
+After that, the actor becomes transparent, and the director
 takes over the control of the actors contained by this actor.
 
 @author Jie Liu
@@ -105,9 +105,9 @@ public class DifferentialSystem extends TypedCompositeActor {
                 new ArrayToken(empty));
         outputVariableNames = new Parameter(this, "outputVariableNames",
                 new ArrayToken(empty));
-        initialStates = new Parameter(this, "initialStates"); 
+        initialStates = new Parameter(this, "initialStates");
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        
+
         getMoMLInfo().className = "ptolemy.domains.ct.lib.DifferentialSystem";
 
         // icon
@@ -126,12 +126,12 @@ public class DifferentialSystem extends TypedCompositeActor {
 
     /////////////////////////////////////////////////////////////////////
     ////                           parameters                        ////
-    
+
     /** The names of the state variables, in an array of strings.
      *  The default is an ArrayToken of an empty String.
      */
     public Parameter stateVariableNames;
-    
+
     /** The names of the input variables, in an array of strings.
      *  The default is  an ArrayToken of an empty String.
      */
@@ -147,24 +147,24 @@ public class DifferentialSystem extends TypedCompositeActor {
      *  The default value is empty.
      */
     public Parameter initialStates;
-    
+
     //////////////////////////////////////////////////////////////////////
     ////                      public methods                          ////
-    
+
     /** If the argument is <i>A, B, C, D</i> or <i>initialState</i>
      *  parameters, check that they are indeed matrices and vectors,
      *  and request for initialization from the director if there is one.
      *  Other sanity checks like the dimensions of the matrices will
      *  be done in the preinitialize() method.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the numerator and the 
+     *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if(attribute == initialStates) {
             // The initialStates parameter should be a row vector.
-            DoubleMatrixToken token = 
+            DoubleMatrixToken token =
                 (DoubleMatrixToken)initialStates.getToken();
             if(token.getRowCount() != 1 || token.getColumnCount() < 1) {
                 throw new IllegalActionException(this,
@@ -191,12 +191,12 @@ public class DifferentialSystem extends TypedCompositeActor {
 
     /** Sanity check the parameters; if the parameters are legal
      *  create a continuous-time subsystem that implement the model,
-     *  preinitialize all the actors in the subsystem, 
+     *  preinitialize all the actors in the subsystem,
      *  and set the opaqueness of this actor to true.
      *  This method need the write access on the workspace.
      *  @throws IllegalActionException If there is no CTDirector,
      *  or any contained actors throw it in its preinitialize() method.
-     *  
+     *
      */
     public void preinitialize() throws IllegalActionException {
         // Check parameters.
@@ -208,7 +208,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         int m = inputNames.length();
         ArrayToken outputNames = (ArrayToken)outputVariableNames.getToken();
         int r = outputNames.length();
-        
+
         try {
             _workspace.getWriteAccess();
             removeAllEntities();
@@ -223,7 +223,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 states[i] = ((StringToken)stateNames.getElement(i)).
                     stringValue().trim();
                 integrators[i] = new Integrator(this, states[i]);
-                stateRelations[i] = new TypedIORelation(this, 
+                stateRelations[i] = new TypedIORelation(this,
                         "relation_" + states[i]);
                 integrators[i].output.link(stateRelations[i]);
                 // One Expression per integrator.
@@ -241,7 +241,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             for(int j = 0; j < m; j++) {
                 inputs[j] = ((StringToken)inputNames.getElement(j)).
                     stringValue().trim();
-                inputRelations[j] = new TypedIORelation(this, 
+                inputRelations[j] = new TypedIORelation(this,
                         "relation_" + inputs[j]);
                 getPort(inputs[j]).link(inputRelations[j]);
             }
@@ -252,7 +252,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 outputs[l] = ((StringToken)outputNames.getElement(l)).
                     stringValue().trim();
                 maps[l] = new Expression(this, "output_" + outputs[l]);
-                
+
                 maps[l].expression.setExpression(((StringToken)((Parameter)
                         getAttribute(outputs[l])).getToken()).stringValue());
                 maps[l].output.setTypeEquals(BaseType.DOUBLE);
@@ -262,14 +262,14 @@ public class DifferentialSystem extends TypedCompositeActor {
             for(int i = 0; i < n; i++) {
                 // One port for each state variable.
                 for(int k = 0; k < n; k++) {
-                    TypedIOPort port = new TypedIOPort(equations[i], 
+                    TypedIOPort port = new TypedIOPort(equations[i],
                             states[k], true, false);
                     port.setTypeEquals(BaseType.DOUBLE);
                     port.link(stateRelations[k]);
                 }
                 // One port for each input variable.
                 for(int k = 0; k < m; k++) {
-                    TypedIOPort port = new TypedIOPort(equations[i], 
+                    TypedIOPort port = new TypedIOPort(equations[i],
                             inputs[k], true, false);
                     port.setTypeEquals(BaseType.DOUBLE);
                     port.link(inputRelations[k]);
@@ -322,7 +322,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             return getExecutiveDirector();
         }
     }
-    
+
     /** Wrapup.
      */
     public void wrapup() throws IllegalActionException {
@@ -355,7 +355,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             String equation = "d_" + name;
             if(getAttribute(equation) == null) {
                  throw new IllegalActionException(this, "Please add a "
-                         + "parameter with name \"" 
+                         + "parameter with name \""
                          + equation + "\" to specify the state euqation.");
             }
         }
@@ -373,11 +373,11 @@ public class DifferentialSystem extends TypedCompositeActor {
                 throw new IllegalActionException(this, "A input variable "
                         + "name should not be an empty string.");
             }
-            if(getPort(name) == null || 
+            if(getPort(name) == null ||
                     !((IOPort)getPort(name)).isInput()) {
                 throw new IllegalActionException(this, "There must be "
                         + "an input port with name " + name);
-            }           
+            }
         }
 
         // Check output names.
@@ -393,20 +393,20 @@ public class DifferentialSystem extends TypedCompositeActor {
                 throw new IllegalActionException(this, "A output variable "
                         + "name should not be an empty string.");
             }
-            if(getPort(name) == null || 
+            if(getPort(name) == null ||
                     !((IOPort)getPort(name)).isOutput()) {
                 throw new IllegalActionException(this, "There must be "
                         + "an output port with name " + name);
-            }        
+            }
             // Check output maps.
             if(getAttribute(name) == null) {
                  throw new IllegalActionException(this, "Please add a "
-                         + "parameter with name \"" 
+                         + "parameter with name \""
                          + name + "\" to specify the output map.");
             }
         }
     }
-        
+
     /** Set this composite actor to opaque and request for reinitialization
      *  from the director if there is one.
      */

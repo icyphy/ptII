@@ -204,7 +204,7 @@ public class LocalZenoApplet extends PtolemyApplet {
 
         _rcvr1 = new ListenSink( toplevel, "UpperRcvr" );
         _rcvr2 = new ListenSink( toplevel, "LowerRcvr" );
-        
+
         _upperTime = new TimeAdvance( toplevel, "upperTime" );
         _upperPlotter = new TimedPlotter( toplevel, "upperPlotter" );
 
@@ -231,7 +231,7 @@ public class LocalZenoApplet extends PtolemyApplet {
 
         toplevel.connect( _fork1.output1, _upperTime.input );
         toplevel.connect( _upperTime.output, _upperPlotter.input );
-        
+
         toplevel.connect( _fork2.output1, _lowerTime.input );
         toplevel.connect( _lowerTime.output, _lowerPlotter.input );
 

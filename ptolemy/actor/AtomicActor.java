@@ -125,7 +125,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return newObject;
     }
 
-    /** Validate attributes, and create new receivers if port is 
+    /** Validate attributes, and create new receivers if port is
      *  an input port and there is a director.
      *  @param port The port that has connection changes.
      */
@@ -142,7 +142,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 }
             }
         }
-    }           
+    }
 
     /** Do nothing.  Derived classes override this method to define their
      *  their primary run-time action.

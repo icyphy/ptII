@@ -124,7 +124,7 @@ public class FSMTransitionController extends EdgeController {
                 Location location = (Location)object;
                 if(location.getContainer() instanceof Entity)
                     return true;
-                else 
+                else
                     return false;
             }
 	    return false;

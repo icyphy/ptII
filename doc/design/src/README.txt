@@ -8,7 +8,7 @@ To create a PDF File
 4. Select File->Print
    Select 'Print Only to File' and select a file ending in .ps
    Select Distiller Assistant v3.01 as your printer
-   Print the file, which will create a PostScript file   
+   Print the file, which will create a PostScript file
 
 In Acrobat distiller, if you select Screen Optimized, then by default
 images are downsampled to 72 dpi.  This seems dumb.  Turning this off
@@ -58,7 +58,7 @@ http://ptolemy/~cxh/sa/quadralay.html covers the details, but basically
    choose File -> Preferences -> Deselect Remember Missing Font Names
    then click Set.  Then open up each file and save it with the new fonts.
 
-4. start wpublish, then open up design.wdt.     
+4. start wpublish, then open up design.wdt.
 
 
 Visio

@@ -1,4 +1,4 @@
-/* 
+/*
 YACC grammar for Java. This file was based on the solution written by
 Paul N. Hilfinger for a class project for CS164.
 
@@ -212,7 +212,7 @@ import ptolemy.lang.java.nodetypes.*;
 %type<obj> ArgumentListOpt ArgumentList
 %type<obj> DimExprs ElementInitializers
 
-%type<obj> FieldAccess 
+%type<obj> FieldAccess
 
 %type<obj> Type ReferenceType PrimitiveType ClassOrInterfaceType ArrayType
 %type<obj> Void SuperOpt
@@ -401,32 +401,32 @@ TypeImportOnDemandStatement :
 
 ClassDeclaration :
     FieldModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
-    { 
+    {
       // add a default constructor if none is found
       NameNode name = (NameNode) $3;
       List body = (List) $6;
-       
+
       Iterator bodyItr = body.iterator();
-             
+
       boolean constructorFound = false;
-        
+
       while (!constructorFound && bodyItr.hasNext()) {
           Object member = bodyItr.next();
-           
+
           if (member instanceof ConstructorDeclNode) {
-             constructorFound = true;           
+             constructorFound = true;
           }
       }
-        
+
       if (!constructorFound) {
-         body.add(new ConstructorDeclNode(Modifier.PUBLIC_MOD,         
+         body.add(new ConstructorDeclNode(Modifier.PUBLIC_MOD,
                   new NameNode(name.getQualifier(), name.getIdent()),
                   new LinkedList(),                // params
-                  new LinkedList(),                // throws 
+                  new LinkedList(),                // throws
                   new BlockNode(new LinkedList()), // body
-                  new SuperConstructorCallNode(new LinkedList())));  
+                  new SuperConstructorCallNode(new LinkedList())));
       }
-                         
+
       $$ = new ClassDeclNode($1, name, (List) $5,
            (List) body, (TreeNode) $4);
     }
@@ -444,9 +444,9 @@ SuperOpt :
     EXTENDS ClassOrInterfaceType
     { $$ = $2; }
   | empty
-    { 
+    {
       // this will be fixed later by class resolution
-      $$ = AbsentTreeNode.instance; 
+      $$ = AbsentTreeNode.instance;
     }
   ;
 
@@ -657,7 +657,7 @@ ParameterList :
 Parameter :
     FieldModifiersOpt Type SimpleName DimsOpt
     {
-      Modifier.checkParameterModifiers($1); 
+      Modifier.checkParameterModifiers($1);
       $$ = new ParameterNode($1, TypeUtility.makeArrayType((TypeNode) $2, $4),
                              (NameNode) $3);
     }
@@ -941,19 +941,19 @@ Statement :
     EmptyStatement
     { $$ = $1; }
   | LabeledStatement
-    { $$ = $1; }  
+    { $$ = $1; }
   | ExpressionStatement ';'
     { $$ = new ExprStmtNode((ExprNode) $1); }
   | SelectionStatement
-    { $$ = $1; }  
+    { $$ = $1; }
   | IterationStatement
-    { $$ = $1; }  
+    { $$ = $1; }
   | JumpStatement
-    { $$ = $1; }  
+    { $$ = $1; }
   | GuardingStatement
     { $$ = $1; }
   | Block
-    { $$ = $1; }  
+    { $$ = $1; }
   ;
 
 /* Section 8.4 */
@@ -1058,14 +1058,14 @@ ForInit :
   ;
 
 ForUpdateOpt :
-    ExpressionStatements   
+    ExpressionStatements
     { $$ = $1; }
   | empty
     { $$ = new LinkedList(); }
   ;
 
 ExpressionStatementsOpt :
-    ExpressionStatements   
+    ExpressionStatements
     { $$ = $1; }
   | empty
     { $$ = new LinkedList(); }

@@ -297,7 +297,7 @@ The receiver starts in state <I>Init</I>. In this state, the FSM acknowledges
 the special packet (with sequence number <I>-1</I>) that the sender sends in
 trying to establish connection. When a packet tagged with bit <I>0</I> is
 received, the FSM acknowledges the packet, sends the message in the packet to
-<I>msgOut</I>, then goes to state <I>S1</I>. In state <I>S1</I>, the FSM 
+<I>msgOut</I>, then goes to state <I>S1</I>. In state <I>S1</I>, the FSM
 acknowledges any packet tagged with bit <I>0</I>. When a packet tagged with
 bit <I>1</I> is received, the FSM acknowledges the packet, sends the message
 in the packet to <I>msgOut</I>, then goes to state <I>S0</I>. In state

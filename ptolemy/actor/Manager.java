@@ -447,7 +447,7 @@ public class Manager extends NamedObj implements Runnable {
             if(_debugging) _debug("Prefire container.");
             if (_container.prefire()) {
                 // Invoke initialize on actors that have been added.
-                
+
                 if(_debugging) _debug("Fire model.");
                 _container.fire();
                 if(_debugging) _debug("Postfire model.");

@@ -449,7 +449,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             return _loadCanonicalFile(file.getCanonicalPath(), pass);
         } catch (Exception ex) {
 	    ex.printStackTrace();
-            throw new RuntimeException("StaticResolution.loadFile(" + 
+            throw new RuntimeException("StaticResolution.loadFile(" +
 				       file + ", " + pass + ")");
         }
     }
@@ -741,7 +741,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         if (!possibles.hasNext() & ((categories & CG_CLASS) == 1) && currentPackage != null) {
 	    System.out.println("StaticResolution_findPossibles(): looking " +
-			       "up " + name.getIdent() + 
+			       "up " + name.getIdent() +
 			       "\nwith reflection Current Class: " +
 			       ((currentClass == null) ?
 				"null " : currentClass.toString()) +

@@ -62,7 +62,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
         output.setTypeEquals(BaseType.GENERAL);
         period = new Parameter(this, "period", new LongToken(1000));
         period.setTypeEquals(BaseType.LONG);
-        
+
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
         public Trigger(Actor container) {
             _container = container;
         }
-        
+
         public void run() {
             while (true) {
                 try {
@@ -156,7 +156,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
 
         Actor _container;
     }
-        
+
     private long _period;
     private Thread _triggerThread;
 }

@@ -73,30 +73,30 @@ public class HysteresisApplet extends PtolemyApplet {
 
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         new SDFDirector(toplevel, "director");
-        
+
         // Create and configure ramp source
         Ramp rampSig = new Ramp(toplevel, "rampSig");
-        
+
         // Create and configure TrigFunction transformer
         TrigFunction trigFunction =
                 new TrigFunction(toplevel, "trigFunction");
         Scale scale = new Scale(toplevel, "Scale");
         scale.factor.setToken(new DoubleToken(0.1));
-        
+
         // Create and configure noise source
         Gaussian noise = new Gaussian(toplevel, "noise");
         noise.standardDeviation.setToken(new DoubleToken(0.2));
-        
+
         // Create the adder.
         AddSubtract add = new AddSubtract(toplevel, "add");
-        
+
         // Create and configure hystplotter
         SequencePlotter hystplotter = new SequencePlotter(toplevel, "plot1");
-        
+
         // Place the hystplotter in the applet in such a way that it fills
         // the available space.
         hystplotter.place(getContentPane());
-        
+
         hystplotter.plot.setBackground(getBackground());
         hystplotter.plot.setGrid(false);
         hystplotter.plot.setTitle("Threshold = 0.3, Noise std dev = 0.2");
@@ -110,81 +110,81 @@ public class HysteresisApplet extends PtolemyApplet {
         // to a FSM.
         TypedCompositeActor hdfActor =
                 new TypedCompositeActor(toplevel, "hdfActor");
-        
+
         // create ports
         TypedIOPort hdfActorInPort =
                  (TypedIOPort)hdfActor.newPort("dataIn");
         hdfActorInPort.setInput(true);
         hdfActorInPort.setTypeEquals(BaseType.DOUBLE);
-        
-        
+
+
         TypedIOPort hdfActorOutPort =
                  (TypedIOPort)hdfActor.newPort("dataOut");
         hdfActorOutPort.setOutput(true);
         hdfActorOutPort.setTypeEquals(BaseType.DOUBLE);
-        
+
         // hdfActor's top level controller
         HDFFSMActor ctrl = new HDFFSMActor(hdfActor, "Controller");
-        
+
         // For debugging.
         //StreamListener sa = new StreamListener();
         //ctrl.addDebugListener(sa);
         // states and transitions
-        
+
         // Create useless redundant ports for the sake of akwardness.
         TypedIOPort ctrlActInPort =
                  (TypedIOPort)ctrl.newPort("dataIn");
         ctrlActInPort.setInput(true);
         ctrlActInPort.setTypeEquals(BaseType.DOUBLE);
-        
+
         TypedIOPort ctrlOutPort =
                  (TypedIOPort)ctrl.newPort("dataOut");
         ctrlOutPort.setOutput(true);
         ctrlOutPort.setTypeEquals(BaseType.DOUBLE);
-        
+
         State ctrls0 = new State(ctrl, "ctrls0");
         State ctrls1 = new State(ctrl, "ctrls1");
 
         ctrl.initialStateName.setExpression("ctrls0");
-        
+
         Transition ctrlTrs0Tos1 = new Transition(ctrl, "ctrlTrs0Tos1");
         ctrls0.outgoingPort.link(ctrlTrs0Tos1);
         ctrls1.incomingPort.link(ctrlTrs0Tos1);
         ctrlTrs0Tos1.setGuardExpression("dataIn_V < -0.3");
-        
+
         Transition ctrlTrs1Tos0 = new Transition(ctrl, "ctrlTrs1Tos0");
         ctrls0.incomingPort.link(ctrlTrs1Tos0);
         ctrls1.outgoingPort.link(ctrlTrs1Tos0);
         ctrlTrs1Tos0.setGuardExpression("dataIn_V > 0.3");
-        
+
         // The HDF director
         HDFFSMDirector sdrDir = new HDFFSMDirector(hdfActor, "hdfActorDirector");
         sdrDir.controllerName.setExpression("Controller");
-        
+
         // Add a opaque composite actor. This actor will contain an
         // SDF model.
         TypedCompositeActor hdfActorState0 =
 		new TypedCompositeActor(hdfActor, "state0");
 	// Set "state0" to be the submachine refining hdfActor's "ctrls0" state
         ctrls0.refinementName.setExpression("state0");
-        
+
         // Note: Currently, the names of all ports linked
         // to a common relation must have the same name.
-        
+
         // Add ports to hdfActorState0.
-        
+
         // Add an input port.
         TypedIOPort hdfActorState0InPort =
                  (TypedIOPort)hdfActorState0.newPort("dataIn");
         hdfActorState0InPort.setInput(true);
         hdfActorState0InPort.setTypeEquals(BaseType.DOUBLE);
-        
+
         // Add an output port.
         TypedIOPort hdfActorState0OutPort =
                  (TypedIOPort)hdfActorState0.newPort("dataOut");
         hdfActorState0OutPort.setOutput(true);
         hdfActorState0OutPort.setTypeEquals(BaseType.DOUBLE);
-        
+
         // Set up hdfActorState0 to contain an SDFDirector and an SDF diagram.
         try {
             // Initialization
@@ -200,13 +200,13 @@ public class HysteresisApplet extends PtolemyApplet {
         // Add an SDF Actor to state0 and connect up ports.
         Const const0 = new Const(hdfActorState0, "Const0");
         const0.value.setToken(new DoubleToken(-1));
-        
+
         // For Const actor, no input port is required.
         hdfActorState0.connect(hdfActorState0InPort, const0.trigger);
-        
+
         hdfActorState0.connect(const0.output, hdfActorState0OutPort);
         ///////////// End of hdfActorState0 config.
-        
+
         // Now config state1.
         // submachine refining hdfActor's s1 state
         TypedCompositeActor hdfActorState1 =
@@ -214,13 +214,13 @@ public class HysteresisApplet extends PtolemyApplet {
         // Set "state1" to be the submachine refining
         // hdfActor's "ctrls1" state
         ctrls1.refinementName.setExpression("state1");
-        
+
         // Add ports to state1.
         TypedIOPort hdfActorState1InPort =
                  (TypedIOPort)hdfActorState1.newPort("dataIn");
         hdfActorState1InPort.setInput(true);
         hdfActorState1InPort.setTypeEquals(BaseType.DOUBLE);
-        
+
         TypedIOPort hdfActorState1OutPort =
                  (TypedIOPort)hdfActorState1.newPort("dataOut");
         hdfActorState1OutPort.setOutput(true);
@@ -233,46 +233,46 @@ public class HysteresisApplet extends PtolemyApplet {
         SDFScheduler scheduler1 = new SDFScheduler(_workspace);
         _director1.setScheduler(scheduler1);
         _director1.setScheduleValid(false);
-    
+
         // Add an SDF Actor to state1 and connect up ports.
         Const const1 = new Const(hdfActorState1, "Const1");
         const1.value.setToken(new DoubleToken(1));
-        
+
         // For Const actor, no input port is required.
         hdfActorState1.connect(hdfActorState1InPort, const1.trigger);
-        
+
         hdfActorState1.connect(const1.output, hdfActorState1OutPort);
-        
+
         TypedIORelation rel3 =
                  (TypedIORelation)hdfActor.newRelation("rel3");
         (hdfActorState0OutPort).link(rel3);
         (hdfActorState1OutPort).link(rel3);
         (hdfActorOutPort).link(rel3);
-        
+
         TypedIORelation rel2 =
                  (TypedIORelation)hdfActor.newRelation("rel2");
         (hdfActorState0InPort).link(rel2);
         (hdfActorState1InPort).link(rel2);
         (hdfActorInPort).link(rel2);
         (ctrlActInPort).link(rel2);
-        
+
         // Conect the actors.
         toplevel.connect(rampSig.output, scale.input);
         toplevel.connect(scale.output, trigFunction.input);
         toplevel.connect(trigFunction.output, add.plus);
         toplevel.connect(noise.output, add.plus);
-        
+
         toplevel.connect(hdfActorOutPort, hystplotter.input);
-        
+
         TypedIORelation noisyRel =
                  (TypedIORelation)toplevel.newRelation("noisyRel");
         (add.output).link(noisyRel);
         (hdfActorInPort).link(noisyRel);
         (hystplotter.input).link(noisyRel);
-        
+
         // We are now allowed to run the model.
         _initCompleted = true;
-        
+
         // The 2 argument requests a go and stop button.
         //getContentPane().add(_createRunControls(2));
 

@@ -87,8 +87,8 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      */
     public void managerStateChanged(Manager manager) {
         super.managerStateChanged(manager);
-        // FIXME this is a workaround for a bug in the type system where 
-        // type listeners are not properly notified when the type is 
+        // FIXME this is a workaround for a bug in the type system where
+        // type listeners are not properly notified when the type is
         // a structured type.
         if (manager.getState() == Manager.INITIALIZING) {
             _updateAllTypeDisplays();
@@ -110,7 +110,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      *  type listeners to all the ports contained by top-level entities.
      *  @param workspace The workspace in which to create the model.
      *  @exception Exception If something goes wrong.
-     */    
+     */
     protected NamedObj _createModel(Workspace workspace)
 	    throws Exception {
         _toplevel = super._createModel(workspace);

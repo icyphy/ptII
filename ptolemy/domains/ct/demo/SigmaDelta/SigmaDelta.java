@@ -83,12 +83,12 @@ public class SigmaDelta extends TypedCompositeActor {
          // Set up the top level composite actor, director and manager
          DEDirector deDirector = new DEDirector(this, "DEDirector");
          //deDirector.addDebugListener(new StreamListener());
-         
+
          double stopT = 15.0;
          deDirector.stopTime.setToken(new DoubleToken(stopT));
-         
+
          // Create toplevel parameters.
-         samplePeriod = new Parameter(this, "samplePeriod", 
+         samplePeriod = new Parameter(this, "samplePeriod",
                  new DoubleToken(0.02));
          feedbackGain = new Parameter(this, "feedbackGain",
                  new DoubleToken(-20.0));
@@ -98,11 +98,11 @@ public class SigmaDelta extends TypedCompositeActor {
                  "CTSubsystem");
          Parameter ctSamplePeriod = new Parameter(ctsub, "samplePeriod");
          ctSamplePeriod.setExpression("samplePeriod");
-         
+
          Parameter ctFeedbackGain = new Parameter(ctsub, "feedbackGain");
          ctFeedbackGain.setExpression("feedbackGain");
-         
-                 
+
+
          TypedIOPort subin = new TypedIOPort(ctsub, "Pin");
          subin.setInput(true);
 
@@ -112,19 +112,19 @@ public class SigmaDelta extends TypedCompositeActor {
          CTMixedSignalDirector ctdir =
              new CTMixedSignalDirector(ctsub, "CTEmbDir");
          //ctdir.addDebugListener(new StreamListener());
-         
+
          // ---------------------------------
          // Create the actors.
          // ---------------------------------
-         
+
          // CTActors
-         
+
          CurrentTime time = new CurrentTime(ctsub, "CurTime");
          TrigFunction trigFunction =
              new TrigFunction(ctsub, "TrigFunction");
          ZeroOrderHold hold = new ZeroOrderHold(ctsub, "Hold");
          AddSubtract add1 = new AddSubtract(ctsub, "Add1");
-         
+
          Integrator intgl1 = new Integrator(ctsub, "Integrator1");
          Integrator intgl2 = new Integrator(ctsub, "Integrator2");
          Scale scale0 = new Scale(ctsub, "Scale0");
@@ -147,7 +147,7 @@ public class SigmaDelta extends TypedCompositeActor {
          CTPeriodicSampler ctSampler =
              new CTPeriodicSampler(ctsub, "PeriodicSampler");
          ctSampler.samplePeriod.setExpression("samplePeriod");
-         
+
          // CT Connections
          ctsub.connect(time.output, scale3.input);
          ctsub.connect(scale3.output, trigFunction.input);
@@ -171,7 +171,7 @@ public class SigmaDelta extends TypedCompositeActor {
          Relation cr10 = ctsub.connect(hold.output, scale4.input, "CR10");
          ctPlot.input.link(cr0);
          ctPlot.input.link(cr10);
-         
+
          // DE System
          ptolemy.domains.de.lib.Delay delay =
              new ptolemy.domains.de.lib.Delay(this, "delay");
@@ -186,7 +186,7 @@ public class SigmaDelta extends TypedCompositeActor {
          clk.offsets.setToken(new DoubleMatrixToken(offs));
          clk.period.setToken(new DoubleToken(1.0));
          clk.values.setExpression("{true}");
-         
+
          TimedPlotter dePlot = new TimedPlotter(this, "DEPlot");
          dePlot.plot = new Plot();
          dePlot.plot.setGrid(true);
@@ -198,12 +198,12 @@ public class SigmaDelta extends TypedCompositeActor {
          dePlot.plot.setMarksStyle("dots");
          dePlot.plot.addLegend(0, "Accum");
          dePlot.plot.addLegend(1, "Quantize");
-         
+
          FIR mav = new FIR(this, "MAV");
          mav.taps.setExpression(
                  "{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
                  + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
-         
+
          // DE connections.
          Relation dr0 = this.connect(subout,  delay.input);
          Relation dr1 = this.connect(delay.output,  fir.input);
@@ -216,31 +216,31 @@ public class SigmaDelta extends TypedCompositeActor {
          Relation dr6 = this.connect(accumulator.output, sampler.input);
          Relation dr7 = this.connect(sampler.output, dePlot.input);
          dePlot.input.link(dr3);
-         
+
          // CT Director parameters
          ctdir.initStepSize.setToken(new DoubleToken(0.0001));
-         
+
          ctdir.minStepSize.setToken(new DoubleToken(1e-6));
-         
+
          //StringToken token1 = new StringToken(
          //        "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
          //ctdir.BreakpointODESolver.setToken(token1);
-         
+
          StringToken token2 = new StringToken(
                  "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
          ctdir.ODESolver.setToken(token2);
-         
+
          // CT Actor Parameters
-         
+
          scale0.factor.setToken(new DoubleToken(50.0));
          scale1.factor.setToken(new DoubleToken(-2.50));
          scale2.factor.setToken(new DoubleToken(-250.0));
          scale3.factor.setToken(new DoubleToken(0.5));
      }
-      
+
     ///////////////////////////////////////////////////////////////////
     ////                          parameters                       ////
-    
+
     /** Sampling rate.
      */
     Parameter samplePeriod;
@@ -248,5 +248,5 @@ public class SigmaDelta extends TypedCompositeActor {
     /** Feedback gain.
      */
     Parameter feedbackGain;
-   
+
 }

@@ -99,7 +99,7 @@ OPTIONAL_FILES = \
 
 # Unfortunately, some of the tests require classes outside of
 # ptolemy/kernel and ptolemy/kernel/util.  This is not good
-# since it means that the tests depend on more packages 
+# since it means that the tests depend on more packages
 # than the source code under test, which makes reuse outside
 # of Ptolemy difficult.  As a workaround, we introduce
 # a variable that lists classes that are runtime dependencies

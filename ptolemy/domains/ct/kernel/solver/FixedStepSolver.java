@@ -79,7 +79,7 @@ public abstract class FixedStepSolver extends ODESolver {
     }
 
     /** Return the current step size of the director, since no step
-     *  size control is performed. 
+     *  size control is performed.
      *  @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#predictedStepSize
      *  @param integrator The integrator that want to predict the step size.
      *  @return The current step size of the director.

@@ -111,8 +111,8 @@ public class EditorIcon extends Attribute {
 	Rectangle2D backBounds = background.getBounds();
         Figure figure = new CompositeFigure(background);
         Nameable container = getContainer();
-        // FIXME this is a bad way to do this.  
-        if(!(container instanceof Attribute) || 
+        // FIXME this is a bad way to do this.
+        if(!(container instanceof Attribute) ||
                 container instanceof ptolemy.actor.Director) {
             LabelFigure label = new LabelFigure(container.getName(),
                     _labelFont, 1.0, SwingConstants.SOUTH_WEST);

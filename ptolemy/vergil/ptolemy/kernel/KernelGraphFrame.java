@@ -171,7 +171,7 @@ public class KernelGraphFrame extends GraphFrame {
 	_newPortAction = _controller.getNewPortAction();
 	_newRelationAction = _controller.getNewRelationAction();
 
-        // 'Edit Icon' pop up menu not shipped with PtII1.0.  
+        // 'Edit Icon' pop up menu not shipped with PtII1.0.
         // See also ptolemy/vergil/ptolemy/GraphFrame.java
 	//_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();

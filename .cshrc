@@ -80,7 +80,7 @@ if ($?prompt) then
 	alias j jobs -l
 endif
 
-# This is required because of the upgrade to X11R5 on our system 
+# This is required because of the upgrade to X11R5 on our system
 # causes the LD_LIBRARY_PATH to be mis-set as far as THOR is concerned.
 # the following corrects for this.
 # if (! $?LD_LIBRARY_PATH) setenv LD_LIBRARY_PATH ""

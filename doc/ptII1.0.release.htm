@@ -9,7 +9,7 @@ Ptolemy II 1.0 is a release of the Ptolemy II Java classes
 and the Ptolemy II design document
 
  <p>Ptolemy II 1.0 includes Vergil, a graphical user interface for
-developing models. 
+developing models.
 
  <p>The design document describes the Ptolemy II design and the implementation
 of the Java classes.
@@ -28,7 +28,7 @@ found online at
 <li> Vergil - the Ptolemy II GUI
 (Steve Neuendorffer and Edward A. Lee)
 <li> Giotto Domain
-	(Christoph M. Kirsch, Benjamin Horowitz, Thomas A. Henzinger) 
+	(Christoph M. Kirsch, Benjamin Horowitz, Thomas A. Henzinger)
 <li> Java 3D Domain (GR Domain) (Chamberlain Fong)
 <li> Discrete Time Domain (Chamberlain Fong)
 <li> CORBA/Jini work (Jie Liu)
@@ -94,7 +94,7 @@ The core of Ptolemy II 1.0 is 100% Java, so it should work on any
 platform that has JDK1.3
 
  <p>We developed Ptolemy II 1.0 under Solaris 2.5.1 and Windows 2000 sr1
-and with JDK1.2.2 and JDK1.3.0. 
+and with JDK1.2.2 and JDK1.3.0.
 We recommend JDK1.3 over JDK1.2.2.  If you have problems with under
 JDK1.2.2, please upgrade to JDK1.3
 
@@ -130,7 +130,7 @@ expressions of double-valued inputs.
 <h3>Limitations in the SDF Domain</h3>
 There are currently two bugs in the SDF Domain.  Both are bugs in the scheduler that can be fairly easily avoided.
 <menu>
-<li> Opaque tunneling entities result in a NullPointerException.  An Opaque tunneling entity is one that does not have any entities.  It only contains relations between external ports. 
+<li> Opaque tunneling entities result in a NullPointerException.  An Opaque tunneling entity is one that does not have any entities.  It only contains relations between external ports.
 <br> <b>Workaround:</b> Do not use a director for tunneling entities.
 
 <li> The SDF scheduler reports that actors are disconnected, when they are connected through external ports.
@@ -178,19 +178,19 @@ sdf.codegen.SDFActorTransformerVisitor._portFieldDeclNode()
 also uses "CG_Main" in a few places, so I have to figure out a way
 to pass the model name via a visitor so that _portFieldDeclNode() can
 get the name.
-<dd> 
+<dd>
 
 
 <dt> zip and jar files are not handled properly
 <dd> Running codegen fails in the nightly build because the code coverage
 tools are in a zip file and codegen does not look inside the zip
-file.  The fix is to modify SearchPath and 
+file.  The fix is to modify SearchPath and
 ASTReflect.lookupClass so that they will handle zip and jar files in
 the classpath
 
 <dt> Duplicate directories with the same name cause problems
 <dd> If there are two directories
-named 'cg', then the codegenerator has a hard time 
+named 'cg', then the codegenerator has a hard time
 resolving classes in the cg package.
 
 To replicate the bug, do:

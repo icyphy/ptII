@@ -5,9 +5,9 @@
 
 # This script is fairly fragile.
 #
-# If this script is called with no arguments, then everything is 
+# If this script is called with no arguments, then everything is
 # started on the localhost
-# If this script is called with two arguments, then the 
+# If this script is called with two arguments, then the
 # pieces of this demo are started up on the two remote hosts
 # and this host
 
@@ -39,7 +39,7 @@ if [ $# -ne 2 ]; then
     MPID=$!
 
     # Upon exit, kill these processes
-    trap "echo killing $TPID $MPID; kill $TPID $MPID" 1 2 3 9 
+    trap "echo killing $TPID $MPID; kill $TPID $MPID" 1 2 3 9
 
     java ptolemy.domains.ct.demo.Corba.NonlinearClientApplication \
 	   -ORBInitialHost ${TNAMEHOST:-localhost} -ORBInitialPort 1050
@@ -61,13 +61,13 @@ else
     # Get the pid of the last process started up in the background
     TPID=$!
 
-    $SSH $MODELSERVERHOST "cd $PTII/ptolemy/domains/ct/demo/Corba; 
+    $SSH $MODELSERVERHOST "cd $PTII/ptolemy/domains/ct/demo/Corba;
 	 java -cp $PTII ptolemy.domains.ct.demo.Corba.ModelServer \
         -ORBInitialHost ${TNAMEHOST:-localhost} -ORBInitialPort 1050" &
     MPID=$!
 
     # Upon exit, kill these processes
-    trap "echo killing $TPID $MPID; kill $TPID $MPID" 1 2 3 9 
+    trap "echo killing $TPID $MPID; kill $TPID $MPID" 1 2 3 9
 
     java ptolemy.domains.ct.demo.Corba.NonlinearClientApplication \
 	-ORBInitialHost ${TNAMEHOST:-localhost} -ORBInitialPort 1050

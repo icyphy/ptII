@@ -120,7 +120,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
                     " must have a CT director.");
         }
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-        double tentativeState = 
+        double tentativeState =
             integrator.getState() + f*(dir.getCurrentStepSize());
         integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
@@ -134,8 +134,8 @@ public class ForwardEulerSolver extends FixedStepSolver {
      *  indicate that the state is found accurately.
      *  This gets the state transition
      *  schedule from the scheduler and fire for one iteration
-     *  (which consists of 1 round). This method only resoles the 
-     *  tentative state. It is the director's job to update the 
+     *  (which consists of 1 round). This method only resoles the
+     *  tentative state. It is the director's job to update the
      *  states.
      *
      * @return True.
@@ -158,7 +158,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
         if(dir.STAT) {
             dir.NFUNC++;
         }
-        Iterator actors = 
+        Iterator actors =
             scheduler.scheduledStateTransitionActorList().iterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();

@@ -74,8 +74,8 @@ public abstract class ScheduleElement {
     ////                         public methods                    ////
 
     /** Return the actor invocation sequence of the schedule in the
-     *  form of a sequence of actors. All of the lowest-level nodes 
-     *  should be an instance of Firing. Otherwise, the returned 
+     *  form of a sequence of actors. All of the lowest-level nodes
+     *  should be an instance of Firing. Otherwise, the returned
      *  iterator will contain null elements.
      *
      *  @return An iterator over a sequence of actors.
@@ -83,8 +83,8 @@ public abstract class ScheduleElement {
     public abstract Iterator actorIterator();
 
     /** Return the actor invocation sequence in the form
-     *  of a sequence of firings. All of the lowest-level nodes 
-     *  should be an instance of Firing. Otherwise, the returned 
+     *  of a sequence of firings. All of the lowest-level nodes
+     *  should be an instance of Firing. Otherwise, the returned
      *  iterator will contain null elements.
      *
      *  @return An iterator over a sequence of firings.
@@ -129,8 +129,8 @@ public abstract class ScheduleElement {
 
     /** Increment the version of this schedule element and if this schedule
      *  element has a parent schedule, increment the version of the parent
-     *  schedule as well. This method will therefore cause a version update 
-     *  to propogate up to all parent schedule elements. This method is 
+     *  schedule as well. This method will therefore cause a version update
+     *  to propogate up to all parent schedule elements. This method is
      *  called when a structure change is made to this schedule element, and
      *  is also called by the immidiate children of this schedule element
      *  when they are modified.
@@ -146,10 +146,10 @@ public abstract class ScheduleElement {
      *  the specified schedule element. If this schedule element is
      *  added to another schedule element (the parent), then the
      *  add() method of the parent will invoke this method.
-     *  This association is used to notify the parent schedule 
+     *  This association is used to notify the parent schedule
      *  element when changes are made to this schedule element.
      *
-     *  @param parent The parent schedule element of this schedule 
+     *  @param parent The parent schedule element of this schedule
      *   element.
      */
     protected void _setParent(ScheduleElement parent) {

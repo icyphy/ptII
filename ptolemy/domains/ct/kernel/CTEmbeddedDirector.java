@@ -98,7 +98,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Always return true indicating that this director can be 
+    /** Always return true indicating that this director can be
      *  an inside director.
      *  @return True always.
      */
@@ -238,7 +238,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         _outsideTime = exe.getCurrentTime();
         if(_debugging) _debug(getName(), "Outside Time = "+ _outsideTime);
         double nextIterationTime = exe.getNextIterationTime();
-        if(_debugging) _debug(getName(), "Next Iteration Time = " 
+        if(_debugging) _debug(getName(), "Next Iteration Time = "
                 + nextIterationTime);
         setCurrentTime(_outsideTime);
         // if break point now, change solver.

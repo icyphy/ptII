@@ -48,9 +48,9 @@ import java.util.List;
 //// ArrayAppend
 /**
 An actor that appends ArrayTokens together.  This actor has a single input
-multiport, and a single output port.  The types on the input and the output 
+multiport, and a single output port.  The types on the input and the output
 port must both be the same array type.  During each firing, this actor reads
-up to one ArrayToken from each channel of the input port and creates an 
+up to one ArrayToken from each channel of the input port and creates an
 ArrayToken of the same type on the output port.  If no token is available on
 a particular channel, then there will be no contribution to the output.
 
@@ -99,9 +99,9 @@ public class ArrayAppend extends Transformer {
         return newObject;
     }
 
-    /** Consume at most one ArrayToken from each channel of the input port 
-     *  and produce a single ArrayToken on the output 
-     *  port that contains all of the tokens contained in all of the 
+    /** Consume at most one ArrayToken from each channel of the input port
+     *  and produce a single ArrayToken on the output
+     *  port that contains all of the tokens contained in all of the
      *  arrays read from the input.
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
@@ -113,11 +113,11 @@ public class ArrayAppend extends Transformer {
                 if(array == null) {
                     array = token.arrayValue();
                 } else {
-                    Token newArray[] = 
+                    Token newArray[] =
                         new Token[array.length + token.length()];
-                    System.arraycopy(array, 0, 
+                    System.arraycopy(array, 0,
                             newArray, 0, array.length);
-                    System.arraycopy(token.arrayValue(), 0, 
+                    System.arraycopy(token.arrayValue(), 0,
                             newArray, array.length, token.length());
                     array = newArray;
                 }

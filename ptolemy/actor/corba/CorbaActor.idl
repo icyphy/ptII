@@ -33,16 +33,16 @@ module util {
 	exception CorbaIllegalActionException{
 		string message;
 	};
-	
+
 	/* Exception for unknow parameter name when passing a parameter.
 	 */
 	exception CorbaUnknownParamException {
 		string paramName;
-		string message;	
+		string message;
 	};
-	
+
 	/* Exception for illegal value when passing data.
-	 */	
+	 */
 	exception CorbaIllegalValueException{
 		string message;
 	};
@@ -51,7 +51,7 @@ module util {
 	 */
 	exception CorbaUnknownPortException{
 		string portName;
-		string message;	
+		string message;
 	};
 
 	/* Exception for channel indeces.
@@ -60,31 +60,31 @@ module util {
 		short index;
 	};
 
-	/* A CORBA compatible interface that implements the execution 
+	/* A CORBA compatible interface that implements the execution
 	 * methods of Ptolemy II.
 	 */
 	interface CorbaActor {
-		/* Mirror the fire() method of Ptolemy II 
+		/* Mirror the fire() method of Ptolemy II
 		 * executable interface.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *   method is an illegal action of the actor.
 		 */
 		void fire() raises (CorbaIllegalActionException);
-		
+
 		/* Return the value (in the form of a string) of
 		 * a parameter.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *  query of parameter is not supported by the actor.
 		 * @exception CorbaUnknowParamException If the parameter
 		 *  name is not known by the actor.
 		 */
-		string getParameter(in string paramName)		
+		string getParameter(in string paramName)
 			raises (CorbaIllegalActionException,
 				CorbaUnknownParamException);
 
 		/* Mirror the initialize() method of Ptolemy II
 		 * executable interface.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *   method is an illegal action of the actor.
 		 */
 		void initialize() raises (CorbaIllegalActionException);
@@ -93,12 +93,12 @@ module util {
 	  	 * port contains unsent data.
 		 * @exception CorbaIllegalActionException If the query is
 		 *   not supported by the actor.
-		 * @exception CorbaUnknownPortException If the specified 
+		 * @exception CorbaUnknownPortException If the specified
 		 *   port is not known by the actor.
-		 * @exception CorbaIndexOutofBoundException If the 
+		 * @exception CorbaIndexOutofBoundException If the
 		 *   channel index is out of the width of the port.
 		 */
-		boolean hasData(in string portName, 
+		boolean hasData(in string portName,
 				in short portIndex)
 			raises (CorbaIllegalActionException,
 				CorbaIndexOutofBoundException,
@@ -115,7 +115,7 @@ module util {
 		 * @param isInput True if the port is an input port.
 		 * @param isOutput True if the port is an output port.
 		 * @param isMultiport True if the port is a multiport.
-		 */ 
+		 */
 		boolean hasPort(in string portName,
 				in boolean isInput,
 				in boolean isOutput,
@@ -124,7 +124,7 @@ module util {
 		/* Set the width of the specified port.
 		 * @param portName The name of the port.
 		 * @param width The width to be set.
-		 * @exception CorbaIllegalActionException If the width 
+		 * @exception CorbaIllegalActionException If the width
 		 *  to be set is not supported by the port, e.g. the
 		 *  port is restricted to a single port, but the width
 		 *  to be set is greater than one.
@@ -135,34 +135,34 @@ module util {
 				  in short width)
 			raises (CorbaIllegalActionException,
 				CorbaUnknownPortException);
-		
+
 		/* Mirror the postfire() method of Ptolemy II
 		 * executable interface.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *   method is an illegal action of the actor.
 		 */
 		boolean postfire() raises (CorbaIllegalActionException);
 
 		/* Mirror the prefire() method of Ptolemy II
 		 * executable interface.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *   method is an illegal action of the actor.
 		 */
 		boolean prefire() raises (CorbaIllegalActionException);
 
                 /* Mirror the preinitialize() method of Ptolmey II
 		 * executable interface.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *   method is an illegal action of the actor.
 		 */
 		boolean preinitialize() raises (CorbaIllegalActionException);
-		
+
 		/* Set the value of the specified parameter.
 		 * @param paramName The parameter name.
 		 * @param paramValue The value to be set.
-		 * @exception CorbaIllegalActionException If the set 
+		 * @exception CorbaIllegalActionException If the set
 		 *  value opertaion is not supported by the parameter.
-		 * @exception CorbaUnknownParamException If the 
+		 * @exception CorbaUnknownParamException If the
 		 *  parameter name is not known by the actor.
 		 * @exception CorbaIllegalValueException If the value
 		 *  is invalid for this parameter.
@@ -175,18 +175,18 @@ module util {
 
 		/*  Mirror the stopFire() method of Ptolemy II
 		 * executable interface.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *   method is an illegal action of the actor.
 		 */
 		void stopFire() raises (CorbaIllegalActionException);
-	
+
 		/* Mirror the terminate() method of Ptolemy II
 		 * executable interface.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *   method is an illegal action of the actor.
 		 */
 		void terminate() raises (CorbaIllegalActionException);
-	
+
 		/* Transfer the input data to the specified port.
 		 * @param portName The port name.
 		 * @param portIndex The channel number within the port.
@@ -226,7 +226,7 @@ module util {
 
 		/* Mirror the wrapup() method of Ptolemy II
 		 * executable interface.
-		 * @exception CorbaIllegalActionException If the 
+		 * @exception CorbaIllegalActionException If the
 		 *   method is an illegal action of the actor.
 		 */
 		void wrapup() raises (CorbaIllegalActionException);

@@ -66,7 +66,7 @@ a breakpoint solver.
 @author  Jie Liu
 @version $Id$
 */
-public class ImpulseBESolver extends BackwardEulerSolver 
+public class ImpulseBESolver extends BackwardEulerSolver
     implements BreakpointODESolver {
 
     /** Construct a solver in the default workspace with an empty
@@ -103,10 +103,10 @@ public class ImpulseBESolver extends BackwardEulerSolver
      *  step size h and -h, respectively, where h is the minimum
      *  step size. Note that the state of the dynamic actors are updated
      *  after the first Backward Euler solving process. This is OK,
-     *  since we have already used the minimum step size. This method 
+     *  since we have already used the minimum step size. This method
      *  does not update the states after the second Backward Euler solving
      *  process, so the director that uses this solver should do it.
-     * 
+     *
      *  @see BackwardEulerSolver#resolveStates
      *  @return True if the state is successfully resolved.
      *  @exception IllegalActionException If it is thrown by the
@@ -120,7 +120,7 @@ public class ImpulseBESolver extends BackwardEulerSolver
             Iterator actors = ((CTScheduler)dir.getScheduler()
                                ).scheduledDynamicActorList().iterator();
             while(actors.hasNext()) {
-                Actor next = (Actor)actors.next(); 
+                Actor next = (Actor)actors.next();
                 _debug(getFullName(),
                         "update state ...", ((Nameable)next).getName());
                 next.postfire();

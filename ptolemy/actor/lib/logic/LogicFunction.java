@@ -128,7 +128,7 @@ public class LogicFunction extends Transformer {
             throws  IllegalActionException {
 
         if (attribute == function) {
-            String functionName = 
+            String functionName =
                 function.getExpression().trim().toLowerCase();
 
             if (functionName.equals("and")) {
@@ -160,8 +160,8 @@ public class LogicFunction extends Transformer {
         }
     }
 
-    /** Consume at most one input token from each input channel, 
-     *  and produce a token on the output port.  If there is no 
+    /** Consume at most one input token from each input channel,
+     *  and produce a token on the output port.  If there is no
      *  input on any channel, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
@@ -222,7 +222,7 @@ public class LogicFunction extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // An indicator for the function to compute.  
+    // An indicator for the function to compute.
     // Valid values are _AND, _OR, and _XOR.
     private int _function;
 

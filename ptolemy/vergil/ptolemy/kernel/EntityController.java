@@ -199,10 +199,10 @@ public class EntityController extends LocatableNodeController {
                             direction,
                             100.0 * number / (count+1));
                 // Note that we don't use CanvasUtilities.translateTo because
-                // we want to only get the bounds of the background of the 
+                // we want to only get the bounds of the background of the
                 // port figure.
                 portFigure.translate(
-                        site.getX() - portBounds.getCenterX(), 
+                        site.getX() - portBounds.getCenterX(),
                         site.getY() - portBounds.getCenterY());
 	    }
 	}

@@ -72,7 +72,7 @@ public class ABP extends TypedCompositeActor {
 	setName("ABP");
         Manager manager = new Manager(workspace, "Manager");
         setManager(manager);
-        
+
         DEDirector director = new DEDirector(this, "DEDirector");
 
         Parameter forwardLossRate = new Parameter(this, "forwardLossRate");
@@ -142,12 +142,12 @@ public class ABP extends TypedCompositeActor {
         sdrError.setOutput(true);
         type = new TypeAttribute(sdrError, "type");
         type.setExpression("general");
-        
+
         TypedIOPort sdrAck = (TypedIOPort)sender.newPort("ack");
         sdrAck.setInput(true);
         type = new TypeAttribute(sdrAck, "type");
         type.setExpression("int");
-        
+
         TypedIOPort sdrPktOut = (TypedIOPort)sender.newPort("pktOut");
         sdrPktOut.setOutput(true);
         type = new TypeAttribute(sdrPktOut, "type");
@@ -156,32 +156,32 @@ public class ABP extends TypedCompositeActor {
         TypedIOPort sdrSetTimer = (TypedIOPort)sender.newPort("setTimer");
         sdrSetTimer.setOutput(true);
         type = new TypeAttribute(sdrSetTimer, "type");
-        type.setExpression("double"); 
+        type.setExpression("double");
 
         TypedIOPort sdrExpired = (TypedIOPort)sender.newPort("expired");
         sdrExpired.setInput(true);
         type = new TypeAttribute(sdrExpired, "type");
-        type.setExpression("general"); 
+        type.setExpression("general");
 
         TypedIOPort sdrMonitor = (TypedIOPort)sender.newPort("monitor");
         sdrMonitor.setOutput(true);
         type = new TypeAttribute(sdrMonitor, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
-        
+
         // sender's mode controller
         FSMActor ctrl = new FSMActor(sender, "Controller");
 
         TypedIOPort ctrlNext = (TypedIOPort)ctrl.newPort("next");
         ctrlNext.setInput(true);
         type = new TypeAttribute(ctrlNext, "type");
-        type.setExpression("general"); 
+        type.setExpression("general");
 
         TypedIOPort ctrlError = (TypedIOPort)ctrl.newPort("error");
         ctrlError.setInput(true);
         type = new TypeAttribute(ctrlError, "type");
-        type.setExpression("general"); 
-        
+        type.setExpression("general");
+
         State ctrlConnecting = new State(ctrl, "Connecting");
         State ctrlDead = new State(ctrl, "Dead");
         State ctrlSending = new State(ctrl, "Sending");
@@ -205,37 +205,37 @@ public class ABP extends TypedCompositeActor {
         TypedIOPort conRequest = (TypedIOPort)connect.newPort("request");
         conRequest.setInput(true);
         type = new TypeAttribute(conRequest, "type");
-        type.setExpression("general"); 
+        type.setExpression("general");
 
         TypedIOPort conNext = (TypedIOPort)connect.newPort("next");
         conNext.setOutput(true);
         type = new TypeAttribute(conNext, "type");
-        type.setExpression("general"); 
-        
+        type.setExpression("general");
+
         TypedIOPort conError = (TypedIOPort)connect.newPort("error");
         conError.setOutput(true);
         type = new TypeAttribute(conError, "type");
-        type.setExpression("general"); 
-        
+        type.setExpression("general");
+
         TypedIOPort conAck = (TypedIOPort)connect.newPort("ack");
         conAck.setInput(true);
         type = new TypeAttribute(conAck, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         TypedIOPort conPktOut = (TypedIOPort)connect.newPort("pktOut");
         conPktOut.setOutput(true);
         type = new TypeAttribute(conPktOut, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         TypedIOPort conSetTimer = (TypedIOPort)connect.newPort("setTimer");
         conSetTimer.setOutput(true);
         type = new TypeAttribute(conSetTimer, "type");
-        type.setExpression("double"); 
+        type.setExpression("double");
 
         TypedIOPort conExpired = (TypedIOPort)connect.newPort("expired");
         conExpired.setInput(true);
         type = new TypeAttribute(conExpired, "type");
-        type.setExpression("general"); 
+        type.setExpression("general");
 
         // connect's states and transitions
         State conInit = new State(connect, "Init");
@@ -321,37 +321,37 @@ public class ABP extends TypedCompositeActor {
         TypedIOPort sendMsgIn = (TypedIOPort)send.newPort("msgIn");
         sendMsgIn.setInput(true);
         type = new TypeAttribute(sendMsgIn, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         TypedIOPort sendNext = (TypedIOPort)send.newPort("next");
         sendNext.setOutput(true);
         type = new TypeAttribute(sendNext, "type");
-        type.setExpression("general"); 
+        type.setExpression("general");
 
         TypedIOPort sendAck = (TypedIOPort)send.newPort("ack");
         sendAck.setInput(true);
         type = new TypeAttribute(sendAck, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         TypedIOPort sendPktOut = (TypedIOPort)send.newPort("pktOut");
         sendPktOut.setOutput(true);
         type = new TypeAttribute(sendPktOut, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         TypedIOPort sendSetTimer = (TypedIOPort)send.newPort("setTimer");
         sendSetTimer.setOutput(true);
         type = new TypeAttribute(sendSetTimer, "type");
-        type.setExpression("double"); 
+        type.setExpression("double");
 
         TypedIOPort sendExpired = (TypedIOPort)send.newPort("expired");
         sendExpired.setInput(true);
         type = new TypeAttribute(sendExpired, "type");
-        type.setExpression("general"); 
+        type.setExpression("general");
 
         TypedIOPort sendMonitor = (TypedIOPort)send.newPort("monitor");
         sendMonitor.setOutput(true);
         type = new TypeAttribute(sendMonitor, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         // the states and transitions
         State s0 = new State(send, "0");
@@ -514,7 +514,7 @@ public class ABP extends TypedCompositeActor {
         msgCount.setToken(new IntToken(0));
         // set to be ctrlSending's refinement
         ctrlSending.refinementName.setExpression("Send");
-        
+
         // connect sender's components
         TypedIORelation sdrR1 = (TypedIORelation)sender.newRelation("request");
         sdrRequest.link(sdrR1);
@@ -549,24 +549,24 @@ public class ABP extends TypedCompositeActor {
         TypedIORelation sdrR9 = (TypedIORelation)sender.newRelation("error");
         conError.link(sdrR9);
         ctrlError.link(sdrR9);
-        
+
         // the receiver FSM
         FSMActor receiver = new FSMActor(this, "Receiver");
         // ports
         TypedIOPort recPktIn = (TypedIOPort)receiver.newPort("pktIn");
         recPktIn.setInput(true);
         type = new TypeAttribute(recPktIn, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         TypedIOPort recAck = (TypedIOPort)receiver.newPort("ack");
         recAck.setOutput(true);
         type = new TypeAttribute(recAck, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         TypedIOPort recMsgOut = (TypedIOPort)receiver.newPort("msgOut");
         recMsgOut.setOutput(true);
         type = new TypeAttribute(recMsgOut, "type");
-        type.setExpression("int"); 
+        type.setExpression("int");
 
         // states and transitions
         State recInit = new State(receiver, "Init");
@@ -625,7 +625,7 @@ public class ABP extends TypedCompositeActor {
         BroadcastOutput recTr6Act2 = new BroadcastOutput(recTr6, "recTr6Act2");
         recTr6Act2.portName.setExpression("msgOut");
         recTr6Act2.expression.setExpression("pktIn/2");
-        
+
         // connect the top level system
         TypedIORelation sysR1 = (TypedIORelation)this.newRelation("request");
         msgSrc.request.link(sysR1);
@@ -657,7 +657,7 @@ public class ABP extends TypedCompositeActor {
         TypedIORelation sysR10 = (TypedIORelation)this.newRelation("next");
         msgSrc.next.link(sysR10);
         sdrNext.link(sysR10);
-        
+
         plot.input.link(sysR2);
         TypedIORelation sysR11 = (TypedIORelation)this.newRelation("monitor");
         sdrMonitor.link(sysR11);

@@ -103,7 +103,7 @@ public class TwoPort extends TypedAtomicActor {
 
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         Director dir = getDirector();
-        
+
         if (dir != null) {
             if (attribute == inrate1) {
                 _inrate1 = ((IntToken) inrate1.getToken()).intValue();

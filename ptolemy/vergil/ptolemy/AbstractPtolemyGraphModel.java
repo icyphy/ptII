@@ -192,8 +192,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
                 " not allow semantic objects" +
                 " to be changed");
     }
-    
-    /** Update the graph model.  This is called whenever a change request is 
+
+    /** Update the graph model.  This is called whenever a change request is
      *  executed.  Subclasses will override this to update internal data
      *  structures that may be cached.
      */
@@ -231,7 +231,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
             }
 
             // update the graph model.
-            if(_update()) {            
+            if(_update()) {
                 // Notify any graph listeners
                 // that the graph might have
                 // completely changed.

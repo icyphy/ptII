@@ -61,9 +61,9 @@ public class SquareWave extends TypedCompositeActor {
 
     /** Constuct the model
      */
-    public SquareWave(Workspace workspace)  
+    public SquareWave(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
-    
+
         // Create the model.
         super(workspace);
         setName("LinearSystem");
@@ -74,11 +74,11 @@ public class SquareWave extends TypedCompositeActor {
         // Parameters
         period = new Parameter(this, "period", new DoubleToken(4.0));
         double[][] b = {{500.0}};
-        numerator = new Parameter(this, "numerator", 
+        numerator = new Parameter(this, "numerator",
                 new DoubleMatrixToken(b));
         numerator.setTypeEquals(BaseType.DOUBLE_MATRIX);
         double[][] a = {{1.0, 10.0, 1000.0}};
-        denominator = new Parameter(this, "denominator", 
+        denominator = new Parameter(this, "denominator",
                 new DoubleMatrixToken(a));
         denominator.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
@@ -96,7 +96,7 @@ public class SquareWave extends TypedCompositeActor {
         responsePlot.plot.setYRange(-2.0, 2.0);
         responsePlot.plot.setSize(500, 350);
         responsePlot.plot.addLegend(0,"response");
-        
+
         IORelation r1 = (IORelation)connect(sqwv.output, tf.input, "R1");
         connect(tf.output, responsePlot.input, "R2");
         responsePlot.input.link(r1);
@@ -114,11 +114,11 @@ public class SquareWave extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     public Parameter period;
-    
+
     public Parameter numerator;
-    
+
     public Parameter denominator;
 
 }

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Run the CT Corba Demo 
+# Run the CT Corba Demo
 # $PTII must be set
 if [ -z "${PTII-}" ]; then
     echo "$0: \$PTII was not set, exiting."
@@ -17,7 +17,7 @@ java ptolemy.domains.ct.demo.Corba.ModelServer -ORBInitialPort 1050 &
 MPID=$!
 
 # Upon exit, kill these processes
-trap "echo killing $TPID $MPID; kill $TPID $MPID" 1 2 3 9 
+trap "echo killing $TPID $MPID; kill $TPID $MPID" 1 2 3 9
 
 appletviewer NonlinearClient.htm
 

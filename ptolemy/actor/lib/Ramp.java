@@ -115,7 +115,7 @@ public class Ramp extends SequenceSource {
             _stateToken = init.getToken();
         }
     }
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
      *  public members to the parameters of the new actor.

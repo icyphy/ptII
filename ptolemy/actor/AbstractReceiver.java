@@ -167,7 +167,7 @@ public abstract class AbstractReceiver implements Receiver {
 
     /** Return true if the receiver contains the specified number of tokens.
      *  In an implementation, returning true in this method guarantees
-     *  that the next <i>numberOfTokens</i> calls to get(), or a 
+     *  that the next <i>numberOfTokens</i> calls to get(), or a
      *  corresponding call to getArray(), will not result in an exception.
      *  @param numberOfTokens The number of tokens desired.
      *  @return True if the next <i>numberOfTokens</i> calls to get()

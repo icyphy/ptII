@@ -52,7 +52,7 @@ A director that implements a priority-based nonpreemptive scheduling
 model of computation. This model of computation is sometimes seen in
 real-time operating systems.
 <P>
-This director is an extension of the DEDirector. It uses piorities 
+This director is an extension of the DEDirector. It uses piorities
 rather than time stamps to sort events. All events go to a priority
 queue and are sorted in the queue. At any given time, events with
 the highest priority is dequeued from the event queue and the destination
@@ -70,7 +70,7 @@ time that getCurrentTime() is called. The execution starting time
 is the time when the initialize() method of this director is called.
 This director uesed the system timer to implement fireAt(). If an
 actor request a fire at a future time <i>t</i>, then a timer is set,
-and the actor will be fired when the timer expires.  
+and the actor will be fired when the timer expires.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
@@ -119,7 +119,7 @@ public class RTOSDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** Update the director parameters when the attributes are changed.
      *  If the change is <i>stopTime</i>, check whether it is less than
      *  zero. If it is, throw an exception. Note that the changes of
@@ -157,13 +157,13 @@ public class RTOSDirector extends DEDirector {
     public void setCurrentTime(double newTime) throws IllegalActionException {
     }
 
-    /** Record the real time that the execution starts, and then 
+    /** Record the real time that the execution starts, and then
      *  initialize the execution.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        long stop = 
+        long stop =
             (long)(((DoubleToken)stopTime.getToken()).doubleValue()*1000.0);
         _terminate = false;
         if (_actorTimers == null) {
@@ -171,18 +171,18 @@ public class RTOSDirector extends DEDirector {
         } else {
             _actorTimers.clear();
         }
-        
+
         // Start the timer that counts the termination time.
         TerminationTask task = new TerminationTask(this);
         _terminationTimer = new Timer();
         _startingTime = System.currentTimeMillis();
         _terminationTimer.schedule(task, stop);
-        
+
         super.initialize();
     }
 
     /** Dequeue the event with the highest priority, and execute
-     *  the destination actor. If there are multiple events for 
+     *  the destination actor. If there are multiple events for
      *  this actor with the same priority as the one dequeued, then
      *  these events are dequeued, too. The actor will get
      *  all the dequeued events.
@@ -234,7 +234,7 @@ public class RTOSDirector extends DEDirector {
         Thread.currentThread().yield();
     }
 
-    
+
     /** Set up a time for the request firing at the future time.
      *  The actor will be fired when the timer expires.
      *  If the requested time is later than the stop time, do nothing.
@@ -256,12 +256,12 @@ public class RTOSDirector extends DEDirector {
         }
         if (time <= ((DoubleToken)stopTime.getToken()).doubleValue()) {
             long requestTime = (long)(time*1000.0) + _startingTime;
-            
+
             ActorTask actorTask = new ActorTask(actor);
             Timer timer = new Timer();
             _actorTimers.put(actor, timer);
             try {
-                timer.schedule(actorTask, requestTime - 
+                timer.schedule(actorTask, requestTime -
                         System.currentTimeMillis());
                 if (_debugging) _debug("Started timer.");
             } catch (IllegalArgumentException ex) {
@@ -270,7 +270,7 @@ public class RTOSDirector extends DEDirector {
             }
         }
     }
-        
+
     /** Return a new RTOSReceiver.
      *  @return a new RTOSReceiver.
      */
@@ -283,7 +283,7 @@ public class RTOSDirector extends DEDirector {
      *  made, otherwise, return true.
      *  @return Whether the stop time has reached.
      */
-    public boolean postfire() throws IllegalActionException {     
+    public boolean postfire() throws IllegalActionException {
         return super.postfire() && !_terminate;;
     }
 
@@ -317,7 +317,7 @@ public class RTOSDirector extends DEDirector {
         throw new IllegalActionException(this, (NamedObj)actor,
                 "Pure events are not supported in this domain.");
     }
-    
+
     /** Put an event into the event queue with the specified destination
      *  receiver, token, and priority.
      *  @param receiver The destination receiver.
@@ -352,14 +352,14 @@ public class RTOSDirector extends DEDirector {
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token)
             throws IllegalActionException {
-        throw new IllegalActionException(this, 
+        throw new IllegalActionException(this,
                 (NamedObj)receiver.getContainer(),
                 "IOPort must have priorities.");
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                    private methods                           ////
-    
+
     // Remove useless parameters inherited from DEDirector, and set
     // different defaults.
     private void _initParameters() {
@@ -373,33 +373,33 @@ public class RTOSDirector extends DEDirector {
             getAttribute("minBinCount").setContainer(null);
             getAttribute("binCountFactor").setContainer(null);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(getName() + 
+            throw new InternalErrorException(getName() +
                     "fail to initialize parameters.");
         } catch (NameDuplicationException ex) {
-            throw new InternalErrorException(getName() + 
+            throw new InternalErrorException(getName() +
                     "fail to initialize parameters.");
         }
     }
-    
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                    private variables                           ////
-    
+
     // A Hash map for all pending timers.
     private HashMap _actorTimers;
 
     // starting time as the system clock time
-    private long _startingTime;     
+    private long _startingTime;
 
     // Indicate that the execution is requested to be terminated.
     private boolean _terminate;
 
     // The termination task timer.
     private Timer _terminationTimer;
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         inner class                            ////
-     
+
     // The task that schedule a firing of an actor in the future time.
     // This task is supposed to be used by the Timer. When the Timer
     // expires, this task will be executed.
@@ -410,7 +410,7 @@ public class RTOSDirector extends DEDirector {
 
         ///////////////////////////////////////////////////////////////////
         ////                      public methods                       ////
-     
+
         /** iterate the actor for one iteration when the timer expires.
          */
         public void run() {
@@ -435,13 +435,13 @@ public class RTOSDirector extends DEDirector {
         }
         ///////////////////////////////////////////////////////////////////
         ////                      private variables                    ////
-     
+
         private Actor _actor;
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         inner class                            ////
-     
+
     // The task that terminates the execution.
     // This task is supposed to be used with the Timer. When the Timer
     // expires, this task will be executed.
@@ -452,7 +452,7 @@ public class RTOSDirector extends DEDirector {
 
         ///////////////////////////////////////////////////////////////////
         ////                      public methods                       ////
-     
+
         /** iterate the actor for one iteration when the timer expires.
          */
         public void run() {
@@ -463,7 +463,7 @@ public class RTOSDirector extends DEDirector {
         }
         ///////////////////////////////////////////////////////////////////
         ////                      private variables                    ////
-     
+
         private Director _director;
     }
 }

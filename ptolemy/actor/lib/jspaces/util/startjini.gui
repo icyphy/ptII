@@ -3,4 +3,4 @@
 #######################################################################
 ####  This is the script that brings up a GUI for starting Jini
 #     and JavaSpaces server.
-java -cp ${PTII}/vendors/sun/jini/lib/jini-examples.jar com.sun.jini.example.service.StartService 
+java -cp ${PTII}/vendors/sun/jini/lib/jini-examples.jar com.sun.jini.example.service.StartService

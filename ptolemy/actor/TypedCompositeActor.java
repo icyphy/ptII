@@ -66,7 +66,7 @@ Derived classes may constrain the container by overriding _checkContainer().
 <P>
 When exporting MoML, instances of this class identify their class name
 as TypedCompositeActor. If a derived class does not change this, then it
-too will be identified as a TypedCompositeActor. To change this in a 
+too will be identified as a TypedCompositeActor. To change this in a
 derived class, put the following line in the constructor
 <pre>
 getMoMLInfo().className = "<i>full class name</i>";

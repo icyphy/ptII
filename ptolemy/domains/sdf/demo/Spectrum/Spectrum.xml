@@ -40,7 +40,7 @@ signal frequency. The sample rate is assumed to be 8kHz.</text>
            <svg>
            <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The blocks with red outlines are hierarchical.
 Right click and select "Look Inside".
-These generate sinusoids, one for the 
+These generate sinusoids, one for the
 signal and the other for the carrier.</text>
            </svg>
            </configure>

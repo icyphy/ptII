@@ -247,7 +247,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    return null;
 	}
     }
-    
+
     /**
      * Delete a node from its parent graph and notify
      * graph listeners with a NODE_REMOVED event.
@@ -269,7 +269,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     /** The model for visible attributes
      */
     public class AttributeModel implements RemoveableNodeModel {
-        
+
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be an icon.
@@ -288,7 +288,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public Iterator inEdges(Object node) {
 	    return new NullIterator();
 	}
-        
+
 	/**
 	 * Return an iterator over the edges coming out of the given node.
 	 * @param node The node, which is assumed to be an icon.
@@ -297,26 +297,26 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public Iterator outEdges(Object node) {
 	    return new NullIterator();
 	}
-        
+
 	/** Remove the given node from the model.  The node is assumed
 	 *  to be an attribute.
 	 */
 	public void removeNode(final Object eventSource, final Object node) {
             final Object prevParent = getParent(node);
 	    NamedObj attribute = (NamedObj)((Location)node).getContainer();
-            
+
             NamedObj container = getChangeRequestParent(attribute);
-            
+
             String moml = "<deleteProperty name=\""
 		+ attribute.getName(container) + "\"/>\n";
-            
+
             // Note: The source is NOT the graph model.
             ChangeRequest request =
 		new MoMLChangeRequest(this, container, moml);
             container.requestChange(request);
         }
         }
-    
+
     /** The model for ports that make external connections to this graph.
      *  These ports are always contained by the root of this graph model.
      */
@@ -330,7 +330,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
         public Object getParent(Object node) {
 	    return ((Location)node).getContainer().getContainer();
         }
-        
+
         /**
          * Return an iterator over the edges coming into the given node.
          * This method first ensures that there is a link
@@ -347,7 +347,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    ComponentPort port = (ComponentPort)location.getContainer();
 	    // make sure that the links to relations that we are connected to
 	    // are up to date.
-            
+
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
@@ -359,10 +359,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    portLinkList.add(link);
 		}
 	    }
-            
+
 	    return portLinkList.iterator();
 	}
-        
+
 	/**
 	 * Return an iterator over the edges coming out of the given node.
 	 * This iterator is constructed by looping over all the relations
@@ -379,7 +379,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    ComponentPort port = (ComponentPort)location.getContainer();
 	    // make sure that the links to relations that we are connected to
 	    // are up to date.
-	    
+
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
@@ -391,18 +391,18 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    portLinkList.add(link);
 		}
 	    }
-            
+
 	    return portLinkList.iterator();
 	}
-        
+
 	/** Remove the given edge from the model
 	 */
 	public void removeNode(final Object eventSource, Object node) {
 	    Location location = (Location)node;
 	    ComponentPort port = (ComponentPort)location.getContainer();
-            
+
             NamedObj container = getChangeRequestParent(port);
-                       
+
 	    // Delete the port.
 	    StringBuffer moml = new StringBuffer();
 	    moml.append("<deletePort name=\"" +
@@ -417,7 +417,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             container.requestChange(request);
         }
     }
-    
+
     /** The model for an icon that contains ports.
      */
     public class IconModel implements CompositeNodeModel, RemoveableNodeModel {
@@ -431,7 +431,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             Location location = (Location) composite;
             return ((ComponentEntity)location.getContainer()).portList().size();
         }
-        
+
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be an icon.
@@ -501,7 +501,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             NamedObj container = getChangeRequestParent(deleteObj);
-            
+
             // Note: The source is NOT the graph model.
             ChangeRequest request =
                     new MoMLChangeRequest(
@@ -509,7 +509,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             container.requestChange(request);
 	}
     }
-    
+
     /** The model for links that connect two ports, or a port and a vertex.
      */
     public class LinkModel implements MutableEdgeModel {
@@ -546,7 +546,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             } else
                 return false;
         }
-        
+
         /** Return the head node of the given edge.
 	 *  @param edge The edge, which is assumed to be a link.
 	 *  @return The node that is the head of the specified edge.
@@ -554,7 +554,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
         public Object getHead(Object edge) {
             return ((Link)edge).getHead();
         }
-        
+
 	/** Return the tail node of the specified edge.
 	 *  @param edge The edge, which is assumed to be a link.
 	 *  @return The node that is the tail of the specified edge.
@@ -575,10 +575,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	/** Append moml to the given buffer that disconnects a link with the
 	 *  given head, tail, and relation. Names in the returned moml will be
-         *  relative to the iven container.  
+         *  relative to the iven container.
 	 */
 	private void _unlinkMoML(
-                NamedObj container, 
+                NamedObj container,
                 StringBuffer moml,
                 NamedObj linkHead,
                 NamedObj linkTail,
@@ -642,7 +642,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  null is returned.
 	 */
 	private String _linkMoML(
-                NamedObj container, 
+                NamedObj container,
                 StringBuffer moml,
                 StringBuffer failmoml,
                 NamedObj linkHead,
@@ -660,8 +660,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
                     if(getToplevel() != container) {
-                        String contextString = "<entity name=\"" + 
-                            getToplevel().getName(container) + 
+                        String contextString = "<entity name=\"" +
+                            getToplevel().getName(container) +
                             "\">\n";
                         moml.append(contextString);
                         failmoml.append(contextString);
@@ -677,7 +677,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                             tailPort.getName(getToplevel()) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
- 
+
 		    // Record moml so that we can blow away these
 		    // links in case we can't create them
                     failmoml.append("<unlink port=\"" +
@@ -797,13 +797,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		};
 
 	    // Handle what happens if the mutation fails.
-	    request.addChangeListener(new LinkChangeListener(link, 
+	    request.addChangeListener(new LinkChangeListener(link,
                     container,
                     failmoml));
 
             container.requestChange(request);
         }
-        
+
 	/** Connect the given edge to the given tail node.
 	 *  This class queues a new change request with the ptolemy model
 	 *  to make this modification.
@@ -851,7 +851,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    failmoml.append("</group>\n");
 
 	    final String relationNameToAdd = relationName;
- 
+
             // Here the source IS the graph model, because we need to
             // handle the event dispatch specially:  An event is only
             // dispatched if both the head and the tail are attached.
@@ -875,7 +875,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	       };
 
 	    // Handle what happens if the mutation fails.
-	    request.addChangeListener(new LinkChangeListener(link, 
+	    request.addChangeListener(new LinkChangeListener(link,
                     container,
                     failmoml));
 
@@ -887,7 +887,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
          */
         // Nested Inner Classes!  I love Java!
         public class LinkChangeListener implements ChangeListener {
-            public LinkChangeListener(Link link, CompositeEntity container, 
+            public LinkChangeListener(Link link, CompositeEntity container,
                     StringBuffer failMoML) {
                 _link = link;
                 _container = container;
@@ -901,7 +901,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                 _link.setHead(null);
                 _link.setTail(null);
                 _link.setRelation(null);
-                
+
                 // and queue a new change request to clean up the model
                 // Note: JDK1.2.2 requires that this variable not be
                 // called request or we get a compile error.
@@ -912,11 +912,11 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                             _failMoML.toString());
                 _container.requestChange(changeRequest);
             }
-            
+
             public void changeExecuted(ChangeRequest change) {
                 // modification to the linkset HAS to occur in the swing
                 // thread.
-                
+
                 if(GraphUtilities.isPartiallyContainedEdge(_link,
                         getRoot(),
                         PtolemyGraphModel.this)) {
@@ -924,12 +924,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                 } else {
                     _linkSet.remove(_link);
                 }
-                
+
                 // Note that there is no GraphEvent dispatched here
-                // if the edge is not fully connected.  This is to 
+                // if the edge is not fully connected.  This is to
                 // prevent rerendering while
                 // an edge is being created.
-                if(_link.getHead() != null && _link.getTail() != null) 
+                if(_link.getHead() != null && _link.getTail() != null)
                     dispatchGraphEvent(
                             new GraphEvent(PtolemyGraphModel.this,
                                     GraphEvent.STRUCTURE_CHANGED,
@@ -962,7 +962,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    "Found an entity that does not contain an icon.");
 	    }
 	}
-        
+
 	/**
 	 * Return an iterator over the edges coming into the given node.
 	 * This method first ensures that there is a link
@@ -975,7 +975,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 */
        	public Iterator inEdges(Object node) {
 	    ComponentPort port = (ComponentPort)node;
-	  
+
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
@@ -989,7 +989,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    }
 	    return portLinkList.iterator();
 	}
-        
+
 	/**
 	 * Return an iterator over the edges coming out of the given node.
 	 * This iterator is constructed by looping over all the relations
@@ -1003,7 +1003,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 */
 	public Iterator outEdges(Object node) {
 	    ComponentPort port = (ComponentPort)node;
-            
+
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
@@ -1042,7 +1042,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    container.requestChange(request);
 	}
     }
-    
+
     /** A model for the toplevel composite of this graph model.
      */
     public class ToplevelModel implements CompositeModel {
@@ -1083,15 +1083,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    while(entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity)entities.next();
 		nodes.add(_getLocation(entity));
-            }    
-            
+            }
+
             // Add a location for every external port.
             Iterator ports = toplevel.portList().iterator();
             while(ports.hasNext()) {
                 ComponentPort port = (ComponentPort)ports.next();
                 nodes.add(_getLocation(port));
             }
-            
+
             // Add a vertex for every relation that has a vertex and
             // doesn't connect exactly two ports.
             Iterator relations = toplevel.relationList().iterator();
@@ -1099,7 +1099,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                 ComponentRelation relation =
                     (ComponentRelation)relations.next();
                 List vertexList = relation.attributeList(Vertex.class);
-                
+
                 if(vertexList.size() != 0) {
                     // Add in all the vertexes.
                     Iterator vertexes = vertexList.iterator();
@@ -1126,12 +1126,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     }
                 }
             }
-            
+
             // Add an icon for every director.
             Iterator attributes = toplevel.attributeList().iterator();
             while(attributes.hasNext()) {
                 Attribute attribute = (Attribute)attributes.next();
-                
+
                 if (attribute instanceof Director) {
                     nodes.add(_getLocation(attribute));
                 } else {
@@ -1143,12 +1143,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     }
                 }
             }
-            
+
             // Return the final result.
             return nodes;
         }
     }
-    
+
     /** The model for vertexes that are contained within the relations of the
      *  ptolemy model.
      */
@@ -1176,7 +1176,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 */
        	public Iterator inEdges(Object node) {
 	    Vertex vertex = (Vertex) node;
-            
+
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List vertexLinkList = new LinkedList();
@@ -1247,25 +1247,25 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /** Update the graph model.  This is called whenever a change request is 
-     *  executed.  In this class the internal set of link objects is 
-     *  verified to be correct.  This method is usually called just before 
+    /** Update the graph model.  This is called whenever a change request is
+     *  executed.  In this class the internal set of link objects is
+     *  verified to be correct.  This method is usually called just before
      *  issuing a graph event.  If this method returns false, then the graph
      *  event should not be issued, because further changes are necessary.
      *  @return true if the model was successfully updated, or false if
-     *  further change requests were queued.   
+     *  further change requests were queued.
      */
     protected boolean _update() {
-	// Go through all the links that currently exist, and remove 
+	// Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
 	Iterator links = _linkSet.iterator();
 	while(links.hasNext()) {
  	    Link link = (Link)links.next();
             Relation relation = link.getRelation();
             if(relation == null) continue;
-            boolean headOK = GraphUtilities.isContainedNode(link.getHead(), 
+            boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
                     getRoot(), this);
-            boolean tailOK = GraphUtilities.isContainedNode(link.getTail(), 
+            boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
                     getRoot(), this);
             // If the head or tail has been removed, then remove this link.
             if(!(headOK && tailOK)) {
@@ -1280,21 +1280,21 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     // other link.  This avoids turning a direct connection
                     // into a half connection with a diamond.
                     // Note that the source is NOT the graphmodel, so this
-                    // will trigger the changerequest listener to 
+                    // will trigger the changerequest listener to
                     // redraw the graph again.
                     ChangeRequest request = new MoMLChangeRequest(
                             container, getToplevel(),
-                            "<deleteRelation name=\"" 
+                            "<deleteRelation name=\""
                             + relation.getName(container)
                             + "\"/>\n");
                     container.requestChange(request);
-                    // If updating requires further updates to the model 
-                    // i.e. the above change request, then return false.  
+                    // If updating requires further updates to the model
+                    // i.e. the above change request, then return false.
                     // this is so that rerendering doesn't happen until the
                     // graph model has reached a stable point.
                     // Note that there is a bit of a performance tradeoff
-                    // here as to whether we queue a bunch of mutations in 
-                    // parallel (which may be redundant) or queue them 
+                    // here as to whether we queue a bunch of mutations in
+                    // parallel (which may be redundant) or queue them
                     // serially (which may be slow).
                     return false;
                 }
@@ -1308,7 +1308,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
         }
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1318,7 +1318,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     private void _updateLinks(ComponentRelation relation) {
 	List linkedPortList = relation.linkedPortList();
 	int allPortCount = linkedPortList.size();
-        
+
 	// Go through all the links that currently exist, and remove ports
 	// from the linkedPortList that already have a Link object.
 	// FIXME this could get expensive
@@ -1333,12 +1333,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    Object tailObj = getSemanticObject(tail);
 	    if(tailObj != null && linkedPortList.contains(tailObj)) {
 		linkedPortList.remove(tailObj);
-	    } 
+	    }
 	    Object head = link.getHead();
 	    Object headObj = getSemanticObject(head);
 	    if(headObj != null && linkedPortList.contains(headObj)) {
 		linkedPortList.remove(headObj);
-	    } 
+	    }
 	}
 
 	// Count the linked ports.
@@ -1435,7 +1435,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    }
 	}
     }
-    
+
     // Return the location contained in the given object, or
     // a new location contained in the given object if there was no location.
     private Location _getLocation(NamedObj object) {
@@ -1454,19 +1454,19 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    }
 	}
     }
-    
+
     private interface RemoveableNodeModel extends NodeModel {
         /** Remove the given edge from the model
 	 */
 	public void removeNode(Object eventSource, Object node);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The set of all links in the model.
     private Set _linkSet;
-    
+
     // The models of the different types of nodes and edges.
     private AttributeModel _attributeModel = new AttributeModel();
     private ExternalPortModel _externalPortModel = new ExternalPortModel();

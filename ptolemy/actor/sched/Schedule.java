@@ -43,48 +43,48 @@ import java.util.ConcurrentModificationException;
 //////////////////////////////////////////////////////////////////////////
 //// Schedule
 /**
-This class is a schedule, which is a count and a list of schedule elements. 
+This class is a schedule, which is a count and a list of schedule elements.
 A schedule consists of an iteration count and a list of schedule elements.
 A schedule element can correspond to a single actor, or a schedule
 element can itself be a schedule. This nesting can be arbitrarily deep.
-However, all of the lowest-level schedule elements must correspond to 
-an actor. If this were not the case, then the actor invocation sequence 
-corresponding to the schedule would contain null elements. It is up to 
+However, all of the lowest-level schedule elements must correspond to
+an actor. If this were not the case, then the actor invocation sequence
+corresponding to the schedule would contain null elements. It is up to
 the scheduler to enforce this requirement.
 <p>
 <i>Terminology</i>
 A schedule (or schedule loop) has the form
-(n,S<sub>1</sub>,S<sub>2</sub>...,S<sub>m</sub>) where n is a positive 
-integer called the iteration count, and S<sub>i</sub> is either another 
-schedule loop or an actor. The schedule can be expressed as a sequence 
-S<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where S<sub>i</sub> is either 
+(n,S<sub>1</sub>,S<sub>2</sub>...,S<sub>m</sub>) where n is a positive
+integer called the iteration count, and S<sub>i</sub> is either another
+schedule loop or an actor. The schedule can be expressed as a sequence
+S<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where S<sub>i</sub> is either
 an actor or a schedule loop.
 <p>
 <h1>Usage</h1>
-In this implementation, if S<sub>i</sub> corresponds to an actor, then 
-S<sub>i</sub> will be an instance of class Firing. Otherwise, if 
-S<sub>i</sub> corresponds to a schedule, then S<sub>i</sub> will be an 
+In this implementation, if S<sub>i</sub> corresponds to an actor, then
+S<sub>i</sub> will be an instance of class Firing. Otherwise, if
+S<sub>i</sub> corresponds to a schedule, then S<sub>i</sub> will be an
 instance of Schedule.
 <p>
 The Schedule class is a schedule element that contains an iteration
-count and a list of schedule elements. The Firing class is a schedule 
-element that contains only a reference to an actor and an iteration count 
-for that actor. Therefore, the top-level schedule element must be an 
-instance of Schedule, and all of the lowest-level schedule elements must 
-be an instance of Firing. The iteration count is set by the 
-setIterationCount() method. If this method is not invoked, a default value 
-of one will be used. The add() and remove() methods are used to add or 
-remove schedule elements. Only elements of type ScheduleElement (Schedule 
+count and a list of schedule elements. The Firing class is a schedule
+element that contains only a reference to an actor and an iteration count
+for that actor. Therefore, the top-level schedule element must be an
+instance of Schedule, and all of the lowest-level schedule elements must
+be an instance of Firing. The iteration count is set by the
+setIterationCount() method. If this method is not invoked, a default value
+of one will be used. The add() and remove() methods are used to add or
+remove schedule elements. Only elements of type ScheduleElement (Schedule
 or Firing) may be added to the schedule list. Otherwise an exception will
 occur.
 <p>
 As an example, suppose that we have an SDF graph containing actors
-A, B, C, and D, with the schedule (1, A, (3, B, C), (2, D)). 
+A, B, C, and D, with the schedule (1, A, (3, B, C), (2, D)).
 The schedule can be written as (1, S<sub>1</sub>S<sub>2</sub>S<sub>3</sub>),
 where S<sub>1</sub> = A, S<sub>2</sub> = (3, B, C), and S<sub>3</sub> = (2, D).
 To construct this schedule, create an instance of Schedule called S.
 Then add the schedule elements S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>, and
-set an iteration count of 1, which is the default. S<sub>1</sub> will be an 
+set an iteration count of 1, which is the default. S<sub>1</sub> will be an
 instance of Firing with a reference to actor A and an iteration count of 1.
 S<sub>2</sub> will be an instance of Schedule with elements
 S<sub>2,1</sub>, S<sub>2,2</sub>, and an iteration count of 3.
@@ -128,9 +128,9 @@ Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
 */
 
 public class Schedule extends ScheduleElement {
-    /** Construct a schedule with iteration count of one and an 
-     *  empty schedule list. This constructor should be used when 
-     *  creating a root schedule. The constructor that takes a 
+    /** Construct a schedule with iteration count of one and an
+     *  empty schedule list. This constructor should be used when
+     *  creating a root schedule. The constructor that takes a
      *  parameter should be used when creating a subschedule.
      */
     public Schedule() {
@@ -165,7 +165,7 @@ public class Schedule extends ScheduleElement {
     }
 
     /** Insert the specified schedule element at the specified position in
-     *  the schedule list. This element must be an instance of 
+     *  the schedule list. This element must be an instance of
      *  ScheduleElement. An exception is thrown if the index is out of
      *  range.
      *
@@ -186,7 +186,7 @@ public class Schedule extends ScheduleElement {
 
     /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. All of the lowest-level nodes of
-     *  the schedule should be an instance of Firing. Otherwise an 
+     *  the schedule should be an instance of Firing. Otherwise an
      *  exception will occur at some point in the iteration.
      *  <p>
      *  A runtime exception is thrown if the
@@ -240,8 +240,8 @@ public class Schedule extends ScheduleElement {
     }
 
     /** Return an iterator over the schedule elements of this schedule.
-     *  The ordering of elements in the iterator sequence is the order 
-     *  of the schedule list. The elements of the iterator sequence are 
+     *  The ordering of elements in the iterator sequence is the order
+     *  of the schedule list. The elements of the iterator sequence are
      *  instances of Firing or Schedule.
      *  <p>
      *  A runtime exception is thrown if the
@@ -321,7 +321,7 @@ public class Schedule extends ScheduleElement {
 			return _lastHasNext;
 		    }
 		} else {
-		    if (_currentIteration < 
+		    if (_currentIteration <
 			_currentFiring.getIterationCount()) {
 			_currentIteration++;
 			_advance = false;
@@ -514,14 +514,14 @@ public class Schedule extends ScheduleElement {
 	    Schedule node = (Schedule)firingNode._parent;
 	    if (node == null) {
 		return null;
-	    } else if (node.size() > 
+	    } else if (node.size() >
 		       (++_horizontalNodePosition[_currentDepth+1])) {
 		return node;
-	    } else if ((++_iterationCounts[_currentDepth]) < 
+	    } else if ((++_iterationCounts[_currentDepth]) <
 		       node.getIterationCount()) {
 		_horizontalNodePosition[_currentDepth+1] = 0;
 		return node;
-	    } 
+	    }
 	    _horizontalNodePosition[_currentDepth+1] = 0;
 	    _iterationCounts[_currentDepth] = 0;
 	    return(_backTrack(node));
@@ -557,22 +557,22 @@ public class Schedule extends ScheduleElement {
 	    }
 	    if (node == null) {
 		return null;
-	    } else if (node.size() > 
+	    } else if (node.size() >
 		       _horizontalNodePosition[_currentDepth + 1]) {
 		_currentDepth++;
-		ScheduleElement nodeElement = 
+		ScheduleElement nodeElement =
 		    node.get(_horizontalNodePosition[_currentDepth]);
 		if (nodeElement instanceof Firing) {
-		    return nodeElement; 
+		    return nodeElement;
 		} else {
 		    return _findLeafNode((Schedule)nodeElement);
 		}
-	    } else if (_iterationCounts[_currentDepth] < 
+	    } else if (_iterationCounts[_currentDepth] <
 		       node.getIterationCount()) {
 		ScheduleElement nodeElement = node.get(0);
 		_currentDepth++;
 		if (nodeElement instanceof Firing) {
-		    return nodeElement; 
+		    return nodeElement;
 		} else {
 		    return _findLeafNode((Schedule)nodeElement);
 		}

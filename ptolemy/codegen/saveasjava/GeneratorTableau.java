@@ -258,7 +258,7 @@ public class GeneratorTableau extends Tableau {
                         boolean deep = ((BooleanToken)options.deep.getToken())
                                 .booleanValue();
 
-			File destination = null; 
+			File destination = null;
 			if (!deep) {
                             // Write the generated code.
                             destination = new File(directoryName,
@@ -270,7 +270,7 @@ public class GeneratorTableau extends Tableau {
                                     (new SaveAsJava()).generate(model));
                             outfile.close();
 			} else {
-			    // FIXME: what if this is not an SDF Model? 
+			    // FIXME: what if this is not an SDF Model?
 
                             // Handle the package entry.
                             // This is out of order because we use the
@@ -293,7 +293,7 @@ public class GeneratorTableau extends Tableau {
 			    Manager manager = ((CompositeActor)model)
 				.getManager();
 			    //			    if (manager == null) {
-				
+
 				((CompositeActor)model)
 				    .setManager(new Manager(model.workspace(),
 							     "manager"));
@@ -303,7 +303,7 @@ public class GeneratorTableau extends Tableau {
 			    LinkedList models = new LinkedList();
 			    models.add(model);
 			    codeGenerator.setModels(models);
-			    
+
 			    // FIXME: the output should go into the text widget
 			    // FIXME: this should be run in the backgroun
 			    codeGenerator.generateCode();
@@ -358,11 +358,11 @@ public class GeneratorTableau extends Tableau {
                                 className = model.getName();
                             }
 			    execCommands.add(
-                                     "java " 
+                                     "java "
                                      + runOptions
                                      + " "
                                      + "ptolemy.actor.gui.CompositeActorApplication "
-                                     + "-class " 
+                                     + "-class "
                                      + className);
                         }
                         if(execCommands.size() > 0) {
@@ -446,7 +446,7 @@ public class GeneratorTableau extends Tableau {
     //  new Thread(exec).start();
     // </pre>
     private class _Exec implements Runnable {
-	
+
 	// Construct an _Exec object to run a command.
 	// @param text The JTextArea to update with the command and the
 	// results

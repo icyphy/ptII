@@ -22,7 +22,7 @@
   <entity name="ComplexToReal"
           class="ptolemy.actor.lib.conversions.ComplexToReal">
   </entity>
- 
+
   <entity name="DoubleToFix"
           class="ptolemy.actor.lib.conversions.DoubleToFix">
     <property name="quantization">
@@ -74,11 +74,11 @@
   <entity name="RealToComplex"
           class="ptolemy.actor.lib.conversions.RealToComplex">
   </entity>
-  
+
   <entity name="RectangularToPolar"
           class="ptolemy.actor.lib.conversions.RectangularToPolar">
   </entity>
-  
+
   <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">

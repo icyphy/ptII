@@ -68,15 +68,15 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 	} catch (RuntimeException ex) {
 	    // FIXME?  This is a bit of a problem for type safe
 	    // enumerations where we refer to a public field in a
-	    // public inner class.  
+	    // public inner class.
 	    // For example data/expr/Variable has a line:
 	    // private Settable.Visibility _visibility = Settable.NONE;
 	    // which refers to a type safe enum in
 	    // ptolemy/kernel/util.Visibility
 	    NameNode parentName = (NameNode) name.getQualifier();
   		System.err.println("ResolveTypesVisitor.visitTypeNameNode():" +
-                        " failed to resolve " + node.getName().getIdent()); 
-//  				   " failed to resolve\n" + node + 
+                        " failed to resolve " + node.getName().getIdent());
+//  				   " failed to resolve\n" + node +
 //  				   "\n name = " + name +
 //    				   " node.hashCode() = " + node.hashCode() +
 //    				   " name.hashCode() = " + name.hashCode() +
@@ -102,10 +102,10 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 		newName.removeProperty(DECL_KEY);
 //  		System.err.println("ResolveTypesVisitor.visitTypeNameNode():" +
 //  				   "newName after setIdent = " + newName +
-//  				   "\n newName.hashCode()" + 
+//  				   "\n newName.hashCode()" +
 //  				   newName.hashCode() +
 //  				   "newName.getQualifier()" +
-//  				   newName.getQualifier());   
+//  				   newName.getQualifier());
 		    try {
 			NameNode newerName =
 			    (NameNode) StaticResolution.
@@ -118,7 +118,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 //  					   "newerName = " + newerName +
 //  					   "\n newerName.hashCode()" +
 //  					   newerName.hashCode());
-		
+
 			node.setName(newerName);
   			System.out.println("ResolveTypesVisitor." +
   					   "visitTypeNameNode(): substituted "+
@@ -126,7 +126,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 //  			System.out.println("ResolveTypesVisitor." +
 //  					   "visitTypeNameNode(): did " +
 //  					   "subsitution. " +
-//  					   node.isSingleton() + 
+//  					   node.isSingleton() +
 //  					   " node.hashCode = " +
 //  					   node.hashCode() +
 //  					   " node is now" + node +

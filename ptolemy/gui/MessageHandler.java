@@ -41,8 +41,8 @@ import javax.swing.JTextArea;
 //////////////////////////////////////////////////////////////////////////
 //// MessageHandler
 /**
-This is a class that is used to report errors.  It provides a 
-set of static methods that are called to report errors.  However, the 
+This is a class that is used to report errors.  It provides a
+set of static methods that are called to report errors.  However, the
 actual reporting of the errors is deferred to an instance of this class
 that is set using the setMessageHandler() method.  Normally there
 is only one instance, set up by the application, so the class is
@@ -50,7 +50,7 @@ a singleton.  But this is not enforced.
 <p>
 This base class simply writes the errors to System.err.
 When an applet or application starts up, it may wish to set a subclass
-of this class as the message handler, to allow a nicer way of 
+of this class as the message handler, to allow a nicer way of
 reporting errors.  For example, a swing application will probably
 want to report errors in a dialog box, using for example
 the derived class GraphicalMessageHandler.
@@ -64,15 +64,15 @@ public class MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Defer to the set message handler to show the specified 
+    /** Defer to the set message handler to show the specified
      *  error message.
      *  @param info The message.
      */
     public static void error(String info) {
         _handler._error(info);
     }
-       
-    /** Defer to the set message handler to 
+
+    /** Defer to the set message handler to
      *  show the specified message and exception information.
      *  If the exception is an instance of CancelException, then it
      *  is not shown.  By default, only the message of the exception
@@ -99,7 +99,7 @@ public class MessageHandler {
         return _handler;
     }
 
-    /** Defer to the set message handler to show the specified 
+    /** Defer to the set message handler to show the specified
      *  message.
      *  @param info The message.
      */
@@ -108,7 +108,7 @@ public class MessageHandler {
     }
 
     /** Set the message handler instance that is used by the static
-     *  methods in this class.  If the given handler is null, then 
+     *  methods in this class.  If the given handler is null, then
      *  do nothing.
      *  @param handler The message handler.
      */
@@ -118,7 +118,7 @@ public class MessageHandler {
         }
     }
 
-    /** Defer to the set message handler to 
+    /** Defer to the set message handler to
      *  show the specified message in a modal dialog.  If the user
      *  clicks on the "Cancel" button, then throw an exception.
      *  This gives the user the option of not continuing the
@@ -212,7 +212,7 @@ public class MessageHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The message handler.
     private static MessageHandler _handler = new MessageHandler();
 }

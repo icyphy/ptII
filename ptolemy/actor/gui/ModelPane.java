@@ -167,7 +167,7 @@ public class ModelPane extends JPanel implements CloseListener {
                         resumeRun();
                     }
                 });
-                
+
                 _stopButton = new JButton("Stop");
                 _stopButton.setToolTipText("Stop executing the model");
                 _buttonPanel.add(_stopButton);
@@ -301,7 +301,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 // is make extra space to fill in the bottom.
                 _controlPanel.add(Box.createVerticalGlue());
             }
-  
+
             // If there are two queries, make them the same width.
             if (_paramQuery != null && _directorQuery != null) {
                 Dimension modelSize = _paramQuery.getPreferredSize();
@@ -322,7 +322,7 @@ public class ModelPane extends JPanel implements CloseListener {
             }
         }
     }
-    
+
     /** If the model has a manager and is not already running,
      *  then execute the model in a new thread.  Otherwise, do nothing.
      */
@@ -419,14 +419,14 @@ public class ModelPane extends JPanel implements CloseListener {
         // place the placeable objects in the model
         _displays = new JPanel();
         _displays.setBackground(null);
-        
+
         add(_displays);
         _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
         _displays.setBackground(null);
-        
+
         // Put placeable objects in a reasonable place.
         Iterator atomicEntities = model
-            .allAtomicEntityList().iterator(); 
+            .allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
             if(object instanceof Placeable) {

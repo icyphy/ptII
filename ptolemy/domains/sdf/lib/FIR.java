@@ -162,7 +162,7 @@ public class FIR extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set a flag that causes recalculation of various local variables 
+    /** Set a flag that causes recalculation of various local variables
      *  that are used in execution on the next invocation of fire().
      *  @param attribute The attribute that changed.
      */
@@ -240,7 +240,7 @@ public class FIR extends SDFTransformer {
      *   or if there is no director, or if runtime type conflicts occur.
      */
     public void fire() throws IllegalActionException {
-     
+
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then renitialize.
         if (_reinitializeNeeded) _reinitialize();
@@ -251,7 +251,7 @@ public class FIR extends SDFTransformer {
 
         if (--_mostRecent < 0) _mostRecent = _data.length - 1;
         _data[_mostRecent] = input.get(0);
-        
+
         // Interpolate once for each input consumed
         for (int inC = 1; inC <= _dec; inC++) {
 
@@ -271,7 +271,7 @@ public class FIR extends SDFTransformer {
                         _dataItem = _data[dataIndex];
                         _dataItem = _tapItem.multiply( _dataItem );
                         _outToken = _outToken.add( _dataItem );
-                    } 
+                    }
                     // else assume tap is zero, so do nothing.
                 }
 
@@ -296,8 +296,8 @@ public class FIR extends SDFTransformer {
    /** Perform domain-specific initialization by calling the
     *  initialize(Actor) method of the director. The director may
     *  reject the actor by throwing an exception if the actor is
-    *  incompatible with the domain.   
-    *  Set a flag that reinitializes the data buffer at the first firing.   
+    *  incompatible with the domain.
+    *  Set a flag that reinitializes the data buffer at the first firing.
     *  @exception IllegalActionException If the superclass throws it.
     */
     public void initialize() throws IllegalActionException {

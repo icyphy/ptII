@@ -4,7 +4,7 @@
 <entity name="StockReader" class="ptolemy.actor.TypedCompositeActor">
 	<doc> Read a stock quote and plot it </doc>
     <property name="stockName" value="&quot;YHOO&quot;"
-        class="ptolemy.data.expr.Parameter">	
+        class="ptolemy.data.expr.Parameter">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
     </property>

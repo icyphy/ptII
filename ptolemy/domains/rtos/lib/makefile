@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/rtos/lib
 
-DIRS = 		
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -49,7 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	PeriodicTrigger.java 
+	PeriodicTrigger.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	rtosentities.xml

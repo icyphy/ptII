@@ -68,7 +68,7 @@ public class SpaceFinder {
                         new RMISecurityManager());
             }
 
-            System.out.println("java.security.policy=" 
+            System.out.println("java.security.policy="
                     + System.getProperty("java.security.policy") + "\n"
                     + "outrigger.spacename="
                     + System.getProperty("outrigger.spacename") + "\n"

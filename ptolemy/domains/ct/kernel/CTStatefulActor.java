@@ -52,7 +52,7 @@ should be restored.
 */
 public interface CTStatefulActor extends Actor {
 
-    /** Implementations of this method should go to the marked state. 
+    /** Implementations of this method should go to the marked state.
      *  If there's no marked state, throws
      *  an exception.
      *  @exception IllegalActionException If there were no marked state.

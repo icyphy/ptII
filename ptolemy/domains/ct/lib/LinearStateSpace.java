@@ -52,22 +52,22 @@ The State-Space model implements a system whose behavior is defined by:
         y = Cx + Du
      x(0) = x0
 </pre>
-where x is the state vector, u is the input vector, and y is the output 
+where x is the state vector, u is the input vector, and y is the output
 vector. The matrix coefficients must have these characteristics:
 <pre>
-A must be an n-by-n matrix, where n is the number of states. 
-B must be an n-by-m matrix, where m is the number of inputs. 
-C must be an r-by-n matrix, where r is the number of outputs. 
+A must be an n-by-n matrix, where n is the number of states.
+B must be an n-by-m matrix, where m is the number of inputs.
+C must be an r-by-n matrix, where r is the number of outputs.
 D must be an r-by-m matrix.
 </pre>
-The actor accepts <i>m</i> inputs and generates <i>r</i> outputs 
-through a multi-input port and a multi-output port. The widths of the 
+The actor accepts <i>m</i> inputs and generates <i>r</i> outputs
+through a multi-input port and a multi-output port. The widths of the
 ports must match the number of rows and columns in corresponding
-matrices, otherwise, an exception will be thrown. 
+matrices, otherwise, an exception will be thrown.
 <P>
 This actor works like a higher-order function. Upon preinitialization,
 the actor will create a subsystem using integrators, adders, and
-scales. After that, the actor becomes transparent, and the director 
+scales. After that, the actor becomes transparent, and the director
 takes over the control of the actors contained by this actor.
 
 @author Jie Liu
@@ -106,8 +106,8 @@ public class LinearStateSpace extends TypedCompositeActor {
 
         D = new Parameter(this, "D", new DoubleMatrixToken(zero));
         D.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        
-        initialStates = new Parameter(this, "initialStates", 
+
+        initialStates = new Parameter(this, "initialStates",
                 new DoubleMatrixToken(zero));
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
         getMoMLInfo().className = "ptolemy.domains.ct.lib.LinearStateSpace";
@@ -128,21 +128,21 @@ public class LinearStateSpace extends TypedCompositeActor {
 
     /////////////////////////////////////////////////////////////////////
     ////                        ports and parameters                 ////
- 
+
     /** Multi-input port.
      */
     public TypedIOPort input;
-    
+
     /** Multi-output port.
      */
     public TypedIOPort output;
-    
+
     /** The A matrix in the state-space representation. It must be a
      *  square matrix.
      *  The default value is [[1.0]].
      */
     public Parameter A;
-    
+
     /** The B matrix in the state-space representation. The number of
      *  rows must equal to the number of rows of the A matrix. The number
      *  of columns must equal to the width of the input port.
@@ -151,14 +151,14 @@ public class LinearStateSpace extends TypedCompositeActor {
     public Parameter B;
 
     /** The C matrix in the state-space representation. The number of
-     *  columns must equal to the number of columns of the A matrix. 
+     *  columns must equal to the number of columns of the A matrix.
      *  The number of rows must equal to the width of the output port.
      *  The default value is [[1.0]].
      */
     public Parameter C;
 
     /** The D matrix in the state-space representation. The number of
-     *  columns must equal to the width of the input port. 
+     *  columns must equal to the width of the input port.
      *  The number of rows must equal to the width of the output port.
      *  The default value is [[0.0]].
      */
@@ -170,17 +170,17 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  The default value is [0.0].
      */
     public Parameter initialStates;
-    
+
     //////////////////////////////////////////////////////////////////////
     ////                      public methods                          ////
-    
+
     /** If the argument is <i>A, B, C, D</i> or <i>initialState</i>
      *  parameters, check that they are indeed matrices and vectors,
      *  and request for initialization from the director if there is one.
      *  Other sanity checks like the dimensions of the matrices will
      *  be done in the preinitialize() method.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the numerator and the 
+     *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
@@ -219,7 +219,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             _requestInitialization();
         } else if(attribute == initialStates) {
             // The initialStates parameter should be a row vector.
-            DoubleMatrixToken token = 
+            DoubleMatrixToken token =
                 (DoubleMatrixToken)initialStates.getToken();
             if(token.getRowCount() != 1 || token.getColumnCount() < 1) {
                 throw new IllegalActionException(this,
@@ -242,12 +242,12 @@ public class LinearStateSpace extends TypedCompositeActor {
 
     /** Sanity check the parameters; if the parameters are legal
      *  create a continuous-time subsystem that implement the model,
-     *  preinitialize all the actors in the subsystem, 
+     *  preinitialize all the actors in the subsystem,
      *  and set the opaqueness of this actor to true.
      *  This method need the write access on the workspace.
      *  @throws IllegalActionException If there is no CTDirector,
      *  or any contained actors throw it in its preinitialize() method.
-     *  
+     *
      */
     public void preinitialize() throws IllegalActionException {
         // Check parameters.
@@ -261,7 +261,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         int r = c.getRowCount();
         DoubleMatrixToken d = (DoubleMatrixToken)D.getToken();
         DoubleMatrixToken x0 = (DoubleMatrixToken)initialStates.getToken();
-        
+
         try {
             _workspace.getWriteAccess();
             removeAllEntities();
@@ -288,14 +288,14 @@ public class LinearStateSpace extends TypedCompositeActor {
                     // in the A matrix is 0.
                     Token tokenIJ = a.getElementAsToken(i,j);
                     if(!(tokenIJ.isEqualTo(tokenIJ.zero())).booleanValue()) {
-                        feedback[i][j] = new Scale(this, 
+                        feedback[i][j] = new Scale(this,
                                 "feedback_" + i + "_" +j);
                         feedback[i][j].factor.setToken(tokenIJ);
                         feedback[i][j].input.link(states[i]);
                         connect(feedback[i][j].output, stateAdders[j].plus);
                     }
                 }
-            }              
+            }
             // Inputs
             Scale[][] inputScales = new Scale[n][m];
             IORelation[] inputs = new IORelation[m];
@@ -304,7 +304,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                 input.link(inputs[j]);
                 // Create input scales.
                 for (int i = 0; i < n; i++) {
-                    // We create a scale for each input even if the 
+                    // We create a scale for each input even if the
                     // corresponding element in B is 0. This is because
                     // if the elements of A's in this row are also zero,
                     // then we will have an illegal topology.
@@ -337,11 +337,11 @@ public class LinearStateSpace extends TypedCompositeActor {
                     // Create the scale only if the element is not 0.
                     Token tokenLJ = d.getElementAsToken(l, j);
                     if(!(tokenLJ.isEqualTo(tokenLJ.zero())).booleanValue()) {
-                        feedThrough[l][j] = new Scale(this, 
+                        feedThrough[l][j] = new Scale(this,
                                 "feedThrough_" + l + "_" + j);
                         feedThrough[l][j].factor.setToken(tokenLJ);
                         feedThrough[l][j].input.link(inputs[j]);
-                        connect(feedThrough[l][j].output, 
+                        connect(feedThrough[l][j].output,
                                 outputAdders[l].plus);
                     }
                 }
@@ -372,7 +372,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             return getExecutiveDirector();
         }
     }
-    
+
     /** Wrapup.
      */
     public void wrapup() throws IllegalActionException {
@@ -426,7 +426,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                     + "the number of columns of the A matrix.");
         }
     }
-        
+
     /** Set this composite actor to opaque and request for reinitialization
      *  from the director if there is one.
      */

@@ -3,7 +3,7 @@
 
 options {
     LOOKAHEAD=1;
-    STATIC = true;                             
+    STATIC = true;
 }
 
 
@@ -61,7 +61,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants/*
 
 /*@egen*/
 
-    /** Read a Matrix from File. 
+    /** Read a Matrix from File.
         @exception IllegalActionException If an error occurs during parsing.
     */
     public Vector readMatrix() throws IllegalActionException {
@@ -72,7 +72,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants/*
             throw new IllegalActionException(e.getMessage());
         }
 	return m;
-    }	
+    }
 }
 
 PARSER_END(MatrixParser)
@@ -91,7 +91,7 @@ SKIP :
 	< CONSTANT: <FLOAT>
 	    | <FLOAT> ( ["e","E"] ([ "-","+"])? <INTEGER> )?
     	>
-  | 	< #FLOAT: <INTEGER> 
+  | 	< #FLOAT: <INTEGER>
 	    | <INTEGER> ( "." <INTEGER> )?
 	    | "." <INTEGER>
     	>
@@ -103,7 +103,7 @@ SKIP :
 {
     < NAME     : ( ["a"-"z" , "A"-"Z" , "_"] )+ ( ["a"-"z" , "A"-"Z" , "_" , "'", "0"-"9"] )* >
  |  < NATURAL  : ( ["0"-"9"] )+ ( ["0"-"9"] )* >
- |  < SIGN     : ["-","+"] > 
+ |  < SIGN     : ["-","+"] >
 }
 
 
@@ -135,8 +135,8 @@ Vector matrix() :
      jjtc000 = false;
    }
 /*@egen*/
-	   
-   {  
+
+   {
        return m;
    }/*@bgen(jjtree)*/
    } catch (Throwable jjte000) {
@@ -180,7 +180,7 @@ Vector row() :
      jjtc000 = false;
    }
 /*@egen*/
-   {	
+   {
        return row;
    }/*@bgen(jjtree)*/
    } catch (Throwable jjte000) {
@@ -235,4 +235,4 @@ double element() :
     }
 /*@egen*/
 }
- 
+

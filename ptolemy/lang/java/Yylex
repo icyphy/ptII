@@ -100,35 +100,35 @@ CPlusPlusStyleComment=("//".*[\n\r])
 "false" {  return JavaParser.FALSE; }
 
 {Letter}{AlphaNum}* {
-           
+
      retval = new JavaParserval(0);
      retval.sval = yytext();
 		  return JavaParser.IDENTIFIER;
 		}
 
 [1-9]{DEC}*	{
-      
+
      retval = new JavaParserval(0);
      retval.sval = yytext();
 		  return JavaParser.INT_LITERAL;
 		}
 
 0{OCT}*	{
-      
+
      retval = new JavaParserval(0);
      retval.sval = yytext();
 		  return JavaParser.INT_LITERAL;
 		}
 
 0[xX]{HEX}+	{
-      
+
      retval = new JavaParserval(0);
      retval.sval = yytext();
 		  return JavaParser.INT_LITERAL;
 		}
 
 [1-9]{DEC}*[lL]	{
-      
+
      retval = new JavaParserval(0);
      String s = yytext();
      retval.sval = s.substring(0, s.length() - 1);
@@ -136,7 +136,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 		}
 
 0{OCT}*[lL]	{
-      
+
      retval = new JavaParserval(0);
      String s = yytext();
      retval.sval = s.substring(0, s.length() - 1);
@@ -144,7 +144,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 		}
 
 0[xX]{HEX}+[lL]	{
-      
+
      retval = new JavaParserval(0);
      String s = yytext();
      retval.sval = s.substring(0, s.length() - 1);
@@ -153,7 +153,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 
 {DEC}+"."{DEC}*([eE][-+]?{DEC}+)?[dD]?|"."{DEC}+([eE][-+]?{DEC}+)?[dD]?|{DEC}+([eE][-+]?{DEC}+)[dD]?|{DEC}+[dD]
    {
-      
+
      retval = new JavaParserval(0);
 		  retval.sval = yytext();
 		  return JavaParser.DOUBLE_LITERAL;
@@ -161,14 +161,14 @@ CPlusPlusStyleComment=("//".*[\n\r])
 
 {DEC}+"."{DEC}*([eE][-+]?{DEC}+)?[fF]|"."{DEC}+([eE][-+]?{DEC}+)?[fF]|{DEC}+([eE][-+]?{DEC}+)[fF]|{DEC}+[fF]
    {
-       
+
      retval = new JavaParserval(0);
 		  retval.sval = yytext();
 		  return JavaParser.FLOAT_LITERAL;
 		}
 
 '({LiteralChar}|\")'	{
-      
+
      retval = new JavaParserval(0);
      String s = yytext();
      retval.sval = s.substring(1, s.length() - 1);
@@ -176,7 +176,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 		}
 
 \"({LiteralChar}|"'")*\" {
-      
+
      retval = new JavaParserval(0);
      String s = yytext();
      retval.sval = s.substring(1, s.length() - 1);
@@ -186,7 +186,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 ["(){}];,."]	{  return yytext().charAt(0); }
 
 "["([ \t\n]|{C_StyleComment}|{CPlusPlusStyleComment})*"]"?  {
-      
+
      String s = yytext();
 
 		  if (s.charAt(s.length() - 1) == ']') {

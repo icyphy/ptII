@@ -38,7 +38,7 @@ import javax.vecmath.*;
 //////////////////////////////////////////////////////////////////////////
 //// GRActor
 /**
-A base class for all GR actors. 
+A base class for all GR actors.
 
  @author C. Fong
  @version $Id$
@@ -89,16 +89,16 @@ public class GRActor extends TypedAtomicActor {
 
     public void makeSceneGraphConnection() throws IllegalActionException {
     }
-   
+
 
     protected void _createModel() throws IllegalActionException {
     }
 
     protected void _stopRenderer() {
     }
-    
+
     protected void _startRenderer() {
     }
-    
+
     protected static GRActor _root;
 }

@@ -126,7 +126,7 @@ public class MoMLApplet extends PtolemyApplet {
         if (_toplevel != null) {
             String tip = Documentation.consolidate(_toplevel);
             if (tip != null) {
-                return version 
+                return version
 		    + " model given in MoML:\n" + tip
 		    + build;
             } else {

@@ -294,7 +294,7 @@ public class PtolemyApplet extends BasicJApplet
                 throw new IllegalActionException(
                         "Cannot find a suitable constructor for "
                         + modelSpecification);
-            }            
+            }
         }
         // If result is still null, then there was no modelClass given.
         if (result == null) {

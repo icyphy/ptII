@@ -146,7 +146,7 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
     // Primitive types.
 
     // First primitive type should start at 0.
-    public static final int TYPE_KIND_BOOLEAN = 0; 
+    public static final int TYPE_KIND_BOOLEAN = 0;
     public static final int TYPE_KIND_BYTE    = 1;
     public static final int TYPE_KIND_SHORT   = 2;
     public static final int TYPE_KIND_CHAR    = 3;

@@ -497,12 +497,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void preinitialize() throws IllegalActionException {
-        
+
         _createReceivers();
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
             TypedIOPort inport = (TypedIOPort)inputPorts.next();
-            
+
             _removeInputVariables(inport);
         }
         Iterator attributes = attributeList(Settable.class).iterator();

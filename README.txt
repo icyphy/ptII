@@ -1,4 +1,4 @@
-Ptolemy II README File 
+Ptolemy II README File
 Version: $Id$
 
 Ptolemy II consists of a group of Java packages that support

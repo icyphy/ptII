@@ -53,7 +53,7 @@ This solver uses the following formula to solve it:
 <pre>
     x(t+h) = x(t) + h*x'(t+h)
 </pre>
-where x(t) is the current state, x(t+h) is the next 
+where x(t) is the current state, x(t+h) is the next
 state, h is the step size, and x'(t+h) is the derivative of x at t+h.
 The formula above is an algebraic equation, and this method uses fixed
 point iteration to solve it.
@@ -96,7 +96,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 1 to indicate that an integrator under this solver needs 
+    /** Return 1 to indicate that an integrator under this solver needs
      *  one auxiliary variable.
      *  @return 1.
      */
@@ -104,7 +104,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
         return 1;
     }
 
-    /** Return 0 to indicate that no history information is needed by 
+    /** Return 0 to indicate that no history information is needed by
      *  this solver.
      *  @return 0.
      */
@@ -127,7 +127,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
                     " must have a CT director.");
         }
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-        double tentativeState = 
+        double tentativeState =
             integrator.getState() + f*(dir.getCurrentStepSize());
         double error = Math.abs(tentativeState-integrator.getTentativeState());
         if( !(error < dir.getValueResolution())) {
@@ -140,14 +140,14 @@ public class BackwardEulerSolver extends FixedStepSolver {
     }
 
 
-    /** Advance time by the current step size and return true if 
+    /** Advance time by the current step size and return true if
      *  the state of the integrators are resolved accurately at that time.
      *  It resolves the states by getting the state transition
      *  schedule from the scheduler and trying to iteration until
      *  the fixed point is reached. Return false if the fixed point
      *  is not reached after <i>maxIterations</i> number of iterations.
-     *  This method only resoles the 
-     *  tentative state. It is the director's job to update the 
+     *  This method only resoles the
+     *  tentative state. It is the director's job to update the
      *  states.
      *  @exception IllegalActionException If there is no director or
      *  no scheduler.
@@ -205,7 +205,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return true if all integrators agree that the fixed-point 
+    /** Return true if all integrators agree that the fixed-point
      *  iteration has converged. Integrators vote for convergence
      *  by calling the _voteForConvergence() with a true arguments.
      *  And the value returned here is the <i>AND</i> of all votes.

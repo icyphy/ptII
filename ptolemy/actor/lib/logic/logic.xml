@@ -29,7 +29,7 @@
 
   <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
   </entity>
- 
+
   <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">

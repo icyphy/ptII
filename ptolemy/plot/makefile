@@ -386,7 +386,7 @@ isj:
 		$(PTTMPDIR)/installshield/doc/$(PTDIST)/ptolemy/plot
 	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/copyright.txt \
 		$(PTTMPDIR)/installshield/src/$(PTDIST)/ptplot.ico \
-		$(PTTMPDIR)/installshield/runtime/$(PTDIST) 
+		$(PTTMPDIR)/installshield/runtime/$(PTDIST)
 	@echo "Copy .jar files to runtime dir"
 	(cd $(PTTMPDIR)/installshield/src/$(PTDIST); tar -cf - `find . -name "*.jar" -print`) | ( cd $(PTTMPDIR)/installshield/runtime/$(PTDIST); tar -xf -)
 	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/ptolemy/plot/plotml/*.dtd \

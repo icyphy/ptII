@@ -73,7 +73,7 @@ This parameter is effective only if the director
 is at the top level. Default value is 1.0.
 <LI> <code>initStepSize</code>: The suggested integration step size
 by the user. This will be the step size for fixed step
-size ODE solvers if there is no breakpoint. However, it is just 
+size ODE solvers if there is no breakpoint. However, it is just
 a hint otherwise. Default value is 0.1
 <LI> <code>minStepSize</code>: The minimum step
 size that the user wants to use in the simulation. Default value is 1e-5.
@@ -93,7 +93,7 @@ a reduced step size. Default value 1e-4.
 <LI> <code>valueResolution</code>:
  This is used to control the convergence of fixed point iterations.
 If in two successive iterations the differences of the state variables
-is less than this resolution, then the fixed point is considered to have 
+is less than this resolution, then the fixed point is considered to have
 reached.
 Default value is 1e-6.
 <LI> <code>timeResolution</code>: The minimum resolution
@@ -155,7 +155,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container. May be thrown by a derived class.
-     *  @exception NameDuplicationException If the name collides with 
+     *  @exception NameDuplicationException If the name collides with
      *   a property in the container.
      */
     public CTDirector(CompositeEntity container, String name)
@@ -228,7 +228,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ////                         public variables                  ////
 
     /** Public variable indicating whether the statistics
-     *  is to be collected. Statistics can be collected during the 
+     *  is to be collected. Statistics can be collected during the
      *  execution if this variable is set to true. These information
      *  can be used to choose ODE solvers and their parameters.
      *  FIXME: Should use debug events.
@@ -259,7 +259,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(_debugging) _debug("Updating CTDirector parameter: ", 
+        if(_debugging) _debug("Updating CTDirector parameter: ",
                 attribute.getName());
         if(attribute == startTime) {
             _startTime = ((DoubleToken)startTime.getToken()).doubleValue();
@@ -273,7 +273,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             double value = ((DoubleToken)initStepSize.getToken()).
                 doubleValue();
             if (value < 0.0) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Cannot set a negative step size.");
             }
             _initStepSize = value;
@@ -281,21 +281,21 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             double value = ((DoubleToken)errorTolerance.getToken()).
                 doubleValue();
             if (value < 0.0) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Cannot set a negative error tolerance.");
             }
             _errorTolerance = value;
         } else if(attribute == minStepSize) {
             double value = ((DoubleToken)minStepSize.getToken()).doubleValue();
             if (value < 0.0) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Cannot set a negative step size.");
             }
             _minStepSize = value;
         } else if(attribute == maxStepSize) {
             double value = ((DoubleToken)maxStepSize.getToken()).doubleValue();
             if (value < 0.0) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Cannot set a negative step size.");
             }
             _maxStepSize = value;
@@ -303,7 +303,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             double value = ((DoubleToken)valueResolution.getToken()).
                 doubleValue();
             if (value < 0.0) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Cannot set a negative value resolution.");
             }
             _valueResolution = value;
@@ -311,7 +311,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             double value = ((DoubleToken)timeResolution.getToken()).
                 doubleValue();
             if (value < 0.0) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Cannot set a negative time resolution.");
             }
             _timeResolution = value;
@@ -325,7 +325,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         } else if(attribute == maxIterations) {
             int value = ((IntToken)maxIterations.getToken()).intValue();
             if (value < 1) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Cannot set a zero or negative iteration number.");
             }
             _maxIterations = value;
@@ -343,7 +343,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Return true if the director can be a top-level director.
      *  Derived class should override this to show whether it can
-     *  serve as a top-level director. 
+     *  serve as a top-level director.
      */
     public abstract boolean canBeTopLevelDirector();
 
@@ -434,7 +434,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  and the fixed point is still not found, then the algorithm
      *  is considered to have failed. This method is final
      *  for performance reason.
-     *  @return The maximum number of iterations when calculating 
+     *  @return The maximum number of iterations when calculating
      *  fixed points.
      */
     public final int getMaxIterations() {
@@ -466,7 +466,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public double getNextIterationTime() {
         return getIterationBeginTime() + getCurrentStepSize();
     }
-    
+
     /** Return the start time parameter value. This method is final
      *  for performance reason.
      *  @return the start time.
@@ -566,7 +566,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  Preinitialize all the directed actors.
      *  Time does not have a meaning yet. So actors should not
      *  use a notion of time at the preinitialize stage.
-     *  
+     *
      *  @exception IllegalActionException If the director has no
      *  container, the director does not fit this level of hierarchy,
      *  or there is no scheduler.
@@ -603,7 +603,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         // invalidate schedule
         scheduler.setValid(false);
-        if(_debugging) _debug(getFullName(), 
+        if(_debugging) _debug(getFullName(),
                 "create/clear break point table.");
         TotallyOrderedSet breakpoints = getBreakPoints();
         if(breakpoints != null) {
@@ -655,10 +655,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Set the current step size. The current step size 
+    /** Set the current step size. The current step size
      *  is very import during
      *  the simulation and should NOT be changed in the middle of an
-     *  iteration. 
+     *  iteration.
      *  @param stepsize The step size to be set.
      */
     public void setCurrentStepSize(double stepsize) {
@@ -678,7 +678,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Set the suggested next step size. If the argument is
-     *  large than the maximum step size, then set the 
+     *  large than the maximum step size, then set the
      *  suggested next step size to the
      *  maximum step size.
      *  @param stepsize The suggested next step size.
@@ -691,7 +691,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-    
+
     /** Show the statistics of the simulation if requested. The statistics
      *  includes the number of steps simulated, the number of function
      *  evaluations (firing all actors in the state transition schedule),
@@ -732,28 +732,28 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             startTime = new Parameter(
                     this, "startTime", new DoubleToken(0.0));
             startTime.setTypeEquals(BaseType.DOUBLE);
-            stopTime = new Parameter(this, "stopTime", 
+            stopTime = new Parameter(this, "stopTime",
                     new DoubleToken(_stopTime));
             stopTime.setTypeEquals(BaseType.DOUBLE);
-            initStepSize = new Parameter(this, "initStepSize", 
+            initStepSize = new Parameter(this, "initStepSize",
                     new DoubleToken(_initStepSize));
             initStepSize.setTypeEquals(BaseType.DOUBLE);
-            minStepSize = new Parameter(this, "minStepSize", 
+            minStepSize = new Parameter(this, "minStepSize",
                     new DoubleToken(_minStepSize));
             minStepSize.setTypeEquals(BaseType.DOUBLE);
-            maxStepSize = new Parameter(this, "maxStepSize", 
+            maxStepSize = new Parameter(this, "maxStepSize",
                     new DoubleToken(_maxStepSize));
             maxStepSize.setTypeEquals(BaseType.DOUBLE);
-            maxIterations = new Parameter(this, "maxIterations", 
+            maxIterations = new Parameter(this, "maxIterations",
                     new IntToken(_maxIterations));
             maxIterations.setTypeEquals(BaseType.INT);
-            errorTolerance = new Parameter(this, "errorTolerance", 
+            errorTolerance = new Parameter(this, "errorTolerance",
                     new DoubleToken(_errorTolerance));
             errorTolerance.setTypeEquals(BaseType.DOUBLE);
-            valueResolution = new Parameter(this, "valueResolution", 
+            valueResolution = new Parameter(this, "valueResolution",
                     new DoubleToken(_valueResolution));
             valueResolution.setTypeEquals(BaseType.DOUBLE);
-            timeResolution = new Parameter(this, "timeResolution", 
+            timeResolution = new Parameter(this, "timeResolution",
                     new DoubleToken(_timeResolution));
             timeResolution.setTypeEquals(BaseType.DOUBLE);
 
@@ -811,7 +811,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  A CTDirector, after finding out that a breakpoint has happened at
      *  the current time, should call this method with a true argument.
      *  In the next iteration,
-     *  the solver may be changed to handle the breakpoint. 
+     *  the solver may be changed to handle the breakpoint.
      *
      *  @param breakpoint True if this is a breakpoint iteration.
      */

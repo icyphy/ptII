@@ -182,7 +182,7 @@ public class CompositeActorApplication {
      *  a display.
      *  <p>
      *  We then start the model running.
-     * 
+     *
      *  @param model The model to execute.
      *  @see ptolemy.actor.Manager#startRun()
      */
@@ -192,10 +192,10 @@ public class CompositeActorApplication {
 
         // NOTE: If you modify this method, please be sure that it
         // will work for non-graphical models in the nightly test suite.
-        
+
         // Iterate through the model, looking for something that is Placeable.
         boolean hasPlaceable = false;
-        Iterator atomicEntities = model.allAtomicEntityList().iterator(); 
+        Iterator atomicEntities = model.allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
             if(object instanceof Placeable) {

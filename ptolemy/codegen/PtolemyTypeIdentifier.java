@@ -198,7 +198,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 return i + TYPE_KIND_TOKEN;
             }
         }
-        
+
         System.out.println("kindOfTokenType(): type = '"
                 + type
                 + "' Known types =\n");
@@ -453,7 +453,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPE_KIND_TOKEN, TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_SCALAR_TOKEN,
         TYPE_KIND_INT_TOKEN, TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN,
         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN,
-        TYPE_KIND_STRING_TOKEN, 
+        TYPE_KIND_STRING_TOKEN,
         /*TYPE_KIND_ARRAY_TOKEN,*/ TYPE_KIND_INT_ARRAY_TOKEN,
         TYPE_KIND_MATRIX_TOKEN,
         TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN,
@@ -476,7 +476,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         BaseType.GENERAL, BaseType.BOOLEAN, BaseType.SCALAR,
             BaseType.INT, BaseType.DOUBLE, BaseType.LONG,
             BaseType.COMPLEX, BaseType.FIX, BaseType.OBJECT,
-            BaseType.STRING, 
+            BaseType.STRING,
             // FIXME: we need to either generalize this to handle all
             // types, or add in each type by hand.
             // Array???,
@@ -852,7 +852,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, SCALAR_TOKEN_TYPE,
                 INT_TOKEN_TYPE, DOUBLE_TOKEN_TYPE, LONG_TOKEN_TYPE,
                 COMPLEX_TOKEN_TYPE, FIX_TOKEN_TYPE, OBJECT_TOKEN_TYPE,
-                STRING_TOKEN_TYPE, 
+                STRING_TOKEN_TYPE,
                 INT_ARRAY_TOKEN_TYPE,
                 MATRIX_TOKEN_TYPE,
                 BOOLEAN_MATRIX_TOKEN_TYPE, INT_MATRIX_TOKEN_TYPE,

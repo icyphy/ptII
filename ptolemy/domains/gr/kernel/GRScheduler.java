@@ -82,7 +82,7 @@ public class GRScheduler extends Scheduler {
      *  graph is not schedulable.  This occurs in the following circumstances:
      *  <ul>
      *  <li>The graph is not a connected graph. // FIXME. not checked
-     *  <li>The graph is not acyclic 
+     *  <li>The graph is not acyclic
      *  <li>Multiple output ports are connected to the same broadcast
      *  relation. (equivalent to a non-deterministic merge) // FIXME: check
      *  </ul>
@@ -93,7 +93,7 @@ public class GRScheduler extends Scheduler {
      *  schedulable.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
-      
+
        // Clear the graph
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
@@ -120,7 +120,7 @@ public class GRScheduler extends Scheduler {
             Actor actor = (Actor) actors.next();
             dag.add(actor);
         }
-        
+
         actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -139,7 +139,7 @@ public class GRScheduler extends Scheduler {
                     }
                 }
             }
-        
+
             // Add the edge in the DAG
             Iterator succeedingActors = successors.iterator();
             while (succeedingActors.hasNext()) {
@@ -147,8 +147,8 @@ public class GRScheduler extends Scheduler {
                 dag.addEdge(actor, connectedActor);
             }
         }
-        
-        
+
+
         // NOTE: The following may be a very costly test, which is why
         // it it done at the end.  However, this means that we cannot
         // report an actor in the directed cycle.  Probably DirectedGraph
@@ -169,8 +169,8 @@ public class GRScheduler extends Scheduler {
         if (dag.top() == null) {
             // FIXME: throw exception here
         }
-        
-        
+
+
         LinkedList result = new LinkedList();
         Object[] sorted = dag.topologicalSort();
         for(int counter=0; counter < actorCount ;counter++) {

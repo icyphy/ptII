@@ -54,7 +54,7 @@ of <i>inputY</i> are together considered the first signal,
 then the second channel of <i>inputX</i> and the second channel
 of <i>inputY</i> are considered the second signal, and so on.
 This requires that <i>inputX</i> and
-<i>inputY</i> have the same width. 
+<i>inputY</i> have the same width.
 <p>
 This actor
 assumes that there is at least one token available on each channel
@@ -100,7 +100,7 @@ public class XYScope extends XYPlotter {
     ////                         public methods                    ////
 
     /** Notify this that an attribute has changed.  If either parameter
-     *  is changed, then this actor updates the configuration of the 
+     *  is changed, then this actor updates the configuration of the
      *  visible plot.
      *  @exception IllegalActionException If the expression of the
      *  attribute cannot be parsed or cannot be evaluated.
@@ -132,8 +132,8 @@ public class XYScope extends XYPlotter {
 
     /** Call the base class postfire() method, then yield this
      *  thread so that the event thread gets a chance.  This is necessary,
-     *  because otherwise the swing thread may be starved and accumulate a 
-     *  large number of points waiting to be plotted.  
+     *  because otherwise the swing thread may be starved and accumulate a
+     *  large number of points waiting to be plotted.
      *  @exception IllegalActionException If there is no director,
      *  or if the base class throws it.
      *  @return True if it is OK to continue.

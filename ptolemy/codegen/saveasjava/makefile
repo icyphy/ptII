@@ -51,7 +51,7 @@ JSRCS = \
 	GeneratorTableau.java \
 	GeneratorTableauAttribute.java \
 	MoMLToJava.java \
-	SaveAsJava.java 
+	SaveAsJava.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -82,9 +82,9 @@ depend:
 	@echo "no dependencies in this directory"
 
 demo: jclass
-	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.codegen.saveasjava.MoMLToJava test/rampFileWriter.xml 
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.codegen.saveasjava.MoMLToJava test/rampFileWriter.xml
 	CLASSPATH="$(CLASSPATH)" "$(JAVAC)" rampFileWriter.java
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication -class rampFileWriter -iterations 5 
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication -class rampFileWriter -iterations 5
 
 demo_vergil: jclass
 	vergil test/rampFileWriter.xml

@@ -9,7 +9,7 @@ package ptolemy.domains.ct.demo.Corba.util;
 */
 
 
-/* A CORBA compatible interface that implements the execution 
+/* A CORBA compatible interface that implements the execution
 	 * methods of Ptolemy II.
 	 */
 public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implements ptolemy.domains.ct.demo.Corba.util.CorbaActor
@@ -30,9 +30,9 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
   }
 
 
-  /* Mirror the fire() method of the Ptolemy 
+  /* Mirror the fire() method of the Ptolemy
   		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the 
+  		 * @exception CorbaIllegalActionException If the
   		 *   method is an illegal action of the actor.
   		 */
   public void fire () throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException
@@ -58,7 +58,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   /* Return the value (in the form of a string) of
   		 * a parameter.
-  		 * @exception CorbaIllegalActionException If the 
+  		 * @exception CorbaIllegalActionException If the
   		 *  query of parameter is not supported by the actor.
   		 * @exception CorbaUnknowParamException If the parameter
   		 *  name is not known by the actor.
@@ -91,7 +91,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   /* Mirror the initialize() method of the Ptolmey
   		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the 
+  		 * @exception CorbaIllegalActionException If the
   		 *   method is an illegal action of the actor.
   		 */
   public void initialize () throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException
@@ -119,9 +119,9 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
   	  	 * port contains unsent data.
   		 * @exception CorbaIllegalActionException If the query is
   		 *   not supported by the actor.
-  		 * @exception CorbaUnknownPortException If the specified 
+  		 * @exception CorbaUnknownPortException If the specified
   		 *   port is not known by the actor.
-  		 * @exception CorbaIndexOutofBoundException If the 
+  		 * @exception CorbaIndexOutofBoundException If the
   		 *   channel index is out of the width of the port.
   		 */
   public boolean hasData (String portName, short portIndex) throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException, ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException
@@ -211,7 +211,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
   /* Set the width of the specified port.
   		 * @param portName The name of the port.
   		 * @param width The width to be set.
-  		 * @exception CorbaIllegalActionException If the width 
+  		 * @exception CorbaIllegalActionException If the width
   		 *  to be set is not supported by the port, e.g. the
   		 *  port is restricted to a single port, but the width
   		 *  to be set is greater than one.
@@ -245,7 +245,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   /* Mirror the postfire() method of the Ptolmey
   		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the 
+  		 * @exception CorbaIllegalActionException If the
   		 *   method is an illegal action of the actor.
   		 */
   public boolean postfire () throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException
@@ -273,7 +273,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   /* Mirror the prefire() method of the Ptolmey
   		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the 
+  		 * @exception CorbaIllegalActionException If the
   		 *   method is an illegal action of the actor.
   		 */
   public boolean prefire () throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException
@@ -302,9 +302,9 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
   /* Set the value of the specified parameter.
   		 * @param paramName The parameter name.
   		 * @param paramValue The value to be set.
-  		 * @exception CorbaIllegalActionException If the set 
+  		 * @exception CorbaIllegalActionException If the set
   		 *  value opertaion is not supported by the parameter.
-  		 * @exception CorbaUnknownParamException If the 
+  		 * @exception CorbaUnknownParamException If the
   		 *  parameter name is not known by the actor.
   		 * @exception CorbaIllegalValueException If the value
   		 *  is invalid for this parameter.
@@ -338,7 +338,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   /*  Mirror the stopFire() method of the Ptolmey
   		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the 
+  		 * @exception CorbaIllegalActionException If the
   		 *   method is an illegal action of the actor.
   		 */
   public void stopFire () throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException
@@ -364,7 +364,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   /* Mirror the terminate() method of the Ptolmey
   		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the 
+  		 * @exception CorbaIllegalActionException If the
   		 *   method is an illegal action of the actor.
   		 */
   public void terminate () throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException
@@ -472,7 +472,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   /* Mirror the wrapup() method of the Ptolmey
   		 * executable interface.
-  		 * @exception CorbaIllegalActionException If the 
+  		 * @exception CorbaIllegalActionException If the
   		 *   method is an illegal action of the actor.
   		 */
   public void wrapup () throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException
@@ -506,7 +506,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   private void readObject (java.io.ObjectInputStream s)
   {
-     try 
+     try
      {
        String str = s.readUTF ();
        org.omg.CORBA.Object obj = org.omg.CORBA.ORB.init ().string_to_object (str);
@@ -517,7 +517,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl implement
 
   private void writeObject (java.io.ObjectOutputStream s)
   {
-     try 
+     try
      {
        String str = org.omg.CORBA.ORB.init ().object_to_string (this);
        s.writeUTF (str);

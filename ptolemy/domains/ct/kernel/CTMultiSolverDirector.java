@@ -56,8 +56,8 @@ solvers is that when abrupt changes in signals or actor functionalities
 occur (also called breakpoints), the state of the system
 have to be recalculated.
 At these points, a special ODE solver, called the "breakpointODESolver"
-is used. The simulation is executed as if the breakpoint is a new 
-starting point. Typically, breakpointODESolvers do not advance time. 
+is used. The simulation is executed as if the breakpoint is a new
+starting point. Typically, breakpointODESolvers do not advance time.
 <P>
 This director handles both predictable breakpoints, which are breakpoints
 that are registered in the breakpoint table, and unpredictable breakpoints,
@@ -72,7 +72,7 @@ This director has two more parameters than the CTDirector base
 class.<BR>
 <UL>
 <LI><I>ODESolver</I>: This is the name of the normal ODE solver
-used in nonbreakpoint iterations. 
+used in nonbreakpoint iterations.
 <LI><I>breakpointODESolver</I>: This is the name of the ODE solver that
 is used in the iterations just after the breakpoint. The breakpoint
 ODE solvers should not require history information (this property
@@ -147,11 +147,11 @@ public class CTMultiSolverDirector extends CTDirector {
     /** React to a change in an attribute. If the changed attribute matches
      *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
-     *  In particular, if the <i>ODESolver</i> or the 
-     *  <i>breakpointODESolver</i> parameters are changed, then 
+     *  In particular, if the <i>ODESolver</i> or the
+     *  <i>breakpointODESolver</i> parameters are changed, then
      *  the corresponding solvers will be instantiated. If the ODEsolver
      *  instantiated is an instance of BreakpointODESolver, then
-     *  an IllegalActionException will be thrown, and the original 
+     *  an IllegalActionException will be thrown, and the original
      *  ODESolver will be unchanged.
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the new solver that is specified
@@ -165,9 +165,9 @@ public class CTMultiSolverDirector extends CTDirector {
                 ((StringToken)ODESolver.getToken()).stringValue();
             ODESolver defaultSolver = _instantiateODESolver(_solverClassName);
             if (defaultSolver instanceof BreakpointODESolver) {
-                throw new IllegalActionException(this, _solverClassName + 
+                throw new IllegalActionException(this, _solverClassName +
                         " can only be used as a breakpoint ODE solver.");
-            } 
+            }
             _defaultSolver = defaultSolver;
             _setCurrentODESolver(_defaultSolver);
         } else if (attribute == breakpointODESolver) {
@@ -198,7 +198,7 @@ public class CTMultiSolverDirector extends CTDirector {
     /** Clone the director into the specified workspace. This calls the
      *  base class and then copies the parameter of this director.  The new
      *  actor will have the same parameter values as the old.
-     *  Note that ODE solvers are stateless, so we only clone the class 
+     *  Note that ODE solvers are stateless, so we only clone the class
      *  name of the solvers.
      *  @param workspace The workspace for the new object.
      *  @return A new director.
@@ -207,9 +207,9 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        CTMultiSolverDirector newobj = 
+        CTMultiSolverDirector newobj =
             (CTMultiSolverDirector)(super.clone(workspace));
-        newobj.ODESolver = 
+        newobj.ODESolver =
             (Parameter)newobj.getAttribute("ODESolver");
         newobj.breakpointODESolver =
             (Parameter)newobj.getAttribute("breakpointODESolver");
@@ -347,7 +347,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
    /**  Return true always, indicating that the system is always ready
-     *  for one iteration. Increase the count of integration step for 
+     *  for one iteration. Increase the count of integration step for
      *  statistics. Note that the actors are not prefired in this method.
      *
      *  @return True Always.
@@ -393,14 +393,14 @@ public class CTMultiSolverDirector extends CTDirector {
         CTScheduler scheduler = (CTScheduler)getScheduler();
         Iterator eventGenerators = scheduler.eventGeneratorList().iterator();
         while(eventGenerators.hasNext()) {
-            CTEventGenerator generator = 
+            CTEventGenerator generator =
                 (CTEventGenerator) eventGenerators.next();
             generator.emitCurrentEvents();
         }
         // FIXME: Fire all discrete actors here.
         Iterator waveGenerators = scheduler.waveformGeneratorList().iterator();
         while(waveGenerators.hasNext()) {
-            CTWaveformGenerator generator = 
+            CTWaveformGenerator generator =
                 (CTWaveformGenerator) waveGenerators.next();
             generator.consumeCurrentEvents();
         }
@@ -436,7 +436,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     } else {
                         break;
                     }
-                } else { 
+                } else {
                     // Resolve state failed, e.g. in implicit methods.
                     if(getCurrentStepSize() < 0.5*getMinStepSize()) {
                         throw new IllegalActionException(this,
@@ -504,8 +504,8 @@ public class CTMultiSolverDirector extends CTDirector {
             //        + ((NamedObj)actor).getName() + " " + thisAccurate);
             accurate = accurate && thisAccurate;
         }
-        if(_debugging) 
-            _debug(getFullName() + " output accurate is " + accurate); 
+        if(_debugging)
+            _debug(getFullName() + " output accurate is " + accurate);
         return accurate;
     }
 
@@ -525,10 +525,10 @@ public class CTMultiSolverDirector extends CTDirector {
             //if(_debugging) _debug("Checking State Step Size Control Actor: " +
             //        ((NamedObj)actor).getName() + " " + thisAccurate);
             accurate = accurate && thisAccurate;
-            
+
         }
-        if(_debugging) 
-            _debug(getFullName() + " state accurate is " + accurate); 
+        if(_debugging)
+            _debug(getFullName() + " state accurate is " + accurate);
         return accurate;
     }
 
@@ -575,10 +575,10 @@ public class CTMultiSolverDirector extends CTDirector {
                 if(_debugging) _debug(getFullName(),
                         "in BREAKPOINT iteration.");
             }else {
-                // Adjust step size so that the first breakpoint is 
+                // Adjust step size so that the first breakpoint is
                 // not in the middle of this step.
                 point = ((Double)breakPoints.first()).doubleValue();
-                double iterationEndTime = 
+                double iterationEndTime =
                     getCurrentTime() + getCurrentStepSize();
                 if (iterationEndTime > point) {
                     setCurrentStepSize(point-getCurrentTime());
@@ -598,19 +598,19 @@ public class CTMultiSolverDirector extends CTDirector {
         if(!isBreakpointIteration()) {
             double predictedStep = 10.0*getCurrentStepSize();
             CTScheduler scheduler = (CTScheduler)getScheduler();
-            Iterator actors = 
+            Iterator actors =
                 scheduler.stateTransitionSSCActorList().iterator();
             while (actors.hasNext()) {
                 CTStepSizeControlActor actor =
                     (CTStepSizeControlActor) actors.next();
-                predictedStep = Math.min(predictedStep, 
+                predictedStep = Math.min(predictedStep,
                         actor.predictedStepSize());
             }
             actors = scheduler.outputSSCActorList().iterator();
             while (actors.hasNext()) {
                 CTStepSizeControlActor actor =
                     (CTStepSizeControlActor) actors.next();
-                predictedStep = Math.min(predictedStep, 
+                predictedStep = Math.min(predictedStep,
                         actor.predictedStepSize());
             }
             return predictedStep;
@@ -625,13 +625,13 @@ public class CTMultiSolverDirector extends CTDirector {
      *  new state.
      *  It asks all the step size control actors in the state transition
      *  and dynamic actor schedule for the refined step size, and takes the
-     *  minimum of them. This method does not check whether the 
+     *  minimum of them. This method does not check whether the
      *  refined step size is less than the minimum step size.
      *  @return The refined step size.
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refinedStepWRTState() throws IllegalActionException {
-        if(_debugging) 
+        if(_debugging)
             _debug(getFullName(), "refine step with respect to states.");
         double refinedStep = getCurrentStepSize();
         CTScheduler scheduler = (CTScheduler)getScheduler();
@@ -656,7 +656,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refinedStepWRTOutput() throws IllegalActionException {
-        if(_debugging) 
+        if(_debugging)
             _debug(getFullName(), "refine step with respect to output.");
         double refinedStep = getCurrentStepSize();
         CTScheduler scheduler = (CTScheduler)getScheduler();

@@ -9,7 +9,7 @@
             <configure>
            <svg>
            <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">Run the demo and sketch a signal using the right mouse button.
-The signal is multiplied by a sine wave. 
+The signal is multiplied by a sine wave.
  </text>
            </svg>
            </configure>

@@ -58,7 +58,7 @@ This Class provides a parser for read matrices in matlab format.
 
 public class MatrixParser {
 
-    /** Read a Matrix from File. 
+    /** Read a Matrix from File.
         @exception IllegalActionException If an error occurs during parsing.
     */
     public Vector readMatrix() throws IllegalActionException {
@@ -69,7 +69,7 @@ public class MatrixParser {
             throw new IllegalActionException(e.getMessage());
         }
 	return m;
-    }	
+    }
 }
 
 PARSER_END(MatrixParser)
@@ -88,7 +88,7 @@ SKIP :
 	< CONSTANT: <FLOAT>
 	    | <FLOAT> ( ["e","E"] ([ "-","+"])? <INTEGER> )?
     	>
-  | 	< #FLOAT: <INTEGER> 
+  | 	< #FLOAT: <INTEGER>
 	    | <INTEGER> ( "." <INTEGER> )?
 	    | "." <INTEGER>
     	>
@@ -100,7 +100,7 @@ SKIP :
 {
     < NAME     : ( ["a"-"z" , "A"-"Z" , "_"] )+ ( ["a"-"z" , "A"-"Z" , "_" , "'", "0"-"9"] )* >
  |  < NATURAL  : ( ["0"-"9"] )+ ( ["0"-"9"] )* >
- |  < SIGN     : ["-","+"] > 
+ |  < SIGN     : ["-","+"] >
 }
 
 
@@ -121,8 +121,8 @@ Vector matrix() :
       "[" [row=row()]  {m.add(row);}
       (";"  row=row()  {m.add(row);} )* "]"
    )
-	   
-   {  
+
+   {
        return m;
    }
 }
@@ -135,7 +135,7 @@ Vector row() :
 {  (   element=element()       {row.add(new Double(element));}
        ( "," element=element() {row.add(new Double(element));} )*
    )
-   {	
+   {
        return row;
    }
 }
@@ -153,4 +153,4 @@ double element() :
     )
     { return value; }
 }
- 
+

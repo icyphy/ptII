@@ -97,14 +97,14 @@ public class XMLIcon extends EditorIcon implements ValueListener {
                 // Listen for changes in value to the icon description.
                 _description.addValueListener(this);
             }
-            
+
             // clear the caches
             _recreateFigure();
         }
-        
+
         // update the painted list, if necessary
         paintedList();
-        
+
         if(_paintedList == null) {
             // If the paintedList is still null, then return the default
             // figure.
@@ -119,7 +119,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
      */
     public PaintedList paintedList() {
         if (_paintedList == null) {
-            _updatePaintedList();           
+            _updatePaintedList();
         }
         return _paintedList;
     }
@@ -197,14 +197,14 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         }
         try {
             String text = _description.value();
-            
+
             Reader in = new StringReader(text);
             // FIXME: Do we need a base here?
             XmlDocument document = new XmlDocument((URL)null);
             XmlReader reader = new XmlReader();
             reader.parse(document, in);
             XmlElement root = document.getRoot();
-            
+
             _paintedList = SVGParser.createPaintedList(root);
         } catch (Exception ex) {
             // If we fail, then we'll just get a default figure.

@@ -66,19 +66,19 @@ public class Lorenz extends TypedCompositeActor {
 
     public Lorenz(Workspace workspace)
 	    throws IllegalActionException, NameDuplicationException {
-    
+
         // Create the model.
         super(workspace);
 	setName("LorenzSystem");
         Manager manager = new Manager(workspace, "Manager");
         setManager(manager);
-        
+
         // Set up the top level composite actor, director and manager
-        CTMultiSolverDirector director = 
+        CTMultiSolverDirector director =
             new CTMultiSolverDirector(this, "CTMultiSolverDirector");
 	setDirector(director);
         director.stopTime.setToken(new DoubleToken(50.0));
-        
+
         // To get debug outputs, uncomment these:
         // director.addDebugListener(new StreamListener());
         // manager.addDebugListener(new StreamListener());
@@ -96,7 +96,7 @@ public class Lorenz extends TypedCompositeActor {
         SIGMA.factor.setExpression("sigma");
         Scale B = new Scale(this, "B");
         B.factor.setExpression("b");
-        
+
         AddSubtract ADD1 = new AddSubtract(this, "Add1");
         AddSubtract ADD2 = new AddSubtract(this, "Add2");
         AddSubtract ADD3 = new AddSubtract(this, "Add3");
@@ -104,15 +104,15 @@ public class Lorenz extends TypedCompositeActor {
 
         MultiplyDivide MULT1 = new MultiplyDivide(this, "MULT1");
         MultiplyDivide MULT2 = new MultiplyDivide(this, "MULT2");
-        
+
         Integrator X1 = new Integrator(this, "IntegratorX1");
         Integrator X2 = new Integrator(this, "IntegratorX2");
         Integrator X3 = new Integrator(this, "IntegratorX3");
-        
+
         Scale MINUS1 = new Scale(this, "MINUS1");
         Scale MINUS2 = new Scale(this, "MINUS2");
         Scale MINUS3 = new Scale(this, "MINUS3");
-        
+
         XYPlotter myplot = new XYPlotter(this, "CTXYPlot");
         myplot.plot = new Plot();
         myplot.plot.setGrid(true);
@@ -120,7 +120,7 @@ public class Lorenz extends TypedCompositeActor {
         myplot.plot.setYRange(-25.0, 25.0);
         myplot.plot.setSize(400, 400);
         myplot.plot.addLegend(0, "(x1, x2)");
-        
+
         // CTConnections
         TypedIORelation x1 = new TypedIORelation(this, "X1");
         TypedIORelation x2 = new TypedIORelation(this, "X2");
@@ -131,13 +131,13 @@ public class Lorenz extends TypedCompositeActor {
         MINUS1.input.link(x1);
         MINUS2.input.link(x2);
         MINUS3.input.link(x3);
-        
+
         // dx1/dt = sigma*(x2-x1)
         connect(MINUS1.output, ADD1.plus);
         ADD1.plus.link(x2);
         connect(ADD1.output, SIGMA.input);
         connect(SIGMA.output, X1.input);
-        
+
         // dx2/dt = (lambda-x3)*x1-x2
         connect(LAMBDA.output, ADD2.plus);
         connect(MINUS3.output, ADD2.plus);
@@ -154,19 +154,19 @@ public class Lorenz extends TypedCompositeActor {
         connect(MULT2.output, ADD4.plus);
         connect(B.output, ADD4.minus);
         connect(ADD4.output, X3.input);
-        
+
         myplot.inputX.link(x1);
         myplot.inputY.link(x2);
-        
+
         // CT Director parameters
         director.initStepSize.setToken(new DoubleToken(0.01));
         director.minStepSize.setToken(new DoubleToken(1e-6));
-        
+
         // CTActorParameters
         X1.initialState.setToken(new DoubleToken(1.0));
         X2.initialState.setToken(new DoubleToken(1.0));
         X3.initialState.setToken(new DoubleToken(1.0));
-        
+
         MINUS1.factor.setToken(new DoubleToken(-1.0));
         MINUS2.factor.setToken(new DoubleToken(-1.0));
         MINUS3.factor.setToken(new DoubleToken(-1.0));
@@ -174,12 +174,12 @@ public class Lorenz extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                       parameters                          ////
-    
-    /** The stop time of the model. This is the top level facet for 
+
+    /** The stop time of the model. This is the top level facet for
      *  the stopTime parameter of the director.
      */
     Parameter stopTime;
-    
+
     /** The lamda value in the equation.
      */
     Parameter lambda;
@@ -187,7 +187,7 @@ public class Lorenz extends TypedCompositeActor {
     /** The sigma value in the equation.
      */
     Parameter sigma;
-    
+
     /** The b value in the equation.
      */
     Parameter b;
@@ -195,15 +195,15 @@ public class Lorenz extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the parameter changed is the stopTime, then update the 
+    /** If the parameter changed is the stopTime, then update the
      *  stopTime parameter of the director.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
         if (director != null) {
             System.out.println("update director parameters.");
-            
+
             director.stopTime.setToken(stopTime.getToken());
         } else {
             super.attributeChanged(attribute);

@@ -3,11 +3,11 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="leadingcar" class="ptolemy.actor.TypedCompositeActor">
     <doc>CT model for the leading car, with discrete output.</doc>
-    <property name="SamplingPeriod" value="1.0" 
+    <property name="SamplingPeriod" value="1.0"
         class="ptolemy.data.expr.Parameter"></property>
     <property name="Malfunctioning" value="false"
         class="ptolemy.data.expr.Parameter">
-            <!-- property name="style0" 
+            <!-- property name="style0"
 	        class="ptolemy.actor.gui.style.CheckBoxStyle"-->
             <!-- /property-->
 	</property>
@@ -15,7 +15,7 @@
         <property name="stopTime" value="240">
         </property>
     </property>
-    
+
     <!-- Define the actors -->
     <entity name="time" class="ptolemy.actor.lib.CurrentTime">
       	<port name="output"></port>
@@ -63,7 +63,7 @@
         port name="forceInput"  /port
         port name="velocityOutput"  /port
 	port name="positionOutput"  /port
-    /entity	
+    /entity
     </doc>
     <entity name="add1" class="ptolemy.actor.lib.AddSubtract">
 	<port name="plus"></port>
@@ -79,7 +79,7 @@
 	<property name="factor" value="0.5"></property>
 	<port name="input"></port>
         <port name="output"></port>
-    </entity> 
+    </entity>
     <entity name="velocity" class="ptolemy.domains.ct.lib.Integrator">
 	<property name="initialState" value="0.0"></property>
 	<port name="input"></port>
@@ -110,7 +110,7 @@
 	<port name="input"></port>
         <port name="output"></port>
     </entity>
-    <entity name="toEventChannel" 
+    <entity name="toEventChannel"
     class="ptolemy.domains.ct.demo.jspaces.CarTracking.CarInformationPublisher">
         <property name="samplingPeriod" value="SamplingPeriod"></property>
 	<property name="entryName" value="&quot;LeadingCar&quot;"></property>
@@ -119,9 +119,9 @@
         <port name="velocity"></port>
 	<port name="position"></port>
     </entity>
-    <entity name="toMonitor" 
+    <entity name="toMonitor"
         class="ptolemy.domains.ct.demo.jspaces.CarTracking.RealTimePublisher">
-	<property name="entryName" 
+	<property name="entryName"
 	    value="&quot;A&quot;"></property>
 	<port name="input"></port>
     </entity>
@@ -161,7 +161,7 @@
     <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="fhold.output" relation="r3"/>
 	<link port="toEventChannel.force" relation="r3"/>
-   
+
     <relation name="r8" class="ptolemy.actor.TypedIORelation"></relation>
 	<link port="toEventChannel.position" relation="r8"/>
 	<link port="ssamp.input" relation="r8"/>
@@ -180,7 +180,7 @@
 	link port="toEventChannel.velocity" relation="r6"/
 	link port="car.velocityOutput" relation="r6"/
 	link port="car.positionOutput" relation="r8"/
-    </doc>	
+    </doc>
     <!--link plot -->
     <link port="ctdisp.input" relation="r3"/>
     <link port="ctdisp.input" relation="r66"/>

@@ -151,15 +151,15 @@ public class DTReceiver extends SDFReceiver implements Receiver {
             IOPort containerPort = (IOPort) this.getContainer();
     	    Actor containerActor = (Actor) _toPort.getContainer();
     	    DTDirector localDirector;
-    	    
+
     	    if ((containerActor instanceof TypedCompositeActor ) &&
     	        (!containerPort.isOutput())) {
     	        localDirector = (DTDirector) containerActor.getExecutiveDirector();
     	    } else {
     	        localDirector = (DTDirector) containerActor.getDirector();
     	    }
-    	   
-            
+
+
             // FIXME: check tunneling topology
             periodValue = localDirector.getPeriod();
             if (_toPort.isOutput()) {
@@ -177,7 +177,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
 
     /** Determine the source and destination ports that use this
-     *  receiver in their communications.  In DT, the source and 
+     *  receiver in their communications.  In DT, the source and
      *  destination ports are distinct for each receiver because
      *  "non-deterministic merge" type relations are not allowed.
      */
@@ -273,11 +273,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
      *  this receiver.
      *
      *  @return The time interval between tokens
-     */ 
+     */
     public double getDeltaTime() {
         return _deltaTime;
     }
-    
+
     /** Return the port that feeds this Receiver
      *
      *  @return The port that feeds this receiver.

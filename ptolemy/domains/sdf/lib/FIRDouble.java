@@ -79,7 +79,7 @@ public class FIRDouble extends FIR {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set a flag that causes recalculation of various local variables 
+    /** Set a flag that causes recalculation of various local variables
      *  that are used in execution on the next invocation of fire().
      *  @param attribute The attribute that changed.
      */
@@ -89,9 +89,9 @@ public class FIRDouble extends FIR {
             ArrayToken tapsToken = (ArrayToken)(taps.getToken());
             _taps = new double[tapsToken.length()];
             for (int i = 0; i < _taps.length; i++) {
-                _taps[i] = 
+                _taps[i] =
                     ((DoubleToken)tapsToken.getElement(i)).doubleValue();
-            }    
+            }
             _reinitializeNeeded = true;
             // note that we do NOT call the super class.
         } else {
@@ -119,7 +119,7 @@ public class FIRDouble extends FIR {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
-     
+
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then renitialize.
         if (_reinitializeNeeded) _reinitialize();

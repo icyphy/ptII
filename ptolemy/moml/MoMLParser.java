@@ -1279,7 +1279,7 @@ public class MoMLParser extends HandlerBase {
                         "Element \"vertex\" found inside an element that "
                         + "is not a Relation. It is: "
                         + _current);
-               
+
                 // Note that vertexes are settable, but they are handled
                 // separately.  This is probably the wrong way to do this.
                 // Create an instance of Vertex and attach it to the Relation.
@@ -1703,16 +1703,16 @@ public class MoMLParser extends HandlerBase {
         }
         // If we get here, then there is no matching constructor.
 
-	// Generate a StringBuffer containing what we were looking for. 
+	// Generate a StringBuffer containing what we were looking for.
 	StringBuffer argumentBuffer = new StringBuffer();
-	for (int i = 0; i < arguments.length; i++) {	
+	for (int i = 0; i < arguments.length; i++) {
 	    argumentBuffer.append(arguments[i].getClass() + " = \""
 				  + arguments[i].toString() + "\" " );
 	}
 
         throw new XmlException("Cannot find a suitable constructor ("
 			       + arguments.length + " args) ( "
-			       + argumentBuffer + ") for'" 
+			       + argumentBuffer + ") for'"
                 + newClass.getName(),
                 _currentExternalEntity(),
                 _parser.getLineNumber(),

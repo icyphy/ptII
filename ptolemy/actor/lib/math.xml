@@ -9,7 +9,7 @@
 
   <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
   </entity>
- 
+
   <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
   </entity>
 
@@ -21,7 +21,7 @@
 
   <entity name="Expression" class="ptolemy.actor.lib.Expression">
   </entity>
-  
+
   <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -52,7 +52,7 @@
 
   <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
   </entity>
-  
+
   <entity name="Remainder" class="ptolemy.actor.lib.Remainder">
   </entity>
 

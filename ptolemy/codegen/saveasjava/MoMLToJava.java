@@ -47,12 +47,12 @@ A MoML-reading wrapper for the saving of Ptolemy II models as Java source code.
 This class converts MoML files to equivalent standalone Ptolemy II Java code.
 
 @author Shuvra S. Bhattacharyya
-@version $Id$ 
+@version $Id$
 */
 public class MoMLToJava {
 
 
-    /** Convert a MoML specification to Java code that implements the 
+    /** Convert a MoML specification to Java code that implements the
      *  specification. The Java code is stored in a file called XXX.java,
      *  where XXX is the model name given in the MoML specification.
      *
@@ -74,7 +74,7 @@ public class MoMLToJava {
         try {
             MoMLParser parser = new MoMLParser();
             toplevel = parser.parseFile(filename);
-        } catch (Exception ex) { 
+        } catch (Exception ex) {
             throw new IllegalActionException(ex.getMessage()
             + "Exception raised from the MoML parser\n");
         }
@@ -100,8 +100,8 @@ public class MoMLToJava {
         }
 
     }
-  
-    /** A simple main() to test the saving of Ptolemy II MoML models 
+
+    /** A simple main() to test the saving of Ptolemy II MoML models
      *  as Java source code. Exactly one argument is expected. This argument
      *  specifies the name of a MoML file. The equivalent Java code for
      *  the MoML file is saved in file XXX.java, where XXX is the model name
@@ -111,7 +111,7 @@ public class MoMLToJava {
 
         if (args.length != 1) {
             throw new Exception("Usage: MoMLToJava file.xml");
-        }     
+        }
 
         MoMLToJava converter = new MoMLToJava();
         converter.convert(args[0]);

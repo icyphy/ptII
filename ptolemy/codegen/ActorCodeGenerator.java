@@ -501,7 +501,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 		unitNode.setPkg(newPackageNameNode);
 	    } catch (ClassCastException classCast) {
 		System.err.println("ActorCodeGenerator._movePackage(): "
-                        + "There might be a problem if " 
+                        + "There might be a problem if "
                         + "_outputPacakgeName is the empty string"
                         + " _outputPackageName = '"
                         + _outputPackageName + "'");

@@ -657,7 +657,7 @@ public abstract class TableauFrame extends Top {
                 if (factory != null) {
                     Effigy tableauContainer = (Effigy)_tableau.getContainer();
                     try {
-                        Tableau tableau = 
+                        Tableau tableau =
 			    factory.createTableau(tableauContainer);
 			tableau.show();
                     } catch (Exception ex) {

@@ -95,7 +95,7 @@ public class PtolemyApplication extends MoMLApplication {
 
     /** Ptolemy II Release version name */
     public static final String RELEASE_VERSION = new String("1.0 beta");
-	
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 

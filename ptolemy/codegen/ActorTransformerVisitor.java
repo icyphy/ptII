@@ -993,7 +993,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     /** Return a new ExprNode representing the value of the argument Token. */
     public ExprNode tokenToExprNode(Token token) {
         System.out.println("ActorTransformerVisitor.tokenToExprNode(): "
-                + token + " getType: " 
+                + token + " getType: "
                 + token.getType()
                 + " _typeID: " + _typeID);
         switch (_typeID.kindOfTokenType(token.getType())) {

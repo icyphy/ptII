@@ -904,7 +904,7 @@ public class CTScheduler extends Scheduler{
      *  @return A graph representation of the actors.
      */
     protected DirectedAcyclicGraph _toGraph(List list) {
-        
+
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
         // Create the nodes.
         Iterator actors = list.iterator();

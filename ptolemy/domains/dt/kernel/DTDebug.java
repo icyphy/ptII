@@ -56,15 +56,15 @@ public class DTDebug {
             JOptionPane.showMessageDialog(null,str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public void turnOn() {
         _debugOn = true;
     }
-    
+
     public void turnOff() {
         _debugOn = false;
     }
-    
+
     public static final void printStackTrace() {
         if (_debugOn) {
             try {

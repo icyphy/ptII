@@ -278,21 +278,21 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
     /** Set the output directory.
      *  @param the output directory.
-     */	
+     */
     public void setOutputDirectoryName(String outputDirectoryName) {
 	_outputDirectoryName = outputDirectoryName;
     }
 
     /** Set the output package.
      *  @param the output package.
-     */	
+     */
     public void setOutputPackageName(String outputPackageName) {
 	_outputPackageName = outputPackageName;
     }
 
     /** Set the list of models.
-     *  @param the list of models. 
-     */	
+     *  @param the list of models.
+     */
     public void setModels(List models) {
 	_models = models;
     }
@@ -978,7 +978,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
     protected TypedCompositeActor _compositeActor = null;
 
     /** The name of the system.
-     *  FIXME: Currently, this defaults to CG_Main, we should 
+     *  FIXME: Currently, this defaults to CG_Main, we should
      *  get the name using _compositeActor.getName(), but
      *  sdf/codegen/SDFActorTransformer needs to be able to get the
      *  name too.

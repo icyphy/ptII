@@ -128,7 +128,7 @@ public class FSMViewerController extends GraphController {
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_stateController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_transitionController.getEdgeInteractor());	
+                (SelectionInteractor)_transitionController.getEdgeInteractor());
 
         MenuCreator _menuCreator = new MenuCreator(
                 new SchematicContextMenuFactory(this));
