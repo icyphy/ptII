@@ -265,6 +265,12 @@ public class CTScheduler extends Scheduler {
         // classify actors and fill in unordered schedules.
         CompositeActor container =
             (CompositeActor)getContainer().getContainer();
+
+        // We clone the list of all actors and will remove discrete actors
+        // from them.
+        continuousActors = (LinkedList)
+            ((LinkedList)container.deepEntityList()).clone();
+
         Iterator allActors = container.deepEntityList().iterator();
         while(allActors.hasNext()) {
             Actor a = (Actor) allActors.next();
@@ -294,12 +300,17 @@ public class CTScheduler extends Scheduler {
             }else if (!(a instanceof CTWaveformGenerator)) {
                 arithmeticActors.add(a);
             }
+
+
 	    // A typed composite actor (but not a CTCompositeActor)
             // which has no predecessors is treated as a discrete actor.
 	    if ((a instanceof TypedCompositeActor) && 
 		!(a instanceof CTCompositeActor) &&
 		(predecessorList(a).isEmpty())) {
+                // Add it to discrete actor list.
 		discreteActors.addLast(a);
+                // Remove it from continuous actor list.
+                continuousActors.remove(a);
 	    }
 	}
         // First make sure that there is no causality loop of arithmetic
@@ -316,11 +327,8 @@ public class CTScheduler extends Scheduler {
                     "are not allowed in the CT domain. You may insert a " +
                     "Scale actor with factor 1.");
         }
-
-        // We clone the list of all actors and will remove discrete actors
-        // from them.
-        continuousActors = (LinkedList)
-            ((LinkedList)container.deepEntityList()).clone();
+        
+        
 
         // Find the discrete actor cluster by looking at the successors
         // of event generators recursively.
