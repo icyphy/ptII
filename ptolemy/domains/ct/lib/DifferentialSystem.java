@@ -141,7 +141,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 + "</svg>\n");
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                           parameters                        ////
 
     /** The names of the state variables, in an array of strings.
@@ -155,8 +155,8 @@ public class DifferentialSystem extends TypedCompositeActor {
      */
     public Parameter initialStates;
 
-    //////////////////////////////////////////////////////////////////////
-    ////                      public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** If the argument is the <i>initialState</i>
      *  parameters, check that it is a row vector;
@@ -354,8 +354,8 @@ public class DifferentialSystem extends TypedCompositeActor {
         super.wrapup();
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                      private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -420,8 +420,8 @@ public class DifferentialSystem extends TypedCompositeActor {
     }
 
 
-    //////////////////////////////////////////////////////////////////////
-    ////                      private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     // opaqueness.
     private boolean _opaque;
 

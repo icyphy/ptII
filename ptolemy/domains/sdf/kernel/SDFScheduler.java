@@ -568,7 +568,7 @@ public class SDFScheduler extends Scheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     /** Determine the number of times the given actor can fire, based on
      *  the number of tokens that are present on its inputs according to
@@ -1951,7 +1951,7 @@ public class SDFScheduler extends Scheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // The firing vector.  A map from actor to an integer representing the
     // number of times the actor will fire.

@@ -183,12 +183,12 @@ public class TransitionController extends BasicEdgeController {
     protected PtolemyMenuFactory _menuFactory;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 10);
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                    ////
+    ////                         inner classes                     ////
 
     /** An inner class that handles interactive changes to connectivity. */
     protected class LinkDropper extends ConnectorAdapter {

@@ -154,7 +154,7 @@ public class LinkController extends BasicEdgeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Set the configuration.  This is may be used by derived controllers
      *  to open files or URLs.

@@ -418,9 +418,9 @@ public class Quantizer {
     /** Static reference to the BigDecimal representation of two. */
     private static BigDecimal _two = new BigDecimal("2");
 
-    //////////////////////
+    ///////////////////////////////////////////////////////////////////
     // static initializer
-    //////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     static {
         BigDecimal p2  = _one;

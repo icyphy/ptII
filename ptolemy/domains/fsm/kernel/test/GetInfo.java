@@ -95,7 +95,7 @@ public class GetInfo {
     ////                         public methods                    ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

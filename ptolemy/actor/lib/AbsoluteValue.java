@@ -113,7 +113,7 @@ public class AbsoluteValue extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

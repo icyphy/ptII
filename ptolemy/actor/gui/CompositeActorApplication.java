@@ -265,8 +265,8 @@ public class CompositeActorApplication {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Parse a command-line argument.  The recognized arguments, which
      *  result in this method returning true, are summarized below:
@@ -412,8 +412,8 @@ public class CompositeActorApplication {
         return result;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** The command-line options that are either present or not. */
     protected String _commandFlags[] = {
@@ -440,8 +440,8 @@ public class CompositeActorApplication {
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Flag indicating that the previous argument was -class.
     private boolean _expectingClass = false;

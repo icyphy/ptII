@@ -198,7 +198,7 @@ public class Lattice extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // Backward prediction errors.
     private double[] _backward = null;

@@ -69,8 +69,8 @@ public class HTMLEffigyFactory extends EffigyFactory {
         super(container, name);
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return false, indicating that this effigy factory is not
      *  capable of creating an effigy without a URL being specified.

@@ -69,7 +69,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _context = context;
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// public methods that are not associated with the             ////
     //// implemented interfaces                                      ////
 
@@ -141,7 +141,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _thisLocalName = name;
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// public methods that implement the ConstantSwitch interface  ////
 
     public void caseDoubleConstant(DoubleConstant v) {
@@ -418,7 +418,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _generateBinaryOperation(v,"^");
     }
 
-    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// public methods that implement the JimpleValueSwitch interface ////
 
     /** Push the name of a local onto the code stack.
@@ -600,7 +600,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected methods                      ////
+    ////                         protected methods                 ////
 
     /** Generate code for a list of arguments from an invoke expression.
      *  @param expression the invoke expression.
@@ -742,7 +742,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
+    ////                         private variables                 ////
 
     // A stack of StringBuffers corresponding to code that has been generated
     // by this switch. The most recently-generated code is at the top of

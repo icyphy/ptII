@@ -409,7 +409,7 @@ public class RecordType extends StructuredType {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Compare this type with the specified type. The specified type
      *  must be a RecordType, otherwise an exception will be thrown.
@@ -541,7 +541,7 @@ public class RecordType extends StructuredType {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     // Test if the first RecordType is less than or equal to the second
     private boolean _isLessThanOrEqualTo(RecordType t1, RecordType t2) {
@@ -567,7 +567,7 @@ public class RecordType extends StructuredType {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // Mapping from label to field information.
     private Map _fields = new HashMap();
@@ -577,7 +577,7 @@ public class RecordType extends StructuredType {
     new RecordType(new String[0], new Type[0]);
 
     ///////////////////////////////////////////////////////////////////
-    ////                           inner class                     ////
+    ////                         inner class                       ////
 
     // A class that encapsulates the declared and resolved types of a
     // field and implements the InequalityTerm interface.

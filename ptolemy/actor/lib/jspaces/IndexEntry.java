@@ -71,7 +71,7 @@ public class IndexEntry implements Entry {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                         public variables                  ////
 
     /** The name of this TokenEntries.
      */

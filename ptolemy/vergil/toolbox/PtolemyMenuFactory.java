@@ -69,7 +69,7 @@ public class PtolemyMenuFactory implements MenuFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Add a menu item factory to this creator.
      *  @param factory The menu item factory to add.
@@ -113,7 +113,7 @@ public class PtolemyMenuFactory implements MenuFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Return the Ptolemy object that the given figure represents.
      *  In this base class, we assume that the figure is attached to a

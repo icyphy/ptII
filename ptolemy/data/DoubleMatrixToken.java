@@ -674,7 +674,7 @@ public class DoubleMatrixToken extends MatrixToken {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Return a reference to the internal 2-D matrix of doubles that
      *  represents this Token. Because no copying is done, the contents
@@ -686,7 +686,7 @@ public class DoubleMatrixToken extends MatrixToken {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // initialize the row and column count and copy the specified
     // matrix. This method is used by the constructors.

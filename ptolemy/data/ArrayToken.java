@@ -411,7 +411,7 @@ public class ArrayToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     // Throw an exception if the argument is not an ArrayToken of the
     // same length.
@@ -451,7 +451,7 @@ public class ArrayToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private Token[] _value;
     private Type _elementType;

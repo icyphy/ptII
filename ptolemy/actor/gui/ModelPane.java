@@ -409,7 +409,7 @@ public class ModelPane extends JPanel implements CloseListener {
     public static int DIRECTOR_PARAMETERS = 4;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Place the placeable objects in the model in the display pane.
      *  This method places all placeables vertically. Derived classes
@@ -442,7 +442,7 @@ public class ModelPane extends JPanel implements CloseListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** A panel into which to place model displays. */
     protected Container _displays;

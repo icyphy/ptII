@@ -148,7 +148,7 @@ public class ActorController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Set the configuration.  This is used to open documentation files.
      *  @param configuration The configuration.
@@ -161,7 +161,7 @@ public class ActorController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private PortDialogFactory _portDialogFactory;
 

@@ -820,7 +820,7 @@ public class Director extends Attribute implements Executable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
 
     /** The current time of the model. */
     protected double _currentTime = 0.0;

@@ -176,7 +176,7 @@ abstract public class GRShadedShape extends GRActor {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     protected Color3f _color;
     protected Appearance _appearance;

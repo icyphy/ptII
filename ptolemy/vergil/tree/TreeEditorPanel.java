@@ -130,7 +130,7 @@ public class TreeEditorPanel extends JScrollPane {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                    ////
+    ////                         private variables                 ////
 
     /** The parser being used for this model. */
     private MoMLParser _parser;

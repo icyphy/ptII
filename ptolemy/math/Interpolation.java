@@ -291,7 +291,7 @@ public class Interpolation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // Return the Hermite curve interpolation. The arguments are: the
     // interpolation point index, the index/value/tangent of the starting

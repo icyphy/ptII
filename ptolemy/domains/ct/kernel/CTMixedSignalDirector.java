@@ -464,8 +464,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return true;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Catch up the simulation from a known good state to the outside
      *  current time. There should be no breakpoints of any kind
@@ -636,7 +636,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The number of rollbacks. Used for statistics.
      */

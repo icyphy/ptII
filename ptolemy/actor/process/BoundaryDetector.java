@@ -361,7 +361,7 @@ public class BoundaryDetector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private Receiver _receiver;
 

@@ -507,7 +507,7 @@ public class EntityLibrary
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     /** The base specified by the configure() method. */
     private URL _base;

@@ -63,8 +63,8 @@ public class RequireVersion extends VersionAttribute {
         setExpression(CURRENT_VERSION.getExpression());
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Set the required version, check it against the currently
      *  executing version, and throw an exception if the executing

@@ -98,7 +98,7 @@ public class Compose {
     ////                         public methods                    ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -115,7 +115,7 @@ class JHDLTransformer extends SceneTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Do the transformation. This method is called by soot.
      *  @param phaseName The name that the transformer was created with,
@@ -180,7 +180,7 @@ class JHDLTransformer extends SceneTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     // Add a static member that defines the JHDL interface
     // to the cell (where the cell is the component).

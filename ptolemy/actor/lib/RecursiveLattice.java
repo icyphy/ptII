@@ -216,7 +216,7 @@ public class RecursiveLattice extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // We set these to null and then the constructor calls setExpression()
     // which in turn calls attributeChanged() which then allocates

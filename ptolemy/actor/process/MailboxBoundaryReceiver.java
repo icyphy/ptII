@@ -364,7 +364,7 @@ public class MailboxBoundaryReceiver extends Mailbox
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private boolean _terminate = false;
     private boolean _readBlock = false;

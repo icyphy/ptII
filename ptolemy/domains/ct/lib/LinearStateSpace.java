@@ -143,7 +143,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                 + "</svg>\n");
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                        ports and parameters                 ////
 
     /** Multi-input port.
@@ -193,8 +193,8 @@ public class LinearStateSpace extends TypedCompositeActor {
      */
     public Parameter initialStates;
 
-    //////////////////////////////////////////////////////////////////////
-    ////                      public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** If the argument is <i>A, B, C, D</i> or <i>initialState</i>
      *  parameters, check that they are indeed matrices and vectors,
@@ -412,8 +412,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         super.wrapup();
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                      private methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -473,8 +473,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                      private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     // opaqueness.
     private boolean _opaque;
 }

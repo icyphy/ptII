@@ -72,7 +72,7 @@ public class NodeControllerFactory extends SingletonAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return a new node controller.  This base class returns an
      *  instance of IconController.  Derived

@@ -140,7 +140,7 @@ public class TypeLattice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          inner class                      ////
+    ////                         inner class                       ////
 
     // The infinite type lattice
     private static class TheTypeLattice implements CPO {
@@ -546,7 +546,7 @@ public class TypeLattice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // The infinite type lattice.
     private static TheTypeLattice _lattice = new TheTypeLattice();

@@ -198,8 +198,8 @@ public class TMCompositeFacade extends TypedCompositeActor
     }
 
 
-    /////////////////////////////////////////////////////////////////////
-    ////                        private variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Indicating whether the execution of the internal model is idle.
     private boolean _idle = true;
@@ -210,8 +210,8 @@ public class TMCompositeFacade extends TypedCompositeActor
 
     private int _priority;
 
-    /////////////////////////////////////////////////////////////////////
-    ////                        inner class                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
 
     private class RunnableDirector implements Runnable {
         public void run() {

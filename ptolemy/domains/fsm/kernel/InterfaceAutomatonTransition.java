@@ -234,7 +234,7 @@ public class InterfaceAutomatonTransition extends Transition {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     // Transition types.
     // FIXME: If these are protected, they should have leading _

@@ -133,7 +133,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                 + "</svg>\n");
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                        ports and parameters                 ////
 
     /** Single input port.
@@ -158,8 +158,8 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      */
     public Parameter denominator;
 
-    //////////////////////////////////////////////////////////////////////
-    ////                      public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** If the argument is the <i>numerator</i> or the <i>denominator</i>
      *  parameters, request for initialization from the director if
@@ -331,8 +331,8 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         super.wrapup();
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                      private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     // opaqueness.
     private boolean _opaque;
 }

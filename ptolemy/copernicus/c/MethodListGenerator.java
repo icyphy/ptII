@@ -147,7 +147,7 @@ public class MethodListGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  protected methods                        ////
+    ////                         protected methods                 ////
 
     /** Given a class, construct the lists
      *  of constructors, inherited methods, new public and protected methods,
@@ -241,7 +241,7 @@ public class MethodListGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  private variables                        ////
+    ////                         private variables                 ////
 
     // Mapping from classes to lists of class initializer methods.
     // The keys are of type SootClass, and the values are either null

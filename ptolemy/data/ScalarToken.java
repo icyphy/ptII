@@ -237,7 +237,7 @@ public abstract class ScalarToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Add the corresponding unit category exponents.
      *  @param token A token whose exponent will be added with the
@@ -339,7 +339,7 @@ public abstract class ScalarToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The unit category exponents.
      *  The unit system contains a set of base unit categories and derived

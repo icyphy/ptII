@@ -219,7 +219,7 @@ public abstract class ConditionalBranch {
     ////                         protected methods                 ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
 
     // The guard for this guarded communication statement.
     protected boolean _guard;

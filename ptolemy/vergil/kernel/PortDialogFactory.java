@@ -56,7 +56,7 @@ from objects.
 public class PortDialogFactory implements MenuItemFactory {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Add an item to the given context menu that will open a dialog
      *  to add or remove ports from an object.
@@ -106,7 +106,7 @@ public class PortDialogFactory implements MenuItemFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** The configuration. */
     private Configuration _configuration;

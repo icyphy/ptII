@@ -136,7 +136,7 @@ public class PtolemyTransferable implements Transferable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                         public variables                  ////
 
     /**
      * The flavor that requests a local virtual machine

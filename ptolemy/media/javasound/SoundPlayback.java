@@ -191,7 +191,7 @@ public class SoundPlayback {
 	this._productionRate = putSamplesSize;
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ///  Public Methods                                         ///
 
     /** Play an array of audio samples.

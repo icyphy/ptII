@@ -233,13 +233,13 @@ public class GraphicalMessageHandler extends MessageHandler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     // The context.
     protected static Component _context = null;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Return a string that contains the original string, limited to the
      *  given number of characters.  If the string is truncated, an ellipsis

@@ -60,7 +60,7 @@ public abstract class CodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  public methods                           ////
+    ////                         public methods                    ////
 
     /** Turn off (disable) single class mode translation
      *  (see {@link Context#getSingleClassMode()}).
@@ -84,7 +84,7 @@ public abstract class CodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  protected methods                        ////
+    ////                         protected methods                 ////
 
     /** Enclose a given string of text within appropriate delimiters to
      *  form a comment in the generated code.
@@ -235,13 +235,13 @@ public abstract class CodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  protected variables                      ////
+    ////                         protected variables               ////
 
     // Code generation context information.
     protected Context _context;
 
     ///////////////////////////////////////////////////////////////////
-    ////                  private variables                        ////
+    ////                         private variables                 ////
 
     // Mapping from classes that the current class depends on to their
     // include file names.

@@ -455,7 +455,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The history states and their derivative.
      *  This variable is needed by Linear Multistep (LMS) methods,

@@ -200,7 +200,7 @@ public class BreakpointEditor extends JFrame implements ActionListener {
     protected String _selectedMethod = "fire";
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                  ////
+    ////                         private variables                 ////
     private ButtonGroup group;
     private JTextField textField;
     private Actor _actor;

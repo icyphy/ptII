@@ -116,7 +116,7 @@ public class CTRateLimiter extends Transformer {
     public Parameter fallingSlewRate;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
+    ////                         public methods                    ////
 
     /** Compute the change rate of the input and compare it to
      *  the <i>risingSlewRate</i> and the <i>fallingSlewRate</i>.
@@ -164,7 +164,7 @@ public class CTRateLimiter extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
     // Last time instant.
     private double _lastTime;
 

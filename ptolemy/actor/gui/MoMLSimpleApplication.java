@@ -158,7 +158,7 @@ public class MoMLSimpleApplication implements ChangeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private Manager _manager = null;
 }

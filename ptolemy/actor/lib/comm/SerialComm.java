@@ -199,7 +199,7 @@ public class SerialComm extends TypedAtomicActor
     public Parameter baudRate;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** If the parameter changed is <i>serialPortName</i>, then hope
      *  the model is not running and do nothing.  Likewise for baudRate.

@@ -89,7 +89,7 @@ public class AttributeController extends IconController {
     public static Access PARTIAL = new Access();
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** A static enumerator for constructor arguments. */
     protected static class Access {

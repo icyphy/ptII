@@ -168,7 +168,7 @@ public final class Edge {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     // The sink node of the edge.
     private Node _sink;

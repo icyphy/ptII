@@ -126,7 +126,7 @@ public final class Node {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // The weight that has been associated with the node.
     private Object _weight;

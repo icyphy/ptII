@@ -101,8 +101,8 @@ public class VersionAttribute
         _tupleList = new LinkedList();
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Compare the value of this VersionAttribute against the argument
      *  according to the VersionAttribute syntax and padding rules.  For
@@ -235,8 +235,8 @@ public class VersionAttribute
         Iterator tuples = _tupleList.iterator();
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     public variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
 
     /** The VersionAttribute that contains the version of the Ptolemy II
@@ -274,8 +274,8 @@ public class VersionAttribute
 	}
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     private variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // A List representation of the version.
     private List _tupleList;

@@ -69,7 +69,7 @@ public class IconController extends ParameterizedNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** An icon renderer. */
     public static class IconRenderer implements NodeRenderer {

@@ -83,7 +83,7 @@ public class ZeroOrderHold extends Transformer
                 new StringToken("CONTINUOUS"));
     }
 
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                       ////
 
     /**Default output before any input has received.
@@ -92,8 +92,8 @@ public class ZeroOrderHold extends Transformer
      */
     Parameter defaultValue;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -158,8 +158,8 @@ public class ZeroOrderHold extends Transformer
         _lastToken = defaultValue.getToken();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Saved token.
     private Token _lastToken;

@@ -440,7 +440,7 @@ public class FixMatrixToken extends MatrixToken {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // initialize the row and column count and copy the specified
     // matrix. This method is used by the constructors.

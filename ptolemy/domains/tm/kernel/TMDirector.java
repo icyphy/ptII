@@ -209,7 +209,7 @@ public class TMDirector extends Director {
     public Parameter displaySchedule;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Append a listener to the current set of schedule listeners.
      *  If the listener is already in the set, do not add it again.
@@ -652,8 +652,8 @@ public class TMDirector extends Director {
      }
     */
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                    protected methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Disable the specified actor.  All events destinated for this actor
      *  will be ignored. If the argument is null, then do nothing.
@@ -731,14 +731,14 @@ public class TMDirector extends Director {
         _eventQueue.put(event);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                    private variables                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** @serial The list of schedule listeners registered with this object. */
     protected LinkedList _scheduleListeners = null;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                    private methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Remove useless parameters inherited from DEDirector, and set
     // different defaults.
@@ -792,8 +792,8 @@ public class TMDirector extends Director {
                 (Actor)getContainer(), time);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                    private variables                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The TM event queue.
     private CalendarQueue _eventQueue;

@@ -176,7 +176,7 @@ public class ImageUnpartition extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private int _image[][];
     private int _imageColumns;

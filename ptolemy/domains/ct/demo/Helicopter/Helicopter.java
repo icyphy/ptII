@@ -487,8 +487,8 @@ public class Helicopter extends TypedCompositeActor {
         // System.out.println(exportMoML());
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     CTCompositeActor _createLinearizer(TypedCompositeActor container,
             int code)

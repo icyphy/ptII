@@ -152,7 +152,7 @@ public class FSMGraphFrame extends BasicGraphFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     // The controller is protected so that the subclass
     // (InterfaceAutomatonGraphFrame) can set it to a more specific
@@ -163,7 +163,7 @@ public class FSMGraphFrame extends BasicGraphFrame {
     protected JMenu _debugMenu;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;

@@ -265,8 +265,8 @@ public class ControllerActor extends TypedAtomicActor
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         public variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Input port Tm
      */

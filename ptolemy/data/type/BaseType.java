@@ -175,7 +175,7 @@ public abstract class BaseType implements Type, Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                         public variables                  ////
 
     // NOTE: It may seem strange that these inner classes are built this
     // way instead of as anonymous classes...  As anonymous classes, the
@@ -428,7 +428,7 @@ public abstract class BaseType implements Type, Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private Class _tokenClass;
     private String _name;

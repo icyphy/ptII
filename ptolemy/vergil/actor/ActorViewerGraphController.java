@@ -279,7 +279,7 @@ public class ActorViewerGraphController extends BasicGraphController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     /** The attribute controller. */
     protected NamedObjController _attributeController;
@@ -297,7 +297,7 @@ public class ActorViewerGraphController extends BasicGraphController {
     protected NamedObjController _relationController;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;

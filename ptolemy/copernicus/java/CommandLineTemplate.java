@@ -343,8 +343,8 @@ public class CommandLineTemplate {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** The list of all the models */
     protected List _models = new LinkedList();
@@ -355,8 +355,8 @@ public class CommandLineTemplate {
     /** Are we testing? */
     protected static boolean _test = false;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Flag indicating that the previous argument was -class.
     // Exists to mirror CompositeActorApplication.

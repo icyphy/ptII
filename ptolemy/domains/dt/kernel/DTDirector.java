@@ -699,7 +699,7 @@ public class DTDirector extends SDFDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Get the number of times an actor repeats in the schedule of an
      *  SDF graph.  If the actor does not exist, throw an exception.

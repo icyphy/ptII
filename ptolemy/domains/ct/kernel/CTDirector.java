@@ -724,8 +724,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Create and initialize all parameters to their default values.
      */
@@ -863,14 +863,14 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return false;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // A list of actors that requested to refire at the current time.
     protected LinkedList _refireActors;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Current ODE solver.
     private ODESolver _currentSolver = null;

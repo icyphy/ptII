@@ -370,7 +370,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
     /** Override the base class to indicate that this director does not
      *  need write access on the workspace during an iteration.
      *

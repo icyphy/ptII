@@ -186,7 +186,7 @@ public class CTScheduler extends Scheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public variables                    ////
+    ////                         public variables                  ////
 
     // FIXME: These should be static enumeration, see kernel.util.Settable
 
@@ -793,8 +793,8 @@ public class CTScheduler extends Scheduler {
     private SignalTypes _signalTypes;
 
 
-    ////////////////////////////////////////////////////////////////////
-    ////                        inner class                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
 
     // Inner class for signal type table. This wraps a HashMap, but
     // the put() method will check for conflicts. That is, if there

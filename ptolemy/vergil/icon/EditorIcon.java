@@ -185,7 +185,7 @@ public class EditorIcon extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Create a new default background figure, which is a white box.
      *  Subclasses of this class should generally override
@@ -207,13 +207,13 @@ public class EditorIcon extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     /** The cached Swing icon. */
     protected javax.swing.Icon _iconCache = null;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }

@@ -193,7 +193,7 @@ public class SRReceiver extends Mailbox {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Reset the receiver by removing any contained token and setting
      *  the state of this receiver to be unknown.  Should be called

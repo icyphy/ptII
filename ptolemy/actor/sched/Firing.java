@@ -221,7 +221,7 @@ public class Firing extends ScheduleElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                 ////
 
     // The actor associated with this firing.
     private Actor _actor;

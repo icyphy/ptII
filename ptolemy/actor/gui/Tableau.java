@@ -358,7 +358,7 @@ public class Tableau extends CompositeEntity {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                  ////
+    ////                         private variables                 ////
 
     /** Flag indicating whether the tableau is editable. */
     private boolean _editable;

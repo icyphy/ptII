@@ -99,7 +99,7 @@ public class TextEditor extends TableauFrame {
     public JTextArea text;
 
     ///////////////////////////////////////////////////////////////////
-    ////                            public methods                 ////
+    ////                         public methods                    ////
 
     /** Scroll as necessary so that the last line is visible.
      */

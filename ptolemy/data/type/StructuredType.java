@@ -82,7 +82,7 @@ public abstract class StructuredType implements Type {
             throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Compare this type with the specified type. The specified type
      *  must be of the same structured type, otherwise an exception will

@@ -202,7 +202,7 @@ public class DatagramSender extends TypedAtomicActor {
     public TypedIOPort remoteSocketNumber;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** If the parameter changed is <i>localSocketNumber</i>, then if
      *  the model is running (as evidenced by socket != null) then

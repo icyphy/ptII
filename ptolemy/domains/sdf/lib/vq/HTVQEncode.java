@@ -291,7 +291,7 @@ public class HTVQEncode extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private int _encode(int p[], int length) {
         int[][] p5, p4, p3, p2, p1, p0;
@@ -471,7 +471,7 @@ public class HTVQEncode extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private int ipbuf_encodep1[][] = new int[8][8];
     private int ipbuf_encodep2[][] = new int[8][8];

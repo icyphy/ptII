@@ -112,8 +112,8 @@ public class ThresholdMonitor extends TypedAtomicActor
 
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
     /** The input port, single port with type double.
      */
     public TypedIOPort input;

@@ -199,7 +199,7 @@ public class StockServer extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       inner class                         ////
+    ////                         inner class                       ////
 
     private class DummySink extends TypedCompositeActor {
 	private DummySink(TypedCompositeActor container, String name)

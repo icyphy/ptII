@@ -280,8 +280,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
         return true;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                       protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     /** Return true if the fixed point iteration is converged. This is
      *  the result of all _voteForConvergence() in the current integration
      *  step.
@@ -307,8 +307,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
         _converge = _converge && converge;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Name of this Solver. */
     private static final String _DEFAULT_NAME="CT_Trapezoidal_Rule_Solver" ;

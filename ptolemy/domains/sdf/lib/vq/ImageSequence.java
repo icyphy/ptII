@@ -230,7 +230,7 @@ public class ImageSequence extends Source {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private int _fullRead(InputStream s, byte b[]) throws IOException {
         int length = 0;

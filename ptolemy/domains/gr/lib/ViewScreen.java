@@ -380,7 +380,7 @@ public class ViewScreen extends GRActor implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      */

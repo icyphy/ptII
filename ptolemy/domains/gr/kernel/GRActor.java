@@ -153,7 +153,7 @@ abstract public class GRActor extends TypedAtomicActor {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     // The root of the scene graph DAG, if there is one
     protected static GRActor _root;

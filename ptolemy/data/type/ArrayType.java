@@ -286,7 +286,7 @@ public class ArrayType extends StructuredType {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public variables                    ////
+    ////                         public variables                  ////
 
     // FIXME: we are using this for codegen, see
     // codegen/PtolemyTypeIdentifier.java
@@ -295,7 +295,7 @@ public class ArrayType extends StructuredType {
     public static final ArrayType DOUBLE_ARRAY_TYPE = new ArrayType(BaseType.DOUBLE);
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Compare this type with the specified type. The specified type
      *  must be an ArrayType, otherwise an exception will be thrown.
@@ -365,7 +365,7 @@ public class ArrayType extends StructuredType {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // the type of array elements.
     private Type _declaredElementType;
@@ -376,7 +376,7 @@ public class ArrayType extends StructuredType {
     private static ArrayType _representative = new ArrayType(BaseType.UNKNOWN);
 
     ///////////////////////////////////////////////////////////////////
-    ////                           inner class                     ////
+    ////                         inner class                       ////
 
     private class ElementTypeTerm implements InequalityTerm {
 

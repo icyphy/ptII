@@ -274,7 +274,7 @@ public class JTextAreaTclShell extends JPanel {
   }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
+    ////                         public variables                  ////
 
     // Prompts
     public String mainPrompt = "% ";

@@ -58,7 +58,7 @@ import soot.util.*;
 public class Main extends KernelMain {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Read in a MoML model.
      *  @params args The first element of the array is the MoML class

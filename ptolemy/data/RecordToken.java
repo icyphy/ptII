@@ -463,7 +463,7 @@ public class RecordToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // initialize this token using the specified labels and values.
     // This method is called by the constructor.
@@ -491,7 +491,7 @@ public class RecordToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private Map _fields = new HashMap();
 }

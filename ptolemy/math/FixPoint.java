@@ -603,8 +603,8 @@ public class FixPoint implements Cloneable, Serializable {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                       private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The precision part of the FixPoint. */
     private Precision _precision;
@@ -632,7 +632,7 @@ public class FixPoint implements Cloneable, Serializable {
     private FixValue  _value;
 
 
-    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                       static initializers                       ////
 
     static {
@@ -644,8 +644,8 @@ public class FixPoint implements Cloneable, Serializable {
 	}
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                             ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** The innerclass FixValue encapsulates a BigInteger representing
      *  the finite number of bits of a FixPoint together with fields

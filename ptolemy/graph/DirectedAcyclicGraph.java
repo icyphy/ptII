@@ -344,7 +344,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Create and add an edge with a specified source node and sink node.
      * The third parameter specifies whether the edge is to be

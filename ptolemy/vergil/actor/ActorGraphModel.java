@@ -262,7 +262,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     // End of FIXME.
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Update the graph model.  This is called whenever a change request is
      *  executed.  In this class the internal set of link objects is

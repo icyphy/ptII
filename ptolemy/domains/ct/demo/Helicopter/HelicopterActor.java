@@ -167,8 +167,8 @@ public class HelicopterActor extends TypedAtomicActor
 
 
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         public variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /**
      */

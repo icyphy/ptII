@@ -82,8 +82,8 @@ public class CTSchedule extends Schedule {
         super();
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         public variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Index for actors in the discrete part of the system,
      *  topologically ordered.
@@ -129,8 +129,8 @@ public class CTSchedule extends Schedule {
     public final static int WAVEFORM_GENERATORS = 9;
 
 
-    ////////////////////////////////////////////////////////////////
-    ////                      public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Override the base class and add the element to the Schedule.
      *  The reason of overriding this method is to use a more
@@ -228,8 +228,8 @@ public class CTSchedule extends Schedule {
         return result;
     }
 
-    ////////////////////////////////////////////////////////////////
-    ////               protected variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // We choose an ArrayList implementation for _schedule,
     // so that most access time is constant.

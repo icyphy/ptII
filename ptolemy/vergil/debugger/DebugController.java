@@ -48,7 +48,7 @@ This class is created by a debugger frame to handle the logic of breakpoints.
 */
 public class DebugController implements DebugListener {
 
-    ////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //                Public variables                    //
     
     //Boolean that becomes false  when the Button END is pushed
@@ -286,7 +286,7 @@ public class DebugController implements DebugListener {
 	notifyAll();
     }
 
-    ////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //                Private variables                   //
     private String _method = "";
     private String _command = "go";

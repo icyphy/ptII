@@ -77,7 +77,7 @@ public class EditParametersFactory implements MenuItemFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Add an item to the given context menu that will configure the
      *  parameters on the given target.     *  @param menu The context menu.
@@ -130,7 +130,7 @@ public class EditParametersFactory implements MenuItemFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     // The name of this factory.
     private String _name;

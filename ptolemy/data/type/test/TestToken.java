@@ -199,6 +199,6 @@ public class TestToken extends Token {
     public static final Type TYPE = new TestType();
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
     private Object _object;
 }

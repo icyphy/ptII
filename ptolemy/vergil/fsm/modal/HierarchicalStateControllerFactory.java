@@ -62,7 +62,7 @@ public class HierarchicalStateControllerFactory extends NodeControllerFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return a new node controller.  This base class returns an
      *  instance of IconController.  Derived

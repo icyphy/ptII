@@ -252,7 +252,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     /** Currently animated state, if any. */
     protected Figure _animated;
@@ -272,7 +272,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     protected NamedObjController _portController;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     /** The time to sleep upon animation. */
     private long _animationDelay = 0l;
@@ -287,9 +287,9 @@ public abstract class BasicGraphController extends AbstractGraphController
     private static double _PORT_OFFSET = 20.0;
 
     ///////////////////////////////////////////////////////////////////
-    ////                          inner classes                    ////
+    ////                         inner classes                     ////
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// NewPortAction
 
     /** An action to create a new port. */
@@ -452,7 +452,7 @@ public abstract class BasicGraphController extends AbstractGraphController
         private IOPort _prototype;
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// SchematicContextMenuFactory
 
     /** Factory for context menus. */

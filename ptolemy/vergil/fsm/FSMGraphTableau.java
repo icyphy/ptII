@@ -72,7 +72,7 @@ public class FSMGraphTableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
+    ////                         public methods                    ////
 
     /** Create the graph frame that displays the model associated with
      *  this tableau. This method creates a FSMGraphFrame. If subclass
@@ -134,7 +134,7 @@ public class FSMGraphTableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

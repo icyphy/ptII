@@ -70,7 +70,7 @@ public class ReceiverActionEvent {
         _capacity = capacity;
     }
 
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                    public methods                   /////
 
     /** Return the actor corresponding to the process that generated the event.
@@ -85,7 +85,7 @@ public class ReceiverActionEvent {
         return _capacity;
     }
 
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                   private variables                 /////
 
     private PNQueueReceiver _receiver;

@@ -185,8 +185,8 @@ public class PtExecuteApplication extends MoMLApplication
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a default Configuration, which in this case is given by
      *  the MoML file ptolemy/configuration/runPanelConfiguration.xml.
@@ -223,8 +223,8 @@ public class PtExecuteApplication extends MoMLApplication
         super._parseArgs(args);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The configuration.
     private Configuration _configuration;

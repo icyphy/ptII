@@ -104,8 +104,8 @@ public class LevelCrossingDetector extends Transformer
 
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** The trigger port. Single port with type double.
      */
@@ -130,8 +130,8 @@ public class LevelCrossingDetector extends Transformer
      */
     public Parameter defaultEventValue;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Update the attribute if it has been changed. If the attribute
      *  is <i>errorTolerance<i> then update the local cache.
@@ -316,13 +316,13 @@ public class LevelCrossingDetector extends Transformer
         return ((CTDirector)getDirector()).getCurrentStepSize();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     // the level crossing threshold.
     protected double _level;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Parameter, the error tolerance, local copy
     private double _errorTolerance;

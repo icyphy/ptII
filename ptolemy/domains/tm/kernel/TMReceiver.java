@@ -85,8 +85,8 @@ public class TMReceiver extends AbstractReceiver {
 	super();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                     public methods                             ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get a token from the receiver.  The token returned is one that
      *  was put in the receiver that is ready for process.

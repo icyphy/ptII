@@ -98,8 +98,8 @@ public class VergilApplication extends MoMLApplication {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a default Configuration, which in this case is given by
      *  the MoML file ptolemy/configs/vergilConfiguration.xml.

@@ -96,7 +96,7 @@ public class CombineInternalTransitions {
     ////                         public methods                    ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

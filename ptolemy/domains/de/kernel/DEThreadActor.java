@@ -207,7 +207,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                 ////
 
     private PtolemyThread _thread;
     private boolean _isWaiting = true;

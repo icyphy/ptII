@@ -150,7 +150,7 @@ public class SoundWriter {
 	}
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ///  Public Methods                                         ///
 
     /** Append the audio data contained in <i>putSamplesArray</i>
@@ -420,5 +420,5 @@ public class SoundWriter {
     // Set this variable to "true" to enable debugging information.
     //private boolean _debug = true;
     private boolean _debug = false;
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 }

@@ -165,7 +165,7 @@ public class AnimationRenderer implements SelectionRenderer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     /** Mapping from figures to decorators
      */

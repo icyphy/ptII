@@ -57,7 +57,7 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
+    ////                         public methods                    ////
 
     /** Override the super class to create an instance of
      *  InterfaceAutomatonGraphFrame.

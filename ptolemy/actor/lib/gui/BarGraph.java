@@ -223,7 +223,7 @@ public class BarGraph extends Plotter implements SequenceActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     // Iteration count, modulo the iterationsPerUpdate.
     private int _iteration = 0;

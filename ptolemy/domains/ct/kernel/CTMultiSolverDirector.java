@@ -390,8 +390,8 @@ public class CTMultiSolverDirector extends CTDirector {
             _instantiateODESolver(_breakpointSolverClassName);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Process discrete events in the system. All the event generators
      *  will produce current events, and then all discrete actors are

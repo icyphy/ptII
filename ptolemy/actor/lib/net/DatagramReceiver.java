@@ -359,7 +359,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     public Parameter bufferLength;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** React to a change of the given attribute.  Generally, this is
      *  called between firings of an actor.  However, this actor

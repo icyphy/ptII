@@ -92,7 +92,7 @@ public class FirstOrderHold extends Transformer
                 new StringToken("CONTINUOUS"));
     }
 
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                       ////
 
     /** The input port that takes the derivative. The type is double.
@@ -111,8 +111,8 @@ public class FirstOrderHold extends Transformer
      */
     public Parameter defaultValue;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Consume the input and derivative if they both present, and output
      *  the first order projection of the last input and its
@@ -153,8 +153,8 @@ public class FirstOrderHold extends Transformer
 
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Saved token.
     private double _value;

@@ -211,7 +211,7 @@ public class HTMLViewer extends TableauFrame
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
+    ////                         public variables                  ////
 
     /** The text pane. */
     public JEditorPane pane = new JEditorPane();

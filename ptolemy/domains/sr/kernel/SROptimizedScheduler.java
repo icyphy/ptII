@@ -241,7 +241,7 @@ public class SROptimizedScheduler extends Scheduler {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     /** Return a list corresponding to the nodes in the head of an SCC.
      *  @return A List representing the head of an SCC.

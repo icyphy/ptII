@@ -224,7 +224,7 @@ public class SimpleModalController extends CTCompositeActor {
         erroForceOutput.link(forceRel);
     }
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                    ports and parameters                    ////
 
     /** leading car position input.

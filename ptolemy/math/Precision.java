@@ -315,9 +315,9 @@ public class Precision {
     /** Static reference to the BigInteger representation of one. */
     private static BigInteger _one  = new BigInteger("1");
 
-    //////////////////////
+    ///////////////////////////////////////////////////////////////////
     // static initializer
-    //////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     /** Calculate the table containing 2^x, with 0 < x < 128. Purpose
      *  is to speed up calculations involving calculating 2^x. The

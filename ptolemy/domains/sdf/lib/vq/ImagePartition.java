@@ -177,7 +177,7 @@ public class ImagePartition extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private IntMatrixToken _partitions[];
 

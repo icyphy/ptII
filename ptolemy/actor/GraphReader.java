@@ -139,7 +139,7 @@ public class GraphReader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Determine the weight to be assigned to the weighted graph edge that
      *  represents a given connection in a Ptolemy II model.
@@ -192,7 +192,7 @@ public class GraphReader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // Flag for turning local debugging output on and off.
     private static boolean _debug = true;

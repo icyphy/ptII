@@ -329,7 +329,7 @@ public class DDEDirector extends CompositeProcessDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Apply an algorithm to resolve an internal deadlock and return
      *  true if the algorithm is successful. If the algorithm is

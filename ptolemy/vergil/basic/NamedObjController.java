@@ -63,7 +63,7 @@ public class NamedObjController extends LocatableNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Set the configuration.  This is used in derived classes to
      *  to open files (such as documentation).  The configuration is
@@ -77,13 +77,13 @@ public class NamedObjController extends LocatableNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The configuration. */
     protected Configuration _configuration;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** This is an action that accesses the documentation for a Ptolemy
      *  object associated with a figure.  Note that this base class does
