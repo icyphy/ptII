@@ -52,12 +52,14 @@ CLASSPATH = ../../../..
 
 JSRCS = \
 	PNAlternate.java \
-	PNExample.java \
 	PNExecutive.java \
 	PNInPort.java \
 	PNInterleave.java \
+	PNInterleavingExample.java \
 	PNOutPort.java \
 	PNPort.java \
+	PNPrimeExample.java \
+	PNRamp.java \
 	PNRedirect.java \
 	PNStar.java \
 	PNUniverse.java 
