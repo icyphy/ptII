@@ -294,7 +294,7 @@ public class FileUtilities {
      *  "$CLASSPATH", then search for the file relative to the classpath.
      *  If the file name is not absolute, the it is assumed
      *  to be relative to the specified base directory.
-     *  @see #nameToFile()
+     *  @see #nameToFile(String, URI)
      *  @param name File name.
      *  @param base The base URI for relative references.
      *  @param classLoader The class loader to use for opening files
@@ -327,9 +327,9 @@ public class FileUtilities {
      *  to be relative to the specified base directory.
      *  If permitted, this method will return a Writer that will simply
      *  overwrite the contents of the file. It is up to the user of this
-     *  method to check whether this is OK (by first calling nameToFile()
+     *  method to check whether this is OK (by first calling 
+     *  {@link #nameToFile(String, URI)} 
      *  and calling exists() on the returned value).
-     *  @see #nameToFile()
      *  @param name File name.
      *  @param base The base URI for relative references.
      *  @param append If true, then append to the file rather than
