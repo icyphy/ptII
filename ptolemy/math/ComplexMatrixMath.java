@@ -387,8 +387,9 @@ public class ComplexMatrixMath {
 
     /** Return the determinate of a square matrix.
      *  If the matrix is not square, throw an IllegalArgumentException.
-     *  This algorithm uses LU decomposition, and is taken from [1]
-     *  THIS IS NOW TESTED.
+     *  This algorithm uses LU decomposition, and is taken from [1].
+     *  @param matrix The matrix for which to calculate the determinate.
+     *  @return The determinate of the matrix.
      */
     public static final Complex determinate(final Complex[][] matrix) {
         _checkSquare("determinate", matrix);
