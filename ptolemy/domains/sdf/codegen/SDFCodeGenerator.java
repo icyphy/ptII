@@ -30,6 +30,8 @@
 
 package ptolemy.domains.sdf.codegen;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -62,11 +64,39 @@ public class SDFCodeGenerator extends CompositeActorApplication
      implements JavaStaticSemanticConstants {
 
     public SDFCodeGenerator(String[] args) throws Exception {
-        super(args, false);                                 
+        super(args, false);                                         
     }
     
-    public void generateCode() throws IllegalActionException {
+    public void generateCode() throws IllegalActionException {        
+        if (_outputDirectoryName == null) {
+           throw new RuntimeException("output directory was not specified " +
+            "with the -outdir option");
+        }
         
+        if (_outputPackageName == null) {
+           throw new RuntimeException("output package was not specified " +
+            "with the -outpkg option");
+        }        
+        
+        _packageDirectoryName = _outputDirectoryName + File.separatorChar +
+         _outputPackageName.replace('.', File.separatorChar) + 
+         File.separatorChar;        
+
+        // Create the directory to put the output package in, 
+        // creating subdirectories as needed. 
+        // This must be done before the Java compiler classes are loaded so 
+        // that they can find the output package.                  
+        new File(_packageDirectoryName).mkdirs();
+        
+        // write a dummy CG_Main.java file to the output package directory so
+        // that a ClassDecl stub is placed in the package environment for it
+        try {
+          new File(_packageDirectoryName + "CG_Main.java").createNewFile();
+        } catch (IOException ioe) {
+           ApplicationUtility.error("could not create output directory " +
+            _packageDirectoryName); 
+        } 
+                                        
         // assume just one model on the command line
         
         _compositeActor = (TypedCompositeActor) _models.get(0);        
@@ -125,7 +155,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
         Iterator actorItr = _actorSet.iterator();
         
         ActorCodeGenerator actorCodeGen = 
-         new ActorCodeGenerator(_codeGenClassFactory);
+         new ActorCodeGenerator(_codeGenClassFactory, _outputDirectoryName, 
+          _outputPackageName);
          
         LinkedList renamedSourceList = new LinkedList();
         
@@ -242,10 +273,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
          StaticResolution.makeNameNode("ptolemy.math.FixPoint")));
                           
         CompileUnitNode unitNode = new CompileUnitNode(
-         new NameNode(AbsentTreeNode.instance, "codegen"),
+         new NameNode(AbsentTreeNode.instance, _outputPackageName),
          importList, TNLManip.cons(classDeclNode));
                     
-        String outFileName = "c:\\users\\ctsay\\ptII\\codegen\\" +  "CG_Main.java";
+        String outFileName = _packageDirectoryName +  "CG_Main.java";
         
         JavaCodeGenerator.writeCompileUnitNodeList(TNLManip.cons(unitNode),
          TNLManip.cons(outFileName));                             
@@ -306,7 +337,6 @@ public class SDFCodeGenerator extends CompositeActorApplication
             
            stmtList.addLast(new ExprStmtNode(methodCallNode));             
         }
-
 
         // generate initialize statements
         actorItr = _actorSet.iterator();
@@ -641,7 +671,30 @@ public class SDFCodeGenerator extends CompositeActorApplication
         labelNum++;
         return retval;
     }
-                        
+    
+    /** Parse a command-line argument.
+     *  @return True if the argument is understood, false otherwise.
+     *  @exception Exception If something goes wrong.
+     */
+    protected boolean _parseArg(String arg) throws Exception {
+        if (arg.equals("-outdir")) {
+           _expectingOutputDirectory = true;
+        } else if (arg.equals("-outpkg")) {
+           _expectingOutputPackage = true;
+        } else {
+           if (_expectingOutputDirectory) {
+              _outputDirectoryName = new File(arg).getCanonicalPath();              
+              _expectingOutputDirectory = false;
+           }  else if  (_expectingOutputPackage) {
+              _outputPackageName = arg;
+              _expectingOutputPackage = false;              
+           } else {
+             return super._parseArg(arg);
+           }        
+        }    
+        return true;
+    }
+                           
     /** The TypedCompositeActor containing the system for which to generate code. */        
     protected TypedCompositeActor _compositeActor = null;       
 
@@ -654,8 +707,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
     /** The set of all actors in the system. */    
     protected HashSet _actorSet = new HashSet();
                 
-    /** A map containing instances of SDFActorCodeGeneratorInfo,
-     *  using the corresponding Actors as keys.
+    /** A map containing instances of SDFActorCodeGeneratorInfo, using the 
+     *  corresponding Actors as keys.
      */
     protected HashMap _actorInfoMap = new HashMap();
     
@@ -670,4 +723,29 @@ public class SDFCodeGenerator extends CompositeActorApplication
     
     /** A non-decreasing number used for globally unique labeling. */
     protected int labelNum = 0;    
+    
+    /** The canonical pathname of the directory in which to place the
+     *  output package.
+     */
+    protected String _outputDirectoryName;
+
+    /** The name of the qualified package in which to put the generated 
+     *  code. 
+     */        
+    protected String _outputPackageName;
+    
+    /** The canonical pathname of the output package, including the last 
+     *  file separator character.
+     */
+    protected String _packageDirectoryName;
+    
+    /** A flag indicating that we are expecting an output directory as the
+     *  next argument in the command-line.
+     */
+    protected boolean _expectingOutputDirectory = false;
+
+    /** A flag indicating that we are expecting an output package name as the
+     *  next argument in the command-line.
+     */
+    protected boolean _expectingOutputPackage = false;    
 }
