@@ -226,12 +226,12 @@ public class CodeStream {
 
         StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex, endIndex));
 
-        // recursively parse within the code body for nested code blocks
+        // recursively parse for nested code blocks
         
-        for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null; ) {       
+        for (String subBlockKey = _parseCodeBlock(codeInFile); subBlockKey != null; ) {       
             // FIXME: do we include the nested code block into the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
-            subBlockKey = _parseCodeBlock(body);
+            subBlockKey = _parseCodeBlock(codeInFile);
         }
         _parseIndex = _BLOCKEND.length() + endIndex; 
         return body;
