@@ -40,7 +40,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -245,11 +246,9 @@ public class IOPort extends ComponentPort {
         int portWidth = getWidth();
         if (portWidth <= 0) return;
 
-        // Create the hashtable of receivers in this port, keyed by
-        // relation, if it does not already exist.
-        if (_localReceiversTable == null) {
-            _localReceiversTable = new Hashtable();
-        }
+        // Create the hashtable of lists of receivers in this port, keyed by
+        // relation.  This replaces any previous table.
+        _localReceiversTable = new HashMap();
 
         boolean input = isInput();
         boolean output = isOutput();
@@ -257,8 +256,7 @@ public class IOPort extends ComponentPort {
         if (input) {
             Iterator outsideRelations = linkedRelationList().iterator();
             while (outsideRelations.hasNext()) {
-                IORelation relation =
-                    (IORelation) outsideRelations.next();
+                IORelation relation = (IORelation) outsideRelations.next();
                 // A null link (supported since indexed links) might
                 // yield a null relation here. EAL 7/19/00.
                 if (relation != null) {
@@ -270,8 +268,20 @@ public class IOPort extends ComponentPort {
                         // This throws an exception if there is no director.
                         result[i][0] = _newReceiver();
                     }
-                    // Save it, possibly replacing a previous version.
-                    _localReceiversTable.put(relation, result);
+                    // Save it.  If we have previously seen this relation,
+                    // then we simply add the new array to the list
+                    // of occurrences for this relation.  Otherwise,
+                    // we create a new list with one element.
+                    // EAL 7/30/99.
+                    if (_localReceiversTable.containsKey(relation)) {
+                        List occurrences =
+                               (List)(_localReceiversTable.get(relation));
+                        occurrences.add(result);
+                    } else {
+                        List occurrences = new LinkedList();
+                        occurrences.add(result);
+                        _localReceiversTable.put(relation, occurrences);
+                    }
                 }
             }
         }
@@ -290,8 +300,20 @@ public class IOPort extends ComponentPort {
                     // This throws an exception if there is no director.
                     result[i][0] = _newInsideReceiver();
                 }
-                // Save it, possibly replacing a previous version.
-                _localReceiversTable.put(relation, result);
+                // Save it.  If we have previously seen this relation,
+                // then we simply add the new array to the list
+                // of occurrences for this relation.  Otherwise,
+                // we create a new list with one element.
+                // EAL 7/30/99.
+                if (_localReceiversTable.containsKey(relation)) {
+                    List occurrences =
+                            (List)(_localReceiversTable.get(relation));
+                    occurrences.add(result);
+                } else {
+                    List occurrences = new LinkedList();
+                    occurrences.add(result);
+                    _localReceiversTable.put(relation, occurrences);
+                }
             }
         }
     }
@@ -575,9 +597,25 @@ public class IOPort extends ComponentPort {
             _localInsideReceivers = new Receiver[width][0];
             int index = 0;
             relations = insideRelationList().iterator();
+
+            // NOTE: Have to be careful here to keep track of the
+            // occurrence number of the receiver.
+            // EAL 7/30/00.
+            HashMap seen = new HashMap();
+
             while (relations.hasNext()) {
                 IORelation r = (IORelation) relations.next();
-                Receiver[][] rr = getReceivers(r);
+
+                int occurrence = 0;
+                if (seen.containsKey(r)) {
+                    // Have seen this relation before.  Increment
+                    // the occurrence number.
+                    occurrence = ((Integer)(seen.get(r))).intValue();
+                    occurrence++;
+                }
+                seen.put(r, new Integer(occurrence));
+
+                Receiver[][] rr = getReceivers(r, occurrence);
                 if (rr != null) {
                     for (int i = 0; i < rr.length; i++) {
                         _localInsideReceivers[index++] = rr[i];
@@ -648,12 +686,24 @@ public class IOPort extends ComponentPort {
                 _localReceivers = new Receiver[width][0];
                 int index = 0;
                 Iterator relations = linkedRelationList().iterator();
+                // NOTE: Have to be careful here to keep track of the
+                // occurrence number of the receiver.
+                // EAL 7/30/00.
+                HashMap seen = new HashMap();
                 while (relations.hasNext()) {
                     IORelation r = (IORelation) relations.next();
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
                     if (r != null) {
-                        Receiver[][] rr = getReceivers(r);
+                        int occurrence = 0;
+                        if (seen.containsKey(r)) {
+                            // Have seen this relation before.  Increment
+                            // the occurrence number.
+                            occurrence = ((Integer)(seen.get(r))).intValue();
+                            occurrence++;
+                        }
+                        seen.put(r, new Integer(occurrence));
+                        Receiver[][] rr = getReceivers(r, occurrence);
                         if (rr != null) {
                             for (int i = 0; i < rr.length; i++) {
                                 _localReceivers[index++] = rr[i];
@@ -672,23 +722,52 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** If the port is an input, return the receivers that handle incoming
+    /** If the port is an input, return receivers that handle incoming
      *  channels from the specified relation. If the port is an opaque output
      *  and the relation is inside linked, return the receivers that handle
-     *  incoming channels from the inside.
+     *  incoming channels from the inside. Since the port may be linked
+     *  multiple times to the specified relation, this method only returns
+     *  the relations correspond to the first occurrence.
      *  The returned value is an array of arrays of the same form
      *  as that returned by getReceivers() with no arguments.  Note that a
-     *  single relation may represent multiple channels because it may be
-     *  a bus.
+     *  single occurrence of a relation may represent multiple channels
+     *  because it may be a bus.  If there are no matching receivers,
+     *  then return an empty array.
      *  <p>
      *  This method is read-synchronized on the workspace.
      *
-     *  @param relation A relation that is linked on the outside or inside.
+     *  @param relation Relations that are linked on the outside or inside.
      *  @return The local receivers.
      *  @exception IllegalActionException If the relation is not linked
      *   from the outside, or if there is no director.
      */
     public Receiver[][] getReceivers(IORelation relation)
+            throws IllegalActionException {
+        return getReceivers(relation, 0);
+    }
+
+    /** If the port is an input, return receivers that handle incoming
+     *  channels from the specified relation. If the port is an opaque output
+     *  and the relation is inside linked, return the receivers that handle
+     *  incoming channels from the inside. Since the port may be linked
+     *  multiple times to the specified relation, the <i>occurrences</i>
+     *  argument specifies which of the links we wish to examine.
+     *  The returned value is an array of arrays of the same form
+     *  as that returned by getReceivers() with no arguments.  Note that a
+     *  single occurrence of a relation may represent multiple channels
+     *  because it may be a bus.  If there are no matching receivers,
+     *  then return an empty array.
+     *  <p>
+     *  This method is read-synchronized on the workspace.
+     *
+     *  @param relation Relations that are linked on the outside or inside.
+     *  @param occurrence The occurrence number that we are interested in,
+     *   starting at 0.
+     *  @return The local receivers.
+     *  @exception IllegalActionException If the relation is not linked
+     *   from the outside, or if there is no director.
+     */
+    public Receiver[][] getReceivers(IORelation relation, int occurrence)
             throws IllegalActionException {
         try {
             _workspace.getReadAccess();
@@ -718,18 +797,23 @@ public class IOPort extends ComponentPort {
 
                 if( _localReceiversTable.containsKey(relation) ) {
                     // Get the list of receivers for this relation.
-                    result = (Receiver[][])_localReceiversTable.get(relation);
+                    List list = (List)_localReceiversTable.get(relation);
+                    try {
+                        result = (Receiver[][])(list.get(occurrence));
+                    } catch (IndexOutOfBoundsException ex) {
+                        return _EMPTY_RECEIVER_ARRAY;
+                    }
                     if (result.length != width)  {
-                        String s = "getReceivers(IORelation): Invalid ";
-                        s += "receivers. Need to call createReceivers().";
-                        throw new InvalidStateException(this, s);
+                        throw new InvalidStateException(this,
+                        "getReceivers(IORelation, int): Invalid receivers. "
+                        + "Need to call createReceivers().");
                     }
                 }
                 return result;
             } else {
-                // If a transparent port, ask its all inside receivers,
+                // If a transparent input port, ask its all inside receivers,
                 // and trim the returned Receivers array to get the
-                // part corresponding to the IORelation
+                // part corresponding to this occurrence of the IORelation
                 Receiver[][] insideReceivers = getReceivers();
                 if(insideReceivers == null) {
                     return _EMPTY_RECEIVER_ARRAY;
@@ -738,19 +822,28 @@ public class IOPort extends ComponentPort {
                 int index = 0;
                 result = new Receiver[width][];
                 Iterator outsideRels = linkedRelationList().iterator();
+                int seen = 0;
                 while(outsideRels.hasNext()) {
                     IORelation outsideRel = (IORelation) outsideRels.next();
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
                     if (outsideRel != null) {
                         if(outsideRel == relation) {
-                            result = new Receiver[width][];
-                            int rstSize =
+                            if (seen == occurrence) {
+                                // Have to be careful here to get the right
+                                // occurrence of the relation.  EAL 7/30/00.
+                                result = new Receiver[width][];
+                                int rstSize =
                                 java.lang.Math.min(width, insideWidth-index);
-                            for (int i = 0; i< rstSize; i++) {
-                                result[i] = insideReceivers[index++];
+                                for (int i = 0; i< rstSize; i++) {
+                                    result[i] = insideReceivers[index++];
+                                }
+                                break;
+                            } else {
+                                seen++;
+                                index += outsideRel.getWidth();
+                                if(index > insideWidth) break;
                             }
-                            break;
                         } else {
                             index += outsideRel.getWidth();
                             if(index > insideWidth) break;
@@ -820,11 +913,13 @@ public class IOPort extends ComponentPort {
                     }
                 }
             }
+            // No longer needed, davisj (3/29/99)
+            /*
             if (!foundremoteinput) {
-		// No longer needed, davisj (3/29/99)
                 // No remote receivers
-                // farReceivers = null;
+                farReceivers = null;
             }
+            */
             // For an opaque port, cache the result.
             if(isOpaque()) {
                 _farReceiversVersion = _workspace.getVersion();
@@ -1277,9 +1372,33 @@ public class IOPort extends ComponentPort {
         _workspace.doneWriting();
     }
 
+    /** Unlink whatever relation is currently linked at the specified index
+     *  number. If there is no such relation, do nothing.
+     *  If a link is removed, then any links at higher index numbers
+     *  will have their index numbers decremented by one.
+     *  If there is a container, notify it by calling connectionsChanged().
+     *  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  @param index The index number of the link to remove.
+     */
+    public void unlink(int index) {
+        // Override the base class to update _localReceiversTable.
+        try {
+            _workspace.getWriteAccess();
+            Relation toDelete = (Relation)_relationsList.get(index);
+            if (toDelete != null) {
+                _localReceiversTable.remove(toDelete);
+            }
+            super.unlink(index);
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
     /** Unlink the specified Relation. The receivers associated with
      *  this relation, and any data they contain, are lost. If the Relation
-     *  is not linked to this port, do nothing.
+     *  is not linked to this port, do nothing. If the relation is linked
+     *  more than once, then unlink all occurrences.
      *  This method is write-synchronized on the workspace.
      *
      *  @param relation The relation to unlink.
@@ -1296,16 +1415,92 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Unlink all relations.
+    /** Unlink all relations that are linked on the outside.
      *  This method is write-synchronized on the
      *  workspace.
      */
     public void unlinkAll() {
         try {
             _workspace.getWriteAccess();
-            super.unlinkAll();
+            // NOTE: Can't just clear the _localReceiversTable because
+            // that would unlink inside relations as well.
             if (_localReceiversTable != null) {
-                _localReceiversTable.clear();
+                Iterator relations = _localReceiversTable.keySet().iterator();
+                while (relations.hasNext()) {
+                    Relation relation = (Relation)relations.next();
+                    if (!isInsideLinked(relation)) {
+                        _localReceiversTable.remove(relation);
+                    }
+                }
+            }
+            super.unlinkAll();
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Unlink all relations that are linked on the inside.
+     *  This method is write-synchronized on the
+     *  workspace.
+     */
+    public void unlinkAllInside() {
+        try {
+            _workspace.getWriteAccess();
+            // NOTE: Can't just clear the _localReceiversTable because
+            // that would unlink inside relations as well.
+            if (_localReceiversTable != null) {
+                Iterator relations = _localReceiversTable.keySet().iterator();
+                while (relations.hasNext()) {
+                    Relation relation = (Relation)relations.next();
+                    if (isInsideLinked(relation)) {
+                        _localReceiversTable.remove(relation);
+                    }
+                }
+            }
+            super.unlinkAllInside();
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Unlink whatever relation is currently linked on the inside
+     *  with the specified index number. If the relation
+     *  is not linked to this port on the inside, do nothing.
+     *  If a link is removed, then any links at higher index numbers
+     *  will have their index numbers decremented by one.
+     *  If there is a container, notify it by calling connectionsChanged().
+     *  This method is write-synchronized on the workspace
+     *  and increments its version number.
+     *  @param index The index number of the link to remove.
+     */
+    public void unlinkInside(int index) {
+        // Override the base class to update _localReceiversTable.
+        try {
+            _workspace.getWriteAccess();
+            Relation toDelete = (Relation)_insideLinks.get(index);
+            if (toDelete != null) {
+                _localReceiversTable.remove(toDelete);
+            }
+            super.unlinkInside(index);
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Unlink the specified Relation on the inside. The receivers associated
+     *  with this relation, and any data they contain, are lost. If the Relation
+     *  is not linked to this port, do nothing. If the relation is linked
+     *  more than once, then unlink all occurrences.
+     *  This method is write-synchronized on the workspace.
+     *
+     *  @param relation The relation to unlink.
+     */
+    public void unlinkInside(Relation relation) {
+        try {
+            _workspace.getWriteAccess();
+            super.unlinkInside(relation);
+            if (_localReceiversTable != null) {
+                _localReceiversTable.remove(relation);
             }
         } finally {
             _workspace.doneWriting();
@@ -1753,9 +1948,6 @@ public class IOPort extends ComponentPort {
     private transient Receiver[][] _insideReceivers;
     private transient long _insideReceiversVersion = -1;
 
-    // The local receivers, indexed by relation.
-    // NOTE: When upgrading to jdk 1.2, we should replace this with HashMap
-    // for which access methods are not synchronized.  There is no need to
-    // synchronize in this case, and it is costly.
-    private Hashtable _localReceiversTable;
+    // Lists of local receivers, indexed by relation.
+    private HashMap _localReceiversTable;
 }

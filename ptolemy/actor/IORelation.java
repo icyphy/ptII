@@ -34,6 +34,7 @@ package ptolemy.actor;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -173,6 +174,10 @@ public class IORelation extends ComponentRelation {
             Iterator inputs =
                 linkedDestinationPortList(except).iterator();
             Receiver[][] recvrs = new Receiver[0][0];
+            // NOTE: We have to be careful here to keep track of
+            // multiple occurrences of a port in this list.
+            // EAL 7/30/00.
+            HashMap seen = new HashMap();
             while(inputs.hasNext()) {
                 IOPort p = (IOPort) inputs.next();
 
@@ -192,7 +197,18 @@ public class IORelation extends ComponentRelation {
                     try {
                         // Note that this may be an inside or outside linked
                         // relation.
-                        recvrs = p.getReceivers(this);
+                        
+                        // NOTE: We have to be careful here to keep track of
+                        // multiple occurrences of a port in this list.
+                        // EAL 7/30/00.
+                        int occurrence = 0;
+                        if (seen.containsKey(p)) {
+                            occurrence = ((Integer)(seen.get(p))).intValue();
+                            occurrence++;
+                        }
+                        seen.put(p, new Integer(occurrence));
+
+                        recvrs = p.getReceivers(this, occurrence);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(
                                 "IORelation.deepReceivers: Internal error: "
