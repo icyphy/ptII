@@ -105,6 +105,9 @@ then click on the Exclusion Filter and hit Edit.
 </ol>
 
 <h2><a name="simpleDebug">Simple Debugging Session</a></h2>
+Before editing any files, follow the steps in
+<a href="#tabs">Don't use tabs in the editor</a> below
+
 <ol>
  <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
 double click. Place a breakpoint on the first line of main()
@@ -175,12 +178,17 @@ as above. Open the Lorenz CT demo from the Quick Tour and run it.
 </ol>       
 
 
-<h2>Don't use tabs in the editor</h2>
+<h2><a name="tabs">Don't use tabs in the editor</a></h2>
 This setting is in the <code>$PTII/.eclipse.epf</code> file.
-See <a name="importPreferences">Import the Ptolemy II specific preferences</a>
+See <a href="#importPreferences">Import the Ptolemy II specific preferences</a>
 for details.
 
-<b>Before editing any files, adjust the Editor Preference to not use tabs</b>
+<p><b>Before editing any files, adjust the Editor Preference to not
+use tabs</b>. 
+<p>Either import the Ptolemy II specific preferences or follow
+the steps below
+
+
 <ol>
 <li> Window -&gt;Preferences: expand the Java tree, select
 'Code Formatter' and then the Style tab.  Uncheck 'Insert tabs for indentation, not spaces'.
