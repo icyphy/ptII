@@ -737,7 +737,7 @@ public class IOPort extends ComponentPort {
                 return _farReceivers;
             }
             // If not an opaque port or Cache is not valid.  Reconstruct it.
-            Receiver[][] farReceivers = new Receiver[width][];
+            Receiver[][] farReceivers = new Receiver[width][0];
             Enumeration relations = linkedRelations();
             int index = 0;
             boolean foundremoteinput = false;
@@ -758,8 +758,9 @@ public class IOPort extends ComponentPort {
                 }
             }
             if (!foundremoteinput) {
+		// No longer needed, davisj (3/29/99)
                 // No remote receivers
-                farReceivers = null;
+                // farReceivers = null;
             }
             // For an opaque port, cache the result.
             if(isOpaque()) {
