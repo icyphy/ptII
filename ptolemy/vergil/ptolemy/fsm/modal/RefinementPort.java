@@ -285,34 +285,6 @@ public class RefinementPort extends TypedIOPort {
         }
     }
 
-    /** Set the type of this port and all the mirror ports.
-     *  If the type is BaseType.UNKNOWN, the determination of the type
-     *  is left to type resolution.
-     *  This method is write-synchronized on the workspace.
-     *  @param type A Type.
-     */
-/* FIXME: not needed??
-    public void setTypeEquals(Type type) {
-        if (_mirrorDisable || getContainer() == null) {
-            super.setTypeEquals(type);
-        } else {
-            boolean success = false;
-            Nameable container = getContainer();
-            if (container != null) {
-                Nameable modal = container.getContainer();
-                if (modal instanceof ModalModel) {
-                    Port port = ((ModalModel)modal).getPort(getName());
-                    if (port instanceof TypedIOPort) {
-                        ((TypedIOPort)port).setTypeEquals(type);
-                        success = true;
-                    }
-                }
-            }
-            if (!success) super.setTypeEquals(type);
-        }
-    }
-*/
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

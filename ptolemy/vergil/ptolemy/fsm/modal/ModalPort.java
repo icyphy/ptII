@@ -297,39 +297,6 @@ public class ModalPort extends TypedIOPort {
         }
     }
 
-    /** Set the type of this port and all the mirror ports.
-     *  If the type is BaseType.UNKNOWN, the determination of the type
-     *  is left to type resolution.
-     *  This method is write-synchronized on the workspace.
-     *  @param type A Type.
-     */
-/* FIXME: not needed??
-    public void setTypeEquals(Type type) {
-        try {
-            _workspace.getWriteAccess();
-            super.setTypeEquals(type);
-            ModalModel container = (ModalModel)getContainer();
-            Iterator entities = container.entityList().iterator();
-            while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
-                Port mirrorPort = entity.getPort(getName());
-                if (mirrorPort instanceof RefinementPort) {
-                    RefinementPort castPort = (RefinementPort)mirrorPort;
-                    boolean disableStatus = castPort._mirrorDisable;
-                    try {
-                        castPort._mirrorDisable = true;
-                        castPort.setTypeEquals(type);
-                    } finally {
-                        castPort._mirrorDisable = disableStatus;
-                    }
-                }
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
-*/
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
