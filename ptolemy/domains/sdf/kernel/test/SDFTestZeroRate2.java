@@ -188,7 +188,7 @@ public class SDFTestZeroRate2 extends Transformer {
     }
 
     /**
-     * for debuging only...
+     * for debugging only...
      *
      *  @exception IllegalActionException If a derived class throws it.
      */
