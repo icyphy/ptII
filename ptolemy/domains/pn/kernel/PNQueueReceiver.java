@@ -97,7 +97,7 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
      */
     public Token get() {
 	Workspace workspace = getContainer().workspace();
-	PNDirector director = ((PNDirector)((Actor)(getContainer().getContainer())).getDirector());
+	BasePNDirector director = ((BasePNDirector)((Actor)(getContainer().getContainer())).getDirector());
         Token result = null;
 	//System.out.println(getContainer().getFullName() +" in receiver.get");
         synchronized (this) {
@@ -185,7 +185,7 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
      */
     public void put(Token token) {
 	Workspace workspace = getContainer().workspace();
-	PNDirector director = (PNDirector)((Actor)(getContainer().getContainer())).getDirector();
+	BasePNDirector director = (BasePNDirector)((Actor)(getContainer().getContainer())).getDirector();
 	//System.out.println("putting token in PNQueueReceiver and pause = "+_pause);
 
         synchronized(this) {
