@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -38,7 +38,7 @@ import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Query
-/** 
+/**
 Create a query with various types of entry boxes and controls.
 
 @author  Edward A. Lee
@@ -47,7 +47,7 @@ Create a query with various types of entry boxes and controls.
 public class Query extends Panel {
 
     /** Construct a panel with no queries in it.
-     */	
+     */
     public Query () {
         _grid = new GridBagLayout();
         setLayout(_grid);
@@ -77,7 +77,7 @@ public class Query extends Panel {
                     name + " \" in the query box.");
         }
         return (new Boolean(result.getState())).booleanValue();
-    }    
+    }
 
     /** Get the current value in the entry with the given name
      *  and return as an integer.  If the value of the entry is not
@@ -99,14 +99,14 @@ public class Query extends Panel {
                     name + " \" in the query box.");
         }
         return (new Integer(result.getText())).intValue();
-    }    
+    }
 
     /** Create a single-line entry box with the specified name, label, and
      *  default value.  The width will be the default width.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param defvalue Default value to appear in the entry box.
-     */	
+     */
     public void line(String name, String label, String defvalue) {
         line(name, label, defvalue, DEFAULT_ENTRY_WIDTH);
     }
@@ -117,7 +117,7 @@ public class Query extends Panel {
      *  @param label The label to attach to the entry.
      *  @param defvalue Default value to appear in the entry box.
      *  @param width The width of the entry box in characters.
-     */	
+     */
     public void line(String name, String label, String defvalue, int width) {
         Label lbl = new Label(label);
         TextField entrybox = new TextField(defvalue, width);
@@ -129,7 +129,7 @@ public class Query extends Panel {
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param defvalue Default value (true for on).
-     */	
+     */
     public void onoff(String name, String label, boolean defvalue) {
         Label lbl = new Label(label);
         Checkbox checkbox = new Checkbox();
@@ -152,7 +152,7 @@ public class Query extends Panel {
                     name + " \" in the query box.");
         }
         return result.getText();
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -165,7 +165,7 @@ public class Query extends Panel {
     /** Add a label and a widget to the panel.
      *  @param label The label.
      *  @param widget The interactive entry to the right of the label.
-     */	
+     */
     protected void _addPair(Label label, Component widget) {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
