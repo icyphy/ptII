@@ -337,7 +337,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public boolean hasToken(int tokens) {
         return true;
-	// FIXME hack - consults neuendors new mechanism.
+	// FIXME hack - consults Neuendor's new mechanism.
     }
 
     /** Return true if this receiver is a consumer receiver. A
