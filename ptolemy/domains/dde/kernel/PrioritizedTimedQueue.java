@@ -123,7 +123,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   contained by the proposed container.
      */
     public PrioritizedTimedQueue(IOPort container)
-             throws IllegalActionException {
+            throws IllegalActionException {
         super(container);
     }
 
@@ -135,7 +135,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   contained by the proposed container.
      */
     public PrioritizedTimedQueue(IOPort container, int priority)
-             throws IllegalActionException {
+            throws IllegalActionException {
         super(container);
         _priority = priority;
     }
@@ -175,7 +175,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         try {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
-                        ((DDEThread)thread).getTimeKeeper();
+                    ((DDEThread)thread).getTimeKeeper();
                 timeKeeper.setCurrentTime( event.getTime() );
                 timeKeeper._setOutputTime( timeKeeper.getCurrentTime() );
             }
@@ -277,7 +277,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public void put(Token token) {
         throw new NoRoomException("put(Token) is not used in the " +
-                                  "DDE domain.");
+                "DDE domain.");
     }
 
     /** Put a token on the queue with the specified time stamp and set
@@ -306,23 +306,23 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
         /*
-        String containerName = actor.getName();
-        Thread thread = Thread.currentThread();
-        String invokerName = "";
-        if ( thread instanceof DDEThread ) {
-            DDEThread ddeThread = (DDEThread)thread;
-            invokerName = ((Nameable)ddeThread.getActor()).getName();
-        }
+          String containerName = actor.getName();
+          Thread thread = Thread.currentThread();
+          String invokerName = "";
+          if ( thread instanceof DDEThread ) {
+          DDEThread ddeThread = (DDEThread)thread;
+          invokerName = ((Nameable)ddeThread.getActor()).getName();
+          }
 
-        if ( containerName.endsWith("2") || invokerName.endsWith("2") ) {
-        if ( token instanceof NullToken ) {
-            System.out.println(invokerName + " put NullToken into the receiver of "
-                    + containerName + " at " + time + ". Last time is " + _lastTime);
-        } else {
-            System.out.println(invokerName + " put RealToken into the receiver of "
-                    + containerName + " at " + time + ". Last time is " + _lastTime);
-        }
-        }
+          if ( containerName.endsWith("2") || invokerName.endsWith("2") ) {
+          if ( token instanceof NullToken ) {
+          System.out.println(invokerName + " put NullToken into the receiver of "
+          + containerName + " at " + time + ". Last time is " + _lastTime);
+          } else {
+          System.out.println(invokerName + " put RealToken into the receiver of "
+          + containerName + " at " + time + ". Last time is " + _lastTime);
+          }
+          }
         */
 
         double _lastTimeCache = _lastTime;
@@ -336,7 +336,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         try {
             if (!_queue.put(event)) {
                 throw new NoRoomException (getContainer(),
-                    "Queue is at capacity. Cannot insert token.");
+                        "Queue is at capacity. Cannot insert token.");
             }
         } catch( NoRoomException e ) {
             _lastTime = _lastTimeCache;
@@ -374,7 +374,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         try {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
-                        ((DDEThread)thread).getTimeKeeper();
+                    ((DDEThread)thread).getTimeKeeper();
                 timeKeeper._setOutputTime( timeKeeper.getCurrentTime() );
             }
         } catch( IllegalActionException e ) {
@@ -386,7 +386,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         if ( getReceiverTime() == PrioritizedTimedQueue.IGNORE ) {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
-                        ((DDEThread)thread).getTimeKeeper();
+                    ((DDEThread)thread).getTimeKeeper();
                 _setReceiverTime( timeKeeper.getCurrentTime() );
             }
         }
@@ -474,7 +474,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     void _setCompletionTime(double time) {
         if ( time < 0.0 && time != PrioritizedTimedQueue.ETERNITY ) {
             throw new IllegalArgumentException("Attempt to set "
-                        + "completion time to a negative value.");
+                    + "completion time to a negative value.");
         }
         _completionTime = time;
     }

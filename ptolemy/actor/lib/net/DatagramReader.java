@@ -89,8 +89,8 @@ next packet.  By stalling again and again, the thread keeps the actor
 aware at all times of incoming packets.  This is particularly
 important if packets come in more quickly than the model can process
 them.  Depending on the domain (e.g. DE) in which this actor is used,
-the director may respond to the thread's fireAtCurrentTime() call by
-calling the actor's fire() method.  In this case, fire() then
+the director may respond to the fireAtCurrentTime() call of the thread by
+calling the fire() method of the actor.  In this case, fire() then
 broadcasts the data received, along with the return address and return
 socket number from which the datagram originated.
 
@@ -100,7 +100,7 @@ The type of the output is always an array of bytes.
 <p>The return address and socket number are broadcast as String and int
 respectively.  These tell where the received datagram originated from.
 
-<p>The actor's behavior under less simple scenarios is governed by
+<p>The behavior of the actor under less simple scenarios is governed by
 parameters of this actor.  Additional packet(s) can arrive while the
 director is getting around to calling fire().  Conversely, the
 director may make extra calls to fire(), even before any datagrams
@@ -267,10 +267,10 @@ public class DatagramReader extends TypedAtomicActor {
     /** This port outputs the IP address portion of the received
      *  datagram packet.  The type of this output is String.  This is
      *  the IP address of the remote datagram socket which sent the
-     *  packet to this actor's socket.  Under IPv4, this string has
+     *  packet to the socket of this actor.  Under IPv4, this string has
      *  the familiar form "128.32.1.1".  This output defaults (when no
      *  datagram has been received and blocking is false) to the IP
-     *  address of this actor's socket.
+     *  address of the socket.
      */
     public TypedIOPort returnAddress;
 
@@ -963,8 +963,8 @@ public class DatagramReader extends TypedAtomicActor {
                             // in AttributeChanged() being called again.
                             // This is why the flag is set to -1 above.
                             // Doing so avoids an infinite sequence of calls.
- //                            platformBufferLength.setToken(new IntToken(
-//                                     _socket.getReceiveBufferSize()));
+                            //                            platformBufferLength.setToken(new IntToken(
+                            //                                     _socket.getReceiveBufferSize()));
                         } catch (SocketException ex) {
                             System.out.println("Socket Ex." + ex.toString());
                             // throw new IllegalActionException(this,

@@ -92,7 +92,7 @@ as an integer array of which only the low bytes carry data.  This
 actor makes no guarantee as to the contents of the other three bytes
 of the integer.
 
-<p>This actor is a class which implements SerialPortEventListener.
+<p>This actor fulfills the SerialPortEventListener interface.
 This means that when serial events (such as DATA_AVAILABLE) occur,
 the serialEvent() method gets called.  The serialEvent()
 method calls the director's fireAtCurrentTime() method, triggering
@@ -128,7 +128,7 @@ firing since the last time fireAt*() was called.
 @since Ptolemy II 2.0
 */
 public class SerialComm extends TypedAtomicActor
-        implements SerialPortEventListener {
+    implements SerialPortEventListener {
 
     /** Construct a SerialComm actor with the given container and name.
      *  Construct the serialPortName and baudRate parameters.  Initialize
@@ -292,7 +292,7 @@ public class SerialComm extends TypedAtomicActor
             int bytesAvailable;
             // Note: This needs _threshold to be at least 1.
             while ((bytesAvailable = in.available()) < _threshold
-                   && _blocking) {
+                    && _blocking) {
                 try{
                     wait();
                 } catch (InterruptedException ex) {
@@ -324,7 +324,7 @@ public class SerialComm extends TypedAtomicActor
                 OutputStream out = _serialPort.getOutputStream();
                 for (int j = 0; j < dataArrayToken.length(); j++) {
                     UnsignedByteToken dataToken =
-                            (UnsignedByteToken)dataArrayToken.getElement(j);
+                        (UnsignedByteToken)dataArrayToken.getElement(j);
                     out.write(dataToken.byteValue());
                 }
                 out.flush();
@@ -355,9 +355,9 @@ public class SerialComm extends TypedAtomicActor
         try {
 
             String serialPortNameValue =
-                    ((StringToken)(serialPortName.getToken())).stringValue();
+                ((StringToken)(serialPortName.getToken())).stringValue();
             CommPortIdentifier portID =
-                    CommPortIdentifier.getPortIdentifier(serialPortNameValue);
+                CommPortIdentifier.getPortIdentifier(serialPortNameValue);
             _serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
             // The 2000 above is 2000mS to open the port, otherwise time out.
 
@@ -383,16 +383,16 @@ public class SerialComm extends TypedAtomicActor
             Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
             while (allPorts.hasMoreElements()) {
                 CommPortIdentifier id = (CommPortIdentifier)
-                        allPorts.nextElement();
+                    allPorts.nextElement();
                 if (_debugging) {
                     _debug("    {");
                     _debug("        id.toString() = " + id.toString());
                     _debug("        id.getName() = " + id.getName());
                     _debug("        id.getPortType() = " + id.getPortType());
                     _debug("        (id.getPortType() == "
-                        + " CommPortIdentifier.PORT_SERIAL) = "
-                        + (id.getPortType() ==
-                        CommPortIdentifier.PORT_SERIAL));
+                            + " CommPortIdentifier.PORT_SERIAL) = "
+                            + (id.getPortType() ==
+                                    CommPortIdentifier.PORT_SERIAL));
                     _debug("    }");
                 }
             }
@@ -434,7 +434,7 @@ public class SerialComm extends TypedAtomicActor
 
         try {
             if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-            //if (e.getEventType() == SerialPortEvent.RI && !_serialPort.isRI()) {
+                //if (e.getEventType() == SerialPortEvent.RI && !_serialPort.isRI()) {
                 if (!_directorFiredAtAlready) {
                     _directorFiredAtAlready = true;
                     getDirector().fireAtCurrentTime(this);

@@ -81,7 +81,7 @@ is not enforced.
 @since Ptolemy II 1.0
 */
 public class HistogramPlotter extends PlotterBase
-        implements Configurable, Placeable {
+    implements Configurable, Placeable {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -93,47 +93,47 @@ public class HistogramPlotter extends PlotterBase
      */
     public HistogramPlotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+                super(container, name);
 
-            input = new TypedIOPort(this, "input", true, false);
-        input.setMultiport(true);
-        input.setTypeEquals(BaseType.DOUBLE);
+                input = new TypedIOPort(this, "input", true, false);
+                input.setMultiport(true);
+                input.setTypeEquals(BaseType.DOUBLE);
 
-        binWidth = new Parameter(this, "binWidth",
-                new DoubleToken(1.0));
-        binWidth.setTypeEquals(BaseType.DOUBLE);
+                binWidth = new Parameter(this, "binWidth",
+                        new DoubleToken(1.0));
+                binWidth.setTypeEquals(BaseType.DOUBLE);
 
-        binOffset = new Parameter(this, "binOffset",
-                new DoubleToken(0.5));
-        binOffset.setTypeEquals(BaseType.DOUBLE);
+                binOffset = new Parameter(this, "binOffset",
+                        new DoubleToken(0.5));
+                binOffset.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" "
-                + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"2\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"-8\" y=\"2\" "
-                + "width=\"4\" height=\"10\" "
-                + "style=\"fill:red\"/>\n"
-                + "<rect x=\"-2\" y=\"-8\" "
-                + "width=\"4\" height=\"20\" "
-                + "style=\"fill:red\"/>\n"
-                + "<rect x=\"4\" y=\"-5\" "
-                + "width=\"4\" height=\"17\" "
-                + "style=\"fill:red\"/>\n"
-                + "</svg>\n");
-    }
+                _attachText("_iconDescription", "<svg>\n" +
+                        "<rect x=\"-20\" y=\"-20\" "
+                        + "width=\"40\" height=\"40\" "
+                        + "style=\"fill:lightGrey\"/>\n"
+                        + "<rect x=\"-12\" y=\"-12\" "
+                        + "width=\"24\" height=\"24\" "
+                        + "style=\"fill:white\"/>\n"
+                        + "<rect x=\"2\" y=\"-18\" "
+                        + "width=\"4\" height=\"4\" "
+                        + "style=\"fill:grey\"/>\n"
+                        + "<rect x=\"8\" y=\"-18\" "
+                        + "width=\"4\" height=\"4\" "
+                        + "style=\"fill:grey\"/>\n"
+                        + "<rect x=\"14\" y=\"-18\" "
+                        + "width=\"4\" height=\"4\" "
+                        + "style=\"fill:grey\"/>\n"
+                        + "<rect x=\"-8\" y=\"2\" "
+                        + "width=\"4\" height=\"10\" "
+                        + "style=\"fill:red\"/>\n"
+                        + "<rect x=\"-2\" y=\"-8\" "
+                        + "width=\"4\" height=\"20\" "
+                        + "style=\"fill:red\"/>\n"
+                        + "<rect x=\"4\" y=\"-5\" "
+                        + "width=\"4\" height=\"17\" "
+                        + "style=\"fill:red\"/>\n"
+                        + "</svg>\n");
+            }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -160,27 +160,27 @@ public class HistogramPlotter extends PlotterBase
      *  @exception IllegalActionException If the bin width is not positive.
      */
     public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {
+            throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
-       if (attribute == binWidth) {
-           double width = ((DoubleToken)binWidth.getToken()).doubleValue();
-           if (width <= 0.0) {
-               throw new IllegalActionException(this,
-                       "Invalid bin width (must be positive): " + width);
-           }
-           if (plot instanceof Histogram) {
-               ((Histogram)plot).setBinWidth(width);
-           }
-       } else if (attribute == binOffset) {
-           double offset = ((DoubleToken)binOffset.getToken()).doubleValue();
-           if (plot instanceof Histogram) {
-               ((Histogram)plot).setBinOffset(offset);
-           }
-       } else {
-           super.attributeChanged(attribute);
-       }
-   }
+        if (attribute == binWidth) {
+            double width = ((DoubleToken)binWidth.getToken()).doubleValue();
+            if (width <= 0.0) {
+                throw new IllegalActionException(this,
+                        "Invalid bin width (must be positive): " + width);
+            }
+            if (plot instanceof Histogram) {
+                ((Histogram)plot).setBinWidth(width);
+            }
+        } else if (attribute == binOffset) {
+            double offset = ((DoubleToken)binOffset.getToken()).doubleValue();
+            if (plot instanceof Histogram) {
+                ((Histogram)plot).setBinOffset(offset);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Configure the plot with data from the specified input source
      *  (a URL) and/or textual data, assumed to be in PlotML format.
@@ -196,36 +196,36 @@ public class HistogramPlotter extends PlotterBase
      */
     public void configure(URL base, String source, String text)
             throws Exception {
-        if (plot instanceof Histogram) {
-            HistogramMLParser parser = new HistogramMLParser((Histogram)plot);
-            if (source != null && !source.trim().equals("")) {
-                URL xmlFile = new URL(base, source);
-                InputStream stream = xmlFile.openStream();
-                parser.parse(base, stream);
-                stream.close();
-            }
-            if (text != null && !text.equals("")) {
-                // NOTE: Regrettably, the XML parser we are using cannot
-                // deal with having a single processing instruction at the
-                // outer level.  Thus, we have to strip it.
-                String trimmed = text.trim();
-                if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-                    trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
-                    if (trimmed.startsWith("plotml")) {
-                        trimmed = trimmed.substring(6).trim();
-                        parser.parse(base, trimmed);
+                if (plot instanceof Histogram) {
+                    HistogramMLParser parser = new HistogramMLParser((Histogram)plot);
+                    if (source != null && !source.trim().equals("")) {
+                        URL xmlFile = new URL(base, source);
+                        InputStream stream = xmlFile.openStream();
+                        parser.parse(base, stream);
+                        stream.close();
                     }
-                    // If it's not a plotml processing instruction, ignore.
+                    if (text != null && !text.equals("")) {
+                        // NOTE: Regrettably, the XML parser we are using cannot
+                        // deal with having a single processing instruction at the
+                        // outer level.  Thus, we have to strip it.
+                        String trimmed = text.trim();
+                        if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
+                            trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
+                            if (trimmed.startsWith("plotml")) {
+                                trimmed = trimmed.substring(6).trim();
+                                parser.parse(base, trimmed);
+                            }
+                            // If it's not a plotml processing instruction, ignore.
+                        } else {
+                            // Data is not enclosed in a processing instruction.
+                            // Must have been given in a CDATA section.
+                            parser.parse(base, text);
+                        }
+                    }
                 } else {
-                    // Data is not enclosed in a processing instruction.
-                    // Must have been given in a CDATA section.
-                    parser.parse(base, text);
+                    super.configure(base, source, text);
                 }
             }
-        } else {
-            super.configure(base, source, text);
-        }
-    }
 
     /** Return the input source that was specified the last time the configure
      *  method was called.
@@ -293,9 +293,9 @@ public class HistogramPlotter extends PlotterBase
         }
         /* NOTE: This causes a bug where manual resizes of the window
            get overridden on re-run.
-        if (_frame != null) {
-            _frame.show();
-        }
+           if (_frame != null) {
+           _frame.show();
+           }
         */
     }
 
