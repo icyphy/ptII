@@ -2734,5 +2734,5 @@ AC_SUBST(X10_CLASSES)
 AC_SUBST(X10_DIR)
 
 # Files we substitute in
-AC_OUTPUT(mk/ptII.mk bin/ptinvoke .classpath, chmod a+x bin/ptinvoke)
+AC_OUTPUT(mk/ptII.mk bin/ptinvoke .classpath bin/comm.policy, chmod a+x bin/ptinvoke)
 
