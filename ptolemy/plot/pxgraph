@@ -140,9 +140,11 @@ if [ -z "$JAVAHOME" ]; then
 fi
 
 if [ "$windows" = "yes" ]; then 
-    CLASSPATH=$TYCHO/java
-    export CLASSPATH
-    $JAVAHOME/bin/java ptplot.Pxgraph ${1+"$@"}
+    # Windows via Cygwin32
+    # chdir prints the current directory in DOS format.
+    # The tr command deletes the \r at the end
+    WINTYCHOJAVA=`(cd $TYCHO/java; cmd /c chdir) | tr -d '\r'`
+    $JAVAHOME/bin/java -classpath $WINTYCHOJAVA\;$JAVAHOME\\lib\\classes.zip ptplot.Pxgraph ${1+"$@"}
 elif [ "$PTARCH" = "alpha4" ]; then
      $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/classes  ptplot.Pxgraph ${1+"$@"}
 else
