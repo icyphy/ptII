@@ -241,6 +241,7 @@ public class SearchPath extends Vector {
         // http://www.utm.edu/research/primes/lists/small/10000.txt
         Set classSet = new HashSet(10427); 
 
+        systemPackageSet = new HashSet();
         // Now read in the system jar file (jre/lib/rt.jar) and
         // add each .class file to the set
 	File systemJarFile = _getSystemJar();
@@ -257,7 +258,9 @@ public class SearchPath extends Vector {
 	    JarEntry jarEntry = (JarEntry)enumeration.nextElement();
 	    //System.out.println(jarEntry.getName());
 	    File jarFile = new File(jarEntry.getName());
-	    if (!jarEntry.isDirectory()) {
+	    if (jarEntry.isDirectory()) {
+                systemPackageSet.add(jarFile.getPath());
+            } else {
                 if (jarFile.getPath().endsWith(".class")) {
 		    // Strip off the .class
                     classSet.add(StringManip.partBeforeLast(jarFile.getPath(),
@@ -279,7 +282,11 @@ public class SearchPath extends Vector {
 
     /** Set of Strings that name all class files in the system jar file.
      */
-    public static Set systemClassSet = systemClasses();
+    public static Set systemClassSet = systemClasses() ;
+
+    /** Set of Strings that name all the packages in the system jar file.
+     */   
+    public static Set systemPackageSet;
 
     /** Set of Strings that name the .java files in the Ptolemy II core
      */
