@@ -39,6 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 
 import java.util.HashMap;
@@ -147,17 +148,14 @@ public class InterfaceAutomaton extends FSMActor {
         InterfaceAutomaton composition = _computeProduct(automaton);
 
         // prune illegal states
-        composition._pruneIllegalStates();
+        _pruneIllegalStates();
 
         // remove states unreacheable from the initial state.
         composition._removeUnreacheableStates();
 
-
-
-
-
         // Create ports for the composition.  Internal transition parameters 
         // were created automatically when the transition labels were set.
+        _createPorts(composition);
 
         return composition;
     }
@@ -725,6 +723,33 @@ public class InterfaceAutomaton extends FSMActor {
         return false;
     }
 
+    // Create ports on the composition automaton, based on _inputNames and
+    // _outputNames.
+    private void _createPorts(InterfaceAutomaton composition)
+            throws IllegalActionException {
+        try {
+            Iterator iterator = _inputNames.iterator();
+            while (iterator.hasNext()) {
+                String name = (String)iterator.next();
+                TypedIOPort port = new TypedIOPort(composition, name);
+                port.setInput(true);
+            }
+
+            iterator = _outputNames.iterator();
+            while (iterator.hasNext()) {
+                String name = (String)iterator.next();
+                TypedIOPort port = new TypedIOPort(composition, name);
+                port.setOutput(true);
+            }
+        } catch (NameDuplicationException exception) {
+            // this should not happen. Composability check should ensure that
+            // names do not clash.
+            throw new InternalErrorException("InterfaceAutomaton._createPort: "
+                + "Cannot create ports due to name duplication: "
+                + exception.getMessage());
+        }
+    }
+
     // prune illegal states from the argument. Use fontier exploration.
     // The Set frontier contains the references of illegal states in the
     // frontier; the Set _illegalStates contains references of all the
@@ -742,6 +767,10 @@ public class InterfaceAutomaton extends FSMActor {
     //          end when frontier is empty
     //
     // remove all states in _illegalstates from automaton 
+    //
+    // Note: this method does not operate the "this" automaton, it operates
+    // on the composition automaton. This is implicite since _illegalStates
+    // contains the states in the composition.
     private void _pruneIllegalStates() {
         // init
         Set frontier = new HashSet();
@@ -794,8 +823,8 @@ public class InterfaceAutomaton extends FSMActor {
             ComponentPort inPort = state.incomingPort;
             Iterator transitions = inPort.linkedRelationList().iterator();
             while (transitions.hasNext()) {
-                InterfaceAutomatonTransition transition =
-                    (InterfaceAutomatonTransition)transitions.next();
+                ComponentRelation transition =
+                    (ComponentRelation)transitions.next();
                 transition.setContainer(null);
             }
 
@@ -803,8 +832,8 @@ public class InterfaceAutomaton extends FSMActor {
             ComponentPort outPort = state.outgoingPort;
             transitions = outPort.linkedRelationList().iterator();
             while (transitions.hasNext()) {
-                InterfaceAutomatonTransition transition =
-                    (InterfaceAutomatonTransition)transitions.next();
+                ComponentRelation transition =
+                    (ComponentRelation)transitions.next();
                 transition.setContainer(null);
             }
 
@@ -851,22 +880,22 @@ public class InterfaceAutomaton extends FSMActor {
     private void _removeUnreacheableStates() {
         // init
         State initialState;
-	try {
-	    initialState = getInitialState();
-	} catch (IllegalActionException exception) {
-	    // initial state was removed since it was illegal. remove all
-	    // states from this automaton to make it empty.
-	    this.removeAllRelations();
-	    this.removeAllEntities();
-	    return;
-	}
+        try {
+            initialState = getInitialState();
+        } catch (IllegalActionException exception) {
+            // initial state was removed since it was illegal. remove all
+            // states from this automaton to make it empty.
+            this.removeAllRelations();
+            this.removeAllEntities();
+            return;
+        }
 
-	Set reacheableStates = new HashSet();
-	Set frontier = new HashSet();
-	reacheableStates.add(initialState);
-	frontier.add(initialState);
+        Set reacheableStates = new HashSet();
+        Set frontier = new HashSet();
+        reacheableStates.add(initialState);
+        frontier.add(initialState);
 
-	// iterate
+        // iterate
         while ( !frontier.isEmpty()) {
             // there does not seem to be an easy way to remove an arbitray
             // element, except through Iterator
@@ -888,14 +917,14 @@ public class InterfaceAutomaton extends FSMActor {
             }
         }
 
-	// remove all states not reacheable from initial state
-	List states = entityList();
-	states.removeAll(reacheableStates);
-	Iterator iterator = states.iterator();
-	while (iterator.hasNext()) {
-	    State state = (State)iterator.next();
+        // remove all states not reacheable from initial state
+        List states = entityList();
+        states.removeAll(reacheableStates);
+        Iterator iterator = states.iterator();
+        while (iterator.hasNext()) {
+            State state = (State)iterator.next();
             _removeStateAndTransitions(state);
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
