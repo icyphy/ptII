@@ -66,13 +66,27 @@ public class Picture extends Canvas {
         return new Dimension(_width, _height);
     }
 
+    /** Return the minimum size.
+     *  @return The size of the image.
+     */
+    public Dimension getMinimumSize() {
+        return new Dimension(_width, _height);
+    }
+
+    /** Return the maximum size.
+     *  @return The size of the image.
+     */
+    public Dimension getMaximumSize() {
+        return new Dimension(_width, _height);
+    }
+
     /** Notify this picture that its image has been changed and that it is
      *  now OK to display the new image.
      */
     public void displayImage() {
         if(_imagesource == null) {
             _imagesource = new MemoryImageSource(_width, _height,
-                    _pix, 0, _width);
+                    ColorModel.getRGBdefault(), _pix, 0, _width);
             _imagesource.setAnimated(true);
             _image = createImage(_imagesource);
         }
@@ -111,6 +125,9 @@ public class Picture extends Canvas {
                     + "match that of the component.");
         }
         _pix = pix;
+        if(_imagesource != null) {
+            _imagesource.newPixels(pix, ColorModel.getRGBdefault(), 0, _width);
+        }
     }
 
     /** Set the specified pixel to the given monochrome value, which
