@@ -66,7 +66,6 @@ public class ExtendedMath {
     /** Return the inverse hyperbolic sine of the argument.
      */
     public static final double asinh(final double x) {
-        // FIXME: What is the assumed range of the argument?
         double result;
         if (x < 0) {
             result = -Math.log( -x+Math.sqrt(x*x+1) );
@@ -79,7 +78,6 @@ public class ExtendedMath {
     /** Return the hyperbolic cosine of the argument.
      */
     public static final double cosh(final double x) {
-        // FIXME: What is the assumed range of the argument?
         return (Math.exp(x) + Math.exp(-x))/2;
     }
 
@@ -157,10 +155,15 @@ public class ExtendedMath {
     }
 
     /** Return the hyperbolic sine of the argument.
-     *  FIXME: What is the assumed range of the argument?
      */
     public static final double sinh(final double x) {
         return (Math.exp(x) - Math.exp(-x))/2;
+    }
+
+    /** Return the hyperbolic tangent of the argument.
+     */
+    public static final double tanh(final double x) {
+        return (sinh(x)/cosh(x));
     }
 
     ///////////////////////////////////////////////////////////////////
