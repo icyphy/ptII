@@ -100,7 +100,7 @@ Note that a PrioritizedTimedQueue is intended for use within a
 multi-threaded environment. PrioritizedTimedQueue does not
 require the synchronization facilities provided by
 ptolemy.kernel.util.Workspace. PrioritizedTimedQueue is subclassed
-by DDEReceiver which add significant synchronization facilities
+by DDEReceiver which adds significant synchronization facilities
 and where appropriate employs workspace.
 
 @author John S. Davis II
