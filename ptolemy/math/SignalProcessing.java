@@ -1022,11 +1022,11 @@ public final class SignalProcessing {
         if (order < 1) {
            throw new IllegalArgumentException( 
             "ptolemy.math.SignalProcessing : order of transform must be "+
-            " positive.");
+            "positive.");
         } else if (order > 31) {
            throw new IllegalArgumentException(
             "ptolemy.math.SignalProcessing : order of transform must be "+
-            " less than 32.");
+            "less than 32.");
         }
     }
 

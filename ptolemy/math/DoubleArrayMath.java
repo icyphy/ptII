@@ -145,7 +145,7 @@ public class DoubleArrayMath {
 
         if ((startIdx >= array.length) && (copySize >= 0)) {
            throw new IllegalArgumentException(
-            "resize() :  input array size is less than the start index");
+            "resize() : input array size is less than the start index");
         }
         
         if (copySize > 0) {
