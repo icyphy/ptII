@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj)
+@AcceptedRating Yellow (janneck)
 */
 
 package ptolemy.actor.corba;

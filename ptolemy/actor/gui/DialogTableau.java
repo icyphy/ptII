@@ -60,7 +60,7 @@ import ptolemy.util.MessageHandler;
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (rowland)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
    @see Effigy
 */
 public class DialogTableau extends Tableau {

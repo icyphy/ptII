@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
 @version $Id$
 @since Ptolemy II 0.4
 @Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+@Pt.AcceptedRating Red (cxh)
 */
 public class TestModel extends TypedCompositeActor {
 
