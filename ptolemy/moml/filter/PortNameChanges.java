@@ -38,6 +38,7 @@ import ptolemy.moml.MoMLParser;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
@@ -170,6 +171,31 @@ public class PortNameChanges implements MoMLFilter {
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
         return elementName;
+    }
+
+    /** Return a string that describes what the filter does.
+     *  @return the description of the filter that ends with a newline. 
+     */
+    public String toString() {
+	StringBuffer results =
+	    new StringBuffer(getClass().getName() 
+			     + ": Update any actor port names that have been\n" 
+			     + "renamed.\n"  
+			     + "Below are the actors that are affected, along\n"
+			     + "with the old port name and the new port name:");
+	Iterator actors = _actorsWithPortNameChanges.keySet().iterator();
+	while (actors.hasNext()) {
+	    String actor = (String)actors.next();
+	    results.append("\t" + actor + "\n");
+            HashMap portMap = (HashMap) _actorsWithPortNameChanges.get(actor);
+	    Iterator ports = portMap.keySet().iterator();
+	    while (ports.hasNext()) {
+		String oldPort = (String) ports.next();
+		String newPort = (String) portMap.get(oldPort);
+		results.append("\t\t" + oldPort + "\t -> " + newPort + "\n"); 
+	    }
+	}
+	return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

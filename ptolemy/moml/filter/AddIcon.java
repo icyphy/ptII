@@ -38,6 +38,7 @@ import ptolemy.moml.MoMLParser;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
@@ -154,6 +155,23 @@ public class AddIcon implements MoMLFilter {
             }
         }
         return elementName;
+    }
+
+    /** Return a string that describes what the filter does.
+     *  @return the description of the filter that ends with a newline. 
+     */
+    public String toString() {
+	StringBuffer results =
+	    new StringBuffer(getClass().getName() 
+			     + ": Add specialized icons that display the value\n"
+			     + "of one of the parameters.\n"
+			     + "The affected actors are:\n"
+			     );
+	Iterator actors = _actorsThatShouldHaveIcons.keySet().iterator();
+	while (actors.hasNext()) {
+	    results.append("\t" + (String)actors.next() + "\n");
+	}
+	return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

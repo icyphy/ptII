@@ -173,6 +173,15 @@ public class AddEditorFactory implements MoMLFilter {
         return elementName;
     }
 
+    /** Return a string that describes what the filter does.
+     *  @return the description of the filter that ends with a newline. 
+     */
+    public String toString() {
+	return getClass().getName() 
+	    + ": If a parameter has a _location, then\n"
+	    + "add a VisibleParameterEditorFactory named _editorFactory.\n";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
