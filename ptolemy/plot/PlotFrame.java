@@ -66,6 +66,11 @@ all windows have been closed. This is done with code something like:
         }
     });
 </pre>
+<p>
+PlotFrame contains an instance of PlotBox. PlotBox is the base class for 
+classes with drawing capability, e.g. Plot, LogicAnalyzer. If not
+specified in the constructor, the default is to contain a Plot object. This
+field is set once in the constructor and immutable afterwards.
 
 @see Plot
 @see PlotBox
@@ -74,16 +79,33 @@ all windows have been closed. This is done with code something like:
 */
 public class PlotFrame extends Frame {
 
-    /** Construct a plot frame with a default title.
+    /** Construct a plot frame with a default title and by default contains
+     *  an instance of Plot.
      */
     public PlotFrame() {
         this("Ptolemy Plot Frame");
+        
     }
 
-    /** Construct a plot frame with the specified title.
+    /** Construct a plot frame with the specified title and by default
+     *  contains an instance of Plot.
      */
     public PlotFrame(String title) {
+        this(title, null);
+    }
+
+    /** Construct a plot frame with the specified title and the specified
+     *  instance of PlotBox.
+     */
+    public PlotFrame(String title, PlotBox plotArg) {
         super(title);
+
+        if (plotArg == null) {
+            plot = new Plot();
+        } else {
+            plot = plotArg;
+        }
+        
         // File menu
         MenuItem[] fileMenuItems = {
             // FIXME: These shortcuts are not right.
@@ -134,50 +156,9 @@ public class PlotFrame extends Frame {
     /** Create a sample plot.
      */
     public void samplePlot() {
-        // Create a sample plot.
-        plot.clear(true);
         _filename = null;
         _directory = null;
-
-        plot.setTitle("Sample plot");
-        plot.setYRange(-4, 4);
-        plot.setXRange(0, 100);
-        plot.setXLabel("time");
-        plot.setYLabel("value");
-        plot.addYTick("-PI", -Math.PI);
-        plot.addYTick("-PI/2", -Math.PI/2);
-        plot.addYTick("0", 0);
-        plot.addYTick("PI/2", Math.PI/2);
-        plot.addYTick("PI", Math.PI);
-        plot.setNumSets(10);
-        plot.setMarksStyle("none");
-        plot.setImpulses(true);
-
-        boolean first = true;
-        for (int i = 0; i <= 100; i++) {
-            plot.addPoint(0, (double)i,
-                    5 * Math.cos(Math.PI * i/20), !first);
-            plot.addPoint(1, (double)i,
-                    4.5 * Math.cos(Math.PI * i/25), !first);
-            plot.addPoint(2, (double)i,
-                    4 * Math.cos(Math.PI * i/30), !first);
-            plot.addPoint(3, (double)i,
-                    3.5* Math.cos(Math.PI * i/35), !first);
-            plot.addPoint(4, (double)i,
-                    3 * Math.cos(Math.PI * i/40), !first);
-            plot.addPoint(5, (double)i,
-                    2.5 * Math.cos(Math.PI * i/45), !first);
-            plot.addPoint(6, (double)i,
-                    2 * Math.cos(Math.PI * i/50), !first);
-            plot.addPoint(7, (double)i,
-                    1.5 * Math.cos(Math.PI * i/55), !first);
-            plot.addPoint(8, (double)i,
-                    1 * Math.cos(Math.PI * i/60), !first);
-            plot.addPoint(9, (double)i,
-                    0.5 * Math.cos(Math.PI * i/65), !first);
-            first = false;
-        }
-        plot.repaint();
+        plot.samplePlot();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -185,7 +166,8 @@ public class PlotFrame extends Frame {
 
     /** The plot object held by this frame.
      */
-    public Plot plot = new Plot();
+    // FIXME: uncomment final when we upgrade to jdk1.2
+    public /*final*/ PlotBox plot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

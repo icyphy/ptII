@@ -116,7 +116,11 @@ public class PlotApplication extends PlotFrame {
      *  @param args The command-line arguments.
      */
     public PlotApplication(String args[]) {
-        super();
+        
+        // invoke the base class constructor and pass in the argument a Plot
+        // object. This makes sure that the plot field is an instance of
+        // Plot class.
+        super("PlotApplication", new Plot());
 
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
@@ -143,7 +147,7 @@ public class PlotApplication extends PlotFrame {
                         + "\n" + _usage());
                 throw new RuntimeException("cancelled");
             }
-            String _cmdfile = plot.getCmdLineFilename();
+            String _cmdfile = ((Plot)plot).getCmdLineFilename();
             if (_cmdfile != null) {
                 _filename = _cmdfile;
             }
@@ -287,7 +291,7 @@ public class PlotApplication extends PlotFrame {
 
         argsread = i++;
 
-        plot.parseArgs(args);
+        ((Plot)plot).parseArgs(args);
         return argsread;
     }
 

@@ -516,6 +516,13 @@ public class PlotBox extends Panel {
         }
     }
 
+    /** Do nothing in this base class. Derived classes might want to override 
+     *  this class to give an example of their use.
+     */
+    public void samplePlot() {
+        // Empty default implementation.
+    }
+
     /** Move and resize this component. The new location of the top-left
      *  corner is specified by x and y, and the new size is specified by
      *  width and height. This overrides the base class method to make

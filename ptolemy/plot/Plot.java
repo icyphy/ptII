@@ -1010,6 +1010,53 @@ public class Plot extends PlotBox {
         }
     }
 
+    /** Create a sample plot.
+     */
+    public void samplePlot() {
+        // Create a sample plot.
+        this.clear(true);
+              
+        this.setTitle("Sample plot");
+        this.setYRange(-4, 4);
+        this.setXRange(0, 100);
+        this.setXLabel("time");
+        this.setYLabel("value");
+        this.addYTick("-PI", -Math.PI);
+        this.addYTick("-PI/2", -Math.PI/2);
+        this.addYTick("0", 0);
+        this.addYTick("PI/2", Math.PI/2);
+        this.addYTick("PI", Math.PI);
+        this.setNumSets(10);
+        this.setMarksStyle("none");
+        this.setImpulses(true);
+
+        boolean first = true;
+        for (int i = 0; i <= 100; i++) {
+            this.addPoint(0, (double)i,
+                    5 * Math.cos(Math.PI * i/20), !first);
+            this.addPoint(1, (double)i,
+                    4.5 * Math.cos(Math.PI * i/25), !first);
+            this.addPoint(2, (double)i,
+                    4 * Math.cos(Math.PI * i/30), !first);
+            this.addPoint(3, (double)i,
+                    3.5* Math.cos(Math.PI * i/35), !first);
+            this.addPoint(4, (double)i,
+                    3 * Math.cos(Math.PI * i/40), !first);
+            this.addPoint(5, (double)i,
+                    2.5 * Math.cos(Math.PI * i/45), !first);
+            this.addPoint(6, (double)i,
+                    2 * Math.cos(Math.PI * i/50), !first);
+            this.addPoint(7, (double)i,
+                    1.5 * Math.cos(Math.PI * i/55), !first);
+            this.addPoint(8, (double)i,
+                    1 * Math.cos(Math.PI * i/60), !first);
+            this.addPoint(9, (double)i,
+                    0.5 * Math.cos(Math.PI * i/65), !first);
+            first = false;
+        }
+        this.repaint();
+    }
+
     /** Turn bars on or off (for bar charts).
      *  @param on If true, turn bars on.
      */
