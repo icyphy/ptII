@@ -65,19 +65,19 @@ JARFILE = 	$(TYPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Actor.java \
-	CalendarQueue.java \
 	CompositeActor.java \
-	DEPriority.java \
 	DataComputingInit.java \
 	Director.java \
 	Executable.java \
 	IOPort.java \
 	IORelation.java \
-	LongPriority.java \
 	Mailbox.java \
 	Priority.java \
 	QueueReceiver.java \
 	Receiver.java \
+	Sortable.java \
+	SortedQueue.java \
+	TimeStamp.java \
 	TokenHolderFullException.java
 
 EXTRA_SRCS =	$(JSRCS)
