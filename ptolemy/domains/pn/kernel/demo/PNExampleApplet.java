@@ -42,7 +42,8 @@ import java.awt.*;
  * @author Christopher Hylands, Mudit Goel
  * @version $Id$
  */
-public class PNExampleApplet extends Applet implements Runnable {
+public class PNExampleApplet extends Applet {
+    
 
     /** Return a string describing this applet.
      */
@@ -63,16 +64,14 @@ public class PNExampleApplet extends Applet implements Runnable {
     }
 
     /** For use as an application.  Use the following command to run:
-     * java -classpath $PTOLEMY/tycho/java:/opt/jdk1.1.4/lib/classes.zip pt.domains.pn.kernel.demo.PNExampleApplet 0 3 
+     * java -classpath $PTOLEMY/tycho/java:/opt/jdk1.1.4/lib/classes.zip pt.domains.pn.kernel.demo.PNExampleApplet 0 1
      */
-    public static void main(String args[]) throws 
-            GraphException, NameDuplicationException, NullReferenceException
+    public static void main(String args[])
     {
         int pnmode = Integer.parseInt(args[0]);
         int pncount = Integer.parseInt(args[1]);
-	PNUniverse myUniverse = new PNUniverse(pnmode, pncount);
-	myUniverse.execute();
-        System.out.println("Bye World\n");
+        PNExampleApplet myapplet = new PNExampleApplet() ;
+        myapplet._run(pnmode, pncount);
 	return;
     }
 
@@ -81,7 +80,7 @@ public class PNExampleApplet extends Applet implements Runnable {
      */
     public void init() {
         if (_debug > 8) System.out.println("PNExampleApplet: init");
-        int width, height, pnmode, pncount;
+        int width, height;
         setLayout(new BorderLayout());
 
         // Process the width and height applet parameters
@@ -100,15 +99,15 @@ public class PNExampleApplet extends Applet implements Runnable {
         resize(width,height);
 
         try {
-            pnmode = Integer.valueOf(getParameter("pnmode")).intValue();
+            _pnmode = Integer.valueOf(getParameter("pnmode")).intValue();
         } catch (NullPointerException e) {
-            pnmode = 0;
+        } catch (NumberFormatException e) {
         }
 
         try {
-            pncount = Integer.valueOf(getParameter("pncount")).intValue();
+            _pncount = Integer.valueOf(getParameter("pncount")).intValue();
         } catch (NullPointerException e) {
-            pncount = 0;
+        } catch (NumberFormatException e) {
         }
 
         super.init();
@@ -119,20 +118,17 @@ public class PNExampleApplet extends Applet implements Runnable {
 	repaint();
     }
 
-    /** Start the plot.
+    /** Start the run.
      */
     public void start () {
         if (_debug > 8) System.out.println("PNExampleApplet: start");
-	_plotThread = new Thread(this);
-        _plotThread.start();
-        super.start();
+        _run(_pnmode, _pncount);
     }
 
-    /** Stop the plot.
+    /** Stop the run.
      */
     public void stop () {
         if (_debug > 8) System.out.println("PNExampleApplet: stop");
-        _plotThread.stop();
     }
 
 
@@ -140,13 +136,34 @@ public class PNExampleApplet extends Applet implements Runnable {
     ////                         protected variables                      ////
 
     // If non-zero, print out debugging messages.
-    // See also the _debug declared in PlotBox.
-    protected int _debug = 0;
+    protected int _debug = 10;
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private methods                          ////
+
+    /** Run the universe in pnmode for pncount. */
+    private void _run(int pnmode, int pncount) {
+        try {
+            if (_debug > 9)
+                System.out.println("PNExampleApplet: _run before new");
+            PNUniverse myUniverse = new PNUniverse(pnmode, pncount);
+            if (_debug > 9)
+                System.out.println("PNExampleApplet: _run before execute");
+            myUniverse.execute();
+            System.out.println("Bye World\n");
+        } catch (GraphException e) {
+            System.out.println("PNExampleApplet: _run: GraphException: " +
+                    e.getMessage());
+        } //catch (NameDuplicationException e) {
+        //  System.out.println("PNExampleApplet: _run: " +
+        //                    "NameDuplicationException: " +
+        //                    e.getMessage());
+        //        }
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    // Thread for this applet.
-    private Thread _plotThread;
-
+    private int _pnmode = 0;         // Mode of PN Buffer Algorithm.
+    private int _pncount = 1;        // Number of times to run.
 }
