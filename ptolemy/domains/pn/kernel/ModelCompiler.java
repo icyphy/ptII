@@ -110,70 +110,96 @@ public class ModelCompiler extends Attribute {
      */
     public void compileTypedCompositeActor(
         TypedCompositeActor compositeActor) throws IllegalActionException {
+
+        ///////////////////////////////////////////////////////////
+        // The recursion part.
+        
+        // Find each opaque composite actor and decompose
+        // it into several composite actors if it is not sequential. 
+        List opaqueCompositeActors 
+            = _containedOpaqueCompositeActors(compositeActor);
+        
+        // Find all opaque composite actor, who do not have an attribute
+        // saying "Atomic".
+        Iterator opaqueCompositeActorsIterator  
+            = opaqueCompositeActors.iterator();
+        
+        // Iterate each opaque composite actor to do depth-first-search
+        while (opaqueCompositeActorsIterator.hasNext()) {
+            TypedCompositeActor containedCompositeActor 
+            = (TypedCompositeActor)opaqueCompositeActorsIterator.next();
+            // recursively call compileTyedCompositeActor on the
+            // cloned composite actor.
+            compileTypedCompositeActor(containedCompositeActor);
+        }
+        Attribute attribute = compositeActor.getAttribute("Atomic");
+        // FIXME: If the current level is "Atomic" and is an
+        // intemediate level, wrap up the inside.
+        ///////////////////////////////////////////////////////////
+        // The condition the recursion ends and generates results.
+        
+        // Get the container of this composite actor.
+        // NOTE: The container may be null if this composite actor
+        // is at the top level.
+        CompositeEntity container 
+            = (CompositeEntity)compositeActor.getContainer();
+        
+        // Get the function dependency of the composite actor
+        FunctionDependencyOfCompositeActor functionDependency
+            = ((FunctionDependencyOfCompositeActor)
+                compositeActor.getFunctionDependency());
+
+        // Get the detailed dependency graph of the composite actor
+        DirectedGraph detailedDependencyGraph 
+            = functionDependency.getDetailedDependencyGraph();
+        
+        // Get a list of subgraphs based on the dependency graph 
+        List listOfSubgraphs = detailedDependencyGraph.subgraphs();
+        
+        // If the number of subgraphs is 1, there is nothing to do.
+        if (listOfSubgraphs.size() == 1) {
+            return;
+        }
+        
         try {
-            ///////////////////////////////////////////////////////////
-            // The recursion part.
-            
-            // Find each opaque composite actor and decompose
-            // it into several composite actors if it is not sequential. 
-            List opaqueCompositeActors 
-                = _containedOpaqueCompositeActors(compositeActor);
-            
-            // Find all opaque composite actor, who do not have an attribute
-            // saying "Atomic".
-            Iterator opaqueCompositeActorsIterator  
-                = opaqueCompositeActors.iterator();
-            
-            // Iterate each opaque composite actor to do depth-first-search
-            while (opaqueCompositeActorsIterator.hasNext()) {
-                TypedCompositeActor containedCompositeActor 
-                = (TypedCompositeActor)opaqueCompositeActorsIterator.next();
-                // recursively call compileTyedCompositeActor on the
-                // cloned composite actor.
-                compileTypedCompositeActor(containedCompositeActor);
-            }
-            Attribute attribute = compositeActor.getAttribute("Atomic");
-            // FIXME: If the current level is "Atomic" and is an
-            // intemediate level, wrap up the inside.
-            ///////////////////////////////////////////////////////////
-            // The condition the recursion ends and generates results.
-            
-            // Get the container of this composite actor.
-            // NOTE: The container may be null if this composite actor
-            // is at the top level.
-            CompositeEntity container 
-                = (CompositeEntity)compositeActor.getContainer();
-            
-            // Get the function dependency of the composite actor
-            FunctionDependencyOfCompositeActor functionDependency
-                = ((FunctionDependencyOfCompositeActor)
-                    compositeActor.getFunctionDependency());
-    
-            // Get the detailed dependency graph of the composite actor
-            DirectedGraph detailedDependencyGraph 
-                = functionDependency.getDetailedDependencyGraph();
-            
-            // Get a list of subgraphs based on the dependency graph 
-            List listOfSubgraphs = detailedDependencyGraph.subgraphs();
-            
-            // If the number of subgraphs is 1, there is nothing to do.
-            if (listOfSubgraphs.size() == 1) {
-                return;
-            }
-            
             // FIXME: if the composite actor is at top level, group actors 
             // by introducing a new layer of hierarchy.
             if (container == null || attribute != null) {
                 //wrap up and return.
                 // If we reach here, the subgraphs.size() > 1,
                 // we MUST wrap up.
+                //TypedCompositeActor subCluster = 
+                  //  (TypedCompositeActor)compositeActor.clone();
+                TypedCompositeActor newLayer =
+                    new TypedCompositeActor(compositeActor.workspace());
+                newLayer.setName("newLayerAbove_"
+                        + compositeActor.getName());
+                compositeActor.setContainer(newLayer);
+                newLayer.setContainer(container);
+                //subCluster.setContainer(compositeActor);
+                // create subCluster's function dependency graph here.
+                // then get its list of subgraphs.
                 for (int i = 0; i < listOfSubgraphs.size(); i ++) {
-                    //TypedCompositeActor subCluster =
-                      //  (TypedCompositeActor)compositeActor.clone();
-                    //subCluster.setName("subCluster"
-                      //      + compositeActor.getName() + "_" + i);
-                    //subCluster.setContainer(compositeActor);
+                    TypedCompositeActor subCluster =
+                        (TypedCompositeActor)compositeActor.clone();
+                    subCluster.setName("subCluster_"
+                            + compositeActor.getName() + "_" + i);
+                    subCluster.setContainer(newLayer);
+                    // Given the original object, clone object, a subgraph,
+                    // transform the clone object to one that only contains
+                    // nodes that the subgraph contains.
+                    // Call Function: transform(origin, clone, subgraph)
+                    // where origin = subCluster;
+                    //       clone = subCluster1;
+                    DirectedGraph subgraph = (DirectedGraph)listOfSubgraphs.get(i);
+                    _trimModel(compositeActor, subCluster, subgraph);
                 }
+                // delete subCluster;
+                // delete toplevel actors.
+                //subCluster.setContainer(null);
+                //This one does not work.
+                compositeActor.setContainer(null);
+                System.out.println(newLayer.exportMoML());
                 return;
             }
             
@@ -188,98 +214,12 @@ public class ModelCompiler extends Attribute {
                 // NOTE: make the name of the composite actor unique.
                 clone.setName("compiled" 
                     + compositeActor.getName() + "_" + i);
-
-                // The following code is unnecessary if the above FIXME
-                // is fixed.
-//                // Associate the cloned composite actor with the 
-//                // upper level composite actor if it is not null.
-//                // Otherwise, associate the cloned composite actor with 
-//                // this composite actor.
-//                // NOTE: If the container is null, a new layer in hierarchy
-//                // is introduced. Otherwise, the layers of hierarchy are
-//                // kept the same.
-//                if (container == null) {
-//                    clone.setContainer(compositeActor);
-//                } else {
-//                    clone.setContainer(container);
-//                }
                 
                 clone.setContainer(container);
                 DirectedGraph subgraph = (DirectedGraph)listOfSubgraphs.get(i);
-                
-                // remove all the entities whose ports are not included
-                // as nodes in the subgraph
-                List entitiesOfClone = clone.deepEntityList();
-                List entitiesOfOrigin 
-                    = compositeActor.deepEntityList();
-                // NOTE: we have to play the ports backwards. Otherwise,
-                // a change to the port lists will affect the order of the
-                // ports that have not been processed. This invalids the 
-                // following algorithm. 
-                // DATE: Less then 23 hours from the project deadline 
-                // on 11/18/2004. 
-                for (int j=entitiesOfClone.size()-1; j>=0; j--) {
-                    ComponentEntity cloneEntity 
-                        = (ComponentEntity)entitiesOfClone.get(j);
-                    ComponentEntity originalEntity 
-                        = (ComponentEntity)entitiesOfOrigin.get(j);
-                    Iterator portsOfOriginalEntity 
-                        = originalEntity.portList().listIterator();
-                    boolean originalEntityInSubgraph = false;
-                    while (portsOfOriginalEntity.hasNext() 
-                        && !originalEntityInSubgraph) {
-                        IOPort portOfOriginalEntity 
-                            = (IOPort)portsOfOriginalEntity.next();
-                        if (subgraph.containsNodeWeight(
-                                portOfOriginalEntity)) {
-                            originalEntityInSubgraph = true;
-                        }
-                    }
-                    if (!originalEntityInSubgraph) {
-                        // remove all the relations of this entity 
-                        // from the cloned composite actor.
-                        Iterator relations = 
-                            cloneEntity.linkedRelationList().listIterator();
-                        while (relations.hasNext()) {
-                            IORelation relation 
-                                = (IORelation)relations.next();
-                            relation.setContainer(null);
-                        }
-                        // remove the entity from the cloned composite actor.
-                        cloneEntity.setContainer(null);
-                    }
-                }
-                
-                // NOTE: we assume that the number of ports is the same 
-                // for both the clone and the original actor. 
-                List portsOfClone = clone.portList();
-                List portsOfOrigin = compositeActor.portList();
+                _trimModel(compositeActor, clone, subgraph);
 
-                // remove all the ports that are not 
-                // included in the subgraph and connect the ports in 
-                // the subgraph to outside
-                // NOTE: we have to play the ports backwards. Otherwise,
-                // a change to the port lists will affect the order of the
-                // ports that have not been processed. This invalids the 
-                // following algorithm. 
-                // NOTE: Less then 23 hours from the project deadline 
-                // on 11/18/2004. 
-                for (int j=portsOfClone.size()-1; j>=0; j--) {
-                    IOPort portOfClone = (IOPort)portsOfClone.get(j);
-                    IOPort portOfOrigin = (IOPort)portsOfOrigin.get(j);
-                    if (!subgraph.containsNodeWeight(portOfOrigin)) {
-                        portOfClone.setContainer(null);
-                    } else {
-                        Iterator relations = 
-                            portOfOrigin.linkedRelationList().iterator();
-                        while (relations.hasNext()) {
-                            IORelation relation 
-                                = (IORelation)relations.next();
-                            portOfClone.link(relation);
-                        }
-                    }
-                }
-           }
+            }
             //remove this composite actor 
             compositeActor.setContainer(null);
             // Construct function dependency graph for the new model.
@@ -316,7 +256,7 @@ public class ModelCompiler extends Attribute {
             compileTypedCompositeActor(modelClone);
             
             // return the compiled model.
-            return modelClone;
+            return (TypedCompositeActor)modelClone.toplevel();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         } catch (KernelException ex) {
@@ -325,7 +265,7 @@ public class ModelCompiler extends Attribute {
         }
         return null; 
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -373,6 +313,96 @@ public class ModelCompiler extends Attribute {
             }
         }
         return opaqueCompositeActors;
+    }
+    
+    
+    /** Given the original model, the cloned model and a subgraph,
+     *  trim the cloned model s.t it only contains nodes in the
+     *  subgraph.
+     * @param origin
+     * @param clone
+     * @param subgraph
+     * @throws IllegalActionException
+     */
+    private void _trimModel(TypedCompositeActor origin,
+            TypedCompositeActor clone, DirectedGraph subgraph)
+            throws IllegalActionException {
+        try {
+            // remove all the entities whose ports are not included
+            // as nodes in the subgraph
+            List entitiesOfClone = clone.deepEntityList();
+            List entitiesOfOrigin 
+                = origin.deepEntityList();
+            // NOTE: we have to play the ports backwards. Otherwise,
+            // a change to the port lists will affect the order of the
+            // ports that have not been processed. This invalids the 
+            // following algorithm. 
+            // DATE: Less then 23 hours from the project deadline 
+            // on 11/18/2004. 
+            for (int j=entitiesOfClone.size()-1; j>=0; j--) {
+                ComponentEntity cloneEntity 
+                    = (ComponentEntity)entitiesOfClone.get(j);
+                ComponentEntity originalEntity 
+                    = (ComponentEntity)entitiesOfOrigin.get(j);
+                Iterator portsOfOriginalEntity 
+                    = originalEntity.portList().listIterator();
+                boolean originalEntityInSubgraph = false;
+                while (portsOfOriginalEntity.hasNext() 
+                    && !originalEntityInSubgraph) {
+                    IOPort portOfOriginalEntity 
+                        = (IOPort)portsOfOriginalEntity.next();
+                    if (subgraph.containsNodeWeight(
+                            portOfOriginalEntity)) {
+                        originalEntityInSubgraph = true;
+                    }
+                }
+                if (!originalEntityInSubgraph) {
+                    // remove all the relations of this entity 
+                    // from the cloned composite actor.
+                    Iterator relations = 
+                        cloneEntity.linkedRelationList().listIterator();
+                    while (relations.hasNext()) {
+                        IORelation relation 
+                            = (IORelation)relations.next();
+                        relation.setContainer(null);
+                    }
+                    // remove the entity from the cloned composite actor.
+                    cloneEntity.setContainer(null);
+                }
+            }
+            
+            // NOTE: we assume that the number of ports is the same 
+            // for both the clone and the original actor. 
+            List portsOfClone = clone.portList();
+            List portsOfOrigin = origin.portList();
+    
+            // remove all the ports that are not 
+            // included in the subgraph and connect the ports in 
+            // the subgraph to outside
+            // NOTE: we have to play the ports backwards. Otherwise,
+            // a change to the port lists will affect the order of the
+            // ports that have not been processed. This invalids the 
+            // following algorithm. 
+            // NOTE: Less then 23 hours from the project deadline 
+            // on 11/18/2004. 
+            for (int j=portsOfClone.size()-1; j>=0; j--) {
+                IOPort portOfClone = (IOPort)portsOfClone.get(j);
+                IOPort portOfOrigin = (IOPort)portsOfOrigin.get(j);
+                if (!subgraph.containsNodeWeight(portOfOrigin)) {
+                    portOfClone.setContainer(null);
+                } else {
+                    Iterator relations = 
+                        portOfOrigin.linkedRelationList().iterator();
+                    while (relations.hasNext()) {
+                        IORelation relation 
+                            = (IORelation)relations.next();
+                        portOfClone.link(relation);
+                    }
+                }
+            }
+        } catch (NameDuplicationException e) {
+            e.printStackTrace();
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
