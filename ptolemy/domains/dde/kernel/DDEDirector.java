@@ -37,6 +37,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
+import java.util.Hashtable;
 import java.util.Enumeration;
 import collections.LinkedList;
 import collections.Comparator;
@@ -120,6 +121,18 @@ public class DDEDirector extends ProcessDirector {
 
     /** Increment the count of actors blocked on a read.
      */
+    public double getCurrentTime() {
+	Thread thread = Thread.currentThread();
+	if( thread instanceof DDEThread ) {
+	    TimeKeeper tk = ((DDEThread)thread).getTimeKeeper();
+	    return tk.getCurrentTime();
+	} else {
+	    return super.getCurrentTime();
+	}
+    }
+
+    /** Increment the count of actors blocked on a read.
+     */
     synchronized void addReadBlock() {
 	String name = "";
 	double time = -1.0;
@@ -189,9 +202,9 @@ public class DDEDirector extends ProcessDirector {
     /** Schedule an actor to be fired at the specified time.
      *  If the thread that calls this method is a DDEThread,
      *  then the specified actor must be contained by this 
-     *  thread. It the thread that calls this method is not
-     *  an instance of DDEThread, then this method returns
-     *  without performing any actions.
+     *  thread. If the thread that calls this method is not
+     *  an instance of DDEThread, then store the actor and
+     *  refire time in the initial time table of this director.
      * @param actor The actor scheduled to fire.
      * @param time The scheduled time to fire.
      * @exception IllegalActionException If the specified 
@@ -207,6 +220,11 @@ public class DDEDirector extends ProcessDirector {
         if( thread instanceof DDEThread ) {
             ddeThread = (DDEThread)thread;
         } else {
+	    // Add the start time of actor to initialize table
+	    if( _initialTimeTable == null ) {
+		_initialTimeTable = new Hashtable();
+	    }
+	    _initialTimeTable.put( actor, new Double(time) );
             return;
         }
 
@@ -224,6 +242,7 @@ public class DDEDirector extends ProcessDirector {
         
         TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
         try {
+	    System.out.println("fireAt() called at time = " + time );
             timeKeeper.setCurrentTime(time);
         } catch( IllegalArgumentException e ) {
 	    throw new IllegalActionException(
@@ -232,6 +251,16 @@ public class DDEDirector extends ProcessDirector {
         }
     }
     
+    /** Return the initial time table of this director.
+     * @return The initial time table of this actor.
+     */
+    public Hashtable getInitialTimeTable() {
+	if( _initialTimeTable == null ) {
+	    _initialTimeTable = new Hashtable();
+	}
+	return _initialTimeTable;
+    }
+
     /** Return true if one of the actors governed by this director
      *  has a pending mutation; return false otherwise.
      * @return True if a pending mutation exists; return false otherwise.
@@ -292,8 +321,6 @@ public class DDEDirector extends ProcessDirector {
 	    name = ((Nameable)((DDEThread)thr).getActor()).getName();
 	}
         System.out.println(name+": Removed read block.");
-        /*
-        */
         if( _readBlocks > 0 ) {
             _readBlocks--;
         }
@@ -438,6 +465,7 @@ public class DDEDirector extends ProcessDirector {
     private int _writeBlocks = 0;
     private boolean _pendingMutations = false;
     private LinkedList _writeBlockedQs;
+    private Hashtable _initialTimeTable;
     
 
     ///////////////////////////////////////////////////////////////////
