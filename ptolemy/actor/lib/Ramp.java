@@ -45,9 +45,8 @@ import collections.LinkedList;
 Produce an output token on each firing with a value that is
 incremented by the specified step each time the actor fires. The
 first output and the step value are given by parameters.
-The type of the output is inferred from the types of the parameters
-at the time that the actor is initialized. The type of the output
-is the type of the result of adding the two parameters.
+The type of the output is determined by the constraint that it must
+be greater than or equal to the types of the parameters.
 Thus, this actor is
 polymorphic in the sense that its output data type can be that
 of any token type that supports addition.
@@ -114,11 +113,7 @@ public class Ramp extends TypedAtomicActor {
         }
     }
 
-    /** Infer the type of the output from the types of the parameters.
-     *  If the parameters have not been set, then they are set
-     *  to type DoubleToken with value 0.0 for init and 1.0 for step.
-     *  @exception IllegalActionException If the parameters cannot be
-     *   added together.
+    /** Initialize the internal state.
      */
     public void initialize() throws IllegalActionException {
 	// FIXME: after the change that initialize() is called
