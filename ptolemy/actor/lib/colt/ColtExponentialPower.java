@@ -79,7 +79,7 @@ public class ColtExponentialPower extends ColtRandomSource {
         tau = new Parameter(this, "tau", new DoubleToken(1.0));
         tau.setTypeEquals(BaseType.DOUBLE);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new ExponentialPower(1.0, _randomNumberGenerator);
     }

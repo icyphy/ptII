@@ -81,7 +81,7 @@ public class ColtBinomial extends ColtRandomSource {
         p = new Parameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new Binomial(1, 0.5, _randomNumberGenerator);
     }

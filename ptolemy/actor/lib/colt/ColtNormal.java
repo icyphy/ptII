@@ -82,7 +82,7 @@ public class ColtNormal extends ColtRandomSource {
             new Parameter(this, "standardDeviation", new DoubleToken(1.0));
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new Normal(1.0, 1.0, _randomNumberGenerator);
     }

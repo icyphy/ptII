@@ -85,7 +85,7 @@ public class ColtBreitWigner extends ColtRandomSource {
         cut = new Parameter(this, "cut", new DoubleToken(1.0));
         cut.setTypeEquals(BaseType.DOUBLE);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new BreitWigner(1.0, 1.0, 1.0, _randomNumberGenerator);
     }

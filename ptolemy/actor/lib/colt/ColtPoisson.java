@@ -79,7 +79,7 @@ public class ColtPoisson extends ColtRandomSource {
         mean = new Parameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new Poisson(1.0, _randomNumberGenerator);
     }

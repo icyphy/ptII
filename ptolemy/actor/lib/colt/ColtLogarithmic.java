@@ -79,7 +79,7 @@ public class ColtLogarithmic extends ColtRandomSource {
         p = new Parameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new Logarithmic(0.5, _randomNumberGenerator);
     }

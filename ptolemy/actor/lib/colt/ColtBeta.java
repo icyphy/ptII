@@ -81,7 +81,7 @@ public class ColtBeta extends ColtRandomSource {
         beta = new Parameter(this, "beta", new DoubleToken(2.0));
         beta.setTypeEquals(BaseType.DOUBLE);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new Beta(2.0, 2.0, _randomNumberGenerator);
     }

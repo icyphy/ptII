@@ -81,7 +81,7 @@ public class ColtZeta extends ColtRandomSource {
         pk = new Parameter(this, "pk", new DoubleToken(1.0));
         pk.setTypeEquals(BaseType.DOUBLE);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new Zeta(1.0, 1.0, _randomNumberGenerator);
     }

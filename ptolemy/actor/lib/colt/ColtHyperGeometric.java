@@ -85,7 +85,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
         n = new Parameter(this, "n", new IntToken(1));
         n.setTypeEquals(BaseType.INT);
 
-        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
+        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
 
         _rng = new HyperGeometric(2, 1, 1, _randomNumberGenerator);
     }
