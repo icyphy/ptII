@@ -27,7 +27,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
         </port>
     </entity>
-    <entity name="Plotter1" class="ptolemy.actor.gui.SequencePlotter">
+    <entity name="Plotter1" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
