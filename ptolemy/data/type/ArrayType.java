@@ -100,7 +100,7 @@ public class ArrayType extends StructuredType {
 
     /** Return the InequalityTerm representing the element type.
      *  @return An InequalityTerm.
-     *  @see ptolemy.graph.InequalityTerm.
+     *  @see ptolemy.graph.InequalityTerm
      */
     public InequalityTerm getElementTypeTerm() {
 	if (_elemTypeTerm == null) {
