@@ -29,6 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+
 ME =		ptolemy/vergil/icon
 
 DIRS = 		
@@ -36,7 +37,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	.:$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -48,7 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	IconEditor.java
+	IconEditor.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -70,6 +71,13 @@ install: jclass $(PTCLASSJAR)
 
 depend:
 	@echo "no dependencies in this directory"
+
+demo:
+	java -classpath $(CLASSPATH) ptolemy.vergil.icon.IconEditor
+mine:
+	java -classpath $(CLASSPATH) ptolemy.vergil.icon.MyWindow
+drag:
+	java ptolemy.vergil.icon.DragKing
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
