@@ -67,15 +67,15 @@ public class DisplayList extends JFrame implements ActionListener {
 	Iterator enum = _list.iterator();
 	while (enum.hasNext()) {
 	    Breakpoint element = (Breakpoint) enum.next();
-	    JRadioButton radioButton = new JRadioButton(element.getMethod());
-	    radioButton.setActionCommand(element.getMethod());
+	    JRadioButton radioButton = new JRadioButton(element.getName());
+	    radioButton.setActionCommand(element.getName());
 	    radioButton.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 			String selection = e.getActionCommand();
 			Iterator iter = _list.iterator();
 			while (iter.hasNext()) {
 			    Breakpoint brkpt = (Breakpoint)iter.next();
-			    if (selection.equals(brkpt.getMethod())) {
+			    if (selection.equals(brkpt.getName())) {
 				selectedItem = (Nameable)brkpt;
 			    break;
 			    }

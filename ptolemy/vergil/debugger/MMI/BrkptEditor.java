@@ -42,20 +42,14 @@ import ptolemy.vergil.debugger.*;
 //////////////////////////////////////////////////////////////////////////
 //// BrkptEditor
 /**
-   This class opens a window with a text field, radiobuttons and
-   Ok-Cancel buttons. The user will use the text field to set a 
-   condition, if he desires, on a breakpoint (The old condition 
-   is viewed by default and is true if it never was edited). 
-   It also enables to change the breakpoint from one method to 
-   another of the actor (The currentmethod is selected by 
-   defaut and is set to .fire at the creation. This dosen't
-   work too well for the moment).
-   The changes are validated when return is pressed after 
-   editing the condition or the Ok button is activated. The 
-   cancel button will close the window without changing at all
-   the breakpoint (Not true due to the error reported above, 
-   which changes the method selected for the breakpoint to 
-   null.)
+A user interface for editing a breakpoint.  The condition is 
+displayed in a text box and can be edited.  The method that the
+breakpoint is active on can also be edited.
+The changes are validated when return is pressed after 
+editing the condition or the Ok button is activated. The 
+cancel button will close the window without changing at all
+the breakpoint 
+
 @author SUPELEC team
 @version $Id$
 @see BrkptEditor
@@ -72,7 +66,7 @@ public class BrkptEditor extends JFrame implements ActionListener {
        
 	super("EditBreakpoint");
 	_brkpt = brkpt;
-	_actor = (Actor)_brkpt.getActor();
+	_actor = (Actor)_brkpt.getContainer();
 
 	//addWindowListener(new WindowAdapter() {
 	//	public void windowClosing(WindowEvent e) {
@@ -118,7 +112,7 @@ public class BrkptEditor extends JFrame implements ActionListener {
 	group = new ButtonGroup();
 
 	JRadioButton radioButton = new JRadioButton("prefire");
-	if (_brkpt.getMethod().equals("prefire")) {
+	if (_brkpt.getName().equals("prefire")) {
 	    radioButton.setSelected(true);
 	    _selectedMethod = "prefire";
 	}
@@ -131,7 +125,7 @@ public class BrkptEditor extends JFrame implements ActionListener {
 	buttonBox.add(radioButton);
 
 	radioButton = new JRadioButton("fire");
-	if (_brkpt.getMethod().equals("fire") || _brkpt.getMethod().equals("default")) {
+	if (_brkpt.getName().equals("fire") || _brkpt.getName().equals("default")) {
 	    radioButton.setSelected(true);
 	    _selectedMethod = "fire";
 	}
@@ -144,7 +138,7 @@ public class BrkptEditor extends JFrame implements ActionListener {
 	buttonBox.add(radioButton);
 
         radioButton = new JRadioButton("postfire");
-	if (_brkpt.getMethod().equals("postfire")) {
+	if (_brkpt.getName().equals("postfire")) {
 	    radioButton.setSelected(true);
 	    _selectedMethod = "postfire";
 	}
@@ -157,7 +151,7 @@ public class BrkptEditor extends JFrame implements ActionListener {
 	buttonBox.add(radioButton);
 
 	radioButton = new JRadioButton("postpostfire");
-	if (_brkpt.getMethod().equals("postpostfire")) {
+	if (_brkpt.getName().equals("postpostfire")) {
 	    radioButton.setSelected(true);
 	    _selectedMethod = "postpostfire";
 	}
@@ -187,17 +181,20 @@ public class BrkptEditor extends JFrame implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**  It gets the condition on the text field and the selected method in order
-     * to make the necessery changes. Activated by Ok button or return key pressed.
-     * @see ptolemy.vergil.default.MMI.BrkptEditor#actionPerformed(ActionEvent e)
-     * @param e : an action event
+    /**  
+     * Get the condition from the text field and make the necessery changes
+     * to the value of the breakpoint.
      */
     public void actionPerformed(ActionEvent e) {
 	String condition = textField.getText();
 	try {
-	    _brkpt.setMethod(_selectedMethod);
+	    _brkpt.setName(_selectedMethod);
 	    _brkpt.setCondition(condition);	    
 	} catch (NullPointerException ex) {
+	    System.out.println(ex.getMessage());
+	} catch (IllegalActionException ex) {
+	    System.out.println(ex.getMessage());
+	} catch (NameDuplicationException ex) {
 	    System.out.println(ex.getMessage());
 	}
 	BrkptEditor.this.dispose();

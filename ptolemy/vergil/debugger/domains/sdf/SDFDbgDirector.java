@@ -216,7 +216,6 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
 		while (iterator.hasNext()) {
 		    ((DebuggingListener) iterator.next()).prefireEvent(actor);
 		}
-
 		
 		/*££End of Debug Code££*/
 
@@ -422,11 +421,6 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
     ///////////////////////////////////////////////////////////////////
     /*££Debug Code££*/
 
-    ////  Specific Public Method for debug director
-    public void setPdb(Pdb pdb) {
-	_pdb = pdb;
-    }
-
     public ExecState getState () {
 	return state;
     }
@@ -511,7 +505,6 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
     private boolean _postfirereturns = true;
 
     /*££Debug Code££*/
-    private Pdb _pdb;
     private List _DebuggingListenerList = new LinkedList();
  
     /*££End of Debug Code££*/

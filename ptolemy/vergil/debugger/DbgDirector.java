@@ -27,6 +27,7 @@
 
 package ptolemy.vergil.debugger;
 
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// DbgDirector
@@ -46,10 +47,16 @@ public interface DbgDirector {
      */
     public ExecState getState();
 
+    public void addDebuggingListener(DebuggingListener listener);
+
+    public void removeDebuggingListener(DebuggingListener listener);
+
+    public List DebuggingListenerList();
+
     /** Set the Pdb
      * @see ptolemy.vergil.debugger.DbgDirector#setPdb()
      * @param pdb reference to the instance of the debugger
      */ 
-    public void setPdb(Pdb pdb);
+    //    public void setPdb(Pdb pdb);
 
 }

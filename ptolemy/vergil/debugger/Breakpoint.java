@@ -36,82 +36,53 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// Breakpoint
 /**
-   This class implements breakpoint. They stop the execution if 
-   their condition returns true when evaluated. Their name is 
-   the fullname of _myActor appended with ._method. They are stored 
-   in a breakpoint list that is implemented by an instance of BrkptList
-   and managed by the executive director of _myActor.This class allows 
-   to track some parameters values of an actor
+This class implements a breakpoint.  The Breakpoint contains a condition
+which enables the breakpoint when it evaluates to true.  Note that 
+this class does not actually halt execution.  Instead, the DebugController
+inspects for its presence in an Actor and acts accordingly.
+
 @author SUPELEC team
 @version $Id$
-@see Attribute
-@see ptolemy.vergil.debugger.Breakpoint
 */
 public class Breakpoint extends Attribute {
    
-
-    /** Constructor
-     * @see full-classname#Breakpoint(Nameable actor, String method)
-     * @param actor : the actor that contains the breakpoint and on 
-     *  the execution will eventually stop.
-     * @param method : the name of the method from executable interface
-     *  on which the execution will eventually stop.
+    /** Construct a new breakpoint in the given actor, with the given name.
+     * @param actor The actor that contains the breakpoint.
+     * @param method The name of the method from executable interface
+     * during which the execution will eventually stop.
      * @exception IllegalActionException, NameDuplicatiopnException
      */
-    public Breakpoint(Nameable actor, String method) throws IllegalActionException, NameDuplicationException {
+    public Breakpoint(NamedObj actor, String method) 
+	throws IllegalActionException, NameDuplicationException {
 
-      	super((NamedObj) actor, method);
-	try {
-	    _method = method;
-	    _myActor = actor;
-	    condition = new Variable((NamedObj)this, "condition");
-	    condition.setExpression("true");
-	} catch (IllegalActionException ex) {
-	    System.out.println("IAE " + ex.getMessage());
-	}
-	catch (NameDuplicationException ex) {
-	    System.out.println("NDE " + ex.getMessage());
-	}
-	catch (ClassCastException ex) {
-	    System.out.println("CCE " + ex.getMessage());
-	}
-	catch (NullPointerException ex) {
-	    System.out.println("NPE " + ex.getMessage());
-	}
+      	super(actor, method);
+	if(!(actor instanceof Actor))
+	    throw new IllegalActionException("Breakpoints can only be " +
+					     "contained by Actors");
+	
+	condition = new Parameter(this, "condition");
+	condition.setExpression("true");
     }
+
     //////////////////////////////////////////////////////////////////
     // Public members
 
     // Contain the boolean expression
-    public Variable condition;
+    public Parameter condition;
 
     /////////////////////////////////////////////////////////////////
     //  Public methods
-    /** Return the container actor
-     * @see ptolemy.vergil.debugger.Breakpoint#getActor()
-     * @return a Nameable reference on the actor that contains this breakpoint
-     *  as an attribute.
-     */
-    public Nameable getActor() {
-	return _myActor;
-    }
     
-    /** Return a reference on the executive director of _myActor
-     * These function is used to edit or modify the breakpoint once
+    /** 
+     * Return a reference to the executive director the actor that 
+     * contains this breakpoint.
+     * This function is used to edit or modify the breakpoint once
      * it has been had in the executive director's breakpoint list
      * @see ptolemy.vergil.debugger.Breakpoint#getContainerDirector()
      * @return a reference on the executive director of the container actor
      */
     public Nameable getContainerDirector() {
-	return ((Actor)_myActor).getExecutiveDirector();
-    }
-
-    /** Return the name of the method attached to the breakpoint 
-     * @see ptolemy.vergil.debugger.Breakpoint#getMethod()
-     * @return the name in a string
-     */
-    public String getMethod() {
-	return _method;
+	return ((Actor)getContainer()).getExecutiveDirector();
     }
 
     /** Set the boolean condition that will be evaluated
@@ -120,19 +91,6 @@ public class Breakpoint extends Attribute {
      */
     public void setCondition(String expr) {
 	condition.setExpression(expr);
-    }
-
-    /** Set the method where to stop 
-     * @see ptolemy.vergil.debugger.Breakpoint#setMethod()
-     * @param newMethod name of the method
-     */
-    public void setMethod(String newMethod) {
-	_method = newMethod;
-	try {
-	    super.setName(newMethod);
-	} catch (IllegalActionException ex) {
-	} catch (NameDuplicationException ex) {
-	}
     }
 
     /** Evaluate the boolean expression of the breakpoint and 
@@ -149,10 +107,4 @@ public class Breakpoint extends Attribute {
 	}
 	return returnValue;
     }
-
-    //////////////////////////////////////////////////////////////////
-    //     Private members
-    private String _method;
-    private Nameable _myActor;
-
 }

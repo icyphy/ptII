@@ -49,7 +49,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import diva.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.interactor.*;
@@ -125,8 +124,8 @@ public class DebuggerUI extends JFrame
     
     
 
-    // a Nameable element to keep reference on object to edit
-    protected Nameable element = null;
+    // a NamedObj element to keep reference on object to edit
+    protected NamedObj element = null;
 
     
     /** Constructor
@@ -194,7 +193,7 @@ public class DebuggerUI extends JFrame
 		public void actionPerformed(ActionEvent e) {
 		    disableMenu();
 		    Breakpoint brkpt = null;
-		    Nameable actor = getSelectedActor();
+		    NamedObj actor = getSelectedActor();
 		    if (actor != null) {
 			    try {
 				brkpt = new Breakpoint(actor, "fire");
@@ -214,7 +213,7 @@ public class DebuggerUI extends JFrame
         menuItem = new JMenuItem("Edit Breakpoint", KeyEvent.VK_E);
 	menuItem.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-		    Nameable actor = getSelectedActor();
+		    NamedObj actor = getSelectedActor();
 		    if (actor != null) {
 			DisplayList list = new DisplayList((Actor)actor, DebuggerUI.this, DisplayList.EDIT_B);
 		    }
@@ -227,7 +226,7 @@ public class DebuggerUI extends JFrame
                                  KeyEvent.VK_D);
 	menuItem.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-		    Nameable actor = getSelectedActor();
+		    NamedObj actor = getSelectedActor();
 		    if (actor != null) {
 			DisplayList list = new DisplayList((Actor)actor, DebuggerUI.this, DisplayList.DEL);
 		    }
@@ -471,7 +470,6 @@ public class DebuggerUI extends JFrame
 			    //		    _entityLibrary.getEntity(
 			    //	(String)_directorComboBox.getSelectedItem());
 			    toplevel.setDirector(director);
-			    director.setPdb(_pdb);
 			    director.addDebuggingListener(_pdb.getDbgController());
 			    director.iterations.setExpression("25");
 			} else if ((dir instanceof ptolemy.domains.sdf.kernel.SDFDirector) || (dir instanceof ptolemy.vergil.debugger.domains.sdf.SDFDbgDirector)) {
@@ -481,7 +479,6 @@ public class DebuggerUI extends JFrame
 			    //		    _entityLibrary.getEntity(
 			    //	(String)_directorComboBox.getSelectedItem());
 			    toplevel.setDirector(director);
-			    director.setPdb(_pdb);
 			    director.addDebuggingListener(_pdb.getDbgController());
 			    director.iterations.setExpression("25");
 			} else if (dir instanceof ptolemy.domains.pn.kernel.PNDirector) {
@@ -556,7 +553,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="resume";
 			displayResult("Command entered = resume");
-			_pdb.getDbgController().cmdNotEntered = false;
+			_pdb.getDbgController().commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -578,7 +575,7 @@ public class DebuggerUI extends JFrame
 			_cmd ="microstep";
 			displayResult("Command entered = end");
 			_pdb.getDbgController().notFinished = false;
-			_pdb.getDbgController().cmdNotEntered = false;
+			_pdb.getDbgController().commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -618,7 +615,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="step";
 			displayResult("Command entered = step");
-			_pdb.getDbgController().cmdNotEntered = false;
+			_pdb.getDbgController().commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -636,7 +633,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="stepin";
 			displayResult("Command entered = Step in");
-			_pdb.getDbgController().cmdNotEntered = false;
+			_pdb.getDbgController().commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -653,7 +650,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="stepout";
 			displayResult("Command entered = Step Out");
-			_pdb.getDbgController().cmdNotEntered = false;
+			_pdb.getDbgController().commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -671,7 +668,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="microstep";
 			displayResult("Command entered = Micro Step");
-			_pdb.getDbgController().cmdNotEntered = false;
+			_pdb.getDbgController().commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -703,8 +700,8 @@ public class DebuggerUI extends JFrame
     ////////////////////////////////////////////////////////////////////////////////
     // Method that gets the selected actor on the vergil interface
     ////////////////////////////////////////////////////////////////////////////////
-    private Nameable getSelectedActor() {
-	Nameable selectedActor = null;
+    private NamedObj getSelectedActor() {
+	NamedObj selectedActor = null;
 	try {
 	    PtolemyDocument d = (PtolemyDocument) _application.getCurrentDocument();
 	    JGraph g = (JGraph) _application.getView(d);
@@ -720,7 +717,7 @@ public class DebuggerUI extends JFrame
 			if (userobj instanceof ptolemy.moml.Icon) {
 			    ptolemy.moml.Icon icon = (ptolemy.moml.Icon)userobj;
 			    ComponentEntity entity = (ComponentEntity)icon.getContainer();
-			    Nameable actor = (Nameable)entity;
+			    NamedObj actor = (NamedObj)entity;
 			    selectedActor = actor;
 			} else {
 			    displayResult("Error !");

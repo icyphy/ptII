@@ -61,7 +61,7 @@ public class DbgController implements DebuggingListener {
     public boolean stepInPause;
     
     //Boolean that allows to synchronize DbgController and DebuggerUI.
-    public boolean cmdNotEntered = true;
+    private boolean _commandNotEntered = true;
 
     //List that contain the Watchers.
     public NamedList actorWatcher = new NamedList();
@@ -246,11 +246,10 @@ public class DbgController implements DebuggingListener {
 	
     }
 
-    /** Method that synchronize the DbgController with the DebuggerUI,
-     *  and wait for an entry by the user. See the actionListener of
-     *  the DebuggerUI for a more effective comprehension. 
-     *  Note : This way of synchronisation is an ugly hack, but it's a
-     *  hack that's working. Et voilà !
+    /** 
+     * Synchronize the DbgController with the DebuggerUI,
+     * and wait for an entry by the user. See the actionListener of
+     * the DebuggerUI for a more effective comprehension. 
      * @see ptolemy.vergil.debugger.DbgController#waitUserCommand()
      * @param state : the execution state of the calling director
      */
@@ -260,10 +259,14 @@ public class DbgController implements DebuggingListener {
 	    ((ActorWatcher)e.nextElement()).refresh();
 	}
 
-	cmdNotEntered=true;
+	_commandNotEntered = true;
 	_pdb.getDebuggerUI().displayResult("Please, enter a command.");       
-	while (cmdNotEntered) {
+	while (_commandNotEntered) {
 	    _pdb.getDebuggerUI().putCmd = true;
+	    try {
+		wait();
+	    } catch (InterruptedException ex) {
+	    }
 	}
 	_pdb.getDebuggerUI().putCmd = false;
 	directorState.setdbgCommand(_pdb.getDebuggerUI().getuserCommand());
@@ -271,6 +274,14 @@ public class DbgController implements DebuggingListener {
 			    + "\t" + _pdb.getDebuggerUI().getuserCommand());
     }
 
+    /**
+     * Called by the UI when a command is entered, to allow the execution
+     * thread to continue. 
+     */
+    public synchronized void commandEntered() {
+	_commandNotEntered = false;
+	notifyAll();
+    }
 
     ////////////////////////////////////////////////////////
     //                Private variables                   //
