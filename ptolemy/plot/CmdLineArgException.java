@@ -34,7 +34,7 @@ package ptolemy.plot;
  * @author Christopher Hylands
  * @version $Id$
  */
-class CmdLineArgException extends Throwable {
+public class CmdLineArgException extends Throwable {
     public CmdLineArgException() { super(); }
     public CmdLineArgException(String s) { super(s); }
 }
