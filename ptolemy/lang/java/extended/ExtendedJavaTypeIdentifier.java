@@ -177,30 +177,44 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
     PtolemyTypeIdentifier.FIX_POINT_TYPE;
 
     static {
-	System.out.println("ExtendedJavaTypeIdentifier public static final fields");
-	System.out.println("TYPE_KIND_COMPLEX: " + TYPE_KIND_COMPLEX);
-	System.out.println("TYPE_KIND_FIX_POINT: " + TYPE_KIND_FIX_POINT);
-	System.out.println("TYPE_KIND_STRING: " + TYPE_KIND_STRING);
-	System.out.println("TYPE_KIND_TOKEN: " + TYPE_KIND_TOKEN);
-	System.out.println("TYPE_KIND_BOOLEAN_ARRAY: " + TYPE_KIND_BOOLEAN_ARRAY);
-	System.out.println("TYPE_KIND_INT_ARRAY: " + TYPE_KIND_INT_ARRAY);
-	System.out.println("TYPE_KIND_LONG_ARRAY: " + TYPE_KIND_LONG_ARRAY);
-	System.out.println("TYPE_KIND_DOUBLE_ARRAY: " + TYPE_KIND_DOUBLE_ARRAY);
-	System.out.println("TYPE_KIND_COMPLEX_ARRAY: " + TYPE_KIND_COMPLEX_ARRAY);
-	System.out.println("TYPE_KIND_FIX_POINT_ARRAY: " + TYPE_KIND_FIX_POINT_ARRAY);
-	System.out.println("TYPE_KIND_BOOLEAN_MATRIX: " + TYPE_KIND_BOOLEAN_MATRIX);
-	System.out.println("TYPE_KIND_INT_MATRIX: " + TYPE_KIND_INT_MATRIX);
-	System.out.println("TYPE_KIND_LONG_MATRIX: " + TYPE_KIND_LONG_MATRIX);
-	System.out.println("TYPE_KIND_DOUBLE_MATRIX: " + TYPE_KIND_DOUBLE_MATRIX);
-	System.out.println("TYPE_KIND_COMPLEX_MATRIX: " + TYPE_KIND_COMPLEX_MATRIX);
-	System.out.println("TYPE_KIND_FIX_POINT_MATRIX: " + TYPE_KIND_FIX_POINT_MATRIX);
-	System.out.println("TOKEN_DECL: " + TOKEN_DECL);
-	System.out.println("TOKEN_TYPE: " + TOKEN_TYPE);
-	System.out.println("COMPLEX_DECL: " + COMPLEX_DECL);
-	System.out.println("COMPLEX_TYPE: " + COMPLEX_TYPE);
-	System.out.println("FIX_POINT_DECL: " + FIX_POINT_DECL);
-	System.out.println("FIX_POINT_TYPE: " + FIX_POINT_TYPE);
+        if (_debug) {
+            System.out.println("ExtendedJavaTypeIdentifier public static final fields");
+            System.out.println("TYPE_KIND_COMPLEX: " + TYPE_KIND_COMPLEX);
+            System.out.println("TYPE_KIND_FIX_POINT: " + TYPE_KIND_FIX_POINT);
+            System.out.println("TYPE_KIND_STRING: " + TYPE_KIND_STRING);
+            System.out.println("TYPE_KIND_TOKEN: " + TYPE_KIND_TOKEN);
+            System.out.println("TYPE_KIND_BOOLEAN_ARRAY: "
+                    + TYPE_KIND_BOOLEAN_ARRAY);
+            System.out.println("TYPE_KIND_INT_ARRAY: "
+                    + TYPE_KIND_INT_ARRAY);
+            System.out.println("TYPE_KIND_LONG_ARRAY: "
+                    + TYPE_KIND_LONG_ARRAY);
+            System.out.println("TYPE_KIND_DOUBLE_ARRAY: "
+                    + TYPE_KIND_DOUBLE_ARRAY);
+            System.out.println("TYPE_KIND_COMPLEX_ARRAY: "
+                    + TYPE_KIND_COMPLEX_ARRAY);
+            System.out.println("TYPE_KIND_FIX_POINT_ARRAY: "
+                    + TYPE_KIND_FIX_POINT_ARRAY);
+            System.out.println("TYPE_KIND_BOOLEAN_MATRIX: "
+                + TYPE_KIND_BOOLEAN_MATRIX);
+            System.out.println("TYPE_KIND_INT_MATRIX: "
+                    + TYPE_KIND_INT_MATRIX);
+            System.out.println("TYPE_KIND_LONG_MATRIX: "
+                    + TYPE_KIND_LONG_MATRIX);
+            System.out.println("TYPE_KIND_DOUBLE_MATRIX: "
+                    + TYPE_KIND_DOUBLE_MATRIX);
+            System.out.println("TYPE_KIND_COMPLEX_MATRIX: "
+                    + TYPE_KIND_COMPLEX_MATRIX);
+            System.out.println("TYPE_KIND_FIX_POINT_MATRIX: "
+                    + TYPE_KIND_FIX_POINT_MATRIX);
+            System.out.println("TOKEN_DECL: " + TOKEN_DECL);
+            System.out.println("TOKEN_TYPE: " + TOKEN_TYPE);
+            System.out.println("COMPLEX_DECL: " + COMPLEX_DECL);
+            System.out.println("COMPLEX_TYPE: " + COMPLEX_TYPE);
+            System.out.println("FIX_POINT_DECL: " + FIX_POINT_DECL);
+            System.out.println("FIX_POINT_TYPE: " + FIX_POINT_TYPE);
+        }
     }
 
-    protected final static boolean _debug = true;
+    protected final static boolean _debug = false;
 }
