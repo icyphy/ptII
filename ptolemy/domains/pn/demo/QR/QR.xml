@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="Process Network Director" class="ptolemy.domains.pn.kernel.PNDirector">
-        <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 35.0">
         </property>
