@@ -154,7 +154,7 @@ public class DDEActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                   package friendly methods		   ////
 
     /** Return a token from the receiver that has the minimum receiver 
      *  time of all receivers contained by this actor. The returned token
@@ -172,7 +172,7 @@ public class DDEActor extends TypedAtomicActor {
      * @see ptolemy.domains.dde.kernel.TimeKeeper
      * @see ptolemy.domains.dde.kernel.DDEThread
      */
-    private Token _getNextInput() throws IllegalActionException {
+    Token _getNextInput() throws IllegalActionException {
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
@@ -192,7 +192,6 @@ public class DDEActor extends TypedAtomicActor {
     ////                        private variables                  ////
 
     private double _currentTime = 0.0;
-
     private TypedIOPort _lastPort = null;
 
 }
