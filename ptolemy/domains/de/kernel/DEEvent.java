@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
 
@@ -40,7 +40,7 @@ import java.lang.Comparable;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEvent
-//
+
 /** This class implements the structure of events in Ptolemy II DE domain.
  *  Conceptually, an event in the Ptolemy II DE domain contains
  *  a token and a tag.  In addition, the event has a destination,
@@ -48,12 +48,13 @@ import java.lang.Comparable;
  *  A pure event has no destination receiver and no token, so methods
  *  for accessing those return null.
  *  The tag consists of a time stamp, a microstep, and a depth.
- *  The depth is the index of the destination actor in a topological
- *  sort.  A larger value of depth represents a lower priority when
- *  processing events.  The microstep represents the phase of execution
+ *  The microstep represents the phase of execution
  *  when processing simultaneous events in directed loops, or when an
  *  actor schedules itself for firing later at the current time
  *  (using fireAt()).
+ *  The depth is the index of the destination actor in a topological
+ *  sort.  A larger value of depth represents a lower priority when
+ *  processing events.  
  *  <p>
  *  This class implements the Comparable interface.  The time stamp,
  *  microstep, and depth are compared in that order by the compareTo()
@@ -114,33 +115,42 @@ public final class DEEvent implements Comparable {
     }
 
     /** Compare the tag of this event with the specified event for order.
+     *  See compareTo(DEEvent event) for the comparison rules.
+     *  The argument has to be an instance of DEEvent or a
+     *  ClassCastException will be thrown.
+     *
+     * @param event The event to compare against.
+     * @return -1, 0, or 1, depends on the order of the events.
+     * @exception ClassCastException If the argument is not an instance
+     *  of DEEvent.
+     */
+    public final int compareTo(Object event) {
+        return compareTo((DEEvent)event);
+    }
+
+    /** Compare the tag of this event with the specified event for order.
      *  Return -1, zero, or +1 if this
      *  event is less than, equal to, or greater than the specified event.
      *  The time stamp is checked first.  If the two time stamps are
      *  identical, then the microstep is checked.  If those are identical,
      *  then the receiver depth is checked.
-     *  The argument has to be an instance of DEEvent or a
-     *  ClassCastException will be thrown.
      *
      * @param event The event to compare against.
-     * @exception ClassCastException If the argument is not an instance
-     *  of DEEvent.
+     * @return -1, 0, or 1, depends on the order of the events.
      */
-    public final int compareTo(Object event) {
+     public final int compareTo(DEEvent event) {
 
-        DEEvent castEvent = (DEEvent) event;
-
-        if ( _timeStamp > castEvent._timeStamp)  {
+        if ( _timeStamp > event._timeStamp)  {
             return 1;
-        } else if ( _timeStamp < castEvent._timeStamp) {
+        } else if ( _timeStamp < event._timeStamp) {
             return -1;
-        } else if ( _microstep > castEvent._microstep) {
+        } else if ( _microstep > event._microstep) {
             return 1;
-        } else if ( _microstep < castEvent._microstep) {
+        } else if ( _microstep < event._microstep) {
             return -1;
-        } else if ( _receiverDepth > castEvent._receiverDepth) {
+        } else if ( _receiverDepth > event._receiverDepth) {
             return 1;
-        } else if ( _receiverDepth < castEvent._receiverDepth) {
+        } else if ( _receiverDepth < event._receiverDepth) {
             return -1;
         } else {
             return 0;

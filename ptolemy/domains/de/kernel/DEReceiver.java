@@ -24,21 +24,29 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.data.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Workspace;
+
+import ptolemy.data.Token;
+import ptolemy.actor.AbstractReceiver;
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.Director;
 
 import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
+
 /** An implementation of the ptolemy.actor.Receiver interface for
  *  the DE domain.  Tokens that are put into this receiver logically
  *  have time stamps. If the time stamp is not explicitly given using
@@ -53,7 +61,9 @@ import java.util.LinkedList;
  *  <p>
  *  By default, the time stamp of a token is the current time of the
  *  director when put() is called. To specify a time stamp in the
- *  future, call setDelay() prior to calling put().
+ *  future, call setDelay() prior to calling put(). This should be
+ *  done in a synchronized manner, since there could be multiple
+ *  thread running in this domain.
  *  <p>
  *  Before firing an actor, the director is expected to put at least one
  *  token into at least one of the receivers contained by the actor.
@@ -84,12 +94,13 @@ public class DEReceiver extends AbstractReceiver {
      *  the current time.  Note that there might be multiple such
      *  tokens in the receiver. In that case, FIFO behaviour is used with
      *  respect to the put() method. If there is no such token, throw an
-     *  exception.
+     *  exception. This method is synhronized since the actor may not 
+     *  execute in the same thread as the director.
      *  @return A token.
      *  @exception NoTokenException If there are no more tokens. This is
      *   a runtime exception, so it need not be declared explicitly.
      */
-    public Token get() throws NoTokenException {
+    public synchronized Token get() throws NoTokenException {
         if(_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
                     "No more tokens in the DE receiver.");
@@ -97,42 +108,6 @@ public class DEReceiver extends AbstractReceiver {
         return (Token)_tokens.removeFirst();
     }
 
-    /** Return the director that created this receiver. Note that
-     *  the director returned is guaranteed to be non-null.
-     *  @return An instance of DEDirector.
-     *  @exception IllegalActionException If there is no container port, or
-     *   if the port has no container actor, or if the actor has no director,
-     *   or if the director is not an instance of DEDirector.
-     */
-    public DEDirector getDirector() throws IllegalActionException {
-        IOPort port = (IOPort)getContainer();
-        if (port != null) {
-            if (_directorVersion == port.workspace().getVersion()) {
-                return _director;
-            }
-            // Cache is invalid.  Reconstruct it.
-            Actor actor = (Actor)port.getContainer();
-            if (actor != null) {
-                Director dir;
-                if ( (port.isOutput()) &&
-                        (actor instanceof CompositeActor) &&
-                        ((CompositeActor)actor).isOpaque()) {
-                    dir = actor.getDirector();
-                } else {
-                    dir = actor.getExecutiveDirector();
-                }
-                if (dir != null) {
-                    if (dir instanceof DEDirector) {
-                        _director = (DEDirector)dir;
-                        _directorVersion = port.workspace().getVersion();
-                        return _director;
-                    }
-                }
-            }
-        }
-        throw new IllegalActionException(getContainer(),
-                "Does not have a DE director.");
-    }
 
     /** Return true, indicating that there is always room.
      *  @return True.
@@ -173,9 +148,11 @@ public class DEReceiver extends AbstractReceiver {
      *  the director with the current time
      *  of the director.  However, by calling setDelay() before calling put(),
      *  you can enqueue the event with a time stamp at a future time.
+     *  This method is synhronized since the actor may not 
+     *  execute in the same thread as the director.
      *  @param token The token to be put.
      */
-    public void put(Token token) {
+    public synchronized void put(Token token) {
         try {
             DEDirector dir = getDirector();
             if (_useDelay) {
@@ -200,13 +177,14 @@ public class DEReceiver extends AbstractReceiver {
      *  Note that the time should be greater than or equal
      *  to the current time of the director, otherwise an exception will
      *  be thrown.
-     *
+     *  This method is synhronized since the actor may not 
+     *  execute in the same thread as the director.
      *  @param token The token to be put.
      *  @param time The time stamp of the token
      *  @exception IllegalActionException If time is less than the
      *     current time of the director, or no director is available.
      */
-    public void put(Token token, double time)
+    public synchronized void put(Token token, double time)
             throws IllegalActionException{
         DEDirector dir = getDirector();
         double now = dir.getCurrentTime();
@@ -228,10 +206,13 @@ public class DEReceiver extends AbstractReceiver {
      *  only used in the next call to put().
      *  If the specified delay is zero, then the next event is queued to be
      *  processed in the next microstep.
+     *  This method is synhronized since the actor may not 
+     *  execute in the same thread as the director.
      *  @param delay The delay.
      *  @exception IllegalActionException If the delay is negative.
      */
-    public void setDelay(double delay) throws IllegalActionException {
+    public synchronized void setDelay(double delay) 
+            throws IllegalActionException {
         if (delay < 0.0) {
             throw new IllegalActionException(getContainer(),
                     "Cannot specify a negative delay.");
@@ -254,6 +235,60 @@ public class DEReceiver extends AbstractReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return the director that created this receiver. 
+     *  If this receiver is an inside receiver of
+     *  an output port of an opaque composite actor, 
+     *  then the director will be the local director
+     *  of the container of its port. Otherwise, it's the executive
+     *  director of the container of its port.Note that
+     *  the director returned is guaranteed to be non-null.
+     *  This method is read synchronized on the workspace.
+     *  @return An instance of DEDirector.
+     *  @exception IllegalActionException If there is no container port, or
+     *   if the port has no container actor, or if the actor has no director,
+     *   or if the director is not an instance of DEDirector.
+     */
+    public DEDirector getDirector() throws IllegalActionException {
+        IOPort port = (IOPort)getContainer();
+        if (port != null) {
+            if (_directorVersion == port.workspace().getVersion()) {
+                return _director;
+            }
+            // Cache is invalid.  Reconstruct it.
+            try {
+                port.workspace().getReadAccess();
+                Actor actor = (Actor)port.getContainer();
+                if (actor != null) {
+                    Director dir;
+                    if ( (port.isOutput()) &&
+                            (actor instanceof CompositeActor) &&
+                            ((CompositeActor)actor).isOpaque()) {
+                        dir = actor.getDirector();
+                    } else {
+                        dir = actor.getExecutiveDirector();
+                    }
+                    if (dir != null) {
+                        if (dir instanceof DEDirector) {
+                            _director = (DEDirector)dir;
+                            _directorVersion = port.workspace().getVersion();
+                            return _director;
+                        } else {
+                            throw new IllegalActionException(getContainer(),
+                                    "Does not have a DEDirector.");
+                        }
+                    }
+                }
+            } finally {
+                port.workspace().doneReading();
+            }
+        }
+        throw new IllegalActionException(getContainer(),
+                "Does not have a IOPort as the container of the receiver.");
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The delay for the next call to put().
@@ -266,11 +301,7 @@ public class DEReceiver extends AbstractReceiver {
     //private int _depth = 0;
 
     // The director where this DEReceiver should register the
-    // events being put in it. If this receiver is an inside receiver of
-    // an output port of
-    // an opaque composite actor, then the director will be the local director
-    // of the container of its port. Otherwise, it's the executive director of
-    // the container of its port.
+    // events being put in it. 
     // NOTE: This should be accessed only via getDirector().
     private DEDirector _director;
     private long _directorVersion = -1;
