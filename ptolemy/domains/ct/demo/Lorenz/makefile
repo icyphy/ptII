@@ -58,7 +58,8 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'LorenzApplet$$ParameterListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
