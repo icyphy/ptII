@@ -50,9 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Place CSPMultiSink at the end to work around a javadoc problem
 JSRCS = \
 	CSPBuffer.java \
-	CSPChopstick.java \
 	CSPMultiSource.java \
-	CSPPhilosopher.java \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
