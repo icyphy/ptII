@@ -6,7 +6,7 @@
 # @version $Id$
 #
 "@java@"
- -Xfuture -classpath "@classPath@"
+ -Xfuture -classpath "@ptIIUserDirectory@/@targetPath@@classPathSeparator@@classPath@"
  "@javaPtIIProperty@"
  ptolemy.actor.gui.CompositeActorApplication
  -class @targetPackage@.CG@modelName@

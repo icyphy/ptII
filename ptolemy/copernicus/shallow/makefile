@@ -131,7 +131,7 @@ compileDemo: $(JCLASS)
 #	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
 
 # Partial Java command to run the code generation output.
-RUN_COMMAND =	"$(JAVA)" -Xfuture -classpath "$(ROOT)" \
+RUN_COMMAND =	"$(JAVA)" -Xfuture -classpath "$(ROOT)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
 		"-Dptolemy.ptII.dir=$(PTII)" \
 		ptolemy.actor.gui.CompositeActorApplication
 

@@ -8,10 +8,11 @@
 "@java@" @jvmSize@
  -classpath "@classPath@"
  "@javaPtIIProperty@"
- ptolemy.copernicus.shallow.Main "@modelPath@" -d "@ptIIUserDirectory@"
- -p wjtp.watchDog time:@watchDogTimeout@
- -p wjtp.mt targetPackage:@targetPackage@
- -p wjtp.writeJimple1 "outDir:@ptIIUserDirectory@/@targetPath@/jimple1"
- -p wjtp.makefileWriter 
- "_generatorAttributeFileName:@_generatorAttributeFileName@,targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@,templateDirectory:ptolemy/copernicus/shallow"
+ ptolemy.copernicus.shallow.Main "@modelPath@" 
+ -watchDogTimer "@watchDogTimeout@"
+ -outputDirectory "@ptIIUserDirectory@/@targetPath@"
+ -targetPackage "@targetPackage@"
+ -templateDirectory "ptolemy/copernicus/java"
+ -generatorAttributeFileName "@_generatorAttributeFileName@"
+ -sootArgs
  @compileOptions@
