@@ -37,13 +37,17 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.util.Time;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTGeneralDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
+import ptolemy.domains.ct.kernel.ODESolver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -137,12 +141,23 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
             _firstFire = false;
         }
+        
         _ctrl._readInputs();
+        
         if (_debugging) _debug(getName(), " find FSMActor " + _ctrl.getName());
-        Transition tr =
-            _ctrl._chooseTransition(_st.preemptiveTransitionList());
-        if (tr != null) {
+        Transition tr;
+        
+        // only check transition during event generating phase.
+        if (isEventGeneratingPhase()) {
+            tr = _ctrl._chooseTransition(_st.preemptiveTransitionList());
+        } else {
+            tr = null;
+        }
 
+        // record the enalbed transition
+        _enabledTransition = tr;
+
+        if (tr != null) {
             Actor[] actors = tr.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -170,7 +185,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             _ctrl._readOutputsFromRefinement();
             return;
         }
+        
         Iterator actors = _enabledRefinements.iterator();
+        
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             if (_debugging) _debug(getName(), " fire refinement",
@@ -180,9 +197,15 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
         _ctrl._readOutputsFromRefinement();
 
-        // Note that the output actions associated with the transition
-        // are executed.
-        tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
+        // only check transition during event generating phase.
+        if (isEventGeneratingPhase()) {
+            // Note that the output actions associated with the transition
+            // are executed.
+            tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
+        } else {
+            tr = null;
+        }
+
         // record the enalbed transition
         _enabledTransition = tr;
 
@@ -222,7 +245,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  there is one, and otherwise return the local view of current time.
      *  @return The current time.
      */
-    public double getCurrentTime() {
+    public Time getCurrentTime() {
         CompositeActor cont = (CompositeActor)getContainer();
         Director execDir = (Director)cont.getExecutiveDirector();
         if (execDir != null) {
@@ -235,7 +258,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     /** Return the next iteration time obtained from the executive director.
      *  @return The next iteration time.
      */
-    public double getNextIterationTime() {
+    public Time getNextIterationTime() {
         CompositeActor cont = (CompositeActor)getContainer();
         Director execDir = (Director)cont.getExecutiveDirector();
         return execDir.getNextIterationTime();
@@ -256,6 +279,29 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
         return eventPresent;
+    }
+
+    /** Call the initialize method of the supper class. Get the controller
+     *  and the current state. Create a set of the refinements associated
+     *  with this state. 
+     *
+     *  @exception IllegalActionException If the initialize() method of
+     *   one of the associated actors throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+       
+        _ctrl = getController();
+        _st = _ctrl.currentState();
+        Actor[] actors = _st.getRefinement();
+        _enabledRefinements = new LinkedList();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; ++i) {
+                if (actors[i].prefire()) {
+                    _enabledRefinements.add(actors[i]);
+                }
+            }
+        }
     }
 
     /** Return true if there are no refinements, or if the current
@@ -569,4 +615,199 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     private Transition _enabledTransition;
     // Lcoal variable to indicate the last transition accurate or not.
     private boolean _lastTransitionAccurate = true;
+    
+    // FIXME: the following methods are to support CT domains only. 
+    // They are not fully developed and commented. They are related to
+    // CTEmbeddedDirector. Actually, most methods are the same.
+    
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#markState()
+     */
+    public void markState() {
+        Iterator actors = _enabledRefinements.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (actor instanceof CTCompositeActor) {
+                ((CTCompositeActor)actor).markState();
+            }
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#emitTentativeOutputs()
+     */
+    public void emitTentativeOutputs() throws IllegalActionException {
+        Iterator actors = _enabledRefinements.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (actor instanceof CTCompositeActor) {
+                ((CTCompositeActor)actor).emitTentativeOutputs();
+            }
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#goToMarkedState()
+     */
+    public void goToMarkedState() throws IllegalActionException {
+        Iterator actors = _enabledRefinements.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (actor instanceof CTCompositeActor) {
+                ((CTCompositeActor)actor).goToMarkedState();
+            }
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#getCurrentStepSize()
+     */
+    public double getCurrentStepSize() {
+        CompositeActor cont = (CompositeActor)getContainer();
+        CTDirector execDir = (CTDirector)cont.getExecutiveDirector();
+        if (execDir != null) {
+            return execDir.getCurrentStepSize();
+        } else {
+            throw new InternalErrorException("HSDirector can only be used " +
+                "in a CT model.");
+        }
+    }
+
+    /** Return the ODE solver.
+     *  @return The default ODE solver
+     */
+    public ODESolver getODESolver() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.getODESolver();  
+    }
+
+    /** Return true if this is the discrete phase execution.
+     *  @return True if this is the discrete phase execution.
+     */
+    public boolean isDiscretePhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isDiscretePhase();
+    }
+
+    /** Return true if this is the discrete phase execution.
+     *  @return True if this is the discrete phase execution.
+     */
+    public boolean isPureDiscretePhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isPureDiscretePhase();
+    }
+
+    /** Return true if this is the discrete phase execution.
+     *  @return True if this is the discrete phase execution.
+     */
+    public boolean isWaveformGeneratingPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isWaveformGeneratingPhase();
+    }
+
+    /** Return true if this is the discrete phase execution.
+     *  @return True if this is the discrete phase execution.
+     */
+    public boolean isEventGeneratingPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        Director exe = container.getExecutiveDirector();
+        // NOTE: Only CTDirector distinguish Continuous phase execution and 
+        // Discrete phase executions. 
+        if (exe instanceof CTGeneralDirector) {
+            return ((CTGeneralDirector)exe).isEventGeneratingPhase();
+        } else {
+            return true;
+        }
+    }
+
+    public boolean isCreatingIterationStartingStatesPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isCreatingIterationStartingStatesPhase();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isStateAccurate()
+     */
+    
+    // FIXME: do we need to seperate isStateAccurate and isOutputAccurate?
+    // For example, in HSDirector, there is no difference actually.
+    public boolean isStateAccurate() {
+        return isThisStepAccurate();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        return isThisStepAccurate();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isSolvingStatesPhase()
+     */
+    public boolean isSolvingStatesPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isSolvingStatesPhase();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isProducingOutputsPhase()
+     */
+    public boolean isProducingOutputsPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isProducingOutputsPhase();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isUpdatingContinuousStatesPhase()
+     */
+    public boolean isUpdatingContinuousStatesPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isUpdatingContinuousStatesPhase();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isPrefiringDynamicActorsPhase()
+     */
+    public boolean isPrefiringDynamicActorsPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isPrefiringDynamicActorsPhase();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringEventGeneratorsPhase()
+     */
+    public boolean isFiringEventGeneratorsPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isFiringEventGeneratorsPhase();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringDynamicActorsPhase()
+     */
+    public boolean isFiringDynamicActorsPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isFiringDynamicActorsPhase();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringStateTransitionActorsPhase()
+     */
+    public boolean isFiringStateTransitionActorsPhase() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.isFiringStateTransitionActorsPhase();
+    }
+
 }
