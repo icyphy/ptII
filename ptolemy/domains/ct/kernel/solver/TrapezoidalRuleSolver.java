@@ -246,7 +246,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
-            incrRound();
+            incrementRound();
             _setConverge(true);
             actors = sch.scheduledStateTransitionActorList().iterator();
             while(actors.hasNext()) {

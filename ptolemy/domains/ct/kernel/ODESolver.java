@@ -140,7 +140,7 @@ public abstract class ODESolver extends NamedObj {
      *  will be increased
      *  for each round the state transition schedule is fired.
      */
-    public void incrRound() {
+    public void incrementRound() {
         _round ++ ;
     }
 

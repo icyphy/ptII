@@ -290,7 +290,7 @@ public class ExplicitRK23Solver extends ODESolver {
                 _debug(getFullName() + " firing..."+((Nameable)next).getName());
                 next.fire();
             }
-            incrRound();
+            incrementRound();
         }
         if(dir.STAT) {
             // for error control.

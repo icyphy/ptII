@@ -187,6 +187,7 @@ public class BackwardEulerSolver extends FixedStepSolver
                 dir.NFUNC ++;
             }
             _setConverge(true);
+            incrementRound();
             actors = sch.scheduledStateTransitionActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
