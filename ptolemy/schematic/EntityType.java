@@ -60,6 +60,8 @@ public class EntityType extends XMLElement {
     public EntityType () {
         super("entitytype");
         setAttribute("name","");
+        setAttribute("type","actor");
+        setAttribute("location","");
     }
 
     /**
@@ -68,21 +70,41 @@ public class EntityType extends XMLElement {
     public EntityType (HashedMap attributes) {
         super("entitytype", attributes);
         if(!hasAttribute("name")) setName("");
+        if(!hasAttribute("type")) setType("actor");
+        if(!hasAttribute("location")) setLocation("");
+    }
+
+    public String getLocation() {
+        return getAttribute("location");
     }
 
     public String getName() {
         return getAttribute("name");
+    }
+    
+    public String getType() {
+        return getAttribute("type");
     }
 
     /**
      * Test if the give entity type is the same as this entity type.
      */
     public boolean equals (EntityType et) {
-        return getName().equals(et.getName());
+        return getName().equals(et.getName())&&
+               getType().equals(et.getType())&& 
+               getLocation().equals(et.getLocation());
+    }
+
+    public void setLocation(String loc) {
+        setAttribute("location", loc);
     }
 
     public void setName(String name) {
         setAttribute("name", name);
+    }
+
+    public void setType(String type) {
+        setAttribute("type", type);
     }
 }
 
