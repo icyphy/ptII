@@ -48,6 +48,16 @@ proc description2DAG {title filename desc} {
     puts $fd "{titleSet title {$title}}"
     puts $fd "\{titleSet subtitle \{created:\
             [clock format [clock seconds]]\}\}"
+
+    # We have list of colors and an array that maps the colors to
+    # classes.  We can't just use an array, since [array names] returns
+    # the arrays unordered.
+    global _descriptionColorList  _descriptionColorArray
+    set _descriptionColorList \
+	    [list red darkGreen blue yellow darkViolet darkPink ]
+    foreach color $_descriptionColorList {
+	set _descriptionColorArray($color) {}
+    }
     _description2DAGInternal $fd $desc
     close $fd
 }
@@ -56,6 +66,7 @@ proc description2DAG {title filename desc} {
 # This is called by description2DAG
 proc _description2DAGInternal {fd contents {parent {}} {oldparent {}}
         {depth 1}} {
+    global _descriptionColorList  _descriptionColorArray
     #puts "dbg: top: $depth parent='$parent' oldparent='$oldparent' \
     #	    [llength $contents] --$contents--"
 
@@ -68,9 +79,31 @@ proc _description2DAGInternal {fd contents {parent {}} {oldparent {}}
 	# of a parent Entity with two child entities that are
 	# connected to each other.  
 	if {[llength $element] == 2 && [llength [lindex $element 0]] == 1} {
+	    set className [lindex $element 0]
+
+	    # Pick a color, default to black if we have more classes
+	    # than colors.  Ideally, we would try to get a notion of
+	    # the type of object and use the right color
+	    set colorName ""
+	    foreach colorElement $_descriptionColorList {
+		if {$_descriptionColorArray($colorElement) == "$className"} {
+		    set colorName $colorElement
+		    break
+		}
+		if {$_descriptionColorArray($colorElement) == {}} {
+		    set _descriptionColorArray($colorElement) $className
+		    set colorName $colorElement
+		    break
+		}
+	    }
+	    if {$colorName == ""} {
+		# default to black, we have more classes than colors
+		set colorName black
+	    }
+
 
 	    # Substitute / for . in the classname
-	    regsub -all {\.} [lindex $element 0] {/} fileName
+	    regsub -all {\.} $className {/} fileName
 
 	    # Get the name of the Entity or Relation
 	    set fullName [lindex $element 1]
@@ -80,17 +113,23 @@ proc _description2DAGInternal {fd contents {parent {}} {oldparent {}}
 		set oldparent {}
 		set parent $element
 		puts $fd "\{add $fullName \{label \{$fullName\}\
-			link \{\$TYCHO/java/$fileName.java\}\}\
+			color \{$colorName\}\
+			tcl \{fullName2HTML $className $fullName \}\
+			altlink \{\$TYCHO/java/$fileName.java\}\}\
 			\{\}\}"
 	    } else {
 		if  {[lindex $parent 1] == $fullName} {
 		    puts $fd "\{add $fullName \{label \{$fullName\}\
-			link \{\$TYCHO/java/$fileName.java\}\}\
+			color \{$colorName\}\
+			tcl \{ fullName2HTML $className $fullName \}\
+			altlink \{\$TYCHO/java/$fileName.java\}\}\
 			\{[lindex $oldparent 1]\}\}"
 
 		} else {
 		    puts $fd "\{add $fullName \{label \{$fullName\}\
-			    link \{\$TYCHO/java/$fileName.java\}\}\
+			    color \{$colorName\}\
+			    tcl \{ fullName2HTML $className $fullName \}\
+			    altlink \{\$TYCHO/java/$fileName.java\}\}\
 			    \{[lindex $parent 1]\}\}"
 		}
 	    }
@@ -109,6 +148,31 @@ proc _description2DAGInternal {fd contents {parent {}} {oldparent {}}
 }
 
 
+######################################################################
+#### fullName2HTML
+# Given a fullName of a Entity or Relation, display an HTML
+# description.
+#
+proc fullName2HTML {className fullName} {
+    global TYCHO jrpc
+    startJRPCIfNecessary
+
+    regsub -all {\.} $className {/} fileName
+    set fullFileName $TYCHO/java/$fileName.java
+    set fullDocFileName \
+	    [file dirname $fullFileName]/doc/codeDoc/$className.html
+
+    set m [::tycho::autoName .fullName2HTML]
+    ::tycho::HTMLMessage $m
+    $m insertData "<h1>Description of <code>$fullName</code></h1> \
+	    <menu>\
+	    <li>Source code:\
+	    <a href=\"$fullFileName\"><code>$fullFileName</code></a>\
+	    <li>JavaDoc:\
+	    <a href=\"$fullDocFileName\"><code>$fullDocFileName</code></a>\
+	    "
+    $m centerOnScreen
+}
 
 ######################################################################
 ####
