@@ -80,6 +80,7 @@ EXTRA_SRCS =	$(JSRCS) \
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES = \
 	filter \
+	jxta \
 	MoML_1.dtd
 
 # make checkjunk will not report OPTIONAL_FILES as trash
