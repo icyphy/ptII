@@ -30,21 +30,7 @@
 
 package ptolemy.domains.sdf.demo.Butterfly;
 
-import java.applet.Applet;
-import java.awt.*;
-import java.awt.event.*;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.lib.conversions.*;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.util.*;
 import ptolemy.domains.sdf.gui.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.*;
 
 import ptolemy.plot.*;
 
@@ -71,6 +57,5 @@ public class ButterflyApplet extends SDFApplet {
             report("Error constructing model.", ex);
         }
 	add(_createRunControls(2));
-
     }
 }

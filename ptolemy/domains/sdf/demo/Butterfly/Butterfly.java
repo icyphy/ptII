@@ -96,17 +96,12 @@ public class Butterfly {
 						    true, false);
 	cos1.expression.setExpression("cos(cos1Input))");
 
-	// Here, we collapse to expression actors into one.
+	// Here, we collapse two actors into one expression actor.
 	Expression cos2 = new Expression(toplevel, "cos2");
 	TypedIOPort cos2Input = new TypedIOPort(cos2, "cos2Input",
 						    true, false);
 	cos2.expression.setExpression("exp(cos(cos2Input))");
 	cos2.output.setTypeEquals(DoubleToken.class);
-
-	//Expression exp1 = new Expression(toplevel, "exp1");
-	//TypedIOPort exp1Input = new TypedIOPort(exp1, "exp1Input",
-	//					    true, false);
-	//exp1.expression.setExpression("exp(exp1Input)");
 
 	XYPlotter xyPlotter = new XYPlotter(toplevel, "xyPlotter");
 	xyPlotter.setPanel(panel);
@@ -116,7 +111,6 @@ public class Butterfly {
 
 	toplevel.connect(scale2.output, sin1Input);
 	toplevel.connect(scale1.output, cos1Input);
-	//toplevel.connect(cos2.output, exp1Input);
 	toplevel.connect(cos1.output, scale3.input);
 
 	TypedIORelation node4 = new TypedIORelation(toplevel, "node4");
@@ -134,7 +128,6 @@ public class Butterfly {
 
 	toplevel.connect(scale3.output, add1.plus);
 	toplevel.connect(mpy3.output, add1.plus);
-	//toplevel.connect(exp1.output, add1.plus);
 	toplevel.connect(cos2.output, add1.plus);
 
 	toplevel.connect(add1.output, polarToRect1.magnitudeInput);
