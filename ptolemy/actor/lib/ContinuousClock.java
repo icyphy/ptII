@@ -49,6 +49,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
 /**
+This is a clock source used in continuous time domain.
 This actor produces a periodic signal, a generalized square wave
 that sequences through <i>N</i> output values with arbitrary duty cycles
 and period.  It has various uses.  It can be used to generate a square wave.
@@ -69,21 +70,22 @@ Moreover, its largest entry must be smaller than <i>period</i>
 or an exception will be thrown by the fire() method.
 <p>
 The <i>values</i> parameter by default
-contains an array of IntTokens with values 1 and 0.  The default
+contains an array of IntTokens with values 0 and 1.  The default
 <i>offsets</i> array is {0.0, 1.0}.  Thus, the default output will be
 alternating 1 and 0 with 50% duty cycle.  The default period
 is 2.0.
 <p>
 The actor uses the fireAt() method of the director to request
-firing at the beginning of each period plus each of the offsets.
-It may in addition fire at any time in response to a trigger
-input.  On such firings, it simply repeats the most recent output
-(or a new output value, if the time is suitable.) Thus, the trigger,
-in effect, asks the actor what its current output value is. If a
-trigger happens at the same time as a fireAt() event, the output
-will be a new value, and it is up to the director to determine
-whether this actor will be fired once or twice.
-Some directors, such as those in CT, may also fire the actor at
+firings at the beginning of each period plus each of the offsets.
+At each of these break points, the actor produces two outputs,
+one at t_minus phase and the other one at t_plus phase. T_minus and
+t_plus are the same as the break point, except the actor does not update
+the output until in t_plus phase. For example, with the default settings,
+at time 1.0, the actor produces 0.0 at t_minus phase and 1.0 at t_plus phase.
+Note, at the break point, we treat the output of this actor as any
+value between 0.0 and 1.0.
+<p>
+CT directors may also fire the actor at
 other times, without requiring a trigger input.  This is because
 that CT may compute the behavior of a system at any time.
 Again, the actor simply repeats the previous output.
@@ -136,8 +138,8 @@ public class ContinuousClock extends TimedSource {
 
         // Set the values parameter.
         IntToken[] defaultValues = new IntToken[2];
-        defaultValues[0] = new IntToken(1);
-        defaultValues[1] = new IntToken(0);
+        defaultValues[0] = new IntToken(0);
+        defaultValues[1] = new IntToken(1);
         ArrayToken defaultValueToken = new ArrayToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
@@ -281,12 +283,12 @@ public class ContinuousClock extends TimedSource {
             // FIXME: why using while but not if?
             //while (currentTime >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
 
-	    // Note that in CTDirector, the time resolution causes troubles.
-	    // For example, if currentTime is slightly smaller than the expected
-	    // break point, it should be treated as a break point as what the director
-	    // does in processBreakPoints method. 
-	    // FIXME: do we need a general method to deal with time resolution
-	    // for every actor/director?
+            // Note that in CTDirector, the time resolution causes troubles.
+            // For example, if currentTime is slightly smaller than the expected
+            // break point, it should be treated as a break point as what the director
+            // does in processBreakPoints method.
+            // FIXME: do we need a general method to deal with time resolution
+            // for every actor/director?
             if (currentTime + ((CTDirector)getDirector()).getTimeResolution() >=
                 _tentativeCycleStartTime + _offsets[_tentativePhase]) {
                 if (_tPlus) {
@@ -384,7 +386,7 @@ public class ContinuousClock extends TimedSource {
             }
             // This should be the last line, because in threaded domains,
             // it could execute immediately.
-            getDirector().fireAt(null, _offsets[0] + currentTime);
+            getDirector().fireAt(this, _offsets[0] + currentTime);
         }
     }
 
@@ -416,7 +418,7 @@ public class ContinuousClock extends TimedSource {
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
         if (!_done && _tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
-            getDirector().fireAt(null, _tentativeNextFiringTime);
+            getDirector().fireAt(this, _tentativeNextFiringTime);
             if (_debugging)_debug("Requesting firing at: "
                    + _tentativeNextFiringTime + ".");
         }
