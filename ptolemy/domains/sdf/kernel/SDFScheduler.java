@@ -370,11 +370,11 @@ public class SDFScheduler extends Scheduler {
         }
 
         // First solve the balance equations
-        Map firings =
+        Map entityToFiringsPerIteration =
             _solveBalanceEquations(container, allActorList, externalRates);
 
         if (_debugging && VERBOSE) {
-            _debug("Firing Ratios: " +  firings.toString());
+            _debug("Firing Ratios: " + entityToFiringsPerIteration.toString());
         }
 
         // A list that contains actors that do not fire.
@@ -386,7 +386,7 @@ public class SDFScheduler extends Scheduler {
             ComponentEntity actor = (ComponentEntity)actors.next();
             // Remove this actor from the firing sequence if it will
             // not be fired.
-            Fraction firing = (Fraction)firings.get(actor);
+            Fraction firing = (Fraction)entityToFiringsPerIteration.get(actor);
             if (_debugging && VERBOSE) {
                 _debug("Actor " + actor.getName() +
                         "fires " + firing.getNumerator() +
@@ -403,16 +403,17 @@ public class SDFScheduler extends Scheduler {
             }
         }
 
-        // Normalize the number of firings for each actor using the
+        // Normalize the number of for each actor using the
         // vectorizationFactor.
-        _normalizeFirings(vectorizationFactor, firings, externalRates);
+        _normalizeFirings(vectorizationFactor, entityToFiringsPerIteration,
+                externalRates);
 
         // Set the firing vector.
-        _setFiringVector(firings);
+        _setFiringVector(entityToFiringsPerIteration);
 
         if (_debugging) {
             _debug("Normalized Firing Counts:");
-            _debug(firings.toString());
+            _debug(entityToFiringsPerIteration.toString());
         }
 
         // Schedule all the actors using the calculated firings.
@@ -422,12 +423,12 @@ public class SDFScheduler extends Scheduler {
 
         if (_debugging && VERBOSE) {
             _debug("Firing Vector:");
-            _debug(firings.toString());
+            _debug(entityToFiringsPerIteration.toString());
         }
 
         // Set parameters on each actor that contain the number
         // of firings in an iteration.
-        _saveFiringCounts(firings);
+        _saveFiringCounts(entityToFiringsPerIteration);
         
         // Set parameters on each relation that contain the maximum
         // buffer sizes necessary during execution.
@@ -472,31 +473,32 @@ public class SDFScheduler extends Scheduler {
         // The map that we will return.
         // This will be populated with the fraction firing ratios for
         // each actor.
-        Map firings = new TreeMap(new NamedObjComparator());
+        Map entityToFiringsPerIteration = 
+            new TreeMap(new NamedObjComparator());
 
-        // The pool of Actors that have not been
-        // touched yet. (i.e. all their firings are still set to Fraction
-        // equal to -1/1)
+        // The pool of Actors that have not been touched
+        // yet. (i.e. all their firingsPerIteration are still set to
+        // Fraction equal to -1/1)
         LinkedList remainingActors = new LinkedList();
 
-        // The pool of actors that have their firings set,
+        // The pool of actors that have their firingsPerIteration set,
         // but have not had their ports explored yet.
         LinkedList pendingActors = new LinkedList();
 
         // Initialize remainingActors to contain all the actors we were given .
         remainingActors.addAll(actorList);
 
-        // Initialize firings for each actor to -1.
+        // Initialize entityToFiringsPerIteration for each actor to -1.
         for (Iterator actors = remainingActors.iterator();
              actors.hasNext();) {
             ComponentEntity entity = (ComponentEntity) actors.next();
-            firings.put(entity, _minusOne);
+            entityToFiringsPerIteration.put(entity, _minusOne);
         }
 
         if (remainingActors.size() == 0) {
             // If we've been given
             // no actors to do anything with, return an empty Map.
-            return firings;
+            return entityToFiringsPerIteration;
         }
 
         StaticSchedulingDirector director =
@@ -528,7 +530,7 @@ public class SDFScheduler extends Scheduler {
                     remainingActors.remove(actor);
                 }
 
-                firings.put(actor, new Fraction(1));
+                entityToFiringsPerIteration.put(actor, new Fraction(1));
                 pendingActors.addLast(actor);
 
                 while (!pendingActors.isEmpty()) {
@@ -537,12 +539,13 @@ public class SDFScheduler extends Scheduler {
                         ((ComponentEntity) currentActor).portList().iterator();
                     while (AllPorts.hasNext()) {
                         IOPort currentPort = (IOPort) AllPorts.next();
-                        _propagatePort(container, currentPort, firings,
+                        _propagatePort(container, currentPort, 
+                                entityToFiringsPerIteration,
                                 externalRates, remainingActors, pendingActors);
                     }
                 }
             }
-            return firings;
+            return entityToFiringsPerIteration;
         }
 
         // Pick an actor as a reference
@@ -558,7 +561,7 @@ public class SDFScheduler extends Scheduler {
             remainingActors.remove(actor);
         }
         // Set it's rate to one per iteration
-        firings.put(actor, new Fraction(1));
+        entityToFiringsPerIteration.put(actor, new Fraction(1));
         // Start the list to recurse over.
         pendingActors.addLast(actor);
 
@@ -576,14 +579,15 @@ public class SDFScheduler extends Scheduler {
                         ((ComponentEntity) currentActor).getName());
             }
 
-            // Traverse all the input and output ports, setting the firings
-            // for the actor(s)???? connected to each port relative
-            // to currentActor.
+            // Traverse all the input and output ports, setting the
+            // firingsPerIteration for the actor(s)????
+            // connected to each port relative to currentActor.
             Iterator AllPorts =
                 ((ComponentEntity) currentActor).portList().iterator();
             while (AllPorts.hasNext()) {
                 IOPort currentPort = (IOPort) AllPorts.next();
-                _propagatePort(container, currentPort, firings, externalRates,
+                _propagatePort(container, currentPort, 
+                        entityToFiringsPerIteration, externalRates,
                         remainingActors, pendingActors);
             }
         }
@@ -613,7 +617,7 @@ public class SDFScheduler extends Scheduler {
             }
             throw new NotSchedulableException(messageBuffer.toString());
         }
-        return firings;
+        return entityToFiringsPerIteration;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -857,14 +861,15 @@ public class SDFScheduler extends Scheduler {
      *
      *  @param vectorizationFactor An integer scaling factor to multiply
      *  the firing vector by.
-     *  @param firings Map of firing ratios to be normalized.
+     *  @param entityToFiringsPerIteration 
+     *  Map of firing ratios to be normalized.
      *  @param externalRates Map of token production rates that will
-     *  be scaled along with the firings map.
+     *  be scaled along with the entityToFiringsPerIteration map.
      *  @exception InternalErrorException If the calculated LCM does not
      *  normalize all of the fractions.
      */
     private void _normalizeFirings(int vectorizationFactor,
-            Map firings, Map externalRates) {
+            Map entityToFiringsPerIteration, Map externalRates) {
         int lcm = 1;
 
         if (_debugging && VERBOSE) {
@@ -873,8 +878,9 @@ public class SDFScheduler extends Scheduler {
         }
 
         // First find the lcm of all the denominators of all the
-        // computed firings.
-        for (Iterator unnormalizedFirings = firings.values().iterator();
+        // computed firingsPerIteration.
+        for (Iterator unnormalizedFirings = 
+                 entityToFiringsPerIteration.values().iterator();
              unnormalizedFirings.hasNext();) {
             Fraction fraction = (Fraction)unnormalizedFirings.next();
             int denominator = fraction.getDenominator();
@@ -889,21 +895,23 @@ public class SDFScheduler extends Scheduler {
 
         // Go back through and multiply by the lcm we just found, which
         // should normalize all the fractions to integers.
-        for (Iterator actors = firings.keySet().iterator();
+        for (Iterator actors = entityToFiringsPerIteration.keySet().iterator();
              actors.hasNext();) {
             Object actor = actors.next();
             if (_debugging && VERBOSE) {
                 _debug("Normalizing Actor " +
                         ((ComponentEntity) actor).getName());
             }
-            Fraction repetitions = (Fraction)firings.get(actor);
+            Fraction repetitions = 
+                (Fraction)entityToFiringsPerIteration.get(actor);
             repetitions = repetitions.multiply(lcmFraction);
             if (repetitions.getDenominator() != 1) {
                 throw new InternalErrorException(
                         "Failed to properly perform " +
                         "fraction normalization");
             }
-            firings.put(actor, new Integer(repetitions.getNumerator()));
+            entityToFiringsPerIteration.put(actor, 
+                    new Integer(repetitions.getNumerator()));
         }
 
         // Go through the ports and normalize the external production
@@ -965,9 +973,10 @@ public class SDFScheduler extends Scheduler {
      *
      *  @param container The actor that is being scheduled.
      *  @param currentPort The port that we are propagating from.
-     *  @param firings The current Map of fractional firing ratios for each
-     *  actor.  This map will be updated if the ratio for any actor
-     *  has not been previously computed.
+     *  @param entityToFiringsPerIteration The current Map of
+     *  fractional firing ratios for each actor.  This map will be
+     *  updated if the ratio for any actor has not been previously
+     *  computed.
      *  @param externalRates A map from external ports of container to
      *  the fractional rates of that port.  This will be updated
      *  during this method.
@@ -984,7 +993,7 @@ public class SDFScheduler extends Scheduler {
      */
     private void _propagatePort(CompositeActor container,
             IOPort currentPort,
-            Map firings,
+            Map entityToFiringsPerIteration,
             Map externalRates,
             LinkedList remainingActors,
             LinkedList pendingActors)
@@ -1109,7 +1118,7 @@ public class SDFScheduler extends Scheduler {
             // currentFiring is the firing ratio that we've already
             // calculated for currentActor
             Fraction currentFiring =
-                (Fraction) firings.get(currentActor);
+                (Fraction) entityToFiringsPerIteration.get(currentActor);
 
             // Compute the firing ratio that we think connected actor
             // should have, based on its connection to currentActor
@@ -1132,7 +1141,7 @@ public class SDFScheduler extends Scheduler {
                 // it will not appear in the final static schedule.
                 currentFiring = Fraction.ZERO;
                 // Update the entry in the firing table.
-                firings.put(currentActor, currentFiring);
+                entityToFiringsPerIteration.put(currentActor, currentFiring);
 
                 // Set the firing count of the connected actor to
                 // be 1.
@@ -1154,7 +1163,8 @@ public class SDFScheduler extends Scheduler {
             // the firing that we computed previously, or null
             // if the port is an external port, or _minusOne if
             // we have not computed the firing ratio for this actor yet.
-            Fraction presentFiring = (Fraction)firings.get(connectedActor);
+            Fraction presentFiring = 
+                (Fraction)entityToFiringsPerIteration.get(connectedActor);
             if (_debugging && VERBOSE) {
                 _debug("presentFiring of connectedActor "
                         + connectedActor + " = " + presentFiring);
@@ -1163,7 +1173,7 @@ public class SDFScheduler extends Scheduler {
                 // We've gotten out to an external port.
                 // Temporarily create the entry in the firing table.
                 // This is possibly rather fragile.
-                firings.put(connectedActor, desiredFiring);
+                entityToFiringsPerIteration.put(connectedActor, desiredFiring);
 
                 // Compute the external rate for this port.
                 Fraction rate = currentFiring.multiply(
@@ -1186,13 +1196,14 @@ public class SDFScheduler extends Scheduler {
                             "detected on external port " +
                             connectedPort.getFullName());
                 }
-                _propagatePort(container, connectedPort, firings,
+                _propagatePort(container, connectedPort, 
+                        entityToFiringsPerIteration,
                         externalRates, remainingActors, pendingActors);
-                firings.remove(connectedActor);
+                entityToFiringsPerIteration.remove(connectedActor);
             } else if (presentFiring.equals(_minusOne)) {
                 // So we are propagating here for the first time.
                 // Create the entry in the firing table.
-                firings.put(connectedActor, desiredFiring);
+                entityToFiringsPerIteration.put(connectedActor, desiredFiring);
                 // Remove them from remainingActors.
                 remainingActors.remove(connectedActor);
                 // and add them to the pendingActors.
@@ -1200,7 +1211,7 @@ public class SDFScheduler extends Scheduler {
 
             } else if (!presentFiring.equals(desiredFiring)) {
                 // So we've already propagated here, but the
-                // firings don't match.
+                // firingsPerIteration don't match.
                 throw new NotSchedulableException("No solution " +
                         "exists for the balance equations.\n" +
                         "Graph is not " +
@@ -1210,7 +1221,7 @@ public class SDFScheduler extends Scheduler {
             }
             if (_debugging && VERBOSE) {
                 _debug("New Firing: ");
-                _debug(firings.toString());
+                _debug(entityToFiringsPerIteration.toString());
             }
         }
     }
@@ -1695,24 +1706,24 @@ public class SDFScheduler extends Scheduler {
      *  @param minimumBufferSizes A map from actor
      *  to firing count.
      */
-    private void _saveFiringCounts(Map firings) {
+    private void _saveFiringCounts(Map entityToFiringsPerIteration) {
         Director director = (Director) getContainer();
         final CompositeActor container =
             (CompositeActor)director.getContainer();
         StringBuffer buffer = new StringBuffer();
         buffer.append("<group>\n");
 
-        Iterator entities = firings.keySet().iterator();
+        Iterator entities = entityToFiringsPerIteration.keySet().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
             int firingCount =
-                ((Integer)firings.get(entity)).intValue();
+                ((Integer)entityToFiringsPerIteration.get(entity)).intValue();
             buffer.append("<entity name=\"");
             buffer.append(entity.getName(container));
             buffer.append("\">\n");
             // Use NotEditableParameter rather than Parameter so that
             // the change is not persistent.
-            buffer.append("<property name=\"firingCount\" "
+            buffer.append("<property name=\"firingsPerIteration\" "
                     + "class=\"ptolemy.data.expr.NotEditableParameter\" "
                     +  "value=\"" + firingCount + "\"/>\n");
             buffer.append("</entity>\n");
