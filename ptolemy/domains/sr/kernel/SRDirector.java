@@ -473,19 +473,26 @@ public class SRDirector extends StaticSchedulingDirector {
     private void _fireActor(Actor actor) throws IllegalActionException {
 
         if (_isReadyToFire(actor)) {
+            if (!_isFiringAllowed(actor)) {
+                _debug("    SRDirector is prefiring", _getNameOf(actor));
+                if (actor.prefire()) {
+                    _doAllowFiringOf(actor);
+                }
+            }
+
             if (_isFiringAllowed(actor)) {
                 if (!_isFinishedFiring(actor)) {
                     _debug("    SRDirector is firing", _getNameOf(actor));
-
+                    
                     // Whether all inputs are known must be checked before
                     // firing to handle cases with self-loops.
                     boolean allInputsKnownBeforeFiring =
                         _areAllInputsKnown(actor);
                     actor.fire();
-
+                    
                     if (_actorsFired == null) _actorsFired = new HashSet();
                     _actorsFired.add(actor);
-
+                    
                     // If all of the inputs of this actor are known, firing
                     // the actor again in this iteration is not necessary.
                     // The actor will not produce any more outputs because
@@ -494,12 +501,6 @@ public class SRDirector extends StaticSchedulingDirector {
                     // are actually absent.
                     if (allInputsKnownBeforeFiring) 
                         _sendAbsentToAllUnknownOutputsOf(actor);
-                    }
-            } else {
-                _debug("    SRDirector is prefiring", _getNameOf(actor));
-                if (actor.prefire()) {
-                    _doAllowFiringOf(actor);
-                    _fireActor(actor);
                 }
             }
         }
