@@ -29,7 +29,7 @@
 
 # Variables
 MAJOR_VERSION = 	1.0
-MINOR_VERSION =		beta
+MINOR_VERSION =		beta2
 
 VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
@@ -117,6 +117,8 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar.$(SUFFIX)
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 # Rebuild the distributions
+# rm unixPtiny.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm  rebuildptiny
+rebuildptiny: clean all installshield_app installshield_ptiny_only build_unixPtiny
 rebuild: clean all installshield_app build_unixPtII
 
 clean:
@@ -125,7 +127,11 @@ clean:
 	@echo "#"
 	@echo `date`
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
-	rm -rf $(PTIIDIST) src installshield/*
+	@echo "Move the directories to a different directory and remove"
+	@echo "in the background"
+	mkdir tobenuked
+	-mv $(PTIIDIST) src installshield/* tobenuked
+	rm -rf tobenuked &
 
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
@@ -947,6 +953,7 @@ $(INSTALLSHIELD_PTINY):
 	 # Big hack here.  We need to include intro.htm in app, so
 	 # we move it back
 	 -mkdir	$(INSTALLSHIELD_APP)/ptolemy/configs/
+	 # Move intro.htm into app
 	 -mv $@/ptolemy/configs/intro.htm \
 	 	$(INSTALLSHIELD_APP)/ptolemy/configs/
 	 # Move vergilConfiguration.xml into app
@@ -1009,18 +1016,18 @@ installshield_ptiny_only: $(INSTALLSHIELD_PTINY_ONLY)
 $(INSTALLSHIELD_PTINY_ONLY):
 	@echo "#"
 	@echo "# Building $@"
-	mkdir -p $@ $@/doc/codeDoc $@/ptolemy/configs
+	mkdir -p $(INSTALLSHIELD_PTINY) $(INSTALLSHIELD_PTINY)/doc/codeDoc $(INSTALLSHIELD_PTINY)/ptolemy/configs
 	 #-cp -r $(PTIIHOME)/doc/codeDoc/* \
 	 #	 $@/doc/codeDoc
 	 -cp -r $(PTIIHOME)/doc/codeDocPtiny/* \
-	 	 $@/doc/codeDoc
+	 	 $(INSTALLSHIELD_PTINY)/doc/codeDoc
 	 # We then rename introPtiny.htm so as to get doc/demoPtiny.htm
 	 # instead of doc/demo.htm
-	 -mv $@/ptolemy/configs/introPtiny.htm $@/ptolemy/configs/intro.htm 
+	 #-mv $@/ptolemy/configs/introPtiny.htm $@/ptolemy/configs/intro.htm 
 	 # Rename vergilConfigurationPtiny.xml so that we get the right 
 	 # directors
-	 -mv $@/ptolemy/configs/vergilConfigurationPtiny.xml \
-		$@/ptolemy/configs/vergilConfiguration.xml
+	 #-mv $@/ptolemy/configs/vergilConfigurationPtiny.xml \
+	 #	$@/ptolemy/configs/vergilConfiguration.xml
 
 #configsPtiny.jar: $(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar
 #$(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar: \
