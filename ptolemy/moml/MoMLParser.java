@@ -170,7 +170,7 @@ master exports MoML.
 
 @see MoMLChangeRequest
 @see MoMLAttribute
-@author Edward A. Lee, Steve Neuendorffer, John Reekie
+@author Edward A. Lee, Steve Neuendorffer, John Reekie, Contributor: Christopher Hylands
 @version $Id$
 @since Ptolemy II 0.4
 */
@@ -1736,7 +1736,7 @@ public class MoMLParser extends HandlerBase {
                     + ex.getTargetException(),
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
-                    _parser.getColumnNumber());
+                    _parser.getColumnNumber(), ex);
         } catch (Exception ex) {
             if (_handler != null) {
                 int reply = _handler.handleError(
