@@ -253,13 +253,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         }
     }
 
-    /** Remove the dependency between the dummy port returned by
-     *  getChannelPort() and itself.
-     */
-    public void removeDependencies() {
-        removeDependency(_channelPort, _channelPort);
-    }
-
     /** Register a property transformer for transmissions from the specified
      *  port.  If null is given for the port, then the property transformer
      *  will be used for all transmissions through this channel.
@@ -288,6 +281,13 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             }
             _propertyTransformers.add(transformer);
         }
+    }
+
+    /** Remove the dependency between the dummy port returned by
+     *  getChannelPort() and itself.
+     */
+    public void removeDependencies() {
+        removeDependency(_channelPort, _channelPort);
     }
 
     /** Return a list of input ports that can potentially send data
