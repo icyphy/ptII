@@ -43,15 +43,15 @@ public class GRDebug {
         _debugOn = debugOn;
     }
 
+    public static final void print(Object object) {
+        if (_debugOn) {
+            System.out.print(object.toString());
+        }
+    }
 
     public static final void println(Object object) {
         if (_debugOn) {
             System.out.println(object.toString());
-        }
-    }
-    public static final void print(Object object) {
-        if (_debugOn) {
-            System.out.print(object.toString());
         }
     }
 

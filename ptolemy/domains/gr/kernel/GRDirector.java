@@ -304,33 +304,6 @@ public class GRDirector extends StaticSchedulingDirector {
         return new GRReceiver();
     }
 
-    /** Always return true. A GR composite actor will always be iterated.
-     *  Note that this does not call prefire() on the contained actors.
-     *
-     *  @return True.
-     *  @exception IllegalActionException Not thrown in this base class
-     */
-    public boolean prefire() throws IllegalActionException {
-        // Note: Actors return false on prefire if they don't want to be
-        // fired and postfired in the current iteration.
-        return true;
-        // _prefire_
-    }
-
-
-    /** Preinitialize the actors associated with this director and
-     *  initialize the number of iterations to zero.  The order in which
-     *  the actors are preinitialized is non-deterministic.
-     *
-     *  @exception IllegalActionException If the preinitialize() method of
-     *  one of the associated actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        _iteration = 0;
-    }
-
-
     /** Return false if the system has finished executing. This happens when
      *  the iteration limit is reached. The iteration limit is specified by
      *  the "iterations" parameter. If the "iterations" parameter is set to
@@ -355,6 +328,32 @@ public class GRDirector extends StaticSchedulingDirector {
             return false;
         }
         return true;
+    }
+
+    /** Always return true. A GR composite actor will always be iterated.
+     *  Note that this does not call prefire() on the contained actors.
+     *
+     *  @return True.
+     *  @exception IllegalActionException Not thrown in this base class
+     */
+    public boolean prefire() throws IllegalActionException {
+        // Note: Actors return false on prefire if they don't want to be
+        // fired and postfired in the current iteration.
+        return true;
+        // _prefire_
+    }
+
+
+    /** Preinitialize the actors associated with this director and
+     *  initialize the number of iterations to zero.  The order in which
+     *  the actors are preinitialized is non-deterministic.
+     *
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        _iteration = 0;
     }
 
     /** Reset this director to an uninitialized state to prepare
@@ -527,25 +526,6 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
 
-    /** For debugging purposes.  Display the list of contained receivers
-     *  and other pertinent information about them.
-     */
-    private void _debugViewReceiverTable() {
-        //  -displayReceiverTable-
-        debug.print("\nARC RECEIVER table with "
-                + _receiverTable.size());
-        debug.println(" unique receivers");
-
-        ListIterator receiverIterator = _receiverTable.listIterator();
-
-        while (receiverIterator.hasNext()) {
-            GRReceiver currentReceiver = (GRReceiver) receiverIterator.next();
-            debug.println(" receiver "
-                    + currentReceiver);
-        }
-        debug.println("\n");
-    }
-
     /** For debugging purposes.  Display the list of attributes
      *  inside a given named object
      *  @param object The named object that has a list of attributes
@@ -602,6 +582,29 @@ public class GRDirector extends StaticSchedulingDirector {
         debug.println("\n");
     }
 
+    /** For debugging purposes.  This function only makes sense
+     *  if the port argument is an opaque / cross-hierarchy
+     *  output port.
+     *  Note: The only output ports with receivers are
+     *        opaque / cross-hierarchy output ports.
+     *  IMPORTANT: There are no receivers inside transparent
+     *             TypedCompositeActors ports
+     */
+    private void _debugViewPortInsideReceivers(IOPort port)
+            throws IllegalActionException {
+        Receiver[][] portReceivers = port.getInsideReceivers();
+
+            for (int i = 0; i < port.getWidth(); i++) {
+                for (int j = 0; j < portReceivers[i].length; j++) {
+                    debug.println("  ->" + portReceivers[i][j]);
+                    debug.println("  = >"
+                            + portReceivers[i][j].getContainer());
+                    // FIXME: remove comments when debugging
+                    // ((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
+                }
+            }
+    }
+
     /** For debugging purposes. This is mainly used for figuring out
      *  which outside receivers are connected to an output port of an
      *  TypedCompositeActor. The TypedCompositeActor can be transparent
@@ -619,26 +622,23 @@ public class GRDirector extends StaticSchedulingDirector {
             }
     }
 
-    /** For debugging purposes.  This function only makes sense
-     *  if the port argument is an opaque / cross-hierarchy
-     *  output port.
-     *  Note: The only output ports with receivers are
-     *        opaque / cross-hierarchy output ports.
-     *  IMPORTANT: There are no receivers inside transparent
-     *             TypedCompositeActors ports
+    /** For debugging purposes.  Display the list of contained receivers
+     *  and other pertinent information about them.
      */
-    private void _debugViewPortInsideReceivers(IOPort port)
-            throws IllegalActionException {
-        Receiver[][] portReceivers = port.getInsideReceivers();
+    private void _debugViewReceiverTable() {
+        //  -displayReceiverTable-
+        debug.print("\nARC RECEIVER table with "
+                + _receiverTable.size());
+        debug.println(" unique receivers");
 
-            for (int i = 0; i < port.getWidth(); i++) {
-                for (int j = 0; j < portReceivers[i].length; j++) {
-                    debug.println("  ->" + portReceivers[i][j]);
-                    debug.println("  = >" + portReceivers[i][j].getContainer());
-                    // FIXME: remove comments when debugging
-                    // ((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
-                }
-            }
+        ListIterator receiverIterator = _receiverTable.listIterator();
+
+        while (receiverIterator.hasNext()) {
+            GRReceiver currentReceiver = (GRReceiver) receiverIterator.next();
+            debug.println(" receiver "
+                    + currentReceiver);
+        }
+        debug.println("\n");
     }
 
     /** Convenience method for getting the director of the container that
