@@ -52,6 +52,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	ComponentEntity.tcl \
 	ComponentPort.tcl \
+	ComponentRelation.tcl \
 	CompositeEntity.tcl \
 	Entity.tcl \
 	Port.tcl \
