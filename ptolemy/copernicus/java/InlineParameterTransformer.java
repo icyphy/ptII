@@ -1,4 +1,4 @@
-/* 
+/* Replace method calls on parameter objects.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -147,28 +147,12 @@ public class InlineParameterTransformer extends SceneTransformer {
                 }
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-                // Add a this local...
-                Local thisLocal;
-                try {
-                    thisLocal = body.getThisLocal();
-                } catch (Exception ex) {
-                    //FIXME: what if no thisLocal?
-                    throw new RuntimeException("method " + method + " does not have a thisLocal!");
-                }
-
                 if(debug) System.out.println("method = " + method);
 
                 boolean moreToDo = true;
                 while(moreToDo) {
-                    CompleteUnitGraph unitGraph = 
-                        new CompleteUnitGraph(body);
-                    // this will help us figure out where locals are defined.
-                    SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-                    SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-                    
                     moreToDo = _inlineMethodCalls(theClass, method, body,
-                        unitGraph, localDefs, localUses, attributeToValueFieldMap,
-                            debug);
+                            attributeToValueFieldMap, debug);
                     LocalNameStandardizer.v().transform(body, phaseName + ".lns");
                 }
             }
@@ -176,12 +160,15 @@ public class InlineParameterTransformer extends SceneTransformer {
     }
     
     private static boolean _inlineMethodCalls(SootClass theClass, SootMethod method, 
-            JimpleBody body, UnitGraph unitGraph,
-            LocalDefs localDefs, LocalUses localUses, 
-            Map attributeToValueFieldMap, boolean debug) {
+            JimpleBody body, Map attributeToValueFieldMap, boolean debug) {
         boolean doneSomething = false;
         if(debug) System.out.println("Inlining method calls in method " + method);
 
+        CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+        // this will help us figure out where locals are defined.
+        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+        SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+        
         for(Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();

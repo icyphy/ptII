@@ -275,6 +275,13 @@ public class ActorTransformer extends SceneTransformer {
                                 ioportLocal,
                                 PtolemyUtilities.portSetTypeMethod, 
                                 typeLocal)));
+                
+                // Lastly, call connectionsChanged()
+                body.getUnits().add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newVirtualInvokeExpr(
+                                thisLocal,
+                                PtolemyUtilities.connectionsChangedMethod,
+                                portLocal)));
             }
             // return void
             units.add(Jimple.v().newReturnVoidStmt());

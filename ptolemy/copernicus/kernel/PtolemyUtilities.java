@@ -720,6 +720,9 @@ public class PtolemyUtilities {
     // Soot class representing the ptolemy.kernel.CompositeEntity class.
     public static SootClass compositeEntityClass;
 
+    // Soot Method representing Entity.connectionsChanged().
+    public static SootMethod connectionsChangedMethod;
+
     public static SootField doubleTypeField;
     public static SootField doubleMatrixTypeField;
 
@@ -895,6 +898,8 @@ public class PtolemyUtilities {
         
         entityClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.Entity");
+        connectionsChangedMethod = entityClass.getMethod(
+                "void connectionsChanged(ptolemy.kernel.Port)");
         getPortMethod = 
             entityClass.getMethod("ptolemy.kernel.Port getPort(java.lang.String)");
 

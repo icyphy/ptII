@@ -145,7 +145,7 @@ compileDemo: $(JCLASS)
 		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.idt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.iat debug,targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.iat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ttn disabled,targetPackage:$(TARGETPACKAGE) \
@@ -154,7 +154,7 @@ compileDemo: $(JCLASS)
 		-p wjtp.snapshot3 outDir:$(ROOT)/$(TARGETPATH)/jimple3 \
 		-p wjtp.snapshot4 outDir:$(ROOT)/$(TARGETPATH)/jimple4 \
 		-p wjtp.snapshot5 outDir:$(ROOT)/$(TARGETPATH)/jimple5 \
-		-p wjtp.iee debug \
+		-p wjtp.iee enabled \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)

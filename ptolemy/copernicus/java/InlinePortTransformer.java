@@ -111,12 +111,14 @@ public class InlinePortTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions();
+        return super.getDeclaredOptions() + " debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlinePortTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
+
+        boolean debug = Options.getBoolean(options, "debug");
 
         // First create the circular buffers for communication.
         SootClass modelClass = ModelTransformer.getModelClass();
@@ -229,479 +231,196 @@ public class InlinePortTransformer extends SceneTransformer {
                 System.out.println("inline port body of " + method + " = " + body);
                 // System.out.println("method = " + method);
                 
-                // Locals for buffer reading and writing.
-                Local indexLocal =
-                    Jimple.v().newLocal("index",
-                            IntType.v());
-                body.getLocals().add(indexLocal);
-                Local indexArrayLocal =
-                Jimple.v().newLocal("indexArray",
-                        ArrayType.v(IntType.v(),1));
-                body.getLocals().add(indexArrayLocal);             
-                Local bufferLocal = 
-                    Jimple.v().newLocal("buffer", 
-                            ArrayType.v(PtolemyUtilities.tokenType, 1));
-                body.getLocals().add(bufferLocal);
-                Local returnArrayLocal = 
-                    Jimple.v().newLocal("returnArray", 
-                            ArrayType.v(PtolemyUtilities.tokenType, 1));
-                body.getLocals().add(returnArrayLocal);
-                Local returnLocal = 
-                    Jimple.v().newLocal("return", PtolemyUtilities.tokenType);
-                body.getLocals().add(returnLocal);
+                boolean moreToDo = true;
+                while(moreToDo) {
+                    moreToDo = _inlineMethodCalls(entityClass, method, body,
+                            portToTypeNameToBufferField, portToIndexArrayField, debug);
+                    LocalNameStandardizer.v().transform(body, phaseName + ".lns", "");
+                }
+            }
+        }
+    }
+
+    private boolean _inlineMethodCalls(
+            SootClass theClass, SootMethod method, 
+            JimpleBody body, Map portToTypeNameToBufferField,
+            Map portToIndexArrayField, boolean debug) {
+        boolean doneSomething = false;
+
+        CompleteUnitGraph unitGraph = 
+            new CompleteUnitGraph(body);
+        // This will help us figure out where locals are defined.
+        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+        SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+        
+        for(Iterator units = body.getUnits().snapshotIterator();
+            units.hasNext();) {
+            Stmt stmt = (Stmt)units.next();
+            if(stmt.containsInvokeExpr()) {
+                ValueBox box = stmt.getInvokeExprBox();
+                Value value = stmt.getInvokeExpr();
+                if(value instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                     
-                                                                                                       
-                CompleteUnitGraph unitGraph = 
-                    new CompleteUnitGraph(body);
-                // this will help us figure out where locals are defined.
-                SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-                SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-
-                for(Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
-                    Unit unit = (Unit)units.next();
-                    Iterator boxes = unit.getUseBoxes().iterator();
-                    while(boxes.hasNext()) {
-                        ValueBox box = (ValueBox)boxes.next();
-                        Value value = box.getValue();
-                        if(value instanceof InstanceInvokeExpr) {
-                            InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-
-                            if(r.getBase().getType() instanceof RefType) {
-                                RefType type = (RefType)r.getBase().getType();
-                              
-                                // Statically evaluate constant arguments.
-                                Value argValues[] = new Value[r.getArgCount()];
-                                int constantArgCount = 0;
-                                for(Iterator args = r.getArgs().iterator();
-                                    args.hasNext();) {
-                                    Value arg = (Value)args.next();
-                                    //System.out.println("arg = " + arg);
-                                    if(Evaluator.isValueConstantValued(arg)) {
-                                        argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
-                                        // System.out.println("argument = " + argValues[argCount-1]);
+                    if(r.getBase().getType() instanceof RefType) {
+                        RefType type = (RefType)r.getBase().getType();
+                        
+                        // Inline calls to connections changed.
+                        if(r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
+                            // If we are calling connections changed on one of the classes
+                            // we are generating code for, then inline it.
+                            if(type.getSootClass().isApplicationClass()) {
+                                SootMethod inlinee = null;
+                                if(r instanceof VirtualInvokeExpr) {
+                                    // Now inline the resulting call.
+                                    List methodList = 
+                                        Scene.v().getActiveHierarchy().resolveAbstractDispatch(
+                                                type.getSootClass(), PtolemyUtilities.connectionsChangedMethod);
+                                    if(methodList.size() == 1) {
+                                        // Inline the method.
+                                        inlinee = (SootMethod)methodList.get(0);
                                     } else {
-                                        break;
+                                        String string = "Can't inline " + stmt + 
+                                            " in method " + method + "\n";
+                                        for(int i = 0; i < methodList.size(); i++) {
+                                            string += "target = " + methodList.get(i) + "\n";
+                                        }
+                                        System.out.println(string);
                                     }
+                                } else if(r instanceof SpecialInvokeExpr) {
+                                    inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
+                                            (SpecialInvokeExpr)r, method);
                                 }
-                                boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
+                                if(!inlinee.getDeclaringClass().isApplicationClass()) {
+                                    inlinee.getDeclaringClass().setLibraryClass();
+                                }
+                                inlinee.retrieveActiveBody();
+                                if(debug) System.out.println("Inlining method call: " + r);
+                                SiteInliner.inlineSite(inlinee, stmt, method);
                                 
-                                if(SootUtilities.derivesFrom(type.getSootClass(), 
-                                        PtolemyUtilities.portClass)) {
-                                    // if we are invoking a method on a port class, then
-                                    // attempt to get the constant value of the port.
-                                    TypedIOPort port = (TypedIOPort)
-                                        getPortValue(method, (Local)r.getBase(), 
-                                                unit, localDefs, localUses);
-                                    //     System.out.println("reference to port = " + port);
+                                doneSomething = true;
+                            } else {
+                                // FIXME: this is a bit of a hack, but
+                                // for right now it seems to work.
+                                // How many things that aren't
+                                // the actors we are generating
+                                // code for do we really care about here?
+                                // Can we do this without having to create
+                                // a class for the port too????
+                                body.getUnits().remove(stmt);
+                                doneSomething = true;
+                            }
+                        }
+                        
+                        // Statically evaluate constant arguments.
+                        Value argValues[] = new Value[r.getArgCount()];
+                        int constantArgCount = 0;
+                        for(Iterator args = r.getArgs().iterator();
+                            args.hasNext();) {
+                            Value arg = (Value)args.next();
+                            //System.out.println("arg = " + arg);
+                            if(Evaluator.isValueConstantValued(arg)) {
+                                argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
+                                // System.out.println("argument = " + argValues[argCount-1]);
+                            } else {
+                                break;
+                            }
+                        }
+                        boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
+                                
+                        if(SootUtilities.derivesFrom(type.getSootClass(), 
+                                PtolemyUtilities.portClass)) {
+                            // If we are invoking a method on a port class, then
+                            // attempt to get the constant value of the port.
+                            TypedIOPort port = (TypedIOPort)
+                                getPortValue(method, (Local)r.getBase(), 
+                                        stmt, localDefs, localUses);
+                            //     System.out.println("reference to port = " + port);
                                          
-                                    if(port == null) {
-                                        continue;
-                                    }
+                            if(port == null) {
+                                continue;
+                            }
 
-                                    if(port instanceof Typeable) {
-                                        PtolemyUtilities.inlineTypeableMethods(body, 
-                                                unit, box, r, (Typeable)port);
+                            if(port instanceof Typeable) {
+                                PtolemyUtilities.inlineTypeableMethods(body, 
+                                        stmt, box, r, (Typeable)port);
                                        
-                                    }
+                            }
                                     
-                                    String methodName = r.getMethod().getName();
-                                    if(port.getWidth() == 0 &&
-                                           (methodName.equals("hasToken") ||
-                                                   methodName.equals("hasRoom") ||
-                                                   methodName.equals("get") ||
-                                                   methodName.equals("put") ||
-                                                   methodName.equals("broadcast"))) {
-                                        // If we try to get on a port with zero width, then 
-                                        // throw a runtime exception.
-                                        Local local = SootUtilities.createRuntimeException(body, unit, 
-                                                methodName + "() called on a port with zero width: " + 
-                                                port.getFullName() + "!");
-                                        body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
-                                                unit);
-                                        if(unit instanceof DefinitionStmt) {
-                                            // be sure we replace with the right return type.
-                                            if(methodName.equals("hasToken") ||
-                                                   methodName.equals("hasRoom")) {
-                                                box.setValue(IntConstant.v(0));
-                                            } else {
-                                                box.setValue(NullConstant.v());
-                                            }
-                                        } else {
-                                            body.getUnits().remove(unit);
-                                        }
-                                        continue;
+                            String methodName = r.getMethod().getName();
+                            if(port.getWidth() == 0 &&
+                                    (methodName.equals("hasToken") ||
+                                            methodName.equals("hasRoom") ||
+                                            methodName.equals("get") ||
+                                            methodName.equals("put") ||
+                                            methodName.equals("broadcast"))) {
+                                // If we try to get on a port with zero width, then 
+                                // throw a runtime exception.
+                                Local local = SootUtilities.createRuntimeException(body, stmt, 
+                                        methodName + "() called on a port with zero width: " + 
+                                        port.getFullName() + "!");
+                                body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
+                                        stmt);
+                                if(stmt instanceof DefinitionStmt) {
+                                    // be sure we replace with the right return type.
+                                    if(methodName.equals("hasToken") ||
+                                            methodName.equals("hasRoom")) {
+                                        box.setValue(IntConstant.v(0));
+                                    } else {
+                                        box.setValue(NullConstant.v());
                                     }
-                                                                            
-                                    if(r.getMethod().getName().equals("hasToken")) {
-                                        // return true.
-                                        box.setValue(IntConstant.v(1));
-                                    } else if(r.getMethod().getName().equals("hasRoom")) {
-                                        // return true.
-                                        box.setValue(IntConstant.v(1));
-                                    } else if(r.getMethod().getName().equals("getWidth")) {
-                                        // Reflect and invoke the same method on our port
-                                        Object object = SootUtilities.reflectAndInvokeMethod(
-                                                port, r.getMethod(), argValues);
-                                        // System.out.println("method result  = " + constant);
-                                        Constant constant = 
-                                            SootUtilities.convertArgumentToConstantValue(object);
-                                       
-                                        // replace the method invocation.
-                                        box.setValue(constant);
-                                    } else if(r.getMethod().getName().equals("get")) {
-                                        // Could be get that takes a channel and returns a token,
-                                        // or get that takes a channel and a count and returns
-                                        // an array of tokens.          
-                                        // In either case, replace the get with circular array ref.
-                                        Value channelValue = r.getArg(0);
-                                       
-                                        Value bufferSizeValue = _getBufferAndSize(body, 
-                                                unit, port, port.getType(), channelValue, bufferLocal,
-                                                portToTypeNameToBufferField);
-                                    
-                                        _getCorrectIndex(body, unit, port, indexLocal, indexArrayLocal, 
-                                                channelValue, bufferSizeValue, portToIndexArrayField);
-                                       
-                                        // If we are calling with just a channel, then read the value.
-                                        if(r.getArgCount() == 1) {
-                                            body.getUnits().insertAfter(_createIndexUpdateInstructions( 
-                                                    indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
-                                                    unit);
-                                           
-                                            // We may be calling get without setting the return value to anything.
-                                            if(unit instanceof DefinitionStmt) {
-                                                // Replace the get() with an array read.
-                                                box.setValue(Jimple.v().newArrayRef(bufferLocal,
-                                                        indexLocal));
-                                            } else {
-                                                body.getUnits().remove(unit);
-                                            }
-                                        } else {
-                                            // We must return an array of tokens.
-                                            // Create an array of the appropriate length.
-                                            body.getUnits().insertBefore(
-                                                    Jimple.v().newAssignStmt(
-                                                            returnArrayLocal, 
-                                                            Jimple.v().newNewArrayExpr(
-                                                                    PtolemyUtilities.tokenType, r.getArg(1))),
-                                                    unit);
-                                            // If the count is specified statically
-                                            // FIXME: constant loop unroller should take care of this.
-                                            if(constantArgCount > 1) {
-                                                int argCount = ((IntConstant)argValues[0]).value;
-                                                for(int k = 0; k < argCount; k++) {
-                                                    // Get the value.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    returnLocal,
-                                                                    Jimple.v().newArrayRef(bufferLocal,
-                                                                            indexLocal)),
-                                                            unit);
-                                                    // Store in the return array.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    Jimple.v().newArrayRef(returnArrayLocal,
-                                                                            IntConstant.v(k)),
-                                                                    returnLocal),
-                                                            unit);
-                                                    // increment the position in the buffer.
-                                                    body.getUnits().insertBefore(
-                                                            _createIndexUpdateInstructions( 
-                                                                    indexLocal, indexArrayLocal, 
-                                                                    channelValue, bufferSizeValue),
-                                                            unit);
-                                                }
-                                                // Replace the get() call.
-                                                box.setValue(returnArrayLocal);
-                                            } else {
-                                                // we don't know the size beforehand,
-                                                // so build a loop into the code.
-                                                // The loop counter
-                                                Local counterLocal = 
-                                                    Jimple.v().newLocal("counter", 
-                                                            IntType.v());
-                                                body.getLocals().add(counterLocal);
-                                                
-                                                // The list of initializer instructions.
-                                                List initializerList = new LinkedList();
-                                                initializerList.add(
-                                                        Jimple.v().newAssignStmt(
-                                                                counterLocal,
-                                                                IntConstant.v(0)));
-
-                                                // The list of body instructions.
-                                                List bodyList = new LinkedList();
-                                                // Get the value.
-                                                bodyList.add(
-                                                        Jimple.v().newAssignStmt(
-                                                                returnLocal,
-                                                                Jimple.v().newArrayRef(
-                                                                        bufferLocal,
-                                                                        indexLocal)));
-                                                // Store in the return array.
-                                                bodyList.add(
-                                                        Jimple.v().newAssignStmt(
-                                                                Jimple.v().newArrayRef(
-                                                                        returnArrayLocal,
-                                                                        counterLocal),
-                                                                returnLocal));
-                                                if(!bufferSizeValue.equals(IntConstant.v(1))) {
-                                                    // increment the position.
-                                                    bodyList.add(
-                                                            Jimple.v().newAssignStmt(
-                                                                    indexLocal,
-                                                                    Jimple.v().newAddExpr(
-                                                                            indexLocal,
-                                                                            IntConstant.v(1))));
-                                                    // wrap around.
-                                                    bodyList.add(
-                                                            Jimple.v().newAssignStmt(
-                                                                    indexLocal,
-                                                                    Jimple.v().newRemExpr(
-                                                                            indexLocal,
-                                                                            bufferSizeValue)));
-                                                }
-                                                // Increment the counter.
-                                                bodyList.add(
-                                                        Jimple.v().newAssignStmt(
-                                                                counterLocal,
-                                                                Jimple.v().newAddExpr(
-                                                                        counterLocal,
-                                                                        IntConstant.v(1))));
-                                                
-                                                Expr conditionalExpr = 
-                                                    Jimple.v().newLtExpr(
-                                                            counterLocal,
-                                                            r.getArg(1));
-                                                List loop = SootUtilities.createForLoopBefore(body,
-                                                        unit,
-                                                        initializerList,
-                                                        bodyList, 
-                                                        conditionalExpr);
-                                                body.getUnits().insertBefore(loop, unit);
-
-                                                if(!bufferSizeValue.equals(IntConstant.v(1))) {
-                                                    // store back.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                            channelValue),
-                                                                    indexLocal),
-                                                            unit);
-                                                }
-                                                // Replace the get() call.
-                                                box.setValue(returnArrayLocal);
-                                            }
-                                        } 
-                                    } else if(r.getMethod().getName().equals("send")) {
-                                        // Could be send that takes a channel and returns a token,
-                                        // or send that takes a channel and an array of tokens.          
-                                        // In either case, replace the send with circular array ref.
-                                        
-                                        _inlineSend(body, unit, r, port, 
-                                                portToIndexArrayField, portToTypeNameToBufferField);
-
-                                    } else if(r.getMethod().getName().equals("broadcast")) {
-                                        // Could be broadcast that takes a token,
-                                        // or broadcast that takes an array of tokens.          
-                                        // In either case, replace the broadcast with circular array ref.
-                                        
-                                        SootField indexArrayField = (SootField)portToIndexArrayField.get(port);
-                                  
-                                        // Load the array of indexes.
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(indexArrayLocal,
-                                                        Jimple.v().newInstanceFieldRef(
-                                                                body.getThisLocal(),
-                                                                indexArrayField)), 
-                                                unit);
-                                        
-                                        
-                                        Value bufferSizeValue = null;
-                                        // Refer directly to the buffer in the 
-                                        // model
-                                        int channel = 0;
-                                        for(Iterator relations = port.linkedRelationList().iterator();
-                                            relations.hasNext();) {
-                                            TypedIORelation relation = (TypedIORelation)relations.next();
-                                            int bufferSize;
-                                            try {
-                                                Variable bufferSizeVariable = 
-                                                    (Variable)relation.getAttribute("bufferSize");
-                                                bufferSize = 
-                                                    ((IntToken)bufferSizeVariable.getToken()).intValue();
-                                            } catch (Exception ex) {
-                                                System.out.println("No BufferSize parameter for " + 
-                                                        relation);
-                                                continue;
-                                            } 
-                                            // remember the size of the buffer.
-                                            bufferSizeValue = IntConstant.v(bufferSize); 
-                                                
-                                            for(int i = 0; 
-                                                i < relation.getWidth();
-                                                i++, channel++) {
-                                                Value channelValue = IntConstant.v(channel);
-                                                
-                                                // Load the correct index into indexLocal
-                                                body.getUnits().insertBefore(
-                                                        Jimple.v().newAssignStmt(indexLocal,
-                                                                Jimple.v().newArrayRef(
-                                                                        indexArrayLocal, 
-                                                                        channelValue)),
-                                                        unit); 
-                                                        
-                                                SootField arrayField = 
-                                                    ModelTransformer.getModelClass().getFieldByName(
-                                                            getBufferFieldName(relation,
-                                                                    channel, port.getType()));
-                                                        
-                                                // load the buffer array.
-                                                body.getUnits().insertBefore(
-                                                        Jimple.v().newAssignStmt(bufferLocal,
-                                                                Jimple.v().newStaticFieldRef(arrayField)),
-                                                        unit);
-
-                                                // If we are calling with just a token, then send the token.
-                                                if(r.getArgCount() == 1) {
-                                                    // Write to the buffer.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    Jimple.v().newArrayRef(bufferLocal, 
-                                                                            indexLocal), r.getArg(0)),
-                                                            unit); 
-                                                    // increment the position in the buffer.
-                                                    body.getUnits().insertBefore(
-                                                            _createIndexUpdateInstructions( 
-                                                                    indexLocal, indexArrayLocal, 
-                                                                    channelValue, bufferSizeValue),
-                                                            unit);
-                                                    // blow away the send.
-                                                    body.getUnits().remove(unit);
-                                                } else {
-                                                    // We must send an array of tokens.
-                                                    body.getUnits().insertBefore(
-                                                            Jimple.v().newAssignStmt(
-                                                                    returnArrayLocal, 
-                                                                    r.getArg(0)),
-                                                            unit);
-                                                    // If the count is specified statically
-                                                    if(Evaluator.isValueConstantValued(r.getArg(1))) {
-                                                        int argCount =
-                                                            ((IntConstant)Evaluator.getConstantValueOf(
-                                                                    r.getArg(1))).value;
-                                                        for(int k = 0; k < argCount; k++) {
-                                                            // Get the value.
-                                                            body.getUnits().insertBefore(
-                                                                    Jimple.v().newAssignStmt(
-                                                                            returnLocal,
-                                                                            Jimple.v().newArrayRef(returnArrayLocal,
-                                                                                    IntConstant.v(k))),
-                                                                    unit);
-                                                            // Store in the buffer array.
-                                                            body.getUnits().insertBefore(
-                                                                    Jimple.v().newAssignStmt(
-                                                                            Jimple.v().newArrayRef(bufferLocal,
-                                                                                    indexLocal),
-                                                                            returnLocal),
-                                                                    unit);
-                                                            // increment the position in the buffer.
-                                                            body.getUnits().insertBefore(
-                                                                    _createIndexUpdateInstructions( 
-                                                                            indexLocal, indexArrayLocal, 
-                                                                            channelValue, bufferSizeValue),
-                                                                    unit);
-                                                        }
-                                                        // blow away the send.
-                                                        body.getUnits().remove(unit);
-                                                    } else {
-                                                        // we don't know the size beforehand,
-                                                        // so build a loop into the code.
-                                                        // The loop counter
-                                                        Local counterLocal = 
-                                                            Jimple.v().newLocal("counter", 
-                                                                    IntType.v());
-                                                        body.getLocals().add(counterLocal);
-                                                            
-                                                                // The list of initializer instructions.
-                                                        List initializerList = new LinkedList();
-                                                        initializerList.add(
-                                                                Jimple.v().newAssignStmt(
-                                                                        counterLocal,
-                                                                        IntConstant.v(0)));
-                                                                
-                                                        // The list of body instructions.
-                                                        List bodyList = new LinkedList();
-                                                        // Get the value.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(
-                                                                        returnLocal,
-                                                                        Jimple.v().newArrayRef(returnArrayLocal,
-                                                                                counterLocal)),
-                                                                unit);
-                                                        // Store in the buffer array.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(
-                                                                        Jimple.v().newArrayRef(bufferLocal,
-                                                                                indexLocal),
-                                                                        returnLocal),
-                                                                unit); 
-                                                        // increment the position.
-                                                        bodyList.add(
-                                                                Jimple.v().newAssignStmt(
-                                                                        indexLocal,
-                                                                        Jimple.v().newAddExpr(
-                                                                                indexLocal,
-                                                                                IntConstant.v(1))));
-                                                        // wrap around.
-                                                        bodyList.add(
-                                                                Jimple.v().newAssignStmt(
-                                                                        indexLocal,
-                                                                        Jimple.v().newRemExpr(
-                                                                                indexLocal,
-                                                                                bufferSizeValue)));
-                                                        // Increment the counter.
-                                                        bodyList.add(
-                                                                Jimple.v().newAssignStmt(
-                                                                        counterLocal,
-                                                                        Jimple.v().newAddExpr(
-                                                                                counterLocal,
-                                                                                IntConstant.v(1))));
-                                                                
-                                                        Expr conditionalExpr = 
-                                                            Jimple.v().newLtExpr(
-                                                                    counterLocal,
-                                                                    r.getArg(1));
-                                                        List loop = SootUtilities.createForLoopBefore(body,
-                                                                unit,
-                                                                initializerList,
-                                                                bodyList, 
-                                                                conditionalExpr);
-                                                        body.getUnits().insertBefore(loop, unit);
-                                                                
-                                                                // store back.
-                                                        body.getUnits().insertBefore(
-                                                                Jimple.v().newAssignStmt(
-                                                                        Jimple.v().newArrayRef(indexArrayLocal, 
-                                                                                channelValue),
-                                                                        indexLocal),
-                                                                unit);
-                                                        // blow away the send.
-                                                        body.getUnits().remove(unit);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                } else {
+                                    body.getUnits().remove(stmt);
                                 }
+                                continue;
+                            }
+                                                                            
+                            if(r.getMethod().getName().equals("hasToken")) {
+                                // return true.
+                                box.setValue(IntConstant.v(1));
+                            } else if(r.getMethod().getName().equals("hasRoom")) {
+                                // return true.
+                                box.setValue(IntConstant.v(1));
+                            } else if(r.getMethod().getName().equals("getWidth")) {
+                                // Reflect and invoke the same method on our port
+                                Object object = SootUtilities.reflectAndInvokeMethod(
+                                        port, r.getMethod(), argValues);
+                                // System.out.println("method result  = " + constant);
+                                Constant constant = 
+                                    SootUtilities.convertArgumentToConstantValue(object);
+                                       
+                                // replace the method invocation.
+                                box.setValue(constant);
+                            } else if(r.getMethod().getName().equals("get")) {
+                                // Could be get that takes a channel and returns a token,
+                                // or get that takes a channel and a count and returns
+                                // an array of tokens.          
+                                // In either case, replace the get with circular array ref.
+                                _inlineGet(body, stmt, box, r, port, 
+                                        portToIndexArrayField, portToTypeNameToBufferField);
+
+                            } else if(r.getMethod().getName().equals("send")) {
+                                // Could be send that takes a channel and returns a token,
+                                // or send that takes a channel and an array of tokens.          
+                                // In either case, replace the send with circular array ref.
+                                        
+                                _inlineSend(body, stmt, r, port, 
+                                        portToIndexArrayField, portToTypeNameToBufferField);
+
+                            } else if(r.getMethod().getName().equals("broadcast")) {
+                                // Could be broadcast that takes a token,
+                                // or broadcast that takes an array of tokens.          
+                                // In either case, replace the broadcast with circular array ref.
+                                _inlineBroadcast(body, stmt, r, port, 
+                                        portToIndexArrayField, portToTypeNameToBufferField);
+                                
                             }
                         }
                     }
                 }
-                LocalNameStandardizer.v().transform(body, phaseName + ".lns", "");
-            }            
+            }
         }
+        return doneSomething;
     }
 
     /** Attempt to determine the constant value of the 
@@ -1167,10 +886,397 @@ public class InlinePortTransformer extends SceneTransformer {
         }
     }
 
+
+    /** Replace the broadcast invocation in the given box
+     *  at the given unit in the 
+     *  given body with a circular array reference.
+     */
+    private void _inlineBroadcast(JimpleBody body, Stmt stmt, 
+            InvokeExpr expr, TypedIOPort port, 
+            Map portToIndexArrayField, Map portToTypeNameToBufferField) {
+
+        Local bufferLocal = 
+            Jimple.v().newLocal("buffer", 
+                    ArrayType.v(PtolemyUtilities.tokenType, 1));
+        body.getLocals().add(bufferLocal);
+        Local indexLocal =
+            Jimple.v().newLocal("index",
+                    IntType.v());
+        body.getLocals().add(indexLocal);
+        Local indexArrayLocal =
+            Jimple.v().newLocal("indexArray",
+                    ArrayType.v(IntType.v(), 1));
+        body.getLocals().add(indexArrayLocal);  
+        Local returnArrayLocal = 
+            Jimple.v().newLocal("returnArray", 
+                    ArrayType.v(PtolemyUtilities.tokenType, 1));
+        body.getLocals().add(returnArrayLocal);
+        Local returnLocal = 
+            Jimple.v().newLocal("return", PtolemyUtilities.tokenType);
+        body.getLocals().add(returnLocal);
+                                
+        SootField indexArrayField = (SootField)portToIndexArrayField.get(port);
+                                  
+        // Load the array of indexes.
+        body.getUnits().insertBefore(
+                Jimple.v().newAssignStmt(indexArrayLocal,
+                        Jimple.v().newInstanceFieldRef(
+                                body.getThisLocal(),
+                                indexArrayField)), 
+                stmt);
+                                        
+                                        
+        Value bufferSizeValue = null;
+        // Refer directly to the buffer in the model
+        int channel = 0;
+        for(Iterator relations = port.linkedRelationList().iterator();
+            relations.hasNext();) {
+            TypedIORelation relation = (TypedIORelation)relations.next();
+            int bufferSize;
+            try {
+                Variable bufferSizeVariable = 
+                    (Variable)relation.getAttribute("bufferSize");
+                bufferSize = 
+                    ((IntToken)bufferSizeVariable.getToken()).intValue();
+            } catch (Exception ex) {
+                System.out.println("No BufferSize parameter for " + 
+                        relation);
+                continue;
+            } 
+            // remember the size of the buffer.
+            bufferSizeValue = IntConstant.v(bufferSize); 
+                                                
+            for(int i = 0; 
+                i < relation.getWidth();
+                i++, channel++) {
+                Value channelValue = IntConstant.v(channel);
+                                                
+                // Load the correct index into indexLocal
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(indexLocal,
+                                Jimple.v().newArrayRef(
+                                        indexArrayLocal, 
+                                        channelValue)),
+                        stmt); 
+                                                        
+                SootField arrayField = 
+                    ModelTransformer.getModelClass().getFieldByName(
+                            getBufferFieldName(relation,
+                                    channel, port.getType()));
+                                                        
+                // load the buffer array.
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(bufferLocal,
+                                Jimple.v().newStaticFieldRef(arrayField)),
+                        stmt);
+
+                // If we are calling with just a token, then send the token.
+                if(expr.getArgCount() == 1) {
+                    // Write to the buffer.
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(
+                                    Jimple.v().newArrayRef(bufferLocal, 
+                                            indexLocal), expr.getArg(0)),
+                            stmt); 
+                    // increment the position in the buffer.
+                    body.getUnits().insertBefore(
+                            _createIndexUpdateInstructions( 
+                                    indexLocal, indexArrayLocal, 
+                                    channelValue, bufferSizeValue),
+                            stmt);
+                    // blow away the send.
+                    body.getUnits().remove(stmt);
+                } else {
+                    // We must send an array of tokens.
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(
+                                    returnArrayLocal, 
+                                    expr.getArg(0)),
+                            stmt);
+                    // If the count is specified statically
+                    if(Evaluator.isValueConstantValued(expr.getArg(1))) {
+                        int argCount =
+                            ((IntConstant)Evaluator.getConstantValueOf(
+                                    expr.getArg(1))).value;
+                        for(int k = 0; k < argCount; k++) {
+                            // Get the value.
+                            body.getUnits().insertBefore(
+                                    Jimple.v().newAssignStmt(
+                                            returnLocal,
+                                            Jimple.v().newArrayRef(returnArrayLocal,
+                                                    IntConstant.v(k))),
+                                    stmt);
+                            // Store in the buffer array.
+                            body.getUnits().insertBefore(
+                                    Jimple.v().newAssignStmt(
+                                            Jimple.v().newArrayRef(bufferLocal,
+                                                    indexLocal),
+                                            returnLocal),
+                                    stmt);
+                            // increment the position in the buffer.
+                            body.getUnits().insertBefore(
+                                    _createIndexUpdateInstructions( 
+                                            indexLocal, indexArrayLocal, 
+                                            channelValue, bufferSizeValue),
+                                    stmt);
+                        }
+                        // blow away the send.
+                        body.getUnits().remove(stmt);
+                    } else {
+                        // we don't know the size beforehand,
+                        // so build a loop into the code.
+                        // The loop counter
+                        Local counterLocal = 
+                            Jimple.v().newLocal("counter", 
+                                    IntType.v());
+                        body.getLocals().add(counterLocal);
+                                                            
+                        // The list of initializer instructions.
+                        List initializerList = new LinkedList();
+                        initializerList.add(
+                                Jimple.v().newAssignStmt(
+                                        counterLocal,
+                                        IntConstant.v(0)));
+                                                                
+                        // The list of body instructions.
+                        List bodyList = new LinkedList();
+                        // Get the value.
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        returnLocal,
+                                        Jimple.v().newArrayRef(returnArrayLocal,
+                                                counterLocal)),
+                                stmt);
+                        // Store in the buffer array.
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        Jimple.v().newArrayRef(bufferLocal,
+                                                indexLocal),
+                                        returnLocal),
+                                stmt); 
+                        // increment the position.
+                        bodyList.add(
+                                Jimple.v().newAssignStmt(
+                                        indexLocal,
+                                        Jimple.v().newAddExpr(
+                                                indexLocal,
+                                                IntConstant.v(1))));
+                        // wrap around.
+                        bodyList.add(
+                                Jimple.v().newAssignStmt(
+                                        indexLocal,
+                                        Jimple.v().newRemExpr(
+                                                indexLocal,
+                                                bufferSizeValue)));
+                        // Increment the counter.
+                        bodyList.add(
+                                Jimple.v().newAssignStmt(
+                                        counterLocal,
+                                        Jimple.v().newAddExpr(
+                                                counterLocal,
+                                                IntConstant.v(1))));
+                                                                
+                        Expr conditionalExpr = 
+                            Jimple.v().newLtExpr(
+                                    counterLocal,
+                                    expr.getArg(1));
+                        List loop = SootUtilities.createForLoopBefore(body,
+                                stmt,
+                                initializerList,
+                                bodyList, 
+                                conditionalExpr);
+                        body.getUnits().insertBefore(loop, stmt);
+                                                                
+                        // store back.
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        Jimple.v().newArrayRef(indexArrayLocal, 
+                                                channelValue),
+                                        indexLocal),
+                                stmt);
+                        // blow away the send.
+                        body.getUnits().remove(stmt);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Replace the get invocation in the given box
+     *  at the given unit in the 
+     *  given body with a circular array reference.
+     */
+    private void _inlineGet(JimpleBody body, Stmt stmt, 
+            ValueBox box, InvokeExpr expr, TypedIOPort port, 
+            Map portToIndexArrayField, Map portToTypeNameToBufferField) {
+        Local bufferLocal = 
+            Jimple.v().newLocal("buffer", 
+                    ArrayType.v(PtolemyUtilities.tokenType, 1));
+        body.getLocals().add(bufferLocal);
+        Local indexLocal =
+            Jimple.v().newLocal("index",
+                    IntType.v());
+        body.getLocals().add(indexLocal);
+        Local indexArrayLocal =
+            Jimple.v().newLocal("indexArray",
+                    ArrayType.v(IntType.v(), 1));
+        body.getLocals().add(indexArrayLocal);  
+        Local returnArrayLocal = 
+            Jimple.v().newLocal("returnArray", 
+                    ArrayType.v(PtolemyUtilities.tokenType, 1));
+        body.getLocals().add(returnArrayLocal);
+        Local returnLocal = 
+            Jimple.v().newLocal("return", PtolemyUtilities.tokenType);
+        body.getLocals().add(returnLocal);
+
+        Value channelValue = expr.getArg(0);
+        
+        Value bufferSizeValue = _getBufferAndSize(body, 
+                stmt, port, port.getType(), channelValue, bufferLocal,
+                portToTypeNameToBufferField);
+        
+        _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal, 
+                channelValue, bufferSizeValue, portToIndexArrayField);
+                                       
+        // If we are calling with just a channel, then read the value.
+        if(expr.getArgCount() == 1) {
+            body.getUnits().insertAfter(_createIndexUpdateInstructions( 
+                    indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
+                    stmt);
+                                           
+            // We may be calling get without setting the return value to anything.
+            if(stmt instanceof DefinitionStmt) {
+                // Replace the get() with an array read.
+                box.setValue(Jimple.v().newArrayRef(bufferLocal,
+                        indexLocal));
+            } else {
+                body.getUnits().remove(stmt);
+            }
+        } else {
+            // We must return an array of tokens.
+            // Create an array of the appropriate length.
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(
+                            returnArrayLocal, 
+                            Jimple.v().newNewArrayExpr(
+                                    PtolemyUtilities.tokenType, expr.getArg(1))),
+                    stmt);
+            Value countValue = expr.getArg(2);
+              
+            // If the count is specified statically
+            // FIXME: constant loop unroller should take care of this.
+            if(Evaluator.isValueConstantValued(countValue)) {
+                int argCount = ((IntConstant)Evaluator.getConstantValueOf(countValue)).value;
+                for(int k = 0; k < argCount; k++) {
+                    // Get the value.
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(
+                                    returnLocal,
+                                    Jimple.v().newArrayRef(bufferLocal,
+                                            indexLocal)),
+                            stmt);
+                    // Store in the return array.
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(
+                                    Jimple.v().newArrayRef(returnArrayLocal,
+                                            IntConstant.v(k)),
+                                    returnLocal),
+                            stmt);
+                    // increment the position in the buffer.
+                    body.getUnits().insertBefore(
+                            _createIndexUpdateInstructions( 
+                                    indexLocal, indexArrayLocal, 
+                                    channelValue, bufferSizeValue),
+                            stmt);
+                }
+                // Replace the get() call.
+                box.setValue(returnArrayLocal);
+            } else {
+                // we don't know the size beforehand,
+                // so build a loop into the code.
+                // The loop counter
+                Local counterLocal = 
+                    Jimple.v().newLocal("counter", 
+                            IntType.v());
+                body.getLocals().add(counterLocal);
+                                                
+                // The list of initializer instructions.
+                List initializerList = new LinkedList();
+                initializerList.add(
+                        Jimple.v().newAssignStmt(
+                                counterLocal,
+                                IntConstant.v(0)));
+
+                // The list of body instructions.
+                List bodyList = new LinkedList();
+                // Get the value.
+                bodyList.add(
+                        Jimple.v().newAssignStmt(
+                                returnLocal,
+                                Jimple.v().newArrayRef(
+                                        bufferLocal,
+                                        indexLocal)));
+                // Store in the return array.
+                bodyList.add(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newArrayRef(
+                                        returnArrayLocal,
+                                        counterLocal),
+                                returnLocal));
+                if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                    // increment the position.
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    Jimple.v().newAddExpr(
+                                            indexLocal,
+                                            IntConstant.v(1))));
+                    // wrap around.
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    Jimple.v().newRemExpr(
+                                            indexLocal,
+                                            bufferSizeValue)));
+                }
+                // Increment the counter.
+                bodyList.add(
+                        Jimple.v().newAssignStmt(
+                                counterLocal,
+                                Jimple.v().newAddExpr(
+                                        counterLocal,
+                                        IntConstant.v(1))));
+                                                
+                Expr conditionalExpr = 
+                    Jimple.v().newLtExpr(
+                            counterLocal,
+                            expr.getArg(1));
+                List loop = SootUtilities.createForLoopBefore(body,
+                        stmt,
+                        initializerList,
+                        bodyList, 
+                        conditionalExpr);
+                body.getUnits().insertBefore(loop, stmt);
+
+                if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                    // store back.
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(
+                                    Jimple.v().newArrayRef(indexArrayLocal, 
+                                            channelValue),
+                                    indexLocal),
+                            stmt);
+                }
+                // Replace the get() call.
+                box.setValue(returnArrayLocal);
+            }
+        } 
+    }
+
     /** Replace the send command at the given unit in the 
      *  given body with a circular array reference.
      */
-    private void _inlineSend(JimpleBody body, Unit unit, 
+    private void _inlineSend(JimpleBody body, Stmt stmt, 
             InvokeExpr expr, TypedIOPort port, 
             Map portToIndexArrayField, Map portToTypeNameToBufferField) {
          
@@ -1190,6 +1296,7 @@ public class InlinePortTransformer extends SceneTransformer {
         // The first argument is always the channel.
         Value channelValue = expr.getArg(0);
          
+        // We have to repeat for all of the remote types.
         Set typeSet = _getConnectedTypeList(port);
         for(Iterator types = typeSet.iterator();
             types.hasNext();) {
@@ -1198,14 +1305,14 @@ public class InlinePortTransformer extends SceneTransformer {
             Local typeLocal = null;
             if(!port.getType().equals(type)) {
                 typeLocal = PtolemyUtilities.buildConstantTypeLocal(body, 
-                        unit, type);
+                        stmt, type);
             }
 
             Value bufferSizeValue = _getBufferAndSize(body, 
-                    unit, port, type, channelValue, bufferLocal, 
+                    stmt, port, type, channelValue, bufferLocal, 
                     portToTypeNameToBufferField);
         
-            _getCorrectIndex(body, unit, port, indexLocal, indexArrayLocal, 
+            _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal, 
                     channelValue, bufferSizeValue, portToIndexArrayField);
         
             // A local of type token
@@ -1213,6 +1320,7 @@ public class InlinePortTransformer extends SceneTransformer {
                 Jimple.v().newLocal("tokenLocal",
                         PtolemyUtilities.tokenType);
             body.getLocals().add(tokenLocal);      
+            
             // A local of the appropriate type to store in the
             // buffer.
             Local outputTokenLocal =
@@ -1229,15 +1337,15 @@ public class InlinePortTransformer extends SceneTransformer {
                                 bufferLocal, indexLocal, 
                                 sendTokenLocal, typeLocal,
                                 tokenLocal, outputTokenLocal),                        
-                        unit);
+                        stmt);
                 // increment the position in the buffer.
                 body.getUnits().insertBefore(
                         _createIndexUpdateInstructions( 
                                 indexLocal, indexArrayLocal, 
                                 channelValue, bufferSizeValue),
-                        unit);
+                        stmt);
                 // blow away the send.
-                body.getUnits().remove(unit);
+                body.getUnits().remove(stmt);
             } else {
                 Local sendArrayLocal = (Local) expr.getArg(1);
                 /*                Jimple.v().newLocal("sendArray", 
@@ -1249,7 +1357,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                   Jimple.v().newAssignStmt(
                                   sendArrayLocal, 
                                   expr.getArg(1)),
-                                  unit);*/
+                                  stmt);*/
 
                 Value countValue = expr.getArg(2);
             
@@ -1269,23 +1377,23 @@ public class InlinePortTransformer extends SceneTransformer {
                                         Jimple.v().newArrayRef(
                                                 sendArrayLocal,
                                                 IntConstant.v(k))),
-                                unit);
+                                stmt);
                         // Store in the buffer array.
                         body.getUnits().insertBefore(
                                 _createBufferStoreInstructions(
                                         bufferLocal, indexLocal, 
                                         sendTokenLocal, typeLocal,
                                         tokenLocal, outputTokenLocal),
-                                unit);
+                                stmt);
                         // increment the position in the buffer.
                         body.getUnits().insertBefore(
                                 _createIndexUpdateInstructions( 
                                         indexLocal, indexArrayLocal, 
                                         channelValue, bufferSizeValue),
-                                unit);
+                                stmt);
                     }
                     // blow away the send.
-                    body.getUnits().remove(unit);
+                    body.getUnits().remove(stmt);
                 } else {
                     // we don't know the size beforehand,
                     // so build a loop into the code.
@@ -1341,11 +1449,11 @@ public class InlinePortTransformer extends SceneTransformer {
                     Expr conditionalExpr = 
                         Jimple.v().newLtExpr(counterLocal, countValue);
                     List loop = SootUtilities.createForLoopBefore(body,
-                            unit,
+                            stmt,
                             initializerList,
                             bodyList, 
                             conditionalExpr);
-                    body.getUnits().insertBefore(loop, unit);
+                    body.getUnits().insertBefore(loop, stmt);
 
                     if(!bufferSizeValue.equals(IntConstant.v(1))) {
                         // store back.
@@ -1354,10 +1462,10 @@ public class InlinePortTransformer extends SceneTransformer {
                                         Jimple.v().newArrayRef(indexArrayLocal, 
                                                 channelValue),
                                         indexLocal),
-                                unit);
+                                stmt);
                     }
                     // blow away the send.
-                    body.getUnits().remove(unit);
+                    body.getUnits().remove(stmt);
                 }
             }
         }
