@@ -87,9 +87,9 @@
 key that is shared between the 
 encryptor and decryptor.
 
-In this case we generate a key 
-using the Key actor.
-</text></svg></configure>
+In this case we read a key from
+a keystore that was created by
+running the KeyWriter.xml model.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -227,7 +227,7 @@ using the Key actor.
     <entity name="PrivateKeyReader" class="ptolemy.actor.lib.security.PrivateKeyReader">
         <property name="alias" class="ptolemy.data.expr.StringParameter" value="foo">
         </property>
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="foo6.ks">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="foo.keystore">
         </property>
         <property name="keyPassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
         </property>
@@ -255,7 +255,7 @@ using the Key actor.
     <entity name="PrivateKeyReader2" class="ptolemy.actor.lib.security.PrivateKeyReader">
         <property name="alias" class="ptolemy.data.expr.StringParameter" value="foo">
         </property>
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="foo6.ks">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="foo.keystore">
         </property>
         <property name="keyPassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
         </property>
