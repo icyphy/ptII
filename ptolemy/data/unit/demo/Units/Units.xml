@@ -180,7 +180,10 @@ as a unit-handling integrator.</text></svg></configure>
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">The gray box above contains a unit system.
-Look inside to see the units that are defined.</text></svg></configure>
+Double click to see the units that are defined.
+These units function exactly as variables
+in expressions. E.g., one volt is written
+"1 * volt".</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
