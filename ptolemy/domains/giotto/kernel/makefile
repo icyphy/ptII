@@ -63,7 +63,8 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'GenerateVisitor$$ClassField.class' \
-	'GenerateVisitor$$MethodSignature.class'
+	'GenerateVisitor$$MethodSignature.class' \
+	'GiottoScheduler$$GiottoActorComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
