@@ -58,14 +58,14 @@ $ctsub setDirector $ctdir
 set sine [java::new ptolemy.domains.ct.lib.CTSin $ctsub SIN]
 set hold [java::new ptolemy.domains.ct.lib.CTZeroOrderHold $ctsub Hold]
 set add1 [java::new ptolemy.domains.ct.lib.CTAdd $ctsub Add1]
-set add2 [java::new ptolemy.domains.ct.lib.CTAdd $ctsub Add2]
+#set add2 [java::new ptolemy.domains.ct.lib.CTAdd $ctsub Add2]
 set intgl1 [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator1]
 set intgl2 [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator2]
 set gain0 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain0]
 set gain1 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain1]
 set gain2 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain2]
 set gain3 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain3]
-set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Bias]
+#set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Bias]
 set plot [java::new ptolemy.domains.ct.lib.CTPlot $ctsub Plot]
 set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler \
 	$ctsub Sample]
@@ -74,8 +74,8 @@ set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler \
 set sineout [$sine getPort output]
 set add1in [$add1 getPort input]
 set add1out [$add1 getPort output]
-set add2in [$add2 getPort input]
-set add2out [$add2 getPort output]
+#set add2in [$add2 getPort input]
+#set add2out [$add2 getPort output]
 set intgl1in [$intgl1 getPort input]
 set intgl1out [$intgl1 getPort output]
 set intgl2in [$intgl2 getPort input]
@@ -88,7 +88,7 @@ set gain2in [$gain2 getPort input]
 set gain2out [$gain2 getPort output]
 set gain3in [$gain3 getPort input]
 set gain3out [$gain3 getPort output]
-set constout [$const getPort output]
+#set constout [$const getPort output]
 set plotin [$plot getPort input]
 set sampin [$sampler getPort input]
 set sampout [$sampler getPort output]
@@ -113,9 +113,10 @@ set cr8 [$ctsub connect $gain3out $add1in CR8]
 set cr9 [java::new ptolemy.actor.TypedIORelation $ctsub CR9]
 $holdin link $cr9
 $subin link $cr9
-set cr10 [$ctsub connect $gain3in $add2out CR10]
-set cr11 [$ctsub connect $constout $add2in CR11]
-set cr12 [$ctsub connect $holdout $add2in CR12]
+#set cr10 [$ctsub connect $gain3in $add2out CR10]
+#set cr11 [$ctsub connect $constout $add2in CR11]
+#set cr12 [$ctsub connect $holdout $add2in CR12]
+set cr10 [$ctsub connect $holdout $gain3in CR110]
 $plotin link $cr0
 $plotin link $cr10
 
@@ -124,19 +125,30 @@ $plotin link $cr10
 #  approximate the FIR filter by a delay and a gain
 set fir [java::new {ptolemy.domains.de.lib.DEFIRfilter \
 	ptolemy.actor.TypedCompositeActor String String}\
-	$sys FIR [list 0.5 0.5]]
+	$sys FIR [list 0.7 0.3]]
 set firdelay [$fir getAttribute Delay]
 $firdelay setExpression 0.02
 $firdelay parameterChanged [java::null]
 
 set quan [java::new ptolemy.domains.de.lib.TestLevel $sys Quantizer]
+set accu [java::new ptolemy.domains.de.lib.DEStatistics $sys Accumulator]
+set clk [java::new ptolemy.domains.de.lib.DEClock $sys ADClock 1 1]
 set deplot [java::new ptolemy.domains.de.lib.DEPlot $sys DEPLOT]
-
+set mav [java::new {ptolemy.domains.de.lib.DEFIRfilter \
+	ptolemy.actor.TypedCompositeActor String String}\
+	$sys MAV [list 0.5 0.3 0.2]]
 # DE ports
 set firin [$fir getPort input]
 set firout [$fir getPort output]
 set quanin [$quan getPort input]
 set quanout [$quan getPort output]
+set accin [$accu getPort "data input"]
+set accout [$accu getPort average]
+set demand [$accu getPort demand]
+set reset [$accu getPort reset]
+set clkout [$clk getPort output]
+set mavin [$mav getPort input]
+set mavout [$mav getPort output]
 set deplotin [$deplot getPort input]
 
 #DE connections
@@ -144,11 +156,16 @@ set dr1 [$sys connect $subout $firin DR1]
 set dr2 [$sys connect $firout $quanin DR2]
 set dr3 [$sys connect $quanout $subin DR3]
 $deplotin link $dr3 
+set dr4 [$sys connect $clkout $demand DR4]
+$reset link $dr4
+$accin link $dr3
+set dr5 [$sys connect $accout $mavin DR5]
+set dr6 [$sys connect $deplotin $mavout DR6]
 
 ############################################################
 ### DEParameters
 # 
-$dedir setStopTime 20.0
+$dedir setStopTime 15.0
 
 
 ############################################################
@@ -176,31 +193,31 @@ $solver2 parameterChanged [java::null]
 ### CT Actor Parameters
 #
 set freq [$sine getAttribute AngleFrequency]
-$freq setExpression 0.25
+$freq setExpression 0.5
 $freq parameterChanged [java::null]
 
 set g0 [$gain0 getAttribute Gain]
-$g0 setExpression 500.0
+$g0 setExpression 50.0
 $g0 parameterChanged [java::null]
 
 set g1 [$gain1 getAttribute Gain]
-$g1 setExpression -25.0
+$g1 setExpression -2.50
 $g1 parameterChanged [java::null]
 
 set g2 [$gain2 getAttribute Gain]
-$g2 setExpression -2500.0
+$g2 setExpression -250.0
 $g2 parameterChanged [java::null]
 
 set g3 [$gain3 getAttribute Gain]
-$g3 setExpression -800.0
+$g3 setExpression -20.0
 $g3 parameterChanged [java::null]
 
-set con [$const getAttribute Value]
-$con setExpression -0.5
-$con parameterChanged [java::null]
+#set con [$const getAttribute Value]
+#$con setExpression -0.5
+#$con parameterChanged [java::null]
 
 set ts [$sampler getAttribute SamplePeriod]
-$ts setExpression 0.1
+$ts setExpression 0.02
 $ts parameterChanged [java::null]
 
 $man startRun
