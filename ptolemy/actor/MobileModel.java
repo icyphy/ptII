@@ -29,27 +29,29 @@
 
 package ptolemy.actor;
 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Const;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.kernel.util.*;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.filter.BackwardCompatibility;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.io.IOException;
+import java.io.Writer;
+import java.io.StringWriter;
+import java.lang.reflect.Constructor;
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel
@@ -86,7 +88,19 @@ public class MobileModel extends TypedCompositeActor {
                 new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(defaultValue);
-        new DEDirector(this, "director");
+        // create a defaultDirector. Without this director, it may get
+        // an infinite loop when preinitialize, etc. is called in case the
+        // specified director is not successfully constructed. Even when the
+        // specified director is construced successfully, it cannot be removed
+        // in wrapup() without this default director.
+
+        //The default director may not work when we need multi tokens to fire
+        //the inside model because the receiver it creates is an instance of
+        //Mailbox, which can only hold one token. In this case, specify a proper
+        //director using the <i>director<i> parameter.
+        new Director(this, "defultDirector");
+        director = new Parameter(this, "director",
+                new StringToken("ptolemy.actor.Director"));
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
     }
 
@@ -110,7 +124,14 @@ public class MobileModel extends TypedCompositeActor {
                 new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(defaultValue);
-        new DEDirector(this, "director");
+        // create a defaultDirector. Without this director, it may get
+        // an infinite loop when preinitialize, etc. is called in case the
+        // specified director is not successfully constructed. Even when the
+        // specified director is construced successfully, it cannot be removed
+        // in wrapup() without this default director.
+        new Director(this, "defaultDirector");
+        director = new Parameter(this, "director",
+                new StringToken("ptolemy.actor.Director"));
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
     }
 
@@ -130,6 +151,11 @@ public class MobileModel extends TypedCompositeActor {
      * the type of the <i>defultValue<i> parameter.
      */
     public TypedIOPort output;
+
+    /** The inside Director for executing the inside model.
+     *
+     */
+    public Parameter director;
 
     /** The default output token when there is no inside model
      *  defined. The default value is 0, and the default type is
@@ -167,19 +193,45 @@ public class MobileModel extends TypedCompositeActor {
         if (_debugging) {
             _debug("Invoking fire");
         }
-        for (int i = 0; i < modelString.getWidth(); i++) {
-            if (modelString.hasToken(i)) {
-                StringToken str = null;
+        if (modelString.getWidth() < 1) {
+            throw new IllegalActionException(getName() + "need to have"
+                    + "the modelString port be connected");
+        } else if (modelString.hasToken(0)) {
+            StringToken str = null;
+            try {
+                str = (StringToken) modelString.get(0);
+
+                _parser.reset();
+                CompositeActor model = (CompositeActor) _parser.parse(str.stringValue());
+                StringWriter writer = new StringWriter();
                 try {
-                    str = (StringToken) modelString.get(0);
-                    //URL url = new URL(str.stringValue());
-                    _model = (CompositeActor) _parser.parse(str.stringValue());
-                    break;
+                    model.exportMoML(writer, 1);
                 } catch (Exception ex) {
+                    // FIXME: don't ignore?
+                }
+
+                String modelMoML =  writer.toString();
+                _moml = "<group>\n" + modelMoML + "<relation name=\"newR1\" "
+                        + "class=\"ptolemy.actor.TypedIORelation\">\n"
+                        + "</relation>\n"
+                        + "<relation name=\"newR2\" "
+                        + "class=\"ptolemy.actor.TypedIORelation\">\n"
+                        + "</relation>\n"
+                        + "<link port=\"input\" relation=\"newR1\"/>\n"
+                        + "<link port=\"" + model.getName()
+                        + ".input\" relation=\"newR1\"/>\n"
+                        + "<link port=\"" + model.getName()
+                        + ".output\" relation=\"newR2\"/>\n"
+                        + "<link port=\"output\" relation=\"newR2\"/>\n"
+                        + "</group>";
+                } catch (Exception ex) {
+                    if (_debugging) {
+                        _debug("Problem parsing " + str.stringValue());
+                    }
                     throw new IllegalActionException(this, ex,
                             "Problem parsing " + str.stringValue());
                 }
-            }
+
         }
         super.fire();
     }
@@ -194,12 +246,10 @@ public class MobileModel extends TypedCompositeActor {
         if (_debugging) {
             _debug("Invoking init");
         }
-        _model = null;
-
+        _moml = null;
         try {
             _parser = new MoMLParser();
             _parser.setMoMLFilters(BackwardCompatibility.allFilters());
-            //     _parser.addMoMLFilter(new RemoveGraphicalClasses());
 
             // When no model applied, output the default value.
             Const constActor = new Const(this, "Const");
@@ -226,7 +276,7 @@ public class MobileModel extends TypedCompositeActor {
      *  is not opaque.
      */
     public boolean postfire() throws IllegalActionException {
-        if (!_stopRequested && _model != null) {
+        if (!_stopRequested && _moml != null) {
             //remove the old model inside first, if there is one.
             String delete = _requestToRemoveAll(this);
             MoMLChangeRequest removeRequest = new MoMLChangeRequest(
@@ -235,53 +285,17 @@ public class MobileModel extends TypedCompositeActor {
                     delete,          // MoML code
                     null);
             requestChange(removeRequest);
-
-            // Add the entity represented by the new model string.
-
-            // FIXME: the reason I do the change by two change request
-            // is because when I tried to group them in one, I got a
-            // parser error...
-
- //            MoMLChangeRequest request = new MoMLChangeRequest(
-//                     this,            // originator
-//                     this,          // context
-//                     _model.exportMoML(), // MoML code
-//                     null);
-//             requestChange(request);
-
-            //connect the model.
-            StringWriter writer = new StringWriter();
-            try {
-                _model.exportMoML(writer, 1);
-            } catch (Exception ex) {
-                // FIXME: don't ignore?
-            }
-
-            String modelMoML =  writer.toString();
-            String moml = "<group>\n" + modelMoML + "<relation name=\"newR1\" "
-                    + "class=\"ptolemy.actor.TypedIORelation\">\n"
-                    + "</relation>\n"
-                    + "<relation name=\"newR2\" "
-                    + "class=\"ptolemy.actor.TypedIORelation\">\n"
-                    + "</relation>\n"
-                    + "<link port=\"input\" relation=\"newR1\"/>\n"
-                    + "<link port=\"" + _model.getName()
-                    + ".input\" relation=\"newR1\"/>\n"
-                    + "<link port=\"" + _model.getName()
-                    + ".output\" relation=\"newR2\"/>\n"
-                    + "<link port=\"output\" relation=\"newR2\"/>\n"
-                    + "</group>";
-            System.out.println("moml = " + moml);
+            //update the inside model change.
             MoMLChangeRequest request2 = new MoMLChangeRequest(
                     this,            // originator
                     this,          // context
-                    moml, // MoML code
+                    _moml, // MoML code
                     null);
             requestChange(request2);
             if (_debugging) {
                 _debug("issues change request to modify the model");
             }
-            _model = null;
+            _moml = null;
         }
         return super.postfire();
     }
@@ -299,6 +313,17 @@ public class MobileModel extends TypedCompositeActor {
         return false;
     }
 
+    /** preinitialize this actor. create the director as specified
+     *  by the <i>director<i> papameter.
+     *  @exception IllegalActionException If can't create the director, or
+     *  if the director's preinitialize() method throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+       _director = null;
+       _createDirector();
+       super.preinitialize();
+   }
+
     /** Clean up tha changes that have been made.
      *  @exception IllegalActionException If there is no director,
      *  or if the director's wrapup() method throws it, or if this
@@ -314,6 +339,14 @@ public class MobileModel extends TypedCompositeActor {
                 null);
         requestChange(removeRequest);
         super.wrapup();
+        if (_director != null) {
+            try{
+                _director.setContainer(null);
+            } catch(NameDuplicationException ex) {
+                throw new IllegalActionException("get an exception" +
+                        "when delete the director" + ex);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -338,6 +371,38 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
+     /** create the inside director of this composite actor according
+      * to the <i>director<i> parameter.
+      * @exception IllegalActionException If cannot find the director
+      * class with the spedified name by the <i>director<i> parameter,
+     *  or if there is name duplicationn for the director.
+     */
+    private void _createDirector() throws IllegalActionException{
+        try {
+            String directorName =((StringToken) director.getToken()).stringValue();
+            Class directorClass = director.getClass().forName(directorName);
+            //System.out.println("find the class for the specified director.");
+            Class[] argClasses = new Class[2];
+            argClasses[0] = CompositeEntity.class;
+            argClasses[1] = String.class;
+            Constructor constructor = directorClass.getConstructor(argClasses);
+            if (constructor != null) {
+                if (_debugging) {
+                    _debug("find constructor for the specified director");
+                }
+                Object[] args = new Object[2];
+                args[0] = this;
+                args[1] = "new director";
+                _director = (Director)constructor.newInstance(args);
+                if (_debugging) {
+                    _debug("create a instance of the specified director");
+                }
+            }
+        } catch(Exception ex) {
+            throw new IllegalActionException("get an illegal action exception" +
+                    "when create director" + ex);
+        }
+    }
 
     /** Construct a modl string for the composite actor to delete
      *  of its entities and relations.
@@ -362,11 +427,15 @@ public class MobileModel extends TypedCompositeActor {
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The inside model that contained by this actor.
+    /**the inside director.
      *
      */
-    private CompositeActor _model;
+    private Director _director;
+
+    /** The moml string for the inside model that contained by this actor.
+     *
+     */
+    private String _moml;
 
     /** The moml parser for parsing the moml string of the inside model.
      *
