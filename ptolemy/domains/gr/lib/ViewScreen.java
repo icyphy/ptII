@@ -208,6 +208,13 @@ public class ViewScreen extends GRActor implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add the node argument as a child to the encapsulated Java3D node
+     *  in this actor.
+     */
+    protected void addChild(Node node) {
+        _addChild(node);
+    }
+
     /** Fire this actor.
      */
     public void fire() throws IllegalActionException {
