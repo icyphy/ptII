@@ -190,7 +190,7 @@ $(PTIIDIST):
 	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc all_packages)
+	#(cd $(PTIIDIST)/doc; make JAVADOC=javadoc all_packages)
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
