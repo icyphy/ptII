@@ -2,7 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Hierarchy" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
         </property>
@@ -78,8 +79,6 @@ source and the upper composite.</text>
         </port>
     </entity>
     <entity name="Upper Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
             <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
             </property>
@@ -104,8 +103,6 @@ source and the upper composite.</text>
         </property>
     </entity>
     <entity name="Lower Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
             <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
             </property>

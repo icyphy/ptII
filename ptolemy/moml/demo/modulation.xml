@@ -2,7 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="modulation" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <doc>Multiply a low-frequency sine wave (the signal)
 by a higher frequency one (the carrier).</doc>
     <property name="frequency1" class="ptolemy.data.expr.Parameter" value="PI*0.2">
@@ -27,8 +28,6 @@ by a higher frequency one (the carrier).</doc>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[175, 147]">
     </property>
     <entity name="carrier" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -67,8 +66,6 @@ by a higher frequency one (the carrier).</doc>
         </property>
     </entity>
     <entity name="signal" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>

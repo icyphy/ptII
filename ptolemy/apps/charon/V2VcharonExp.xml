@@ -2,7 +2,6 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="V2VcharonExp" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -1354,8 +1353,6 @@ of following the LeadingPlatoon.</text></svg></configure>
             </port>
         </entity>
         <entity name="TimedSinewave" class="ptolemy.actor.lib.TimedSine">
-            <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-            </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 450]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[92, 102]">

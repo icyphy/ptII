@@ -2,7 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Spectrum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -110,8 +111,6 @@ Try changing the parameters in the run window.</text>
         </port>
     </entity>
     <entity name="Carrier Source" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -154,8 +153,6 @@ Try changing the parameters in the run window.</text>
         </property>
     </entity>
     <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>

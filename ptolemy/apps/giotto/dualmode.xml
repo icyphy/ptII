@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="dualmode" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 230]">
@@ -12,6 +14,8 @@
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;dualModes.giotto&quot;">
         </property>
@@ -31,7 +35,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
@@ -51,7 +55,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
@@ -71,7 +75,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
@@ -159,6 +163,8 @@
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="85.0, 44.5">
@@ -244,6 +250,8 @@
                 <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
                 </property>
@@ -383,6 +391,8 @@
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -399,6 +409,8 @@
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7890205568051265">
                 </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -414,6 +426,8 @@
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7753782417653715">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
