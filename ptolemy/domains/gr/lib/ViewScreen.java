@@ -82,7 +82,8 @@ import java.util.Enumeration;
 //// ViewScreen
 
 /** A sink actor that renders the GR geometry into a display screen
-@author C. Fong, Adam Cataldo
+
+@author C. Fong, Adam Cataldo, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -207,12 +208,7 @@ public class ViewScreen extends GRActor implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void addChild(Node node) {
-        _userTransformation.addChild(node);
-    }
-
-
-    /*
+    /** Fire this actor.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -223,33 +219,35 @@ public class ViewScreen extends GRActor implements Placeable {
         }
     }
 
+    /** Return the root Java 3D rendering group used by this view screen.
+     */
     public BranchGroup getBranchGroup() {
         return _branchRoot;
     }
 
+    /** Return the Java 3D canvas used by this view screen.
+     */
     public Canvas3D getCanvas() {
         return _canvas;
     }
 
-    /** This method creates the ViewScreen frame if it hasn't been
-     *  created (_canvas != null).  It sets up the canvas and draws any 3D
-     *  shapes.
+    /** Initialize the execution.  Create the ViewScreen frame if 
+     *  it hasn't been set using the place() method.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
 
-        boolean addLights = false;
-
         super.initialize();
-        if (_canvas == null) {
-            place(_container);
-            addLights = true;
-        }
+
+        // Create a frame, if necessary, along with the canvas and
+        // simple universe.
+        _createViewScreen();
+       
+        // Make the frame visible.
         if (_frame != null) {
             _frame.setVisible(true);
         }
-        if (_simpleUniverse == null) {
-            _simpleUniverse = new SimpleUniverse(_canvas);
-        }
+                
         Enumeration branches
             = _simpleUniverse.getLocale().getAllBranchGraphs();
 
@@ -280,12 +278,11 @@ public class ViewScreen extends GRActor implements Placeable {
         backg.setApplicationBounds(_bounds);
         _branchRoot.addChild(backg);
 
-
         if (_isRotatable()) {
-            __mouseRotate = new MouseRotateView(this);
-            __mouseRotate.setTransformGroup(_userTransformation);
-            __mouseRotate.setSchedulingBounds(_bounds);
-            _branchRoot.addChild(__mouseRotate);
+            _mouseRotate = new MouseRotateView(this);
+            _mouseRotate.setTransformGroup(_userTransformation);
+            _mouseRotate.setSchedulingBounds(_bounds);
+            _branchRoot.addChild(_mouseRotate);
         }
 
         if (_isScalable()) {
@@ -337,38 +334,81 @@ public class ViewScreen extends GRActor implements Placeable {
         }
 
 
-        // Setup the lights, if needed.
-        if (addLights) {
-            BranchGroup lightRoot = new BranchGroup();
-
-            AmbientLight lightA
-                = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
-            lightA.setInfluencingBounds(_bounds);
-            lightRoot.addChild(lightA);
-
-            DirectionalLight lightD1 = new DirectionalLight();
-            lightD1.setInfluencingBounds(_bounds);
-            Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
-            direction.normalize();
-            lightD1.setDirection(direction);
-            lightD1.setColor(new Color3f(1.0f, 1.0f, 1.0f));
-            lightRoot.addChild(lightD1);
-
-            _simpleUniverse.getViewer().getView()
-                .setLocalEyeLightingEnable(true);
-            _simpleUniverse.addBranchGraph(lightRoot);
-
-        }
-
-
-
+        // Setup the lights.
+        BranchGroup lightRoot = new BranchGroup();
+        
+        AmbientLight lightAmbient
+            = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
+        lightAmbient.setInfluencingBounds(_bounds);
+        lightRoot.addChild(lightAmbient);
+        
+        DirectionalLight lightDirectional = new DirectionalLight();
+        lightDirectional.setInfluencingBounds(_bounds);
+        Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
+        direction.normalize();
+        lightDirectional.setDirection(direction);
+        lightDirectional.setColor(new Color3f(1.0f, 1.0f, 1.0f));
+        lightRoot.addChild(lightDirectional);
+        
+        _simpleUniverse.getViewer().getView()
+            .setLocalEyeLightingEnable(true);
+        _simpleUniverse.addBranchGraph(lightRoot);
+        
         if (_iterationSynchronized) {
             if (_canvas != null) _canvas.stopRenderer();
         }
     }
 
 
+    /** Set the container that this actor should display data in.  If
+     * place is not called, then the actor will create its own frame
+     * for display.
+     */
     public void place(Container container) {
+        _container = container;
+
+        if (_container == null) return;
+        Container c = _container.getParent();
+        while (c.getParent() != null) {
+            c = c.getParent();
+        }
+        // If we had created a frame before, then blow it away.
+        if(_frame != null) {
+            _frame.dispose();
+            _frame = null;
+        }
+        _createViewScreen();
+    }
+
+    /** Wrapup an execution
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _userTransformation.getTransform(_lastTransform);
+        if (_iterationSynchronized) {
+            _canvas.stopRenderer();
+            _canvas.swap();
+            if (_mouseRotate != null) _mouseRotate.stopped();
+            _canvas.startRenderer();
+        }
+        _isSceneGraphInitialized = false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Add the node argument as a child to the encapsulated Java3D node
+     *  in this actor.
+     */
+    protected void _addChild(Node node) {
+        _userTransformation.addChild(node);        
+    }
+
+    /** Create the view screen component.  If place() was called with
+     * a container, then use the container.  Otherwise, create a new
+     * frame and use that.
+     */
+    protected void _createViewScreen() {
         GraphicsConfiguration config =
             SimpleUniverse.getPreferredConfiguration();
 
@@ -382,28 +422,31 @@ public class ViewScreen extends GRActor implements Placeable {
             // FIXME handle this
         }
 
-        if (_canvas == null) {
-            _canvas = new Canvas3D(config);
-        }
-        if (container == null) {
+        // Create a frame, if placeable was not called.
+        if (_container == null) {
             _frame = new JFrame("ViewScreen");
-            _frame.getContentPane().add(_canvas, BorderLayout.CENTER);
-            _canvas.setSize(new Dimension(horizontalDimension,
-                    verticalDimension));
+            _frame.show();
+            _frame.validate();
             _frame.setSize(horizontalDimension+50,verticalDimension);
-            if (_simpleUniverse == null) {
-                _simpleUniverse = new SimpleUniverse(_canvas);
-            }
-            _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+            _container = _frame.getContentPane();    
+        }
+        // Set the frame to be visible.
+        if (_frame != null) {
             _frame.setVisible(true);
-        } else {
-            container.add("Center",_canvas);
-            _canvas.setSize(new Dimension(horizontalDimension,
-                    verticalDimension));
-            if (_simpleUniverse == null) {
-                _simpleUniverse = new SimpleUniverse(_canvas);
-            }
-            _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+        }
+
+        // Lastly drop the canvas in the frame.
+        if (_canvas != null) {
+            _container.remove(_canvas);
+        }
+        _canvas = new Canvas3D(config);
+       
+        _container.add("Center", _canvas);
+        _canvas.setSize(new Dimension(horizontalDimension,
+                                verticalDimension));
+        _simpleUniverse = new SimpleUniverse(_canvas);
+        _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+      
 
             /* FIXME: experimental code for changing views.
                TransformGroup VPTG = new TransformGroup();
@@ -420,30 +463,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
                VPTG.setTransform(VPT3D);
             */
-        }
     }
-
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _userTransformation.getTransform(_lastTransform);
-        if (_iterationSynchronized) {
-            _canvas.stopRenderer();
-            _canvas.swap();
-            if (__mouseRotate != null) __mouseRotate.stopped();
-            _canvas.startRenderer();
-        }
-        _isSceneGraphInitialized = false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /**
-     */
-    protected void _addChild(Node node) {
-        _userTransformation.addChild(node);
-    }
-
 
     /** The ViewScreen does not have an associated Java3D node
      *
@@ -471,7 +491,7 @@ public class ViewScreen extends GRActor implements Placeable {
         return new Background(color);
     }
 
-    /**
+    /** Setup the scene graph connections of this actor.  
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
@@ -573,16 +593,6 @@ public class ViewScreen extends GRActor implements Placeable {
 
            transform.get(db);
            for (int i = 0; i < 16; i++) {
-           if (i%4 == 0) {
-           System.out.println(" ");
-           }
-           System.out.print(" "+db[i]);
-           }
-           System.out.println(" ");
-           System.out.println("------------------------------"
-           + "---------------------------------");
-           db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
-           db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
            db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
            db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
            Transform3D td = new Transform3D();
@@ -594,15 +604,26 @@ public class ViewScreen extends GRActor implements Placeable {
         ViewScreen _viewContainer;
     }
 
-    private MouseRotateView __mouseRotate;
-    private Canvas3D _canvas;
-    private SimpleUniverse _simpleUniverse;
-    private boolean _iterationSynchronized = false;
+    private BoundingSphere _bounds;
     // The main connection branch that connects to the universe
     private BranchGroup _branchRoot;
-    private Transform3D _lastTransform = new Transform3D();
-    private TransformGroup _userTransformation = new TransformGroup();
+    // The Java3D canvas component.
+    private Canvas3D _canvas;
+    // The container set in the place() method, or the content pane of the
+    // created frame if place was not called.
     private Container _container;
+    // The frame containing our canvas, if we created it.
     private JFrame _frame;
-    private BoundingSphere _bounds;
+    // True for manual rendering, false for default rendering.
+    // Steve doesn't think this is entirely necessary.
+    private boolean _iterationSynchronized = false;
+
+    private Transform3D _lastTransform = new Transform3D();
+
+    private MouseRotateView _mouseRotate;
+    // The Java3D universe, displayed inside the canvas.
+    private SimpleUniverse _simpleUniverse;
+
+    private TransformGroup _userTransformation = new TransformGroup();
 }
+
