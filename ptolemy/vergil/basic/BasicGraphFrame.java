@@ -484,10 +484,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     }
 
-        /** Create a typed composite actor that contains the selected actors
+    /** Create a typed composite actor that contains the selected actors
      *  and connections. The created typed composite actor is transparent.
      *  The resulting topology is the same in the sense
-     *  of deep conctivities.
+     *  of deep connectivities.
      */
     public void createHierarchy() {
         GraphPane graphPane = _jgraph.getGraphPane();
