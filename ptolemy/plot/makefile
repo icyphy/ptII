@@ -50,7 +50,7 @@ JSRCS = \
 
 EXTRA_SRCS = $(JSRCS)
 
-MISC_FILES = demo doc test 
+MISC_FILES = demo doc #test 
 
 JCLASS = \
 	PlotBox.class \
