@@ -22,7 +22,7 @@ int main(void) {
     struct i69615_FIR fir;
 
 
-    /* Configure the filter with the desired paramters */
+    /* Configure the filter with the desired parameters */
     f0651603000_initialize(&fir, taps, NUM_TAPS, data, INTERP, DEC, DECPHASE);
 
     /* Execute one (SDF) invocation of the filter */

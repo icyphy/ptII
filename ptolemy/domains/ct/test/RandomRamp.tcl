@@ -106,7 +106,7 @@ $plotIn link $r4
 # DE parameters
 $dedir setStopTime 20.0
 
-# CT paramters
+# CT parameters
 set solver1 [$ctdir getAttribute breakpointODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 $solver1 setToken $token

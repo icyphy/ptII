@@ -178,7 +178,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                     _space.read(_minTemplate, null, Long.MAX_VALUE);
             } else {
                 //read for 10 seconds.
-                // FIXME: should 10000 be a paramter?
+                // FIXME: should 10000 be a parameter?
                 while (true) {
                     indexMinimum =
                         (IndexEntry)_space.read(_minTemplate, null, 10000);
@@ -202,7 +202,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
             } else {
                 while (true) {
                     // read for 10 seconds.
-                    // FIXME: should 10000 be a paramter?
+                    // FIXME: should 10000 be a parameter?
                     indexMaximum =
                         (IndexEntry)_space.read(_maxTemplate, null, 10000);
                     if (indexMaximum == null) {
@@ -221,18 +221,18 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
 
             // depends on the where the numberOfHistory is:
             // _lastRead serves as a lock.
-            long lastread = maximum - numberOfHistoryValue;
-            if ( lastread < minimum) {
-                lastread = minimum -1;
+            long lastRead = maximum - numberOfHistoryValue;
+            if ( lastRead < minimum) {
+                lastRead = minimum -1;
             }
-            System.out.println("set initial reading # to " + lastread);
-            _lastRead = new LastRead(lastread);
+            System.out.println("set initial reading # to " + lastRead);
+            _lastRead = new LastRead(lastRead);
 
             // request for notification
             _eventReg = _space.notify(
                     template, null, this, Lease.FOREVER, null);
             _notificationSeq = _eventReg.getSequenceNumber();
-            if (lastread < maximum) {
+            if (lastRead < maximum) {
                 // grab a lock and read all old entries.
                 synchronized(_lastRead) {
                     boolean finished = false;

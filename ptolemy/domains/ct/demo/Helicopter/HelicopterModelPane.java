@@ -75,7 +75,7 @@ public class HelicopterModelPane extends ModelPane {
      *  If BUTTONS is included, then a panel of buttons, go, pause,
      *  resume, and stop, are shown.  If TOP_PARAMETERS is included,
      *  then the top-level parameters of the model are included.
-     *  If DIRECTOR_PARAMETERS is included, then the paramters of
+     *  If DIRECTOR_PARAMETERS is included, then the parameters of
      *  the director are included.
      *  @param model The model to control.
      *  @param layout HORIZONTAL or VERTICAL layout.
