@@ -114,7 +114,7 @@ public class PNQueueReceiver extends QueueReceiver {
                 
                 while (_pause) {
                     //System.out.println(" Actually pausing");
-                    director.paused();
+                    director.increasePausedCount();
                     workspace.wait(this);
                 }
             } catch (IllegalActionException e) {
@@ -195,7 +195,7 @@ public class PNQueueReceiver extends QueueReceiver {
                 }
                 while (_pause) {
                     //System.out.println("Pausing in puuuuuuuuuut");
-                    director.paused();
+                    director.increasePausedCount();
                     workspace.wait(this);
                 }
                 

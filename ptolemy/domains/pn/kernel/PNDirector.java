@@ -77,21 +77,6 @@ public class PNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This decreases the number of active threads in the compositeActor by 1.
-     *  It also checks if the simulation has paused if a pause was 
-     *  requested.
-     *  This method should be called only when an active thread that was 
-     *  registered using increaseActiveCount() is terminated.
-     */
-    // public synchronized  void decreaseActiveCount() {
-// 	_activeActorsCount--;	    
-// 	_checkForDeadlock();
-	//System.out.println("decreased active count");
-        //If pause requested, then check if paused
-        // if (_pause) {
-//             _checkForPause();
-//         }
-//}
     
     /** This handles deadlocks in PN. It is responsible for doing mutations, 
      *  and increasing queue capacities in PNQueueReceivers if required.
@@ -136,22 +121,6 @@ public class PNDirector extends ProcessDirector {
         }
     }
 
-    /** This method should be called when a new thread corresponding to an actor
-     *  is started in a simulation. This method is required for detection of
-     *  deadlocks. The corresponding method decreaseActiveCount should be called 
-     *  when the thread is terminated.
-     */
-    // public synchronized void increaseActiveCount() {
-// 	_activeActorsCount++;
-//     }
-
-    /** This method increases the number of paused threads and checks if the 
-     *  entire simulation is paused. 
-     */
-    public void paused() {
-        _pausedcount++;
-        _checkForPause();
-    }
 
     /** This method iterates through the set of actors in the compositeActor
      *  and sets the pause flag of all the receivers.
@@ -208,7 +177,7 @@ public class PNDirector extends ProcessDirector {
 	}
         synchronized (this) {
             _pausedRecs.clear();
-            _pausedcount= 0;
+            _actorsPaused= 0;
             _pauseRequested = false;
         }
     }
@@ -390,8 +359,8 @@ public class PNDirector extends ProcessDirector {
 
     //Check if all threads are either blocked or paused
     protected synchronized void _checkForPause() {
-	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_pausedcount);
-	if (_readBlockCount + _writeBlockCount + _pausedcount >= _actorsActive) {
+	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_actorsPaused);
+	if (_readBlockCount + _writeBlockCount + _actorsPaused >= _actorsActive) {
 	    _paused = true;
             notifyAll();
 	}
@@ -532,7 +501,7 @@ public class PNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    private long _pausedcount = 0;
+    //private long _pausedcount = 0;
 
     private LinkedList _threadlist = new LinkedList();
     //private boolean _pause = false;
