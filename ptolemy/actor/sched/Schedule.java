@@ -70,8 +70,10 @@ of one will be used. <p>
 
 As an example, suppose that we have an SDF graph containing actors
 A, B, C, and D, with the firing order ABCBCBCDD.
-This firing order can be represented by a simple looped schedule.   The code to create
-this schedule appears below.
+
+This firing order can be represented by a simple looped schedule.  The
+code to create this schedule appears below.
+
 <p>
 <pre>
 Schedule S = new Schedule();
@@ -131,6 +133,30 @@ public class Schedule extends ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the actor invocation sequence of the schedule in the
+     *  form of a sequence of actors. All of the lowest-level nodes of
+     *  the schedule should be an instance of Firing. Otherwise an
+     *  exception will occur at some point in the iteration.
+     *  <p>
+     *  A runtime exception is thrown if the
+     *  underlying schedule structure is modified while the iterator
+     *  is active.
+     *  <p>
+     *  Implementation note: This method is optimized to be memory
+     *  efficient. It walks the schedule tree structure as the
+     *  iterator methods are invoked.
+     *
+     *  @return An iterator over a sequence of actors.
+     *  @exception ConcurrentModificationException If the
+     *   underlying schedule structure is modified while the iterator
+     *   is active.
+     *  @exception InternalErrorException If the schedule contains
+     *   any leaf nodes that are not an instance of Firing.
+     */
+    public Iterator actorIterator() {
+        return new ActorIterator();
+    }
+
     /** Append the specified schedule element to the end of the schedule
      *  list. This element must be an instance of ScheduleElement.
      *
@@ -163,30 +189,6 @@ public class Schedule extends ScheduleElement {
         element.setParent(this);
         _incrementVersion();
         _schedule.add(index, element);
-    }
-
-    /** Return the actor invocation sequence of the schedule in the
-     *  form of a sequence of actors. All of the lowest-level nodes of
-     *  the schedule should be an instance of Firing. Otherwise an
-     *  exception will occur at some point in the iteration.
-     *  <p>
-     *  A runtime exception is thrown if the
-     *  underlying schedule structure is modified while the iterator
-     *  is active.
-     *  <p>
-     *  Implementation note: This method is optimized to be memory
-     *  efficient. It walks the schedule tree structure as the
-     *  iterator methods are invoked.
-     *
-     *  @return An iterator over a sequence of actors.
-     *  @exception ConcurrentModificationException If the
-     *   underlying schedule structure is modified while the iterator
-     *   is active.
-     *  @exception InternalErrorException If the schedule contains
-     *   any leaf nodes that are not an instance of Firing.
-     */
-    public Iterator actorIterator() {
-        return new ActorIterator();
     }
 
     /** Return the actor invocation sequence of this schedule in the form
