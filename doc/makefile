@@ -55,7 +55,6 @@ OPTIONAL_FILES =	codeDoc
 ALLJSRCS = 		ptolemy/plot/*.java \
 			ptolemy/kernel/*.java \
 			ptolemy/kernel/util/*.java \
-			ptolemy/kernel/mutation/*.java \
 			ptolemy/actor/*.java \
 			ptolemy/actor/util/*.java \
 			ptolemy/data/*.java \
@@ -69,7 +68,6 @@ all: suball codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html: 	../ptolemy/plot/*.java \
 			../ptolemy/kernel/*.java \
-			../ptolemy/kernel/mutation/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/util/*.java \
