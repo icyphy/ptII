@@ -31,8 +31,7 @@
 ME =		ptolemy/data/unit/demo
 
 # Keep these alphabetical please.
-DIRS = 		Units \
-		StaticUnits
+DIRS = 		StaticUnits Units
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -48,8 +47,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Units/Units.jar \
-	Fermenter/Fermenter.jar
+	StaticUnits/StaticUnits.jar \
+	Units/Units.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
