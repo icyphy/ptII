@@ -37,16 +37,6 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-# Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
-
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
-
 ######################################################################
 ####
 #
@@ -55,19 +45,29 @@ test Ramp-1.1 {test clone} {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
     $ramp typeConstraints
 
-    set newobj [$ramp clone]
-    set initVal [[[$newobj getAttribute init] getToken] doubleValue]
-    set stepVal [[[$newobj getAttribute step] getToken] doubleValue]
+    #set newobj [$ramp clone]
+    #set initVal [[[$newobj getAttribute init] getToken] doubleValue]
+    #set stepVal [[[$newobj getAttribute step] getToken] doubleValue]
+
+    set newobj [test_clone $ramp]
+    set initVal [test_doubleValue $newobj init]
+    set stepVal [test_doubleValue $newobj step]
     list $initVal $stepVal
 } {0.0 1.0}
 
 test Ramp-1.2 {test clone} {
     set orginit [$ramp getAttribute init]
     set dToken [java::new {ptolemy.data.DoubleToken double} 3.0]
-    $orginit setToken $dToken
 
-    set orgInitVal [[[$ramp getAttribute init] getToken] doubleValue]
-    set initVal [[[$newobj getAttribute init] getToken] doubleValue]
+    #$orginit setToken $dToken
+    [java::cast ptolemy.data.expr.Parameter $orginit] \
+	    setToken $dToken
+    
+    #set orgInitVal [[[$ramp getAttribute init] getToken] doubleValue]
+    #set initVal [[[$newobj getAttribute init] getToken] doubleValue]
+    set orgInitVal [test_doubleValue $ramp init]
+    set initVal [test_doubleValue $newobj init]
+
     list $orgInitVal $initVal
 } {3.0 0.0}
 
