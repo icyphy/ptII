@@ -49,9 +49,9 @@ JSRCS = \
 	HTVQApplet.java \
 	VideoTest.java \
 	SDFApplet.java \
-	SDFdemo.java \
-	SDFdemo2.java \
-	SDFdemo3.java
+	SDFDemo.java \
+	SDFDemo2.java \
+	SDFDemo3.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
