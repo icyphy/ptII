@@ -93,7 +93,7 @@ public class JavaToC {
         LinkedList passList = new LinkedList();
         passList.add(new IndentationVisitor());
         passList.add(new HeaderFileGenerator());
-        passList.add(new CCodeGenerator()); 
+        passList.add(new CFileGenerator()); 
         JavaConverter converter = new JavaConverter(passList, prePassList);
 
         // Configure the code generator to display verbose output,
