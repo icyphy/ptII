@@ -281,6 +281,8 @@ update: ptII$(PTVERSION).releaseVergil.htm troubleshootingVergil.htm \
 		ptII$(PTVERSION).releaseVergil.htm \
 		troubleshootingVergil.htm \
 		whatsnew.htm whatsnewVergil.htm
+	rm docConfig.jar
+	$(MAKE) docConfig.jar
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
