@@ -168,7 +168,6 @@ public class CompositeActorSimpleApplication {
      *  @see ptolemy.actor.Manager#startRun()
      */
     public synchronized void startRun(CompositeActor model) throws IllegalActionException {
-            throws IllegalActionException {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
 
