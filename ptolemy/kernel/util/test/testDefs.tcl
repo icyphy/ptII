@@ -88,7 +88,7 @@ if { $tcl_platform(os) == "SunOS"} {
 		    machine\n psrinfo -s 1 should return an error on a \
 		    single\n processor machines, but it did not\n\
 		    ******************************************\n"
-	    exit -9
+	    #exit -9
 	}
     }
 }
