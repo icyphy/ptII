@@ -45,7 +45,7 @@ ME =		ptolemy/apps
 #DIRS =		agilent $(PTKVM_DIR) $(PTJMF_DIR) \
 #		$(PTLEGO_DIR) $(PTLEJOS) \
 #		tini $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
-DIRS = tini $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
+DIRS = $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
 # Root of Ptolemy II directory
 ROOT =		../..
 
@@ -60,8 +60,7 @@ PTCLASSJAR =
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS) \
-	robot
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
