@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -37,16 +37,16 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNImageSink
-/** 
+/**
 Stores an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
 */
 
 public class RLEncoder extends AtomicActor {
-    
+
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
@@ -58,11 +58,11 @@ public class RLEncoder extends AtomicActor {
         _dimenin = new IOPort(this, "dimensionsIn", true, false);
         _dimenout = new IOPort(this, "dimensionsOut", false, true);
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-            
+
     /** Reads one block of data from file and writes it to output port.
      *  Assuming data in 16 bit, higher byte first format.
      */
@@ -121,11 +121,11 @@ public class RLEncoder extends AtomicActor {
         System.out.println("Approximate compression ratio = "+
                 ((double)_outputlength*100*8)/_inputlength);
     }
-        
-    //public boolean postfire() { 
-    //return false; 
+
+    //public boolean postfire() {
+    //return false;
     //}
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

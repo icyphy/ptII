@@ -71,7 +71,7 @@ succeeded with its rendezvous is executed in the run method. There are
 roughly three parts to the algorithm, each of which is relevant
 to the different rendezvous scenarios.
 <br>
-<I>Case 1:</I> Realized by arriveAfterPut(). There is a put already waiting 
+<I>Case 1:</I> Realized by arriveAfterPut(). There is a put already waiting
 at the rendezvous point. In this case
 the branch attempts to register itself, with the parent actor, as the first
 branch ready to rendezvous. If it succeeds, it performs the rendezvous,
@@ -81,8 +81,8 @@ branch successfully rendezvoused in which case it fails and terminates. Note
 that a put cannot "go away" so it remains in an inner-loop trying to
 rendezvous or failing.
 <br>
-<I>Case 2:</I> Realized by arriveAfterCondSend(). There is a conditional send 
-waiting. In this case it tries to register both branches with their parents as 
+<I>Case 2:</I> Realized by arriveAfterCondSend(). There is a conditional send
+waiting. In this case it tries to register both branches with their parents as
 the first to try. If it
 succeeds it performs the transfer, notifies the parent and returns. It
 performs the registration in two steps, first registering this branch and
@@ -93,7 +93,7 @@ the conditional send could "go away". If it is unable to register itself as
 the first branch to try, it again starts trying to rendezvous from the
 beginning.
 <br>
-<I>Case 3:</I> Realized by arriveFirst(). If there is neither a put or a 
+<I>Case 3:</I> Realized by arriveFirst(). If there is neither a put or a
 conditional send waiting, it sets a
 flag in the receiver that a conditional receive is trying to rendezvous. It
 then waits until a put is executed on the receiver, or until another branch
@@ -182,7 +182,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     // Should never happen that a get or a ConditionalReceive
                     // is already at the receiver.
                     throw new InvalidStateException(parentActor.getName() +
-                            ": ConditionalReceive branch trying to " + 
+                            ": ConditionalReceive branch trying to " +
                             " rendezvous with a receiver that already " +
                             " has a get or a ConditionalReceive waiting.");
                 }
@@ -216,16 +216,16 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             getReceiver()._setConditionalReceive(false, null);
         }
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
 
     /** Encounter a conditionalsend that is already waiting on this
-     *  conditionalreceive. Since this conditionalreceive arrived second, 
-     *  check if both branches are "first" and if so perform the data 
-     *  transfer and reset the state of the receiver. Since a 
+     *  conditionalreceive. Since this conditionalreceive arrived second,
+     *  check if both branches are "first" and if so perform the data
+     *  transfer and reset the state of the receiver. Since a
      *  conditionalsend can "disappear," then this method can return to
-     *  the top of the main loop in the run method that calls this method. 
+     *  the top of the main loop in the run method that calls this method.
      *  Return true if this method should go to the top of the calling
      *  loop; return false otherwise.
      * @returns true if this method should continue at the beginning of
@@ -235,41 +235,41 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected boolean arriveAfterCondSend(CSPReceiver rcvr, CSPActor parent) 
+    protected boolean arriveAfterCondSend(CSPReceiver rcvr, CSPActor parent)
             throws InterruptedException {
         if (parent._isBranchFirst(getID())) {
-            // receive side ok, need to check that send 
-            // side also ok 
-            // CSPReceiver rec = getReceiver(); 
+            // receive side ok, need to check that send
+            // side also ok
+            // CSPReceiver rec = getReceiver();
             if (rcvr._getOtherParent()._isBranchFirst(getID())) {
-                setToken( rcvr.get() ); 
-                rcvr._setConditionalSend(false, null); 
-                parent._branchSucceeded(getID()); 
+                setToken( rcvr.get() );
+                rcvr._setConditionalSend(false, null);
+                parent._branchSucceeded(getID());
                 return false;
             } else {
-                parent._releaseFirst(getID()); 
+                parent._releaseFirst(getID());
                 rcvr.notifyAll();
             }
         }
         _registerBlockAndWait();
-        return true; 
+        return true;
     }
-    
-    /** Encounter a non-conditional put that is already waiting on this 
-     *  conditionalreceive. Since a non-conditional put can not disappear, 
+
+    /** Encounter a non-conditional put that is already waiting on this
+     *  conditionalreceive. Since a non-conditional put can not disappear,
      *  wait (via a while loop) until it successfully rendezvouses or dies.
      * @param parent The csp actor that contains this conditional
      *  receive.
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected void arriveAfterPut(CSPReceiver rcvr, CSPActor parent) 
+    protected void arriveAfterPut(CSPReceiver rcvr, CSPActor parent)
             throws InterruptedException {
         while (true) {
             if (parent._isBranchFirst(getID())) {
-                // I am the branch that succeeds 
-                setToken( rcvr.get() ); 
-                parent._branchSucceeded(getID()); 
+                // I am the branch that succeeds
+                setToken( rcvr.get() );
+                parent._branchSucceeded(getID());
                 return;
             }
             _registerBlockAndWait();
@@ -279,7 +279,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             }
         }
     }
-    
+
     /** Begin a rendezvous attempt prior to any other conditionalsends
      *  or (non-conditional) put attempts. Wait until a put or
      *  conditionalsend attempt is made by another branch.
@@ -288,28 +288,28 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected void arriveFirst(CSPReceiver rcvr, CSPActor parent) 
+    protected void arriveFirst(CSPReceiver rcvr, CSPActor parent)
             throws InterruptedException {
-        rcvr._setConditionalReceive(true, parent); 
-        _registerBlockAndWait(); 
+        rcvr._setConditionalReceive(true, parent);
+        _registerBlockAndWait();
         while (true) {
             if (!isAlive()) {
-                // reset state of receiver 
-                // CSPReceiver rec = getReceiver(); 
-                rcvr._setConditionalReceive(false, null); 
-                parent._branchFailed(getID()); 
-                // wakes up a put if it is waiting 
-                rcvr.notifyAll(); 
+                // reset state of receiver
+                // CSPReceiver rec = getReceiver();
+                rcvr._setConditionalReceive(false, null);
+                parent._branchFailed(getID());
+                // wakes up a put if it is waiting
+                rcvr.notifyAll();
                 return;
             } else if (rcvr._isPutWaiting()) {
                 if (parent._isBranchFirst(getID())) {
-                    // I am the branch that succeeds 
-                    // Note that need to reset condSend 
-                    // flag BEFORE doing put. 
-                    // CSPReceiver rec = getReceiver(); 
-                    rcvr._setConditionalReceive(false, null); 
-                    setToken( rcvr.get() ); 
-                    parent._branchSucceeded(getID()); 
+                    // I am the branch that succeeds
+                    // Note that need to reset condSend
+                    // flag BEFORE doing put.
+                    // CSPReceiver rec = getReceiver();
+                    rcvr._setConditionalReceive(false, null);
+                    setToken( rcvr.get() );
+                    parent._branchSucceeded(getID());
                     return;
                 }
             }

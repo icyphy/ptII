@@ -51,7 +51,7 @@ import java.util.Enumeration;
  *  so that deterministic behavior can be achieved.
  *  <p>
  *  The bottleneck in a typical DE simulator is in the maintenance of the
- *  global event queue. By default, a DE director uses the calendar queue 
+ *  global event queue. By default, a DE director uses the calendar queue
  *  as the global event queue. It is currently the most efficient algorithm
  *  with O(1) time complexity in both enqueue and dequeue operations.
  *  <p>
@@ -66,7 +66,7 @@ import java.util.Enumeration;
  *  <p>
  *  Several of the methods provided in this base class have two versions.
  *  One that deals with relative time (with respect to the current time) and
- *  another that deals with absolute time. While they are theoretically 
+ *  another that deals with absolute time. While they are theoretically
  *  equivalent, it is practically better to use the one with
  *  absolute time in case the data is already in that form. This will
  *  eliminate unnecessary quantization error. For example,
@@ -226,8 +226,8 @@ public class DEDirector extends Director {
      *  @exception It may be thrown in derived classes if the
      *      director is not compatible with the specified container.
      */
-    public DEDirector(CompositeActor container, 
-            String name, 
+    public DEDirector(CompositeActor container,
+            String name,
             DEEventQueue eventQueue) throws IllegalActionException {
 	super(container, name);
         try {
@@ -333,7 +333,7 @@ public class DEDirector extends Director {
                         // If one actor is dead, then stop the simulation.
                         _shouldPostfireReturnFalse = true;
                     }
-                    // check _filledReceivers to see if there are any 
+                    // check _filledReceivers to see if there are any
                     // receivers left that are not emptied.
                     refire = false;
                     Enumeration enum = _filledReceivers.elements();
@@ -565,7 +565,7 @@ public class DEDirector extends Director {
             return false;
         } else if (isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
-        } 
+        }
         return true;
     }
 
@@ -730,7 +730,7 @@ public class DEDirector extends Director {
         // Return false to let the workspace be write-protected.
         // Return true to debug the PtolemyThread.
         return false;
-    } 
+    }
 
     ////////////////////////////////////////////////////////////////////////
             ////                         private methods                        ////

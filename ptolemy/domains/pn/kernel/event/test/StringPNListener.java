@@ -45,9 +45,9 @@ during the execution of a process by a ProcessThread or director in PN.
 
 public class StringPNListener implements PNProcessListener {
 
-    /** Called to report that the execution of a process finished. The 
-     *  wrapup sequence may or may not have completed normally.   The 
-     *  execution event will contain a reference to the actor corresponding 
+    /** Called to report that the execution of a process finished. The
+     *  wrapup sequence may or may not have completed normally.   The
+     *  execution event will contain a reference to the actor corresponding
      *  to the process that finished and the reason for finishing.
      *
      *  @param event A PNProcessEvent that contains a reference to an
@@ -57,9 +57,9 @@ public class StringPNListener implements PNProcessListener {
         _profile += event.toString() + "\n";
     }
 
-    /** Called to report that a process has changed its state (i.e. started, 
+    /** Called to report that a process has changed its state (i.e. started,
      *  or blocked or unblocked, etc.). The PNProcessEvent
-     *  will contain a reference to the actor corresponding to the process. 
+     *  will contain a reference to the actor corresponding to the process.
      *  The event will also indicate the new state and blocking cause, etc.
      *
      *  @param event A PNProcessEvent that contains a reference to an actor.

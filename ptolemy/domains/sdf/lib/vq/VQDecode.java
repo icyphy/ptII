@@ -41,7 +41,7 @@ import java.net.*;
 //////////////////////////////////////////////////////////////////////////
 //// VQDecode
 /**
-This actor decompresses a vector quantized signal.   This operation is simply 
+This actor decompresses a vector quantized signal.   This operation is simply
 a table lookup into the codebook.
 FIXME This should be generalized to a Table-lookup actor.
 
@@ -65,7 +65,7 @@ public final class VQDecode extends SDFAtomicActor {
         outputport.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook",
-                new StringToken("ptolemy/domains/sdf" + 
+                new StringToken("ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
@@ -74,7 +74,7 @@ public final class VQDecode extends SDFAtomicActor {
 
     }
 
-    /** 
+    /**
      * Fire this actor.
      * Consume a Vector on the input, and perform Vector Quantization using
      * Hierarchical Table-Lookup Vector Quantization.  Send the computed
@@ -170,7 +170,7 @@ public final class VQDecode extends SDFAtomicActor {
                 }
 
 		// skip over the lookup tables.
-		
+
                 temp = new byte[65536];
                 // read in the lookup table.
                 if(_fullread(source, temp) != 65536)

@@ -38,8 +38,8 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// TestProcessActor
 /**
-A TestProcessActor is a simple atomic actor that is used for testing the 
-actor package constructs for Processes. It overrides the action methods to 
+A TestProcessActor is a simple atomic actor that is used for testing the
+actor package constructs for Processes. It overrides the action methods to
 return false in the postfire after the first invocation of fire method.
 
 @author Edward A. Lee, Mudit Goel

@@ -234,7 +234,7 @@ public abstract class ConditionalBranch {
     // Has another branch successfully rendezvoused? If so, then _alive
     // is set to false. Otherwise, this branch still can potentially
     // rendezvous. _alive remains true until it is no longer possible
-    // for this branch to successfully rendezvous. 
+    // for this branch to successfully rendezvous.
     private boolean _alive = true;
 
     // The guard for this guarded communication statement.

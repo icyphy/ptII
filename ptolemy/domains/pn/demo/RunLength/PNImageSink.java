@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -37,16 +37,16 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNImageSink
-/** 
+/**
 Stores an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
 */
 
 public class PNImageSink extends AtomicActor {
-    
+
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
@@ -57,7 +57,7 @@ public class PNImageSink extends AtomicActor {
         //_output = new IOPort(this, "output", false, true);
 	_filename = new Parameter(this, "Output_file", new StringToken("/tmp/image.pbm"));
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -78,7 +78,7 @@ public class PNImageSink extends AtomicActor {
         } catch (SecurityException e) {
             System.out.println("Error: Could not open the file: \"" +
                     filename + "\" for writing");
-        } 
+        }
     }
 
     /** Reads one block of data from file and writes it to output port.
@@ -102,14 +102,14 @@ public class PNImageSink extends AtomicActor {
         out.flush();
         out.close();
     }
-    
-    public boolean postfire() { 
-        return false; 
+
+    public boolean postfire() {
+        return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     //    private FileInputStream _file;
     private Parameter _filename;
     //private BufferedReader _file;

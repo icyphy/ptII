@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedSource
-/** 
+/**
 
 
 @author John S. Davis II
@@ -46,18 +46,18 @@ import collections.LinkedList;
 */
 public class TimedSource extends DDEActor {
 
-    /** 
+    /**
      */
     public TimedSource(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	output = new TypedIOPort( this, "output", false, true ); 
+	output = new TypedIOPort( this, "output", false, true );
 	output.setTypeEquals(Token.class);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
-   
+
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ public class TimedSource extends DDEActor {
     ////                        private variables                  ////
 
     private double _interval = 1.0;
-    
+
 }
 
 

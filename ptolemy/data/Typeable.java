@@ -32,7 +32,7 @@
 package ptolemy.data;
 
 import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
+import ptolemy.graph.Inequality;	/* Needed for javadoc */
 import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
 
@@ -94,7 +94,7 @@ public interface Typeable
     /** Return the type constraints of this object.
      *  The constraints are an enumeration of inequalities.
      *  @return an enumeration of instances of Inequality.
-     *  @see ptolemy.graph.Inequality 
+     *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints();
 }

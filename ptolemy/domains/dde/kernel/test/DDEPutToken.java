@@ -43,8 +43,8 @@ import ptolemy.data.StringToken;
 /**
 DDEPutToken is a test class used for testing the production of tokens.
 DDEPutToken has a single, typed, output multiport. A DDEPutToken object
-can output N tokens where 'N' is specified in the constructor. The current 
-time of DDEPutToken at the time a given token is output can be queried 
+can output N tokens where 'N' is specified in the constructor. The current
+time of DDEPutToken at the time a given token is output can be queried
 after Manager.run() is finished.
 
 
@@ -72,7 +72,7 @@ public class DDEPutToken extends DDEPut {
     /**
      */
     public void fire() throws IllegalActionException {
-	int cnt = 0; 
+	int cnt = 0;
 	Token token = new Token();
 	while(cnt < _numTokens) {
 	    Receiver[][] rcvrs = outputPort.getRemoteReceivers();

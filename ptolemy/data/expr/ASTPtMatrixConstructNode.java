@@ -68,7 +68,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     boolean[][] val = new boolean[_nRows][_nColumns];
                     for (i = 0; i < nChildren; ++i) {
                         tok = BooleanToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] = 
+                        val[i/_nColumns][i%_nColumns] =
                             ((BooleanToken)tok).booleanValue();
                     }
                     _ptToken = new BooleanMatrixToken(val);
@@ -76,7 +76,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     int[][] val = new int[_nRows][_nColumns];
                     for (i = 0; i < nChildren; ++i) {
                         tok = IntToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] = 
+                        val[i/_nColumns][i%_nColumns] =
                             ((IntToken)tok).intValue();
                     }
                     _ptToken = new IntMatrixToken(val);
@@ -84,7 +84,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     long[][] val = new long[_nRows][_nColumns];
                     for (i = 0; i < nChildren; ++i) {
                         tok = LongToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] = 
+                        val[i/_nColumns][i%_nColumns] =
                             ((LongToken)tok).longValue();
                     }
                     _ptToken = new LongMatrixToken(val);
@@ -92,7 +92,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     double[][] val = new double[_nRows][_nColumns];
                     for (i = 0; i < nChildren; ++i) {
                         tok = DoubleToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] = 
+                        val[i/_nColumns][i%_nColumns] =
                             ((DoubleToken)tok).doubleValue();
                     }
                     _ptToken = new DoubleMatrixToken(val);
@@ -100,12 +100,12 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     Complex[][] val = new Complex[_nRows][_nColumns];
                     for (i = 0; i < nChildren; ++i) {
                         tok = ComplexToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] = 
+                        val[i/_nColumns][i%_nColumns] =
                             ((ComplexToken)tok).complexValue();
                     }
                     _ptToken = new ComplexMatrixToken(val);
                 } else {
-                    /* The resolved type does not have a corresponding 
+                    /* The resolved type does not have a corresponding
                        matrix type. */
                     throw new IllegalExpressionException("The LUB of the types "
                             + "of the terms of matrix construction does not "
@@ -115,7 +115,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 if (mtype == IntToken.class) {
                     _nColumns = _numIntColumns(childTokens[0], childTokens[1],
                             childTokens[2]);
-                    // Make sure that all following rows have the same number 
+                    // Make sure that all following rows have the same number
                     // of columns.
                     for (i = 1; i < _nRows; ++i) {
                         if (_nColumns != _numIntColumns(childTokens[3*i],
@@ -127,14 +127,14 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     }
                     int[][] val = new int[_nRows][];
                     for (i = 0; i < _nRows; ++i) {
-                        val[i] = _createIntRow(childTokens[3*i], 
+                        val[i] = _createIntRow(childTokens[3*i],
                                 childTokens[3*i+1]);
                     }
                     _ptToken = new IntMatrixToken(val);
                 } else if (mtype == LongToken.class) {
                     _nColumns = _numLongColumns(childTokens[0], childTokens[1],
                             childTokens[2]);
-                    // Make sure that all following rows have the same number 
+                    // Make sure that all following rows have the same number
                     // of columns.
                     for (i = 1; i < _nRows; ++i) {
                         if (_nColumns != _numLongColumns(childTokens[3*i],
@@ -146,14 +146,14 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     }
                     long[][] val = new long[_nRows][];
                     for (i = 0; i < _nRows; ++i) {
-                        val[i] = _createLongRow(childTokens[3*i], 
+                        val[i] = _createLongRow(childTokens[3*i],
                                 childTokens[3*i+1]);
                     }
                     _ptToken = new LongMatrixToken(val);
                 } else if (mtype == DoubleToken.class) {
                     _nColumns = _numDoubleColumns(childTokens[0], childTokens[1],
                             childTokens[2]);
-                    // Make sure that all following rows have the same number 
+                    // Make sure that all following rows have the same number
                     // of columns.
                     for (i = 1; i < _nRows; ++i) {
                         if (_nColumns != _numDoubleColumns(childTokens[3*i],
@@ -165,12 +165,12 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     }
                     double[][] val = new double[_nRows][];
                     for (i = 0; i < _nRows; ++i) {
-                        val[i] = _createDoubleRow(childTokens[3*i], 
+                        val[i] = _createDoubleRow(childTokens[3*i],
                                 childTokens[3*i+1]);
                     }
                     _ptToken = new DoubleMatrixToken(val);
                 } else {
-                    /* The resolved type does not have a corresponding 
+                    /* The resolved type does not have a corresponding
                        matrix type. */
                     throw new IllegalExpressionException("The LUB of the types "
                             + "of the terms of a regularly-spaced-vector matrix "
@@ -186,7 +186,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         return _ptToken;
     }
 
-    /* Create a row of a matrix using matlab-style regularly-spaced-vector 
+    /* Create a row of a matrix using matlab-style regularly-spaced-vector
      * construction when the elements are integers.
      */
     private int[] _createIntRow(ptolemy.data.Token lb, ptolemy.data.Token incr) {
@@ -206,7 +206,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         return result;
     }
 
-    /* Create a row of a matrix using matlab-style regularly-spaced-vector 
+    /* Create a row of a matrix using matlab-style regularly-spaced-vector
      * construction when the elements are long integers.
      */
     private long[] _createLongRow(ptolemy.data.Token lb, ptolemy.data.Token incr) {
@@ -226,7 +226,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         return result;
     }
 
-    /* Create a row of a matrix using matlab-style regularly-spaced-vector 
+    /* Create a row of a matrix using matlab-style regularly-spaced-vector
      * construction when the elements are doubles.
      */
     private double[] _createDoubleRow(ptolemy.data.Token lb, ptolemy.data.Token incr) {
@@ -269,10 +269,10 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
      * construction [lb:incr:ub], when lb, incr, and ub are compatible with
      * IntTokens.
      */
-    // FIXME: note that subtle numerical exceptions may occur in the following 
+    // FIXME: note that subtle numerical exceptions may occur in the following
     // three methods when values of lb, incr, and ub are ill-conditioned. The
     // current implementation does nothing about these.
-    private int _numIntColumns(ptolemy.data.Token lb, ptolemy.data.Token incr, 
+    private int _numIntColumns(ptolemy.data.Token lb, ptolemy.data.Token incr,
             ptolemy.data.Token ub) {
         int result = 0;
         try {
@@ -300,7 +300,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
      * construction [lb:incr:ub], when lb, incr, and ub are compatible with
      * LongTokens.
      */
-    private int _numLongColumns(ptolemy.data.Token lb, ptolemy.data.Token incr, 
+    private int _numLongColumns(ptolemy.data.Token lb, ptolemy.data.Token incr,
             ptolemy.data.Token ub) {
         int result = 0;
         try {
@@ -320,7 +320,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             throw new InternalErrorException("The caller should guarantee that "
                     + "arguments can be converted losslessly to LongToken: "
                     + ex.getMessage());
-        } 
+        }
         return result;
     }
 
@@ -328,7 +328,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
      * construction [lb:incr:ub], when lb, incr, and ub are compatible with
      * DoubleTokens.
      */
-    private int _numDoubleColumns(ptolemy.data.Token lb, ptolemy.data.Token incr, 
+    private int _numDoubleColumns(ptolemy.data.Token lb, ptolemy.data.Token incr,
             ptolemy.data.Token ub) {
         int result = 0;
         try {

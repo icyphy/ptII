@@ -75,7 +75,7 @@ public class PNSieve extends AtomicActor {
 		if (islargestprime) {
 		    // yes - make the mutation for it
 		    ChangeRequest m = makeMutation(value);
-                    System.out.println("Discovered next prime - It is " + 
+                    System.out.println("Discovered next prime - It is " +
                             value);
 		    BasePNDirector director = (BasePNDirector)getDirector();
 		    // Queue the new mutation
@@ -112,7 +112,7 @@ public class PNSieve extends AtomicActor {
             public void execute() {
                 CompositeActor container =  (CompositeActor)getContainer();
                 try {
-                    PNSieve newSieve = 
+                    PNSieve newSieve =
                         new PNSieve(container, value + "_sieve");
                     //queueEntityAddedEvent(container, newSieve);
                     Parameter prim = (Parameter)newSieve.getAttribute("prime");
@@ -129,14 +129,14 @@ public class PNSieve extends AtomicActor {
                         outport.link(relation);
 		    }
 		    IOPort inp = (IOPort)newSieve.getPort("input");
-		    IORelation newRelation = 
+		    IORelation newRelation =
                         new IORelation(container, value+"_queue");
                     //newRelation.setName(value+"_queue");
-                    //FIXME: This cast should not be required. 
+                    //FIXME: This cast should not be required.
                     //Mention it to johnr
-                    //queueRelationAddedEvent(container, 
+                    //queueRelationAddedEvent(container,
                     //(ComponentRelation)newRelation);
-                    
+
                     //queuePortLinkedEvent(newRelation, output);
                     output.link(newRelation);
                     //queuePortLinkedEvent(newRelation, inp);

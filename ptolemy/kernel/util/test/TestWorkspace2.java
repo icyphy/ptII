@@ -40,8 +40,8 @@ import ptolemy.kernel.util.Workspace;
 /**
 This object implements a thread that obtains read permission to
 a workspace three times sequentially, then calls workspace.wait(obj) on an
-object and exits. The object "obj" on which the wait method is called is an 
-inner class of TestWorkspace2 and has a thread of its own. This thread gets a 
+object and exits. The object "obj" on which the wait method is called is an
+inner class of TestWorkspace2 and has a thread of its own. This thread gets a
 write access on the workspace, after the TestWorkspace2 object calls wait(obj)
 on it. Then it gives up the write access and returns.
 To use it, create an instance and then call its start() method.
@@ -61,8 +61,8 @@ public class TestWorkspace2 extends Thread {
         _notif = new Notification(_name + ".notif");
     }
 
-    /** Start a thread for an instance of the inner class "Notification", 
-     *  obtain read access on the workspace 3 times, call wait(obj) on the 
+    /** Start a thread for an instance of the inner class "Notification",
+     *  obtain read access on the workspace 3 times, call wait(obj) on the
      *  workspace, ask the inner class to get a write access on the workspace
      *  and return after relinquishing the read accesses on the workspace.
      *  This method is synchronized both on this class and the inner class
@@ -90,8 +90,8 @@ public class TestWorkspace2 extends Thread {
             }
         }
     }
-    
-    /** Return a profile which contains the various actions performed by this 
+
+    /** Return a profile which contains the various actions performed by this
      *  object.
      */
     public synchronized String profile() {
@@ -108,8 +108,8 @@ public class TestWorkspace2 extends Thread {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    
-    /** Repeatedly calls notifyAll on itself to wake up any threads waiting 
+
+    /** Repeatedly calls notifyAll on itself to wake up any threads waiting
      *  on it.
      */
     public class Notification extends Thread {
@@ -126,11 +126,11 @@ public class TestWorkspace2 extends Thread {
                     if (getwriteaccess) {
                         try {
                             TestWorkspace2.this._workspace.getWriteAccess();
-                            TestWorkspace2.this.profile += 
+                            TestWorkspace2.this.profile +=
                                 _name + ".getWriteAccess()\n";
                         } finally {
                             _workspace.doneWriting();
-                            TestWorkspace2.this.profile += 
+                            TestWorkspace2.this.profile +=
                                 _name + ".doneWriting()\n";
                         }
                         getwriteaccess = false;

@@ -1,6 +1,6 @@
 /*
 A library for mathematical operations on arrays of complex numbers.
- 
+
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
 
@@ -333,7 +333,7 @@ public class ComplexArrayMath {
     }
 
     /** Return the product of the elements in the array.
-     *  If there are no elements in the array, return a Complex number 
+     *  If there are no elements in the array, return a Complex number
      *  with value zero.
      *  @param array An array of Complex's.
      *  @return A new complex number.
@@ -404,7 +404,7 @@ public class ComplexArrayMath {
         }
 
         return retval;
-    } 
+    }
 
     /** Return a new array of length newLength that is formed by
      *  either truncating or padding the input array.
@@ -418,9 +418,9 @@ public class ComplexArrayMath {
     }
 
     /** Return a new array of length newLength that is formed by
-     *  either truncating or padding the input array. 
+     *  either truncating or padding the input array.
      *  Elements from the input array are copied to the output array,
-     *  starting from array[startIdx] until one of the following conditions 
+     *  starting from array[startIdx] until one of the following conditions
      *  is met :
      *  1) The input array has no more elements to copy.
      *  2) The output array has been completely filled.
@@ -455,12 +455,12 @@ public class ComplexArrayMath {
         }
 
         return retval;
-    }  
+    }
 
-                
+
     /** Return a new array that is constructed from the argument by
      *  scaling each element in the array by factor, which
-     *  is a double. If the array argument is of length 0, return a new array 
+     *  is a double. If the array argument is of length 0, return a new array
      *  of length 0.
      */
     public static final Complex[] scale(Complex[] array, double factor) {
@@ -475,7 +475,7 @@ public class ComplexArrayMath {
     }
 
     /** Return a new array that is constructed by subtracting the complex
-     *  number z from every element in the first array. If the array argument 
+     *  number z from every element in the first array. If the array argument
      *  is of length 0, return a new array of length 0.
      */
     public static final Complex[] subtract(Complex[] array, Complex z) {

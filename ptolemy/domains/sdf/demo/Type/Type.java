@@ -115,7 +115,7 @@ public class Type extends SDFApplet {
             // Construct the Ptolemy type lattice model
             final GraphModel graphModel = _constructLattice();
 
-            // Display the type lattice 
+            // Display the type lattice
             _displayGraph(_jgraph, graphModel);
 
             // Construct a new trace model
@@ -127,7 +127,7 @@ public class Type extends SDFApplet {
             visPanel.add(_traceCanvas, BorderLayout.EAST);
 
 	    _addListeners();
-            
+
         } catch (Exception ex) {
             report("Setup failed:", ex);
 	}
@@ -154,7 +154,7 @@ public class Type extends SDFApplet {
 	    _ramp2.step.setExpression(_query.stringValue("ramp2step"));
 
 	    _expr.expression.setExpression(_query.stringValue("expr"));
-            
+
             // Reinitialize the trace display
             _tracePane.getTraceView().clear();
             _tracePane.getTraceModel().clear();
@@ -306,7 +306,7 @@ public class Type extends SDFApplet {
         model.addNode(n9);
         model.addNode(n10);
 
-        /* 
+        /*
            nodeMap.put(a1,n1);
            nodeMap.put(a2,n2);
            nodeMap.put(a3,n3);
@@ -438,12 +438,12 @@ public class Type extends SDFApplet {
         view.drawTrace(trace);
         view.drawTraceElement(element);
     }
-        
+
     // Construct the trace display in a JCanvas and return the JCanvas
     private JCanvas _displayTrace(TraceModel traceModel) {
         _tracePane = new TracePane();
         JCanvas traceWidget = new JCanvas(_tracePane);
-        
+
         // Configure the view
         TraceView traceView = _tracePane.getTraceView();
         traceView.setTimeScale(25);
@@ -790,7 +790,7 @@ public class Type extends SDFApplet {
             Class newtype = event.getNewType();
             String typeString = newtype == null ? "NaT" :
                 (String)_type2String.get(newtype);
-            
+
             TypedIOPort port = event.getPort();
             int id = 0;
             if (port == _ramp1.output) {
@@ -815,7 +815,7 @@ public class Type extends SDFApplet {
                 _printerType = typeString;
                 id = 6;
             }
-            
+
             _schemPanel.repaint();
 
             // Figure out which color to draw
@@ -858,7 +858,7 @@ public class Type extends SDFApplet {
                     currentTime, currentTime+1, color);
             element.closure = TraceModel.Element.OPEN_END;
             trace.add(element);
-            
+
             // Close the current element
             final TraceModel.Element current = _currentElement[id];
             current.closure = 0;
@@ -888,7 +888,7 @@ public class Type extends SDFApplet {
 
             // Update
             _currentElement[id] = element;
-            
+
         }
     }
 

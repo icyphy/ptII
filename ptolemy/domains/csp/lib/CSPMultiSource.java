@@ -123,7 +123,7 @@ public class CSPMultiSource extends CSPActor {
         System.out.println("Invoking wrapup of CSPMultiSource...\n");
         for (int i=0; i<output.getWidth(); i++) {
             System.out.println("MultiSource: Branch " + i +
-                    " successfully  rendezvoused " + 
+                    " successfully  rendezvoused " +
                     _branchCount[i] + " times.");
         }
     }

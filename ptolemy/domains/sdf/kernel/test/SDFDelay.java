@@ -86,14 +86,14 @@ public class SDFDelay extends SDFAtomicActor {
 	    setTokenConsumptionRate(input, 1);
 	    /* The getPort method (in ptolemy.kernel.Entity) finds a port by
 	     * name.  It returns a Port object, but all the ports in the
-	     * actor package are of type TypedIOPort, 
+	     * actor package are of type TypedIOPort,
 	     * which extends Port.   So, we
 	     * have to upcast the return value to the appropriate type.
 	     * The setDeclaredType calls use the type system to define what
 	     * types of tokens are valid for this actor.
 	     */
 	    input.setTypeEquals(IntToken.class);
-	
+
 	    /* Similarly for the output port */
 	    output = (TypedIOPort)newPort("output");
             output.setOutput(true);

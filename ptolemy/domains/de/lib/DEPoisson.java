@@ -168,5 +168,5 @@ public class DEPoisson extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _lambda;            
+    private double _lambda;
 }

@@ -67,7 +67,7 @@ public class PNProcessMulticaster implements PNProcessListener {
         return  !(_listeners.isEmpty());
     }
 
-    /** Notify that a process has finished execution. 
+    /** Notify that a process has finished execution.
      *
      * @param event The PNProcessEvent
      */

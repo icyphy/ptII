@@ -55,16 +55,16 @@ public class CSPCondPut extends CSPPutToken {
             int numTokens, int receiverCount)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name, numTokens);
-         
+
         _receiverCount = receiverCount;
-        _truth = new boolean[receiverCount]; 
-        _winningBranch = new boolean[receiverCount]; 
+        _truth = new boolean[receiverCount];
+        _winningBranch = new boolean[receiverCount];
 
 	for( int i = 0; i < receiverCount; i++ ) {
 	    _winningBranch[i] = false;
 	    _truth[i] = false;
 	}
-	
+
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ public class CSPCondPut extends CSPPutToken {
      */
     public void fire() throws IllegalActionException {
 	int numRcvrs = 0;
-        Receiver[][] rcvrs = outputPort.getRemoteReceivers(); 
+        Receiver[][] rcvrs = outputPort.getRemoteReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
 		numRcvrs++;
@@ -87,7 +87,7 @@ public class CSPCondPut extends CSPPutToken {
 		    + " instantiated.");
 	}
 
-	ConditionalBranch[] Branchs = new ConditionalBranch[numRcvrs]; 
+	ConditionalBranch[] Branchs = new ConditionalBranch[numRcvrs];
 
 	Token token = new Token();
 
@@ -117,5 +117,5 @@ public class CSPCondPut extends CSPPutToken {
 
     private int _receiverCount;
     private boolean[] _truth;
-    private boolean[] _winningBranch; 
+    private boolean[] _winningBranch;
 }

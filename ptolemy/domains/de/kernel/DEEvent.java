@@ -41,10 +41,10 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DEEvent
 //
-/** This class implements the structure of events in Ptolemy II DE domain. 
+/** This class implements the structure of events in Ptolemy II DE domain.
  *  Conceptually, an event in the Ptolemy II DE domain is an aggregation of
  *  a token and a tag. Actors communicate by sending events to each other.
- *  Thus, it makes sense for the implementation to include the 
+ *  Thus, it makes sense for the implementation to include the
  *  destination actor and the destination receiver as fields in the DEEvent
  *  class, as well as the transferred token and the event tag mentioned
  *  previously.
@@ -81,7 +81,7 @@ public class DEEvent {
             throw new IllegalActionException(
                     "Attempt to queue an event with an invalid receiver.");
         }
-        
+
         _receiver = receiver;
         _token = token;
         _tag = tag;
@@ -96,14 +96,14 @@ public class DEEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the destination actor of this event.
      *  @return The destination actor
      */
     public final Actor getDestinationActor() {
         return _actor;
     }
-    
+
     /** Return the destination receiver of this event. If the event is a pure
      *  one, then it returns null.
      *  @return The destination receiver
@@ -119,7 +119,7 @@ public class DEEvent {
     public final Token getTransferredToken() {
         return _token;
     }
-    
+
     /** Return the event tag associated with this event.
      *  @return The event tag
      */

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -37,7 +37,7 @@ import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixAdder
-/** 
+/**
 A multiple input double precision adder.
 Input and output are DoubleMatrixTokens.
 
@@ -47,7 +47,7 @@ Input and output are DoubleMatrixTokens.
 public class PNAdder extends AtomicActor {
 
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
@@ -86,14 +86,14 @@ public class PNAdder extends AtomicActor {
 	//for (int j =0; j<debug[0].length; j++) {
 	//System.out.println(getName()+": debug[0]["+j+"] = "+debug[0][j]);
 	//writeTo(_output, result);
-    }                
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The input port 
+    // The input port
     private IOPort _input;
-    // The output port 
+    // The output port
     private IOPort _output;
 }
 

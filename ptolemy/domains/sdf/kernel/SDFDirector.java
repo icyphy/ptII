@@ -43,31 +43,31 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
-/**  
+/**
 <h1>SDF overview<h1>
-The Synchronous Dataflow(SDF) domain supports the efficient 
-execution of Dataflow graphs that 
-lack control structures.   Dataflow graphs that contain control structures 
+The Synchronous Dataflow(SDF) domain supports the efficient
+execution of Dataflow graphs that
+lack control structures.   Dataflow graphs that contain control structures
 should be executed using the Process Networks(PN) domain instead.
 SDF allows efficient execution, with very little overhead at runtime.  It
-requires that the rates on the ports of all actors be known before hand. 
-SDF also requires that the rates on the ports not change during 
+requires that the rates on the ports of all actors be known before hand.
+SDF also requires that the rates on the ports not change during
 execution.  In addition, in some cases (namely systems with feedback) delays,
 which are represented by initial tokens on relations must be explicitly
-noted.  SDF uses this rate and delay information to determine 
-the execution sequence of the actors before execution begins. 
+noted.  SDF uses this rate and delay information to determine
+the execution sequence of the actors before execution begins.
 <h2>Schedule Properties<h2>
 <ul>
 <li>The number of tokens accumulated on every relation is bounded, given
 an infinite number of executions of the schedule.
-<li>Deadlock will never occur, given and infinite number of executions of 
+<li>Deadlock will never occur, given and infinite number of executions of
 the schedule.
-<ul> 
+<ul>
 <h1>Class comments<h1>
 An SDFDirector is the class that controls execution of actors under the
 SDF domain.  By default, actor scheduling is handled by the SDFScheduler
-class.  Furthermore, the newReceiver method creates Receivers of type 
-SDFReceiver, which extends QueueReceiver to support optimized gets 
+class.  Furthermore, the newReceiver method creates Receivers of type
+SDFReceiver, which extends QueueReceiver to support optimized gets
 and puts of arrays of tokens.
 <p>
 The SDF director has a single parameter, "iterations", corresponding to a
@@ -144,7 +144,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
 
-    /** Initialize the actors associated with this director and 
+    /** Initialize the actors associated with this director and
      *  initialize the number of iterations to zero.  The order in which
      *  the actors are initialized is arbitrary.
      *  @exception IllegalActionException If the initialize() method of
@@ -155,7 +155,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         _iteration = 0;
     }
 
-    /** The SDFDirector always returns true, 
+    /** The SDFDirector always returns true,
      *  assuming that it can be fired.   It does
      *  not call prefire on any contained actors.
      *  @return True.
@@ -173,11 +173,11 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  reaching the iteration limit, or having an actor in the system return
      *  false in postfire.
      *  Increment the number of iterations.
-     *  If the "iterations" parameter is greater than zero, then 
+     *  If the "iterations" parameter is greater than zero, then
      *  see if the limit has been reached.  If so, return false.
      *  Otherwise return true if all of the fired actors since the last
      *  call to prefire returned true.
-     *  @return True if the Director wants to be fired again in the 
+     *  @return True if the Director wants to be fired again in the
      *  future.
      *  @exception IllegalActionException Not thrown.
      */
@@ -192,21 +192,21 @@ public class SDFDirector extends StaticSchedulingDirector {
         return _postfirereturns;
     }
 
-    /** Calculate the current schedule, if necessary, 
+    /** Calculate the current schedule, if necessary,
      *  and iterate the contained actors
-     *  in the order given by the schedule.  No internal state of the 
+     *  in the order given by the schedule.  No internal state of the
      *  director is updated during fire, so it may be used with domains that
      *  require this property, such as CT.
      *  <p>
-     *  Iterating an actor involves calling the actor's prefire, fire and 
+     *  Iterating an actor involves calling the actor's prefire, fire and
      *  postfire methods in succession.  If prefire returns false, indicating
-     *  that the actor is not ready to execute, then an IllegalActionException 
+     *  that the actor is not ready to execute, then an IllegalActionException
      *  will be thrown.   The values returned from postfire are recorded and
      *  are used to determine the value that postfire will return at the
      *  end of the director's iteration.
-     *  @exception IllegalActionException If any actor executed by this 
+     *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
-     *  @exception InvalidStateException If this director does not have a 
+     *  @exception InvalidStateException If this director does not have a
      *  container.
      */
     public void fire() throws IllegalActionException {
@@ -224,7 +224,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
                 if(!actor.prefire()) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             (ComponentEntity) actor, "Actor " +
                             "is not ready to fire.");
                 }
@@ -252,7 +252,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
             throw new InternalErrorException(
-                    "Could not create Default Scheduler:\n" + 
+                    "Could not create Default Scheduler:\n" +
                     e.getMessage());
         }
 
@@ -262,7 +262,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
         catch (Exception e) {
             throw new InternalErrorException(
-                    "Cannot create default iterations parameter:\n" + 
+                    "Cannot create default iterations parameter:\n" +
                     e.getMessage());
         }
 

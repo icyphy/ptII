@@ -34,15 +34,15 @@ package ptolemy.domains.pn.kernel.event;
 //// PNProcessListener
 /**
 An PNProcessListener is able to receive PNProcessEvents that are issued
-during the execution of a process by a ProcessThread or director in PN.   
-In general, an object that implements this interface will probably be a front 
+during the execution of a process by a ProcessThread or director in PN.
+In general, an object that implements this interface will probably be a front
 end such as a execution visualization tool for
 the Ptolemy II system, or an object that is communicating with a front end.
 The events are issued only when the event actually occurs, not when it is
-requested.   For example: A process receives a call to pause(), but the 
+requested.   For example: A process receives a call to pause(), but the
 process may pause some time after the pause was requested. The processPaused()
-method will not be called until the process actually pauses and corresponding 
-thread is suspended.   
+method will not be called until the process actually pauses and corresponding
+thread is suspended.
 
 @author Mudit Goel
 @version $Id$
@@ -50,9 +50,9 @@ thread is suspended.
 
 public interface PNProcessListener {
 
-    /** Called to report that the execution of a process finished. The 
-     *  wrapup sequence may or may not have completed normally.   The 
-     *  execution event will contain a reference to the actor corresponding 
+    /** Called to report that the execution of a process finished. The
+     *  wrapup sequence may or may not have completed normally.   The
+     *  execution event will contain a reference to the actor corresponding
      *  to the process that finished and the reason for finishing.
      *
      *  @param event A PNProcessEvent that contains a reference to an
@@ -60,9 +60,9 @@ public interface PNProcessListener {
      */
     public void processFinished(PNProcessEvent event);
 
-    /** Called to report that a process has changed its state (i.e. started, 
+    /** Called to report that a process has changed its state (i.e. started,
      *  or blocked or unblocked, etc.). The PNProcessEvent
-     *  will contain a reference to the actor corresponding to the process. 
+     *  will contain a reference to the actor corresponding to the process.
      *  The event will also indicate the new state and blocking cause, etc.
      *
      *  @param event A PNProcessEvent that contains a reference to an actor.

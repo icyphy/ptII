@@ -41,8 +41,8 @@ import java.awt.Panel;
 
 /** A XY plotter.  This plotter contains an instance of the Plot class
  *  from the Ptolemy plot package as a public member.  Data at the inputX and
- *  inputY, are plotted on this instance. Both inputX and inputY are 
- *  multiport with type DoubleToken. When plotted, the first channel of 
+ *  inputY, are plotted on this instance. Both inputX and inputY are
+ *  multiport with type DoubleToken. When plotted, the first channel of
  *  inputX and the first channel of inputY is considered the first signal,
  *  then the second channel of inputX and the second channel of inputY
  *  is considered the second signal, and so on. The current implementation
@@ -115,7 +115,7 @@ public class XYPlotter extends Plotter implements Placeable {
      *  at least one tokens. Otherwise,
      *  one token will be gotten from the input channel that has
      *  a token, but nothing will be plotted.
-     *  @exception IllegalActionException If there is no director, 
+     *  @exception IllegalActionException If there is no director,
      *  the width of the ports are not the same, or
      *   if the base class throws it.
      *  @return True if it is OK to continue.

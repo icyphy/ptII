@@ -42,9 +42,9 @@ import java.util.Enumeration;
 A polymorphic commutator, which merges a set of input sequences into
 a single output sequence.  The commutator has an input port
 (a multiport) and an output port (a single port).
-The types of the ports are undeclared and will be resolved by the type 
+The types of the ports are undeclared and will be resolved by the type
 resolution mechanism, with the constraint that the output type must be
-greater than or equal to the input type. On each call to the fire method, the 
+greater than or equal to the input type. On each call to the fire method, the
 actor reads one token from each input channel and broadcasts the token
 to the output port. The order in which the tokens are produced
 is the order of the channels in the input multiport. If any input
@@ -69,9 +69,9 @@ run time, the schedule will be recalculated if necessary.
 public class Commutator extends Transformer implements SequenceActor {
 
     /** Construct an actor in the specified container with the specified
-     *  name. Create ports and make the input port a multiport. Create 
+     *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.
-     * 
+     *
      *  @param container The container.
      *  @param name This is the name of this commutator within the container.
      *  @exception NameDuplicationException If an actor
@@ -106,7 +106,7 @@ public class Commutator extends Transformer implements SequenceActor {
             (newobj.output.getAttribute("TokenProductionRate"));
         return newobj;
     }
-    
+
     /** Notify this entity that the links to the specified port have
      *  been altered.  This sets the production rate of the output port
      *  and notifies the director that the schedule is invalid, if there
@@ -126,7 +126,7 @@ public class Commutator extends Transformer implements SequenceActor {
         }
     }
 
-    /** Read one token from each input channel and 
+    /** Read one token from each input channel and
      *  send it to the output port. If an input
      *  channel has no token, suspend firing and return. In this case,
      *  the actor makes a record of the input channel that it last

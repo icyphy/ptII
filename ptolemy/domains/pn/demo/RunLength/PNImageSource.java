@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -38,7 +38,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNImageSource
-/** 
+/**
 Reads an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
@@ -46,9 +46,9 @@ Reads an image file (int the ASCII PBM format) and creates a matrix token
 */
 
 public class PNImageSource extends AtomicActor {
-    
+
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
@@ -58,7 +58,7 @@ public class PNImageSource extends AtomicActor {
         _output = new IOPort(this, "output", false, true);
 	_filename = new Parameter(this, "Image_file", new StringToken());
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -103,7 +103,7 @@ public class PNImageSource extends AtomicActor {
                     dataread = _file.readLine();
                 }
                 //System.out.println("Read "+dataread);
-                DataInputStream dim = 
+                DataInputStream dim =
                     new DataInputStream(new StringBufferInputStream(dataread));
                 StreamTokenizer datastr = new StreamTokenizer(dim);
                 int datarow = 0;
@@ -119,7 +119,7 @@ public class PNImageSource extends AtomicActor {
                 datastr = new StreamTokenizer(_file);
                 for (int i=0; i<datarow; i++) {
                     for (int j=0; j<datacol; j++) {
-                        while (datastr.nextToken() != 
+                        while (datastr.nextToken() !=
                                 StreamTokenizer.TT_NUMBER);
                         image[i][j] = (int)datastr.nval;
                     }
@@ -138,16 +138,16 @@ public class PNImageSource extends AtomicActor {
             System.out.println("PNImageSource Can't readInt.");
         }
 
-    
+
     }
 
-    public boolean postfire() { 
-        return false; 
+    public boolean postfire() {
+        return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     //    private FileInputStream _file;
     private Parameter _filename;
     //private BufferedReader _file;

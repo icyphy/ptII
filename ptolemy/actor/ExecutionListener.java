@@ -43,7 +43,7 @@ events that are reported are state changes in the manager.
 Events are issued only when they actually occurs, not when it is
 requested. For example, when the pause() method of a manager is called,
 no event is issued.  An event is issued when the request is actually
-processed and the execution thread has been suspended.  
+processed and the execution thread has been suspended.
 
 @author Steve Neuendorffer, Edward A. Lee
 @version $Id$

@@ -106,7 +106,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in the type of an attribute.  This method is 
+    /** React to a change in the type of an attribute.  This method is
      *  called by a contained attribute when its type changes.
      *  In this base class, the method throws an exception.
      *  Thus, by default, attribute types are not allowed to change.

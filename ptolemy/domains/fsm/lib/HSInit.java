@@ -53,7 +53,7 @@ to an FSMTransition whose destination state has a CT subsystem as refinement.
 */
 public class HSInit extends NamedObj implements TransitionAction {
 
-    public HSInit(FSMTransition container, String integratorName, 
+    public HSInit(FSMTransition container, String integratorName,
             String expression) {
         super(container.workspace(), container.getFullName() + ".init."
                 + integratorName);
@@ -80,17 +80,17 @@ public class HSInit extends NamedObj implements TransitionAction {
         /*try*/ {
             VariableList vl = null;
             // Add the FSMController's input value variable list to ValueVar's
-            // scope. 
+            // scope.
             FSMController ctrl = (FSMController)_container.getContainer();
             vl = (VariableList)ctrl.getAttribute(FSMController.INPUT_VALUE_VAR_LIST);
             _valueVar.addToScope(vl);
-            // Add the FSMController's local variable list to ValueVar's 
+            // Add the FSMController's local variable list to ValueVar's
             // scope.
             vl = (VariableList)ctrl.getAttribute(FSMController.LOCAL_VARIABLE_LIST);
             _valueVar.addToScope(vl);
             // Add the source state's local input value variable list to ValueVar's
             // scope.
-            FSMState st = _container.sourceState(); 
+            FSMState st = _container.sourceState();
             vl = (VariableList)st.getAttribute(FSMState.LOCAL_INPUT_VALUE_VAR_LIST);
             _valueVar.addToScope(vl);
             _valueVar.setExpression(_expression);
@@ -110,14 +110,14 @@ public class HSInit extends NamedObj implements TransitionAction {
 
         CTBaseIntegrator intgr = (CTBaseIntegrator)nref.getEntity(_integratorName);
 
-        
+
 
         //intgr.setPotentialState(((DoubleToken)_valueVar.getToken()).doubleValue());
         Parameter init = (Parameter)intgr.getAttribute("InitialState");
         init.setToken(_valueVar.getToken());
-        
-        //System.out.println("Executing transition action: " + 
-        //this.getFullName() + " " + 
+
+        //System.out.println("Executing transition action: " +
+        //this.getFullName() + " " +
         //((DoubleToken)_valueVar.getToken()).doubleValue());
 
         // set the input of dest ref
@@ -126,7 +126,7 @@ public class HSInit extends NamedObj implements TransitionAction {
         FSMController ctrl = (FSMController)dest.getContainer();
         VariableList vl = (VariableList)ctrl.getAttribute(FSMController.INPUT_VALUE_VAR_LIST);
         Enumeration invars = vl.getVariables();
-        while (invars.hasMoreElements()) { 
+        while (invars.hasMoreElements()) {
             Variable invar = (Variable)invars.nextElement();
             IOPort np = (IOPort)nref.getPort(invar.getName());
             if (np != null) {
@@ -144,8 +144,8 @@ public class HSInit extends NamedObj implements TransitionAction {
         nref.initialize();
         dir.setCurrentTime(exec.getCurrentTime());
 
-        //System.out.println("transition action set " + 
-        //dir.getFullName() + " current time " + 
+        //System.out.println("transition action set " +
+        //dir.getFullName() + " current time " +
         //exec.getCurrentTime());
 
     }

@@ -74,7 +74,7 @@ public class PNGalaxySieve extends AtomicActor {
 		if (islargestprime) {
 		    //System.out.println("Making mutations");
 		    // yes - make the mutation for it
-		    ChangeRequest m = 
+		    ChangeRequest m =
                         makeMutation(((IntToken)data).intValue());
 		    BasePNDirector director = (BasePNDirector)getDirector();
 		    // Queue the new mutation
@@ -114,12 +114,12 @@ public class PNGalaxySieve extends AtomicActor {
 
                 CompositeActor container =  (CompositeActor)getContainer();
                 try {
-		    CompositeActor galaxy = 
+		    CompositeActor galaxy =
                         new CompositeActor(container, value+"_gal");
 		    IOPort galin = (IOPort)galaxy.newPort(value+"_in");
 		    IOPort galout = (IOPort)galaxy.newPort(value+"_out");
-		    
-                    PNGalaxySieve newSieve = 
+
+                    PNGalaxySieve newSieve =
                         new PNGalaxySieve(galaxy, value + "_sieve");
                     newSieve.setParam("prime", Integer.toString(value));
 
@@ -138,13 +138,13 @@ public class PNGalaxySieve extends AtomicActor {
 			galout.link(relation);
 		    }
 		    IOPort outport = (IOPort)newSieve.getPort("output");
-		    Relation newout = 
+		    Relation newout =
                         galaxy.connect(galout, outport, value+"outgal");
 		    IOPort input = (IOPort)newSieve.getPort("input");
-		    Relation newin = 
+		    Relation newin =
                         galaxy.connect(input, galin, value+"ingal");
 		    //_output = new PNOutPort(PNSieve.this, "output");
-		    Relation newRelation = 
+		    Relation newRelation =
                         container.connect(galin, _output, value+"_queue");
                 } catch (NameDuplicationException ex) {
                     throw new InvalidStateException("Cannot create " +

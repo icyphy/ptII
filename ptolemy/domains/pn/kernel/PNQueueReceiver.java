@@ -41,16 +41,16 @@ import collections.LinkedList;
 //// PNQueueReceiver
 /**
 
-A receiver with a FIFO queue that blocks the calling process on a read if the 
+A receiver with a FIFO queue that blocks the calling process on a read if the
 FIFO queue is empty and on a write if the queue is full. Blocking read provides
-the basic functionality of a FIFO channel in the process networks model of 
+the basic functionality of a FIFO channel in the process networks model of
 computation. Blocking write supports the implementation suggested by Parks for
 bounded memory execution of process networks.
 <p>
 Tokens are appended to the queue with the put() method, which blocks on a write
-if the queue is full. Tokens are removed from the queue with the get() method, 
+if the queue is full. Tokens are removed from the queue with the get() method,
 which blocks on a read if the queue is empty.
-In case a process blocks on a read or a write, the receiver informs the 
+In case a process blocks on a read or a write, the receiver informs the
 director about the same.
 The receiver also unblocks processes blocked on a read or a write. In case
 a process is blocked on a read (read-blocked), it is unblocked on availability
@@ -59,10 +59,10 @@ is unblocked on the availability of room in the queue and informs the director
 of the same.
 <p>
 This class is also responsible for pausing or terminating a process that tries
-to read from or write to the receiver. In case of termination, the receiver 
-throws a TerminateProcessException when a process tries to read from or write 
-to the receiver. This terminates the process. 
-In case of pausing, the receiver suspends the process when it tries to read 
+to read from or write to the receiver. In case of termination, the receiver
+throws a TerminateProcessException when a process tries to read from or write
+to the receiver. This terminates the process.
+In case of pausing, the receiver suspends the process when it tries to read
 from or write to the receiver and resumes it only after a request to resume the
 process has been received.
 <p>
@@ -90,19 +90,19 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Remove and return the oldest token from the FIFO queue contained 
-     *  in the receiver. Terminate the calling process by throwing a 
-     *  TerminateProcessException if requested. 
-     *  Otherwise, if the FIFO queue is empty, then suspend the calling 
+    /** Remove and return the oldest token from the FIFO queue contained
+     *  in the receiver. Terminate the calling process by throwing a
+     *  TerminateProcessException if requested.
+     *  Otherwise, if the FIFO queue is empty, then suspend the calling
      *  process and inform the director of the same.
-     *  If a new token becomes available to the FIFO queue, then resume the 
-     *  suspended process. 
+     *  If a new token becomes available to the FIFO queue, then resume the
+     *  suspended process.
      *  If the queue was not empty, or on availability of a new token (calling
      *  process was suspended), take the oldest token from the FIFO queue.
-     *  Check if any process is blocked on a write to this 
-     *  receiver. If a process is indeed blocked, then unblock the 
+     *  Check if any process is blocked on a write to this
+     *  receiver. If a process is indeed blocked, then unblock the
      *  process, and inform the director of the same. Then check if a pause is
-     *  requested, in which case suspend the calling process until the 
+     *  requested, in which case suspend the calling process until the
      *  execution is resumed.
      *  Otherwise return.
      *  @return The oldest Token read from the queue
@@ -158,7 +158,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public Actor getWriteBlockedActor() {
         return _writeblockedactor;
     }
-    
+
     /** Return true since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
      *  @return true
@@ -167,7 +167,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
-    /** Return true since a call to the get() method of the receiver will 
+    /** Return true since a call to the get() method of the receiver will
      *  always return a token if the call to get() ever returns.
      *  @return true
      */
@@ -189,8 +189,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Return a true or false to indicate whether there is a read pending
      *  on this receiver or not, respectively.
-     *  @return a boolean indicating whether a read is pending on this 
-     *  receiver or not. 
+     *  @return a boolean indicating whether a read is pending on this
+     *  receiver or not.
      */
     public synchronized boolean isReadPending() {
 	return _readpending;
@@ -198,26 +198,26 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Return a true or false to indicate whether there is a write pending
      *  on this receiver or not.
-     *  @return A boolean indicating whether a write is pending on this 
-     *  receiver or not. 
+     *  @return A boolean indicating whether a write is pending on this
+     *  receiver or not.
      */
     public synchronized boolean isWritePending() {
 	return _writepending;
     }
 
-    /** Put a token on the queue contained in this receiver.  
-     *  If the queue is full, then suspend the calling process (blocking 
-     *  write) and inform the director of the same. Resume the process on 
-     *  detecting room in the queue. 
-     *  If a termination is requested, then initiate the termination of the 
+    /** Put a token on the queue contained in this receiver.
+     *  If the queue is full, then suspend the calling process (blocking
+     *  write) and inform the director of the same. Resume the process on
+     *  detecting room in the queue.
+     *  If a termination is requested, then initiate the termination of the
      *  calling process by throwing a TerminateProcessException.
-     *  On detecting a room in the queue, put a token in the queue. 
-     *  Check whether any process is blocked 
-     *  on a read from this receiver. If a process is indeed blocked, then 
-     *  unblock the process, and inform the director of the same. 
-     *  If a pause is requested, then suspend the calling process until a 
-     *  resumption is requested. 
-     *  @param token The token to be put in the receiver. 
+     *  On detecting a room in the queue, put a token in the queue.
+     *  Check whether any process is blocked
+     *  on a read from this receiver. If a process is indeed blocked, then
+     *  unblock the process, and inform the director of the same.
+     *  If a pause is requested, then suspend the calling process until a
+     *  resumption is requested.
+     *  @param token The token to be put in the receiver.
      */
     public void put(Token token) {
 	Workspace workspace = getContainer().workspace();
@@ -227,7 +227,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             if (!super.hasRoom()) {
                 _writepending = true;
                 //Note: Required only to inform the listeners
-                _writeblockedactor = 
+                _writeblockedactor =
                     ((ProcessThread)Thread.currentThread()).getActor();
                 director._informOfWriteBlock(this);
                 while (!_terminate && !super.hasRoom()) {
@@ -258,7 +258,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
     }
 
-    /** Reset the state variables in the receiver. 
+    /** Reset the state variables in the receiver.
      */
     public void reset() {
 	super.reset();
@@ -273,7 +273,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Pause any process that tries to read from or write to this receiver
      *  if the argument is true. If the argument is false, then resume any
      *  process paused while reading from or writing to this receiver.
-     *  @param pause true if requesting a pause and false if requesting a 
+     *  @param pause true if requesting a pause and false if requesting a
      *  resumption of the paused thread.
      */
     public synchronized void requestPause(boolean pause) {
@@ -285,18 +285,18 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	}
     }
 
-    /** Set a state flag indicating that there is a process blocked while 
+    /** Set a state flag indicating that there is a process blocked while
      *  trying to read from this receiver.
-     *  @param readpending true if the calling process is blocking on a 
+     *  @param readpending true if the calling process is blocking on a
      *  read, false otherwise.
      */
     public synchronized void setReadPending(boolean readpending) {
 	_readpending = readpending;
     }
 
-    /** Set a state flag indicating that there is a process blocked 
-     *  (write-blocked) while trying to write to the receiver. 
-     *  @param writepending true if the calling process is blocking on 
+    /** Set a state flag indicating that there is a process blocked
+     *  (write-blocked) while trying to write to the receiver.
+     *  @param writepending true if the calling process is blocking on
      *  a write, false otherwise.
      */
     public synchronized void setWritePending(boolean writepending) {

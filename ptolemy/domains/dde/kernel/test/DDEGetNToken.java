@@ -98,21 +98,21 @@ public class DDEGetNToken extends DDEGet {
     /**
      */
     public void fire() throws IllegalActionException {
-	int cnt = 0; 
+	int cnt = 0;
 	Token token;
 	while(cnt < _numTokens) {
 	    boolean finished = false;
-            Thread thread = Thread.currentThread(); 
+            Thread thread = Thread.currentThread();
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-		_beforeTimes[cnt] = timeKeeper.getCurrentTime(); 
+		_beforeTimes[cnt] = timeKeeper.getCurrentTime();
 		Receiver[][] rcvrs = inputPort.getReceivers();
 		for( int i = 0; i < rcvrs.length; i++ ) {
 		    for( int j = 0; j < rcvrs[i].length; j++ ) {
 			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
 			if( rcvr.hasToken() ) {
-			    _tokens[cnt] = rcvr.get(); 
-			    _afterTimes[cnt] = timeKeeper.getCurrentTime(); 
+			    _tokens[cnt] = rcvr.get();
+			    _afterTimes[cnt] = timeKeeper.getCurrentTime();
 		            cnt++;
 			    j = rcvrs[i].length + 1;
 			    finished = true;
@@ -133,5 +133,5 @@ public class DDEGetNToken extends DDEGet {
     private Token[] _tokens = null;
     private double[] _beforeTimes = null;
     private double[] _afterTimes = null;
-    
+
 }

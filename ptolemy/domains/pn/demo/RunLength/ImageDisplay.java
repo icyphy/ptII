@@ -47,14 +47,14 @@ import java.awt.image.*;
 */
 
 public final class ImageDisplay extends AtomicActor {
-    public ImageDisplay(CompositeActor container, String name) 
+    public ImageDisplay(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container,name);
         _port_image = new IOPort(this, "image", true, false);
 	new Parameter(this, "FrameName", new StringToken("ImageDisplay"));
     }
 
-    //     public ImageDisplay(CompositeActor container, String name, Picture pan) 
+    //     public ImageDisplay(CompositeActor container, String name, Picture pan)
     //             throws IllegalActionException, NameDuplicationException {
     //         super(container,name);
     //         _port_image = new IOPort(this, "image", true, false);
@@ -66,7 +66,7 @@ public final class ImageDisplay extends AtomicActor {
         _frame = null;
         _oldxsize = 0;
         _oldysize = 0;
-	StringToken name = 
+	StringToken name =
 	    (StringToken)((Parameter)getAttribute("FrameName")).getToken();
 	_framename = name.stringValue();
 	if(_panel == null) {
@@ -133,10 +133,10 @@ public final class ImageDisplay extends AtomicActor {
 		if (frame[j][i] == 0) tem = 255;
 		else tem = 0;
 		_RGBbuffer[index] = (255 << 24) |
-		    ((tem & 255) << 16) | 
-		    ((tem & 255) << 8) | 
+		    ((tem & 255) << 16) |
+		    ((tem & 255) << 8) |
 		    (tem & 255);
-	    }  
+	    }
 	}
 	_picture.displayImage();
 	_picture.repaint();
@@ -176,7 +176,7 @@ public final class ImageDisplay extends AtomicActor {
 		_window.dispose();
 	    }
 	}
-	
+
 	public void windowDeactivated(WindowEvent e) {}
 	public void windowDeiconified(WindowEvent e) {}
 	public void windowIconified(WindowEvent e) {}

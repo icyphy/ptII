@@ -274,7 +274,7 @@ public class Clock extends TimedSource {
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
 
         // Adjust the phase if time has moved beyond the current phase.
-        while (currentTime >= 
+        while (currentTime >=
                 _tentativeCycleStartTime + offsts[0][_tentativePhase]) {
             // Phase boundary.  Change the current value.
             _tentativeCurrentValue = _getValue(_tentativePhase);

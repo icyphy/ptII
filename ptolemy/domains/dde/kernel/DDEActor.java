@@ -55,7 +55,7 @@ notion of time of the actor that receives the NullToken.
 <P>
 The DDE model of computation supports typed, polymorphic actors and
 does not require this base class for implementation; this class is
-purely optional. Nevertheless, this class provides useful syntactic 
+purely optional. Nevertheless, this class provides useful syntactic
 conveniences for developing DDE models.
 
 @author John S. Davis II
@@ -112,23 +112,23 @@ public class DDEActor extends TypedAtomicActor {
 	return _currentTime;
     }
 
-    /** Return the last port through which a token was consumed by 
-     *  this actor. If no tokens have ever been consumed through any 
+    /** Return the last port through which a token was consumed by
+     *  this actor. If no tokens have ever been consumed through any
      *  ports of this actr, then return null.
-     * @return IOPort The last port through which a token was 
-     *  consumed by this actor. 
+     * @return IOPort The last port through which a token was
+     *  consumed by this actor.
      */
     public IOPort getLastPort() {
 	return _lastPort;
     }
 
     /** Return a non-NullToken from the receiver that has the minimum,
-     *  non-negative receiver time of all receivers contained by this 
-     *  actor. If there exists a set of multiple receivers that share 
-     *  a common minimum receiver time, then return the token contained 
-     *  by the highest priority receiver within this set. If this actor 
-     *  contains no receivers then return null. This method may block 
-     *  as it calls several blocking methods. 
+     *  non-negative receiver time of all receivers contained by this
+     *  actor. If there exists a set of multiple receivers that share
+     *  a common minimum receiver time, then return the token contained
+     *  by the highest priority receiver within this set. If this actor
+     *  contains no receivers then return null. This method may block
+     *  as it calls several blocking methods.
      * @return Return a non-NullToken that has the minimum, nonnegative
      *  receiver time of all receivers contained by this actor.
      */
@@ -158,17 +158,17 @@ public class DDEActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods		   ////
 
-    /** Return a token from the receiver that has the minimum receiver 
+    /** Return a token from the receiver that has the minimum receiver
      *  time of all receivers contained by this actor. The returned token
      *  will have the lowest time stamp of all pending tokens for this
      *  actor. If there exists a set of multiple receivers that share
-     *  a common minimum receiver time, then return the token contained 
+     *  a common minimum receiver time, then return the token contained
      *  by the highest priority receiver within this set. If this actor
      *  contains no receivers then return null.
      * @return The token with the smallest time stamp of all tokens
      *  contained by this actor. If multiple tokens share the smallest
      *  time stamp this token will come from the highest priority
-     *  receiver that has the minimum receiver time. If all receivers 
+     *  receiver that has the minimum receiver time. If all receivers
      *  have expired then throw a TerminateProcessException.
      * @see ptolemy.domains.dde.kernel.DDEReceiver
      * @see ptolemy.domains.dde.kernel.TimeKeeper
@@ -185,7 +185,7 @@ public class DDEActor extends TypedAtomicActor {
             } else {
                 return _getNextInput();
             }
-	} else { 
+	} else {
 	    throw new IllegalActionException("FIXME");
 	}
     }

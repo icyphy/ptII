@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -35,7 +35,7 @@ import ptolemy.gui.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueryApplet
-/** 
+/**
 Applet demonstrating the Query class.
 @author  Edward A. Lee, Manda Sutijono
 @version $Id$
@@ -44,7 +44,7 @@ Applet demonstrating the Query class.
 public class QueryApplet extends Applet implements QueryListener {
 
     /** Constructor.
-     */	
+     */
     public QueryApplet() {
         _query = new Query();
         add(_query);

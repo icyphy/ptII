@@ -48,7 +48,7 @@ import java.awt.image.*;
 */
 
 public final class TicTacToeDisplay extends AtomicActor {
-    public TicTacToeDisplay(CompositeActor container, String name) 
+    public TicTacToeDisplay(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container,name);
         input = new IOPort(this, "input", true, false);
@@ -66,7 +66,7 @@ public final class TicTacToeDisplay extends AtomicActor {
 	_moves = new int[3][3];
 	if(_panel == null) {
             _frame = new _PictureFrame("Enjoy Mudit's TicTacToe");
-	    _frame.addWindowListener(new _PictureFrameListener(_frame));    
+	    _frame.addWindowListener(new _PictureFrameListener(_frame));
             _panel = _frame.getPanel();
 	    _frame.setSize(300, 300);
         } else {
@@ -114,7 +114,7 @@ public final class TicTacToeDisplay extends AtomicActor {
 			wait();
 		    }
 		} catch (InterruptedException e) {
-		    throw new IllegalActionException(this, 
+		    throw new IllegalActionException(this,
 			    "InterruptedException e: " + e.toString());
 		}
 	    }
@@ -129,7 +129,7 @@ public final class TicTacToeDisplay extends AtomicActor {
 	    _nomove = true;
 	}
     }
-    
+
     public synchronized void moveMade(int row, int col, int val) {
 	Panel pan = (Panel)_panel.getComponent(row*3 + col);
 	CardLayout layout = (CardLayout)pan.getLayout();
@@ -160,23 +160,23 @@ public final class TicTacToeDisplay extends AtomicActor {
 	    return true;
 	}
     }
-    
+
     public void setPanel(Panel panel) {
         _panel = panel;
     }
-    
+
     public final static int  CROSSES = 1;
     public final static int NOTS = -1;
     public IOPort input;
     public IOPort output;
 
-    /** Determine whether the game is over. 
+    /** Determine whether the game is over.
      *  @return true if game is over
      */
     private boolean _isGameOver() {
 	for (int i = 0; i < 3; i++ ) {
 	    if ((Math.abs(_moves[i][0] + _moves[i][1] + _moves[i][2]) == 3) ||
-		    (Math.abs(_moves[0][i] + _moves[1][i] + _moves[2][i]) 
+		    (Math.abs(_moves[0][i] + _moves[1][i] + _moves[2][i])
 			    == 3)) {
 		_notdone = false;
 	    }
@@ -244,7 +244,7 @@ public final class TicTacToeDisplay extends AtomicActor {
 		_window.dispose();
 	    }
 	}
-	
+
 	public void windowDeactivated(WindowEvent e) {}
 	public void windowDeiconified(WindowEvent e) {}
 	public void windowIconified(WindowEvent e) {}

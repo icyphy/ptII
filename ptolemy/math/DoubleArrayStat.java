@@ -41,7 +41,7 @@ import java.util.*;
  * This class provides a library for statistical operations on arrays of
  * doubles.
  * Unless explicity noted otherwise, all array arguments are assumed to be
- * non-null. If a null array is passed to a method, a NullPointerException 
+ * non-null. If a null array is passed to a method, a NullPointerException
  * will be thrown in the method or called methods.
  * <p>
  * @author Jeff Tsay
@@ -105,7 +105,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  are not verified to be non-negative.
      *  Return 1.0 if the length of the array is 0.
      *  @param array An array of doubles.
-     *  @return A double. 
+     *  @return A double.
      */
     public static final double geometricMean(double[] array) {
         return Math.pow(productOfElements(array), 1.0 / array.length);
@@ -117,9 +117,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double max(double[] array) {
 
         int length = _nonZeroLength(array, "DoubleArrayStat.max");
- 
+
         double maxElement = array[0];
-        
+
         for (int i = 1; i < length; i++) {
             maxElement = Math.max(array[i], maxElement);
         }
@@ -172,9 +172,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
         if (sample && (array.length < 2)) {
            throw new IllegalArgumentException(
             "ptolemy.math.DoubleArrayStat.variance() : sample variance and " +
-            "standard deviation of an array of length less than 2 are not " + 
+            "standard deviation of an array of length less than 2 are not " +
             "defined.");
-        } 
+        }
 
         double ex2 = 0.0;
         double sum = 0.0;
@@ -183,9 +183,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
             sum += array[i];
         }
 
-        double norm = sample ? (length - 1) : length;        
+        double norm = sample ? (length - 1) : length;
         double sumSquaredOverLength = sum * sum / length;
-        return (ex2 - sumSquaredOverLength) / norm; 
+        return (ex2 - sumSquaredOverLength) / norm;
     }
 
     /** Return the standard deviation of the elements in the array.
@@ -254,10 +254,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  defined by :
      *  Rxx[d] = sum of i = 0 to N - 1 of x[i] * x[i + d]
      *  N must be non-negative, but large numbers are ok because this
-     *  routine will not overrun reading of the arrays.     
+     *  routine will not overrun reading of the arrays.
      *  @param x An array of doubles.
-     *  @param N An integer indicating the  number of samples to sum over. 
-     *  @param lag An integer indicating the lag value (may be negative). 
+     *  @param N An integer indicating the  number of samples to sum over.
+     *  @param lag An integer indicating the lag value (may be negative).
      *  @return A double, Rxx[lag].
      */
     public static double autoCorrelationAt(double[] x, int N, int lag) {
@@ -281,9 +281,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return a new array that is the cross-correlation of the two
      *  argument arrays, starting and ending at user-specified lag values.
-     *  The output array will have length (endlag - startlag + 1).  The first 
-     *  element of the output will have the cross-correlation at a lag of 
-     *  startlag. The last element of the output will have the 
+     *  The output array will have length (endlag - startlag + 1).  The first
+     *  element of the output will have the cross-correlation at a lag of
+     *  startlag. The last element of the output will have the
      *  cross-correlation at a lag of endlag.
      *  @param x The first array of doubles.
      *  @param y The second array of doubles.
@@ -296,7 +296,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
         double[] retval = new double[outputLength];
-       
+
         for (int lag = startLag; lag < endLag; lag++) {
 
             // Find the most efficient and correct place to start the summation
@@ -319,14 +319,14 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the auto-correlation of the 
+    /** Return a new array that is the auto-correlation of the
      *  argument array, starting and ending at user-specified lag values.
      *  The output array will have length (endlag - startlag + 1).  The first
-     *  element of the output will have the auto-correlation at a lag of 
+     *  element of the output will have the auto-correlation at a lag of
      *  startlag. The last element of the output will have the
      *  auto-correlation at a lag of endlag.
      *  @param x An array of doubles.
-     *  @param startLag An int indicating at which lag to start (may be 
+     *  @param startLag An int indicating at which lag to start (may be
      *  negative).
      *  @param endLag An int indicating at which lag to end.
      *  @return A new array of doubles.
@@ -353,12 +353,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
             }
 
             retval[lag - startLag] = sum;
-        } 
+        }
 
         return retval;
     }
 
-    /** Given an array of probabilities, treated as a probability mass 
+    /** Given an array of probabilities, treated as a probability mass
      *  function (pmf), calculate the entropy (in bits). The pmf is
      *  a discrete function that gives the probability of each element.
      *  The sum of the elements in the pmf should be 1, and each element
@@ -368,7 +368,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The function computed is :
      *  <p>
      *   H(p) = - sum (p[x] * log<sup>2</sup>(p[x]))
-     *  </p> 
+     *  </p>
      *  The entropy is always non-negative.
      *  Throw an IllegalArgumentException if the length of the array is 0,
      *  or a negative probability is encountered.
@@ -393,17 +393,17 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return h;
     }
 
-    /** Given two array's of probabilities, calculate the relative entropy 
-     *  aka Kullback Leibler distance, D(p || q), (in bits) between the 
+    /** Given two array's of probabilities, calculate the relative entropy
+     *  aka Kullback Leibler distance, D(p || q), (in bits) between the
      *  two probability mass functions. The result will be POSITIVE_INFINITY if
      *  q has a zero probability for a symbol for which p has a non-zero
      *  probability.
      *  The function computed is :
      *  <p>
      *   D(p||q) = - sum (p[x] * log<sup>2</sup>(p[x]/q[x]))
-     *  </p> 
+     *  </p>
      *  Throw an IllegalArgumentException if either array has length 0.
-     *  If the two arrays do not have the same length, throw an 
+     *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      *  @param p An array of doubles representing the first pmf, p.
      *  @param q An array of doubles representing the second pmf, q.
@@ -416,7 +416,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         int length = _commonLength(p, q, "DoubleArrayStat.relativeEntropy");
 
         double d = 0.0;
-  
+
         for (int i = 0; i < length; i++) {
             if ((p[i] < 0.0) || (q[i] < 0.0)) {
                throw new IllegalArgumentException(
@@ -451,33 +451,33 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return a new array of Gaussian distributed doubles with a given
-     *  mean and standard deviation. The number of elements to allocate 
+     *  mean and standard deviation. The number of elements to allocate
      *  is given by N.
-     *  This algorithm is from [1]. 
+     *  This algorithm is from [1].
      */
-    public static final double[] randomGaussian(double mean, 
+    public static final double[] randomGaussian(double mean,
      double standardDeviation, int N) {
         double t;
         double x, v1, v2, r;
         Random random = new Random();
         double[] retval = new double[N];
-   
+
         for (int i = 0; i < N; i+=2) {
             do {
                v1 = 2.0 * random.nextDouble() - 1.0;
                v2 = 2.0 * random.nextDouble() - 1.0;
                r = v1 * v1 + v2 * v2;
-            } while ((r >= 1.0) && (r == 0.0)); 
+            } while ((r >= 1.0) && (r == 0.0));
               // prevent division by zero later in very rare cases
 
-            r = Math.sqrt((-2.0 * Math.log(r)) / r);        
+            r = Math.sqrt((-2.0 * Math.log(r)) / r);
             retval[i] = mean + v1 * r * standardDeviation;
- 
+
             if ((i + 1) < N) {
                retval[i + 1] = mean + v2 * r * standardDeviation;
             }
         }
-  
+
         return retval;
     }
 
@@ -509,13 +509,13 @@ public class DoubleArrayStat extends DoubleArrayMath {
             do {
                r = random.nextDouble();
             } while (r != 0.0);
-        
+
             retval[i] = -Math.log(r) / lambda;
         }
         return retval;
     }
 
-    /** Return a new array of Poisson random variables (as doubles) with 
+    /** Return a new array of Poisson random variables (as doubles) with
      *  a given mean. The number of elements to allocate is given by N.
      *  This algorithm is from [1].
      */
@@ -535,8 +535,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
                p *= (mean / (j + 1.0));
                f += p;
                j += 1.0;
-            } 
-        
+            }
+
             retval[i] = j;
         }
         return retval;

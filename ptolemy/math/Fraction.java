@@ -39,8 +39,8 @@ package ptolemy.math;
 /**
 A class for representing fractions.  Fractions are immutable and
 maintained in lowest terms, with a positive denominator.   Thus,
-1/2 and 2/4 are interpreted as different names for the same number.  
-Any fraction with the value zero is expressed as 0/1 in lowest terms. 
+1/2 and 2/4 are interpreted as different names for the same number.
+Any fraction with the value zero is expressed as 0/1 in lowest terms.
 <p>This class only represents fractions with a determined value,
 so fractions with a zero in the denominator are not allowed (including 0/0).
 
@@ -64,7 +64,7 @@ public class Fraction extends Object {
 	_simplify();
     }
 
-    /** 
+    /**
      * Create a new fraction in lowest terms
      * with the value Numerator/Denominator.
      * @exception ArithmeticException If the denominator is specified to be
@@ -87,7 +87,7 @@ public class Fraction extends Object {
         _den = f._den;
     }
 
-    /* It is arguable as to whether or not this is needed.  It may 
+    /* It is arguable as to whether or not this is needed.  It may
      * reduce the number of object creations, and increase speed,
      * depending how often a zero fraction is needed.  This may become
      * useful when this class is made into a Token.
@@ -125,13 +125,13 @@ public class Fraction extends Object {
     public boolean equals(Object b) {
         // The Fractions are already in lowest terms, so we just compare the
         // numerator and denominator
-        if(b instanceof Fraction) 
-            return ((_num == ((Fraction) b)._num) && 
+        if(b instanceof Fraction)
+            return ((_num == ((Fraction) b)._num) &&
                     (_den == ((Fraction) b)._den));
         else
             return false;
     }
-    
+
     /** Implement Euclid's method for finding the Greatest Common Divisor
      * (GCD) of
      *  two numbers.  If the numbers are negative, then we compute the
@@ -143,7 +143,7 @@ public class Fraction extends Object {
         if(u < 0) u = -u;
         if(v < 0) v = -v;
         while(u > 0) {
-            if(u < v) 
+            if(u < v)
                 { t = u; u = v; v = t; }
             else
                 { u = u % v; }
@@ -175,7 +175,7 @@ public class Fraction extends Object {
         return f;
     }
 
-    /** Finds the least common multiple(LCM) of two integers. 
+    /** Finds the least common multiple(LCM) of two integers.
      *  If one of the numbers is negative, then the LCM is negative.
      *  If both of the numbers are negative, then the LCM is positive.
      *  the LCM is least in terms of absolute value.
@@ -224,7 +224,7 @@ public class Fraction extends Object {
     }
 
    /** Reduce the fraction to lowest terms by dividing the Numerator and
-     *  Denominator by their Greatest Common Divisor.  In addition the 
+     *  Denominator by their Greatest Common Divisor.  In addition the
      *  fraction is put in standard form (denominator greater than zero).
      */
     protected void _simplify() {

@@ -70,10 +70,10 @@ Deadlock due to feedback loops is dealt with via NullTokens. When an
 actor in an DDE model receivers a NullToken, it may advance its local
 time value even though it does not consume the NullToken.
 <P>
-The DDE model of computation assumes that valid time stamps have 
-non-negative values. The value of TimedQueueReceiver.INACTIVE is 
-reserved to indicate the termination of a receiver. The value of 
-TimedQueueReceiver.NOTSTARTED is reserved to indicate that a receiver 
+The DDE model of computation assumes that valid time stamps have
+non-negative values. The value of TimedQueueReceiver.INACTIVE is
+reserved to indicate the termination of a receiver. The value of
+TimedQueueReceiver.NOTSTARTED is reserved to indicate that a receiver
 has not begun to participate in a model's execution.
 
 @author John S. Davis II, Mudit Goel
@@ -157,7 +157,7 @@ public class DDEDirector extends ProcessDirector {
         System.out.println("Added write block. Count = " + _writeBlocks);
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
-	} 
+	}
 	_writeBlockedQs.insertFirst(rcvr);
 	if( _isDeadlocked() ) {
 	    notifyAll();
@@ -171,7 +171,7 @@ public class DDEDirector extends ProcessDirector {
      *  registered using _increaseActiveCount() is terminated.
      *  This count is used to detect deadlocks for termination and other
      *  reasons.
-     *  FIXME: This is only here for testing. Remove it so that it 
+     *  FIXME: This is only here for testing. Remove it so that it
      *  doesn't override the superclass method.
      */
     protected synchronized void _decreaseActiveCount() {
@@ -201,20 +201,20 @@ public class DDEDirector extends ProcessDirector {
 
     /** Schedule an actor to be fired at the specified time.
      *  If the thread that calls this method is a DDEThread,
-     *  then the specified actor must be contained by this 
+     *  then the specified actor must be contained by this
      *  thread. If the thread that calls this method is not
      *  an instance of DDEThread, then store the actor and
      *  refire time in the initial time table of this director.
      * @param actor The actor scheduled to fire.
      * @param time The scheduled time to fire.
-     * @exception IllegalActionException If the specified 
+     * @exception IllegalActionException If the specified
      *  time is in the past or if the thread calling this
-     *  method is a DDEThread but the specified actor is 
+     *  method is a DDEThread but the specified actor is
      *  not contained by the DDEThread.
      */
-    public void fireAt(Actor actor, double time) 
+    public void fireAt(Actor actor, double time)
             throws IllegalActionException {
-        
+
         DDEThread ddeThread;
         Thread thread = Thread.currentThread();
         if( thread instanceof DDEThread ) {
@@ -232,14 +232,14 @@ public class DDEDirector extends ProcessDirector {
 	    // FIXME: Should TerminateProcessException be thrown here?
 	    return;
 	}
-        
+
         Actor threadActor = ddeThread.getActor();
         if( threadActor != actor ) {
-            throw new IllegalActionException("Actor argument of " 
+            throw new IllegalActionException("Actor argument of "
                     + "DDEDirector.fireAt() must be contained "
                     + "by the DDEThread that calls fireAt()");
         }
-        
+
         TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
         try {
 	    System.out.println("fireAt() called at time = " + time );
@@ -250,7 +250,7 @@ public class DDEDirector extends ProcessDirector {
 		    + "set current time in the past.");
         }
     }
-    
+
     /** Return the initial time table of this director.
      * @return The initial time table of this actor.
      */
@@ -270,9 +270,9 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Initialize this director and the actors it contains and set
-     *  variables to their initial values. Create a DDEThread for 
+     *  variables to their initial values. Create a DDEThread for
      *  each actor that this director controls but do not start
-     *  the thread. 
+     *  the thread.
      * @exception IllegalActionException If there is an error
      *  during the creation of the threads or initialization of
      *  the actors.
@@ -285,7 +285,7 @@ public class DDEDirector extends ProcessDirector {
         _pendingMutations = false;
         _writeBlockedQs = new LinkedList();
     }
-    
+
     /** Return a new receiver of a type compatible with this director.
      *  If the completion time of this director has been explicitly set
      *  to a particular value then set the completion time of the receiver
@@ -336,13 +336,13 @@ public class DDEDirector extends ProcessDirector {
         }
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
-	} 
+	}
         _writeBlockedQs.removeOneOf(rcvr);
     }
 
     /** Set the completion time of all actors governed by this
-     *  director to a nonnegative value. If this method is not 
-     *  called then the governed actors will act as if there is 
+     *  director to a nonnegative value. If this method is not
+     *  called then the governed actors will act as if there is
      *  no completion time. If the completion time argument is
      *  negative, then throw an IllegalArgumentException.
      * @param time The specified completion time.
@@ -398,13 +398,13 @@ public class DDEDirector extends ProcessDirector {
             System.out.println("Real deadlock!! Read blocks = " + _readBlocks);
             return true;
         }
-        
+
         if( _pendingMutations ) {
 	    /* FIXME
                try {
                _processTopologyRequests();
                } catch( TopologyChangeFailedException e ) {
-               throw new IllegalActionException("TopologyChangeFailed: " 
+               throw new IllegalActionException("TopologyChangeFailed: "
                + e.getMessage());
                }
 	    */
@@ -412,26 +412,26 @@ public class DDEDirector extends ProcessDirector {
         return false;
     }
 
-    /** Increment the port capacity's according to Tom Parks' 
-     *  algorithm. Select the port with the smallest capacity 
-     *  and double the capacity. 
+    /** Increment the port capacity's according to Tom Parks'
+     *  algorithm. Select the port with the smallest capacity
+     *  and double the capacity.
      * @exceptions IllegalActionException If there is an error
      *  while attempting to set the capacity of a DDE receiver.
      */
-    protected void incrementLowestCapacityPort() 
+    protected void incrementLowestCapacityPort()
             throws IllegalActionException {
 	System.out.println("Call to incrementLowestCapacityPort()");
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
-	} 
+	}
         _writeBlockedQs.sort(new RcvrCapacityComparator() );
         DDEReceiver smallestQueue;
         smallestQueue = (DDEReceiver)_writeBlockedQs.first();
-        
+
         if( smallestQueue.getCapacity() <= 0 ) {
             smallestQueue.setCapacity(1);
         } else {
-            int cap = smallestQueue.getCapacity(); 
+            int cap = smallestQueue.getCapacity();
             smallestQueue.setCapacity(cap * 2);
         }
         removeWriteBlock( smallestQueue );
@@ -439,14 +439,14 @@ public class DDEDirector extends ProcessDirector {
             smallestQueue.notifyAll();
         }
     }
-    
+
     /** Mutate the model that this director controls.
      *  FIXME
      protected void _processTopologyRequests() throws
      TopologyChangeFailedException {
      }
     */
-    
+
     /** Mutate the model that this director controls.
      *  FIXME
      */
@@ -466,13 +466,13 @@ public class DDEDirector extends ProcessDirector {
     private boolean _pendingMutations = false;
     private LinkedList _writeBlockedQs;
     private Hashtable _initialTimeTable;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class			   ////
-    
+
     private class RcvrCapacityComparator implements Comparator {
-            
+
         /**
          * @exception ClassCastException If fst and scd are
          *  not instances of DDEReceiver.
@@ -480,14 +480,14 @@ public class DDEDirector extends ProcessDirector {
         public int compare( Object fst, Object scd ) {
             DDEReceiver first = null;
             DDEReceiver second = null;
-           
+
             if( fst instanceof DDEReceiver ) {
                 first = (DDEReceiver)fst;
             }
             if( scd instanceof DDEReceiver ) {
                 second = (DDEReceiver)scd;
             }
-           
+
             if( first.getCapacity() > second.getCapacity() ) {
                 return 1;
             } else if( first.getCapacity() < second.getCapacity() ) {

@@ -50,8 +50,8 @@ public class SignalProcessing {
     // be instantiated.
     private SignalProcessing() {}
 
-    /** This class generates samples of a Gaussian function with the 
-     *  specified mean and standard deviation.  
+    /** This class generates samples of a Gaussian function with the
+     *  specified mean and standard deviation.
      *  The function computed is :
      *  <p>
      *  <pre>
@@ -75,13 +75,13 @@ public class SignalProcessing {
        *  specified time.
        */
       public final double sampleAt(double time) {
-        double shiftedTime = time - _mean; 
-        return _factor * 
+        double shiftedTime = time - _mean;
+        return _factor *
          Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
-      } 
-      
+      }
+
       private final double _mean, _oneOverVariance, _factor;
-      private static final double ONE_OVER_SQRT_TWO_PI = 
+      private static final double ONE_OVER_SQRT_TWO_PI =
        1.0 / Math.sqrt(2 * Math.PI);
     }
 
@@ -93,7 +93,7 @@ public class SignalProcessing {
      *  h(t) = slope * t + yIntercept
      *  </pre>
      *  </p>
-     */    
+     */
     public static class LineSampleGenerator implements SampleGenerator {
 
       /** Construct a LineSampleGenerator.
@@ -107,18 +107,18 @@ public class SignalProcessing {
 
       /** Return a sample of the line, sampled at the specified time.
        */
-      public final double sampleAt(double time) { 
+      public final double sampleAt(double time) {
         return _slope * time + _yIntercept;
-      } 
-      
+      }
+
       private final double _slope, _yIntercept;
     }
 
-    /** This class generates samples of a sawtooth wave with the specified 
-     *  period and phase. The returned values range between -1.0 and 1.0. 
+    /** This class generates samples of a sawtooth wave with the specified
+     *  period and phase. The returned values range between -1.0 and 1.0.
      */
     public static class SawtoothSampleGenerator implements SampleGenerator {
-  
+
         /** Construct a SawtoothSampleGenerator with the given period and
          *  phase.  The phase is given as a fraction of a cycle,
          *  typically ranging from 0.0 to 1.0.  If the phase is 0.0 or 1.0,
@@ -138,7 +138,7 @@ public class SignalProcessing {
           double point = ((time / _period) + _phase + 0.5) % 1.0;
           return 2.0 * point - 1.0;
         }
-      
+
         private final double _period, _phase;
     }
 
@@ -174,7 +174,7 @@ public class SignalProcessing {
     }
 
     /** This class generates samples of a raised cosine pulse, or if the
-     *  excess is zero, a modified sinc function.  
+     *  excess is zero, a modified sinc function.
      *  <p>
      *  The function that is computed is:
      *  <p>
@@ -202,7 +202,7 @@ public class SignalProcessing {
 
       /*  Construct a RaisedCosineSampleGenerator.
        *  @param firstZeroCrossing The time of the first zero crossing,
-       *  after time zero. This would be the symbol interval in a 
+       *  after time zero. This would be the symbol interval in a
        *  communications application of this pulse.
        *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
        */
@@ -293,14 +293,14 @@ public class SignalProcessing {
         _eightExcessPI = 8.0 * _excess * Math.PI;
         _sixteenExcess = 16.0 * _excess;
 
-        _sampleAtZero = ((_fourExcess / Math.PI) + 1.0 - _excess) / 
+        _sampleAtZero = ((_fourExcess / Math.PI) + 1.0 - _excess) /
          _sqrtFZC;
         _fourExcessOverPISqrtFZC = _fourExcess / (Math.PI * _sqrtFZC);
         _fzcSqrtFZCOverEightExcessPI =
          firstZeroCrossing * _sqrtFZC / _eightExcessPI;
         _fzcOverFourExcess = firstZeroCrossing / _fourExcess;
 
-        _oneMinusFZCOverFourExcess = _oneMinus * firstZeroCrossing / 
+        _oneMinusFZCOverFourExcess = _oneMinus * firstZeroCrossing /
           _fourExcess;
       }
 
@@ -332,7 +332,7 @@ public class SignalProcessing {
 
             return _fzcSqrtFZCOverEightExcessPI * oneOverTime *
              (_onePlus * Math.sin(onePlusTime) -
-              _oneMinusFZCOverFourExcess * oneOverTime * 
+              _oneMinusFZCOverFourExcess * oneOverTime *
               Math.cos(oneMinusTime) +
               _fzcOverFourExcess * squareTime * Math.sin(oneMinusTime));
         }
@@ -1518,10 +1518,10 @@ public class SignalProcessing {
           case 1:
           case 2:
           return null; // should never be used
-       
+
           // Optimized base case for higher orders
           case 4:
-            {                   
+            {
              double[] retval = new double[2];
              // retval[0] = 0.0; // not necessary for Java,
                                  // also not read

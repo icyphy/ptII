@@ -322,7 +322,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super.setContainer(container);
     }
 
-    /** Request that execution of the current iteration stop. 
+    /** Request that execution of the current iteration stop.
      *  Most atomic actors have bounded fire() methods, so they
      *  can simply ignore this.  Atomic actors with unbounded fire()
      *  methods should override this method to save their state and

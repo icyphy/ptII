@@ -121,7 +121,7 @@ public class CSPSieve extends CSPActor {
      TopologyChangeRequest request = new TopologyChangeRequest(this) {
      public void constructEventQueue() {
              System.out.println("TopologyRequest event q being constructed!");
-             TypedCompositeActor container =  
+             TypedCompositeActor container =
              (TypedCompositeActor)getContainer();
              CSPSieve newSieve = null;
              ComponentRelation newRel = null;

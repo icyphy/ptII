@@ -53,7 +53,7 @@ public class NoRoomException extends RuntimeException {
         _setMessage(message);
     }
 
-    /** Construct a NoRoomException originating from the given object, 
+    /** Construct a NoRoomException originating from the given object,
      *  with the given error message.
      *  @param obj The originating object.
      *  @param message The message.

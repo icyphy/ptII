@@ -35,11 +35,11 @@ import ptolemy.kernel.Entity;
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessEvent
 /**
-An event passed from a process executing under the PN semantics to a 
+An event passed from a process executing under the PN semantics to a
 PNProcessListener. This is used to
 represent an event that happened during the execution of a topology.
 This event contains two pieces of information:  the actor under the control
-of the process and an exception that might be thrown. 
+of the process and an exception that might be thrown.
 The exception might not be a valid reference.
 
 @author Mudit Goel
@@ -48,8 +48,8 @@ The exception might not be a valid reference.
 
 public class PNProcessEvent {
 
-    /** Create a new event 
-     *  @param The actor 
+    /** Create a new event
+     *  @param The actor
      */
     public PNProcessEvent(Actor actor, int state) {
         _actor = actor;
@@ -139,15 +139,15 @@ public class PNProcessEvent {
             result = "State of "+((Entity)_actor).getFullName()+" is "+st;
         }
         return result;
-    }        
-    
+    }
+
     //////////////////////////////////////////////////////////////
     ////                   public variables                  /////
     public static final int BLOCKED_ON_DELAY = 111;
     public static final int BLOCKED_ON_MUTATION = 112;
     public static final int BLOCKED_ON_READ = 113;
     public static final int BLOCKED_ON_WRITE = 114;
-    
+
     public static final int FINISHED_ABRUPTLY = 734;
     public static final int FINISHED_PROPERLY = 735;
     public static final int FINISHED_WITH_EXCEPTION = 736;

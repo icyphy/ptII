@@ -66,7 +66,7 @@ public class SDFSplit extends SDFAtomicActor {
         }
     }
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    //// 
+    ////                         public methods                    ////
 
 
     public TypedIOPort input;
@@ -93,8 +93,8 @@ public class SDFSplit extends SDFAtomicActor {
         }
     }
 
-    /** 
-     * Consume two tokens from the input.  Copy the first one to the port 
+    /**
+     * Consume two tokens from the input.  Copy the first one to the port
      * output1, and the second to the port output2
      * @exception IllegalActionException if a contained method throws it.
      */

@@ -67,7 +67,7 @@ public class DESampler extends DEActor {
             String name)
             throws NameDuplicationException, IllegalActionException  {
         this(container, name, null);
-        
+
     }
 
     /** Construct a DESampler actor with the specified initial token.
@@ -138,7 +138,7 @@ public class DESampler extends DEActor {
             }
         } else if (inputR.hasToken()) {
             // Record the token from the input.
-            
+
             _lastTokens.clear();
 
             while (inputR.hasToken()) {
@@ -151,7 +151,7 @@ public class DESampler extends DEActor {
         }
 
     }
-    
+
     /** Reset the initial token.
      *  @exception IllegalActionException If the parent class throws it.
      */

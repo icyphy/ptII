@@ -1,5 +1,5 @@
-/* FlowThru is a test class used to test token production 
-AND consumption. 
+/* FlowThru is a test class used to test token production
+AND consumption.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,10 +41,10 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// FlowThru
 /**
-FlowThru is a test class used to test token production AND consumption. 
+FlowThru is a test class used to test token production AND consumption.
 It has a typed, input and output multiport. The fire() method of this
-class simply passes through "real" tokens. Use this class to test 
-DDEReceiver and DDEThread. 
+class simply passes through "real" tokens. Use this class to test
+DDEReceiver and DDEThread.
 
 
 @author John S. Davis II
@@ -110,7 +110,7 @@ public class FlowThru extends TypedAtomicActor {
 		    }
 		} else {
 		    /*
-		    System.out.println("actorThru: Weird error; hasToken=false"); 
+		    System.out.println("actorThru: Weird error; hasToken=false");
 		    Thread thr = Thread.currentThread();
 		    if( thr instanceof DDEThread ) {
 			TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();

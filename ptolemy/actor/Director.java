@@ -45,7 +45,7 @@ import java.util.Enumeration;
 A Director governs the execution within a CompositeActor.  A composite actor
 that contains a director is said to be <i>opaque</i>, and the execution model
 within the composite actor is determined by the contained director.   This
-director is called the <i>local director</i> of a composite actor.  
+director is called the <i>local director</i> of a composite actor.
 A composite
 actor is also aware of the director of its container, which is referred to
 as its <i>executive director</i>.
@@ -78,7 +78,7 @@ an iteration. In this base class, the default implementation results in
 a read/write workspace. Derived classes (e.g. domain specific
 directors) should override the _writeAccessRequired() method to report
 that write access is not required. If none of the directors in a simulation
-require write access, then it is safe to set the workspace to be read-only, 
+require write access, then it is safe to set the workspace to be read-only,
 which will result in faster execution.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
@@ -204,9 +204,9 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Return the current time of the model being executed by this director.
-     *  This time can be set with the setCurrentTime method. In this base 
+     *  This time can be set with the setCurrentTime method. In this base
      *  class, time never passes, and there are no restrictions on valid
-     *  times.  
+     *  times.
      *
      *  @return The current time.
      */
@@ -215,10 +215,10 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Return the next time of interest in the model being executed by
-     *  this director. This method is useful for domains that perform 
+     *  this director. This method is useful for domains that perform
      *  speculative execution (such as CT).  Such a domain in a hierarchical
      *  model (i.e. CT inside DE) uses this method to determine how far
-     *  into the future to execute. 
+     *  into the future to execute.
      *  <p>
      *  In this base class, we return the current time.
      *  Derived classes should override this method to provide an appropriate
@@ -252,7 +252,7 @@ public class Director extends NamedObj implements Executable {
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
                 _debug(getName() + " initializes actor "+
-                        ((NamedObj)actor).getName()); 
+                        ((NamedObj)actor).getName());
                 actor.initialize();
             }
         }
@@ -301,24 +301,24 @@ public class Director extends NamedObj implements Executable {
     public void invalidateSchedule() {
     }
 
-    /** Return true if this director, or any of its contained directors 
-     *  requires write access on the workspace during execution. 
-     *  If this director requires write access during execution 
-     *  (i.e. _writeAccessRequired() returns true), then 
+    /** Return true if this director, or any of its contained directors
+     *  requires write access on the workspace during execution.
+     *  If this director requires write access during execution
+     *  (i.e. _writeAccessRequired() returns true), then
      *  this method returns true.   Otherwise, needWriteAccess() is called
-     *  recursively on all the local directors of all deeply 
+     *  recursively on all the local directors of all deeply
      *  contained entities that are opaque composite actors.
-     *  If any of those lower level directors requires write access, then 
+     *  If any of those lower level directors requires write access, then
      *  this method will return true.  Otherwise, this method returns false.
      *  <p>
-     *  This method is called on the top level director by the manager 
+     *  This method is called on the top level director by the manager
      *  at the start of an execution.
      *  If it returns false (indicating that none of the directors in
      *  the model need write access on the workspace), then the manager
      *  will set the workspace to be read only during each toplevel iteration
      *  of the model.  Note that mutations can still occur, but they can
      *  only be performed by the manager.
-     * 
+     *
      *  @return true If this director, or any of its contained directors,
      *  needs write access to the workspace.
      *  @exception InvalidStateException If the director does not have
@@ -370,10 +370,10 @@ public class Director extends NamedObj implements Executable {
      *  should <i>not</i>, in general, just take the logical AND of calling
      *  postfire on all the contained actors.
      *  <p>
-     *  In this base class, assume that the director only wants to get 
+     *  In this base class, assume that the director only wants to get
      *  fired once, so return false. Domain directors will probably want
-     *  to override this method.   
-     *  
+     *  to override this method.
+     *
      *  @return false
      *  @exception IllegalActionException If the postfire()
      *  method of one of the associated actors throws it.
@@ -382,15 +382,15 @@ public class Director extends NamedObj implements Executable {
         return false;
     }
 
-    /** Return true if the director is ready to fire. This method is 
-     *  called but the container of this director to determine if the 
-     *  director is ready to execute, and 
+    /** Return true if the director is ready to fire. This method is
+     *  called but the container of this director to determine if the
+     *  director is ready to execute, and
      *  should <i>not</i>, in general, just take the logical AND of calling
      *  prefire on all the contained actors.
      *  <p>
-     *  In this base class, assume that the director is always ready to 
+     *  In this base class, assume that the director is always ready to
      *  be fired, so return true. Domain directors should probably
-     *  override this method.   
+     *  override this method.
      *
      *  @return true
      *  @exception IllegalActionException If the postfire()
@@ -450,15 +450,15 @@ public class Director extends NamedObj implements Executable {
      *   due to the state of the simulation. Not thrown in this base class.
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(double newTime) 
+    public void setCurrentTime(double newTime)
             throws IllegalActionException {
         _currentTime = newTime;
     }
 
     /** Terminate any currently executing model with extreme prejudice.
-     *  This method is not intended to be used as a normal route of 
-     *  stopping execution. To normally stop execution, call the finish() 
-     *  method instead. This method should be called only 
+     *  This method is not intended to be used as a normal route of
+     *  stopping execution. To normally stop execution, call the finish()
+     *  method instead. This method should be called only
      *  when execution fails to terminate by normal means due to certain
      *  kinds of programming errors (infinite loops, threading errors, etc.).
      *  There is no assurance that the topology will be in a consistent
@@ -624,8 +624,8 @@ public class Director extends NamedObj implements Executable {
 
     /** Make this director the local director of the specified composite
      *  actor.  If the CompositeActor is not null, then remove the Actor
-     *  from the workspace directory. If the CompositeActor is null, then 
-     *  the director is not added back into the directory of the Workspace, 
+     *  from the workspace directory. If the CompositeActor is null, then
+     *  the director is not added back into the directory of the Workspace,
      *  which could result in it being garbage collected.
      *  This method should not be called directly.  Instead, call
      *  setDirector of the CompositeActor class (or a derived class).
@@ -639,14 +639,14 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Return true if this director requires write access
-     *  on the workspace during execution. Most director functions 
+     *  on the workspace during execution. Most director functions
      *  during execution do not need write access on the workpace.
-     *  A director will generally only need write access on the workspace if 
-     *  it performs mutations locally, instead of queueing them with the 
+     *  A director will generally only need write access on the workspace if
+     *  it performs mutations locally, instead of queueing them with the
      *  manager.
      *  <p>
-     *  In this base class, we assume 
-     *  that write access is required and always return true.  This method 
+     *  In this base class, we assume
+     *  that write access is required and always return true.  This method
      *  should probably be overridden by derived classes.
      *
      *  @return true
@@ -661,7 +661,7 @@ public class Director extends NamedObj implements Executable {
 
     // The composite of which this is the local director.
     private CompositeActor _container = null;
-    
+
     // The current time of the model.
     private double _currentTime = 0.0;
 }

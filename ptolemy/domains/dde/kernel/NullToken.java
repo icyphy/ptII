@@ -37,20 +37,20 @@ import ptolemy.data.*;
 //// NullToken
 /**
 A NullToken is a marker class used to break deadlock in certain
-topologies of DDE models. A NullToken object does not represent 
-modeled computation but serves as an indicator that an actor in 
+topologies of DDE models. A NullToken object does not represent
+modeled computation but serves as an indicator that an actor in
 an DDE model can safely advance time to be equal to the time stamp
 associated with the NullToken.
 
 NullTokens are not part of the Ptolemy II type lattice. As such,
-a NullToken will violate type resolution if passed through a 
+a NullToken will violate type resolution if passed through a
 typed IO port. For this reason, Null Tokens are placed directly
 into receivers without using the send() method of IOPort. This
 tactic circumvents type resolution constraints and affirms the
-notion that NullTokens do not represent computation and hence 
+notion that NullTokens do not represent computation and hence
 should never be incorporated into actor code. Note further, that
 the get() method of DDEReceiver does not return NullTokens but
-instead consumes them and then proceeds until a "real" token 
+instead consumes them and then proceeds until a "real" token
 becomes available.
 
 @author John S. Davis II

@@ -43,19 +43,19 @@ A FIFO queue-based receiver for storing tokens with time stamps. A "time
 stamp" is a time value that is associated with a token and is used to order
 the consumption of a token with respect to other time stamped tokens. To
 help organize the tokens contained by this queue, two flags are maintained:
-<I>last time</I> and <I>receiver time</I>. The last time flag is defined to 
-be equivalent to the time stamp of the token that was most recently placed 
-in the queue. The receiver time flag is defined as the time stamp of the 
-oldest token in the queue or the last token to be removed from the queue if 
-the queue is empty. Both of these flags must have monotonically, 
-non-decreasing values. At the conclusion of a simulation run the receiver 
+<I>last time</I> and <I>receiver time</I>. The last time flag is defined to
+be equivalent to the time stamp of the token that was most recently placed
+in the queue. The receiver time flag is defined as the time stamp of the
+oldest token in the queue or the last token to be removed from the queue if
+the queue is empty. Both of these flags must have monotonically,
+non-decreasing values. At the conclusion of a simulation run the receiver
 time is set to INACTIVE.
 <P>
 A TimeKeeper object is assigned to each actor that operates according to
 an DDE model of computation. The TimeKeeper manages each of the receivers
 that are contained by an actor by keeping track of the receiver times of
-each receiver. As information flows through a TimedQueueReceiver, the 
-TimeKeeper must be kept up to date with respect to the receiver times. 
+each receiver. As information flows through a TimedQueueReceiver, the
+TimeKeeper must be kept up to date with respect to the receiver times.
 
 
 @author John S. Davis II
@@ -111,9 +111,9 @@ public class TimedQueueReceiver {
     /** Take the the oldest token off of the queue and return it.
      *  If the queue is empty, throw a NoTokenException. If there are
      *  other tokens left on the queue after this removal, then set
-     *  the receiver time of this receiver to equal that of the next 
-     *  oldest token. Update the TimeKeeper that manages this 
-     *  TimedQueueReceiver. If there are any receivers in the 
+     *  the receiver time of this receiver to equal that of the next
+     *  oldest token. Update the TimeKeeper that manages this
+     *  TimedQueueReceiver. If there are any receivers in the
      *  TimeKeeper with receiver times of TimedQueueReceiver.IGNORE,
      *  remove the first token from these receivers.
      * @exception NoTokenException If the queue is empty.
@@ -130,7 +130,7 @@ public class TimedQueueReceiver {
             }
 	    token = event.getToken();
 	    if( thread instanceof DDEThread ) {
-	        TimeKeeper timeKeeper = 
+	        TimeKeeper timeKeeper =
 		        ((DDEThread)thread).getTimeKeeper();
 	        timeKeeper.setCurrentTime( event.getTime() );
 	    }
@@ -143,7 +143,7 @@ public class TimedQueueReceiver {
 	    // Call updateRcvrList() even if _queue.size()==0,
 	    // so that the triple is no longer in front.
 	    if( thread instanceof DDEThread ) {
-		TimeKeeper timeKeeper = 
+		TimeKeeper timeKeeper =
 		        ((DDEThread)thread).getTimeKeeper();
 
 		if( !timeKeeper.searchingForIgnoredTokens() ) {
@@ -190,8 +190,8 @@ public class TimedQueueReceiver {
     }
 
     /** Return the receiver time of this receiver. The receiver
-     *  time is the time stamp associated with the oldest token that 
-     *  is currently on the queue. If the queue is empty, then the 
+     *  time is the time stamp associated with the oldest token that
+     *  is currently on the queue. If the queue is empty, then the
      *  receiver time value is equal to the "last time."
      * @return double The receiver time of this TimedQueueReceiver.
      */
@@ -218,7 +218,7 @@ public class TimedQueueReceiver {
     }
 
     /** Put a token on the queue with the specified time stamp and set
-     *  the last time value to be equal to this time stamp. If the 
+     *  the last time value to be equal to this time stamp. If the
      *  queue is empty immediately prior to putting the token on
      *  the queue, then set the receiver time value to be equal to the
      *  last time value. If the queue is full, throw a NoRoomException.
@@ -232,14 +232,14 @@ public class TimedQueueReceiver {
 		return;
 	    }
 	    /*
-	    System.out.println("Time in the past: " + time + 
+	    System.out.println("Time in the past: " + time +
 			       "\t_lastTime:" + _lastTime);
 	    */
-	    IOPort port = (IOPort)getContainer(); 
-	    NamedObj actor = (NamedObj)port.getContainer(); 
+	    IOPort port = (IOPort)getContainer();
+	    NamedObj actor = (NamedObj)port.getContainer();
 	    // Note: Maintain the following IllegalArgumentException
 	    // message as it is used by DDEIOPort.send().
-	    throw new IllegalArgumentException(actor.getName() + 
+	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time in the past.");
 	}
         Event event;
@@ -292,7 +292,7 @@ public class TimedQueueReceiver {
         return _completionTime;
     }
 
-    /** Return true if this receiver has a NullToken at the front 
+    /** Return true if this receiver has a NullToken at the front
      *  of the queue; return false otherwise.
      * @return True if this receiver contains a NullToken in the
      *  oldest queue position; return false otherwise.
@@ -304,19 +304,19 @@ public class TimedQueueReceiver {
 	    if( event.getToken() instanceof NullToken ) {
 		return true;
 	    }
-	} 
+	}
         return false;
 	/*
-	    System.out.println(name+": hasNullToken() has a size of " 
+	    System.out.println(name+": hasNullToken() has a size of "
 		    + _queue.size() );
 	if( _queue.size() <= 0 ) {
 	    return false;
-	} 
+	}
 	System.out.println(name+": Checking for NullToken!!!");
 	if( _queue.get(0) instanceof NullToken ) {
 	    System.out.println("NullToken found!!!");
 	    return true;
-	} 
+	}
         return false;
 	*/
     }
@@ -335,8 +335,8 @@ public class TimedQueueReceiver {
         _priority = priority;
     }
 
-    /** Set the receiver time of this receiver to the specified 
-     *  value. If this queue is not empty, then the receiver 
+    /** Set the receiver time of this receiver to the specified
+     *  value. If this queue is not empty, then the receiver
      *  time will not be set to the specified value.
      * @param time The new rcvr time.
      */

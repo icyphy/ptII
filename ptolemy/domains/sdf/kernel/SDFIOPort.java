@@ -50,8 +50,8 @@ tokens is exactly equivalent to sending each token individually.  Tokens
 that are sent using sendArray can be received using get and vice versa.
 <p>
 This class exists solely as an optimization.  There are two large pieces
-of overhead in sending a large number of tokens using the standard IOPort 
-implementation.  We list them below, and the steps that this class takes to 
+of overhead in sending a large number of tokens using the standard IOPort
+implementation.  We list them below, and the steps that this class takes to
 reduce them.
 <ol>
 <li>Finding the remote receivers. <br>
@@ -59,7 +59,7 @@ getArray() and sendArray() only have to get the receivers once.
 <li>Inserting each element into the QueueReceiver.<br>
 SDFIOPort creates SDFReceivers, which are based on ArrayFIFOQueue, instead
 of FIFOQueue.  ArrayFIFOQueue uses a circular array instead of a linkedlist to
-represent the queue.  ArrayFIFOQueue also optimizes insertion and removal of 
+represent the queue.  ArrayFIFOQueue also optimizes insertion and removal of
 arrays of objects using the java.lang.System.arraycopy() method.
 </ol>
 
@@ -122,15 +122,15 @@ public final class SDFIOPort extends TypedIOPort {
      *  a sequence of tokens in an array.   The oldest token in the
      *  sequence will be returned in the first position in the array, and
      *  the newest token in the sequence will be in the last position of the
-     *  array.   This method is provided for efficiency only, and is 
-     *  semantically equivalent to calling IOPort.get() consecutively for 
+     *  array.   This method is provided for efficiency only, and is
+     *  semantically equivalent to calling IOPort.get() consecutively for
      *  each element in the array.
      *
      *  @param channelindex The channel index.
      *  @param tokens An array to fill with Tokens from the port.
      *  @exception NoTokenException If there are not enough tokens.
      *  @exception IllegalActionException If there is no director, and hence
-     *   no receivers have been created, if the port is not an input port, 
+     *   no receivers have been created, if the port is not an input port,
      *   if the channel index is out of range, or if the array is null.
      */
     public void getArray(int channelindex, Token tokens[])
@@ -159,7 +159,7 @@ public final class SDFIOPort extends TypedIOPort {
         } finally {
             workspace().doneReading();
         }
-        if((localRec[channelindex].length > 1)|| 
+        if((localRec[channelindex].length > 1)||
                 !(localRec[channelindex][0] instanceof SDFReceiver)) {
             for (int i = 0; i < tokens.length; i++) {
                 Token tt = null;
@@ -176,19 +176,19 @@ public final class SDFIOPort extends TypedIOPort {
         }
         else {
             ((SDFReceiver) localRec[channelindex][0]).getArray(tokens);
-        }    
+        }
     }
 
     /** Send an array of tokens to all receivers connected to the
-     *  specified channel.  Operation is similar to IOPort.send(), 
-     *  except that it sends 
+     *  specified channel.  Operation is similar to IOPort.send(),
+     *  except that it sends
      *  a sequence of tokens in an array.   The token in the
      *  first position in the array is interpreted as the oldest token
      *  in the sequence, and
      *  the token in the last position of the
-     *  array in interpreted as the newest token in the sequence.   
-     *  This method is provided for efficiency only, and is 
-     *  semantically equivalent to calling IOPort.put() consecutively for 
+     *  array in interpreted as the newest token in the sequence.
+     *  This method is provided for efficiency only, and is
+     *  semantically equivalent to calling IOPort.put() consecutively for
      *  each element in the array.
      *
      *  @param channelindex The index of the channel, from 0 to width-1

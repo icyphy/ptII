@@ -130,7 +130,7 @@ public class SDFScheduler extends Scheduler {
     /** Create the schedule.  Return the number of times that the given
      *  entity will fire in a single iteration of the system.
      */
-    public int getFiringCount(Entity entity) 
+    public int getFiringCount(Entity entity)
             throws IllegalActionException {
         schedule();
         return _getFiringCount(entity);
@@ -201,7 +201,7 @@ public class SDFScheduler extends Scheduler {
 
     /** Return the firing vector, which is a LLMap associating an Actor
      *  with the number of times that it will fire during an SDF iteration.
-     *  The firing vector is only guaranteed to be valid if the schedule 
+     *  The firing vector is only guaranteed to be valid if the schedule
      *  is valid.
      *
      *  @return A LLMap from ComponentEntity to Integer.
@@ -219,11 +219,11 @@ public class SDFScheduler extends Scheduler {
     protected int _getTokenConsumptionRate(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
         if(param == null) {
-            if(p.isInput()) 
+            if(p.isInput())
                 return 1;
             else
                 return 0;
-        } else 
+        } else
             return ((IntToken)param.getToken()).intValue();
     }
 
@@ -236,7 +236,7 @@ public class SDFScheduler extends Scheduler {
      */
     protected int _getTokenInitProduction(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
-        if(param == null) 
+        if(param == null)
             return 0;
         return ((IntToken)param.getToken()).intValue();
     }
@@ -251,9 +251,9 @@ public class SDFScheduler extends Scheduler {
     protected int _getTokenProductionRate(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
         if(param == null) {
-            if(p.isOutput()) 
+            if(p.isOutput())
                 return 1;
-            else 
+            else
                 return 0;
         }
         return ((IntToken)param.getToken()).intValue();
@@ -295,7 +295,7 @@ public class SDFScheduler extends Scheduler {
         while(Actors.hasMoreElements()) {
 
             Object actor = Actors.nextElement();
-            _debug("normalizing Actor " + 
+            _debug("normalizing Actor " +
                     ((ComponentEntity) actor).getName() + "\n");
             Fraction reps = (Fraction) firings.at(actor);
             reps = reps.multiply(lcmFraction);
@@ -303,7 +303,7 @@ public class SDFScheduler extends Scheduler {
                 throw new InternalErrorException(
                         "Failed to properly perform " +
                         "fraction normalization");
-            firings = (LLMap) 
+            firings = (LLMap)
                 firings.puttingAt(actor, new Integer(reps.getNumerator()));
         }
         return firings;
@@ -323,7 +323,7 @@ public class SDFScheduler extends Scheduler {
      *  @param pendingActors The set of actors that have had their rate
      *  set, but have not been propagated onwards.
      *  @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. 
+     *  schedulable.
      */
     private void _propagateInputPort(IOPort currentPort,
             LLMap firings,
@@ -386,7 +386,7 @@ public class SDFScheduler extends Scheduler {
 
                     else if(!presentFiring.equals(desiredFiring))
                         throw new NotSchedulableException("No solution " +
-                                "exists for the balance equations.\n" + 
+                                "exists for the balance equations.\n" +
                                 "Graph is not" +
                                 "consistent under the SDF domain");
                 }
@@ -417,7 +417,7 @@ public class SDFScheduler extends Scheduler {
      *  @param pendingActors The set of actors that have had their rate
      *  set, but have not been propagated onwards.
      *  @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. 
+     *  schedulable.
      */
     private void _propagateOutputPort(IOPort currentPort,
             LLMap firings,
@@ -427,13 +427,13 @@ public class SDFScheduler extends Scheduler {
 
         ComponentEntity currentActor =
             (ComponentEntity) currentPort.getContainer();
-            
+
         // First check to make sure that this Port is not connected to
         // Any other output ports.  This results in a non-deterministic
         // merge and is illegal.
         Enumeration connectedOutPorts =
             currentPort.deepConnectedOutPorts();
-            
+
         while(connectedOutPorts.hasMoreElements()) {
             IOPort connectedPort =
                 (IOPort) connectedOutPorts.nextElement();
@@ -442,7 +442,7 @@ public class SDFScheduler extends Scheduler {
             if(!connectedPort.getContainer().equals(
                     currentPort.getContainer().getContainer())) {
                 throw new NotSchedulableException(
-                        currentPort, connectedPort, 
+                        currentPort, connectedPort,
                         "Two output ports are connected " +
                         "on the same relation. " +
                         "This is not legal in SDF.");
@@ -520,14 +520,14 @@ public class SDFScheduler extends Scheduler {
      *  <li>The graph is not a connected graph.
      *  <li>No integer solution exists for the balance equations.
      *  <li>The graph contains cycles without delays (deadlock).
-     *  <li>Multiple output ports are connected to the same broadcast 
+     *  <li>Multiple output ports are connected to the same broadcast
      *  relation. (equivalent to a non-deterministic merge)
      *  </ul>
      *
      * @return An Enumeration of the deeply contained opaque entities
      *  in the firing order.
      * @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. 
+     *  schedulable.
      */
 
     protected Enumeration _schedule() throws NotSchedulableException {
@@ -547,7 +547,7 @@ public class SDFScheduler extends Scheduler {
                 Director containedDirector =
                     ((CompositeActor) a).getDirector();
                 if(containedDirector instanceof StaticSchedulingDirector) {
-                    Scheduler containedScheduler = 
+                    Scheduler containedScheduler =
                         ((StaticSchedulingDirector) containedDirector)
                         .getScheduler();
                     try {
@@ -558,7 +558,7 @@ public class SDFScheduler extends Scheduler {
                     }
                 }
             }
-                
+
             // Fill AllActors with the list of things that we can schedule
             // FIXME: What if other things can be scheduled than actors?
             if(a instanceof Actor) AllActors.insertLast(a);
@@ -606,14 +606,14 @@ public class SDFScheduler extends Scheduler {
 
     private CircularList _scheduleConnectedActors(
             CircularList UnscheduledActors) {
-        
+
         // A linked list containing all the actors that have no inputs
         CircularList ReadyToScheduleActors = new CircularList();
         // A linked list that will contain our new schedule.
         CircularList newSchedule = new CircularList();
-        
+
         boolean Done = false;
-        
+
         // an association between AllActors and the number of unfulfilledInputs
         // that that actor contains.   when this number goes to zero, then the
         // actor is ready to fire.
@@ -822,7 +822,7 @@ public class SDFScheduler extends Scheduler {
         finally {
             _debug("finishing loop" + "\n");
         }
-        
+
         Enumeration eschedule = newSchedule.elements();
         _debug("Schedule is:" + "\n");
         while(eschedule.hasMoreElements())
@@ -835,18 +835,18 @@ public class SDFScheduler extends Scheduler {
      *  This allows the container to be properly scheduled if it is
      *  in a hierarchical system
      */
-    private void _setContainerRates() 
+    private void _setContainerRates()
             throws NotSchedulableException {
         Director director = (Director) getContainer();
-        if(director == null) 
+        if(director == null)
             throw new NotSchedulableException("Scheduler must " +
                     "have a director in order to schedule.");
-        
+
         CompositeActor container = (CompositeActor) director.getContainer();
         if(container == null) throw new NotSchedulableException(
                 "The model must be contained within a CompositeActor in " +
                 "order to be scheduled.");
-        
+
         Enumeration ports = container.getPorts();
         while(ports.hasMoreElements()) {
             IOPort port = (IOPort) ports.nextElement();
@@ -858,11 +858,11 @@ public class SDFScheduler extends Scheduler {
             if(connectedports.hasMoreElements()) {
                 IOPort cport = (IOPort) connectedports.nextElement();
                 Entity cactor = (Entity) cport.getContainer();
-                consumptionRate = _getFiringCount(cactor) * 
+                consumptionRate = _getFiringCount(cactor) *
                     _getTokenConsumptionRate(cport);
-                productionRate = _getFiringCount(cactor) * 
+                productionRate = _getFiringCount(cactor) *
                     _getTokenProductionRate(cport);
-                initProduction = _getFiringCount(cactor) * 
+                initProduction = _getFiringCount(cactor) *
                     _getTokenInitProduction(cport);
                 _debug("CPort " + cport.getName());
                 _debug("consumptionRate = " + consumptionRate + "\n");
@@ -873,31 +873,31 @@ public class SDFScheduler extends Scheduler {
             while(connectedports.hasMoreElements()) {
                 IOPort cport = (IOPort) connectedports.nextElement();
                 Entity cactor = (Entity) cport.getContainer();
-                int crate = _getFiringCount(cactor) * 
+                int crate = _getFiringCount(cactor) *
                     _getTokenConsumptionRate(cport);
                 if(crate != consumptionRate) throw new NotSchedulableException(
-                        port, cport, "Port " + cport.getName() + 
-                        " has an aggregate consumption rate of " + crate + 
+                        port, cport, "Port " + cport.getName() +
+                        " has an aggregate consumption rate of " + crate +
                         " which does not match the computed aggregate rate " +
-                        "of " + port.getName() + " of " + consumptionRate + 
+                        "of " + port.getName() + " of " + consumptionRate +
                         "!");
-                int prate = _getFiringCount(cactor) * 
+                int prate = _getFiringCount(cactor) *
                     _getTokenProductionRate(cport);
                 if(prate != productionRate) throw new NotSchedulableException(
-                        port, cport, "Port " + cport.getName() + 
-                        " has an aggregate production rate of " + prate + 
+                        port, cport, "Port " + cport.getName() +
+                        " has an aggregate production rate of " + prate +
                         " which does not match the computed aggregate rate " +
-                        "of " + port.getName() + " of " + productionRate + 
+                        "of " + port.getName() + " of " + productionRate +
                         "!");
-                int initp = _getFiringCount(cactor) * 
+                int initp = _getFiringCount(cactor) *
                     _getTokenInitProduction(cport);
                 if(initp != initProduction) throw new NotSchedulableException(
-                        port, cport, "Port " + cport.getName() + 
-                        " has an aggregate init production of " + initp + 
+                        port, cport, "Port " + cport.getName() +
+                        " has an aggregate init production of " + initp +
                         " which does not match the computed aggregate " +
-                        "of " + port.getName() + " of " + initProduction + 
+                        "of " + port.getName() + " of " + initProduction +
                         "!");
-                
+
             }
             _debug("Port " + port.getName() + "\n");
             _debug("consumptionRate = " + consumptionRate + "\n");
@@ -917,7 +917,7 @@ public class SDFScheduler extends Scheduler {
               port.getName() + " has a nonzero consumption rate, " +
               "but does not declare that it is an input port.");
               }
-            
+
               if(_getTokenConsumptionRate(port) != consumptionRate) {
               throw new NotSchedulableException(port, "Port " +
               port.getName() + " has a declared consumption rate " +
@@ -961,25 +961,25 @@ public class SDFScheduler extends Scheduler {
             try {
                 Parameter param;
                 param = (Parameter)port.getAttribute("TokenConsumptionRate");
-                if(param == null) 
+                if(param == null)
                     param = new Parameter(port,"TokenConsumptionRate",
-                            new IntToken(1)); 
+                            new IntToken(1));
                 param.setToken(new IntToken(consumptionRate));
                 param = (Parameter)port.getAttribute("TokenProductionRate");
-                if(param == null) 
+                if(param == null)
                     param = new Parameter(port,"TokenProductionRate",
-                            new IntToken(1)); 
+                            new IntToken(1));
                 param.setToken(new IntToken(productionRate));
                 param = (Parameter)port.getAttribute("TokenInitProduction");
-                if(param == null) 
+                if(param == null)
                     param = new Parameter(port,"TokenInitProduction",
-                            new IntToken(1)); 
+                            new IntToken(1));
                 param.setToken(new IntToken(initProduction));
             }
             catch (Exception ex) {
             }
 
-        }            
+        }
     }
 
     /** Set the number of firings associated with the Actor.   This is
@@ -1004,7 +1004,7 @@ public class SDFScheduler extends Scheduler {
         _firingvectorvalid = true;
     }
 
-    protected void _setTokenConsumptionRate(Entity e, IOPort port, int rate) 
+    protected void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -1024,7 +1024,7 @@ public class SDFScheduler extends Scheduler {
                         new IntToken(rate));
             }
         } catch (Exception exception) {
-            // This should never happen.  
+            // This should never happen.
             // e might be NameDuplicationException, but we already
             // know it doesn't exist.
             // e might be IllegalActionException, but we've already
@@ -1033,7 +1033,7 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-    protected void _setTokenProductionRate(Entity e, IOPort port, int rate) 
+    protected void _setTokenProductionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -1051,9 +1051,9 @@ public class SDFScheduler extends Scheduler {
             } else {
                 param = new Parameter(port,"TokenProductionRate",
                         new IntToken(rate));
-            } 
+            }
         } catch (Exception exception) {
-            // This should never happen.  
+            // This should never happen.
             // e might be NameDuplicationException, but we already
             // know it doesn't exist.
             // e might be IllegalActionException, but we've already
@@ -1062,7 +1062,7 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-    protected void _setTokenInitProduction(Entity e, IOPort port, int rate) 
+    protected void _setTokenInitProduction(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -1080,16 +1080,16 @@ public class SDFScheduler extends Scheduler {
             } else {
                 param = new Parameter(port,"TokenInitProduction",
                         new IntToken(rate));
-            } 
+            }
         } catch (Exception exception) {
-            // This should never happen.  
+            // This should never happen.
             // e might be NameDuplicationException, but we already
             // know it doesn't exist.
             // e might be IllegalActionException, but we've already
             // checked the error conditions
             throw new InternalErrorException(exception.getMessage());
         }
-    }   
+    }
 
     /** Simulate the consumption of tokens by the actor during an execution.
      *  The entries in LLMap will be modified to reflect the number of
@@ -1224,7 +1224,7 @@ public class SDFScheduler extends Scheduler {
                 while (actors.hasMoreElements()) {
                     NamedObj actor = (NamedObj)(actors.nextElement());
                     msg += actor.getFullName() + " ";
-                }                    
+                }
                 throw new NotSchedulableException(msg);
             }
         }

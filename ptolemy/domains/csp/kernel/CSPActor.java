@@ -151,7 +151,7 @@ public class CSPActor extends TypedAtomicActor {
      * @param name The actor's name.
      * @exception IllegalActionException If the entity cannot be contained
      *  by the proposed container.
-     * @exception NameDuplicationException If the name argument coincides 
+     * @exception NameDuplicationException If the name argument coincides
      *  with an entity already in the container.
      */
     public CSPActor(TypedCompositeActor container, String name)

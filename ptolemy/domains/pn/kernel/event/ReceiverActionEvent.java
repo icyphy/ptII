@@ -35,11 +35,11 @@ import ptolemy.domains.pn.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ReceiverActionEvent
 /**
-An event passed from a process executing under the PN semantics to a 
+An event passed from a process executing under the PN semantics to a
 ProcessStateListener. This is used to
 represent an event that happened during the execution of a topology.
 This event contains two pieces of information:  the actor under the control
-of the process and an exception that might be thrown. 
+of the process and an exception that might be thrown.
 The exception might not be a valid reference.
 
 @author Mudit Goel
@@ -48,7 +48,7 @@ The exception might not be a valid reference.
 
 public class ReceiverActionEvent {
 
-    /** Create a new event and assign the variable corresponding to the 
+    /** Create a new event and assign the variable corresponding to the
      *  capacity of the receiver to the current capacity of the receiver.
      *  @param The Receiver.
      */

@@ -117,7 +117,7 @@ public class Memory extends CSPActor {
 
             int br = chooseBranch( branches );
 
-	    // Sleep so that graphical displays involving this 
+	    // Sleep so that graphical displays involving this
 	    // applet will pause after colors are changed.
 	    try {
 	        Thread.sleep(300);

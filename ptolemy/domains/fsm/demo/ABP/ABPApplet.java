@@ -83,14 +83,14 @@ public class ABPApplet extends Applet {
         _finishButton = new Button("Finish");
         _terminateButton = new Button("Terminate");
 
-        
+
 
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
         appletPanel.setLayout(new GridLayout(1,1));
         add(appletPanel, "Center");
-        
+
         // _la is the drawing panel for DELogicAnalyzer actor.
         Plot dePanel = new Plot();
         appletPanel.add(dePanel);
@@ -130,7 +130,7 @@ public class ABPApplet extends Applet {
         // Adding current time in the sub panel.
         simulationParam.add(_currentTimeLabel);
         // Done adding average wait time.
-        
+
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
         controlPanel.add(_pauseButton);
@@ -508,7 +508,7 @@ public class ABPApplet extends Applet {
             plot.input.link(sysR11);
             String[] deLegends = {"Received", "Sent", "AltBit"};
             plot.setLegend(deLegends);
-            
+
             // Setting up parameters.
             _fdRate = (Parameter)forward.getAttribute("DropRate");
             _bdRate = (Parameter)backward.getAttribute("DropRate");
@@ -619,14 +619,14 @@ public class ABPApplet extends Applet {
                     System.err.println("Invalid stop time: " +ex.getMessage());
                     return;
                 }
-                
+
                 // Set the minimum service time.
                 try {
                     _fdr = _fdrBox.getText();
                     double f1 = (Double.valueOf(_fdr)).doubleValue();
                     _fdRate.setToken(new DoubleToken(f1));
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid minimum service time: " + 
+                    System.err.println("Invalid minimum service time: " +
                             ex.getMessage());
                 }
 
@@ -634,14 +634,14 @@ public class ABPApplet extends Applet {
                 try {
                     _bdr = _bdrBox.getText();
                     double f2 = (Double.valueOf(_bdr)).doubleValue();
-                    _bdRate.setToken(new DoubleToken(f2)); 
+                    _bdRate.setToken(new DoubleToken(f2));
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid interrupt service time: " + 
+                    System.err.println("Invalid interrupt service time: " +
                             ex.getMessage());
                 }
 
                 _localDirector.setStopTime(_stopTime);
-               
+
 
                 // Start the CurrentTimeThread.
                 Thread ctt = new CurrentTimeThread();

@@ -42,9 +42,9 @@ import java.util.Enumeration;
 A polymorphic distributor, which splits an input stream into a set of
 output streams. The distributor has an input port and an output port,
 the latter of which is a multiport.
-The types of the ports are undeclared and will be resolved by the type 
+The types of the ports are undeclared and will be resolved by the type
 resolution mechanism, with the constraint that the output type must be
-greater than or equal to the input type. On each call to the fire method, the 
+greater than or equal to the input type. On each call to the fire method, the
 actor reads at most <i>n</i> tokens from the input, where <i>n</i> is
 the width of the output port, and writes one token to each output channel,
 in the order of the channels.  If there are fewer than <i>n</i> tokens
@@ -68,7 +68,7 @@ run time, the schedule will be recalculated if necessary.
 public class Distributor extends Transformer implements SequenceActor {
 
     /** Construct an actor in the specified container with the specified
-     *  name. Create ports and make the input port a multiport. Create 
+     *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.
      *
      *  @param container The container.
@@ -104,7 +104,7 @@ public class Distributor extends Transformer implements SequenceActor {
             (newobj.input.getAttribute("TokenConsumptionRate"));
         return newobj;
     }
-    
+
     /** Notify this entity that the links to the specified port have
      *  been altered.  This sets the consumption rate of the input port
      *  and notifies the director that the schedule is invalid, if there

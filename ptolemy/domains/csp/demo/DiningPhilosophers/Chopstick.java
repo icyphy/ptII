@@ -42,15 +42,15 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// Chopstick
 /**
-Chopstick in the Dining Philosophers demo. Each Chopstick can only be 
+Chopstick in the Dining Philosophers demo. Each Chopstick can only be
 used by one philosopher at a time. When it is not being used it can be
-claimed by either of the two philosophers next to it. Once it has been 
-claimed, it is not available until it is released by the philosopher 
+claimed by either of the two philosophers next to it. Once it has been
+claimed, it is not available until it is released by the philosopher
 holding it.
 <p>
 This actor has four ports, each of width one: two are used to communicate
-with the philosopher on the left, and two are used to communicate with 
-the buffer on the right. Two ports are needed to communicate with each 
+with the philosopher on the left, and two are used to communicate with
+the buffer on the right. Two ports are needed to communicate with each
 philosopher as the philosopher holds the chopstick for some random time.
 <p>
 @author Neil Smyth

@@ -70,7 +70,7 @@ public class CSPHasRoom extends CSPPut {
 	    }
 	}
 
-	while( !rcvr.hasRoom() ); 
+	while( !rcvr.hasRoom() );
 	if( rcvr.hasRoom() ) {
 	    _hasRoom = true;
 	}

@@ -193,7 +193,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  <p>
      *  The execution is performed in the calling thread (the current thread),
      *  so this method returns only after execution finishes.
-     *  If you wish to perform execution in a new thread, use startRun() 
+     *  If you wish to perform execution in a new thread, use startRun()
      *  instead.  Even if an exception occurs during the execution, the
      *  wrapup() method is called (in a finally clause).  It is up to the
      *  caller to handle (i.e. report) the exception.
@@ -210,7 +210,7 @@ public final class Manager extends NamedObj implements Runnable {
         long startTime = (new Date()).getTime();
 
         boolean completedSuccessfully = false;
-        try {            
+        try {
             initialize();
             // Call iterate() until finish() is called or postfire()
             // returns false.
@@ -229,7 +229,7 @@ public final class Manager extends NamedObj implements Runnable {
                 }
             }
             completedSuccessfully = true;
-        } 
+        }
         finally {
             wrapup();
             if (completedSuccessfully) {
@@ -248,13 +248,13 @@ public final class Manager extends NamedObj implements Runnable {
     /** Set a flag to request that execution stop and exit gracefully.
      *  This will result in finish() being called on the top level
      *  CompositeActor, although not necessarily immediately.
-     *  This method sets the flag, then calls stopFire() on the 
+     *  This method sets the flag, then calls stopFire() on the
      *  toplevel composite actor to ensure that the flag will actually get
      *  seen.  Finally, resume() is called to ensure that the model is not
      *  currently paused.  Note that the flag is set before
      *  calling resume so that it is visible as
      *  as soon as possible.  This is important since another thread may
-     *  be holding a synchronization lock on the manager, preventing 
+     *  be holding a synchronization lock on the manager, preventing
      *  resume from running.
      */
     public void finish() {
@@ -404,10 +404,10 @@ public final class Manager extends NamedObj implements Runnable {
     }
 
     /** Set a flag requesting that execution pause at the next opportunity
-     *  (between iterations).  Call stopFire() on the toplevel composite 
-     *  actor to ensure that the manager's execution thread becomes active 
+     *  (between iterations).  Call stopFire() on the toplevel composite
+     *  actor to ensure that the manager's execution thread becomes active
      *  again.   The thread controlling the execution will be
-     *  suspended the next time through the iteration loop.  To resume 
+     *  suspended the next time through the iteration loop.  To resume
      *  execution, call resume() from another thread.
      */
     public void pause() {
@@ -584,9 +584,9 @@ public final class Manager extends NamedObj implements Runnable {
      *  This leaves the state of the manager in CORRUPTED, which means
      *  that the model cannot be executed again.  A new model must be
      *  created, with a new manager, to execute again.
-     *  This method is not intended to be used as a normal route of 
-     *  stopping execution. To normally stop execution, call the finish() 
-     *  method instead. This method should be called only 
+     *  This method is not intended to be used as a normal route of
+     *  stopping execution. To normally stop execution, call the finish()
+     *  method instead. This method should be called only
      *  when execution fails to terminate by normal means due to certain
      *  kinds of programming errors (infinite loops, threading errors, etc.).
      *  <p>
@@ -714,7 +714,7 @@ public final class Manager extends NamedObj implements Runnable {
 
     /*  Check whether write access is needed during an
      *  iteration. This is done by asking the directors.
-     *  This method calls the needWriteAccess() method of 
+     *  This method calls the needWriteAccess() method of
      *  the top level director, which will in turn query any inside
      *  directors.
      */

@@ -39,7 +39,7 @@ import ptolemy.domains.sdf.kernel.*;
  * This actor will consume all tokens on its input port and write their
  * values to a string.  The value of the string can then be obtained
  * for use in test scripts, etc.
- * 
+ *
  * This actor is aware of the rate that is set on its input port and will
  * consume an appropriate number of tokens with each firing.
  * This actor is type Polymorphic.
@@ -63,7 +63,7 @@ public class SDFConsumer extends SDFAtomicActor {
     }
 
     public TypedIOPort input;
- 
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
@@ -94,10 +94,10 @@ public class SDFConsumer extends SDFAtomicActor {
         for(i = 0; i < tokens; i++) {
             Token t = input.get(0);
             _history.append(t.toString() + "\n");
-        }        
+        }
     }
 
-    /** 
+    /**
      * Return a string representing the values of the tokens that have been
      * consumed so far by this actor, since its creation.
      */

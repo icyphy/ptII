@@ -71,7 +71,7 @@ public class SDFJoin extends SDFAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    //// 
+    ////                         public methods                    ////
 
     public TypedIOPort input1;
     public TypedIOPort input2;
@@ -98,7 +98,7 @@ public class SDFJoin extends SDFAtomicActor {
     }
 
     /** Fire the actor.
-     * Copy one token from input1 to the output and then copy one token 
+     * Copy one token from input1 to the output and then copy one token
      * from input2 to the output.
      * @exception IllegalActionException If a contained method throws it.
      */

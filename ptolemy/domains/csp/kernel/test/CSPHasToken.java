@@ -70,7 +70,7 @@ public class CSPHasToken extends CSPGet {
 	    }
 	}
 
-	while( !rcvr.hasToken() ); 
+	while( !rcvr.hasToken() );
 	if( rcvr.hasToken() ) {
 	    _hasToken = true;
 	}

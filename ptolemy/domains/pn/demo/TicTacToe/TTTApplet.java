@@ -78,7 +78,7 @@ public class TTTApplet extends PNApplet {
 	validate();
 	return;
     }
-	
+
     /** Construct the Ptolemy system
      */
     public void constructPtolemyModel () {
@@ -87,7 +87,7 @@ public class TTTApplet extends PNApplet {
 	    TTTPlayer play = new TTTPlayer(_toplevel, "player");
 	    _toplevel.connect(_display.input, play.output, "QX");
 	    _toplevel.connect(play.input, _display.output);
-	    System.out.println("Connections made");	    
+	    System.out.println("Connections made");
         }
         catch (Exception e) {
             throw new RuntimeException(e.toString());
@@ -100,9 +100,9 @@ public class TTTApplet extends PNApplet {
     public void start() {
     }
 
-    /** Start execution of the model. 
+    /** Start execution of the model.
      *  In this base class, this method calls the protected method
-     *  _go(), which executes the model.  
+     *  _go(), which executes the model.
      */
     protected void _go() throws IllegalActionException {
 	displayPanel.removeAll();

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -40,7 +40,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChangeRequestTest
-/** 
+/**
 Test for ChangeRequest.
 
 @author  Edward A. Lee
@@ -50,7 +50,7 @@ Test for ChangeRequest.
 public class ChangeRequestTest {
 
     /** Constructor.
-     */	
+     */
     public ChangeRequestTest()
              throws IllegalActionException, NameDuplicationException {
         TypedCompositeActor _top = new TypedCompositeActor();
@@ -69,7 +69,7 @@ public class ChangeRequestTest {
     ////                         public methods                    ////
 
     /** Finish a run.  Return the results.
-     */	
+     */
     public Enumeration finish() throws KernelException {
         _manager.iterate();
         _manager.wrapup();
@@ -93,7 +93,7 @@ public class ChangeRequestTest {
     }
 
     /** Start a run.
-     */	
+     */
     public void start() throws KernelException {
         _manager.initialize();
         _manager.iterate();

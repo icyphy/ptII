@@ -208,7 +208,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             }
         } catch (InterruptedException ex) {
             getParent()._branchFailed(getID());
-            throw new InternalErrorException( getParent().getName() + 
+            throw new InternalErrorException( getParent().getName() +
                     ": ConditionalSend interrupted: " + ex.getMessage());
         } catch (TerminateProcessException ex) {
             System.out.println(getParent().getName() +
@@ -221,7 +221,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             getReceiver()._setConditionalSend(false, null);
         }
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
 
@@ -231,14 +231,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected boolean arriveAfterCondRec(CSPReceiver rcvr, CSPActor parent ) 
+    protected boolean arriveAfterCondRec(CSPReceiver rcvr, CSPActor parent )
                     throws InterruptedException {
-        // CASE 2: a conditionalReceive is already waiting. 
-        // As this conditionalSend arrived second, it has 
-        // to check if both branches are "first" and if 
-        // so perform transfer & reset state of the receiver. 
-        // A ConditionalReceive may disappear, 
-        // so if fail to rendezvous, go back to top 
+        // CASE 2: a conditionalReceive is already waiting.
+        // As this conditionalSend arrived second, it has
+        // to check if both branches are "first" and if
+        // so perform transfer & reset state of the receiver.
+        // A ConditionalReceive may disappear,
+        // so if fail to rendezvous, go back to top
         // of main loop.
         if (parent._isBranchFirst(getID())) {
             // send side ok, need to check that receive
@@ -258,42 +258,42 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         _registerBlockAndWait();
         return true;
     }
-    
+
     /**
      * @param parent The csp actor that contains this conditional
      *  receive.
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected void arriveAfterGet(CSPReceiver rcvr, CSPActor parent ) 
+    protected void arriveAfterGet(CSPReceiver rcvr, CSPActor parent )
             throws InterruptedException {
-        // CASE 1: a get is already waiting 
-        // A get cannot disappear, so once enter this 
-        // part of the loop stay here until branch 
-        // successfully rendezvous or dies. 
+        // CASE 1: a get is already waiting
+        // A get cannot disappear, so once enter this
+        // part of the loop stay here until branch
+        // successfully rendezvous or dies.
         while (true) {
             if (parent._isBranchFirst(getID())) {
                 // I am the branch that succeeds
-                rcvr.put(getToken()); 
-                parent._branchSucceeded(getID()); 
+                rcvr.put(getToken());
+                parent._branchSucceeded(getID());
                 return;
             } else {
                 _registerBlockAndWait();
-            } 
+            }
             if (!isAlive()) {
-                parent._branchFailed(getID()); 
+                parent._branchFailed(getID());
                 return;
             }
         }
-    } 
-    
+    }
+
     /**
      * @param parent The csp actor that contains this conditional
      *  receive.
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected void arriveFirst(CSPReceiver rcvr, CSPActor parent ) 
+    protected void arriveFirst(CSPReceiver rcvr, CSPActor parent )
             throws InterruptedException {
         // CASE 3: ConditionalSend got here before a get or a
         // ConditionalReceive. Once enter this part of main

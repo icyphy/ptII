@@ -99,7 +99,7 @@ public class HSDirector extends FSMDirector implements CTEmbeddedDirector {
 
         if (ref instanceof CTStepSizeControlActor) {
 
-            //System.out.println("HSDirector: get step status from subsys " 
+            //System.out.println("HSDirector: get step status from subsys "
             //+ ((ComponentEntity)ref).getFullName());
 
             return ((CTStepSizeControlActor)ref).isThisStepSuccessful();

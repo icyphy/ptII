@@ -556,7 +556,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
     }
 
-    /** FIXME: This should do something like calling stopfire on the contained 
+    /** FIXME: This should do something like calling stopfire on the contained
      *  actors.
      */
     public void stopFire() {

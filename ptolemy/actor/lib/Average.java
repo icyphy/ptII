@@ -40,7 +40,7 @@ import ptolemy.data.*;
 Output the average of the inputs so far.
 One output is produced each time the actor fires.
 The inputs and outputs can be any token type that
-supports addition and division by an integer.  The output type is 
+supports addition and division by an integer.  The output type is
 constrained to be the same as the input type.
 <p>
 Note that the type system will fail to catch some errors. Static type

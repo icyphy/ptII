@@ -122,6 +122,6 @@ public class SequencePlotter extends Plotter
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** @serial X axis counter */ 
+    /** @serial X axis counter */
     private double _xValue;
 }

@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -39,7 +39,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEPrinter
-/** 
+/**
 
 
 @author John S. Davis II
@@ -47,35 +47,35 @@ import java.util.Enumeration;
 */
 public class DDEPrinter extends DDEActor {
 
-    /** 
+    /**
      */
     public DDEPrinter(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort( this, "input", true, false );
 	input.setTypeEquals(Token.class);
         input.setMultiport(true);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
-   
+
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      */
     public void fire() throws IllegalActionException {
 	getNextToken();
         double time = getCurrentTime();
-	System.out.println("\n###DDEPrinter at time = " 
+	System.out.println("\n###DDEPrinter at time = "
                 + time + " ###");
     }
-    
-    /** 
+
+    /**
      */
     public void wrapup() throws IllegalActionException {
         System.out.println("\nIt is finished.\n");

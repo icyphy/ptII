@@ -774,7 +774,7 @@ public final class Workspace implements Nameable, Serializable {
 
     /** @serial A table by readers (threads) of how many times they have
      *  gotten read permission.
-     */ 
+     */
     private Hashtable _readers = new Hashtable();
 
     /** @serial The number of PtolemyThread readers.

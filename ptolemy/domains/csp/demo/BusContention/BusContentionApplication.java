@@ -60,19 +60,19 @@ import javax.swing.SwingUtilities;
 
 /** A model of hardware subsystems accessing a shared resource using
  *  rendezvous. The model shows the use of timed CSP to
- *  deterministically handle nondeterministic events. 
+ *  deterministically handle nondeterministic events.
  *  <p>
  *  The applet consists of a controller, three processors and a memory
  *  block. At randomly selected points in time, each processor can
  *  request permission from the controller to access the memory. The
  *  processors each have priorities associated with them, and in cases
  *  where there is a simultaneous memory access request, the controller
- *  grants permission to the processor with the highest priority. 
+ *  grants permission to the processor with the highest priority.
  *  <p>
  *  All communication between actors in a CSP model of computation
  *  occurs via rendezvous. Rendezvous is an atomic form of
  *  communication. This model uses a timed extension to CSP, so each
- *  rendezvous logically occurs at a specific point in time. 
+ *  rendezvous logically occurs at a specific point in time.
  *  <p>
  *  Because of the atomic nature of rendezvous, when the controller
  *  receives a request for access, it cannot know whether there is
@@ -83,7 +83,7 @@ import javax.swing.SwingUtilities;
  *  blocks on delays). This indicates to the controller that no more
  *  memory requests will occur at the given point in time. Hence, the
  *  alarm uses centralized time to make deterministic an inherently
- *  non-deterministic activity. 
+ *  non-deterministic activity.
  *  <p>
  *  In the applet, each of the initially blue processors (the circular
  *  nodes) can be in one of three states. The color yellow indicates
@@ -102,7 +102,7 @@ public class BusContentionApplication implements ActionListener {
      *  composite actor.  The model is actually created by the
      *  initializeDemo() method.
      */
-    public BusContentionApplication(Manager manager, 
+    public BusContentionApplication(Manager manager,
 	    TypedCompositeActor topLevel) {
 	_manager = manager;
 	_topLevel = topLevel;
@@ -116,14 +116,14 @@ public class BusContentionApplication implements ActionListener {
 	TypedCompositeActor topLevel = new TypedCompositeActor();
 
 	try {
-            topLevel.setName("topLevel"); 
+            topLevel.setName("topLevel");
             topLevel.setManager(manager);
 	} catch( KernelException e ) {
             // This should not occur.
 	    throw new InternalErrorException(e.toString());
 	}
 
-        BusContentionApplication app = 
+        BusContentionApplication app =
             new BusContentionApplication( manager, topLevel );
 
 	Panel nullAppletPanel = null;
@@ -141,9 +141,9 @@ public class BusContentionApplication implements ActionListener {
 	    try {
                 this.runDemo();
             } catch( Exception e ) {
-	        e.printStackTrace(); 
-	        throw new InternalErrorException("Error in GoButton: " 
-                        + e.getMessage()); 
+	        e.printStackTrace();
+	        throw new InternalErrorException("Error in GoButton: "
+                        + e.getMessage());
             }
 	}
 	if( action.equals("Stop") ) {
@@ -199,83 +199,83 @@ public class BusContentionApplication implements ActionListener {
     public void constructPtolemyModel () {
         try {
 	    Director director = new CSPDirector(_topLevel, "Director");
-	    
-            // Instantiate Actors 
-	    _contentionActor = new Controller( _topLevel, "controller" ); 
+
+            // Instantiate Actors
+	    _contentionActor = new Controller( _topLevel, "controller" );
 	    _alarmActor = new ContentionAlarm( _topLevel, "alarm" );
-            _memoryActor = new Memory( _topLevel, "memory" ); 
-	    _processActor1 = new Processor( _topLevel, "proc1", 1 ); 
-	    _processActor2 = new Processor( _topLevel, "proc2", 2 ); 
-	    _processActor3 = new Processor( _topLevel, "proc3", 3 ); 
+            _memoryActor = new Memory( _topLevel, "memory" );
+	    _processActor1 = new Processor( _topLevel, "proc1", 1 );
+	    _processActor2 = new Processor( _topLevel, "proc2", 2 );
+	    _processActor3 = new Processor( _topLevel, "proc3", 3 );
 
-	    // Set up ports, relation 
-	    TypedIOPort reqOut = 
-                (TypedIOPort)_contentionActor.getPort("requestOut"); 
-	    TypedIOPort reqIn = 
-                (TypedIOPort)_contentionActor.getPort("requestIn"); 
-	    TypedIOPort contendOut = 
-                (TypedIOPort)_contentionActor.getPort("contendOut"); 
-	    TypedIOPort contendIn = 
-                (TypedIOPort)_contentionActor.getPort("contendIn"); 
+	    // Set up ports, relation
+	    TypedIOPort reqOut =
+                (TypedIOPort)_contentionActor.getPort("requestOut");
+	    TypedIOPort reqIn =
+                (TypedIOPort)_contentionActor.getPort("requestIn");
+	    TypedIOPort contendOut =
+                (TypedIOPort)_contentionActor.getPort("contendOut");
+	    TypedIOPort contendIn =
+                (TypedIOPort)_contentionActor.getPort("contendIn");
 
-	    TypedIOPort _alarmOut = 
-                (TypedIOPort)_alarmActor.getPort("output"); 
-	    TypedIOPort _alarmIn = 
-                (TypedIOPort)_alarmActor.getPort("input"); 
-	    TypedIOPort memOut = 
-                (TypedIOPort)_memoryActor.getPort("output"); 
-	    TypedIOPort memIn = 
-                (TypedIOPort)_memoryActor.getPort("input"); 
+	    TypedIOPort _alarmOut =
+                (TypedIOPort)_alarmActor.getPort("output");
+	    TypedIOPort _alarmIn =
+                (TypedIOPort)_alarmActor.getPort("input");
+	    TypedIOPort memOut =
+                (TypedIOPort)_memoryActor.getPort("output");
+	    TypedIOPort memIn =
+                (TypedIOPort)_memoryActor.getPort("input");
 
-	    TypedIOPort p1_ReqOut = 
-                (TypedIOPort)_processActor1.getPort("requestOut"); 
-	    TypedIOPort p2_ReqOut = 
-                (TypedIOPort)_processActor2.getPort("requestOut"); 
-	    TypedIOPort p3_ReqOut = 
-                (TypedIOPort)_processActor3.getPort("requestOut"); 
-	    TypedIOPort p1_ReqIn = 
-                (TypedIOPort)_processActor1.getPort("requestIn"); 
-	    TypedIOPort p2_ReqIn = 
-                (TypedIOPort)_processActor2.getPort("requestIn"); 
-	    TypedIOPort p3_ReqIn = 
-                (TypedIOPort)_processActor3.getPort("requestIn"); 
+	    TypedIOPort p1_ReqOut =
+                (TypedIOPort)_processActor1.getPort("requestOut");
+	    TypedIOPort p2_ReqOut =
+                (TypedIOPort)_processActor2.getPort("requestOut");
+	    TypedIOPort p3_ReqOut =
+                (TypedIOPort)_processActor3.getPort("requestOut");
+	    TypedIOPort p1_ReqIn =
+                (TypedIOPort)_processActor1.getPort("requestIn");
+	    TypedIOPort p2_ReqIn =
+                (TypedIOPort)_processActor2.getPort("requestIn");
+	    TypedIOPort p3_ReqIn =
+                (TypedIOPort)_processActor3.getPort("requestIn");
 
-	    TypedIOPort p1_MemOut = 
-                (TypedIOPort)_processActor1.getPort("memoryOut"); 
-	    TypedIOPort p2_MemOut = 
-                (TypedIOPort)_processActor2.getPort("memoryOut"); 
-	    TypedIOPort p3_MemOut = 
-                (TypedIOPort)_processActor3.getPort("memoryOut"); 
-	    TypedIOPort p1_MemIn = 
-                (TypedIOPort)_processActor1.getPort("memoryIn"); 
-	    TypedIOPort p2_MemIn = 
-                (TypedIOPort)_processActor2.getPort("memoryIn"); 
-	    TypedIOPort p3_MemIn = 
-                (TypedIOPort)_processActor3.getPort("memoryIn"); 
+	    TypedIOPort p1_MemOut =
+                (TypedIOPort)_processActor1.getPort("memoryOut");
+	    TypedIOPort p2_MemOut =
+                (TypedIOPort)_processActor2.getPort("memoryOut");
+	    TypedIOPort p3_MemOut =
+                (TypedIOPort)_processActor3.getPort("memoryOut");
+	    TypedIOPort p1_MemIn =
+                (TypedIOPort)_processActor1.getPort("memoryIn");
+	    TypedIOPort p2_MemIn =
+                (TypedIOPort)_processActor2.getPort("memoryIn");
+	    TypedIOPort p3_MemIn =
+                (TypedIOPort)_processActor3.getPort("memoryIn");
 
-	    TypedIORelation inReqs, outReqs, 
+	    TypedIORelation inReqs, outReqs,
                 reads, writes, outContends, inContends;
 
-	    // Set up connections 
-	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p1_ReqOut ); 
-	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p2_ReqOut ); 
-	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p3_ReqOut ); 
+	    // Set up connections
+	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p1_ReqOut );
+	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p2_ReqOut );
+	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p3_ReqOut );
 
-	    outContends = (TypedIORelation)_topLevel.connect(contendOut, 
+	    outContends = (TypedIORelation)_topLevel.connect(contendOut,
 	            _alarmIn );
             inContends = (TypedIORelation)_topLevel.connect(contendIn,
 	            _alarmOut );
 
-            outReqs = (TypedIORelation)_topLevel.connect( reqOut, p1_ReqIn ); 
-	    outReqs = (TypedIORelation)_topLevel.connect( reqOut, p2_ReqIn ); 
-	    outReqs = (TypedIORelation)_topLevel.connect( reqOut, p3_ReqIn ); 
+            outReqs = (TypedIORelation)_topLevel.connect( reqOut, p1_ReqIn );
+	    outReqs = (TypedIORelation)_topLevel.connect( reqOut, p2_ReqIn );
+	    outReqs = (TypedIORelation)_topLevel.connect( reqOut, p3_ReqIn );
 
-	    reads = (TypedIORelation)_topLevel.connect( memOut, p1_MemIn ); 
-	    reads = (TypedIORelation)_topLevel.connect( memOut, p2_MemIn ); 
-	    reads = (TypedIORelation)_topLevel.connect( memOut, p3_MemIn ); 
+	    reads = (TypedIORelation)_topLevel.connect( memOut, p1_MemIn );
+	    reads = (TypedIORelation)_topLevel.connect( memOut, p2_MemIn );
+	    reads = (TypedIORelation)_topLevel.connect( memOut, p3_MemIn );
 
-	    writes = (TypedIORelation)_topLevel.connect( memIn, p1_MemOut ); 
-	    writes = (TypedIORelation)_topLevel.connect( memIn, p2_MemOut ); 
+	    writes = (TypedIORelation)_topLevel.connect( memIn, p1_MemOut );
+	    writes = (TypedIORelation)_topLevel.connect( memIn, p2_MemOut );
 	    writes = (TypedIORelation)_topLevel.connect( memIn, p3_MemOut );
 
             System.out.println("Connections are complete.");
@@ -287,46 +287,46 @@ public class BusContentionApplication implements ActionListener {
     }
 
     /**
-     * Construct the graph widget with the default constructor (giving 
-     * it an empty graph), and then set the model once the _window is 
+     * Construct the graph widget with the default constructor (giving
+     * it an empty graph), and then set the model once the _window is
      * showing. Add control buttons to the _window.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-	Panel controlPanel = new Panel(); 
+	Panel controlPanel = new Panel();
 
-	Button startButton = new Button("Go"); 
-	startButton.addActionListener( this ); 
-	controlPanel.add(startButton, BorderLayout.WEST); 
+	Button startButton = new Button("Go");
+	startButton.addActionListener( this );
+	controlPanel.add(startButton, BorderLayout.WEST);
 
-	Button stopButton = new Button("Stop"); 
-	stopButton.addActionListener( this ); 
-	controlPanel.add(stopButton, BorderLayout.CENTER); 
+	Button stopButton = new Button("Stop");
+	stopButton.addActionListener( this );
+	controlPanel.add(stopButton, BorderLayout.CENTER);
 
-	Button quitButton = new Button("Quit"); 
-	quitButton.addActionListener( this ); 
-	controlPanel.add(quitButton, BorderLayout.EAST); 
+	Button quitButton = new Button("Quit");
+	quitButton.addActionListener( this );
+	controlPanel.add(quitButton, BorderLayout.EAST);
 
-	controlPanel.setVisible(true); 
+	controlPanel.setVisible(true);
 
-        _window = new BasicWindow("Basic Window"); 
-	_window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
-	_window.getContentPane().add(g, BorderLayout.CENTER); 
-	_window.setSize(500, 600); 
-	_window.setLocation(100, 100); 
+        _window = new BasicWindow("Basic Window");
+	_window.getContentPane().add(controlPanel, BorderLayout.NORTH);
+	_window.getContentPane().add(g, BorderLayout.CENTER);
+	_window.setSize(500, 600);
+	_window.setLocation(100, 100);
 	_window.setVisible(true);
 	/*
           if( _appletPanel == null ) {
-          _window = new BasicWindow("Basic Window"); 
-          _window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
-          _window.getContentPane().add(g, BorderLayout.CENTER); 
-          _window.setSize(500, 600); 
-          _window.setLocation(100, 100); 
+          _window = new BasicWindow("Basic Window");
+          _window.getContentPane().add(controlPanel, BorderLayout.NORTH);
+          _window.getContentPane().add(g, BorderLayout.CENTER);
+          _window.setSize(500, 600);
+          _window.setLocation(100, 100);
           _window.setVisible(true);
           } else {
           _appletPanel.add(controlPanel, BorderLayout.NORTH);
           _appletPanel.add(g, BorderLayout.CENTER);
-          _appletPanel.setSize(500, 600); 
-          _appletPanel.setLocation(100, 100); 
+          _appletPanel.setSize(500, 600);
+          _appletPanel.setLocation(100, 100);
           _appletPanel.setVisible(true);
           }
 	*/
@@ -371,13 +371,13 @@ public class BusContentionApplication implements ActionListener {
             ex.printStackTrace();
             System.exit(0);
         }
-        StateListener listener = 
+        StateListener listener =
             new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addListeners(listener);
 	_processActor2.addListeners(listener);
 	_processActor3.addListeners(listener);
     }
- 
+
     /**
      */
     public void runDemo() throws IllegalActionException {
@@ -392,14 +392,14 @@ public class BusContentionApplication implements ActionListener {
     /**
      */
     public void endSimulation() {
-        Director director = _topLevel.getDirector(); 
+        Director director = _topLevel.getDirector();
 	_manager.finish();
     }
 
     /**
      */
     public void shutDown() {
-        Director director = _topLevel.getDirector(); 
+        Director director = _topLevel.getDirector();
 	try {
 	    // Eventually we will not need to call Director.wrapup()
 	    // as Manager.finish() will subsume this responsibility.
@@ -407,19 +407,19 @@ public class BusContentionApplication implements ActionListener {
 	    _manager.finish();
 	    _manager = null;
 	} catch( IllegalActionException e ) {
-	    System.err.println("IllegalActionException thrown while " + 
+	    System.err.println("IllegalActionException thrown while " +
 		    "attempting to shutDown()");
 	    e.printStackTrace();
 	}
 	if( _appletPanel == null ) {
-	    _window.setVisible(false); 
-	    _window.dispose(); 
+	    _window.setVisible(false);
+	    _window.dispose();
 	    _window = null;
 
 	    System.exit(0);
 	} else {
-	    _window.setVisible(false); 
-	    _window.dispose(); 
+	    _window.setVisible(false);
+	    _window.dispose();
 	    _window = null;
 	}
     }
@@ -499,11 +499,11 @@ public class BusContentionApplication implements ActionListener {
                         case 1:
 			    figure.setFillPaint(Color.yellow);
                             break;
-                        
+
                         case 2:
                             figure.setFillPaint(Color.yellow);
                             break;
-                        
+
                         case 3:
                             figure.setFillPaint(Color.green);
                             break;
@@ -517,7 +517,7 @@ public class BusContentionApplication implements ActionListener {
                         }
                     }
                 });
-            } 
+            }
             catch (Exception e) {}
         }
     }
@@ -541,17 +541,17 @@ public class BusContentionApplication implements ActionListener {
         public Figure render (Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
-            boolean isEllipse = 
-                actor instanceof Controller 
-                || actor instanceof Memory 
+            boolean isEllipse =
+                actor instanceof Controller
+                || actor instanceof Memory
                 || actor instanceof ContentionAlarm;
 
-            
+
             BasicFigure f;
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);
             } else {
-                f = new BasicRectangle(0, 0, _size, _size); 
+                f = new BasicRectangle(0, 0, _size, _size);
 		f.setFillPaint(Color.blue);
             }
             String label = actor.getName();

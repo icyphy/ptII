@@ -75,7 +75,7 @@ public class DEInterruptibleServer extends DEActor {
      */
     public DEInterruptibleServer(TypedCompositeActor container,
             String name,
-            double minServiceTime, 
+            double minServiceTime,
             double interruptServiceTime)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -89,13 +89,13 @@ public class DEInterruptibleServer extends DEActor {
         interrupt.setTypeEquals(Token.class);
 
         // set the parameters.
-        _minimumServiceTime = new Parameter(this, 
-                "MinimumServiceTime", 
+        _minimumServiceTime = new Parameter(this,
+                "MinimumServiceTime",
                 new DoubleToken(minServiceTime));
         _interruptServiceTime = new Parameter(this,
-                "InterruptServiceTime", 
+                "InterruptServiceTime",
                 new DoubleToken(interruptServiceTime));
-        
+
     }
 
 
@@ -108,31 +108,31 @@ public class DEInterruptibleServer extends DEActor {
      * @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException{
-        
-        double interruptServiceTime = 
+
+        double interruptServiceTime =
             ((DoubleToken)_interruptServiceTime.getToken()).doubleValue();
         double minimumServiceTime =
             ((DoubleToken)_minimumServiceTime.getToken()).doubleValue();
         double currentTime = getCurrentTime();
 
         boolean busy = _busyUntil > currentTime;
-        
+
         if (busy) {
             // The interrupt event(s) delay the total execution time of
             // the current input events by even more.
             while (interrupt.hasToken(0)) {
-               
+
                 interrupt.get(0);
                 _busyUntil += interruptServiceTime;
                 if (DEBUG) {
-                    System.out.println("DEInterruptibleServer: Interrupted " + 
-                            "while busy at time " + 
-                            currentTime + " and will be busy until " + 
+                    System.out.println("DEInterruptibleServer: Interrupted " +
+                            "while busy at time " +
+                            currentTime + " and will be busy until " +
                             _busyUntil + " .");
                 }
             }
             fireAt(_busyUntil);
-            
+
 
         } else {
 
@@ -141,7 +141,7 @@ public class DEInterruptibleServer extends DEActor {
                 output.broadcast(_tokenBeingServed);
                 _tokenBeingServed = null;
                 if (DEBUG) {
-                    System.out.println("DEInterruptibleServer: Output at " + 
+                    System.out.println("DEInterruptibleServer: Output at " +
                             "time " + currentTime + " .");
                 }
             }
@@ -155,23 +155,23 @@ public class DEInterruptibleServer extends DEActor {
                 // value. Otherwise add it wrt to the current time.
                 if (_busyUntil > currentTime) {
                     _busyUntil += interruptServiceTime;
-                } else {   
+                } else {
                     _busyUntil = currentTime + interruptServiceTime;
                 }
 
                 if (DEBUG) {
-                    System.out.println("DEInterruptibleServer: Interrupted " + 
-                            "while not busy at time " + 
-                            currentTime + " and will be busy until " + 
+                    System.out.println("DEInterruptibleServer: Interrupted " +
+                            "while not busy at time " +
+                            currentTime + " and will be busy until " +
                             _busyUntil + " .");
                 }
-                
+
             }
 
             // process input event after the interrupts.
             if (input.hasToken(0)) {
                 _tokenBeingServed = input.get(0);
-                
+
                 // If due to the interrupts above, the _busyUntil has
                 // got incremented then add the time to that value.
                 // Otherwise, it will busy starting from currentTime processing
@@ -183,13 +183,13 @@ public class DEInterruptibleServer extends DEActor {
                 }
 
                 if (DEBUG) {
-                    System.out.println("DEInterruptibleServer: Input at " + 
+                    System.out.println("DEInterruptibleServer: Input at " +
                             "time " + currentTime + " .");
                 }
                 fireAt(_busyUntil);
             }
 
-            
+
         }
     }
 
@@ -209,8 +209,8 @@ public class DEInterruptibleServer extends DEActor {
      *  fire whenever there is interrupt event or if it's not busy and
      *  there is input event.
      *  <p>
-     *  Note that this method is called by director due to either of 
-     *  the following three reasons: event in input port, 
+     *  Note that this method is called by director due to either of
+     *  the following three reasons: event in input port,
      *  event in interrut port, or a pure event (produced by fireAfterDelay).
      *  @return true is ready to fire, false otherwise.
      */

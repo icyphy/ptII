@@ -220,8 +220,8 @@ public class DTDirector extends SDFDirector {
 	    }
 
 
-	    
-	    
+
+
 
 
         }
@@ -283,13 +283,13 @@ public class DTDirector extends SDFDirector {
         }
     }
 
-    /** 
+    /**
      * Advance the current time to the given time.   Release all tokens to
      * output ports that should have been created before this time.
      *
      * @return true if it is time to fire the system again at the
      * new time.
-     */   
+     */
     boolean _advanceTime(double time) {
 	boolean firenow = (time >= _nextfiringtime);
 	_currenttime = time;
@@ -298,7 +298,7 @@ public class DTDirector extends SDFDirector {
 	    DoubleToken t = (DoubleToken) p.getToken();
 	    _nextfiringtime = _nextfiringtime + t.doubleValue();
 	}
-	
+
 	return firenow;
     }
 
@@ -307,11 +307,11 @@ public class DTDirector extends SDFDirector {
 
     private int _iteration;
     private Parameter _parameteriterations;
-    // after every firing, _waitingtokens[port][channel] 
+    // after every firing, _waitingtokens[port][channel]
     // contains all the tokens produced
     // for the channel of the given port.
     private LinkedList _waitingtokens[][] = new LinkedList[r.length()];
-	
+
     //    private HashedMap _currenttime;
 
     // Support for mutations.

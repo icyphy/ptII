@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -39,7 +39,7 @@ import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// TTTPlayer
-/** 
+/**
 A multiple input double precision adder.
 Input and output are DoubleMatrixTokens.
 
@@ -49,7 +49,7 @@ Input and output are DoubleMatrixTokens.
 public class TTTPlayer extends AtomicActor {
 
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
@@ -70,7 +70,7 @@ public class TTTPlayer extends AtomicActor {
 	_decideMove(moves);
 	output.broadcast(new IntToken(_row));
 	output.broadcast(new IntToken(_col));
-    }                
+    }
 
     /** Initialize and set the move variables */
     public void initialize() throws IllegalActionException {
@@ -78,18 +78,18 @@ public class TTTPlayer extends AtomicActor {
 	_row = -1;
 	_col = -1;
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  //// 
 
-    // The input port 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    // The input port
     public IOPort input;
-    // The output port 
+    // The output port
     public IOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**Make a decision on the move
      */
     private void _decideMove(int[][] moves) {
@@ -107,7 +107,7 @@ public class TTTPlayer extends AtomicActor {
 			i = 3;
 			j = 3;
 			done = true;
-		    } 
+		    }
 		}
 	    } //Check for column sum
 	    else if (moves[0][i] + moves[1][i] + moves[2][i] == -2) {
@@ -134,7 +134,7 @@ public class TTTPlayer extends AtomicActor {
 			done = true;
 		    }
 		}
-	    } 
+	    }
 	    else if (moves[0][0] + moves[1][1] + moves[2][2] == -2) {
 		for (int j = 0; j < 3; j++) {
 		    if (moves[j][j] == 0) {
@@ -160,7 +160,7 @@ public class TTTPlayer extends AtomicActor {
 			    i = 3;
 			    j = 3;
 			    done = true;
-			} 
+			}
 		    }
 		} //Check for column sum
 		else if (moves[0][i] + moves[1][i] + moves[2][i] == 2) {
@@ -187,7 +187,7 @@ public class TTTPlayer extends AtomicActor {
 			    done = true;
 			}
 		    }
-		} 
+		}
 		else if (moves[0][0] + moves[1][1] + moves[2][2] == 2) {
 		    for (int j = 0; j < 3; j++) {
 			if (moves[j][j] == 0) {
@@ -198,7 +198,7 @@ public class TTTPlayer extends AtomicActor {
 			    done = true;
 			}
 		    }
-		} 	
+		}
 	    }
 	}
 	if (done) return;
@@ -225,12 +225,12 @@ public class TTTPlayer extends AtomicActor {
 			}
 		    }
 		}
-	    }   
+	    }
 	}
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  //// 
+    ////                        private variables                  ////
     int _row = -1;
     int _col = -1;
 }

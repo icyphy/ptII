@@ -46,7 +46,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// FSMController
 /**
-An FSMController is an FSM controller. 
+An FSMController is an FSM controller.
 
 FIXME: Clean handling of the refinement of the state left.
 
@@ -76,7 +76,7 @@ public class HSController extends FSMController {
         return super.prefire();
     }
 
-    /** Change state according to the enabled transition determined 
+    /** Change state according to the enabled transition determined
      *  from last fire.
      *  @return True, the execution can continue into the next iteration.
      *  @exception IllegalActionException If the refinement of the state
@@ -152,13 +152,13 @@ public class HSController extends FSMController {
         emb.fireAt(null, out.getCurrentTime());
         out.fireAt(null, out.getCurrentTime());
 
-        if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {   
+        if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {
             // Initialize the refinement.
             // Actor actor = currentRefinement();
             if (actor == null) {
                 return true;
             }
-            // If the refinement is an FSMController or an FSM system, then the trigger 
+            // If the refinement is an FSMController or an FSM system, then the trigger
             // actions of the taken transition should be input to the actor to enable
             // initial transitions.
             // ADD THIS!
@@ -169,10 +169,10 @@ public class HSController extends FSMController {
             //            }
             // FIXME!
             actor.initialize();
-        }    
+        }
         return true;
     }
 
-}    
+}
 
 

@@ -82,10 +82,10 @@ public class HTVQApplet extends SDFApplet {
 	    Panel displayPanel = new Panel();
 	    add(displayPanel, "North");
 	    displayPanel.setLayout(new BorderLayout());
-	 	    
+
 	    Panel originalPanel = new Panel();
             displayPanel.add("West", originalPanel);
-            
+
             Panel compressedPanel = new Panel();
 	    displayPanel.add("Center", compressedPanel);
 
@@ -93,18 +93,18 @@ public class HTVQApplet extends SDFApplet {
             prnPanel.add(new Label("SNR (dB)"));
             prnPanel.setLayout(new BorderLayout());
             displayPanel.add("East", prnPanel);
-            
+
             Panel labelPanel = new Panel();
             labelPanel.add(new Label("SNR (dB)"));
             prnPanel.add("North", labelPanel);
-            
+
             URL baseURL = new URL(getDocumentBase(), "../../../../../");
 	    ImageSequence source = new ImageSequence(_toplevel, "Source");
             source.setBaseURL(baseURL);
 
             //added SNR actor
             SNR ratio = new SNR(_toplevel, "SNR");
-                    
+
             ImagePartition part = new ImagePartition(_toplevel, "Part");
 
 	    HTVQEncode encode = new HTVQEncode(_toplevel, "Encoder");
@@ -121,8 +121,8 @@ public class HTVQApplet extends SDFApplet {
 
 	    ImageDisplay original = new ImageDisplay(_toplevel, "Original");
 	    original.setPanel(originalPanel);
-            
-            //added Print actor and put the text area at the right of the 
+
+            //added Print actor and put the text area at the right of the
             //applet window. Text Area size is set to be 7*10 (row* column)
             //in order to fit well with the image size.
             Print prn = new Print(_toplevel, "Print");

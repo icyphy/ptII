@@ -82,7 +82,7 @@ public class PNApplet extends PtolemyApplet {
      */
     public void init() {
         super.init();
-        
+
         // Process the initial queue size parameter.
         int capacity = 1;
         try {
@@ -129,7 +129,7 @@ public class PNApplet extends PtolemyApplet {
             // in a new panel.
             Panel queuepanel = new Panel();
             queuepanel.add(new Label("Initial capacity of FIFO channels:"));
-            
+
             // Process the defaultiterations parameter.
             String defqueuespec = getParameter("defaultcapacity");
             if (defqueuespec == null) {
@@ -145,7 +145,7 @@ public class PNApplet extends PtolemyApplet {
     }
 
 
-    /** Get the initial capacity of the channels from the entry box, 
+    /** Get the initial capacity of the channels from the entry box,
      *  if there is one, or from the director, if not.
      */
     protected int _getQueueSize() {
@@ -224,7 +224,7 @@ public class PNApplet extends PtolemyApplet {
      *  parameter.  Note that this is set by the init() method.
      */
     protected boolean _queuesizegiven = false;
-    
+
     /** The entry box containing the number of iterations, or null if
      *  there is none.
      */

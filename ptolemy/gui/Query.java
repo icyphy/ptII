@@ -66,7 +66,7 @@ public class Query extends Panel {
     public void addCheckBox(String name, String label, boolean defvalue) {
         // FIXME: Background color needs to be set.
         JLabel lbl = new JLabel(label + ": ");
-        JRadioButton checkbox = new JRadioButton(); 
+        JRadioButton checkbox = new JRadioButton();
         checkbox.addItemListener(new CheckBoxListener(name));
         checkbox.setSelected(defvalue);
         _addPair(lbl, checkbox);

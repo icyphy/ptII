@@ -39,7 +39,7 @@ import ptolemy.data.expr.Variable;
 /**
 A PassiveVariable is a Variable that does not propagate its changes to
 variables that depend on it.
-You should use this class when you wish to exercise explicit control 
+You should use this class when you wish to exercise explicit control
 over the order of evaluation of a set of variables.
 
 @author Xiaojun Liu, Edward A. Lee

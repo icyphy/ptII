@@ -55,10 +55,10 @@ public class DEANDGate extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEANDGate(TypedCompositeActor container, String name) 
+    public DEANDGate(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         this(container, name, 0.1);
-                
+
     }
 
     /** Construct a DEANDGate actor with the specified delay.

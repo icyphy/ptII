@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEStringMerge
-/** 
+/**
 
 
 @author John S. Davis II
@@ -45,49 +45,49 @@ import ptolemy.data.*;
 */
 public class DDEStringMerge extends DDEActor {
 
-    /** 
+    /**
      */
     public DDEStringMerge(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	_stringOutput = new DDEIOPort( this, "stringOut", false, true ); 
+	_stringOutput = new DDEIOPort( this, "stringOut", false, true );
 	_nullOutput =  new DDEIOPort( this, "nullOut", false, true );
 	_input =  new DDEIOPort( this, "input", true, false );
 
 	_stringOutput.setMultiport(true);
 	_nullOutput.setMultiport(true);
 	_input.setMultiport(true);
-        
+
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      */
     public void fire() throws IllegalActionException {
 	boolean notFinishedYet = true;
 	Token token = null;
-        
+
 	// FIXME: This is valid because DDESourceActor.initialize()
         // calls getNextToken();
         while( notFinishedYet ) {
-	    token = getNextToken(); 
+	    token = getNextToken();
 	    _stringOutput.send( 0, token, getCurrentTime() );
         }
-        
+
         // System.out.println(getName()+" is finished with fire()");
 	// System.out.println(getName()+" returns "+postfire()+" for postfire()");
-        
+
             /*
-            System.out.println(getName() + " fired \"" 
+            System.out.println(getName() + " fired \""
                     + strTime.getString() + "\" at time = " + fireTime );
             */
         // ((DDEDirector)getDirector()).addWriteBlock();
         // System.out.println("#####"+getName()+" is finished executing");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private methods			   ////
 

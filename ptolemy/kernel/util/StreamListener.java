@@ -39,7 +39,7 @@ A debug listener that sends messages to a stream or to the standard output.
 
 @author  Edward A. Lee, Christopher Hylands
 @version $Id$
-@see NamedObj 
+@see NamedObj
 @see RecorderListener
 
 */

@@ -41,7 +41,7 @@ import java.lang.Double;              /* Needed by javadoc */
 /**
  * This class provides a library for mathematical operations on double arrays.
  * Unless explicity noted otherwise, all array arguments are assumed to be
- * non-null. If a null array is passed to a method, a NullPointerException 
+ * non-null. If a null array is passed to a method, a NullPointerException
  * will be thrown in the method or called methods.
  * <p>
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
@@ -388,7 +388,7 @@ public class DoubleArrayMath {
     }
     return true;
   }
-  
+
   /////////////////////////////////////////////////////////////////////////
   //    protected methods
 
@@ -420,7 +420,7 @@ public class DoubleArrayMath {
    *  length of the arrays.
    *  @param array The first array of doubles.
    *  @param array The second array of doubles.
-   *  @param methodName A String representing the method name of the caller, 
+   *  @param methodName A String representing the method name of the caller,
    *  without parentheses.
    *  @return The common length of both arrays.
    */

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -37,16 +37,16 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNImageSink
-/** 
+/**
 Stores an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
 */
 
 public class MatrixUnpacker extends AtomicActor {
-    
+
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
@@ -57,7 +57,7 @@ public class MatrixUnpacker extends AtomicActor {
         _output = new IOPort(this, "output", false, true);
         _dimen = new IOPort(this, "dimensions", false, true);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -71,7 +71,7 @@ public class MatrixUnpacker extends AtomicActor {
         //send the dimensions. First the rows, then the columns
         _dimen.broadcast(new IntToken(image.length));
         _dimen.broadcast(new IntToken(image[0].length));
-        
+
         //Now sequentialize the Matrix
         //int[] result = new int[image.length*image[0].length];
         for (int i=0; i<image.length; i++) {
@@ -81,11 +81,11 @@ public class MatrixUnpacker extends AtomicActor {
             }
         }
     }
-    
-    //public boolean postfire() { 
-    //return false; 
+
+    //public boolean postfire() {
+    //return false;
     //}
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

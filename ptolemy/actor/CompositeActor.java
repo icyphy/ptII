@@ -566,8 +566,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is write-synchronized on the workspace.
      *
      *  @param manager The Manager
-     *  @exception IllegalActionException If this actor already has a 
-     *  container, or the manager is not in the same workspace as this 
+     *  @exception IllegalActionException If this actor already has a
+     *  container, or the manager is not in the same workspace as this
      *  actor.
      *  @see #getManager()
      */
@@ -596,10 +596,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Request that execution of the current iteration stop. 
-     *  If this actor is opaque, then invoke the stopFire() 
+    /** Request that execution of the current iteration stop.
+     *  If this actor is opaque, then invoke the stopFire()
      *  method of the local director. Otherwise, do nothing.
-     *  This method is read-synchronized on the workspace. 
+     *  This method is read-synchronized on the workspace.
      */
     public void stopFire() {
         try {

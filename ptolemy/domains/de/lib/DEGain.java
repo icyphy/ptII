@@ -86,8 +86,8 @@ public class DEGain extends TypedAtomicActor {
         input.setTypeEquals(DoubleToken.class);
     }
 
-    /** Construct a DEGain with the specified container, name, and gain. 
-     *  The gain value is represented by String expressions which will be 
+    /** Construct a DEGain with the specified container, name, and gain.
+     *  The gain value is represented by String expressions which will be
      *  evaluated by the Parameter class.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -134,7 +134,7 @@ public class DEGain extends TypedAtomicActor {
             output.broadcast(new DoubleToken(inval * gain));
 
         } else {
-            throw new InternalErrorException("Scheduling error! DEGain" + 
+            throw new InternalErrorException("Scheduling error! DEGain" +
                     "fired with no input tokens.");
         }
     }

@@ -116,7 +116,7 @@ public class ThreadDemo {
         System.out.println("Bye World\n");
         return;
     }
-    
+
     /**  Construct the graph representing the PN topology.
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
@@ -238,7 +238,7 @@ public class ThreadDemo {
 
             portin = (IOPort)a5.getPort("output");
             portout = (IOPort)a6.getPort("input");
-            rel = c1.connect(portin, portout);        
+            rel = c1.connect(portin, portout);
             (a8.getPort("image")).link(rel);
         }
         catch (Exception e) {
@@ -254,7 +254,7 @@ public class ThreadDemo {
      */
     public void displayGraph(JGraph g, GraphModel model) {
         window = new TutorialWindow("PN Thread Demo");
-        
+
         // Display the window
         window.getContentPane().add("Center", g);
         window.setSize(800, 300);
@@ -298,7 +298,7 @@ public class ThreadDemo {
         traceWindow = new TutorialWindow("PN Thread Trace");
         tracePane = new TracePane();
         JCanvas traceWidget = new JCanvas(tracePane);
-        
+
         // Configure the view
         TraceView traceView = tracePane.getTraceView();
         traceView.setTimeScale(0.02);
@@ -348,7 +348,7 @@ public class ThreadDemo {
 
             for (int i = 0; i < model.size(); i++ ) {
                 TraceModel.Trace trace = model.getTrace(i);
-                
+
                 final TraceModel.Element element = new TraceModel.Element(
                         0, 1, 3);
                 element.closure = TraceModel.Element.OPEN_END;
@@ -388,11 +388,11 @@ public class ThreadDemo {
                         case PNProcessEvent.PROCESS_BLOCKED:
                             figure.setFillPaint(Color.red);
                             break;
-                        
+
                         case PNProcessEvent.PROCESS_FINISHED:
                             figure.setFillPaint(Color.black);
                             break;
-                        
+
                         case PNProcessEvent.PROCESS_PAUSED:
                             figure.setFillPaint(Color.yellow);
                             break;
@@ -406,7 +406,7 @@ public class ThreadDemo {
                         }
                     }
                 });
-            } 
+            }
             catch (Exception e) {}
 
             // Get the trace and element figure
@@ -422,11 +422,11 @@ public class ThreadDemo {
             case PNProcessEvent.PROCESS_BLOCKED:
                 colorState = 0;
                 break;
-                        
+
             case PNProcessEvent.PROCESS_FINISHED:
                 colorState = 7;
                 break;
-                        
+
             case PNProcessEvent.PROCESS_PAUSED:
                 colorState = 2;
                 break;
@@ -442,7 +442,7 @@ public class ThreadDemo {
                     currentTime, currentTime+1, colorState);
             element.closure = TraceModel.Element.OPEN_END;
             trace.add(element);
-            
+
             // Close the current element
             final TraceModel.Element current = _currentElement[id];
             current.closure = 0;
@@ -500,7 +500,7 @@ public class ThreadDemo {
         public Figure render (Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
-            boolean isEllipse = 
+            boolean isEllipse =
                 actor instanceof PNImageSource
                 || actor instanceof PNImageSink
                 || actor instanceof ImageDisplay;

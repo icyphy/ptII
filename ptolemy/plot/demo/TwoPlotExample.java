@@ -51,7 +51,7 @@ java TwoPlotExample
 @author Christopher Hylands
 @version $Id$
 */
-public class TwoPlotExample extends Frame { 
+public class TwoPlotExample extends Frame {
 
     /** We use a constructor here so that we can call methods
      *  directly on the Frame.  The main method is static
@@ -79,7 +79,7 @@ public class TwoPlotExample extends Frame {
         leftPlot.addYTick("PI", Math.PI);
         leftPlot.setMarksStyle("none");
         leftPlot.setImpulses(true);
-        
+
         boolean first = true;
         for (int i=0; i <= 100; i++) {
             leftPlot.addPoint(0,(double)i,

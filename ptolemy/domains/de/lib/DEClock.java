@@ -71,7 +71,7 @@ public class DEClock extends DEActor {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     *  @deprecated This constructor is going away... 
+     *  @deprecated This constructor is going away...
      */
     public DEClock(TypedCompositeActor container, String name,
             double value, double interval)

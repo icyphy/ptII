@@ -57,13 +57,13 @@ public interface Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
- 
-    
+
+
     /** This fires an actor and may be invoked several times between
      *  invocations of prefire() and postfire(). Output data may
-     *  (and normally will) be produced during the fire method. 
+     *  (and normally will) be produced during the fire method.
      *  Typically, the fire() method performs the computation associated
-     *  with an actor. This method is not required to have bounded 
+     *  with an actor. This method is not required to have bounded
      *  execution.  However, after endFire() is called, this method should
      *  return in bounded time.
      *
@@ -119,12 +119,12 @@ public interface Executable {
      *  not assume the fire() method will be called again.  It is possible
      *  that the wrapup() method will be called next.
      */
-    public void stopFire(); 
-    
+    public void stopFire();
+
     /** Terminate any currently executing model with extreme prejudice.
-     *  This method is not intended to be used as a normal route of 
-     *  stopping execution. To normally stop execution, call the finish() 
-     *  method instead. This method should be called only 
+     *  This method is not intended to be used as a normal route of
+     *  stopping execution. To normally stop execution, call the finish()
+     *  method instead. This method should be called only
      *  when execution fails to terminate by normal means due to certain
      *  kinds of programming errors (infinite loops, threading errors, etc.).
      *  <p>
@@ -141,8 +141,8 @@ public interface Executable {
     /** This method is invoked exactly once per execution
      *  of an application.  None of the other action methods should be
      *  be invoked after it.  It finalizes an execution, typically closing
-     *  files, displaying final results, etc.  When this method is called, 
-     *  no further execution should occur.  
+     *  files, displaying final results, etc.  When this method is called,
+     *  no further execution should occur.
      *
      *  @exception IllegalActionException If wrapup is not permitted.
      */

@@ -1,4 +1,4 @@
-/* A ReceiverListener is able to receive ReceiverEvents from the Processes 
+/* A ReceiverListener is able to receive ReceiverEvents from the Processes
 which notifies the various actions done on the receivers.
 
 Copyright (c) 1997-1999 The Regents of the University of California.
@@ -35,8 +35,8 @@ package ptolemy.domains.pn.kernel.event;
 //// ReceiverListener
 /**
 A ReceiverListener is able to receive ReceiverEvents that are issued
-during the execution of a process by a ProcessThread or director in PN.   
-In general, an object that implements this interface will probably be a front 
+during the execution of a process by a ProcessThread or director in PN.
+In general, an object that implements this interface will probably be a front
 end such as a execution visualization tool for
 the Ptolemy II system, or an object that is communicating with a front end.
 
@@ -46,7 +46,7 @@ the Ptolemy II system, or an object that is communicating with a front end.
 
 public interface ReceiverListener {
 
-    /** Called to indicate that the capacity of the receiver has been 
+    /** Called to indicate that the capacity of the receiver has been
      *  increased.
      *  @param event An event that has a reference to the receiver. The event
      *  also has the new capacity of the receiver.
@@ -60,9 +60,9 @@ public interface ReceiverListener {
      */
     public void receiverClear(ReceiverActionEvent event);
 
-    /** Called to report that a request to finish any process trying to read 
+    /** Called to report that a request to finish any process trying to read
      *  from or write to this receiver has been made.
-     *  @param event An event that has a reference to the receiver on which 
+     *  @param event An event that has a reference to the receiver on which
      *  the request has been made.
      */
     public void receiverFinishRequested(ReceiverActionEvent event);
@@ -78,26 +78,26 @@ public interface ReceiverListener {
      */
     public void receiverPauseRequested(ReceiverActionEvent event);
 
-    /** Called to indicate that a token has been put into the receiver by 
-     *  a process. 
+    /** Called to indicate that a token has been put into the receiver by
+     *  a process.
      *  @param event An event that has a reference to the receiver.
      */
     public void receiverPut(ReceiverActionEvent event);
 
-    /** Called to indicate that a process blocked on the receiver while 
+    /** Called to indicate that a process blocked on the receiver while
      *  trying to read from it.
      *  @param event An event that has a reference to the receiver.
      */
     public void receiverReadBlocked(ReceiverActionEvent event);
 
-    /** Called to indicate that a process blocked while trying to read from 
+    /** Called to indicate that a process blocked while trying to read from
      *  this receiver can resume now.
      *  @param event An event that has a reference to the receiver.
      */
     public void receiverReadUnblocked(ReceiverActionEvent event);
 
-    /** Called to indicate that a request to resume any process that might 
-     *  have paused earlier while trying to read from or write to this 
+    /** Called to indicate that a request to resume any process that might
+     *  have paused earlier while trying to read from or write to this
      *  receiver has been made.
      *  @param event An event that has a reference to the receiver.
      */

@@ -177,7 +177,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     public void attributeChanged(Attribute attribute)
            throws IllegalActionException {}
 
-    /** React to a change in the type of an attribute.  This method is 
+    /** React to a change in the type of an attribute.  This method is
      *  called by a contained attribute when its type changes.
      *  In this base class, the method does nothing.
      *  @param attribute The attribute whose type changed.

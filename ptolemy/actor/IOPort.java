@@ -151,11 +151,11 @@ public class IOPort extends ComponentPort {
     ////                         public methods                    ////
 
     /** Send a token to all connected receivers.
-     *  Tokens are in general immutable, so each receiver is given a 
+     *  Tokens are in general immutable, so each receiver is given a
      *  reference to the same token and no clones are made.
      *  The transfer is accomplished by calling getRemoteReceivers()
      *  to determine the number of channels with valid receivers and
-     *  then calling send on the appropriate channels.  
+     *  then calling send on the appropriate channels.
      *  It would probably be faster to call put() directly on the receivers.
      *  If there are no destination receivers, then nothing is sent.
      *  This method is read-synchronized on the workspace.
@@ -562,7 +562,7 @@ public class IOPort extends ComponentPort {
                         for (int i = 0; i < rr.length; i++) {
                             _localReceivers[index++] = rr[i];
                         }
-		    } 
+		    }
                 }
                 _localReceiversVersion = workspace().getVersion();
                 return _localReceivers;
@@ -582,7 +582,7 @@ public class IOPort extends ComponentPort {
      *  The returned value is an array of arrays of the same form
      *  as that returned by getReceivers() with no arguments.  Note that a
      *  single relation may represent multiple channels because it may be
-     *  a bus. 
+     *  a bus.
      *  <p>
      *  This method is read-synchronized on the workspace.
      *
@@ -956,7 +956,7 @@ public class IOPort extends ComponentPort {
     /** Send the specified token to all receivers connected to the
      *  specified channel.  Tokens are in general immutable, so each receiver
      *  is given a reference to the same token and no clones are made.
-     *  If there are no receivers, then do nothing. The transfer is 
+     *  If there are no receivers, then do nothing. The transfer is
      *  accomplished by calling the put() method of the remote receivers.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
@@ -1225,7 +1225,7 @@ public class IOPort extends ComponentPort {
                             result += _getIndentPrefix(indent+2);
                             result += "{";
                             if (receivers[i][j] != null) {
-                                result += 
+                                result +=
                                     receivers[i][j].getClass().getName();
                             }
                             result += "}\n";

@@ -154,7 +154,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 	divapanel.setSize(new Dimension(800, 615));
 	divapanel.setBackground(Color.white);
 	add(divapanel, BorderLayout.CENTER);
-	
+
         // Construct the graph representing the PN topology
 	_gmodel = constructThreadGraph();
         final GraphModel model = _gmodel;
@@ -172,27 +172,27 @@ public class RLEDiva extends PNApplet implements Runnable {
 	}
 
         final TraceModel traceModel = constructTraceModel();
-	
+
         // Display the trace
 	try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
 		public void run () {
-		    displayTrace(traceModel);		
+		    displayTrace(traceModel);
 		}
 	    });
         } catch(Exception ex) {
 	    ex.printStackTrace();
 	    System.exit(0);
 	}
-	
+
 	//validate();
 
         // Add the process state listener
-	//FIXME: HACK HACK HACK 
+	//FIXME: HACK HACK HACK
 	listener = new StateListener((GraphPane) jgraph.getCanvasPane());
         _director.addProcessListener(listener);
-	
-	
+
+
         // Run the model
 	System.out.println("Connections made");
         Parameter p = (Parameter)_director.getAttribute(
@@ -204,8 +204,8 @@ public class RLEDiva extends PNApplet implements Runnable {
         }
 	return;
     }
-	
-	
+
+
     /**  Construct the graph representing the PN topology.
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
@@ -304,7 +304,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 
             portin = (IOPort)a5.getPort("output");
             portout = (IOPort)a6.getPort("input");
-            rel = _toplevel.connect(portin, portout);        
+            rel = _toplevel.connect(portin, portout);
             (a8.getPort("image")).link(rel);
 
 	    String dataurlspec = getParameter("imageurl");
@@ -323,7 +323,7 @@ public class RLEDiva extends PNApplet implements Runnable {
                             " input file: " +e);
                 }
             }
-	    
+
         }
         catch (Exception e) {
             throw new RuntimeException(e.toString());
@@ -347,7 +347,7 @@ public class RLEDiva extends PNApplet implements Runnable {
         final GraphView gv = gp.getGraphView();
         gv.setNodeRenderer(new ThreadRenderer());
         g.setGraphModel(model);
-	
+
         // Do the layout
 	final GraphModel m = model;
 	try {
@@ -433,7 +433,7 @@ public class RLEDiva extends PNApplet implements Runnable {
             System.err.println("Run failed: " + ex.getMessage());
             ex.printStackTrace();
         }
-    }   
+    }
 
 
     ////////////////////////////////////////////////////////////////////////
@@ -464,7 +464,7 @@ public class RLEDiva extends PNApplet implements Runnable {
             System.out.println("Simulation still running.. hold on..");
             return;
         }
-        
+
         RLEDiva.this.listener.setStartTime(System.currentTimeMillis());
         super._go();
     }
@@ -472,11 +472,11 @@ public class RLEDiva extends PNApplet implements Runnable {
     /** Stop the simulation of the system
      */
     public void _stop() {
-	_isSimulationRunning = false;	
+	_isSimulationRunning = false;
         _manager.terminate();
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     //// StateListener
 
@@ -509,7 +509,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 
             for (int i = 0; i < model.size(); i++ ) {
                 TraceModel.Trace trace = model.getTrace(i);
-                
+
                 final TraceModel.Element element = new TraceModel.Element(
                         0, 1, 3);
                 element.closure = TraceModel.Element.OPEN_END;
@@ -568,11 +568,11 @@ public class RLEDiva extends PNApplet implements Runnable {
 				figure.setFillPaint(Color.magenta);
 			    }
                             break;
-                        
+
                         case PNProcessEvent.PROCESS_FINISHED:
                             figure.setFillPaint(Color.black);
                             break;
-                        
+
                         case PNProcessEvent.PROCESS_PAUSED:
                             figure.setFillPaint(Color.yellow);
                             break;
@@ -607,11 +607,11 @@ public class RLEDiva extends PNApplet implements Runnable {
 		    colorState = 5;
 		}
 		break;
-		
+
             case PNProcessEvent.PROCESS_FINISHED:
                 colorState = 7;
                 break;
-                        
+
             case PNProcessEvent.PROCESS_PAUSED:
                 colorState = 2;
                 break;
@@ -628,7 +628,7 @@ public class RLEDiva extends PNApplet implements Runnable {
                     currentTime, currentTime+1, colorState);
             element.closure = TraceModel.Element.OPEN_END;
             trace.add(element);
-            
+
             // Close the current element
             final TraceModel.Element current = _currentElement[id];
             current.closure = 0;
@@ -655,7 +655,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 	    catch (Exception e) {
 		System.out.println(e.toString());
 	    }
-	    
+
             // Update
             _currentElement[id] = element;
         }
@@ -686,12 +686,12 @@ public class RLEDiva extends PNApplet implements Runnable {
         public Figure render (Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
-            boolean isEllipse = 
+            boolean isEllipse =
                 actor instanceof PNImageSource
                 || actor instanceof PNImageSink
                 || actor instanceof ImageDisplay;
 
-            
+
             BasicFigure f;
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);

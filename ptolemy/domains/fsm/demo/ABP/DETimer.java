@@ -83,7 +83,7 @@ public class DETimer extends DEActor {
                 _expireTime = -1.0;
             }
 
-            //System.out.println("Reset DETimer " + this.getFullName() + 
+            //System.out.println("Reset DETimer " + this.getFullName() +
             //        " to expire at " + _expireTime);
 
         } else if (Math.abs(getCurrentTime() - _expireTime) < 1e-14) {

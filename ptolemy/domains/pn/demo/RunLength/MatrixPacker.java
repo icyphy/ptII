@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -37,16 +37,16 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNImageSink
-/** 
+/**
 Stores an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
 */
 
 public class MatrixPacker extends AtomicActor {
-    
+
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
@@ -57,7 +57,7 @@ public class MatrixPacker extends AtomicActor {
         _output = new IOPort(this, "output", false, true);
         _dimen = new IOPort(this, "dimensions", true, false);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -69,7 +69,7 @@ public class MatrixPacker extends AtomicActor {
         //Get Matrix dimensions
         int rows = ((IntToken)_dimen.get(0)).intValue();
         int columns = ((IntToken)_dimen.get(0)).intValue();
-        
+
         int[][] image = new int[rows][columns];
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -79,8 +79,8 @@ public class MatrixPacker extends AtomicActor {
 
         _output.broadcast(new IntMatrixToken(image));
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

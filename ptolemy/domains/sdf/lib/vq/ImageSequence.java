@@ -91,7 +91,7 @@ public final class ImageSequence extends SDFAtomicActor {
         for(framenumber = 0;
             framenumber < numframes;
             framenumber++) {
-            
+
             try {
                 byte arr[] = fileroot.getBytes();
                 int i = framenumber + startframe;
@@ -131,7 +131,7 @@ public final class ImageSequence extends SDFAtomicActor {
                         source = new FileInputStream(sourcefile);
                     }
                 }
-               
+
                 if(_fullread(source, frames[framenumber])
                         != ysize*xsize)
                     throw new IllegalActionException("Error reading " +

@@ -60,19 +60,19 @@ import java.applet.Applet;
 
 /** A model of hardware subsystems accessing a shared resource using
  *  rendezvous. The model shows the use of timed CSP to
- *  deterministically handle nondeterministic events. 
+ *  deterministically handle nondeterministic events.
  *  <p>
  *  The applet consists of a controller, three processors and a memory
  *  block. At randomly selected points in time, each processor can
  *  request permission from the controller to access the memory. The
  *  processors each have priorities associated with them, and in cases
  *  where there is a simultaneous memory access request, the controller
- *  grants permission to the processor with the highest priority. 
+ *  grants permission to the processor with the highest priority.
  *  <p>
  *  All communication between actors in a CSP model of computation
  *  occurs via rendezvous. Rendezvous is an atomic form of
  *  communication. This model uses a timed extension to CSP, so each
- *  rendezvous logically occurs at a specific point in time. 
+ *  rendezvous logically occurs at a specific point in time.
  *  <p>
  *  Because of the atomic nature of rendezvous, when the controller
  *  receives a request for access, it cannot know whether there is
@@ -83,7 +83,7 @@ import java.applet.Applet;
  *  blocks on delays). This indicates to the controller that no more
  *  memory requests will occur at the given point in time. Hence, the
  *  alarm uses centralized time to make deterministic an inherently
- *  non-deterministic activity. 
+ *  non-deterministic activity.
  *  <p>
  *  In the applet, each of the initially blue processors (the circular
  *  nodes) can be in one of three states. The color yellow indicates
@@ -118,13 +118,13 @@ public class BusContentionApplet extends PtolemyApplet {
         _demo = new BusContentionApplication(_manager, _toplevel);
         _demo.initializeDemo(this);
     }
- 
+
     /** Start the applet.  This overrides the base class to avoid
      *  executing the model immediately.
      */
     public void start() {
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 

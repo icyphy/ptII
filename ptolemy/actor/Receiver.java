@@ -44,7 +44,7 @@ receiver. Get retrieves a token that has been put. The order of
 the retrieved tokens depends on specific implementations, and does not
 necessarily match the order in which tokens have been put.
 <p>
-All implementations of this interface must follow these rules, regardless 
+All implementations of this interface must follow these rules, regardless
 of the number of threads that are accessing the receiver:
 <ul>
 <li> If hasToken() returns true then calling get() should not result in a
@@ -52,8 +52,8 @@ NoTokenException being thrown.
 <li> If hasRoom() returns true then calling put() should not result in a
 NoRoomException being thrown.
 </ul>
-In general, this means that threaded domains will provide a higher level of 
-synchronization for receivers.  
+In general, this means that threaded domains will provide a higher level of
+synchronization for receivers.
 <p>
 Objects that implement this interface can only be contained
 by an instance of IOPort.

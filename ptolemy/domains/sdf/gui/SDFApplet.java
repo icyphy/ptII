@@ -121,7 +121,7 @@ public class SDFApplet extends PtolemyApplet {
      *  is also created. In addition,
      *  if the number of iterations has not been specified by the applet
      *  parameter "iterations," then create
-     *  an entry box for that number to be entered. 
+     *  an entry box for that number to be entered.
      *  Derived classes may override this method to add additional controls.
      *  @param numberOfButtons The number of buttons to create.
      *  @return The panel containing the controls.

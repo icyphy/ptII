@@ -167,7 +167,7 @@ public abstract class MatrixToken extends Token {
                 s += getElementAsToken(i,j).stringValue();
                 if (j < columnCount - 1) s += ", ";
             }
-            if (i < rowCount - 1) s += "; ";            
+            if (i < rowCount - 1) s += "; ";
         }
 	s += "]";
 	return s;

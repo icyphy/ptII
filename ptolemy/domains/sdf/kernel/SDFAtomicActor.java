@@ -43,22 +43,22 @@ import collections.HashedMap;
 //// SDFAtomicActor
 /**
 An SDFAtomicActor is an atomic actor that is valid in the SDF domain.  This
-implies that it supports a static notion of the "Rate" of a port. 
+implies that it supports a static notion of the "Rate" of a port.
 i.e. a number of tokens are created or
 destroyed on a port during any firing.//   This information is contained in
 parameters on each of the Actors ports.
 <ul>
-<li> TokenConsumptionRate: The number of tokens consumed on an input port 
+<li> TokenConsumptionRate: The number of tokens consumed on an input port
 during each firing.
-<li> TokenProductionRate: The number of tokens produced on an output port 
+<li> TokenProductionRate: The number of tokens produced on an output port
 during each firing.
-<li> TokenInitProduction: The number of tokens produced on an output port 
+<li> TokenInitProduction: The number of tokens produced on an output port
 during initialization.
 </ul>
-The SDF director uses these parameters to calculate a static schedule based 
+The SDF director uses these parameters to calculate a static schedule based
 on these parameters.  The static schedule allows more efficient execution,
-when it can be constructed.  Creating the schedule is costly, but only 
-needs to be done when execution starts, or when the topology changes.   
+when it can be constructed.  Creating the schedule is costly, but only
+needs to be done when execution starts, or when the topology changes.
 
 @author Stephen Neuendorffer
 @version $Id$
@@ -104,17 +104,17 @@ public class SDFAtomicActor extends TypedAtomicActor {
         super(container, name);
     }
 
-    /** If a input port has not had its consumption rate set, then 
+    /** If a input port has not had its consumption rate set, then
      * it is assumed to be this.
      */
     public static final int DEFAULT_CONSUMPTION_RATE = 1;
 
-    /** If a output port has not had its production rate set, then 
+    /** If a output port has not had its production rate set, then
      * getTokenConsumptionRate will return this
      */
     public static final int DEFAULT_PRODUCTION_RATE = 1;
 
-    /** If a output port has not had its init production set, then 
+    /** If a output port has not had its init production set, then
      * getTokenConsumptionRate will return this
      */
     public static final int DEFAULT_INIT_PRODUCTION = 0;
@@ -123,12 +123,12 @@ public class SDFAtomicActor extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Get the number of tokens that are consumed
-     *  on the designated port of this Actor.   
+     *  on the designated port of this Actor.
      *
-     *  @exception IllegalActionException if port is not contained in 
+     *  @exception IllegalActionException if port is not contained in
      *  this actor, or the port is not an input port.
      *  @return The number of tokens consumed on the port, as specified in
-     *  the TokenConsumptionRate Parameter, or DEFAULT_CONSUMPTION_RATE if the 
+     *  the TokenConsumptionRate Parameter, or DEFAULT_CONSUMPTION_RATE if the
      *  parameter does not exist.
      */
     public int getTokenConsumptionRate(IOPort p)
@@ -155,7 +155,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException if port is not contained
      *  in this actor, or the port is not an output port.
      *  @return The number of tokens produced on the port, as specified in
-     *  the TokenInitProduction Parameter, or DEFAULT_INIT_PRODUCTION if the 
+     *  the TokenInitProduction Parameter, or DEFAULT_INIT_PRODUCTION if the
      *  parameter does not exist.
      */
     public int getTokenInitProduction(IOPort p)
@@ -180,10 +180,10 @@ public class SDFAtomicActor extends TypedAtomicActor {
     /** Get the number of tokens that are produced
      *  on the designated port of this Actor during each firing.
      *
-     *  @exception IllegalActionException If port is not contained 
+     *  @exception IllegalActionException If port is not contained
      *  in this actor, or the port is not an output port.
      *  @return The number of tokens produced on the port, as specified in
-     *  the TokenProductionRate Parameter, or DEFAULT_PRODUCTION_RATE if the 
+     *  the TokenProductionRate Parameter, or DEFAULT_PRODUCTION_RATE if the
      *  parameter does not exist.
      */
     public int getTokenProductionRate(IOPort p)
@@ -205,7 +205,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
 
     }
 
-    /** Create ports for this object.  Ports will be of type SDFIOPort, 
+    /** Create ports for this object.  Ports will be of type SDFIOPort,
      *  which provides support getArray() and sendArray().
      *  @exception NameDuplicationException If the SDFIOPort constructor
      *  throws it.
@@ -220,18 +220,18 @@ public class SDFAtomicActor extends TypedAtomicActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "SDFAtomicActor.newPort: Internal error: " + 
+                    "SDFAtomicActor.newPort: Internal error: " +
                     ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
     }
-    
+
 
     /** Set the number of tokens that are consumed
      *  on the appropriate port of this Actor during each firing.
      *
-     *  @exception IllegalActionException If port is not contained 
+     *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an input port.
      */
@@ -253,7 +253,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
             try {
                 param = new Parameter(p, "TokenConsumptionRate",
                         new IntToken(r));
-            } 
+            }
             catch (NameDuplicationException e) {
                 // This should never happen.
                 throw new InternalErrorException(e.getMessage());
@@ -267,7 +267,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  port is connected to, and may be necessary in order to get the SDF
      *  scheduler to create a valid schedule from certain kinds of topologies.
      *
-     *  @exception IllegalActionException If port is not contained 
+     *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
      */
@@ -288,7 +288,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
             try {
                 param = new Parameter(p, "TokenInitProduction",
                         new IntToken(r));
-            } 
+            }
             catch (NameDuplicationException e) {
                 // This should never happen.
                 throw new InternalErrorException(e.getMessage());
@@ -299,7 +299,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
     /** Set the number of tokens that are produced
      *  on the appropriate port of this Actor during each firing.
      *
-     *  @exception IllegalActionException If port is not contained 
+     *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
      */
@@ -320,7 +320,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
             try {
                 param = new Parameter(p, "TokenProductionRate",
                         new IntToken(r));
-            } 
+            }
             catch (NameDuplicationException e) {
                 // This should never happen.
                 throw new InternalErrorException(e.getMessage());

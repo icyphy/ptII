@@ -93,21 +93,21 @@ public class DDEGetToken extends DDEGet {
 	    }
 	}
 	System.out.println("There are "+aCntr+" receivers in "+getName());
-	int cnt = 0; 
+	int cnt = 0;
 	while(cnt < _numTokens) {
 	    Receiver[][] rcvrs = inputPort.getReceivers();
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j]; 
+		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
 		    System.out.println("DDEGetToken receiver["+i+"]["+j+"]; cnt = "+cnt);
 		    if( rcvr.hasToken() ) {
 			_rcvrTimes[cnt] = rcvr.getRcvrTime();
-	                _tokens[cnt] = rcvr.get(); 
-			Thread thread = Thread.currentThread(); 
+	                _tokens[cnt] = rcvr.get();
+			Thread thread = Thread.currentThread();
 			if( thread instanceof DDEThread ) {
-			    TimeKeeper timeKeeper = 
+			    TimeKeeper timeKeeper =
 				    ((DDEThread)thread).getTimeKeeper();
-			    _threadTimes[cnt] = 
+			    _threadTimes[cnt] =
 				    timeKeeper.getCurrentTime();
 			}
 		    } else {
@@ -127,5 +127,5 @@ public class DDEGetToken extends DDEGet {
     private Token[] _tokens = null;
     private double[] _threadTimes = null;
     private double[] _rcvrTimes = null;
-    
+
 }

@@ -68,7 +68,7 @@ public class Delay extends SDFAtomicActor {
             e1.printStackTrace();
         }
     }
- 
+
     public TypedIOPort input;
     public TypedIOPort output;
 
@@ -91,10 +91,10 @@ public class Delay extends SDFAtomicActor {
         }
     }
 
-    /** 
+    /**
      * Initialize this actor.
      * Create the Delay Token.
-     * @exception IllegalActionException If one of the contained methods 
+     * @exception IllegalActionException If one of the contained methods
      * throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -105,10 +105,10 @@ public class Delay extends SDFAtomicActor {
         output.send(0, token);
     }
 
-    /** 
+    /**
      * Fire this actor.
      * Copy the input to the output.
-     * @exception IllegalActionException If one of the contained methods 
+     * @exception IllegalActionException If one of the contained methods
      * throws it.
      */
     public void fire() throws IllegalActionException {

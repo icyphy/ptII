@@ -84,9 +84,9 @@ public class DEProcessor extends TypedCompositeActor {
         super(container, name);
 
         // create and initialize the parameters.
-        _minimumServiceTime = 
+        _minimumServiceTime =
             new Parameter(this, "MST", new DoubleToken(minimumServiceTime));
-        _interruptServiceTime = 
+        _interruptServiceTime =
             new Parameter(this, "IST", new DoubleToken(interruptServiceTime));
         _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
 
@@ -98,9 +98,9 @@ public class DEProcessor extends TypedCompositeActor {
 
         // create and attach a local director
         DEDirector localDir = new DEDirector(this, name + " local director");
-        
+
         // create the actors.
-        DEInterruptibleServer iServer = new DEInterruptibleServer(this, 
+        DEInterruptibleServer iServer = new DEInterruptibleServer(this,
                 "InterruptibleServer");
         DEPoisson poisson = new DEPoisson(this, "InterruptPoisson");
 
@@ -110,13 +110,13 @@ public class DEProcessor extends TypedCompositeActor {
         this.connect(iServer.output, output);
 
         // get the inner parameters.
-        Parameter iServerMST = 
+        Parameter iServerMST =
             (Parameter)iServer.getAttribute("MinimumServiceTime");
-        Parameter iServerIST = 
+        Parameter iServerIST =
             (Parameter)iServer.getAttribute("InterruptServiceTime");
-        Parameter poissonLambda = 
+        Parameter poissonLambda =
             (Parameter)poisson.getAttribute("lambda");
-        
+
         // make inner parameters depend on outer.
 
         if (iServerMST == null) {

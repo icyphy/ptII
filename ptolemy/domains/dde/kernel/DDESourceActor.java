@@ -87,11 +87,11 @@ public class DDESourceActor extends DDEActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _reinvokeInPort = 
+        _reinvokeInPort =
 	        new DDEIOPort( this, "reinvokeIn", true, false );
-        _reinvokeOutPort = 
+        _reinvokeOutPort =
 	        new DDEIOPort( this, "reinvokeOut", false, true );
-        _reinvokeRelation = 
+        _reinvokeRelation =
 	        new TypedIORelation( container, name + "_innerRel" );
 
 	_reinvokeInPort.setTypeEquals(Token.class);
@@ -108,7 +108,7 @@ public class DDESourceActor extends DDEActor {
     /** Invoke this actor at the specified time. If the wakeTime is
      *  less than the current time of this actor, then throw an
      *  IllegalActionException.
-     * @param wakeTime The absolute time when this actor will be 
+     * @param wakeTime The absolute time when this actor will be
      *  reinvoked.
      * @exception IllegalActionException If the wakeTime is less
      *  than the current time of this actor.

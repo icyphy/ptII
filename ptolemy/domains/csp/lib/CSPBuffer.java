@@ -120,9 +120,9 @@ public class CSPBuffer extends CSPActor {
      */
     public CSPBuffer(TypedCompositeActor cont, String name, int depth)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name); 
-	_depth = new Parameter(this, "depth", (new IntToken(depth)) ); 
-	_output = new TypedIOPort(this, "output", false, true); 
+        super(cont, name);
+	_depth = new Parameter(this, "depth", (new IntToken(depth)) );
+	_output = new TypedIOPort(this, "output", false, true);
 	_input = new TypedIOPort(this, "input", true, false);
 
         _output.setTypeEquals(Token.class);

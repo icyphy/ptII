@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEInPunctuation
-/** 
+/**
 
 
 @author John S. Davis II
@@ -46,14 +46,14 @@ import collections.LinkedList;
 */
 public class DDEInPunctuation extends DDEPunctuation {
 
-    /** 
+    /**
      */
     public DDEInPunctuation(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	_input = new TypedIOPort(this, "input", true, false);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -61,7 +61,7 @@ public class DDEInPunctuation extends DDEPunctuation {
     public LinkedList setUpStrings() {
     }
      */
-    
+
     public void wrapup() throws IllegalActionException {
         //System.out.println("DDEInPunctuation current time = "+getCurrentTime());
         super.wrapup();
@@ -71,7 +71,7 @@ public class DDEInPunctuation extends DDEPunctuation {
     ////                        private variables                  ////
 
     private TypedIOPort _input;
-    
+
 }
 
 

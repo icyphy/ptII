@@ -112,7 +112,7 @@ public class ProcessThread extends PtolemyThread {
      *  on the actor.
      */
     public void run() {
-	boolean iterate = true; 
+	boolean iterate = true;
 	try {
 	    while (iterate) {
 	        iterate = false;
@@ -149,17 +149,17 @@ public class ProcessThread extends PtolemyThread {
         }
     }
 
-    /** Restart this thread if it has stopped in response to a 
-     *  call to stopFire(). 
+    /** Restart this thread if it has stopped in response to a
+     *  call to stopFire().
      */
     public synchronized void restartThread() {
  	_threadStopRequested = false;
     }
- 
+
     /** Request that execution of the actor controlled by this
-     *  thread stop. Call stopFire() on all composite actors 
-     *  that are contained by the composite actor that contains 
-     *  this director. 
+     *  thread stop. Call stopFire() on all composite actors
+     *  that are contained by the composite actor that contains
+     *  this director.
      */
     public synchronized void stopThread() {
 	_threadStopRequested = true;

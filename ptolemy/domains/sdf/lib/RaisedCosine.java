@@ -195,8 +195,8 @@ public class RaisedCosine extends FIR {
         double [][] tps = new double[1][];
         double center = len * 0.5;
 
-        SampleGenerator rcSg = sqrt ? 
-            (SampleGenerator) 
+        SampleGenerator rcSg = sqrt ?
+            (SampleGenerator)
             new SignalProcessing.SqrtRaisedCosineSampleGenerator(inter, ebw) :
             (SampleGenerator)
             new SignalProcessing.RaisedCosineSampleGenerator(inter, ebw);

@@ -1,5 +1,5 @@
-/* TwoPut is a test class with two output ports used to test token 
-production AND consumption. 
+/* TwoPut is a test class with two output ports used to test token
+production AND consumption.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,10 +41,10 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// TwoPut
 /**
-TwoPut is a test class with two output ports used to test token 
+TwoPut is a test class with two output ports used to test token
 production AND consumption. It has a single typed, input multiport
-and two output multiports. The fire() method of this class simply 
-passes through "real" tokens on the _first_ output port ("output1"). 
+and two output multiports. The fire() method of this class simply
+passes through "real" tokens on the _first_ output port ("output1").
 Use this class to test feedback loops.
 
 

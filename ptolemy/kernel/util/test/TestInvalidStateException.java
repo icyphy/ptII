@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// TestInvalidStateException
 /**
-Test class used to test protected method of InvalidStateException 
+Test class used to test protected method of InvalidStateException
 
 @author Christopher Hylands
 @version $Id$

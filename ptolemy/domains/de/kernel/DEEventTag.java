@@ -31,8 +31,8 @@ package ptolemy.domains.de.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// DEEventTag
 /** Events in the Ptolemy II DE domain are associated with tags. The tags
- *  define an ordering relation between events. This class implements the 
- *  tag associated with each event. A DE event tag is an aggregation of 
+ *  define an ordering relation between events. This class implements the
+ *  tag associated with each event. A DE event tag is an aggregation of
  *  time stamp and receiver depth.
  *  <p>
  *  A class that implements the DEEventQueue interface implements how tags

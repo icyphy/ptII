@@ -41,28 +41,28 @@ import java.net.*;
 //////////////////////////////////////////////////////////////////////////
 //// HTVQEncode
 /**
-This actor encodes a matrix using Hierarchical Table-Lookup Vector 
+This actor encodes a matrix using Hierarchical Table-Lookup Vector
 Quantization.   The matrix must be of dimensions that are amenable to this
-method. (i.e. 2x1, 2x2, 4x2, 4x4, etc..).  Instead of performing a 
-full-search vector quantization during execution, all the optimal encoding 
-vectors are calculated before hand and stored in a lookup table. (This is 
+method. (i.e. 2x1, 2x2, 4x2, 4x4, etc..).  Instead of performing a
+full-search vector quantization during execution, all the optimal encoding
+vectors are calculated before hand and stored in a lookup table. (This is
 known as Table-lookup Vector Quantization).  However, for large vector sizes
-the lookup tables are unmanageably large.   This actor approximates a 
-full search VQ by storing the lookup tables hierarchically.  
-The encoding is broken up into stages, and at each stage a number of 2x1 
+the lookup tables are unmanageably large.   This actor approximates a
+full search VQ by storing the lookup tables hierarchically.
+The encoding is broken up into stages, and at each stage a number of 2x1
 table lookup VQs are performed.  As follows:<br>
-Starting with a 4x2 vector in the first stage, codebook 0 (which operates 
-on raw pixels is used 4 times.  In the second stage, codebook 1 is used 
+Starting with a 4x2 vector in the first stage, codebook 0 (which operates
+on raw pixels is used 4 times.  In the second stage, codebook 1 is used
 twice.  Lastly, a single 2x1 VQ using codebook 2 (which operates on codewords
 representing 2x2 vectors) returns a single codeword for the 4x2 vector.
 
 For more information here are some interesting references: <br>
 A. Gersho and R. M. Gray, <i>Vector Quantization and Signal Compression</i>.
 Kluwer Academic Publishers, Boston, 1992.  <br>
-P. C. Chang, J. May, R. M. Gray, "Hierarchical Vector Quantizers with 
+P. C. Chang, J. May, R. M. Gray, "Hierarchical Vector Quantizers with
 Table Lookup Encoders," <i> International Conference on Acoustics Speech
 and Signal Processing</i>, pp. 1452-1455, 1985. <br>
-M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical 
+M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical
 Compression of Video," <i>International Conference on Image Processing</i>,
 vol. 3, pp. 275-279, Nov. 1994. <br>
 
@@ -90,7 +90,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         inputport.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook",
-                new StringToken("ptolemy/domains/sdf" + 
+                new StringToken("ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
@@ -98,7 +98,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         new Parameter(this, "YPartitionSize", new IntToken("2"));
     }
 
-    /** 
+    /**
      * Fire this actor.
      * Consume a codeword on the input, and perform Vector Quantization using
      * Hierarchical Table-Lookup Vector Quantization.  Send the computed
@@ -120,10 +120,10 @@ public final class HTVQEncode extends SDFAtomicActor {
         ((SDFIOPort) getPort("index")).sendArray(0, _codewords);
     }
 
-    /** 
+    /**
      * Initialize this actor.
-     * Load the codebooks and lookup tables from the file given by the 
-     * parameter "Codebook".  
+     * Load the codebooks and lookup tables from the file given by the
+     * parameter "Codebook".
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

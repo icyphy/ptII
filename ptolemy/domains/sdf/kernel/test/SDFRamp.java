@@ -64,7 +64,7 @@ public class SDFRamp extends SDFAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    //// 
+    ////                         public methods                    ////
 
     public TypedIOPort output;
 
@@ -88,7 +88,7 @@ public class SDFRamp extends SDFAtomicActor {
 
     /**
      * Produce several integer tokens with values with incremental values.
-     * The number of tokens produced during each firing is determined by 
+     * The number of tokens produced during each firing is determined by
      * the rates on the ports, and the sequence of values continues across
      * firings.
      * @exception IllegalActionException If a contained method throws it.

@@ -147,8 +147,8 @@ public class Ramp extends SequenceSource {
         _stateToken = init.getToken();
         try {
             super.initialize();
-        } catch (IllegalActionException ex) { 
-            // This should never happen.  SequenceSource documents that 
+        } catch (IllegalActionException ex) {
+            // This should never happen.  SequenceSource documents that
             // it never throws IllegalActionException
             throw new InternalErrorException(ex.getMessage());
         }

@@ -96,7 +96,7 @@ public class Link extends ChangeRequest {
                         IOPort farPort = (IOPort)ports.nextElement();
                         farPort.createReceivers();
                     }
-                }                    
+                }
             }
             ComponentEntity portContainer
                 = (ComponentEntity)_port.getContainer();

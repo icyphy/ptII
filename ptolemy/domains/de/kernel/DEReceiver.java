@@ -233,7 +233,7 @@ public class DEReceiver implements Receiver {
     ////                         protected methods                 ////
 
 
-    
+
     /** Return true if this receiver is inside an output port of an opaque
      *  composite actor (a wormhole). Calling the put() method on this
      *  kind of receiver will not result in an event being put into the

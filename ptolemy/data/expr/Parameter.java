@@ -53,8 +53,8 @@ for editing, it presents only those that are instances of Parameter.
 
 public class Parameter extends Variable {
 
-    /** Construct a parameter in the default workspace with an empty 
-     *  string as its name. The parameter is added to the list of 
+    /** Construct a parameter in the default workspace with an empty
+     *  string as its name. The parameter is added to the list of
      *  objects in the workspace.
      *  Increment the version number of the workspace.
      */

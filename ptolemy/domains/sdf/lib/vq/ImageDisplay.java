@@ -46,10 +46,10 @@ import ptolemy.media.Picture;
 //// ImageDisplay
 /**
 This class displays an image on the screen using the ptolemy.media.Picture
-class.  For a sequence of images that are all the same size, this class 
-will continually update the picture with new data.   If the size of the 
-input image changes, then a new Picture object is created.  This class 
-will only accept a IntMatrixToken on its input, and assumes that the 
+class.  For a sequence of images that are all the same size, this class
+will continually update the picture with new data.   If the size of the
+input image changes, then a new Picture object is created.  This class
+will only accept a IntMatrixToken on its input, and assumes that the
 input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 
 @author Steve Neuendorffer
@@ -93,12 +93,12 @@ public final class ImageDisplay extends SDFAtomicActor {
     }
 
 
-    /** 
+    /**
      * Initialize this actor.
-     * If setPanel has not been called, then create a frame to display the 
+     * If setPanel has not been called, then create a frame to display the
      * image in.
      * @exception IllegalActionException If a contained method throws it.
-     */ 
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -115,13 +115,13 @@ public final class ImageDisplay extends SDFAtomicActor {
     }
 
     /**
-     * Fire this actor.  
+     * Fire this actor.
      * Consume an IntMatrixToken from the input port.  If the image is not
-     * the same size as the previous image, or this is the first image, then 
+     * the same size as the previous image, or this is the first image, then
      * create a new Picture object to represent the image, and put it in the
-     * appropriate panel (either the panel set using setPanel, or the frame 
+     * appropriate panel (either the panel set using setPanel, or the frame
      * created during the initialize phase).
-     * Convert the pixels from greyscale to RGBA triples (setting the 
+     * Convert the pixels from greyscale to RGBA triples (setting the
      * image to be opaque) and update the picture.
      * @exception IllegalActionException If a contained method throws it.
      */

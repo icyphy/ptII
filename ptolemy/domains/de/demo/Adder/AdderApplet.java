@@ -246,11 +246,11 @@ public class AdderApplet extends Applet implements Runnable {
             _valueOfB.setToken(t);
 
             _localDirector.setStopTime(_stopTime);
-            
+
             // Start the CurrentTimeThread.
             Thread ctt = new CurrentTimeThread();
             ctt.start();
-            
+
             _manager.run();
 
         } catch (Exception ex) {

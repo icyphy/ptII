@@ -89,7 +89,7 @@ public final class ImageUnpartition extends SDFAtomicActor {
         }
     }
 
-    /** 
+    /**
      * Initialize this actor
      *  @exception IllegalActionException If the parent class throws it.
      */
@@ -109,7 +109,7 @@ public final class ImageUnpartition extends SDFAtomicActor {
         message = new IntMatrixToken[3168];
     }
 
-    /** 
+    /**
      * Fire this actor
      * Consume a single IntMatrixToken on the input.  Produce IntMatrixTokens
      * on the output port by partitioning the input matrix.
@@ -121,7 +121,7 @@ public final class ImageUnpartition extends SDFAtomicActor {
 
         try {
             partition.getArray(0, message);
-    
+
             for(j = 0, a = 0; j < yframesize; j += ypartsize)
                 for(i = 0; i < xframesize; i += xpartsize, a++) {
                     part = message[a].intArray();
@@ -136,7 +136,7 @@ public final class ImageUnpartition extends SDFAtomicActor {
         catch (IllegalActionException e) {
             // getArray and send should never throw an exception.
             throw new InternalErrorException(e.getMessage());
-        }            
+        }
     }
 
     IntMatrixToken message[];

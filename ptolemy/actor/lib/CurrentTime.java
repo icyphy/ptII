@@ -52,7 +52,7 @@ the current time. The output is of Type Double.
 public class CurrentTime extends TimedSource {
 
     /** Construct an actor with the given container and name.
-     * 
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained

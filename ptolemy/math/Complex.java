@@ -363,7 +363,7 @@ public class Complex implements Cloneable, Serializable {
     }
 
 
-    /** Return a new complex number that is formed by multiplying this 
+    /** Return a new complex number that is formed by multiplying this
      *  complex number by the specified complex number.
      *  @param w A complex number.
      *  @return A new complex number.
@@ -373,7 +373,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(w.real*real-w.imag*imag, w.real*imag+w.imag*real);
     }
 
-    /** Return a new complex number that is formed by the negatives of both 
+    /** Return a new complex number that is formed by the negatives of both
      *  the real and imaginary parts of this complex number.
      */
     public final Complex negate() {
@@ -390,7 +390,7 @@ public class Complex implements Cloneable, Serializable {
      *  @param angle The angle.
      *  @return A new complex number.
      */
-    public static final Complex polarToComplex(double magnitude, 
+    public static final Complex polarToComplex(double magnitude,
      double angle) {
         if (magnitude < 0.0) {
             angle +=  Math.PI;
@@ -513,7 +513,7 @@ public class Complex implements Cloneable, Serializable {
         return polarToComplex(magnitude, angle);
     }
 
-    /** Return a new complex number formed by subtracting the specified 
+    /** Return a new complex number formed by subtracting the specified
      *  complex number from this complex number.
      */
     public final Complex subtract(Complex w) {

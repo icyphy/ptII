@@ -60,7 +60,7 @@ public class PNRedirect extends AtomicActor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
 
     /** Reads a token from it's input stream and writes it to the output
      */

@@ -39,32 +39,32 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// DDEIOPort
 /**
-A DDEIOPort is a timed input/output port used in the DDE domain. 
-DDEIOPorts are used to send tokens between DDEActors, and in so 
-doing, associate time with the tokens as they are placed in DDEReceivers. 
+A DDEIOPort is a timed input/output port used in the DDE domain.
+DDEIOPorts are used to send tokens between DDEActors, and in so
+doing, associate time with the tokens as they are placed in DDEReceivers.
 <P>
 DDEIOPorts are not necessary to facilitate communication between actors
 executing in a DDE model; standard TypedIOPorts are sufficient for most
-communication. DDEIOPorts become necessary when the time stamp to be 
-associated with an outgoing token is greater than the current time of 
-the sending actor. 
+communication. DDEIOPorts become necessary when the time stamp to be
+associated with an outgoing token is greater than the current time of
+the sending actor.
 <P>
 The designers of models that incorporate DDEIOPorts should be careful
-to make sure that output time stamp ordering information is correct. 
+to make sure that output time stamp ordering information is correct.
 Since the output time stamp of a token being sent through a DDEIOPort
 can be greater then the sending actor's current time, it is possible
 on a subsequent token production to create an outgoing token with
 a time stamp that is greater than the current time but less then the
 previously produced time stamp. In such cases, an IllegalArgumentException
-will be thrown. 
+will be thrown.
 <P>
 To prevent the runtime difficulties cited above, it is suggested that
 DDEIOPorts be avoided except when necessary. The kind of actors that
 require the use of DDEIOPorts are often referred to as <I>delay
 actors</I> to indicate the fact that a delay occurs between the time stamps
-of consumed tokens and their corresponding output-produced time stamps. 
-As a general rule, it is suggested that in a DDE model, delay actors 
-derive from DDEActors. Applying this rule means that polymorphic actors 
+of consumed tokens and their corresponding output-produced time stamps.
+As a general rule, it is suggested that in a DDE model, delay actors
+derive from DDEActors. Applying this rule means that polymorphic actors
 (those of the ptolemy.actor.lib package) should never require DDEIOPorts
 and should use TypedIOPorts instead.
 
@@ -123,17 +123,17 @@ public class DDEIOPort extends TypedIOPort {
     ////                         public methods                    ////
 
     /** Send a token to all connected receivers by calling send on
-     *  all of the remote receivers connected to this port. If there 
+     *  all of the remote receivers connected to this port. If there
      *  are no connected receivers, then nothing is sent. Associate
      *  a time stamp with the token that is equivalent to the specified
-     *  'sendTime' parameter. Throw an IllegalActionException if the 
-     *  port is not an output. Throw a NoRoomException if one of the 
+     *  'sendTime' parameter. Throw an IllegalActionException if the
+     *  port is not an output. Throw a NoRoomException if one of the
      *  channels throws it.
      * @param token The token to send
      * @param sendTime The output time of the token being sent.
-     * @exception IllegalActionException If the port is not an output 
+     * @exception IllegalActionException If the port is not an output
      *  or the delay is negative.
-     * @exception NoRoomException If a send to one of the channels 
+     * @exception NoRoomException If a send to one of the channels
      *  throws it.
      */
     public void broadcast(Token token, double sendTime)
@@ -155,17 +155,17 @@ public class DDEIOPort extends TypedIOPort {
 
     /** Send the specified token to all receivers connected to the
      *  specified channel. The first receiver gets the actual token,
-     *  while subsequent receivers get a clone. If there are no 
-     *  receivers, then do nothing. Associate a time stamp with the 
-     *  token that is equivalent to the specified 'sendTime' parameter. 
-     *  Throw an IllegalActionException if the port is not an output. 
+     *  while subsequent receivers get a clone. If there are no
+     *  receivers, then do nothing. Associate a time stamp with the
+     *  token that is equivalent to the specified 'sendTime' parameter.
+     *  Throw an IllegalActionException if the port is not an output.
      *  Throw a NoRoomException if one of the channels throws it.
      * @param chIndex The index of the channel, between (inclusive)
      *  0 to width-1.
      * @param token The token to send.
      * @param sendTime The output time of the token being sent.
      * @exception NoRoomException If there is no room in the receiver.
-     * @exception IllegalActionException If the port is not an output, 
+     * @exception IllegalActionException If the port is not an output,
      *  if the index is out of range.
      */
     public void send(int chIndex, Token token, double sendTime)
@@ -177,7 +177,7 @@ public class DDEIOPort extends TypedIOPort {
 	    ddeThread = (DDEThread)thread;
 	    currentTime = ddeThread.getTimeKeeper().getCurrentTime();
 	}
-        if( sendTime < currentTime && 
+        if( sendTime < currentTime &&
 		sendTime != TimedQueueReceiver.IGNORE &&
 		sendTime != TimedQueueReceiver.INACTIVE ) {
 	    // FIXME: Am I sure about INACTIVE
@@ -212,7 +212,7 @@ public class DDEIOPort extends TypedIOPort {
 	        String actorName = ((NamedObj)getContainer()).getName();
 	        throw new IllegalArgumentException(actorName + " "
 			+ "attempted to place an event into outgoing "
-			+ "channel " + chIndex + " of DDEIOPort '" 
+			+ "channel " + chIndex + " of DDEIOPort '"
 			+ this.getName() + "' with a time stamp "
 			+ "earlier than that of previous events placed "
 			+ "into this channel.");

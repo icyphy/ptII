@@ -77,16 +77,16 @@ public class ABPPlot extends DEActor {
         input.setMultiport(true);
 
         _plot = plot;
-        
+
         // FIXME: This is not the right way to handle this...
         String legends = new String("");
         _yMin = (double)-1.0;
         _yMax = (double)1.0;
-        _paramLegends = new Parameter(this, "Legends", 
+        _paramLegends = new Parameter(this, "Legends",
                 new StringToken(legends));
         _paramYMin = new Parameter(this, "Y_Min", new DoubleToken(_yMin));
         _paramYMax = new Parameter(this, "Y_Max", new DoubleToken(_yMax));
-       
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,8 +120,8 @@ public class ABPPlot extends DEActor {
             while(stokens.hasMoreTokens()) {
                 _legends[index++]= stokens.nextToken();
             }
-        }   
-        
+        }
+
 	for (int i = 0; i < input.getWidth(); i++) {
             if (_legends != null && i < _legends.length && _legends[i].length() != 0) {
                 _plot.addLegend(i, _legends[i]);
@@ -164,7 +164,7 @@ public class ABPPlot extends DEActor {
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     Token curToken = input.get(i);
-                    
+
                     if (curToken instanceof DoubleToken) {
                         _processDoubleToken(i, curTime, (DoubleToken)curToken);
                     } else if (curToken instanceof IntToken) {
@@ -222,15 +222,15 @@ public class ABPPlot extends DEActor {
     ////                         protected methods                      ////
 
     /** Process input tokens that are instances of DoubleToken.
-     *  
+     *
      * @param channel The channel number
      * @param curTime The current time of the simulation
      * @param token The input token that is an instance of DoubleToken
-     */	
-    protected void _processDoubleToken(int channel, 
-            double curTime, 
+     */
+    protected void _processDoubleToken(int channel,
+            double curTime,
             DoubleToken token) {
-        
+
         double curValue = token.doubleValue();
 
         // update the y range
@@ -256,7 +256,7 @@ public class ABPPlot extends DEActor {
                     ", CurrentValue = " + curValue + ".");
         }
         _plot.addPoint(channel, curTime, curValue, false);
-        
+
     }
 
     protected void _processIntToken(int channel,
@@ -292,15 +292,15 @@ public class ABPPlot extends DEActor {
     }
 
     /** Process pure token, i.e. typeless token.
-     *  
+     *
      * @param channel The channel number
      * @param curTime The current time of the simulation
      * @param token The input token
-     */	
-    protected void _processPureToken(int channel, 
-            double curTime, 
+     */
+    protected void _processPureToken(int channel,
+            double curTime,
             Token token) {
-        
+
         double curValue = channel;
 
         // update the y range
@@ -326,8 +326,8 @@ public class ABPPlot extends DEActor {
                     ", CurrentValue = " + curValue + ".");
         }
         _plot.addPoint(channel, curTime, curValue, false);
-        
-    }   
+
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////

@@ -54,16 +54,16 @@ public class CSPCondGet extends CSPGet {
     public CSPCondGet(TypedCompositeActor cont, String name, int receiverCount)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
-         
+
         _receiverCount = receiverCount;
-        _truth = new boolean[receiverCount]; 
-        _winningBranch = new boolean[receiverCount]; 
+        _truth = new boolean[receiverCount];
+        _winningBranch = new boolean[receiverCount];
 
 	for( int i = 0; i < receiverCount; i++ ) {
 	    _winningBranch[i] = false;
 	    _truth[i] = false;
 	}
-	
+
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ public class CSPCondGet extends CSPGet {
      */
     public void fire() throws IllegalActionException {
 	int numReceivers = 0;
-        Receiver[][] rcvrs = inputPort.getReceivers(); 
+        Receiver[][] rcvrs = inputPort.getReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
 		numReceivers++;
@@ -86,7 +86,7 @@ public class CSPCondGet extends CSPGet {
 		    + " instantiated.");
 	}
 
-	ConditionalBranch[] brchs = new ConditionalBranch[numReceivers]; 
+	ConditionalBranch[] brchs = new ConditionalBranch[numReceivers];
 
 	for( int i = 0; i < numReceivers; i++ ) {
 	    brchs[i] = new ConditionalReceive(_truth[i], inputPort, i, i);
@@ -114,5 +114,5 @@ public class CSPCondGet extends CSPGet {
 
     private int _receiverCount;
     private boolean[] _truth;
-    private boolean[] _winningBranch; 
+    private boolean[] _winningBranch;
 }

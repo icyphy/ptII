@@ -242,7 +242,7 @@ public class CSPDirector extends ProcessDirector {
     public synchronized void setCurrentTime(double newTime)
             throws IllegalActionException {
         if (_actorsDelayed != 0) {
-            throw new IllegalActionException("CSPDirector.setCurrentTime()" 
+            throw new IllegalActionException("CSPDirector.setCurrentTime()"
 		    + " can only be called when no processes are delayed.");
         }
         _currentTime = newTime;

@@ -41,7 +41,7 @@ import ptolemy.data.Token;
 //// DDEPut
 /**
 DDEPut is a test class used to test token production. It has a single
-typed, input multiport. Use this class to test DDEReceiver and DDEThread. 
+typed, input multiport. Use this class to test DDEReceiver and DDEThread.
 
 
 @author John S. Davis II

@@ -113,7 +113,7 @@ public class DEMessageSource extends DEActor {
                 _nextMsgTime = getCurrentTime() + delay;
             }
 
-            //System.out.println("DEMessageSource " + this.getFullName() + 
+            //System.out.println("DEMessageSource " + this.getFullName() +
             //        " next message " + "scheduled at " + _nextMsgTime);
 
         }

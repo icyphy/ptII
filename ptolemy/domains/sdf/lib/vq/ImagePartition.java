@@ -42,7 +42,7 @@ import ptolemy.domains.sdf.kernel.*;
 //// ImagePartition
 /**
 This actor partitions an image into smaller subimages.  Each input matrix
-should have dimensions XFrameSize by YFrameSize, and each output matrix 
+should have dimensions XFrameSize by YFrameSize, and each output matrix
 will have dimensions XPartitionSize by YPartitionSize.  The output images
 are row scanned from the input image.
 
@@ -95,7 +95,7 @@ public final class ImagePartition extends SDFAtomicActor {
         }
     }
 
-    /** 
+    /**
      * Initialize this actor
      * @exception IllegalActionException If a contained method throws it.
      */
@@ -116,11 +116,11 @@ public final class ImagePartition extends SDFAtomicActor {
                 / xpartsize / ypartsize];
     }
 
-    /** 
+    /**
      * Fire this actor
      * Consume a single IntMatrixToken on the input.  Produce IntMatrixTokens
      * on the output port by partitioning the input matrix.
-     * 
+     *
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {

@@ -57,7 +57,7 @@ public interface InequalityTerm {
      *  @return an Object.
      */
     public Object getAssociatedObject();
-    
+
 
     /** Return the value of this term.  If this term is a constant,
      *  return that constant; if this term is a variable, return the

@@ -50,7 +50,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// SimpleHS - A very simple hybrid system.
 /**
-An application demonstrating the hierarchical combination of DE, FSM, and 
+An application demonstrating the hierarchical combination of DE, FSM, and
 CT domains in PtolemyII.
 @author Jie Liu, Xiaojun Liu
 @version $Id$
@@ -106,20 +106,20 @@ public class SimpleHS {
             TypedIOPort hstr = (TypedIOPort)hs.newPort("trig");
             hstr.setOutput(true);
             hstr.setTypeEquals(DoubleToken.class);
- 
+
 
             // the FSM controller
             HSController ctrl = new HSController(hs, "Controller");
             FSMState ctrlInc = new FSMState(ctrl, "Increasing");
             FSMState ctrlDec = new FSMState(ctrl, "Decreasing");
             ctrl.setInitialState(ctrlInc);
-            FSMTransition ctrlTr1 = 
+            FSMTransition ctrlTr1 =
                 ctrl.createTransition(ctrlInc, ctrlDec);
             ctrlTr1.setTriggerEvent("output");
             // ctrlTr1.setInitEntry(true);
             HSInit hsinit1 = new HSInit(ctrlTr1, "Integrator", "state");
-            FSMTransition ctrlTr2 = 
-                ctrl.createTransition(ctrlDec, ctrlInc);            
+            FSMTransition ctrlTr2 =
+                ctrl.createTransition(ctrlDec, ctrlInc);
             ctrlTr2.setTriggerEvent("output");
             //ctrlTr2.setInitEntry(true);
             HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
@@ -255,7 +255,7 @@ public class SimpleHS {
 
             // try to run the system
             dedir.setStopTime(5.0);
-           
+
             // CT director parameters
             Parameter initStep = (Parameter)ctIncDir.getAttribute("InitialStepSize");
             initStep.setToken(new DoubleToken(0.01));
