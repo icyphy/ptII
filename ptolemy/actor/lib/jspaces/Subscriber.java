@@ -197,26 +197,39 @@ public class Subscriber extends Source implements RemoteEventListener {
             } else {
                 //read for 10 seconds.
                 // FIXME: should 10000 be a paramter?
-                indexmin = (IndexEntry)_space.read(_minTemplate, null, 10000);
-                if (indexmin == null) {
-                    throw new IllegalActionException(this,
-                            "the publisher is not ready. Please try again.");
+                while(true) {
+                    indexmin = 
+                        (IndexEntry)_space.read(_minTemplate, null, 10000);
+                    if (indexmin == null) {
+                        System.err.println(getName() + 
+                                ": The publisher (min index) is not ready." +
+                                " Try again...");
+                    } else {
+                        break;
+                    }
                 }
             }
+                
             long minimum = indexmin.getPosition();
-
+            
             _maxTemplate = new IndexEntry(_entryName, "maximum", null);
             IndexEntry indexmax;
             if(_blocking) {
                 indexmax = (IndexEntry)
                     _space.read(_maxTemplate, null, Long.MAX_VALUE);
             } else {
-                // read for 10 seconds.
-                // FIXME: should 10000 be a paramter?
-                indexmax = (IndexEntry)_space.read(_maxTemplate, null, 10000);
-                if (indexmax == null) {
-                    throw new IllegalActionException(this,
-                            "the publisher is not ready. Please try again.");
+                while (true) {
+                    // read for 10 seconds.
+                    // FIXME: should 10000 be a paramter?
+                    indexmax = 
+                        (IndexEntry)_space.read(_maxTemplate, null, 10000);
+                    if (indexmax == null) {
+                        System.err.println(getName() + 
+                                " The publisher (max index) is not ready. "+ 
+                                " Try again...");
+                    } else {
+                        break;
+                    }
                 }
             }
             long maximum = indexmax.getPosition();
@@ -269,9 +282,9 @@ public class Subscriber extends Source implements RemoteEventListener {
                 }
             }
         } catch (Exception e) {
-                throw new IllegalActionException( this,
-                        "error reading from the JavaSpace." +
-                        e.getMessage());
+            throw new IllegalActionException( this,
+                    "error reading from the JavaSpace." +
+                    e.getMessage());
         }
     }
 
