@@ -217,8 +217,8 @@ public class CASDFComposite extends TypedCompositeActor {
                 + dmp);
         System.out.println("The total CMP for Cache Aware Schedule is : "
                 + (imp + dmp));
-        _cacheAwareScheduler.calculateMinActivationScheduleCMP();
-       
+        _cacheAwareScheduler.calculateMPMBScheduleCMP();
+        _cacheAwareScheduler.calculateSAMAScheduleCMP();   
         super.wrapup(); 
    }
 
