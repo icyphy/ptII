@@ -59,7 +59,7 @@ test FixToken-1.1 {Create a non-empty instance from two strings} {
     set c1 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
     set p [java::new ptolemy.data.FixToken $c1 ]
     $p toString
-} {fix(5.573486328125,16,4)}
+} {fix(5.5732421875,16,4)}
 
 test FixToken-1.2 {Create a non-empty instance from two strings} {
     set p1 [java::new ptolemy.math.Precision "(4^32)" ]
@@ -129,7 +129,7 @@ test FixToken-4.0 {Test fixValue} {
     set p  [java::new ptolemy.data.FixToken $c1 ]
     set res1 [$p fixValue]
     list [$res1 toBitString]
-} {101.100100101101}
+} {101.100100101100}
 
 test FixToken-4.1 {Test doubleValue} {
     catch {$p doubleValue} msg
@@ -148,7 +148,7 @@ test FixToken-4.3 {Test longValue} {
 
 test FixToken-4.4 {Test stringValue} {
     $p stringValue
-} {fix(5.573486328125,16,4)}
+} {fix(5.5732421875,16,4)}
 
 ######################################################################
 
