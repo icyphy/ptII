@@ -112,8 +112,6 @@ JCLASS =  \
 	PtParser.class \
 	$(OPTIONAL_JSRCS:%.java=%.class)
 
-# Needed for compiling under Cygwin on NT
-LIB = dummylib
 
 all:  $(OPTIONAL_JSRCS) $(JCLASS)
 install: PtParser javadocs $(PTCLASSJAR)

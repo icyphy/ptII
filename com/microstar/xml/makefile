@@ -73,8 +73,6 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Needed for compiling under Cygwin on NT
-LIB = dummylib
 
 all: jclass
 install: jclass javadocs $(PTCLASSJAR)

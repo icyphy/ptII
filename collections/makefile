@@ -142,8 +142,6 @@ OPTIONAL_FILES =	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Needed for compiling under Cygwin on NT
-LIB = dummylib
 
 all: suball jclass
 install: subinstall jclass javadocs $(PTCLASSJAR)
