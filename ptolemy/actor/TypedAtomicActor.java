@@ -222,10 +222,22 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 			isUndeclared = outPort.getTypeTerm().isSettable();
 		    	if (isUndeclared && inPort != outPort) {
 			    // output also undeclared, not bidirectional port,
-		            Inequality inequality = new Inequality(
+			    // check if there is any type constraints stored
+			    // in ports.
+			    List inPortConstraints =
+			                     inPort.typeConstraintList();
+			    List outPortConstraints =
+			                     outPort.typeConstraintList();
+                            if (inPortConstraints.isEmpty() &&
+			        outPortConstraints.isEmpty()) {
+				// ports not constrained, use default
+				// constraint
+		                Inequality inequality = new Inequality(
                                     inPort.getTypeTerm(),
                                     outPort.getTypeTerm());
-			    result.add(inequality);
+			        result.add(inequality);
+                            }
+
 			}
 		    }
 		}
