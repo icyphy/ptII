@@ -115,6 +115,9 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
 			      null);
 	_graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
 			      "ptolemy.kernel.util.Attribute");
+	_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
+			      "ptolemy.kernel.util.Attribute");
+
     }
 }
 
