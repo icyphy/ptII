@@ -113,18 +113,13 @@ public class DDEDirector extends CompositeProcessDirector {
      *  the list of objects in the workspace. Increment the
      *  version number of the workspace.
      */
-    public DDEDirector() {
+    public DDEDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
 
-	try {
-            double value = PrioritizedTimedQueue.ETERNITY;
-	    stopTime = new
-                Parameter(this, "stopTime", new DoubleToken(value));
-	} catch (IllegalActionException illegalAction) {
-	    throw new InternalErrorException(this, illegalAction, null);
-        } catch (NameDuplicationException nameDuplication) {
-            throw new InvalidStateException(this, nameDuplication, null);
-	}
+        double value = PrioritizedTimedQueue.ETERNITY;
+        stopTime = new
+            Parameter(this, "stopTime", new DoubleToken(value));
     }
 
     /** Construct a director in the  workspace with an empty
@@ -133,18 +128,13 @@ public class DDEDirector extends CompositeProcessDirector {
      *  of the workspace.
      * @param workspace The workspace of this object.
      */
-    public DDEDirector(Workspace workspace) {
+    public DDEDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
-
-	try {
-            double value = PrioritizedTimedQueue.ETERNITY;
-	    stopTime = new
-                Parameter(this, "stopTime", new DoubleToken(value));
-	} catch (IllegalActionException illegalAction) {
-	    throw new InternalErrorException(this, illegalAction, null);
-        } catch (NameDuplicationException nameDuplication) {
-            throw new InvalidStateException(this, nameDuplication, null);
-	}
+        
+        double value = PrioritizedTimedQueue.ETERNITY;
+        stopTime = new
+            Parameter(this, "stopTime", new DoubleToken(value));
     }
 
     /** Construct a director in the given container with the
@@ -164,15 +154,9 @@ public class DDEDirector extends CompositeProcessDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	try {
-            double value = PrioritizedTimedQueue.ETERNITY;
-	    stopTime = new
-                Parameter(this, "stopTime", new DoubleToken(value));
-	} catch (IllegalActionException illegalAction) {
-	    throw new InternalErrorException(this, illegalAction, null);
-        } catch (NameDuplicationException nameDuplication) {
-            throw new InvalidStateException(this, nameDuplication, null);
-	}
+        double value = PrioritizedTimedQueue.ETERNITY;
+        stopTime = new
+            Parameter(this, "stopTime", new DoubleToken(value));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -234,7 +218,7 @@ public class DDEDirector extends CompositeProcessDirector {
         if (thread instanceof DDEThread) {
             ddeThread = (DDEThread)thread;
         } else {
-	    // Add the start time of actor to initialize table
+            // Add the start time of actor to initialize table
 	    if (_initialTimeTable == null) {
 		_initialTimeTable = new Hashtable();
 	    }
@@ -255,6 +239,8 @@ public class DDEDirector extends CompositeProcessDirector {
 
         TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
         try {
+            //    System.out.println("fireAt " + actor + " time " + time);
+            // System.out.println("current time was " + timeKeeper.getCurrentTime());            
             timeKeeper.setCurrentTime(time);
         } catch (IllegalArgumentException e) {
 	    throw new IllegalActionException(
