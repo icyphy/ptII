@@ -108,9 +108,9 @@ out how to remove this dependence.
 
 @author Edward A. Lee
 @version $Id$
-@see Variable
-@see Parameter
-@see Settable
+@see ptolemy.data.expr.Variable
+@see ptolemy.data.expr.Parameter
+@see ptolemy.kernel.util.Settable
 */
 public class VisualModelReference
     extends ModelReference
