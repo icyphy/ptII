@@ -180,7 +180,7 @@ public class PtolemyDocument extends AbstractDocument
 	view.add(panel);
 	view.add(jgraph);*/
 
-	new EditorDropTarget(jgraph);
+	new EditorDropTarget(jgraph, getApplication());
        
 	ActionListener deletionListener = new DeletionListener();
         jgraph.registerKeyboardAction(deletionListener, "Delete",

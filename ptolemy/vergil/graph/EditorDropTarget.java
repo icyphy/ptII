@@ -31,6 +31,7 @@
 package ptolemy.vergil.graph;
 
 import diva.graph.*;
+import diva.gui.*;
 import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 import java.awt.Point;
@@ -62,8 +63,9 @@ public class EditorDropTarget extends DropTarget {
      * Construct a new graph target to operate
      * on the given JGraph.
      */
-    public EditorDropTarget(JGraph g) {
+    public EditorDropTarget(JGraph g, Application application) {
         setComponent(g);
+        _application = application;
         try {
             addDropTargetListener(new DTListener());
         }
@@ -174,8 +176,8 @@ public class EditorDropTarget extends DropTarget {
                         gc.addNode(newObject, ((int)p.x), ((int)p.y));
                     }
                     catch (Exception ex) {
-                        ex.printStackTrace();
-                        throw new RuntimeException(ex.getMessage());
+                        _application.showError("Drop of " + data.getFullName()
+                                + " failed.", ex);
                     }
                 }
 		dtde.dropComplete(true); //success!
@@ -194,6 +196,9 @@ public class EditorDropTarget extends DropTarget {
      * The plain-text flavor that we will be using for our
      * basic drag-and-drop protocol.
      */
-    static final DataFlavor TEXT_FLAVOR = DataFlavor.plainTextFlavor;
-    static final DataFlavor STRING_FLAVOR = DataFlavor.stringFlavor;
+    public static final DataFlavor TEXT_FLAVOR = DataFlavor.plainTextFlavor;
+    public static final DataFlavor STRING_FLAVOR = DataFlavor.stringFlavor;
+    
+    // The application for reporting exceptions.
+    private Application _application;
 }

@@ -144,9 +144,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
 		   parent instanceof CompositeEntity) {
 	    addNode((Vertex)node, (CompositeEntity)parent);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. node = " + node + 
-				       "parent = " + parent);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. node = " + node + 
+                    "parent = " + parent);
 	}
     }
 
@@ -160,8 +161,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	try {
 	    relation.setContainer(parent);
 	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+            throw new GraphException(ex);
 	}
         GraphEvent e = new GraphEvent(GraphEvent.NODE_ADDED,
                 this, vertex, parent);
@@ -177,8 +177,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	try {
 	    entity.setContainer(parent);
 	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+            throw new GraphException(ex);
 	}
         GraphEvent e = new GraphEvent(GraphEvent.NODE_ADDED,
                 this, icon, parent);
@@ -193,8 +192,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	try {
 	    port.setContainer(parent);
 	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+            throw new GraphException(ex);
 	}
         GraphEvent e = new GraphEvent(GraphEvent.NODE_ADDED,
                 this, port, parent);
@@ -210,8 +208,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	try {
 	    port.setContainer(entity);
 	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+            throw new GraphException(ex);
 	}
         GraphEvent e = new GraphEvent(GraphEvent.NODE_ADDED,
                 this, port, icon);
@@ -238,9 +235,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
 			    (ComponentPort)head);
 	    }
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. link = " + link +
-				       "tail = " + tail + " head = " + head);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. link = " + link +
+                    "tail = " + tail + " head = " + head);
 	}
     }
 
@@ -270,9 +268,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	   node instanceof NamedObj) {
 	    return containsNode((NamedObj)composite, (NamedObj)node);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. composite = " +
-				       composite + "node = " + node);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. composite = " +
+                    composite + "node = " + node);
 	}
     }
 
@@ -292,8 +291,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	if(edge instanceof ComponentRelation) {
 	    disconnectEdge((ComponentRelation)edge);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. edge = " + edge);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. edge = " + edge);
 	}
     }
 
@@ -335,8 +335,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	if(link instanceof Link) {
 	    return getHead((Link)link);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. link = " + link);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. link = " + link);
 	}       
     }
 		
@@ -357,9 +358,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else if(composite instanceof Icon) {
 	    return getNodeCount((Icon)composite);
        	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. composite = " + 
-				       composite);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. composite = " + composite);
 	}
     }
 	
@@ -397,8 +398,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else if(node instanceof Port) {
 	    return getParent((Port)node);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. node = " + node);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. node = " + node);
 	}       
     }
 
@@ -431,7 +433,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    if(iconList.size() > 0) {
 		return iconList.get(0);
 	    } else {
-		throw new RuntimeException("entity does not contain an icon.");
+		throw new InternalErrorException(
+                        "entity does not contain an icon.");
 	    }
 	}
     }
@@ -443,8 +446,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	if(link instanceof Link) {
 	    return getTail((Link)link);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. link =" + link);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. link =" + link);
 	}       
     }
 
@@ -463,8 +467,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	if(o instanceof NamedObj) {
 	    return getVisualObject((NamedObj)o);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. object =" + o);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. object =" + o);
 	}       	
     }
 
@@ -497,8 +502,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else if(o instanceof Link) {
 	    return getSemanticObject((Link)o);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. object= " + o);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. object= " + o);
 	}       
     }
 
@@ -538,8 +544,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else if(node instanceof Icon) {
 	    return new NullIterator();
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. icon = " + node);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. icon = " + node);
 	}       
     }
     
@@ -609,8 +616,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else if(object instanceof Icon) {
 	    return nodes((Icon)object);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. icon = " + object);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. icon = " + object);
 	}       
     }
 
@@ -670,8 +678,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else if(node instanceof Icon) {
 	    return new NullIterator();
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. icon = " + node);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. icon = " + node);
 	}       
     }
 
@@ -709,8 +718,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else if(node instanceof Vertex) {
 	    removeNode((Vertex)node);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. node = " + node);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. node = " + node);
 	}
 	GraphEvent e = new GraphEvent(GraphEvent.NODE_REMOVED,
 				      this, node, parent);
@@ -726,8 +736,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    port.unlinkAll();
 	    port.setContainer(null);
 	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+            throw new GraphException(ex);
 	}
     }
 	
@@ -745,8 +754,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    }
 	    entity.setContainer(null);
 	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+	    throw new GraphException(ex);
 	}
     }  
 
@@ -761,8 +769,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    relation.unlinkAll();
 	    relation.setContainer(null);
 	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+	    throw new GraphException(ex);
 	}
     }
 
@@ -775,9 +782,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    setEdgeHead((Link)link,
 			(NamedObj)object);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. link = " + link + 
-				       "object = " + object);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. link = " + link + 
+                    "object = " + object);
 	}
     }
 
@@ -786,9 +794,18 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * with an EDGE_HEAD_CHANGED event.
      */
     public void setEdgeHead(Link link, Object head) {
-	link.unlink();
-	link.setHead(head);
-	link.link();
+        try {
+            link.unlink();
+        } catch (Exception ex) {
+            throw new GraphException(ex);
+        }
+        
+        link.setHead(head);
+        try {
+            link.link();
+        } catch (Exception ex) {
+            throw new GraphException(ex);
+        }
         GraphEvent e = new GraphEvent(GraphEvent.EDGE_HEAD_CHANGED,
                 this, link, head);
         dispatchGraphEvent(e);
@@ -803,9 +820,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    setEdgeTail((Link)link,
 			(NamedObj)object);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. link = " + link +
-				       "object = " + object);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. link = " + link +
+                    "object = " + object);
 	}
     }
 
@@ -814,9 +832,17 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * with an EDGE_TAIL_CHANGED event.
      */
     public void setEdgeTail(Link link, NamedObj tail) {
-	link.unlink();
+        try {
+            link.unlink();
+        } catch (Exception ex) {
+            throw new GraphException(ex);
+        }
 	link.setTail(tail);
-	link.link();
+        try {
+            link.link();
+        } catch (Exception ex) {
+            throw new GraphException(ex);
+        }
         GraphEvent e = new GraphEvent(GraphEvent.EDGE_TAIL_CHANGED,
                 this, link, tail);
         dispatchGraphEvent(e);
@@ -830,8 +856,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	if(o instanceof NamedObj) {
 	    setVisualObject((NamedObj)o, visual);
 	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. object = " + o);
+	    throw new InternalErrorException(
+                    "Ptolemy Graph Model only handles " +
+                    "named objects. object = " + o);
 	}       
     }
 
@@ -846,7 +873,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    a.setFigure(visual);
 	} catch (Exception ex) {
 	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+	    throw new GraphException(ex.getMessage());
 	}
     }
 
@@ -855,8 +882,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * to the given node, edge, or composite.
      */
     public void setSemanticObject(Object o, Object sem) {
-	throw new RuntimeException("PtolemyGraphModel does not support" + 
-				   " setting semantic objects.");
+	throw new InternalErrorException(
+                "PtolemyGraphModel does not support" + 
+                " setting semantic objects.");
     }
     
     /**

@@ -91,16 +91,16 @@ public class EntityController extends LocatableNodeController {
 	interactor.setSelectionModel(sm);
 
 
-	//	Action action = 
-	//    VergilApplication.getInstance().getAction("Look Inside");
-	//ActionInteractor actionInteractor = new ActionInteractor(action);
-	//actionInteractor.setConsuming(false);
-	//actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
-	//interactor.addInteractor(actionInteractor);
+        Action action = 
+	    VergilApplication.getInstance().getAction("Look Inside");
+	ActionInteractor actionInteractor = new ActionInteractor(action);
+	actionInteractor.setConsuming(false);
+	actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
+	interactor.addInteractor(actionInteractor);
 
 	// FIXME this is a horrible dance so that the actioninteractor gets
 	// the events before the drag interactor.
-	//interactor.setDragInteractor(interactor.getDragInteractor());
+	interactor.setDragInteractor(interactor.getDragInteractor());
 
         // Initialize the menu creator. 
 	_menuCreator = 

@@ -7,6 +7,10 @@
         </property>
     </director>
     <doc>ramp-recorder...  a good first start</doc>
+    <property name="test" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="style0" class="ptolemy.actor.gui.style.CheckBoxStyle">
+        </property>
+    </property>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>

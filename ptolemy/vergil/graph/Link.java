@@ -110,7 +110,8 @@ public class Link extends Attribute {
 	_tail = tail;
     } 
 
-    public void link() {
+    public void link() throws IllegalActionException, 
+            NameDuplicationException {
 	ComponentPort port;
 	ComponentRelation relation;
 	Vertex vertex;
@@ -118,19 +119,13 @@ public class Link extends Attribute {
         if(_head == null || _tail == null) return;
         if(_head instanceof ComponentPort && _tail instanceof ComponentPort) {
             CompositeEntity container = (CompositeEntity) getContainer();
-            try {
-                relation = 
-                    container.newRelation(container.uniqueName("relation"));
-		port = (ComponentPort)_head;
-                port.link(relation);
-                port = (ComponentPort)_tail;
-		port.link(relation);
-		setRelation(relation);
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex.getMessage());
-            }
+            relation = 
+                container.newRelation(container.uniqueName("relation"));
+            port = (ComponentPort)_head;
+            port.link(relation);
+            port = (ComponentPort)_tail;
+            port.link(relation);
+            setRelation(relation);
             return;
         }
 	if(_tail instanceof ComponentPort && _head instanceof Vertex) {
@@ -146,17 +141,12 @@ public class Link extends Attribute {
                     "but head is " + _head +
                     " and tail is " + _tail);
 	}
-	try {
-	    setRelation(relation);
-	    port.link(relation);
-	}
-	catch (IllegalActionException ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
-	}
+        setRelation(relation);
+        port.link(relation);
     }
 
-    public void unlink() {
+    public void unlink() throws IllegalActionException,
+        NameDuplicationException {
 	ComponentPort port;
 	Vertex vertex;
 	ComponentRelation relation;
@@ -169,13 +159,7 @@ public class Link extends Attribute {
             port = (ComponentPort)_tail;
             port.unlink(relation);
             // blow the relation away.
-            try {
-                relation.setContainer(null);
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex.getMessage());
-            }             
+            relation.setContainer(null);
 	    setRelation(null);
             return;
         }

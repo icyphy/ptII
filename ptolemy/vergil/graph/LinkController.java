@@ -113,38 +113,13 @@ public class LinkController extends EdgeController {
         }
     }
 
-    /**
-     * The factory for creating context menus on relations
-     */
-    /*
-    public static class LinkContextMenuFactory 
-	extends RelationController.RelationContextMenuFactory {
-	
-	public NamedObj _getObjectFromFigure(Figure source) {
-	    Relation relation = (Relation)source.getUserObject();
-	    GraphModel model = getController().getGraphModel();
-	    if(relation == null) {
-		Node node = edge.getHead();
-		Object object = node.getSemanticObject();
-		if(!(object instanceof Vertex)) {
-		    node = edge.getTail();
-		    object = node.getSemanticObject();
-		}
-		if(object != null && object instanceof Vertex) {
-		    Vertex vertex = (Vertex) object;
-		    relation = (Relation)vertex.getContainer();
-		}
-	    }
-	    return relation;
-	}
-    }
-    */
     public class LinkRenderer implements EdgeRenderer {
 	/**
          * Render a visual representation of the given edge.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             AbstractConnector c = new ManhattanConnector(tailSite, headSite);
+            //AbstractConnector c = new StraightConnector(tailSite, headSite);
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
 	    
