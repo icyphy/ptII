@@ -226,9 +226,6 @@ public class ModelCompiler extends Attribute {
                     // Given the original object, clone object, a subgraph,
                     // transform the clone object to one that only contains
                     // nodes that the subgraph contains.
-                    // Call Function: transform(origin, clone, subgraph)
-                    // where origin = subCluster;
-                    //       clone = subCluster1;
                     DirectedGraph subgraph = (DirectedGraph)listOfSubgraphs.get(i);
                     _trimModel(compositeActor, subCluster, subgraph);
                 }
@@ -237,7 +234,7 @@ public class ModelCompiler extends Attribute {
                 //subCluster.setContainer(null);
                 //This one does not work.
                 compositeActor.setContainer(null);
-                System.out.println(newLayer.exportMoML());
+                //System.out.println(newLayer.exportMoML());
                 return newLayer;
             }
             
@@ -359,9 +356,9 @@ public class ModelCompiler extends Attribute {
     /** Given the original model, the cloned model and a subgraph,
      *  trim the cloned model s.t it only contains nodes in the
      *  subgraph.
-     * @param origin
-     * @param clone
-     * @param subgraph
+     * @param origin The original model.
+     * @param clone The cloned model.
+     * @param subgraph The subgraph.
      * @throws IllegalActionException
      */
     private void _trimModel(TypedCompositeActor origin,
