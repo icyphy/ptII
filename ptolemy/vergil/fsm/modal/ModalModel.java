@@ -31,7 +31,7 @@ package ptolemy.vergil.fsm.modal;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
+import java.util.*;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -39,11 +39,9 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.style.ChoiceStyle;
+import ptolemy.data.expr.Variable;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.FSMDirector;
-import ptolemy.domains.fsm.kernel.HSDirector;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -56,6 +54,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.actor.util.ExplicitChangeContext;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalModel
@@ -115,7 +114,8 @@ it can report events generated inside.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ModalModel extends CTCompositeActor {
+public class ModalModel extends CTCompositeActor 
+    implements ExplicitChangeContext {
 
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -213,8 +213,59 @@ public class ModalModel extends CTCompositeActor {
         ModalModel newModel = (ModalModel)super.clone(workspace);
         newModel._controller = (FSMActor)newModel.getEntity("_Controller");
         return newModel;
+    }   
+
+    /** Return a list of variables that this entity modifies.  The
+     * variables are assumed to have a change context of the given
+     * entity.
+     * @return A list of variables.
+     */
+    public List getModifiedVariables() throws IllegalActionException {
+        List list = new LinkedList();
+        // Collect assignments from FSM transitions
+        for (Iterator states = _controller.entityList().iterator();
+             states.hasNext();) {
+            State state = (State)states.next();
+            for (Iterator transitions =
+                     state.outgoingPort.linkedRelationList().iterator();
+                 transitions.hasNext();) {
+                Transition transition = (Transition)transitions.next();
+                for (Iterator actions =
+                         transition.choiceActionList().iterator();
+                     actions.hasNext();) {
+                    AbstractActionsAttribute action =
+                        (AbstractActionsAttribute)actions.next();
+                    for (Iterator names = 
+                             action.getDestinationNameList().iterator();
+                         names.hasNext();) {
+                        String name = (String)names.next();
+                        NamedObj object = action.getDestination(name);
+                        if (object instanceof Variable) {
+                            list.add(object);
+                        }
+                    }
+                }
+                for (Iterator actions =
+                         transition.commitActionList().iterator();
+                     actions.hasNext();) {
+                    AbstractActionsAttribute action =
+                        (AbstractActionsAttribute)actions.next();
+                    
+                    for (Iterator names = 
+                             action.getDestinationNameList().iterator();
+                         names.hasNext();) {
+                        String name = (String)names.next();
+                        NamedObj object = action.getDestination(name);
+                        if (object instanceof Variable) {
+                            list.add(object);
+                        }
+                    }
+                }
+            }
+        }      
+        return list;
     }
-    
+
     /** Create a new director for use in this composite.  This base
      *  class returns an instance of FSMDirector, but derived classes
      *  may return a subclass.  Note that this method is called in the
