@@ -1,4 +1,4 @@
-/* An actor that receives Datagram packets via a separate thread.
+/* An actor that asynchronously reads datagram packets.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -62,84 +62,127 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// DatagramReader
 /**
-This actor receives datagram packets via a separate thread it creates.
-Datagrams are open-loop internet communications.  Each contains data
-plus a kind of return address.  Datagrams use the UDP protocol under
-which no reply or confirmation is expected.  This is in contrast to
-TCP which expects confirmations and attempts to receive packets in
-order.  Because UDP makes no such attempts, it never hangs and does
-not need to be timed out.  <p>
+This actor reads datagram packets via a separate thread.  The thread
+responds to datagrams whenever they arrive, giving the actor the ability
+to read the datagrams asynchronously.  
 
-NOTE: This actor has been developed to work in the Discrete Event (DE)
-and Synchronous Data Flow (SDF) domains.  Use elsewhere with caution. <p><p>
+Datagrams are connectionless, open-loop internet communications.  Each
+datagram packet contains data plus a return address.  The return
+address consists of an IP address and a socket number.  Datagrams use
+the UDP protocol under which no reply or confirmation is expected.
+This is in contrast to TCP which expects confirmations and attempts to
+deliver packets in order to the layer above TCP.  This can result in
+long delays in the delivery of information across the network.  Because
+UDP makes no such attempts, it never hangs and does not need to be timed out.
 
+<p>NOTE: This actor has been developed to work in the Discrete Event
+(DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
+caution.
 
-The simplest scenario has the thread constantly stalled awaiting a
-packet.  When it receives one, it quickly queues it here in the actor,
-calls fireAtCurrentTime(), and then stalls again awaiting the next
-packet.  By stalling again and again, the thread keeps the actor aware
-at all times of incoming packets.  This is particularly important if
-packets come in more quickly than the model can process them.  More on
-this below.  Depending of the domain (e.g. DE) in which this actor is
-used, the director may respond to the thread's fireAtCurrentTime()
-call by calling the actor's fire() method.  In this case, fire() then
-broadcasts the data received, plus the return address and return
-socket number from which the datagram originated.  This information
-goes to connected actors in the Ptolemy model in the usual manner. <p>
+<p>
+<p>The simplest scenario has the thread constantly stalled awaiting a
+packet.  When a packet arrives, the thread quickly queues it in one of
+the actor's buffers, calls the getDirector().fireAtCurrentTime(), and then
+stalls again awaiting the next packet.  By stalling again and again,
+the thread keeps the actor aware at all times of incoming packets.
+This is particularly important if packets come in more quickly than
+the model can process them.  Depending on the domain (e.g. DE) in
+which this actor is used, the director may respond to the
+thread's fireAtCurrentTime()
+call by calling the actor's fire() method.
+In this case, fire() then broadcasts the data
+received, along with the return address and return socket number from
+which the datagram originated.
 
-The data portion of the packet is broadcast at the <i>output</i> port.
-A variety of data types are possible, depending on the setting of the
-<i>encoding</i> parameter.  If <i>encoding</i> is one of the raw data
-formats, then an array of integers is produced.  Otherwise, any legal
-Ptolemy data type is possible, and may vary from packet to packet.
-This is because this setting permits the Ptolemy parser to parse the
-received data and determine the type.  The return address and socket
-number are broadcast as String and int respectively.  These tell where
-the received datagram originated from.  <p>
+<p>The data portion of the packet is broadcast at the <i>output</i> port.
+The <i>encoding</i> parameter determines how the bytes received are
+formed into a token.  The 3 values currently available for the
+<i>encoding</i> parameter are "for_Ptolemy_parser",
+"raw_integers_little_endian", and "raw_low_bytes_of_integers".
 
-NOTE: Ideally, there would be more encoding options than
-provided here.  However, I believe the best way to fill out this
-repertoire is to make a separate encode/decode or pack/repack/unpack
-actor.  Such an actor would better re-factor this functionality than
-to duplicate it in each I/O actor (as has been done here with the
-datagram actors).  <p><p>
+<p>If <i>encoding</i> equals "for_Ptolemy_parser", then the bytes
+received are first made into a string using the platform's default
+character encoding.  Then this string is parsed by the Ptolemy parser.
+The parser is capable of throwing an exception if the data has been
+garbled or truncated or is incorrectly formed for the parser.  A
+variety of output data types are possible, and may vary from packet 
+to packet.  This is because this setting permits the Ptolemy parser 
+to determine the type as it parses. 
 
+<p>If <i>encoding</i> equals "raw_integers_little_endian", then the bytes
+received are packed into integers, 4 bytes to each integer.  As the
+name implies, the low byte of each integer receives a byte whose
+index in the received byte array is a multiple of 4.  The most significant
+byte of this same integer receives a byte whose address in the received
+array was 3 more than the low byte.  If the number of bytes received
+was not a multiple 4, then the excess is discarded.  The type of the
+output in this case is an array of integers.
 
-The actor's behavior under less simple scenarios is governed by
-parameters.  Additional packet(s) can arrive while the director is
-getting around to calling fire().  Conversely, the director may make
-extra calls to fire(), even before any datagrams have come in.  <p>
+<p>If <i>encoding</i> equals "raw_low_bytes_of_integers", everything is
+the same as above except that only one byte is placed into each integer.
+No attention is placed on what goes into the other 24 bits, so they may
+be 1s or 0s.  Since only one byte is put into each integer, no excess
+bytes are discarded.  This is the robust setting, capable of handling
+any datagram that may arrive.  As above, The type of the
+output is an array of integers.
 
-Background: There are two packet buffers.  The thread and the fire()
-method share these buffers and maintain consistency via synchronized
-on the object <i>_syncFireAndThread</i>.  This synchronization prevent
+<p>The return address and socket number are broadcast as String and int 
+respectively.  These tell where the received datagram originated from.
+
+<p>FIXME: Factor out the encoding capability so all actors can use it
+and so the I/O actors can share it rather than each having to separately
+implement it.  Ideally, there would be more encoding options than
+provided here.  Actors to factor out encoding functionality might be 
+named Encode and Decode, or Pack and Unpack, or simply Repack.  These
+will be sort of like the conversion actors, but they will be bit-preserving
+rather than value-preserving (as are most of the existing converters).
+
+<p>
+<p>The actor's behavior under less simple scenarios is governed by
+parameters of this actor.  Additional packet(s) can arrive while the
+director is getting around to calling fire().  Conversely, the
+director may make extra calls to fire(), even before any datagrams
+have come in.  I call these the eager packet and eager director
+scenarios respectively.
+
+<p>Background: There are two packet buffers.  The thread and the fire()
+method share these buffers and maintain consistency via synchronization
+on the object <i>_syncFireAndThread</i>.  This synchronization prevents
 conflicts when accessing the shared buffers and when accessing the
-count of queued packets.  <p>
+count of queued packets.
 
-The <i>overwrite</i>parameter applies to the eager packet scenario.
-If true (the default), it has the actor discard the packet already
-received in favor of the new one.  If false, the new packet is queued
-behind the existing one.  In the latter case, both buffers are now
-full.  The thread then waits for fire() to consume a queued packet
-before it stalls again awaiting the next.  In all other cases
-(<i>overwrite</i> true or no queued packets) the thread immediately
-stalls to await the next packet.<p>
+<p>The <i>overwrite</i> parameter applies to the eager packet
+scenario.  Setting this parameter to true is useful in cases where it
+is possible for data to come in too fast for the model to process.
+This setting alleviates data gluts without undue loss of data when the
+model is able to keep up.  When <i>overwrite</i> is set to true (the
+default), the actor discards the packet already received in
+favor of the new packet.  If false, the new packet is queued behind the
+existing one.  In the latter case, both buffers are now full.  The
+thread then waits for fire() to consume a queued packet before it
+stalls again awaiting the next.  In all other cases (<i>overwrite</i>
+true or no queued packets) the thread immediately stalls to await the
+next packet.
 
-The <i>blockAwaitingDatagram</i> parameter applies to the eager director
-case.  If true, a call to fire() will block unless or until a datagram has
-arrived.  (This is particularly useful in the SDF domain.)  If false, then
-fire() returns without waiting, using the <i>defaultOutput</i> in place of
-real data.  The <i>returnAddress</i> and <i>returnSocketNumber</i> ports
-have default outputs as well, but they are not parameter-programmable. <p><p>
+<p>The <i>blockAwaitingDatagram</i> parameter applies to the eager
+director case.  This case comes up most often in SDF, where an actor
+is expected to block in fire until an output can be produced.  If
+true, a call to fire() will block unless or until a datagram has
+arrived.  If false, then fire() returns without waiting, using the
+<i>defaultOutput</i> parameter in place of real data.  The
+<i>returnAddress</i> and <i>returnSocketNumber</i> ports have default
+outputs as well, but they are not parameter-programmable.
 
-
-NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
+<p>
+<p>NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
 number assigned to its local datagram socket.  Initially, the local
-socket number is set to 4004.  There is no particular reason for choosing
-this number, except that is noticeable in the code and in Vergil, thus
-encouraging you to change it to any desired value in the range 0..65535.
+socket number is set to 4004.  There is no particular reason for choosing 
+this number, except that is noticeable in the code and in Vergil, thus 
+encouraging you to change it to any desired value in the range 0..65535.  
+Note that socket numbers 0..1023 are generally reserved and numbers 1024 and 
+above are generally available.
 
-Some commonly used port numbers (a.k.a. socket numbers) are shown below:
+<p>Some commonly used port numbers (a.k.a. socket numbers) are shown below:
 <pre>
 Well-known Ports
 (Commonly Used Ports)
@@ -156,19 +199,21 @@ Well-known Ports
  162	(SNMP Trap)
 </pre>
 Reference:  http://192.168.1.1/Forward.htm
-(A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router) <p>
+(A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router)
 
-Another useful tidbit is the command 'netstat'.  This works in a DOS prompt
-and also in the UNIX-like Bash shell.  In either shell, enter 'netstat -an'.
-This shows current port allocations!  Both due to the Ptolemy model and
-otherwise. <p>
+<p>Another useful tidbit is the command 'netstat'.  This works in a 
+DOS prompt and also in the UNIX-like Bash shell.  In either shell, 
+enter 'netstat -an'.  This command shows current port allocations!  Ports 
+allocated to Ptolemy models are shown along with other port allocations.
+Both TCP and UDP (datagram) ports are shown by netstat.
+FIXME: Find out whether a TCP port using a specific number blocks a 
+UDP port from using that same number.
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward Lee
 (Based on TiltSensor actor written
    by Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
-@since Ptolemy II 2.0
-*/
+@since Ptolemy II 2.0 */
 public class DatagramReader extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -248,8 +293,8 @@ public class DatagramReader extends TypedAtomicActor {
         encoding.setExpression("for_Ptolemy_parser");
 	// The above setExpression() call causes a call to the
 	// attributeChanged() method here in this same actor!
-	// The actor uses this to set the related cached values
-	// <i>_decodeWithPtolemyParser</i> etc. to be congruent
+	// The actor uses this to set the related cached values 
+	// <i>_decodeWithPtolemyParser</i> etc. to be congruent 
 	// with the setting of <i>encoding</i>.
 
    }
@@ -259,37 +304,44 @@ public class DatagramReader extends TypedAtomicActor {
 
     /** The trigger input port.  The type of this port has been set to
      *  GENERAL, permitting any token type to be accepted.  The
-     *  .hasToken() and .get() methods are called on this input, but
-     *  their contents are discarded.  This input serves as a trigger
-     *  via the director, which is compelled to fire() this actor when
-     *  a trigger input is available.  Without this input,
-     *  configurations in SDF would be limited.  (See
-     *  actor/lib/Source.java for an archetype trigger input.
+     *  hasToken() and get(int) methods are called on this input, but
+     *  their contents are discarded.  The presence of a connection to
+     *  this input serves a purpose by causing the director to
+     *  schedule the firing of this actor at an appropriate place in
+     *  the sequence of firings of actors.  This is particularly
+     *  useful in the SDF domain.  Without a trigger input, the SDF
+     *  scheduler would be unable to schedule a firing of this actor
+     *  unless it can be scheduled as the first actor to be fired.
+     *  Thus, without this input, configurations in SDF would be
+     *  limited.  (@See ptolemy.actor.lib.Source for an archetypal
+     *  trigger input.)
      */
     public TypedIOPort trigger = null;
 
     /** The default output.  This default token is broadcast when the
-     * actor is fired, but no actual datagram data is available to
-     * broadcast and <i>blockAwaitingDatagram</i> is false.  If
-     * blocking were true, the actor would simply stall in fire()
-     * until a datagram arrives.
+     *  actor is fired, but no actual datagram data is available to
+     *  broadcast and <i>blockAwaitingDatagram</i> is false.  If
+     *  blocking were true, the actor would simply stall in fire()
+     *  until a datagram arrives.  Default is the integer 0.
      */
     public Parameter defaultOutput;
 
     /** Encoding to expect of received datagrams.  This is a
-     *  string-valued attribute that defaults to "forPtolemyParser".
-     *  This is a 'ChoiceStyle' i.e. drop-menu-select parameter.
+     *  string-valued attribute that defaults to "for_Ptolemy_parser".
+     *  This is a ChoiceStyle (i.e. drop-menu-select) parameter.
+     *  @see ptolemy.actor.gui.ChoiceStyle
      *  The three options currently implemented are: "for_Ptolemy_parser",
      *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
      *  The first option allows reconstruction of any data type upon
-     *  reception.  This is designed to be used with the DatagramSender
-     *  similarly configured.  The other two options are for receiving
+     *  reception.  The "for_Ptolemy_parser" setting is designed to be
+     *  used in partnership with a similarly configured DatagramSender.
+     *  The other two options are for receiving
      *  general data in raw form.  These formats are also convenient for
      *  receiving arrays of bytes and integers respectively.  The former
      *  are not received explicitly as bytes since the Byte type is
      *  still under development in Ptolemy.  Conversion in this actor
-     *  between bytes and integers simply ignores the 24 high order bits
-     *  of the integer.  For example, 511, 255, and -1 are treated as
+     *  between bytes and integers simply ignores the 24 high order bits 
+     *  of the integer.  For example, 511, 255, and -1 are treated as 
      *  the same value under the "raw_low_bytes_of_integers" setting.
      */
     public StringAttribute encoding;
@@ -298,10 +350,11 @@ public class DatagramReader extends TypedAtomicActor {
     /** Whether to block in fire().  If fire() is called before the
      *  datagram has arrived, the actor must either block awaiting the
      *  datagram or use its <i>defaultOutput</i>.  This blocking
-     *  parameter controls which choice fire() will make.  Useful for
-     *  SDF.  Has no effect in DE unless trigger input is connected.
-     *  Trigger is normally unconnected in DE.  Boolean.  Default
-     *  value is true.
+     *  parameter controls which choice fire() will make.  This
+     *  parameter is useful for SDF models, where it is generally set
+     *  to true.  It has no effect in DE models unless the trigger
+     *  input has been connected.  Type is Boolean.  Default value is
+     *  true.
      */
     public Parameter blockAwaitingDatagram;
 
@@ -315,12 +368,12 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public TypedIOPort returnAddress;
 
-    /** This port outputs the socket(a.k.a port) number portion of the
+    /** This port outputs the socket (a.k.a port) number portion of the
      *  received datagram packet.  The type of this output is int.
      *  This is the socket number of the remote datagram socket which
      *  sent the packet to this actor's socket.  This is an integer in
      *  the range 0 through 65535.  This output defaults (when no
-     *  datagram has been received and blocking is false) is this
+     *  datagram has been received and blocking is false) to this
      *  actor's local socket number.
      */
     public TypedIOPort returnSocketNumber;
@@ -329,10 +382,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  packet.  The type of <i>output</i> may depend on the datagram
      *  received, which may vary even during a single run of a model.
      *  <b>The user is encouraged to play with the configuration of
-     *  this port</b> to best suit the need at hand.  Note that the
-     *  configured type of this port changes automatically to
-     *  'general' or '{int}' when <i>_decodeWithPtolemyParser</i> is
-     *  changed to true or false respectively.
+     *  this port</b> to best suit the need at hand.
      */
     public TypedIOPort output;
 
@@ -353,17 +403,17 @@ public class DatagramReader extends TypedAtomicActor {
     public Parameter overwrite;
 
     /** Length (in bytes) of each of the two packet buffers for
-     * receiving a datagram.  This length does not include the bytes
-     * needed for storing the datagram's return address and other
-     * housekeeping information.  This buffer need only be big enough
-     * to hold the payload or net contents of the datagram.  There is
-     * also a buffer somewhere in the Java Virtual Machine or in the
-     * underlying firmware or platform.  The size of this buffer is
-     * not controlled by this actor, but it could be.  Its length is
-     * accessible via the getReceiveBufferSize and
-     * setReceiveBufferSize methods of java.net.DatagramSocket.
-     * Caution - The set is only a suggestion.  Must call get to see
-     * what you actually got.
+     *  receiving a datagram.  This length does not include the bytes
+     *  needed for storing the datagram's return address and other
+     *  housekeeping information.  This buffer need only be big enough
+     *  to hold the payload or net contents of the datagram.  There is
+     *  also a buffer somewhere in the Java Virtual Machine or in the
+     *  underlying firmware or platform.  The size of this buffer is
+     *  not controlled by this actor, but it could be.  Its length is
+     *  accessible via the getReceiveBufferSize() and
+     *  setReceiveBufferSize() methods of @see java.net.DatagramSocket.
+     *  Caution - The set*() is only a suggestion.  Must call get*()
+     *  to see what you actually got.
      */
     public Parameter bufferLength;
 
@@ -421,15 +471,15 @@ public class DatagramReader extends TypedAtomicActor {
 		// it really work, that is set the type of the <i>output</i>
 		// port if and only if the <i>encoding</i> parameter is
 		// actually changed, some things would need to be fixed.
-		// The "configure" dialog currently implements "cancel"
-		// via a reapplication of stored values, thus reverting
-		// the change.  However, my actor would have already
-		// overwritten and lost user settings in such a process.
-		// Having fixed this, the next step would be to use
-		// MoMLChangeRequest(originator, context, "<....>") in
-		// place of setTypeEquals() whose changes do not stick.
-		// Finally, to make this safe during the constructor
-		// call, maybe an _inConstructor variable would serve
+		// The "configure" dialog currently implements "cancel" 
+		// via a reapplication of stored values, thus reverting 
+		// the change.  However, my actor would have already 
+		// overwritten and lost user settings in such a process.  
+		// Having fixed this, the next step would be to use 
+		// MoMLChangeRequest(originator, context, "<....>") in 
+		// place of setTypeEquals() whose changes do not stick. 
+		// Finally, to make this safe during the constructor 
+		// call, maybe an _inConstructor variable would serve 
 		// to avoid overwriting user settings.
 		if (false) {
 
@@ -570,9 +620,9 @@ public class DatagramReader extends TypedAtomicActor {
            } // Sync(this)
 
         // In the case of <i>bufferLength</i>, simply cache the parameter.
-        // The thread used this value to set the size of a buffer prior
-        // to the socket.receive() call.  The thread only resizes a buffer
-        // when it is about to call receive on it and this parameter has
+        // The thread used this value to set the size of a buffer prior 
+        // to the socket.receive() call.  The thread only resizes a buffer 
+        // when it is about to call receive on it and this parameter has 
         // changed from the value last used for that specific buffer.
         // Synchronization ensures that the thread's test for a change in
         // this value and its use of the value access the same thing.
@@ -865,10 +915,10 @@ public class DatagramReader extends TypedAtomicActor {
     }
 
     /** Override the setContainer method to ensure that if the actor
-     *  is deleted while the model is running, then any resources it
+     *  is deleted while the model is running, then any resources it 
      *  has locked are released.
      */
-    public void setContainer(CompositeEntity container)
+    public void setContainer(CompositeEntity container) 
             throws IllegalActionException, NameDuplicationException {
 	if (container != getContainer()) {
             wrapup();
@@ -934,9 +984,9 @@ public class DatagramReader extends TypedAtomicActor {
         if (_debugging) _debug("stopFire() is called");
         synchronized(_syncFireAndThread) {
             if (_fireIsWaiting) {
-                // stopFire() gets called a lot.  Including each time
-                // the program is started.  This caveat has proven
-                // necessary to avoid disrupting one of the first
+                // stopFire() gets called a lot.  Including each time 
+                // the program is started.  This caveat has proven 
+                // necessary to avoid disrupting one of the first 
                 // few firings.
 		_stopFire = true;
                 _syncFireAndThread.notifyAll();
@@ -957,7 +1007,7 @@ public class DatagramReader extends TypedAtomicActor {
         if (_debugging) _debug("WRAPUP IS CALLED");
 
         //System.err.println("wrapup() has been called in " + this);
-        //e.printStackTrace();
+        //e.printStackTrace();  
 	      // FIXME cxh's java checker recommends
 	      // KernelException.stackTraceToString(ex)
 	      // instead of printStackTrace() above.  Try it.
