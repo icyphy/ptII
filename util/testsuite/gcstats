@@ -35,7 +35,7 @@
 # 1.67619e-006: [Full GC 508K->160K(260160K), 0.0135542 secs]
 
 
-awk 'BEGIN {FS="K|>| "}
+gawk 'BEGIN {FS="K|>| "}
 # accumulate GC lines
 /\[Full GC/ {
     fullCount++;
