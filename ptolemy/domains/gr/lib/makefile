@@ -80,7 +80,9 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'KeyInput3D$$1.class' \
 	'KeyInput3D$$_React.class' \
+	'MouseInput3D$1.class' \
 	'MouseInput3D$$_React.class' \
 	doc \
 	index.xml
