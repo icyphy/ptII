@@ -74,13 +74,6 @@ test MoMLUndoChangeRequest-1.1 {Test adding an entity} {
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $change
 
-    # Make a change that is not undoable	
-    set change2 [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <entity name=".top">
-            <entity name="discard" class="ptolemy.actor.lib.Discard"/>
-        </entity>
-    }]
-
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -173,3 +166,67 @@ test MoMLUndoChangeRequest-1.4 {Redo again, with nothing to redo } {
     set redoneMoML [$toplevel exportMoML]
     diffText $originalMoML $redoneMoML
 } {}
+
+######################################################################
+####
+#
+test MoMLUndoChangeRequest-2.1 {Make three changes, merge the first and the last, but the middle one is not undoable } {
+
+    # Make a change that is undoable	
+    set change1 [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name=".top">
+            <entity name="discard1" class="ptolemy.actor.lib.Discard"/>
+        </entity>
+    }]
+    $change1 setUndoable true
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $change1
+
+    # Make a change that is not undoable	
+    set change2 [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name=".top">
+            <entity name="discard2" class="ptolemy.actor.lib.Discard"/>
+        </entity>
+    }]
+
+    #$change2 setUndoable false
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $change2
+
+    # Make a change that is undoable	
+    set change3 [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name=".top">
+            <entity name="discard3" class="ptolemy.actor.lib.Discard"/>
+        </entity>
+    }]
+
+    $change3 setUndoable true
+    $change3 setMergeWithPreviousUndo true
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $change3
+    set threeChangeMoML [$toplevel exportMoML]
+
+    set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
+    set undoChange [java::new ptolemy.moml.MoMLUndoChangeRequest \
+	$originator $toplevel] 
+    $toplevel requestChange $undoChange 
+    set undoneThreeChangeMoML [$toplevel exportMoML]
+    diffText $threeChangeMoML $undoneThreeChangeMoML
+
+} {26,31d25
+<     <entity name="discard1" class="ptolemy.actor.lib.Discard">
+<         <port name="input" class="ptolemy.actor.TypedIOPort">
+<             <property name="input"/>
+<             <property name="multiport"/>
+<         </port>
+<     </entity>
+33,38d26
+<         <port name="input" class="ptolemy.actor.TypedIOPort">
+<             <property name="input"/>
+<             <property name="multiport"/>
+<         </port>
+<     </entity>
+<     <entity name="discard3" class="ptolemy.actor.lib.Discard">}
