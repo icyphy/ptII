@@ -39,7 +39,7 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		#test demo
+DIRS = 		test # demo
 
 CLASSPATH =	../../../..
 
