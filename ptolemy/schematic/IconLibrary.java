@@ -152,6 +152,13 @@ public class IconLibrary extends XMLElement{
         return getAttribute("name");
     }
 
+    /** 
+     * return the URL of the given sublibrary.
+     */
+    public String getSubLibraryURL(String name) {
+        return ((XMLElement) _sublibraries.at(name)).getAttribute("url");
+    }
+
     /** Return the version of this library.
      */
     public String getVersion() {
