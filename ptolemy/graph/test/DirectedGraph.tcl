@@ -53,13 +53,21 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test DirectedGraph-2.1 {Create an empty instance} {
     set p [java::new ptolemy.graph.DirectedGraph]
-    $p contains null
-} {0}
+    list [$p contains null] [$p isAcyclic]
+} {0 1}
 
 ######################################################################
 ####
 # 
-test DirectedGraph-2.2 {Create a cyclic graph with 2 nodes} {
+test DirectedGraph-2.2 {test reachableNodes on empty graph above} {
+    catch {$p reachableNodes null} msg
+    list $msg
+} {{java.lang.IllegalArgumentException: Graph._getNodeId: the specified Object is not a node in this graph.}}
+
+######################################################################
+####
+# 
+test DirectedGraph-3.1 {Create a cyclic graph with 2 nodes} {
     set p [java::new ptolemy.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
@@ -74,7 +82,7 @@ test DirectedGraph-2.2 {Create a cyclic graph with 2 nodes} {
 ######################################################################
 ####
 # 
-test DirectedGraph-2.3 {an acyclic graph with 4 nodes forming a diamond} {
+test DirectedGraph-3.2 {an acyclic graph with 4 nodes forming a diamond} {
     set p [java::new ptolemy.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
