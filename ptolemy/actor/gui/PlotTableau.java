@@ -121,7 +121,8 @@ public class PlotTableau extends Tableau {
     public void setFrame(JFrame frame) throws IllegalActionException {
         if (!(frame instanceof PlotTableauFrame)) {
             throw new IllegalActionException(this,
-                    "Frame for PlotTableau must be an instance of PlotTableauFrame.");
+                    "Frame for PlotTableau must be an instance of "
+                    + "PlotTableauFrame.");
         }
         super.setFrame(frame);
         ((PlotTableauFrame)frame).setTableau(this);

@@ -259,7 +259,8 @@ public class TextEffigy extends Effigy {
                 _newTextEffigyURL =
                     effigyClass.getMethod
                     ("newTextEffigy",
-                            new Class[]{CompositeEntity.class, URL.class, URL.class});
+                            new Class[]{CompositeEntity.class,
+                                            URL.class, URL.class});
 
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
