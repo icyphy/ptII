@@ -82,6 +82,23 @@ public class NetworkActorBase extends TypedAtomicActor {
         _timersSet = new HashSet();
     }
 
+    // messages from higher layers
+    protected static final String[] PCRequestMsgFields = {"kind", "fromMACAddr",
+            "toMACAddr", "range", "angle", "num_nb", "xpos","ypos", "Length"};
+
+    protected static final String[] PCResponseMsgFields = {"kind", "fromMACAddr",
+            "toMACAddr","xpos","ypos","range","Length"};
+
+    protected static final String[] StartRspMsgFields = {"kind","range"};
+
+    protected static final String[] cNetwInterestMessageFields = {"kind","cost",
+            "hop_distance","fromMACAddr","toMACAddr","hopcount","arrivalTime", "Length"};
+
+    protected static final String[] cNetwDataMessageFields = {"kind","fromMACAddr",
+            "toMACAddr","hopcount","arrivalTime","payload","Length"};
+
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////        
     /** Check whether this has a <i>id<i> attribute. If yes, return
