@@ -142,9 +142,9 @@ public class ZeroCrossingDetector extends Transformer
      *  @exception IllegalActionException If no token is available.
      */
     public void fire() throws IllegalActionException {
-        _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
+        _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
         if(_debugging)
-            _debug(getFullName() + " consuming trigger Token" +  _thisTrg);
+            _debug(getFullName() + " consuming trigger Token" +  _thisTrigger);
         _inputToken = input.get(0);
     }
 
@@ -183,10 +183,10 @@ public class ZeroCrossingDetector extends Transformer
             return true;
         }
         if(_debugging) {
-            _debug(this.getFullName() + " This trigger " + _thisTrg);
-            _debug(this.getFullName() + " The last trigger " + _lastTrg);
+            _debug(this.getFullName() + " This trigger " + _thisTrigger);
+            _debug(this.getFullName() + " The last trigger " + _lastTrigger);
         }
-        if (Math.abs(_thisTrg) < _errorTolerance) {
+        if (Math.abs(_thisTrigger) < _errorTolerance) {
             if (_enabled) {
                 _eventNow = true;
                 if(_debugging)
@@ -200,12 +200,12 @@ public class ZeroCrossingDetector extends Transformer
             if(!_enabled) {  // if last step is a zero, always accurate.
                 _enabled = true;
             } else {
-                if ((_lastTrg * _thisTrg) < 0.0) {
+                if ((_lastTrigger * _thisTrigger) < 0.0) {
 
                     CTDirector dir = (CTDirector)getDirector();
                     _eventMissed = true;
-                    _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
-                        (_thisTrg-_lastTrg);
+                    _refineStep = (-_lastTrigger*dir.getCurrentStepSize())/
+                        (_thisTrigger-_lastTrigger);
                     if(_debugging) _debug(getFullName() +
                             " Event Missed: refined step at" +  _refineStep);
                     return false;
@@ -222,7 +222,7 @@ public class ZeroCrossingDetector extends Transformer
      */
     public boolean postfire() {
         if(!_eventMissed) {
-            _lastTrg = _thisTrg;
+            _lastTrigger = _thisTrigger;
         }
         return true;
     }
@@ -260,10 +260,10 @@ public class ZeroCrossingDetector extends Transformer
     private double _refineStep;
 
     // last trigger input.
-    private double _lastTrg;
+    private double _lastTrigger;
 
     // this trigger input.
-    private double _thisTrg;
+    private double _thisTrigger;
 
     // flag indicating if the event detection is enable for this step
     private boolean _enabled;
