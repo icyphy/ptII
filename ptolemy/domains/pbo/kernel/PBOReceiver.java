@@ -64,6 +64,13 @@ public class PBOReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+    /** Clear this receiver of any contained tokens.
+     */
+    public void clear() {
+        _token = null;
+    }
+
     /** Get the contained Token.  This returns a reference to the contained
      *  token, but does not remove the token from the receiver.
      *  @return A token.
