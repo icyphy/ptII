@@ -44,10 +44,11 @@ to be applied by the MoMLParser
 <p>When this class is registered with
 <pre>
 MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters())
-<pre>
+</pre>
 method, it will cause MoMLParser to filter so that models from
 earlier releases will run in the current release.
 
+@see ptolemy.moml.MoMLFilter
 @author Christopher Hylands, Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
