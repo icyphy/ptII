@@ -93,6 +93,7 @@ ptolemy/copernicus/c/test/java.lang.Object.h
 ptolemy/copernicus/c/test/natives
 ptolemy/copernicus/deep
 ptolemy/copernicus/interpreted/test/codeGenerator.tmp
+ptolemy/copernicus/java/test/codeGenerator.tmp
 ptolemy/copernicus/java/test/longjtests.tcl
 ptolemy/copernicus/java/test/ptolemy*
 ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.class
