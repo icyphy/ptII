@@ -312,20 +312,20 @@ public class Scheduler extends Attribute {
      */
     protected Schedule _getSchedule()
             throws IllegalActionException, NotSchedulableException {
-	StaticSchedulingDirector director =
+        StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
         CompositeActor compositeActor =
             (CompositeActor)(director.getContainer());
         List actors = compositeActor.deepEntityList();
-	Schedule schedule = new Schedule();
-	Iterator actorIterator = actors.iterator();
-	while (actorIterator.hasNext()) {
-	    Actor actor = (Actor)actorIterator.next();
-	    Firing firing = new Firing();
-	    firing.setActor(actor);
-	    schedule.add(firing);
-	}
-	return schedule;
+        Schedule schedule = new Schedule();
+        Iterator actorIterator = actors.iterator();
+        while (actorIterator.hasNext()) {
+            Actor actor = (Actor)actorIterator.next();
+            Firing firing = new Firing();
+            firing.setActor(actor);
+            schedule.add(firing);
+        }
+        return schedule;
     }
 
     ///////////////////////////////////////////////////////////////////

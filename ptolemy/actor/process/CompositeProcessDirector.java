@@ -178,12 +178,12 @@ public class CompositeProcessDirector extends ProcessDirector {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         CompositeProcessDirector newObj =
-	        (CompositeProcessDirector)super.clone(workspace);
-	newObj._onFirstIteration = true;
-	newObj._inputBranchController = null;
-	newObj._outputBranchController = null;
-	newObj._blockedReceivers = new LinkedList();
-	newObj._branchControllerLock = new Object();
+                (CompositeProcessDirector)super.clone(workspace);
+        newObj._onFirstIteration = true;
+        newObj._inputBranchController = null;
+        newObj._outputBranchController = null;
+        newObj._blockedReceivers = new LinkedList();
+        newObj._branchControllerLock = new Object();
         return newObj;
     }
 
@@ -197,7 +197,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   not opaque.
      */
     public void createBranchController(Iterator ports)
-    	    throws IllegalActionException {
+                throws IllegalActionException {
 
         IOPort port = null;
         while ( ports.hasNext() ) {
@@ -206,12 +206,12 @@ public class CompositeProcessDirector extends ProcessDirector {
                     throw new IllegalActionException(this, port,
                     "port argument is not an opaque port.");
             }
-	    if ( port.isInput() ) {
-		_inputBranchController.addBranches(port);
-	    }
-	    if ( port.isOutput() ) {
-		_outputBranchController.addBranches(port);
-	    }
+            if ( port.isInput() ) {
+                _inputBranchController.addBranches(port);
+            }
+            if ( port.isOutput() ) {
+                _outputBranchController.addBranches(port);
+            }
         }
     }
 
@@ -269,13 +269,13 @@ public class CompositeProcessDirector extends ProcessDirector {
         _inputBranchController = new BranchController(container);
         _outputBranchController = new BranchController(container);
 
-	// Instantiate Input/Output Branch Controllers
-	if ( container != null ) {
+        // Instantiate Input/Output Branch Controllers
+        if ( container != null ) {
             Iterator inPorts = container.inputPortList().iterator();
             createBranchController(inPorts);
-	    Iterator outports = container.outputPortList().iterator();
+            Iterator outports = container.outputPortList().iterator();
             createBranchController(outports);
-	}
+        }
 
         _inputControllerIsBlocked = _inputBranchController.isBlocked();
         _outputControllerIsBlocked = _outputBranchController.isBlocked();
@@ -398,7 +398,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     protected synchronized void _actorBlocked(ProcessReceiver receiver) {
         _blockedReceivers.add(receiver);
-	super._actorBlocked(receiver);
+        super._actorBlocked(receiver);
     }
 
     /** Register the receivers that instigated the newly blocked actor.
@@ -413,7 +413,7 @@ public class CompositeProcessDirector extends ProcessDirector {
             return;
         }
         _blockedReceivers.addAll(receivers);
-	super._actorBlocked(receivers);
+        super._actorBlocked(receivers);
     }
 
     /** Unregister the specified receiver that was previously blocked.
@@ -426,7 +426,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver receiver) {
         _blockedReceivers.remove(receiver);
-	super._actorUnBlocked(receiver);
+        super._actorUnBlocked(receiver);
     }
 
     /** Unregister the receivers that were previously blocked. This
@@ -443,7 +443,7 @@ public class CompositeProcessDirector extends ProcessDirector {
             ProcessReceiver receiver = (ProcessReceiver)receiverIterator.next();
             _blockedReceivers.remove(receiver);
         }
-	super._actorUnBlocked(receivers);
+        super._actorUnBlocked(receivers);
     }
 
     /** Return false if the number of blocked processes is less than
@@ -481,7 +481,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   blocked; return false otherwise.
      */
     protected boolean _areActorsExternallyBlocked() {
-    	Iterator blockedReceivers = _blockedReceivers.iterator();
+            Iterator blockedReceivers = _blockedReceivers.iterator();
         while ( blockedReceivers.hasNext() ) {
             ProcessReceiver receiver =
                     (ProcessReceiver)blockedReceivers.next();
@@ -563,26 +563,26 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   executive director to respond.
      */
     protected boolean _registerBlockedReceiversWithExecutive() {
-	Workspace workspace = workspace();
-	LinkedList blockedReceivers = new LinkedList();
-	blockedReceivers.addAll(
+        Workspace workspace = workspace();
+        LinkedList blockedReceivers = new LinkedList();
+        blockedReceivers.addAll(
                 _outputBranchController.getBlockedReceivers() );
-	blockedReceivers.addAll(
+        blockedReceivers.addAll(
                 _inputBranchController.getBlockedReceivers() );
 
-	int originalCount = blockedReceivers.size();
+        int originalCount = blockedReceivers.size();
 
-    	Director execDir = ((Actor)getContainer()).getExecutiveDirector();
-	CompositeActor execContainer =
+            Director execDir = ((Actor)getContainer()).getExecutiveDirector();
+        CompositeActor execContainer =
                 ((CompositeActor)getContainer().getContainer());
 
-    	((CompositeProcessDirector)execDir)._actorBlocked(blockedReceivers);
+            ((CompositeProcessDirector)execDir)._actorBlocked(blockedReceivers);
 
-	while ( blockedReceivers.size() >= originalCount ) {
-	    workspace.wait(this);
-	}
+        while ( blockedReceivers.size() >= originalCount ) {
+            workspace.wait(this);
+        }
 
-	return true;
+        return true;
     }
 
     /** Attempt to resolve a deadlock and return true if the deadlock
@@ -615,70 +615,70 @@ public class CompositeProcessDirector extends ProcessDirector {
         if(_debugging) {
             _debug("Resolving Deadlock");
         }
-	Director execDir = ((Actor)getContainer()).getExecutiveDirector();
-	Workspace workspace = workspace();
-	if ( _areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
-	    if ( _inputBranchController.isBlocked() ) {
+        Director execDir = ((Actor)getContainer()).getExecutiveDirector();
+        Workspace workspace = workspace();
+        if ( _areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
+            if ( _inputBranchController.isBlocked() ) {
                 while ( !_outputBranchController.isBlocked() ) {
                     workspace.wait(this);
                 }
-		stopInputBranchController();
-		stopOutputBranchController();
-		if ( execDir == null ) {
-		    // This is the top level director - problem!!!
-		    throw new IllegalActionException( this,
-			    "No executive director exists yet this " +
-			    "director's composite actor is externally " +
-			    "deadlocked.");
-		} else if ( execDir instanceof CompositeProcessDirector ) {
-		    // This is contained by a process-oriented MoC
-		    return _registerBlockedReceiversWithExecutive();
-		} else {
-		    // This is contained by a schedule-oriented MoC
-		    return true;
-		}
-	    } else if ( _outputBranchController.isBlocked() ) {
-		stopInputBranchController();
-		stopOutputBranchController();
-		if ( execDir == null ) {
-		    // This is the top level director - problem!!!
-		    throw new IllegalActionException( this,
-			    "No executive director exists yet this " +
-			    "director's composite actor is externally " +
-			    "deadlocked.");
-		} else if ( execDir instanceof CompositeProcessDirector ) {
-		    // This is contained by a process-oriented MoC
-		    return _registerBlockedReceiversWithExecutive();
-		} else {
-		    // This is contained by a schedule-oriented MoC
-		    return true;
-		}
-	    }
-	}
+                stopInputBranchController();
+                stopOutputBranchController();
+                if ( execDir == null ) {
+                    // This is the top level director - problem!!!
+                    throw new IllegalActionException( this,
+                            "No executive director exists yet this " +
+                            "director's composite actor is externally " +
+                            "deadlocked.");
+                } else if ( execDir instanceof CompositeProcessDirector ) {
+                    // This is contained by a process-oriented MoC
+                    return _registerBlockedReceiversWithExecutive();
+                } else {
+                    // This is contained by a schedule-oriented MoC
+                    return true;
+                }
+            } else if ( _outputBranchController.isBlocked() ) {
+                stopInputBranchController();
+                stopOutputBranchController();
+                if ( execDir == null ) {
+                    // This is the top level director - problem!!!
+                    throw new IllegalActionException( this,
+                            "No executive director exists yet this " +
+                            "director's composite actor is externally " +
+                            "deadlocked.");
+                } else if ( execDir instanceof CompositeProcessDirector ) {
+                    // This is contained by a process-oriented MoC
+                    return _registerBlockedReceiversWithExecutive();
+                } else {
+                    // This is contained by a schedule-oriented MoC
+                    return true;
+                }
+            }
+        }
 
-	if ( !_areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
-	    if ( _inputBranchController.isBlocked() ) {
+        if ( !_areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
+            if ( _inputBranchController.isBlocked() ) {
                 while ( !_outputBranchController.isBlocked() ) {
                     workspace.wait(this);
                 }
-		stopInputBranchController();
-		stopOutputBranchController();
-		return _resolveInternalDeadlock();
-	    } else if ( _outputBranchController.isBlocked() ) {
-		stopInputBranchController();
-		stopOutputBranchController();
-		return _resolveInternalDeadlock();
-	    } else {
+                stopInputBranchController();
+                stopOutputBranchController();
+                return _resolveInternalDeadlock();
+            } else if ( _outputBranchController.isBlocked() ) {
+                stopInputBranchController();
+                stopOutputBranchController();
+                return _resolveInternalDeadlock();
+            } else {
                 while ( !_outputBranchController.isBlocked() ) {
                     workspace.wait(this);
                 }
-		stopInputBranchController();
-		stopOutputBranchController();
-		return _resolveInternalDeadlock();
-	    }
-	}
+                stopInputBranchController();
+                stopOutputBranchController();
+                return _resolveInternalDeadlock();
+            }
+        }
 
-	return false;
+        return false;
     }
 
     /** Return false indicating that resolution of an internal
@@ -699,7 +699,7 @@ public class CompositeProcessDirector extends ProcessDirector {
         if(_debugging) {
             _debug("Failed To Resolve Internal Deadlock: stopping");
         }
-	return false;
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////

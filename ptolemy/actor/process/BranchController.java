@@ -122,60 +122,60 @@ public class BranchController implements Runnable {
      */
     public void addBranches(IOPort port) throws
             IllegalActionException {
-	if ( port.getContainer() != getParent() ) {
-	    throw new IllegalActionException("Can not contain "
-		    + "a port that is not contained by this "
-		    + "BranchController's container.");
-	}
+        if ( port.getContainer() != getParent() ) {
+            throw new IllegalActionException("Can not contain "
+                    + "a port that is not contained by this "
+                    + "BranchController's container.");
+        }
 
         if ( _ports.contains(port) ) {
             throw new IllegalActionException(port, "This port "
-            	    + "is already controlled by this "
+                        + "is already controlled by this "
                     + "BranchController");
         }
         // Careful; maintain order of following test in case
         // Java is like C
         if ( _hasInputPorts() && !port.isInput() ) {
-	    throw new IllegalActionException("BranchControllers "
-            	    + "must contain only input ports or only output "
+            throw new IllegalActionException("BranchControllers "
+                        + "must contain only input ports or only output "
                     + "ports; not both");
         }
         if ( _hasOutputPorts() && !port.isOutput() ) {
-	    throw new IllegalActionException("BranchControllers "
-            	    + "must contain only input ports or only output "
+            throw new IllegalActionException("BranchControllers "
+                        + "must contain only input ports or only output "
                     + "ports; not both");
         }
         _ports.add(port);
 
-	Branch branch = null;
-	ProcessReceiver prodReceiver = null;
-	ProcessReceiver consReceiver = null;
-	Receiver[][] prodReceivers = null;
-	Receiver[][] consReceivers = null;
+        Branch branch = null;
+        ProcessReceiver prodReceiver = null;
+        ProcessReceiver consReceiver = null;
+        Receiver[][] prodReceivers = null;
+        Receiver[][] consReceivers = null;
 
-	for ( int i = 0; i < port.getWidth(); i++ ) {
-	    if ( port.isInput() ) {
-		prodReceivers = port.getReceivers();
-		consReceivers = port.deepGetReceivers();
-	    } else if ( port.isOutput() ) {
-		prodReceivers = port.getInsideReceivers();
-		consReceivers = port.getRemoteReceivers();
-	    } else {
-		throw new IllegalActionException("Bad news");
-	    }
+        for ( int i = 0; i < port.getWidth(); i++ ) {
+            if ( port.isInput() ) {
+                prodReceivers = port.getReceivers();
+                consReceivers = port.deepGetReceivers();
+            } else if ( port.isOutput() ) {
+                prodReceivers = port.getInsideReceivers();
+                consReceivers = port.getRemoteReceivers();
+            } else {
+                throw new IllegalActionException("Bad news");
+            }
 
-	    prodReceiver = (ProcessReceiver)prodReceivers[i][0];
-	    consReceiver = (ProcessReceiver)consReceivers[i][0];
+            prodReceiver = (ProcessReceiver)prodReceivers[i][0];
+            consReceiver = (ProcessReceiver)consReceivers[i][0];
 
-	    branch = new Branch( prodReceiver, consReceiver, this );
-	    _branches.add(branch);
-	}
+            branch = new Branch( prodReceiver, consReceiver, this );
+            _branches.add(branch);
+        }
     }
 
     /** Deactive the branches assigned to this branch controller.
      */
     public synchronized void deactivateBranches() {
-	setActive(false);
+        setActive(false);
         Iterator branches = _branches.iterator();
         Branch branch = null;
         ProcessReceiver bReceiver = null;
@@ -191,7 +191,7 @@ public class BranchController implements Runnable {
                 bReceiver.notifyAll();
             }
         }
-	notifyAll();
+        notifyAll();
     }
 
     /** Returned a linked list of the blocked receivers associated
@@ -200,7 +200,7 @@ public class BranchController implements Runnable {
      *   with this branch controller.
      */
     public LinkedList getBlockedReceivers() {
-	return _blockedReceivers;
+        return _blockedReceivers;
     }
 
     /** Return the list of branches controlled by this controller.
@@ -232,7 +232,7 @@ public class BranchController implements Runnable {
      * @return True if this controller is active; false otherwise.
      */
     public boolean isActive() {
-	return _isActive;
+        return _isActive;
     }
 
     /** Return true if all of the branches assigned to this branch
@@ -261,7 +261,7 @@ public class BranchController implements Runnable {
      *  branch controller is notified.
      */
     public void run() {
-    	synchronized(this) {
+            synchronized(this) {
             try {
                 activateBranches();
                 while ( isActive() ) {
@@ -269,13 +269,13 @@ public class BranchController implements Runnable {
                         wait();
                     }
                     while ( isBlocked() && isActive() ) {
-			_getDirector()._controllerBlocked(this);
+                        _getDirector()._controllerBlocked(this);
                         wait();
                     }
-		    _getDirector()._controllerUnBlocked(this);
+                    _getDirector()._controllerUnBlocked(this);
                 }
-	    } catch( InterruptedException e ) {
-		// Do something
+            } catch( InterruptedException e ) {
+                // Do something
             }
         }
     }
@@ -286,7 +286,7 @@ public class BranchController implements Runnable {
      *   will be set active or inactive.
      */
     public void setActive(boolean active) {
-	_isActive = active;
+        _isActive = active;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -303,8 +303,8 @@ public class BranchController implements Runnable {
     protected void _branchBlocked(ProcessReceiver receiver) {
         synchronized(this) {
             _branchesBlocked++;
-	    _blockedReceivers.addFirst(receiver);
-	    notifyAll();
+            _blockedReceivers.addFirst(receiver);
+            notifyAll();
         }
     }
 
@@ -319,8 +319,8 @@ public class BranchController implements Runnable {
             if ( _branchesBlocked > 0 ) {
                 _branchesBlocked--;
             }
-	    _blockedReceivers.remove(receiver);
-	    notifyAll();
+            _blockedReceivers.remove(receiver);
+            notifyAll();
         }
     }
 
@@ -334,15 +334,15 @@ public class BranchController implements Runnable {
      */
     private CompositeProcessDirector _getDirector() {
         try {
-	    return  (CompositeProcessDirector)_parentActor.getDirector();
+            return  (CompositeProcessDirector)_parentActor.getDirector();
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
-	    String name = ((Nameable)getParent()).getName();
-	    throw new TerminateProcessException("Error: " +
-		    name + " contains a branch controller that has a " +
-		    "receiver that does not have a director");
-	}
+            String name = ((Nameable)getParent()).getName();
+            throw new TerminateProcessException("Error: " +
+                    name + " contains a branch controller that has a " +
+                    "receiver that does not have a director");
+        }
     }
 
     /** Return true if this branch controller has input ports associated
@@ -351,7 +351,7 @@ public class BranchController implements Runnable {
      *  with it. False otherwise.
      */
     private boolean _hasInputPorts() {
-    	if ( _ports.size() == 0 ) {
+            if ( _ports.size() == 0 ) {
             return false;
         }
         Iterator ports = _ports.iterator();
@@ -368,7 +368,7 @@ public class BranchController implements Runnable {
      *  with it. False otherwise.
      */
     private boolean _hasOutputPorts() {
-    	if ( _ports.size() == 0 ) {
+            if ( _ports.size() == 0 ) {
             return false;
         }
         Iterator ports = _ports.iterator();

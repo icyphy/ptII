@@ -142,10 +142,10 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void fire() throws IllegalActionException {
-	Workspace workspace = workspace();
+        Workspace workspace = workspace();
         synchronized (this) {
             while ( !_areActorsDeadlocked() && !_areAllActorsStopped() ) {
-		workspace.wait(this);
+                workspace.wait(this);
             }
             // Don't resolve deadlock if we are just pausing.
             if(_areActorsDeadlocked()) {
@@ -163,11 +163,11 @@ public class ProcessDirector extends Director {
      *  throws it.
      */
     public void preinitialize() throws IllegalActionException {
- 	_notDone = true;
-	_activeActorCount = 0;
+         _notDone = true;
+        _activeActorCount = 0;
         _blockedActorCount = 0;
-	_actorThreadList = new LinkedList();
-	_newActorThreadList = new LinkedList();
+        _actorThreadList = new LinkedList();
+        _newActorThreadList = new LinkedList();
         super.preinitialize();
     }
 
@@ -230,7 +230,7 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug(_name+": returning _notDone = " + _notDone);
         }
-	return _notDone;
+        return _notDone;
     }
 
     /** Start threads for all actors that have not had threads started
@@ -270,14 +270,14 @@ public class ProcessDirector extends Director {
      *  so that the next call to postfire() returns false.
      */
     public void stop() {
- 	Iterator threads = _actorThreadList.iterator();
- 	while ( threads.hasNext() ) {
- 	    ProcessThread thread = (ProcessThread)threads.next();
+         Iterator threads = _actorThreadList.iterator();
+         while ( threads.hasNext() ) {
+             ProcessThread thread = (ProcessThread)threads.next();
 
-	    // Call stopThread() on the threads first
- 	    thread.stopThread();
-	    thread.getActor().stop();
- 	}
+            // Call stopThread() on the threads first
+             thread.stopThread();
+            thread.getActor().stop();
+         }
         _stopRequested = true;
     }
 
@@ -288,14 +288,14 @@ public class ProcessDirector extends Director {
      *  non-blocking.
      */
     public void stopFire() {
- 	Iterator threads = _actorThreadList.iterator();
- 	while ( threads.hasNext() ) {
- 	    ProcessThread thread = (ProcessThread)threads.next();
+         Iterator threads = _actorThreadList.iterator();
+         while ( threads.hasNext() ) {
+             ProcessThread thread = (ProcessThread)threads.next();
 
-	    // Call stopThread() on the threads first
- 	    thread.stopThread();
-	    thread.getActor().stopFire();
- 	}
+            // Call stopThread() on the threads first
+             thread.stopThread();
+            thread.getActor().stopFire();
+         }
     }
 
     /** Throw an IllegalActionException as an indication that this method
@@ -305,8 +305,8 @@ public class ProcessDirector extends Director {
      *   should not be invoked within the process domains.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-	throw new IllegalActionException(this, "transferInputs() is not " +
-	        "intended for use by directors in the process domains.");
+        throw new IllegalActionException(this, "transferInputs() is not " +
+                "intended for use by directors in the process domains.");
     }
 
     /** Throw an IllegalActionException as an indication that this method
@@ -316,8 +316,8 @@ public class ProcessDirector extends Director {
      *   should not be invoked within the process domains.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
-	throw new IllegalActionException(this, "transferOutputs() is not " +
-	        "intended for use by directors in the process domains.");
+        throw new IllegalActionException(this, "transferOutputs() is not " +
+                "intended for use by directors in the process domains.");
     }
 
     /** Terminates all threads under control of this director immediately.
@@ -332,12 +332,12 @@ public class ProcessDirector extends Director {
         // control of this director.
         super.terminate();
         // Now stop any threads created by this director.
-	LinkedList list = new LinkedList();
-	list.addAll(_actorThreadList);
-	_actorThreadList.clear();
+        LinkedList list = new LinkedList();
+        list.addAll(_actorThreadList);
+        _actorThreadList.clear();
         Iterator threads = list.iterator();
         while (threads.hasNext()) {
-	    ((Thread)threads.next()).stop();
+            ((Thread)threads.next()).stop();
         }
     }
 
@@ -359,7 +359,7 @@ public class ProcessDirector extends Director {
         if ( _debugging ) {
             _debug(_name+": calling wrapup()");
         }
-	Nameable container = getContainer();
+        Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
@@ -461,7 +461,7 @@ public class ProcessDirector extends Director {
      *  @param thread The newly created thread.
      */
     protected synchronized void _addNewThread(ProcessThread thread) {
-	_actorThreadList.addFirst(thread);
+        _actorThreadList.addFirst(thread);
     }
 
     /** Return true if the count of active processes in the container is 0.
@@ -491,8 +491,8 @@ public class ProcessDirector extends Director {
      *  reasons.
      */
     protected synchronized void _decreaseActiveCount() {
- 	_activeActorCount--;
-	notifyAll();
+         _activeActorCount--;
+        notifyAll();
     }
 
     /** Return the number of active processes under the control of this
@@ -501,14 +501,14 @@ public class ProcessDirector extends Director {
      *  @return The number of active actors.
      */
     protected final synchronized long _getActiveActorsCount() {
-	return _activeActorCount;
+        return _activeActorCount;
     }
 
     /** Return the number of actors that are currently blocked.
      *  @return Return the number of actors that are currently blocked.
      */
     protected final synchronized int _getBlockedActorsCount() {
-	return _blockedActorCount;
+        return _blockedActorCount;
     }
 
     /** Create a new ProcessThread for controlling the actor that
@@ -523,8 +523,8 @@ public class ProcessDirector extends Director {
      *   actor passed as a parameter for this method.
      */
     protected ProcessThread _getProcessThread(Actor actor,
-	    ProcessDirector director) throws IllegalActionException {
-	return new ProcessThread(actor, director);
+            ProcessDirector director) throws IllegalActionException {
+        return new ProcessThread(actor, director);
     }
 
     /** Increases the count of active actors in the composite actor
@@ -536,7 +536,7 @@ public class ProcessDirector extends Director {
      *  when the thread is terminated.
      */
     protected synchronized void _increaseActiveCount() {
-	_activeActorCount++;
+        _activeActorCount++;
         notifyAll();
     }
 
@@ -550,7 +550,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
-	return false;
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////

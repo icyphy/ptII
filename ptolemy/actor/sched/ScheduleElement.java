@@ -67,8 +67,8 @@ public abstract class ScheduleElement {
      *  element that is contained by another schedule element.
      */
     public ScheduleElement() {
-	super();
-	_scheduleVersion = 0;
+        super();
+        _scheduleVersion = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ public abstract class ScheduleElement {
      *  @return The iteration count for this schedule.
      */
     public int getIterationCount() {
-	return _iterationCount;
+        return _iterationCount;
     }
 
     /** Set the iteration count for this schedule. The
@@ -111,8 +111,8 @@ public abstract class ScheduleElement {
      *  @param count The iteration count for this schedule.
      */
     public void setIterationCount(int count) {
-	_incrementVersion();
-	_iterationCount = count;
+        _incrementVersion();
+        _iterationCount = count;
     }
 
     /** Set the parent schedule element of this schedule element to
@@ -126,7 +126,7 @@ public abstract class ScheduleElement {
      *   element.
      */
     public void setParent(ScheduleElement parent) {
-	_parent = parent;
+        _parent = parent;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,7 +139,7 @@ public abstract class ScheduleElement {
      *  @return The current version of this schedule element.
      */
     protected long _getVersion() {
-	return _scheduleVersion;
+        return _scheduleVersion;
     }
 
     /** Increment the version of this schedule element and if this schedule
@@ -151,10 +151,10 @@ public abstract class ScheduleElement {
      *  when they are modified.
      */
     protected void _incrementVersion() {
-	_scheduleVersion++;
-	if (_parent != null) {
-	    _parent._incrementVersion();
-	}
+        _scheduleVersion++;
+        if (_parent != null) {
+            _parent._incrementVersion();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

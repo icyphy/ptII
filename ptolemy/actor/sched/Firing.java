@@ -66,7 +66,7 @@ public class Firing extends ScheduleElement {
      *  and with no parent schedule.
      */
     public Firing() {
-	super();
+        super();
     }
 
     /** Construct a firing with a actor, an iteration count equal to one
@@ -74,7 +74,7 @@ public class Firing extends ScheduleElement {
      *  @param actor The actor in the firing.
      */
     public Firing(Actor actor) {
-	super();
+        super();
         _actor = actor;
     }
 
@@ -99,7 +99,7 @@ public class Firing extends ScheduleElement {
     public Iterator actorIterator() {
         // As of 8/02, it seems like this method class is not really
         // used except by the test suite.
-	return new ActorIterator();
+        return new ActorIterator();
     }
 
     /** Return the actor invocation sequence in the form
@@ -123,7 +123,7 @@ public class Firing extends ScheduleElement {
             _firing = new LinkedList();
             _firing.add(this);
         }
-	return _firing.iterator();
+        return _firing.iterator();
     }
 
     /** Get the actor associated with this Firing. The setActor()
@@ -133,7 +133,7 @@ public class Firing extends ScheduleElement {
      * @return The actor associated with this Firing.
      */
     public Actor getActor() {
-	return _actor;
+        return _actor;
     }
 
     /** Set the actor associated with this firing. This actor will
@@ -144,8 +144,8 @@ public class Firing extends ScheduleElement {
      *  @param actor The actor to associate with this firing.
      */
     public void setActor(Actor actor) {
-	_incrementVersion();
-	_actor  = actor;
+        _incrementVersion();
+        _actor  = actor;
         if (_firing != null) {
             _firing.clear();
             _firing.add(this);
@@ -172,58 +172,58 @@ public class Firing extends ScheduleElement {
     private class ActorIterator implements Iterator {
         // As of 8/02, it seems like this inner class is not really
         // used except by the test suite.
-	/** Construct a ScheduleIterator.
-	 */
-	public ActorIterator() {
-	    _startingVersion = _getVersion();
-	    _currentElement = 0;
-	}
+        /** Construct a ScheduleIterator.
+         */
+        public ActorIterator() {
+            _startingVersion = _getVersion();
+            _currentElement = 0;
+        }
 
-	/** Return true if the iteration has more elements.
-	 *
-	 *  @exception ConcurrentModificationException If the schedule
-	 *   data structure has changed since this iterator
-	 *   was created.
-	 *  @return true if the iterator has more elements.
-	 */
-	public boolean hasNext() {
-	    if (_startingVersion != _getVersion()) {
-		throw new ConcurrentModificationException(
+        /** Return true if the iteration has more elements.
+         *
+         *  @exception ConcurrentModificationException If the schedule
+         *   data structure has changed since this iterator
+         *   was created.
+         *  @return true if the iterator has more elements.
+         */
+        public boolean hasNext() {
+            if (_startingVersion != _getVersion()) {
+                throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
-	    } else {
-		return(_currentElement <= getIterationCount());
-	    }
-	}
+            } else {
+                return(_currentElement <= getIterationCount());
+            }
+        }
 
-	/** Return the next object in the iteration.
-	 *
-	 *  @exception InvalidStateException If the schedule
-	 *   data structure has changed since this iterator
-	 *   was created.
-	 *  @return the next object in the iteration.
-	 */
-	public Object next() throws NoSuchElementException {
-	    if (!hasNext()) {
-		throw new NoSuchElementException("No element to return.");
-	    } else if (_startingVersion != _getVersion()) {
-		throw new ConcurrentModificationException(
+        /** Return the next object in the iteration.
+         *
+         *  @exception InvalidStateException If the schedule
+         *   data structure has changed since this iterator
+         *   was created.
+         *  @return the next object in the iteration.
+         */
+        public Object next() throws NoSuchElementException {
+            if (!hasNext()) {
+                throw new NoSuchElementException("No element to return.");
+            } else if (_startingVersion != _getVersion()) {
+                throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
-	    } else {
-		_currentElement++;
-		return getActor();
-	    }
-	}
+            } else {
+                _currentElement++;
+                return getActor();
+            }
+        }
 
-	/** Throw an exception, since removal is not allowed. It really
-	 *  doesn't make sense to remove an actor from an actor invocation
-	 *  sequence anyway.
-	 */
-	public void remove() {
-	    throw new UnsupportedOperationException();
-	}
+        /** Throw an exception, since removal is not allowed. It really
+         *  doesn't make sense to remove an actor from an actor invocation
+         *  sequence anyway.
+         */
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
 
-	private long _startingVersion;
-	private int _currentElement;
+        private long _startingVersion;
+        private int _currentElement;
     }
 
     ///////////////////////////////////////////////////////////////////

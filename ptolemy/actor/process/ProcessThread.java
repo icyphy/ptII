@@ -85,18 +85,18 @@ public class ProcessThread extends PtolemyThread {
      */
     public ProcessThread(Actor actor, ProcessDirector director) {
         super();
-	_actor = actor;
+        _actor = actor;
         _director = director;
         _manager = ((CompositeActor)
                 ((NamedObj)actor).getContainer()).getManager();
 
-	// This method is called here and not in the run() method as the
-	// count should be incremented before any thread is started
-	// or made active. This is because the second started thread might
-	// block on a read or write to this process and increment the block
-	// count even before this thread has incremented the active count.
-	// This results in false deadlocks.
-	_director._increaseActiveCount();
+        // This method is called here and not in the run() method as the
+        // count should be incremented before any thread is started
+        // or made active. This is because the second started thread might
+        // block on a read or write to this process and increment the block
+        // count even before this thread has incremented the active count.
+        // This results in false deadlocks.
+        _director._increaseActiveCount();
 
         _name = ((Nameable)_actor).getName();
     }
@@ -108,7 +108,7 @@ public class ProcessThread extends PtolemyThread {
      *  @return The actor being executed by this thread.
      */
     public Actor getActor() {
-	return _actor;
+        return _actor;
     }
 
     /** Initialize the actor, iterate it through the execution cycle
@@ -116,13 +116,13 @@ public class ProcessThread extends PtolemyThread {
      *  on the actor.
      */
     public void run() {
-	Workspace workspace = _director.workspace();
-	boolean iterate = true;
-	try {
+        Workspace workspace = _director.workspace();
+        boolean iterate = true;
+        try {
             // Initialize the actor.
             _actor.initialize();
 
-	    while (iterate) {
+            while (iterate) {
                 // If a stop has been requested, then
                 if(_threadStopRequested) {
                     // Tell the director we're stopped
@@ -140,9 +140,9 @@ public class ProcessThread extends PtolemyThread {
                 if ( ((Entity)_actor).getContainer() != null ) {
                     if (_actor.prefire()){
                         _actor.fire();
-			iterate = _actor.postfire();
+                        iterate = _actor.postfire();
                     }
-		}
+                }
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
@@ -151,12 +151,12 @@ public class ProcessThread extends PtolemyThread {
         }
         finally {
             try {
- 		wrapup();
+                 wrapup();
             } catch (IllegalActionException e) {
                 _manager.notifyListenersOfException(e);
             }
             _director._decreaseActiveCount();
-	    /*
+            /*
               String name = ((Nameable)_actor).getName();
               + _director.getName() + "; there are "
               + _director._getActiveActorsCount()+" active actors in "
@@ -170,7 +170,7 @@ public class ProcessThread extends PtolemyThread {
      *  in the prefire method.
      */
     public void cancelStopThread() {
-	_threadStopRequested = false;
+        _threadStopRequested = false;
     }
 
     /** Request that execution of the actor controlled by this
@@ -179,7 +179,7 @@ public class ProcessThread extends PtolemyThread {
      *  this director.
      */
     public void stopThread() {
-    	_threadStopRequested = true;
+            _threadStopRequested = true;
     }
 
     /** End the execution of the actor under the control of this
@@ -190,7 +190,7 @@ public class ProcessThread extends PtolemyThread {
      *  thread.
      */
     public void wrapup() throws IllegalActionException {
-	_actor.wrapup();
+        _actor.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////

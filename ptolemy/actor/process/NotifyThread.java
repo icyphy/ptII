@@ -70,7 +70,7 @@ public class NotifyThread extends Thread {
      *  @param locks The set of locks to call notifyAll on.
      */
     public NotifyThread(Object lock) {
-	_lock = lock;
+        _lock = lock;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -80,19 +80,19 @@ public class NotifyThread extends Thread {
      *  class in its constructor.
      */
     public void run() {
-	if (_locks != null) {
-	    Iterator objects = _locks.iterator();
-	    while (objects.hasNext()) {
-		Object nextObj = objects.next();
-		synchronized(nextObj) {
-		    nextObj.notifyAll();
-		}
-	    }
-	} else {
-	    synchronized(_lock) {
-		_lock.notifyAll();
-	    }
-	}
+        if (_locks != null) {
+            Iterator objects = _locks.iterator();
+            while (objects.hasNext()) {
+                Object nextObj = objects.next();
+                synchronized(nextObj) {
+                    nextObj.notifyAll();
+                }
+            }
+        } else {
+            synchronized(_lock) {
+                _lock.notifyAll();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

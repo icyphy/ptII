@@ -80,8 +80,8 @@ public class MailboxBoundaryReceiver extends Mailbox
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
     public MailboxBoundaryReceiver() {
-	super();
-	_boundaryDetector = new BoundaryDetector(this);
+        super();
+        _boundaryDetector = new BoundaryDetector(this);
     }
 
     /** Construct an empty MailboxBoundaryReceiver with the specified
@@ -92,7 +92,7 @@ public class MailboxBoundaryReceiver extends Mailbox
     public MailboxBoundaryReceiver(IOPort container)
             throws IllegalActionException {
         super(container);
-	_boundaryDetector = new BoundaryDetector(this);
+        _boundaryDetector = new BoundaryDetector(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,15 +135,15 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
 
             if ( _terminate ) {
-            	throw new TerminateProcessException("");
+                    throw new TerminateProcessException("");
             } else {
-            	result = super.get();
+                    result = super.get();
                 if ( _writeBlock ) {
                     wakeUpBlockedPartner();
                     _writeBlock = false;
                     notifyAll();
                 }
-            	return result;
+                    return result;
             }
         }
     }
@@ -158,7 +158,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *   return false otherwise.
      */
     public boolean isConnectedToBoundary() {
-	return _boundaryDetector.isConnectedToBoundary();
+        return _boundaryDetector.isConnectedToBoundary();
     }
 
     /** Return true if this receiver is connected to the inside of an
@@ -170,7 +170,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *   boundary port; return false otherwise.
      */
     public boolean isConnectedToBoundaryInside() {
-	return _boundaryDetector.isConnectedToBoundaryInside();
+        return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
     /** Return true if this receiver is connected to the outside of an
@@ -183,7 +183,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *   boundary port; return false otherwise.
      */
     public boolean isConnectedToBoundaryOutside() {
-	return _boundaryDetector.isConnectedToBoundaryOutside();
+        return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
     /** Return true if this is a consumer receiver; return false otherwise.
@@ -196,7 +196,7 @@ public class MailboxBoundaryReceiver extends Mailbox
         if ( isConnectedToBoundary() ) {
             return true;
         }
-    	return false;
+            return false;
     }
 
     /** Return true if this receiver is contained on the inside of a
@@ -210,7 +210,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *   a boundary port; return false otherwise.
      */
     public boolean isInsideBoundary() {
-	return _boundaryDetector.isInsideBoundary();
+        return _boundaryDetector.isInsideBoundary();
     }
 
     /** Return true if this receiver is contained on the outside of a
@@ -224,7 +224,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *   boundary port; return false otherwise.
      */
     public boolean isOutsideBoundary() {
-	return _boundaryDetector.isOutsideBoundary();
+        return _boundaryDetector.isOutsideBoundary();
     }
 
     /** Return true if this is a producer receiver; return false otherwise.
@@ -237,7 +237,7 @@ public class MailboxBoundaryReceiver extends Mailbox
         if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
-    	return false;
+            return false;
     }
 
     /** Return true if this receiver is read blocked; return false
@@ -273,7 +273,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             _otherBranch = branch;
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)
-        	    (getContainer().getContainer())).getDirector());
+                    (getContainer().getContainer())).getDirector());
             director._actorBlocked(this);
             _otherBranch = branch;
         }
@@ -303,7 +303,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
 
             if ( _terminate ) {
-            	throw new TerminateProcessException("");
+                    throw new TerminateProcessException("");
             } else {
                 super.put(token);
                 if ( _readBlock ) {
@@ -331,7 +331,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  containing this receiver discontinue.
      */
     public synchronized void requestFinish() {
-    	_terminate = true;
+            _terminate = true;
         notifyAll();
     }
 
@@ -339,10 +339,10 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  restarting execution.
      */
     public void reset() {
-    	_terminate = false;
+            _terminate = false;
         _readBlock = false;
         _writeBlock = false;
-	_boundaryDetector.reset();
+        _boundaryDetector.reset();
     }
 
     /** Unblock this receiver and register this new state with
@@ -356,7 +356,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)
-        	    (getContainer().getContainer())).getDirector());
+                    (getContainer().getContainer())).getDirector());
             director._actorUnBlocked(this);
 
         }
