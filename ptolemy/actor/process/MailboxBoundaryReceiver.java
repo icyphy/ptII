@@ -119,7 +119,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
                 //
                 // Inform The Controlling Branch Of Success
                 //
-            	brnch.branchWasSuccessful();
+            	brnch.engagementWasSuccessful();
             	return super.get();
             }
         }
@@ -199,7 +199,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
                 //
                 // Inform The Controlling Branch Of Success
                 //
-            	brnch.branchWasSuccessful();
+            	brnch.engagementWasSuccessful();
             }
         }
     }

@@ -79,9 +79,16 @@ public abstract class Branch {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     */
+    public int numberOfEngagements() {
+        return 0;
+    }
+    
     /** 
      */
-    public void branchWasSuccessful() {
+    protected void engagementWasSuccessful() {
+    	_successfulEngagements++;
     }
 
     /** Return the controller that manges conditional rendezvous for this
@@ -137,7 +144,7 @@ public abstract class Branch {
     /** 
      */
     public boolean isBranchCommitted() {
-        if( _controller._canBranchContinue( getID() ) ) {
+        if( _controller._canBranchEngage(this) ) {
             return true;
         }
     	return false;
@@ -222,5 +229,7 @@ public abstract class Branch {
     private BoundaryReceiver _consRcvr;
     
     private boolean _rcvrBlocked = false;
+    
+    private int _successfulEngagements = 0;
 
 }

@@ -56,16 +56,16 @@ public class BranchThread extends PtolemyThread {
     ////                         public methods                    ////
 
     /** 
-     */
     public void continueThread() {
     	_stopRequest = false;
     }
+     */
     
     /** 
-     */
     public void endThread() {
     	_continue = false;
     }
+     */
     
     /** 
      */
@@ -76,8 +76,29 @@ public class BranchThread extends PtolemyThread {
     /**
      */
     public void run() {
+        /*
         try {
-            while( _continue ) {
+        */
+            while( _branch.isActive() ) {
+                _branch.transferTokens();
+                /*
+                while( _stopRequest && _continue ) {
+                    synchronized(this) {
+                        wait();
+                    }
+                }
+                */
+            }
+        /*
+        } catch( InterruptedException e ) {
+        }
+        */
+    } 
+
+    /**
+    public void run() {
+        try {
+            while( _branch.isActive() ) {
                 _branch.transferTokens();
                 while( _stopRequest && _continue ) {
                     synchronized(this) {
@@ -88,6 +109,7 @@ public class BranchThread extends PtolemyThread {
         } catch( InterruptedException e ) {
         }
     } 
+     */
 
     /** 
      */

@@ -89,6 +89,11 @@ public class BranchController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                        public variables		   ////
+    
+    // public Parameter engagements;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the Actor that creates the branch and owns this
@@ -146,19 +151,34 @@ public class BranchController {
      *  this method does not allow the threads to terminate gracefully.
      */
     public void terminate() {
-        synchronized(_internalLock) {
+        // synchronized(_internalLock) {
             // Now stop any threads created by this director.
             if (_threadList != null) {
                 Iterator threads = _threadList.iterator();
                 BranchThread bThread = null;
+                Branch branch = null;
+                BoundaryReceiver bRcvr = null;
                 while (threads.hasNext()) {
                     bThread = (BranchThread)threads.next();
+                    branch = bThread.getBranch();
+                    branch.setActive(false);
+                    bRcvr = branch.getConsReceiver();
+                    synchronized(bRcvr) {
+                        bRcvr.notifyAll();
+                    }
+                    bRcvr = branch.getProdReceiver();
+                    synchronized(bRcvr) {
+                        bRcvr.notifyAll();
+                    }
+                    
+                    /*
                     if (bThread.isAlive()) {
                         bThread.stop();
                     }
+                    */
                 }
             }
-        }
+        // }
     }
 
     /**
@@ -228,16 +248,22 @@ public class BranchController {
      *  the first branch that succeeds with a rendezvous.
      *  @param branchID The ID assigned to the calling branch upon creation.
      */
-    protected void _branchSucceeded(int branchID) {
+    protected void _engagementSucceeded(Branch branch) {
         synchronized(_internalLock ) {
-            if (_branchTrying != branchID) {
-                throw new InvalidStateException(
-			((Nameable)getParent()).getName() +
-                        ": branchSucceeded called with a branch id not " +
-                        "equal to the id of the branch registered as trying.");
+            if( _maxEngagements < 0 && _maxEngagers < 0 ) {
+                return;
             }
-            _successfulBranch = _branchTrying;
-            _branchesActive--;
+            
+            if( !_engagements.contains(branch) ) {
+                // throw exception here.
+            }
+            
+            if( branch.numberOfEngagements() < _maxEngagements ) {
+                branch.engagementWasSuccessful();
+            } else {
+                // throw exception here.
+            }
+            
             // wakes up chooseBranch() which wakes up parent thread
             _internalLock.notifyAll();
         }
@@ -279,11 +305,23 @@ public class BranchController {
      *  @return True if the calling branch is the first branch to try
      *   to rendezvous, otherwise false.
      */
-    protected boolean _canBranchContinue(int branchNumber) {
+    protected boolean _canBranchEngage(Branch branch) {
         synchronized(_internalLock) {
-            if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
-                // store branchNumber
-                _branchTrying = branchNumber;
+            if( _maxEngagements < 0 && _maxEngagers < 0 ) {
+                return true;
+            }
+            
+            if( _engagements == null ) {
+            	_engagements = new LinkedList();
+            }
+            
+            if( _engagements.contains(branch) ) {
+                if( branch.numberOfEngagements() < _maxEngagements ) {
+                    return true;
+                } 
+                return false;
+            } else if( _engagements.size() < _maxEngagers ) {
+            	_engagements.add( branch );
                 return true;
             }
             return false;
@@ -322,17 +360,19 @@ public class BranchController {
      *  to be released to allow other branches the possibility of succeeding.
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
-    protected void _releaseFirst(int branchNumber) {
+    protected void _disengageBranch(Branch branch) {
         synchronized(_internalLock) {
-            if (branchNumber == _branchTrying) {
-                _branchTrying = -1;
+            if( _maxEngagements < 0 && _maxEngagers < 0 ) {
                 return;
             }
+            if( _engagements.contains(branch) ) {
+                if( branch.numberOfEngagements() == 0 ) {
+                    _engagements.remove(branch);
+                }
+            } else {
+                // throw exception here.
+            }
         }
-        throw new InvalidStateException(
-		((Nameable)getParent()).getName() +
-		": Error: branch releasing first without possessing it! :"
-		+ _branchTrying + " & " + branchNumber);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -417,4 +457,9 @@ public class BranchController {
     private List _threadList = null;
     
     private Branch[] _branches;
+    
+    private LinkedList _engagements;
+    
+    private int _maxEngagements = 0;;
+    private int _maxEngagers = 0;;
 }
