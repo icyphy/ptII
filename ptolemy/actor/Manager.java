@@ -222,7 +222,19 @@ public class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a static analysis to this manager.
+    /** Add a static analysis to this manager. A static analysis is...
+     *  FIXME: Currently a static analysis is simply an object that
+     *  is recorded in a hash table and cleared at the end of preinitialize,
+     *  with no semantics associated with that object.  The intent is
+     *  for that object to serve as a repository for static analysis
+     *  results, but clearing it and the end of preinitialize isn't
+     *  quite right. The idea is that it is cleared at a point when
+     *  the analysis has to be redone after that point. But doing
+     *  this at the end of preinitialize means this won't work with
+     *  models that mutate either during preinitialize() (as in higher-
+     *  order actors) or during execution.
+     *  @param analysis The analysis to record.
+     *  @see #getAnalysis(String)
      */
     public void addAnalysis(String name, Object analysis) {
         if (_nameToAnalysis == null) {
@@ -373,6 +385,7 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Get the analysis with the given name, or return null if no such
      *  analysis exists.
+     *  @see #addAnalysis(String, Object)
      */
     public Object getAnalysis(String name) {
         if (_nameToAnalysis == null) {
