@@ -118,6 +118,7 @@ TARGETPACKAGE = ptolemy.copernicus.java.cg.$(MODEL)
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
 
 # jad is a Java disassembler we use for debugging
+# See http://www.geocities.com/SiliconValley/Bridge/8617/jad.html
 JAD=jad
 
 # Package that jad creates classes in
@@ -138,6 +139,7 @@ SOOT_USER_ARGS =
 WATCH_DOG_TIMEOUT =     150000
 # Number of Iterations to run the generated code for.
 ITERATIONS =		50000
+ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
 compileDeepDemo: $(JCLASS)
 	@echo "generate deep code for $(SOURCECLASS)"
 	$(JAVA) $(JVM_SIZE) \
@@ -148,7 +150,7 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.at targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.clt \
-		targetPackage:$(TARGETPACKAGE),iterations:$(ITERATIONS) \
+		targetPackage:$(TARGETPACKAGE)$(ITERATIONS_PARAMETER) \
 		-p wjtp.fot targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
@@ -221,6 +223,25 @@ recompileDeepDemo:
 	$(JAVA) -Xfuture -classpath "$(ROOT)" \
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $(JADTARGETPACKAGE).$(JADTARGETCLASS)
+
+
+# Generate .java files from the snapshots
+recompileSnapshots:
+	for snapshot in $(SNAPSHOTS); \
+	do \
+		echo "Recompiling in $(TARGETPATH)/$$snapshot"; \
+		$(JAD) -r -o -d $(ROOT)/$(TARGETPATH)/$$snapshot/jad $(ROOT)/$(TARGETPATH)/$$snapshot/$(TARGETPATH)/*.class; \
+		for file in $(ROOT)/$(TARGETPATH)/$$snapshot/jad/$(TARGETPATH)/*.jad; \
+		do \
+			echo "Fixing $$file"; \
+			javafile=`dirname $$file`/`basename $$file .jad`.java;\
+			sh ../shallow/test/jad2java $$file \
+				> $$javafile; \
+			echo "Compilinmg $$javafile"; \
+			$(JAVAC) -classpath "$(ROOT)/$(TARGETPATH)/$$snapshot/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
+				$$javafile; \
+		done; \
+	done
 
 
 # Get the rest of the rules
