@@ -87,6 +87,18 @@ modulo
 java.lang.IllegalArgumentException: Unknown overflow strategy "zzz". }}
 
 ####################################################################
+test Overflow-2.5 {clone} {
+    set clone [$overflow_grow clone]
+    list \
+	[$clone equals $overflow_grow] \
+	[expr {[$clone hashCode] == [$overflow_grow hashCode]}] \
+	[$clone equals $overflow_trap] \
+	[expr {[$clone hashCode] == [$overflow_trap hashCode]}]
+} {1 1 0 0}
+
+
+
+####################################################################
 
 test Overflow-2.0 {grow} {
     set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,grow,unnecessary" ]
