@@ -299,6 +299,18 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             double tnow = getCurrentTime();
             double bp;
             TotallyOrderedSet breakPoints = getBreakPoints();
+            // clear break points in the past.
+            if(breakPoints != null) {
+                while(!breakPoints.isEmpty()) {
+                    bp = ((Double)breakPoints.first()).doubleValue();
+                    if (bp < (getCurrentTime()-timeAcc/2.0)) {
+                        breakPoints.removeFirst();
+                    } else {
+                        break;
+                    }
+                }
+            }
+
             //choose ODE solver
             // If now is a break point, remove the break point from table;
             if((breakPoints != null) && !breakPoints.isEmpty()) {
