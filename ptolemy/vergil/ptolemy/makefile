@@ -49,8 +49,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		fsm/fsm.jar
+		fsm/fsm.jar \
+		img/img.jar \
+		kernel/kernel.jar
 
 PTCLASSALLJAR = ptolemy.jar
 
