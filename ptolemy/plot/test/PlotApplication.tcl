@@ -44,7 +44,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 proc plotApplicationTest { args } {
     set jargs [java::new {String[]} [llength $args] $args ]
-    set plotapp [java::new ptolemy.plot.apps.PlotApplication $jargs]
+    set plotapp [java::new ptolemy.plot.PlotApplication $jargs]
     set thread [java::call Thread currentThread ]
     # sleep 2 seconds
     $thread sleep 2000
