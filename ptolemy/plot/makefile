@@ -370,9 +370,16 @@ fixtmpdist:
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "To build under Solaris:" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "Set the PTII variable to this directory: " >> \
+	echo "Set the PTII variable to the directory that contains this file." >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "PTII=`pwd` " >> \
+	echo "For example, if this file is at /tmp/src/${PTVERSION}/README.txt," >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "then under Bash do:" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "export PTII=/tmp/src/ptplot${PTVERSION}" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "or, under csh, do:" >> \
+	echo "setenv PTII /tmp/src/ptplot${PTVERSION}" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Then configure and make:" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
