@@ -134,12 +134,12 @@ public class SignatureVerifier extends SignatureActor {
             // Process the input data to generate a signature.
 
             byte [] signatureData = ArrayToken.arrayTokenToUnsignedByteArray(
-                        (ArrayToken)signature.get(0));
+                    (ArrayToken)signature.get(0));
             ArrayToken inputToken = (ArrayToken)input.get(0);
             try {
                 _signature.initVerify(_publicKey);
                 _signature.update(ArrayToken.arrayTokenToUnsignedByteArray(
-                                          inputToken));
+                        inputToken));
                 if (!_signature.verify(signatureData)) {
                     throw new IllegalActionException(this,
                             "Signature verification failed.");

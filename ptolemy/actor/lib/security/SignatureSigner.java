@@ -138,15 +138,15 @@ public class SignatureSigner extends SignatureActor {
             try {
                 // Process the input data to generate a signature.
                 byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
-                            (ArrayToken)input.get(0));
+                        (ArrayToken)input.get(0));
 
                 _signature.initSign(_privateKey);
                 _signature.update(dataBytes);
 
                 output.send(0, ArrayToken.unsignedByteArrayToArrayToken(
-                                dataBytes));
+                        dataBytes));
                 signature.send(0, ArrayToken.unsignedByteArrayToArrayToken(
-                                _signature.sign()));
+                        _signature.sign()));
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Problem sending data");

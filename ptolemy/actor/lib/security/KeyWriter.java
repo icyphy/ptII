@@ -130,8 +130,8 @@ public class KeyWriter extends KeyStoreActor {
                         null /* No certificate */);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to set key '" + key + "' to alias '"
-                    + alias + "'");
+                        "Failed to set key '" + key + "' to alias '"
+                        + alias + "'");
             }
             try {
                 FileOutputStream keyStoreOutputStream =

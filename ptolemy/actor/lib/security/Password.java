@@ -137,7 +137,7 @@ public class Password extends Source {
             throws IllegalActionException {
         if (attribute == isPersistent) {
             password.setPersistent(((BooleanToken)isPersistent
-                                        .getToken()).booleanValue());
+                    .getToken()).booleanValue());
         } else {
             super.attributeChanged(attribute);
         }

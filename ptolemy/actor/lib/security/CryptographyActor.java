@@ -229,7 +229,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
-                            (ArrayToken)input.get(0));
+                        (ArrayToken)input.get(0));
                 dataBytes = _process(dataBytes);
                 output.send(0,
                         ArrayToken.unsignedByteArrayToArrayToken(
