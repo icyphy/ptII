@@ -103,7 +103,11 @@ public class TimedSource extends Source implements TimedActor {
                 Director director = getDirector();
                 if (director != null) {
                     double currentTime = director.getCurrentTime();
-                    director.fireAt(this, time);
+                    if (time > currentTime) {
+                        director.fireAt(this, time);
+                    } else {
+                        director.fireAt(this, currentTime);
+                    }
                 } // else ignore.
             }
         } else {
