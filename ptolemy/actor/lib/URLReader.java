@@ -78,7 +78,7 @@ called "test.txt", then <i>sourceURL</i> should be set to
        from there.
 <p>FIXME: URLReader should read in expressions and serialized tokens
 
-@see ptolemy.actor.lib.javasound.AudioURLReader
+@see ptolemy.actor.lib.javasound.AudioReader
 @author  Jie Liu
 @version $Id$
  */
