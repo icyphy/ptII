@@ -107,6 +107,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         stateOutput = new TypedIOPort(this, "stateOutput", false, true);
         stateOutput.setMultiport(true);
         _opaque = true;
+        _requestInitialization = true;
         double[][] one = {{1.0}};
         double[][] zero = {{0.0}};
 
@@ -215,7 +216,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                 throw new IllegalActionException(this,
                         "The A matrix must be a nonempty square matrix.");
             }
-            _requestInitialization();
+            _requestInitialization = true;
         } else if (attribute == B) {
             // Check that B is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken)B.getToken();
@@ -223,7 +224,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                 throw new IllegalActionException(this,
                         "The B matrix must be a nonempty matrix.");
             }
-            _requestInitialization();
+            _requestInitialization = true;
         } else if (attribute == C) {
             // Check that C is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken)C.getToken();
@@ -231,14 +232,14 @@ public class LinearStateSpace extends TypedCompositeActor {
                 throw new IllegalActionException(this,
                         "The C matrix must be a nonempty matrix.");
             }
-            _requestInitialization();
+            _requestInitialization = true;
         } else if (attribute == D) {
             DoubleMatrixToken token = (DoubleMatrixToken)D.getToken();
             if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The D matrix must be a nonempty matrix.");
             }
-            _requestInitialization();
+            _requestInitialization = true;
         } else if (attribute == initialStates) {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token =
@@ -392,6 +393,15 @@ public class LinearStateSpace extends TypedCompositeActor {
         }
     }
 
+    /** Request the reinitialization.
+     *  @return True if the super class returns true.
+     *  @exception IllegalActionException If thrown by super class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (_requestInitialization) _requestInitialization();
+        return super.postfire();
+    }
+
     /** Stop the current firing. This method overrides the stopFire()
      *  method in TypedCompositeActor base class, so that it will not
      *  invoke the local director (since there is none). This method
@@ -472,17 +482,19 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  from the director if there is one.
      */
     private void _requestInitialization() {
-        // Set this composite to opaque.
-        _opaque = true;
         // Request for initialization.
         Director dir = getDirector();
         if (dir != null) {
             dir.requestInitialization(this);
         }
+        // Set this composite to opaque.
+        _opaque = true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // opaqueness.
     private boolean _opaque;
+    // request for initialization.
+    private boolean _requestInitialization;
 }
