@@ -43,12 +43,13 @@ This class mediates connections between ports that can send data to
 one another via message passing. One purpose of this relation is to
 ensure that IOPorts are only connected to IOPorts. A second purpose
 is to support the notion of a <i>width</i> to represent something
-like a bus. By default the relation is not a bus, which means that
-its width can only be zero or one. Calling <code>setWidth()</code> with
+like a bus. By default an IORelation is not a bus, which means that
+its width can only be zero or one. Calling setWidth() with
 an argument larger than one makes the relation a bus of fixed width.
-Calling <code>setWidth()</code> with an argument of zero makes the relation
+Calling setWidth() with an argument of zero makes the relation
 a bus with indeterminate width, in which case the width will be
-inferred (if possible) from the context.
+inferred (if possible) from the context.  The actual width of an IORelation
+can never be less than one.
 <p>
 Instances of IORelation can only be linked to instances of IOPort.
 Derived classes may further constrain this to subclasses of IOPort.
@@ -70,17 +71,17 @@ override the setContainer() method.
 public class IORelation extends ComponentRelation {
 
     /** Construct a relation in the default workspace with an empty string
-     *  as its name.
-     *  Increment the version number of the workspace.
+     *  as its name. Add the relation to the directory of the workspace.
      */
     public IORelation() {
         super();
     }
 
     /** Construct a relation in the specified workspace with an empty
-     *  string as a name.
+     *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
-     *  Increment the version number of the workspace.
+     *  Add the relation to the workspace directory.
+     *
      *  @param workspace The workspace that will list the relation.
      */
     public IORelation(Workspace workspace) {
@@ -92,8 +93,9 @@ public class IORelation extends ComponentRelation {
      *  NullPointerException will be thrown.  This relation will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  @param container The container entity.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
      *  @param name The name of the relation.
      *  @exception IllegalActionException If the container is incompatible
      *   with this relation.
@@ -108,52 +110,90 @@ public class IORelation extends ComponentRelation {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new relation with no links and no container, but with
+     *  the same width as the original.
+     *
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one or more of the attributes
+     *   cannot be cloned.
+     *  @return A new ComponentRelation.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        IORelation newobj = (IORelation)super.clone(ws);
+        newobj._inferredwidthversion = -1;
+        return newobj;
+    }
+
     /** Return the receivers of all input ports linked to this
      *  relation, directly or indirectly, except those in the port
      *  given as an argument. The returned value is an array of
-     *  arrays. The first index (the row) specifies the channel
-     *  number. Each channel normally receives distinct data. The
+     *  arrays. The first index (the row) specifies the channel.
+     *  Each channel normally receives distinct data. The
      *  second index (the column) specifies the receiver number within
-     *  the group of receivers that get copies of the same channel.
+     *  the group of receivers that get copies from the same channel.
+     *  <p>
      *  The number of channels (rows) is less than or equal to the
      *  width of the relation, which is always at least one. If
      *  there are no receivers then return null.
-     *  This method synchronizes on the workspace.
+     *  <p>
+     *  For each channel, there may be any number of receivers in the group.
+     *  The individual receivers are selected using the second index of the
+     *  returned array of arrays.  If there are no receivers in the group,
+     *  then the channel is represented by null.  I.e., if the returned
+     *  array of arrays is <i>x</i> and the channel number is <i>c</i>,
+     *  then <i>x</i>[<i>c</i>] is null.  Otherwise, it is an array, where
+     *  the size of the array is the number of receivers in the group.
+     *  <p>
+     *  This method may have the effect of creating new receivers in the
+     *  remote input ports, if they do not already have the right number of
+     *  receivers.  In this case, previous receivers are lost, together
+     *  with any data they may contain.
+     *  <p>
+     *  This method read-synchronizes on the workspace.
+     *
      *  @see IOPort#getRemoteReceivers
      *  @param except The port to exclude.
      *  @return The receivers associated with this relation.
-     *  @exception InvalidStateException If an inconsistency is found
-     *   between the width of the input ports and the width of this
-     *   relation.
      */
-    public Receiver[][] deepReceivers(IOPort except)
-            throws InvalidStateException {
-        Receiver[][] result = null;
-        Enumeration inputs = linkedDestinationPorts(except);
-        Receiver[][] recvrs = null;
-        while(inputs.hasMoreElements()) {
-            IOPort p = (IOPort) inputs.nextElement();
+    public Receiver[][] deepReceivers(IOPort except) {
+        try {
+            workspace().getReadAccess();
+            Receiver[][] result = null;
+            Enumeration inputs = linkedDestinationPorts(except);
+            Receiver[][] recvrs = null;
+            while(inputs.hasMoreElements()) {
+                IOPort p = (IOPort) inputs.nextElement();
 
-            if(p.isInsideLinked(this)) {
-                // if p is a transparent port and this relation links from
-                // the inside, then get the Receivers outside p.
-                try {
-                    recvrs = p.getRemoteReceivers(this);
-                } catch (IllegalActionException e) {
-                    //Ignored. linkedInside is checked.
+                if(p.isInsideLinked(this)) {
+                    // if p is a transparent port and this relation links from
+                    // the inside, then get the Receivers outside p.
+                    try {
+                        recvrs = p.getRemoteReceivers(this);
+                    } catch (IllegalActionException e) {
+                        throw new InternalErrorException(
+                        "IORelation.deepReceivers: Internal error: "
+                        + e.getMessage());
+                    }
+                } else {
+                    // if p not a transparent port, or this relation is linked
+                    // to p from the outside.
+                    try {
+                        recvrs = p.getReceivers(this);
+                    } catch (IllegalActionException e) {
+                         throw new InternalErrorException(
+                        "IORelation.deepReceivers: Internal error: "
+                        + e.getMessage());
+                    }
                 }
-            } else {
-                // if p not a transparent port, or this relation is linked
-                // to p from the outside.
-                try {
-                    recvrs = p.getReceivers(this);
-                } catch (IllegalActionException e) {
-                    //Ignored. link is checked
-                }
+                result = _cascade(result, recvrs);
             }
-            result = _cascade(result, recvrs);
+            return result;
+        } finally {
+            workspace().doneReading();
         }
-        return result;
     }
 
     /** Return the width of the IORelation, which is always at least one.
@@ -166,9 +206,8 @@ public class IORelation extends ComponentRelation {
      *  allowed to have at most one inside relation with an unspecified
      *  width, or an exception is thrown.  If this inference yields a width
      *  of zero, then return one.
-     *  @return width
-     *  @exception InvalidStateException If a port has more than one
-     *   inside relation with unspecified width.
+     *
+     *  @return The width, which is at least one.
      */
     public int getWidth() {
         if (_width == 0) {
@@ -180,9 +219,10 @@ public class IORelation extends ComponentRelation {
     /** Enumerate the input ports that we are linked to from the
      *  outside, and the output ports that we are linked to from the inside.
      *  I.e., enumerate the ports through or to which we could send data.
-     *  This method synchronizes on the workspace.
+     *  This method read-synchronizes on the workspace.
+     *
      *  @see pt.kernel.Relation#linkedPorts
-     *  @return An enumeration of the linked input ports
+     *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedDestinationPorts() {
         return linkedDestinationPorts(null);
@@ -194,14 +234,18 @@ public class IORelation extends ComponentRelation {
      *  I.e., enumerate the ports through or to which we could send data.
      *  If the given port is null or is not linked to this relation,
      *  then enumerate all the input ports.
-     *  This method synchronizes on the workspace.
+     *  This method read-synchronizes on the workspace.
+     *
      *  @see pt.kernel.Relation#linkedPorts(pt.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedDestinationPorts(IOPort except) {
-        synchronized(workspace()) {
-            // NOTE: The result could be cached for efficiency.
+        try {
+            workspace().getReadAccess();
+            // NOTE: The result could be cached for efficiency, but
+            // it would have to be cached in a hashtable indexed by the
+            // except argument.  Probably not worth it.
             LinkedList resultPorts = new LinkedList();
             Enumeration ports = linkedPorts();
             while(ports.hasMoreElements()) {
@@ -216,16 +260,18 @@ public class IORelation extends ComponentRelation {
                 }
             }
             return resultPorts.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Enumerate the output ports that we are linked to from the outside
      *  and the input ports that we are linked to from the inside.
      *  I.e. enumerate the ports from or through which we might receive
-     *  data.
-     *  This method synchronizes on the workspace.
+     *  data. This method read-synchronizes on the workspace.
+     *
      *  @see pt.kernel.Relation#linkedPorts
-     *  @return Ann enumeration of the linked input ports
+     *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedSourcePorts() {
         return linkedSourcePorts(null);
@@ -236,14 +282,17 @@ public class IORelation extends ComponentRelation {
      *  I.e. enumerate the ports from or through which we might receive
      *  If the given port is null or is not linked to this relation,
      *  then enumerate all the output ports.
-     *  This method synchronizes on the workspace.
+     *  This method read-synchronizes on the workspace.
      *  @see pt.kernel.Relation#linkedPorts(pt.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedSourcePorts(IOPort except) {
-        synchronized(workspace()) {
-            // NOTE: The result could be cached for efficiency.
+        try {
+            workspace().getReadAccess();
+            // NOTE: The result could be cached for efficiency, but
+            // it would have to be cached in a hashtable indexed by the
+            // except argument.  Probably not worth it.
             LinkedList resultPorts = new LinkedList();
             Enumeration ports = linkedPorts();
             while(ports.hasMoreElements()) {
@@ -258,6 +307,8 @@ public class IORelation extends ComponentRelation {
                 }
             }
             return resultPorts.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -275,8 +326,8 @@ public class IORelation extends ComponentRelation {
      *  Derived classes may further constrain the class of the container
      *  to a subclass of CompositeActor.
      *  <p>
-     *  This method is synchronized on the
-     *  workspace and increments its version number.
+     *  This method is write-synchronized on the workspace.
+     *
      *  @param container The proposed container.
      *  @exception IllegalActionException If the container is not a
      *   CompositeActor, or this entity and the container are not in
@@ -290,6 +341,7 @@ public class IORelation extends ComponentRelation {
             throw new IllegalActionException (this, container,
                     "IORelation can only be contained by CompositeActor.");
         }
+        super.setContainer(container);
     }
 
     /** Set the width of the IORelation. The width is the number of
@@ -299,7 +351,8 @@ public class IORelation extends ComponentRelation {
      *  (but will never be less than one).
      *  If the argument is not one, then all linked ports must
      *  be multiports, or an exception is thrown.
-     *  This method increments the workspace version number.
+     *  This method write-synchronizes on the workspace.
+     *
      *  @param width The width of the relation.
      *  @exception IllegalActionException If the argument is greater than
      *   one and the relation is linked to a non-multiport, or it is zero and
@@ -307,45 +360,57 @@ public class IORelation extends ComponentRelation {
      *   linked on the inside to a relation with unspecified width.
      */
     public void setWidth(int width) throws IllegalActionException {
-        if(width == 0) {
-            // Check legitimacy of the change.
-            try {
-                _inferWidth();
-            } catch (InvalidStateException ex) {
-                throw new IllegalActionException(this,
-                        "Cannot use unspecified width on this relation " +
-                        "because of its links.");
-            }
-        }
-        if (width != 1) {
-            // Check for non-multiports
-            Enumeration ports = linkedPorts();
-            while(ports.hasMoreElements()) {
-                IOPort p = (IOPort) ports.nextElement();
-                if (!p.isMultiport()) {
-                    throw new IllegalActionException(this, p,
-                            "Cannot make bus because the " +
-                            "relation is linked to a non-multiport.");
+        try {
+            workspace().getWriteAccess();
+            if(width == 0) {
+                // Check legitimacy of the change.
+                try {
+                    _inferWidth();
+                } catch (InvalidStateException ex) {
+                    throw new IllegalActionException(this,
+                    "Cannot use unspecified width on this relation " +
+                    "because of its links.");
                 }
             }
+            if (width != 1) {
+                // Check for non-multiports
+                Enumeration ports = linkedPorts();
+                while(ports.hasMoreElements()) {
+                    IOPort p = (IOPort) ports.nextElement();
+                    if (!p.isMultiport()) {
+                        throw new IllegalActionException(this, p,
+                        "Cannot make bus because the " +
+                        "relation is linked to a non-multiport.");
+                    }
+                }
+            }
+            _width = width;
+        } finally {
+            workspace().doneWriting();
         }
-        _width = width;
-        workspace().incrVersion();
     }
 
     /** Return true if the relation has a definite width (i.e.,
-     *  <code>setWidth()</code> has not been called with a zero argument).
+     *  setWidth() has not been called with a zero argument).
      */
     public boolean widthFixed() {
         return (_width != 0);
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+
+    /** Indicate that the description(int) method should describe the width
+     *  of the relation, and whether it has been fixed.
+     */
+    public static final int CONFIGURATION = 512;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
     /** Throw an exception if the specified port cannot be linked to this
      *  relation (is not of class IOPort).
-     *  @param port The port to link to.
+     *  @param port The candidate port to link to.
      *  @exception IllegalActionException If the port is not an IOPort.
      */
     protected void _checkPort (Port port) throws IllegalActionException {
@@ -355,18 +420,63 @@ public class IORelation extends ComponentRelation {
         }
     }
 
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the NamedObj class and in this class.
+     *  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is specified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  <p>
+     *  If the detail argument sets the bit defined by the constant
+     *  CONFIGURATION, then append to the description is a field
+     *  of the form "configuration {width <i>integer</i> ?fixed?}", where the
+     *  word "fixed" is present if the relation has fixed width, and is
+     *  absent if the relation is a bus with inferred width (widthFixed()
+     *  returns false).
+     *
+     *  This method is read-synchronized on the workspace.
+     *
+     *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent, int bracket) {
+        try {
+            workspace().getReadAccess();
+            String result;
+            if (bracket == 1 || bracket == 2) {
+                result = super._description(detail, indent, 1);
+            } else {
+                result = super._description(detail, indent, 0);
+            }
+            if ((detail & CONFIGURATION) != 0) {
+                if (result.trim().length() > 0) {
+                    result += " ";
+                }
+                result += "configuration {";
+                result += "width " + getWidth();
+                if (widthFixed()) result += " fixed";
+                result += "}";
+            }
+            if (bracket == 2) result += "}";
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
-    /** Cascade two Receiver arrays to form a new array. For each row, each
-     *  element of the second array is appended behind the elements of the
-     *  first array. This method is solely for deepReceivers.
-     *  The two input arrays must have the same number of rows.
-     *  @param array1 the first array.
-     *  @param array2 the second array.
-     *  @exception InvalidStateException If the two arrays do not have
-     *   the same number of rows.
-     */
+    // Cascade two Receiver arrays to form a new array. For each row, each
+    // element of the second array is appended behind the elements of the
+    // first array. This method is solely for deepReceivers.
+    // The two input arrays must have the same number of rows.
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
             throws InvalidStateException {
         if (array1 == null) {
@@ -398,34 +508,38 @@ public class IORelation extends ComponentRelation {
         return result;
     }
 
-    /** Infer the width of the port from how it is connected.
-     *  Throw an exception if this cannot be done.  Returned value
-     *  is always at least one.
-     *  @InvalidStateException If the width cannot be inferred.
-     */
-    private int _inferWidth() throws InvalidStateException {
-        int result = 1;
-        Enumeration ports = linkedPorts();
-        while(ports.hasMoreElements()) {
-            IOPort p = (IOPort) ports.nextElement();
-            if (p.isInsideLinked(this)) {
-                // I am linked on the inside...
-                int piw = p._getInsideWidth(this);
-                int pow = p.getWidth();
-                int diff = pow - piw;
-                if (diff > result) result = diff;
+    // Infer the width of the port from how it is connected.
+    // Throw a runtime exception if this cannot be done (normally,
+    // the methods that construct a topology ensure that it can be
+    // be done).  The returned value is always at least one.
+    // This method is not read-synchronized on the workspace, so the caller
+    // should be.
+    private int _inferWidth() {
+        if (workspace().getVersion() != _inferredwidthversion) {
+            _inferredwidth = 1;
+            Enumeration ports = linkedPorts();
+            while(ports.hasMoreElements()) {
+                IOPort p = (IOPort) ports.nextElement();
+                if (p.isInsideLinked(this)) {
+                    // I am linked on the inside...
+                    int piw = p._getInsideWidth(this);
+                    int pow = p.getWidth();
+                    int diff = pow - piw;
+                    if (diff > _inferredwidth) _inferredwidth = diff;
+                }
             }
+            _inferredwidthversion = workspace().getVersion();
         }
-        // FIXME: Should cache this result.
-        return result;
+        return _inferredwidth;
     }
 
     ///////////////////////////////////////////////////////////////////////
     ////                      private variables                        ////
 
-    // whether the relation is a bus
-    private boolean _bus = false;
-
     // width of the relation.
     private int _width = 1;
+
+    // cached inferred width.
+    private transient int _inferredwidth;
+    private transient long _inferredwidthversion = -1;
 }

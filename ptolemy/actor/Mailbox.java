@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 
 */
 
@@ -35,78 +35,80 @@ import pt.kernel.util.NoSuchItemException;
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
 /**
-The Receiver with capacity one. Used in MailboxPort to hold incoming
-token. Implement the Receiver interface.
+A token holder with capacity one.
 
-@author Jie Liu
+@author Jie Liu, Edward A. Lee
 @version $Id$
 */
 public class Mailbox implements Receiver {
-    /** Construct an empty Mailbox. The Mailbox must have a container,
-     * which is an IOPort. The container, once set, can't be changed.
-     * FIXME: what if container = null?
-     * @param container Container of Mailbox to be constructed.
+
+    /** Construct an empty Mailbox with no container.
+     */
+    public Mailbox() {
+    }
+
+    /** Construct an empty Mailbox with the specified container.
+     *  @param container The container.
      */
     public Mailbox(IOPort container) {
         _container = container;
-        _isEmpty = true;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Get the contained Token.
-     * FIXME: synchronized on workspace?
-     * @see put
-     * @return token
-     * @exception NoSuchItemException if the Mailbox is empty.
+    /** Get the contained Token.  If there is none, thrown an exception.
+     *  @return A token.
+     *  @exception NoSuchItemException If the Mailbox is empty.
      */
     public Token get() throws NoSuchItemException {
-        if(_isEmpty) {
+        if(_token == null) {
             throw new NoSuchItemException(getContainer(),
                     "Attempt to get data from an empty mailbox.");
         }
-        _isEmpty = true;
-        return _token;
+        Token t = _token;
+        _token = null;
+        return t;
     }
 
-    /** return the IOPort that contains this Mailbox
-     * @return container
+    /** Return the container.
+     *  @return The container.
      */
-    public Nameable getContainer() {
+    public IOPort getContainer() {
         return _container;
     }
 
-    /** Return ture if the Mailbox is empty.
-     * @return ture if the Mailbox is empty.
+    /** Return true if the Mailbox is empty.
+     *  @return true if the Mailbox is empty.
      */
     public boolean isEmpty() {
-        return _isEmpty;
+        return (_token == null);
     }
 
-    /** Put a token in the Mailbox
-     * @see get
-     * @param token The token to be put in.
-     * @exception TokenHolderFullException if the Mailbox has
-     *            unconsumed token.
+    /** Put a token into the mailbox.  If the argument is null, then the
+     *  mailbox will not contain a token after this returns.
+     *  @param token The token to be put into the mailbox.
+     *  @exception TokenHolderFullException If the Mailbox already contains
+     *   a previously put token that has not been gotten.
      */
     public void put(Token token) throws TokenHolderFullException{
-        if(!_isEmpty) {
+        if(_token != null) {
             throw new TokenHolderFullException();
         }
         _token = token;
-        _isEmpty = false;
+    }
+
+    /** Set the container. */
+    public void setContainer(IOPort port) {
+        _container = port;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-
     // Container is not changeable.
-    private final IOPort _container;
+    private IOPort _container = null;
+
     // The token held.
-    private Token _token;
-    private boolean _isEmpty;
+    private Token _token = null;
 }

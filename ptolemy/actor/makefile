@@ -65,6 +65,7 @@ JARFILE = 	$(TYPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Actor.java \
+	AtomicActor.java \
 	CompositeActor.java \
 	DataComputingInit.java \
 	Director.java \

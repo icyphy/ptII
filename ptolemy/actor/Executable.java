@@ -34,7 +34,8 @@ import pt.kernel.util.*;
 //// Executable
 /**
 This interface defines how an object can be invoked. This should be
-implemented by classes Actor and Director
+implemented by actors and directors.
+
 @author Mudit Goel
 @version $Id$
 */
@@ -45,7 +46,7 @@ public interface Executable {
 
     /** This fires an actor and maybe invoked several times between
      *  invocations of prefire() and postfire().
-     * @exception IllegalActionException Throw by derived classes.
+     *  @exception IllegalActionException Throw by derived classes.
      */
     public void fire() throws IllegalActionException;
 
@@ -55,8 +56,8 @@ public interface Executable {
     public void initialize();
 
     /** This should be invoked before the first fire()
-     * @return the state of the actor. TRUE indicates that the fire() and
-     *  postfire() methods can be invoked while FALSE indicates the opposite.
+     *  @return the state of the actor. TRUE indicates that the fire() and
+     *   postfire() methods can be invoked while FALSE indicates the opposite.
      */
     public boolean prefire();
 

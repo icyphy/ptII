@@ -152,6 +152,14 @@ public class Director extends NamedObj implements Executable {
         return _complete;
     }
 
+    /** Return a new receiver of a type compatible with this director.
+     *  In this base class, this returns an instance of Mailbox.
+     *  @return A new Mailbox.
+     */
+    public Receiver newReceiver() {
+        return new Mailbox();
+    }
+
     /** This should be called after the fire methods have been called. This
      *  should invoke the postfire methods of actors according to a schedule
      */

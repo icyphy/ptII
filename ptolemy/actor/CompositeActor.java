@@ -89,7 +89,7 @@ relations to IORelations, and the actors instances of Actor.
 @see pt.actors.Actor
 @see pt.actors.IOPort
 */
-public class CompositeActor extends CompositeEntity implements Executable {
+public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Construct a top-level CompositeActor with the specified director
      *  and executive director.  At least one of these must be non-null.
@@ -178,10 +178,12 @@ public class CompositeActor extends CompositeEntity implements Executable {
     /** Return the director responsible for execution of the contained
      *  actors.  This will be either the local director (if it exists) or the
      *  executive director.  Note that this is never null.
+     *  FIXME: Is this latter statement true with cloning?
      *  @return The director responsible for invocation of inside actors.
      */
     public Director getDirector() {
-	return _director;
+        if (_director != null) return _director;
+        return _execdirector;
     }
 
     /** Return the director responsible for the execution of this composite.
@@ -249,6 +251,19 @@ public class CompositeActor extends CompositeEntity implements Executable {
             workspace().incrVersion();
             return port;
         }
+    }
+
+    /** Return a new receiver of a type compatible with the director.
+     *  @exception IllegalActionException If there is no director.
+     *  @return A new object implementing the Receiver interface.
+     */
+    public Receiver newReceiver() throws IllegalActionException {
+        Director dir = getDirector();
+        if (dir == null) {
+            throw new IllegalActionException(this,
+            "Cannot create a receiver without a director.");
+        }
+        return dir.newReceiver();
     }
 
     /** Create a new IORelation with the specified name, add it to the
@@ -409,6 +424,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
             // FIXME - getDirector().unregisterActor(entity);
         }
     }
+
     /////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
