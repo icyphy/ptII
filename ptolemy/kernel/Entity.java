@@ -178,27 +178,46 @@ public class Entity extends InstantiableNamedObj {
             }
             Class myClass = getClass();
             Field fields[] = myClass.getFields();
+
             for (int i = 0; i < fields.length; i++) {
                 try {
                     if (fields[i].get(newEntity) instanceof Port) {
-                        Port port = newEntity.getPort(fields[i].getName());
+                        String fieldName = fields[i].getName();
+                        Port port = newEntity.getPort(fieldName);
                         if (port == null) { 
-                            throw new IllegalActionException(this,
-                                    "Could not find a port named '"
-                                    + fields[i].getName() + "'. "
-                                    + "This can occur when the name of the "
-                                    + "variable does not match the name "
-                                    + "passed to the constructor of the "
-                                    + "actor.\n"
-                                    + "Right:\n"
-                                    + "    input = new TypedIOPort(this, "
-                                    + "\"input\", true, false);\n"
-                                    + "Wrong:\n"
-                                    + "    myInput = new TypedIOPort(this, "
-                                    + "\"input\", true, false);");
-                        } else {
-                            fields[i].set(newEntity, port);
+                            // Names that end in Port are ok.
+                            if (fieldName.endsWith("Port")) {
+                                port = newEntity.getPort(
+                                        fieldName.substring(0,
+                                                fieldName.length() - 4));
+                            }
+                            if (port == null) { 
+                                throw new IllegalActionException(this,
+                                        "Could not find a port named '"
+                                        + fieldName + "' or '"
+                                        + fieldName + "Port'. "
+                                        + "This can occur when the name of "
+                                        + "the "
+                                        + "variable does not match the name "
+                                        + "passed to the constructor of the "
+                                        + "actor.\n"
+                                        + "Right:\n"
+                                        + "    " + fieldName
+                                        + " = new TypedIOPort(this, "
+                                        + "\"" + fieldName
+                                        + "\", true, false);\n"
+                                        + "Right:\n"
+                                        + "    " + fieldName
+                                        + " = new TypedIOPort(this, "
+                                        + "\"" + fieldName
+                                        + "Port\", true, false);\n"
+                                        + "Wrong:\n"
+                                        + "    " + fieldName
+                                        + " = new TypedIOPort(this, "
+                                        + "\"foo\", true, false);");
+                            }
                         }
+                        fields[i].set(newEntity, port);
                     }
                 } catch (Exception ex) {
                     // CloneNotSupportedException does not have a

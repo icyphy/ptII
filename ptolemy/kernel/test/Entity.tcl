@@ -298,11 +298,13 @@ test Entity-9.3 {Test clone with badly named ports} {
     set exception [lindex $errorCode 1]
     set cause [$exception getCause]
     list [$cause toString]
-} {{ptolemy.kernel.util.IllegalActionException: Could not find a port named 'badlyNamedInput'. This can occur when the name of the variable does not match the name passed to the constructor of the actor.
+} {{ptolemy.kernel.util.IllegalActionException: Could not find a port named 'poorlyNamedInput' or 'poorlyNamedInputPort'. This can occur when the name of the variable does not match the name passed to the constructor of the actor.
 Right:
-    input = new TypedIOPort(this, "input", true, false);
+    poorlyNamedInput = new TypedIOPort(this, "poorlyNamedInput", true, false);
+Right:
+    poorlyNamedInput = new TypedIOPort(this, "poorlyNamedInputPort", true, false);
 Wrong:
-    myInput = new TypedIOPort(this, "input", true, false);
+    poorlyNamedInput = new TypedIOPort(this, "foo", true, false);
   in .E1}}
 
 ######################################################################

@@ -50,16 +50,24 @@ public class PortNameProblem extends Entity {
             throws  IllegalActionException, NameDuplicationException  {
         super(workspace, name);
 
+        // This port should be oke
+        directoryOrURLPort = new Port(this, "directoryOrURL");
+
         // The name of the port should passed to the constructor should
         // match the name of the variable.  Entity.clone() assumes
         // that the names match.
         // Right:  
-        // badlyNamedInput = new Port(this, "badlyNamedInput");
+        // poorlyNamedInput = new Port(this, "poorlyNamedInput");
         // Wrong:
-        badlyNamedInput = new Port(this, "input");
+        poorlyNamedInput = new Port(this, "input");
 
     }
 
+    // This port, from actor/lib/io/DirectoryListing.java, is ok because
+    // it ends in "Port"
+    public Port directoryOrURLPort;
+
     //public Port input;
-    public Port badlyNamedInput;
+    public Port poorlyNamedInput;
+
 }
