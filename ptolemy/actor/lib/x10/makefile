@@ -58,6 +58,7 @@ JSRCS = ApplianceController.java \
 	X10Interface.java
 
 OTHER_FILES_TO_BE_JARED = \
+	x10.xml \
 	x10-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
