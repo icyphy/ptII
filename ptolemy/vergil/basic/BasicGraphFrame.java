@@ -65,6 +65,7 @@ import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -112,7 +113,9 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
+import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.VisibleTreeModel;
+import ptolemy.vergil.toolbox.*;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.JCanvas;
@@ -132,6 +135,7 @@ import diva.graph.layout.LevelLayout;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FocusMouseListener;
 import diva.gui.toolbox.JCanvasPanner;
+import diva.gui.toolbox.JContextMenu;
 import diva.util.java2d.ShapeUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -322,6 +326,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
           }
         */
 
+        _libraryContextMenuCreator = new PTreeMenuCreator();
+        _libraryContextMenuCreator.addMenuItemFactory(
+                new OpenLibraryMenuItemFactory());
+        _library.addMouseListener(_libraryContextMenuCreator);
+        
         _libraryScrollPane = new JScrollPane(_library);
         _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
         _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
@@ -1469,6 +1478,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected JGraph _jgraph;
     protected JCanvasPanner _graphPanner;
     protected JTree _library;
+    protected PTreeMenuCreator _libraryContextMenuCreator;
     protected EntityTreeModel _libraryModel;
     protected JScrollPane _libraryScrollPane;
     protected JPanel _palettePane;
@@ -1891,10 +1901,40 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     }
 
     /////////////////////////////////////////////////////////////////////
+    //// OpenLibraryMenuItemFactory
+
+    /**
+     *  Create a menu item that will open a library in editable form.
+     */
+    private class OpenLibraryMenuItemFactory implements MenuItemFactory {
+        /**
+         * Add an item to the given context menu that will open the
+         * given object as an editable model.
+         */
+        public JMenuItem create(
+                final JContextMenu menu, final NamedObj object) {
+            Action action = new AbstractAction("Open for Editing") {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            getConfiguration().openModel(object);
+                        } catch(KernelException ex) {
+                            // FIXME
+                        }
+                    }        
+                };
+            action.putValue("tooltip",
+                    "Open library for editing.");
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_O));
+            return menu.add(action, (String)action.getValue(Action.NAME));
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////
     //// RedoAction
 
     /**
-     *  Undo the last undoable MoML change on the current current model.
+     *  Redo the last undone MoML change on the current current model.
      */
     private class RedoAction extends AbstractAction {
 
@@ -1915,9 +1955,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
 
         /**
-         *  Paste the current contents of the clipboard into the current model.
+         *  Redo the last undone MoML change on the current current model.
          *
-         * @param  e  Description of Parameter
+         * @param e The event for the action.
          */
         public void actionPerformed(ActionEvent e) {
             redo();
@@ -1949,9 +1989,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
 
         /**
-         *  Paste the current contents of the clipboard into the current model.
+         *  Undo the last undoable MoML change on the current current model.
          *
-         * @param  e  Description of Parameter
+         * @param e The event for the action.
          */
         public void actionPerformed(ActionEvent e) {
             undo();

@@ -52,6 +52,7 @@ JSRCS = \
 	EntityTreeModel.java \
 	FullTreeModel.java \
 	PTree.java \
+	PTreeMenuCreator.java \
 	PtolemyTreeCellRenderer.java \
 	TreeEditor.java \
 	TreeEditorPanel.java \

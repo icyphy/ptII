@@ -69,24 +69,23 @@ public class PTree extends JTree {
         DragSource.getDefaultDragSource().
             createDefaultDragGestureRecognizer(
                     this, DnDConstants.ACTION_COPY_OR_MOVE,
-                    new DesignTreeDragGestureListener());
+                    new PTreeDragGestureListener());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     // A Drag Gesture listener for the tree.
-    private class DesignTreeDragGestureListener implements DragGestureListener
-    {
+    private class PTreeDragGestureListener implements DragGestureListener {
         public void dragGestureRecognized(DragGestureEvent e) {
             final DragSourceListener dsl = new DragSourceListener() {
                     public void dragDropEnd(DragSourceDropEvent dsde) {}
                     public void dragEnter(DragSourceDragEvent dsde) {
                         DragSourceContext context = dsde.getDragSourceContext();
-                        //intersection of the users selected action, and the
-                        //source and target actions
+                        // Intersection of the users selected action,
+                        // and the source and target actions
                         int myaction = dsde.getDropAction();
-                        if ( (myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
+                        if ((myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
                             context.setCursor(DragSource.DefaultCopyDrop);
                         } else {
                             context.setCursor(DragSource.DefaultCopyNoDrop);
@@ -115,7 +114,6 @@ public class PTree extends JTree {
                     //initial cursor, transferable, dsource listener
                     e.startDrag(DragSource.DefaultCopyNoDrop,
                             transferable, dsl);
-
                 }
             }
         }

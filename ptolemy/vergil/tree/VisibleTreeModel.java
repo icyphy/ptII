@@ -38,6 +38,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.icon.EditorIcon;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -110,7 +111,9 @@ public class VisibleTreeModel extends FullTreeModel {
      *  @return A list of attributes.
      */
     protected List _attributes(Object object) {
-        if (!(object instanceof NamedObj)) return _emptyList;
+        if (!(object instanceof NamedObj)) {
+            return Collections.EMPTY_LIST;
+        }
 
         // Use the cached list, if possible.
         long version = _workspace.getVersion();
@@ -155,7 +158,9 @@ public class VisibleTreeModel extends FullTreeModel {
      *  @return A list of ports.
      */
     protected List _ports(Object object) {
-        if (!(object instanceof Entity)) return _emptyList;
+        if (!(object instanceof Entity)) {
+            return Collections.EMPTY_LIST;
+        }
 
         // Use the cached list, if possible.
         long version = _workspace.getVersion();
@@ -183,7 +188,9 @@ public class VisibleTreeModel extends FullTreeModel {
      *  @return A list of relations.
      */
     protected List _relations(Object object) {
-        if (!(object instanceof CompositeEntity)) return _emptyList;
+        if (!(object instanceof CompositeEntity)) {
+            return Collections.EMPTY_LIST;
+        }
 
         // Use the cached list, if possible.
         long version = _workspace.getVersion();

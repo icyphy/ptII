@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.tree;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -138,13 +139,9 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
      *  @return A list of classes.
      */
     protected List _classes(Object object) {
-        if (!(object instanceof CompositeEntity)) return _emptyList;
+        if (!(object instanceof CompositeEntity)) {
+            return Collections.EMPTY_LIST;
+        }
         return ((CompositeEntity)object).classDefinitionList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-    /** Empty list. */
-    protected static List _emptyList = new LinkedList();
 }

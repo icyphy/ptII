@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.tree;
 
+import java.util.Collections;
 import java.util.List;
 
 import ptolemy.kernel.CompositeEntity;
@@ -187,7 +188,9 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      *  @return A list of attributes.
      */
     protected List _attributes(Object object) {
-        if (!(object instanceof NamedObj)) return _emptyList;
+        if (!(object instanceof NamedObj)) {
+            return Collections.EMPTY_LIST;
+        }
         return ((NamedObj)object).attributeList();
     }
 
@@ -197,7 +200,9 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      *  @return A list of ports.
      */
     protected List _ports(Object object) {
-        if (!(object instanceof Entity)) return _emptyList;
+        if (!(object instanceof Entity)) {
+            return Collections.EMPTY_LIST;
+        }
         return ((Entity)object).portList();
     }
 
@@ -207,7 +212,9 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      *  @return A list of relations.
      */
     protected List _relations(Object object) {
-        if (!(object instanceof CompositeEntity)) return _emptyList;
+        if (!(object instanceof CompositeEntity)) {
+            return Collections.EMPTY_LIST;
+        }
         return ((CompositeEntity)object).relationList();
     }
 }
