@@ -45,32 +45,50 @@ CLASSPATH = ../..
 
 JSRCS = \
 	CentralizedExecutive.java \
+	DataPort.java \
 	DistributedExecutive.java \
 	Entity.java \
 	Executive.java \
+	FIFORelation.java \
 	Galaxy.java \
 	GenericPort.java \
 	GenericPortForTcl.java \
 	GraphElement.java \
+	IntervalTag.java \
 	IntParam.java \
 	MultiPort.java \
 	NamedObj.java \
+	NonPrimitiveValue.java \
+	NoTag.java \
+	NoTagDoubleParticle.java \
+	NoTagNonPrimitive.java \
+	NoTagPrimitive.java \
+	NoValue.java \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
 	Particle.java \
+	PrimitiveValue.java \
 	POElement.java \
 	Port.java \
 	Relation.java \
 	SampleTarget.java \
 	SampleSDFExecutive.java \
 	Scheduler.java \
+	SDFPort.java \
 	SDFStar.java \
 	Star.java \
 	StatusArray.java \
+	Tag.java \
+	TagInterface.java \
 	Target.java \
+	TimedTag.java \
+	TimedPrimitive.java \
+	TimedNonPrimitive.java \
 	ThreadedEntity.java \
-	Universe.java
+	Universe.java \
+	Value.java \
+	ValueInterface.java
 
 EXTRA_SRCS =	$(JSRCS)
 
