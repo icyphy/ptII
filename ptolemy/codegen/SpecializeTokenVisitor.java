@@ -918,6 +918,11 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 				       + "_visitVarInitDeclNode: "
 				       + "addInequality12");
 		}
+		try {
+		    term.setValue((ClassDecl)initExprTerm.getValue());
+		} catch (IllegalActionException e) {
+		    throw new RuntimeException("initExpr:" + e);
+		}
                 _solver.addInequality(new Inequality(initExprTerm, term));
             }
         }
