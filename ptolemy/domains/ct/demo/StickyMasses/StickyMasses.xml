@@ -68,7 +68,7 @@
     </entity>
     <entity name="HS" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.data.expr.Parameter" value="&quot;Controller&quot;">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="84.0, 42.0">
             </property>
@@ -96,7 +96,7 @@
             </property>
         </port>
         <entity name="Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
-            <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;Separate&quot;">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Separate">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="453.99998474121094, 224.0">
             </property>
@@ -119,7 +119,7 @@
                 <property name="input"/>
             </port>
             <entity name="Separate" class="ptolemy.domains.fsm.kernel.State">
-                <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;Separate&quot;">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Separate">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="420.0, 225.0">
                 </property>
@@ -129,7 +129,7 @@
                 </port>
             </entity>
             <entity name="Together" class="ptolemy.domains.fsm.kernel.State">
-                <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;Together&quot;">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Together">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="180.0, 225.0">
                 </property>
@@ -139,62 +139,62 @@
                 </port>
             </entity>
             <relation name="Tr1" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;touched_S&quot;">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_S">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="act1" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;P1_V&quot;">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="P1_V">
                     </property>
-                    <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;P1.initialState&quot;">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="P1.initialState">
                     </property>
                 </property>
                 <property name="act4" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;(V1_V*1.0+V2_V*1.0)/2.0&quot;">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(V1_V*1.0+V2_V*1.0)/2.0">
                     </property>
-                    <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;V1.initialState&quot;">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="V1.initialState">
                     </property>
                 </property>
                 <property name="act0" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;10.0&quot;">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="10.0">
                     </property>
-                    <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;STI.initialState&quot;">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="STI.initialState">
                     </property>
                 </property>
                 <property name="reset1" class="ptolemy.domains.fsm.kernel.ResetRefinement">
                 </property>
             </relation>
             <relation name="Tr2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;F_V &gt; STI_V || F_V &lt; -STI_V&quot;">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="F_V &gt; STI_V || F_V &lt; -STI_V">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;P1_V&quot;">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="P1_V">
                     </property>
-                    <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;P1.initialState&quot;">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="P1.initialState">
                     </property>
                 </property>
                 <property name="act3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;P1_V&quot;">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="P1_V">
                     </property>
-                    <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;P2.initialState&quot;">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="P2.initialState">
                     </property>
                 </property>
                 <property name="act5" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;V1_V&quot;">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="V1_V">
                     </property>
-                    <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;V1.initialState&quot;">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="V1.initialState">
                     </property>
                 </property>
                 <property name="act6" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;V1_V&quot;">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="V1_V">
                     </property>
-                    <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;V2.initialState&quot;">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="V2.initialState">
                     </property>
                 </property>
                 <property name="reset2" class="ptolemy.domains.fsm.kernel.ResetRefinement">
