@@ -343,7 +343,8 @@ public class StringUtilities {
 
         // The third argument is true, which means return the delimiters
         // as part of the tokens.
-        StringTokenizer tokenizer = new StringTokenizer(longName, "\r\n", true);
+        StringTokenizer tokenizer =
+            new StringTokenizer(longName, "\r\n", true);
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             int i;
