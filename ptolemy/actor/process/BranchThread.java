@@ -64,6 +64,7 @@ public class BranchThread extends PtolemyThread {
     /**
      */
     public void run() {
+	try {
 	while( _branch.isActive() ) {
 	    while( !_branch.isIterationOver() ) {
 		_branch.transferToken();
@@ -72,6 +73,10 @@ public class BranchThread extends PtolemyThread {
                 _branch.newIteration();
             }
 	}
+        } catch( TerminateProcessException e ) {
+            // Process was terminated.
+            _branch.setActive(false);
+        }
     } 
 
     ///////////////////////////////////////////////////////////////////
