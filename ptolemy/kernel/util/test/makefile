@@ -68,6 +68,7 @@ JSIMPLE_TESTS = \
 	NamedList.tcl \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
+	ProcessedString.tcl \
 	PtolemyThread.tcl \
 	StringUtilities.tcl \
 	Workspace.tcl
