@@ -30,15 +30,16 @@
 
 package ptolemy.apps.charon;
 
-import ptolemy.*;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Expression;
+import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
-import ptolemy.data.DoubleToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.lib.Integrator;
 import ptolemy.domains.ct.kernel.CTMixedSignalDirector;
 import ptolemy.domains.ct.kernel.CTEmbeddedDirector;
@@ -56,10 +57,14 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.Relation;
 import ptolemy.vergil.fsm.modal.ModalModel;
 import ptolemy.vergil.fsm.modal.ModalPort;
+import ptolemy.vergil.fsm.modal.ModalController;
 import ptolemy.vergil.fsm.modal.Refinement;
 import ptolemy.vergil.fsm.modal.RefinementPort;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.StringTokenizer;
 
 public class Agent {
 
@@ -402,22 +407,21 @@ public class Agent {
 
       if (!_topLevel) {
 
-	ListIterator paraIterator = _parameters.listIterator();
-	while (paraIterator.hasNext()) {
-	  String paraName = (String) paraIterator.next();
-	  // Note that since it is not top level,
-	  // the parameter does not have actual value.
-	  // The actual value is eveluated during simulation
-	  // referring to the upper level parameters.
-	  Parameter parameter = new Parameter(_container, paraName);
-	  parameter.setExpression(paraName);
-	}
-
 	// refinement should have a CTEmbeddedDirector
 	if (_container instanceof Refinement) {
 	  _director = new CTEmbeddedDirector(_container, "CT Embedded Director");
+	} else {
+  	  ListIterator paraIterator = _parameters.listIterator();
+	  while (paraIterator.hasNext()) {
+	    String paraName = (String) paraIterator.next();
+	    // Note that since it is not top level,
+	    // the parameter does not have actual value.
+	    // The actual value is eveluated during simulation
+	    // referring to the upper level parameters.
+	    Parameter parameter = new Parameter(_container, paraName);
+	    parameter.setExpression(paraName);
+	  }
 	}
-
       } else {
 	// topLevel should have a CTMixedSignalDirector
 	_director = new CTMixedSignalDirector(_container, "CT Director");
@@ -515,6 +519,14 @@ public class Agent {
 	  TypedIOPort expressionOutput = expression.output;
 	  TypedIOPort integratorInput = integrator.input;
 
+	  // if the expression actor has no inputs, its output type has to be
+	  // configured
+	  if (getInputs().size() == 0) {
+	    TypeAttribute ta = new TypeAttribute(expressionOutput, "_type");
+	    ta.setExpression("double");
+	    //expression.output.setTypeEquals(BaseType.DOUBLE);
+	  }
+
 	  Parameter signalType;
 
 	  // Usually, there is one direction between the output port of the expression
@@ -570,6 +582,7 @@ public class Agent {
 	  }
 	} else {
 	  // The agent is a modal model.
+
     	  ListIterator transitions = _transitions.listIterator();
 	  int transitionIndex = 0;
 	  while (transitions.hasNext()) {
@@ -615,12 +628,14 @@ public class Agent {
 
 	    Transition fsmTransition = new Transition(controller, transition.getState() + "->" + transition.getNextState());
 	    fsmTransition.guardExpression.setExpression(transition.getCondition());
+	    fsmTransition.reset.setExpression("true");
+	    fsmTransition.setActions.setExpression(transition.getNextState() + ".integrator.initialState = " + getOutputs().get(0));
 
 	    state.outgoingPort.link(fsmTransition);
 	    nextState.incomingPort.link(fsmTransition);
 	  }
 
-	  // Construct the input and output ports for the modal model.
+  	  // Construct the input and output ports for the modal model.
 	  ListIterator outputs = getOutputs().listIterator();
 	  while(outputs.hasNext()) {
 	    String outputStr = (String) outputs.next();
@@ -725,47 +740,84 @@ public class Agent {
 	}
       }
 
-      // link container output ports to the entities output ports of the container
-      ListIterator sinks = _container.outputPortList().listIterator();
-      while (sinks.hasNext()) {
-	TypedIOPort sink = (TypedIOPort) sinks.next();
-	System.out.println("      Output port name: " + sink.getName());
-//	if(sink.insideRelationList().size() > 0)
-//	  continue;
+      if (_container instanceof ModalModel) {
+	// link internal ports
+	// If the model is ModalModel, all refinements use the same outputs
+	// which means that we have connect all the output of refinements to model outputs
+	ListIterator containerOutputs = _container.outputPortList().listIterator();
 
-	TypedIOPort source = _searchSource(sink);
-	TypedIORelation relation;
-
-	if (source != null) {
-	  List relations = source.linkedRelationList();
-	  System.out.println("      Source port name: " + source.getName() + " " + relations.size());
-	  if(relations.size() > 1) {
-	    throw new IllegalActionException("port has two relations!");
-	  } else if (relations.size() == 1) {
-	    relation = (TypedIORelation) relations.get(0);
-	    sink.link(relation);
+	while (containerOutputs.hasNext()) {
+	  TypedIOPort containerOutput = (TypedIOPort) containerOutputs.next();
+	  TypedIORelation containerOutputRelation = (TypedIORelation) containerOutput.insideRelationList().get(0);
+/*	  TypedIORelation containerOutputRelation = new TypedIORelation();
+	  if (containerOutput.linkedRelationList().size() == 0) {
+	    System.out.println(containerOutput.insideRelationList().size());
+	    continue;
 	  } else {
-	      // If there is no relation associated with the entities outputs,
-	      // while the container output has one relation linked,
-	      // the entities output ports should be linked to the relation.
-	      List myRelations = sink.insideRelationList();
-	      System.out.println(sink.getName() + " has relations: " + myRelations.size());
-	      if (myRelations.size() > 1) {
-		throw new IllegalActionException ("port has two relations!");
-	      } else if (myRelations.size() == 1) {
-		relation = (TypedIORelation) myRelations.get(0);
-	      } else {
-		relation = new TypedIORelation(_container, "relation" + relationIndex);
-		relationIndex++;
-		sink.link(relation);
-	      }
-	      source.link(relation);
+	    containerOutputRelation = (TypedIORelation) containerOutput.insideRelationList().get(0);
 	  }
+*/
+	  entities = _container.entityList().listIterator();
+	  while (entities.hasNext()) {
+	    Actor actor = (Actor) entities.next();
 
-	  // Status checking ...
-	  relations = source.insideRelationList();
-	  System.out.println("      After linking, Source name: " + source.getName() + " " + relations.size());
-	  System.out.println("      relation has " + relation.linkedPortList().size());
+	    if (!(actor instanceof ModalController)) {
+	      System.out.println("    dealing with Refinement: " + ((Nameable) actor).getFullName());
+
+	      ListIterator outputs = actor.outputPortList().listIterator();
+	      while (outputs.hasNext()) {
+		TypedIOPort output = (TypedIOPort) outputs.next();
+		System.out.println("      Refinement Output port name: " + output.getFullName());
+		if(output.linkedRelationList().size() > 0)
+		  throw new IllegalActionException ("Should not have any relation in modal model level before adding relations.");
+
+		output.link(containerOutputRelation);
+	      }
+	    }
+	  }
+	}
+
+      } else {
+	// link container output ports to the entities output ports of the container
+	ListIterator sinks = _container.outputPortList().listIterator();
+	while (sinks.hasNext()) {
+	  TypedIOPort sink = (TypedIOPort) sinks.next();
+	  System.out.println("      Output port name: " + sink.getFullName());
+
+	  TypedIOPort source = _searchSource(sink);
+	  TypedIORelation relation;
+
+	  if (source != null) {
+	    List relations = source.linkedRelationList();
+	    System.out.println("      Source port name: " + source.getFullName() + " " + relations.size());
+	    if(relations.size() > 1) {
+	      throw new IllegalActionException("port has two relations!");
+	    } else if (relations.size() == 1) {
+	      relation = (TypedIORelation) relations.get(0);
+	      sink.link(relation);
+	    } else {
+		// If there is no relation associated with the entities outputs,
+		// while the container output has one relation linked,
+		// the entities output ports should be linked to the relation.
+		List myRelations = sink.insideRelationList();
+		System.out.println(sink.getName() + " has relations: " + myRelations.size());
+		if (myRelations.size() > 1) {
+		  throw new IllegalActionException ("port has two relations!");
+		} else if (myRelations.size() == 1) {
+		  relation = (TypedIORelation) myRelations.get(0);
+		} else {
+		  relation = new TypedIORelation(_container, "relation" + relationIndex);
+		  relationIndex++;
+		  sink.link(relation);
+		}
+		source.link(relation);
+	    }
+
+	    // Status checking ...
+	    relations = sink.insideRelationList();
+	    System.out.println("      After linking, Output name: " + sink.getName() + " " + relations.size());
+	    System.out.println("      relation has " + relation.linkedPortList().size());
+	  }
 	}
       }
     } catch (NameDuplicationException e) {
