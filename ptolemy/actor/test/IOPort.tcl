@@ -973,7 +973,7 @@ test IOPort-12.3 {deepConnectedIn(Out)Ports} {
 test IOPOrt-12.4 {deepConnectedInPorts from a inside outputport} {
     # Create objects
     set e0 [java::new ptolemy.actor.CompositeActor]
-    set exedir [java::new ptolemy.actor.Director "EXE"]
+    set exedir [java::new ptolemy.actor.Director]
     $e0 setDirector $exedir
     $e0 setManager $manager
     $e0 setName E0
