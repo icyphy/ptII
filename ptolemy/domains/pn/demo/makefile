@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS = Interleave TicTacToe Prime 
+DIRS = Interleave Prime 
 
 # Root of the Java directory
 ROOT =		../../../..
