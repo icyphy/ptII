@@ -1,3 +1,5 @@
+$Id$
+
 1/05: Attila Vizhanyo writes:
 >  Please find the SBW example in Matlab Simulink and ECSL-DP format.
 >  I also enclosed the ECSL-DP metamodel, please make sure you import and
@@ -139,3 +141,4 @@ Ok, now:
 
 The problem here is that we already have the ECSL file, so no need
 to run XML2ECSL!
+
