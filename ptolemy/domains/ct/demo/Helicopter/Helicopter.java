@@ -440,8 +440,6 @@ public class Helicopter extends TypedCompositeActor {
         ctrl.inputA.link(rA);
         ctrl.inputTh.link(rTh);
         ctrl.inputDTh.link(rTh);
-        ctrl.inputTm.link(rTm);
-        ctrl.inputTm.link(rTm);
         ctrl.inputVx.link(rVx);
         ctrl.inputVz.link(rVz);
 
