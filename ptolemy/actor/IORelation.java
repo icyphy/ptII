@@ -372,7 +372,7 @@ public class IORelation extends ComponentRelation {
      *   one and the relation is linked to a non-multiport, or it is zero and
      *   the relation is linked on the inside to a port that is already
      *   linked on the inside to a relation with unspecified width.
-     *  @see WorkSpace.getWriteAccess
+     *  @see ptolemy.kernel.util.Workspace#getWriteAccess()
      */
     public void setWidth(int width) throws IllegalActionException {
         try {
