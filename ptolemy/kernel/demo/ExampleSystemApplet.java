@@ -1,4 +1,4 @@
-/* ExampleSystem.java constructs a test hierachical graph using the ptolemy.kernel classes.
+/* Applet showing the canonical Ptolemy II system
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
 /**
-ExapmleSystem constructs a hierachical graph as shown in
+ExampleSystem constructs a hierachical graph as shown in
 Ptolemy 2 design document, Figure 8
 The graph has 10 entities, 14 ports, and 12 relations.
 The main function also returns the results of some key functions of
@@ -92,7 +92,7 @@ public class ExampleSystemApplet extends ExampleApplet
         f.addNotify();
         java.awt.Insets insets = f.insets();
         exsys.init();
-        exsys.move(insets.left,insets.top);
+        exsys.move(insets.left, insets.top);
         f.resize(exsys.preferredSize());
         exsys.resize(exsys.preferredSize());
         f.show();

@@ -1,6 +1,6 @@
-/* ExampleApplet.java is a applet class which cotains a run button and a text area
+/* A frame that contains the Ptolemy II applet
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,7 +31,7 @@ package ptolemy.kernel.demo;
 //////////////////////////////////////////////////////////////////////////
 //// ExampleFrame
 /**
-ExapmleApplet is an frame contains the ExampleApplet.
+ExampleApplet is an frame contains the ExampleApplet.
 It's for the conversion of an applet to an application.
 @author Jie Liu
 @version $Id$
