@@ -23,6 +23,8 @@ PNPrimeTycho 50
 structure of the Entities that make up the Universe before it is run.
 <li> The Second DAG that is displayed shows the 
 structure of the Entities that make up the Universe after it is run.
+<li> The nodes of both DAGs are mouse sensitive.  If you double click
+on a node, a window that describes the node will appear.
 </ul>
 <h2>How it works</h2>
 <a href="PNPrimeTycho.tcl"><code>PNPrimeTycho.tcl</code></a> is
@@ -34,7 +36,13 @@ contains Tcl Blend commands that build the universe and run it.
 The universe uses classes in
 <a href="../"><code>$TYCHO/java/pt/domains/pn/kernel</code></a> to 
 implement the Process Network domain.
-
+<h2>The Example System</h2>
+To view a DAG representation of the Ptolemy II kernel document example system,
+click on the Tcl code below:
+<tcl><pre>
+source [file join $TYCHO java pt domains pn kernel demo PNPrimeTycho.tcl] 
+ExampleSystemTycho
+</pre></tcl>
 <p>
 <a href="../doc/index.html">Tycho Home Page</a><br>
 <p>
