@@ -543,6 +543,16 @@ else
         mkdir $PTII/mescal/include
         cp -r boost $PTII/mescal/include])
     fi
+
+    AC_CHECK_HEADER(stdint.h, PTSTDINT_H=yes, PTSTDINT_H=no)
+    if test "$PTSTDINT_H" = "no"; then
+       AC_MSG_WARN([Failed to find stdint.h
+    mescal/views/simulation/model/UINT.h includes stdint.h so that
+    uint32_t and uint64_t are properly typedefd.
+    Older versions of Cygwin might not include stdint.h, the solution
+    is to update Cygwin from http://sources.redhat.com/cygwin
+    See mescal/views/simulation/model/UINT.h for details.])
+       fi
 fi
 
 #--------------------------------------------------------------------
