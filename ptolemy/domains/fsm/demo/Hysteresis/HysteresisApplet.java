@@ -103,7 +103,7 @@ public class HysteresisApplet extends SDFApplet {
 	    
             hystplotter.plot.setBackground(getBackground());
             hystplotter.plot.setGrid(false);
-            hystplotter.plot.setTitle("T = 0.3, Noise std dev = 0.2");
+            hystplotter.plot.setTitle("Threshold = 0.3, Noise std dev = 0.2");
             hystplotter.plot.setXRange(0.0, 200.0);
             hystplotter.plot.setWrap(true);
             hystplotter.plot.setYRange(-1.3, 1.3);
