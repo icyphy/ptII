@@ -61,21 +61,26 @@ JSRCS = \
 	Galaxy.java \
 	GenericPort.java \
 	GraphElement.java \
+	GraphException.java \
 	HasValue.java \
 	IntervalTag.java \
+	InvalidMoCException.java \
 	IntParam.java \
 	MultiPort.java \
 	NamedObj.java \
+	NameDuplicationException.java \
 	NoTag.java \
 	NoTagDoubleParticle.java \
 	NoTagHasValue.java \
 	NoValue.java \
+	NullReferenceException.java \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
 	Particle.java \
 	POElement.java \
 	Port.java \
+	PtolemyException.java \
 	Relation.java \
 	Star.java \
 	StatusArray.java \
