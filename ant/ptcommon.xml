@@ -52,10 +52,10 @@ KRUFT		Files to be removed by 'ant clean'
           depends="init">
     <javac
      destdir="${root}"
-     srcdir="."
+     srcdir="${root}"
      debug="on"
      classpath="${root}"
-     includes="${JSRCS}"
+     includes="${ME}/*.java"
      excludes="${compileExcludes}"
     />
   </target>
