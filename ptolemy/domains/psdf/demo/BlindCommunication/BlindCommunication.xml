@@ -4,9 +4,9 @@
 <entity name="BlindCommunication" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {8, 18, 880, 639}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {8, 18, 880, 607}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 530]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 498]">
     </property>
     <property name="order" class="ptolemy.data.expr.Parameter" value="11">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -54,18 +54,40 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.5, 265.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.5, 249.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AudioReader reads an input PSK signal and executes a sequence of &#10;signal analyses to determine the carrier, baud rate, and number of phase states.&#10;The resampler computes an unknown number of output samples, preventing &#10;static scheduling of the toplevel model.  Since the amount of processed &#10;data changes, the PhaseStatesEstimator model cannot be a synchronous &#10;dataflow model. In this model the PhaseStatesEstimator is quasi-statically &#10;scheduled using the Parameterized Synchronous Dataflow domain.&#10;&#10;Author: Stephen Neuendorffer&#10;Data and Algorithms provided by&#10;Southwest Research Institute.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AudioReader reads an input PSK signal and executes a sequence of &#10;signal analyses to determine the carrier, baud rate, and number of phase states.&#10;The resampler computes an unknown number of output samples, preventing &#10;static scheduling of the toplevel model.  Since the amount of processed &#10;data changes, the PhaseStatesEstimator model cannot be a synchronous &#10;dataflow model. In this model the PhaseStatesEstimator is quasi-statically &#10;scheduled using the Parameterized Synchronous Dataflow domain.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 315.0}">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of a blind communication receiver&#10;that illustrates the use of the &#10;parameterized synchronous dataflow domain.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 240.0">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Stephen Neuendorffer, Data and Algorthms provided by Southwest Research Institute</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 455.0]">
         </property>
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
@@ -702,8 +724,15 @@
             <link port="IdentifyBaudSamples.baud" relation="relation5"/>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, -10.0">
             </property>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                </property>
+            </port>
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
             <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="2^order">
