@@ -53,21 +53,6 @@ run tests when there is no graphical display present.
 
 public class RemoveGraphicalClasses implements MoMLFilter {
 
-    /** Add a class to be filtered for and its replacement if the class
-     *  is found.  If the replacement is null, then the rest of the
-     *  attribute is skipped
-     *  @param className The name of the class to be filtered
-     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
-     *  @param replacement The name of the class to be used if
-     *  className is found.  If this argument is null then the
-     *  rest of the attribute is skipped.
-     */
-    public void put(String className, String replacement) {
-        // ptolemy.copernicus.kernel.KernelMain call this method
-        // so as to filter out the GeneratorAttribute
-        _graphicalClasses.put(className, replacement);
-    }
-
     /** If the attributeValue is "ptolemy.vergil.icon.ValueIcon",
      *  or "ptolemy.vergil.basic.NodeControllerFactory"
      *  then return "ptolemy.kernel.util.Attribute"; if the attributeValue
@@ -115,6 +100,36 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         return elementName;
     }
 
+    /** Remove a class to be filtered
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @see #put(String)   
+     */
+    public void remove(String className) {
+        // ptolemy.copernicus.kernel.MakefileGenerator
+        // so as to filter out the GeneratorAttribute
+        _graphicalClasses.remove(className);
+    }
+
+    /** Add a class to be filtered for and its replacement if the class
+     *  is found.  If the replacement is null, then the rest of the
+     *  attribute is skipped.  Note that if you add a class with
+     *  this method, then you must remove it with {@link #remove(String)},
+     *  calling 'new RemoveGraphicalClasses' will not remove a class
+     *  that was added with this method.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @param replacement The name of the class to be used if
+     *  className is found.  If this argument is null then the
+     *  rest of the attribute is skipped.
+     *  @see #remove(String)
+     */
+    public void put(String className, String replacement) {
+        // ptolemy.copernicus.kernel.KernelMain call this method
+        // so as to filter out the GeneratorAttribute
+        _graphicalClasses.put(className, replacement);
+    }
+
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
@@ -132,9 +147,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
             String oldClassName = (String)classNames.next();
             String newClassName = (String) _graphicalClasses.get(oldClassName);
             if (newClassName == null) {
-                results.append(oldClassName + "will be removed\n");
+                results.append(oldClassName + " will be removed\n");
             } else {
-                results.append(oldClassName + "will be replaced by "
+                results.append(oldClassName + " will be replaced by "
                         + newClassName +"\n");
             }
         }
