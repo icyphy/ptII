@@ -213,6 +213,10 @@ public class PlotBox extends Panel {
      *  @param axes If true, clear the axes parameters.
      */
     public synchronized void clear (boolean axes) {
+        _xBottom = Double.MAX_VALUE;
+        _xTop = - Double.MAX_VALUE;
+        _yBottom = Double.MAX_VALUE;
+        _yTop = - Double.MAX_VALUE;
         if (axes) {
             // Protected members first.
             _yMax = 0;
@@ -221,10 +225,6 @@ public class PlotBox extends Panel {
             _xMin = 0;
             _xRangeGiven = false;
             _yRangeGiven = false;
-            _xBottom = Double.MAX_VALUE;
-            _xTop = - Double.MAX_VALUE;
-            _yBottom = Double.MAX_VALUE;
-            _yTop = - Double.MAX_VALUE;
             _xlog = false;
             _ylog = false;
             _grid = true;
