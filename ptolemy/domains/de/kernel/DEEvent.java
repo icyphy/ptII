@@ -49,9 +49,9 @@ import ptolemy.kernel.util.NamedObj;
    <p>
    A DE event is associated with a destination, which is either an actor or
    an IO port of an actor. A DE event, whose destination is an actor, is
-   called a <i>pure</i> event. A pure event does not have a desitination IO
-   port. A DE event, whose destination is an IO port, is called a <i>trigger</i>
-   event. Apprently, a trigger event has a destination actor.
+   called a <i>pure</i> event. A pure event does not have a destination IO
+   port. A DE event, whose destination is an IO port, is called a
+   <i>trigger</i> event. Apparently, a trigger event has a destination actor.
    <p>
    A DE event also has a depth, which is the topology information of its
    destinations. For a pure event, the depth is that of its destination actor.
@@ -168,7 +168,7 @@ public final class DEEvent implements Comparable {
 
     /** Return true if this event has the same tag with the argument DE event.
      *  @param event The DE event to compare against.
-     *  @return Ture if this event has the same tag with the specified one.
+     *  @return True if this event has the same tag with the specified one.
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
         return (timeStamp().equals(event.timeStamp())) &&

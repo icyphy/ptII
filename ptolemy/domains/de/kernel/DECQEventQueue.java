@@ -63,7 +63,7 @@ public class DECQEventQueue implements DEEventQueue {
     public DECQEventQueue(Director director) {
         _director = director;
         // Construct a calendar queue _cQueue with its default parameters:
-        // minBinCount is 2, binCountFactor is 2,and isAdaptive is true.
+        // minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
         _cQueue = new CalendarQueue(new DECQComparator());
     }
 

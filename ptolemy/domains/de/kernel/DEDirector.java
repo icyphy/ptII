@@ -85,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
    will be generated.
    <p>
    An event is also associated with a depth reflecting its priority, based
-   on which a DE director chooses the executiong order for simultaneous events.
+   on which a DE director chooses the execution order for simultaneous events.
    A depth is an integer and a larger value of depth indicates a lower priority.
    The depth of an event is determined by topologically sorting all the ports
    of actors according to their data dependencies over which there is no time
@@ -93,7 +93,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
    The order of events is defined as follows. An event A is said to be earlier
    than another event B if A's timestamp is smaller than B's; or if A's
-   timestamp is the same as B's, and A's microstp is smaller than B's; or if
+   timestamp is the same as B's, and A's microstep is smaller than B's; or if
    A's tag is the same as B's, and A's depth is smaller than B's. By giving
    events this well-defined order, this director can handle simultaneous events
    in a deterministic way.
@@ -116,7 +116,7 @@ import ptolemy.kernel.util.Workspace;
    no duplicate trigger events are allowed in an event queue. Another mechanism
    is that in a hierarchical model, each levels keep a local event queue.
    A lower level only reports the earliest event to its immediately upper level
-   to schedule a future firing. The last mechanism is to mantain a list which
+   to schedule a future firing. The last mechanism is to maintain a list which
    records all actors that are disabled. Any triggers sent to the actors in
    the list are discarded.
    <p>
@@ -719,7 +719,7 @@ public class DEDirector extends Director implements TimedDirector {
         _isInitializing = true;
         super.initialize();
 
-        // Register a pure event for the simulatino stop time.
+        // Register a pure event for the simulation stop time.
         //        Actor container = (Actor)getContainer();
         //        fireAt(container, getModelStopTime());
 
@@ -779,7 +779,7 @@ public class DEDirector extends Director implements TimedDirector {
         // There are two conditions to stop the model.
         // 1. There are no more actors to be fired (i.e. event queue is
         // empty), and either of the following conditions is satisfied:
-        //     a. the stopWhenWueueIsEmpty parameter is set to true.
+        //     a. the stopWhenQueueIsEmpty parameter is set to true.
         //     b. the current model time equals the model stop time.
         // 2. The event queue is not empty, but the current time exceeds
         // the stop time.
@@ -797,7 +797,7 @@ public class DEDirector extends Director implements TimedDirector {
             // hierarchy to refire the container at the timestamp of the
             // first event of the local event queue.
             // This design allows the upper level director (actually all
-            // levels in hieararchy) to keep a relatively short event queue.
+            // levels in hierarchy) to keep a relatively short event queue.
             _requestFiring();
         }
 
@@ -889,7 +889,7 @@ public class DEDirector extends Director implements TimedDirector {
         if (nextEventTime.equals(modelTime)) {
             // If there is an internal event scheduled to happen
             // at the current time, it is the right time to fire
-            // regaldless whether there are external inputs.
+            // regardless whether there are external inputs.
             result = result && true;
         } else {
             // If the event timestamp is greater than the model timestamp,
@@ -1008,9 +1008,9 @@ public class DEDirector extends Director implements TimedDirector {
         super.stopFire();
     }
 
-    // FIXME: Why we do not need an overriden transferOutputs method?
-    // trasfer all tokens at boundaries of hierarchies.
-    // Do we need an overriden transferInputs method?
+    // FIXME: Why we do not need an overridden transferOutputs method?
+    // transfer all tokens at boundaries of hierarchies.
+    // Do we need an overridden transferInputs method?
 
     /** Override the base class method to transfer all the available
      *  tokens at the boundary output port to outside.
@@ -1215,7 +1215,7 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         // If the event queue is not empty, we should update the depths of
-        // the existing events with new dpeths.
+        // the existing events with new depths.
         // NOTE: After update, we must use the same _eventQueue to keep the
         // existing references to it. For example, the debug listeners.
         if (!_eventQueue.isEmpty()) {
@@ -1305,7 +1305,7 @@ public class DEDirector extends Director implements TimedDirector {
             if (portContainer.equals(getContainer())) {
                 continue;
             }
-            // Get the function depenedency of the container actor
+            // Get the function dependency of the container actor
             FunctionDependency functionDependency =
                 portContainer.getFunctionDependency();
 
@@ -1430,7 +1430,7 @@ public class DEDirector extends Director implements TimedDirector {
     }
 
     /** Return the depth of an ioPort, which is the index of this ioPort in
-     *  topoligical sort.
+     *  topological sort.
      *  @param ioPort An IOPort whose depth is requested.
      *  @return An int representing the depth of the given ioPort.
      *  @exception IllegalActionException If the ioPort is not sorted.
@@ -1450,7 +1450,7 @@ public class DEDirector extends Director implements TimedDirector {
         }
     }
 
-    /** Dequeue the eventsthat have the smallest tag from the event queue.
+    /** Dequeue the events that have the smallest tag from the event queue.
      *  Return their destination actor. Advance the model tag to their tag.
      *  If the timestamp of the smallest tag is greater than the stop time
      *  then return null. If there are no events in the event queue, and
@@ -1494,7 +1494,7 @@ public class DEDirector extends Director implements TimedDirector {
                 // If the director is not at the top level.
                 if (_eventQueue.isEmpty()) {
                     // NOTE: when could this happen?
-                    // The containsr of this director, an opaque composite
+                    // The container of this director, an opaque composite
                     // actor, may be invoked by an update of its parameter
                     // port. Therefore, no actors inside this container need
                     // to be fired.
@@ -1574,10 +1574,10 @@ public class DEDirector extends Director implements TimedDirector {
                 }// Close the blocking read while loop
 
                 // To reach this point, either the event queue is not empty,
-                // or the _stopRequested is true, or an inturrupted exception
+                // or the _stopRequested is true, or an interrupted exception
                 // happened.
                 if (_eventQueue.isEmpty()) {
-                    // Stop is requested or this method is inturrupted.
+                    // Stop is requested or this method is interrupted.
                     // jump out of the loop: LOOPLABEL::GetNextEvent
                     break;
                 } else {
@@ -1641,7 +1641,7 @@ public class DEDirector extends Director implements TimedDirector {
                                             + timeToWait);
                                 }
                                 try {
-                                    // FIXME: Wait() does not realease the
+                                    // FIXME: Wait() does not release the
                                     // locks on the workspace, this blocks
                                     // UI interactions and may cause deadlocks.
                                     // SOLUTION: workspace.wait(object, long).
@@ -1667,13 +1667,13 @@ public class DEDirector extends Director implements TimedDirector {
                     currentTime = lastFoundEvent.timeStamp();
                     actorToFire = lastFoundEvent.actor();
 
-                    // NOTE: The _enqueEvent method discards the events
+                    // NOTE: The _enqueueEvent method discards the events
                     // for disabled actors.
                     if (_disabledActors != null &&
                             _disabledActors.contains(actorToFire)) {
                         // This actor has requested not to be fired again.
                         if (_debugging) {
-                            _debug("Skipping diabled actor: ",
+                            _debug("Skipping disabled actor: ",
                                     ((Nameable)actorToFire).getFullName());
                         }
                         actorToFire = null;
