@@ -1,7 +1,11 @@
 @java@ @jvmSize@
- -classpath "@classPath@"
- -Dptolemy.ptII.dir="@root@"
- ptolemy.copernicus.java.Main "@modelPath@" -d "@root@"
+ -classpath @classPath@
+ -Dptolemy.ptII.dir=@root@
+<<<<<<< compileCommandTemplate.txt
+ ptolemy.copernicus.java.Main @modelPath@ -d "@root@"
+=======
+ ptolemy.copernicus.java.Main @modelPath@ -d @root@
+>>>>>>> 1.3
  -p wjtp.watchDog time:@watchDogTimeout@
  -p wjtp.at targetPackage:@targetPackage@
  -p wjtp.mt targetPackage:@targetPackage@

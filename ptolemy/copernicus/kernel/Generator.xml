@@ -80,7 +80,7 @@ $Id$
                class="ptolemy.data.expr.Parameter"
 	       value="&quot;ptolemy/copernicus/java/cg/&quot; + model"
 	       >
-	       <doc>The path of the directory to generate code in. The default is derived from the value of targetPackage.</doc>
+	       <doc>The path relative to 'root' directory to generate code in. The default is derived from the value of targetPackage.</doc>
      </property>
 
 
@@ -88,8 +88,7 @@ $Id$
                class="ptolemy.data.expr.Parameter"
 	       value="&quot;OrthogonalCom&quot;"
 	       >
-	       <doc> The name of the model, as it appears in the .xml file.
-The name should be a well structured java identifier.</doc>
+	       <doc> The name of the model, read from the .xml file and sanitized.</doc>
      </property>
 
      <property name="modelPath" 
@@ -118,7 +117,7 @@ The name should be a well structured java identifier.</doc>
                class="ptolemy.data.expr.Parameter"
 	       value="property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses"
 	       >
-	       <doc>Defaults to the valye of of the java.class.path property.</doc>
+	       <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
      </property>
 
      <property name="classPathSeparator" 
@@ -132,7 +131,7 @@ The name should be a well structured java identifier.</doc>
                class="ptolemy.data.expr.Parameter"
 	       value="1000"
 	       >
-	       <doc>Defaults to 1000.</doc>
+	       <doc>Number of iterations to run the model for. Defaults to 1000.</doc>
      </property>
 
      <property name="iterationsParameter" 
@@ -163,6 +162,13 @@ The name should be a well structured java identifier.</doc>
 	       <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
      </property>
 
+
+     <property name="ptII" 
+               class="ptolemy.data.expr.Parameter"
+	       value="property(&quot;ptolemy.ptII.dir&quot;)"
+	       >
+	       <doc>The location of the Ptolemy II classes.</doc>
+     </property>
 
      <property name="root" 
                class="ptolemy.data.expr.Parameter"
@@ -197,8 +203,7 @@ The name should be a well structured java identifier.</doc>
                class="ptolemy.data.expr.Parameter"
 	       value="sootDir + &quot;/sootclasses.jar&quot; + classPathSeparator + sootDir + &quot;/jasminclasses.jar&quot; + classPathSeparator + javaSystemJar"
 	       >
-	       <doc>The location of sootclasses.jar, jasminclasses.jar and
-the Java system jar (usually rt.jar).</doc>
+	       <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).</doc>
      </property>
 
      <property name="watchDogTimeout" 

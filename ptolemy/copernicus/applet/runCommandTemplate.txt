@@ -1,4 +1,2 @@
-@java@
- -Xfuture -classpath @classPath@
- -Dptolemy.ptII.dir=@root@
- ptolemy.actor.gui.CompositeActorApplication
+appletviewer
+	"@root@/@targetPath@/@model@.htm"

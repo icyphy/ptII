@@ -149,12 +149,9 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
     ////                         public methods                    ////
 
     public void changeExecuted(ChangeRequest change) {
-	// FIXME: should we do anything here?
-	System.out.println("changeExecuted: " + change);
     }
 
     public void changeFailed(ChangeRequest change, final Exception exception) {
-	// FIXME: should we do anything here?
 	System.out.println("changeFailed: " + change + " " + exception);
     }
 

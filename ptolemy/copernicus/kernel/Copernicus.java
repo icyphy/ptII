@@ -37,6 +37,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.gui.MessageHandler;
+import ptolemy.moml.MoMLParser;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -132,7 +133,7 @@ public class Copernicus {
 	    (Parameter)_generatorAttribute.getAttribute("modelPath");
 	String modelPathValue =
 	    ((StringToken)(modelPath.getToken())).stringValue();
-        _updateModelPathAndModel(modelPathValue);
+        updateModelPathAndModel(_generatorAttribute, modelPathValue);
 
 	if (_verbose) {
 	    System.out.println(_generatorAttribute.toString());
@@ -366,8 +367,8 @@ public class Copernicus {
 					    + "' as a resource");
 	}
 	BufferedReader inputReader =
-	    new BufferedReader(new InputStreamReader(
-			     inputFileURL.openStream()));
+	    new BufferedReader(new InputStreamReader(inputFileURL
+						     .openStream()));
 	String inputLine;
 	StringBuffer output = new StringBuffer();
 	while ( (inputLine = inputReader.readLine()) != null) {
@@ -401,6 +402,40 @@ public class Copernicus {
 	outputFile.close();
     }
 
+    /** Update the modelPath and model parameters in the GeneratorAttribute.
+     *  @param generatorAttribute The GeneratorAttribute to update.
+     *  @param modelPathOrURL The file pathname or URL to the model.
+     */
+    public static void updateModelPathAndModel(GeneratorAttribute 
+					       generatorAttribute,
+					       String modelPathOrURL)
+    throws IOException {
+	URL modelURL = MoMLApplication.specToURL(modelPathOrURL);
+	Parameter modelPath =
+	    (Parameter)generatorAttribute.getAttribute("modelPath");
+	modelPath.setExpression("\"" + modelURL.toExternalForm() + "\"");
+
+	modelPathOrURL = modelURL.toExternalForm();
+
+	// Parse the model and get the name of the model.
+	MoMLParser parser = new MoMLParser();
+	try {
+	    // FIXME: 1st arg of parse() could be $PTII as a URL.
+	    NamedObj topLevel = parser.parse(null, modelURL);
+
+	    // Strip off the leading '.' and then sanitize.
+	    String modelName = 
+	    StringUtilities.sanitizeName(topLevel.getFullName().substring(1));
+
+	    Parameter model =
+		(Parameter)generatorAttribute.getAttribute("model");
+	    model.setExpression("\"" + modelName + "\"");
+	} catch (Exception ex) {
+	    throw new IOException("Failed to parse '" + modelPathOrURL + "': "
+				  + ex);
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -426,7 +461,7 @@ public class Copernicus {
             // Ignore blank argument.
         } else if (!arg.startsWith("-")) {
 	    // Assume the argument is a file name or URL.
-	    _updateModelPathAndModel(arg);
+	    updateModelPathAndModel(_generatorAttribute, arg);
 	} else {
 	    // Argument not recognized.
 	    return false;
@@ -501,32 +536,6 @@ public class Copernicus {
 	} catch (Exception ex) {
 	    return ex.toString();
 	}
-    }
-
-    /** Update the modelPath and model parameters */
-    private void _updateModelPathAndModel(String modelPathOrURL)
-    throws IOException {
-	URL modelURL = MoMLApplication.specToURL(modelPathOrURL);
-	Parameter modelPath =
-	    (Parameter)_generatorAttribute.getAttribute("modelPath");
-	modelPath.setExpression("\"" + modelURL.toExternalForm() + "\"");
-
-	modelPathOrURL = modelURL.toExternalForm();
-	// Get the model name from the path.
-	// I suppose we could parse the model and get it that way?
-	String modelName =
-	    modelPathOrURL.substring(modelPathOrURL.lastIndexOf('/')+1);
-
-	if (modelName.endsWith(".xml")) {
-	    modelName = modelName.substring(0, modelName.length() - 4);
-	}
-	if (modelName.endsWith(".moml")) {
-	    modelName = modelName.substring(0, modelName.length() - 5);
-	}
-
-	Parameter model =
-	    (Parameter)_generatorAttribute.getAttribute("model");
-	model.setExpression("\"" + modelName + "\"");
     }
 
     /** Return a string containing the usage */

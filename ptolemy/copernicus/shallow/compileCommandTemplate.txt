@@ -1,7 +1,7 @@
 @java@ @jvmSize@
- -classpath @classPath@
- -Dptolemy.ptII.dir=@root@
- ptolemy.copernicus.shallow.Main @modelPath@ -d @root@
+ -classpath "@classPath@"
+ -Dptolemy.ptII.dir="@root@"
+ ptolemy.copernicus.shallow.Main "@modelPath@" -d "@root@"
  -p wjtp.watchDog time:@watchDogTimeout@
  -p wjtp.mt targetPackage:@targetPackage@
  -p wjtp.writeJimple1 outDir:@root@@targetPath/jimple1

@@ -38,11 +38,16 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.copernicus.kernel.Copernicus;
+import ptolemy.copernicus.kernel.GeneratorAttribute;
 //import ptolemy.copernicus.c.Main;
 //import ptolemy.copernicus.java.Main;
 //import ptolemy.copernicus.jhdl.Main;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.SwingWorker;
@@ -157,6 +162,7 @@ public class GeneratorTableau extends Tableau {
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
+	    
             // Caveats panel.
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(
@@ -193,11 +199,18 @@ public class GeneratorTableau extends Tableau {
 
             // Panel for push buttons.
             JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new GridLayout(5, 1));
+            buttonPanel.setLayout(new GridLayout(7, 1));
             buttonPanel.setBorder(
                     BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
             // Button panel first.
+            JButton parametersButton = new JButton("Parameters");
+            parametersButton
+		.setToolTipText("Display a summary of the Parameters");
+            buttonPanel.add(parametersButton);
+
+            buttonPanel.add(Box.createVerticalStrut(10));
+
             JButton goButton = new JButton("Generate");
             goButton.setToolTipText("Generate code");
             buttonPanel.add(goButton);
@@ -229,6 +242,13 @@ public class GeneratorTableau extends Tableau {
                 attribute = new GeneratorTableauAttribute(
                         model, "_generator");
             }
+
+	    // Adjust parameters accordingly.
+	    //Parameter modelName = (Parameter)attribute.getAttribute("model");
+	    //modelName.setExpression(StringUtilities
+	    //			    .sanitizeName(model.getName()));
+
+
             Configurer configurer = new Configurer(attribute);
             final GeneratorTableauAttribute options = attribute;
             controlPanel.add(configurer);
@@ -245,6 +265,12 @@ public class GeneratorTableau extends Tableau {
 
             getContentPane().add(component, BorderLayout.CENTER);
 
+            parametersButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+			exec.appendJTextArea(options.toString());
+		    }
+		});
+
             stopButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
 			exec.cancel();
@@ -260,186 +286,200 @@ public class GeneratorTableau extends Tableau {
             goButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
-                            // Handle the directory entry.
-                            final String directoryName = options.directory
-                                .getExpression();
-
-                            // If the directory name is empty, then set
-                            // directory to the current working directory.
-                            File directory = new File(directoryName);
-                            if (!directory.isDirectory()) {
-                                throw new IllegalActionException(model,
-                                        "Not a directory: " + directoryName);
-                            }
-
-                            if (!directory.canWrite()) {
-                                throw
-				    new IllegalActionException(model,
-                                            "Can't write: "
-                                            + directoryName
-							       );
-                            }
-			    // True if we should run jode, jad or javap
+			    // True if we should run jode, jad or javap.
 			    boolean decompile = false;
+			    boolean compile =
+				((BooleanToken)
+				 ((Parameter)options.getAttribute("compile"))
+				 .getToken())
+				.booleanValue();
 			    boolean show =
-				((BooleanToken)options.show.getToken())
+				((BooleanToken)
+				 ((Parameter)options.getAttribute("show"))
+				 .getToken())
 				.booleanValue();
 			    boolean run =
-				((BooleanToken)options.run.getToken())
+				((BooleanToken)
+				 ((Parameter)options.getAttribute("run"))
+				 .getToken())
 				.booleanValue();
-			    boolean isApplet = false;
-			    boolean isDeep = false;
+
+			    // The code generator to run.  The value of this
+			    // parameter should name a subdirectory of
+			    // ptolemy/copernnicus such as "java" or "shallow".
+			    String codeGenerator = 
+				((StringToken)
+				 ((Parameter)options
+				  .getAttribute("codeGenerator"))
+				 .getToken()).stringValue();
+
+			    // Convert "java" to java.
+			    //codeGenerator =
+			    //	codeGenerator.substring(1, codeGenerator
+			    //				.length() - 1);
+								    
+			    String targetPath =
+				((StringToken)
+				 ((Parameter)options
+				  .getAttribute("targetPath"))
+				 .getToken()).stringValue();
+
+			    String root =
+				((StringToken)
+				 ((Parameter)options
+				  .getAttribute("root"))
+				 .getToken()).stringValue();
+
+			    //targetPath =
+				//targetPath.substring(1, targetPath
+			    // .length() - 1);
+
+			    // Check that we will be able to write
+			    File directory = new File(root, targetPath);
+			    if (!directory.isDirectory()) {
+				throw new IllegalActionException(model,
+						 "Not a directory: "
+						 + root + "/" + targetPath);
+			    }
+			    if (!directory.canWrite()) {
+				throw new IllegalActionException(model,
+						 "Can't write: "
+						 + root + "/" + targetPath);
+			    }
+
+			    // Commands that we will eventually execute,
+			    // depending on compile, show and run.
 			    List execCommands = new LinkedList();
 
-			    String packageNameString =
-				options.packageName.getExpression();
-			    String codeGenerator =
-				options.codeGenerator.getExpression();
+			    // Commands that are generated by Copernicus
+			    // that may or not be executed.  For example,
+			    // we may end up not compile, but using an
+			    // earlier compilation and running.
+			    List commands = null;
 
-			    if (codeGenerator.equals(options
-                                    .sootApplet.
-                                    getExpression())){
+			    if (codeGenerator.equals("applet")) {
 				// Soot is a memory pig, so we run
 				// it in a separate process.
 				try {
-				    execCommands
-					.add(_generateSootJavaCommand(model,
-                                                directoryName,
-                                                packageNameString,
-                                                "applet" /* Generate applet code. */));
-
+				    commands =
+					_generateCodeGeneratorCommands(model,
+								       options,
+								       "applet"
+								       );
 				} catch (Exception ex) {
 				    throw new IllegalActionException(model, ex, null);
 				}
-				isApplet = true;
-			    } else if (codeGenerator.equals(options
-                                    .sootC.
-                                    getExpression())){
-
-				// FIXME: we should disable the compile
-				// button.
+			    } else if (codeGenerator.equals("c")
+				       && compile) {
 				exec.updateStatusBar("Starting c "
                                         + "code generation");
 				// FIXME: How come the status bar
 				// does not get updated?
 				ptolemy.copernicus.c
 				    .Main.generate((CompositeActor)model,
-                                            directoryName);
+                                            targetPath);
 				exec.updateStatusBar("C Code generation "
                                         + "complete.");
 				decompile = true;
 
-			    } else if (codeGenerator.equals(options
-                                    .sootDeep.
-                                    getExpression())){
-
+			    } else if (codeGenerator.equals("java")) {
 				// Soot is a memory pig, so we run
 				// it in a separate process.
 				try {
-				    execCommands
-					.add(_generateSootJavaCommand(model,
-                                                directoryName,
-                                                packageNameString,
-                                                "java"
-                                                /* Generate deep code. */));
-
+				    commands =
+					_generateCodeGeneratorCommands(model,
+								       options,
+								       "java");
                                     decompile = true;
-                                    isDeep = true;
 				} catch (Exception ex) {
-				    throw new IllegalActionException(model, ex, null);
+				    throw new IllegalActionException(model,
+								     ex, null);
 				}
-			    } else if (codeGenerator.equals(options
-                                    .sootJHDL.
-                                    getExpression())){
-				// FIXME: we should disable the compile
-				// button.
-
+			    } else if (codeGenerator.equals("jhdl")
+				       && compile) {
 				exec.updateStatusBar("Starting jhdl "
                                         + "code generation");
+				// FIXME: How come the status bar
+				// does not get updated?
 				ptolemy.copernicus.jhdl
 				    .Main.generate((CompositeActor)model,
-                                            directoryName);
-				exec.updateStatusBar("Code generation "
+                                            targetPath);
+				exec.updateStatusBar("JHDL Code generation "
                                         + "complete.");
 
-			    } else if (codeGenerator.equals(options
-                                    .sootShallow.
-                                    getExpression())){
-				// FIXME: we should disable the compile
-				// button.
 
+			    } else if (codeGenerator.equals("shallow")) {
 				// Soot is a memory pig, so we run
 				// it in a separate process.
 				try {
-				    execCommands
-					.add(_generateSootJavaCommand(model,
-                                                directoryName,
-                                                packageNameString,
-                                                "shallow" /* Generate shallow code */));
+				    commands =
+					_generateCodeGeneratorCommands(model,
+								       options,
+							              "shallow"
+								       );
 				} catch (Exception ex) {
-				    throw new IllegalActionException(model, ex, null);
+				    throw new IllegalActionException(model,
+								     ex, null);
 				}
-
-				//ptolemy.copernicus.java
-				//    .Main.generate((CompositeActor)model,
-				//		   directoryName);
-
 				decompile = true;
-
-
-			    }
-
-
-			    String className = options
-				.packageName.getExpression();
-			    if (isDeep) {
-				className = className + ".Main";
 			    } else {
-				if (className.length() > 0
-                                        && ! className.endsWith(".") ) {
-				    className = className + '.'
-					+ "CG" + model.getName();
-				} else {
-				    className = "CG" + model.getName();
-				}
+				throw new IllegalActionException(model,
+					 "Don't know about '"
+					 + codeGenerator + "'.  Try 'java'");
 			    }
 
-			    String runOptions = options
-				.runOptions.getExpression();
+
+			    if (compile && commands != null) {
+				execCommands.add(commands.get(0));
+			    } 
 
 			    if (show && decompile) {
+				String targetPackage =
+				    ((StringToken)
+				     ((Parameter)options
+				      .getAttribute("targetPackage"))
+				     .getToken()).stringValue();
+
+				//targetPackage =
+				//    targetPackage.substring(1, targetPackage
+				// .length() - 1);
+
+				String className = targetPackage;
+				if (codeGenerator.equals("java")) {
+				    className = className + ".Main";
+				} else {
+				    if (className.length() > 0
+                                        && ! className.endsWith(".") ) {
+					className = className + '.'
+					    + "CG" + model.getName();
+				    } else {
+					className = "CG" + model.getName();
+				    }
+				}
+
+				String classPath =
+				    ((StringToken)
+				     ((Parameter)options
+				      .getAttribute("classPath"))
+				     .getToken()).stringValue();
+
 				execCommands.add("javap "
-                                        + runOptions
+                                        + "-classpath " 
+					+ classPath	 
                                         + " "
                                         + className);
 			    }
-                            if (run) {
-				if (isApplet) {
-				    String appletDirectoryName =
-					_getPtolemyPtIIDir() + "/"
-					+ StringUtilities.substitute(
-                                                packageNameString,
-                                                ".", "/")
-					+ "/" + model.getName() ;
 
-
-				    execCommands.add("make -C "
-                                            + appletDirectoryName
-                                            + " demo"
-						     );
-				} else if (isDeep) {
-				    execCommands.add("java "
-                                            + runOptions
-                                            + " " + className);
-				} else {
-				    execCommands.add("java "
-                                            + runOptions
-                                            + " ptolemy.actor.gui"
-                                            + ".CompositeActorApplication -class "
-                                            + className);
-				}
+                            if (run && commands != null) {
+				System.println("GeneratorTableau: run"
+					       + commands.get(1));
+				execCommands.add(commands.get(1));
                             }
+
                             if (execCommands.size() > 0) {
+				System.println("GeneratorTableau: execCommand"
+					       + execCommands.size());
+
 				exec.setCommands(execCommands);
 				exec.start();
                             }
@@ -502,36 +542,20 @@ public class GeneratorTableau extends Tableau {
 	}
     }
 
-    // Return a command string that will generate shallow or deep
-    // Java for model in the directoryName directory.
+    // Return a List consisting of the command string that will
+    // generate code Java for model and the command string that will
+    // run the generated code.
     //
     // @param model The model to generate code for.
-    // @param directoryName The name of the directory to generate code in
-    // @param targetPackage The java package that the generated code
-    // will reside in.  Usually the targetPackage is relative to $PTII
+    // @param generatorAttribute The GeneratorAttribute that
+    // controls the compilation of the model.
     // @param copernicusSubdirectory The directory that contains
     // the generator we are running.  Usually, something like
     // "applet" or "java" or "shallow".
-    private String _generateSootJavaCommand(CompositeEntity model,
-            String directoryName,
-            String targetPackage,
+    private List _generateCodeGeneratorCommands(CompositeEntity model,
+	    GeneratorAttribute generatorAttribute,
             String copernicusSubdirectory)
-            throws IllegalArgumentException, InternalErrorException
-    {
-	// Make sure the directory exists.
-	String makefileDirectory = _getPtolemyPtIIDir() + File.separatorChar
-	    + "ptolemy" + File.separatorChar
-	    + "copernicus" + File.separatorChar
-	    + copernicusSubdirectory;
-	File makefileDirectoryFile = new File(makefileDirectory);
-	if (!makefileDirectoryFile.isDirectory()) {
-            throw new IllegalArgumentException("'" + makefileDirectory
-                    + "' is not a directory. "
-                    + "This directory should contain "
-                    + "the makefile used for code "
-                    + " generation.");
-	}
-
+            throws IllegalArgumentException, InternalErrorException {
 	// Create a temporary file in c:/temp or /tmp.
 	File temporaryMoMLFile = null;
 
@@ -546,60 +570,35 @@ public class GeneratorTableau extends Tableau {
 	    model.exportMoML(fileWriter);
 	    fileWriter.close();
 	} catch (IOException io) {
-	    throw new InternalErrorException(model, null, "Warning: failed to write model "
-                    + "to '"
+	    throw new InternalErrorException(model, null,
+	            "Failed to write model to '"
                     + temporaryMoMLFile + "': " + io);
 	}
-	if (temporaryMoMLFile == null) {
-	    return "# Could not write temporary moml file";
+
+
+	try {
+	    Copernicus.updateModelPathAndModel(generatorAttribute,
+					       temporaryMoMLFile.getPath());
+	} catch (IOException ex) {
+	    throw new InternalErrorException(model, ex,
+					     "Failed to update modelPath "
+					     + " or model");
 	}
 
-  	URL temporaryMoMLURL = null;
-  	try {
-  	    temporaryMoMLURL = temporaryMoMLFile.toURL();
-  	} catch (MalformedURLException malformedURL) {
-            throw new InternalErrorException(this, malformedURL,
-                    "Failed to convert '"
-                    + temporaryMoMLFile + "' to a URL");
-  	}
+	Parameter codeGenerator =
+	    (Parameter)generatorAttribute.getAttribute("codeGenerator");
+	codeGenerator.setExpression("\"" + copernicusSubdirectory + "\"");
 
-        //  	String temporaryMoMLCanonicalPath = null;
-        //  	try {
-        //  	    temporaryMoMLCanonicalPath = temporaryMoMLFile.getCanonicalPath();
-        //    	} catch (IOException io) {
-        //    	    InternalErrorException internalError =
-        //    		new InternalErrorException("Failed to get canonical path '"
-        //    					   + temporaryMoMLFile + ": " + io);
-        //    	    internalError.fillInStackTrace();
-        //    	    throw internalError;
-        //  	}
 
-        return "make -C \"" + makefileDirectory
-            + "\" MODEL=\"" + model.getName()
-            + "\" SOURCECLASS=\"" + temporaryMoMLURL
-            //	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
-            + "\" TARGETPACKAGE=\"" + targetPackage
-            + "\" compileDemo";
-
-    }
-
-    private String _getPtolemyPtIIDir() {
-	// Determine where $PTII is so that we can find the right directory
-	String home = null;
-        try {
-            // NOTE: getProperty() will probably fail in applets, which
-            // is why this is in a try block.
-	    // NOTE: This property is set by the vergil startup script.
-	    home = System.getProperty("ptolemy.ptII.dir");
-        } catch (SecurityException security) {
-            throw new InternalErrorException(this, security,
-                    "Could not find "
-                    + "'ptolemy.ptII.dir'"
-                    + " property.  Vergil should be "
-                    + "invoked with -Dptolemy.ptII.dir"
-                    + "=\"$PTII\"");
-        }
-	return home;
+	List results = new LinkedList();
+	try { 
+	    results.add(Copernicus.commandToCompile(generatorAttribute));
+	    results.add(Copernicus.commandToRun(generatorAttribute));
+	} catch (Exception ex) {
+	    throw new InternalErrorException(model, ex,
+					     "Failed generate command strings");
+	}
+	return results;
     }
 }
 
