@@ -33,6 +33,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
+/**
+@author Jeff Tsay
+@version $Id$
+*/
 public interface ArrayStringFormat {
 
     /**
@@ -126,8 +130,7 @@ public interface ArrayStringFormat {
      *  the format
      *  "[x[0] x[1] x[2] ...  x[n-1]]",
      */
-    public static class ExprArrayStringFormat implements
-                                                                                            ArrayStringFormat {
+    public static class ExprArrayStringFormat implements ArrayStringFormat {
         public ExprArrayStringFormat() {}
 
         public String complexString(Complex c) {
@@ -169,10 +172,10 @@ public interface ArrayStringFormat {
     /** A static instance of JavaArrayStringFormat.
      */
     public static final ArrayStringFormat javaASFormat =
-                                                                                            new JavaArrayStringFormat();
+        new JavaArrayStringFormat();
 
     /** A static instance of ExprArrayStringFormat.
      */
     public static final ArrayStringFormat exprASFormat =
-    new ExprArrayStringFormat();
+        new ExprArrayStringFormat();
 }
