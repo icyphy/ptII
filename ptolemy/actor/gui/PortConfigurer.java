@@ -59,6 +59,7 @@ in this way.
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
+@deprecated This class is no longer used.  Use PortConfigurerDialog.
 */
 
 public class PortConfigurer extends Query implements QueryListener {
