@@ -284,9 +284,29 @@ public class test1 extends TypedAtomicActor {
 	int d=0;
 	if (a > 5) {
 	    d = a * 2 + 3;
+	    d += a;
+	} else {
+	    d += a;
+	    d = d * 2 + a;
 	}
 	d += a + 5;
 	return d;
+    }
+
+    /* Simple method with one basic block and one operation */
+    public int hwgen1(int a, int b) {
+	int c = a + b;
+	return c;
+    }
+
+    /* Simple method with one basic block and several operations */
+    public int hwgen2(int a, int b, int d) {
+	int c = a * b + d - a;
+	return c;
+    }
+
+    public boolean hwgen3(boolean a, boolean b, boolean c) {
+	return a & b | c;
     }
 
     public void fire() throws IllegalActionException {

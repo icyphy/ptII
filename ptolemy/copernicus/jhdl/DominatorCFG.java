@@ -82,8 +82,8 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 	_init();
     }
 
-    public void updateDominators() throws IllegalActionException {
-	update();
+    public void update() throws IllegalActionException {
+	super.update();
 	_init();
     }
 
@@ -126,7 +126,6 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 	    _cfg = new DominatorCFG(bbgraph);
 
   	    ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile(testMethod.getName(),_cfg);
-	    System.out.println(_cfg);
 	} catch (IllegalActionException e) {
 	    System.err.println(e);
 	    System.exit(1);

@@ -68,7 +68,9 @@ public class IntervalChain {
 	return _sink;
     }
 
-    /** Return the sink node of the interval **/
+    /** Return the sink node in the chain of intervals. If this
+     * interval is the end of the chain, return the sink of this
+     * interval. **/
     public Node getChainSinkNode() {
 	if (_next == null)
 	    return _sink;
@@ -76,8 +78,53 @@ public class IntervalChain {
 	    return _next.getChainSinkNode();
     }
 
+    /** Return the sink node of the interval **/
+    public IntervalChain getChainSinkInterval() {
+	if (_next == null)
+	    return this;
+	else
+	    return _next.getChainSinkInterval();
+    }
+
+    /** Return the sink node of the interval **/
+    public Node getChainSinkTarget() {
+	IntervalChain n = getChainSinkInterval();
+	return n.getSinkTarget();
+    }
+
     public Node getRoot() {
 	return _root;
+    }
+
+    public IntervalChain getNext() {
+	return _next;
+    }
+
+    public HashMap getChildren() {
+	return _children;
+    }
+
+    public boolean isSingleNode() {
+	if (_children == null && _specialChildren == null)
+	    return true;
+	else
+	    return false;
+    }
+
+    public boolean isSimpleMerge() {
+	if (isSingleNode())
+	    return false;
+	if (_children != null && _specialChildren == null)
+	    return true;
+	return false;
+    }
+
+    public boolean isSpecialMerge() {
+	if (isSingleNode())
+	    return false;
+	if (_children == null && _specialChildren != null)
+	    return true;
+	return false;
     }
 
     public boolean isValid() {
@@ -214,7 +261,8 @@ public class IntervalChain {
 	    // 3. The node forks, but it has children that are
 	    //    "invalid". This node will include a sub-tree
 	    //    of nodes and will terminate at the immediate
-	    //    postDominator of the root.
+	    //    postDominator of the root. This is called a "special"
+	    //    interval.
 
 	    // iterate over direct children. Children are either dominated
 	    // by the root or not. If they are dominated, create a new
@@ -236,13 +284,17 @@ public class IntervalChain {
 		    nonDomChildren.add(child);
 		}
 	    }
-
 	    // Determine the immediate post-dominator of the current
 	    // node. 
 	    Node immediatePostDominator = 
 		_graph.getImmediatePostDominator(_root);
 	    System.out.print("Fork "+ns(_root)+" ipd="+
 			       ns(immediatePostDominator));
+
+	    // If the ipd is one of the dominated children, remove it.
+	    // (it will be outside of the interval since a custom
+	    //  join node will be made in front of it)
+	    domChildren.remove(immediatePostDominator);
 
 	    // Process nonSpecial intervals
 	    if (!specialInterval) {
@@ -255,26 +307,47 @@ public class IntervalChain {
 		     i.hasNext() && canMerge;) {
 		    IntervalChain childInterval  = (IntervalChain) i.next();
 		    System.out.print(is(childInterval)+" ");
-		    // The childInterval must point to the ipd or
-		    // it must be the ipd
-		    if (childInterval.getSinkTarget() != 
+		    // All of the edges that leave _root must converge to
+		    // the ipd in order for this node to be mergable. There
+		    // are several cases in which this might occur:
+		    // 1. The target of the child interval must point
+		    //    to the ipd.
+		    // 2. The root of the child interval must be the ipd.
+		    //
+		    // Note that a merge Node for this interval has
+		    // not yet been created (ipd may be a child interval)
+		    if (childInterval.getChainSinkTarget() != 
 			immediatePostDominator &&
-			childInterval.getRoot() != immediatePostDominator)
+			childInterval.getRoot() != immediatePostDominator) {
 			canMerge = false;
+			System.out.print(" childInterval "+is(childInterval)+
+					 "!=ipd "+
+					 ns(immediatePostDominator)+
+					 "(target="+
+					 ns(childInterval.getChainSinkTarget())
+					 +" "+
+					 is(childInterval.getChainSinkInterval())
+					 +")");
+		    }
 		}
 		for (Iterator i = nonDomChildren.iterator(); 
 		     i.hasNext() && canMerge;) {
 		    child = (Node) i.next();
-		    if (child != immediatePostDominator)
+		    if (child != immediatePostDominator) {
 			canMerge = false;
+			System.out.print(" child "+ns(child)+"!= ipd "+
+					 ns(immediatePostDominator));
+		    }
 		}
 		// If Interval cannot be merged, it is invalid
 		if (!canMerge) {
 		    _valid = false;
-		    System.out.print(" invalid");
+		    System.out.println(" invalid");
+		    return;
 		}
 		else {
 		    System.out.print(" normal");
+		    /*
 		    // Add an extra Node if the _root does not dominate
 		    // the immediatePostDominator
 		    if (!_graph.dominates(_root,immediatePostDominator)) {
@@ -283,8 +356,22 @@ public class IntervalChain {
 			    addImmediatePostDominator(_root,domChildren,
 						      immediatePostDominator);
 		    }
+		    */
 		}
 		_children = domChildren;
+
+		// Create a new node as the target for the final
+		// merge (instead of the ipd). Make the ipd
+		// the next and continue processing.
+		_sink = addSimpleJoinNode(immediatePostDominator);
+		System.out.print(" sink="+ns(_sink));
+		
+		System.out.println();
+		if (_graph.dominates(_root,immediatePostDominator))
+		    _next = new IntervalChain(this,immediatePostDominator);
+		else
+		    _next = null;
+
 	    } else {
 		// a special interval
 		System.out.print(" special");
@@ -293,37 +380,106 @@ public class IntervalChain {
 		for (Iterator search = _graph.topologicalSort().iterator();
 		     search.hasNext();) {
 		    Node n = (Node) search.next();
+		    if (n==immediatePostDominator)
+			// don't add ipd
+			addMode = false;
 		    if (addMode) {
 			nodes.add(n);
-			if (n==immediatePostDominator)
-			    addMode = false;
-		    } else {
-			if (n==_root) {
-			    addMode = true;
-			    nodes.add(n);
-			}
-		    }
+			// add join node
+			addSpecialJoinNode(n);
+		    } 
+		    if (n==_root)
+			// don't add root
+			addMode = true;
 		}		
 		_specialChildren = nodes;
+		// Continue chain (new interval)
+
+		// Create a new node as the target for the final
+		// merge (instead of the ipd). Make the ipd
+		// the next and continue processing.
+		_sink = addSpecialJoinNode(immediatePostDominator);
+		System.out.print(" sink="+ns(_sink));
+		
+		System.out.println();
+		if (_graph.dominates(_root,immediatePostDominator))
+		    _next = new IntervalChain(this,immediatePostDominator);
+		else
+		    _next = null;
+
+		
 	    }
-
-	    if (!_valid)
-		break;
-
-	    // continue chain (specify next in chain)
-
-	    // Should a target fork node be split? 
-	    immediatePostDominator = 
-		splitTargetForkNode(immediatePostDominator);
-	    _sink = immediatePostDominator;
-
-	    Node n = getSinkTarget();
-	    if (n != null)
-		_next = new IntervalChain(this,n);
-	    else
-		_next = null;
-	} 
+ 	} 
 	System.out.println();
+    }
+    
+    protected Node addSimpleJoinNode(Node ipd) throws IllegalActionException {
+
+//  	System.out.println(" sijoin, ipd="+ns(ipd));
+	// temporary string name for new join node
+	String newNodeWeight="sijoin_"; 
+	// Vector for edges that will need to be removed (may
+	// not be the full size of ipdInEdges)
+	Vector remove = new Vector(_graph.inputEdges(ipd).size());
+
+	// Iterate through dominated intervals and change the edge
+	// leaving the sink node to the newNode 
+	for (Iterator i = _children.values().iterator();i.hasNext();) {
+	    IntervalChain ic = (IntervalChain) i.next();
+	    Node sink = ic.getChainSinkNode();
+	    Edge e = (Edge) _graph.outputEdges(sink).iterator().next();
+	    remove.add(e);
+	    newNodeWeight += ns(sink);
+	}
+	// Get all edges from _root to commonTarget and move them
+	// to newNode
+	for (Iterator i = _graph.outputEdges(_root).iterator();
+	     i.hasNext();) {
+	    Edge e = (Edge) i.next();
+	    if (e.sink() == ipd) {
+		remove.add(e);
+		newNodeWeight += (ns(e.source()));
+	    }
+	}
+
+	// Create new node
+	Node newNode = _graph.addNodeWeight(newNodeWeight);
+	// iterate over edges to remove and edges to add
+	for (Iterator i=remove.iterator();i.hasNext();) {
+	    Edge e = (Edge) i.next();
+	    _graph.removeEdge( e );
+	    _graph.addEdge(e.source(),newNode);		
+	}
+	_graph.addEdge(newNode, ipd);
+	//System.out.println(_graph);
+	_graph.update();
+	//System.out.println(_graph);
+	return newNode;
+    }
+
+    protected Node addSpecialJoinNode(Node join) {
+	Collection joinInEdges = _graph.inputEdges(join);
+	if (joinInEdges.size() > 1) {
+//  	    System.out.print(" spjoin="+ns(join)+" edges="+
+//  			     joinInEdges.size());
+	    String newNodeWeight="spjoin__";
+	    Vector remove = new Vector(joinInEdges.size());
+	    // Figure out the weight and collect edges
+	    for (Iterator i=joinInEdges.iterator();i.hasNext();) {
+		Edge e = (Edge) i.next();
+		newNodeWeight += ns(e.source());
+		remove.add(e);
+	    }	    	    
+	    Node newNode = _graph.addNodeWeight(newNodeWeight);
+	    for (Iterator i=remove.iterator();i.hasNext();) {
+		Edge e = (Edge) i.next();
+		_graph.removeEdge( e );
+		_graph.addEdge(e.source(),newNode);		
+	    }
+	    _graph.addEdge(newNode, join);
+	    return newNode;
+	}
+	return null;
     }
 
     protected Node splitTargetForkNode(Node ipd) {
@@ -377,7 +533,7 @@ public class IntervalChain {
 		_graph.addEdge(_root,newNode);
 	    }
 	}
-	_graph.updateDominators();
+	_graph.update();
 	//System.out.println("updated"+_graph);
 
 	return newNode;
@@ -394,12 +550,12 @@ public class IntervalChain {
 	    System.err.println(e);
 	    System.exit(1);
 	}
-	System.out.println("IntervalChain=\n"+ic);
 	return ic;
     }
 
     public static void main(String args[]) {
 	IntervalChain ic = _main(args);
+	System.out.println("IntervalChain=\n"+ic);
     }
 
     /** The top-level DAG associated with this IntervalChain **/
@@ -427,7 +583,13 @@ public class IntervalChain {
 
     protected boolean _valid;
 
+    /**
+     * key=root Node, value=corresponding IntervalChain
+     **/
     HashMap _children;
 
     Vector _specialChildren;
+    
+    protected int _intervalType;
+
 }

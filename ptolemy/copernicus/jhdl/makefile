@@ -60,9 +60,9 @@ JSRCS = \
 	DominatorHashMap.java \
 	ConditionalControlCompactor.java \
 	DirectedAcyclicCFG.java \
-	Dominator.java \
 	DominatorCFG.java \
-	IntervalChain.java
+	IntervalChain.java \
+	IntervalMerge.java
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

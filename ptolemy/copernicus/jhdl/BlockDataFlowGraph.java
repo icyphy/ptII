@@ -605,7 +605,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	}
     }
 
-    public static void main(String args[]) {
+    public static soot.SootMethod getSootMethod(String args[]) {
 	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;
 	String methodname = "method1";
 	if (args.length > 0)
@@ -624,24 +624,37 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    System.err.println("Method "+methodname+" not found");
 	    System.exit(1);
 	}
-	soot.SootMethod testMethod = testClass.getMethodByName(methodname);
+
+	return testClass.getMethodByName(methodname);
+    }
+
+    public static BlockDataFlowGraph[] getBlockDataFlowGraphs(String args[]) {
+	soot.SootMethod testMethod = getSootMethod(args);
 	soot.Body body = testMethod.retrieveActiveBody();
 	CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 	
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
 	List blockList=bbgraph.getBlocks();
+	BlockDataFlowGraph graphs[] = new BlockDataFlowGraph[blockList.size()];
 	for (int blockNum=0; blockNum < blockList.size(); blockNum++){
 	    Block block=(Block)blockList.get(blockNum);
 	    BlockDataFlowGraph dataFlowGraph=null;
 	    try {
 		dataFlowGraph=new BlockDataFlowGraph(block);
+		graphs[blockNum] = dataFlowGraph;
 	    } catch (JHDLUnsupportedException e) {
 		System.err.println(e);
+		System.exit(1);
 	    }
 	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+blockNum,
 						dataFlowGraph);
 	}
+	return graphs;
+    }
+
+    public static void main(String args[]) {
+	BlockDataFlowGraph[] graphs = getBlockDataFlowGraphs(args);
     }
 	
     /** The Soot block used to create this graph **/
