@@ -192,7 +192,7 @@ public class ImagePartition extends SDFAtomicActor {
                     new IntMatrixToken(part, _partitionRows,
                             _partitionColumns);
             }
-        output.sendArray(0, partitions);
+        output.send(0, partitions, partitions.length);
     }
 
     private IntMatrixToken partitions[];
