@@ -629,21 +629,33 @@ public class Pxgraph extends Frame {
 			     "/java/plot for more information. -->\n"+
 			     "<html>\n<head>\n"+
 			     "<title>"+getTitle()+"</title>\n<body>\n"+
+			     "<!-- You will need to edit the codebase tag\n"+
+			     "     below.  To use the most recent version\n"+
+			     "     from over the network set it to:\n"+ 
+			     "     http://ptolemy.eecs.berkeley.edu/java\n"+
+			     "-->\n"+
 			     "<applet name =\""+getTitle()+"\""+
                              " code=\"plot.Plot\""+
 			     " width="+dim.width+" height="+dim.height+"\n"+
-			     "codebase=\""+plotclassdir+"\"\n"+
-			     "archive=\"plot/plot.zip\"\n"+
-			     "alt=\"If you had a java-enabled "+
-			     "browser, you would see an applet here.\"\n"+
+			     "    codebase=\""+plotclassdir+"\"\n"+
+			     "    archive=\"plot/plot.zip\"\n"+
+			     "    alt=\"If you had a java-enabled "+
+			     "browser, you would see an applet here.\"\n>\n"+
 			     "<param name=\"pxgraphargs\" value=\"");
 
 	if (_cmdLineArgs.length > 0) { 
 	    for(int i=0;i<(_cmdLineArgs.length - 1);i++) {
-		applettag.append(_cmdLineArgs[i]+" ");
+		// FIXME: we are not checking for args that contain 
+		// single or double quotes.
+		if (_cmdLineArgs[i].indexOf(" ") != -1) {
+		    // If the arg contains a space, wrap it in single quotes.
+		    applettag.append("'" + _cmdLineArgs[i] + "' ");
+		} else
+		    applettag.append(_cmdLineArgs[i] + " ");
 	    }
 	    applettag.append(_cmdLineArgs[_cmdLineArgs.length - 1]);
 	}
+	// FIXME: we should handle the background and foreground params.
 	applettag.append("\">\n"+
 			 "</applet>\n</body>\n</html>");
 
