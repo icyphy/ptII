@@ -365,4 +365,3 @@ public class Tableau extends CompositeEntity {
     /** The title set by setTitle(). */
     private String _title;
 }
-

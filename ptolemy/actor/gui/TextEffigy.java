@@ -238,4 +238,3 @@ public class TextEffigy extends Effigy {
 	}
     }
 }
-

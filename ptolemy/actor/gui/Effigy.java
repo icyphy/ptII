@@ -372,4 +372,3 @@ public class Effigy extends CompositeEntity {
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
 }
-

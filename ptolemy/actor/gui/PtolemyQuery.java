@@ -511,4 +511,3 @@ public class PtolemyQuery extends Query
     // attribute is attached to.
     private Map _varToListOfEntries;
 }
-

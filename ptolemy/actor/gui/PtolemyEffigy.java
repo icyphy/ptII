@@ -339,4 +339,3 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 	}
     }
 }
-
