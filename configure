@@ -956,7 +956,7 @@ fi
 	echo $ac_n "checking for how to run jacl""... $ac_c" 1>&6
 echo "configure:958: checking for how to run jacl" >&5
 	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $JACL_JFLAG tcl.lang.Shell; then
+	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell; then
 		echo "$ac_t""CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell" 1>&6
 	else
 		PTJACL_JFLAG=
