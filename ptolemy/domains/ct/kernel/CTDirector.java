@@ -1,4 +1,4 @@
-/* An abstract base class for directors of Continuous time simulation.
+/* An abstract base class for directors for continuous time simulation.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -32,74 +32,74 @@ package ptolemy.domains.ct.kernel;
 
 import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.sched.*;
-import ptolemy.data.expr.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import java.util.Iterator;
-
-
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
 /**
-This is the base class for directors of continuous time simulation.
+This is the abstract base class for directors for continuous time simulation.
+<P>
+A CTDirector has a CTScheduler which provides the schedule for firing
+the actors in different phase of the execution.
+<P>
+CTDirectors may have more than one ODE solvers. In each iteration, one
+of the ODE solvers is taking charge of solving the ODEs. This solver
+is called the <I>current ODE solver</I>.
 <P>
 The continuous time (CT) domain is a timed domain. There is a global
-notion of time that all the actors are shared. Time is maintained
-by the directors. The method getCurrentTime() returns the current
+notion of time that all the actors are aware of. Time is maintained
+by the director. The method getCurrentTime() returns the current
 global time. Time can be set by setCurrentTime() method, but this
 method should not the called by the actors. Time can only be advanced
 by directors or its ODE solvers.
 <P>
-CTDirectors has a CTScheduler which provides the schedule for firing
-the actors in different phase of the execution.
-<P>
-CTDirectors may have one or more ODE solvers. In each iteration, one
-of the ODE solvers is taking charge of solving the ODEs. This solver
-is called the <I>current ODE solver</I>.
-<P>
 This base class maintains a list of parameters that may be used by
-ODE solvers. These parameters are: <Br>
-<LI> start time (<code>startTime</code>): The start time of the
-simulation. The parameter should only be affective if the director
+ODE solvers and actors. These parameters are: <Br>
+<LI> <code>startTime</code>: The start time of the
+simulation. The parameter is affective only if the director
 is at the top level. Default value is 0.0.</LI><BR>
-<LI> stop time (<code>stopTime</code>): The stop time of the simulation.
- The parameter should only be affective if the director
+<LI> <code>stopTime</code>: The stop time of the simulation.
+ The parameter is affective only if the director
 is at the top level. Default value is 1.0.</LI><BR>
-<LI> initial step size (<code>InitStepSize</code>): The suggested
-step size from the user. This will be the step size for fixed step
+<LI> <code>initStepSize</code>: The suggested integration step size 
+from the user. This will be the step size for fixed step
 size ODE solvers. However, it is just a guide for variable step size
 ODE solvers. Default value is 0.1</LI><Br>
-<LI> minimum step size (<code>minStepSize</code>): The minimum step
+<LI> <code>minStepSize</code>: The minimum step
 size the user wants to use in the simulation. Default value is 1e-5.
 </LI><Br>
-<LI> maximum step size (<code>maxStepSize</code>): The maximum step
+<LI> <code>maxStepSize</code>: The maximum step
 size the user wants to use in the simulation. Usually used to control
 the simulation speed. Default value is 1.0.
 </LI><Br>
-<LI> maximum iteration per step (<code>maxIterations</code>):
+<LI> <code>maxIterations</code>:
 Used only in implicit ODE solvers. This is the maximum number of
 iterations for finding the fixed point at one time point.
 Default value is 20. </LI><Br>
-<LI> local truncation error tolerance (<code>errorTolerance</code>):
-This used for controlling the local truncation error
+<LI> <code>errorTolerance</code>: This is the local truncation
+error, used for controlling the integration accuracy
 in variable step size ODE solvers. If the local truncation error
-at some error control actors are greater than this tolerance, then the
+at some step size control actors are greater than this tolerance, then the
 integration step is considered failed, and should be restarted with
 a reduced step size. Default value 1e-4. </LI><Br>
-<LI> value resolution for convergence (<code>valueResolution</code>):
- This is used to control the convergence of fixed point iteration.
+<LI> <code>valueResolution</code>:
+ This is used to control the convergence of fixed point iterations.
 If in two successive iterations the differences of the state variables
-is less than this resolution, then the fixed point is considered found.
+is less than this resolution, then the fixed point is considered reached.
 Default value is 1e-6.<LI><Br>
-<LI> time resolution (<code>timeResolution</code>): The minimum resolution
+<LI> <code>timeResolution</code>: The minimum resolution
 of time, such that if two time values differ less than this value,
 they are considered equivalent. Default value is 1e-10. </LI><Br>
 <P>
-This director maintains a breakpoint table to record all the break points.
+This director also maintains a breakpoint table to record all breakpoints.
 The breakpoints are sorted in their chronological order in the table.
 Breakpoints at the "same" time (controlled by time resolution) are
 considered to be one. A breakpoint can be inserted into the table by
@@ -176,23 +176,63 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    public Parameter startTime;
-    public Parameter stopTime;
-    public Parameter initStepSize;
-    public Parameter minStepSize;
-    public Parameter maxStepSize;
-    public Parameter maxIterations;
+    /** ODE solving error tolerance, only effective in variable step
+     *  size methods.
+     *  The default value is 1e-4, of type DoubelToken.
+     */
     public Parameter errorTolerance;
-    public Parameter valueResolution;
+
+    /** User's guide of the initial integration step size.
+     *  The default value is 0.1, of 
+     *  type DoubleToken.
+     */
+    public Parameter initStepSize;
+
+    /** The maximum number of iterations in looking for a fixed-point.
+     *  The default value is 20, of type IntToken.
+     */
+    public Parameter maxIterations;
+
+    /** User's guide of the maximum integration step size.
+     *  The default value is 1.0, of 
+     *  type DoubleToken.
+     */
+    public Parameter maxStepSize;
+
+    /** User's guide of the minimum integration step size.
+     *  The default value is 1e-5, of 
+     *  type DoubleToken.
+     */
+    public Parameter minStepSize;
+
+    /** Start time of the simulation. The default value is 0.0, of 
+     *  type DoubleToken.
+     */
+    public Parameter startTime;
+
+    /** Stop time of the simulation. The default value is 1.0, of 
+     *  type DoubleToken.
+     */
+    public Parameter stopTime;
+
+    /** The resolution in evaluating time.
+     *  The default value is 1e-10, of type DoubelToken.
+     */
     public Parameter timeResolution;
+
+    /** Value resolution in looking for a fixed-point.
+     *  The default value is 1e-6, of type DoubelToken.
+     */
+    public Parameter valueResolution;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Static public variable indicating whether the statistics
+    /** Public variable indicating whether the statistics
      *  is to be collected.
      */
-    public static boolean STAT = false;
+    public boolean STAT = false;
 
     /** The number of integration steps.
      */
@@ -216,8 +256,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** React to a change in an attribute. If the changed attribute
      *  matches a parameter of the director, then the corresponding
-     *  private copy of the
-     *  parameter value will be updated.
+     *  local copy of the parameter value will be updated.
      *  @param attr The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      *     Not thrown in this class. May be needed by derived classes.

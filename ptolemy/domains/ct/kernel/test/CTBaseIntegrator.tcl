@@ -87,8 +87,9 @@ test CTBaseIntegrator-2.1 {Construct a CTBaseIntegrator, get parameters} {
 #
 test CTBaseIntegrator-3.1 {check intialization} {
     $integ initialize
-    list [$integ getInitialState] [$integ getState]  [$integ getTentativeState]
-} {1.0 1.0 1.0}
+    list [$integ getState] [$integ getTentativeState] \
+	    [$integ getDerivative]
+} {1.0 1.0 0.0}
 
 ######################################################################
 ####  check history

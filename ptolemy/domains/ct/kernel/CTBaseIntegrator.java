@@ -29,12 +29,14 @@
 */
 
 package ptolemy.domains.ct.kernel;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -42,10 +44,10 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
 /**
-Base class for integrators for continuous time simulation.
+Base class for integrators in the continuous time (CT) domain.
 An integrator has one input port and one output port. Conceptually,
-the input is the differential of the output. So an ordinary
-differential equation dx/dt = f(x, t) can be represented by:
+the input is the direvative of the output w.r.t. time. So an ordinary
+differential equation dx/dt = f(x, t) can be built by:
 <P>
 <pre>
 <pre>               +---------------+
@@ -61,18 +63,18 @@ differential equation dx/dt = f(x, t) can be represented by:
 
 <P>
 An integrator
-is a dynamic actor that emit a token (internal state) at the beginning
-of the simulation. An integrator is an step size actor that can control
-the accuracy of the ODE solution by adjusting step sizes. An integrator has
-one memory, which is its state.
+is a dynamic actor that can emit a token (the state) without knowing the
+input. An integrator is a step size actor that can control
+the accuracy of the ODE solution by adjusting step sizes. 
+An integrator has at least one memory, which is its state.
 <P>
-To help resolving the new state, a set of variables are used:<BR>
-state: This is the new state at a time point, which has beed confirmed
-by all the step size control actors.
-tentative state: This is the resolved state which has not been confirmed.
-It is a starting point for other actor to control the successfulness
-of this integration step.
-history: The previous states and their derivatives. They may be used 
+To help solving the ODE, a set of variables are used:<BR>
+<I>state</I>: This is the value of the state variable at a time point, 
+which has beed confirmed by all the step size control actors.
+<I>tentative state</I>: This is the value of the state variable 
+which has not been confirmed. It is a starting point for other actors 
+to estimate the sucess of this integration step.
+<I>history</I>: The previous states and their derivatives. They may be used 
 by multistep methods.
 <P>
 For different ODE solving methods, the functionality
@@ -80,16 +82,17 @@ of an integrator may be different. This class provide a basic
 implementation of the integrator, and some solver-dependent methods are
 delegated to the ODE solvers.
 <P>
-An integrator has one parameter: <code>initialState</code>. At the
+An integrator has one parameter: the <code>initialState</code>. At the
 initialization stage of the simulation, the state of the integrator is
 set to the initial state. Changing the initialState does not impact 
-the simulation after the simulation starts. 
-The default value of the parameter is 0.
+the simulation after the simulation starts, unless the initialize() method
+is called again. The default value of the parameter is 0 of type
+DoubleToken.
 <P>
-An integrator can possibly have several auxiliary variables--
-<code>_auxVariables</code>. The number of <code>_auxVariables</code> is get
-from the ODE solver.
-<P>
+An integrator can possibly have several auxiliary variables for the 
+the ODE solvers to use. The number of the auxiliary variables is get
+from the ODE solver. And they can be set and get by setAuxVariables()
+and getAuxVariables() method.
 
 @author Jie Liu
 @version $Id$
@@ -99,63 +102,10 @@ from the ODE solver.
 public class CTBaseIntegrator extends TypedAtomicActor 
     implements TimedActor, CTStepSizeControlActor, 
                CTDynamicActor, CTStatefulActor {
-    /** Construct an integrator in the default workspace with an
-     *  empty string name.
-     *  An integrator has one single input port and one single
-     *  output port.
-     *  The object is added to the workspace directory.
-     *  Increment the version number of the workspace.
-     *
-     *  @exception NameDuplicationException Not thrown in this base class.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *
-    public CTBaseIntegrator()
-            throws NameDuplicationException, IllegalActionException {
-	super();
-        input = new TypedIOPort(this, "input");
-        input.setInput(true);
-        input.setOutput(false);
-        input.setMultiport(false);
-        input.setTypeEquals(BaseType.DOUBLE);
-        output = new TypedIOPort(this, "output");
-        output.setOutput(true);
-        output.setTypeEquals(BaseType.DOUBLE);
-        _initState = 0.0;
-        initialState = new Parameter(this, "initialState",
-                new DoubleToken(_initState));
-    }
 
-    /** Construct an integrator in the specified workspace with an empty
-     *  string as the name. You can then change the name with setName().
-     *  A integrator has one single input port and one single
-     *  output port.
-     *  If the workspace argument is null, then use the default workspace.
-     *  The object is added to the workspace directory.
-     *  Increment the version number of the workspace.
-     *
-     *  @param workspace The workspace that will list the entity.
-     *  @exception NameDuplicationException Not thrown in this base class.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *
-    public CTBaseIntegrator(Workspace workspace)
-            throws NameDuplicationException, IllegalActionException {
-        super(workspace);
-        input = new TypedIOPort(this, "input");
-        input.setInput(true);
-        input.setOutput(false);
-        input.setMultiport(false);
-        input.setTypeEquals(BaseType.DOUBLE);
-        output = new TypedIOPort(this, "output");
-        output.setOutput(true);
-        output.setTypeEquals(BaseType.DOUBLE);
-        initialState = new Parameter(this, "initialState",
-                new DoubleToken(_initState));
-    }
-    */
     /** Construct an integrator, with a name, a input port, a output port
      *  and a TypedCompositeActor as the container.
-     *  A integrator has one single input port and one single
-     *  output port.
+     *  The integrator is in the same workspace as the container.
      *
      * @param container The TypedCompositeActor that contains this integrator.
      * @param name The name
@@ -177,7 +127,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
         initialState = new Parameter(this, "initialState",
-                new DoubleToken(_initState));
+                new DoubleToken(0.0));
         _history = new History(this);
     }
 
@@ -185,14 +135,16 @@ public class CTBaseIntegrator extends TypedAtomicActor
     ////                     ports and parameters                  ////
 
     /** Input port. Finals means they are not changeable once created.
+     *  It is a single port with type DOUBLE.
      */
     public final TypedIOPort input;
 
-    /** Input port. Finals means they are not changeable once created.
+    /** Output port. Finals means they are not changeable once created.
+     *  It is a single port with type DOUBLE.
      */
     public final TypedIOPort output;
 
-    /** Initial State
+    /** The initial state of type DouleToken. The default value is 0.0
      */
     public Parameter initialState;
 
@@ -200,16 +152,26 @@ public class CTBaseIntegrator extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clean the history information.
+    /** Remove the history information.
      */
     public void clearHistory() {
         _history.clear();
     }
 
+    /** Emit the tentative output, which is the tentative state of the
+     *  integrator.
+     *  @exception IllegalActionException If the data transfer is not
+     *  completed.
+     */
+    public void emitTentativeOutputs() throws IllegalActionException {
+        output.send(0, new DoubleToken(_tentativeState));
+    }
+
     /** This method delegates to the integratorFire() of the 
-     *  current ODE solver. The existance of director and ODE solver
-     *  is not checked, since they are checked in the preinitalize()
-     *  method.
+     *  current ODE solver. The existance of a director and an ODE solver
+     *  is not checked, since they are checked in the initalize()
+     *  method. If there's no director and ODE solver, a
+     *  NullPointerException will be thrown. 
      *
      *  @exception IllegalActionException If thrown by integratorFire()
      *       of the solver.
@@ -217,13 +179,15 @@ public class CTBaseIntegrator extends TypedAtomicActor
     public void fire() throws  IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
-        if(_debugging) _debug(getName() + "using solver:", solver.getName());
+        if(_debugging) _debug(getName() + 
+                "fire using solver: ", solver.getName());
         solver.integratorFire(this);
     }
 
-    /** Return the auxVariables in a double array. This method get the
-     *  auxVariables stored in the integrator. auxVariables are created
-     *  in the prefire() method. Return null if the
+    /** Return the auxiliary variables in a double array. 
+     *  The auxiliary variables are created
+     *  in the prefire() method and may be set during each firing
+     *  of the actor. Return null if the
      *  auxVariables have never been created.
      *
      *  @return The auxVariables in a double array.
@@ -232,7 +196,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return _auxVariables;
     }
 
-    /** Return the derivative of the latest updated state.
+    /** Return the latest updated derivative.
      *  @return The derivative of the most recent resolved state.
      */
     public final double getDerivative() {
@@ -240,14 +204,20 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return the history information of the last index-th step.
-     *  The index start from 0, and getHistory(0) gives the 
-     *  state and derivative of time t(n-1), assuming the current
-     *  time is t(n). If the index is less than 0 or grater than
-     *  the history capacity, an runtime IndexOutOfBoundsException
-     *  will be thrown.
+     *  The index starts from 0. If the current time is t(n),
+     *  then getHistory(0) gives the 
+     *  state and derivative of time t(n-1), and getHistory(1)
+     *  corresponds to time t(n-2).
      *  The returned history array has length 2, where the first 
      *  element is the history state, and the second element is 
      *  the corresponding derivative.
+     *  The history information is equidistant in time, and the 
+     *  distance is the current step size.
+     *  If the step sizes are changed during the execution,
+     *  the history information will be self-adjusted.
+     *  If the index is less than 0 or grater than
+     *  the history capacity, an runtime IndexOutOfBoundsException
+     *  will be thrown.
      *  
      *  @param index The index
      *  @return The history array at that index point.
@@ -257,22 +227,15 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return the history capacity.
-     *  @return The maximum capacity of the history list.
+     *  @return The maximum capacity of the history information.
      */
     public final int getHistoryCapacity() {
         return _history.getCapacity();
     }
     
-    /** Return the initial state.
-     *
-     *  @return the initial state.
-     */
-    public final double getInitialState() {
-        return _initState;
-    }
-
     /** Return the state of the integrator. The returned state is the 
-     *  latest confirmed state. This is the same as getHistory(0)[0].
+     *  latest confirmed state. This is the same value as getHistory(0)[0],
+     *  but more efficient.
      *
      *  @return A double number as the state of the integrator.
      */
@@ -281,7 +244,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return the tentative state.
-     *
      *  @return the tentative state.
      */
     public double getTentativeState() {
@@ -294,6 +256,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public final int getValidHistoryCount() {
         return _history.getValidEntryCount();
+    }
+
+    /** Go to the marked state. This method may be used
+     *  for rollback the simulation from a previous time point.
+     */
+    public void goToMarkedState() {
+        _state = _storedState;
+        setTentativeState(_storedState);
     }
 
     /** Initialize the integrator. Check for director and ODE 
@@ -318,27 +288,20 @@ public class CTBaseIntegrator extends TypedAtomicActor
                     " no ODE solver available");
         }
         super.initialize();
-        _initState = ((DoubleToken)initialState.getToken()).doubleValue();
-        _tentativeState = _initState;
+        _tentativeState = 
+            ((DoubleToken)initialState.getToken()).doubleValue();
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
-        if(_debugging) _debug(getName(), " init, token = " + _initState);
+        if(_debugging) _debug(getName(), " initialize: initial state = " 
+                + _tentativeState);
         _history.clear();
     }
 
-    /** Emit the tentative output, which is the tentative state of the
-     *  integrator.
-     *  @exception IllegalActionException If the data transfer is not
-     *  completed.
-     */
-    public void emitTentativeOutputs() throws IllegalActionException {
-        output.send(0, new DoubleToken(_tentativeState));
-    }
-
-    /** Return true if the last integration step is successful.
+    /** Return true if the latest integration step is successful.
      *  This method delegates to the integratorIsSuccessful() method of
      *  the current ODE solver.
+     *  Throw a NullPointerException, if there's no ODE solver.
      *  @return True if the last integration step is successful.
      */
     public boolean isThisStepSuccessful() {
@@ -347,7 +310,15 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return _successful;
     }
 
-    /** Updates the states and push the current state and its derivative
+    /** Mark and remember the current state. This remembered state can be
+     *  retrieved by the goToMarkedState() method. The marked state
+     *  may be used for back up simulation from past.
+     */
+    public void markState() {
+        _storedState = getState();
+    }
+
+    /** Updates the state and it derivaticve, and push them 
      *  into history.
      *  @return True always.
      *  @exception Never thrown
@@ -357,12 +328,13 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _derivative = _tentativeDerivative;
         if(_debugging) _debug(getName(), " state: " + _state +
                               " derivative: " + _derivative);
-        _pushHistory(_tentativeState, _tentativeDerivative);
+        _history.pushEntry(_tentativeState, _tentativeDerivative);
         return true;
     }
 
     /** Return the predicted next step size. This method delegates to
      *  the integratorPredictedStepSize() method of the current ODESolver.
+     *  Throw a NullPointerException, if there's no ODE solver.
      *  @return The predicteded next step size.
      */
     public double predictedStepSize() {
@@ -370,12 +342,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return solver.integratorPredictedStepSize(this);
     }
 
-    /** Setup the actor to operate with the current ODE solver.
+    /** Setup the integrator to operate with the current ODE solver.
      *  This method checks
-     *  if there enough auxVariables in the integrator given the
-     *  current ODE solver. If not, create more auxVariables.
+     *  if there enough auxiliary variables in the integrator for the
+     *  current ODE solver. If not, create more auxiliary variables.
+     *  This method also adjust the history information w.r.t. the
+     *  current ODE solver and the current step size.
      *  The existance of director and ODE solver is not checked,
-     *  since they are checked in preinitialize()
+     *  since they are checked in the initialize() method.
      *  @return True always.
      *  @exception IllegalActionException If there's no director or
      *       the director has no ODE solver.
@@ -396,11 +370,11 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return true;
     }
 
-    /** Return the prediction of the refined next step size. 
+    /** Return the estimation of the refined next step size. 
      *  If this integrator considers the last step to be successful,
      *  then return the current step size, else return half the
      *  current step size.
-     *  @return The predicteded next step size.
+     *  @return The refined step size.
      */
     public double refinedStepSize() {
         double curstep = ((CTDirector)getDirector()).getCurrentStepSize();
@@ -411,26 +385,10 @@ public class CTBaseIntegrator extends TypedAtomicActor
         }
     }
 
-    /** Go to the marked state. This method may be used
-     *  for rollback the simulation from a previous time point.
-     */
-    public void goToMarkedState() {
-        _setState(_storedState);
-        setTentativeState(_storedState);
-    }
-
-    /** Mark the current state. This remembered state can be
-     *  retrieved by the goToMarkedState() method. The marked state
-     *  may be used for back up simulation from past.
-     */
-    public void markState() {
-        _storedState = getState();
-    }
-
-    /** Set the value of an auxVariable.  If the index is out of
-     *  the bound of the auxVariables
-     *  array, an IllegalActionException is thrown to indicate a error
-     *  in the integration method.
+    /** Set the value of an auxiliary variable.  If the index is out of
+     *  the bound of the auxiliary variable
+     *  array, an IllegalActionException is thrown to indicate an 
+     *  inconsistecy in the ODE solver.
      *
      *  @param index The index in the auxVariables array.
      *  @param value The value to be set.
@@ -443,7 +401,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
             _auxVariables[index] = value;
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new IllegalActionException(this,
-                    "index out of the range of auxVariables.");
+                    "index out of the range of the auxVariables.");
         }
     }
 
@@ -477,58 +435,40 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-    /** Push the state and derivative into the history storage.
-     *  If the history capacity is full, then the oldest history
-     *  will be lost. The contents of the history storage can be
-     *  retrieved by getHistory() method. 
-     */
-    protected void _pushHistory(double state, double derivative) {
-        _history.pushEntry(state, derivative);
-    }      
+    ////                       protected variables                 ////
 
-    /** Set the state of the integrator.
-     *
-     *  @param value The value to be set to the state.
-     */
-    protected final void _setState(double value) {
-        _state = value;
-    }
-
-    /** Rebalance the history. This method is here for the test purpose.
-     *  @param stepsize The new step size.
-     */
-    protected void _rebalanceHistory(double stepsize) {
-        _history.rebalance(stepsize);
-    }
+    // The history states and its derivative.
+    // This variable is needed by Linear Multistep (LMS) methods,
+    // like Trapezoidal rule and backward defferential formula.
+    // This varaible is protected so that derived classes may 
+    // access it directly.
+    protected History _history;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Parameter initial state.
-
-    private double _initState;
-
+    // Indicate whether the latest step is successful from this
+    // integrator's point of view. 
     private boolean _successful = false;
+
     // Temporary states array.
     private double[] _auxVariables;
+
     // State.
     private double _state;
     // Derivative.
+
     private double _derivative;
     // tentative state;
+
     private double _tentativeState;
+
     // Tentative derivative;
     private double _tentativeDerivative;
 
     // The state stored, may be used for back up simulation
     private double _storedState;
 
-    // The history states and its derivative.
-    // This variable is needed by Linear Multistep (LMS) methods,
-    // like Trapezoidal rule and backward defferential formula.
-    private History _history;
-   
     ///////////////////////////////////////////////////////////////////
     ////                           Inner Class                     ////
     
@@ -596,7 +536,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         /**
          *  Rebalances the history information 
          *  with repect to the current step size, such that the information
-         *  in the history list are equaly distanced, and the the 
+         *  in the history list are equaly distance, and the
          *  distance is the current step size. 
          *  If the current step size is less than the history step size
          *  used in the history list, then a 4-th order Hermite 
@@ -661,7 +601,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         }
         
         ///////////////////////////////////////////////////////////////
-        ////                        private variables               ////
+        ////                        private methods                ////
         
         // Hermite interpolation.
         // @param p1 Point1, state and derivative.
@@ -712,7 +652,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
         double _stepsize;
     }
         
-
     ///////////////////////////////////////////////////////////////////
     ////                           Inner Class                     ////
     

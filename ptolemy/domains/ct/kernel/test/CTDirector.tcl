@@ -1,4 +1,4 @@
-# Tests for the TotallyOrderedSet class
+# Tests for the CTDirector and CTMultiSolverDirector class
 #
 # @Author: Jie Liu
 #
