@@ -62,17 +62,14 @@ JSIMPLE_TESTS = \
 	CrossRefList.tcl \
 	Entity.tcl \
 	IllegalActionException.tcl \
-	IntToken.tcl \
 	InvalidStateException.tcl \
 	KernelException.tcl \
 	NameDuplicationException.tcl \
 	NamedList.tcl \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
-	ObjectToken.tcl \
 	Port.tcl \
-	Relation.tcl \
-	StringToken.tcl
+	Relation.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
