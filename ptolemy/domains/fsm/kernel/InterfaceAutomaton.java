@@ -138,43 +138,27 @@ public class InterfaceAutomaton extends FSMActor {
 	// check composability
 	_checkComposability(automaton);
 
-	// computes the input, output, and internal transitions of the
+	// compute the input, output, and internal transitions of the
 	// composition
-	Set[] sets = _computeCompositionTransitions(automaton);
-        Set inputs = sets[0];
-	Set outputs = sets[1];
-	Set internals = sets[2];
+	_computeTransitionNamesInComposition(automaton);
 
-// step 1: compute product
-/* cases in frontier exploration at state p x q: for a transition from T from p:
-(1) T is input for p:
-    (1A) T is input of product: add to product
-    (1B) T is shared:
-        (1Ba) q has T ouput: add to product
-	(1Bb) q does not have T output: transition cannot happen in
-	                                product. ignore
-(2) T is output for p:
-    (2A) T is output of product: add to product
-    (2B) T is shared:
-        (2Ba) q has T input: add to product
-	(2Bb) q does not have T input: mark p x q as illegal. stop exploring
-	                               from p x q
+        // compute the product automaton
+        InterfaceAutomaton composition = _computeProduct(automaton);
 
-(3) T is internal for p: add to product
+	// prune illegal states
 
-The cases for q is symmetric, but be careful not to add shared transition
-twice.
-*/
 
-// step2: prune out illegal states.
-// need step1 to mark illegal states.
+
+// step2: prune out illegal states. Use frontier exploration again. The
+// initial frontier is the set illegalStates.
 
 // step3: eliminate states disconnected to initial state.
 
 
-        // First computes the product automaton, then prunes the illegal
-        // states.
-        InterfaceAutomaton product = _computeProduct(automaton);
+
+
+
+        // create ports and internal transition parameters for the composition
 
 
         return null;
@@ -404,11 +388,11 @@ twice.
 	}
     }
 
-    // Compute the input, output, and internal transitions of the composition.
-    // Return the result in an array of sets, in that order.
-    private Set[] _computeCompositionTransitions(InterfaceAutomaton automaton) {
-        Set[] sets = new Set[3];
-
+    // Compute the names of the input, output, and internal transitions of
+    // the composition.  Set the results to _inputNames, _outputNames, and
+    // _internalNames;
+    private void _computeTransitionNamesInComposition(
+                                            InterfaceAutomaton automaton) {
 	// compute shared transitions
 	Set shared = this.inputNameSet();
 	Set thatOutputs = automaton.outputNameSet();
@@ -421,80 +405,121 @@ twice.
 	shared.addAll(shared1);
 
 	// compute input, output, and internal transitions
-	sets[0] = this.inputNameSet();
-	sets[0].addAll(automaton.inputNameSet());
-	sets[0].removeAll(shared);
+	_inputNames = this.inputNameSet();
+	_inputNames.addAll(automaton.inputNameSet());
+	_inputNames.removeAll(shared);
 
-	sets[1] = this.outputNameSet();
-	sets[1].addAll(automaton.outputNameSet());
-	sets[1].removeAll(shared);
+	_outputNames = this.outputNameSet();
+	_outputNames.addAll(automaton.outputNameSet());
+	_outputNames.removeAll(shared);
 
-	sets[2] = this.internalTransitionNameSet();
-	sets[2].addAll(automaton.internalTransitionNameSet());
-	sets[2].addAll(shared);
-
-	return sets;
+	_internalNames = this.internalTransitionNameSet();
+	_internalNames.addAll(automaton.internalTransitionNameSet());
+	_internalNames.addAll(shared);
     }
 
-    // Compute the product of this autmaton and the argument.
+    // Compute the product of this autmaton and the argument. Also store
+    // the illegal states found in the Set _illegalStates.
+    //
     // Use frontier exploration. The frontier is represented by a HashMap
     // frontier. The key is the name of the state in the product, the value
     // is a Triple: productState, stateInThis, stateInArgument. The keys
     // are used to easily check if a product state is in the frontier.
     //
-    // init: set the product to empty
-    //       product = frontier = (this.initialState x automaton.initialSate, 
-    //                             this.initialState, automaton.initialState)
-    // iterate: pick a currentState from frontie
-    //          for each transition from the currentState:
-    //              (1) check composability;
-    //              (2) if destination state not in product, add it to
-    //                  both the product and the frontier
-    //              (3) add the transition to the product.
-    //          remove currentState from frontier
-    // end: when frontier is empty
+    // init: product = (this.initialState x automaton.initialSate)
+    //       frontier = (this.initialState x automaton.initialSate, 
+    //                   this.initialState, automaton.initialState)
+    // iterate: pick a state p x q from frontier;
+    //          pick a step pTr from p, if r x q is not in product, add it to
+    //          both the product and the frontier. switch:
+    //            (case 1) T is input for p:
+    //              (1A) T is input of product: add T to product
+    //              (1B) T is shared:
+    //                (1Ba) q has T ouput: add T to product as internal
+    //                      transition
+    //                (1Bb) q does not have T output: transition cannot happen
+    //                      in product. ignore
+    //            (case 2) T is output for p:
+    //              (2A) T is output of product: add T to product
+    //              (2B) T is shared:
+    //                (2Ba) q has T input: add T to product as internal
+    //                      transition
+    //                (2Bb) q does not have T input: mark p x q as illegal.
+    //                      stop exploring from p x q.
+    //            (case 3) T is internal for p: add T to product
     //
-    // The name of the states in the product is formed by the 
-    // <nameInThisAutomaton>_&_<nameInArgumentAutomaton>
+    //         The cases for a transition from q is almost symmetric,
+    //         but be careful not to add shared transition twice.
+    //
+    //         (after exploring all transitions from p and q), remove p x q
+    //          from frontier.
+    //
+    // end: when frontier is empty
     //
     private InterfaceAutomaton _computeProduct(InterfaceAutomaton automaton)
             throws IllegalActionException {
         try {
             // init
+	    _illegalStates = new HashSet();
             InterfaceAutomaton product = new InterfaceAutomaton();
             HashMap frontier = new HashMap();
 
-            State currentStateThis = this.getInitialState();
-            State currentStateArgument = automaton.getInitialState();
-            String name = currentStateThis.getName() + "_&_"
-                              + currentStateArgument.getName();
-            // set container to null now so it is not in the product automaton
-            State currentState = new State(null, name);
-            Triple triple = new Triple(currentState, currentStateThis,
-                                       currentStateArgument);
+	    // create initial state
+            State stateInThis = this.getInitialState();
+            State stateInArgument = automaton.getInitialState();
+            String name = stateInThis.getName() + NAME_CONNECTOR
+                              + stateInArgument.getName();
+            State productState = new State(product, name);
+
+            Triple triple = new Triple(productState, stateInThis,
+                                       stateInArgument);
             frontier.put(name, triple);
 
             // iterate
             while ( !frontier.isEmpty()) {
-                // pick a value from frontier. It seems that there isn't an
+                // pick a state from frontier. It seems that there isn't an
                 // easy way to pick an arbitrary entry from a HashMap, except
                 // through Iterator
                 Iterator iterator = frontier.keySet().iterator();
                 name = (String)iterator.next();
                 triple = (Triple)frontier.get(name);
 
+		boolean isProductStateIllegal = false;
+
                 // extend frontier from state in this automaton
-                currentStateThis = triple._stateInThis;
-                ComponentPort outPort = currentStateThis.outgoingPort;
+                stateInThis = triple._stateInThis;
+                ComponentPort outPort = stateInThis.outgoingPort;
                 Iterator transitions = outPort.linkedRelationList().iterator();
-                while (transitions.hasNext()) {
+                while (transitions.hasNext() && !isProductStateIllegal) {
                     InterfaceAutomatonTransition transition =
                             (InterfaceAutomatonTransition)transitions.next();
-		    // process non-shared transitions
+
+		    // if destination state is not in product, add it to both
+		    // the product and the frontier.
+		    State destinationInThis = transition.destinationState();
+		    String destinationName = destinationInThis.getName()
+		            + NAME_CONNECTOR
+			    + triple._stateInArgument.getName();
+		    if (product.getEntity(destinationName) == null) {
+		        // not in product
+			State destinationState = new State(product,
+			                                   destinationName);
+                        Triple destinationTriple = new Triple(destinationState,
+                                  destinationInThis, triple._stateInArgument);
+                        frontier.put(destinationName, destinationTriple);
+                    }
+
+                    // switch depending on type of transition
                     int transitionType = transition.getTransitionType();
                     if (transitionType ==
                             InterfaceAutomatonTransition.INPUT_TRANSITION) {
+			// case 1
+			String transitionName = transition.getName();
+			if (_inputNames.contains(transitionName)) {
+			    // case 1A
+			    // stop here
 
+                        }
 
                     }
                     else if (transitionType ==
@@ -526,6 +551,23 @@ twice.
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The state names in automata composition is formed by
+    // <nameInThisAutomaton><NAME_CONNECTOR><nameInArgumentAutomaton>
+    private final String NAME_CONNECTOR = "_&_";
+
+    // The following variables are used to store intermediate results
+    // during the computation of compose().
+
+    // Names of the transitions in the composition. Constructed by
+    // _computeTransitionNamesInComposition().
+    private Set _inputNames;
+    private Set _outputNames;
+    private Set _internalNames;
+
+    // Set of illegal states in the product automaton. The elements of
+    // the Set are references to states. Constructed by _computeProduct().
+    private Set _illegalStates;
     
     ///////////////////////////////////////////////////////////////////
     ////                            inner class                    ////
