@@ -63,7 +63,7 @@ public class Add extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	_input = new TypedIOPort(this, "Input", true, false);
-	_input.makeMultiport(true);
+	_input.setMultiport(true);
 	_output = new TypedIOPort(this, "Output", false, true);
     }
 
