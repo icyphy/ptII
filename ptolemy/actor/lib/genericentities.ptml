@@ -4,7 +4,7 @@
 <entitylibrary name="generic" version="1.0">
 <description>Generic domain polymorphic actors</description>
 
-<entity name="ramp" icon="generic.source" terminalstyle="generic.source">
+<entity name="ramp" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Ramp">
 <description>Create a sequence of tokens with increasing value</description>
 <terminalmap ports="output"/>
 <parameter name="init" value="0.0" type="double"/>
@@ -12,7 +12,7 @@
 <port name="output" output="true" type="double"/>
 </entity>
 
-<entity name="recorder" icon="generic.sink" terminalstyle="generic.sink">
+<entity name="recorder" icon="generic.sink" terminalstyle="generic.sink" implementation="ptolemy.actor.lib.Recorder">
 <terminalmap ports="input"/>
 <port name="input" input="true" type="double"/>
 </entity>
