@@ -112,6 +112,8 @@ public class CommandLineTemplate {
      */
     public void processArgs(String args[]) throws Exception {
         if (args != null) {
+            // FIXME: Remove this when method caching is fixed!
+            new ptolemy.data.expr.PtParser();
 
             // start the models.
             Iterator models = _models.iterator();

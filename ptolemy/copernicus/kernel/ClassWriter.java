@@ -101,6 +101,7 @@ public class ClassWriter extends SceneTransformer {
             try {
                 theClass.write(outDir);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 throw new RuntimeException("Creating class file for " +
                         theClass + " failed because " + ex.getMessage());
             }

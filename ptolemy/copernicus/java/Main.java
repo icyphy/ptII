@@ -133,7 +133,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
         
-        /*
+        
               
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
@@ -265,8 +265,12 @@ public class Main extends KernelMain {
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ls",
+                        new TransformerAdapter(LocalSplitter.v())));
+        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
                         new TransformerAdapter(TypeAssigner.v())));
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.nee",
                         NamedObjEqualityEliminator.v(_toplevel)));
@@ -398,7 +402,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-         */         
+            
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
          
         // This snapshot should be last...

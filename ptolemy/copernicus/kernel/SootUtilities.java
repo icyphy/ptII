@@ -1207,6 +1207,37 @@ public class SootUtilities {
         return foundMethod;
     }
 
+    /**
+     */
+    public static SootMethod getSootMethodForMethod(Method method) {
+        StringBuffer buffer = new StringBuffer();
+ 
+        buffer.append("<" + Scene.v().quotedNameOf(
+                              method.getDeclaringClass().getName()) + ": ");
+        String returnType = method.getReturnType().getName();
+
+        buffer.append(returnType + " " + Scene.v().quotedNameOf(method.getName()) + "(");
+        
+        Class[] parameterTypes = method.getParameterTypes();
+        if(parameterTypes.length > 0) {
+            buffer.append(parameterTypes[0].getName());
+            for(int i = 1; i < parameterTypes.length; i++) {
+                buffer.append(",");
+                buffer.append(parameterTypes[i].getName());
+            }
+        }
+        buffer.append(")");
+        buffer.append(">");
+      
+//         SootClass math = Scene.v().getSootClass("java.lang.Math");
+//         Iterator methods = math.getMethods().iterator();
+//         while(methods.hasNext()) {
+//             System.out.println("method = " + ((SootMethod)methods.next()).getSignature());
+//         }
+        System.out.println("looking for method " + buffer);
+        return Scene.v().getMethod(buffer.toString());
+    }
+
     /** Inline all calls to the given method that occur within the given class.
      *  Note that this alone will really only increase the size of the
      *  affected code, but it turns cross-method optimizations into local

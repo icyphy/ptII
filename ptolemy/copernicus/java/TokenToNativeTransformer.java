@@ -197,7 +197,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
             for (Iterator methods = entityClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                
+                System.out.println("method = " + method);
+    
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
                 
                 // First split local variables that are used in

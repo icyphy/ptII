@@ -58,6 +58,8 @@ import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.jimple.toolkits.typing.TypeAssigner;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorTransformer
@@ -487,12 +489,14 @@ public class ActorTransformer extends SceneTransformer {
          
         // Add fields to contain the tokens for each port. 
         Map nameToField = new HashMap();
+        Map nameToType = new HashMap();
         {
             Iterator inputPorts = entity.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort port = (TypedIOPort)(inputPorts.next());
                 String name = port.getName(entity);
                 Type type = PtolemyUtilities.tokenType;
+                nameToType.put(name, port.getType());
                 // PtolemyUtilities.getSootTypeForTokenType(
                        //  port.getType());
                 SootField field = new SootField(
@@ -526,9 +530,10 @@ public class ActorTransformer extends SceneTransformer {
                 TypedIOPort port = (TypedIOPort)(inputPorts.next());
                 // FIXME: Handle multiports
                 if (port.getWidth() > 0) {
+                    String name = port.getName(entity);
+
                     // Create an if statement.
                     // 
-                    String name = port.getName(entity);
                     Local portLocal = Jimple.v().newLocal("port",
                             PtolemyUtilities.portType);
                     body.getLocals().add(portLocal);
@@ -588,10 +593,11 @@ public class ActorTransformer extends SceneTransformer {
                 PtParser parser = new PtParser();
                 ASTPtRootNode parseTree = 
                     parser.generateParseTree(expression);
-                ActorParseTreeCodeGenerator generator = 
-                    new ActorParseTreeCodeGenerator(nameToField);
-                
-                local = generator.generateCode(parseTree, body);
+                ActorCodeGenerationScope scope = 
+                    new ActorCodeGenerationScope(nameToField, nameToType, body);
+                ParseTreeCodeGenerator generator = 
+                    new ParseTreeCodeGenerator();
+                local = generator.generateCode(parseTree, body, scope);
             } catch (IllegalActionException ex) {
                 ex.printStackTrace();
                 throw new RuntimeException(ex.toString());
@@ -621,12 +627,13 @@ public class ActorTransformer extends SceneTransformer {
             units.add(Jimple.v().newReturnVoidStmt());
         
             LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
         }
 
         // Remove super calls to the executable interface.
         // FIXME: This would be nice to do by inlining instead of
         // special casing.
-        //  _implementExecutableInterface(entityInstanceClass);
+        _implementExecutableInterface(entityInstanceClass);
         
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
@@ -643,13 +650,22 @@ public class ActorTransformer extends SceneTransformer {
         return entityInstanceClass;
     }
 
-    public static class ActorParseTreeCodeGenerator
-        extends ParseTreeCodeGenerator {
-        public ActorParseTreeCodeGenerator(Map nameToField) {
+    public static class ActorCodeGenerationScope
+        implements CodeGenerationScope {
+        public ActorCodeGenerationScope(Map nameToField, Map nameToType, JimpleBody body) {
             _nameToField = nameToField;
+            _nameToType = nameToType;
+            _body = body;
+            _units = body.getUnits();
+        }
+        
+        public ptolemy.data.Token get(String name)
+                throws IllegalActionException {
+            throw new IllegalActionException("The ID " + name + 
+                    " does not have a value");
         }
 
-        protected Local _getLocalForName(String name)
+        public Local getLocal(String name)
                 throws IllegalActionException {
             SootField portField = (SootField)_nameToField.get(name);
 
@@ -668,10 +684,25 @@ public class ActorTransformer extends SceneTransformer {
             } else {
                 throw new IllegalActionException(
                         "The ID " + name + " is undefined.");
-           }
+            }
         }
-            
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            if(_nameToType.containsKey(name)) {
+                return (ptolemy.data.type.Type)_nameToType.get(name);
+            } else {
+                throw new IllegalActionException(
+                        "The ID " + name + " is undefined.");
+            }
+        }
+        public NamedList variableList() {
+            return new NamedList();
+        }
+        
         private Map _nameToField;
+        private Map _nameToType;
+        private JimpleBody _body;
+        private Chain _units;
     }
 
     private static void _removeAttributeInitialization(SootClass theClass) {
@@ -932,8 +963,9 @@ public class ActorTransformer extends SceneTransformer {
             String portName = port.getName(container);
             String fieldName = 
                 ModelTransformer.getFieldNameForPort(port, container);
+            RefType portType = RefType.v(className);
 	    Local portLocal = Jimple.v().newLocal("port",
-                        PtolemyUtilities.portType);
+                    portType);
             body.getLocals().add(portLocal);
             
             if (createdSet.contains(port.getFullName())) {
@@ -952,7 +984,7 @@ public class ActorTransformer extends SceneTransformer {
                 body.getUnits().add(
                             Jimple.v().newAssignStmt(portLocal,
                                     Jimple.v().newCastExpr(tempPortLocal,
-                                            PtolemyUtilities.portType)));
+                                            portType)));
                //  } else {
 //                     System.out.println("Warning: " + modelClass + " does " +
 //                             "not declare a field " + fieldName);
@@ -971,11 +1003,13 @@ public class ActorTransformer extends SceneTransformer {
                 ModelTransformer.updateCreatedSet(entity.getFullName() + "."
                         + port.getName(),
                         port, port, createdSet);
-                // and then cast to portLocal
+                // and then assign to portLocal
+                // (It should already have the correct type.
                 body.getUnits().add(
                         Jimple.v().newAssignStmt(portLocal,
-                                Jimple.v().newCastExpr(local,
-                                        PtolemyUtilities.portType)));
+                                local));
+                             //    Jimple.v().newCastExpr(local,
+//                                         portType)));
                 
             }
             if (port instanceof TypedIOPort) {
