@@ -27,6 +27,7 @@
 <PARAM NAME=NAME VALUE="ABPApplet">
 <PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
 <PARAM NAME="background" VALUE="#faf0e6">
+<PARAM NAME="defaultStopTime" VALUE="100">
 <COMMENT>
 <EMBED type="application/x-java-applet;version=1.2"
  CODE=ptolemy.domains.fsm.demo.ABP.ABPApplet.class
@@ -39,6 +40,7 @@
  NAME="ABPApplet"
  WIDTH=600 HEIGHT=400
  background="#faf0e6"
+ defaultStopTime="100"
  pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
 <NOEMBED></COMMENT>
 <I>If you were able to run applets, you would have a demo here.</I>
@@ -99,15 +101,6 @@ a hierarchical FSM as shown below.
 <P><B>Receiver. </B>The receiver is a flat FSM as shown below.
 <CENTER>
 <P><IMG SRC="img/Receiver.gif" ></CENTER>
-
-<H1>Run the Demo as a Java Application</H1>
-<p>You can run the demo as a standalone Java application by executing the following sequence of commands:
-<pre><code>
-cd $PTII/ptolemy/domains/sc/demo/ABP
-setenv CLASSPATH $PTII
-java ptolemy.domains.sc.demo.ABP.ABP
-</code>
-</pre>
 
 A sample result of running the demo is shown below.
 <CENTER>
