@@ -89,7 +89,7 @@ public class TestDirector extends AtomicActor {
 	}
 	try {
 	    ((CompositeActor)getContainer()).workspace().getReadAccess();
-	    ((BasePNDirector)getDirector()).finish();
+	    ((BasePNDirector)getDirector()).wrapup();
 	} finally {
 	    ((CompositeActor)getContainer()).workspace().doneReading();
 	}
