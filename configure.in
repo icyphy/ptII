@@ -48,7 +48,7 @@ if test  ! -w "$PTII"; then
     echo "\$PTII is set to '$PTII', but it is not writable by you"
     exit 3	
 fi 
-
+PTII_DEFAULT=$PTII
 # The default value of prefix
 AC_PREFIX_DEFAULT($PTII)
 
@@ -139,4 +139,5 @@ else
 fi
 
 AC_SUBST(PTJAVA_DIR)
+AC_SUBST(PTII_DEFAULT)
 AC_OUTPUT(mk/ptII.mk ptolemy/plot/ptplot)

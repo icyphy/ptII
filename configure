@@ -537,7 +537,7 @@ if test  ! -w "$PTII"; then
     echo "\$PTII is set to '$PTII', but it is not writable by you"
     exit 3	
 fi 
-
+PTII_DEFAULT=$PTII
 # The default value of prefix
 
 
@@ -726,6 +726,7 @@ else
 fi
 
 
+
 trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -871,6 +872,7 @@ s%@mandir@%$mandir%g
 s%@JAVAC@%$JAVAC%g
 s%@JAVA@%$JAVA%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
+s%@PTII_DEFAULT@%$PTII_DEFAULT%g
 
 CEOF
 EOF
