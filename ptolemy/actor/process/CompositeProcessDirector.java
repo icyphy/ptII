@@ -355,7 +355,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public void stopOutputBranchController() {
         Workspace workspace = workspace();
-        if( !_outputBranchController) {
+        if( _outputBranchController == null) {
             return;
         }
         if( !_outputBranchController.hasBranches() ) {
