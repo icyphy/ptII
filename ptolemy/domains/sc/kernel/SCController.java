@@ -327,7 +327,7 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
             //currentRefinement().createReceivers();
             //currentRefinement().initialize();
 
-System.out.println("Initializing refinement "+((ComponentEntity)currentRefinement()).getFullName());
+//System.out.println("Initializing refinement "+((ComponentEntity)currentRefinement()).getFullName());
 
         }
     }
@@ -687,8 +687,8 @@ System.out.println("Initializing refinement "+((ComponentEntity)currentRefinemen
                 if (dir.currentRefinement() == this) {
 
 SCState state = dir.currentState();
-System.out.println("SCController " + this.getFullName() + " setting " +
-        "local variable " + var.getName() + ":" + var.getExpression() + " of state " + state.getFullName());
+//System.out.println("SCController " + this.getFullName() + " setting " +
+//        "local variable " + var.getName() + ":" + var.getExpression() + " of state " + state.getFullName());
 
                     dir.currentState().setLocalInputVar(var.getName(), var.getToken());
                 }
@@ -699,7 +699,7 @@ System.out.println("SCController " + this.getFullName() + " setting " +
             }
             if (port.numLinks() > 0) {
 
-System.out.println("Sending trigger action to "+port.getFullName());
+//System.out.println("Sending trigger action to "+port.getFullName());
 
                 port.send(0, var.getToken());
             } else {
@@ -707,7 +707,7 @@ System.out.println("Sending trigger action to "+port.getFullName());
                 // This branch will not be executed, because now all ports
                 // in SC system are connected.
 
-System.out.println("Port " + port.getFullName() + " is floating.");
+//System.out.println("Port " + port.getFullName() + " is floating.");
 
                 // Here we must be careful, port does not have inside
                 // receivers created!
@@ -734,13 +734,13 @@ System.out.println("Port " + port.getFullName() + " is floating.");
             if (port.numLinks() > 0) {
                 if (port.hasToken(0)) {
 
-System.out.println("Port " + port.getFullName() + " has token.");
+//System.out.println("Port " + port.getFullName() + " has token.");
 
                     _inputStatusVars.setVarValue(port.getName(), PRESENT);
                     _inputValueVars.setVarValue(port.getName(), port.get(0));
                 } else {
 
-System.out.println("Port " + port.getFullName() + " has no token.");
+//System.out.println("Port " + port.getFullName() + " has no token.");
 
                     _inputStatusVars.setVarValue(port.getName(), ABSENT);
                 }
