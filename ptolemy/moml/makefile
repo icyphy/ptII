@@ -31,7 +31,7 @@
 
 ME =		ptolemy/moml
 
-DIRS = 		demo test
+DIRS = 		demo filter test
 
 # Root of the Java directory
 ROOT =		../..
@@ -44,15 +44,17 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	moml
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	filter/filter.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =	Documentation.java \
 	EntityLibrary.java \
 	ErrorHandler.java \
-	FilterBackwardCompatibility.java \
-	FilterOutGraphicalClasses.java \
-	FilterHideAnnotationNames.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
 	Location.java \

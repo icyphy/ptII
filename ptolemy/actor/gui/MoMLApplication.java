@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.FilterBackwardCompatibility;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
 
 import java.util.Date;			// For timing measurements
@@ -134,13 +134,8 @@ public class MoMLApplication {
         // Create a parser to use.
         _parser = new MoMLParser();
 
-
-        // We reset the filters here so that if we call MoMLApplication 
-        // more than once, we do not add a filter each time.
-        _parser.setMoMLFilters(null);
-
-	// Handle Backward Compatibility.
-	_parser.addMoMLFilter(new FilterBackwardCompatibility());
+	// We set the list of MoMLFilters to handle Backward Compatibility. 
+        _parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
         _parseArgs(args);
 

@@ -36,8 +36,8 @@ import ptolemy.actor.Manager;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.FilterOutGraphicalClasses;
-import ptolemy.moml.FilterBackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.StreamErrorHandler;
 
@@ -86,11 +86,12 @@ public class MoMLSimpleApplication implements ChangeListener {
         // The test suite calls MoMLSimpleApplication multiple times,
         // and the list of filters is static, so we reset it each time
         // so as to avoid adding filters every time we run an auto test.
-        parser.setMoMLFilters(null);
+
+	// We set the list of MoMLFilters to handle Backward Compatibility. 
+        parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
 	// Filter out any graphical classes.
-	parser.addMoMLFilter(new FilterBackwardCompatibility());
-	parser.addMoMLFilter(new FilterOutGraphicalClasses());
+	parser.addMoMLFilter(new RemoveGraphicalClasses());
 
         parser.setErrorHandler(new StreamErrorHandler());
 

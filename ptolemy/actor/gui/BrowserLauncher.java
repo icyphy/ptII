@@ -125,7 +125,6 @@ public class BrowserLauncher {
      * does not run
      */
     public static void openURL(String url) throws IOException {
-	System.out.println("BrowserLauncher.openURL(): " + url);
 	if (!loadedWithoutErrors) {
 	    throw new IOException("Exception in finding browser: "
                     + errorMessage);
@@ -205,7 +204,6 @@ public class BrowserLauncher {
 	    break;
 	case WINDOWS_NT:
 	case WINDOWS_9x:
-	    System.out.println("BrowserLauncher.openURL(): Windows");
             // Add quotes around the URL to allow ampersands and other special
             // characters to work.
             Process process =

@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.Documentation;
-import ptolemy.moml.FilterOutGraphicalClasses;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.MoMLParser;
 
 
@@ -213,7 +213,7 @@ public class MoMLApplet extends PtolemyApplet {
             parser.setMoMLFilters(null);
 
 	    // Filter out graphical classes so that we do not require diva.jar
-	    parser.addMoMLFilter(new FilterOutGraphicalClasses());
+	    parser.addMoMLFilter(new RemoveGraphicalClasses());
 	}
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
