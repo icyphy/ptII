@@ -271,7 +271,7 @@ public class CTScheduler extends Scheduler{
      *  @exception NotSchedulableException If the system is not schedulable.
      */
     public Enumeration dynamicActorSchedule()
-        throws NotSchedulableException, IllegalActionException {
+            throws NotSchedulableException, IllegalActionException {
         try {
             workspace().getReadAccess();
             if(!valid()) {
