@@ -93,7 +93,13 @@ OPTIONAL_FILES = \
 	'PlotBox$$FillButtonListener.class' \
 	'PlotBox$$ZoomListener.class' \
 	'PlotLive$$StartButtonListener.class' \
-	'PlotLive$$StopButtonListener.class'
+	'PlotLive$$StopButtonListener.class' \
+	'Pxgraph$$1.class' \
+	'Pxgraph$$2.class' \
+	'Pxgraph$$AboutButtonListener.class' \
+	'Pxgraph$$ExitButtonListener.class' \
+	'Pxgraph$$HTMLButtonListener.class' \
+	'Pxgraph$$PrintButtonListener.class'
 
 # Files to be removed by 'make realclean'
 REALCLEAN_STUFF =
