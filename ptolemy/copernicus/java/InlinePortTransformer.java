@@ -111,6 +111,21 @@ public class InlinePortTransformer extends SceneTransformer {
             + "_" + StringUtilities.sanitizeName(type.toString());
     }
 
+    /** Return the port inliner for the given model.
+     */
+    public static PortInliner getPortInliner(CompositeActor model) {
+        return (PortInliner)_modelToPortInliner.get(model);
+    }
+
+    /** Set the port inliner for the given model.
+     *  This method is expected to be called by the Director inliner when 
+     *  when a decision is made about how to inline ports.
+     */
+    public static void setPortInliner(
+            CompositeActor model, PortInliner inliner) {
+        _modelToPortInliner.put(model, inliner);
+    }
+
     public String getDefaultOptions() {
         return "";
     }
@@ -151,17 +166,14 @@ public class InlinePortTransformer extends SceneTransformer {
             }
         }
 
-        PortInliner inliner;
-        if(director instanceof ptolemy.domains.sdf.kernel.SDFDirector) {
-            inliner = new SDFPortInliner(modelClass, model, _options);
-        } else if(director instanceof ptolemy.domains.fsm.kernel.FSMDirector) {
-            inliner = new HSPortInliner(modelClass, model, _options);
-        } else if(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
-            inliner = new GiottoPortInliner(modelClass, model, _options);
-        } else {
+        PortInliner inliner = getPortInliner(model);
+        if(inliner == null) {
             throw new RuntimeException("Port methods cannot be inlined for " +
                     director.getClass().getName());
         }
+
+        // Initialize the inliner
+        inliner.initialize();
         _inlinePortCalls(modelClass, model, inliner);
     }
 
@@ -734,6 +746,7 @@ public class InlinePortTransformer extends SceneTransformer {
         }
     }
 
+    private static Map _modelToPortInliner = new HashMap();
     private CompositeActor _model;
     private boolean _debug;
     private Map _options;

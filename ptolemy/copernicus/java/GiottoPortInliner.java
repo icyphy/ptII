@@ -83,7 +83,44 @@ public class GiottoPortInliner implements PortInliner {
         _modelClass = modelClass;
         _model = model;
         _options = options;
+    }
 
+    public SootField getBufferField(IOPort port, ptolemy.data.type.Type type) {
+        Map typeNameToBufferField = (Map)
+            _portToTypeNameToBufferField.get(port);
+        SootField arrayField = (SootField)
+            typeNameToBufferField.get(type.toString());
+        if(arrayField == null) {
+            throw new RuntimeException("arrayField for " + port + " and type " + type + " is null!");
+        }
+        return arrayField;
+    }
+
+    public SootField getInsideBufferField(IOPort port,
+            ptolemy.data.type.Type type) {
+        Map typeNameToBufferField = (Map)
+            _portToTypeNameToInsideBufferField.get(port);
+        SootField arrayField = (SootField)
+            typeNameToBufferField.get(type.toString());
+        if(arrayField == null) {
+            throw new RuntimeException("arrayField null!");
+        }
+        return arrayField;
+    }
+
+    /** Initialize the inliner.  This inliner does nothing, since it
+     * expects the GiottoDirectorInliner to have previously called the
+     * CreateBuffers method.
+     */
+    public void initialize() {
+    }
+
+    /** Create communication places for the ports.  This method is
+     * provided for the use of the GiottoDirectorInliner, since that
+     * inliner and this one are closely coordinated, unlike most other
+     * domains.
+     */
+    public void createBuffers() {
         // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
         _portToTypeNameToBufferField = new HashMap();
@@ -658,43 +695,6 @@ public class GiottoPortInliner implements PortInliner {
             }
 
         }
-//             for (Iterator types = typeMap.keySet().iterator();
-//                  types.hasNext();) {
-//                 ptolemy.data.type.Type type =
-//                     (ptolemy.data.type.Type)typeMap.get(types.next());
-//                 BaseType tokenType =
-//                     PtolemyUtilities.getSootTypeForTokenType(type);
-//                 Type arrayType = ArrayType.v(tokenType, 1);
-//                 String fieldName = relation.getName() + "_bufferLocal";
-//                 Local arrayLocal =
-//                     Jimple.v().newLocal(fieldName, arrayType);
-//                 clinitBody.getLocals().add(arrayLocal);
-
-//                 for (int i = 0; i < relation.getWidth(); i++) {
-//                     SootField field = new SootField(
-//                             InlinePortTransformer.getBufferFieldName(relation, i, type),
-//                             arrayType,
-//                             Modifier.PUBLIC | Modifier.STATIC);
-//                     _modelClass.addField(field);
-//                     System.out.println("creating field = " + field +
-//                             " of size " + bufferSize);
-
-//                     // Tag the field with the type.
-//                     field.addTag(new TypeTag(type));
-
-//                     // Create the new buffer
-//                     // Note: reverse order!
-//                     clinitUnits.addFirst(Jimple.v().newAssignStmt(
-//                             Jimple.v().newStaticFieldRef(field),
-//                             arrayLocal));
-//                     clinitUnits.addFirst(
-//                             Jimple.v().newAssignStmt(arrayLocal,
-//                                     Jimple.v().newNewArrayExpr(tokenType,
-//                                             IntConstant.v(bufferSize))));
-
-//                 }
-//             }
-//         }
 
         // In each actor class, create an
         _createInsideBufferReferences();
@@ -726,7 +726,7 @@ public class GiottoPortInliner implements PortInliner {
             //  System.out.println("port = " + port.getFullName() + " type = " + port.getType());
 
             // If the port is connected.
-            if (port.getWidth() > 0) {
+            if (true) {//port.getWidth() > 0) {
                 // If the port is an input, then it references
                 // the buffer of its own type.  If the port
                 // is an output, then we might have to convert to
@@ -740,6 +740,7 @@ public class GiottoPortInliner implements PortInliner {
                             port, type, typeNameToBufferField);
                 } else if (port.isOutput()) {
                     Set typeSet = _getConnectedTypeList(port);
+                    typeSet.add(port.getType());
                     for (Iterator types = typeSet.iterator();
                          types.hasNext();) {
                         ptolemy.data.type.Type type =
@@ -758,7 +759,7 @@ public class GiottoPortInliner implements PortInliner {
     private void _createPortBufferReference(SootClass entityClass,
             TypedIOPort port, ptolemy.data.type.Type type, 
             Map typeNameToBufferField) {
-        //  System.out.println("creating  buffer reference for " + port + " type = " + type);
+        System.out.println("creating  buffer reference for " + port + " type = " + type);
         BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =

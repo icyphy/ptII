@@ -30,6 +30,7 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.*;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -41,7 +42,9 @@ import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 
 import soot.*;
 import soot.jimple.*;
@@ -55,6 +58,7 @@ import soot.toolkits.scalar.LocalSplitter;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeResolver;
 
+import java.io.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -91,7 +95,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return super.getDeclaredOptions() + " targetPackage outDir";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -169,8 +173,16 @@ public class InlineDirectorTransformer extends SceneTransformer {
     private void _inlineGiottoDirector(
             CompositeActor model, SootClass modelClass,
             String phaseName, Map options) {
+        GiottoPortInliner portInliner = 
+            new GiottoPortInliner(modelClass, model, options);
+        InlinePortTransformer.setPortInliner(model, portInliner);
+
+        // Create the Giotto communication buffers so we can reference
+        // them here.
+        portInliner.createBuffers();
+
         GiottoDirector director = (GiottoDirector) model.getDirector();
-              
+        
         System.out.println("Inlining director for " + model.getFullName());
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
 
@@ -178,6 +190,233 @@ public class InlineDirectorTransformer extends SceneTransformer {
 //                 BooleanType.v(), Modifier.PRIVATE);
 //         modelClass.addField(postfireReturnsField);
 
+        // First, write out Giotto Code for the model.
+        try {
+            String giottoCode = 
+                ptolemy.domains.giotto.kernel.GiottoCodeGenerator.generateCode(
+                        (TypedCompositeActor)model);
+            String directory = Options.getString(options, "outDir");
+            FileWriter writer = new FileWriter(
+                    directory + "/" + model.getName() + ".giotto");
+            writer.write(giottoCode);
+            writer.close();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
+
+        // Create a Task class for each actor in the model
+        for (Iterator entities = model.deepEntityList().iterator();
+             entities.hasNext();) {
+            Entity entity = (Entity)entities.next();
+            String entityClassName =
+                ActorTransformer.getInstanceClassName(entity, options);
+            SootClass entityClass = 
+                Scene.v().loadClassAndSupport(entityClassName);
+            String fieldName = ModelTransformer.getFieldNameForEntity(
+                    entity, model);
+            SootField field = modelClass.getFieldByName(fieldName);
+
+            String taskClassName = 
+                entityClassName + "_Task";
+            SootClass taskInterface = 
+                Scene.v().loadClassAndSupport(
+                        "giotto.functionality.interfaces.TaskInterface");
+            SootMethod runInterface = 
+                taskInterface.getMethodByName("run");
+            
+            // create a class for the entity instance.
+            SootClass taskClass =
+                new SootClass(taskClassName, Modifier.PUBLIC);
+            
+            taskClass.setSuperclass(PtolemyUtilities.objectClass);
+            taskClass.addInterface(taskInterface);
+            Scene.v().addClass(taskClass);
+            taskClass.setApplicationClass();
+            
+            // Implement the run method.
+            SootMethod runMethod = new SootMethod(
+                    runInterface.getName(),
+                    runInterface.getParameterTypes(), 
+                    runInterface.getReturnType(),
+                    Modifier.PUBLIC);
+            taskClass.addMethod(runMethod);
+            JimpleBody body = Jimple.v().newBody(runMethod);
+            runMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            
+            Local localPostfireReturnsLocal = 
+                Jimple.v().newLocal("localPostfireReturns", BooleanType.v());
+            body.getLocals().add(localPostfireReturnsLocal);
+
+            Local actorLocal = Jimple.v().newLocal("actor", actorType);
+            body.getLocals().add(actorLocal);
+            
+            SootClass giottoParameterClass = Scene.v().loadClassAndSupport(
+                    "giotto.functionality.table.Parameter");
+            SootClass giottoTokenPortVariableClass =
+                Scene.v().loadClassAndSupport(
+                        "giotto.functionality.code.Token_port");
+            Local paramLocal = Jimple.v().newLocal("params", 
+                    RefType.v(giottoParameterClass));
+            body.getLocals().add(paramLocal);
+            Local portVarLocal = Jimple.v().newLocal("portVar", 
+                    RefType.v("giotto.functionality.interfaces.PortVariable"));
+            body.getLocals().add(portVarLocal);
+            Local tokenPortVarLocal = Jimple.v().newLocal("tokenPortVar", 
+                    RefType.v(giottoTokenPortVariableClass));
+            body.getLocals().add(tokenPortVarLocal);
+            Local tokenLocal = Jimple.v().newLocal("token",
+                    PtolemyUtilities.tokenType);
+            body.getLocals().add(tokenLocal);
+            Local bufferLocal =
+                Jimple.v().newLocal("buffer",
+                        ArrayType.v(PtolemyUtilities.tokenType, 1));
+            body.getLocals().add(bufferLocal);
+            
+            SootMethod actorPrefireMethod =
+                SootUtilities.searchForMethodByName(
+                        entityClass, "prefire");
+            SootMethod actorFireMethod =
+                SootUtilities.searchForMethodByName(
+                        entityClass, "fire");
+            SootMethod actorPostfireMethod =
+                SootUtilities.searchForMethodByName(
+                        entityClass, "postfire");
+            SootMethod getPortVariableMethod =
+                SootUtilities.searchForMethodByName(
+                        giottoParameterClass, "getPortVariable");
+            SootMethod getPortVariableTokenMethod =
+                SootUtilities.searchForMethodByName(
+                        giottoTokenPortVariableClass, "getToken");
+            SootMethod setPortVariableTokenMethod =
+                SootUtilities.searchForMethodByName(
+                        giottoTokenPortVariableClass, "setToken");
+
+            Stmt insertPoint = Jimple.v().newNopStmt();
+            units.add(insertPoint);
+            
+            // Get a reference to the actor.
+            units.insertBefore(
+                    Jimple.v().newAssignStmt(actorLocal,
+                            ModelTransformer.getFieldRefForEntity(entity)),
+                    insertPoint);
+
+            // Copy the inputs...
+            List inputPortList = ((Actor)entity).inputPortList();
+            List outputPortList = ((Actor)entity).outputPortList();
+            int inputCount = inputPortList.size();
+            int outputCount = outputPortList.size();
+            // Get the Parameter argument.
+            units.insertBefore(
+                    Jimple.v().newAssignStmt(paramLocal,
+                            body.getParameterLocal(0)),
+                    insertPoint);
+            for(int i = 0; i < inputCount; i++) {
+                TypedIOPort port = (TypedIOPort)inputPortList.get(i);
+                // Get the port variable from the parameter.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(portVarLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        paramLocal, getPortVariableMethod,
+                                        IntConstant.v(i))),
+                        insertPoint);
+                // Cast the port variable to the correct type.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(tokenPortVarLocal,
+                                Jimple.v().newCastExpr(
+                                        portVarLocal, 
+                                        RefType.v(giottoTokenPortVariableClass))),
+                        insertPoint);
+                // Get the token from the port variable.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(tokenLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tokenPortVarLocal, 
+                                        getPortVariableTokenMethod)),
+                        insertPoint);
+                // Get the buffer to put the token into.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                bufferLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        actorLocal, 
+                                        portInliner.getBufferField(port, port.getType()))),
+                        insertPoint);
+                // Store the token.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newArrayRef(bufferLocal, IntConstant.v(0)),
+                                tokenLocal),
+                        insertPoint);
+            }       
+            // Create the code to actually fire the actor.
+            units.insertBefore(
+                    Jimple.v().newInvokeStmt(
+                            Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                    actorPrefireMethod)),
+                    insertPoint);
+            units.insertBefore(
+                    Jimple.v().newInvokeStmt(
+                            Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                    actorFireMethod)),
+                    insertPoint);
+            units.insertBefore(
+                    Jimple.v().newAssignStmt(
+                            localPostfireReturnsLocal,
+                            Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                    actorPostfireMethod)),
+                    insertPoint);
+            // The Parameter.
+            units.insertBefore(
+                    Jimple.v().newAssignStmt(paramLocal,
+                            body.getParameterLocal(0)),
+                    insertPoint);
+            
+            // Copy the outputs
+            // FIXME! loop
+            for(int i = 0; i < outputCount; i++) {
+                TypedIOPort port = (TypedIOPort)outputPortList.get(i);
+                // Get the buffer to retrieve the token from.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                bufferLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        actorLocal, 
+                                        portInliner.getBufferField(port, port.getType()))),
+                        insertPoint);
+                // Retrieve the token.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                tokenLocal,
+                                Jimple.v().newArrayRef(bufferLocal, IntConstant.v(0))),
+                        insertPoint);
+               // Get the right output Port variable.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(portVarLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        paramLocal, getPortVariableMethod,
+                                        IntConstant.v(inputCount + i))),
+                        insertPoint);
+                // Cast to a Token port variable.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(tokenPortVarLocal,
+                                Jimple.v().newCastExpr(
+                                        portVarLocal, 
+                                        RefType.v(giottoTokenPortVariableClass))),
+                        insertPoint);
+                // Set the token.
+                units.insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tokenPortVarLocal, 
+                                        setPortVariableTokenMethod,
+                                        tokenLocal)),
+                        insertPoint);
+           }
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());
+        }
+        
         // Inline the director
         {
             // populate the preinitialize method
@@ -596,6 +835,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
     private void _inlineHSDirector(CompositeActor model, SootClass modelClass,
             String phaseName, Map options) {
+        InlinePortTransformer.setPortInliner(model,
+                new HSPortInliner(modelClass, model, options));
         FSMDirector director = (FSMDirector) model.getDirector();
         FSMActor controller;
         try {
@@ -1020,6 +1261,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
     private void _inlineSDFDirector(CompositeActor model, SootClass modelClass,
             String phaseName, Map options) {
+        InlinePortTransformer.setPortInliner(model,
+                new SDFPortInliner(modelClass, model, options));
         System.out.println("Inlining director for " + model.getFullName());
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
 

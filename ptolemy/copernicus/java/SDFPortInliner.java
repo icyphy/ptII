@@ -105,7 +105,11 @@ public class SDFPortInliner implements PortInliner {
         _modelClass = modelClass;
         _model = model;
         _options = options;
+    }
 
+    /** Initialize the inliner.  Create communication buffers and index arrays.
+     */
+    public void initialize() {
         // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
         _portToTypeNameToBufferField = new HashMap();

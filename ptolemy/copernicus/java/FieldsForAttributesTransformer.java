@@ -242,7 +242,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 body.getLocals().add(local);
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(local,
-                                FieldsForEntitiesTransformer.getFieldRefForEntity(entityContainer)),
+                                ModelTransformer.getFieldRefForEntity(entityContainer)),
                         unit);
             }
             if (attributeField != null) {

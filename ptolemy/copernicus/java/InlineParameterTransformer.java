@@ -462,7 +462,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     Entity container = (Entity) FieldsForEntitiesTransformer.
                                         getEntityContainerOfObject(attribute);
 
-                                    StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
+                                    StaticFieldRef containerFieldRef = ModelTransformer.
                                         getFieldRefForEntity(container);
                                     Local containerLocal = Jimple.v().newLocal("container",
                                             RefType.v(PtolemyUtilities.entityClass));
@@ -508,7 +508,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     if (debug) System.out.println("Replacing setExpression on Variable");
                                     Entity container = (Entity) FieldsForEntitiesTransformer.
                                         getEntityContainerOfObject(attribute);
-                                    StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
+                                    StaticFieldRef containerFieldRef = ModelTransformer.
                                         getFieldRefForEntity(container);
 
                                     Local containerLocal = Jimple.v().newLocal("container",
@@ -565,7 +565,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     if (debug) System.out.println("Replacing setExpression on Settable");
                                     Entity container = (Entity) FieldsForEntitiesTransformer.
                                         getEntityContainerOfObject(attribute);
-                                    StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
+                                    StaticFieldRef containerFieldRef = ModelTransformer.
                                         getFieldRefForEntity(container);
 
                                     Local containerLocal = Jimple.v().newLocal("container",

@@ -116,22 +116,6 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         }
     }
 
-    /** Given an entity that we are generating code for, return a
-     *  reference to the instance field created for that entity.
-     *  @exception RuntimeException If no field was created for the
-     *  given entity.
-     */
-    public static StaticFieldRef getFieldRefForEntity(Entity entity) {
-        SootField entityField = (SootField)
-            _entityToFieldMap.get(entity);
-        if (entityField != null) {
-            return Jimple.v().newStaticFieldRef(entityField);
-        } else {
-            throw new RuntimeException(
-                    "Failed to find field for entity " + entity);
-        }
-    }
-
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldsForEntitiesTransformer.internalTransform("
@@ -139,13 +123,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
 
         _options = options;
         _debug = Options.getBoolean(options, "debug");
-        _entityToFieldMap = new HashMap();
-        _fieldToEntityMap = new HashMap();
-        _classToObjectMap = new HashMap();
-
-        _createEntityInstanceFields(ModelTransformer.getModelClass(),
-                _model);
-
+   
         _replaceEntityCalls(ModelTransformer.getModelClass(),
                 _model);
     }
@@ -190,8 +168,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                                        PtolemyUtilities.toplevelMethod)) {
                         // Replace with reference to the toplevel
                         Value newFieldRef =
-                            Jimple.v().newStaticFieldRef((SootField)
-                                    _entityToFieldMap.get(_model));
+                            ModelTransformer.getFieldRefForEntity(_model);
                         box.setValue(newFieldRef);
                         if(_debug) System.out.println("replacing " + unit);
                    } else if (r.getMethod().getSubSignature().equals(
@@ -242,12 +219,13 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
 
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
-        NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
+        NamedObj object = (NamedObj)ModelTransformer.getActorForClass(
+                type.getSootClass());
         if (object != null) {
             // Then we are dealing with a getContainer call on one of the
             // classes we are generating.
             Entity container = (Entity)object.getContainer();
-            return getFieldRefForEntity(container);
+            return ModelTransformer.getFieldRefForEntity(container);
         } else {
             DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
             System.out.println("stmt = " + stmt);
@@ -259,7 +237,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             }
             object = (NamedObj)tag.getObject();
             CompositeEntity container = (CompositeEntity)object.getContainer();
-            return getFieldRefForEntity(container);
+            return ModelTransformer.getFieldRefForEntity(container);
 
             //            throw new RuntimeException("unimplemented case");
           //   // Walk back and get the definition of the field.
@@ -283,18 +261,20 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
 
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
-        NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
+        NamedObj object = (NamedObj)ModelTransformer.getActorForClass(
+                type.getSootClass());
         if (object != null) {
             // Then we are dealing with a getEntity call on one of the
             // classes we are generating.
             Entity entity = (Entity)((CompositeEntity)object).getEntity(name);
-            return getFieldRefForEntity(entity);
+            return ModelTransformer.getFieldRefForEntity(entity);
         } else {
             DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
             FieldRef ref = (FieldRef) stmt.getRightOp();
             SootField field = ref.getField();
-            CompositeEntity container = (CompositeEntity) _fieldToEntityMap.get(field);
-            return getFieldRefForEntity(container.getEntity(name));
+            CompositeEntity container = (CompositeEntity) 
+                ModelTransformer.getEntityForField(field);
+            return ModelTransformer.getFieldRefForEntity(container.getEntity(name));
         }
     }
 
@@ -329,62 +309,9 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         return null;
     }
 
-    private void _createEntityInstanceFields(SootClass actorClass,
-            ComponentEntity actor) {
-
-        // Create a static field in the actor class.  This field
-        // will reference the singleton instance of the actor class.
-        SootField field = new SootField(
-                "_CGInstance",
-                RefType.v(actorClass),
-                Modifier.PUBLIC | Modifier.STATIC);
-        actorClass.addField(field);
-
-        field.addTag(new ValueTag(actor));
-        _entityToFieldMap.put(actor, field);
-        _fieldToEntityMap.put(field, actor);
-
-        // Add code to the end of each class initializer to set the
-        // instance field.
-        for(Iterator methods = actorClass.getMethods().iterator();
-            methods.hasNext();) {
-            SootMethod method = (SootMethod) methods.next();
-            if(method.getName().equals("<init>")) {
-                JimpleBody body = (JimpleBody)method.getActiveBody();
-                body.getUnits().insertBefore(
-                        Jimple.v().newAssignStmt(
-                                Jimple.v().newStaticFieldRef(field),
-                                body.getThisLocal()),
-                        body.getUnits().getLast());
-            }
-        }
-
-
-        _classToObjectMap.put(actorClass, actor);
-
-        // Loop over all the actor instance classes and get
-        // fields for ports.
-        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
-            // Then recurse
-            CompositeEntity model = (CompositeEntity)actor;
-            for (Iterator i = model.deepEntityList().iterator();
-                 i.hasNext();) {
-                ComponentEntity entity = (ComponentEntity)i.next();
-                String className =
-                    ActorTransformer.getInstanceClassName(entity, _options);
-                SootClass entityClass =
-                    Scene.v().loadClassAndSupport(className);
-                _createEntityInstanceFields(entityClass, entity);
-            }
-        }
-    }
-
     private CompositeActor _model;
     private Map _options;
     private boolean _debug;
-    private static Map _entityToFieldMap;
-    private static Map _fieldToEntityMap;
-    private Map _classToObjectMap;
 }
 
 

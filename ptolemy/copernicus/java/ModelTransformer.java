@@ -155,6 +155,51 @@ public class ModelTransformer extends SceneTransformer {
         return StringUtilities.sanitizeName(relation.getName(context));
     }
 
+    /** Given an entity that we are generating code for, return a
+     *  reference to the instance field created for that entity.
+     *  @exception RuntimeException If no field was created for the
+     *  given entity.
+     */
+    public static Entity getEntityForField(SootField field) {
+        Entity entity = (Entity) _fieldToEntityMap.get(field);
+        if (entity != null) {
+            return entity;
+        } else {
+            throw new RuntimeException(
+                    "Failed to find entity for field " + field);
+        }
+    }
+
+    /** Given an entity that we are generating code for, return a
+     *  reference to the instance field created for that entity.
+     *  @exception RuntimeException If no field was created for the
+     *  given entity.
+     */
+    public static StaticFieldRef getFieldRefForEntity(Entity entity) {
+        SootField entityField = (SootField)
+            _entityToFieldMap.get(entity);
+        if (entityField != null) {
+            return Jimple.v().newStaticFieldRef(entityField);
+        } else {
+            throw new RuntimeException(
+                    "Failed to find field for entity " + entity);
+        }
+    }
+
+    /** 
+     *  @exception RuntimeException If no field was created for the
+     *  given entity.
+     */
+    public static Entity getActorForClass(SootClass theClass) {
+        Entity entity = (Entity) _classToObjectMap.get(theClass);
+        if (entity != null) {
+            return entity;
+        } else {
+            throw new RuntimeException(
+                    "Failed to find entity for class " + theClass);
+        }
+    }
+
     /** Return the model class created during the most recent
      *  execution of this transformer.
      */
@@ -191,7 +236,12 @@ public class ModelTransformer extends SceneTransformer {
 
         _modelClass = ActorTransformer.createCompositeActor(
                 _model, modelClassName, options);
-
+        
+        // Create static instance fields for each actor.
+        _entityToFieldMap = new HashMap();
+        _fieldToEntityMap = new HashMap();
+        _classToObjectMap = new HashMap();
+        _createEntityInstanceFields(_modelClass, _model, options);
     }
         /*
         EntitySootClass modelClass =
@@ -1070,6 +1120,59 @@ public class ModelTransformer extends SceneTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private static void _createEntityInstanceFields(SootClass actorClass,
+            ComponentEntity actor, Map options) {
+
+        // Create a static field in the actor class.  This field
+        // will reference the singleton instance of the actor class.
+        SootField field = new SootField(
+                "_CGInstance",
+                RefType.v(actorClass),
+                Modifier.PUBLIC | Modifier.STATIC);
+        actorClass.addField(field);
+
+        field.addTag(new ValueTag(actor));
+        _entityToFieldMap.put(actor, field);
+        _fieldToEntityMap.put(field, actor);
+
+        // Add code to the end of each class initializer to set the
+        // instance field.
+        for(Iterator methods = actorClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
+            if(method.getName().equals("<init>")) {
+                JimpleBody body = (JimpleBody)method.getActiveBody();
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newStaticFieldRef(field),
+                                body.getThisLocal()),
+                        body.getUnits().getLast());
+            }
+        }
+
+        _classToObjectMap.put(actorClass, actor);
+
+        // Loop over all the actor instance classes and get
+        // fields for ports.
+        if(actor instanceof CompositeActor) {
+            // Then recurse
+            CompositeEntity model = (CompositeEntity)actor;
+            for (Iterator i = model.deepEntityList().iterator();
+                 i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)i.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass entityClass =
+                    Scene.v().loadClassAndSupport(className);
+                _createEntityInstanceFields(entityClass, entity, options);
+            }
+        }
+    }
+
+    private static Map _entityToFieldMap;
+    private static Map _fieldToEntityMap;
+    private static Map _classToObjectMap;
 
     // Map from Ports to Locals.
     public static Map _portLocalMap;

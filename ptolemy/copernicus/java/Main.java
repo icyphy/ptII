@@ -264,7 +264,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(toplevel)));
-
+        /*
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",

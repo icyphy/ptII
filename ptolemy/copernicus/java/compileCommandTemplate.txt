@@ -17,7 +17,7 @@
  -p wjtp.ffat targetPackage:@targetPackage@
  -p wjtp.ffet targetPackage:@targetPackage@
  -p wjtp.ffpt targetPackage:@targetPackage@
- -p wjtp.idt targetPackage:@targetPackage@
+ -p wjtp.idt "outDir:@ptIIUserDirectory@/@targetPath@,targetPackage:@targetPackage@"
  -p wjtp.iat debug,targetPackage:@targetPackage@
  -p wjtp.ipt targetPackage:@targetPackage@
  -p wjtp.itt targetPackage:@targetPackage@
