@@ -48,11 +48,15 @@ of time, but dependent on the iteration number.  For some time-based
 domains, such as CT, actors of this type probably do not make sense
 because the number of iterations that the actor experiences per unit
 time is not easily determined or controlled.  This actor has a parameter,
-<i>lifetime</i>, that optionally controls the number of iterations
+<i>firingCountLimit</i>, that optionally limits the number of iterations
 for which the actor is fired.  If this number is <i>n</i> > 0, then
 the <i>n</i>-th invocation of postfire() returns false, which indicates
-to the scheduler that it should stop execution as soon as practical.
-The default value is zero, which results in postfire always returning
+to the scheduler that it should stop execution as soon as practical,
+typically at the conclusion of the current iteration.
+Note that there may still be additional firings of the actor before
+the iteration concludes.
+The default value of <i>firingCountLimit</i>
+is zero, which results in postfire always returning
 true.  Derived classes must call super.postfire() for this mechanism to
 work.
 
@@ -63,7 +67,7 @@ work.
 public class SequenceSource extends Source implements SequenceActor {
 
     /** Construct an actor with the given container and name.
-     *  The <i>lifetime</i> parameter is also constructed.
+     *  The <i>firingCountLimit</i> parameter is also constructed.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -74,7 +78,8 @@ public class SequenceSource extends Source implements SequenceActor {
     public SequenceSource(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        lifetime = new Parameter(this, "lifetime", new IntToken(0));
+        firingCountLimit = new Parameter(this, "firingCountLimit",
+                new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,25 +89,26 @@ public class SequenceSource extends Source implements SequenceActor {
      *  actor indicates to the scheduler that it is finished by returning
      *  false in its postfire() method.
      */
-    public Parameter lifetime;
+    public Parameter firingCountLimit;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>lifetime</code> public member
+     *  base class and then sets the <code>firingCountLimit</code> public member
      *  to the parameter of the new actor.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
         SequenceSource newobj = (SequenceSource)super.clone(ws);
-        newobj.lifetime = (Parameter)newobj.getAttribute("lifetime");
+        newobj.firingCountLimit =
+                (Parameter)newobj.getAttribute("firingCountLimit");
         return newobj;
     }
 
     /** Initialize the iteration counter.  A derived class must call
-     *  this method in its initialize() method or the <i>lifetime</i>
+     *  this method in its initialize() method or the <i>firingCountLimit</i>
      *  feature will not work.
      *  @exception IllegalActionException If the parent class throws it,
      *   which could occur if, for example, the director will not accept
@@ -121,7 +127,7 @@ public class SequenceSource extends Source implements SequenceActor {
      */
     public boolean postfire() {
         _iterCount++;
-        if (_iterCount == ((IntToken)lifetime.getToken()).intValue()) {
+        if (_iterCount == ((IntToken)firingCountLimit.getToken()).intValue()) {
             return false;
         }
         return true;

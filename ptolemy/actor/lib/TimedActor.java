@@ -40,7 +40,7 @@ import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// TimeActor
+//// TimedActor
 /**
 This is a marker interface for actors that operate on time-based signals.
 That is, logically, all signals observed or produced are tokens placed
@@ -51,4 +51,4 @@ in certain domains where time has no useful significance.
 @version $Id$
 */
 
-public interface TimeActor {}
+public interface TimedActor {}

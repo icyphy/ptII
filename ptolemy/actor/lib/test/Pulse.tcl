@@ -53,7 +53,7 @@ test Pulse-1.1 {test constructor and clone with default values} {
     set indexesVal [[$newIndexes getToken] stringValue]
 
     list $valuesVal $indexesVal
-} {{[[1 0]]} {[[0 1]]}}
+} {{[1, 0]} {[0, 1]}}
 
 ######################################################################
 #### Test Pulse in an SDF model

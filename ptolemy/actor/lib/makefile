@@ -55,6 +55,7 @@ JSRCS = \
 	AbsoluteValue.java \
 	Average.java \
 	Bernoulli.java \
+	Clock.java \
 	Const.java \
 	Cosine.java \
 	Expression.java \
@@ -73,7 +74,8 @@ JSRCS = \
 	Sine.java \
 	Sink.java \
 	Source.java \
-	TimeActor.java \
+	TimedActor.java \
+	TimedSource.java \
 	Transformer.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -91,8 +91,10 @@ public class Pulse extends SequenceSource {
 
         indexes = new Parameter(this, "indexes", defaultIndexToken);
         indexes.setTypeEquals(IntMatrixToken.class);
+        // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
         values = new Parameter(this, "values", defaultValueToken);
+        // Call this so that we don't have to copy its code here...
         attributeChanged(values);
         _zero = new IntToken(0);
         _dummy = new Variable(this, "_dummy", _zero);
@@ -114,27 +116,30 @@ public class Pulse extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Locally cache the values and indexes.
+    /** If the attribute being changed is <i>indexes</i>, then check
+     *  that it is increasing and nonnegative.
      *  @exception IllegalActionException If the indexes array is not
-     *   increasing and non-negative.
+     *   increasing and nonnegative.
      */
+// FIXME: Change this so it only accepts row vectors...
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == values) {
-            _values = (MatrixToken)values.getToken();
-        } else if (attribute == indexes) {
-            _indexes = ((IntMatrixToken)indexes.getToken()).intMatrix();
+        if (attribute == indexes) {
+            int[][] idx =
+                   ((IntMatrixToken)indexes.getToken()).intMatrix();
             int previous = -1;
-            for (int i=0; i<_indexes.length; i++) {
-                for (int j=0; j<_indexes[i].length; j++) {
-                    if (_indexes[i][j] <= previous) {
+            for (int i=0; i<idx.length; i++) {
+                for (int j=0; j<idx[i].length; j++) {
+                    if (idx[i][j] <= previous) {
                         throw new IllegalActionException(this,
                         "Value of indexes must be an array of nonnegative "
                         + "integers increasing in value.");
                     }
-                    previous = _indexes[i][j];
+                    previous = idx[i][j];
                 }
             }
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -150,22 +155,27 @@ public class Pulse extends SequenceSource {
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
-        Director dir = getDirector();
-        if (dir != null) {
-            dir.invalidateResolvedTypes();
-        }
-        try {
-            MatrixToken valuesArray = (MatrixToken)values.getToken();
-            Token prototype = valuesArray.getElementAsToken(0,0);
-            _dummy.setToken(prototype);
-            _zero = prototype.zero();
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException(this,
-            "Cannot set values to an empty array.");
-        } catch (ClassCastException ex) {
-            throw new IllegalActionException(this,
-            "Cannot set values to something that is not an array: "
-            + values.getToken());
+        if (attribute == values) {
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateResolvedTypes();
+            }
+            try {
+                MatrixToken valuesArray = (MatrixToken)values.getToken();
+                Token prototype = valuesArray.getElementAsToken(0,0);
+                _dummy.setToken(prototype);
+                _zero = prototype.zero();
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                throw new IllegalActionException(this,
+                "Cannot set values to an empty array.");
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(this,
+                "Cannot set values to something that is not an array: "
+                + values.getToken());
+            }
+        } else if (attribute != _dummy) {
+            // Notice that type changes to _dummy are allowed...
+            super.attributeTypeChanged(attribute);
         }
     }
 
@@ -179,10 +189,10 @@ public class Pulse extends SequenceSource {
         Pulse newobj = (Pulse)super.clone(ws);
         newobj.indexes = (Parameter)newobj.getAttribute("indexes");
         try {
-            indexes.setTypeEquals(IntMatrixToken.class);
-            newobj.attributeChanged(indexes);
+            newobj.indexes = (Parameter)newobj.getAttribute("indexes");
+            newobj.attributeChanged(newobj.indexes);
             newobj.values = (Parameter)newobj.getAttribute("values");
-            newobj.attributeChanged(values);
+            newobj.attributeChanged(newobj.values);
             // set the type constraints.
             MatrixToken val = (MatrixToken)(newobj.values.getToken());
             if (val != null && val.getRowCount() > 0 &&
@@ -210,22 +220,26 @@ public class Pulse extends SequenceSource {
      *   do not have the same dimension, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (_values.getRowCount() != _indexes.length) {
+        super.fire();
+        MatrixToken val = (MatrixToken)values.getToken();
+        int[][] idx =
+               ((IntMatrixToken)indexes.getToken()).intMatrix();
+        if (val.getRowCount() != idx.length) {
             throw new IllegalActionException(this,
             "Parameters values and indexes must be arrays "
             + "of the same dimension.");
         }
-        if (_indexRowCount < _indexes.length &&
-                _indexColCount < _indexes[_indexRowCount].length) {
-            if (_values.getColumnCount() != _indexes[_indexRowCount].length) {
+        if (_indexRowCount < idx.length &&
+                _indexColCount < idx[_indexRowCount].length) {
+            if (val.getColumnCount() != idx[_indexRowCount].length) {
                 throw new IllegalActionException(this,
                 "Parameters values and indexes must be arrays "
                 + "of the same dimension.");
             }
-            int currentIndex = _indexes[_indexRowCount][_indexColCount];
+            int currentIndex = idx[_indexRowCount][_indexColCount];
             if (_iterationCount == currentIndex) {
                 // Got a match with an index.
-                output.broadcast(_values.getElementAsToken(
+                output.broadcast(val.getElementAsToken(
                     _indexRowCount,_indexColCount));
                 _match = true;
                 return;
@@ -248,10 +262,11 @@ public class Pulse extends SequenceSource {
     /** Update the iteration counters.
      */
     public boolean postfire() {
+        MatrixToken val = (MatrixToken)values.getToken();
         ++_iterationCount;
         if (_match) {
             ++_indexColCount;
-            if (_indexColCount >= _values.getColumnCount()) {
+            if (_indexColCount >= val.getColumnCount()) {
                 _indexColCount = 0;
                 ++_indexRowCount;
             }
@@ -295,9 +310,5 @@ public class Pulse extends SequenceSource {
     // Dummy variable which reflects the type of the elements of the
     // values parameter, so that the output type can be related to it.
     private Variable _dummy;
-
-    // Locally cached data
-    private transient MatrixToken _values;
-    private transient int[][] _indexes;
 }
 

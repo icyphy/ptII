@@ -146,6 +146,7 @@ public class Ramp extends SequenceSource {
      */
     public void fire() {
         try {
+            super.fire();
             output.broadcast(_stateToken);
         } catch (IllegalActionException ex) {
             // Should not be thrown because this is an output port.

@@ -114,6 +114,7 @@ public class Const extends Source {
      *   sending out the token.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         output.broadcast(value.getToken());
     }
 }
