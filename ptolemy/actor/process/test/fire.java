@@ -19,30 +19,60 @@ public class fire extends ProcessDirector {
                 
                 if( _areActorsDeadlocked() ) {
                     if( externalReadBlock ) {
-                        // This avoids a race condition.
+			// Since this is an external read block
+			// we might as well wait to see what
+			// happens. Either the input will block
+			// or the input will not block and the
+			// actors will no longer be deadlocked.
                         while( _areActorsDeadlocked() && !inputBlocked() ) {
                             workspace.wait();
                         }
+
                         while( _areActorsDeadlocked() && inputBlocked() ) {
+			    // Reaching this point means that both the
+			    // actors and the input have blocked. 
+			    // However, it is possible that the input
+			    // could awaken resulting in an end to the
+			    // external read block
                             if( execDir instanceof ProcessDirector ) {
+				// Since the higher level actor is a process
+				// let's register a block and wait.
                                 execDir.registerBlockedBranchReceivers();
                                 workspace.wait();
                             } else {
+				// Since the higher level actor is not a 
+				// process, let's end this iteration and
+				// request another iteration. Recall that
+				// calling stopInputBranchController()
+				// is a blocking call that when finished
+				// will guarantee that the (input) branches
+				// will not restart during this iteration.
                                 stopInputBranchController();
+
                                 if( _areActorsDeadlocked() ) {
                                     _notDone = false;
                                     return;
                                 } else if( !_areActorsDeadlocked() ) {
+				    // It is possible that prior to
+				    // stopping the branch controller
+				    // a token stuck that caused the
+				    // deadlocked actors to awaken.
                          	    _continueFireMethod = true;
                                 }
-                                _notDone = false;
-                                return;
                             }
                         }
                     } else {
-                        
+			// Since this is not an external read block, 
+			// we know that addition input data will do
+			// no good to resolve the deadlocked actors.
+			// Hmmm...FIXME
+			// Attempt to resolve deadlock. If resolution
+			// is not possible, then end iteration and
+			// postfire() = false.
                     }
                     if( !_areActorsDeadlocked() || !inputBlocked() ) {
+			// Reaching this point means that the
+			// fire method should continue
                         _continueFireMethod = true;
                     }
                 } else if( _areActorsStopped() ) {
