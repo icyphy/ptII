@@ -1031,7 +1031,7 @@ test ASTReflect-12.1 {check out interfaces} {
     {Modifiers 8} 
     {Members  {}} 
   }}}} 
-}   }   }   } {1} {KNOWN_FAILURE: This tests fails under JDK1.2.2 because Class.getPackage() always returns null}
+}   }   }   } {1}
 
 
 ######################################################################
@@ -1205,10 +1205,7 @@ test ASTReflect-13.1 {check out inner classes} {
                }}} 
   }}}} 
 }}}
-} {1} {KNOWN_FAILURE: This tests fails under JDK1.2.2 because Class.getPackage() always returns null}
-
-
-
+} {1}
 
 ######################################################################
 ####
@@ -1313,7 +1310,7 @@ test ASTReflect-14.1 {check out } {
                }}} 
   }}}} 
 }}}
-} {1} {KNOWN_FAILURE: This tests fails under JDK1.2.2 because Class.getPackage() always returns null}
+} {1}
 
 ######################################################################
 ####
