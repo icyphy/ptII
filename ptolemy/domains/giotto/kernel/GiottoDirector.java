@@ -420,6 +420,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
         _schedule = scheduler.getSchedule();
         _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
 
+        if (_isEmbedded()) {
+            // Request an initial firing at time 0.0
+            _requestFiring();
+        } else {
+            // Or set the initial time.
+            setCurrentTime (_expectedNextIterationTime);
+        }
+
         _realStartTime = System.currentTimeMillis();
     }
 
