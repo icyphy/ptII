@@ -99,12 +99,11 @@ public class SDFApplet extends PtolemyApplet {
 
         try {
             // Initialization
-            _director = new SDFDirector();
+            _director = new SDFDirector(_toplevel, "SDFDirector");
             Parameter iterparam = _director.iterations;
             iterparam.setToken(new IntToken(iterations));
-            SDFScheduler scheduler = new SDFScheduler();
+            SDFScheduler scheduler = new SDFScheduler(_workspace);
 
-            _toplevel.setDirector(_director);
             _director.setScheduler(scheduler);
             _director.setScheduleValid(false);
         } catch (Exception ex) {
