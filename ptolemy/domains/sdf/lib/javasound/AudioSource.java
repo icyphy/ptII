@@ -391,7 +391,7 @@ public class AudioSource extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	//System.out.println("AudioSource: initialize(): invoked");
-        if (((StringToken)source.getToken()).toString() == "URL") {
+        if (((StringToken)source.getToken()).toString().equals("URL")) {
             // Load audio from a URL.
             String theURL =
                 ((StringToken)pathName.getToken()).toString();
@@ -411,8 +411,7 @@ public class AudioSource extends SDFAtomicActor {
             _channels = _soundCapture.getChannels();
             channels.setToken(new IntToken(_channels));
 
-        } else if (((StringToken)source.getToken()).toString() ==
-                "mic") {
+        } else if (((StringToken)source.getToken()).toString().equals("mic")) {
 
             int sampleRateInt =
                 ((IntToken)sampleRate.getToken()).intValue();
