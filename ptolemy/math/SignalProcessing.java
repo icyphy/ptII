@@ -948,7 +948,6 @@ public class SignalProcessing {
                     " length of window should be greater than 0.");
         }        
         
-        int M = length - 1;
         int n;
         double[] window = new double[length];
                  
