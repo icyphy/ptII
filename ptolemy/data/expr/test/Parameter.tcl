@@ -212,16 +212,15 @@ test Param-6.0 {Check updating of Params that refer to other Params} {
     set param1 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id1 1.1]
     $e {addParam pt.data.Param} $param1
 
-    set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] getValue]
-
     set tok1 [java::new  {pt.data.DoubleToken double} 9.9]
     set param2 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id2 9.9]
     $e {addParam pt.data.Param} $param2
 
     set param3 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id3 "id1 + id2"]
     $e {addParam pt.data.Param} $param3
-    
+ 
+    set name1 [$param1 getFullName]
+    set value1 [[$param1 getToken] getValue]
     set name2 [$param2 getFullName]
     set value2 [[$param2 getToken] getValue]
     set name3 [$param3 getFullName]

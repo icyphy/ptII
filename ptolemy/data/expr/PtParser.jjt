@@ -141,7 +141,7 @@ public class PtParser {
     public ASTPtRootNode  generateParseTree(String stringIn) throws IllegalArgumentException {
         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
         this.ReInit(stream);
-        
+        //debug = true;
         String str = stringIn.replace('\n', ' ');
         if (debug) { 
             System.out.print("\nParsing expression: ");
