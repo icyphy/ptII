@@ -48,17 +48,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	ArrayType.java \
-	Data.java \
-	DataType.java \
-	DataTypeResolver.java \
-	Dimension.java \
-	DimensionType.java \
-	DimensionTypeResolver.java \
-	DimensionLattice.java \
-	Type.java \
-	TypeSystem.java \
-	UnknownType.java
+	BaseType.java \
+	StructuredType.java \
+	Type.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -69,9 +61,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'DataType$$1.class' \
-	'DataType$$DataTypeEnum.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
