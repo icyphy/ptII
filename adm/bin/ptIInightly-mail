@@ -88,7 +88,7 @@ $AWK ' $0 ~ /Entering directory/ { indir=$0 }
 echo "javadoc had the following `grep ': warning -' $ptbuildlog | wc -l` warnings" >> $mailmsg
 
 $AWK ' $0 ~ /^Generating/ { indir=$0 }
-      { if ($0 ~ /javadoc: warning/) {
+      { if ($0 ~ /: warning -/) {
 	    print indir
 	    print $0
 	    sawjavadocwarning=1
