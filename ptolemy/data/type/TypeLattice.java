@@ -497,7 +497,7 @@ public class TypeLattice {
 	    _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
 	    _basicLattice.addEdge(BaseType.INT, BaseType.LONG);
 	    _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
-	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.INT);
+	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BYTE);
 
 	    _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
 	    _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
