@@ -189,7 +189,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
             // whatever, the currentTime should be updated by the
             // director of upper container.
-            setCurrentTime ((((CompositeActor) getContainer()).getExecutiveDirector()).getCurrentTime());
+            setCurrentTime ((((CompositeActor) getContainer()).
+                getExecutiveDirector()).getCurrentTime());
             _debug("Set current time as: " + getCurrentTime());
         }
 

@@ -258,7 +258,7 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
-        _currentTime = time;
+        setCurrentTime(time);
     }
 
     /** Return the current "time". The GR domain is not a timed domain,
@@ -528,7 +528,6 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
     private void _reset() {
-        _currentTime = 0.0;
         _formerTimeFired = 0.0;
         _formerValidTimeFired = 0.0;
         _lastIterationTime = (long)0;

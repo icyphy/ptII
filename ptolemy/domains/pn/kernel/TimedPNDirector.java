@@ -198,7 +198,8 @@ public class TimedPNDirector extends PNDirector {
         }
     }
 
-    /** Set the current time of the model under this director.
+    /** Set a new value to the current time of the model, where
+     *  the new time must be no earlier than the current time.
      *  @exception IllegalActionException If an attempt is made to change the
      *  time to less than the current time.
      *  @param newTime The new time of the model.

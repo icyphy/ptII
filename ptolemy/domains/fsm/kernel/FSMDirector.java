@@ -706,7 +706,8 @@ public class FSMDirector extends Director
         }
     }
 
-    /** Set the current time of the model under this director.
+    /** Set a new value to the current time of the model, where
+     *  the new time can be earlier than the current time.
      *  It allows the set time to be earlier than the current time.
      *  This feature is needed when switching between timed and untimed
      *  models.
@@ -715,7 +716,8 @@ public class FSMDirector extends Director
      *  @exception IllegalActionException Not thrown in this base class.
      *  FIXME: Changed by liuj, not yet reviewed.
      */
-    public void setCurrentTime(double newTime) throws IllegalActionException {
+    public void setCurrentTime(double newTime) 
+        throws IllegalActionException {
         _currentTime = newTime;
     }
 
