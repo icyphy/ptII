@@ -50,7 +50,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Don't use GNU make extensions here
 #    $(wildcard *.java)
 JSRCS = \
-	FieldRecord.java
+    CheckpointRecord.java \
+	FieldRecord.java \
+	FieldRecordState.java \
+	PathFinder.java \
+	SourceOutputStream.java
 
 OTHER_FILES_TO_BE_JARED =
 

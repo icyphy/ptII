@@ -49,7 +49,9 @@ PTPACKAGE = 	backtrack
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = Checkpoint.java \
+        CheckpointState.java \
+        Rollbackable.java
 
 OTHER_FILES_TO_BE_JARED = 
 
