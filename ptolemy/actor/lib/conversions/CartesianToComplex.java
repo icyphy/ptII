@@ -43,10 +43,10 @@ import ptolemy.math.Complex;
 ///////////////////////////////////////////////////////////////
 /// CartesianToComplex
 /**
-Convert a cartesian pair (represented as two double tokens) to a single 
-complex token. At each firing of the actor, it will consume at exactly one 
-token from each of the two input ports and produce a complex token on the 
-output port. The x input becomes the real output and the y input becomes the 
+Convert a cartesian pair (represented as two double tokens) to a single
+complex token. At each firing of the actor, it will consume at exactly one
+token from each of the two input ports and produce a complex token on the
+output port. The x input becomes the real output and the y input becomes the
 imaginary output. If either input port is empty, nothing is produced.
 
 @author Michael Leung, Jie Liu, Edward A. Lee, Paul Whitaker
@@ -80,12 +80,12 @@ public class CartesianToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port for the x component of the cartesian pair, which 
+    /** The input port for the x component of the cartesian pair, which
         has type DoubleToken.
      */
     public TypedIOPort real;
 
-    /** The input port for the y component of the cartesian pair, which 
+    /** The input port for the y component of the cartesian pair, which
         has type DoubleToken.
      */
     public TypedIOPort imag;

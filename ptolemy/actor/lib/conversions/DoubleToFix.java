@@ -104,7 +104,7 @@ public class DoubleToFix extends Transformer {
         by an integer matrix. */
     public Parameter precision;
 
-    /** The quantization strategy used, encoded as an integer, where 0 
+    /** The quantization strategy used, encoded as an integer, where 0
         represents round, and 1 represents truncate. */
     public StringAttribute quantization;
 
@@ -140,8 +140,8 @@ public class DoubleToFix extends Transformer {
         }
     }
 
-    /** Read at most one token from the input and output the converted 
-     *  fixed-point value with the precision and quantization given by the 
+    /** Read at most one token from the input and output the converted
+     *  fixed-point value with the precision and quantization given by the
      *  corresponding parameters on the output port.
      *  @exception IllegalActionException If there is no director.
      */

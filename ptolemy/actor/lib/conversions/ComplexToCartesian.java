@@ -42,7 +42,7 @@ import ptolemy.math.Complex;
 ///////////////////////////////////////////////////////////////
 /// ComplexToCartesian
 /**
-Read a complex token and output double tokens that represent the real and 
+Read a complex token and output double tokens that represent the real and
 imaginary parts to two different output ports.
 
 @author Michael Leung, Edward A. Lee, Paul Whitaker
@@ -83,14 +83,14 @@ public class ComplexToCartesian extends TypedAtomicActor {
     /** The output port for real component, which has type DoubleToken. */
     public TypedIOPort real;
 
-    /** The output port for the imaginary component, which has type 
+    /** The output port for the imaginary component, which has type
         DoubleToken. */
     public TypedIOPort imag;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume a complex token from the input port and output a new double 
+    /** Consume a complex token from the input port and output a new double
      *  token on each of the two output ports (the real and imaginary parts
      *  of the input complex token).
      *

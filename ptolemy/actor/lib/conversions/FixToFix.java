@@ -111,7 +111,7 @@ public class FixToFix extends Transformer {
         integer matrix. */
     public Parameter precision;
 
-    /** The quantization strategy used, encoded as an integer, where 0 
+    /** The quantization strategy used, encoded as an integer, where 0
         represents round and 1 represents truncate. */
     public StringAttribute quantization;
 

@@ -44,8 +44,8 @@ import ptolemy.math.Complex;
 /// PolarToComplex
 /**
 
-This actor reads two double tokens (magnitude and angle) and outputs 
-a single complex token. The output is a complex token representation of 
+This actor reads two double tokens (magnitude and angle) and outputs
+a single complex token. The output is a complex token representation of
 the components given at the inputs in polar form. The angle input is
 assumed to be in radians. If either input is NaN or infinity,
 then the output is NaN or infinity.
@@ -81,11 +81,11 @@ public class PolarToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port for the magnitude component, which has type 
+    /** The input port for the magnitude component, which has type
         DoubleToken. */
     public TypedIOPort magnitude;
 
-    /** The input port for the angle component (in radians), which has 
+    /** The input port for the angle component (in radians), which has
         type DoubleToken. */
     public TypedIOPort angle;
 
@@ -96,9 +96,9 @@ public class PolarToComplex extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Consume a double token from each input port (magnitude and angle)
-     *  and output a new complex token on the output port. The output is 
-     *  a complex representation of the components given at the inputs in 
-     *  polar form. The input angle is assumed to be in radians. If either 
+     *  and output a new complex token on the output port. The output is
+     *  a complex representation of the components given at the inputs in
+     *  polar form. The input angle is assumed to be in radians. If either
      *  input has no token, then do nothing.
      *
      *  @exception IllegalActionException If there is no director.

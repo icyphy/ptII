@@ -44,7 +44,7 @@ import ptolemy.kernel.util.*;
 
 /**
 Convert a cartesian pair, which is represented by two double tokens (x and y),
-to a polar form, which is also represented by two double tokens (magnitude 
+to a polar form, which is also represented by two double tokens (magnitude
 and angle).  The angle is in radians.
 <p>
 The implementation uses java.lang.Math.atan2(double, double).
@@ -91,7 +91,7 @@ public class CartesianToPolar extends TypedAtomicActor {
     /** The y component of the input pair, which has type DoubleToken. */
     public TypedIOPort y;
 
-    /** The magnitude component of the output pair, which has type 
+    /** The magnitude component of the output pair, which has type
         DoubleToken. */
     public TypedIOPort magnitude;
 
@@ -102,8 +102,8 @@ public class CartesianToPolar extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Consume one double token from each of the two input ports (x and y),
-     *  and output one new double token on each of the two output ports 
-     *  (magnitude and angle). The output is a polar form representation of 
+     *  and output one new double token on each of the two output ports
+     *  (magnitude and angle). The output is a polar form representation of
      *  the cartesian pair given at the inputs. The angle is in radians.
      *  If either input has no token, then do nothing.
      *

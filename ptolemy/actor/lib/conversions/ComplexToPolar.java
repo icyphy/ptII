@@ -44,7 +44,7 @@ import ptolemy.math.Complex;
 /// ComplexToPolar
 
 /**
-Convert a complex token to polar components, which are represented by two 
+Convert a complex token to polar components, which are represented by two
 double tokens (magnitude and angle).  The output angle is in radians.
 <p>
 The implementation uses java.lang.Math.atan2(double, double).
@@ -85,7 +85,7 @@ public class ComplexToPolar extends TypedAtomicActor {
     /** The port for the input, which has type ComplexToken. */
     public TypedIOPort input;
 
-    /** The output port for the magnitude component, which has type 
+    /** The output port for the magnitude component, which has type
         DoubleToken. */
     public TypedIOPort magnitude;
 
@@ -95,10 +95,10 @@ public class ComplexToPolar extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume one complex token on the input port and output a new double 
-     *  token on each of the two output ports (magnitude and angle). The 
-     *  outputs are a polar form representation of the complex input. The 
-     *  output angle is in radians. If there is no input token, then do 
+    /** Consume one complex token on the input port and output a new double
+     *  token on each of the two output ports (magnitude and angle). The
+     *  outputs are a polar form representation of the complex input. The
+     *  output angle is in radians. If there is no input token, then do
      *  nothing.
      *
      *  @exception IllegalActionException If there is no director.

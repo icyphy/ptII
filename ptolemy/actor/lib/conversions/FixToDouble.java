@@ -76,8 +76,8 @@ public class FixToDouble extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read one FixToken from the input and output the converted 
-     *  DoubleToken to the output port. If there is no input available, 
+    /** Read one FixToken from the input and output the converted
+     *  DoubleToken to the output port. If there is no input available,
      *  then no output is produced.
      * @exception IllegalActionException If there is no director.
      */

@@ -43,10 +43,10 @@ import ptolemy.kernel.util.*;
 /// PolarToCartesian
 /**
 
-This actor reads two double tokens (magnitude and angle) and outputs 
-two new double tokens (x and y). The outputs are a cartesian representation 
-of the pair given at the inputs in polar form. The angle input is assumed 
-to be in radians. If either input is NaN or infinity, then the outputs are 
+This actor reads two double tokens (magnitude and angle) and outputs
+two new double tokens (x and y). The outputs are a cartesian representation
+of the pair given at the inputs in polar form. The angle input is assumed
+to be in radians. If either input is NaN or infinity, then the outputs are
 NaN or infinity.
 
 @author Michael Leung, Edward A. Lee, Paul Whitaker
@@ -84,11 +84,11 @@ public class PolarToCartesian extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port for the magnitude component, which has type 
+    /** The input port for the magnitude component, which has type
         DoubleToken. */
     public TypedIOPort magnitude;
 
-    /** The input port for the angle component (in radians), which has type 
+    /** The input port for the angle component (in radians), which has type
         DoubleToken. */
     public TypedIOPort angle;
 
@@ -101,9 +101,9 @@ public class PolarToCartesian extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume a double token from each of the two input ports (magnitude 
-     *  and angle) and output a double token on each of the two output ports 
-     *  (x and y). The output is a cartesian representation of the components 
+    /** Consume a double token from each of the two input ports (magnitude
+     *  and angle) and output a double token on each of the two output ports
+     *  (x and y). The output is a cartesian representation of the components
      *  given at the inputs in polar form. The angle is in radians.
      *  If either input has no token, then do nothing.
      *
