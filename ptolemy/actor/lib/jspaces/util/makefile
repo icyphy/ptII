@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/jspaces/util
 
-DIRS = 		conversions test logic
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../../..
