@@ -145,8 +145,8 @@ test RecordToken-3.1 {Test get} {
 
     set r [java::new {ptolemy.data.RecordToken} $l $v]
 
-    list [[$r get name] stringValue] [[$r get value] toString]
-} {foo 5}
+    list [[$r get name] toString] [[$r get value] toString]
+} {{"foo"} 5}
 
 ######################################################################
 ####
