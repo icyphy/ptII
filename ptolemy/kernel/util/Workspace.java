@@ -1,6 +1,6 @@
 /* An object for synchronization and version tracking of groups of objects.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -228,27 +228,6 @@ public class Workspace implements Nameable, Serializable {
         }
     }
 
-    /** Frees the thread of all the readAccesses on the workspace 
-     *  @return The number of readAccess that the thread possessed on the
-     *  workspace
-     */
-    private synchronized int _releaseAllReadPermissions() {
-	Thread current = Thread.currentThread();
-        ReadDepth depth = (ReadDepth)_readers.get(current);
-        if (depth == null) {
-	    return 0;
-        }
-	int count = 0;
-	while (!depth.isZero()) {
-	    depth.decr();
-	    count++;
-	}
-	_readers.remove(current);
-	if (_writer != current) {
-	    notifyAll();
-	}
-	return count;
-    }
 
     /** Get the container.  Always return null since a workspace
      *  has no container.
@@ -306,42 +285,6 @@ public class Workspace implements Nameable, Serializable {
         }
     }
 
-    /** Obtain permission to read objects in the workspace.
-     *  This method suspends the calling thread until such permission
-     *  has been obtained.  Permission is granted unless either another
-     *  thread has write permission, or there are threads that
-     *  have requested write permission and not gotten it yet.
-     *  It is essential that doneReading() be called
-     *  after this, or write permission may never again be granted in
-     *  this workspace.
-     */
-    private synchronized void _reacquireReadPermissions(int count) {
-	if (count == 0) return;
-        while (true) {
-            // If the current thread has write permission, or if there
-            // are no pending write requests, then grant read permission.
-            Thread current = Thread.currentThread();
-            if (current == _writer || _writeReq == 0 ) {
-                // The thread may already have read permission.
-                ReadDepth depth = (ReadDepth)_readers.get(current);
-                if (depth == null) {
-                    depth = new ReadDepth();
-                    _readers.put(current, depth);
-                }
-		for (int i=0; i<count; i++) {
-		    depth.incr();
-		}
-                return;
-            }
-            try {
-                wait();
-            } catch(InterruptedException ex) {
-                throw new InternalErrorException(
-                        "Thread interrupted while waiting for read access!"
-                        + ex.getMessage());
-            }
-        }
-    }
 
     /** Get the version number.  The version number is incremented on
      *  each call to doneWriting() and also on calls to incrVersion().
@@ -443,6 +386,12 @@ public class Workspace implements Nameable, Serializable {
         return getClass().getName() + " {" + getFullName()+ "}";
     }
 
+    /** This releases all the read accesses by the current thread and waits on
+     *  the object. After waking up, it reacquires all the read accesses held
+     *  earlier by the thread, and returns. This is the method that should be 
+     *  used by any thread that wants to wait.
+     *  @param obj The object that the thread wants to wait on.
+     */
     public void wait(Object obj) {
 	int depth = 0;
 	try {
@@ -511,6 +460,73 @@ public class Workspace implements Nameable, Serializable {
         if (bracket == 2) result += "}";
         return result;
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Obtain permissions to read objects in the workspace. This obtains 
+     *  many permissions on the read access and should be called in 
+     *  conjunction with _releaseAllReadPermissions.
+     *  This method suspends the calling thread until such permission
+     *  has been obtained.  Permission is granted unless either another
+     *  thread has write permission, or there are threads that
+     *  have requested write permission and not gotten it yet.
+     *  @param count This is the number of read permissions desired on the 
+     *  workspace.
+     */
+    private synchronized void _reacquireReadPermissions(int count) {
+	if (count == 0) return;
+        while (true) {
+            // If the current thread has write permission, or if there
+            // are no pending write requests, then grant read permission.
+            Thread current = Thread.currentThread();
+            if (current == _writer || _writeReq == 0 ) {
+                // The thread may already have read permission.
+                ReadDepth depth = (ReadDepth)_readers.get(current);
+                if (depth == null) {
+                    depth = new ReadDepth();
+                    _readers.put(current, depth);
+                }
+		for (int i=0; i<count; i++) {
+		    depth.incr();
+		}
+                return;
+            }
+            try {
+                wait();
+            } catch(InterruptedException ex) {
+                throw new InternalErrorException(
+                        "Thread interrupted while waiting for read access!"
+                        + ex.getMessage());
+            }
+        }
+    }
+
+    /** Frees the thread of all the readAccesses on the workspace. The method
+     *  _reacquireAllReadAccesses should be called after this method is 
+     *  called. 
+     *  @return The number of readAccess that the thread possessed on the
+     *  workspace
+     */
+    private synchronized int _releaseAllReadPermissions() {
+	Thread current = Thread.currentThread();
+        ReadDepth depth = (ReadDepth)_readers.get(current);
+        if (depth == null) {
+	    return 0;
+        }
+	int count = 0;
+	while (!depth.isZero()) {
+	    depth.decr();
+	    count++;
+	}
+	_readers.remove(current);
+	if (_writer != current) {
+	    notifyAll();
+	}
+	return count;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
