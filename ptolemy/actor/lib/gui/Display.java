@@ -48,6 +48,7 @@ import ptolemy.actor.gui.TextEditor;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -75,6 +76,10 @@ import ptolemy.kernel.util.Workspace;
    Tokens are read from the input only in
    the postfire() method, to allow them to settle in domains where they
    converge to a fixed point.
+   <p>
+   This actor has a <i>suppressBlankLines</i> parameter, whose default value
+   is false. If this parameter is configured to be true, this actor does not
+   put a blank line in the display.  
    <p>
    Note that because of complexities in Swing, if you resize the display
    window, then, unlike the plotters, the new size will not be persistent.
@@ -113,6 +118,10 @@ public class Display extends Sink implements Placeable {
         columnsDisplayed = new Parameter(this, "columnsDisplayed");
         columnsDisplayed.setExpression("40");
 
+        suppressBlankLines = new Parameter(this, "suppressBlankLines");
+        suppressBlankLines.setTypeEquals(BaseType.BOOLEAN);
+        suppressBlankLines.setToken(BooleanToken.FALSE);
+        
         title = new StringAttribute(this, "title");
         title.setExpression("");
 
@@ -146,6 +155,11 @@ public class Display extends Sink implements Placeable {
      *  integer, and defaults to 10.
      */
     public Parameter rowsDisplayed;
+
+    /** The flat indicating whether this display actor suppress 
+     *  blank lines. The default value is false. 
+     */
+    public Parameter suppressBlankLines;
 
     /** The text area in which the data will be displayed. */
     public transient JTextArea textArea;
@@ -205,6 +219,9 @@ public class Display extends Sink implements Placeable {
                     }
                 }
             }
+        } else if (attribute == suppressBlankLines) {
+            _suppressBlankLines = 
+                ((BooleanToken) suppressBlankLines.getToken()).booleanValue();
         }
     }
 
@@ -373,6 +390,8 @@ public class Display extends Sink implements Placeable {
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
 
+        boolean currentInputIsBlankLine = true;
+        
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
@@ -388,6 +407,15 @@ public class Display extends Sink implements Placeable {
                 if ((value.length() > 1) && value.startsWith("\"")
                         && value.endsWith("\"")) {
                     value = value.substring(1, value.length() - 1);
+                }
+                
+                // If the value is not an empty string, set the 
+                // currentInputIsBlankLine to false.
+                // Note that if there are multiple input ports, and if any of 
+                // the input ports has data, the current input is considered
+                // to be non-empty. 
+                if (value.length() > 0) {
+                    currentInputIsBlankLine = false;
                 }
 
                 textArea.append(value);
@@ -414,7 +442,10 @@ public class Display extends Sink implements Placeable {
             }
         }
 
-        if (textArea != null) {
+        // If the current input is not a blank line, or the supressBlankLines 
+        // parameter is configured to false, append a newline character.
+        if (textArea != null && 
+                !(_suppressBlankLines && currentInputIsBlankLine)) {
             textArea.append("\n");
         }
 
@@ -506,6 +537,9 @@ public class Display extends Sink implements Placeable {
     // The scroll pane.
     private JScrollPane _scrollPane;
 
+    // The flat indicating whether the blank lines will be suppressed.
+    private boolean _suppressBlankLines = false;
+    
     // A specification for the window properties of the frame.
     private WindowPropertiesAttribute _windowProperties;
 
