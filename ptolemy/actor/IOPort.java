@@ -453,27 +453,6 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Return the depth of the director of this object. If the director of
-     *  this object equals to the "topDirector", then return 1, otherwise,
-     *  increase the depth by 1 and get the director of the container of
-     *  its container and check again. Etc.
-     *
-     *  @return The depth of the director in the hierarchy of this object.
-     */
-     public int depthOfDirector(Director topDirector) {
-        int result = 1;
-        Nameable container = getContainer();
-        Director myDirector = ((Actor)container).getDirector();
-        while (myDirector != topDirector) {
-            result++;
-            container = container.getContainer();
-            myDirector = ((Actor)container).getDirector();
-            //director = ((Actor)director.getContainer()).getDirector();
-        }
-        return result;
-    }
-
-
     /** Deeply enumerate the ports connected to this port on the
      *  outside that are input ports.  This method is deprecated and calls
      *  deepConnectedInPortList(). It is read-synchronized on the
@@ -493,10 +472,9 @@ public class IOPort extends ComponentPort {
      *  are higher in the hierarchy to which this port is connected
      *  on the <i>inside</i>.  This can be confusing because such ports
      *  cannot receive data produced by this port.  To get a list of
-     *  the ports that can receive data from this port, use the
-     *  sinkPortList() method.
+     *  the ports that can receive data from this port, use the following
+     *  sinkPortList() method:
      *
-     *  @see #sinkPortList
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPortList
      *  @return A list of IOPort objects.
      */
@@ -538,10 +516,9 @@ public class IOPort extends ComponentPort {
      *  are higher in the hierarchy to which this port is connected
      *  on the <i>inside</i>.  This can be confusing because such ports
      *  cannot send data to this port.  To get a list of
-     *  the ports that can send data to this port, use the
+     *  the ports that can send data to this port, use the following
      *  sourcePortList() method.
      *
-     *  @see #sourcePortList
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
      *  @return An enumeration of IOPort objects.
      */
@@ -1793,24 +1770,27 @@ public class IOPort extends ComponentPort {
      *  and output ports that are connected on the inside to this one.
      *  @return A list of IOPort objects.
      */
-    public List sinkPortList(int thisDepth) {
-      try {
-           _workspace.getReadAccess();
-           LinkedList result = new LinkedList();
-           Iterator ports = deepConnectedPortList().iterator();
-           while(ports.hasNext()) {
-               IOPort port = (IOPort)ports.next();
-               int myDepth = port.depthInHierarchy();
-               if (port.isInput() && myDepth >= thisDepth) {
-                   result.addLast(port);
-               } else if (port.isOutput() && myDepth < thisDepth) {
-                   result.addLast(port);
-               }
-           }
-           return result;
-       } finally {
-           _workspace.doneReading();
-       }
+    public List sinkPortList() {
+        try {
+            _workspace.getReadAccess();
+            Nameable container = getContainer();
+            Director excDirector = ((Actor) container).getExecutiveDirector();
+            int depthOfDirector = excDirector.depthInHierarchy();
+            LinkedList result = new LinkedList();
+            Iterator ports = deepConnectedPortList().iterator();
+            while(ports.hasNext()) {
+                IOPort port = (IOPort)ports.next();
+                int myDepth = port.depthInHierarchy();
+                if (port.isInput() && myDepth >= depthOfDirector) {
+                    result.addLast(port);
+                } else if (port.isOutput() && myDepth < depthOfDirector) {
+                    result.addLast(port);
+                }
+            }
+            return result;
+	} finally {
+	    _workspace.doneReading();
+	}
     }
 
     /** Return a list of ports connected to this port on the
@@ -1819,24 +1799,27 @@ public class IOPort extends ComponentPort {
      *  and input ports that are connected on the inside to this port.
      *  @return A list of IOPort objects.
      */
-    public List sourcePortList(int thisDepth) {
+    public List sourcePortList() {
         try {
             _workspace.getReadAccess();
+            Nameable container = getContainer();
+            Director excDirector = ((Actor) container).getExecutiveDirector();
+	    int depthOfDirector = excDirector.depthInHierarchy();
             LinkedList result = new LinkedList();
-            Iterator ports = deepConnectedPortList().iterator();
+	    Iterator ports = deepConnectedPortList().iterator();
             while(ports.hasNext()) {
-                IOPort port = (IOPort)ports.next();
+		IOPort port = (IOPort)ports.next();
                 int myDepth = port.depthInHierarchy();
-                if (port.isInput() && myDepth <= thisDepth) {
+                if (port.isInput() && myDepth <= depthOfDirector) {
                     result.addLast(port);
-                } else if (port.isOutput() && myDepth > thisDepth) {
-                    result.addLast(port);
+                } else if (port.isOutput() && myDepth > depthOfDirector) {
+                        result.addLast(port);
                 }
-            }
-            return result;
-        } finally {
-            _workspace.doneReading();
-        }
+	    }
+	    return result;
+	} finally {
+	    _workspace.doneReading();
+	}
     }
 
     /** Transfer data from this port to the ports it is connected to
