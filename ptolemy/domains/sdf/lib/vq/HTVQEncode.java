@@ -142,7 +142,6 @@ public class HTVQEncode extends Transformer {
 
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
         blockCount.setTypeEquals(BaseType.INT);
-        _blockCount = ((IntToken)blockCount.getToken()).intValue();
 
         blockWidth =
             new Parameter(this, "blockWidth", new IntToken("4"));
