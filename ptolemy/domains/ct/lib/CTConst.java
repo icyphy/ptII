@@ -55,12 +55,13 @@ public class CTConst extends CTActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */	
-    public CTConst(CompositeActor container, String name) 
+    public CTConst(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        output = new IOPort(this, "output");
+        output = new TypedIOPort(this, "output");
         output.makeInput(false);
         output.makeOutput(true);
+        output.setDeclaredType(DoubleToken.class);
         _value = (double)0.0;
         _paramValue = new CTParameter(this, "Value", new DoubleToken(_value));
     }
@@ -79,14 +80,15 @@ public class CTConst extends CTActor {
 
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
+     *  @exception IllegalActionException Never thrown.
      */
-    public void updateParameters() {
+    public void updateParameters() throws IllegalActionException{
         _value = ((DoubleToken)_paramValue.getToken()).doubleValue();
     }
 
     /** The single output port.
      */
-    public IOPort output;
+    public TypedIOPort output;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

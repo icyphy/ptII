@@ -49,7 +49,7 @@ A second order system simulation. For performance testing.
 public class WaveBERK23 {
      public static void main(String[] args) {
          try {
-             CompositeActor sys = new CompositeActor();
+             TypedCompositeActor sys = new TypedCompositeActor();
              sys.setName( "system");
              Manager man = new Manager();
              sys.setManager(man);

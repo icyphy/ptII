@@ -52,12 +52,13 @@ public class CTPrintln extends CTActor{
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
      */
-    public CTPrintln(CompositeActor container, String name) 
+    public CTPrintln(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input = new IOPort(this, "input");
+        input = new TypedIOPort(this, "input");
         input.makeInput(true);
         input.makeOutput(false);
+        input.setDeclaredType(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,6 +86,6 @@ public class CTPrintln extends CTActor{
 
     /** The single input port.
      */
-    public IOPort input;
+    public TypedIOPort input;
 
 }

@@ -53,17 +53,19 @@ public class CTGain extends CTActor {
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
      */	
-    public CTGain(CompositeActor container, String name) 
+    public CTGain(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input = new IOPort(this, "input");
+        input = new TypedIOPort(this, "input");
         input.makeInput(true);
         input.makeOutput(false);
         input.makeMultiport(false);
-        output = new IOPort(this, "output");
+        input.setDeclaredType(DoubleToken.class);
+        output = new TypedIOPort(this, "output");
         output.makeInput(false);
         output.makeOutput(true);
         output.makeMultiport(false);
+        output.setDeclaredType(DoubleToken.class);
         _gain = (double)1.0;
         _paramGain = new CTParameter(this, "Gain", new DoubleToken(_gain));
     }
@@ -84,18 +86,19 @@ public class CTGain extends CTActor {
 
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
+     *  @exception IllegalActionException Never thrown.*  
      */
-    public void updateParameters() {
+    public void updateParameters() throws IllegalActionException {
         _gain = ((DoubleToken)_paramGain.getToken()).doubleValue();
     }
     
     /** The single input port.
      */
-    public IOPort input;
+    public TypedIOPort input;
 
     /** The single output port.
      */
-    public IOPort output;
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -36,7 +36,7 @@
 # The one without lookup table. It uses the default ODE solver
 # which is a Forward Euler solver.
 
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName System
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
@@ -50,7 +50,7 @@ set intgl2 [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integrator2]
 set gain1 [java::new ptolemy.domains.ct.lib.CTGain $sys Gain1]
 set gain2 [java::new ptolemy.domains.ct.lib.CTGain $sys Gain2]
 set gain3 [java::new ptolemy.domains.ct.lib.CTGain $sys Gain3]
-set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
+set plot [java::new ptolemy.domains.ct.lib.CTPlot $sys Plot]
 
 set sqwvout [$sqwv getPort output]
 set add1in [$add1 getPort input]
@@ -124,5 +124,5 @@ $g3 parameterChanged [java::null]
 #$constval setExpression 1.0
 #$constval parameterChanged [java::null]
 
-$man go
+$man startRun
 

@@ -51,17 +51,19 @@ public class CTMultiply extends CTActor{
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
      */	
-    public CTMultiply(CompositeActor container, String name) 
+    public CTMultiply(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input = new IOPort(this, "input");
+        input = new TypedIOPort(this, "input");
         input.makeInput(true);
         input.makeOutput(false);
         input.makeMultiport(true);
-        output = new IOPort(this, "output");
+        input.setDeclaredType(DoubleToken.class);
+        output = new TypedIOPort(this, "output");
         output.makeInput(false);
         output.makeOutput(true);
         output.makeMultiport(false);
+        output.setDeclaredType(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,10 +83,10 @@ public class CTMultiply extends CTActor{
     
     /** The multi-input port.
      */
-    public IOPort input;
+    public TypedIOPort input;
 
     /** The singal output port.
      */
-    public IOPort output;
+    public TypedIOPort output;
 }
 

@@ -28,7 +28,7 @@
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.*;
-import ptolemy.domains.de.kernel.*;
+import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
@@ -43,7 +43,7 @@ A plotter for discrete-event signals.
 @author Jie Liu, Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-publi class  CTPlot extends AtomicActor {
+public class  CTPlot extends CTActor {
 
     private static final boolean DEBUG = false;
 
@@ -53,7 +53,7 @@ publi class  CTPlot extends AtomicActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public CTPlot  (CompositeActor container, String name)
+    public CTPlot  (TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
         this(container, name, (new PlotFrame(name)).plot);
@@ -67,14 +67,15 @@ publi class  CTPlot extends AtomicActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public CTPlot (CompositeActor container, String name, Plot plot)
+    public CTPlot (TypedCompositeActor container, String name, Plot plot)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // create the input port and make it a multiport.
-        input = new IOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         //input.setDeclaredType(DoubleToken.class);
         input.makeMultiport(true);
+        input.setDeclaredType(DoubleToken.class);
 
         _plot = plot;
         _plot.setButtons(true);
@@ -204,7 +205,7 @@ publi class  CTPlot extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
-    public IOPort input;
+    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

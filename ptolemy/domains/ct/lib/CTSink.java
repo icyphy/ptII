@@ -54,13 +54,14 @@ public class CTSink extends CTActor{
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
      */
-    public CTSink(CompositeActor container, String name) 
+    public CTSink(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input = new IOPort(this, "input");
+        input = new TypedIOPort(this, "input");
         input.makeInput(true);
         input.makeOutput(false);
         input.makeMultiport(true);
+        input.setDeclaredType(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,6 +88,6 @@ public class CTSink extends CTActor{
 
     /** The single input port.
      */
-    public IOPort input;
+    public TypedIOPort input;
 
 }

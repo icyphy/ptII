@@ -57,12 +57,13 @@ public class CTSquareWave extends CTActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */	
-    public CTSquareWave(CompositeActor container, String name) 
+    public CTSquareWave(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        output = new IOPort(this, "output");
+        output = new TypedIOPort(this, "output");
         output.makeInput(false);
         output.makeOutput(true);
+        output.setDeclaredType(DoubleToken.class);
         _maxValue = (double)1.0;
         _paramMaxValue = new CTParameter(this, "MaximumValue",
                 new DoubleToken(_maxValue));
@@ -156,14 +157,21 @@ public class CTSquareWave extends CTActor {
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
      *  FIXME: default values? negative frquency?
+     *  @exception IllegalActionException If the frequency id negative.
      */
-    public synchronized void updateParams() {
+    public synchronized void updateParams() throws IllegalActionException{
         if(VERBOSE) {
             System.out.println("SquareWave updating parameters..");
         }
         _maxValue = ((DoubleToken)_paramMaxValue.getToken()).doubleValue();
         _minValue = ((DoubleToken)_paramMinValue.getToken()).doubleValue();
-        _frequency = ((DoubleToken)_paramFrequency.getToken()).doubleValue();
+       
+        double f  = ((DoubleToken)_paramFrequency.getToken()).doubleValue();
+        if(f < 0) {
+            throw new IllegalActionException (this, 
+                    "Fequency: "+ f + " is illegal.");
+        }
+        _frequency = f;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
         if(DEBUG) {
             System.out.println("_maxVaue=" + _maxValue);
@@ -175,7 +183,7 @@ public class CTSquareWave extends CTActor {
 
     /** Single output port.
      */
-    public IOPort output;
+    public TypedIOPort output;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

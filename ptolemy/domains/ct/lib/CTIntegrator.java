@@ -49,7 +49,7 @@ public class CTIntegrator extends CTBaseIntegrator {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */    
-    public CTIntegrator(CompositeActor container, String name) 
+    public CTIntegrator(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }

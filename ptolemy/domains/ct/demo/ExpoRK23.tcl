@@ -35,7 +35,7 @@
 #  RK solver
 #
 
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName System
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
@@ -80,15 +80,15 @@ set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.E
 $solver setToken $token
 $solver parameterChanged [java::null]
 
-set initstate [$integral getAttribute InitialState]
-$initstate setExpression 1.0
-$initstate parameterChanged [java::null]
+#set initstate [$integral getAttribute InitialState]
+#$initstate setExpression 1.0
+#$initstate parameterChanged [java::null]
 
-#set constval [$const getAttribute Value]
-#$constval setExpression 1.0
-#$constval parameterChanged [java::null]
+set constval [$const getAttribute Value]
+$constval setExpression -1.0
+$constval parameterChanged [java::null]
 
-$man go
+$man startRun
 
 
 

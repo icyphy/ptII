@@ -50,12 +50,13 @@ public class CTRamp extends CTActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */	
-    public CTRamp(CompositeActor container, String name) 
+    public CTRamp(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        output = new IOPort(this, "output");
+        output = new TypedIOPort(this, "output");
         output.makeInput(false);
         output.makeOutput(true);
+        output.setDeclaredType(DoubleToken.class);
         _initValue = (double)0.0;
         _paramInitValue = new CTParameter(this, "InitialValue",
                 new DoubleToken(_initValue));
@@ -86,15 +87,16 @@ public class CTRamp extends CTActor {
     }
 
     /** Update parameters
+     *  @exception IllegalActionException Never thrown.
      */
-    public void updateParameters() {
+    public void updateParameters() throws IllegalActionException {
         _initValue = ((DoubleToken)_paramInitValue.getToken()).doubleValue();
         _slope = ((DoubleToken)_paramSlope.getToken()).doubleValue();
     }
 
     /** The single output port
      */
-    public IOPort output;
+    public TypedIOPort output;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

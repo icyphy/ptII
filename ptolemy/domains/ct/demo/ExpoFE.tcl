@@ -35,7 +35,7 @@
 #  RK solver
 #
 
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName System
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
@@ -79,7 +79,7 @@ $initstate parameterChanged [java::null]
 #$constval setExpression 1.0
 #$constval parameterChanged [java::null]
 
-$man go
+$man startRun
 
 
 
