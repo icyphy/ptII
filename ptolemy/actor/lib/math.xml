@@ -55,7 +55,7 @@
     </rendition>
   </entity>
   
-  <entity name="RoundingFunction" class="ptolemy.actor.lib.RoundingFunction">
+  <entity name="Round" class="ptolemy.actor.lib.Round">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
