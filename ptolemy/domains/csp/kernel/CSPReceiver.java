@@ -180,62 +180,6 @@ public class CSPReceiver implements ProcessReceiver {
 	 return _boundaryDetector.isConnectedToBoundary();
      }
 
-    /** Return true if this receiver is connected to the inside of a
-     *  boundary port. A boundary port is an opaque port that is contained
-     *  by a composite actor. If this receiver is connected to the inside
-     *  of a boundary port, then return true; otherwise return false.
-     *  This method is not synchronized so the caller should be.
-     * @return True if this receiver is connected to the inside of a
-     *  boundary port; return false otherwise.
-     public boolean isConnectedToBoundary() {
-         if( _connectedBoundaryCacheIsOn ) {
-             return _isConnectedBoundaryValue;
-         } else {
-             IOPort innerPort = (IOPort)getContainer();
-             if( innerPort == null ) {
-                 _connectedBoundaryCacheIsOn = false;
-                 _isConnectedBoundaryValue = false;
-                 return _isConnectedBoundaryValue;
-             }
-             ComponentEntity innerEntity =
-                     (ComponentEntity)innerPort.getContainer();
-             Port outerPort = null;
-             ComponentEntity outerEntity = null;
-             List portList = innerPort.connectedPortList();
-             Iterator ports = portList.iterator();
-
-             try {
-                 while( ports.hasNext() ) {
-                     outerPort = (Port)ports.next();
-                     outerEntity = (ComponentEntity)outerPort.getContainer();
-                     if( outerEntity == innerEntity.getContainer() ) {
-                         // The port container of this receiver is
-                         // connected to a boundary port. Now determine
-                         // if this receiver's channel is connected to
-                         // a boundary port.
-                         Receiver[][] rcvrs =
-                        	 ((IOPort)outerPort).deepGetReceivers();
-		     	 for( int i = 0; i < rcvrs.length; i++ ) {
-                             for( int j = 0; j < rcvrs[i].length; j++ ) {
-                                 if( this == rcvrs[i][j] ) {
-                                     _connectedBoundaryCacheIsOn = true;
-                                     _isConnectedBoundaryValue = true;
-                                     return true;
-                                 }
-                             }
-                         }
-                     }
-                 }
-             }  catch (IllegalActionException ex) {
-                 throw new InternalErrorException("No director? " + ex);
-             }
-             _connectedBoundaryCacheIsOn = true;
-             _isConnectedBoundaryValue = false;
-             return _isConnectedBoundaryValue;
-         }
-     }
-     */
-
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
@@ -249,53 +193,6 @@ public class CSPReceiver implements ProcessReceiver {
 	 return _boundaryDetector.isInsideBoundary();
      }
 
-    /** Return true if this receiver is contained on the inside of a
-     *  boundary port. A boundary port is an opaque port that is
-     *  contained by a composite actor. If this receiver is contained
-     *  on the inside of a boundary port then return true; otherwise
-     *  return false. This method is not synchronized so the caller
-     *  should be.
-     * @return True if this receiver is contained on the inside of
-     *  a boundary port; return false otherwise.
-     public boolean isInsideBoundary() {
-         if( _insideBoundaryCacheIsOn ) {
-             return _isInsideBoundaryValue;
-         } else {
-             IOPort innerPort = (IOPort)getContainer();
-             if( innerPort == null ) {
-                 _insideBoundaryCacheIsOn = false;
-                 _isInsideBoundaryValue = false;
-                 return _isInsideBoundaryValue;
-             }
-             ComponentEntity innerEntity =
-             	     (ComponentEntity)innerPort.getContainer();
-             if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
-                 // This receiver is contained by the port
-                 // of a composite actor.
-                 if( innerPort.isOutput() && !innerPort.isInput() ) {
-                     _isInsideBoundaryValue = true;
-                 } else if( !innerPort.isOutput() && innerPort.isInput() ) {
-                     _isInsideBoundaryValue = false;
-                 } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
-                     _isInsideBoundaryValue = false;
-                 } else {
-                     // CONCERN: The following only works if the port
-                     // is not both an input and output.
-                     throw new IllegalArgumentException("A port that "
-                             + "is both an input and output can not be "
-                             + "properly dealt with by "
-                             + "CSPReceiver.isInsideBoundary");
-                 }
-                 _insideBoundaryCacheIsOn = true;
-                 return _isInsideBoundaryValue;
-             }
-             _insideBoundaryCacheIsOn = true;
-             _isInsideBoundaryValue = false;
-             return _isInsideBoundaryValue;
-         }
-     }
-     */
-
     /** Return true if this receiver is contained on the outside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
@@ -308,53 +205,6 @@ public class CSPReceiver implements ProcessReceiver {
      public boolean isOutsideBoundary() {
 	 return _boundaryDetector.isOutsideBoundary();
      }
-
-    /** Return true if this receiver is contained on the outside of a
-     *  boundary port. A boundary port is an opaque port that is
-     *  contained by a composite actor. If this receiver is contained
-     *  on the outside of a boundary port then return true; otherwise
-     *  return false. This method is not synchronized so the caller
-     *  should be.
-     * @return True if this receiver is contained on the outside of
-     *  a boundary port; return false otherwise.
-     public boolean isOutsideBoundary() {
-         if( _outsideBoundaryCacheIsOn ) {
-             return _isInsideBoundaryValue;
-         } else {
-             IOPort innerPort = (IOPort)getContainer();
-             if( innerPort == null ) {
-                 _outsideBoundaryCacheIsOn = false;
-                 _isOutsideBoundaryValue = false;
-                 return _isOutsideBoundaryValue;
-             }
-             ComponentEntity innerEntity =
-                     (ComponentEntity)innerPort.getContainer();
-             if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
-                 // This receiver is contained by the port
-                 // of a composite actor.
-                 if( innerPort.isOutput() && !innerPort.isInput() ) {
-                     _isOutsideBoundaryValue = false;
-                 } else if( !innerPort.isOutput() && innerPort.isInput() ) {
-                     _isOutsideBoundaryValue = true;
-                 } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
-                     _isOutsideBoundaryValue = false;
-                 } else {
-                     // CONCERN: The following only works if the port
-                     // is not both an input and output.
-                     throw new IllegalArgumentException("A port that "
-                             + "is both an input and output can not be "
-                             + "properly dealt with by "
-                             + "CSPReceiver.isInsideBoundary");
-                 }
-                 _outsideBoundaryCacheIsOn = true;
-                 return _isOutsideBoundaryValue;
-             }
-             _outsideBoundaryCacheIsOn = true;
-             _isOutsideBoundaryValue = false;
-             return _isOutsideBoundaryValue;
-         }
-     }
-     */
 
     /** Place a Token into the receiver via rendezvous. This method
      *  does not return until the rendezvous has been completed.
@@ -448,14 +298,6 @@ public class CSPReceiver implements ProcessReceiver {
 	_rendezvousComplete = false;
 	_modelFinished = false;
 	_boundaryDetector.reset();
-	/*
-    	_insideBoundaryCacheIsOn = false;
-    	_isInsideBoundaryValue = false;
-    	_outsideBoundaryCacheIsOn = false;
-    	_isOutsideBoundaryValue = false;
-    	_connectedBoundaryCacheIsOn = false;
-    	_isConnectedBoundaryValue = false;
-	*/
     }
 
     /** Set the container of this CSPReceiver to the specified IOPort.
