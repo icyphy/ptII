@@ -62,6 +62,7 @@ JSRCS = \
 	OutputActionsAttribute.java \
 	State.java \
 	StateEvent.java \
+	StatePair.java \
 	Transition.java
 
 EXTRA_SRCS =	$(JSRCS)

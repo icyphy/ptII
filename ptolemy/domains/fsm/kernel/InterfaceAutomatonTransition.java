@@ -43,9 +43,9 @@ import ptolemy.data.expr.Parameter;
 //// InterfaceAutomatonTransition
 /**
 A Transition for Interface Automaton. In the Interface Automata paper
-written by Luca de Alfaro, transitions are called actions. However,
-the name action conflicts with the Action class in this package, so this
-class uses the name transition.  There are three types of transitions:
+written by Luca de Alfaro and Henzinger, transitions are called actions.
+However, the name action conflicts with the Action class in this package,
+so this class uses the name transition.  There are three types of transitions:
 input, output, and internal. Each transition has a label. The labels for
 input, output, and internal transitions end with "?", "!", and ";",
 respectively. The type of transition is determined by the ending character
@@ -83,7 +83,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *  will be thrown. This transition will use the workspace of the
      *  container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  @param container An InterfaceAutomaton.
+     *  @param container An interface automaton.
      *  @param name The name of this transition.
      *  @exception IllegalActionException If the container is incompatible
      *   with this transition.

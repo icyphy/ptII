@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+        AlternatingSimulation.java \
         CombineInternalTransitions.java \
         Compose.java \
 	DeadlockStates.java \

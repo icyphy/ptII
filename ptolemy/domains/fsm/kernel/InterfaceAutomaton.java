@@ -53,7 +53,7 @@ import java.util.Set;
 //// InterfaceAutomaton
 /**
 This class models an Interface Automaton. Interface automata is an automata
-model defined by Luca de Alfaro in the paper "Interface Automata".
+model defined by de Alfaro and Henzinger in the paper "Interface Automata".
 An InterfaceAutomaton contains a set of states and
 InterfaceAutomatonTransitions. There are three kinds transitions:
 input transition, output transition, and internal transitions.
@@ -283,6 +283,65 @@ public class InterfaceAutomaton extends FSMActor {
         return composition;
     }
 
+    /** Return the unique maximal alternating simulation from the specified
+     *  automaton to this automaton.
+     *  Alternating simulation is a binary relation defined in the interface
+     *  automata paper. If P and Q are two interface automata, and Vp and Vq
+     *  are their states, an alternating simulation is a subset of Vp x Vq
+     *  that satisfies the conditions described in the paper. This method
+     *  computes such a subset. If this subset is not empty, we say that
+     *  there is an alternating simulation from Q to P. In this class, we
+     *  call the automaton P the <i>super automaton</i>, and Q the
+     *  <i>sub automaton</i>.
+     *  <p>
+     *  This method returns a set of instances of StatePair. The first state
+     *  in each pair is in the super automaton, and the second state is in
+     *  the sub automaton.
+     *  @param subAutomaton An interface automaton.
+     *  @return A set representing the alternating simulation.
+     *  @see StatePair
+     */
+    public Set computeAlternatingSimulation(InterfaceAutomaton subAutomaton) {
+        Set simulation = new HashSet();
+
+        // Initialize simulation. Use condition 1 in Definitino 14 to
+        // (significantly) reduce the size.
+        Iterator superStates = entityList().iterator();
+        while (superStates.hasNext()) {
+            State superState = (State)superStates.next();
+            Iterator subStates = subAutomaton.entityList().iterator();
+            while (subStates.hasNext()) {
+                State subState = (State)subStates.next();
+                if (_condition1Satisfied(this, superState, subAutomaton,
+                                        subState)) {
+                    StatePair pair = new StatePair(superState, subState);
+                    simulation.add(pair);
+                }
+            }
+        }
+
+        // Repeatedly removing the pairs in simulation using the 2 conditions
+        // in Definition 14 of the paper, until no more pairs can be removed
+        // or until simulation is empty.
+        Set toBeRemoved = new HashSet();
+        do {
+            toBeRemoved.clear();
+            Iterator pairs = simulation.iterator();
+            while (pairs.hasNext()) {
+                StatePair pair = (StatePair)pairs.next();
+                State superState = pair.first();
+                State subState = pair.second();
+
+                if (_condition2Satisfied(this, superState, subAutomaton,
+                                        subState, simulation) == false) {
+                    toBeRemoved.add(pair);
+                }
+            }
+            simulation.removeAll(toBeRemoved);
+        } while ( !toBeRemoved.isEmpty());
+        return simulation;
+    }
+
     /** Return the deadlock states in a Set. A state is a deadlock state if
      *  it does not have any outgoing transitions.
      *  @return A Set of deadlock states.
@@ -306,6 +365,141 @@ public class InterfaceAutomaton extends FSMActor {
             }
         }
         return deadlockStates;
+    }
+
+    /** Return the epsilon-closure of the specified state. Epsilon-closure
+     *  is defined in Definition 11 of the interface automaton paper. It
+     *  is the set of states that can be reached from the specified state
+     *  by taking only internal transitions.
+     *  @param state The state from which the espilon-closure is computed.
+     *  @return A set of instances of State.
+     */
+    public Set epsilonClosure(State state) {
+        // Use frontier exploration. The Set frontier stores the frontier
+        // states, and the Set closure stores all reacheable states. frontier
+        // is always a subset of closure.
+        //
+        // init: closure = frontier = state
+        //
+        // iterate: Pick (remove) a state p from the frontier
+        //          for all states s reacheable from p through internal
+        //          transitions
+        //              if s is not in closure
+        //                  add s to both closure and frontier
+        //
+        //          end when frontier is empty
+
+        // init
+        Set closure = new HashSet();
+        Set frontier = new HashSet();
+        closure.add(state);
+        frontier.add(state);
+
+        // iterate
+        while ( !frontier.isEmpty()) {
+            // there does not seem to be an easy way to remove an arbitrary
+            // element, except through Iterator
+            Iterator iterator = frontier.iterator();
+            State current = (State)iterator.next();
+            frontier.remove(current);
+
+            // put all states that are reacheable from current through
+            // internal transitions into closure and frontier
+            ComponentPort outPort = current.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+            while (transitions.hasNext()) {
+                InterfaceAutomatonTransition transition =
+                    (InterfaceAutomatonTransition)transitions.next();
+                int transitionType = transition.getType();
+                if (transitionType ==
+                            InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                    State destinationState = transition.destinationState();
+                    if ( !closure.contains(destinationState)) {
+                        closure.add(destinationState);
+                        closure.add(destinationState);
+                    }
+                }
+            }
+        }
+
+        return closure;
+    }
+
+    /** Return the set of externally enabled destination states. This set is
+     *  defined in Definition 13 of the interface automaton paper.
+     *  The caller should ensure that the specified transition label is for
+     *  an externally enabled input or output transition. This method assumes
+     *  this is true without checking.
+     *  @param sourceState The source state from which the externally
+     *   enabled destinations are computed.
+     *  @param transitionLabel The label for an externally enabled transition.
+     *  @return A set of instances of State.
+     */
+    public Set externallyEnabledDestinations(State sourceState,
+                                                 String transitionLabel) {
+        Set destinations = new HashSet();
+        Set closure = epsilonClosure(sourceState);
+        Iterator sources = closure.iterator();
+        while (sources.hasNext()) {
+            State source = (State)sources.next();
+            ComponentPort outPort = source.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+            while (transitions.hasNext()) {
+                InterfaceAutomatonTransition transition =
+                        (InterfaceAutomatonTransition)transitions.next();
+                if (transition.getLabel().equals(transitionLabel)) {
+                    State destination = transition.destinationState();
+                    destinations.add(destination);
+                }
+            }
+        }
+        return destinations;
+    }
+
+    /** Return the labels for the set of externally enabled input transitions
+     *  for the specified state. This set is defined in Definition 12 of the
+     *  interface automaton paper.
+     *  @param state The state for which the externally enabled input
+     *   transitions are computed.
+     *  @return A set of string.
+     */
+    public Set externallyEnabledInputTransitionLabels(State state) {
+        Set transitionLabels = _transitionLabelsFrom(state,
+                        InterfaceAutomatonTransition.INPUT_TRANSITION);
+
+        Set closure = epsilonClosure(state);
+        closure.remove(state);
+        Iterator states = closure.iterator();
+        while (states.hasNext()) {
+            State nextState = (State)states.next();
+            Set labels = _transitionLabelsFrom(nextState,
+                            InterfaceAutomatonTransition.INPUT_TRANSITION);
+            transitionLabels.retainAll(labels);
+        }
+        return transitionLabels;
+    }
+
+    /** Return the labels for the set of externally enabled output transitions
+     *  for the specified state. This set is defined in Definition 12 of the
+     *  interface automaton paper.
+     *  @param state The state for which the externally enabled output
+     *   transitions are computed.
+     *  @return A set of string.
+     */
+    public Set externallyEnabledOutputTransitionLabels(State state) {
+        Set transitionLabels = _transitionLabelsFrom(state,
+                        InterfaceAutomatonTransition.OUTPUT_TRANSITION);
+
+        Set closure = epsilonClosure(state);
+        closure.remove(state);
+        Iterator states = closure.iterator();
+        while (states.hasNext()) {
+            State nextState = (State)states.next();
+            Set labels = _transitionLabelsFrom(nextState,
+                        InterfaceAutomatonTransition.OUTPUT_TRANSITION);
+            transitionLabels.addAll(labels);
+        }
+        return transitionLabels;
     }
 
     /** Choose the enabled transition among the outgoing transitions of
@@ -824,7 +1018,8 @@ public class InterfaceAutomaton extends FSMActor {
                             // case 1A. Add transition to product as input
                             // transition
                             State destinationInProduct = _addState(product,
-                                    destinationInThis, stateInArgument, frontier);
+                                    destinationInThis, stateInArgument,
+                                    frontier);
                             _addTransition(product,
                                     this.getName(),
                                     stateInProduct, destinationInProduct,
@@ -838,8 +1033,8 @@ public class InterfaceAutomaton extends FSMActor {
                                 // case 1Ba. q has T output. Add T to product
                                 // as internal transition
                                 State destinationInProduct = _addState(product,
-                                        destinationInThis, destinationInArgument,
-                                        frontier);
+                                        destinationInThis,
+                                        destinationInArgument, frontier);
                                 _addTransition(product,
                                         this.getName() + NAME_CONNECTOR
                                         + automaton.getName(),
@@ -858,7 +1053,8 @@ public class InterfaceAutomaton extends FSMActor {
                             // case 2A. T is output of product. Add T to
                             // product as output transition
                             State destinationInProduct = _addState(product,
-                                    destinationInThis, stateInArgument, frontier);
+                                    destinationInThis, stateInArgument,
+                                    frontier);
                             _addTransition(product,
                                     this.getName(),
                                     stateInProduct, destinationInProduct,
@@ -891,8 +1087,8 @@ public class InterfaceAutomaton extends FSMActor {
                                 transitionLabel);
                     } else {
                         throw new InternalErrorException(
-                                "InterfaceAutomaton._computeProduct: unrecognized "
-                                + "transition type.");
+                                "InterfaceAutomaton._computeProduct: "
+                                + "unrecognized transition type.");
                     }
                 } // end explore from state p
 
@@ -921,7 +1117,8 @@ public class InterfaceAutomaton extends FSMActor {
                             // case 1A. Add transition to product as input
                             // transition
                             State destinationInProduct = _addState(product,
-                                    stateInThis, destinationInArgument, frontier);
+                                    stateInThis, destinationInArgument,
+                                    frontier);
                             _addTransition(product,
                                     automaton.getName(),
                                     stateInProduct, destinationInProduct,
@@ -935,7 +1132,8 @@ public class InterfaceAutomaton extends FSMActor {
                                 // case 1Ba. p has T output. Add T to product
                                 // as internal transition
                                 State destinationInProduct = _addState(product,
-                                        destinationInThis, destinationInArgument,
+                                        destinationInThis,
+                                        destinationInArgument,
                                         frontier);
                                 _addTransition(product,
                                         this.getName() + NAME_CONNECTOR
@@ -955,7 +1153,8 @@ public class InterfaceAutomaton extends FSMActor {
                             // case 2A. T is output of product. Add T to
                             // product as output transition
                             State destinationInProduct = _addState(product,
-                                    stateInThis, destinationInArgument, frontier);
+                                    stateInThis, destinationInArgument,
+                                    frontier);
                             _addTransition(product,
                                     automaton.getName(),
                                     stateInProduct, destinationInProduct,
@@ -989,8 +1188,8 @@ public class InterfaceAutomaton extends FSMActor {
                                 transitionLabel);
                     } else {
                         throw new InternalErrorException(
-                                "InterfaceAutomaton._computeProduct: unrecognized "
-                                + "transition type.");
+                                "InterfaceAutomaton._computeProduct: "
+                                + "unrecognized transition type.");
                     }
                 } // end explore from state q
             }
@@ -1034,6 +1233,82 @@ public class InterfaceAutomaton extends FSMActor {
         _internalNames = this.internalTransitionNameSet();
         _internalNames.addAll(automaton.internalTransitionNameSet());
         _internalNames.addAll(shared);
+    }
+
+    // Return true if condition 1 in Definition 14 of the interface automaton
+    // paper is satisfied. That is, return true if the externally enabled input
+    // transitions for the state in the super automaton is a subset of the
+    // externally enabled input transitions for the state in the sub automaton,
+    // and the externally enabled output transitions of the sub automaton is
+    // a subset of the externally enabled output transitions of the super
+    // automaton.
+    private static boolean _condition1Satisfied(
+                    InterfaceAutomaton superAutomaton, State superState,
+                    InterfaceAutomaton subAutomaton, State subState) {
+        Set inputLabelsInSuper =
+            superAutomaton.externallyEnabledInputTransitionLabels(superState);
+        Set inputLabelsInSub =
+            subAutomaton.externallyEnabledInputTransitionLabels(subState);
+        if (inputLabelsInSub.containsAll(inputLabelsInSuper) == false) {
+            return false;
+        }
+
+        Set outputLabelsInSuper =
+            superAutomaton.externallyEnabledOutputTransitionLabels(superState);
+        Set outputLabelsInSub =
+            subAutomaton.externallyEnabledOutputTransitionLabels(subState);
+        return outputLabelsInSuper.containsAll(outputLabelsInSub);
+    }
+
+    // Return true if condition 2 in Definition 14 of the interface automaton
+    // paper is satisfied. That is, return true if the super automaton can
+    // match the move of the sub automaton at the specified states.
+    private static boolean _condition2Satisfied(
+                    InterfaceAutomaton superAutomaton, State superState,
+                    InterfaceAutomaton subAutomaton, State subState,
+                    Set currentSimulation) {
+        // consideredTransitions are the union of the externally enabled
+        // input transitions at the super state and the externally enabled
+        // output transitions at the sub state.
+        Set consideredTransitionLabels =
+            superAutomaton.externallyEnabledInputTransitionLabels(superState);
+        Set consideredOutputTransitionLabels =
+            subAutomaton.externallyEnabledOutputTransitionLabels(subState);
+        consideredTransitionLabels.addAll(consideredOutputTransitionLabels);
+
+        Iterator transitionLabels = consideredTransitionLabels.iterator();
+        while (transitionLabels.hasNext()) {
+            String label = (String)transitionLabels.next();
+            Set destinationsInSub = subAutomaton.externallyEnabledDestinations(
+                                                        subState, label);
+            Set destinationsInSuper =
+                                superAutomaton.externallyEnabledDestinations(
+                                                superState, label);
+
+            // check that for each destination in the sub automaton, there is
+            // an destination in the super automaton such that the two
+            // destinations are in the current alternating simulation relation.
+            Iterator subStates = destinationsInSub.iterator();
+            while (subStates.hasNext()) {
+                State destinationInSub = (State)subStates.next();
+                boolean inCurrentSimulation = false;
+                Iterator superStates = destinationsInSuper.iterator();
+                while (superStates.hasNext()) {
+                    State destinationInSuper = (State)superStates.next();
+                    StatePair pair = new StatePair(destinationInSuper,
+                                                       destinationInSub);
+                    if (currentSimulation.contains(pair)) {
+                        inCurrentSimulation = true;
+                        break;
+                    }
+                }
+
+                if (inCurrentSimulation == false) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // Create ports on the composition automaton, based on _inputNames and
@@ -1173,8 +1448,9 @@ public class InterfaceAutomaton extends FSMActor {
             // Should not happen since the argument for setContainer() is null.
             throw new InternalErrorException(
                     "InterfaceAutomaton._removeStateAndTransitions: "
-                    + "IllegalActionException thrown when calling setContainer() "
-                    + "with null argument: " + exception.getMessage());
+                    + "IllegalActionException thrown when calling "
+                    + "setContainer() with null argument: "
+                    + exception.getMessage());
         } catch (NameDuplicationException exception) {
             // Should not happen since the argument for setContainer() is null.
             throw new InternalErrorException(
@@ -1268,6 +1544,24 @@ public class InterfaceAutomaton extends FSMActor {
             State state = (State)iterator.next();
             _removeStateAndTransitions(state);
         }
+    }
+
+    // Return all the transitions from the specified state with the specified
+    // type.
+    private Set _transitionLabelsFrom(State state, int transitionType) {
+        Set labels = new HashSet();
+        ComponentPort outPort = state.outgoingPort;
+        Iterator transitions = outPort.linkedRelationList().iterator();
+        while (transitions.hasNext()) {
+            InterfaceAutomatonTransition transition =
+                    (InterfaceAutomatonTransition)transitions.next();
+            int type = transition.getType();
+            if (type == transitionType) {
+                String label = transition.getLabel();
+                labels.add(label);
+            }
+        }
+        return labels;
     }
 
     ///////////////////////////////////////////////////////////////////
