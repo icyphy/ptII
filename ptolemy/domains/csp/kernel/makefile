@@ -38,7 +38,7 @@ ME =		ptolemy/domains/csp/kernel
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-DIRS = 		test #demo #doc
+DIRS = 		test  #doc
 
 CLASSPATH =	../../../..
 
@@ -57,13 +57,14 @@ JSRCS = \
 	ConditionalSend.java \
 	CSPActor.java \
 	CSPCompositeActor.java \
+	CSPDirector.java \
 	CSPReceiver.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	demo doc test
+MISC_FILES =	 doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
