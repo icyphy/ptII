@@ -7,7 +7,7 @@
     <doc>This composite actor calculates the spectrum of the input.</doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[707, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[73, 98]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[51, 100]">
     </property>
     <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="190.0, 45.0">
@@ -129,6 +129,12 @@ radians per second, centered at zero frequency.</text>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="445.0, 255.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
