@@ -70,7 +70,7 @@ While building Xml2Ecsl:
 DataflowConverter.cpp
 c:\cxh\src\udm\include\errhand.h(72) : fatal error C1083: Cannot open include file: 'stl_user_config.h': No such file or directory
 
-Solution: Add $(STL_PATH)/3rdpart/stl to 
+Solution: Add $(STL_PATH)/3rdparty/stl to 
 	   Project -> Settings -> C++ -> C++ filter
 	   
 
@@ -79,17 +79,28 @@ Problem:
 LINK : fatal error LNK1104: cannot open file "xerces-c_2D.lib"
 Error executing link.exe.
 
-Solution: Download from Xerces-C 2.6.0 from
+1st Solution: Download from Xerces-C 2.6.0 from
 http://xml.apache.org/xerces-c/download.cgi
 
 1. Edit the Xml2Ecsl project settings and add the Xerces Library to 
 Link -> Input -> Additional library path
 2. Change library to xerces-c_2d
 
+Real Solution: xerces is included in UDM in the 3rdparty/xerces
+directory, so I added $(UDM_PATH)\3rdparty\xerces-c2_2_0-win32\lib
+to the Additional library path
+
 -------
 Problem:
 LINK : fatal error LNK1104: cannot open file "zlibD.lib"
-Solution: Download Zlib Developer files from
+
+1st Solution: Download Zlib Developer files from
 http://gnuwin32.sourceforge.net/downlinks/zlib-lib-zip.php
 and add that directory to the link list
 Also, change the library to libz.lib
+
+Real Solution: zlib is included in UDM in the 3rdparty/zlib
+directory, so I added $(UDM_PATH)\3rdparty\xerces-c2_2_0-win32\lib
+to the Additional library path, which now looks like:
+
+$(UDM_PATH)\lib,$(UDM_PATH)3rdparty\zlib,$(UDM_PATH)3rdparty\xerces\xerces-c2_2_0-win32\lib
