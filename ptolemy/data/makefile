@@ -62,6 +62,7 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	BooleanToken.java \
 	ByteToken.java \
 	DoubleMatrixToken.java \
 	DoubleToken.java \
@@ -71,7 +72,6 @@ JSRCS = \
 	MatrixToken.java \
 	NullToken.java \
 	ObjectToken.java \
-	Param.java \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java \
