@@ -120,7 +120,7 @@ public interface Changeable {
      *  request when it is executed.
      *  @param change The requested change.
      *  @see #executeChangeRequests()
-     *  @see #setDeferChangeRequests(boolean)
+     *  @see #setDeferringChangeRequests(boolean)
      */
     public void requestChange(ChangeRequest change);
 
@@ -136,7 +136,7 @@ public interface Changeable {
      *  @param isDeferring If true, defer change requests.
      *  @see #addChangeListener(ChangeListener)
      *  @see #executeChangeRequests()
-     *  @see #isDeferringRequests()
+     *  @see #isDeferringChangeRequests()
      *  @see #requestChange(ChangeRequest)
      */
     public void setDeferringChangeRequests(boolean isDeferring);

@@ -128,6 +128,7 @@ public final class CrossRefList implements Serializable  {
     /** Get the container at the specified index.  If there is no such
      *  container, return null. Indices begin with 0.
      *  @param index The index of the container to return.
+     *  @return The container at the specified index.
      */
     public synchronized Object get(int index) {
         if (index < 0 || index >= _size) return null;
@@ -339,15 +340,17 @@ public final class CrossRefList implements Serializable  {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    // Class CrossRef.
-    // Objects of this type form the elements of the list.
-    // They occur in pairs, one in each list at each end of a link.
-    // A CrossRef is similar to a "link" in a doubly-linked list.
-    // (Note that the usage of "link" here is different from "link"
-    // in the comments for the above public methods.  "Link" here
-    // refers to an element of a doubly-linked list.)
+    /**
+     * Objects of this type form the elements of the list.
+     * They occur in pairs, one in each list at each end of a link.
+     * A CrossRef is similar to a "link" in a doubly-linked list.
+     * (Note that the usage of "link" here is different from "link"
+     * in the comments for the above public methods.  "Link" here
+     * refers to an element of a doubly-linked list.)
+     */
     protected class CrossRef implements Serializable{
 
+        /** The far CrossRef. */ 
         protected CrossRef _far;
 
         private CrossRef _next;

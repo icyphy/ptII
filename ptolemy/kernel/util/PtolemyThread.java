@@ -123,6 +123,7 @@ public class PtolemyThread extends Thread implements Debuggable {
     /** Append a listener to the current set of debug listeners.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send debug messages.
+     *  @see #removeDebugListeners(DebugListener)
      *  @since Ptolemy II 2.3
      */
     public synchronized void addDebugListener(DebugListener listener) {
@@ -141,6 +142,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
      *   to which debug messages are sent.
+     *  @see #addDebugListeners(DebugListener)
      *  @since Ptolemy II 2.3
      */
     public synchronized void removeDebugListener(DebugListener listener) {
@@ -209,12 +211,12 @@ public class PtolemyThread extends Thread implements Debuggable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** @serial Flag that is true if there are debug listeners.
+    /** Flag that is true if there are debug listeners.
      *  @since Ptolemy II 2.3
      */
     protected boolean _debugging = false;
 
-    /** @serial The list of DebugListeners registered with this object.
+    /** The list of DebugListeners registered with this object.
      *  @since Ptolemy II 2.3
      */
     protected LinkedList _debugListeners = null;

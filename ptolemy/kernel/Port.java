@@ -366,7 +366,8 @@ public class Port extends NamedObj {
      *   does not match the current container.
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
-     *  @see #isClassElement()
+     *  @see #getContainer()
+     *  @see #_checkContainer()
      */
     public void setContainer(Entity entity)
             throws IllegalActionException, NameDuplicationException {
