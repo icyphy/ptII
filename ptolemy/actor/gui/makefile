@@ -142,13 +142,13 @@ TableauFrame.class: HTMLEffigy.class
 install: jclass $(PTCLASSJAR)
 
 demo: all demo_ptolemy demo_vergil demo_caa
-demo_ptolemy:
+demo_ptolemy: all
 	$(ROOT)/bin/ptolemy $(ROOT)/ptolemy/moml/demo/modulation.xml 
-demo_vergil:
+demo_vergil: all
 	$(ROOT)/bin/vergil $(ROOT)/ptolemy/moml/demo/modulation.xml 
 
 # Demonstrate CompositeActorApplication
-demo_caa:
+demo_caa: all
 	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)" \
 	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
 	 -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
