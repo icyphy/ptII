@@ -99,7 +99,16 @@ OPTIONAL_FILES = $(SHELL_FILES) \
 
 all: ptinvoke ptscripts ptbats
 
-ptscripts:
+ptinvoke: ptinvoke.in ../config.status
+	(cd ..; ./config.status)
+	-chmod a+x ptinvoke
+
+# zip might not get the permissions of configure right, so we run /bin/sh
+../config.status: ../configure
+	(cd ..; /bin/sh ./configure)
+
+# Get the rest of the rules
+ptscripts: ptinvoke
 	for file in $(SHELL_FILES); do \
 		echo "$$file"; \
 		rm -f "$$file"; \
@@ -107,7 +116,7 @@ ptscripts:
 		chmod a+x "$$file"; \
 	done
 
-ptbats:
+ptbats: ptinvoke
 	rm -f makebat
 	ln -s ptinvoke makebat
 	for file in $(SHELL_FILES); do \
@@ -120,13 +129,6 @@ install: all
 
 fast: install
 demo: all
-
-ptinvoke: ptinvoke.in ../config.status
-	(cd ..; ./config.status)
-	-chmod a+x ptinvoke
-# zip might not get the permissions of configure right, so we run /bin/sh
-../config.status: ../configure
-	(cd ..; /bin/sh ./configure)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
