@@ -25,13 +25,15 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.domains.pn.lib;
+package ptolemy.domains.pn.demo.TicTacToe;
+
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
+
 import java.util.Enumeration;
 import java.io.*;
 

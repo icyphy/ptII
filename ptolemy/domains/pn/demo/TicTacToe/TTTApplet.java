@@ -26,7 +26,7 @@ for visualization
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.domains.pn.demo;
+package ptolemy.domains.pn.demo.TicTacToe;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -36,7 +36,6 @@ import java.io.*;
 import java.util.*;
 
 import ptolemy.domains.pn.kernel.*;
-import ptolemy.domains.pn.lib.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;

@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.domains.pn.demo;
+package ptolemy.domains.pn.demo.TicTacToe;
+
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.lib.*;
 import ptolemy.actor.*;

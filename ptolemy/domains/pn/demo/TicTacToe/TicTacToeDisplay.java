@@ -24,16 +24,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 */
-package ptolemy.domains.pn.lib;
+package ptolemy.domains.pn.demo.TicTacToe;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.media.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+
 import java.io.*;
-import ptolemy.actor.*;
 import java.text.MessageFormat;
-import java.util.Enumeration;import ptolemy.media.*;
+import java.util.Enumeration;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
