@@ -38,7 +38,7 @@ import ptolemy.data.*;
 /**
 
 @author John S. Davis II
-@version @(#)NullToken.java	1.3	11/02/98
+@version $Id$
 @see ptolemy.actors.Token
 */
 
