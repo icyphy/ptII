@@ -50,6 +50,8 @@ import ptolemy.vergil.basic.BasicGraphController;
    before or after any of the following firing events: prefire, fire,
    postfire, iterate.
 
+   <p>There is further documentation in $PTII/doc/coding/debugging.htm
+
    @see ptolemy.actor.gui.PortConfigurer
 
    @author Elaine Cheong
@@ -96,6 +98,11 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
             throw new InternalErrorException(
                     "No director associated with this actor.");
         } else {
+            // FIXME: Currently, it seems that this facility 
+            // only works in SDF.  Perhaps we should check
+            // that the director is an instance of SDF?
+            // Perhaps this constructor should throw IllegalActionException.
+
             // See if the director already has a DebugController.
             DebugController debugController =
                 (DebugController) director.getAttribute(_DEBUGCONTROLLER);
