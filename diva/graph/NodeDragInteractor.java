@@ -56,6 +56,13 @@ public class NodeDragInteractor extends DragInteractor {
     public NodeDragInteractor (GraphController controller) {
         _controller = controller;
     }
+    
+    /** Return the controller set in the constructor.
+     *  @return The controller.
+     */
+    public GraphController getController() {
+        return _controller;
+    }
 
     /** Drag all selected nodes and move any attached edges
      */
