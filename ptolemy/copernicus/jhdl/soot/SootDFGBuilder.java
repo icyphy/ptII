@@ -57,7 +57,7 @@ public class SootDFGBuilder extends SootASTVisitor {
     }
 
     public Stmt processDefinitionStmt(DefinitionStmt stmt, 
-					Value rightOp, Value leftOp) {
+				      Value rightOp, Value leftOp) {
 	
 	Node rightNode = _valueMap.getValueNode(rightOp);
 	Node leftNode = _valueMap.getValueNode(leftOp);

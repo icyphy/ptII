@@ -52,14 +52,14 @@ public class SootBlockDirectedGraph extends DirectedGraph {
 	super();
 	_block = block;
 	_valueMap = new ValueMap(this);
-	_requiredDefsAnalysis = new SootDFGRequiredDefinitionsAnalysis(this);
+	//	_requiredDefsAnalysis = new SootDFGRequiredDefinitionsAnalysis(this);
     }
 
     public ValueMap getValueMap() { return _valueMap; }
 
-    public Collection requiredDefinitions() {	
-	return (Collection) _requiredDefsAnalysis.result();
-    }
+//      public Collection requiredDefinitions() {	
+//  	return (Collection) _requiredDefsAnalysis.result();
+//      }
 
 
     /**
@@ -70,15 +70,7 @@ public class SootBlockDirectedGraph extends DirectedGraph {
 
     protected ValueMap _valueMap;
 
-    /**
-     * This List contains all Nodes in the graph that must be defined
-     * (i.e. unresolved input Nodes).
-     **/
-    protected List _requiredDefinitionNodes;
-
     protected Block _block;
-
-    protected SootDFGRequiredDefinitionsAnalysis _requiredDefsAnalysis;
 
     public static void main(String args[]) {
 	SootBlockDirectedGraph graphs[] = 

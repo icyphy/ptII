@@ -131,11 +131,11 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
 	SootBlockDirectedGraph[] g=getGraphs(args);
 	for (int i = 0;i<g.length;i++) {
 	    PtDirectedGraphToDotty.writeDotFile("bgraph"+i,g[i]);
-	    System.out.print("Sources=");
-	    Iterator j=g[i].requiredDefinitions().iterator();
-	    while (j.hasNext()) {
-		System.out.print(j.next() + " ");
-	    }
+//  	    System.out.print("Sources=");
+//  	    Iterator j=g[i].requiredDefinitions().iterator();
+//  	    while (j.hasNext()) {
+//  		System.out.print(j.next() + " ");
+//  	    }
 	    System.out.println();
 	}
     }

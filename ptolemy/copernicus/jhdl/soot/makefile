@@ -51,12 +51,17 @@ JSRCS = \
 	CompoundOrExpression.java \
 	ConditionalControlCompactor.java \
 	ControlSootDFGBuilder.java \
+	DirectedAcyclicCFG.java \
+	DominatorCFG.java \
+	DominatorHashMap.java \
+	IntervalBlockDirectedGraph.java \
+	IntervalChain.java \
+	IntervalDFG.java \
 	JHDLNotExpr.java \
 	SootASTException.java \
 	SootASTVisitor.java \
 	SootBlockDirectedGraph.java \
 	SootDFGBuilder.java \
-	SootDFGRequiredDefinitionsAnalysis.java \
 	ValueMap.java
 
 # should include: (move from above directory)

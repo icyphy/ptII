@@ -28,6 +28,8 @@
 
 package ptolemy.copernicus.jhdl;
 
+import ptolemy.copernicus.jhdl.soot.*;
+
 import byucc.jhdl.base.HWSystem;
 import byucc.jhdl.base.Cell;
 import byucc.jhdl.base.Wire;

@@ -27,9 +27,9 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
+package ptolemy.copernicus.jhdl.soot;
 
-import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.*;
 
 import java.util.Iterator;
 import java.util.HashMap;

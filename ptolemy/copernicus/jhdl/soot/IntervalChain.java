@@ -27,7 +27,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
+package ptolemy.copernicus.jhdl.soot;
 
 import java.util.Iterator;
 import java.util.Collection;
@@ -555,8 +555,6 @@ public class IntervalChain {
 
     Vector _specialChildren;
     
-    protected int _intervalType;
-
     public static boolean DEBUG = false; 
 
 }

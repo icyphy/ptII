@@ -27,7 +27,9 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
+package ptolemy.copernicus.jhdl.soot;
+
+import ptolemy.copernicus.jhdl.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -143,10 +145,10 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    // key=IntervalChain root Node, Value=IntervalChain
 	    Map children = _ic.getChildren();
 	    // key=Value, Value=Node
-	    ValueMap rootVM = new ValueMap(_locals,_instanceFieldRefs);
+	    IValueMap rootVM = new IValueMap(_locals,_instanceFieldRefs);
 
 	    // key=IntervalDFG, Value=child LValues (key=value,value=Node)
-	    HashMap childrenValueMaps = new HashMap(children.size());
+	    HashMap childrenIValueMaps = new HashMap(children.size());
 
 	    for (Iterator i = children.values().iterator();i.hasNext();) {
 		IntervalChain childInterval = (IntervalChain) i.next();
@@ -154,9 +156,9 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		    new IntervalDFG(childInterval,childrenDefinitions);
 		_requiredDefinitions.addAll(childDFG.getRequiredDefinitions());
 
-		_valueMap = (ValueMap) rootVM.clone();
+		_valueMap = (IValueMap) rootVM.clone();
 		mergeSerial(childDFG);
-		childrenValueMaps.put(childDFG,_valueMap);
+		childrenIValueMaps.put(childDFG,_valueMap);
 	    }
 
 	    _valueMap = rootVM;
@@ -165,9 +167,9 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		// Only one branch. Merge the root graph with
 		// the branch graph.
 
-		Iterator i = childrenValueMaps.keySet().iterator();
+		Iterator i = childrenIValueMaps.keySet().iterator();
 		IntervalDFG childDFG = (IntervalDFG) i.next();
-		ValueMap childMap = (ValueMap) childrenValueMaps.get(childDFG);
+		IValueMap childMap = (IValueMap) childrenIValueMaps.get(childDFG);
 		
 		for (i=childMap.getDefs().keySet().iterator();i.hasNext();) {
 		    Value origv = (Value) i.next();
@@ -186,11 +188,11 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
 		// Two branches. Merge all of their outputs.		
 		// Obtain the defintions defined by both children
-		Iterator i = childrenValueMaps.keySet().iterator();
+		Iterator i = childrenIValueMaps.keySet().iterator();
 		IntervalDFG child1DFG = (IntervalDFG) i.next();
 		IntervalDFG child2DFG = (IntervalDFG) i.next();
-		ValueMap child1Map = (ValueMap) childrenValueMaps.get(child1DFG);
-		ValueMap child2Map = (ValueMap) childrenValueMaps.get(child2DFG);
+		IValueMap child1Map = (IValueMap) childrenIValueMaps.get(child1DFG);
+		IValueMap child2Map = (IValueMap) childrenIValueMaps.get(child2DFG);
 
 		// Iterate through all of child1Values
 		for (i=child1Map.getDefs().keySet().iterator();i.hasNext();) {
@@ -523,11 +525,11 @@ public class IntervalDFG extends BlockDataFlowGraph {
      **/
     protected Collection _requiredDefinitions;
 
-    protected ValueMap _valueMap;
+    protected IValueMap _valueMap;
 }
 
-class ValueMap {
-    public ValueMap(MapList l, MapList ifr) {
+class IValueMap {
+    public IValueMap(MapList l, MapList ifr) {
 	locals = l;
 	instanceFieldRefs = ifr;
 	newDefs = new HashMap();
@@ -535,7 +537,7 @@ class ValueMap {
     public Object clone() {
 	MapList l = (MapList) locals.clone();
 	MapList ifrs = (MapList) instanceFieldRefs.clone();
-	ValueMap vm = new ValueMap(l,ifrs);
+	IValueMap vm = new IValueMap(l,ifrs);
 	return vm;
     }
     public void addLocal(Local l,Node n) {

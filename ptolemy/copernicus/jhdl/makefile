@@ -52,14 +52,8 @@ JSRCS = \
 	CircuitAnalysis.java \
 	CircuitCreator.java \
 	CircuitTransformer.java \
-	DirectedAcyclicCFG.java \
-	DominatorCFG.java \
-	DominatorHashMap.java \
 	InlinePrimitivePortTransformer.java \
 	Inliner.java \
-	IntervalBlockDirectedGraph.java \
-	IntervalChain.java \
-	IntervalDFG.java \
 	JHDLTransformer.java \
 	Main.java \
 	Predefined.java \

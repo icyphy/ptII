@@ -51,16 +51,20 @@ public class ValueMap extends HashListMap {
     public ValueMap(SootBlockDirectedGraph graph) {
 	super();
 	_graph = graph;
+	_definitions = new UniqueVector();
     }
 
     public ValueMap(ValueMap vm) {
 	super(vm);
 	_graph = vm._graph;
+	_definitions = (UniqueVector) vm._definitions.clone();
     }
 
     public Object clone() {
 	return new ValueMap(this);
     }
+
+    public DirectedGraph getGraph() { return _graph; }
 
     public Node getValueNode(Value v) {
 	if (containsKey(v))
@@ -88,6 +92,10 @@ public class ValueMap extends HashListMap {
     }
 
     public Node addValueNode(Value v) {
+	return addValueNode(v,false);
+    }
+
+    public Node addValueNode(Value v, boolean left) {
 	Value nodeValue = v; 
 	if (v instanceof InstanceFieldRef) {
 	    InstanceFieldRef ifr = 
@@ -97,17 +105,10 @@ public class ValueMap extends HashListMap {
 	}
 	Node n = _graph.addNodeWeight(nodeValue);
 	add(nodeValue,n);
+	if (left)
+	    _definitions.add(nodeValue);
 	return n;
     }
-
-    // origValue will map to the list associated with newValue
-    /*
-    public void replaceValueNode(Value origValue, Value newValue) {
-	List l = getList(newValue);
-	setList(origValue,l);
-	//return getValueNode(newValue);
-    }
-    */
 
     /**
      * Search all Nodes in the graph to see if there is an InstanceFieldRef
@@ -123,7 +124,7 @@ public class ValueMap extends HashListMap {
 	    Node n = (Node) i.next();
 	    if (n.getWeight() instanceof InstanceFieldRef) {
 		InstanceFieldRef t_ifr = (InstanceFieldRef) n.getWeight();
-		if (equal(t_ifr, ifr) && ifr != t_ifr) {
+		if (equalIFR(t_ifr, ifr) && ifr != t_ifr) {
 		    dupIfr = t_ifr;
 		}
 	    }
@@ -131,23 +132,78 @@ public class ValueMap extends HashListMap {
 	return dupIfr;
     }
 
-    public static boolean equal(InstanceFieldRef ifr1, InstanceFieldRef ifr2) {
+    public static boolean equalIFR(InstanceFieldRef ifr1, InstanceFieldRef ifr2) {
 	return ifr1.getBase().equals(ifr2.getBase()) &&
 	    ifr1.getField().equals(ifr2.getField());
     }
 
-    public void mergeSerial(SootBlockDirectedGraph succeedingGraph) {
+    /**
+     * This method will return a Collection of Nodes that are not assigned
+     * within the graph. An undefined node is a Local or InstanceFieldRef
+     * that is never assigned a value.
+     **/
+    public Collection unassignedNodes() {
+	Vector requiredNodes = new Vector();
+	Iterator nodes = _graph.nodes().iterator();
+	while (nodes.hasNext()) {
+	    Node n = (Node) nodes.next();
+	    Object nweight = n.getWeight();
+	    if (nweight instanceof Local) {
+		if (_graph.predecessors(n).size() == 0)
+		    requiredNodes.add(n);
+	    } else if (nweight instanceof InstanceFieldRef) {		
+		if (_graph.predecessors(n).size() == 1)
+		    requiredNodes.add(n);
+	    }
+	}
+	return requiredNodes;
+    }
+    
+    public Collection unassignedValues() {
+	Collection unassignedNodes = unassignedNodes();
+	UniqueVector values = new UniqueVector(unassignedNodes.size());
+	Iterator i = unassignedNodes.iterator();
+	while (i.hasNext()) {
+	    Node n = (Node) i.next();
+	    values.add(n.getWeight());
+	}
+	return values;
+    }
+
+    /**
+     * This method returns a Collection of Values that are assigned
+     * within the graph. The Value may be assigned more than once.
+     **/
+    public Collection definitionValues() {
+	return _definitions;
+    }
+
+    public boolean isDefined(Value v) {
+	return _definitions.contains(v);
+    }
+
+    /**
+     * This method will merge a data flow graph as a successor of 
+     * the current graph. Rather than passing the graph itself, the
+     * ValueMap of the graph is passed in. The ValueMap is used
+     * to decide which nodes in the successor graph are driven by
+     * nodes in this graph.
+     **/
+    public void mergeSerial(ValueMap successor) {
+
+	DirectedGraph succeedingGraph = successor.getGraph();
 
 	// temporary hashmap between old nodes & new. 
 	// Used when connecting edges
 	HashMap nodeMap = new HashMap(); 
 
 	// Obtain required definitions of succGraph
-	Collection undrivenNodes = succeedingGraph.requiredDefinitions();
+	Collection undrivenNodes = successor.unassignedNodes();
 
 	// Add all nodes from dfg to graph
 	for (Iterator i = succeedingGraph.nodes().iterator(); i.hasNext();) {
 	    Node node = (Node) i.next();	    
+	    Value nodeValue = (Value) node.getWeight();
 	    //if (DEBUG) System.out.print("Adding node="+node);
 
 	    // See if the given node in the succGraph needs to be
@@ -156,12 +212,16 @@ public class ValueMap extends HashListMap {
 	    if (undrivenNodes.contains(node)) {
 		// Search current graph for a Node with an equivelant
 		// Value.
-		Value nodeValue = (Value) node.getWeight();
 		sourceNode = this.getValueNode(nodeValue);
 	    }
 	    // No driver - create new node
 	    if (sourceNode == null) {
-		sourceNode = this.addValueNode(node);
+		// if Value in successor is defined (i.e. assigned),
+		// mark it as defined in this graph.
+		if (successor.isDefined(nodeValue))
+		    sourceNode = this.addValueNode(nodeValue,true);
+		else
+		    sourceNode = this.addValueNode(nodeValue);
 	    }
 	    nodeMap.put(node,sourceNode);
 	}
@@ -188,5 +248,6 @@ public class ValueMap extends HashListMap {
     }
 
     protected SootBlockDirectedGraph _graph;
+    protected UniqueVector _definitions; 
 
 }

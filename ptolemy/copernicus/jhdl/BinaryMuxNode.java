@@ -32,7 +32,7 @@ package ptolemy.copernicus.jhdl;
 import ptolemy.graph.Node;
 
 
-class BinaryMuxNode {
+public class BinaryMuxNode {
 
     public BinaryMuxNode(Node t, Node f, Node c, String name) {
 	_trueNode = t;

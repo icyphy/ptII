@@ -27,7 +27,8 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
+package ptolemy.copernicus.jhdl.soot;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,12 +65,23 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
     public IntervalBlockDirectedGraph(IntervalChain ic) 
 	throws JHDLUnsupportedException {
+	this(ic,null);
+    }
+
+    public IntervalBlockDirectedGraph(IntervalChain ic, 
+				      UniqueVector _parentRequiredDefinitions) 
+	throws JHDLUnsupportedException {
 
 	// Create DFG from the Block object associated with the root
 	// Node of the given IntervalChain
 	super((Block) ic.getRoot().getWeight());
 	_ic = ic;
 	_processChain();
+	_requiredDefinitions = new UniqueVector(_parentRequiredDefinitions);
+    }
+
+    public Collection getRequiredDefinitions() {
+	return _requiredDefinitions;
     }
 
     protected void _processChain() throws JHDLUnsupportedException {
@@ -79,22 +91,27 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	//     definitions downstream are known before upstream
 	//     DFGs are constructed).
 	IntervalChain nextChain = _ic.getNext();
-	if (nextChain != null)
+	if (nextChain != null) {
 	    _next = new IntervalBlockDirectedGraph(nextChain);
-	else
+	    _requiredDefinitions.addAll(_next.getRequiredDefinitions());
+	} else {
 	    _next = null;
-
+	}
 
 	// 2. Merge Children Nodes
+	//    Update _requiredDefinitions by children
 	if (_ic.isSimpleMerge())
 	    simpleMerge();
 	else if (_ic.isSpecialMerge()) {
 	    throw new JHDLUnsupportedException("Special Nodes not yet supported");
 	}	
 
+	// Update required definitions
+	_requiredDefinitions.addAll(_valueMap.unassignedValues());
+
 	// 3. Connect previously created chain to this node
 	if (_next != null) { 
-  	    mergeSerial(_next);
+  	    _valueMap.mergeSerial(_next._valueMap);
 	}
 
     }
@@ -104,36 +121,43 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	// key=IntervalChain root Node, Value=IntervalChain
 	Map children = _ic.getChildren();
 
-	// Save the ValueMap for the current Graph (i.e. pre-merge)
-	// TODO
-
 	// Iterate over the children:
 	// - merge the child
 	// - save the ValueMap for the control path 
 	// key=IntervalBlockDirectedGraph, Value=ValueMap
 	HashMap childrenValueMaps = new HashMap(children.size());
-
-	for (Iterator i = children.values().iterator();i.hasNext();) {
+	Iterator i = children.values().iterator();i.hasNext();
+	while (i.hasNext()) {
 	    IntervalChain childInterval = (IntervalChain) i.next();
 	    IntervalBlockDirectedGraph childDFG = 
 		new IntervalBlockDirectedGraph(childInterval);	    
-	    mergeSerial(childDFG);
-	    // Need to save new ValueMap
-	    // _valueMap = childrenValueMaps.put(childDFG,_valueMap);
+	    ValueMap valueMapCopy = (ValueMap) _valueMap.clone();
+	    valueMapCopy.mergeSerial(childDFG._valueMap);
+	    childrenValueMaps.put(childDFG,valueMapCopy);
+	    _requiredDefinitions.addAll(childDFG.getRequiredDefinitions());
 	}
 
-	// Restore _valueMap
-	//_valueMap = rootVM;
-
-	if (children.values().size() == 1) {
+	Iterator childMapIterator = childrenValueMaps.values().iterator();
+	int numChildren = children.values().size();
+	ValueMap childrenMaps[] = new ValueMap[numChildren];
+	if (numChildren == 1) {
 	    // merge root w/child
-	} else if (children.values().size() == 2) {
+	    ValueMap childMap = (ValueMap) childMapIterator.next();
+	    childrenMaps[0] = childMap;
+	    joinOneChild(childMap,_requiredDefinitions);
+	} else if (numChildren == 2) {
 	    // merge two children
+	    ValueMap childMap1 = (ValueMap) childMapIterator.next();
+	    ValueMap childMap2 = (ValueMap) childMapIterator.next();
+	    joinTwoChildren(childMap1,childMap2,_requiredDefinitions);
+	    childrenMaps[0] = childMap1;
+	    childrenMaps[1] = childMap1;
 	} else {
 	    // A switch.
 	    throw new JHDLUnsupportedException("Switches not yet supported");
 	    // merge switch targets
 	}
+	//_valueMap.joinChildren(childrenMaps);
 
 	/*
 	// - Create a DFG for each child associated with this fork.
@@ -207,124 +231,59 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	*/
     }
     
-    /** returns new lValues **/
-    public void mergeSerial(IntervalBlockDirectedGraph dfg) {
-	/*
-	// temporary hashmap between old nodes & new. 
-	// Used when connecting edges
-	HashMap nodeMap = new HashMap(); 
-	
-	// Add all nodes to graph
-	for (Iterator i = dfg.nodes().iterator(); i.hasNext();) {
-	    
-	    Node node = (Node) i.next();	    
-
-	    if (DEBUG) System.out.print("Adding node="+node);
-	    
-	    Node driver = findNodeDriver(dfg,node);
-	    if (driver != null)
-		nodeMap.put(node,driver);
-	    else {
-	    	if (node.getWeight() instanceof InstanceFieldRef) {
-		    InstanceFieldRef ifr = (InstanceFieldRef) node.getWeight();
-		    InstanceFieldRef nifr =
-			_getMatchingInstanceFieldRef((InstanceFieldRef) ifr);
-		    if (nifr != null) {
-			Node newnode = addNodeWeight(nifr);
-			_valueMap.addInstanceFieldRef(nifr,newnode);
-			nodeMap.put(node,newnode);
-		    } else
-			addNode(node);
-		} else
-		    addNode(node);		
-	    }
-	}
-	    
-	// Iterate through all edges and add to graph
-	for (Iterator i = dfg.edges().iterator(); i.hasNext();) {
-	    Edge e = (Edge) i.next();
-	    Node src = e.source();
-	    if (nodeMap.containsKey(src))
-		src = (Node) nodeMap.get(src);
-	    Node snk = e.sink();		
-	    if (nodeMap.containsKey(snk))
-		snk = (Node) nodeMap.get(snk);
-
-	    if (successorEdges(src,snk).size() == 0) {
-		// Add edge (avoid duplicates)
-		if (e.hasWeight())
-		    addEdge(src,snk,e.getWeight());
-		else
-		    addEdge(src,snk);
-		Object snkWeight = snk.getWeight();
-		if (snkWeight instanceof Local ||
-		    snkWeight instanceof InstanceFieldRef)
-		    _valueMap.addNewDef(snk);
-	    }
-	}	
-	*/
-    }
-
-    public Node addNode(Node n) {
-
-	super.addNode(n);
-	Object weight = n.getWeight();
-  	if (weight instanceof Local) {
-	    _valueMap.addLocal((Local)weight,n);
-  	}
-	if (weight instanceof InstanceFieldRef) {
-	    _valueMap.addInstanceFieldRef((InstanceFieldRef)weight,n);
-	}
-	return n;
-    }
-
-    /* This method will find a Node in the current graph that should
-     * drive the Node n in the passed in dfg. If there is no Node 
-     * in the current graph that with the Value as that of n, null
-     * is returned (i.e. no driver)
-     */
-    protected Node findNodeDriver(BlockDataFlowGraph dfg, Node n) {
-	Object weight = n.getWeight();
-	if (weight instanceof Local) {
-	    if (dfg.inputEdges(n).size() == 0) {
-		// return 
-		return _valueMap.getLastLocal(weight);
-	    } else
-		return null; // Node is being driven
-	}
-	if (weight instanceof InstanceFieldRef) {
-	    InstanceFieldRef ifr = (InstanceFieldRef) weight;
-	    if (dfg.inputEdges(n).size() == 1) {
-		return _valueMap.getMatchingInstanceFieldRefNode(ifr);
-	    }
-	}
-	return null;
-    }
-
     public IntervalChain getIntervalChain() { return _ic; }
 
     public String toBriefString() {
 	return _ic.toShortString();
     }
 
+    /**
+     * This method will join one control-flow branch with a root
+     * control-flow branch. This method must look at all values
+     * that are assigned in both the child branch and root branch.
+     * Assignment values must be multiplexed in either of the two
+     * conditions:
+     * 1. If the root and child both define the same value
+     * 2. If the child defines a value that is required by a
+     *    parent of the root (need the defined and not defined path)
+     *
+     **/
+    public void joinOneChild(ValueMap childMap, Collection neededBySuccessors) {
+	// Determine which branch is true
+
+	// Iterate over all values that are defined in the child
+	for (Iterator i=childMap.definitionValues().iterator();i.hasNext();) {
+	    Value v = (Value) i.next();
+	    if (neededBySuccessors.contains(v)) {
+		Node childn = childMap.getValueNode(v);
+		Node rootn = _valueMap.getOrAddValueNode(v);
+		//_multiplexNodes();
+	    }
+	}
+    }
+
+    public void joinTwoChildren(ValueMap child1, ValueMap child2,
+				Collection neededBySuccessors) {
+    }
     
-    protected Node _multiplexNodes(IntervalBlockDirectedGraph child1DFG, 
+    protected Node _multiplexNodes(ValueMap child1Map,
 				   Node child1,
 				   Node child2) {
-	/*
-	Value value = (Value) child1.getWeight();
 
-	// Get the edges associated with the original CFG.
-	Node cNode = getConditionNode();
+	/*
+
+ 	// Get the edges associated with the original CFG.
+ 	Node cNode = getConditionNode();
 
 	Node trueNode = child1;
-	Node falseNode = child2;
+ 	Node falseNode = child2;
 	if (!isTrueNode(child1DFG)) {
 	    trueNode = child2;
 	    falseNode = child1;
 	}
 	
-	BinaryMuxNode bmn = new BinaryMuxNode(trueNode,falseNode,cNode,
+	Value value = (Value) child1.getWeight();
+ 	BinaryMuxNode bmn = new BinaryMuxNode(trueNode,falseNode,cNode,
 					      value.toString());
 	Node muxNode = addNodeWeight(bmn);
 
@@ -345,62 +304,31 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	return null;
     }
     
-    /** move to higher level **/
-    public Node getOrCreateNode(Value v) throws JHDLUnsupportedException {
-	/*
-	Node newNode = _valueMap.getLast(v);
-	if (DEBUG)
-	    System.out.println("newNode = "+newNode+" value="+v+
-			       " id="+System.identityHashCode(v));
-	if (newNode == null) {
-  	    if (v instanceof InstanceFieldRef) {
-  		InstanceFieldRef ifr = (InstanceFieldRef) v;
-//  		InstanceFieldRef ifr_p = _getMatchingInstanceFieldRef(ifr);
-//  		newNode = _valueMap.getLast(ifr_p);
-//  		if (newNode == null)
-		newNode = _createInstanceFieldRef(ifr);
-	    } else if (v instanceof Local) {
-		newNode = _createLocal((Local)v);
-	    }
-	}
-	return newNode;
-	*/
-	return null;
-    }
 
-    public boolean isRequired(Value v) {
-	/*
-	if (_completeRequiredDefinitions.contains(v))
-	    return true;
-	if (v instanceof InstanceFieldRef) {
-	    InstanceFieldRef vifr = (InstanceFieldRef) v;
-	    for (Iterator i=_completeRequiredDefinitions.iterator();i.hasNext();) {
-		Object o = i.next();
-		if (o instanceof InstanceFieldRef) {
-		    InstanceFieldRef oifr = (InstanceFieldRef) o;
-		    if (vifr.getBase().equals(oifr.getBase()) &&
-			vifr.getField().equals(oifr.getField()))
-			return true;
-		}
-	    }
-	}
-	*/
-	return false;
-    }
 
-    /** Return the condition Value object associated with a fork Node
+    /** 
+     * Return the Node associated with the Condition of the IfStmt.
      **/ 
     public Node getConditionNode() {
 	IfStmt ifs = getIfStmt();
 	Value v = ifs.getCondition();
-	return node(v);
+	return _valueMap.getValueNode(v);
     }
 
+    /**
+     * This method will return the IfStmt associated with the
+     * last Unit in the Block associated with this graph.
+     * If the last Unit is not an IfStmt, this method will return a 
+     * null.
+     **/
     public IfStmt getIfStmt() {
 	Node root = _ic.getRoot();
 	Block b = (Block) root.getWeight();
-	IfStmt ifs = (IfStmt) b.getTail();
-	return ifs;
+	Unit u = b.getTail();
+	if (u instanceof IfStmt)
+	    return (IfStmt) u;
+	else
+	    return null;
     }
 
     public boolean isTrueNode(IntervalBlockDirectedGraph cidfg) {
@@ -421,20 +349,6 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	    return true;
 	else
 	    return false;
-    }
-
-    public Collection getInstanceFieldRefInputDefinitions() {
-	ArrayList nodes = new ArrayList();
-	// iterate over all nodes in the graph
-	for (Iterator i = nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();
-	    Object weight = node.getWeight();
-	    if (inputEdgeCount(node) == 1 &&
-		weight instanceof InstanceFieldRef) {
-		nodes.add(node);
-	    }
-	}
-	return nodes;
     }
 
     public static IntervalBlockDirectedGraph createIntervalBlockDirectedGraph(String args[]) 
@@ -467,63 +381,17 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
     protected IntervalChain _ic;
     protected IntervalBlockDirectedGraph _next;
 
+    /**
+     * This UniqueVector contains a list of all Values that are
+     * used by this block and succeeding blocks in the dataflow graph.
+     * This Collection is used during the merging process in order to
+     * decide which defined Values must be merged with with some
+     * earlier Value. If a Value is defined but is not required,
+     * then it does not need to be merged. 
+     *
+     * The algorithm for computing requiredDefinitions is a bottom-up
+     * search of Values that are defined.
+     **/
+    protected UniqueVector _requiredDefinitions;
 
-    protected ValueMap _valueMap;
 }
-
-class ValueMap {
-    public ValueMap(MapList l, MapList ifr) {
-	locals = l;
-	instanceFieldRefs = ifr;
-	newDefs = new HashMap();
-    }
-    public Object clone() {
-	MapList l = (MapList) locals.clone();
-	MapList ifrs = (MapList) instanceFieldRefs.clone();
-	ValueMap vm = new ValueMap(l,ifrs);
-	return vm;
-    }
-    public void addLocal(Local l,Node n) {
-  	locals.add(l,n);
-	//newDefs.add(n);
-    }
-    public void addInstanceFieldRef(InstanceFieldRef ifr,Node n) {
-  	instanceFieldRefs.add(ifr,n);
-	//newDefs.add(n);
-    }
-    public void addNewDef(Node n) {
-	newDefs.put(n.getWeight(),n);
-    }
-    public Map getDefs() { return newDefs; }
-    public Node getLast(Object v) {
-	if (v instanceof Local)
-	    return getLastLocal(v);
-	if (v instanceof InstanceFieldRef)
-	    return getLastInstanceFieldRef((InstanceFieldRef)v);
-	return null;
-    }
-    public Node getLastLocal(Object v) {
-	return (Node) locals.getLast(v);
-    }
-    public Node getLastInstanceFieldRef(InstanceFieldRef v) {
-	return (Node) instanceFieldRefs.getLast(v);
-    }
-    public Node getMatchingInstanceFieldRefNode(InstanceFieldRef ifr) {
-	SootField field = ifr.getField();
-	Value baseValue = ifr.getBase();
-	InstanceFieldRef previous=null;
-	for(Iterator it = instanceFieldRefs.keySet().iterator();it.hasNext();) {
-	    InstanceFieldRef ifr_n = (InstanceFieldRef) it.next();
-	    if (ifr_n.getBase().equals(baseValue) &&
-		ifr_n.getField().equals(field)) {
-		previous = ifr_n;
-	    }
-	}
-	return getLastInstanceFieldRef(previous);	
-    }
-
-    public MapList locals;
-    public MapList instanceFieldRefs;
-    public Map newDefs;
-}
-

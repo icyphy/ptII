@@ -27,7 +27,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
+package ptolemy.copernicus.jhdl.soot;
 
 import java.util.*;
 import ptolemy.graph.*;
