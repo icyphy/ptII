@@ -230,8 +230,8 @@ public class Main extends KernelMain {
         //        ConstantLoopUnroller.v()));
 
         // Simplify to speed up instance equality elimination
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
-                UnreachableMethodRemover.v()));
+        //   Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
+        //        UnreachableMethodRemover.v()));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         // Remove tests of object equality that can be statically
@@ -242,8 +242,8 @@ public class Main extends KernelMain {
                 InstanceEqualityEliminator.v()));
         
         // Remove casts and instanceof Checks.
-        //  Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
-        //        new TransformerAdapter(CastAndInstanceofEliminator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
+                new TransformerAdapter(CastAndInstanceofEliminator.v())));
        
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
         //        TokenToNativeTransformer.v(_toplevel)));
@@ -271,21 +271,17 @@ public class Main extends KernelMain {
                 new TransformerAdapter(AliasAssignmentEliminator.v())));
         
         // Remove other useless getFoo() methods.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
-                SideEffectFreeInvocationRemover.v()));
+        //   Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
+        //         SideEffectFreeInvocationRemover.v()));
         
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can
         // have access to the result.
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
-        //   Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
-        //        new TransformerAdapter(CastAndInstanceofEliminator.v())));
-        
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true"));
-        
-     }
+    }
 
     /** Add transforms corresponding to the standard soot optimizations
      *  to the given pack.

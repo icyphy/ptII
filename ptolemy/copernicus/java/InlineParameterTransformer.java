@@ -76,9 +76,10 @@ public class InlineParameterTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static InlineParameterTransformer v(CompositeActor model) { 
         return new InlineParameterTransformer(model);
@@ -107,9 +108,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                 attributeToValueFieldMap, debug);
 
         // Loop over all the actor instance classes.
-        for(Iterator i = _model.entityList().iterator();
-            i.hasNext();) {
-            Entity entity = (Entity)i.next();
+        for(Iterator entities = _model.entityList().iterator();
+            entities.hasNext();) {
+            Entity entity = (Entity)entities.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
             SootClass entityClass = 
@@ -127,9 +128,9 @@ public class InlineParameterTransformer extends SceneTransformer {
             }           
         }
 
-        for(Iterator i = _model.entityList().iterator();
-            i.hasNext();) {
-            Entity entity = (Entity)i.next();
+        for(Iterator entities = _model.entityList().iterator();
+            entities.hasNext();) {
+            Entity entity = (Entity)entities.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
             SootClass theClass = 
@@ -153,16 +154,19 @@ public class InlineParameterTransformer extends SceneTransformer {
                 while(moreToDo) {
                     moreToDo = _inlineMethodCalls(theClass, method, body,
                             attributeToValueFieldMap, debug);
-                    LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+                    LocalNameStandardizer.v().transform(body,
+                            phaseName + ".lns");
                 }
             }
         }                
     }
     
-    private static boolean _inlineMethodCalls(SootClass theClass, SootMethod method, 
+    private static boolean _inlineMethodCalls(SootClass theClass, 
+            SootMethod method, 
             JimpleBody body, Map attributeToValueFieldMap, boolean debug) {
         boolean doneSomething = false;
-        if(debug) System.out.println("Inlining method calls in method " + method);
+        if(debug) System.out.println("Inlining method calls in method " +
+                method);
 
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
@@ -248,7 +252,7 @@ public class InlineParameterTransformer extends SceneTransformer {
 
                         if(SootUtilities.derivesFrom(type.getSootClass(), 
                                 PtolemyUtilities.settableClass)) {
-                            // if we are invoking a method on a variable class, then
+                            // If we are invoking a method on a variable class, then
                             // attempt to get the constant value of the variable.
                             Attribute attribute =
                                 getAttributeValue(method, (Local)r.getBase(), stmt, localDefs, localUses);
@@ -297,7 +301,15 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     box.setValue(Jimple.v().newSpecialInvokeExpr(
                                             (Local)r.getBase(), constructorWithoutToken,
                                             r.getArg(0), r.getArg(1)));
-                                            
+                                      
+                                    // Call setToken.
+                                    body.getUnits().insertAfter(
+                                            Jimple.v().newInvokeStmt(
+                                                    Jimple.v().newVirtualInvokeExpr(
+                                                            (Local)r.getBase(),
+                                                            PtolemyUtilities.variableSetTokenMethod,
+                                                            r.getArg(2))),
+                                            stmt);
                                     doneSomething = true;
 
                                 } else if(r.getMethod().getName().equals("getToken")) {
@@ -359,12 +371,15 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // expression and then set the
                                     // token to that value.
                                     try {
-                                        // FIXME: This is rather tricky..
-                                        // is there a better way to do it?
-                                        Variable temp = new Variable();
-                                        temp.setTypeEquals(((Variable)attribute).getType());
-                                        temp.setExpression(((StringConstant)argValues[0]).value);
-                                        token = temp.getToken();
+                                        /*
+                                          // FIXME: This is rather tricky..
+                                          // is there a better way to do it?
+                                          Variable temp = new Variable();
+                                          temp.setTypeEquals(((Variable)attribute).getType());
+                                          temp.setExpression(((StringConstant)argValues[0]).value);
+                                          token = temp.getToken();
+                                        */
+                                        token = ((Variable)attribute).getToken();
                                     } catch (Exception ex) {
                                         throw new RuntimeException("Illegal parameter value = " 
                                                 + argValues[0]);
@@ -523,7 +538,8 @@ public class InlineParameterTransformer extends SceneTransformer {
         /*   SootClass tokenClass = 
             Scene.v().loadClassAndSupport("ptolemy.data.Token");
             Type tokenType = RefType.v(tokenClass);*/
-        if(debug) System.out.println("creating field for " + container + " in class " + theClass);
+        if(debug) System.out.println("creating field for " + 
+                container + " in class " + theClass);
 
         SootClass stringClass =
             Scene.v().loadClassAndSupport("java.lang.String");
@@ -543,11 +559,14 @@ public class InlineParameterTransformer extends SceneTransformer {
                 if(settable instanceof Variable) {
                     Variable variable = (Variable)settable;
                     ptolemy.data.type.Type type = variable.getType();
-                    Type tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+                    Type tokenType = 
+                        PtolemyUtilities.getSootTypeForTokenType(type);
                     field = new SootField(
                             fieldName + "_CGToken",
                             tokenType, 
-                            Modifier.PRIVATE | Modifier.STATIC | Modifier.FINAL);
+                            Modifier.PRIVATE | 
+                            Modifier.STATIC |
+                            Modifier.FINAL);
                     theClass.addField(field);
                     try {
                         field.addTag(new ValueTag(variable.getToken()));
@@ -557,14 +576,17 @@ public class InlineParameterTransformer extends SceneTransformer {
                     field = new SootField(
                             fieldName + "_CGExpression",
                             stringType,
-                            Modifier.PRIVATE | Modifier.STATIC | Modifier.FINAL);
+                            Modifier.PRIVATE |
+                            Modifier.STATIC | 
+                            Modifier.FINAL);
                     theClass.addField(field);
                     String expression = settable.getExpression();
                     field.addTag(new ValueTag(expression));
                 }
                 attributeToValueFieldMap.put(attribute, field);
             }
-            _createTokenAndExpressionFields(theClass, context, attribute, attributeToValueFieldMap, debug);
+            _createTokenAndExpressionFields(theClass, context, attribute,
+                    attributeToValueFieldMap, debug);
         }
     }
 

@@ -36,6 +36,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.ModelFrame;
+import ptolemy.actor.gui.ModelPane;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
@@ -180,7 +181,11 @@ public class CommandLineTemplate {
         if (hasPlaceable) {
             // The model has an entity that is Placeable, so create a frame.
             try {
-                ModelFrame frame = new ModelFrame(model);
+                // A model frame with no buttons... just place the 
+                // placeable actors.
+                ModelFrame frame = new ModelFrame(model, null,
+                        new ModelPane(model, ModelPane.HORIZONTAL, 0));
+                          
                 _openCount++;
                 frame.addWindowListener(new WindowAdapter() {
                     public void windowClosed(WindowEvent event) {
