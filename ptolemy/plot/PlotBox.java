@@ -371,7 +371,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Create a BufferedImage and draw this plot to it.
      *  The size of the returned image matches the current size of the plot.
      *  This method can be used, for
-     *  example, by a servelet to produce an image, rather than
+     *  example, by a servlet to produce an image, rather than
      *  requiring an applet to instantiate a PlotBox.
      *  @return An image filled by the plot.
      */
@@ -391,7 +391,7 @@ public class PlotBox extends JPanel implements Printable {
      *  this plot to it at the position specified by the rectangle.
      *  The plot is rendered using anti-aliasing.
      *  @param rectangle The size of the plot. This method can be used, for
-     *  example, by a servelet to produce an image, rather than
+     *  example, by a servlet to produce an image, rather than
      *  requiring an applet to instantiate a PlotBox.
      *  @return An image containing the plot.
      */
@@ -411,7 +411,7 @@ public class PlotBox extends JPanel implements Printable {
      *  The plot is rendered using anti-aliasing.
      *  This can be used to paint a number of different
      *  plots onto a single buffered image.  This method can be used, for
-     *  example, by a servelet to produce an image, rather than
+     *  example, by a servlet to produce an image, rather than
      *  requiring an applet to instantiate a PlotBox.
      *  @param bufferedImage Image onto which the plot is drawn.
      *  @param rectangle The size and position of the plot in the image.
