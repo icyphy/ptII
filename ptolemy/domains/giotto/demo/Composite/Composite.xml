@@ -4,9 +4,9 @@
 <entity name="Composite" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0.1">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[634, 325]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[634, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[78, 113]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[87, 154]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -43,7 +43,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="-10.0, 205.0">
+        <property name="_location" class="ptolemy.moml.Location" value="10.0, 225.0">
         </property>
     </property>
     <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -63,7 +63,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="-10.0, 295.0">
+        <property name="_location" class="ptolemy.moml.Location" value="15.0, 315.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -86,7 +86,7 @@ to the DE semantics.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="185.0, 30.0">
+        <property name="_location" class="ptolemy.moml.Location" value="165.0, 70.0">
         </property>
     </property>
     <entity name="giotto" class="ptolemy.actor.TypedCompositeActor">
@@ -299,7 +299,7 @@ Once invoked, 2 iterations will be fired.</text></svg></configure>
         </configure>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="270.0, 245.0">
+        <vertex name="vertex1" value="270.0, 245.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
