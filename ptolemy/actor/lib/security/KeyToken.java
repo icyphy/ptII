@@ -29,6 +29,7 @@
 
 package ptolemy.actor.lib.security;
 
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import java.security.Key;
