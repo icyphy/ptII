@@ -184,3 +184,139 @@ W.E0.A1.wrapup
 W.E0.E1.A2.wrapup
 W.E0.E1.A3.wrapup
 }
+
+######################################################################
+####
+#
+test Director-8.1 {Test type checking} {
+    set director [java::new pt.actor.Director]
+    set e0 [java::new pt.actor.TypedCompositeActor]
+    $e0 setExecutiveDirector $director
+    $e0 setName E0
+
+    #create e1
+    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new pt.actor.TypedIOPort $e1 P1]
+    $p1 makeOutput true
+    set t1 [java::new pt.data.IntToken]
+    $p1 setDeclaredType $t1
+
+    #create e2
+    set e2 [java::new pt.actor.TypedAtomicActor $e0 E2]
+    set p2 [java::new pt.actor.TypedIOPort $e2 P2]
+    $p2 makeInput true
+    set t2 [java::new pt.data.DoubleToken]
+    $p2 setDeclaredType $t2
+
+    #link up p1, p2
+    set r1 [java::new pt.actor.IORelation $e0 R1]
+    $p1 link $r1
+    $p2 link $r1
+
+    $director resolveTypes
+    set rt1 [[[$p1 resolvedType] getClass] getName]
+    set rt2 [[[$p2 resolvedType] getClass] getName]
+    list $rt1 $rt2
+} {pt.data.IntToken pt.data.DoubleToken}
+
+######################################################################
+####
+#
+test Director-8.2 {Test type resolution} {
+    # use the setup above
+    $p1 setDeclaredType [java::null]
+
+    $director resolveTypes
+    set rt1 [[[$p1 resolvedType] getClass] getName]
+    set rt2 [[[$p2 resolvedType] getClass] getName]
+    list $rt1 $rt2
+} {pt.data.DoubleToken pt.data.DoubleToken}
+
+######################################################################
+####
+#
+test Director-8.3 {Test type resolution} {
+    # use the setup above
+    $p1 setDeclaredType $t1
+    $p2 setDeclaredType [java::null]
+
+    $director resolveTypes
+    set rt1 [[[$p1 resolvedType] getClass] getName]
+    set rt2 [[[$p2 resolvedType] getClass] getName]
+    list $rt1 $rt2
+} {pt.data.IntToken pt.data.StringToken}
+
+######################################################################
+####
+#
+test Director-8.4 {Test type resolution} {
+    set director [java::new pt.actor.Director]
+    set e0 [java::new pt.actor.TypedCompositeActor]
+    $e0 setExecutiveDirector $director
+    $e0 setName E0
+
+    #create e1, a source actor
+    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new pt.actor.TypedIOPort $e1 P1]
+    $p1 makeOutput true
+    set tDouble [java::new pt.data.DoubleToken]
+    $p1 setDeclaredType $tDouble
+
+    #create e2, a fork
+    set e2 [java::new pt.actor.TypedAtomicActor $e0 E2]
+    set p21 [java::new pt.actor.TypedIOPort $e2 P21]
+    set p22 [java::new pt.actor.TypedIOPort $e2 P22]
+    set p23 [java::new pt.actor.TypedIOPort $e2 P23]
+    $p21 makeInput true
+    $p22 makeOutput true
+    $p23 makeOutput true
+
+    #create e3, a sink actor
+    set e3 [java::new pt.actor.TypedAtomicActor $e0 E3]
+    set p3 [java::new pt.actor.TypedIOPort $e3 P3]
+    $p3 makeInput true
+
+    #create e4, a sink actor
+    set e4 [java::new pt.actor.TypedAtomicActor $e0 E4]
+    set p4 [java::new pt.actor.TypedIOPort $e4 P4]
+    $p4 makeInput true
+    $p4 setDeclaredType $tDouble
+
+    #link up p1-p21, p22-p3, p23-p4
+    set r12 [java::new pt.actor.IORelation $e0 R12]
+    $p1 link $r12
+    $p21 link $r12
+
+    set r23 [java::new pt.actor.IORelation $e0 R23]
+    $p22 link $r23
+    $p3 link $r23
+
+    set r24 [java::new pt.actor.IORelation $e0 R24]
+    $p23 link $r24
+    $p4 link $r24
+
+    $director resolveTypes
+    set rt1 [[[$p1 resolvedType] getClass] getName]
+    set rt21 [[[$p21 resolvedType] getClass] getName]
+    set rt22 [[[$p22 resolvedType] getClass] getName]
+    set rt23 [[[$p23 resolvedType] getClass] getName]
+    set rt3 [[[$p3 resolvedType] getClass] getName]
+    set rt4 [[[$p4 resolvedType] getClass] getName]
+
+    list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
+} {pt.data.DoubleToken pt.data.DoubleToken pt.data.StringToken\
+pt.data.DoubleToken pt.data.StringToken pt.data.DoubleToken}
+
+######################################################################
+####
+#
+test Director-8.5 {Test type resolution} {
+    # use the setup above
+    set tInt [java::new pt.data.IntToken]
+    $p1 setDeclaredType $tDouble
+    $p4 setDeclaredType $tInt
+
+    catch {$director resolveTypes} msg
+    list $msg
+} {{pt.kernel.util.InvalidStateException: Type Conflict.}}
+
