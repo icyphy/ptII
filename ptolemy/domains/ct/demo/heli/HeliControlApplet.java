@@ -34,8 +34,8 @@ import ptolemy.domains.de.lib.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.domains.ct.lib.*;
-import ptolemy.domains.sc.kernel.*;
-import ptolemy.domains.sc.lib.*;
+import ptolemy.domains.fsm.kernel.*;
+import ptolemy.domains.fsm.lib.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -204,11 +204,11 @@ public class HeliControlApplet extends CTApplet {
             hscInPz.setInput(true);
             hscInPz.setOutput(false);
 
-            SCState hoverState = new SCState(hsctrl, "HoverState");
-            SCState accelState = new SCState(hsctrl, "AccelState");
-            SCState cruise1State = new SCState(hsctrl, "Cruise1State");
-            SCState climbState = new SCState(hsctrl, "ClimbState");
-            SCState cruise2State = new SCState(hsctrl, "Cruise2State");
+            FSMState hoverState = new FSMState(hsctrl, "HoverState");
+            FSMState accelState = new FSMState(hsctrl, "AccelState");
+            FSMState cruise1State = new FSMState(hsctrl, "Cruise1State");
+            FSMState climbState = new FSMState(hsctrl, "ClimbState");
+            FSMState cruise2State = new FSMState(hsctrl, "Cruise2State");
             hsctrl.setInitialState(hoverState);
             CTCompositeActor linHover = _createLinearizer(sub, 0);
             CTCompositeActor linAccel = _createLinearizer(sub, 1);
@@ -220,13 +220,13 @@ public class HeliControlApplet extends CTApplet {
             cruise1State.setRefinement(linCruise1);
             climbState.setRefinement(linClimb);
             cruise2State.setRefinement(linCruise2);
-            SCTransition tr1 = hsctrl.createTransition(hoverState, accelState);
+            FSMTransition tr1 = hsctrl.createTransition(hoverState, accelState);
             tr1.setTriggerCondition("inputAction");
-            SCTransition tr2 = hsctrl.createTransition(accelState, cruise1State);
+            FSMTransition tr2 = hsctrl.createTransition(accelState, cruise1State);
             tr2.setTriggerCondition("(outputV >= 5.0) && (inputPz > -2.05) && (inputPz < -1.95)");
-            SCTransition tr3 = hsctrl.createTransition(cruise1State, climbState);
+            FSMTransition tr3 = hsctrl.createTransition(cruise1State, climbState);
             tr3.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (outputR > -0.01) && (outputR < 0.01)");
-            SCTransition tr4 = hsctrl.createTransition(climbState, cruise2State);
+            FSMTransition tr4 = hsctrl.createTransition(climbState, cruise2State);
             tr4.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (inputPz > -10.05) && (inputPz < -9.95)");
 
             TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
@@ -831,7 +831,7 @@ public class HeliControlApplet extends CTApplet {
             while (_isSimulationRunning) {
                 _switched = false;
                 // get current FSM state.
-                SCState st = _hsdir.currentState();
+                FSMState st = _hsdir.currentState();
                 if( st == null) {
                     continue;
                 }

@@ -32,8 +32,8 @@ package ptolemy.domains.ct.demo.thermo;
 
 import java.awt.*;
 import java.awt.event.*;
-import ptolemy.domains.sc.kernel.*;
-import ptolemy.domains.sc.lib.*;
+import ptolemy.domains.fsm.kernel.*;
+import ptolemy.domains.fsm.lib.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.domains.ct.lib.*;
@@ -132,15 +132,15 @@ public class Thermostat extends CTApplet {
 
             //System.out.println("Building the FSM controller.");
             HSController ctrl = new HSController(hs, "Controller");
-            SCState ctrlInc = new SCState(ctrl, "Increasing");
-            SCState ctrlDec = new SCState(ctrl, "Decreasing");
+            FSMState ctrlInc = new FSMState(ctrl, "Increasing");
+            FSMState ctrlDec = new FSMState(ctrl, "Decreasing");
             ctrl.setInitialState(ctrlInc);
-            SCTransition ctrlTr1 = 
+            FSMTransition ctrlTr1 = 
                     ctrl.createTransition(ctrlInc, ctrlDec);
             ctrlTr1.setTriggerEvent("output");
             // ctrlTr1.setInitEntry(true);
             HSInit hsinit1 = new HSInit(ctrlTr1, "Integrator", "state");
-            SCTransition ctrlTr2 = 
+            FSMTransition ctrlTr2 = 
                     ctrl.createTransition(ctrlDec, ctrlInc);            
             ctrlTr2.setTriggerEvent("output");
             //ctrlTr2.setInitEntry(true);
