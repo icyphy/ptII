@@ -46,6 +46,18 @@ import cern.jet.random.Exponential;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+   <p> This actor instantiates a 
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Exponential.html">cern.jet.random.Exponential</a> object with
+    lambda set to 1.0.  The distribution is defined as
+<pre>
+p(x) = lambda*exp(-x*lambda) for x >= 0, lambda > 0
+</pre>
+   The above description of Exponential is
+   <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
+
+    <p>A definition of the Exponential distribution can be found at
+<a href="http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000"><code>http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000</code></a>
+
    @author David Bauer and Kostas Oikonomou (contributor: Edward A. Lee)
    @version $Id$
    @since Ptolemy II 4.1

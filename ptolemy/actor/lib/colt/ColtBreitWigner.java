@@ -46,6 +46,17 @@ import cern.jet.random.BreitWigner;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+   <p> This actor instantiates a 
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/BreitWigner.html">cern.jet.random.BreitWigner</a> object with
+    mean, gamma and cut set to 1.0.
+
+    <p>Breit-Wigner is a also know as the Lorentz distribution.
+    The Breit-Wigner distribution is a more generate form of the 
+    Cauchy distribution.
+
+    <p>A definition of the Breit-Wigner distribution can be found at
+<a href="http://rd11.web.cern.ch/RD11/rkb/AN16pp/node23.html#SECTION000230000000000000000"><code>http://rd11.web.cern.ch/RD11/rkb/AN16pp/node23.html#SECTION000230000000000000000</code></a>
+
    @author David Bauer and Kostas Oikonomou
    @version $Id$
    @since Ptolemy II 4.1
