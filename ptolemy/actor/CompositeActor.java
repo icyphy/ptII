@@ -207,8 +207,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     castedPort.createReceivers();
                 } catch(IllegalActionException ex) {
                     // Should never happen.
-                    throw new InternalErrorException(
-                            "cannot create receivers:" + ex.getMessage());
+                    throw new InternalErrorException(this, ex,
+                            "Cannot create receivers");
                 }
             }
         }
