@@ -42,7 +42,7 @@ import java.util.List;
   @Pt.ProposedRating Red (tfeng)
   @Pt.AcceptedRating Red (tfeng)
 */
-public class FieldRecord {
+public final class FieldRecord {
     
     public void add(boolean value, int timestamp) {
         _records.add(new Record(new Boolean(value), timestamp));

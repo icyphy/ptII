@@ -65,6 +65,7 @@ import ptolemy.backtrack.ast.ASTClassNotFoundException;
 import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
 import ptolemy.backtrack.util.FieldRecord;
+import ptolemy.backtrack.util.FieldRecordArray;
 
 //////////////////////////////////////////////////////////////////////////
 //// AssignmentTransformer
@@ -73,7 +74,7 @@ import ptolemy.backtrack.util.FieldRecord;
  * 
  *  @author Thomas Feng
  *  @version $Id$
- *  @since Ptolemy II 4.1
+ *  @since Ptolemy II 5.1
  *  @Pt.ProposedRating Red (tfeng)
  */
 public class AssignmentTransformer
@@ -111,12 +112,9 @@ public class AssignmentTransformer
                 return;
             
             newObject = (Expression)ASTNode.copySubtree(ast, object);
-        } else  if (leftHand instanceof SimpleName) {
+        } else if (leftHand instanceof SimpleName)
             name = (SimpleName)leftHand;
-            // Use owner to do this test.
-            // if (state.isVariable(name.getIdentifier()))
-            //     return;
-        } else
+        else
             return; // Some unknown situation.
         
         Type owner = Type.getOwner(leftHand);
@@ -127,7 +125,8 @@ public class AssignmentTransformer
         else {
             try {
                 ownerClass = owner.toClass(state.getClassLoader());
-                Field field = ownerClass.getDeclaredField(name.getIdentifier());
+                Field field = 
+                    ownerClass.getDeclaredField(name.getIdentifier());
                 int modifiers = field.getModifiers();
                 if (!java.lang.reflect.Modifier.isPrivate(modifiers))
                     return; // Not handling non-private fields.
@@ -198,6 +197,7 @@ public class AssignmentTransformer
         
         MethodDeclaration method = ast.newMethodDeclaration();
         
+        int dimensions = fieldType.dimensions();
         for (int i = 0; i < indices; i++)
             try {
                 fieldType = fieldType.removeOneDimension();
@@ -237,7 +237,8 @@ public class AssignmentTransformer
         argument.setName(ast.newSimpleName("newValue"));
         method.parameters().add(argument);
         
-        Block body = _createAssignmentBlock(ast, fieldName, indices);
+        Block body = _createAssignmentBlock(ast, currentClass.getName(), 
+                fieldName, fieldType, indices, dimensions);
         method.setBody(body);
         
         int modifiers = Modifier.PRIVATE | Modifier.FINAL;
@@ -248,8 +249,8 @@ public class AssignmentTransformer
         return method;
     }
     
-    private Block _createAssignmentBlock(AST ast, String variableName, 
-            int indices) {
+    private Block _createAssignmentBlock(AST ast, String className, 
+            String variableName, Type fieldType, int indices, int dimensions) {
         Block block = ast.newBlock();
         
         Expression field  = ast.newSimpleName(variableName);
@@ -276,15 +277,63 @@ public class AssignmentTransformer
         timestampGetter.setExpression(ast.newSimpleName(CHECKPOINT_NAME));
         timestampGetter.setName(ast.newSimpleName("getTimestamp"));
 
+        // Method call to store old value.
+        // Examples:
+        //   1. $RECORD$buf.add(buf, $CHECKPOINT.getTimestamp());
+        //   2. $RECORD$buf$1.getRecord(index0).add(buf[index0], $CHECKPOINT.getTimestamp());
+        //   3. $RECORD$buf$2.getArray(index0).getRecord(index1).add(buf[index0][index1], $CHECKPOINT.getTimestamp());
         MethodInvocation recordInvocation = ast.newMethodInvocation();
-        recordInvocation.setExpression(
-                ast.newSimpleName(_getRecordName(variableName, indices)));
+        String recordName = _getRecordName(variableName, indices);
+        Expression recordExpression = ast.newSimpleName(recordName);
+        for (int i = 0; i < indices; i++) {
+            MethodInvocation methodInvocation = ast.newMethodInvocation();
+            methodInvocation.setExpression(recordExpression);
+            methodInvocation.setName(ast.newSimpleName(
+                    i < indices - 1 ? "getArray" : "getRecord"));
+            methodInvocation.arguments().add(ast.newSimpleName("index" + i));
+            recordExpression = methodInvocation;
+        }
+        recordInvocation.setExpression(recordExpression);
         recordInvocation.setName(ast.newSimpleName("add"));
         recordInvocation.arguments().add(field);
         recordInvocation.arguments().add(timestampGetter);
         ExpressionStatement recordStatement = 
             ast.newExpressionStatement(recordInvocation);
         thenBranch.statements().add(recordStatement);
+        
+        // Method call to ensure array capacity.
+        // Examples:
+        //   1. $RECORD$buf$1.setSize(newValue, 1);
+        //      $RECORD$buf$2.setSize(newValue, 2);
+        //   2. $RECORD$buf$2.getArray(index0).setSize(newValue, 1);
+        //   3. (Not needed for element assignment.)
+        List indicesList = _getAccessedField(className, variableName);
+        Iterator indicesIter = indicesList.iterator();
+        while (indicesIter.hasNext()) {
+            int i = ((Integer)indicesIter.next()).intValue();
+            if (i > indices) {
+                MethodInvocation methodInvocation = 
+                    ast.newMethodInvocation();
+                Expression prefix = 
+                    ast.newSimpleName(_getRecordName(variableName, i));
+                for (int j = 0; j < indices; j++) {
+                    MethodInvocation methodInvocation2 = 
+                        ast.newMethodInvocation();
+                    methodInvocation2.setExpression(prefix);
+                    methodInvocation2.setName(ast.newSimpleName("getArray"));
+                    methodInvocation2.arguments().add(
+                            ast.newSimpleName("index" + j));
+                    prefix = methodInvocation2;
+                }
+                methodInvocation.setExpression(prefix);
+                methodInvocation.setName(ast.newSimpleName("setSize"));
+                methodInvocation.arguments().add(ast.newSimpleName("newValue"));
+                methodInvocation.arguments().add(
+                        ast.newNumberLiteral(Integer.toString(i - indices)));
+                thenBranch.statements().add(
+                        ast.newExpressionStatement(methodInvocation));
+            }
+        }
         
         ifStatement.setThenStatement(thenBranch);
         block.statements().add(ifStatement);
@@ -309,17 +358,23 @@ public class AssignmentTransformer
             throw new ASTDuplicatedFieldException(currentClass.getName(), 
                     recordName);
         
+        String typeName;
+        if (indices > 0)
+            typeName = FieldRecordArray.class.getName();
+        else
+            typeName = FieldRecord.class.getName();
+
         VariableDeclarationFragment fragment = 
             ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(recordName));
         
         ClassInstanceCreation initializer = ast.newClassInstanceCreation();
-        initializer.setName(_createName(ast, FieldRecord.class.getName()));
+        initializer.setName(_createName(ast, typeName));
 
         fragment.setInitializer(initializer);
         
         FieldDeclaration field = ast.newFieldDeclaration(fragment);
-        field.setType(_createType(ast, FieldRecord.class.getName()));
+        field.setType(_createType(ast, typeName));
         
         int modifiers = Modifier.PRIVATE;
         if (isStatic)

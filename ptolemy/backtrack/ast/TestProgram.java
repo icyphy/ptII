@@ -1,11 +1,16 @@
 package ptolemy.backtrack.ast;
 
-public class TestProgram {
+class TestProgram {
     
-    private int i;
+    /*public static void main(String[] args) {
+        java.util.ArrayList list = new java.util.ArrayList();
+        list.setSize(10);
+    }*/
+    
+    /*private int i;
     void f() {
         i = 0;
-    }
+    }*/
     
     /*private TestProgram o;
     private Object o2;
@@ -16,11 +21,17 @@ public class TestProgram {
         return null;
     }*/
     
-    /*private char[][] buf;
+    private char[][][][] buf;
     void f() {
-        buf = new char[1][];
-        buf[1] = new char[2];
-        buf[1+1][2<<2] = 'B';
+        buf = new char[1][2][3][4];
+        buf[0] = new char[2][][];
+        buf[0][1] = new char[3][];
+        buf[0][1][2] = new char[4];
+        buf[0][1][2][3] = 'C';
+    }
+    
+    /*public static void main(String[] args) {
+        new TestProgram().f();
     }*/
     
     /*void f() {

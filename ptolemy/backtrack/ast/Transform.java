@@ -66,7 +66,7 @@ public class Transform {
      *  @exception Exception If any exception occues.
      */
     public static void main(String[] args) throws Exception {
-        boolean outputResult = false;
+        boolean outputResult = true;
         
         if (args.length == 0)
             System.err.println("USAGE: java ptolemy.backtrack.ast.Transform " +
