@@ -238,7 +238,7 @@ if {[info command update] == ""} then {
 # Compare two lists of numbers, if each number in the newresults
 # is the different by more than epsilong from the corresponding number
 # in old results, then return a message about the difference.
-# If the two results lists are within epsilon, then return 1
+# If the two results lists are within epsilon, then return null
 #
 proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
     if {[llength $newresults] != [llength $oldresults]} {
