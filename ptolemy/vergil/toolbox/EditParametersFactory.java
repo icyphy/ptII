@@ -80,7 +80,8 @@ public class EditParametersFactory implements MenuItemFactory {
     ////                         public methods                    ////
 
     /** Add an item to the given context menu that will configure the
-     *  parameters on the given target.     *  @param menu The context menu.
+     *  parameters on the given target.    
+     *  @param menu The context menu.
      *  @param object The object whose parameters are being configured.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
@@ -115,8 +116,8 @@ public class EditParametersFactory implements MenuItemFactory {
 
     /** Open an edit parameters dialog.  This is a modal dialog, so
      *  this method returns only after the dialog has been dismissed.
-     *  @param parent A frame to serve as a parent for the dialog,
-     *   or null if there is none.
+     *  @param parent A frame to serve as a parent for the dialog, or
+     *  null if there is none.
      *  @param target The object whose parameters are to be edited.
      */
     public void openDialog(Frame parent, NamedObj target) {
