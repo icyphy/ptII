@@ -37,7 +37,7 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
 /** 
-Composte actor in the CT domain. This class is derived from CompositeActor
+Composite actor in the CT domain. This class is derived from CompositeActor
 and implements the CTStepSizeControlActor interface. If the director of
 this composite actor is an instance of CTEmbeddedDirector, then the 
 CTStepSizeControlActor calls will be delegated to its local director.
