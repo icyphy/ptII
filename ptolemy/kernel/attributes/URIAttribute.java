@@ -60,7 +60,7 @@ quoted (converted) to <code>%20</code>.
 
 @author Edward A. Lee
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 2.1
 */
 public class URIAttribute extends SingletonAttribute {
 
