@@ -226,7 +226,7 @@ public final class ASTReflect {
 	    int modifiers =
                 Modifier.convertModifiers(fields[i].getModifiers());
 	    NameNode fieldName =
-                (NameNode) _makeNameNode(fields[i].toString());
+                (NameNode) _makeNameNode(fields[i].getName());
 	    TypeNode defType = _definedType(fields[i].getType());
 
 	    FieldDeclNode  fieldDeclNode =
@@ -314,7 +314,7 @@ public final class ASTReflect {
 
 
     /** Given a class name, try to find a class that corresponds with it
-     *  by first looking in the set of currently loaded packagtes and then
+     *  by first looking in the set of currently loaded packages and then
      *  by searching the directories in SearchPath.NAMED_PATH.
      *  If a class is not found, return null.
      *  @param className The name of the class, which may or may
@@ -347,7 +347,7 @@ public final class ASTReflect {
             for (int i = 0; i < SearchPath.NAMED_PATH.size(); i++) {
                 String candidate = (String) SearchPath.NAMED_PATH.get(i);
                 System.out.println("ASTReflect.lookupClass: SearchPath: " +
-                        candidate);
+				   candidate);
                 File file = new File(candidate + className + ".class");
                 if (file.isFile()) {
                     String qualifiedName =
@@ -540,9 +540,15 @@ public final class ASTReflect {
         TreeNode retval = AbsentTreeNode.instance;
 
         int firstDotPosition;
-
         do {
             firstDotPosition = qualifiedName.indexOf('.');
+
+
+//  	    if (firstDotPosition == -1) {
+//  		// If we our out of dots, check for a $, which would
+//  		// be part of an inner class name.
+//  		firstDotPosition = qualifiedName.indexOf('$');
+//  	    }
 
             if (firstDotPosition > 0) {
                 String ident = qualifiedName.substring(0, firstDotPosition);
