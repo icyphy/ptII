@@ -501,6 +501,10 @@ if test ! -f "$MESCAL_USER_DIR"; then
     AC_MSG_RESULT([$MESCAL_USER_DIR is not present,
 	so we need not find Boost.])
 else
+    case "`uname -s`" in
+	Linux) ARCH=linux;;
+        *) ARCH=unknown;;
+    esac
     if test "$PTBOOST" = "no"; then
         AC_MSG_CHECKING([for Boost in \$PTII/mescal/include/boost/static_assert.hpp])
 	if test -f "$PTII/mescal/include/boost/static_assert.hpp"; then
@@ -517,7 +521,9 @@ else
         AC_MSG_CHECKING([for Boost in /usr/local/include/boost/static_assert.hpp])
 	if test -f "/usr/local/include/boost/static_assert.hpp"; then
 	    AC_MSG_RESULT([ok])
-	    PTBOOST_INCLUDE="-I/usr/local/include"
+	    if test "$ARCH" != "linux"; then
+		PTBOOST_INCLUDE="-I/usr/local/include"
+	    fi
 	    PTBOOST=yes
         else
 	    AC_MSG_RESULT([not found, keep looking])
@@ -856,6 +862,11 @@ if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
     AC_MSG_RESULT([$MESCAL_RELSAT_USER_DIR is not present,
 	so we need not find GMP.])
 else
+    case "`uname -s`" in
+	Linux) ARCH=linux;;
+        *) ARCH=unknown;;
+    esac
+
     if test "$PTGMP" = "no"; then
         AC_MSG_CHECKING([for GMP in \$PTII/mescal/include/gmp.h])
 	if test -f "$PTII/mescal/include/gmp.h"; then
@@ -873,9 +884,11 @@ else
         AC_MSG_CHECKING([for GMP in /usr/local/include/gmp.h])
         if test -f "/usr/local/include/gmp.h"; then
             AC_MSG_RESULT([ok])
-	    PTGMP_INCLUDE=-I/usr/local/include
-	    PTGMP_LIB=-L/usr/local/lib
-	    PTGMP_LD_FLAGS="-Wl,-R/usr/local/lib"
+	    if test "$ARCH" != "linux"; then
+	        PTGMP_INCLUDE=-I/usr/local/include
+		PTGMP_LIB=-L/usr/local/lib
+	        PTGMP_LD_FLAGS="-Wl,-R/usr/local/lib"
+            fi
 	    PTGMP=yes
         else
 	    AC_MSG_RESULT([not found, keep looking])
@@ -1570,8 +1583,8 @@ fi
 # $PTII/makefile if gcc or cc is found.
 PTJNI_DIR=
 
-if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" ; then
-    AC_MSG_RESULT([$PTII/jni and $PTII/ptolemy/matlab are not present,
+if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" -a "$PTII/mescal/kirika" ; then
+    AC_MSG_RESULT([$PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
         so we need not find gcc or cc])
 else
     AC_PATH_PROG(PTCC, gcc)
