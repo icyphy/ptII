@@ -187,7 +187,7 @@ ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
 TypeClassAccessNode C ExprNode k 0 TypeNode fType k
 OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
-MethodCallNode C ExprNode k 0 TreeNode method LinkedList args k
+MethodCallNode C ExprNode k 0 ExprNode method LinkedList args k
 AllocateNode C ExprNode k 0 TypeNameNode dtype LinkedList args ExprNode enclosingInstance k
 AllocateArrayNode C ExprNode k 0 TypeNode dtype LinkedList dimExprs int dims TreeNode initExpr k
 AllocateAnonymousClassNode C ExprNode k 0 TypeNameNode superType LinkedList superArgs LinkedList members ExprNode enclosingInstance k

@@ -210,7 +210,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
            resolveAField(node, false, false, ctx);
         }
 
-        if (expr instanceof ThisNode) {
+        if (expr.classID() == ThisNode.THISNODE_ID) {
            ThisFieldAccessNode retval = new ThisFieldAccessNode(node.getName());
            
            retval.setProperty(THIS_CLASS_KEY, 
@@ -270,8 +270,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         
         subCtx.methodArgs = node.getArgs();
         
-        node.setMethod((TreeNode) node.getMethod().accept(this, TNLManip.cons(subCtx)));
-
+        node.setMethod((ExprNode) node.getMethod().accept(this, TNLManip.cons(subCtx)));
         return node;        
     }
 
@@ -349,7 +348,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
            
         return node;
     }
-
+    
+    // default visit is from ResolveVisitorBase
+    
     protected void resolveAField(FieldAccessNode node, boolean thisAccess, boolean isSuper, 
      FieldContext ctx) {
         EnvironIter resolutions;
@@ -391,8 +392,6 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         node.getName().setProperty(DECL_KEY, d);
         //checkFieldAccess(d, typeDecl, thisAccess, isSuper, false, ctx, position());
     }
-
-    /* The default visit method comes from ReplacementJavaVisitor. */
 
     protected static class FieldContext {
         public FieldContext() {}

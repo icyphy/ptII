@@ -33,6 +33,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 import java.util.HashMap;
@@ -123,6 +127,7 @@ public class PropertyMap implements Cloneable {
     public Collection values() {
         return _propertyMap.values();
     }
+
    
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
@@ -138,9 +143,10 @@ public class PropertyMap implements Cloneable {
     /** The key that retrieves indicating a numbering. */  
     public static final Integer NUMBER_KEY = new Integer(-1);
 
+    // 0 is reserved for a dummy value for the interrogator    
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
-    
+
     protected HashMap _propertyMap = new HashMap();
 }

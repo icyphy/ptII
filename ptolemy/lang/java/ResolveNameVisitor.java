@@ -394,7 +394,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.resolveAsObject = false;        
         LinkedList childArgs = TNLManip.cons(subCtx);
         
-        node.setMethod((TreeNode) node.getMethod().accept(this, childArgs));
+        node.setMethod((ExprNode) node.getMethod().accept(this, childArgs));
         
         return node;    
     }

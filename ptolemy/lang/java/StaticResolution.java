@@ -149,8 +149,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     EnvironIter possibles = findPossibles(name, env, currentClass, 
      currentPackage, categories);
 
-    if (possibles.moreThanOne() && ((categories & JavaDecl.CG_METHOD) == 0)) {
-       throw new RuntimeException("ambiguous reference to " + name.getIdent());
+    if (((categories & JavaDecl.CG_METHOD) == 0) && possibles.moreThanOne()) {
+       ApplicationUtility.error("ambiguous reference to " + name.getIdent());
     }
 
     JavaDecl d = (JavaDecl) name.getDefinedProperty(DECL_KEY);

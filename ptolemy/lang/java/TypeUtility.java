@@ -248,8 +248,16 @@ public class TypeUtility implements JavaStaticSemanticConstants {
        int kind2 = kind(type2);
 
        if (isPrimitiveType(type1)) {
-          // table driven for primitive types
-          return _isOneOf(type1, _TYPES_ASSIGNABLE_TO[kind2]);
+          if (isPrimitiveType(type2)) {       
+             // table driven for 2 primitive types
+             return _isOneOf(type1, _TYPES_ASSIGNABLE_TO[kind2]);
+          } else {
+             // type1 is primitive type, type2 is user type
+             return false;
+          }
+       } else if (isPrimitiveType(type2)) {
+          // type1 is user type, type2 is primitive
+          return false;
        }
 
        switch (kind1) {
@@ -260,7 +268,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
 
 	         case TYPE_KIND_INTERFACE: 
 	         {
-             JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);	       
+              JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);	       
 
 	            return (decl == StaticResolution.OBJECT_DECL);
   	       }
@@ -289,32 +297,33 @@ public class TypeUtility implements JavaStaticSemanticConstants {
 
          case TYPE_KIND_INTERFACE:
          switch (kind2) {
-	       case TYPE_KIND_NULL: 
-	       return true;
+ 	         case TYPE_KIND_NULL: 
+  	       return true;
 
-	       case TYPE_KIND_CLASS:
-	       {
+	         case TYPE_KIND_CLASS:
+	         {
              ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);	       
              ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);	       
 
-	         return doesImplement(decl2, decl1);
-	       }
+	           return doesImplement(decl2, decl1);
+	         }
 
-	       case TYPE_KIND_INTERFACE:
-	       {
+	         case TYPE_KIND_INTERFACE:
+	         {
              ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);	       
              ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);
   	         return isSuperInterface(decl1, decl2); 
-	       }
+	         }
 
-	       default: 
-	       return false;
-	     }
+	         default: 
+	         return false;
+	       }
 
          case TYPE_KIND_NULL:
          return false;         
        }       
 
+       // type1 is class o
        return false;
     }   
 

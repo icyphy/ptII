@@ -37,7 +37,8 @@ package ptolemy.lang.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 import ptolemy.lang.*;
 
@@ -48,20 +49,21 @@ import ptolemy.lang.*;
  */
 public class NumberNodeVisitor extends JavaVisitor {
     public NumberNodeVisitor() {
-        this(new HashSet());
+        this(new HashMap());
     }
 
-    public NumberNodeVisitor(HashSet nodeSet) {
+    public NumberNodeVisitor(Map nodeMap) {
         super(TM_SELF_FIRST);
         
-        _nodeSet = nodeSet;
+        _nodeMap = nodeMap;
     }
 
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (!node.hasProperty(PropertyMap.NUMBER_KEY)) {
-           node.setProperty(PropertyMap.NUMBER_KEY, new Integer(_nodeSet.size()));        
-           _nodeSet.add(node);
+           Integer keyValue = new Integer(_nodeMap.size());
+           node.setProperty(PropertyMap.NUMBER_KEY, keyValue);        
+           _nodeMap.put(keyValue, node);
         }
         
         return null;
@@ -71,19 +73,19 @@ public class NumberNodeVisitor extends JavaVisitor {
      *  including descendents of individual TreeNode's. 
      *  Return the Set of all nodes.
      */
-    public static HashSet numberNodes(List list) {
-        HashSet set = new HashSet();
-        NumberNodeVisitor v = new NumberNodeVisitor(set);
+    public static Map numberNodes(List list) {
+        HashMap map = new HashMap();
+        NumberNodeVisitor v = new NumberNodeVisitor(map);
         
         Iterator itr = list.iterator();
         
         while (itr.hasNext()) {
             TreeNode node = (TreeNode) itr.next();
-            node.accept(v, null); // modifies set
+            node.accept(v, null); // modifies map
         } 
         
-        return set;                
+        return map;                
     }
              
-    protected final HashSet _nodeSet;
+    protected final Map _nodeMap;
 }

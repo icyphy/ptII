@@ -1,8 +1,11 @@
 package ptolemy.lang.java;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
+import java.util.Map;
 
 import ptolemy.lang.*;
 
@@ -35,7 +38,7 @@ class Main {
 
     LinkedList unitList = StaticResolution.fullyResolvedFiles;
     
-    Set nodeSet = NumberNodeVisitor.numberNodes(unitList);
+    Map nodeMap = NumberNodeVisitor.numberNodes(unitList);
     NumberDeclVisitor.numberDecls(unitList);
     
     Iterator unitItr = unitList.iterator();
@@ -43,6 +46,30 @@ class Main {
     while (unitItr.hasNext()) {
         CompileUnitNode ast = (CompileUnitNode) unitItr.next();
         System.out.println(ast.toString());
-    }
-  }
+    }   
+    
+    BufferedReader reader = null;
+    
+    reader = new BufferedReader(new InputStreamReader(System.in));    
+    
+    int nodeNumber;
+    String lineString;  
+      
+    do {
+       System.out.print("Enter node number to inspect (-1 to quit) : ");          
+       
+       try {
+         lineString = reader.readLine();
+       } catch (IOException e) {
+         throw new RuntimeException("io error");
+       }
+         
+       nodeNumber = Integer.parseInt(lineString);         
+       
+       if (nodeNumber != -1) {                          
+          PropertyMap node = (PropertyMap) nodeMap.get(new Integer(nodeNumber));                    
+          Interrogator.interrogate(node, reader);          
+       }                           
+    } while (nodeNumber != -1);      
+  } 
 }

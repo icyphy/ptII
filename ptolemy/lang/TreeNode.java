@@ -33,23 +33,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang;
 
-import java.util.LinkedList;
-import java.util.Iterator;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public abstract class TreeNode extends PropertyMap {
 
     /** A class ID number, which is unique for each sub-type. */    
     public abstract int classID();
-
-    /** Re-override equals() from Decl so that equality is defined as being the
-     *  same object. This is necessary to ensure that a Decl named z for x.y.z
-     *  does not equal another Decl named z for x.z.
-     */
-    public boolean equals(Object obj) {
-        return (this == obj);   
-    }
 
     public String toString(String indent) {
 
@@ -60,7 +52,7 @@ public abstract class TreeNode extends PropertyMap {
 
         sb.append(className);
       
-        // If property "n" is defined, print the number.
+        // If the number property is defined, print the number.
         if (hasProperty(NUMBER_KEY)) {
            sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ")");
         }
@@ -250,8 +242,9 @@ public abstract class TreeNode extends PropertyMap {
         return null;
     }
 
-    /** Return true iff this sub-class of TreeNode is a singleton, i.e. there exists only
-     *  one object of the sub-class. 
+    /** Return true iff this subclass of TreeNode is a singleton, i.e. there exists only
+     *  one object of the subclass. This method needs to be overridden by 
+     *  singleton classes.
      */
     public boolean isSingleton() { return false; }
 
@@ -277,12 +270,12 @@ public abstract class TreeNode extends PropertyMap {
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
 
+    protected Class  _myClass = null;    
     protected LinkedList _childList = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private Class  _myClass = null;
+    
     private String _visitMethodName = null;
     private final Class[] _visitParamTypes = new Class[2];
     private final Object[] _visitArgs = new Object[2];

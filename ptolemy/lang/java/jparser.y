@@ -1210,14 +1210,11 @@ FieldAccess :
 /* Section 9.7 */
 
 MethodCall :
-	  SimpleName '(' ArgumentListOpt ')'
-   { $$ = new MethodCallNode((NameNode) $1, (LinkedList) $3); }
-	| FieldAccess '(' ArgumentListOpt ')'
-		{ $$ = new MethodCallNode((TreeNode) $1, (LinkedList) $3); }
-   /* Redundant production to handle Name '(' ... ')'. */
-	| Name '.' IDENTIFIER '(' ArgumentListOpt ')'
-		{ $$ = new MethodCallNode(new NameNode((NameNode) $1, $3), (LinkedList) $5); }
-	;
+    Name '(' ArgumentListOpt ')'
+    { $$ = new MethodCallNode(new ObjectNode((NameNode) $1), (LinkedList) $3); }
+  | FieldAccess '(' ArgumentListOpt ')'
+    { $$ = new MethodCallNode((FieldAccessNode) $1, (LinkedList) $3); }
+  ;
 
 ArgumentListOpt :
 	  ArgumentList   {  }
