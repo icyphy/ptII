@@ -42,7 +42,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
-import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import diva.canvas.FigureLayer;
@@ -182,11 +181,10 @@ public class EditIconFrame extends BasicGraphFrame {
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
-        // FIXME: This is the wrong controller to create.
-        _controller = new ActorEditorGraphController();
+        _controller = new EditIconGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
-        final ActorGraphModel graphModel = new ActorGraphModel(getModel());
+        ActorGraphModel graphModel = new ActorGraphModel(getModel());
         return new GraphPane(_controller, graphModel);
     }
     
@@ -205,7 +203,7 @@ public class EditIconFrame extends BasicGraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private ActorEditorGraphController _controller;
+    private EditIconGraphController _controller;
 
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;

@@ -31,11 +31,7 @@
 package ptolemy.vergil.basic;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,40 +39,25 @@ import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.actor.ExternalIOPortController;
-import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.EditIconAction;
-import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
-import ptolemy.vergil.toolbox.RemoveIconAction;
-import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.Figure;
 import diva.canvas.connector.Connector;
 import diva.canvas.interactor.SelectionRenderer;
 import diva.graph.AbstractGraphController;
 import diva.graph.GraphController;
-import diva.graph.GraphException;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.NodeController;
-import diva.graph.NodeRenderer;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.MenuCreator;
 
 
@@ -211,9 +192,6 @@ public abstract class BasicGraphController extends AbstractGraphController
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
-        _portController.setConfiguration(configuration);
-        _editIconAction.setConfiguration(configuration);
-        _removeIconAction.setConfiguration(configuration);
     }
 
     /** Set the figure associated with the given semantic object, and if
@@ -325,15 +303,13 @@ public abstract class BasicGraphController extends AbstractGraphController
     ////                         protected methods                 ////
 
     /** Create the controllers for nodes in this graph.
-     *  In this base class, a port controller with PARTIAL access is created.
+     *  In this base class, nothing is created.
      *  This is called by the constructor, so derived classes that
      *  override this must be careful not to reference local variables
      *  defined in the derived classes, because the derived classes
      *  will not have been fully constructed by the time this is called.
      */
     protected void _createControllers() {
-        _portController = new ExternalIOPortController(this,
-                AttributeController.PARTIAL);
     }
 
     // NOTE: The following method name does not have a leading underscore
@@ -376,10 +352,6 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** The configure action. */
     protected static ConfigureAction _configureAction
             = new ConfigureAction("Configure");
-            
-    /** The edit custom icon action. */
-    protected static EditIconAction _editIconAction
-            = new EditIconAction();
 
     /** The interactor for creating context sensitive menus on the
      *  graph itself.
@@ -388,13 +360,6 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** The factory belonging to the menu creator. */
     protected PtolemyMenuFactory _menuFactory;
-
-    /** The port controller. */
-    protected NamedObjController _portController;
-
-    /** The remove custom icon action. */
-    protected static RemoveIconAction _removeIconAction
-            = new RemoveIconAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -411,185 +376,8 @@ public abstract class BasicGraphController extends AbstractGraphController
     // Flag to prevent double rendering upon setting location.
     private boolean _inValueChanged = false;
 
-    /** Offset of ports from the visible border. */
-    private static double _PORT_OFFSET = 20.0;
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// NewPortAction
-
-    /** An action to create a new port. */
-    public class NewPortAction extends FigureAction {
-
-        /** Create a new port that has the same input, output, and
-         *  multiport properties as the specified port.  If the specified
-         *  port is null, then a new port that is neither an input, an
-         *  output, nor a multiport will be created.
-         *  @param prototype Prototype port.
-         *  @param description The description used for menu entries and
-         *   tooltips.
-         *  @param mnemonicKey The KeyEvent field for the mnemonic key to
-         *   use in the menu.
-         */
-        public NewPortAction(
-                IOPort prototype, String description, int mnemonicKey) {
-            super(description);
-            _prototype = prototype;
-            String dflt = "";
-            // Creating the renderers this way is rather nasty..
-            // Standard toolbar icons are 25x25 pixels.
-            NodeRenderer renderer = _portController.getNodeRenderer();
-            Object location = null;
-            if (_prototype != null) {
-                location = _prototype.getAttribute("_location");
-            }
-            Figure figure = renderer.render(location);
-
-            FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
-            putValue(GUIUtilities.LARGE_ICON, icon);
-
-            putValue("tooltip", description);
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(mnemonicKey));
-        }
-
-        /** Create a new port. */
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-            double x;
-            double y;
-            if (getSourceType() == TOOLBAR_TYPE ||
-                    getSourceType() == MENUBAR_TYPE) {
-                // No location in the action, so put it in the middle.
-                BasicGraphFrame frame = BasicGraphController.this.getFrame();
-                if (frame != null) {
-                    // Put in the middle of the visible part.
-                    Point2D center = frame.getCenter();
-                    if (_prototype != null) {
-                        Rectangle2D visiblePart = frame.getVisibleRectangle();
-                        if (_prototype.isInput() && _prototype.isOutput()) {
-                            x = center.getX();
-                            y = visiblePart.getY()
-                                + visiblePart.getHeight() - _PORT_OFFSET;
-                        } else if (_prototype.isInput()) {
-                            x = visiblePart.getX() + _PORT_OFFSET;
-                            y = center.getY();
-                        } else if (_prototype.isOutput()) {
-                            x = visiblePart.getX()
-                                + visiblePart.getWidth() - _PORT_OFFSET;
-                            y = center.getY();
-                        } else {
-                            x = center.getX();
-                            y = center.getY();
-                        }
-                    } else {
-                        x = center.getX();
-                        y = center.getY();
-                    }
-                } else {
-                    // Put in the middle of the pane.
-                    GraphPane pane = getGraphPane();
-                    Point2D center = pane.getSize();
-                    x = center.getX()/2;
-                    y = center.getY()/2;
-                }
-            } else {
-                // Transform
-                AffineTransform current =
-                    getGraphPane().getTransformContext().getTransform();
-                AffineTransform inverse;
-                try {
-                    inverse = current.createInverse();
-                }
-                catch(NoninvertibleTransformException ex) {
-                    throw new RuntimeException(ex.toString());
-                }
-                Point2D point = new Point2D.Double(getX(), getY());
-
-                inverse.transform(point, point);
-                x = point.getX();
-                y = point.getY();
-            }
-
-            AbstractBasicGraphModel graphModel =
-                (AbstractBasicGraphModel)getGraphModel();
-            final double[] point = SnapConstraint.constrainPoint(x, y);
-            final NamedObj toplevel = graphModel.getPtolemyModel();
-            if (!(toplevel instanceof Entity)) {
-                throw new InternalErrorException(
-                "Cannot invoke NewPortAction on an object " +
-                "that is not an instance of Entity.");
-            }
-            NamedObj container =
-                MoMLChangeRequest.getDeferredToParent(toplevel);
-            if (container == null) {
-                container = toplevel;
-            }
-
-            final NamedObj context = container;
-            final String portName = toplevel.uniqueName("port");
-            final String locationName = "_location";
-            // Create the port.
-            StringBuffer moml = new StringBuffer();
-            if (container != toplevel) {
-                moml.append("<entity name=\"" +
-                        toplevel.getName(container) + "\">\n");
-            }
-            moml.append("<port name=\"" + portName + "\">\n");
-            moml.append("<property name=\"" + locationName +
-                    "\" class=\"ptolemy.kernel.util.Location\"/>\n");
-            if (_prototype != null) {
-                if (_prototype.isInput()) {
-                    moml.append("<property name=\"input\"/>");
-                }
-                if (_prototype.isOutput()) {
-                    moml.append("<property name=\"output\"/>");
-                }
-                if (_prototype.isMultiport()) {
-                    moml.append("<property name=\"multiport\"/>");
-                }
-            }
-            moml.append("</port>");
-            if (container != toplevel) {
-                moml.append("</entity>");
-            }
-
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            super._execute();
-
-                            // Set the location of the icon.
-                            // Note that this really needs to be done after
-                            // the change request has succeeded, which is why
-                            // it is done here.  When the graph controller
-                            // gets around to handling this, it will draw
-                            // the icon at this location.
-                            // NOTE: The cast is safe because it is checked
-                            // above, and presumably a reasonable GUI would
-                            // provide no mechanism for creating a port on
-                            // something that is not an entity.
-                            NamedObj newObject =
-                                ((Entity)toplevel).getPort(portName);
-                            Location location =
-                                (Location) newObject.getAttribute(locationName);
-                            location.setLocation(point);
-                        }
-                    };
-            request.setUndoable(true);
-            container.requestChange(request);
-            try {
-                request.waitForCompletion();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new GraphException(ex);
-            }
-        }
-
-        private IOPort _prototype;
-    }
 
     ///////////////////////////////////////////////////////////////////
     //// SchematicContextMenuFactory
@@ -605,8 +393,6 @@ public abstract class BasicGraphController extends AbstractGraphController
         public SchematicContextMenuFactory(GraphController controller) {
             super(controller);
             addMenuItemFactory(new MenuActionFactory(_configureAction));
-            addMenuItemFactory(new MenuActionFactory(_editIconAction));
-            addMenuItemFactory(new MenuActionFactory(_removeIconAction));
         }
 
         protected NamedObj _getObjectFromFigure(Figure source) {

@@ -64,7 +64,7 @@ model, then execution commands are propagated up to the top level.
 @since Ptolemy II 2.1
 */
 public abstract class RunnableGraphController
-    extends BasicGraphController implements ExecutionListener {
+    extends WithIconGraphController implements ExecutionListener {
 
     /** Create a new controller.
      */

@@ -53,7 +53,11 @@ JSRCS = \
 	BoxedValueIcon.java \
 	BoxedValuesIcon.java \
 	CopyCatIcon.java \
+	EditIconFrame.java \
+	EditIconGraphController.java \
+	EditIconTableau.java \
 	EditorIcon.java \
+	ImageIcon.java \
 	ResizableAttributeControllerFactory.java \
 	ShapeIcon.java \
 	SVGIcon.java \
