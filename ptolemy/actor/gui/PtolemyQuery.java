@@ -38,6 +38,7 @@ import ptolemy.actor.gui.style.*;
 import ptolemy.data.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.awt.Container;

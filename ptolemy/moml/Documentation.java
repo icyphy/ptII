@@ -28,7 +28,7 @@
 
 */
 
-package ptolemy.actor.gui;
+package ptolemy.moml;
 
 import ptolemy.kernel.util.*;
 
@@ -41,11 +41,13 @@ import java.util.List;
 //// Documentation
 /**
 An attribute that contains documentation for the container.
+This is a singleton attribute.  If there is a pre-existing instance
+with the same name, then it is replaced.
 
 @author  Edward A. Lee
 @version $Id$
 */
-public class Documentation extends Attribute {
+public class Documentation extends SingletonAttribute {
 
     /** Construct an attribute with the specified container and name.
      *  The documentation contained by the attribute is initially empty,
@@ -104,7 +106,7 @@ public class Documentation extends Attribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (name.equals("_doc_")) {
+        if (name.equals("_doc")) {
             // Name is the default name.  Omit.
             output.write(_getIndentPrefix(depth)
                     + "<doc>"

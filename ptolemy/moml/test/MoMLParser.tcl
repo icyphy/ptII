@@ -107,7 +107,7 @@ test MoMLParser-1.2.2 {parse simple model with HTML markup} {
 
 #----------------------------------------------------------------------
 # NOTE: If no name is given to the inside doc element, then it will
-# be assigned the MoML default name "_doc_".
+# be assigned the MoML default name "_doc".
 set moml_2_1 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc><H1>HTML <doc name=\"foo\">Markup</doc></H1><I>italics</I>.</doc>

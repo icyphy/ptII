@@ -30,12 +30,12 @@
 
 package ptolemy.vergil.tree;
 
-import ptolemy.actor.gui.Documentation;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.moml.Documentation;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.toolbox.EditorIcon;
 import ptolemy.vergil.toolbox.XMLIcon;

@@ -43,6 +43,7 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Documentation;
 
 // Java imports
 import javax.swing.JOptionPane;

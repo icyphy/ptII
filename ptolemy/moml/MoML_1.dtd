@@ -46,7 +46,7 @@
                    class CDATA #REQUIRED>
 
 <!ELEMENT doc (#PCDATA)>
-<!ATTLIST doc name CDATA "_doc_">
+<!ATTLIST doc name CDATA #IMPLIED>
 
 <!ELEMENT entity (class | configure | deleteEntity | deletePort |
 		  deleteRelation | director | doc |
