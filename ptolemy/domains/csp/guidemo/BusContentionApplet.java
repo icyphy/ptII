@@ -50,7 +50,8 @@ public class BusContentionApplet extends PtolemyApplet {
    public void init() {
         super.init();
         _demo = new BusContentionApplication();
-	_demo.initializeDemo();
+        Panel nullPanel = null;
+	_demo.initializeDemo(nullPanel);
     }
  
     /**
