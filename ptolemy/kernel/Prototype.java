@@ -284,7 +284,8 @@ public class Prototype extends NamedObj implements Instantiable {
             IllegalActionException, NameDuplicationException {
         if (!isClassDefinition()) {
             throw new IllegalActionException(this,
-                    "Cannot instantiate an object that is not a class definition");
+                    "Cannot instantiate an object that is not a "
+                    + "class definition");
         }
         // Use the workspace of the container, if there is one,
         // or the workspace of this object, if there isn't.

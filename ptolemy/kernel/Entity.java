@@ -431,8 +431,8 @@ public class Entity extends Prototype {
                 Port port = (Port)ports.next();
                 if (port.numLinks() > 0) {
                     throw new IllegalActionException(this,
-                            "Cannot convert an entity to a class definition while "
-                            + "it contains ports with links.");
+                            "Cannot convert an entity to a class definition "
+                            + "while it contains ports with links.");
                 }
             }
         }
