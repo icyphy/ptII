@@ -355,7 +355,8 @@ public final class CrossRefList implements Serializable  {
         }
 
         /** Return the next element in the enumeration.
-         *  @exception java.util.NoSuchElementException Exhausted enumeration.
+         *  @exception java.util.NoSuchElementException If the enumeration is
+         *  exhausted.
          */
         public Object nextElement()
                 throws NoSuchElementException {
