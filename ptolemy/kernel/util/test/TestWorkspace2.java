@@ -55,7 +55,7 @@ NOTE: This is a very primitive test.  It does not check very much.
 */
 public class TestWorkspace2 extends Thread {
 
-    public TestWorkspace2 (String name, Workspace ws) {
+    public TestWorkspace2(String name, Workspace ws) {
         _name = name;
         _workspace = ws;
         _notif = new Notification(_name + ".notif");

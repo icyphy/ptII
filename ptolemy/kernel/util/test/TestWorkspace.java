@@ -51,7 +51,7 @@ NOTE: This is a very primitive test.  It does not check very much.
 */
 public class TestWorkspace extends Thread {
 
-    public TestWorkspace (String name, Workspace ws) {
+    public TestWorkspace(String name, Workspace ws) {
         _name = name;
         _workspace = ws;
     }
