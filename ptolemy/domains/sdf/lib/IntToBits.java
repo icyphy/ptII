@@ -1,4 +1,4 @@
-/* An actor that converse 32 boolean tokens to an IntToken
+/* An actor that converts  an IntToken to 32 BooleanTokens.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -40,8 +40,8 @@ import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// IntToBits
-/** This actor takes in a integer token and output 32 boolean tokens 
-    which represents that integer.
+/** This actor takes in an IntToken and output 32 BooleanTokens 
+    (bitwise representation of input IntToken).
 
 @author Michael Leung
 @version $Id$
@@ -92,26 +92,21 @@ public class IntToBits extends SDFAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            IntToBits newobj = (IntToBits)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-                return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        IntToBits newobj = (IntToBits)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        return newobj;
     }
 
 
-    /** Consume a single IntToken on the input. Produce BooleanMatrixTokens
+    /** Consume a single IntToken on the input. Produce 32 BooleanTokens
      *  on the output port which is the 32 bits representation of the input
-     *  integer.
+     *  IntToken. The most significant bit is at index 0. (The first boolean 
+     *  token send out.) The least significant bit is at index 31 (The last 
+     *  boolean token send out.).
      *
-     *  @exception IllegalActionException will be thrown if attempt to
-     *  fire this actor when there is no director.
+     *  @exception IllegalActionException If there is no director.
      */
 
     public final void fire() throws IllegalActionException  {
@@ -135,12 +130,6 @@ public class IntToBits extends SDFAtomicActor {
 
        output.sendArray(0, bits);
     }
-    
-    private BooleanToken bits[];
-    private IntToken token;
-    private int integer;
-    private int remainder;
-    
 }
 
 
