@@ -45,7 +45,6 @@ EXTRA_SRCS = \
 	body.htm \
 	buttons.htm \
 	develsetup.htm \
-	directories.htm \
 	index.htm \
 	javalinks.htm \
 	main.htm \
