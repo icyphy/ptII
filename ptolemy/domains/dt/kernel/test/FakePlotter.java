@@ -82,11 +82,11 @@ public class FakePlotter extends TypedAtomicActor {
     public TypedIOPort outTime;
 
     /*
-    public void initialize() throws IllegalActionException {
-    }
+      public void initialize() throws IllegalActionException {
+      }
 
-    public void place(Container container) {
-    }*/
+      public void place(Container container) {
+      }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

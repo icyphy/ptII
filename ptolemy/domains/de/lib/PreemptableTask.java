@@ -151,9 +151,9 @@ public class PreemptableTask extends DETransformer {
         double currentTime = ((DEDirector)getDirector()).getCurrentTime();
         DEDirector director = (DEDirector)getDirector();
 
-       // If the task receives a token on the <i>input</i> port, queue
-       // it inside of the actor.
-       if (input.hasToken(0)) {
+        // If the task receives a token on the <i>input</i> port, queue
+        // it inside of the actor.
+        if (input.hasToken(0)) {
             _tokenList.add(input.get(0));
         }
 

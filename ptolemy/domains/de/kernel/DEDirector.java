@@ -1378,7 +1378,7 @@ public class DEDirector extends Director {
                     }
                     // find the input ports connected to outPort
                     Iterator inPortIterator =
-                            outPort.deepConnectedInPortList().iterator();
+                        outPort.deepConnectedInPortList().iterator();
                     int referenceDepth = outPort.depthInHierarchy();
                     while (inPortIterator.hasNext()) {
                         IOPort port = (IOPort)inPortIterator.next();

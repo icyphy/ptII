@@ -66,24 +66,24 @@ public class Mutate {
     public void insertClock() {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(_top, "test2") {
-            public void _execute() throws IllegalActionException,
-                    NameDuplicationException {
-                _clock.output.unlinkAll();
-                _rec.input.unlinkAll();
-                Clock clock2 = new Clock(_top, "clock2");
-                clock2.values.setExpression("[2.0]");
-                clock2.offsets.setExpression("[0.5]");
-                clock2.period.setExpression("2.0");
-                Merge merge = new Merge(_top, "merge");
-                _top.connect(_clock.output, merge.input);
-                _top.connect(clock2.output, merge.input);
-                _top.connect(merge.output, _rec.input);
-                // Any pre-existing input port whose connections
-                // are modified needs to have this method called.
-                _rec.input.createReceivers();
-                _director.invalidateSchedule();
-            }
-        };
+                public void _execute() throws IllegalActionException,
+                        NameDuplicationException {
+                    _clock.output.unlinkAll();
+                    _rec.input.unlinkAll();
+                    Clock clock2 = new Clock(_top, "clock2");
+                    clock2.values.setExpression("[2.0]");
+                    clock2.offsets.setExpression("[0.5]");
+                    clock2.period.setExpression("2.0");
+                    Merge merge = new Merge(_top, "merge");
+                    _top.connect(_clock.output, merge.input);
+                    _top.connect(clock2.output, merge.input);
+                    _top.connect(merge.output, _rec.input);
+                    // Any pre-existing input port whose connections
+                    // are modified needs to have this method called.
+                    _rec.input.createReceivers();
+                    _director.invalidateSchedule();
+                }
+            };
         _top.requestChange(change);
     }
 }
