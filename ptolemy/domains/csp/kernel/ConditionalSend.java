@@ -168,7 +168,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 while (getReceiver().isConditionalSendWaiting()) {
                     // last time condSend got there first, condRec
                     // hasn't cleared yet
-                    System.out.println("CondSend waiting for CondRec to clear state" + getBranchNumber());
+                    String s = "CondSend waiting for CondRec to clear state: ";
+                    System.out.println(s + getBranchNumber());
                     getReceiver()._checkAndWait();
                 }
 
@@ -188,7 +189,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 // I am the branch that succeeds
                                 //System.out.println(getParent().getName() + ": conditionalSend succeeded: " + getBranchNumber());
                                 getReceiver().put(_token);
-                                getParent().branchSucceeded(getBranchNumber()); // deadlock pt
+                                int id = getBranchNumber();
+                                getParent().branchSucceeded(id);
                                 return;
                             } else {
                                 getReceiver()._checkAndWait();
@@ -209,10 +211,12 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         if (getParent().amIFirst(getBranchNumber())) {
                             // send side ok, need to check that receive
                             // side also ok
-                            if (getReceiver().getOtherParent().amIFirst(getBranchNumber())) {
+                            CSPReceiver rec = getReceiver();
+                            CSPActor side2 = getReceiver().getOtherParent();
+                            if (side2.amIFirst(getBranchNumber())) {
                                 //System.out.println(getParent().getName() + ": conditionalSend succeeding: " + getBranchNumber());
-                                getReceiver().put(_token);
-                                getReceiver().setConditionalReceive(false, null);
+                                rec.put(_token);
+                                rec.setConditionalReceive(false, null);
                                 getParent().branchSucceeded(getBranchNumber());
                                 return;
                             } else {
@@ -241,8 +245,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 if (getParent().amIFirst(getBranchNumber())) {
                                     // I am the branch that succeeds
                                     getReceiver().put(_token);
-                                    getReceiver().setConditionalSend(false, null);
-                                    getParent().branchSucceeded(getBranchNumber());
+                                    CSPReceiver rec = getReceiver();
+                                    int id = getBranchNumber();
+                                    rec.setConditionalSend(false, null);
+                                    getParent().branchSucceeded(id);
                                     return;
                                 }
                             }
