@@ -264,9 +264,9 @@ proc openAllFiles {args} {
 #
 proc doneTests {args} {
     global PASSED FAILED KNOWN_FAILED NEWLY_PASSED duration reallyExit
-    puts "Total: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
+    puts "Total Tests: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
 	    ((Passed: $PASSED, Newly Passed: $NEWLY_PASSED) \
-    Failed: $FAILED Known Failed: $KNOWN_FAILED)"
+    Failed: $FAILED Known Failed: $KNOWN_FAILED) [pwd]"
     flush stderr
     update
     if {![info exists reallyExit] || $reallyExit == 1} {
