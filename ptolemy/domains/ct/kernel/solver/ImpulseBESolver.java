@@ -107,7 +107,7 @@ public class ImpulseBESolver extends BackwardEulerSolver
      *  does not update the states after the second Backward Euler solving
      *  process, so the director that uses this solver should do it.
      * 
-     *  @see BackwardEulerSolver#resolveState
+     *  @see BackwardEulerSolver#resolveStates
      *  @return True if the state is successfully resolved.
      *  @exception IllegalActionException If it is thrown by the
      *  resolveStates() method of the BackwardEulerSolver.resolveState().
