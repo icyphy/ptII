@@ -119,7 +119,8 @@ case "`basename $0`" in
 		javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_DIR"
 	    ;;
 	    *)    
-	    javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_DIR"
+		JINI_DIR=`echo $JINI_DIR | sed 's/jini1_0_1//'`
+		javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_DIR"
 	    ;;
         esac
 	;;
