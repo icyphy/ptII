@@ -40,9 +40,11 @@ import java.util.ListIterator;
 
 import javax.swing.SwingUtilities;
 
+import ptolemy.gui.Top;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
 
@@ -83,12 +85,29 @@ public class ShapeIcon extends EditorIcon {
     public ShapeIcon(NamedObj container, String name, Shape defaultShape)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _defaultShape = defaultShape;
         setShape(defaultShape);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ShapeIcon newObject = (ShapeIcon)super.clone(workspace);
+        newObject._figures = new LinkedList();
+        newObject._shape = _defaultShape;
+        return newObject;
+    }
+
     /** Create a new default background figure, which is the shape set
      *  by setShape, if it has been called, or a small box if not.
      *  This must be called in the Swing thread, or a concurrent
@@ -115,6 +134,7 @@ public class ShapeIcon extends EditorIcon {
         if (_shape != null) {
             newFigure = new BasicFigure(_shape);
         } else {
+            // Create a white rectangle.
             newFigure = new BasicFigure(new Rectangle2D.Double(
                    0.0, 0.0, 20.0, 20.0));
         }
@@ -291,7 +311,7 @@ public class ShapeIcon extends EditorIcon {
                 }
             }
         };
-        SwingUtilities.invokeLater(doSet);
+        Top.deferIfNecessary(doSet);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -299,6 +319,9 @@ public class ShapeIcon extends EditorIcon {
 
     // Indicator of whether the figure should be centered on its origin.
     private boolean _centered = false;
+    
+    // Default shape specified in the constructor.
+    private Shape _defaultShape;
     
     // A list of weak references to figures that this has created.
     private List _figures = new LinkedList();

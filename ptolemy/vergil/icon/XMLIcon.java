@@ -116,6 +116,23 @@ public class XMLIcon extends EditorIcon implements ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        XMLIcon newObject = (XMLIcon)super.clone(workspace);
+        newObject._paintedList = null;
+        newObject._description = null;
+        newObject._smallIconDescription = null;
+        return newObject;
+    }
+    
     /** Create a background figure based on this icon.  The background figure
      *  will be painted with each graphic element that this icon contains.
      *  @return A figure for this icon.

@@ -46,6 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
@@ -93,6 +94,22 @@ public class AttributeValueIcon extends XMLIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        AttributeValueIcon newObject = (AttributeValueIcon)super.clone(workspace);
+        newObject._background = null;
+        newObject._label = null;
+        return newObject;
+    }
 
     /** Create a new background figure.  This overrides the base class
      *  to remember the background figure so that it can center the label
@@ -153,7 +170,7 @@ public class AttributeValueIcon extends XMLIcon {
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
 
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         output.write(_getIndentPrefix(depth)

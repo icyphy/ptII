@@ -43,6 +43,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
@@ -103,6 +104,21 @@ public class UpdatedValueIcon extends AttributeValueIcon {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        UpdatedValueIcon newObject = (UpdatedValueIcon)super.clone(workspace);
+        newObject._associatedAttribute = null;
+        return newObject;
     }
 
     /** Create a new background figure.  This overrides the base class

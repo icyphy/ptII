@@ -44,6 +44,7 @@ import javax.swing.SwingUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.ImageFigure;
 
@@ -74,6 +75,23 @@ public class ImageIcon extends EditorIcon implements ImageObserver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ImageIcon newObject = (ImageIcon)super.clone(workspace);
+        newObject._figures = new LinkedList();
+        newObject._image = null;
+        newObject._scaledImage = null;
+        return newObject;
+    }
 
     /** Create a new default background figure, which is the shape set
      *  by setShape, if it has been called, or a small box if not.

@@ -41,6 +41,7 @@ import javax.swing.SwingConstants;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import diva.canvas.CompositeFigure;
@@ -51,12 +52,8 @@ import diva.canvas.toolbox.LabelFigure;
 //////////////////////////////////////////////////////////////////////////
 //// ValueIcon
 /**
-An icon that displays the value of the container, which is assumed
-to be an instance of Settable. The display consists of a small
-circle (a bullet) with the name of the container and its value,
-separated by a colon, to the right.  If this icon contains
-an instance of ColorAttribute, then the color of the bullet
-is given by that attribute.
+An icon that displays a bullet, the name, and, if the container is
+an instance of settable, its value.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
@@ -94,13 +91,21 @@ public class ValueIcon extends XMLIcon {
     public Figure createFigure() {
         CompositeFigure background = new CompositeFigure(
                 super.createBackgroundFigure());
-        Settable container = (Settable)getContainer();
-        String name = container.getName();
-        String value = container.getExpression();
-        LabelFigure label = new LabelFigure(name + ": " + value,
-                _labelFont, 1.0, SwingConstants.SOUTH_WEST);
-        background.add(label);
-        return background;
+        Nameable container = getContainer();
+        if (container instanceof Settable) {
+            String name = container.getName();
+            String value = ((Settable)container).getExpression();
+            LabelFigure label = new LabelFigure(name + ": " + value,
+                    _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+            background.add(label);
+            return background;
+        } else {
+            String name = container.getName();
+            LabelFigure label = new LabelFigure(name,
+                    _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+            background.add(label);
+            return background;
+        }
     }
 
     /** Write a MoML description of this object, unless the object is
@@ -127,7 +132,7 @@ public class ValueIcon extends XMLIcon {
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
 
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         output.write(_getIndentPrefix(depth)

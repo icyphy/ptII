@@ -41,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
+import ptolemy.kernel.util.Workspace;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
@@ -73,6 +74,21 @@ public class CopyCatIcon extends XMLIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        CopyCatIcon newObject = (CopyCatIcon)super.clone(workspace);
+        newObject._originalDescription = null;
+        return newObject;
+    }
+    
     /** Create a new background figure.  This method looks for entities
      *  contained by the same container, and if there are any, copies
      *  the icon of the last such entity.  If there are none, then it

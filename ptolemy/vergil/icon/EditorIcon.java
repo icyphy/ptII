@@ -125,7 +125,23 @@ public class EditorIcon extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        EditorIcon newObject = (EditorIcon)super.clone(workspace);
+        newObject._containerToBe = null;
+        newObject._iconCache = null;
+        return newObject;
+    }
+    
     /** Create a new background figure.  This figure is a composition of
      *  the figures of any contained visible attributes. If there are no such
      *  visible attributes, then this figure is a simple white box.
@@ -250,7 +266,7 @@ public class EditorIcon extends Attribute {
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         // If this icon is not persistent, do nothing.
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         output.write(_getIndentPrefix(depth)
