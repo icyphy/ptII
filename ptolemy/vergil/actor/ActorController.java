@@ -595,28 +595,15 @@ public class ActorController extends AttributeController {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
             NamedObj object = getTarget();
-            if (!(object instanceof CompositeEntity)) {
-                // Open the source code, if possible.
-                String filename = object.getClass()
-                    .getName().replace('.', '/') + ".java";
-                try {
-                    URL toRead = getClass().getClassLoader()
-                        .getResource(filename);
-                    if (toRead != null) {
-                        _configuration.openModel(null,
-                                toRead, toRead.toExternalForm());
-                    } else {
-                        MessageHandler.error(_CANNOT_FIND_MESSAGE);
-                    }
-                } catch (Exception ex) {
-                    MessageHandler.error(_CANNOT_FIND_MESSAGE, ex);
-                }
-                return;
-            }
+            
+            // NOTE: Used to open source code here if the object
+            // was not a CompositeEntity. But this made it impossible
+            // to associate a custom tableau with an atomic entity.
+            // So now, the Configuration opens the source code as a
+            // last resort.
 
-            CompositeEntity entity = (CompositeEntity)object;
             try {
-                _configuration.openModel(entity);
+                _configuration.openModel(object);
             } catch (Exception ex) {
                 MessageHandler.error("Look inside failed.", ex);
             }

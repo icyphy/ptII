@@ -61,7 +61,10 @@ JSRCS = \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
 	SnapConstraint.java \
+	TextEditorConfigureFactory.java \
 	TextEditorFactory.java \
+	TextEditorForStringAttributes.java \
+	TextEditorTableauFactory.java \
 	VisibleParameterEditorFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
