@@ -63,7 +63,7 @@ public final class SDFReceiver implements Receiver {
      */
     public SDFReceiver() {
         super();
-        _queue = new ArrayFIFOQueue(10);
+        _queue = new ArrayFIFOQueue();
     }
 
     /** Construct an empty receiver with no container and given size.

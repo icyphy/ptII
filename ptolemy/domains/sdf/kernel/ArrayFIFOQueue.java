@@ -313,7 +313,7 @@ public final class ArrayFIFOQueue implements Cloneable {
 		catch (Exception e) {
 		    e.printStackTrace();
 		}
-		return put(element);
+		return putArray(element);
 	    } else 
 		return false;
         }
@@ -519,7 +519,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      * The starting size of the circular buffer, if the capacity is
      * infinite.
      */
-    public static final int STARTING_ARRAYSIZE = 10;
+    public static final int STARTING_ARRAYSIZE = 4;
 
     /** 
      * The default capacity of the history queue.

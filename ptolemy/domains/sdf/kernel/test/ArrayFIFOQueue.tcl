@@ -180,6 +180,49 @@ test ArrayFIFOQueue-3.3 {Take items} {
 ######################################################################
 ####
 #
+test ArrayFIFOQueue-3.4 {Put array of data on a queue} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    set array [java::new {Object[]} {5} {}]
+    $array set 0 $n1
+    $array set 1 $n2
+    $array set 2 $n3
+    $array set 3 $n4
+    $array set 4 $n5
+    $queue putArray $array
+    _testEnums elements $queue
+} {{n1 n2 n3 n4 n5}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-3.5 {Get individual items} {
+   
+    catch {[$queue get -1]} s0
+    set a0 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 0]] \
+            getName] 
+    set a1 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 1]] \
+            getName] 
+    set a2 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 2]] \
+            getName] 
+    set a3 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 3]] \
+            getName] 
+    set a4 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 4]] \
+            getName] 
+    catch {[$queue get 5]} s1 
+    list $s0 $a0 $a1 $a2 $a3 $a4 $s1 [$queue size] [$queue isFull]
+} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 n5 {java.util.NoSuchElementException: No object at offset 5 in the FIFOQueue.} 5 0}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-3.6 {Takearray items} {
+    $queue takeArray $array
+    list [jdkPrintArray $array] [_testEnums elements $queue]
+} {{{ptolemy.kernel.util.NamedObj {.n1}} {ptolemy.kernel.util.NamedObj {.n2}} {ptolemy.kernel.util.NamedObj {.n3}} {ptolemy.kernel.util.NamedObj {.n4}} {ptolemy.kernel.util.NamedObj {.n5}}} {{}}}
+
+######################################################################
+####
+#
 test ArrayFIFOQueue-4.1 {Inserting elements into a queue of bounded size} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
     $queue setCapacity 3
