@@ -229,7 +229,7 @@ cd $startdir
 AC_MSG_CHECKING([for the proper CLASSPATH separator])
 
 case "`uname -s`" in
-    CYGWIN_NT-) CLASSPATHSEPARATOR=";";;
+    CYGWIN_NT-*) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
 esac
 AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
