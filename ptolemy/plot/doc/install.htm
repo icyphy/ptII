@@ -44,7 +44,7 @@ is in your path.
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
 <pre>
-setenv PTII ~/src/ptplot3.1p1
+setenv PTII ~/src/ptplot4.1
 </pre>
 
 <li> cd into the <CODE>PTII</CODE> directory:
@@ -114,8 +114,8 @@ As a result, JRE1.1.7B is the JRE that is optionally downloaded for Sparcs.
 
 <li> The InstallShield installer places the <CODE>ptplot</CODE>,
 <CODE>histogram</CODE> and <CODE>pxgraph</CODE> startup scripts
-in the toplevel <CODE>ptplot3.1p1</CODE> directory rather than placing
-them in <CODE>ptplot3.1p1/bin</CODE>
+in the toplevel <CODE>ptplot4.1</CODE> directory rather than placing
+them in <CODE>ptplot4.1/bin</CODE>
 
 
 </menu>
@@ -161,7 +161,7 @@ PTJAVA_DIR=/usr/java1.1
 
 
 
-<h3><a name="windowswithoutcygwin">Using Ptplot under Windows without Cygwin</h3>
+<h3><a name="windowswithoutcygwin">Using Ptplot under Windows without Cygwin</a></h3>
 Below are the instructions for using Ptplot 
 if you are under Windows and you do not have the Cygwin and have 
 downloaded the tar or zip files.
@@ -170,7 +170,7 @@ downloaded the tar or zip files.
 <li> Set the <CODE>PTII</CODE> variable to the top-level
 directory of the Ptplot tree.
 <pre>
-C:\ptplot3.1p1&gt; PTII=c:\ptplot3.1p1
+C:\ptplot4.1&gt; PTII=c:\ptplot4.1
 </pre>
 <CODE>PTII</CODE> is used by the standalone <CODE>ptplot.bat</CODE>
 script and other scripts
@@ -190,26 +190,26 @@ Cygwin.
 ptolemy\plot.
 <CODE></CODE>
 <pre>
-C:\ptplot3.1p1&gt; cd ptolemy\plot
+C:\ptplot4.1&gt; cd ptolemy\plot
 </pre>
 
 
 <li> set your CLASSPATH to ..\..
 <pre>
-C:\ptplot3.1p1\ptolemy\plot&gt;set CLASSPATH=..\..
-C:\ptplot3.1p1\ptolemy\plot&gt;echo %CLASSPATH%
+C:\ptplot4.1\ptolemy\plot&gt;set CLASSPATH=..\..
+C:\ptplot4.1\ptolemy\plot&gt;echo %CLASSPATH%
 ..\..
 </pre>
 
 <li> Remove the old Java files and compile them
 <pre>
-C:\ptplot3.1p1\ptolemy\plot&gt;del  *.java *\*.java
-C:\ptplot3.1p1\ptolemy\plot&gt;javac *.java
+C:\ptplot4.1\ptolemy\plot&gt;del  *.java *\*.java
+C:\ptplot4.1\ptolemy\plot&gt;javac *.java
 </pre>
 
 <li> Run <CODE>ptplot.bat</CODE>, which reads <CODE>%PTII%</CODE>
 <pre>
-C:\ptplot3.1p1\ptolemy\plot&gt;ptplot.bat
+C:\ptplot4.1\ptolemy\plot&gt;ptplot.bat
 </pre>
 
 </ol>

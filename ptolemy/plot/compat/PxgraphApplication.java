@@ -129,7 +129,8 @@ public class PxgraphApplication extends PlotApplication {
                 "        A Java Plotting Tool\n\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
                 "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 3.1p1, Build: $Id$\n\n"+
+                "Version " + PlotBox.PTPLOT_RELEASE +
+	        ", Build: $Id$\n\n"+
                 "For help, type 'pxgraph -help', or see \n" +
                 "the class documentation in the plot.pxgraph package.\n" +
                 "For more information, see\n" +
@@ -175,7 +176,8 @@ public class PxgraphApplication extends PlotApplication {
                 continue;
             } else if (arg.equals("-v") || arg.equals("-version")) {
                 // -version is not in the original X11 pxgraph.
-                System.out.println("Version 3.1p1, Build $Id$");
+                System.out.println("Version " + PlotBox.PTPLOT_RELEASE +
+				   ", Build $Id$");
                 System.exit(0);
                 continue;
             } else if (arg.startsWith("=")) {

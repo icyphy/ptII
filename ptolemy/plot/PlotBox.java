@@ -1039,6 +1039,11 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    public static final String PTPLOT_RELEASE = "4.1";
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Draw the axes using the current range, label, and title information.
@@ -1627,7 +1632,8 @@ public class PlotBox extends JPanel implements Printable {
                 "Ptolemy plot package\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 3.1p1, Build: $Id$\n\n" +
+                "Version " + PTPLOT_RELEASE + 
+	        ", Build: $Id$\n\n" +
                 "Key bindings:\n" +
                 "   Cntr-c:  copy plot to clipboard (EPS format)\n" +
                 "   D: dump plot data to standard out\n" +
@@ -2051,7 +2057,7 @@ public class PlotBox extends JPanel implements Printable {
      * NOTE: java.text.NumberFormat in Netscape 4.61 has a bug
      * where it fails to round numbers instead it truncates them.
      * As a result, we don't use java.text.NumberFormat, instead
-     * We use the method from Ptplot3.1
+     * We use the method from Ptplot1.3
      */
     private String _formatNum(double num, int numfracdigits) {
         // When java.text.NumberFormat works under Netscape,
@@ -2071,7 +2077,7 @@ public class PlotBox extends JPanel implements Printable {
         //_numberFormat.setMaximumFractionDigits(numfracdigits);
         //return _numberFormat.format(num);
 
-        // The section below is from Ptplot3.1
+        // The section below is from Ptplot1.3
 
         // First, round the number.
         double fudge = 0.5;

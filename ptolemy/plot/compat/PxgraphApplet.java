@@ -35,6 +35,7 @@ package ptolemy.plot.compat;
 
 import ptolemy.plot.PlotApplet;
 import ptolemy.plot.Plot;
+import ptolemy.plot.PlotBox;
 import ptolemy.plot.CmdLineArgException;
 
 import java.io.*;
@@ -62,7 +63,8 @@ public class PxgraphApplet extends PlotApplet {
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PxgraphApplet 3.1p1: A data plotter.\n" +
+        return "PxgraphApplet " + PlotBox.PTPLOT_RELEASE +
+	    ": A data plotter.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
             "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
             "($Id$)";
