@@ -69,6 +69,13 @@ public class TTTPlayer extends AtomicActor {
 	output.broadcast(new IntToken(_row));
 	output.broadcast(new IntToken(_col));
     }                
+
+    /** Initialize and set the move variables */
+    public void initialize() throws IllegalActionException {
+	super.initialize();
+	_row = -1;
+	_col = -1;
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  //// 

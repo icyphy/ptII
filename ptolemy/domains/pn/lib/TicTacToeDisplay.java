@@ -56,6 +56,10 @@ public final class TicTacToeDisplay extends AtomicActor {
 
     /** Initialize the actor */
     public void initialize() throws IllegalActionException {
+	_notdone = true;
+	_nomove = true;
+	_playermove = false;
+	_moves = new int[3][3];
 	if(_panel == null) {
             _frame = new _PictureFrame("Enjoy Mudit's TicTacToe");
 	    _frame.addWindowListener(new _PictureFrameListener(_frame));    
@@ -196,17 +200,13 @@ public final class TicTacToeDisplay extends AtomicActor {
 
 
     //private Picture _panel;
-    private boolean _notdone = true;
-    private boolean _nomove = true;
-    private boolean _playermove = false;
-    private int[][] _moves = new int[3][3];
+    private boolean _notdone;
+    private boolean _nomove;
+    private boolean _playermove;
+    private int[][] _moves;
     private Picture _picture;
     private _PictureFrame _frame;
     private Panel _panel;
-
-    private int _oldxsize, _oldysize;
-    //private Image _image;
-    private int _RGBbuffer[] = null;
     private String _framename;
 
 
