@@ -48,7 +48,7 @@ ME =		java/pt/data
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-DIRS = 		test # parser # doc
+DIRS = 		test  parser  doc
 
 CLASSPATH = ../..
 
