@@ -1963,12 +1963,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 		PtolemyEffigy effigy =
 		        (PtolemyEffigy)getTableau().getContainer();
 		NamedObj object = effigy.getModel();
-		if (object == null) return;
+		if (object == null) {
+                    return;
+                }
 		StringWriter buffer = new StringWriter();
 		object.exportMoML(buffer, 1);
 		Configuration configuration = (Configuration)effigy.toplevel();
-		NamedObj library = configuration.getEntity("actor library");
-		if (library == null) return;
+		NamedObj library =
+                    configuration.getEntity("actor library.vergilUserLibrary");
+		if (library == null) {
+                    MessageHandler.error(
+                            "Save In Library failed: " +
+                            "Could not find user library with name " +
+                            "\"vergilUserLibrary\".");
+                    return;
+                }
                 ChangeRequest request =
                     new MoMLChangeRequest(this, library, buffer.toString());
 		library.requestChange(request);
