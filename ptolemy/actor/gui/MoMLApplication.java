@@ -137,7 +137,7 @@ public class MoMLApplication {
 
         // We reset the filters here so that if we call MoMLApplication 
         // more than once, we do not add a filter each time.
-        parser.setMoMLFilters(null);
+        _parser.setMoMLFilters(null);
 
 	// Handle Backward Compatibility.
 	_parser.addMoMLFilter(new FilterBackwardCompatibility());
