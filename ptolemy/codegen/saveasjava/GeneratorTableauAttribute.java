@@ -232,6 +232,28 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         GeneratorTableauAttribute newObject = (GeneratorTableauAttribute)
             super.clone(workspace);
 
+	/*
+	// We use reflection here so that we don't have to edit
+	// this method every time we add a field.
+	Field fields [] = getClass().getFields();
+	String fieldValue;
+	for(int i = 0; i < fields.length; i++) {
+	    try {
+		if (fields[i].get(newObject) instanceof StringAttribute
+		    || fields[i].get(newObject) instanceof Parameter) {
+                    fields[i].set(newObject,
+				  newObject.getAttribute(fields[i].getName()));
+		}
+	    } catch (IllegalAccessException e) {
+                throw new CloneNotSupportedException(e.getMessage() +
+                        ": " + fields[i].getName());
+	    }
+	}
+	System.out.println("GenerateTableauAttribute.clone(): "
+			   + newObject);
+
+	return newObject;
+	*/
 	// Alphabetical
         newObject.compile = (Parameter)
             newObject.getAttribute("compile");
@@ -259,12 +281,6 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         return newObject;
     }
 
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-	System.out.println("GenerateTableauAttribute.attributeChanged()"
-			   + attribute);
-
-    }
     /** Return a String representation of this object. */
     public String toString() {
 	// We use reflection here so that we don't have to edit
