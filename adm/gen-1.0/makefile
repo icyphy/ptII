@@ -435,6 +435,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
