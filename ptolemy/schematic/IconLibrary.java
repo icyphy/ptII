@@ -108,9 +108,10 @@ public class IconLibrary extends XMLElement{
     /**
      * Add a sublibrary to this library.
      */
-    public void addSubLibrary(String name) {
+    public void addSubLibrary(String name, String url) {
         XMLElement e = new XMLElement("sublibrary");
-        e.setAttribute("uri",name);
+        e.setAttribute("name", name);
+        e.setAttribute("url", url);
         _header.addChildElement(e);
         _sublibraries.putAt(name, e);
     }
@@ -228,10 +229,12 @@ a     * This is primarily used by the parser to keep the semantic structures
             // if it's an Icon, then just add it to the list of icons.
             _icons.putAt(
                     ((Icon) e).getName(), e);
+
         } else if(e.getElementType().equals("sublibrary")) {
             // if it's a sublibrary, then add it to the list of sublibraries.
-            String filename = e.getAttribute("uri");
-            _sublibraries.putAt(filename,e);
+            String name = e.getAttribute("name");
+            _sublibraries.putAt(name,e);
+
         } else if(e.getElementType().equals("header")) {
             /* Remove the old header and swap in the new one.
                if the new header does not contain a description, then
@@ -242,6 +245,7 @@ a     * This is primarily used by the parser to keep the semantic structures
             }
             removeChildElement(_header);
             _header = e;
+
         } else if(e.getElementType().equals("description")) {
             // if it's a description, then replace the old description that
             // was in the header. Remember that the description is not
