@@ -78,7 +78,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 130.0">
         </property>
     </property>
-    <property name="inputBlockSize" class="ptolemy.data.expr.Parameter" value="2">
+    <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -169,8 +169,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>inputBits</title>
-<xRange min="-0.40306122448979576" max="58.90963718820862"/>
-<yRange min="8.670520231213175E-4" max="0.9991329479768787"/>
+<xRange min="0.0" max="79.0"/>
+<yRange min="0.0" max="1.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -200,7 +200,7 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>decodedBits</title>
-<xRange min="20.0" max="79.0"/>
+<xRange min="0.0" max="79.0"/>
 <yRange min="0.0" max="1.0"/>
 </plot>?>
         </configure>
@@ -236,28 +236,8 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-        <property name="inputBlockSize" class="ptolemy.data.expr.Parameter" value="inputBlockSize">
-        </property>
-        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="initial">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 280.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
-            </property>
-        </port>
-    </entity>
     <entity name="ViterbiDecoder" class="ptolemy.actor.lib.comm.ViterbiDecoder">
-        <property name="inputBlockSize" class="ptolemy.data.expr.Parameter" value="inputBlockSize">
+        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="uncodeBlockSize">
         </property>
         <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
         </property>
@@ -265,7 +245,7 @@
         </property>
         <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 290.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -275,6 +255,26 @@
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
+        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="uncodeBlockSize">
+        </property>
+        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
+        </property>
+        <property name="initial" class="ptolemy.data.expr.Parameter" value="initial">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 280.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
             </property>
         </port>
     </entity>
@@ -302,8 +302,8 @@
     <link port="inputBits.input" relation="relation4"/>
     <link port="decodedBits.input" relation="relation3"/>
     <link port="encodedBits.input" relation="relation6"/>
-    <link port="ConvolutionalCoder.input" relation="relation4"/>
-    <link port="ConvolutionalCoder.output" relation="relation6"/>
     <link port="ViterbiDecoder.input" relation="relation2"/>
     <link port="ViterbiDecoder.output" relation="relation3"/>
+    <link port="ConvolutionalCoder.input" relation="relation4"/>
+    <link port="ConvolutionalCoder.output" relation="relation6"/>
 </entity>

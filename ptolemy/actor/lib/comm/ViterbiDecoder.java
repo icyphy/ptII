@@ -52,7 +52,7 @@ import ptolemy.util.StringUtilities;
 The Viterbi algorithm is one optimal way to decode convolutional codes.
 The <i>polynomialArray<i> indicates the polynomials used to compute
 parities for the corresponding convolutional encoder.
-The <i>inputBlockSize</i> is the input rate of the encoder, and it is
+The <i>uncodeBlockSize</i> is the input rate of the encoder, and it is
 actually the output rate of the decoder.
 <p>
 The input port of the decoder is double type and receives signals from
@@ -75,8 +75,9 @@ and computational complexity.
 As each new corrupted codeword is received, the decoder makes a final
 decision on the most-likely input symbol of "D" firings earlier, where "D"
 is specified by the <i>delay</i> parameter. It should be a positive integer.
-Therefore, the decoder does not produce any outputs during the first "D"
-firings, and the last "D" codewords are "lost" in the decoder.
+Therefore, in the first "D" firings, the decoder does not make any
+decoding decision and sends all-zero tokens to the output.
+And the last "D" codewords are "lost" in the decoder.
 The larger "D" is, the more likely the decoder can "guess" correctly.
 The trade-off is more waiting time and more complexity in the computation.
 Users who wish to get a complete sequence of the decoded bits should attatch
@@ -109,9 +110,9 @@ public class ViterbiDecoder extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        inputBlockSize = new Parameter(this, "inputBlockSize");
-        inputBlockSize.setTypeEquals(BaseType.INT);
-        inputBlockSize.setExpression("1");
+        uncodeBlockSize = new Parameter(this, "uncodeBlockSize");
+        uncodeBlockSize.setTypeEquals(BaseType.INT);
+        uncodeBlockSize.setExpression("1");
 
         polynomialArray = new Parameter(this, "polynomialArray");
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
@@ -150,7 +151,7 @@ public class ViterbiDecoder extends Transformer {
      *  takes in each firing. It should be a positive integer. Its
      *  default value is the integer 1.
      */
-    public Parameter inputBlockSize;
+    public Parameter uncodeBlockSize;
 
     /** Integer defining the trace back depth of the viterbi decoder.
      *  It should be a posivitive integer. Its default value is the
@@ -168,11 +169,11 @@ public class ViterbiDecoder extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>inputBlockSize</i> or
+    /** If the attribute being changed is <i>uncodeBlockSize</i> or
      *  <i>delay</i> then verify it is a positive integer; if it is
      *  <i>polynomailArray</i>, then verify that each of its elements
      *  is a positive integer.
-     *  @exception IllegalActionException If <i>inputBlockSize</i>,
+     *  @exception IllegalActionException If <i>uncodeBlockSize</i>,
      *  or <i>delay</i> is non-positive, or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
@@ -180,8 +181,8 @@ public class ViterbiDecoder extends Transformer {
             throws IllegalActionException {
         if (attribute == softDecoding) {
             _mode = ((BooleanToken)softDecoding.getToken()).booleanValue();
-        } else if (attribute == inputBlockSize) {
-            _inputNumber = ((IntToken)inputBlockSize.getToken()).intValue();
+        } else if (attribute == uncodeBlockSize) {
+            _inputNumber = ((IntToken)uncodeBlockSize.getToken()).intValue();
             if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
                         "inputLength must be non-negative.");
@@ -281,7 +282,7 @@ public class ViterbiDecoder extends Transformer {
             // _truthTable[m][n][1:3] has the following meanings:
             // "m" is the possible current state of the shift register.
             // It has 2<i>k</i> possible previous states, where "k"
-            // is the <i>inputBlockSize</i>.
+            // is the <i>uncodeBlockSize</i>.
             // Hence _truthTable[m][n][1:3] stores the truth values for
             // the n-th possible previous state for state "m".
             // _truthTable[m][n][1] is the "value" of the previous
@@ -346,6 +347,14 @@ public class ViterbiDecoder extends Transformer {
             }
             _path[state][_flag] = minInput;
 
+        }
+
+        if (_flag < _depth) {
+            IntToken[] initialOutput = new IntToken[_inputNumber];
+            for (int i = 0; i < _inputNumber; i ++) {
+                initialOutput[i] = _tokenZero;
+            }
+            output.broadcast(initialOutput, _inputNumber);
         }
 
         // If the waiting time has reached "D", the decoder starts to send

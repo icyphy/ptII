@@ -7,7 +7,7 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -44,7 +44,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 55.0">
         </property>
     </property>
-    <property name="NoisePower" class="ptolemy.data.expr.Parameter" value="0.5">
+    <property name="NoisePower" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -473,7 +473,7 @@ we always want to rely more on the "strong" path.</text></svg></configure>
             </port>
         </entity>
         <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(31, 0)">
             </property>
             <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 310.0">
@@ -491,7 +491,7 @@ we always want to rely more on the "strong" path.</text></svg></configure>
                 <property name="output"/>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="31">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -526,7 +526,7 @@ we always want to rely more on the "strong" path.</text></svg></configure>
             </port>
         </entity>
         <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
-            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0}">
             </property>
             <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 410.0">
@@ -544,7 +544,7 @@ we always want to rely more on the "strong" path.</text></svg></configure>
                 <property name="output"/>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -675,13 +675,159 @@ we always want to rely more on the "strong" path.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 125.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
             <port name="bit" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+            </port>
+        </entity>
+        <entity name="SequencePlotter3" class="ptolemy.actor.lib.gui.SequencePlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 176]">
+            </property>
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="730.0, 350.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter3</title>
+<xRange min="0.0" max="19.0"/>
+<yRange min="-1.0000000000000004" max="1.6"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="SequencePlotter2" class="ptolemy.actor.lib.gui.SequencePlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 176]">
+            </property>
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="695.0, 255.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter2</title>
+<xRange min="1.0924999999999998" max="19.285"/>
+<yRange min="-9.825391304347823" max="9.09078260869565"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 176]">
+            </property>
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 65.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="19.0"/>
+<yRange min="-16.4" max="16.4"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="SampleDelay3" class="ptolemy.domains.sdf.lib.SampleDelay">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(30, 0)">
+            </property>
+            <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 255.0">
+            </property>
+            <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                <property name="output"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+        </entity>
+        <entity name="SequenceToArray5" class="ptolemy.domains.sdf.lib.SequenceToArray">
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="codeLength">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 250.0">
+            </property>
+            <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="31">
+                </property>
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                <property name="output"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="{double}">
+                </property>
             </port>
         </entity>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -705,7 +851,7 @@ we always want to rely more on the "strong" path.</text></svg></configure>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="195.0, 120.0">
+            <vertex name="vertex1" value="210.0, 125.0">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -720,17 +866,25 @@ we always want to rely more on the "strong" path.</text></svg></configure>
         </relation>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="655.0, 320.0">
+            </vertex>
+        </relation>
+        <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="545.0, 150.0">
+            </vertex>
+        </relation>
+        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="out" relation="relation9"/>
         <link port="sumSignal" relation="relation17"/>
@@ -747,8 +901,8 @@ we always want to rely more on the "strong" path.</text></svg></configure>
         <link port="Scrambler.output" relation="relation15"/>
         <link port="DotProduct.input1" relation="relation8"/>
         <link port="DotProduct.input2" relation="relation2"/>
-        <link port="DotProduct.output" relation="relation16"/>
-        <link port="DotProduct2.input1" relation="relation2"/>
+        <link port="DotProduct.output" relation="relation21"/>
+        <link port="DotProduct2.input1" relation="relation16"/>
         <link port="DotProduct2.input2" relation="relation"/>
         <link port="DotProduct2.output" relation="relation4"/>
         <link port="SampleDelay.input" relation="relation7"/>
@@ -761,19 +915,26 @@ we always want to rely more on the "strong" path.</text></svg></configure>
         <link port="SequenceToArray4.output" relation="relation13"/>
         <link port="DotProduct3.input1" relation="relation2"/>
         <link port="DotProduct3.input2" relation="relation13"/>
-        <link port="DotProduct3.output" relation="relation10"/>
+        <link port="DotProduct3.output" relation="relation20"/>
         <link port="AddSubtract.plus" relation="relation3"/>
         <link port="AddSubtract.plus" relation="relation18"/>
         <link port="AddSubtract.plus" relation="relation19"/>
         <link port="AddSubtract.output" relation="relation14"/>
-        <link port="Scale.input" relation="relation16"/>
+        <link port="Scale.input" relation="relation21"/>
         <link port="Scale.output" relation="relation3"/>
         <link port="Scale2.input" relation="relation4"/>
         <link port="Scale2.output" relation="relation18"/>
-        <link port="Scale3.input" relation="relation10"/>
+        <link port="Scale3.input" relation="relation20"/>
         <link port="Scale3.output" relation="relation19"/>
         <link port="Expression.output" relation="relation7"/>
         <link port="Expression.bit" relation="relation15"/>
+        <link port="SequencePlotter3.input" relation="relation20"/>
+        <link port="SequencePlotter2.input" relation="relation4"/>
+        <link port="SequencePlotter.input" relation="relation21"/>
+        <link port="SampleDelay3.input" relation="relation17"/>
+        <link port="SampleDelay3.output" relation="relation10"/>
+        <link port="SequenceToArray5.input" relation="relation10"/>
+        <link port="SequenceToArray5.output" relation="relation16"/>
     </entity>
     <entity name="Modulation2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 285.0">
@@ -927,7 +1088,7 @@ we always want to rely more on the "strong" path.</text></svg></configure>
         </property>
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.5, 0.3, 0.2}">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.5, 0.3, 0, 0, 0, 0, 0.2}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 135.0">
         </property>
@@ -972,7 +1133,7 @@ we always want to rely more on the "strong" path.</text></svg></configure>
         </property>
         <property name="pmf" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{-1, 1}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 285.0">
         </property>
@@ -996,11 +1157,11 @@ we always want to rely more on the "strong" path.</text></svg></configure>
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="770.0, 230.0">
         </property>
@@ -1010,6 +1171,37 @@ we always want to rely more on the "strong" path.</text></svg></configure>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 176]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 340.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="19.0"/>
+<yRange min="-1.0" max="1.0"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -1060,4 +1252,5 @@ we always want to rely more on the "strong" path.</text></svg></configure>
     <link port="Equals.input" relation="relation2"/>
     <link port="Equals.output" relation="relation4"/>
     <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="relation15"/>
 </entity>

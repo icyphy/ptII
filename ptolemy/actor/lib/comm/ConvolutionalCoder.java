@@ -52,7 +52,7 @@ The input port accepts a sequence of integers 0 and 1. The output port
 produces the encoded bits in a sequence of 0 and 1.
 The initial state of the shift register is given by the <i>initial</i>
 parameter, which should be a non-negative integer.
-The <i>inputBlockSize</i> parameter, denoted by "k", is the number of
+The <i>uncodeBlockSize</i> parameter, denoted by "k", is the number of
 bits per firing that should be shifted into and along the shift register.
 It should be a positive integer. We call a k-bit block of input sequence
 as an <i>information symbol</i>.
@@ -107,9 +107,9 @@ public class ConvolutionalCoder extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        inputBlockSize = new Parameter(this, "inputBlockSize");
-        inputBlockSize.setTypeEquals(BaseType.INT);
-        inputBlockSize.setExpression("1");
+        uncodeBlockSize = new Parameter(this, "uncodeBlockSize");
+        uncodeBlockSize.setTypeEquals(BaseType.INT);
+        uncodeBlockSize.setExpression("1");
 
         polynomialArray = new Parameter(this, "polynomialArray");
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
@@ -150,19 +150,19 @@ public class ConvolutionalCoder extends Transformer {
      *  takes in each firing. It should be a positive integer. Its
      *  default value is the integer 1.
      */
-    public Parameter inputBlockSize;
+    public Parameter uncodeBlockSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>initial</i>, then verify
-     *  that it is a non-negative integer; if it is <i>inputBlockSize</i>,
+     *  that it is a non-negative integer; if it is <i>uncodeBlockSize</i>,
      *  then verify that it is a positive integer; if it is
      *  <i>polynomailArray</i>, then verify that each of its elements is
      *  a positive integer and find the maximum value among them, which
      *  is used to compute the highest order among all polynomials.
      *  @exception IllegalActionException If <i>initial</i> is negative
-     *  or <i>inputBlockSize</i> is non-positive or any element of
+     *  or <i>uncodeBlockSize</i> is non-positive or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
@@ -173,8 +173,8 @@ public class ConvolutionalCoder extends Transformer {
                 throw new IllegalActionException(this,
                         "shift register's value must be non-negative.");
             }
-        } else if (attribute == inputBlockSize) {
-            _inputNumber = ((IntToken)inputBlockSize.getToken()).intValue();
+        } else if (attribute == uncodeBlockSize) {
+            _inputNumber = ((IntToken)uncodeBlockSize.getToken()).intValue();
             if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
                         "inputLength must be non-negative.");
@@ -208,7 +208,7 @@ public class ConvolutionalCoder extends Transformer {
         }
     }
 
-    /** Read "<i>inputBlockSize</i>" bits from the input port and shift
+    /** Read "<i>uncodeBlockSize</i>" bits from the input port and shift
      *  them into the shift register. Compute the parity for each
      *  polynomial specified in <i>polynomialArray</i>. Send the results
      *  in sequence. The i-th bit corresponds to the parity computed

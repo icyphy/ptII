@@ -52,6 +52,7 @@ JSRCS = \
         ConvolutionalCoder.java \
 	DeScrambler.java \
 	HadamardCode.java \
+        Interleaver.java \
         Scrambler.java \
         ViterbiDecoder.java
 OTHER_FILES_TO_BE_JARED = \
