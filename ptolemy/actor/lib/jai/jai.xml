@@ -168,6 +168,20 @@
 	</entity>		
 	<entity name="JAIPNMWriter" class="ptolemy.actor.lib.jai.JAIPNMWriter">
 	</entity>
+	<entity name="JAIRotate" class="ptolemy.actor.lib.jai.JAIRotate">
+	  <property name="interpolationType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="bicubic" value="bicubic"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bicubic2" value="bicubic2"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bilinear" value="bilinear"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="nearestNeighbor" value="nearestNeighbor"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
 	<entity name="JAIScale" class="ptolemy.actor.lib.jai.JAIScale">
 	  <property name="interpolationType">
 	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
