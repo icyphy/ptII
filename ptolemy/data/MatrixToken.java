@@ -218,6 +218,14 @@ public abstract class MatrixToken extends Token {
         return createMatrix(tokens, rows, columns);
     }
 
+    /** Create a new instance of ArrayToken that contains the values
+     *  in the specified matrix.
+     *  @return An array.
+     */
+    public static ArrayToken createArray(MatrixToken matrix) {
+        return matrix.toArray();
+    }
+
     /** Create a new instance of a MatrixToken subclass with the given number
      *  of rows and columns.  The token will contain all of the elements of the
      *  given array.  The element type of the matrix token will be
