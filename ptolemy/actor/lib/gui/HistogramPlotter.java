@@ -65,7 +65,7 @@ where <i>w</i> is the value of the <i>binWidth</i> parameter,
 and <i>o</i> is the value of the <i>binOffset</i> parameter.
 So for example, if <i>o = w/2</i>,
 then each bin represents values from <i>nw</i> to
-(<i>n</i> + 1)<i>w</i>) for some integer <i>n</i>.
+(<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
 The default offset is 0.5, half the default bin width, which is 1.0.
 <p>
 This actor has a <i>legend</i> parameter,
