@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ImageReaderImageToString" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ImageReaderFullScreenImageDisplay" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 99]">
@@ -14,6 +14,27 @@
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="130.0, 52.1328125">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Display various images
+in full screen mode.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="435.0, 55.0">
         </property>
     </property>
     <entity name="ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
@@ -73,7 +94,7 @@
         </port>
     </entity>
     <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 222.203125">
+        <property name="_location" class="ptolemy.moml.Location" value="245.0, 222.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

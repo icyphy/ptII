@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ImageReaderImageToString" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ThreeScreenSlideShow" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 101]">
@@ -16,6 +16,28 @@
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="60.0, 27.203125">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model will probably only
+work on a machine that has
+three displays</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="93.4609375, 185.46875">
         </property>
     </property>
     <entity name="ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
@@ -34,7 +56,7 @@
     <entity name="1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="178.078125, 32.1875">
+        <property name="_location" class="ptolemy.moml.Location" value="428.078125, 27.1875">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -447,7 +469,7 @@
     <entity name="3:1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="403.078125, 152.1875">
+        <property name="_location" class="ptolemy.moml.Location" value="433.078125, 182.1875">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -460,7 +482,7 @@
     <entity name="4:1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="423.078125, 337.1875">
+        <property name="_location" class="ptolemy.moml.Location" value="428.078125, 342.1875">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -473,7 +495,7 @@
     <entity name="5:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="58.078125, 252.203125">
+        <property name="_location" class="ptolemy.moml.Location" value="68.078125, 282.203125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -498,7 +520,7 @@
     <entity name="6:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="63.078125, 367.1875">
+        <property name="_location" class="ptolemy.moml.Location" value="68.078125, 382.1875">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -511,7 +533,7 @@
     <entity name="6:ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
         <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="270">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="245.0859375, 412.1875">
+        <property name="_location" class="ptolemy.moml.Location" value="210.0859375, 382.1875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -521,7 +543,7 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="6">
         </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">

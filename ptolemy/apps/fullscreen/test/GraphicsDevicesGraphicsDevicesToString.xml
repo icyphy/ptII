@@ -16,8 +16,30 @@
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 80.0">
         </property>
     </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model displays the GraphicsDevices
+on the current machine.
+Most machines have only one GraphisDevice.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="362.0, 95.3828125">
+        </property>
+    </property>
     <entity name="GraphicsDevices" class="ptolemy.apps.fullscreen.GraphicsDevices">
-        <property name="_location" class="ptolemy.moml.Location" value="111.265625, 202.1328125">
+        <property name="_location" class="ptolemy.moml.Location" value="116.265625, 197.1328125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -44,7 +66,7 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="516.5, 197.203125">
+        <property name="_location" class="ptolemy.moml.Location" value="501.5, 197.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
