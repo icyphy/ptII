@@ -37,6 +37,7 @@ ME =		java/pt/domains/pn/kernel
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
+JAVAHOME =      /opt/jdk1.2latest
 
 DIRS = 		demo #test doc
 
