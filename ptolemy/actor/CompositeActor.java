@@ -164,40 +164,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a list that consists of all the atomic entities in a model.
-     *  This method differs from CompositeEntity.deepEntityList() in that
-     *  this method looks inside opaque entities, whereas deepEntityList()
-     *  does not.
-     *
-     *  @return a List of all atomic entities in the model.
-     */
-    public List allAtomicEntityList() {
-        // We don't use an Iterator here so that we can modify the list
-        // rather than having both an Iterator and a result list.
-        //
-        // Note: 
-        // deepEntityList() should be renamed to deepOpaqueEntityList()
-        // allAtomicEntityList() to deepAtomicEntityList()
-        // However, the change would require a fair amount of work.
-        LinkedList entities = (LinkedList)deepEntityList();
-        for(int i = 0; i < entities.size(); i++) {
-            Object actor = entities.get(i);
-            if (actor instanceof CompositeActor) {
-                // Remove the composite actor and add its containees.
-                entities.remove(i);
-                // Note that removing an element from the list causes
-                // the indices of later elements to shift forward by 1.
-                // We reduce the index i by one to match the index in
-                // the list.
-                i--;
-                entities.addAll(
-                        ((CompositeActor) actor).allAtomicEntityList());
-            }
-        }
-        return (List)entities;
-    }
-
-
     /** Clone the actor into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
