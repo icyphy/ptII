@@ -83,6 +83,7 @@ public class Environ {
         _declList.add(decl);
     }
 
+    /** copy the declList from env */
     public void copyDeclList(Environ env) {
 	// FIXME: This is a little strange, but if two envs share a declList
 	// then copyDeclList will effectively set them to null
@@ -90,38 +91,80 @@ public class Environ {
         _declList.addAll(env._declList);
     }
 
+    /** Lookup a decl by name in the current environment, do not look
+     *  in the parent environment, if any.	
+     */
     public Decl lookup(String name) {
         return lookup(name, Decl.CG_ANY, new boolean[1], false);
     }
 
+    /** Lookup a decl by name and mask in the current environment, do not look
+     *  in the parent environment, if any.	
+     */
     public Decl lookup(String name, int mask) {
         return lookup(name, mask, new boolean[1], false);
     }
 
+    /** Lookup a decl by name in the current environment, do not look
+     *  in the parent environment. Set more[0] to true if there are
+     *  other decls with the same name in the environment.	
+     */
     public Decl lookup(String name, boolean[] more) {
         return lookup(name, Decl.CG_ANY, more, false);
     }
 
+    /** Lookup a decl by name and mask in the current environment, do not look
+     *  in the parent environment, if any. Set more[0] to true if there 
+     *  is one or more decls with the same name in the environment.
+     *  Note that more[0] will be true if the other decls have the
+     *  same name but different masks.
+     */
     public Decl lookup(String name, int mask, boolean[] more) {
         return lookup(name, mask, more, false);
     }
 
+    /** Lookup a decl by name in the current environment and
+     *  in the parent environment, if any.
+     */	
     public Decl lookupProper(String name) {
         return lookup(name, Decl.CG_ANY, new boolean[1], true);
     }
 
+    /** Lookup a decl by name and mask in the current environment and
+     *  in the parent environment, if any.
+     */	
     public Decl lookupProper(String name, int mask) {
         return lookup(name, mask, new boolean[1], true);
     }
 
+    /** Lookup a decl by name in the current environment and
+     *  in the parent environment, if any. Set more[0] to true if there 
+     *  is one or more decls with the same name in the environment.
+     *  Note that more[0] will be true if the other decls have the
+     *  same name but different masks.
+     */	
     public Decl lookupProper(String name, boolean[] more) {
         return lookup(name, Decl.CG_ANY, more, true);
     }
 
+    /** Lookup a decl by name and mask in the current environment and
+     *  in the parent environment, if any. Set more[0] to true if there 
+     *  is one or more decls with the same name in the environment.
+     *  Note that more[0] will be true if the other decls have the
+     *  same name but different masks.
+     */	
     public Decl lookupProper(String name, int mask, boolean[] more) {
         return lookup(name, mask, more, true);
     }
 
+    /** Lookup a decl by name and mask in the current environment or
+     *  in the parent environment, if any. Set more[0] to true if there 
+     *  is one or more decls with the same name in the environment.
+     *  Note that more[0] will be true if the other decls have the
+     *  same name but different masks.  If the proper argument is
+     *  true, then look in the parent environment, if any.  If it
+     *  is false, then do not look in the parent environment.
+     */	
     public Decl lookup(String name, int mask, boolean[] more, boolean proper) {
         EnvironIter itr = lookupFirst(name, mask, proper);
 
@@ -157,7 +200,7 @@ public class Environ {
     }
 
     public EnvironIter allDecls() {
-        return lookupFirst("*", Decl.CG_ANY, false);
+        return lookupFirst(Decl.ANY_NAME, Decl.CG_ANY, false);
     }
 
     public EnvironIter allDecls(int mask) {
