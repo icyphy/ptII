@@ -375,7 +375,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel)));
-        
+       
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ufr",
                         UnusedFieldRemover.v()));
@@ -401,7 +401,10 @@ public class Main extends KernelMain {
        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffu",
                         FinalFieldUnfinalizer.v()));
-        /**/
+       Scene.v().getPack("wjtp").add(
+               new Transform("wjtp.umr", 
+                       UnreachableMethodRemover.v()));
+       /**/
 
         // This snapshot should be last...
         Scene.v().getPack("wjtp").add(

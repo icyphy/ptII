@@ -285,9 +285,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 TypeAssigner.v().transform(
                         body, _phaseName + ".ta", "");
 
-                TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
-                        body, _phaseName + ".tie", unsafeLocalSet,
-                        false);
+         //        TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
+//                         body, _phaseName + ".tie", unsafeLocalSet,
+//                         false);
 
                 UnreachableCodeEliminator.v().transform(
                         body, _phaseName + ".uce", "");
@@ -333,7 +333,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
         }
     }
 
-    public void inlineTokenAndTypeMethods(SootClass entityClass, int depth, Set unsafeLocalSet, boolean debug) {
+    public void inlineTokenAndTypeMethods(SootClass entityClass, int depth,
+            Set unsafeLocalSet, boolean debug) {
         // Inline all token methods, until we run out of things to inline
         boolean doneSomething = true;
         int count = 0;
@@ -343,6 +344,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
             if (debug) {
                 System.err.println("inlining token methods in " + entityClass + " iteration " +
+                        count + " depth = " + depth);
+                System.out.println("inlining token methods in " + entityClass + " iteration " +
                         count + " depth = " + depth);
             }
 
@@ -390,7 +393,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // of the analysis.  And prevent typing errors.
                 TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
                         body, _phaseName + ".tie", unsafeLocalSet,
-                        false);
+                        debug);
 
                 UnreachableCodeEliminator.v().transform(
                         body, _phaseName + ".uce", "");
@@ -438,6 +441,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
             for (Iterator methods = entityClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
+
+                // Check to see if the method is safe to modify with:
+                // It has no arguments or return values which are 
+                // tokens.
+                if(_methodWillBeInlined(method)) {
+                    continue;
+                }
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
@@ -528,12 +538,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 body.getUnits().remove(unit);
             }
 
-            boolean isInlineableTokenMethod = false;
-            isInlineableTokenMethod = _isInlineableTokenType(
-                    local, typeAnalysis, unsafeLocalSet,
-                    depth, debug);
+            boolean isInlineableTokenMethod = _isLocalTokenTypeWithDepth(
+                local, typeAnalysis, unsafeLocalSet,
+                depth, debug);
 
-            // Try to make sure we get methods like Scale._scaleOnRight
+            // Check if token arguments are being used.
+            // This makes sure we get methods like Scale._scaleOnRight
             // inlined.
             if (baseType instanceof RefType &&
                     Scene.v().getApplicationClasses().contains(
@@ -544,7 +554,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     if (arg instanceof Local) {
                         Local argLocal = (Local)arg;
                         if (debug) System.out.println("argtype = " + argLocal.getType());
-                        isInlineableTokenMethod = _isInlineableTokenType(
+                        isInlineableTokenMethod = _isLocalTokenTypeWithDepth(
                                 argLocal, typeAnalysis, unsafeLocalSet,
                                 depth, debug);
                         if (debug) {
@@ -554,7 +564,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     }
                 }
             }
-
+        
             if (!isInlineableTokenMethod) {
                 return false;
             }
@@ -594,7 +604,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                 } else {
                     SootClass declaringClass = inlinee.getDeclaringClass();
-                    declaringClass.setLibraryClass();
+                    if(!declaringClass.isApplicationClass()) {
+                        declaringClass.setLibraryClass();
+                    }
                     if (!inlinee.isAbstract() &&
                             !inlinee.isNative()) {
                         // FIXME: only inline things where we are
@@ -655,7 +667,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         hierarchy.resolveSpecialDispatch(
                                 r, method);
                     SootClass declaringClass = inlinee.getDeclaringClass();
-                    declaringClass.setLibraryClass();
+                    if(!declaringClass.isApplicationClass()) {
+                        declaringClass.setLibraryClass();
+                    }
                     if (!inlinee.isAbstract() &&
                             !inlinee.isNative()) {
                         if (debug) System.out.println("inlining");
@@ -717,8 +731,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     // Note that we make sure to inline method like
                     // UtilityFunctions.gaussian, which returns a
                     // DoubleMatrixToken.
-               
-                    declaringClass.setLibraryClass();
+                    if(!declaringClass.isApplicationClass()) {
+                        declaringClass.setLibraryClass();
+                    }
                     if (!inlinee.isAbstract() &&
                             !inlinee.isNative()) {
                         if (debug) System.out.println("inlining");
@@ -744,6 +759,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
             count++;
             if (debug) {
                 System.err.println("inlining type methods in " + entityClass + " iteration " +
+                        count + " depth = " + depth);
+                System.out.println("inlining type methods in " + entityClass + " iteration " +
                         count + " depth = " + depth);
             }
 
@@ -885,7 +902,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             }
                         } else {
                             SootClass declaringClass = inlinee.getDeclaringClass();
-                            declaringClass.setLibraryClass();
+                            if(!declaringClass.isApplicationClass()) {
+                                declaringClass.setLibraryClass();
+                            }
                             if (!inlinee.isAbstract() &&
                                     !inlinee.isNative()) {
                                 // FIXME: only inline things where we are
@@ -927,9 +946,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         if (debug) {
             System.err.println("Creating Replacement token fields in " + entityClass + " with depth " + depth);
+            System.out.println("Creating Replacement token fields in " + entityClass + " with depth " + depth);
         }
-
-        if (debug) System.out.println("creating replacement fields in Class = " + entityClass);
 
         // For every Token field of the actor, create new fields
         // that represent the fields of the token class in this actor.
@@ -1030,9 +1048,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
         boolean doneSomething = false;
         if (debug) {
             System.err.println("Replacing token fields in " + entityClass + " with depth " + depth);
+            System.out.println("Replacing token fields in " + entityClass + " with depth " + depth);
         }
-
-        if (debug) System.out.println("creating replacement locals in Class = " + entityClass);
 
         TypeSpecializerAnalysis typeAnalysis =
             new TypeSpecializerAnalysis(entityClass, unsafeLocalSet);
@@ -1040,6 +1057,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
         for (Iterator methods = entityClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
+
+            // Check to see if the method is safe to modify with:
+            // It has no arguments or return values which are 
+            // tokens.
+            if(_methodWillBeInlined(method)) {
+                continue;
+            }
 
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
@@ -1948,24 +1972,47 @@ public class TokenToNativeTransformer extends SceneTransformer {
         return doneSomething;
     }
 
+    // Return true if the method is one we will inline because it has
+    // token arguments.
+    private static boolean _methodWillBeInlined(
+            SootMethod method) {
+        boolean isInlineableTokenMethod = _isInlineableTokenType(
+                method.getReturnType());
+        
+        for (Iterator args = method.getParameterTypes().iterator();
+             args.hasNext() && !isInlineableTokenMethod;) {
+            Type argType = (Type)args.next();
+            isInlineableTokenMethod = _isInlineableTokenType(argType);
+        }
+        
+        return isInlineableTokenMethod;
+    }
+    
+    // Return true if the type is one we will inline because it is a
+    // token type.
+    private static boolean _isInlineableTokenType(Type type) {
+        if (type instanceof RefType) {
+            RefType refType = (RefType)type;
+            
+            if (SootUtilities.derivesFrom(refType.getSootClass(),
+                        PtolemyUtilities.tokenClass)) {
+                return true;
+            }
+        }
+        return false;
+    }
     // Return true if the givne local is a token, and its specialized type
     // according to the given analysis is a type with the given depth.
-    private static boolean _isInlineableTokenType(
+    private static boolean _isLocalTokenTypeWithDepth(
             Local local, TypeSpecializerAnalysis typeAnalysis,
             Set unsafeLocalSet, int depth, boolean debug) {
         Type baseType = local.getType();
 
         // If we are invoking a method on a Token
         // or Type, and the token is not unsafe.
-        if (baseType instanceof RefType &&
+        if (_isInlineableTokenType(baseType) &&
                 !unsafeLocalSet.contains(local)) {
-            RefType type = (RefType)baseType;
-
-            if (!SootUtilities.derivesFrom(type.getSootClass(),
-                    PtolemyUtilities.tokenClass)) {
-                return false;
-            }
-
+            
             // If it is a token, then check to
             // make sure that it has the
             // appropriate type

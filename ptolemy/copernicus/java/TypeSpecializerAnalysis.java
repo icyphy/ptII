@@ -315,7 +315,12 @@ public class TypeSpecializerAnalysis {
             throw new RuntimeException(
                     "attempt to inline unhandled typeLattice method: " + unit);
         }
-        box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
+        // System.out.println("type1 = " + type1);
+        // System.out.println("type2 = " + type2);
+        // Only inline if both are concrete types.
+        if(type1.isInstantiable() && type2.isInstantiable()) {
+            box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
+        }
     }
 
     private void _collectConstraints(SootClass entityClass, boolean debug) {

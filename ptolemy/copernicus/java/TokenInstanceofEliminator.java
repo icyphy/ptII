@@ -52,7 +52,7 @@ import java.util.Map;
 import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
-//// FieldsForAttributesTransformer
+//// TokenInstanceofEliminator
 /**
 A transformer that removes unnecessary instanceof checks for tokens.
 This is similar to CastAndInstanceofEliminator, except here
@@ -120,6 +120,12 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     // type of the argument.
                     ptolemy.data.type.Type type =
                         tokenTypes.getTypeOfBefore((Local)op, unit);
+
+                    // Don't try to replace non-instantiable types, since they
+                    // might be more refined later.
+                    if(!type.isInstantiable()) {
+                        continue;
+                    }
 
                     Type opType =
                         PtolemyUtilities.getSootTypeForTokenType(type);
