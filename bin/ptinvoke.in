@@ -445,7 +445,8 @@ if [ "$1" = "-policyfile" ]; then
     POLICY_FILE_SET=yes
 fi
 
-if [ "$1" = "-sandbox" -o "$POLICY_FILE_SET" = "yes" ]; then
+# We need the x$1 in case $1 is -x
+if [ "x$1" = "x-sandbox" -o "$POLICY_FILE_SET" = "yes" ]; then
     # Note that when running "vergil -sandbox" or "vergil -policyfile ...",
     # merging properties from lib/ptII.properties.in might not work.
     if [ "$1" = "-sandbox" ]; then
@@ -539,11 +540,11 @@ ptflag="\"-Dptolemy.ptII.dir=$PTII\""
 # $CLASSPATH/lib/ptII.properties.  However, other apps need this property.
 localeflag="-Duser.language=en -Duser.region=US" 
 
-# See $PTII/doc/coding/debuggin.htm for details about using Emacs as an editor.
+# See $PTII/doc/coding/debugging.htm for details about using Emacs as an editor
 # Uncomment this line to pass java this flag to use Emacs as a text editor.
 #USERJAVAPROPERTIES=-Dptolemy.user.texteditor=emacs
 
-quiet=0
+quiet=1
 
 commandname=`basename "$0"`
 # check to see if we are building bat files.
@@ -836,9 +837,10 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	echo " -helpall   List the Ptolemy II commands that can be invoked"
 	echo " -jdb       Run jdb instead of java, see \$PTII/doc/coding/debugging.htm"
 	echo " -profiler  Run under cpu sample profiling"
-    echo " -q         Do not echo the command being run"
+        echo " -q         Do not echo the command being run"
 	echo " -sandbox   Run model under tight security, see \$PTII/bin/sandbox.policy" 
 	echo " -policyfile policyfile  Run model with a specified policyfile" 
+	echo " -v         Echo the command being run"
 	echo "Note that not all combinations above the above arguments make sense."
 	echo ""
 	# Most commands have their own help built in, but some do not. 
@@ -929,6 +931,14 @@ EOF
         shift
         continue
     fi
+    case $1 in
+        -v|-verbose|--verbose)
+	    shift
+            quiet=0
+	    continue
+            ;;
+    esac
+
     # If we get to here, we saw an argument with a leading -, but it
     # was not one of the args we were looking for.
     break;
