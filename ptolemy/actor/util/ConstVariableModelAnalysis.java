@@ -78,7 +78,7 @@ PortParameter with an external connection, or by assignment from
 within a modal model.  The second pass collects all the variables
 which are not constant because they depend on other variables which
 are not constant.  This class also recognizes dependence declarations
-represented by the {@see DependencyDeclaration} class.
+represented by the {@link DependencyDeclaration} class.
 
 <p> This class also keeps track of the "change context" of each
 dynamic variable.  The change context of a variable is an actor that
