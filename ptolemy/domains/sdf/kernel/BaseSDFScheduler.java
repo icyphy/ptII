@@ -73,7 +73,7 @@ import ptolemy.math.Fraction;
 This class factors code out of the SDF domain, for use in different
 schedulers, so that they can be implemented in a consistent fashion.
 
-@author Stephen Neuendorffer
+@author Stephen Neuendorffer, Shuvra S. Bhattacharyya 
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -570,18 +570,25 @@ public abstract class BaseSDFScheduler extends Scheduler {
     protected static void _setOrCreate(
             NamedObj container, String name, int value)
             throws IllegalActionException {
-        Variable rateParameter = (Variable)container.getAttribute(name);
-        if (rateParameter == null) {
-            try {
-                rateParameter = new Variable(container, name);
-                rateParameter.setVisibility(Settable.NOT_EDITABLE);
-                rateParameter.setPersistent(false);
-            } catch (KernelException ex) {
-                throw new InternalErrorException(container, ex,
-                        "Should not occur");
-            }
-        }
-        rateParameter.setToken(new IntToken(value));
+        Variable variable = _getOrCreate(container, name);
+        variable.setToken(new IntToken(value));
+    }
+
+    /** If the specified container does not contain a variable with
+     *  the specified name, then create such a variable and set its
+     *  expression to the specified string.  The resulting variable is not
+     *  persistent and not editable, but will be visible to the user.
+     *  If the variable does exist, then just set its expression.
+     *  @param container The container.
+     *  @param name Name of the variable.
+     *  @param expression The expression.
+     *  @exception If the variable exists and its value cannot be set.
+     */
+    protected static void _setOrCreate(
+            NamedObj container, String name, String expression) 
+            throws IllegalActionException {
+        Variable variable = _getOrCreate(container, name);
+        variable.setExpression(expression);
     }
 
     /** Set the rate variable with the specified name to the specified
@@ -653,4 +660,25 @@ public abstract class BaseSDFScheduler extends Scheduler {
     ////                        protected variables                ////
 
     protected static final boolean VERBOSE = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    // If a variable exists with the given container and given name,
+    // then return it. Otherwise, create the variable and return it.
+    private static Variable _getOrCreate(NamedObj container, String name) 
+            throws IllegalActionException {
+        Variable variable = (Variable)container.getAttribute(name);
+        if (variable == null) {
+            try {
+                variable = new Variable(container, name);
+                variable.setVisibility(Settable.NOT_EDITABLE);
+                variable.setPersistent(false);
+            } catch (KernelException ex) {
+                throw new InternalErrorException(container, ex,
+                        "Should not occur");
+            }
+        }
+        return variable;
+    }
 }
