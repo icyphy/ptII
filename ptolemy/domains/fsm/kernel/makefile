@@ -63,7 +63,11 @@ JSRCS = \
 	HDFFSMDirector.java \
 	HDFFSMController.java \
 	HDFFSMTransition.java \
-	HDFFSMState.java
+	HDFFSMState.java \
+	Action.java \
+	FSMActor.java \
+	State.java \
+	Transition.java
 
 EXTRA_SRCS =	$(JSRCS)
 
