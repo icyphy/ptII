@@ -65,7 +65,9 @@ public interface Nameable {
      */
     public String description();
 
-    /** Return the container. */
+    /** Return the container.
+     *  @return The contain.er
+     */
     public NamedObj getContainer();
 
     /** Return the full name, which reflects the container object, if there
@@ -78,6 +80,7 @@ public interface Nameable {
 
     /** Return the name of the object.
      *  @return The name of the object.
+     *  @see #setName(name)
      */
     public String getName();
 
@@ -96,6 +99,7 @@ public interface Nameable {
      *   encountered, where this object directly or indirectly contains
      *   itself. Note that this is a runtime exception so it need not
      *   be declared explicitly.
+     *  @see #setName(name)
      */
     public String getName(NamedObj relativeTo) throws InvalidStateException;
 
@@ -105,6 +109,8 @@ public interface Nameable {
      *  @exception IllegalActionException If the name contains a period.
      *  @exception NameDuplicationException If the container already
      *   contains an object with this name.
+     *  @see #getName()
+     *  @see #getName(NamedObj)
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException;

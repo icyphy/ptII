@@ -51,6 +51,7 @@ public interface Locatable extends Settable {
 
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
+     *  @see #setLocation(double [])
      */
     public double[] getLocation();
 
@@ -58,6 +59,7 @@ public interface Locatable extends Settable {
      *  the container and any value listeners of the new location.
      *  @param location The location.
      *  @exception IllegalActionException If the location is rejected.
+     *  @see #getLocation()
      */
     public void setLocation(double[] location) throws IllegalActionException;
 }

@@ -57,6 +57,7 @@ public class StreamListener implements DebugListener {
     }
 
     /** Create a debug listener that sends messages to the specified stream.
+     *  @param out The output stream used to create the debug listener.
      */
     public StreamListener(OutputStream out) {
         _output = new PrintStream(out);

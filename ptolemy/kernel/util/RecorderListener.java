@@ -63,6 +63,7 @@ public class RecorderListener implements DebugListener {
     }
 
     /** Get the messages recorded so far.
+     *  @return The messages recorded thus far.
      */
     public String getMessages() {
         return _buffer.toString();

@@ -276,6 +276,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     /** Append a listener to the current set of debug listeners.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send debug messages.
+     *  @see #removeDebugListener(DebugListener) 
      */
     public void addDebugListener(DebugListener listener) {
         // NOTE: This method needs to be synchronized to prevent two
@@ -982,6 +983,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return The level above this object in the containment
      *   hierarchy where a parent-child relationship implies this object.
      *  @see Derivable
+     *  @see #setDerivedLevel(int)
      */
     public int getDerivedLevel() {
         return _derivedLevel;
@@ -1081,6 +1083,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     /** Get the name. If no name has been given, or null has been given,
      *  then return an empty string, "".
      *  @return The name of the object.
+     *  @see #setName(name)
      */
     public String getName() {
         return _name;
@@ -1111,6 +1114,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   encountered, where this object directly or indirectly contains
      *   itself. Note that this is a runtime exception so it need not
      *   be declared explicitly.
+     *  @see #setName(name)
      */
     public String getName(NamedObj parent) throws InvalidStateException {
         if (parent == null) {
@@ -1333,6 +1337,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return Does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException Always thrown in this base class.
      */
     public int moveDown() throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
@@ -1350,6 +1355,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return Does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException Always thrown in this base class.
      */
     public int moveToFirst() throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
@@ -1357,11 +1363,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         throw new IllegalActionException(this, "Has no container.");
     }
 
-    /** Move this object to the specified position in the list
-     *  of attributes of the container. If this object is already at the
-     *  specified position, do  nothing.  In this base class, this method throws
-     *  an IllegalActionException because this base class does not
-     *  have a setContainer() method, and hence cannot be contained.
+    /** Move this object to the specified position in the list of
+     *  attributes of the container. If this object is already at the
+     *  specified position, do nothing.  In this base class, this
+     *  method throws an IllegalActionException because this base
+     *  class does not have a setContainer() method, and hence cannot
+     *  be contained.
      *  Any derived object that implements setContainer() should
      *  also implement this method.
      *  @param index The position to move this object to.
@@ -1369,6 +1376,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      *  @exception IndexOutOfBoundsException If the index is out of bounds.
+     *  @exception IllegalActionException Always thrown in this base class.
      */
     public int moveToIndex(int index) throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
@@ -1386,6 +1394,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return Does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException Always thrown in this base class.
      */
     public int moveToLast() throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
@@ -1403,6 +1412,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return Does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException Always thrown in this base class.
      */
     public int moveUp() throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
@@ -1509,6 +1519,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
      *   to which debug messages are sent.
+     *  @see #addDebugListener(DebugListener)
      */
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
@@ -1684,6 +1695,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @exception NameDuplicationException Not thrown in this base class.
      *   May be thrown by derived classes if the container already contains
      *   an object with this name.
+     *  @see #getName()
+     *  @see #getName(NamedObj)
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {

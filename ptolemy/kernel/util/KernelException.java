@@ -253,7 +253,7 @@ public class KernelException extends Exception {
      *  hierarchy, separated by periods.
      *  If the argument is a null reference, return an empty string.
      *  If the name of the argument or any of its containers is the
-     *  empty string, then that name is replaced with "<Unnamed Object>".
+     *  empty string, then that name is replaced with "&lt;Unnamed Object&gt;".
      *  <p>
      *  This method is public static so that both
      *  KernelException and KernelRuntimeException and any classes
@@ -312,7 +312,8 @@ public class KernelException extends Exception {
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
-     *  If the name is the empty string, then we return "<Unnamed Object>".
+     *  If the name is the empty string, then we return
+     *  "&lt;Unnamed Object&gt;".
      *
      *  @param object An object with a name.
      *  @return The name of the argument.

@@ -89,6 +89,7 @@ public interface MoMLExportable extends Nameable {
      *  if there is no MoML description of this object or if this object
      *  is not persistent, or if an implementor has some other reason that the
      *  object has no persistent description.
+     *  @param name The name that is used as a replacement.
      *  @return A MoML description, or the empty string if there is none.
      *  @see #isPersistent()
      */

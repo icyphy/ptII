@@ -102,6 +102,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
     /** Add a listener to be notified when the value of this attribute changes.
      *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
+     *  @removeValueListener(ValueListener)
      */
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
@@ -207,6 +208,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
     /** Return the the result of calling value().
      *  @return The value, or a description of the exception if one is thrown.
      *  @see #value()
+     *  @see #setExpression(String)
      */
     public String getExpression() {
         try {
@@ -219,6 +221,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
     /** Get the visibility of this attribute, as set by setVisibility().
      *  The visibility is set by default to NONE.
      *  @return The visibility of this attribute.
+     *  @see #setVisibility(Settable.Visibility)
      */
     public Settable.Visibility getVisibility() {
         return _visibility;
@@ -228,6 +231,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  notified when the value of this attribute changes.  If no such listener
      *  exists, do nothing.
      *  @param listener The listener to remove.
+     *  @addValueListener(ValueListener)
      */
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
@@ -244,6 +248,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @param expression The text to configure the attribute with.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
+     *  @see #getExpression()
      */
     public void setExpression(String expression) throws IllegalActionException {
         try {
@@ -258,6 +263,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
     /** Set the visibility of this attribute.  The argument should be one
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this attribute.
+     *  @see #getVisibility()
      */
     public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;

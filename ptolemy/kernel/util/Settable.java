@@ -92,6 +92,7 @@ public interface Settable extends Nameable {
      *  listeners.  In other words, it should not be possible for the
      *  same listener to be notified twice of a value update.
      *  @param listener The listener to add.
+     *  @see #removeValueListener(ValueListener)
      */
     public void addValueListener(ValueListener listener);
 
@@ -105,6 +106,7 @@ public interface Settable extends Nameable {
     /** Get the value of the attribute that has been set by setExpression(),
      *  or null if there is none.
      *  @return The expression.
+     *  @see #setExpression(String)
      */
     public String getExpression();
 
@@ -114,6 +116,7 @@ public interface Settable extends Nameable {
      *  user-level visibility. The returned value is one of the static
      *  instances of the Visibility inner class.
      *  @return The visibility of this Settable.
+     *  @see #setVisibility(Settable.Visibility)
      */
     public Settable.Visibility getVisibility();
 
@@ -121,6 +124,7 @@ public interface Settable extends Nameable {
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
      *  @param listener The listener to remove.
+     *  @see #addValueListener(ValueListener)
      */
     public void removeValueListener(ValueListener listener);
 
@@ -130,6 +134,7 @@ public interface Settable extends Nameable {
      *  defer notification until validate() is called.
      *  @param expression The value of the attribute.
      *  @exception IllegalActionException If the expression is invalid.
+     *  @see #getExpression()
      */
     public void setExpression(String expression) throws IllegalActionException;
 
@@ -140,6 +145,7 @@ public interface Settable extends Nameable {
      *  If this method is not called, then implementations of
      *  this interface should return some default, not null.
      *  @param visibility The visibility of this Settable.
+     *  @see #getVisibility()
      */
     public void setVisibility(Settable.Visibility visibility);
 

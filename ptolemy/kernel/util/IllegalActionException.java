@@ -42,7 +42,7 @@ package ptolemy.kernel.util;
    <li> An attempt to remove a port from an entity when the
    port does not belong to the entity.
    <li> An attempt to add an item with no name to a named list.
-   <menu>
+   </menu>
 
    @author Edward A. Lee, Christopher Hylands
    @version $Id$

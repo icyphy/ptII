@@ -117,6 +117,7 @@ public class StringAttribute extends AbstractSettableAttribute {
     /** Add a listener to be notified when the value of this attribute changes.
      *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
+     *  @see #removeValueListener(ValueListener)
      */
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
@@ -169,6 +170,7 @@ public class StringAttribute extends AbstractSettableAttribute {
     /** Get the value that has been set by setExpression(),
      *  or null if there is none.
      *  @return The string value.
+     *  @see #setExpression(String)
      */
     public String getExpression() {
         return _value;
@@ -177,6 +179,7 @@ public class StringAttribute extends AbstractSettableAttribute {
     /** Get the visibility of this attribute, as set by setVisibility().
      *  The visibility is set by default to FULL.
      *  @return The visibility of this attribute.
+     *  @see #setVisibility(Settable.Visibility)
      */
     public Settable.Visibility getVisibility() {
         return _visibility;
@@ -186,6 +189,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  notified when the value of this attribute changes.  If no such listener
      *  exists, do nothing.
      *  @param listener The listener to remove.
+     *  @see #addValueListener(ValueListener)
      */
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
@@ -199,8 +203,10 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @param expression The value of the string attribute.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
+     *  @see #getExpression()
      */
-    public void setExpression(String expression) throws IllegalActionException {
+    public void setExpression(String expression)
+            throws IllegalActionException {
         super.setExpression(expression);
         _value = expression;
 
@@ -225,6 +231,7 @@ public class StringAttribute extends AbstractSettableAttribute {
     /** Set the visibility of this attribute.  The argument should be one
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this attribute.
+     *  @see #getVisibility()
      */
     public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
