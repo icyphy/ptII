@@ -268,7 +268,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
                 .doubleValue();
             _stopTimeValue = stopTimeValue;
         } else if (attribute == initStepSize) {
-            double value = ((DoubleToken) initStepSize.getToken()).doubleValue();
+            double value = 
+                ((DoubleToken) initStepSize.getToken()).doubleValue();
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
@@ -628,13 +629,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
 
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        Iterator actors = 
+            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
 
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor) actors.next();
 
             if (_debugging && _verbose) {
-                _debug("Prefire dynamic actor: " + ((Nameable) actor).getName());
+                _debug("Prefire dynamic actor: " 
+                        + ((Nameable) actor).getName());
             }
 
             boolean ready = actor.prefire();
@@ -797,6 +800,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  with CTDirector. The default director is HSDirector, which
      *  is used in hybird system. FSMDirector could also be used
      *  with CTDirector in some simple cases.
+     *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
@@ -849,7 +853,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
             valueResolution.setExpression("1e-6");
             valueResolution.setTypeEquals(BaseType.DOUBLE);
 
-            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
+            synchronizeToRealTime = 
+                new Parameter(this, "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
@@ -977,7 +982,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // NOTE: Time objects are not initialized here. They are initialized at
     // the end of the preinitialize method of this director.
     private void _initializeLocalVariables() throws IllegalActionException {
-        _errorTolerance = ((DoubleToken) errorTolerance.getToken()).doubleValue();
+        _errorTolerance = 
+            ((DoubleToken) errorTolerance.getToken()).doubleValue();
         _initStepSize = ((DoubleToken) initStepSize.getToken()).doubleValue();
         _maxIterations = ((IntToken) maxIterations.getToken()).intValue();
         _maxStepSize = ((DoubleToken) maxStepSize.getToken()).doubleValue();

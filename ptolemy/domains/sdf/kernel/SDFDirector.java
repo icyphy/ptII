@@ -429,6 +429,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  the SDFDirector will throw an exception.
      *  FSMDirector can be used with SDFDirector only when rate signatures
      *  for modal model are all 1. 
+     *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
@@ -438,7 +439,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         // in the array.
         String[] defaultSuggestions = new String[3];
         defaultSuggestions[2] = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
-        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        defaultSuggestions[1] = 
+            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }

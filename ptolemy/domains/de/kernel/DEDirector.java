@@ -560,7 +560,8 @@ public class DEDirector extends Director implements TimedDirector {
                             || (next.microstep() < _microstep)) {
                         throw new IllegalActionException(
                                 "The tag of the next event (" + next.timeStamp()
-                                + "." + next.microstep() + ") can not be less than"
+                                + "." + next.microstep() 
+                                + ") can not be less than"
                                 + " the current tag (" + getModelTime() + "."
                                 + _microstep + ") !");
                     } else {
@@ -797,7 +798,8 @@ public class DEDirector extends Director implements TimedDirector {
         // 2. The event queue is not empty, but the current time exceeds
         // the stop time.
         if (_noMoreActorsToFire
-                && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
+                && 
+                (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
             _exceedStopTime = true;
             result = result && false;
         } else if (_exceedStopTime) {
@@ -1049,6 +1051,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default
      *  director used by a modal model.
+     *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
@@ -1057,7 +1060,8 @@ public class DEDirector extends Director implements TimedDirector {
         // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        defaultSuggestions[0] = 
+            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
@@ -1154,7 +1158,8 @@ public class DEDirector extends Director implements TimedDirector {
             }
         } else if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable) actor,
-                    "Attempt to queue an event in the past:" + " Current time is "
+                    "Attempt to queue an event in the past:" 
+                    + " Current time is "
                     + getModelTime() + " while event time is " + time);
         }
 
@@ -1205,7 +1210,8 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         // Register this trigger event.
-        DEEvent newEvent = new DEEvent(ioPort, getModelTime(), _microstep, depth);
+        DEEvent newEvent = 
+            new DEEvent(ioPort, getModelTime(), _microstep, depth);
         _eventQueue.put(newEvent);
     }
 
@@ -1448,7 +1454,7 @@ public class DEDirector extends Director implements TimedDirector {
 
                         if (_debugging && _verbose) {
                             _debug(((Nameable) input).getFullName(),
-                                    "depth is adjusted to: " + maximumPortDepth);
+                                "depth is adjusted to: " + maximumPortDepth);
                         }
 
                         // Insert the hashtable entry.
@@ -1467,7 +1473,8 @@ public class DEDirector extends Director implements TimedDirector {
             FunctionDependency functionDependency = portContainer
                 .getFunctionDependency();
 
-            Set inputPorts = functionDependency.getInputPortsDependentOn(ioPort);
+            Set inputPorts = 
+                functionDependency.getInputPortsDependentOn(ioPort);
             Iterator inputsIterator = inputPorts.iterator();
 
             // Iterate all input ports the current output depends on,
@@ -1527,7 +1534,8 @@ public class DEDirector extends Director implements TimedDirector {
 
         // Get the functionDependency attribute of the container of this
         // director. If there is no such attribute, construct one.
-        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) castContainer
+        FunctionDependencyOfCompositeActor functionDependency = 
+            (FunctionDependencyOfCompositeActor) castContainer
             .getFunctionDependency();
 
         // NOTE: The following may be a very costly test.
@@ -1586,7 +1594,8 @@ public class DEDirector extends Director implements TimedDirector {
      *  is not sorted.
      */
     private int _getDepthOfActor(Actor actor) throws IllegalActionException {
-        if ((_sortValid != workspace().getVersion()) || (_actorToDepth == null)) {
+        if ((_sortValid != workspace().getVersion()) 
+                || (_actorToDepth == null)) {
             _computePortDepth();
             _computeActorDepth();
         }
@@ -1607,8 +1616,10 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return An int representing the depth of the given ioPort.
      *  @exception IllegalActionException If the ioPort is not sorted.
      */
-    private int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
-        if ((_sortValid != workspace().getVersion()) || (_portToDepth == null)) {
+    private int _getDepthOfIOPort(IOPort ioPort) 
+        throws IllegalActionException {
+        if ((_sortValid != workspace().getVersion()) 
+                || (_portToDepth == null)) {
             _computePortDepth();
             _computeActorDepth();
         }
@@ -1817,13 +1828,16 @@ public class DEDirector extends Director implements TimedDirector {
                             // from the assumption that the smallest
                             // time interval between any two events is the
                             // minimum double value.
-                            double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+                            double elapsedTimeInSeconds = 
+                                ((double) elapsedTime) / 1000.0;
 
-                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
+                            if (currentTime.getDoubleValue() 
+                                    <= elapsedTimeInSeconds) {
                                 break;
                             }
 
-                            long timeToWait = (long) (currentTime.subtract(elapsedTimeInSeconds)
+                            long timeToWait = (long) 
+                                (currentTime.subtract(elapsedTimeInSeconds)
                                     .getDoubleValue() * 1000.0);
 
                             if (timeToWait > 0) {
@@ -1938,7 +1952,8 @@ public class DEDirector extends Director implements TimedDirector {
             stopWhenQueueIsEmpty.setExpression("true");
             stopWhenQueueIsEmpty.setTypeEquals(BaseType.BOOLEAN);
 
-            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
+            synchronizeToRealTime = 
+                new Parameter(this, "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
@@ -1980,7 +1995,8 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         // Enqueue a pure event to fire the container of this director.
-        container.getExecutiveDirector().fireAt(container, nextEvent.timeStamp());
+        container.getExecutiveDirector().fireAt(
+                container, nextEvent.timeStamp());
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -559,6 +559,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     }
 
     /** (non-Javadoc)
+     *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
@@ -567,7 +568,8 @@ public class GiottoDirector extends StaticSchedulingDirector
         // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
+        defaultSuggestions[0] = 
+            "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }

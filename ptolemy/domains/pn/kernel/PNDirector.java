@@ -296,6 +296,7 @@ public class PNDirector extends CompositeProcessDirector {
     }
 
     /** (non-Javadoc)
+     *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {

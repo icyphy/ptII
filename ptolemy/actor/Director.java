@@ -167,29 +167,6 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    //    /** Check the status of the manager before update the timePrecisionInDigits
-    //     *  parameter. If the status of the manager is running,
-    //     *  throws an illegalActionException.
-    //     *  @param attribute The changed parameter.
-    //     *  @exception IllegalActionException If the status of manager is running.
-    //     */
-    //    public void attributeChanged(Attribute attribute)
-    //            throws IllegalActionException {
-    //        if (attribute == timePrecisionInDigits) {
-    //            Nameable container = getContainer();
-    //            if (container instanceof CompositeActor) {
-    //                Manager manager = ((CompositeActor)container).getManager();
-    //                if (manager != null
-    //                        && manager.getState() != Manager.ITERATING) {
-    //                    throw new IllegalActionException("Can not change the " +
-    //                        "timePrecisionInDigits parameter when model runs.");
-    //                }
-    //            }
-    //        } else {
-    //            super.attributeChanged(attribute);
-    //        }
-    //    }
-    //
 
     /** Transfer at most one data token from the given input port of
      *  the container to the ports it is connected to on the inside.
@@ -615,14 +592,14 @@ public class Director extends Attribute implements Executable {
             // Initialize the current time.
             if (containersContainer instanceof CompositeActor) {
                 // The container is an embedded model.
-                Time currentTime = ((CompositeActor) containersContainer).getDirector()
+                Time currentTime = 
+                    ((CompositeActor) containersContainer).getDirector()
                                     .getModelTime();
                 _currentTime = currentTime;
             } else {
                 // The container is at the top level.
                 // There is no reason to set the current time to 0.0.
                 // Instead, it has to be set to start time of a model.
-                // FIXME: simplify the initilize method of DE director
                 _currentTime = getModelStartTime();
             }
 
@@ -895,7 +872,6 @@ public class Director extends Attribute implements Executable {
         }
 
         // preinitialize protected variables.
-        // FIXME: a duplicate operation also appears in the initialize method.
         _currentTime = getModelStartTime();
         _stopRequested = false;
 
@@ -1125,14 +1101,16 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Return an array of suggested directors to use with
+    /** Return an array of suggested directors to be used with
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default
      *  director used by a modal model.
+     *  @return An array of suggested directors to be used with ModalModel.
      */
     public String[] suggestedModalModelDirectors() {
         // Default is just one suggestion.
-        String[] defaultSuggestions = { "ptolemy.domains.fsm.kernel.FSMDirector" };
+        String[] defaultSuggestions = 
+            { "ptolemy.domains.fsm.kernel.FSMDirector" };
         return defaultSuggestions;
     }
 
@@ -1180,7 +1158,6 @@ public class Director extends Attribute implements Executable {
      *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
-     *  @see IOPort#transferInputs
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         return domainPolymorphicTransferInputs(port);
@@ -1197,7 +1174,6 @@ public class Director extends Attribute implements Executable {
      *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
-     *  @see IOPort#transferOutputs
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         return domainPolymorphicTransferOutputs(port);
@@ -1269,6 +1245,7 @@ public class Director extends Attribute implements Executable {
             //  result += "FIXME {\n";
             //  result += _getIndentPrefix(indent) + "}";
             // }
+
             if (bracket == 2) {
                 result += "}";
             }
@@ -1296,7 +1273,6 @@ public class Director extends Attribute implements Executable {
         // NOTE: the container may not be a composite actor.
         // For example, the container may be an entity as a library,
         // where the director is already at the top level.
-        // FIXME: can the container be any other types?
         if (container instanceof CompositeActor) {
             if (((CompositeActor) container).getExecutiveDirector() == null) {
                 return true;
