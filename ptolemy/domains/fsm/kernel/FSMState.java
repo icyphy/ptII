@@ -331,7 +331,7 @@ public class FSMState extends ComponentEntity {
      *  which can be used as part of a guard expression or action
      *  of a state transition.
      */
-    protected void setupScope() {
+    public void setupScope() {
         try {
             if (_localStatusVars != null) {
                 // remove old variable lists
