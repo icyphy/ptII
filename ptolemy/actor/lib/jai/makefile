@@ -48,7 +48,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = DoubleMatrixToJAI.java \
+JSRCS = AdaptiveMedian.java \
+	DoubleMatrixToJAI.java \
 	ImageToJAI.java \
 	JAIAffineTransform.java \
 	JAIBandCombine.java \
@@ -82,7 +83,8 @@ JSRCS = DoubleMatrixToJAI.java \
 	JAITIFFWriter.java \
 	JAIToDoubleMatrix.java \
 	JAITranslate.java \
-	JAITranspose.java 
+	JAITranspose.java \
+	SaltAndPepper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	jai.xml \

@@ -6,6 +6,8 @@
     <?moml
       <group>
         <doc>Java Advanced Imaging actors</doc>
+	<entity name="AdaptiveMedian" class="ptolemy.actor.lib.jai.AdaptiveMedian">
+	</entity>
 	<entity name="DoubleMatrixToJAI" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
 	  <property name="dataFormat">
 	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -312,6 +314,8 @@
 		            class="ptolemy.kernel.util.StringAttribute"/>	      
 	      </property>   
 	  </property>
+	</entity>
+	<entity name="SaltAndPepper" class="ptolemy.actor.lib.jai.SaltAndPepper">
 	</entity>
       </group>
     ?>
