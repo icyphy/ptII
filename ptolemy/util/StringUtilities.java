@@ -108,7 +108,7 @@ public class StringUtilities {
                 results.append(tokenizer.nextToken());
             }
             results.append("..."); 
-            return results.toString();
+            string = results.toString();
         }
 
         if (string.length() > length) {
