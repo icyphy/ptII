@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm
-PTVERSION =	5.2
+PTVERSION =	5.2p1
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
@@ -159,8 +159,8 @@ OPTIONAL_FILES = \
 	'PlotApplication$$1.class' \
 	'PlotFrame$$FileMenuListener.class' \
 	'PlotFrame$$FormatListener.class' \
-	'PlotFrame$$SpecialMenuListener.class' \
 	'PlotFrame$$PLTOrXMLFileFilter.class' \
+	'PlotFrame$$SpecialMenuListener.class' \
 	'Render$$1.class' \
 	'RenderApplication$$1.class' \
 	Render.java \
@@ -252,7 +252,7 @@ RENDERCLASSFILES = \
 # Jar file for simple applets
 $(PTAUXJAR): $(JSRCS) $(JCLASS)
 	rm -f $@
-	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+	(cd $(ROOT); "$(JAR)" cf $(ME)/$@ \
 		$(BASECLASSFILES) \
 		$(APPLETCLASSFILES) \
             )
@@ -261,7 +261,7 @@ $(PTAUXJAR): $(JSRCS) $(JCLASS)
 # Class files used in pxgraph applets
 $(PXGRAPHAPPLETJAR): $(JSRCS) $(JCLASS)
 	rm -f $@
-	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+	(cd $(ROOT); "$(JAR)" cf $(ME)/$@ \
 		$(BASECLASSFILES) \
 		$(APPLETCLASSFILES) \
 		$(ME)/compat/PxgraphApplet.class \
@@ -272,7 +272,7 @@ $(PXGRAPHAPPLETJAR): $(JSRCS) $(JCLASS)
 # Jar file for PlotML applets, including xml classes
 $(PLOTMLAPPLETJAR): $(JSRCS) $(JCLASS)
 	rm -f $@
-	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+	(cd $(ROOT); "$(JAR)" cf $(ME)/$@ \
 		$(BASECLASSFILES) \
 		$(APPLETCLASSFILES) \
 		$(COMPLEXCLASSFILES) \
@@ -283,7 +283,7 @@ $(PLOTMLAPPLETJAR): $(JSRCS) $(JCLASS)
 # Jar file for applications, including ptolemy/gui and xml classes
 $(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
 	rm -f $@
-	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+	(cd $(ROOT); "$(JAR)" cf $(ME)/$@ \
 		$(BASECLASSFILES) \
 		$(APPLICATIONCLASSFILES) \
 		$(COMPLEXCLASSFILES) \
@@ -296,7 +296,7 @@ $(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
 # actor.lib.gui.MatrixVisualizer but not to used by the Ptplot applets. 
 $(RENDERJAR): $(JSRCS) $(JCLASS)
 	rm -f $@
-	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+	(cd $(ROOT); "$(JAR)" cf $(ME)/$@ \
 		$(RENDERCLASSFILES) \
             )
 
@@ -485,7 +485,7 @@ fixtmpdist:
 	#
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/codeDoc
 	cd $(PTTMPDIR)/$(PTDIST); \
-	CLASSPATH=. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc \
+	CLASSPATH=. "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
 		com.microstar.xml \
 		ptolemy.gui \
 		ptolemy.plot \
