@@ -103,7 +103,7 @@ Note, this evaluator does not use short-circuit evaluation on logical nodes.
 
 public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
-    /** Construct a parse tree evaluator for guard expression. The relatoin
+    /** Construct a parse tree evaluator for guard expression. The relation
      *  list is used to store the information of the relation nodes and leaf
      *  nodes with boolean tokens. If the relation list is empty, the evaluator
      *  is in construction mode, otherwise, it is in update mode.
