@@ -194,28 +194,37 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      */
     public int kindOfTokenType(Type type) {
         for (int i = 0; i < _KNOWN_TOKEN_TYPES.length; i++) {
-            if (type == _KNOWN_TOKEN_TYPES[i]) {
+            //if (type == _KNOWN_TOKEN_TYPES[i]) {
+	    if (type.equals(_KNOWN_TOKEN_TYPES[i])) {
                 return i + TYPE_KIND_TOKEN;
             }
         }
 
-        System.out.println("kindOfTokenType(): type = '"
-                + type
-                + "' Known types =\n");
-        for (int i = 0; i < _KNOWN_TOKEN_TYPES.length; i++) {
-            System.err.println(i + " " + _KNOWN_TOKEN_TYPES[i]);
-        }
+        //System.out.println("kindOfTokenType(): Warning: type = '"
+        //        + type
+        //        + "' Known types =\n");
+        //for (int i = 0; i < _KNOWN_TOKEN_TYPES.length; i++) {
+        //    System.err.println(i + " " + _KNOWN_TOKEN_TYPES[i]);
+        //}
 
-        System.err.println("kindOfTokenType(): Ok, trying isEqualTo()");
+        System.err.println("PtolemyTypeIdentifier.kindOfTokenType(): "
+			   + "type = '" + type + "' == failed, trying " 
+			   + "isEqualTo()");
 
-        try {
-            throw new Exception("kindOfTokenType() stack");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //try {
+        //    throw new Exception("kindOfTokenType() stack");
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //}
         for (int i = 0; i < _KNOWN_TOKEN_TYPES.length; i++) {
             if (type.isEqualTo(_KNOWN_TOKEN_TYPES[i])) {
-		System.err.println("kindOfTokenType(): isEqualTo() found one");
+		System.err.println("kindOfTokenType(): isEqualTo() found one\n"
+				   + "  type: " + type
+				   + " " + type.hashCode()
+				   + "\n   _KNOWN_TOKEN_TYPES: "
+				   + _KNOWN_TOKEN_TYPES[i] 
+				   + " " + _KNOWN_TOKEN_TYPES[i].hashCode()
+				   );
                 return i + TYPE_KIND_TOKEN;
             }
         }
@@ -230,8 +239,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      *  DUMMY_LOWER_BOUND_TYPE. The argument should not be null.
      */
     public TypeNameNode typeNodeForTokenType(Type type) {
-        System.err.println("PtolemyTypeIdentifier.typeNodeForTokenType(): "
-                + type);
+        //System.out.println("PtolemyTypeIdentifier.typeNodeForTokenType(): "
+        //        + type);
         return typeNodeForKind(kindOfTokenType(type));
     }
 
@@ -262,20 +271,22 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_OBJECT_TOKEN         = TYPE_KIND_FIX_TOKEN + 1;
     public static final int TYPE_KIND_STRING_TOKEN         = TYPE_KIND_OBJECT_TOKEN + 1;
 
-    //public static final int TYPE_KIND_ARRAY_TOKEN         = TYPE_KIND_STRING_TOKEN + 1;
-    //public static final int TYPE_KIND_DOUBLE_ARRAY_TOKEN         = TYPE_KIND_INT_ARRAY_TOKEN + 1;
-    public static final int TYPE_KIND_INT_ARRAY_TOKEN      = TYPE_KIND_STRING_TOKEN + 1;
+    public static final int TYPE_KIND_ARRAY_TOKEN          = TYPE_KIND_STRING_TOKEN + 1;
+    public static final int TYPE_KIND_INT_ARRAY_TOKEN      = TYPE_KIND_ARRAY_TOKEN + 1;
     public static final int TYPE_KIND_DOUBLE_ARRAY_TOKEN   = TYPE_KIND_INT_ARRAY_TOKEN + 1;
-    public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_DOUBLE_ARRAY_TOKEN + 1;
-    //public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_INT_ARRAY_TOKEN + 1;
+    // FIXME: what about long arrays etc.
 
     //public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_STRING_TOKEN + 1;
+    public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_DOUBLE_ARRAY_TOKEN + 1;
 
     public static final int TYPE_KIND_BOOLEAN_MATRIX_TOKEN = TYPE_KIND_MATRIX_TOKEN + 1;
     public static final int TYPE_KIND_INT_MATRIX_TOKEN     = TYPE_KIND_BOOLEAN_MATRIX_TOKEN + 1;
     public static final int TYPE_KIND_DOUBLE_MATRIX_TOKEN  = TYPE_KIND_INT_MATRIX_TOKEN + 1;
     public static final int TYPE_KIND_LONG_MATRIX_TOKEN    = TYPE_KIND_DOUBLE_MATRIX_TOKEN + 1;
     public static final int TYPE_KIND_COMPLEX_MATRIX_TOKEN = TYPE_KIND_LONG_MATRIX_TOKEN + 1;
+    // TYPE_KIND_FIX_MATRIX_TOKEN should be the last supported token,
+    // isSupportedTokenKind() uses TYPE_KIND_FIX_MATRIX_TOKEN,
+    // so if you change this change isSupportedTokenKind().
     public static final int TYPE_KIND_FIX_MATRIX_TOKEN     = TYPE_KIND_COMPLEX_MATRIX_TOKEN + 1;
 
     public static final int TYPE_KIND_DUMMY_TOKEN          = TYPE_KIND_FIX_MATRIX_TOKEN + 1;
@@ -360,8 +371,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final ClassDecl OBJECT_TOKEN_DECL;
     public static final TypeNameNode OBJECT_TOKEN_TYPE;
 
-    //public static final ClassDecl ARRAY_TOKEN_DECL;
-    //public static final TypeNameNode ARRAY_TOKEN_TYPE;
+    public static final ClassDecl ARRAY_TOKEN_DECL;
+    public static final TypeNameNode ARRAY_TOKEN_TYPE;
 
     public static final ClassDecl INT_ARRAY_TOKEN_DECL;
     public static final TypeNameNode INT_ARRAY_TOKEN_TYPE;
@@ -469,7 +480,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPE_KIND_INT_TOKEN, TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN,
         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN,
         TYPE_KIND_STRING_TOKEN,
-        /*TYPE_KIND_ARRAY_TOKEN,*/ TYPE_KIND_INT_ARRAY_TOKEN,
+        TYPE_KIND_ARRAY_TOKEN, TYPE_KIND_INT_ARRAY_TOKEN,
 	TYPE_KIND_DOUBLE_ARRAY_TOKEN,
         TYPE_KIND_MATRIX_TOKEN,
         TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN,
@@ -500,6 +511,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             // FIXME: we need to either generalize this to handle all
             // types, or add in each type by hand.
             // Array???,
+	    ArrayType.ARRAY_TYPE,
 	    ArrayType.INT_ARRAY_TYPE,
 	    ArrayType.DOUBLE_ARRAY_TYPE,
             BaseType.MATRIX,
@@ -515,7 +527,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         false, true, false,
         true, true, true,
         true, true, true,
-	// FIXME: we should add and Array abstract token??
+	false,
         true, true,
         true, false,
         true, true,
@@ -644,18 +656,25 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         STRING_TOKEN_TYPE = STRING_TOKEN_DECL.getDefType();
 
 
-        CompileUnitNode intArrayTokenUnit =
+        CompileUnitNode arrayTokenUnit =
             StaticResolution.loadClassName("ptolemy.data.ArrayToken", 1);
+        ARRAY_TOKEN_DECL =
+            (ClassDecl) StaticResolution.findDecl(arrayTokenUnit,
+                    "ArrayToken", CG_CLASS);
+        ARRAY_TOKEN_TYPE = ARRAY_TOKEN_DECL.getDefType();
+
+        CompileUnitNode intArrayTokenUnit =
+            StaticResolution.loadClassName("ptolemy.data.IntArrayToken", 1);
         INT_ARRAY_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(intArrayTokenUnit,
-                    "ArrayToken", CG_CLASS);
+                    "IntArrayToken", CG_CLASS);
         INT_ARRAY_TOKEN_TYPE = INT_ARRAY_TOKEN_DECL.getDefType();
 
         CompileUnitNode doubleArrayTokenUnit =
-            StaticResolution.loadClassName("ptolemy.data.ArrayToken", 1);
+            StaticResolution.loadClassName("ptolemy.data.DoubleArrayToken", 1);
         DOUBLE_ARRAY_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(doubleArrayTokenUnit,
-                    "ArrayToken", CG_CLASS);
+                    "DoubleArrayToken", CG_CLASS);
         DOUBLE_ARRAY_TOKEN_TYPE = DOUBLE_ARRAY_TOKEN_DECL.getDefType();
 
         CompileUnitNode matrixTokenUnit =
@@ -863,7 +882,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 INT_TOKEN_DECL, DOUBLE_TOKEN_DECL, LONG_TOKEN_DECL,
                 COMPLEX_TOKEN_DECL, FIX_TOKEN_DECL, OBJECT_TOKEN_DECL,
                 STRING_TOKEN_DECL,
-	        /*ARRAY_TOKEN_DECL,*/ INT_ARRAY_TOKEN_DECL,
+	        ARRAY_TOKEN_DECL, INT_ARRAY_TOKEN_DECL,
 	        DOUBLE_ARRAY_TOKEN_DECL,
                 MATRIX_TOKEN_DECL,
                 BOOLEAN_MATRIX_TOKEN_DECL, INT_MATRIX_TOKEN_DECL,
@@ -890,7 +909,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 INT_TOKEN_TYPE, DOUBLE_TOKEN_TYPE, LONG_TOKEN_TYPE,
                 COMPLEX_TOKEN_TYPE, FIX_TOKEN_TYPE, OBJECT_TOKEN_TYPE,
                 STRING_TOKEN_TYPE,
-	        INT_ARRAY_TOKEN_TYPE,
+       	        ARRAY_TOKEN_TYPE, INT_ARRAY_TOKEN_TYPE,
 	        DOUBLE_ARRAY_TOKEN_TYPE,
                 MATRIX_TOKEN_TYPE,
                 BOOLEAN_MATRIX_TOKEN_TYPE, INT_MATRIX_TOKEN_TYPE,
@@ -918,7 +937,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 LongTypeNode.instance,
                 COMPLEX_TYPE, FIX_POINT_TYPE, StaticResolution.OBJECT_TYPE,
                 StaticResolution.STRING_TYPE,
-	        // FIXME: is this right? we are making matrices with dim 1?
+	        // Hack for ArrayToken
+                TypeUtility.makeArrayType(IntTypeNode.instance, 1),
                 // IntArray
                 TypeUtility.makeArrayType(IntTypeNode.instance, 1),
 	        // DoubleArray

@@ -399,6 +399,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
 
+	if (_debug)
+	    System.out.println("ActorTransformerVistor.visitMethodCallNode():"
+			       + fieldAccessNode.getName());
+
         // if this is a static method call, we can't do any more.
         if (fieldAccessNode instanceof TypeFieldAccessNode) {
             return _defaultVisit(node, args);
@@ -514,6 +518,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                         new NameNode(AbsentTreeNode.instance, "length"),
                         accessedObj);
             } else if (methodName.equals("getElementAsToken") ||
+                    methodName.equals("getElement") ||
                     methodName.equals("getElementAt")) {
                 ExprNode secondArg = (ExprNode) methodArgs.get(1);
                 return new ArrayAccessNode(
@@ -522,7 +527,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     methodName.equals("toString")) {
                 switch (accessedObjKind) {
                 case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
-                    return new StringLitNode("bad token");
+                    return new StringLitNode(methodName + ":abstract token");
 
                 case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
@@ -548,6 +553,16 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     // for matrices, call the toString() method of
                     // the helper classes in ptolemy.math using
                     // ArrayStringFormat.exprASFormat
+
+                case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
+                    System.err.println("Warning: toString() on double array "
+				       + "not supported yet");
+                    break;
+
+                case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
+                    System.err.println("Warning: toString() on int array not"
+				       + " supported yet");
+                    break;
 
                 case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
                     System.err.println("Warning: toString() on boolean matrix not " +
@@ -920,6 +935,47 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     new ObjectFieldAccessNode(
                             new NameNode(AbsentTreeNode.instance, "fixMatrix"), node),
                     new LinkedList());
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
+	    if (_debug)
+		System.out.println("ActorTransformerVisitor.visitAllocateNode(): "
+				   + "PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN");
+
+            // no support for constructor with no arguments
+
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            TypeUtility.makeArrayType(
+                                    (TypeNode) PtolemyTypeIdentifier.DOUBLE_TOKEN_TYPE.clone(), 2))) {
+                // new ArrayToken(??[][])
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
+            // new ArrayToken(???, ???, ...)
+
+            // call the fixMatrix() method of the created FixMatrixToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "{int}"), node),
+                    new LinkedList());
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
+	    if (_debug)
+		System.out.println("ActorTransformerVisitor.visitAllocateNode(): "
+			       + "PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN");
+            // no support for constructor with no arguments
+
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            TypeUtility.makeArrayType(
+                                    (TypeNode) PtolemyTypeIdentifier.INT_TOKEN_TYPE.clone(), 2))) {
+                // new ArrayToken(??[][])
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
+            // new ArrayToken(???, ???, ...)
+
+            // call the fixMatrix() method of the created FixMatrixToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "{int}"), node),
+                    new LinkedList());
         }
 
         return node;
@@ -996,7 +1052,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     /** Return a new ExprNode representing the value of the argument Token. */
     public ExprNode tokenToExprNode(Token token) {
-        System.out.println("ActorTransformerVisitor.tokenToExprNode(): "
+	if (_debug)
+	    System.out.println("ActorTransformerVisitor.tokenToExprNode(): "
                 + token + " getType: "
                 + token.getType()
                 + " _typeID: " + _typeID);
@@ -1055,6 +1112,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
             throw new RuntimeException("tokenToExprNode not supported on int arrays yet:" + token);
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
+            throw new RuntimeException("tokenToExprNode not supported on double arrays yet:" + token);
 
         case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
@@ -1303,6 +1362,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
@@ -1457,6 +1518,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
      */
     protected ExprNode _oneValue(int accessedObjKind, ExprNode accessedObj) {
         switch (accessedObjKind) {
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
+	    throw new RuntimeException("oneValue not yet supported for "
+					+ "int or double arrays");
         case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
@@ -1640,6 +1705,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
      */
     protected ExprNode _zeroValue(int accessedObjKind, ExprNode accessedObj) {
         switch (accessedObjKind) {
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
+	    throw new RuntimeException("zeroValue not yet supported for "
+					+ "int or double arrays");
+
         case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
@@ -1706,4 +1776,6 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
      *  super.XXX() method calls must be eliminated.
      */
     protected boolean _isBaseClass = false;
+
+    protected final boolean _debug = false;
 }
