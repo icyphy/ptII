@@ -89,9 +89,15 @@ proc speedComparison  {xmlFile \
 	#set codegenExecElapsed \
 	#	[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
 	set separator [java::field java.io.File pathSeparator]
+
 	set codegenExecElapsed \
 		[time {exec java -classpath $relativePathToPTII/ptolemy/copernicus/java/cg/$modelName$separator$relativePathToPTII $modelName.Main} $repeat]
-        #puts "[expr {int([lindex $codegenExecElapsed 0] /1000.0)}] ms per run" 
+
+	#puts "[expr {int([lindex $codegenExecElapsed 0] /1000.0)}] ms per run" 
+        puts "Running exec $codeGenType codegen $repeat times on treeshake_codegen.jar"
+	set codegenJarExecElapsed \
+		[time {exec java -jar $relativePathToPTII/ptolemy/copernicus/java/cg/$modelName/treeshake_codegen.jar} $repeat]
+
     } else {
 	if {$codeGenType == "Actor" \
 		|| $codeGenType == "Applet"} {
@@ -152,10 +158,15 @@ proc speedComparison  {xmlFile \
 	    ptolemy.actor.gui.MoMLSimpleApplication \
 	    $xmlFile} $repeat]
 
+    puts "Running exec interpreted $repeat times on treeshake.jar"
+    set interpretedJarElapsed \
+	    [time {exec java -jar $relativePathToPTII/ptolemy/copernicus/java/cg/$modelName/treeshake.jar file:$xmlFile} $repeat]
+
+
+    #####
     # Convert from Tcl time's microseconds to milliseconds
     set codegenElapsedTime [expr {int([lindex $codegenElapsed 0] /1000.0)}]
     set interpretedElapsedTime [expr {int([lindex $interpretedElapsed 0] /1000.0)}]
-
     if {[lindex $interpretedElapsed 0] == 0} {
 	set elapsedRatio 0
     } else {
@@ -166,6 +177,11 @@ proc speedComparison  {xmlFile \
 		([lindex $interpretedElapsed 0] + 0.0)) * 100)}]
     }
 
+    puts "$modelName $repeat builtin runs: Interp/$codeGenType: \
+	    $interpretedElapsedTime/$codegenElapsedTime ms. \
+	    ($elapsedRatio%)"
+
+    #####
     set codegenExecElapsedTime \
 	    [expr {int([lindex $codegenExecElapsed 0] /1000.0)}]
     set interpretedExecElapsedTime \
@@ -181,14 +197,31 @@ proc speedComparison  {xmlFile \
 		([lindex $interpretedExecElapsed 0] + 0.0)) * 100)}]
     }
 
-    puts "$modelName $repeat builtin runs: Interp/$codeGenType: \
-	    $interpretedElapsedTime/$codegenElapsedTime \
-	    ($elapsedRatio%)"
-
     puts "$modelName $repeat exec runs: Interp/$codeGenType: \
-	    $interpretedExecElapsedTime/$codegenExecElapsedTime \
+	    $interpretedExecElapsedTime/$codegenExecElapsedTime ms. \
 	    ($execElapsedRatio%)"
+    #####
 
+    set codegenJarExecElapsedTime [expr {int([lindex $codegenJarExecElapsed 0] /1000.0)}]
+    set interpretedJarElapsedTime [expr {int([lindex $interpretedJarElapsed 0] /1000.0)}]
+
+
+    if {[lindex $interpretedJarElapsed 0] == 0} { 
+	set jarElapsedRatio 0
+    } else {
+	set jarElapsedRatio [expr { \
+		int(
+	(([lindex $codegenJarExecElapsed 0] + 0.0) \
+		/ \
+		([lindex $interpretedJarElapsed 0] + 0.0)) * 100)}]
+    }
+
+    puts "$modelName $repeat jar runs: Interp/$codeGenType: \
+	    $interpretedJarElapsedTime/$codegenJarExecElapsedTime ms. \
+	    ($jarElapsedRatio%)"
+
+
+    #####
     # The percentage is separated by spaces to make this more machine readable
     return "Times Interp/$codeGenType ms $modelName $repeat \
 	    builtin: $interpretedElapsedTime/$codegenElapsedTime \
