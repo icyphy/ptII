@@ -107,7 +107,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      */
     public MoMLChangeRequest(
             Object originator, NamedObj context, String request) {
-	this(originator, context, request, null);
+	this(originator, null, context, request, null);
     }
 
      /** Construct a mutation request to be executed in the specified context.
@@ -124,12 +124,36 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @param context The context in which to execute the MoML.
      *  @param request The mutation request in MoML.
      *  @param base The URL relative to which external references should
-     *  be resolved.
+     *   be resolved.
      */
     public MoMLChangeRequest(
             Object originator, NamedObj context, String request, URL base) {
+	this(originator, _staticParser, context, request, null);
+    }
+
+    /** Construct a mutation request to be executed in the specified context.
+     *  The context is typically a Ptolemy II container, such as an entity,
+     *  within which the objects specified by the MoML code will be placed.
+     *  This method resets and uses a parser that is a static member
+     *  of this class.
+     *  A listener to changes will probably want to check the originator
+     *  so that when it is notified of errors or successful completion
+     *  of changes, it can tell whether the change is one it requested.
+     *  Alternatively, it can call waitForCompletion().
+     *  All external references are assumed to be absolute URLs.  Whenever
+     *  possible, use a different constructor that specifies the base.
+     *  @param originator The originator of the change request.
+     *  @param parser The parser to execute the request.
+     *  @param context The context in which to execute the MoML.
+     *  @param request The mutation request in MoML.
+     *  @param base The URL relative to which external references should
+     *   be resolved.
+     */
+    public MoMLChangeRequest(
+            Object originator, MoMLParser parser, NamedObj context,
+            String request, URL base) {
         super(originator, request);
-        _parser = _staticParser;
+        _parser = parser;
         _context = context;
 	_base = base;
     }
