@@ -45,12 +45,14 @@ CLASSPATH =	../../../..
 
 # Used to build zip files
 PTPACKAGE = 	kernel
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/fsm/kernel
-PTERSION =	1.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =	$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		util/util.jar
+
+PTCLASSALLJAR = kernel.jar
 
 JSRCS = \
 	FSMState.java \
