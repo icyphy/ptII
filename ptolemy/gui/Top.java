@@ -504,6 +504,17 @@ public abstract class Top extends JFrame {
                 // menu item for this.
                 File file = fileDialog.getSelectedFile().getCanonicalFile();
                 _read(file.toURL());
+            } catch (Error error) {
+                // Be sure to catch Error here so that if we throw an
+                // Error, then we will report it to with a window.
+                // FIXME: The report() methods and
+                // the MessageHandler class should take Throwable
+                // as an argument instead of taking an vException.
+                try {
+                    throw new RuntimeException(error);
+                } catch (Exception ex2) {
+                    report("Error while reading input:", ex2);
+                }
             } catch (Exception ex) {
                 // NOTE: The XML parser can only throw an XmlException.
                 // It signals that it is a user cancellation with the special
