@@ -60,7 +60,7 @@ of classes that are registered with the parser (using
 PtParser.registerFunctionClass()).  The methods represented
 by instances of this class are methods of a Token and its subclasses.
 <p>
-Instances of this class have a type returned by getType(), which 
+Instances of this class have a type returned by getType(), which
 is a bitwise OR of either {@link #REAL} or {@link #MISSING} with
 either {@link #FUNCTION} or {@link #METHOD}.  REAL indicates that
 the method or function has been searched for and found, while
@@ -318,7 +318,7 @@ public class CachedMethod {
                 }
             }
         }
-        
+
         if(cachedMethod == null) {
             // System.out.println("Checking for matrix map");
             // Go Look for a MatrixMapped method, instead.
@@ -339,7 +339,7 @@ public class CachedMethod {
                     isArrayArg[i] = false;
                 }
             }
-           
+
             if(hasArray) {
                 CachedMethod mapCachedMethod =
                         findMethod(methodName, newArgTypes, type);
@@ -564,7 +564,7 @@ public class CachedMethod {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** A "missing" method or function is one that was not found. */
     public static final int MISSING = 1;
 
@@ -711,7 +711,7 @@ public class CachedMethod {
             // give us a way to tell if primitive arguments are
             // acceptable
             if(formal.isPrimitive()) {
-                Type type = 
+                Type type =
                     ASTPtFunctionNode.convertJavaTypeToTokenType(formal);
                 if(ptolemy.graph.CPO.LOWER ==
                         TypeLattice.compare(actual, type)) {
@@ -749,7 +749,7 @@ public class CachedMethod {
             String methodName, Type[] argTypes,
             ArgumentConversion[] conversions) {
         Method matchedMethod = null;
-        ArgumentConversion[] matchedConversions = 
+        ArgumentConversion[] matchedConversions =
                 new ArgumentConversion[conversions.length];
         while (library != null) {
             // We want to ascend the class hierarchy in a controlled way

@@ -186,7 +186,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         for (int i = 0; i < numChildren; i++) {
             tokens[i] = elementType.convert(tokens[i]);
         }
-        
+
         node.setToken(new ArrayToken(tokens));
     }
 
@@ -249,7 +249,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      */
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
-        
+
         ASTPtRootNode cloneTree;
         try {
             cloneTree = (ASTPtRootNode)node.getExpressionTree().clone();
@@ -259,7 +259,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
         specializer.specialize(cloneTree,
                 node.getArgumentNameList(), _scope);
-               
+
         // Infer the return type.
         if(_typeInference == null) {
             _typeInference = new ParseTreeTypeInference();
@@ -292,7 +292,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if(_scope != null && functionName != null) {
             value = _scope.get(node.getFunctionName());
         }
-        
+
         if(value != null || functionName == null) {
             // The value of the first child should be either a FunctionToken,
             // an ArrayToken, or a MatrixToken.
@@ -553,7 +553,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         String name = node.getName();
-        
+
         // The node refers to a variable, or something else that is in
         // scope.
         if(_scope != null) {
@@ -966,7 +966,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 _assert(false, node, "Invalid operation");
             }
         }
-          
+
         node.setToken(result);
     }
 
@@ -1045,7 +1045,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
         return tokens;
     }
-   
+
     /** Evaluate the array index operation represented by the given node.
      *  @param node The node that caused this method to be called.
      *  @param value The token that is being indexed into, which must
@@ -1151,14 +1151,14 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     ////                       inner classes                       ////
 
     private static class ExpressionFunction implements FunctionToken.Function {
-        
-        public ExpressionFunction(List argumentNames, Type[] argumentTypes, 
+
+        public ExpressionFunction(List argumentNames, Type[] argumentTypes,
                 ASTPtRootNode exprRoot) {
             _argumentNames = new ArrayList(argumentNames);
             _argumentTypes = argumentTypes;
             _exprRoot = exprRoot;
         }
-        
+
         public ptolemy.data.Token apply(List args)
                 throws IllegalActionException {
             ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
@@ -1174,11 +1174,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             return parseTreeEvaluator.evaluateParseTree(
                     _exprRoot, argumentsScope);
         }
-        
+
         public int getNumberOfArguments() {
             return _argumentNames.size();
         }
-        
+
         public String toString() {
             StringBuffer buffer = new StringBuffer("(function(");
             int n = _argumentNames.size();
@@ -1204,5 +1204,5 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         private ASTPtRootNode _exprRoot;
         private List _argumentNames;
         private Type[] _argumentTypes;
-    }   
+    }
 }

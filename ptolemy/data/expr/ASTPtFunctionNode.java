@@ -169,7 +169,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         else
             return ((ASTPtLeafNode)n).getName();
     }
-    
+
     public void jjtClose() {
         super.jjtClose();
         // We cannot assume that the result of a function call is
@@ -557,7 +557,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (tokenClass.isArray()) {
                 return new ArrayType(convertJavaTypeToTokenType(
                                              tokenClass.getComponentType()));
-                
+
             } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
                 return BaseType.OBJECT;
             } else {

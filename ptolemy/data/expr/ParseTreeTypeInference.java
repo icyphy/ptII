@@ -105,7 +105,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 public ptolemy.data.Token get(String name) {
                     return null;
                 }
-                public Type getType(String name) 
+                public Type getType(String name)
                         throws IllegalActionException {
                     Type type = (Type)map.get(name);
                     if(type == null && currentScope != null) {
@@ -130,20 +130,20 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
-     
+
         _visitAllChildren(node);
-   
+
         // Get the child types.
         Type[] childTypes = new Type[argCount];
         for (int i = 0; i < argCount; i++) {
-            childTypes[i] =  
+            childTypes[i] =
                 ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
             if(childTypes[i] == null) {
                 throw new RuntimeException("node " +
                         node + " has null type.");
             }
         }
- 
+
         Type baseType = ((ASTPtRootNode) node.jjtGetChild(0)).getType();
 
         // Handle as an array or matrix index into a named
@@ -170,7 +170,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                         + "' because it does not have a matrix type.");
             }
         }
- 
+
         String functionName = node.getFunctionName();
         if(functionName == null) {
             throw new IllegalActionException("Wrong number of indices "
@@ -194,23 +194,23 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // Note: We used to just do this, but in some case is it
             // useful to have functions which are type constructors...
             // Hence the above code.
-            //  _setType(node, 
+            //  _setType(node,
             //     ((ASTPtRootNode) node.jjtGetChild(0 + 1)).getType());
             //  return;
         }
-        
+
         if (functionName.compareTo("eval") == 0) {
             // We can't infer the type of eval expressions...
             _setType(node, BaseType.GENERAL);
             return;
         }
-        
+
         if (functionName.compareTo("matlab") == 0) {
             // We can't infer the type of eval expressions...
             _setType(node, BaseType.GENERAL);
             return;
         }
-        
+
         // Otherwise, try to reflect the method name.
         CachedMethod cachedMethod =
             CachedMethod.findMethod(functionName,
@@ -261,7 +261,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     node.getToken().getType());
             return;
         }
-        
+
         _setType(node, _getTypeForName(node.getName()));
     }
 
@@ -425,13 +425,13 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 return type;
             }
         }
-        
+
         // Look up for constants.
         if (Constants.get(name) != null) {
             // A named constant that is recognized by the parser.
             return Constants.get(name).getType();
         }
-        
+
         return BaseType.GENERAL;
     }
 
