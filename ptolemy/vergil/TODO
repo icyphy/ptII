@@ -6,15 +6,13 @@ If an executed model refs other files, then those files should be relative to th
 
 TODO:
 Snap to Grid.
-Director specification.
 Better Layout.
 Title box on each graph.
 Text Annotation.
-Better layout for Palette.
 Icon drawing app.
-Better parameter configuration.
 Cut and Paste.
-Printing.
+Improve debugger.
+Instantiation by name.
 
 DONE:
 Direct connections from Ports to Ports.
@@ -22,3 +20,7 @@ Layout breaks when toolbar gets dragged to the bottom.
 Manhattan Routing.
 Multiple Document Factories.
 Visual Notations for Ptolemy Package.
+Director specification.
+Printing.
+Better parameter configuration.
+Better layout for Palette.
