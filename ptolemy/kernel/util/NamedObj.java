@@ -155,6 +155,6 @@ public class NamedObj {
     ////                         private variables                        ////
 
      private String _name;
-     private ParamList _paramList;
+     private ParamList _paramList = null;
 //   private Entity _container;
 }
