@@ -240,7 +240,7 @@ public class RecordUpdater extends TypedAtomicActor {
 
 	    if ( !(inputType instanceof RecordType)) {
 	        throw new InvalidStateException(_updater, "RecordUpdater: "
-		        + "The type of the input port must be record,\n"
+		        + "The type of the input port must be record, \n"
 			+ "but the connection forces it to be "
 			+ inputType);
 	    }
@@ -269,7 +269,7 @@ public class RecordUpdater extends TypedAtomicActor {
 	    String[] labels = new String[labelsObj.length];
 	    Type[] types = new Type[labelsObj.length];
 
-            for (int i=0; i<labels.length; i++) {
+            for (int i = 0; i < labels.length; i++) {
 	        labels[i] = (String)labelsObj[i];
 		types[i] = (Type)outputMap.get(labels[i]);
 	    }
@@ -285,7 +285,7 @@ public class RecordUpdater extends TypedAtomicActor {
 	    Object[] portsObj = inputPorts.toArray();
 	    InequalityTerm[] variables = new InequalityTerm[portsObj.length];
 
-	    for (int i=0; i<variables.length; i++) {
+	    for (int i = 0; i < variables.length; i++) {
 	        TypedIOPort port = (TypedIOPort)portsObj[i];
 	        variables[i] = port.getTypeTerm();
 	    }
