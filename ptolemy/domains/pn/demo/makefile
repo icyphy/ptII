@@ -54,6 +54,7 @@ CLASSPATH = ../../../..
 JSRCS = \
 	PNInterleavingExample.java \
 	PNPrimeExample.java \
+	RLEncoding.java \
 	TimedPrimeExample.java \
 	PNPrimeGalaxy.java \
 	PNWavepacket.java
