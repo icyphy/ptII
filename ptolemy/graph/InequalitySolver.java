@@ -74,12 +74,30 @@ public class InequalitySolver {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    /** Adds all of the inequalities in the specified
+     *  <code>Enumeration </code> to the set of constraints.
+     *  @param ineqs an <code>Enumeration</code> of <code>Inequality</code>
+     *  @exception IllegalArgumentException the specified
+     *   <code>Enumeration</code> contains an object that is not an
+     *   <code>Inequality</code>.
+     */
+    public void addInequalities(Enumeration ineqs) {
+	while (ineqs.hasMoreElements()) {
+	    Object element = ineqs.nextElement();
+	    if ( !(element instanceof Inequality)) {
+		throw new IllegalArgumentException(
+			"InequalitySolver.addInequalities: the specified " +
+			"enumeration contains an object that is not an " +
+			"Inequality.");
+	    }
+	    addInequality((Inequality)element);
+	}
+    }
+
     /** Adds an inequality to the set of constraints.
      *  @param ineq an <code>Inequality</code>.
-     *  @param variables an array of inequality terms corresponding
-     *   to variables in the specified inequality.
      */
-    public void addInequality(Inequality ineq, InequalityTerm[] variables) {
+    public void addInequality(Inequality ineq) {
 
 	// put ineq. to _Ilist
 	Integer indexWrap = new Integer(_Ilist.size());
@@ -87,11 +105,12 @@ public class InequalitySolver {
 	_Ilist.addElement(info);
 
         // add var->ineq to Hashtable
-        for (int i = 0; i < variables.length; i++) {
-            Vector entry = (Vector)(_Clist.get(variables[i]));
+	InequalityTerm[] vars = ineq.variables();
+        for (int i = 0; i < vars.length; i++) {
+            Vector entry = (Vector)(_Clist.get(vars[i]));
             if (entry == null) {	// variable not in Hashtable
                 entry = new Vector();
-                _Clist.put(variables[i], entry);
+                _Clist.put(vars[i], entry);
 	    }
             entry.addElement(indexWrap);
         }
