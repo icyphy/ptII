@@ -444,7 +444,8 @@ public class TableauFrame extends Top {
                 if (!_checkForDerivedObjects()) {
                     return false;
                 }
-
+            }
+            if (reply == _SAVED || reply == _DISCARDED) {
                 dispose();
                 return true;
             }
