@@ -385,7 +385,7 @@ any number of changes may be issured. </text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="MobileModel" class="ptolemy.actor.MobileModel">
+    <entity name="MobileModel" class="ptolemy.actor.hoc.MobileModel">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="{85ub, 0ub, 0ub}">
         </property>
         <property name="director" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.de.kernel.DEDirector&quot;">

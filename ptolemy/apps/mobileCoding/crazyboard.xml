@@ -453,7 +453,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="MobileModel2" class="ptolemy.actor.MobileModel">
+    <entity name="MobileModel2" class="ptolemy.actor.hoc.MobileModel">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="{85ub, 0ub, 0ub}">
         </property>
         <property name="defaultDirector" class="ptolemy.actor.Director">
