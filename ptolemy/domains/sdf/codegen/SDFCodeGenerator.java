@@ -103,7 +103,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // assume exactly one model on the command line
 
         _compositeActor = (TypedCompositeActor)
-                ModelDirectory.models().iterator().next();
+                _models.iterator().next();
 
         try {
             // initialize the model to ensure type resolution and scheduling
