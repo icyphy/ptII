@@ -65,7 +65,6 @@ JSRCS = \
 	ASTPtRootNode.java \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
-	PassiveVariable.java \
 	Parameter.java \
 	ParameterEvent.java \
 	ParameterListener.java \
