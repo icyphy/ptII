@@ -87,6 +87,24 @@ public class BooleanToAnything extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the value public variable in the new
+     *  object to equal the cloned parameter in that new object.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+	    throws CloneNotSupportedException {
+        BooleanToAnything newObject = (BooleanToAnything)
+            super.clone(workspace);
+	// Set the type constraint.
+	newObject.output.setTypeAtLeast(newObject.trueValue);
+	newObject.output.setTypeAtLeast(newObject.falseValue);
+        return newObject;
+    }
+
     /** Read exactly one token from the input and output the token
      *  given by either the <i>falseValue</i> or <i>trueValue</i>
      *  parameter.
