@@ -67,8 +67,8 @@ include $(CONFIG)
 
 all: cg_interpret cg_generate cg_compile cg_run
 
-cg_interpreted: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" \
+cg_interpret: $(PTCLASSJAR)
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)" \
 		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS)
@@ -82,14 +82,17 @@ cg_generate:
 		-outpkg $(OUTPKG)
 
 cg_compile:
-	(cd $(CG_ROOT)/$(OUTPKG_DIR); \
+	(cd $(OUTPKG_DIR); \
 		CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)" \
 		"$(JAVAC)" $(JFLAGS) $(OUTPKG_MAIN_CLASS).java)
 
 cg_run:
-	(cd $(CG_ROOT)/$(OUTPKG_DIR); \
+	(cd $(OUTPKG_DIR); \
 		CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)" \
 		"$(JAVA)" $(OUTPKG).$(OUTPKG_MAIN_CLASS))
+
+cg_clean:
+	(cd $(OUTPKG_DIR); rm -f *.class)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
