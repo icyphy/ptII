@@ -247,7 +247,7 @@ public class RecordUpdater extends TypedAtomicActor {
 	    }
 
 	    if ( !(inputType instanceof RecordType)) {
-	        throw new InvalidStateException(_updater, "ReocordUpdater: "
+	        throw new InvalidStateException(_updater, "RecordUpdater: "
 		        + "The type of the input port must be record,\n"
 			+ "but the connection forces it to be "
 			+ inputType);
