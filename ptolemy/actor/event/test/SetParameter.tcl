@@ -106,7 +106,7 @@ test SetParameter-4.0 {queue a change list} {
     $m initialize
     $m iterate
     set listener [java::new ptolemy.kernel.event.StreamChangeListener]
-    $m addChangeListener $listener
+    $e0 addChangeListener $listener
     set c1 [java::new ptolemy.actor.event.SetParameter $e0 $value {"x"}]
     set c2 [java::new ptolemy.actor.event.SetParameter $e0 $value {"y"}]
     set changelist [java::new ptolemy.kernel.event.ChangeList $e0 "list"]

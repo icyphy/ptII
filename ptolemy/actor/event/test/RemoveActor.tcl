@@ -53,7 +53,7 @@ test RemoveActor-1.0 {test removing an actor} {
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
     set m [$e0 getManager]
-    $m addChangeListener \
+    $e0 addChangeListener \
             [java::new ptolemy.kernel.event.StreamChangeListener]
     set debuglistener [java::new ptolemy.kernel.util.StreamListener]
     
