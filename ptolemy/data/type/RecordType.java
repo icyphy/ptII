@@ -339,7 +339,7 @@ public class RecordType extends StructuredType {
             } else {
                 s += ", ";
             }
-            s += label + "=" + type;
+            s += label + ":" + type;
         }
         return s + "}";
     }
