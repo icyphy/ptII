@@ -56,12 +56,6 @@ An applet that models the compiled QR algorithm.
 */
 public class QRcompileApplet extends PNApplet implements QueryListener {
 
-    // Flag to prevent spurious exception being thrown by _go() method.
-    // If this flag is not true, the _go() method will not execute the model.
-    private boolean _initCompleted = false;
-
-    public  boolean DEBUG = false;
-
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
@@ -71,7 +65,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	super.init();
 	try {
 
-	     setSize(600, 600);
+            setSize(600, 600);
 
             getContentPane().setLayout(
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -108,14 +102,11 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    _ND_36 = new ND_36(_toplevel,"ND_36");
 	    _ND_86 = new ND_86(_toplevel,"ND_86");
 
-
 	    _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
-
             _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
             _matrixViewer.place(getContentPane());
 
-	    // System.out.println(" -- 1.) Process Nodes instantiated -- ");
-
+            // Connect the network
 	    _toplevel.connect(_ND_6.out0, _ND_36.in1);
 	    _toplevel.connect(_ND_6.out1, _ND_66.in1);
 
@@ -132,24 +123,16 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    _toplevel.connect(_ND_66.out3, _ND_66.in2);
 	    _toplevel.connect(_ND_66.out4, _ND_66.in4);
 
+            // Split the output in two.
 	    Relation t = _toplevel.connect(_ND_86.out0, _eventplot.input);
 	    _s2m.input.link( t );
-
 	    _toplevel.connect(_s2m.output, _matrixViewer.input);
-
-            // System.out.println(_toplevel.exportMoML());
 
             _initCompleted = true;
 	    
 	    // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));
-            
-            StreamListener sa = new StreamListener();
-	    _ND_66.addDebugListener(sa);
 
-            StreamListener sa2 = new StreamListener();
-	    _s2m.addDebugListener(sa2);        
-	
 	} catch (Exception ex) {
             report("Setup failed:", ex);
         }
@@ -157,6 +140,11 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	return;
     }
 
+   /** Execute the model. This overrides the base class to read the
+    *  values in the query box first and set parameters.
+    *  @exception IllegalActionException If topology changes on the
+    *   model or parameter changes on the actors throw it.
+    */
     protected void _go() throws IllegalActionException {
         
         // If an exception occurred during initialization, then we don't
@@ -172,32 +160,32 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 
     }
         
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** If the argument is the string "regular", then set the
-     *  variable that controls whether bus arrivals will be regular
-     *  or Poisson.  If the argument is anything else, update the
-     *  parameters of the model from the values in the query boxes.
+    /** Changing of a parameter has occured. First check if the
+     *  parameter (K or N) falls within the range of allowed
+     *  values. Then propagate the new parameter value to the various
+     *  actors in the model. If a valid change of a parameter took
+     *  place, execute the model again.
      *  @param name The name of the entry that changed.
      */
     public void changed(String name) {
 
         try {
 
+            boolean done = false;
 	    if ( name == "K" ) {
 		int k = (int)_query.intValue("K");
 		if ( (k < 501) && (k>0) ) {
 		    _ND_6.parameter_K.
-			    setToken(new IntToken((int)_query.intValue("K")));
+                        setToken(new IntToken((int)_query.intValue("K")));
 		    _ND_14.parameter_K.
-			    setToken(new IntToken((int)_query.intValue("K")));
+                        setToken(new IntToken((int)_query.intValue("K")));
 		    _ND_66.parameter_K.
-			    setToken(new IntToken((int)_query.intValue("K")));
+                        setToken(new IntToken((int)_query.intValue("K")));
 		    _ND_36.parameter_K.
-			    setToken(new IntToken((int)_query.intValue("K")));
+                        setToken(new IntToken((int)_query.intValue("K")));
 		    _ND_86.parameter_K.
-			    setToken(new IntToken((int)_query.intValue("K")));
+                        setToken(new IntToken((int)_query.intValue("K")));
+                    done = true;
 		} else {
 		    throw new IllegalActionException(" Select a number between 1 < K < 500 ");
 		}
@@ -206,23 +194,28 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    if ( name == "N" ) {
 		int n = (int)_query.intValue("N");
 		if ( (n<17) && ( n>1) ) {
-		_s2m.dimension.
+                    _s2m.dimension.
 			setToken(new IntToken((int)_query.intValue("N")));
-	        _ND_6.parameter_N.
+                    _ND_6.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
-		_ND_14.parameter_N.
+                    _ND_14.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
-		_ND_66.parameter_N.
+                    _ND_66.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
-		_ND_36.parameter_N.
+                    _ND_36.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
-		_ND_86.parameter_N.
+                    _ND_86.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
+                    done = true;
 		} else {
 		    throw new IllegalActionException(" Select a number between 1 < N < 16 ");
 		}
-		_go();
 	    }
+
+            if ( done ) { 
+                _go();
+            }
+
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
         }
@@ -233,6 +226,11 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Flag to prevent spurious exception being thrown by _go() method.
+    // If this flag is not true, the _go() method will not execute the model.
+    private boolean _initCompleted = false;
+
+    // The actors in the QR process network
     private ND_6     _ND_6;
     private ND_66    _ND_66;
     private ND_14    _ND_14;

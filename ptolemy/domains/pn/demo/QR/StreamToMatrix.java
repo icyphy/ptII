@@ -38,17 +38,16 @@ import ptolemy.data.type.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import java.io.*;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// StreamToMatrix
 /**
 
-Convert a stream of Double Tokens into a Matrix. The Matrix is an
-Upper triangular Matrix.
-@author Bart Kienhuis 
-@version $Id:
-StreamToMatrix.java,v 1.2 1999/11/30 03:55:57 kienhuis Exp $
+Convert a stream of Double Tokens into a Matrix. The Matrix is
+considered to be an Upper triangular Matrix.  
+@author Bart Kienhuis
+@version $Id: StreamToMatrix.java,v 1.2 1999/11/30 03:55:57 kienhuis
+Exp $
 */
 
 public class StreamToMatrix extends Transformer {
@@ -62,17 +61,18 @@ public class StreamToMatrix extends Transformer {
      *   actor with this name.
      */
     public StreamToMatrix(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+            throws IllegalActionException, NameDuplicationException 
+        {
+            super(container, name);
 
-        input.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        dimension = new Parameter(this, "dimension", new IntToken( 6 ));
+            input.setTypeEquals(BaseType.DOUBLE);
+            output.setTypeEquals(BaseType.DOUBLE_MATRIX);
+            dimension = new Parameter(this, "dimension", new IntToken( 6 ));
 
-        // Initialize the dimension
-        attributeChanged( dimension );
+            // Initialize the dimension
+            attributeChanged( dimension );
 
-    }
+        }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -86,19 +86,18 @@ public class StreamToMatrix extends Transformer {
     ////                         public methods                    ////
 
     /** If the argument is the meanTime parameter, check that it is
-      *  positive.  
-      * @exception IllegalActionException If the
-      *  meanTime value is * not positive.
-      */
+     *  positive.  
+     * @exception IllegalActionException If the
+     *  meanTime value is * not positive.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-            _debug(" Attribute Change: " + attribute.toString() );
-        if (attribute == dimension) {
-            _rows = ((IntToken)dimension.getToken()).intValue();
-            _columns = ((IntToken)dimension.getToken()).intValue();
-        } else {
-            super.attributeChanged(attribute);
-        }
+                if (attribute == dimension) {
+                    _rows = ((IntToken)dimension.getToken()).intValue();
+                    _columns = ((IntToken)dimension.getToken()).intValue();
+                } else {
+                    super.attributeChanged(attribute);
+                }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -110,9 +109,9 @@ public class StreamToMatrix extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        StreamToMatrix newobj = (StreamToMatrix)super.clone(ws);
-        newobj.dimension = (Parameter)newobj.getAttribute("dimension");
-        return newobj;
+                StreamToMatrix newobj = (StreamToMatrix)super.clone(ws);
+                newobj.dimension = (Parameter)newobj.getAttribute("dimension");
+                return newobj;
     }
 
     /** Reads a stream of DoubleTokens and places these tokens in a
@@ -132,7 +131,6 @@ public class StreamToMatrix extends Transformer {
             }
             runL++;
         }
-        _debug(" **** MATRIX SEND **** ");
         output.broadcast(new DoubleMatrixToken(image));
     }
 
@@ -142,8 +140,6 @@ public class StreamToMatrix extends Transformer {
      */
     public void initialize() throws IllegalActionException {	
 	super.initialize();
-
-        _debug(" initialize StreamToMatrix ");        
 
 	// Get the correct value from the parameters
         _rows = ((IntToken)dimension.getToken()).intValue();
