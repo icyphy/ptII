@@ -37,9 +37,13 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayElement
@@ -72,12 +76,6 @@ public class ArrayElement extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// Set type constraints.
-	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-	ArrayType inputType = (ArrayType)input.getType();
-	InequalityTerm elementTerm = inputType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
-
         // Set parameters.
         index = new Parameter(this, "index");
         index.setExpression("0");
@@ -94,25 +92,6 @@ public class ArrayElement extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets up the type constraints.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
-        ArrayElement newObject = (ArrayElement)(super.clone(workspace));
-
-        // Set the type constraints.
-        ArrayType inputType = (ArrayType)newObject.input.getType();
-        InequalityTerm elementTerm = inputType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
-
-        return newObject;
-    }
 
     /** Consume at most one array from the input port and produce
      *  one of its elements on the output port.  If there is no token
@@ -132,6 +111,34 @@ public class ArrayElement extends Transformer {
             }
             output.send(0, token.getElement(indexValue));
         }
+    }
+
+    /** Return the type constraints of this actor.
+     *  In this class, the constraints are that the type of the input port
+     *  is an array type, and the type of the output port is no less than
+     *  the type of the elements of the input array.
+     *  @return A list of instances of Inequality.
+     *  @see ptolemy.actor.TypedAtomicActor#typeConstraintList
+     */
+    public List typeConstraintList() {
+	LinkedList result = new LinkedList();
+
+	Type inputType = input.getType();
+        if (inputType == BaseType.UNKNOWN) {
+	    input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        } else if ( !(inputType instanceof ArrayType)) {
+	    throw new IllegalStateException("ArrayElement.typeConstraintList: "
+	            + "The input type, " + inputType.toString() + " is not an "
+		    + "array type.");
+	}
+
+	ArrayType inputArrayType = (ArrayType)input.getType();
+	InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
+	Inequality inequality = new Inequality(elementTerm,
+			                       output.getTypeTerm());
+
+        result.add(inequality);
+	return result;
     }
 }
 
