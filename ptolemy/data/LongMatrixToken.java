@@ -34,7 +34,7 @@ import ptolemy.graph.CPO;
 /**
 A token that contains a 2-D long array.
 
-FIXME: Except add() and addR(), other arithmetics operations are
+FIXME: Except add() and addReverse(), other arithmetics operations are
 not implemented yet. Those methods will be added after the corresponding
 operations are added to the math package.
 
@@ -109,7 +109,7 @@ public class LongMatrixToken extends MatrixToken {
 			 t.getClass().getName();
 	    throw new IllegalActionException(msg);
 	} else if (compare == CPO.LOWER) {
-	    return t.addR(this);
+	    return t.addReverse(this);
 	} else {
 	    // type of the specified token <= LongMatrixToken
 	    long[][] result = null;
@@ -150,7 +150,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than LongMatrixToken.
      */
-    public Token addR(Token t)
+    public Token addReverse(Token t)
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if (! (compare == CPO.HIGHER)) {

@@ -93,7 +93,7 @@ public class ComplexToken extends ScalarToken {
                          token.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
-            return token.addR(this);
+            return token.addReverse(this);
         } else {
 	    // type of the specified token <= ComplexToken
 	    ComplexToken tem = (ComplexToken)convert(token);
@@ -110,7 +110,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than ComplexToken.
      */
-    public Token addR(Token token)
+    public Token addReverse(Token token)
 	    throws IllegalActionException {
 
 	int compare = TypeLattice.compare(this, token);
@@ -196,7 +196,7 @@ public class ComplexToken extends ScalarToken {
         }
  
         if (compare == CPO.LOWER) {
-            return divisor.divideR(this);
+            return divisor.divideReverse(this);
         } else {
 	    // argument type is lower or the same as Complex.
 	    ComplexToken comptoken = (ComplexToken)convert(divisor);
@@ -213,7 +213,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than ComplexToken;
      */
-    public Token divideR(Token dividend)
+    public Token divideReverse(Token dividend)
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, dividend);
         if (! (compare == CPO.HIGHER)) {
@@ -284,7 +284,7 @@ public class ComplexToken extends ScalarToken {
                          token.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
-            return token.multiplyR(this);
+            return token.multiplyReverse(this);
         } else {
 	    // type of the specified token <= ComplexToken
 	    ComplexToken tem = (ComplexToken)convert(token);
@@ -301,13 +301,14 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than ComplexToken.
      */
-    public Token multiplyR(Token token)
+    public Token multiplyReverse(Token token)
 	    throws IllegalActionException {
 
 	int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
-            throw new IllegalActionException("Complex.multiplyR: The type "
-		+ "of the specified token " + token.getClass().getName()
+            throw new IllegalActionException("Complex.multiplyReverse: "
+		+ "The type of the specified token "
+		+ token.getClass().getName()
 		+ " is not lower than " + getClass().getName());
         }
 
@@ -354,7 +355,7 @@ public class ComplexToken extends ScalarToken {
         }
  
         if (compare == CPO.LOWER) {
-            return rightArg.subtractR(this);
+            return rightArg.subtractReverse(this);
         } else {
 	    // argument type is lower or the same as Complex.
 	    ComplexToken comptoken = (ComplexToken)convert(rightArg);
@@ -372,7 +373,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than ComplexToken;
      */
-    public Token subtractR(Token leftArg)
+    public Token subtractReverse(Token leftArg)
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, leftArg);
         if (! (compare == CPO.HIGHER)) {

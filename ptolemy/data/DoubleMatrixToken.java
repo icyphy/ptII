@@ -35,7 +35,7 @@ import ptolemy.math.Complex;
 /**
 A token that contains a 2-D double array.
 
-FIXME: Except add() and addR(), other arithmetics operations are
+FIXME: Except add() and addReverse(), other arithmetics operations are
 not implemented yet. Those methods will be added after the corresponding
 operations are added to the math package.
 
@@ -110,7 +110,7 @@ public class DoubleMatrixToken extends MatrixToken {
 			 t.getClass().getName();
 	    throw new IllegalActionException(msg);
 	} else if (compare == CPO.LOWER) {
-	    return t.addR(this);
+	    return t.addReverse(this);
 	} else {
 	    // type of the specified token <= DoubleMatrixToken
 	    double[][] result = null;
@@ -151,7 +151,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than DoubleMatrixToken.
      */
-    public Token addR(Token t)
+    public Token addReverse(Token t)
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if (! (compare == CPO.HIGHER)) {
