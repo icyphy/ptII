@@ -38,18 +38,16 @@ import java.util.List;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ScopeExtendingAttribute;
-import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -234,6 +232,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         }
                         TypedIORelation relation = (TypedIORelation)
                             relations.get(0);
+                        TypedIORelation oldRelation = relation;
 
                         // Iterate through other actors ports in the
                         // container that are connected to port. If a
@@ -243,6 +242,13 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         // relation above to link newPort.
                         Iterator otherPorts =
                             relation.linkedPortList(port).iterator();
+                        
+                        // Added by Gang Zhou. If a port is connected to
+                        // multiple other ports (through a single relation),
+                        // only one relation should be created.
+                        boolean isRelationCreated = false;
+                        boolean isPortLinked = false;
+                        
                         while (otherPorts.hasNext()) {
                             TypedIOPort otherPort = (TypedIOPort)
                                 otherPorts.next();
@@ -253,25 +259,44 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                         + "output port "+ port.getName()
                                         + "must be connected to a multi-port");
                             }
-                            if ((port.isInput() && otherPort.isOutput()) ||
-                                    (port.isOutput() && otherPort.isInput())) {
+                            // Modified by Gang Zhou so that the port can
+                            // be connected to the otherPort either from inside
+                            // or from outside.
+                            boolean isInsideLinked = 
+                                    otherPort.isInsideLinked(oldRelation);
+                            if (port.isInput() && 
+                                    (!isInsideLinked && otherPort.isOutput() 
+                                    || isInsideLinked && otherPort.isInput())
+                                    ||
+                                    port.isOutput() && 
+                                    (!isInsideLinked && otherPort.isInput() 
+                                    || isInsideLinked && otherPort.isOutput())){
                                 if (otherPort.isMultiport()) {
-                                    relation = new TypedIORelation
-                                        (container,"r_" + getName() + "_" +
-                                                i + "_" + port.getName());
-                                    otherPort.link(relation);
-                                    if (_debugging)
-                                        _debug(port.getFullName()+
-                                                ": created relation "+
-                                                relation.getFullName());
+                                    if (!isRelationCreated) {
+                                        relation = new TypedIORelation
+                                                (container, "r_" + getName() +
+                                                "_" + i + "_" + port.getName());
+                                        isRelationCreated = true;
+                                        if (_debugging)
+                                            _debug(port.getFullName()+
+                                                    ": created relation "+
+                                                    relation.getFullName());
+                                    }    
+                                    otherPort.link(relation);                                    
                                 }
-                                newPort.link(relation);
-                                if (_debugging)
-                                    _debug(newPort.getFullName()+
-                                            ": linked to "+
-                                            relation.getFullName());
-                                container.connectionsChanged(otherPort);
-                                clone.connectionsChanged(newPort);
+                                if (!isPortLinked) {
+                                    newPort.link(relation);
+                                    isPortLinked = true;
+                                    if (_debugging)
+                                        _debug(newPort.getFullName()+
+                                                ": linked to "+
+                                                relation.getFullName());
+                                }    
+                                // Commented out by Gang Zhou since the method
+                                // connectionsChanged() has already been called
+                                // in the method link()
+                                //container.connectionsChanged(otherPort);
+                                //clone.connectionsChanged(newPort);
                             }
                         }
                     }
@@ -321,7 +346,13 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 while (relations.hasNext()) {
                     TypedIORelation  relation = (TypedIORelation)
                         relations.next();
-                    if (relation.linkedPortList().size() <= 2) {
+                    // Use a different criterion to delete relation
+                    // since the old one wouldn't work any more.
+                    // Added by Gang Zhou.
+                    TypedIOPort mirrorPort = (TypedIOPort)
+                            getPort(port.getName());
+                    if (!port.isDeeplyConnected(mirrorPort)) {
+                    //if (relation.linkedPortList().size() <= 2) {
                         // Delete the relation that was created in
                         // preinitialize()
                         try {
@@ -394,9 +425,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
             (MultiInstanceComposite)super.clone(workspace);
         newObject._isMasterCopy = false;
         try {
-            SingletonParameter hide = new SingletonParameter(this, "_hide");
-            hide.setToken(BooleanToken.TRUE);
-            hide.setVisibility(Settable.EXPERT);
+            new Attribute(newObject, "_hide");
         } catch (KernelException e) {
             // This should not occur.  Ignore if it does
             // since the only downside is that the actor is
