@@ -19,7 +19,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="function(rpm, peak, spread) 1/(1+((rpm-peak)/spread)^2)">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="function(rpm:double, peak:double, spread:int) 1/(1+((rpm-peak)/spread)^2)">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
