@@ -207,15 +207,17 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         _relationCreator = new RelationCreator();
         _relationCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
-        _relationCreator2 = new RelationCreator();
-        _relationCreator2.setMouseFilter(_shiftFilter);
-        pane.getBackgroundEventLayer().addInteractor(_relationCreator2);
+        // Note that shift-click is already bound to the dragSelection
+        // interactor when adding things to a selection.
+//     _relationCreator2 = new RelationCreator();
+//         _relationCreator2.setMouseFilter(_shiftFilter);
+//         pane.getBackgroundEventLayer().addInteractor(_relationCreator2);
 
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
         _linkCreator.setMouseFilter(_controlFilter);
-        _linkCreator2 = new LinkCreator();
-        _linkCreator2.setMouseFilter(_shiftFilter);
+//         _linkCreator2 = new LinkCreator();
+//         _linkCreator2.setMouseFilter(_shiftFilter);
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
