@@ -119,6 +119,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     public Parameter runAheadLength;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public variables                    ////
+   
+    /** The number of rollbacks. Used for statistics.
+     */
+    public int NROLL = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

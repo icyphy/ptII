@@ -92,12 +92,11 @@ test CTMultiSolverDirector-2.1 {Get default values} {
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
 	    [$dir getNextIterationTime] \
-	    [$dir getStartTime] \
 	    [$dir getStopTime] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 0.0 1.79769313486e+308 0.1 1e-10 1e-06}
+} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 1.79769313486e+308 0.1 1e-10 1e-06}
 
 
 ######################################################################
@@ -167,12 +166,11 @@ test CTMultiSolverDirector-2.2 {set Parameters by expression} {
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
 	    [$dir getNextIterationTime] \
-	    [$dir getStartTime] \
 	    [$dir getStopTime] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 10.0 100.0 0.1 1e-11 0.1}
+} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 100.0 0.1 1e-11 0.1}
 
 ######################################################################
 ####  Test set parameters, same as above, but uses setToken
@@ -242,25 +240,22 @@ test CTMultiSolverDirector-2.2a {set Parameters} {
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
 	    [$dir getNextIterationTime] \
-	    [$dir getStartTime] \
 	    [$dir getStopTime] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 10.0 100.0 0.1 1e-11 0.1}
+} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 100.0 0.1 1e-11 0.1}
 
 
 test CTMultiSolverDirector-2.3 {sets and gets} {
     #Note: Use above set up.
     $dir setCurrentTime 0.1
     $dir setCurrentStepSize 0.2
-    $dir setStartTime 0.3
     $dir setStopTime 0.4
     list [$dir getCurrentTime] \
 	    [$dir getCurrentStepSize] \
-	    [$dir getStartTime] \
 	    [$dir getStopTime] \
-} {0.1 0.2 0.3 0.4}
+} {0.1 0.2 0.4}
 
 #############################################################################
 #### Test set suggested next step size, it is larger than the maximum

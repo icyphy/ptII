@@ -120,6 +120,7 @@ public class CTTestValueSink extends TypedAtomicActor {
     public void wrapup() throws IllegalActionException {
         _debug(getName() + " wrapping up.");
         double v = ((DoubleToken)_lastToken).doubleValue();
+        //System.out.println("lasttoken=" + v);
         double p = ((DoubleToken)testValue.getToken()).doubleValue();
         if (Math.abs(v-p) < 1e-10) {
             _success = true;

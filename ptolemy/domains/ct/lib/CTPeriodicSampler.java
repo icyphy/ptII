@@ -157,8 +157,8 @@ public class CTPeriodicSampler extends TypedAtomicActor
     /** Request the first sampling time as a director refire.
      *  @exception IllegalActionException If thrown by the supper class.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         // clear receivers
         if(input.hasToken(0)) {
             input.get(0);

@@ -102,11 +102,12 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         return false;
     }
 
-    /** In addition to the initialization actions of the super class,
+    /** FIXME: This is done in CTDirector.preinitalize().
+     *  In addition to the initialization actions of the super class,
      *  synchronize the local current time with the outside model's
      *  current time.
      *  @exception IllegalActionException If thrown by the super class.
-     */
+     *
     public void initialize() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), " initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
@@ -114,10 +115,10 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         //if(_debugging) _debug(getName(), " _first is set to true.");
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
-        setStartTime(tnow);
+        startTime.setToken(new DoubleToken(tnow));
         setCurrentTime(tnow);
         super.initialize();
-    }
+        }*/
 
     /** fire
      */

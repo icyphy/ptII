@@ -206,6 +206,8 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         _setCurrentODESolver(_defaultSolver);
         if(_debugging) _debug(getFullName(), "assert the current ODE solver ",
                 getCurrentODESolver().getName());
+        if(_debugging) _debug(getFullName() + " initialize directed actors: ");
+        super.initialize();
         // set step sizes
         setCurrentStepSize(getInitialStepSize());
         if(_debugging) _debug(getFullName(), " set current step size to "
@@ -223,8 +225,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
                     getStopTime());
         fireAt(null, getStopTime());
         //_first = true;
-        if(_debugging) _debug(getFullName() + " initialize directed actors: ");
-        super.initialize();
+        
         if(_debugging) _debug(getFullName() + " End of Initialization.");
     }
 
