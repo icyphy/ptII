@@ -81,6 +81,7 @@ OPTIONAL_FILES = \
 	'BaseType$$18.class' \
 	'BaseType$$19.class' \
 	'BaseType$$2.class' \
+	'BaseType$$20.class' \
 	'BaseType$$3.class' \
 	'BaseType$$4.class' \
 	'BaseType$$5.class' \
@@ -92,7 +93,7 @@ OPTIONAL_FILES = \
 	'RecordType$$1.class' \
 	'RecordType$$FieldType.class' \
 	'TypeLattice$$1.class' \
-	'TypeLattice$$TheTypeLattice.class
+	'TypeLattice$$TheTypeLattice.class'
 
 JCLASS= $(JSRCS:%.java=%.class)
 

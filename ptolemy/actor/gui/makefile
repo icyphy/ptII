@@ -114,11 +114,15 @@ OPTIONAL_FILES = \
 	'ModelPane$$2.class' \
 	'ModelPane$$3.class' \
 	'ModelPane$$4.class' \
+	'PtolemyApplet$$1.class' \
+	'PtolemyApplet$$ExportButtonListener.class' \
 	'PtolemyApplet$$GoButtonListener.class' \
 	'PtolemyApplet$$StopButtonListener.class' \
 	'PtolemyApplication$$1.class' \
 	'PtolemyEffigy$$Factory.class' \
 	'PtolemyQuery$$1.class' \
+	'PtolemyQuery$$2.class' \
+	'PtolemyQuery$$3.class' \
 	'PtolemyTop$$ViewMenuListener.class' \
 	'RunTableau$$Factory.class' \
 	'RunTableau$$RunFrame$$DebugMenuListener.class' \

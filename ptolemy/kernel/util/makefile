@@ -98,6 +98,7 @@ OPTIONAL_FILES = \
 	'NamedList$$NamedListEnumeration.class' \
 	'NamedObj$$MoMLInfo.class' \
 	'Settable$$Visibility.class' \
+	'Workspace$$1.class' \
 	'Workspace$$ReadDepth.class' \
 	$(PTCLASSJAR)
 

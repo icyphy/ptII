@@ -66,7 +66,10 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'Schedule$$ScheduleIterator.class'
+	'Schedule$$ScheduleIterator.class' \
+	'Firing$$ActorIterator.class' \
+	'Schedule$$ActorIterator.class' \
+	'Schedule$$FiringIterator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
