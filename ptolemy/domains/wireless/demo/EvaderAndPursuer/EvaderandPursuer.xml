@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="EnvaderandPursuer2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="EvaderandPursuer2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 31, 973, 782}}">
@@ -73,7 +73,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 35.0">
         </property>
     </entity>
-    <entity name="Sensor" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -128,7 +128,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor2" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor2" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -183,7 +183,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor3" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor3" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -238,7 +238,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor4" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor4" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -293,7 +293,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor5" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor5" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -348,7 +348,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor6" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor6" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -403,7 +403,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor7" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor7" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -458,7 +458,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor8" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor8" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -513,7 +513,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor9" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor9" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -568,7 +568,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor10" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor10" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -623,7 +623,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor11" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor11" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -678,7 +678,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor12" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor12" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -733,7 +733,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor13" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor13" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -788,7 +788,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor14" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor14" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -843,7 +843,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor15" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor15" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -898,7 +898,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor16" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor16" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -953,7 +953,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor17" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor17" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1008,7 +1008,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor18" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor18" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1063,7 +1063,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor19" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor19" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1118,7 +1118,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor20" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor20" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1173,7 +1173,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor21" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor21" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1228,7 +1228,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor22" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor22" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1283,7 +1283,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor23" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor23" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1338,7 +1338,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor24" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor24" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1393,7 +1393,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor25" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor25" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1448,7 +1448,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor26" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor26" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1503,7 +1503,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor27" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor27" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1558,7 +1558,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor28" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor28" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1613,7 +1613,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor29" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor29" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1668,7 +1668,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor30" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor30" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1723,7 +1723,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor31" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor31" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1778,7 +1778,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor32" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor32" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1833,7 +1833,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor33" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor33" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1888,7 +1888,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor34" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor34" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1943,7 +1943,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor35" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor35" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -1998,7 +1998,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor36" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor36" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2053,7 +2053,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor37" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor37" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2108,7 +2108,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor38" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor38" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2163,7 +2163,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor39" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor39" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2218,7 +2218,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor40" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor40" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2273,7 +2273,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor41" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor41" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2328,7 +2328,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor42" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor42" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2383,7 +2383,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor43" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor43" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2438,7 +2438,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor44" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor44" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2493,7 +2493,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor45" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor45" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2548,7 +2548,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor46" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor46" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2603,7 +2603,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor47" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor47" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2658,7 +2658,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor48" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor48" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2713,7 +2713,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor49" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor49" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2768,7 +2768,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor50" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor50" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2823,7 +2823,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor51" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor51" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2878,7 +2878,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor52" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor52" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2933,7 +2933,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor53" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor53" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -2988,7 +2988,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor54" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor54" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3043,7 +3043,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor55" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor55" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3098,7 +3098,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor56" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor56" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3153,7 +3153,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor57" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor57" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3208,7 +3208,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor58" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor58" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3263,7 +3263,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor59" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor59" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3318,7 +3318,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor60" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor60" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3373,7 +3373,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor61" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor61" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3428,7 +3428,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor62" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor62" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3489,7 +3489,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor63" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor63" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -3544,7 +3544,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Sensor64" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Sensor">
+    <entity name="Sensor64" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
@@ -4314,7 +4314,7 @@ to another. Then delete this annotation.</text>
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="Pursuer" class="ptolemy.domains.wireless.demo.EnvaderAndPursuer.Pursuer">
+        <entity name="Pursuer" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Pursuer">
             <property name="speed" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
             <property name="workRange" class="ptolemy.data.expr.Parameter" value="{{160.0, 500.0}, {185.0, 500.0}}">
