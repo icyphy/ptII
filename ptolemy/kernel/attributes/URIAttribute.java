@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.attributes;
@@ -95,7 +95,7 @@ public class URIAttribute extends SingletonAttribute {
     }
 
     /** Return the URI from which the specified model was read,
-     *  or null if there is none.
+     *  or null if there is no such URI.
      *  This is obtained by finding a URIAttribute in the first
      *  container above this attribute in the hierarchy that has
      *  such an attribute.  Note that this URI may represent a
@@ -131,8 +131,8 @@ public class URIAttribute extends SingletonAttribute {
 
     /** Get a URL representation of the URI that has been set by setURI(),
      *  or null if there is none.  For this to succeed, it is necessary
-     *  that the URI be absolute (or an IllegalArgumentException will be
-     *  thrown).
+     *  that the URI be absolute or an IllegalArgumentException will be
+     *  thrown.
      *  @return A new URL.
      *  @exception MalformedURLException If the URI cannot be converted to
      *   a URL.
