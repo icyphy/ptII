@@ -80,7 +80,7 @@ public class VergilApplication extends MDIApplication {
     /**
      * Construct a new graph editing application.
      */
-    public VergilApplication () {
+    public VergilApplication() {
         super();
 
         // Create local objects
@@ -147,7 +147,7 @@ public class VergilApplication extends MDIApplication {
     /** Given a document, create a new view which displays that
      * document. This class creates a JGraph.
      */
-    public JComponent createView (Document d) {
+    public JComponent createView(Document d) {
         //FIXME
 	GraphPane pane = new GraphPane(new EditorGraphController(),
 				       new VergilGraphImpl());
@@ -234,20 +234,20 @@ public class VergilApplication extends MDIApplication {
      * form of update when the component appears on the screen.
      * This class executes a graph layout algorithm on the document
      */
-    public void redisplay (Document d, JComponent c) {
+    public void redisplay(Document d, JComponent c) {
         JGraph jgraph = (JGraph) c;
         //       redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
     }
 
     /** Return the entity library associated with this Vergil
      */
-    public CompositeEntity getEntityLibrary () {
+    public CompositeEntity getEntityLibrary() {
 	return _entityLibrary;
     }
 
     /** Return the icon library associated with this Vergil
      */
-    public CompositeEntity getIconLibrary () {
+    public CompositeEntity getIconLibrary() {
 	return _iconLibrary;
     }
 
@@ -259,7 +259,7 @@ public class VergilApplication extends MDIApplication {
 
     /** Initialize the palette in the.
      */
-    public void initializePalette () {
+    public void initializePalette() {
         DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
         JTreePane pane = (JTreePane)frame.getPalettePane();
 
@@ -280,11 +280,11 @@ public class VergilApplication extends MDIApplication {
 	// the preferred size along with the minimum size.   JDK1.2 has a
 	// bug where the preferred size may be inferred to be less than the
 	// minimum size when the pane is first created.
-	pane.setMinimumSize(new Dimension(150,150));
+	pane.setMinimumSize(new Dimension(150, 150));
 	((JComponent)pane.getTopComponent()).
-	    setMinimumSize(new Dimension(150,150));
+	    setMinimumSize(new Dimension(150, 150));
 	((JComponent)pane.getTopComponent()).
-	    setPreferredSize(new Dimension(150,150));
+	    setPreferredSize(new Dimension(150, 150));
 	splitPane.validate();
     }
 
@@ -321,7 +321,7 @@ public class VergilApplication extends MDIApplication {
      * hard-wired, but maybe we should be getting them out of the
      * application resources.
      */
-    public void initializeMenuBar (JMenuBar mb) {
+    public void initializeMenuBar(JMenuBar mb) {
         Action action;
         JMenuItem item;
 
@@ -377,7 +377,7 @@ public class VergilApplication extends MDIApplication {
         addAction(action);
         addMenuItem(menuDevel, action, 'P', "Print current document info");
 
-        action = new AbstractAction ("Execute System") {
+        action = new AbstractAction("Execute System") {
             public void actionPerformed(ActionEvent e) {
                 VergilDocument d = (VergilDocument)getCurrentDocument();
                 if (d == null) {
@@ -394,7 +394,8 @@ public class VergilApplication extends MDIApplication {
                     // Simplest hack.
                     if(toplevel.getDirector() == null) {
                         ptolemy.domains.sdf.kernel.SDFDirector director =
-                            new ptolemy.domains.sdf.kernel.SDFDirector(toplevel.workspace());
+                            new ptolemy.domains.sdf.kernel.SDFDirector(
+                                    toplevel.workspace());
 		    //		    _entityLibrary.getEntity(
 		    //	(String)_directorComboBox.getSelectedItem());
                         toplevel.setDirector(director);
@@ -471,7 +472,7 @@ public class VergilApplication extends MDIApplication {
      * -- if we did that, the icons would appear in the menus, which I
      * suppose is a neat trick but completely useless.
      */
-    public void initializeToolBar (JToolBar tb) {
+    public void initializeToolBar(JToolBar tb) {
         Action action;
         RelativeBundle resources = getResources();
 
@@ -494,7 +495,7 @@ public class VergilApplication extends MDIApplication {
         _layoutComboBox.setSelectedItem(dflt);
         _layoutComboBox.setMaximumSize(_layoutComboBox.getMinimumSize());
         _layoutComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged (ItemEvent e) {
+            public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     VergilDocument d = (VergilDocument) getCurrentDocument();
                     JGraph jg = (JGraph) getView(d);
@@ -513,7 +514,7 @@ public class VergilApplication extends MDIApplication {
         _directorComboBox.setSelectedItem(dflt);
         _directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
         _directorComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged (ItemEvent e) {
+            public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     // FIXME do something.
                 }
@@ -524,14 +525,14 @@ public class VergilApplication extends MDIApplication {
 
     /** Create and run a new graph application
      */
-    public static void main (String argv[]) {
+    public static void main(String argv[]) {
         VergilApplication ge = new VergilApplication();
         ge.setVisible(true);
     }
 
     /** Parse the xml libraries
      */
-    public void parseLibraries () {
+    public void parseLibraries() {
         URL iconlibURL = null;
         URL entitylibURL = null;
         try {
@@ -558,7 +559,7 @@ public class VergilApplication extends MDIApplication {
 
     /** Redo the layout of the given JGraph.
      */
-    public void redoLayout (JGraph jgraph, String type) {
+    public void redoLayout(JGraph jgraph, String type) {
         GraphController controller = jgraph.getGraphPane().getGraphController();
         LayoutTarget target = new BasicLayoutTarget(controller);
         Graph graph = controller.getGraph();
@@ -585,7 +586,7 @@ public class VergilApplication extends MDIApplication {
      * In this class, there are some things that we want to enable and
      * disable if there are no documents present.
      */
-    public void setCurrentDocument (Document d) {
+    public void setCurrentDocument(Document d) {
         super.setCurrentDocument(d);
         if(d == null) {
             Action saveAction = getAction(DefaultActions.SAVE);
