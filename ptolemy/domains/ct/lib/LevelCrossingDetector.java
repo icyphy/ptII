@@ -52,6 +52,17 @@ import ptolemy.kernel.util.Workspace;
    An event detector that converts continuous signals to discrete events when
    the continuous signal crosses a level threshold.
    <p>
+   This actor has a parameter <i>crossingDirectionsBeingDetected</i>. This 
+   parameter is used to configure the directions of the level crossings this
+   actor need to detect. There are three possible directions: rising, falling,
+   and both directions. Rising means this actor only detects the level 
+   crossings when the input value goes from below the level threshold to above 
+   it. Falling means this actor only detects the level crossings when the input
+   value goes from above the level threshold to below it. Both-directions means
+   a level corssing is detected as long as the level threshold is crossed. The 
+   default value of the crossingDirectionsBeingDetected parameter is 
+   "bothDirections". 
+   <p>
    When the <i>trigger</i> equals the level threshold (within the specified
    <i>errorTolerance</i>), this actor outputs a discrete event with value
    <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the
@@ -111,10 +122,31 @@ public class LevelCrossingDetector extends TypedAtomicActor
         _errorTolerance = (double) 1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
+
+        // By default, this director detects both directions of leve crossings.
+        crossingDirectionsBeingDetected = new Parameter(this, 
+                "crossingDirectionsBeingDetected", 
+                new StringToken("bothDirections"));
+        _detectRisingCrossing = true;
+        _detectFallingCrossing = true;
+        
+        crossingDirectionsBeingDetected.setTypeEquals(BaseType.STRING);
+        crossingDirectionsBeingDetected.addChoice(
+                new StringToken("bothDirections").toString());
+        crossingDirectionsBeingDetected.addChoice(
+                new StringToken("falling").toString());
+        crossingDirectionsBeingDetected.addChoice(
+                new StringToken("rising").toString());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    /** A parameter specifying which directions this actor detects the 
+     *  level crossings in. There are three choices: falling, rising, and 
+     *  bothDirections. The default value is bothDirections.
+     */
+    public Parameter crossingDirectionsBeingDetected;
 
     /** A parameter that specifies the value of output events
      *  if the <i>useEventValue</i> parameter is checked. By default,
@@ -159,15 +191,29 @@ public class LevelCrossingDetector extends TypedAtomicActor
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == errorTolerance) {
-            double tolerance = ((DoubleToken) errorTolerance.getToken())
-                .doubleValue();
-
+            double tolerance = 
+                ((DoubleToken) errorTolerance.getToken()).doubleValue();
             if (tolerance <= 0.0) {
                 throw new IllegalActionException(this,
                         "Error tolerance must be greater than 0.");
             }
-
-            _errorTolerance = tolerance;
+            _errorTolerance = tolerance;            
+        } else if (attribute == crossingDirectionsBeingDetected) {
+            String crossingDirections = ((StringToken) 
+                    crossingDirectionsBeingDetected.getToken()).stringValue();
+            if (crossingDirections.equalsIgnoreCase("falling")) {
+                _detectFallingCrossing = true;
+                _detectRisingCrossing = false;
+            } else if (crossingDirections.equalsIgnoreCase("rising")) {
+                _detectFallingCrossing = false;
+                _detectRisingCrossing = true;
+            } else if (crossingDirections.equalsIgnoreCase("bothDirections")) {
+                _detectFallingCrossing = true;
+                _detectRisingCrossing = true;
+            } else {
+                throw new IllegalActionException("Unknown direction for" +
+                        " detecting level crossings: " + crossingDirections);
+            }
         } else if (attribute == level) {
             _level = ((DoubleToken) level.getToken()).doubleValue();
         } else {
@@ -230,26 +276,29 @@ public class LevelCrossingDetector extends TypedAtomicActor
             // 1. There is a discontinuity at the current time; OR
             // 2. By linear interpolation, an event is located at the current
             // time.
+            boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
             if ((((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0)
                     || hasCurrentEvent()) {
-                // Emit an event.
-                if (((BooleanToken) usingDefaultEventValue.getToken())
-                        .booleanValue()) {
-                    output.send(0, defaultEventValue.getToken());
-
-                    if (_debugging) {
-                        _debug("Emitting an event with a default value: "
-                                + defaultEventValue.getToken());
-                    }
-                } else {
-                    output.send(0, new DoubleToken(_level));
-
-                    if (_debugging) {
-                        _debug("Emitting an event with the level value: "
-                                + _level);
+                if ((_detectFallingCrossing && !inputIsIncreasing) ||
+                        (_detectRisingCrossing && inputIsIncreasing)) {
+                    // Emit an event.
+                    if (((BooleanToken) usingDefaultEventValue.getToken())
+                            .booleanValue()) {
+                        output.send(0, defaultEventValue.getToken());
+                        
+                        if (_debugging) {
+                            _debug("Emitting an event with a default value: "
+                                    + defaultEventValue.getToken());
+                        }
+                    } else {
+                        output.send(0, new DoubleToken(_level));
+                        
+                        if (_debugging) {
+                            _debug("Emitting an event with the level value: "
+                                    + _level);
+                        }
                     }
                 }
-
                 _eventNow = false;
                 _eventMissed = false;
             }
@@ -309,6 +358,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
         // Otherwise, the current step size is too big.
         // NOTE that the level crossing must happen to avoid the possibility
         // of detecting duplicate level crossings.
+        boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
         if (((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0) {
             // Preinitialize method ensures the cast to be safe.
             CTDirector director = (CTDirector) getDirector();
@@ -320,15 +370,27 @@ public class LevelCrossingDetector extends TypedAtomicActor
                             + getDirector().getModelTime());
                 }
 
-                _eventNow = true;
-                _eventMissed = false;
+                if ((_detectFallingCrossing && !inputIsIncreasing) ||
+                        (_detectRisingCrossing && inputIsIncreasing)) {
+                    _eventNow = true;
+                    _eventMissed = false;
+                } else {
+                    _eventNow = false;
+                    _eventMissed = false;
+                }
             } else {
                 _eventNow = false;
                 _eventMissed = true;
             }
         } else if (_thisTrigger == _level) {
-            _eventNow = true;
-            _eventMissed = false;
+            if ((_detectFallingCrossing && !inputIsIncreasing) ||
+                    (_detectRisingCrossing && inputIsIncreasing)) {
+                _eventNow = true;
+                _eventMissed = false;
+            } else {
+                _eventNow = false;
+                _eventMissed = false;
+            }
         } else {
             _eventNow = false;
             _eventMissed = false;
@@ -374,7 +436,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
         // This used to be done only in isOutputAccurate(),
         // but that results in the first step not being
         // checked. EAL 3/9/05
-        _levelCrossingDetectionDisabled = false;
+        //_levelCrossingDetectionDisabled = false;
         return super.postfire();
     }
 
@@ -409,8 +471,9 @@ public class LevelCrossingDetector extends TypedAtomicActor
 
         if (_eventMissed) {
             // The refined step size is a linear interpolation.
-            refinedStep = (Math.abs(_lastTrigger - _level) * dir
-                    .getCurrentStepSize()) / Math.abs(_thisTrigger - _lastTrigger);
+            refinedStep = 
+                (Math.abs(_lastTrigger - _level) * dir.getCurrentStepSize()) 
+                / Math.abs(_thisTrigger - _lastTrigger);
 
             if (_debugging) {
                 _debug(getFullName() + " Event Missed: refined step at"
@@ -426,13 +489,21 @@ public class LevelCrossingDetector extends TypedAtomicActor
 
     /** The level threshold this actor detects.
      */
-
     // The variable is proetected because ZeroCrossingDetector needs access
     // to this variable.
     protected double _level;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    // flag indicating whether this actor detects the level crossing 
+    // when the input value is rising.
+    private boolean _detectRisingCrossing;
+
+    // flag indicating whether this actor detects the level crossing 
+    // when the input value is falling.
+    private boolean _detectFallingCrossing;
+    
     // Parameter, the error tolerance, local copy
     private double _errorTolerance;
 
