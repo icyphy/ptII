@@ -1,4 +1,4 @@
-/* An aggregation of actors.
+/* An actor that iterates a contained actor over input arrays.
 
  Copyright (c) 1997-2003 The Regents of the University of California.
  All rights reserved.
@@ -24,47 +24,46 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
  */
 
 package ptolemy.actor.hoc;
 
 //import ptolemy.kernel.*;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.*;
 
-import ptolemy.actor.*;
-import ptolemy.graph.*;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.actor.IODependence.IOInformation;
-import ptolemy.graph.DirectedGraph;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.ComponentRelation;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.FiringEvent;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.QueueReceiver;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-
-
 
 //////////////////////////////////////////////////////////////////////////
 //// IterateOverArray
 /**
+This actor iterates a contained actor over input arrays.
 
-A composite actor that takes arrays as inputs and maps actors inside
-over the array inputs.
+FIXME: details.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
@@ -93,121 +92,14 @@ public class IterateOverArray extends TypedCompositeActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         getMoMLInfo().className = "ptolemy.actor.hoc.IterateOverArray";
+        new IterateDirector(this, uniqueName("IterateDirector"));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a composite actor with clones of the ports of the
-     *  original actor, the contained actors, and the contained relations.
-     *  The ports of the returned actor are not connected to anything.
-     *  The connections of the relations are duplicated in the new composite,
-     *  unless they cross levels, in which case an exception is thrown.
-     *  The local director is cloned, if there is one.
-     *  The executive director is not cloned.
-     *  NOTE: This will not work if there are level-crossing transitions.
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If the actor contains
-     *   level crossing transitions so that its connections cannot be cloned,
-     *   or if one of the attributes cannot be cloned.
-     *  @return A new IterateOverArray.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        IterateOverArray newObject = (IterateOverArray)super.clone(workspace);
-        return newObject;
-    }
-
-    /** If this actor is opaque, transfer any data from the input ports
-     *  of this composite to the ports connected on the inside, and then
-     *  invoke the fire() method of its local director.
-     *  The transfer is accomplished by calling the transferInputs() method
-     *  of the local director (the exact behavior of which depends on the
-     *  domain).  If the actor is not opaque, throw an exception.
-     *  This method is read-synchronized on the workspace, so the
-     *  fire() method of the director need not be (assuming it is only
-     *  called from here).  After the fire() method of the director returns,
-     *  send any output data created by calling the local director's
-     *  transferOutputs method.
-     *
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's fire() method throws it, or if the actor is not
-     *   opaque.
-     */
-    public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called fire()");
-        }
-        try {
-            workspace().getReadAccess();
-            if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Cannot fire a non-opaque actor.");
-            }
-
-            // Don't use the local director to transfer inputs.
-            Iterator inputPorts = inputPortList().iterator();
-            while (inputPorts.hasNext() && !_stopRequested) {
-                IOPort p = (IOPort)inputPorts.next();
-                for (int i = 0; i < p.getWidth(); i++) {
-                    // NOTE: This is not compatible with certain cases
-                    // in PN, where we don't want to block on a port
-                    // if nothing is connected to the port on the
-                    // inside.
-                    try {
-                        if (p.isKnown(i)) {
-                            if (p.hasToken(i)) {
-                                Token t = p.get(i);
-                                if (_debugging) _debug(getName(),
-                                        "transferring input from "
-                                        + getName());
-                                ArrayToken arrayToken = (ArrayToken)t;
-                                for(int j = 0; j < arrayToken.length(); j++) {
-                                    p.sendInside(i, arrayToken.getElement(j));
-                                }
-                            }
-                        }
-                    } catch (NoTokenException ex) {
-                        // this shouldn't happen.
-                        throw new InternalErrorException(this, ex, null);
-                    }
-                }
-            }
-            
-            if (_stopRequested) return;
-            while (!_stopRequested && getDirector().prefire()) {
-                getDirector().fire();
-                if (!getDirector().postfire()) break;
-            }           
-            if (_stopRequested) return;
-            // Use the local director to transfer outputs.
-            Iterator outports = outputPortList().iterator();
-            while (outports.hasNext() && !_stopRequested) {
-                IOPort p = (IOPort)outports.next();
-                for (int i = 0; i < p.getWidthInside(); i++) {
-                    try {
-                        ArrayList list = new ArrayList();
-                        while(p.isKnownInside(i) && p.hasTokenInside(i)) {
-                            Token t = p.getInside(i);
-                            list.add(t);
-                        }
-                        if(list.size() != 0) {
-                            Token[] tokens = (Token[])list.toArray(new Token[list.size()]);
-                            p.send(i, new ArrayToken(tokens));
-                        }
-                    } catch (NoTokenException ex) {
-                        throw new InternalErrorException(this, ex, null);
-                    }
-                }
-            }
-        } finally {
-            workspace().doneReading();
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     // Return the type constraints on all connections starting from
     // the specified source port to all the ports in a group of
@@ -240,7 +132,6 @@ public class IterateOverArray extends TypedCompositeActor {
                 System.out.println("ineq = " + ineq);
             }
         }
-
         return result;
     }
 
@@ -251,7 +142,7 @@ public class IterateOverArray extends TypedCompositeActor {
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
         List result = new LinkedList();
-
+        
         boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
         if (!isUndeclared) {
             // sourcePort has a declared type.
@@ -286,10 +177,189 @@ public class IterateOverArray extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
+    ////                         inner classes                     ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    //// IterateDirector
+    
+    /**
+     *  FIXME.
+     */
+    private class IterateDirector extends Director {
 
+        /** Create a new instance of the director for IterateOverArray.
+         *  @param container The container for the director.
+         *  @param name The name of the director.
+         *  @throws IllegalActionException Should not be thrown.
+         *  @throws NameDuplicationException Should not be thrown.
+         */
+        public IterateDirector(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            setPersistent(false);
+        }
+
+        /** Invoke an iteration on all of the deeply contained actors of the
+         *  container of this director repeatedly until they all return false
+         *  in prefire or any one return false in postfire. The contained
+         *  actors are interated in the order reported by the entityList()
+         *  method of the container.
+         *  @exception IllegalActionException If any called method of one
+         *  of the associated actors throws it.
+         */
+        public void fire() throws IllegalActionException {
+            Nameable container = getContainer();
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
+            int iterationCount = 1;
+            while (actors.hasNext() && !_stopRequested) {
+                Actor actor = (Actor)actors.next();
+                if (_debugging) {
+                    _debug(new FiringEvent(this, actor,
+                            FiringEvent.BEFORE_ITERATE,
+                            iterationCount));
+                }
+                boolean postfireReturns = true;
+                int result = Actor.COMPLETED;
+                while (result != Actor.NOT_READY) {
+                    if (_debugging) {
+                        _debug(new FiringEvent(this, actor,
+                                FiringEvent.BEFORE_ITERATE,
+                                iterationCount));
+                    }
+                    result = actor.iterate(1);
+                    if (_debugging) {
+                        _debug(new FiringEvent(this, actor,
+                                FiringEvent.AFTER_ITERATE,
+                                iterationCount));
+                    }
+                    // FIXME: Perhaps should return if there is no more input data,
+                    // irrespective of return value of perfire() of the actor, which
+                    // may not be reliable.
+                    if (result == Actor.STOP_ITERATING) {
+                        postfireReturns = true;
+                        if (_debugging) {
+                            _debug("Actor requests halt: "
+                                    + ((Nameable)actor).getFullName());
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        /** Delegate by calling fireAt() on the director of the container's
+         *  container.
+         *  @param actor The actor requesting firing.
+         *  @param time The time at which to fire.
+         */
+        public void fireAt(Actor actor, double time)
+                throws IllegalActionException {
+            Director director = IterateOverArray.this.getExecutiveDirector();
+            if (director != null) {
+                director.fireAt(actor, time);
+            }
+        }
+
+        /** Delegate by calling fireAtCurrentTime() on the director
+         *  of the container's container.
+         *  @param actor The actor requesting firing.
+         *  @param time The time at which to fire.
+         */
+        public void fireAtCurrentTime(Actor actor)
+                throws IllegalActionException {
+            Director director = IterateOverArray.this.getExecutiveDirector();
+            if (director != null) {
+                director.fireAtCurrentTime(actor);
+            }
+        }
+        
+        // FIXME: Other methods that need to be delegated?
+        
+        /** Return a new instance of QueueReceiver.
+         *  @return A new instance of QueueReceiver.
+         *  @see QueueReceiver
+         */
+        public Receiver newReceiver() {
+            // TODO Auto-generated method stub
+            return new QueueReceiver();
+        }
+
+        /** Transfer data from an input port of the
+         *  container to the ports it is connected to on the inside.
+         *  This method extracts tokens from the input array and
+         *  provides them sequentially to the corresponding ports
+         *  of the contained actor.
+         *  @exception IllegalActionException Should not be thrown.
+         *  @param port The port to transfer tokens from.
+         *  @return True if at least one data token is transferred.
+         */
+        public boolean transferInputs(IOPort port)
+                throws IllegalActionException {
+
+            boolean result = false;
+            for (int i = 0; i < port.getWidth(); i++) {
+                // NOTE: This is not compatible with certain cases
+                // in PN, where we don't want to block on a port
+                // if nothing is connected to the port on the
+                // inside.
+                try {
+                    if (port.isKnown(i)) {
+                        if (port.hasToken(i)) {
+                            Token t = port.get(i);
+                            if (_debugging) {
+                                _debug(getName(),
+                                        "transferring input from "
+                                        + port.getName());
+                            }
+                            ArrayToken arrayToken = (ArrayToken)t;
+                            for(int j = 0; j < arrayToken.length(); j++) {
+                                port.sendInside(i, arrayToken.getElement(j));
+                            }
+                            result = true;
+                        }
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
+                }
+            }
+            return result;
+        }
+
+        /** Transfer data from the inside receivers of an output port of the
+         *  container to the ports it is connected to on the outside.
+         *  This method packages the available tokens into a single array.
+         *  @exception IllegalActionException Should not be thrown.
+         *  @param port The port to transfer tokens from.
+         *  @return True if at least one data token is transferred.
+         *  @see IOPort#transferOutputs
+         */
+        public boolean transferOutputs(IOPort port)
+                throws IllegalActionException {
+            boolean result = false;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                try {
+                    ArrayList list = new ArrayList();
+                    while(port.isKnownInside(i) && port.hasTokenInside(i)) {
+                        Token t = port.getInside(i);
+                        list.add(t);
+                    }
+                    if(list.size() != 0) {
+                        Token[] tokens = (Token[])list.toArray(new Token[list.size()]);
+                        if (_debugging) {
+                            _debug(getName(),
+                                    "transferring output to "
+                                    + port.getName());
+                        }
+                        port.send(i, new ArrayToken(tokens));
+                    }
+                    result = true;
+                } catch (NoTokenException ex) {
+                    throw new InternalErrorException(this, ex, null);
+                }
+            }
+            return result;
+        }
+    }
 }
