@@ -93,12 +93,6 @@ import ptolemy.kernel.util.Workspace;
    externally have HDF or SDF semantics. There is no constraint on
    the number of levels in the hierarchy.
    <p>
-   Note: unlike the general FSM and HS directors, the HDFFSM director
-   does not support multiple state refinements or transition refinements.
-   This is because multiple refinements may result in type signature
-   conflicts. Such restriction should not be a limitation to expressiveness
-   since users can put all the models in one refinement.
-   <p>
    To use this director, create a ModalModel and specify this director
    as its director.  Then look inside to populate the controller
    with states. Create one TypedComposite actor as a refinement
@@ -188,22 +182,22 @@ public class HDFFSMDirector extends FSMDirector {
 
             Actor[] actors = tr.getRefinement();
             if (actors != null) {
-                throw new IllegalActionException(this,
-                        "HDF does not support transition refinements.");
-                /*
-                  for (int i = 0; i < actors.length; ++i) {
-                  if (_stopRequested) break;
-                  if (actors[i].prefire()) {
-                  if (_debugging) {
-                  _debug(getFullName(),
-                  " fire transition refinement",
-                  ((ptolemy.kernel.util.NamedObj)
-                  actors[i]).getName());
-                  }
-                  actors[i].fire();
-                  actors[i].postfire();
-                  }
-                  }*/
+                //throw new IllegalActionException(this,
+                //      "HDF does not support transition refinements.");
+                
+                for (int i = 0; i < actors.length; ++i) {
+                    if (_stopRequested) break;
+                    if (actors[i].prefire()) {
+                        if (_debugging) {
+                            _debug(getFullName(),
+                            " fire transition refinement",
+                            ((ptolemy.kernel.util.NamedObj)
+                            actors[i]).getName());
+                        }
+                        actors[i].fire();
+                        actors[i].postfire();
+                    }
+                }
             }
             _readOutputsFromRefinement();
             //execute the output actions
@@ -287,9 +281,6 @@ public class HDFFSMDirector extends FSMDirector {
             TypedActor[] curRefinements = initialState.getRefinement();
             if (curRefinements != null) {
                 // FIXME
-                if (curRefinements.length != 1)
-                    throw new IllegalActionException(this,
-                            "HDF does not support multiple state refinements.");
                 TypedCompositeActor curRefinement =
                     (TypedCompositeActor)(curRefinements[0]);
                 Director refinementDir = curRefinement.getDirector();
@@ -385,9 +376,6 @@ public class HDFFSMDirector extends FSMDirector {
             TypedActor[] actors = curState.getRefinement();
             if (actors != null) {
                 // FIXME
-                if (actors.length != 1)
-                    throw new IllegalActionException(this,
-                            "HDF does not support multiple state refinements.");
                 actor = (TypedCompositeActor)(actors[0]);
                 //refinementDir = actor.getDirector();
                 superPostfire = super.postfire();
@@ -406,9 +394,6 @@ public class HDFFSMDirector extends FSMDirector {
             TypedActor[] actors = curState.getRefinement();
             if (actors != null) {
                 //FIXME
-                if (actors.length != 1)
-                    throw new IllegalActionException(this,
-                            "HDF does not support multiple state refinements.");
                 actor = (TypedCompositeActor)(actors[0]);
             } else {
                 throw new IllegalActionException(this,
@@ -427,7 +412,7 @@ public class HDFFSMDirector extends FSMDirector {
                         refinementDir).getScheduler();
                 refinmentSched.setValid(true);
                 ((SDFScheduler)refinmentSched).getSchedule();
-            } else { //FIXME
+            } else {
                 throw new IllegalActionException(this,
                         "Only HDF, SDF, or HDFFSM director is "
                         + "allowed in the refinement.");
@@ -528,10 +513,6 @@ public class HDFFSMDirector extends FSMDirector {
         TypedActor[] curRefinements = initialState.getRefinement();
         if (curRefinements != null) {
             // FIXME
-            if (curRefinements.length != 1) {
-                throw new IllegalActionException(this,
-                        "HDF does not support multiple state refinements");
-            }
             TypedCompositeActor curRefinement
                 = (TypedCompositeActor)(curRefinements[0]);
             Director refinementDir = curRefinement.getDirector();
@@ -539,7 +520,6 @@ public class HDFFSMDirector extends FSMDirector {
             if (!(refinementDir instanceof HDFFSMDirector)
                     && !(refinementDir instanceof SDFDirector)) {
                 // Invalid director.
-                // FIXME
                 throw new IllegalActionException(this,
                         "Only HDF, SDF, or HDFFSM director is "
                         + "allowed in the refinement.");

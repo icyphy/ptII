@@ -57,7 +57,6 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.Typeable;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
