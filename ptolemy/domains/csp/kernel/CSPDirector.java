@@ -167,10 +167,10 @@ public class CSPDirector extends ProcessDirector {
         CSPDirector newobj = (CSPDirector)super.clone(ws);
         newobj._actorsBlocked = 0;
 	newobj._actorsDelayed = 0;
-        newobj._delayedActorList = new LinkedList();
-        newobj._mutationsPending = false;
-        newobj._simulationUntimed = false;
         newobj._currentTime = 0.0;
+        newobj._delayedActorList = new LinkedList();
+        newobj._simulationUntimed = false;
+        newobj._topologyChangesPending = false;
         return newobj;
     }
 
@@ -211,33 +211,17 @@ public class CSPDirector extends ProcessDirector {
         return false;
     }
 
-    /** FIXME: compare to Director.processTopologyRequests.
-     *  Request the director to process topology change requests
-     *  immediately. This should be called by clients that have
-     *  queued a request and require that the request be processed
-     *  immediately. The method does not return until requests
-     *  have been processed.
-     *  <p> 
-     *  @exception TopologyChangeFailedException If the mutations could not 
-     *   be completed.
+    /** Queue a topology change request. This sets a flag so that 
+     *  the next time artificial deadlock is reached the changes 
+     *  to the topology are made.
+     *  @param req the topology change being queued.
      */
-    public void processTopologyRequests() throws TopologyChangeFailedException{
-        try {
-            setPauseRequested();
-            synchronized(this) {
-                _urgentMutations = true;
-                while (!_paused) {
-                    this.wait();
-                }
-            }
-            // simulation is paused.
-            // Do mutations.
-            // Resume.
-            setResumeRequested();
-        } catch (InterruptedException ex) {
-            // FIXME: what goes here?
-        } catch (IllegalActionException ex) {
-            // FIXME: throw new TopologyChangeFailedException();
+    public void queueTopologyChangeRequest(TopologyChangeRequest req) {
+        System.out.println("queuning topology change in CSPDirector.");
+        synchronized(this) {
+            _topologyChangesPending = true;
+            super.queueTopologyChangeRequest(req);
+            System.out.println("queuedtopology change in CSPDirector.");
         }
     }
             
@@ -286,7 +270,8 @@ public class CSPDirector extends ProcessDirector {
     public synchronized void wrapup() throws IllegalActionException {
         System.out.println(Thread.currentThread().getName() +
                 ": CSPDirector: about to end the simulation");
-        if ((_actorsDelayed !=0) || _mutationsPending || (_actorsPaused != 0)){
+        if ((_actorsDelayed !=0) || _topologyChangesPending 
+                || (_actorsPaused != 0)){
             throw new InvalidStateException( "CSPDirector wrapping up " +
                     "when there are actors delayeed or paused, or when " +
                     "topology changes are pending.");
@@ -343,7 +328,8 @@ public class CSPDirector extends ProcessDirector {
      *  the deadlock.
      */
     protected synchronized void _checkForDeadlock() {
-        System.out.println("_checkForDeadlock: Active = " + 
+        System.out.println(Thread.currentThread().getName() +
+                ": _checkForDeadlock: Active = " + 
                 _actorsActive + ", blocked = " + _actorsBlocked + 
                 ", delayed = " + _actorsDelayed );
         if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
@@ -389,12 +375,44 @@ public class CSPDirector extends ProcessDirector {
      *  @param True if real deadlock occured, false otherwise.
      */
     protected synchronized boolean _handleDeadlock() {
-        try {
-            this.wait();
+        try {          
             if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
-                if (_mutationsPending) {
-                    // FIXME: fill in later!
+                if (_topologyChangesPending) {
                     System.out.println("ARTIFICIAL MUTATION DEADLOCK!!");
+                    _processTopologyRequests();
+                    LinkedList newThreads = new LinkedList();
+                    Enumeration newActors = _newActors();
+                    while (newActors.hasMoreElements()) {
+                        Actor actor = (Actor)newActors.nextElement(); 
+                        System.out.println("Adding and starting new actor; " +
+                                ((Nameable)actor).getName() + "\n");
+                        //increaseActiveCount should be called before 
+                        // createReceivers as that might increase the 
+                        // count of processes blocked and deadlocks 
+                        // might get detected even if there are no 
+                        //deadlocks
+                        increaseActiveCount();
+                        actor.createReceivers();
+                        actor.initialize();
+                        String name = ((Nameable)actor).getName();
+                        ProcessThread pnt = new ProcessThread(actor, 
+                                this, name);
+                        newThreads.insertFirst(pnt);
+                    }
+                    // Note we only start the threads after they have 
+                    // all had the receivers created.
+                    Enumeration allThreads = newThreads.elements();
+                    while (allThreads.hasMoreElements()) {
+                            ProcessThread p = 
+                                (ProcessThread)allThreads.nextElement(); 
+                            p.start();
+                           
+                            _threadList.insertFirst(p);
+                    }
+                    _topologyChangesPending = false;
+                    _checkForDeadlock();
+                    System.out.println("Finished dealing with " +
+                            "mutation deadlock.");
                 } else if (_actorsDelayed > 0) {
                     // Artificial deadlock.
                     System.out.println("ARTIFICIAL TIME DEADLOCK!!");
@@ -429,12 +447,25 @@ public class CSPDirector extends ProcessDirector {
                     return true;
                 }
             }
+            System.out.println("\nhandleDeadlock waiting...");
+            this.wait();
+            return false;
         } catch (InterruptedException ex ) {
-            throw new InvalidStateException("CSPDirector interruped " +
+            throw new InvalidStateException("CSPDirector: interruped " +
                     "while waiting for deadlock to occur or " +
                     "resolving an artificial deadlock.");
+        } catch (TopologyChangeFailedException ex ) {
+            throw new InvalidStateException("CSPDirector: failed to " +
+                    "complete topology change requests.");
+        } catch (IllegalActionException ex ) {
+            throw new InvalidStateException("CSPDirector: failed to " +
+                    "create new receivers following a topology " +
+                    "change request.");
+        } catch (Exception ex) {
+            System.out.println("arrrgggghhhh!!!" + ex.getClass().getName() + 
+                    ": " + ex.getMessage());
         }
-        return false;
+        return true;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -501,8 +532,9 @@ public class CSPDirector extends ProcessDirector {
     // will next be advanced to is the time at the top of the list.
     private LinkedList _delayedActorList = new LinkedList();
     
-    // Flag indicating that mutations have been registered with this director.
-    private boolean _mutationsPending = false;// FIXME!
+    // Flag indicating that changes in the topology have been
+    // registered with this director.
+    private boolean _topologyChangesPending = false;
 
     // Flag indicating if the simulation is timed.
     private boolean _simulationUntimed = false;
