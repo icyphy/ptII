@@ -563,23 +563,23 @@ public class LogicAnalyzer extends PlotBox {
         }
 
         /*
-        // Use long here because these numbers can be quite large
-        // (when we are zoomed out a lot).
-        long ypos = _lry - (long)((pt.y - _yMin) * _yscale);
-        long xpos = _ulx + (long)((pt.x - _xMin) * _xscale);
+          // Use long here because these numbers can be quite large
+          // (when we are zoomed out a lot).
+          long ypos = _lry - (long)((pt.y - _yMin) * _yscale);
+          long xpos = _ulx + (long)((pt.x - _xMin) * _xscale);
 
-        // Draw lines to the previous point.
-        long prevx = ((Long)_prevx.elementAt(dataset)).longValue();
-        long prevy = ((Long)_prevy.elementAt(dataset)).longValue();
-        // a horizontal line
-        _drawLine(graphics, dataset, xpos, prevy,prevx, prevy, true);
-        // a vertical line
-        // _drawLine(graphics, dataset, xpos, ypos,xpos, prevy, true);
+          // Draw lines to the previous point.
+          long prevx = ((Long)_prevx.elementAt(dataset)).longValue();
+          long prevy = ((Long)_prevy.elementAt(dataset)).longValue();
+          // a horizontal line
+          _drawLine(graphics, dataset, xpos, prevy,prevx, prevy, true);
+          // a vertical line
+          // _drawLine(graphics, dataset, xpos, ypos,xpos, prevy, true);
 
-        // Save the current point as the "previous" point for future
-        // line drawing.
-        _prevx.setElementAt(new Long(xpos), dataset);
-        _prevy.setElementAt(new Long(ypos), dataset);
+          // Save the current point as the "previous" point for future
+          // line drawing.
+          _prevx.setElementAt(new Long(xpos), dataset);
+          _prevy.setElementAt(new Long(ypos), dataset);
         */
 
         // Draw the point & associated decorations, if appropriate.

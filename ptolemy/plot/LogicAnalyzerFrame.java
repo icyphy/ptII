@@ -111,7 +111,7 @@ public class LogicAnalyzerFrame extends Frame {
         // Set the action command and listener for each menu item.
         for(int i = 0; i < specialMenuItems.length; i++) {
             specialMenuItems[i].setActionCommand(
-                specialMenuItems[i].getLabel());
+                    specialMenuItems[i].getLabel());
             specialMenuItems[i].addActionListener(sml);
             _specialMenu.add(specialMenuItems[i]);
         }
