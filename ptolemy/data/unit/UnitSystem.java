@@ -1,4 +1,4 @@
-/* A unit system as defined by a set of constants.
+/* A unit system as defined by a set of base and derived units.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -37,31 +37,33 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ScopeExtendingAttribute;
 import ptolemy.data.type.BaseType;
 import ptolemy.math.Complex;
 
 import java.util.Hashtable;
+import java.util.Vector;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitSystem
 /**
-A unit system as defined by a set of constants.
+A unit system as defined by a set of base and derived units.
 <p>
-The constants represent the various measurement units in a unit system.
-The units belong to a number of categories, for example length and time
+The various measurement units of a unit system are represented by the
+parameters of an instance of UnitSystem.
+The units belong to a number of categories, such as length and time
 in the International System of Units (SI). Each category has a base unit,
 for example meter in the length category.
-
-FIXME:
-In a Vergil configuration, a unit system is defined as. (Give example)
+<p>
+Several basic unit systems are provided with Ptolemy II. They are specified
+using MoML. Customized unit systems can be created following these examples.
 
 @author Xiaojun Liu
 @version $Id$
 @since Ptolemy II 2.0
-@see ptolemy.data.expr.Constants
 */
 
-public class UnitSystem extends Attribute {
+public class UnitSystem extends ScopeExtendingAttribute {
 
     /** Construct a unit system with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -84,47 +86,21 @@ public class UnitSystem extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Record the specified unit category, and the name of its base unit.
-     *  If the category is not already recorded, assign a unique index for
-     *  the category.
-     *  @param categoryName The name of the unit category.
-     *  @param baseUnitName The name of the base unit of the category.
+    /** Register the specified unit category.
+     *  If the category is not already registered, assign a unique index
+     *  for the category.
+     *  @param category The unit category to be registered.
      */
-    public static void addUnitCategory(String categoryName,
-	    String baseUnitName) {
+    public static void addUnitCategory(UnitCategory category) {
 
-        // System.out.println("Add unit category: " + categoryName
-        // + " " + baseUnitName);
-
-	Integer index = (Integer)_indexTable.get(categoryName);
+	Integer index = (Integer)_indexTable.get(category);
 	if (index != null) {
-	    _baseNames[index.intValue()] = baseUnitName;
+            return;
 	} else {
-	    String[] oldNames = _baseNames;
-	    int length = oldNames.length;
-	    _baseNames = new String[length + 1];
-	    System.arraycopy(oldNames, 0, _baseNames, 0, length);
-	    index = new Integer(length);
-	    _indexTable.put(categoryName, index);
-	    _baseNames[length] = baseUnitName;
-	}
-    }
-
-    /** If the changed attribute is a parameter, add the parameter as
-     *  a constant recognized by the expression parser.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
-    public void attributeChanged(Attribute attribute)
-	    throws IllegalActionException {
-	if (attribute instanceof Parameter) {
-
-            // System.out.println("Add unit constant: " + attribute.getName());
-
-	    Constants.add(attribute.getName(),
-		    ((Parameter)attribute).getToken());
-	} else {
-	    super.attributeChanged(attribute);
+	    index = new Integer(_categories);
+	    _indexTable.put(category, index);
+            ++_categories;
+            _categoryVector.add(category);
 	}
     }
 
@@ -133,19 +109,25 @@ public class UnitSystem extends Attribute {
      *  @return The name of the base unit of the category.
      */
     public static String getBaseUnitName(int categoryIndex) {
-	if (categoryIndex < 0 || categoryIndex > _baseNames.length - 1) {
-	    return null;
+	if (categoryIndex < 0 || categoryIndex >= _categories) {
+	    return "unknown";
 	} else {
-	    return _baseNames[categoryIndex];
+            UnitCategory category =
+                    (UnitCategory)_categoryVector.elementAt(categoryIndex);
+            if (category != null) {
+                return ((BaseUnit)category.getContainer()).getName();
+            } else {
+                return "unknown";
+            }
 	}
     }
 
     /** Return the index assigned to the specified unit category.
-     *  @param categoryName The name of the unit category.
+     *  @param category The unit category.
      *  @return The index assigned to the category.
      */
-    public static int getUnitCategoryIndex(String categoryName) {
-	Integer index = (Integer)_indexTable.get(categoryName);
+    public static int getUnitCategoryIndex(UnitCategory category) {
+	Integer index = (Integer)_indexTable.get(category);
 	if (index == null) {
 	    //FIXME: throw an exception?
 	    return -1;
@@ -160,7 +142,9 @@ public class UnitSystem extends Attribute {
     // The hash table that maps the name of a unit category to its index.
     private static Hashtable _indexTable = new Hashtable();
 
-    // The array that contains the names of the base units of the categories.
-    private static String[] _baseNames = new String[0];
+    // The number of registered unit categories.
+    private static int _categories = 0;
 
+    // The vector that contains all registered categories ordered by index.
+    private static Vector _categoryVector = new Vector();
 }

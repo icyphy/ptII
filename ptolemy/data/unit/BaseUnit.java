@@ -47,24 +47,18 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// BaseUnit
 /**
-The base unit of a unit category.
-<p>
-The value of the base unit is given by an expression. The category of
-a base unit is specified by a unit category property.
-FIXME:
-In a Vergil configuration, such a property is used as. (Give example)
+The base unit of a unit category.  The category of a base unit is specified
+by a unit category property.
 
 @author Xiaojun Liu
 @version $Id$
 @since Ptolemy II 2.0
-@see ptolemy.data.unit.UnitCategory
 */
 
 public class BaseUnit extends Parameter {
 
     /** Construct a base unit with the given name contained by
-     *  the specified
-     *  entity. The container argument must not be null, or a
+     *  the specified entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
@@ -84,7 +78,9 @@ public class BaseUnit extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the token contained by this base unit.  Calling this method
+    /** Get the token contained by this base unit.  The token contains
+     *  the unit information specified by the unit category property.
+     *  Calling this method
      *  will trigger evaluation of the expression, if the value has been
      *  given by setExpression(). Notice the evaluation of the expression
      *  can trigger an exception if the expression is not valid, or if the
@@ -106,9 +102,9 @@ public class BaseUnit extends Parameter {
 	    Iterator attributes =
                     attributeList(UnitCategory.class).iterator();
 	    if (attributes.hasNext()) {
-		Attribute category = (Attribute)attributes.next();
+		UnitCategory category = (UnitCategory)attributes.next();
 		int index =
-                        UnitSystem.getUnitCategoryIndex(category.getName());
+                        UnitSystem.getUnitCategoryIndex(category);
 		if (index >= 0) {
 		    ((ScalarToken)token).setUnitCategory(index);
 		}

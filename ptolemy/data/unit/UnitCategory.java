@@ -45,10 +45,8 @@ import java.util.Hashtable;
 //////////////////////////////////////////////////////////////////////////
 //// UnitCategory
 /**
-A property that specifies the category of a base unit.
-<p>
-FIXME:
-In a Vergil configuration, such a property is used as. (Give example)
+A property that specifies the category of a base unit.  For example, in the
+International System of Units, the base unit meter has the category length.
 
 @author Xiaojun Liu
 @version $Id$
@@ -75,7 +73,7 @@ public class UnitCategory extends Attribute {
     public UnitCategory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	UnitSystem.addUnitCategory(name, container.getName());
+	UnitSystem.addUnitCategory(this);
     }
 
 }
