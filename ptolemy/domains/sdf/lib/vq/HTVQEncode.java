@@ -41,6 +41,8 @@ import java.net.*;
 //////////////////////////////////////////////////////////////////////////
 //// HTVQEncode
 /**
+This actor encodes a matrix using Hierarchical Table-Lookup Vector 
+Quantization.   
 @author Steve Neuendorffer
 @version $Id$
 */

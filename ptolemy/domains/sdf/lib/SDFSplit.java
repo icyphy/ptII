@@ -93,6 +93,10 @@ public class SDFSplit extends SDFAtomicActor {
         }
     }
 
+    /** 
+     * Consume two tokens from the input.  Copy the first one to the port 
+     * output1, and the second to the port output2
+     */
     public void fire() throws IllegalActionException {
         IntToken message;
 

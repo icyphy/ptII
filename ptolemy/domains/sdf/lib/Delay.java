@@ -44,43 +44,75 @@ import ptolemy.domains.sdf.kernel.*;
  * @author Steve Neuendorffer
  * @version $Id$
  */
+//FIXME: This should maybe get rewritten somehow so that it never
+// Actually gets fired, but overrides getRemoteReceivers on it's input
+// port to return the RemoteReceivers of its output port.
 public class Delay extends SDFAtomicActor {
     public Delay(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            TypedIOPort inputport = (TypedIOPort)newPort("input");
-            inputport.setInput(true);
-            setTokenConsumptionRate(inputport, 1);
-            inputport.setDeclaredType(IntToken.class);
+            TypedIOPort input = (TypedIOPort)newPort("input");
+            input.setInput(true);
+            setTokenConsumptionRate(input, 1);
+            input.setDeclaredType(Token.class);
 
-            TypedIOPort outputport = (TypedIOPort)newPort("output");
-            outputport.setOutput(true);
-            setTokenProductionRate(outputport, 1);
-            outputport.setDeclaredType(IntToken.class);
-            setTokenInitProduction(outputport, 1);
+            TypedIOPort output = (TypedIOPort)newPort("output");
+            output.setOutput(true);
+            setTokenProductionRate(output, 1);
+            output.setDeclaredType(Token.class);
+            setTokenInitProduction(output, 1);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFDelay: constructor error");
             e1.printStackTrace();
         }
     }
+ 
+    public TypedIOPort input;
+    public TypedIOPort output;
 
-    public void initialize() throws IllegalActionException {
-        IntToken token = new IntToken();
-        TypedIOPort outputport = (TypedIOPort)getPort("output");
-        outputport.send(0, token);
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            Delay newobj = (Delay)(super.clone(ws));
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
-    public void fire() throws IllegalActionException {
-        IntToken message;
-        TypedIOPort inputport = (TypedIOPort)getPort("input");
-        TypedIOPort outputport = (TypedIOPort)getPort("output");
+    /** 
+     * Initialize this actor.
+     * Create the Delay Token.
+     * @exception IllegalActionException If one of the contained methods 
+     * throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        // Create the Delay token.
+        IntToken token = new IntToken();
+        TypedIOPort output = (TypedIOPort)getPort("output");
+        output.send(0, token);
+    }
 
-        message = (IntToken)inputport.get(0);
-        System.out.print("Delay - ");
-        System.out.println(message.intValue());
-        outputport.send(0, message);
+    /** 
+     * Fire this actor.
+     * Copy the input to the output.
+     * @exception IllegalActionException If one of the contained methods 
+     * throws it.
+     */
+    public void fire() throws IllegalActionException {
+        Token message = input.get(0);
+        output.send(0, message);
     }
 }
 

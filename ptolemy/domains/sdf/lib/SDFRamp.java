@@ -59,7 +59,7 @@ public class SDFRamp extends SDFAtomicActor {
         catch (IllegalActionException e1) {
             System.out.println("SDFRamp: constructor error");
         }
-        value = 0;
+        _value = 0;
 
     }
 
@@ -86,26 +86,31 @@ public class SDFRamp extends SDFAtomicActor {
         }
     }
 
+    /**
+     * Produce several integer tokens with values with incremental values.
+     * The number of tokens produced during each firing is determined by 
+     * the rates on the ports, and the sequence of values continues across
+     * firings.
+     * @exception IllegalActionException If a contained method throws it.
+     */
     public void fire() throws IllegalActionException {
         int i;
 
         int tokens = getTokenProductionRate(output);
         for(i = 0; i < tokens; i++) {
-            Token message = new IntToken(value);
-            value = value + 1;
+            Token message = new IntToken(_value);
+            _value = _value + 1;
             output.send(0, message);
         }
     }
 
+    /**
+     * Initialize the sequence so the first token created has value zero.
+     */
     public void initialize() {
-        value = 0;
+        _value = 0;
     }
 
-    public boolean prefire() throws IllegalActionException {
-        return true;
-    }
-
-    private int value;
-
+    private int _value;
 }
 

@@ -191,6 +191,7 @@ public class FIR extends SDFAtomicActor {
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.
+     *  @exception IllegalActionException Not Thrown.
      */
     public void fire() throws IllegalActionException {
 

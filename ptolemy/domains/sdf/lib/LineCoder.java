@@ -155,6 +155,7 @@ public class LineCoder extends SDFAtomicActor {
     }
 
     /** Consume the inputs and produce the corresponding symbol.
+     *  @exception IllegalActionException Not Thrown.
      */
     public void fire() throws IllegalActionException {
         int tableaddress = 0;

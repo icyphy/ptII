@@ -76,6 +76,10 @@ public class SDFPrint extends SDFAtomicActor {
         }
     }
 
+    /**
+     * Consume an integer and print its value to standard output.
+     * @exception IllegalActionException Not Thrown
+     */
     public void fire() throws IllegalActionException {
         IntToken message;
 

@@ -36,7 +36,10 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 /**
- * This actor will consume and discard all tokens on its input port.
+ * This actor will consume all tokens on its input port and write their
+ * values to a string.  The value of the string can then be obtained
+ * for use in test scripts, etc.
+ * 
  * This actor is aware of the rate that is set on its input port and will
  * consume an appropriate number of tokens with each firing.
  * This actor is type Polymorphic.
@@ -56,7 +59,7 @@ public class SDFConsumer extends SDFAtomicActor {
         catch (IllegalActionException e1) {
             System.out.println("SDFConsumer: Constructor error");
         }
-        history = new StringBuffer("");
+        _history = new StringBuffer("");
     }
 
     public TypedIOPort input;
@@ -71,7 +74,7 @@ public class SDFConsumer extends SDFAtomicActor {
         try {
             SDFConsumer newobj = (SDFConsumer)(super.clone(ws));
             newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.history = new StringBuffer(history.toString());
+            newobj._history = new StringBuffer(_history.toString());
 	    return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -80,20 +83,29 @@ public class SDFConsumer extends SDFAtomicActor {
         }
     }
 
+    /**
+     * Fire the Actor
+     * Consume an input token, and append its value to the history.
+     * @exception IllegalActionException If a contained method throws it.
+     */
     public void fire() throws IllegalActionException {
         int tokens = getTokenConsumptionRate(input);
         int i;
         for(i = 0; i < tokens; i++) {
             Token t = input.get(0);
-            history.append(t.toString() + "\n");
+            _history.append(t.toString() + "\n");
         }        
     }
 
+    /** 
+     * Return a string representing the values of the tokens that have been
+     * consumed so far by this actor, since its creation.
+     */
     public String getHistory() {
-        return history.toString();
+        return _history.toString();
     }
 
-    private StringBuffer history;
+    private StringBuffer _history;
 }
 
 

@@ -53,17 +53,17 @@ public class SDFJoin extends SDFAtomicActor {
             input1 = (TypedIOPort)newPort("input1");
             input1.setInput(true);
             setTokenConsumptionRate(input1, 1);
-            input1.setDeclaredType(IntToken.class);
+            input1.setDeclaredType(Token.class);
 
             input2 = (TypedIOPort)newPort("input2");
             input2.setInput(true);
             setTokenConsumptionRate(input2, 1);
-            input2.setDeclaredType(IntToken.class);
+            input2.setDeclaredType(Token.class);
 
             output = (TypedIOPort)newPort("output");
             output.setOutput(true);
             setTokenProductionRate(output, 2);
-            output.setDeclaredType(IntToken.class);
+            output.setDeclaredType(Token.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFJoin: constructor error");
@@ -97,6 +97,10 @@ public class SDFJoin extends SDFAtomicActor {
         }
     }
 
+    /** Fire the actor.
+     * Copy one token from input1 to the output and then copy one token 
+     * from input2 to the output.
+     */
     public void fire() throws IllegalActionException {
         IntToken message;
 
