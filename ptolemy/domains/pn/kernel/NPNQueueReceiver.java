@@ -74,8 +74,7 @@ process has been received.
 
 @author Winthrop Williams
 @version $Id$
-@see QueueReceiver, PNQueueReceiver
-@see ptolemy.actor.PNQueueReceiver
+@see PNQueueReceiver
 @see ptolemy.actor.QueueReceiver
 */
 public class NPNQueueReceiver extends PNQueueReceiver 
