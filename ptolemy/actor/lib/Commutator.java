@@ -188,7 +188,7 @@ public class Commutator extends Transformer implements SequenceActor {
         if (!input.hasToken(_currentInputPosition)) {
             return false;
         }
-        return super.postfire();
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
