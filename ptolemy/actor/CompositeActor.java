@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+setDirector throws NameDuplicationException
 */
 
 package ptolemy.actor;
@@ -679,18 +680,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *
      *  @param director The Director responsible for execution.
      *  @exception IllegalActionException If the director is not in
-     *   the same workspace as this actor. It may also be thrown in derived
-     *   classes if the director is not compatible.
+     *  the same workspace as this actor. It may also be thrown in derived
+     *  classes if the director is not compatible.
+     *  @exception NameDuplicationException If an attribute already exists
+     *  in this container with the same name as the given director.
      */
-    public void setDirector(Director director) throws IllegalActionException {
-        try {
-            if (director != null) {
-                director.setContainer(this);
-            } else {
-                _setDirector(null);
-            }
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException("Name collision in setDirector!");
+    public void setDirector(Director director)
+            throws IllegalActionException, NameDuplicationException {
+        if (director != null) {
+            director.setContainer(this);
+        } else {
+            _setDirector(null);
         }
     }
 
