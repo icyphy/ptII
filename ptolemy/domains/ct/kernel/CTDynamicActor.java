@@ -40,7 +40,7 @@ that have one or more integrators in their I/O relations.
 Typically, integrators, analog filters, and anything that can be written
 as<BR>
 dx/dt = f(x, u, t)<BR>
-y=g(x, u, t)<BR>
+y = g(x, u, t)<BR>
 are dynamic actors.
 <P>
 There is one method defined in this interface, which is
