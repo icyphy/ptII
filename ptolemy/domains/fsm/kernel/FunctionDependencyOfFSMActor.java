@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class FunctionDependencyOfFSMActor extends FunctionDependency {
 
     /** Construct a FunctionDependencyOfFSMActor in the given actor.
-     *  @param actor The associated actor.
+     *  @param fsmActor The associated FSM actor.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains

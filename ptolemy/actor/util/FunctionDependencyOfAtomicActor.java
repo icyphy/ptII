@@ -72,7 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 
     /** Construct a FunctionDependencyOfAtomicActor in the given actor.
-     *  @param actor The actor.
+     *  @param atomicActor The atomic actor.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
