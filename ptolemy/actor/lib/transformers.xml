@@ -53,6 +53,12 @@
     </rendition>
   </entity>
 
+  <entity name="RealTimeDelay" class="ptolemy.actor.lib.RealTimeDelay">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+       <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
   <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
