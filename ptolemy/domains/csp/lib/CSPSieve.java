@@ -142,11 +142,11 @@ public class CSPSieve extends CSPActor {
      TypedCompositeActor container =
      (TypedCompositeActor)getContainer();
      CSPSieve newSieve = null;
-     ComponentRelation newRel = null;
+     ComponentRelation newRelation = null;
      try {
      newSieve = new CSPSieve(container, value + "_sieve", value);
      // If we use a 1-1 relation this needs to change.
-     newRel = new IORelation(container, "R" + value);
+     newRelation = new IORelation(container, "R" + value);
      } catch (NameDuplicationException ex) {
      throw new InvalidStateException("11Cannot create " +
      "new sieve.");
