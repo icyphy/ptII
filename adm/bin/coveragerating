@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Fri Feb 22 09:01:41 2002 by cxh]-
+# -[Fri Feb 22 09:08:00 2002 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -24,7 +24,7 @@ find /tmp -name "$ratingfile" -mtime +1 -exec rm {} \;
 # being the file name, the other being the rating
 #if [ ! -f $ratingfile ]; then
 	echo "Regenerating $javafiles"
-	find $tree -xdev -name '*.java' -print > $javafiles
+	find $tree -xdev -name adm -prune -o -name '*.java' -print > $javafiles
 
 	echo "Regenerating $ratingfile"
 	grep AcceptedRating `cat $javafiles`  | 
@@ -129,4 +129,4 @@ awk ' BEGIN {
 cp $summaryfile $summaryfile.bak
 cat /tmp/coveragerating.toc /tmp/coveragerating.out > $summaryfile
 
-rm -f /tmp/coveragerating.toc /tmp/coveragerating.out
+#rm -f /tmp/coveragerating.toc /tmp/coveragerating.out
