@@ -76,8 +76,8 @@ public class SynthesisToDotty extends GraphToDotty {
 	    Node source = (Node)nodes.next();
 	    String name;
 
-	    if (source.weight() instanceof SuperBlock){
-		SuperBlock b = (SuperBlock)source.weight();
+	    if (source.getWeight() instanceof SuperBlock){
+		SuperBlock b = (SuperBlock)source.getWeight();
 		name = "cluster_"+count;
 		sb.append("\t"+subGraph(b,name));
 		blockToVertex.put(source, bigHack);
@@ -90,7 +90,7 @@ public class SynthesisToDotty extends GraphToDotty {
 		sb.append("\t\""+name+"\"");
 		if (source.hasWeight()){
 		    sb.append(" [label=\""
-			      +convertSpecialsToEscapes(source.weight().toString())
+			      +convertSpecialsToEscapes(source.getWeight().toString())
 			      +"\"]");
 		}
 		sb.append(";\r\n");
@@ -106,9 +106,9 @@ public class SynthesisToDotty extends GraphToDotty {
 		Edge edge= (Edge)succs.next();		
 		Node dest= edge.sink();
 		
-		boolean sourceIsSB=(source.weight() instanceof SuperBlock) &&
+		boolean sourceIsSB=(source.getWeight() instanceof SuperBlock) &&
 		    (blockToVertex.get(source) != null);
-		boolean destIsSB=(dest.weight() instanceof SuperBlock) &&
+		boolean destIsSB=(dest.getWeight() instanceof SuperBlock) &&
 		    (blockToVertex.get(dest) != null);
 		
 		if (sourceIsSB){
@@ -142,7 +142,7 @@ public class SynthesisToDotty extends GraphToDotty {
 		    }
 		
 		    sb.append(" label=\""+
-			      convertSpecialsToEscapes(edge.weight().toString())
+			      convertSpecialsToEscapes(edge.getWeight().toString())
 			      +"\"");
 		}
 		sb.append("];\r\n");
@@ -175,7 +175,7 @@ public class SynthesisToDotty extends GraphToDotty {
 
 	    if (source.hasWeight()){
 		sb.append(" [label=\""
-			  +convertSpecialsToEscapes(source.weight().toString())
+			  +convertSpecialsToEscapes(source.getWeight().toString())
 			  +"\"]");
 	    }
 	    sb.append(";\r\n");
@@ -190,7 +190,7 @@ public class SynthesisToDotty extends GraphToDotty {
 		sb.append("\t\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
 		if (edge.hasWeight()){
 		    sb.append(" [label=\""+
-			      convertSpecialsToEscapes(edge.weight().toString())
+			      convertSpecialsToEscapes(edge.getWeight().toString())
 			      +"\"]");
 		}
 		sb.append(";\r\n");

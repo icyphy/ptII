@@ -84,7 +84,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
 	// Create DFG from the Block object associated with the root
 	// Node of the given IntervalChain
-	super((Block) ic.getRoot().weight());
+	super((Block) ic.getRoot().getWeight());
 	_ic = ic;
 	
 	_processChain(requiredDefinitions);
@@ -230,10 +230,10 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	Vector newDefs = new Vector();
 	// Get simple input definitions
 	for (Iterator i=sourceNodes().iterator();i.hasNext();)
-	    newDefs.add( ((Node) i.next()).weight() );
+	    newDefs.add( ((Node) i.next()).getWeight() );
 	for (Iterator i=getInstanceFieldRefInputDefinitions().iterator();
 	     i.hasNext();)
-	    newDefs.add( ((Node) i.next()).weight() );
+	    newDefs.add( ((Node) i.next()).getWeight() );
 	_requiredDefinitions.addAll(newDefs);
 
 //  	System.out.print(_ic.toShortString()+" defs=");
@@ -269,8 +269,8 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    if (driver != null)
 		nodeMap.put(node,driver);
 	    else {
-	    	if (node.weight() instanceof InstanceFieldRef) {
-		    InstanceFieldRef ifr = (InstanceFieldRef) node.weight();
+	    	if (node.getWeight() instanceof InstanceFieldRef) {
+		    InstanceFieldRef ifr = (InstanceFieldRef) node.getWeight();
 		    InstanceFieldRef nifr =
 			_getMatchingInstanceFieldRef((InstanceFieldRef) ifr);
 		    if (nifr != null) {
@@ -297,10 +297,10 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    if (successorEdges(src,snk).size() == 0) {
 		// Add edge (avoid duplicates)
 		if (e.hasWeight())
-		    addEdge(src,snk,e.weight());
+		    addEdge(src,snk,e.getWeight());
 		else
 		    addEdge(src,snk);
-		Object snkWeight = snk.weight();
+		Object snkWeight = snk.getWeight();
 		if (snkWeight instanceof Local ||
 		    snkWeight instanceof InstanceFieldRef)
 		    _valueMap.addNewDef(snk);
@@ -311,7 +311,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
     public Node addNode(Node n) {
 
 	super.addNode(n);
-	Object weight = n.weight();
+	Object weight = n.getWeight();
   	if (weight instanceof Local) {
 	    _valueMap.addLocal((Local)weight,n);
   	}
@@ -323,7 +323,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
     protected Node findNodeDriver(BlockDataFlowGraph dfg, Node n) {
 	
-	Object weight = n.weight();
+	Object weight = n.getWeight();
 	if (weight instanceof Local) {
 	    if (dfg.inputEdges(n).size() == 0) {
 		// return 
@@ -370,7 +370,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 				   Node child1,
 				   Node child2) {
 	
-	Value value = (Value) child1.weight();
+	Value value = (Value) child1.getWeight();
 
 	// Get the edges associated with the original CFG.
 	Node cNode = getConditionNode();
@@ -449,7 +449,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
     public IfStmt getIfStmt() {
 	Node root = _ic.getRoot();
-	Block b = (Block) root.weight();
+	Block b = (Block) root.getWeight();
 	IfStmt ifs = (IfStmt) b.getTail();
 	return ifs;
     }
@@ -461,7 +461,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
 	Node childCFGNode = cidfg._ic.getRoot();
 
-	Block dest = (Block) childCFGNode.weight();
+	Block dest = (Block) childCFGNode.getWeight();
 
 //  	System.out.println("IFstmt="+ifs+" target="+
 //  			   ifs.getTargetBox().getUnit()+" dest head="+
@@ -479,7 +479,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	// iterate over all nodes in the graph
 	for (Iterator i = nodes().iterator(); i.hasNext();) {
 	    Node node = (Node) i.next();
-	    Object weight = node.weight();
+	    Object weight = node.getWeight();
 	    if (inputEdgeCount(node) == 1 &&
 		weight instanceof InstanceFieldRef) {
 		nodes.add(node);
@@ -565,7 +565,7 @@ class ValueMap {
 	//newDefs.add(n);
     }
     public void addNewDef(Node n) {
-	newDefs.put(n.weight(),n);
+	newDefs.put(n.getWeight(),n);
     }
     public Map getDefs() { return newDefs; }
     public Node getLast(Object v) {

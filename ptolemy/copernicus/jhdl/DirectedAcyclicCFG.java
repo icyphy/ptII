@@ -161,7 +161,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 
     public String nodeString(Node n) {
 	if (n.hasWeight()) {
-	    Object o = n.weight();
+	    Object o = n.getWeight();
 	    if (o instanceof Block) {
 		return "B" + ((Block) o).getIndexInMethod();
 	    } else if (o instanceof String) {

@@ -250,9 +250,9 @@ public class SuperBlock implements GraphNode {
 	if (predecessor != null){
 	    for (Iterator i=predecessorDefs.iterator(); i.hasNext();){
 		Node n = (Node)i.next();
-		if (n.weight() instanceof Constant) continue;
+		if (n.getWeight() instanceof Constant) continue;
 		System.out.println("going to "+predecessor+" to look for "+n);
-		Node result = predecessor.createDataFlow(graph, n.weight());
+		Node result = predecessor.createDataFlow(graph, n.getWeight());
 		if (result != null && !graph.edgeExists(result,n))
 		    graph.addEdge(result, n);
 	    }

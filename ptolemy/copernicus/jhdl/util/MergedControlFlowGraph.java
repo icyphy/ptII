@@ -141,7 +141,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	Object []temp=topologicalSort(nodes()).toArray();
 	sorted=new SuperBlock[temp.length];   
 	for (int i=0; i < temp.length; i++){
-	    sorted[i]=(SuperBlock)((Node)temp[i]).weight();
+	    sorted[i]=(SuperBlock)((Node)temp[i]).getWeight();
 	}
 	
 	for (int i=0; i < sorted.length; i++){
@@ -150,7 +150,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 		 succs.hasNext();){
 		Node succ = (Node)succs.next();
 		
-		sorted[i].propagateLabelsTo((SuperBlock)succ.weight());
+		sorted[i].propagateLabelsTo((SuperBlock)succ.getWeight());
 	    }
 	}
 	

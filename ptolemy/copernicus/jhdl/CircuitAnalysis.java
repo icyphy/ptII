@@ -175,8 +175,8 @@ public class CircuitAnalysis {
         for(Iterator nodes = graph.nodes().iterator();
             nodes.hasNext();) {
             Node node = (Node)nodes.next();
-            if(node.weight() instanceof Local ||
-	       node.weight() instanceof SootField ||
+            if(node.getWeight() instanceof Local ||
+	       node.getWeight() instanceof SootField ||
 	       !requiredNodeSet.contains(node)) {
                 // Then remove the node.
                 for(Iterator preds = graph.predecessors(node).iterator();
@@ -295,7 +295,7 @@ public class CircuitAnalysis {
 	//Make the requiredNodeMap from each graph's requiredNodeSet
 	Map requiredNodeMap = new HashMap();
 	for (Iterator i=graph.nodes().iterator(); i.hasNext();){
-	    GraphNode gn = (GraphNode)((Node)i.next()).weight();
+	    GraphNode gn = (GraphNode)((Node)i.next()).getWeight();
 	    if (gn instanceof SuperBlock){
 		SuperBlock sb = (SuperBlock)gn;
 		BlockDataFlowGraph bdfg = (BlockDataFlowGraph)sb.getGraph();

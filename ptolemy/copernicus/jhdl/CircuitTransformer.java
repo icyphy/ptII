@@ -133,11 +133,11 @@ public class CircuitTransformer extends SceneTransformer {
 	    Node cnode=(Node)cnodes.next();
 
 	    //Skip ports; only Entity's are expanded
-	    if (!(cnode.weight() instanceof Entity)) continue;
+	    if (!(cnode.getWeight() instanceof Entity)) continue;
 
 	    // Get directed graph of entity (if null, don't replace)
 	    DirectedGraph operatorGraph = 
-		_createEntityGraph((Entity) cnode.weight(), options);
+		_createEntityGraph((Entity) cnode.getWeight(), options);
 	    if (operatorGraph != null)
 		replaceMap.put(cnode,operatorGraph);
 
