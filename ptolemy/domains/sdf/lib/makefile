@@ -80,7 +80,9 @@ JSRCS = \
 	VariableFIR.java
 
 OTHER_FILES_TO_BE_JARED = \
+	SmoothedSpectrum.xml \
 	Spectrum.xml \
+	SpectrumPlot.xml \
 	sdfentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
