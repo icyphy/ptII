@@ -58,7 +58,82 @@ test Relation-1.1 {Get information about an instance of Relation} {
   class:         pt.kernel.test.RelationTest
   fields:        
   methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams enumPorts {enumPortsExcept pt.kernel.Port} enumEntities {isPortConnected java.lang.String} numberOfConnections
-  constructors:  pt.kernel.test.RelationTest
+  constructors:  pt.kernel.test.RelationTest {pt.kernel.test.RelationTest java.lang.String}
   properties:    class params name
   superclass:    pt.kernel.Relation
 }}
+
+
+######################################################################
+####
+# 
+test Relation-2.1 {Construct Relations, call some methods on empty Relations} {
+    set r1 [java::new pt.kernel.test.RelationTest]
+    set r2 [java::new pt.kernel.test.RelationTest "My Relation"]
+    list [$r1 numberOfConnections] \
+	    [$r2 numberOfConnections] \
+	    [$r1 isPortConnected "not a port"] \
+	    [$r2 isPortConnected "not a port"]
+} {0 0 0 0}
+
+######################################################################
+####
+# 
+test Relation-3.1 {Test enumPorts on a Relation that has no ports} {
+    set r1 [java::new pt.kernel.test.RelationTest]
+    set enum  [$r1 enumPorts]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {{java.util.NoSuchElementException: List is empty.} 0}
+
+######################################################################
+####
+# 
+test Relation-3.2 {Test enumPorts on a Relation that has no ports} {
+    set r1 [java::new pt.kernel.test.RelationTest "my relation"]
+    set enum  [$r1 enumPorts]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {{java.util.NoSuchElementException: List is empty.} 0}
+
+######################################################################
+####
+# 
+test Relation-4.1 {Test enumPortsExcept on a Relation that has no ports} {
+    set r1 [java::new pt.kernel.test.RelationTest]
+    set p1 [java::new pt.kernel.Port "My Port"]
+    set enum  [$r1 enumPortsExcept $p1]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {{java.util.NoSuchElementException: List is empty.} 0}
+
+######################################################################
+####
+# 
+test Relation-4.2 {Test enumPortsExcept on a Relation that has no ports} {
+    set r1 [java::new pt.kernel.test.RelationTest "my relation"]
+    set p1 [java::new pt.kernel.Port "My Port"]
+    set enum  [$r1 enumPortsExcept $p1]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {{java.util.NoSuchElementException: List is empty.} 0}
+
+######################################################################
+####
+# 
+test Relation-5.1 {Test enumEntities on a Relation that has no ports} {
+    set r1 [java::new pt.kernel.test.RelationTest]
+    set enum  [$r1 enumEntities]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
+
+######################################################################
+####
+# 
+test Relation-5.2 {Test enumEntities on a Relation that has no ports} {
+    set r1 [java::new pt.kernel.test.RelationTest "my relation"]
+    set enum  [$r1 enumEntities]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
