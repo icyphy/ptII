@@ -63,22 +63,35 @@ data. Each captured audio sample is converted to a double that
 may range from -1.0 to 1.0. Thus, the output type of this actor
 is DoubleToken.
 <p>
-The following parameters
-should be set accordingly. In all cases, an exception is thrown if
-an illegal parameter value is used. Note that these parameters may
-be changed while audio playback is active. If this actor is used
-in conjunction with an AudioPlayer actor, changing a parameter will
-cause the parameter value of the AudioPlayer to automatically be
-set to the same value.
+The following parameters should be set accordingly. In all cases, 
+an exception is thrown if an illegal parameter value is used. 
+Note that these parameters may be changed while audio playback 
+is active. If this actor is used in conjunction with an 
+AudioPlayer actor, changing a parameter will cause the corresponding 
+parameter value of the AudioPlayer to automatically be set to the 
+same value. This behavior is required because the AudioCapture and
+AudioPlayback actors both share access to the audio hardware, which
+is associated with a single sample rate, bit resolution, and
+number of channels.
 <ul>
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
 The default value is 8000. Allowable values are 8000, 11025,
-22050, 44100, and 48000 Hz.
-<li><i>bitsPerSample</i> should be set to desired bit
+22050, 44100, and 48000 Hz. Note that Java does not support
+96000 Hz operation, even if the audio hardware supports it.
+<li><i>bitsPerSample</i> should be set to the desired bit
 resolution. The default value is 16. Allowable values are 8 and 16.
+Note that Java does not support 20 or 24 bit audio, even if the
+audio hardware supports it.
 <li><i>channels</i> should be set to desired number of audio
 channels. The default value is 1 (for mono audio). Allowable
-values are 1 and 2.
+values are 1 and 2. Note that more than two channels of audio is
+not currently supported in Java, even if the audio hardware
+supports it.
+<p>
+It should be noted that at most one AudioCapture and one AudioPlayer
+actor may be used simultaneously. Otherwise, an exception will
+occur. This restriction may be lifted in a future version of
+this actor.
 <p>
 There are security issues involved with accessing files and audio
 resources in applets. Applets are not
@@ -92,13 +105,14 @@ Note: Requires Java 2 v1.3.0 or later.
 @author Brian K. Vogel
 @version $Id$
 @see ptolemy.media.javasound.LiveSound
-@see ptolemy.actor.lib.javasound.AudioSink
+@see AudioPlayback
 */
 public class AudioCapture extends Source implements LiveSoundListener {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the parameters and initialize them to their default values.
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -132,7 +146,9 @@ public class AudioCapture extends Source implements LiveSoundListener {
     /** The desired sample rate to use, in Hz. Valid values
      *  are dependent on the audio hardware (sound card), but typically
      *  include at least 8000, 11025, 22050, 44100, and 48000. The
-     *  default value of the sample rate is 8000 Hz.
+     *  default value of the sample rate is 8000 Hz. Some sound
+     *  cards support 96000 Hz audio, but this is not supported by
+     *  Java.
      *  <p>
      *  If this actor is used simultaneously with an AudioPlayer actor,
      *  then this parameter will be constrained to be the same for
@@ -146,10 +162,11 @@ public class AudioCapture extends Source implements LiveSoundListener {
      */
     public Parameter sampleRate;
 
-    /** The number desired number of bits per sample.
-     *  Allowed values are dependent
-     *  on the audio hardware, but typically at least include
-     *  8 and 16. The default value is 16.
+    /** The number desired number of bits per sample. Allowed 
+     *  values are dependent on the audio hardware, but typically 
+     *  at least include 8 and 16. The default value is 16. Some
+     *  sound cards suport 20 and 24 bit audio, but this is not
+     *  supported by Java.
      *  <p>
      *  If this actor is used simultaneously with an AudioPlayer actor,
      *  then this parameter will be constrained to be the same for
@@ -166,7 +183,8 @@ public class AudioCapture extends Source implements LiveSoundListener {
     /** The number of audio channels to use. Valid values
      *  are dependent on the audio hardware (sound card), but typically
      *  at least include 1 (for mono) and 2 (for stereo). The
-     *  default value is 1.
+     *  default value is 1. Some sound cards support more than two
+     *  audio channels, but this is not supported by Java.
      *  <p>
      *  If this actor is used simultaneously with an AudioPlayer actor,
      *  then this parameter will be constrained to be the same for
@@ -237,7 +255,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	}
     }
 
-    /** Check parameters and begin the sound capture process.
+    /** Read parameter values and begin the sound capture process.
      *  @exception IllegalActionException If the parameters
      *             are out of range.
      */
@@ -270,11 +288,8 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  <p>
      *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors. It is recommended for
-     *  performance reasons that a large value of <i>count</i> be used
-     *  when this actor is used in live capture mode. This actor is
-     *  optimized to provide good performance even if the value of
-     *  <i>count</i> changes often.
+     *  domain that supports vectorized actors. 
+     *
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times.
@@ -350,13 +365,10 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	}
     }
 
-     /** Notify that the an audio parameter of LiveSound has
+    /** Notify this actor that the an audio parameter of LiveSound has
      *  changed.
      *
      *  @param event The live sound change event.
-     *
-     *  @exception IllegalActionException If the change is not
-     *   allowed.
      */
     public void liveSoundChanged(LiveSoundEvent event) {
 	// Check to see what parameter was changed.
@@ -407,7 +419,6 @@ public class AudioCapture extends Source implements LiveSoundListener {
 		    attributeChanged(bitsPerSample);
 		}
 	    }
-
 	} catch (IllegalActionException ex) {
 	    throw new InternalErrorException(
                         "Error responding to audio parameter change. " +
@@ -425,6 +436,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  of data. This method will block until the samples have been
      *  written, so it is not possible to invoke this method too
      *  frequently.
+     *
      *  @return True Unless there is a problem capturing audio, in
      *   which case an exception will occur.
      *  @exception IllegalActionException If audio cannot be captured.
