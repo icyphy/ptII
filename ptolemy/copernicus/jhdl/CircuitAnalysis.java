@@ -84,7 +84,7 @@ public class CircuitAnalysis {
     /** Construct a new analysis
      */
     public CircuitAnalysis(Entity entity, SootClass theClass)
-    throws IllegalActionException {
+            throws IllegalActionException {
         DirectedGraph graph = new DirectedGraph();
         _graph = graph;
 
@@ -111,100 +111,100 @@ public class CircuitAnalysis {
         if (theClass.declaresMethodByName("prefire")) {
             prefire_graph =
                 _analyzeMethod(theClass.getMethodByName("prefire"));
-//              _analyze(prefire_graph, theClass.getMethodByName("prefire"));
+            //              _analyze(prefire_graph, theClass.getMethodByName("prefire"));
         }
         if (theClass.declaresMethodByName("fire")) {
             fire_graph =
                 _analyzeMethod(theClass.getMethodByName("fire"));
-//              _analyze(fire_graph, theClass.getMethodByName("fire"));
+            //              _analyze(fire_graph, theClass.getMethodByName("fire"));
         }
         if (theClass.declaresMethodByName("postfire")) {
             postfire_graph =
                 _analyzeMethod(theClass.getMethodByName("postfire"));
-//              _analyze(postfire_graph, theClass.getMethodByName("postfire"));
+            //              _analyze(postfire_graph, theClass.getMethodByName("postfire"));
         }
 
-//          _appendGraph(graph, prefire_graph);
-//          _appendGraph(graph, fire_graph);
-//          _appendGraph(graph, postfire_graph);
+        //          _appendGraph(graph, prefire_graph);
+        //          _appendGraph(graph, fire_graph);
+        //          _appendGraph(graph, postfire_graph);
 
         // get rid of non-essential nodes of
-//          boolean changed = true;
-//          while (changed) {
-//              changed = false;
-//              for (Iterator nodes = graph.nodes().iterator();
-//                  nodes.hasNext();) {
-//                  Node node = (Node)nodes.next();
-//                  if (requiredNodeSet.contains(node)) {
-//                      continue;
-//                  }
-//                  HashSet set = new HashSet(graph.successors(node));
-//                  set.retainAll(requiredNodeSet);
-//                  if (set.isEmpty()) {
-//                      continue;
-//                  }
-//                  requiredNodeSet.add(node);
-//                  changed = true;
-//              }
-//          }
+        //          boolean changed = true;
+        //          while (changed) {
+        //              changed = false;
+        //              for (Iterator nodes = graph.nodes().iterator();
+        //                  nodes.hasNext();) {
+        //                  Node node = (Node)nodes.next();
+        //                  if (requiredNodeSet.contains(node)) {
+        //                      continue;
+        //                  }
+        //                  HashSet set = new HashSet(graph.successors(node));
+        //                  set.retainAll(requiredNodeSet);
+        //                  if (set.isEmpty()) {
+        //                      continue;
+        //                  }
+        //                  requiredNodeSet.add(node);
+        //                  changed = true;
+        //              }
+        //          }
 
 
 
 
         SynthesisToDotty toDotty = new SynthesisToDotty();
         toDotty.writeDotFile(".", GraphToDotty.validFileName(entity.getName()),
-                                      fire_graph);
+                fire_graph);
 
 
 
 
         /* This isn't ready yet.. this should act on graphs at each node,
            not the top-level control flow graph
-        // Go though and eliminate unnecessary nodes.  These are nodes
-        // that are not the names of output ports and have no targets,
-        // or locals
-        Set removeSet = new HashSet();
+           // Go though and eliminate unnecessary nodes.  These are nodes
+           // that are not the names of output ports and have no targets,
+           // or locals
+           Set removeSet = new HashSet();
 
-        // find removable nodes and add new edges between removed
-        // nodes predecessors and successors
-        for (Iterator nodes = graph.nodes().iterator();
-            nodes.hasNext();) {
-            Node node = (Node)nodes.next();
-            if (node.getWeight() instanceof Local ||
-               node.getWeight() instanceof SootField ||
-               !requiredNodeSet.contains(node)) {
-                // Then remove the node.
-                for (Iterator preds = graph.predecessors(node).iterator();
-                    preds.hasNext();) {
-                    Node pred = (Node)preds.next();
-                    for (Iterator succs = graph.successors(node).iterator();
-                        succs.hasNext();) {
-                        Node succ = (Node)succs.next();
-                        graph.addEdge(pred, succ);
-                    }
-                }
-                removeSet.add(node);
-            }
-        }
+           // find removable nodes and add new edges between removed
+           // nodes predecessors and successors
+           for (Iterator nodes = graph.nodes().iterator();
+           nodes.hasNext();) {
+           Node node = (Node)nodes.next();
+           if (node.getWeight() instanceof Local ||
+           node.getWeight() instanceof SootField ||
+           !requiredNodeSet.contains(node)) {
+           // Then remove the node.
+           for (Iterator preds = graph.predecessors(node).iterator();
+           preds.hasNext();) {
+           Node pred = (Node)preds.next();
+           for (Iterator succs = graph.successors(node).iterator();
+           succs.hasNext();) {
+           Node succ = (Node)succs.next();
+           graph.addEdge(pred, succ);
+           }
+           }
+           removeSet.add(node);
+           }
+           }
 
-        // Remove all the edges & nodes
-        for (Iterator nodes = removeSet.iterator();
-            nodes.hasNext();) {
-            Node node = (Node)nodes.next();
-            List predList = new LinkedList(graph.predecessors(node));
-            for (Iterator preds = predList.iterator();
-                preds.hasNext();) {
-                Node pred = (Node)preds.next();
-                graph.removeEdge((Edge)graph.successorEdges(pred, node).toArray()[0]);
-            }
-            List succList = new LinkedList(graph.successors(node));
-            for (Iterator succs = succList.iterator();
-                succs.hasNext();) {
-                Node succ = (Node)succs.next();
-                graph.removeEdge((Edge)graph.successorEdges(node, succ).toArray()[0]);
-            }
-            graph.removeNode(node);
-        }
+           // Remove all the edges & nodes
+           for (Iterator nodes = removeSet.iterator();
+           nodes.hasNext();) {
+           Node node = (Node)nodes.next();
+           List predList = new LinkedList(graph.predecessors(node));
+           for (Iterator preds = predList.iterator();
+           preds.hasNext();) {
+           Node pred = (Node)preds.next();
+           graph.removeEdge((Edge)graph.successorEdges(pred, node).toArray()[0]);
+           }
+           List succList = new LinkedList(graph.successors(node));
+           for (Iterator succs = succList.iterator();
+           succs.hasNext();) {
+           Node succ = (Node)succs.next();
+           graph.removeEdge((Edge)graph.successorEdges(node, succ).toArray()[0]);
+           }
+           graph.removeNode(node);
+           }
         */
         //System.out.println("Filtered graph:\r\n" + graph + "\r\n");
     }
@@ -257,29 +257,29 @@ public class CircuitAnalysis {
     public static void main(String args[]) {
         TypedCompositeActor system = new TypedCompositeActor();
         try {
-          ptolemy.domains.sdf.kernel.SDFDirector sdfd = new
-            ptolemy.domains.sdf.kernel.SDFDirector(system,"director");
-          ptolemy.copernicus.jhdl.demo.FIR2.FIR f =
-            new ptolemy.copernicus.jhdl.demo.FIR2.FIR(system,"fir");
-          SootClass entityClass =
-            Scene.v().loadClassAndSupport("ptolemy.copernicus.jhdl.demo.FIR2.FIR");
-          entityClass.setApplicationClass();
-          if (entityClass == null) {
-            System.err.println("Err - cannot find class");
-            System.exit(1);
-          } else
-            new CircuitAnalysis(f,entityClass);
+            ptolemy.domains.sdf.kernel.SDFDirector sdfd = new
+                ptolemy.domains.sdf.kernel.SDFDirector(system,"director");
+            ptolemy.copernicus.jhdl.demo.FIR2.FIR f =
+                new ptolemy.copernicus.jhdl.demo.FIR2.FIR(system,"fir");
+            SootClass entityClass =
+                Scene.v().loadClassAndSupport("ptolemy.copernicus.jhdl.demo.FIR2.FIR");
+            entityClass.setApplicationClass();
+            if (entityClass == null) {
+                System.err.println("Err - cannot find class");
+                System.exit(1);
+            } else
+                new CircuitAnalysis(f,entityClass);
         } catch (ptolemy.kernel.util.KernelException e) {
-          System.err.println(e);
+            System.err.println(e);
         }
     }
 
     /**
      **/
     protected DirectedGraph _analyzeMethod(SootMethod method)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Body body = method.retrieveActiveBody();
-          DirectedGraph mcfg = new MergedControlFlowGraph(body);
+        DirectedGraph mcfg = new MergedControlFlowGraph(body);
         mcfg = _extractDataFlow(mcfg);
 
         return mcfg;
@@ -294,9 +294,9 @@ public class CircuitAnalysis {
             if (gn instanceof SuperBlock){
                 SuperBlock sb = (SuperBlock)gn;
                 RequiredBlockDataFlowGraph bdfg = (RequiredBlockDataFlowGraph)sb.getGraph();
-                  for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
-                      requiredNodeMap.put(j.next(), sb);
-                  }
+                for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
+                    requiredNodeMap.put(j.next(), sb);
+                }
             }
         }
 
@@ -352,7 +352,7 @@ public class CircuitAnalysis {
     }
 
     protected ptolemy.data.type.Type _getPortType(Port port)
-        throws RuntimeException {
+            throws RuntimeException {
         ptolemy.data.type.Type t=null;
         try {
             TypedIOPort tport=(TypedIOPort)port;
@@ -361,8 +361,8 @@ public class CircuitAnalysis {
             throw new RuntimeException("Must have ports that are TypedIOPorts");
         }
         if (t.equals(BaseType.FIX) || t.equals(BaseType.INT) ||
-            t.equals(BaseType.LONG) /*|| t.equals(BaseType.UNSIGNED_BYTE)*/ ||
-            t.equals(BaseType.BOOLEAN) ) {
+                t.equals(BaseType.LONG) /*|| t.equals(BaseType.UNSIGNED_BYTE)*/ ||
+                t.equals(BaseType.BOOLEAN) ) {
             return t;
         } else {
             throw new RuntimeException("Unsupported port type "+t+" in port "+port);
@@ -377,7 +377,7 @@ public class CircuitAnalysis {
 
 class PermissiveBlockDataFlowGraph extends BlockDataFlowGraph {
     public PermissiveBlockDataFlowGraph(Block block)
-        throws ptolemy.copernicus.jhdl.util.JHDLUnsupportedException {
+            throws ptolemy.copernicus.jhdl.util.JHDLUnsupportedException {
         super(block);
     }
     protected Node _processValue(Value v) {

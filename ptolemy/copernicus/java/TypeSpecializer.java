@@ -199,70 +199,70 @@ public class TypeSpecializer extends SceneTransformer {
 
                 // FIXME: We need to figure out a way to insert casts where appropriate.
                 // See RampFiringLimitSDF
-//                 ptolemy.data.type.Type leftType, rightType;
-//                 leftType = _getReplacementTokenType(
-//                         assignStmt.getLeftOp(), typeAnalysis);
-//                 rightType = _getReplacementTokenType(
-//                         assignStmt.getRightOp(), typeAnalysis);
+                //                 ptolemy.data.type.Type leftType, rightType;
+                //                 leftType = _getReplacementTokenType(
+                //                         assignStmt.getLeftOp(), typeAnalysis);
+                //                 rightType = _getReplacementTokenType(
+                //                         assignStmt.getRightOp(), typeAnalysis);
 
-//                 if (leftType != null && rightType != null && !leftType.equals(rightType)) {
-//                     if (debug) System.out.println("inserting conversion: leftType = " +
-//                             leftType + ", rightType = " + rightType);
-
-
-//                     // insert a call to convert(), and a cast.
-//                     FieldRef ref = (FieldRef)assignStmt.getLeftOp();
-//                     SootField field = ref.getField();
-//                     Type newType =
-//                         typeAnalysis.getSpecializedSootType(field);
-//                     Local tempLocal =
-//                         Jimple.v().newLocal("fieldUpdateLocal", newType);
-//                     body.getLocals().add(tempLocal);
-//                     Local tokenLocal =
-//                         Jimple.v().newLocal("tokenLocal", PtolemyUtilities.tokenType);
-//                     body.getLocals().add(tokenLocal);
-//                     Local typeLocal =
-//                         PtolemyUtilities.buildConstantTypeLocal(body, unit, leftType);
-
-//                     body.getUnits().insertBefore(
-//                             Jimple.v().newAssignStmt(tokenLocal,
-//                                     Jimple.v().newVirtualInvokeExpr(
-//                                             typeLocal,
-//                                             PtolemyUtilities.typeConvertMethod,
-//                                             assignStmt.getRightOp())),
-//                             unit);
-//                     body.getUnits().insertBefore(
-//                             Jimple.v().newAssignStmt(tempLocal,
-//                                     Jimple.v().newCastExpr(
-//                                             tokenLocal,
-//                                             newType)),
-//                             unit);
-//                     assignStmt.setRightOp(tempLocal);
+                //                 if (leftType != null && rightType != null && !leftType.equals(rightType)) {
+                //                     if (debug) System.out.println("inserting conversion: leftType = " +
+                //                             leftType + ", rightType = " + rightType);
 
 
-//                 } else {
-                    FieldRef ref = (FieldRef)assignStmt.getLeftOp();
-                    SootField field = ref.getField();
+                //                     // insert a call to convert(), and a cast.
+                //                     FieldRef ref = (FieldRef)assignStmt.getLeftOp();
+                //                     SootField field = ref.getField();
+                //                     Type newType =
+                //                         typeAnalysis.getSpecializedSootType(field);
+                //                     Local tempLocal =
+                //                         Jimple.v().newLocal("fieldUpdateLocal", newType);
+                //                     body.getLocals().add(tempLocal);
+                //                     Local tokenLocal =
+                //                         Jimple.v().newLocal("tokenLocal", PtolemyUtilities.tokenType);
+                //                     body.getLocals().add(tokenLocal);
+                //                     Local typeLocal =
+                //                         PtolemyUtilities.buildConstantTypeLocal(body, unit, leftType);
 
-                    Type type = field.getType();
-                    // Things that aren't token types are ignored.
-                    // Things that are already the same type are ignored.
-                    Type newType =
-                        typeAnalysis.getSpecializedSootType(field);
-                    if (newType != null && !newType.equals(type)) {
-                        if (debug) System.out.println("inserting cast");
-                        Local tempLocal =
-                            Jimple.v().newLocal("fieldUpdateLocal", newType);
-                        body.getLocals().add(tempLocal);
-                        body.getUnits().insertBefore(
-                                Jimple.v().newAssignStmt(tempLocal,
-                                        Jimple.v().newCastExpr(
-                                                assignStmt.getRightOp(),
-                                                newType)),
-                                unit);
-                        assignStmt.setRightOp(tempLocal);
-                    }
-                    //     }
+                //                     body.getUnits().insertBefore(
+                //                             Jimple.v().newAssignStmt(tokenLocal,
+                //                                     Jimple.v().newVirtualInvokeExpr(
+                //                                             typeLocal,
+                //                                             PtolemyUtilities.typeConvertMethod,
+                //                                             assignStmt.getRightOp())),
+                //                             unit);
+                //                     body.getUnits().insertBefore(
+                //                             Jimple.v().newAssignStmt(tempLocal,
+                //                                     Jimple.v().newCastExpr(
+                //                                             tokenLocal,
+                //                                             newType)),
+                //                             unit);
+                //                     assignStmt.setRightOp(tempLocal);
+
+
+                //                 } else {
+                FieldRef ref = (FieldRef)assignStmt.getLeftOp();
+                SootField field = ref.getField();
+
+                Type type = field.getType();
+                // Things that aren't token types are ignored.
+                // Things that are already the same type are ignored.
+                Type newType =
+                    typeAnalysis.getSpecializedSootType(field);
+                if (newType != null && !newType.equals(type)) {
+                    if (debug) System.out.println("inserting cast");
+                    Local tempLocal =
+                        Jimple.v().newLocal("fieldUpdateLocal", newType);
+                    body.getLocals().add(tempLocal);
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(tempLocal,
+                                    Jimple.v().newCastExpr(
+                                            assignStmt.getRightOp(),
+                                            newType)),
+                            unit);
+                    assignStmt.setRightOp(tempLocal);
+                }
+                //     }
             }
         }
 
@@ -317,8 +317,8 @@ public class TypeSpecializer extends SceneTransformer {
         } else if (value instanceof Local) {
             Local local = (Local)value;
             return typeAnalysis.getSpecializedType(local);
-      //   } else if (value.getType().equals(NullType.v())) {
-//             return tokenClass
+            //   } else if (value.getType().equals(NullType.v())) {
+            //             return tokenClass
         } else {
             return null;
             //throw new RuntimeException("Unrecognized value:" + value);

@@ -183,14 +183,14 @@ public class BlockDataFlowGraph extends DirectedGraph {
      *
      **/
     protected void _processStmtUnits()
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         for (Iterator units = _block.iterator(); units.hasNext();) {
 
             // Process all Stmt units in this graph
             Stmt stmt = (Stmt)units.next();
             if (DEBUG) System.out.println("Statement Class="+
-                                          stmt.getClass().getName()+
-                                          "\n\t\""+stmt+"\"");
+                    stmt.getClass().getName()+
+                    "\n\t\""+stmt+"\"");
 
             // Each statement is treated differently. Search for the
             // appropriate statement type and process it according
@@ -219,7 +219,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
                 // analysis may look at this statement at a later time.
             } else {
                 throw new JHDLUnsupportedException("Unsupported statement="+
-                                                   stmt.getClass().getName());
+                        stmt.getClass().getName());
             }
         }
     }
@@ -245,7 +245,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * @see BlockDataFlowGraph#_processStaticFieldRef(StaticFieldRef)
      **/
     protected void _processDefinitionStmt(DefinitionStmt stmt)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         // 1. Create Node for RightOp first
         // 2. Create LeftOp Node
@@ -273,11 +273,11 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * @return Returns the Node associated with the given Value
      **/
     protected Node _processValue(Value v)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         if (DEBUG) System.out.println("\tValue="+v+" class="+
-                                      v.getClass().getName()+" identity="+
-                                      System.identityHashCode(v));
+                v.getClass().getName()+" identity="+
+                System.identityHashCode(v));
         Node valueNode = null;
         if (v instanceof UnopExpr){
             valueNode = _processUnopExpr( (UnopExpr) v);
@@ -296,7 +296,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
         } else {
             // soot.jimple.NewExpr
             throw new JHDLUnsupportedException("Unsupported Value="+
-                                               v.getClass().getName());
+                    v.getClass().getName());
         }
         return valueNode;
     }
@@ -309,9 +309,9 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * This method is called by the _processValue() method.
      **/
     protected Node _processUnopExpr(UnopExpr expr)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         if (expr instanceof NegExpr ||
-            expr instanceof JHDLNotExpr){
+                expr instanceof JHDLNotExpr){
 
             Node n = addNodeWeight(expr);
             Value rightValue=expr.getOp();
@@ -320,7 +320,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
             return n;
         } else {
             throw new JHDLUnsupportedException("Unsupported Unary Operator="+
-                                             expr.getClass().getName());
+                    expr.getClass().getName());
         }
     }
 
@@ -337,7 +337,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * @return Returns the new Node created for the binary operation.
      **/
     protected Node _processBinopExpr(BinopExpr expr)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Value rightValue1=expr.getOp1();
         Value rightValue2=expr.getOp2();
         Node n = addNodeWeight(expr);
@@ -385,7 +385,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * This method is called by the _processValue() method.
      **/
     protected Node _processCastExpr(CastExpr ce)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Value op = ce.getOp();
         return _processValue(op);
     }
@@ -397,7 +397,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * This method is called by the _processValue() method.
      **/
     protected Node _processRef(Ref cr)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Node new_node = null;
         if (cr instanceof ArrayRef) {
             new_node = _processArrayRef((ArrayRef) cr);
@@ -409,7 +409,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
             new_node = _processStaticFieldRef((StaticFieldRef) cr);
         } else {
             throw new JHDLUnsupportedException("Unsupported Ref="+
-                                               cr.getClass().getName());
+                    cr.getClass().getName());
         }
         return new_node;
     }
@@ -422,12 +422,12 @@ public class BlockDataFlowGraph extends DirectedGraph {
     }
 
     protected Node _processArrayRef(ArrayRef ifr)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         throw new JHDLUnsupportedException("No support for arrays");
     }
 
     protected Node _processInstanceFieldRef(InstanceFieldRef ifr)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         InstanceFieldRef ifr_p = _getMatchingInstanceFieldRef(ifr);
         if (ifr_p == null) {
@@ -444,7 +444,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
         for (Iterator it = _instanceFieldRefs.keySet().iterator();it.hasNext();) {
             InstanceFieldRef ifr_n = (InstanceFieldRef) it.next();
             if (ifr_n.getBase().equals(baseValue) &&
-                ifr_n.getField().equals(field)) {
+                    ifr_n.getField().equals(field)) {
                 previous = ifr_n;
             }
         }
@@ -455,14 +455,14 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * Called by _processInstanceFieldRef and _addLeftValue
      **/
     protected Node _createInstanceFieldRef(InstanceFieldRef ifr)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         InstanceFieldRef new_ifr = _getMatchingInstanceFieldRef(ifr);
         if (new_ifr == null)
             new_ifr = ifr;
 
         if (DEBUG) System.out.println("\tNew InstanceFieldRef Node using id="+
-                                      System.identityHashCode(new_ifr));
+                System.identityHashCode(new_ifr));
 
         Node base = _processValue(new_ifr.getBase());
         Node n = addNodeWeight(new_ifr);
@@ -474,30 +474,30 @@ public class BlockDataFlowGraph extends DirectedGraph {
     }
 
     protected Node _processStaticFieldRef(StaticFieldRef sfr)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         //        throw new JHDLUnsupportedException("Static field references currently not supported"+sfr);
         return _getOrCreateNode(sfr);
     }
 
     protected Node _processInvokeExpr(InvokeExpr ie)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Node invokeNode = null;
         if (ie instanceof InstanceInvokeExpr)
             invokeNode = _createInstanceInvokeExpr((InstanceInvokeExpr)ie);
         else if (ie instanceof InterfaceInvokeExpr ||
-                 ie instanceof SpecialInvokeExpr ||
-                 ie instanceof StaticInvokeExpr ||
-                 ie instanceof VirtualInvokeExpr)
+                ie instanceof SpecialInvokeExpr ||
+                ie instanceof StaticInvokeExpr ||
+                ie instanceof VirtualInvokeExpr)
             throw new JHDLUnsupportedException("Unsupported InvokeExpr="+
-                                              ie.getClass().getName());
+                    ie.getClass().getName());
         else
             throw new JHDLUnsupportedException("Unsupported InvokeExpr="+
-                                              ie.getClass().getName());
+                    ie.getClass().getName());
 
         // add argument links
         int argCount=0;
         for (Iterator arguments = ie.getArgs().iterator();
-            arguments.hasNext();) {
+             arguments.hasNext();) {
             Value argument = (Value)arguments.next();
             Node a_n = _processValue(argument);
             addEdge(a_n,invokeNode,new Integer(argCount++));
@@ -506,7 +506,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
     }
 
     protected Node _createInstanceInvokeExpr(InstanceInvokeExpr iie)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Node base = _processValue(iie.getBase());
         Node n = addNodeWeight(iie);
         addBaseEdge(base,n);
@@ -527,19 +527,19 @@ public class BlockDataFlowGraph extends DirectedGraph {
      *
      **/
     protected Node _addLeftValue(Value lv)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Node leftOpNode = null;
         if (DEBUG) System.out.println("\tLeft Value="+lv+" class="+
-                                      lv.getClass().getName()+
-                                      " identity="+
-                                      System.identityHashCode(lv));
+                lv.getClass().getName()+
+                " identity="+
+                System.identityHashCode(lv));
         if (lv instanceof Local) {
             leftOpNode = _createLocal((Local) lv);
         } else if (lv instanceof InstanceFieldRef) {
             leftOpNode = _createInstanceFieldRef((InstanceFieldRef)lv);
         } else {
             throw new JHDLUnsupportedException("Unsupported Left AssignOp=" +
-                                               lv.getClass().getName());
+                    lv.getClass().getName());
         }
         //_lValues.add(lv);
         return leftOpNode;
@@ -558,7 +558,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
     /////////////////////////////
 
     protected void _processInvokeStmt(InvokeStmt stmt)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         InvokeExpr ie = (InvokeExpr) stmt.getInvokeExpr();
         _processInvokeExpr(ie);
     }
@@ -569,7 +569,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * The weight of the new Node is the ReturnStmt.
      **/
     protected Node _processReturnStmt(ReturnStmt stmt)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Value returnedValue = stmt.getOp();
         Node returnedNode = _processValue(returnedValue);
         // NOTE: The weight of this Node is a ReturnStmt Object,
@@ -582,19 +582,19 @@ public class BlockDataFlowGraph extends DirectedGraph {
     /**
      **/
     protected Node _processIfStmt(IfStmt stmt)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         Value condition = stmt.getCondition();
         if (!(condition instanceof ConditionExpr))
             throw new JHDLUnsupportedException("Unsupported Condition="+
-                                               condition.getClass().getName());
+                    condition.getClass().getName());
 
         return _processConditionExpr((ConditionExpr) condition);
 
     }
 
     protected Node _processConditionExpr(ConditionExpr condition)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         Node n = null;
         Value op1 = condition.getOp1();
@@ -603,11 +603,11 @@ public class BlockDataFlowGraph extends DirectedGraph {
         Node op2n;
 
         if (condition instanceof EqExpr ||
-            condition instanceof GeExpr ||
-            condition instanceof GtExpr ||
-            condition instanceof LeExpr ||
-            condition instanceof LtExpr ||
-            condition instanceof NeExpr) {
+                condition instanceof GeExpr ||
+                condition instanceof GtExpr ||
+                condition instanceof LeExpr ||
+                condition instanceof LtExpr ||
+                condition instanceof NeExpr) {
             op1n = _processValue(op1);
             op2n = _processValue(op2);
             n = addNodeWeight(condition);
@@ -617,7 +617,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
             n = addNodeWeight(condition);
         } else
             throw new JHDLUnsupportedException("Unknown ConditionExpr "+
-                                               condition.getClass());
+                    condition.getClass());
         addEdge(op1n,n,"op1");
         addEdge(op2n,n,"op2");
 
@@ -677,7 +677,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
                 throw new RuntimeException();
             }
             dgToDotty.writeDotFile(".","bbgraph" + blockNum,
-                                                dataFlowGraph);
+                    dataFlowGraph);
         }
         return graphs;
     }
@@ -685,9 +685,9 @@ public class BlockDataFlowGraph extends DirectedGraph {
     public static void main(String args[]) {
         BlockDataFlowGraph.DEBUG = true;
         BlockDataFlowGraph[] graphs = getBlockDataFlowGraphs(args);
-//          for (int i = 0;i<graphs.length;i++)
-//              System.out.println("Block "+i+" Value Map=\n"+
-//                                 graphs[i].getValueMap());
+        //          for (int i = 0;i<graphs.length;i++)
+        //              System.out.println("Block "+i+" Value Map=\n"+
+        //                                 graphs[i].getValueMap());
     }
 
     /** The original Soot block used to create this graph **/

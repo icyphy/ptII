@@ -138,13 +138,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
         while (depth > level) {
 
             // Inline all methods on types that have the given depth.
-         //    for (Iterator classes =
-//                      Scene.v().getApplicationClasses().iterator();
-//                  classes.hasNext();) {
-//                 SootClass entityClass = (SootClass)classes.next();
+            //    for (Iterator classes =
+            //                      Scene.v().getApplicationClasses().iterator();
+            //                  classes.hasNext();) {
+            //                 SootClass entityClass = (SootClass)classes.next();
 
-//                 inlineTypeMethods(entityClass, depth, unsafeLocalSet, debug);
-//             }
+            //                 inlineTypeMethods(entityClass, depth, unsafeLocalSet, debug);
+            //             }
             List classList = new LinkedList();
             classList.addAll(Scene.v().getApplicationClasses());
 
@@ -274,8 +274,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         TypeSpecializerAnalysis typeAnalysis =
             new TypeSpecializerAnalysis(classList, unsafeLocalSet);
-//         TokenTypeAnalysis typeAnalysis =
-//             new TokenTypeAnalysis(classList, unsafeLocalSet);
+        //         TokenTypeAnalysis typeAnalysis =
+        //             new TokenTypeAnalysis(classList, unsafeLocalSet);
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
              classes.hasNext();) {
@@ -302,7 +302,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             }
 
             // This will allow us to get a better type inference below.
-           for (Iterator methods = entityClass.getMethods().iterator();
+            for (Iterator methods = entityClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
@@ -322,9 +322,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                 // Run some cleanup...  this will speedup the rest
                 // of the analysis.  And prevent typing errors.
-            //     TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
-//                         body, _phaseName + ".tie", unsafeLocalSet,
-//                         true);
+                //     TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
+                //                         body, _phaseName + ".tie", unsafeLocalSet,
+                //                         true);
 
                 UnreachableCodeEliminator.v().transform(
                         body, _phaseName + ".uce", "");
@@ -456,7 +456,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 AssignStmt stmt = (AssignStmt)unit;
                 unsafeLocalSet.add(stmt.getLeftOp());
                 unsafeLocalSet.addAll(_computeTokenLocalsDefinedFrom(
-                                              localUses, stmt));
+                        localUses, stmt));
                 if (debug) System.out.println("unsafeLocalSet = " + unsafeLocalSet);
             }
         }
@@ -494,7 +494,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     Scene.v().getApplicationClasses().contains(
                             ((RefType)baseType).getSootClass())) {
                 for (Iterator args = r.getArgs().iterator();
-                    args.hasNext() && !isInlineableTokenMethod;) {
+                     args.hasNext() && !isInlineableTokenMethod;) {
                     Object arg = args.next();
                     if (arg instanceof Local) {
                         Local argLocal = (Local)arg;
@@ -542,8 +542,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             "<java.lang.Class: java.lang.Class "
                             + "forName(java.lang.String)>");
                     box.setValue(Jimple.v().newStaticInvokeExpr(
-                                         newGetClassMethod,
-                                         StringConstant.v("java.lang.Object")));
+                            newGetClassMethod,
+                            StringConstant.v("java.lang.Object")));
 
                 } else {
                     SootClass declaringClass = inlinee.getDeclaringClass();
@@ -592,7 +592,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 if (isInlineableTokenMethod) {
                     type = (RefType)typeAnalysis.getSpecializedSootType((Local)r.getBase());
                     if (PtolemyUtilities.getTypeDepth(
-                               typeAnalysis.getSpecializedType((Local)r.getBase())) != depth) {
+                            typeAnalysis.getSpecializedType((Local)r.getBase())) != depth) {
                         if (debug) System.out.println("skipping, type depth = " +
                                 PtolemyUtilities.getTypeDepth(
                                         typeAnalysis.getSpecializedType((Local)r.getBase())) +
@@ -630,7 +630,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             StaticInvokeExpr r = (StaticInvokeExpr)value;
             // Inline typelattice methods.
             if (r.getMethod().getDeclaringClass().equals(
-                        PtolemyUtilities.typeLatticeClass)) {
+                    PtolemyUtilities.typeLatticeClass)) {
                 try {
                     if (debug) {
                         System.out.println("inlining typelattice method = "
@@ -654,13 +654,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // little information, and is hard to get
                 // rid of any other way.
                 if (_mangleExceptionMessages && (
-                            inlinee.getName().equals("notSupportedMessage") ||
-                            inlinee.getName().equals("notSupportedConversionMessage") ||
-                            inlinee.getName().equals("notSupportedIncomparableMessage") ||
-                            inlinee.getName().equals("notSupportedIncomparableConversionMessage"))) {
+                        inlinee.getName().equals("notSupportedMessage") ||
+                        inlinee.getName().equals("notSupportedConversionMessage") ||
+                        inlinee.getName().equals("notSupportedIncomparableMessage") ||
+                        inlinee.getName().equals("notSupportedIncomparableConversionMessage"))) {
                     box.setValue(StringConstant.v("Token Exception"));
                 } else if (SootUtilities.derivesFrom(declaringClass,
-                                   PtolemyUtilities.tokenClass)) {
+                        PtolemyUtilities.tokenClass)) {
                     declaringClass.setLibraryClass();
                     if (!inlinee.isAbstract() &&
                             !inlinee.isNative()) {
@@ -721,8 +721,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         ValueBox box = (ValueBox)boxes.next();
                         Value value = box.getValue();
 
-                         doneSomething |= _inlineTypeMethodsIn(
-                                 method, body, unit, box,
+                        doneSomething |= _inlineTypeMethodsIn(
+                                method, body, unit, box,
                                 localDefs, localUses,
                                 depth, unsafeLocalSet, debug);
                     }
@@ -782,8 +782,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     "<java.lang.Class: java.lang.Class "
                                     + "forName(java.lang.String)>");
                             box.setValue(Jimple.v().newStaticInvokeExpr(
-                                                 newGetClassMethod,
-                                                 StringConstant.v("java.lang.Object")));
+                                    newGetClassMethod,
+                                    StringConstant.v("java.lang.Object")));
 
                         } else if (inlinee.getName().equals("getElementType")) {
                             if (debug) System.out.println("handling getElementType: " + unit);
@@ -904,10 +904,10 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
             // If the type is not instantiable, then skip it.
             // Hack: should this be an exception?
-        //     if (!fieldTokenType.isInstantiable()) {
-//                 if (debug) System.out.println("Skipping field " + field + ": Not instantiable");
-//                 continue;
-//             }
+            //     if (!fieldTokenType.isInstantiable()) {
+            //                 if (debug) System.out.println("Skipping field " + field + ": Not instantiable");
+            //                 continue;
+            //             }
 
             // If we've already created subfields for this
             // field, then don't do it again.
@@ -942,11 +942,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
             entityClass.addField(isNotNullField);
             entityFieldToIsNotNullField.put(field, isNotNullField);
             // FIXME: initialize properly.
-//             body.getUnits().insertBefore(
-//                     Jimple.v().newAssignStmt(
-//                             isNotNullLocal,
-//                             IntConstant.v(1)),
-//                     body.getFirstNonIdentityStmt());
+            //             body.getUnits().insertBefore(
+            //                     Jimple.v().newAssignStmt(
+            //                             isNotNullLocal,
+            //                             IntConstant.v(1)),
+            //                     body.getFirstNonIdentityStmt());
 
 
             Map tokenFieldToReplacementField = new HashMap();
@@ -1034,7 +1034,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 SootClass localClass = type.getSootClass();
 
                 if (!SootUtilities.derivesFrom(localClass,
-                            PtolemyUtilities.tokenClass)) {
+                        PtolemyUtilities.tokenClass)) {
                     continue;
                 }
 
@@ -1054,11 +1054,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 body.getLocals().add(isNotNullLocal);
                 localToIsNotNullLocal.put(local, isNotNullLocal);
                 // Note: default initialization is to false..
-//                 body.getUnits().insertBefore(
-//                         Jimple.v().newAssignStmt(
-//                                 isNotNullLocal,
-//                                 IntConstant.v(1)),
-//                         body.getFirstNonIdentityStmt());
+                //                 body.getUnits().insertBefore(
+                //                         Jimple.v().newAssignStmt(
+                //                                 isNotNullLocal,
+                //                                 IntConstant.v(1)),
+                //                         body.getFirstNonIdentityStmt());
 
                 Map tokenFieldToReplacementLocal = new HashMap();
                 localToFieldToLocal.put(local,
@@ -1142,12 +1142,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     fieldToReplacementArrayLocal.keySet());
                             Collections.sort(replacementList,
                                     new Comparator() {
-                                        public int compare(Object o1, Object o2) {
-                                            SootField f1 = (SootField)o1;
-                                            SootField f2 = (SootField)o2;
-                                            return f1.getName().compareTo(f2.getName());
-                                        }
-                                    });
+                                            public int compare(Object o1, Object o2) {
+                                                SootField f1 = (SootField)o1;
+                                                SootField f2 = (SootField)o2;
+                                                return f1.getName().compareTo(f2.getName());
+                                            }
+                                        });
                             SootField field = (SootField)
                                 replacementList.get(replacementList.size() - 1);
                             if (debug) System.out.println("replace with  " +
@@ -1167,7 +1167,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             RefType type = (RefType)r.getBase().getType();
                             //System.out.println("BaseType = " + type);
                             if (SootUtilities.derivesFrom(type.getSootClass(),
-                                        PtolemyUtilities.tokenClass)) {
+                                    PtolemyUtilities.tokenClass)) {
                                 if (debug) System.out.println("handling " +
                                         unit + " token operation");
 
@@ -1190,7 +1190,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             RefType type = (RefType)r.getBase().getType();
                             //System.out.println("BaseType = " + type);
                             if (SootUtilities.derivesFrom(type.getSootClass(),
-                                        PtolemyUtilities.tokenClass)) {
+                                    PtolemyUtilities.tokenClass)) {
                                 if (debug) System.out.println("handling " +
                                         unit + " token operation");
 
@@ -1263,32 +1263,32 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             Map fieldToReplacementLocal =
                                 (Map) localToFieldToLocal.get(stmt.getRightOp());
 
-                     //        System.out.println("fieldToReplacementField = " + fieldToReplacementField);
-//                             System.out.println("fieldToReplacementLocal = " + fieldToReplacementLocal);
+                            //        System.out.println("fieldToReplacementField = " + fieldToReplacementField);
+                            //                             System.out.println("fieldToReplacementLocal = " + fieldToReplacementLocal);
                             if (fieldToReplacementLocal != null &&
                                     fieldToReplacementField != null) {
                                 doneSomething = true;
                                 // Replace references to fields with token types.
                                 {
-                                   SootField replacementField = (SootField)entityFieldToIsNotNullField.get(field);
-                                   //System.out.println("replacementField = " + replacementField);
-                                   FieldRef isNotNullFieldRef;
-                                   if (oldFieldRef instanceof InstanceFieldRef) {
-                                       isNotNullFieldRef = Jimple.v().newInstanceFieldRef(
-                                               ((InstanceFieldRef)oldFieldRef).getBase(),
-                                               replacementField);
-                                   } else {
-                                       isNotNullFieldRef = Jimple.v().newStaticFieldRef(
-                                               replacementField);
-                                   }
-                                   body.getUnits().insertBefore(
-                                           Jimple.v().newAssignStmt(
-                                                  isNotNullFieldRef,
-                                                  (Local)localToIsNotNullLocal.get(stmt.getRightOp())),
-                                           unit);
-                               }
-                               if (debug) System.out.println("local = " + stmt.getLeftOp());
-                               for (Iterator tokenFields = fieldToReplacementField.keySet().iterator();
+                                    SootField replacementField = (SootField)entityFieldToIsNotNullField.get(field);
+                                    //System.out.println("replacementField = " + replacementField);
+                                    FieldRef isNotNullFieldRef;
+                                    if (oldFieldRef instanceof InstanceFieldRef) {
+                                        isNotNullFieldRef = Jimple.v().newInstanceFieldRef(
+                                                ((InstanceFieldRef)oldFieldRef).getBase(),
+                                                replacementField);
+                                    } else {
+                                        isNotNullFieldRef = Jimple.v().newStaticFieldRef(
+                                                replacementField);
+                                    }
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    isNotNullFieldRef,
+                                                    (Local)localToIsNotNullLocal.get(stmt.getRightOp())),
+                                            unit);
+                                }
+                                if (debug) System.out.println("local = " + stmt.getLeftOp());
+                                for (Iterator tokenFields = fieldToReplacementField.keySet().iterator();
                                      tokenFields.hasNext();) {
                                     SootField tokenField = (SootField)tokenFields.next();
                                     if (debug) System.out.println("tokenField = " + tokenField);
@@ -1334,10 +1334,10 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             boolean isBooleanTokenTrueSingleton = false;
                             boolean isBooleanTokenFalseSingleton = false;
                             if (field.getSignature().equals(
-                                        "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken TRUE>")) {
+                                    "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken TRUE>")) {
                                 isBooleanTokenTrueSingleton = true;
                             } else if (field.getSignature().equals(
-                                               "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
+                                    "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
                                 isBooleanTokenFalseSingleton = true;
                             }
                             if ((isBooleanTokenFalseSingleton || isBooleanTokenTrueSingleton) &&
@@ -1383,27 +1383,27 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 doneSomething = true;
                                 // Replace references to fields with token types.
                                 // FIXME properly handle isNotNull field?
-                               {
-                                   SootField replacementField = (SootField)entityFieldToIsNotNullField.get(field);
-                                   //   System.out.println("replacementField = " + replacementField);
-                                   FieldRef isNotNullFieldRef;
-                                   if (oldFieldRef instanceof InstanceFieldRef) {
-                                       isNotNullFieldRef = Jimple.v().newInstanceFieldRef(
-                                               ((InstanceFieldRef)oldFieldRef).getBase(),
-                                               replacementField);
-                                   } else {
-                                       isNotNullFieldRef = Jimple.v().newStaticFieldRef(
-                                               replacementField);
-                                   }
-                                   body.getUnits().insertBefore(
-                                           Jimple.v().newAssignStmt(
-                                                   (Local)localToIsNotNullLocal.get(stmt.getLeftOp()),
-                                                   isNotNullFieldRef),
-                                           unit);
-                               }
-                               if (debug) System.out.println("local = " + stmt.getLeftOp());
-                               for (Iterator tokenFields = fieldToReplacementField.keySet().iterator();
-                                    tokenFields.hasNext();) {
+                                {
+                                    SootField replacementField = (SootField)entityFieldToIsNotNullField.get(field);
+                                    //   System.out.println("replacementField = " + replacementField);
+                                    FieldRef isNotNullFieldRef;
+                                    if (oldFieldRef instanceof InstanceFieldRef) {
+                                        isNotNullFieldRef = Jimple.v().newInstanceFieldRef(
+                                                ((InstanceFieldRef)oldFieldRef).getBase(),
+                                                replacementField);
+                                    } else {
+                                        isNotNullFieldRef = Jimple.v().newStaticFieldRef(
+                                                replacementField);
+                                    }
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    (Local)localToIsNotNullLocal.get(stmt.getLeftOp()),
+                                                    isNotNullFieldRef),
+                                            unit);
+                                }
+                                if (debug) System.out.println("local = " + stmt.getLeftOp());
+                                for (Iterator tokenFields = fieldToReplacementField.keySet().iterator();
+                                     tokenFields.hasNext();) {
                                     SootField tokenField = (SootField)tokenFields.next();
                                     if (debug) System.out.println("tokenField = " + tokenField);
                                     SootField replacementField = (SootField)
@@ -1659,12 +1659,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                                 if (expr instanceof EqExpr) {
                                     box.setValue(Jimple.v().newEqExpr(
-                                                         isNotNullLocal,
-                                                         nullValue));
+                                            isNotNullLocal,
+                                            nullValue));
                                 } else if (expr instanceof NeExpr) {
                                     box.setValue(Jimple.v().newNeExpr(
-                                                         isNotNullLocal,
-                                                         nullValue));
+                                            isNotNullLocal,
+                                            nullValue));
                                 }
                             }
                         } else if (op2IsToken && expr.getOp1().getType().equals(NullType.v())) {
@@ -1684,19 +1684,19 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                                 if (expr instanceof EqExpr) {
                                     box.setValue(Jimple.v().newEqExpr(
-                                                         isNotNullLocal,
-                                                         nullValue));
+                                            isNotNullLocal,
+                                            nullValue));
                                 } else if (expr instanceof NeExpr) {
                                     box.setValue(Jimple.v().newNeExpr(
-                                                         isNotNullLocal,
-                                                         nullValue));
+                                            isNotNullLocal,
+                                            nullValue));
                                 }
                             }
                         }
                     }
                 }
                 if (debug) System.out.println("New unit = " + unit);
-             }
+            }
         }
     }
 
@@ -1715,7 +1715,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 if (PtolemyUtilities.isTokenType(value.getType())) {
                     set.add(value);
                     set.addAll(_computeTokenLocalsDefinedFrom(
-                                       localUses, defStmt));
+                            localUses, defStmt));
                 }
             }
         }
@@ -1728,54 +1728,54 @@ public class TokenToNativeTransformer extends SceneTransformer {
         // class to the local variable that replaces it.
         Map fieldToLocal = (Map)localToFieldToLocal.get(baseLocal);
         if (fieldToLocal == null) {
-//             if (debug) System.out.println("creating new fieldToLocal for " + baseLocal);
-//             // If we have not seen this local get, then
-//             // create a new map.
-//             fieldToLocal = new HashMap();
-//             localToFieldToLocal.put(baseLocal, fieldToLocal);
+            //             if (debug) System.out.println("creating new fieldToLocal for " + baseLocal);
+            //             // If we have not seen this local get, then
+            //             // create a new map.
+            //             fieldToLocal = new HashMap();
+            //             localToFieldToLocal.put(baseLocal, fieldToLocal);
             return null;
         }
         Local instanceLocal = (Local)fieldToLocal.get(field);
         if (instanceLocal == null) {
-//             if (debug) System.out.println("creating new instanceLocal for " + baseLocal);
-//             // If we have not referenced this particular field
-//             // then create a new local.
-//             instanceLocal = Jimple.v().newLocal(
-//                     baseLocal.getName() + "_" + field.getName(),
-//                     field.getType());
-//             body.getLocals().add(instanceLocal);
-//             fieldToLocal.put(field, instanceLocal);
+            //             if (debug) System.out.println("creating new instanceLocal for " + baseLocal);
+            //             // If we have not referenced this particular field
+            //             // then create a new local.
+            //             instanceLocal = Jimple.v().newLocal(
+            //                     baseLocal.getName() + "_" + field.getName(),
+            //                     field.getType());
+            //             body.getLocals().add(instanceLocal);
+            //             fieldToLocal.put(field, instanceLocal);
             return null;
         }
         return instanceLocal;
     }
 
     /*
-    public static Value _getSubFieldValue(SootClass entityClass, Body body,
-            Value baseValue, SootField tokenField, Map localToFieldToLocal,
-            boolean debug) {
-        Value returnValue;
-        if (baseValue instanceof Local) {
-            returnValue = _getInstanceLocal(body, (Local)baseValue,
-                    tokenField, localToFieldToLocal, debug);
-        } else if (baseValue instanceof FieldRef) {
-            SootField field = ((FieldRef)baseValue).getField();
-            SootField replacementField =
-                entityClass.getFieldByName("_CG_" + field.getName()
-                        + tokenField.getName());
-            if (baseValue instanceof InstanceFieldRef) {
-                returnValue = Jimple.v().newInstanceFieldRef(
-                        ((InstanceFieldRef)baseValue).getBase(), replacementField);
-            } else {
-                returnValue = Jimple.v().newStaticFieldRef(
-                        replacementField);
-            }
-        } else {
-            throw new RuntimeException("Unknown value type for subfield: " + baseValue);
-        }
-        return returnValue;
-    }
-     */
+      public static Value _getSubFieldValue(SootClass entityClass, Body body,
+      Value baseValue, SootField tokenField, Map localToFieldToLocal,
+      boolean debug) {
+      Value returnValue;
+      if (baseValue instanceof Local) {
+      returnValue = _getInstanceLocal(body, (Local)baseValue,
+      tokenField, localToFieldToLocal, debug);
+      } else if (baseValue instanceof FieldRef) {
+      SootField field = ((FieldRef)baseValue).getField();
+      SootField replacementField =
+      entityClass.getFieldByName("_CG_" + field.getName()
+      + tokenField.getName());
+      if (baseValue instanceof InstanceFieldRef) {
+      returnValue = Jimple.v().newInstanceFieldRef(
+      ((InstanceFieldRef)baseValue).getBase(), replacementField);
+      } else {
+      returnValue = Jimple.v().newStaticFieldRef(
+      replacementField);
+      }
+      } else {
+      throw new RuntimeException("Unknown value type for subfield: " + baseValue);
+      }
+      return returnValue;
+      }
+    */
 
     public static Value _getNullValueForType(Type type) {
         if (type instanceof ArrayType) {
@@ -1909,7 +1909,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             RefType type = (RefType)baseType;
 
             if (!SootUtilities.derivesFrom(type.getSootClass(),
-                       PtolemyUtilities.tokenClass)) {
+                    PtolemyUtilities.tokenClass)) {
                 return false;
             }
 
@@ -1917,7 +1917,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             // make sure that it has the
             // appropriate type
             if (PtolemyUtilities.getTypeDepth(
-                       typeAnalysis.getSpecializedType(local)) != depth) {
+                    typeAnalysis.getSpecializedType(local)) != depth) {
                 if (debug) System.out.println("skipping, type depth = " +
                         PtolemyUtilities.getTypeDepth(
                                 typeAnalysis.getSpecializedType(local)) +

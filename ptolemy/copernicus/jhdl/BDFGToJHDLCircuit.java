@@ -72,7 +72,7 @@ import soot.*;
 public class BDFGToJHDLCircuit {
 
     public BDFGToJHDLCircuit(BlockDataFlowGraph bdfg, JHDLTestbench parent)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         _cell = new Logic(parent,"newcell");
         _jtb = parent;
         _bdfg = bdfg;
@@ -114,7 +114,7 @@ public class BDFGToJHDLCircuit {
      * return statement.
      **/
     protected Collection _determineOutputNodes()
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         Vector v = new Vector(1);
         // Find return statement node
         Node returnNode = null;
@@ -178,7 +178,7 @@ public class BDFGToJHDLCircuit {
     }
 
     protected void _processParameterRef(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         ParameterRef pr = (ParameterRef) node.getWeight();
         Type t = pr.getType();
         // Currently only support IntType
@@ -221,7 +221,7 @@ public class BDFGToJHDLCircuit {
     }
 
     protected void _processBinopExpr(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         // get two nodes coming into this op
         Wire wire1=null;
@@ -280,7 +280,7 @@ public class BDFGToJHDLCircuit {
     }
 
     protected void _processUnopExpr(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         // get nodes coming into this op
         Wire wire1=null;
         Collection inEdges = _bdfg.inputEdges(node);
@@ -304,8 +304,8 @@ public class BDFGToJHDLCircuit {
     }
 
     protected Wire _processConditionExpr(Node node, Wire wire1,
-                                         Wire wire2)
-        throws JHDLUnsupportedException {
+            Wire wire2)
+            throws JHDLUnsupportedException {
 
         Object nweight = node.getWeight();
         if (nweight instanceof CompoundBooleanExpression)
@@ -315,8 +315,8 @@ public class BDFGToJHDLCircuit {
     }
 
     protected Wire _processCompoundBooleanExpression(Node node, Wire wire1,
-                                                     Wire wire2)
-        throws JHDLUnsupportedException {
+            Wire wire2)
+            throws JHDLUnsupportedException {
 
         Object nweight = node.getWeight();
         if (nweight instanceof CompoundAndExpression) {
@@ -329,8 +329,8 @@ public class BDFGToJHDLCircuit {
     }
 
     protected Wire _processSimpleConditionExpr(Node node, Wire wire1,
-                                               Wire wire2)
-        throws JHDLUnsupportedException {
+            Wire wire2)
+            throws JHDLUnsupportedException {
 
         // TODO: more agressive bitwidth analysis
         int wireSize = wire1.getWidth() > wire2.getWidth() ?
@@ -344,9 +344,9 @@ public class BDFGToJHDLCircuit {
 
         // LE, GE, GT, and LT are all performed with an adder
         if (weight instanceof LeExpr ||
-            weight instanceof GeExpr ||
-            weight instanceof GtExpr ||
-            weight instanceof LtExpr) {
+                weight instanceof GeExpr ||
+                weight instanceof GtExpr ||
+                weight instanceof LtExpr) {
 
             Wire notB = _cell.not(newWire2);
             Wire cin = _cell.wire(1);
@@ -373,7 +373,7 @@ public class BDFGToJHDLCircuit {
             }
 
         } else if (weight instanceof EqExpr ||
-                   weight instanceof NeExpr) {
+                weight instanceof NeExpr) {
             // Need to build a better EQ and NE module (carry chain?)
             Wire equal = _cell.nor(_cell.xor(newWire1,newWire2));
             if (weight instanceof EqExpr)
@@ -396,32 +396,32 @@ public class BDFGToJHDLCircuit {
     protected Wire _createMultiplier(Wire wire1, Wire wire2 ) {
         Wire allbits = _cell.wire(64);
         new arrayMult(_cell,       // parent
-                      wire1,       // x
-                      wire2,       // y
-                      null,        // clk_en
-                      allbits,     // pout
-                      true,        // signed
-                      0);          // pipedepth
+                wire1,       // x
+                wire2,       // y
+                null,        // clk_en
+                allbits,     // pout
+                true,        // signed
+                0);          // pipedepth
         Wire output = allbits.range(31,0);
         return output;
     }
 
     protected Wire _createAnd(Wire wire1, Wire wire2 )
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         if (wire1.getWidth() != wire2.getWidth())
             _error("Mismatched Bits for Binary operation");
         return _cell.and(wire1,wire2);
     }
 
     protected Wire _createOr(Wire wire1, Wire wire2 )
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         if (wire1.getWidth() != wire2.getWidth())
             _error("Mismatched Bits for Binary operation");
         return _cell.or(wire1,wire2);
     }
 
     protected Wire _createXor(Wire wire1, Wire wire2 )
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         if (wire1.getWidth() != wire2.getWidth())
             _error("Mismatched Bits for Binary operation");
         return _cell.xor(wire1,wire2);
@@ -432,7 +432,7 @@ public class BDFGToJHDLCircuit {
     }
 
     protected void _processReturnStmt(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         // Get input wire
         Node predecessor=null;
         for (Iterator ie=_bdfg.inputEdges(node).iterator();
@@ -450,7 +450,7 @@ public class BDFGToJHDLCircuit {
     }
 
     protected void _processBinaryMux(Node node)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
 
         BinaryMux w = (BinaryMux) node.getWeight();
 
@@ -502,15 +502,15 @@ public class BDFGToJHDLCircuit {
     }
 
     protected static void _error(String s)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         throw new JHDLUnsupportedException(s);
     }
 
     protected static void _unsupportedOperation(Object o)
-        throws JHDLUnsupportedException {
+            throws JHDLUnsupportedException {
         throw new JHDLUnsupportedException("Object "+
-                                           o.getClass().getName()+
-                                           " not supported");
+                o.getClass().getName()+
+                " not supported");
     }
 
 

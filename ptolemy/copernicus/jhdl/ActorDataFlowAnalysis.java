@@ -50,7 +50,7 @@ import soot.*;
 public class ActorDataFlowAnalysis {
 
     public ActorDataFlowAnalysis(Entity entity, SootClass theClass)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         DirectedGraph prefire_graph = _analyzeMethod(theClass,"prefire");
         DirectedGraph fire_graph = _analyzeMethod(theClass,"fire");
@@ -61,8 +61,8 @@ public class ActorDataFlowAnalysis {
     /**
      **/
     protected DirectedGraph _analyzeMethod(SootClass theClass,
-                                           String methodName)
-        throws IllegalActionException
+            String methodName)
+            throws IllegalActionException
     {
 
         SootMethod method = theClass.getMethodByName(methodName);

@@ -151,7 +151,7 @@ public class TypeSpecializerAnalysis {
         _objectToInequalityTerm = new HashMap();
 
         for (Iterator classes = list.iterator();
-            classes.hasNext();) {
+             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _collectConstraints(theClass, _debug);
         }
@@ -879,9 +879,9 @@ public class TypeSpecializerAnalysis {
 
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
-                    InequalityTerm[] result = new InequalityTerm[1];
-                    result[0] = this;
-                    return result;
+                InequalityTerm[] result = new InequalityTerm[1];
+                result[0] = this;
+                return result;
             }
             return (new InequalityTerm[0]);
         }
@@ -905,7 +905,7 @@ public class TypeSpecializerAnalysis {
         public void setValue(Object e) throws IllegalActionException {
             //   System.out.println("setting value of " + toString() + " to " + e);
             if (!_declaredType.isSubstitutionInstance((ptolemy.data.type.Type)e)) {
-                    throw new RuntimeException("VariableTerm.setValue: "
+                throw new RuntimeException("VariableTerm.setValue: "
                         + "Cannot update the type of " + this + " to the "
                         + "new type."
                         + ", Variable type: " + _declaredType.toString()

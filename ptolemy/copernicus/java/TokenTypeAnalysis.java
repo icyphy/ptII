@@ -192,7 +192,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                     out.put(r.getArg(0), in.get(r.getArg(2)));
                 }
             } else if (rightOp instanceof InstanceInvokeExpr ||
-                       rightOp instanceof InterfaceInvokeExpr) {
+                    rightOp instanceof InterfaceInvokeExpr) {
                 InstanceInvokeExpr r = (InstanceInvokeExpr)rightOp;
                 String methodName = r.getMethod().getName();
                 //System.out.println("invokeExpr = " + r);
@@ -233,11 +233,11 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                             methodName.equals("bitwiseAnd") ||
                             methodName.equals("bitwiseOr") ||
                             methodName.equals("bitwiseXor")) {
-//                         System.out.println("methodName = " + methodName);
-//                         System.out.println("r.getBase() = " + r.getBase());
-//                         System.out.println("r.getArg(0) = " + r.getArg(0));
-//                         System.out.println("type(r.getBase()) = " + in.get(r.getBase()));
-//                         System.out.println("type(r.getArg(0)) = " + in.get(r.getArg(0)));
+                        //                         System.out.println("methodName = " + methodName);
+                        //                         System.out.println("r.getBase() = " + r.getBase());
+                        //                         System.out.println("r.getArg(0) = " + r.getArg(0));
+                        //                         System.out.println("type(r.getBase()) = " + in.get(r.getBase()));
+                        //                         System.out.println("type(r.getArg(0)) = " + in.get(r.getArg(0)));
                         ptolemy.data.type.Type baseType = (ptolemy.data.type.Type) in.get(r.getBase());
                         ptolemy.data.type.Type argType = (ptolemy.data.type.Type) in.get(r.getArg(0));
                         if (baseType == null || argType == null) {
@@ -321,8 +321,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                     }
                 }
             } else if (rightOp instanceof ArrayRef) {
-               //  System.out.println("arrayRef stmt = " + stmt);
-//                 System.out.println("right type = " + in.get(((ArrayRef)rightOp).getBase()));
+                //  System.out.println("arrayRef stmt = " + stmt);
+                //                 System.out.println("right type = " + in.get(((ArrayRef)rightOp).getBase()));
                 out.put(leftOp, in.get(((ArrayRef)rightOp).getBase()));
             } else if (rightOp instanceof CastExpr) {
                 CastExpr castExpr = (CastExpr)rightOp;
@@ -330,9 +330,9 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 // FIXME: what if downcast???
 
                 RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-          //       System.out.println("castType = " + tokenType);
-//                 System.out.println("castOp = " + castExpr.getOp());
-//                 System.out.println("currentType = " + in.get(castExpr.getOp()));
+                //       System.out.println("castType = " + tokenType);
+                //                 System.out.println("castOp = " + castExpr.getOp());
+                //                 System.out.println("currentType = " + in.get(castExpr.getOp()));
                 //if (tokenType != null) {
                 out.put(leftOp, in.get(castExpr.getOp()));
                 // } else {
@@ -373,8 +373,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 TypeTag tag = (TypeTag)field.getTag("_CGType");
                 Object newType;
                 if (tag == null) {
-                   //  System.out.println("No Tag... Existing type = " + in.get(rightOp));
-//                     System.out.println("No Tag... field type = " + field.getType());
+                    //  System.out.println("No Tag... Existing type = " + in.get(rightOp));
+                    //                     System.out.println("No Tag... field type = " + field.getType());
 
                     if (in.get(rightOp) == null) {
                         RefType fieldType = PtolemyUtilities.getBaseTokenType(field.getType());

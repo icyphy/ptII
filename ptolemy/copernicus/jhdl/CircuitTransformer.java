@@ -117,7 +117,7 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("*** START JHDL");
         System.out.println("**************************************************");
         System.out.println("\nCircuitTransformer.internalTransform("
-                           + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
 
         //////////////////////////////////////////////
@@ -139,7 +139,7 @@ public class CircuitTransformer extends SceneTransformer {
         PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
         toDotty.writeDotFile(_outDir, _model.getName(), combinedGraph);
 
-         System.out.println("**************************************************");
+        System.out.println("**************************************************");
         System.out.println("*** END JHDL");
         System.out.println("**************************************************");
     }
@@ -177,7 +177,7 @@ public class CircuitTransformer extends SceneTransformer {
             // iterate over all outPorts and add Node corresponding
             // to port. Also add edge between entity and port
             for (Iterator outPorts =
-                   ((TypedAtomicActor)entity).outputPortList().iterator();
+                     ((TypedAtomicActor)entity).outputPortList().iterator();
                  outPorts.hasNext();){
                 Object port=outPorts.next();
                 System.out.println("     Adding outport "+((Nameable)port).getName());
@@ -188,7 +188,7 @@ public class CircuitTransformer extends SceneTransformer {
             // iterate over all inPorts and add Node corresponding
             // to port. Also add edge between entity and port
             for (Iterator inPorts =
-                   ((TypedAtomicActor)entity).inputPortList().iterator();
+                     ((TypedAtomicActor)entity).inputPortList().iterator();
                  inPorts.hasNext();){
                 Object port=inPorts.next();
                 System.out.println("     Adding inport "+((Nameable)port).getName());
@@ -203,11 +203,11 @@ public class CircuitTransformer extends SceneTransformer {
         for (Iterator inputPorts=model.inputPortList().iterator();
              inputPorts.hasNext();){
             IOPort port = (IOPort)inputPorts.next();
-              System.out.println("    Input Port = " + port + " inside sinks="
-                               + port.insideSinkPortList().size());
+            System.out.println("    Input Port = " + port + " inside sinks="
+                    + port.insideSinkPortList().size());
             combinedGraph.addNodeWeight(port);
             for (Iterator insideSinks = port.insideSinkPortList().iterator();
-                insideSinks.hasNext();) {
+                 insideSinks.hasNext();) {
                 IOPort insideSink = (IOPort)insideSinks.next();
                 System.out.println("     remote port="+insideSink);
                 combinedGraph.addEdge(port, insideSink);
@@ -222,7 +222,7 @@ public class CircuitTransformer extends SceneTransformer {
             for (Iterator outPorts = ((TypedAtomicActor)entity).outputPortList().iterator(); outPorts.hasNext();){
                 IOPort port = (IOPort) outPorts.next();
                 System.out.println("    Entity output Port="+port+
-                                   " sinks="+port.sinkPortList().size());
+                        " sinks="+port.sinkPortList().size());
                 // insideSinkPortList(), sinkPortList()
                 for (Iterator sinkPorts = port.sinkPortList().iterator();
                      sinkPorts.hasNext();) {
@@ -274,12 +274,12 @@ public class CircuitTransformer extends SceneTransformer {
         String entityClassName = entity.getClass().getName();
 
         // skip some classes?
-//          if (entityClassName.equals("ptolemy.actor.lib.Const") ||
-//              entityClassName.equals("ptolemy.actor.lib.FileWriter"))
-//              return null;
+        //          if (entityClassName.equals("ptolemy.actor.lib.Const") ||
+        //              entityClassName.equals("ptolemy.actor.lib.FileWriter"))
+        //              return null;
 
         System.out.println("Creating graph for class "+className+
-                           " (entity="+entityClassName+")");
+                " (entity="+entityClassName+")");
         SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
         SootMethod method = entityClass.getMethodByName("fire");
@@ -303,8 +303,8 @@ public class CircuitTransformer extends SceneTransformer {
     // This method will insert the directed graph for each actor into
     // the top-level model
     protected void _insertEntityGraphs(CompositeActor model,
-                                       DirectedGraph topGraph,
-                                       Map entityGraphMap) {
+            DirectedGraph topGraph,
+            Map entityGraphMap) {
 
         for (Iterator i = model.entityList().iterator(); i.hasNext();) {
             Entity entity = (Entity) i.next();
@@ -319,7 +319,7 @@ public class CircuitTransformer extends SceneTransformer {
      * entity into the top-level model graph.
      **/
     protected void _insertEntityGraph(DirectedGraph graph, Entity entity,
-                                      DirectedGraph entityGraph) {
+            DirectedGraph entityGraph) {
 
         System.out.println("3. Inserting Entity Graph ");
 
@@ -357,75 +357,75 @@ public class CircuitTransformer extends SceneTransformer {
 
         /*
 
-        List inputPortList = actor.inputPortList();
-        List outputPortList = actor.outputPortList();
+          List inputPortList = actor.inputPortList();
+          List outputPortList = actor.outputPortList();
 
-        Map inputPortNodeMap = new HashMap(inputPortList.size());
-        Map outputPortNodeMap = new HashMap(outputPortList.size());
-        // Iterate over all actor input ports and obtain top-level
-        // node associated with this port
-        for (Iterator i=inputPortList.iterator();
-             i.hasNext();) {
-            IOPort port = (IOPort) i.next();
-            // Identify the Node in the top-level graph associated
-            // with this port
-            Node portNode = graph.node(port);
-            inputPortNodeMap.put(port,portNode);
-        }
-        // Iterate over all actor output ports and obtain top-level
-        // node associated with this port
-        for (Iterator i=outputPortList.iterator();
-             i.hasNext();) {
-            IOPort port = (IOPort) i.next();
-            // Identify the Node in the top-level graph associated
-            // with this port
-            Node portNode = graph.node(port);
-            outputPortNodeMap.put(port,portNode);
-        }
+          Map inputPortNodeMap = new HashMap(inputPortList.size());
+          Map outputPortNodeMap = new HashMap(outputPortList.size());
+          // Iterate over all actor input ports and obtain top-level
+          // node associated with this port
+          for (Iterator i=inputPortList.iterator();
+          i.hasNext();) {
+          IOPort port = (IOPort) i.next();
+          // Identify the Node in the top-level graph associated
+          // with this port
+          Node portNode = graph.node(port);
+          inputPortNodeMap.put(port,portNode);
+          }
+          // Iterate over all actor output ports and obtain top-level
+          // node associated with this port
+          for (Iterator i=outputPortList.iterator();
+          i.hasNext();) {
+          IOPort port = (IOPort) i.next();
+          // Identify the Node in the top-level graph associated
+          // with this port
+          Node portNode = graph.node(port);
+          outputPortNodeMap.put(port,portNode);
+          }
 
-        // Iterate over the input ports
-        for (Iterator i=inputPortNodeMap.keySet().iterator(); i.hasNext();) {
-            IOPort inputport = (IOPort) i.next();
+          // Iterate over the input ports
+          for (Iterator i=inputPortNodeMap.keySet().iterator(); i.hasNext();) {
+          IOPort inputport = (IOPort) i.next();
 
 
-        }
+          }
 
-        Map inputPorts = new HashMap();
-        Map outputPorts = new HashMap();
+          Map inputPorts = new HashMap();
+          Map outputPorts = new HashMap();
 
-        // 1. Identify ports in entity graph
-        // TODO: multiple calls to get in different control flow paths?
-        // - Assume homogoneous (need to think about how to connect
-        //   port calls for multi-rate ports)
-        // - Assume non-hierarchical (need to recursively build graph)
-        for (Iterator entityNodes = entityGraph.nodes().iterator();
-             entityNodes.hasNext();) {
-            Node node = (Node) entityNodes.next();
-            Object weight = node.getWeight();
+          // 1. Identify ports in entity graph
+          // TODO: multiple calls to get in different control flow paths?
+          // - Assume homogoneous (need to think about how to connect
+          //   port calls for multi-rate ports)
+          // - Assume non-hierarchical (need to recursively build graph)
+          for (Iterator entityNodes = entityGraph.nodes().iterator();
+          entityNodes.hasNext();) {
+          Node node = (Node) entityNodes.next();
+          Object weight = node.getWeight();
 
-            // See if weight is of type virtualinvoke
-            if (!(weight instanceof VirtualInvokeExpr))
-                continue;
-            VirtualInvokeExpr expr = (VirtualInvokeExpr) weight;
+          // See if weight is of type virtualinvoke
+          if (!(weight instanceof VirtualInvokeExpr))
+          continue;
+          VirtualInvokeExpr expr = (VirtualInvokeExpr) weight;
 
-            // See if the invoke calls the appropriate method
-            String methodName = expr.getMethod().getName();
-            System.out.println("   VirtualInvoke="+methodName);
-            if (!methodName.equals("getInt") &&
-                !methodName.equals("sendInt"))
-                continue;
+          // See if the invoke calls the appropriate method
+          String methodName = expr.getMethod().getName();
+          System.out.println("   VirtualInvoke="+methodName);
+          if (!methodName.equals("getInt") &&
+          !methodName.equals("sendInt"))
+          continue;
 
-            FieldRef ref = _getFieldRef(entityGraph,node);
-            SootField field = ref.getField();
-            String portName = field.getName();
+          FieldRef ref = _getFieldRef(entityGraph,node);
+          SootField field = ref.getField();
+          String portName = field.getName();
 
-            if (methodName.equals("getInt")) {
-                inputPorts.put(portName,node);
-            }
-            if (methodName.equals("sendInt")) {
-                outputPorts.put(portName,node);
-            }
-        }
+          if (methodName.equals("getInt")) {
+          inputPorts.put(portName,node);
+          }
+          if (methodName.equals("sendInt")) {
+          outputPorts.put(portName,node);
+          }
+          }
         */
 
         // 2. Add "in-between"
@@ -439,7 +439,7 @@ public class CircuitTransformer extends SceneTransformer {
     // The key to the map is a IOPort and the Value is a List of
     // Nodes
     protected Map _getPortCallNodes(TypedAtomicActor actor,
-                                    DirectedGraph entityGraph) {
+            DirectedGraph entityGraph) {
 
         Map portNodeMap = new HashMap();
 
@@ -447,7 +447,7 @@ public class CircuitTransformer extends SceneTransformer {
         List inputPortList = actor.inputPortList();
         List outputPortList = actor.outputPortList();
         Map stringPortMap = new HashMap(inputPortList.size() +
-                                        outputPortList.size());
+                outputPortList.size());
         for (Iterator i=inputPortList.iterator(); i.hasNext();) {
             IOPort port = (IOPort) i.next();
             String portName = port.getName();
@@ -475,7 +475,7 @@ public class CircuitTransformer extends SceneTransformer {
             String methodName = expr.getMethod().getName();
             //System.out.println("   VirtualInvoke="+methodName);
             if (!methodName.equals("getInt") &&
-                !methodName.equals("sendInt"))
+                    !methodName.equals("sendInt"))
                 continue;
 
             FieldRef ref = _getFieldRef(entityGraph,node);
@@ -483,10 +483,10 @@ public class CircuitTransformer extends SceneTransformer {
             String portName = field.getName();
 
 
-//                System.out.println("Found port node "+node+ " with methodname="+
-//                                   methodName + " portname="+portName);
+            //                System.out.println("Found port node "+node+ " with methodname="+
+            //                                   methodName + " portname="+portName);
             IOPort port = (IOPort) stringPortMap.get(portName);
-//              System.out.println("Found port call "+port);
+            //              System.out.println("Found port call "+port);
 
             Node portNode=null;
             if (methodName.equals("getInt")) {
@@ -512,17 +512,17 @@ public class CircuitTransformer extends SceneTransformer {
         }
 
         /*
-        for (Iterator i=portNodeMap.keySet().iterator();i.hasNext();) {
-            IOPort port = (IOPort) i.next();
-            System.out.print("Port="+port);
-            System.out.print(" nodes=");
-            List l = (List) portNodeMap.get(port);
-            for (Iterator j=l.iterator();j.hasNext();) {
-                Node n = (Node) j.next();
-                System.out.print(n+" ");
-            }
-            System.out.println();
-        }
+          for (Iterator i=portNodeMap.keySet().iterator();i.hasNext();) {
+          IOPort port = (IOPort) i.next();
+          System.out.print("Port="+port);
+          System.out.print(" nodes=");
+          List l = (List) portNodeMap.get(port);
+          for (Iterator j=l.iterator();j.hasNext();) {
+          Node n = (Node) j.next();
+          System.out.print(n+" ");
+          }
+          System.out.println();
+          }
         */
 
         // Fix up graph (remove some garbage)
@@ -583,7 +583,7 @@ public class CircuitTransformer extends SceneTransformer {
         for (Iterator i = graph.predecessors(node).iterator();
              i.hasNext();) {
             Node n = (Node) i.next();
-//              System.out.println("Node="+node+" pred="+n);
+            //              System.out.println("Node="+node+" pred="+n);
             Edge e = (Edge) graph.predecessorEdges(node,n).iterator().next();
             if (!e.hasWeight())
                 predecessor = n;

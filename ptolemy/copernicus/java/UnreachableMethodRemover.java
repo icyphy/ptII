@@ -118,7 +118,7 @@ public class UnreachableMethodRemover extends SceneTransformer {
                 SootClass theInterface = (SootClass)interfaces.next();
                 // Except for InequalityTerm...
                 if (theInterface.getName().equals(
-                            "ptolemy.graph.InequalityTerm")) {
+                        "ptolemy.graph.InequalityTerm")) {
                     continue;
                 }
                 for (Iterator methods =

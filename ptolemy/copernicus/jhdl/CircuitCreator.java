@@ -45,8 +45,8 @@ import soot.toolkits.graph.*;
 public class CircuitCreator {
 
     public static void create(HashMutableDirectedGraph operatorGraph,
-                              String outDir, String packageName,
-                              String className) throws IOException {
+            String outDir, String packageName,
+            String className) throws IOException {
         String fileName = outDir + "/" + className + ".java";
         System.out.println("Creating JHDL file: " + fileName);
         File outputFile = new File(fileName);
@@ -55,7 +55,7 @@ public class CircuitCreator {
         write_header(writer, packageName, className);
 
         for (Iterator nodes = operatorGraph.getNodes().iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             writer.write("    Wire " + _getWireName(node) + " = wire(32);\r\n");
         }
@@ -84,7 +84,7 @@ public class CircuitCreator {
             } else {
                 try {
                     write_const(writer, node.toString(),
-                                Integer.parseInt(node.toString()));
+                            Integer.parseInt(node.toString()));
                 } catch (Exception ex) {
                 }
             }
@@ -95,41 +95,41 @@ public class CircuitCreator {
     }
 
     static void write_reg(FileWriter writer, Object in, Object out)
-        throws IOException {
+            throws IOException {
         writer.write("    regc_o(" + _getWireName(in) + ", " +
-                     _getWireName(out) + ");\r\n");
+                _getWireName(out) + ");\r\n");
     }
 
     static void write_fir(FileWriter writer, Object in, Object out)
-        throws IOException {
+            throws IOException {
         writer.write("    new byucc.ptolemy.domains.jhdl.lib.JHDLSimpleFir(this,"
-                     + _getWireName(in) + ", " +
-                     _getWireName(out) + ");\r\n");
+                + _getWireName(in) + ", " +
+                _getWireName(out) + ");\r\n");
     }
 
     static void write_add(FileWriter writer, Object in1,
-                          Object in2, Object out) throws IOException {
+            Object in2, Object out) throws IOException {
         writer.write("    add_o(" + _getWireName(in1) + ", " +
-                     _getWireName(in2) + ", " +
-                     _getWireName(out) + ");\r\n");
+                _getWireName(in2) + ", " +
+                _getWireName(out) + ");\r\n");
     }
 
     static void write_const(FileWriter writer, Object out, int value)
-        throws IOException {
+            throws IOException {
 
         writer.write("    constant_o(" + _getWireName(out) + ", " +
-                     value + ");\r\n");
+                value + ");\r\n");
     }
 
     static void write_buf(FileWriter writer, Object in)
-        throws IOException {
+            throws IOException {
         writer.write("    buf_o(" + _getWireName(in) +
-                     ", LAD_Bus_Data_Out);\r\n");
+                ", LAD_Bus_Data_Out);\r\n");
     }
 
     static void write_header(FileWriter writer,
-                             String packageName, String className)
-        throws IOException {
+            String packageName, String className)
+            throws IOException {
         writer.write("package " + packageName + ";\r\n");
         writer.write("import byucc.jhdl.base.*;\r\n");
         writer.write("import byucc.jhdl.Logic.*;\r\n");
@@ -161,7 +161,7 @@ public class CircuitCreator {
     }
 
     static void write_footer(FileWriter writer)
-        throws IOException {
+            throws IOException {
         writer.write("  }\r\n");
 
         writer.write("  protected GenericInterfaceCell Clocks(GenericProcessingElement parent) {\r\n");
