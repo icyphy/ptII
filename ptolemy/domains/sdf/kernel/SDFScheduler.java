@@ -1446,6 +1446,8 @@ public class SDFScheduler extends Scheduler {
             } else if (port.isOutput()) {
                 setTokenProductionRate(port, rate.intValue());
                 // Infer init production.
+                // FIXME: this is not enough.. 
+                // We really have to analyze the model.
                 Iterator connectedPorts = port.insidePortList().iterator();
                 IOPort foundOutputPort = null;
                 while (connectedPorts.hasNext()) {
