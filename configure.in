@@ -179,7 +179,11 @@ if $JAVAC confTest.java ; then
     AC_MSG_RESULT(ok)
 
     AC_MSG_CHECKING([the value of the java.version Property ])
-    JVERSION=`CLASSPATH=$PTII/config $JAVA confTest`	
+    # Strip out the JDK1.3beta messages under Solaris2.5.1
+    JVERSION=`CLASSPATH=$PTII/config $JAVA confTest | 
+	grep -v "Warning! The libthread.so on your system is an older version than" |
+	grep -v "the one this VM was tested with. Please read the install documentation for" |
+	grep -v "patch installation instructions."`	
     AC_MSG_RESULT($JVERSION)
 
     JDEPENDFLAG="-Xdepend"
