@@ -21,6 +21,9 @@
 0xe0
 0xf7
 0xff
+ACOS
+ASIN
+ATAN
 ALT
 Agha
 Agha's
@@ -50,6 +53,7 @@ COMMAPI
 CONFIG
 COPYRIGHTENDKEY
 CORBA
+COS
 CSF
 CSP
 CYGWIN
@@ -81,6 +85,7 @@ Downsampler
 Dresden
 EAL
 EECS
+EXP
 Edsger
 Emacs
 Endian
@@ -164,6 +169,7 @@ Koo
 Korn
 Kubota
 Kupferman
+LOG
 Lego
 Lemkin
 Lenzmann
@@ -238,6 +244,7 @@ Qadeer
 Quadralay
 Queueing
 README
+REMAINDER
 REMOTERECEIVER
 Rao
 Rapide
@@ -249,6 +256,10 @@ Ruehli
 Rumbaugh
 SDF
 SRCS
+SIGN
+SIN
+SQRT
+SQUARE
 STOPBITS
 Sangiovanni
 Saracco
@@ -268,6 +279,7 @@ Sparc
 Statecharts
 Stefani
 Synopsys
+TAN
 TU
 Tarskian
 Tcl
