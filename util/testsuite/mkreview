@@ -217,5 +217,5 @@ Review ended: <I>time</I>
 </html>
 EOF
 
-chmod -R g+ws .
-chgrp -R ptolemy .
+chmod g+ws .
+chgrp ptolemy .
