@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/dde/kernel
 
-DIRS = 		test #doc
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -63,11 +63,12 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS) doc test #demo
+MISC_FILES =	$(DIRS) test #demo
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	doc \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)

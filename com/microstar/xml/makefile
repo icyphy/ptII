@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1997- The Regents of the University of California.
+# @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,11 +58,12 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) doc
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	doc \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)

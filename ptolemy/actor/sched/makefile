@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/actor/sched
 
-DIRS = 		test # doc
+DIRS = 		test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -57,11 +57,12 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) doc
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
