@@ -93,6 +93,7 @@ public class RefinementPort extends TypedIOPort {
             // Nothing to do.
             return;
         }
+        boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
@@ -115,7 +116,7 @@ public class RefinementPort extends TypedIOPort {
                 if (!success) super.setContainer(container);
             }
         } finally {
-            _mirrorDisable = false;
+            _mirrorDisable = disableStatus;
             _workspace.doneWriting();
         }
     }
@@ -131,6 +132,7 @@ public class RefinementPort extends TypedIOPort {
      *  @param isInput True to make the port an input.
      */
     public void setInput(boolean isInput) {
+        boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
@@ -154,7 +156,7 @@ public class RefinementPort extends TypedIOPort {
                 if (!success) super.setInput(isInput);
             }
         } finally {
-            _mirrorDisable = false;
+            _mirrorDisable = disableStatus;
             _workspace.doneWriting();
         }
     }
@@ -170,6 +172,7 @@ public class RefinementPort extends TypedIOPort {
      *  @param isMultiport True to make the port a multiport.
      */
     public void setMultiport(boolean isMultiport) {
+        boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
@@ -193,7 +196,7 @@ public class RefinementPort extends TypedIOPort {
                 if (!success) super.setMultiport(isMultiport);
             }
         } finally {
-            _mirrorDisable = false;
+            _mirrorDisable = disableStatus;
             _workspace.doneWriting();
         }
     }
@@ -208,6 +211,7 @@ public class RefinementPort extends TypedIOPort {
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
+        boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
@@ -231,7 +235,7 @@ public class RefinementPort extends TypedIOPort {
                 if (!success) super.setName(name);
             }
         } finally {
-            _mirrorDisable = false;
+            _mirrorDisable = disableStatus;
             _workspace.doneWriting();
         }
     }
@@ -239,9 +243,9 @@ public class RefinementPort extends TypedIOPort {
     /** If the argument is true, make the port an output port.
      *  If the argument is false, make the port not an output port.
      *  In addition, if the container is an instance of Refinement,
-     *  and the argument is true, find the corresponding port of
-     *  of the controller and make it an input.  This makes it
-     *  possible for the controller to see the outputs of the refinements.
+     *  and the argument is true, find the corresponding port of the
+     *  controller and make it an input and not an output.  This makes
+     *  it possible for the controller to see the outputs of the refinements.
      *  This method overrides the base class to make the same
      *  change on the mirror ports in the controller and state refinments.
      *  This method invalidates the schedule and resolved types of the
@@ -251,6 +255,7 @@ public class RefinementPort extends TypedIOPort {
      *  @param isOutput True to make the port an output.
      */
     public void setOutput(boolean isOutput) {
+        boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
@@ -271,7 +276,7 @@ public class RefinementPort extends TypedIOPort {
                         }
                         if (isOutput && container instanceof Refinement) {
                             // Find the corresponding port in the controller
-                            // and make an input as well.
+                            // and make an input and not an output
                             ModalController controller = (ModalController)
                                     ((ModalModel)modal)
                                     .getEntity("_Controller");
@@ -280,11 +285,19 @@ public class RefinementPort extends TypedIOPort {
                                        = (RefinementPort)controller
                                        .getPort(getName());
                                 if (controlPort != null) {
+                                    boolean controlPortStatus
+                                            = controlPort._mirrorDisable;
                                     try {
                                         controlPort._mirrorDisable = true;
                                         controlPort.setInput(true);
+                                        // If we don't do the following,
+                                        // this will port will both an input
+                                        // and an output in the controller,
+                                        // which is probably what we want.
+                                        // controlPort.setOutput(false);
                                     } finally {
-                                        controlPort._mirrorDisable = false;
+                                        controlPort._mirrorDisable
+                                                = controlPortStatus;
                                     }
                                 }
                             }
@@ -294,7 +307,7 @@ public class RefinementPort extends TypedIOPort {
                 if (!success) super.setOutput(isOutput);
             }
         } finally {
-            _mirrorDisable = false;
+            _mirrorDisable = disableStatus;
             _workspace.doneWriting();
         }
     }
@@ -304,6 +317,8 @@ public class RefinementPort extends TypedIOPort {
 
     // This is protected to be accessible to ModalPort.
 
-    /** Indicator that we are processing a setInput request. */
-    protected boolean _mirrorDisable = false;
+    /** If false, then changes the port are mirrored in the container's
+     *  container.
+     */
+    protected boolean _mirrorDisable = true;
 }

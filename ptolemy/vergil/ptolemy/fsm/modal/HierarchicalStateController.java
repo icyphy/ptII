@@ -239,7 +239,8 @@ public class HierarchicalStateController extends FSMStateController {
 	    super.actionPerformed(e);
 	    NamedObj target = getTarget();
             if (!(target instanceof State)) {
-                MessageHandler.error("Can only add refinements to states.");
+                MessageHandler.error(
+                        "Can only remove refinements from states.");
                 return;
             }
             State state = (State)target;
@@ -311,6 +312,7 @@ public class HierarchicalStateController extends FSMStateController {
                 if (other != state && other instanceof State) {
                     String refinementList = ((State)other)
                             .refinementName.getExpression();
+                    if (refinementList == null) continue;
                     tokenizer = new StringTokenizer(refinementList, ",");
                     while(tokenizer.hasMoreTokens()) {
                         String token = tokenizer.nextToken();

@@ -100,13 +100,13 @@ public class ModalPort extends TypedIOPort {
                     Entity entity = (Entity)entities.next();
                     Port mirrorPort = entity.getPort(getName());
                     if (mirrorPort instanceof RefinementPort) {
+                        RefinementPort castPort = (RefinementPort)mirrorPort;
+                        boolean disableStatus = castPort._mirrorDisable;
                         try {
-                            ((RefinementPort)mirrorPort)
-                                     ._mirrorDisable = true;
-                            mirrorPort.setContainer(null);
+                            castPort._mirrorDisable = true;
+                            castPort.setContainer(null);
                         } finally {
-                            ((RefinementPort)mirrorPort)
-                                     ._mirrorDisable = false;
+                            castPort._mirrorDisable = disableStatus;
                         }
                     }
                 }
@@ -139,13 +139,13 @@ public class ModalPort extends TypedIOPort {
                 Entity entity = (Entity)entities.next();
                 Port mirrorPort = entity.getPort(getName());
                 if (mirrorPort instanceof RefinementPort) {
+                    RefinementPort castPort = (RefinementPort)mirrorPort;
+                    boolean disableStatus = castPort._mirrorDisable;
                     try {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = true;
-                        ((IOPort)mirrorPort).setInput(isInput);
+                        castPort._mirrorDisable = true;
+                        castPort.setInput(isInput);
                     } finally {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = false;
+                        castPort._mirrorDisable = disableStatus;
                     }
                 }
             }
@@ -176,13 +176,13 @@ public class ModalPort extends TypedIOPort {
                 Entity entity = (Entity)entities.next();
                 Port mirrorPort = entity.getPort(getName());
                 if (mirrorPort instanceof RefinementPort) {
+                    RefinementPort castPort = (RefinementPort)mirrorPort;
+                    boolean disableStatus = castPort._mirrorDisable;
                     try {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = true;
-                        ((IOPort)mirrorPort).setMultiport(isMultiport);
+                        castPort._mirrorDisable = true;
+                        castPort.setMultiport(isMultiport);
                     } finally {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = false;
+                        castPort._mirrorDisable = disableStatus;
                     }
                 }
             }
@@ -215,10 +215,11 @@ public class ModalPort extends TypedIOPort {
                     Entity entity = (Entity)entities.next();
                     Port mirrorPort = entity.getPort(oldName);
                     if (mirrorPort instanceof RefinementPort) {
+                        RefinementPort castPort = (RefinementPort)mirrorPort;
+                        boolean disableStatus = castPort._mirrorDisable;
                         try {
-                            ((RefinementPort)mirrorPort)
-                                     ._mirrorDisable = true;
-                            mirrorPort.setName(name);
+                            castPort._mirrorDisable = true;
+                            castPort.setName(name);
                             // Rename the corresponding relation.
                             Relation relation = container.getRelation(
                                     oldName + "Relation");
@@ -226,8 +227,7 @@ public class ModalPort extends TypedIOPort {
                                 relation.setName(name + "Relation");
                             }
                         } finally {
-                            ((RefinementPort)mirrorPort)
-                                     ._mirrorDisable = false;
+                            castPort._mirrorDisable = disableStatus;
                         }
                     }
                 }
@@ -259,13 +259,13 @@ public class ModalPort extends TypedIOPort {
                 Entity entity = (Entity)entities.next();
                 Port mirrorPort = entity.getPort(getName());
                 if (mirrorPort instanceof RefinementPort) {
+                    RefinementPort castPort = (RefinementPort)mirrorPort;
+                    boolean disableStatus = castPort._mirrorDisable;
                     try {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = true;
-                        ((IOPort)mirrorPort).setOutput(isOutput);
+                        castPort._mirrorDisable = true;
+                        castPort.setOutput(isOutput);
                     } finally {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = false;
+                        castPort._mirrorDisable = disableStatus;
                     }
                 }
             }

@@ -110,9 +110,17 @@ public class Refinement extends TypedCompositeActor
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
-                // Have already called the super class.
+                // Have already called newPort() in the container.
                 // This time, process the request.
-                Port port = new RefinementPort(this, name);
+                RefinementPort port = new RefinementPort(this, name);
+
+                // NOTE: This is a total kludge, but when a port is created
+                // this way, rather than by parsing MoML that specifies the
+                // class, we assume that it is being created interactively,
+                // rather than by reading a stored MoML file, so we enable
+                // mirroring in the port.
+                port._mirrorDisable = false;
+
                 // Create the appropriate links.
                 ModalModel container = (ModalModel)getContainer();
                 if (container != null) {

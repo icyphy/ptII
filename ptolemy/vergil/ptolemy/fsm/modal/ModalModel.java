@@ -31,12 +31,16 @@ package ptolemy.vergil.ptolemy.fsm.modal;
 
 import java.util.Iterator;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
+import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.HSDirector;
@@ -95,14 +99,16 @@ a refinement in order to choose a transition.
 <p>
 This class is designed to work closely with ModalController and
 Refinement, since changes to ports can be initiated in this class
-or in those.
+or in those. It works with continuous-time as well as discrete-time
+models.
 
 @see ModalController
 @see Refinement
 @author Edward A. Lee
 @version $Id$
 */
-public class ModalModel extends TypedCompositeActor {
+public class ModalModel extends TypedCompositeActor
+        implements CTStepSizeControlActor {
 
     /** Construct a modal model with a name and a container.
      *  The container argument must not be null, or a
@@ -167,6 +173,20 @@ public class ModalModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return true, indicating that this composite actor does not
+     *  perform step size control.
+     *  @return True if this step is accurate.
+     */
+    public boolean isThisStepAccurate() {
+        Director dir = getDirector();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).isThisStepAccurate();
+        }
+        return true;
+    }
 
     /** Create a new director for use in this composite.  This base
      *  class returns an instance of FSMDirector, but derived classes
@@ -238,6 +258,32 @@ public class ModalModel extends TypedCompositeActor {
         } finally {
             _workspace.doneWriting();
         }
+    }
+
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return java.lang.Double.MAX_VALUE.
+     *  @return The predicted step size.
+     */
+    public double predictedStepSize() {
+        Director dir = getDirector();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).predictedStepSize();
+        }
+        return java.lang.Double.MAX_VALUE;
+    }
+
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return the current step size of the executive director.
+     *  @return The refined step size.
+     */
+    public double refinedStepSize() {
+        Director dir = getDirector();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).refinedStepSize();
+        }
+        return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
     }
 
     ///////////////////////////////////////////////////////////////////
