@@ -162,20 +162,12 @@ musical instrument sound.</text></svg></configure>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="26.0, 185.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="35">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="Delay.input" relation="relation5"/>
     <link port="Delay.output" relation="relation1"/>

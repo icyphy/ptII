@@ -798,100 +798,58 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <link port="pivotX" relation="relation5"/>
                 <link port="pivotY" relation="relation6"/>
@@ -1147,52 +1105,34 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="180.0, 225.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 75.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 135.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 195.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 315.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 254.99999237060547">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 375.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <link port="pivot_X" relation="relation9"/>
                 <link port="pivot_Y" relation="relation10"/>
@@ -1421,52 +1361,34 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="180.0, 225.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 375.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 75.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 135.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 315.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 195.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 254.99999237060547">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <link port="pivot_X" relation="relation9"/>
                 <link port="pivot_Y" relation="relation10"/>
@@ -1734,52 +1656,34 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="180.0, 225.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 195.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 375.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 135.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 315.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 75.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 254.99999237060547">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <link port="pivot_X" relation="relation9"/>
                 <link port="pivot_Y" relation="relation10"/>
@@ -2622,100 +2526,58 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="50.0, 237.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="64.0, 162.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="175.0, 63.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="186.0, 155.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="177.0, 229.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="196.0, 309.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <link port="pivotX" relation="relation5"/>
                 <link port="pivotY" relation="relation6"/>
@@ -2971,52 +2833,34 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <link port="pivot_X" relation="relation9"/>
                 <link port="pivot_Y" relation="relation10"/>
@@ -3249,52 +3093,34 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="70.0, 260.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="315.0, 230.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="243.0, 323.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="261.0, 296.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="275.0, 351.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="288.0, 154.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="304.0, 174.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <link port="pivot_X" relation="relation9"/>
                 <link port="pivot_Y" relation="relation10"/>
@@ -4088,100 +3914,58 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <link port="pivotX" relation="relation5"/>
                 <link port="pivotY" relation="relation6"/>
@@ -4441,52 +4225,34 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="180.0, 225.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 75.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 254.99999237060547">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 375.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 195.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 315.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 135.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <link port="pivot_X" relation="relation9"/>
                 <link port="pivot_Y" relation="relation10"/>

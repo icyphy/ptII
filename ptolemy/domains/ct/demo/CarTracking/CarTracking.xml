@@ -651,78 +651,50 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="450.0, 165.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="305.0, 390.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="245.0, 265.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="2">
-                </property>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="90.0, 145.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="430.0, 280.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation16" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="670.0, 125.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 105.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 115.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="105.0, 135.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="2">
-                </property>
             </relation>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="2">
-                </property>
             </relation>
             <relation name="relation17" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="30.0, 160.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
             </relation>
             <link port="input" relation="relation17"/>
             <link port="faulty" relation="relation16"/>
@@ -1742,34 +1714,20 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <relation name="1:relation8" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="1:relation7" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="285.0, 215.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="1:relation5" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
             </relation>
             <link port="leading" relation="relation"/>
             <link port="following" relation="relation3"/>

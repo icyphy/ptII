@@ -263,38 +263,22 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex" class="ptolemy.moml.Vertex" value="340.0, 135.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex" class="ptolemy.moml.Vertex" value="491.0, 314.8571428571429">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="MathFunction1.firstOperand" relation="relation5"/>
     <link port="MathFunction1.output" relation="relation26"/>

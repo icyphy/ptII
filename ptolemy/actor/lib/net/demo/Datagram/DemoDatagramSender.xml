@@ -77,8 +77,6 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="265.0, 220.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="DatagramSender.data" relation="relation"/>
     <link port="Ramp.output" relation="relation"/>

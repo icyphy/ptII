@@ -49,8 +49,6 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="210.0, 230.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>

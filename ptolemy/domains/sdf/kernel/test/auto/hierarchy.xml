@@ -75,8 +75,6 @@
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <link port="out" relation="relation2"/>
         <link port="Sinewave.output" relation="relation2"/>
@@ -94,8 +92,6 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="typed composite actor.out" relation="relation"/>
     <link port="Test.input" relation="relation"/>
