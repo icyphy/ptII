@@ -147,6 +147,7 @@ JSRCS = \
 	Recorder.java \
 	RecursiveLattice.java \
 	Remainder.java \
+	Rician.java \
 	Scale.java \
 	Select.java \
 	SequenceActor.java \

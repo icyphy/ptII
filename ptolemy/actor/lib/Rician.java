@@ -1,4 +1,4 @@
-/* An actor that outputs a random sequence with a Gaussian distribution.
+/* An actor that outputs a random sequence with a Rician distribution.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,31 +30,46 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import java.util.Random;
+import java.lang.Math;
+import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
-//// Gaussian
+//// Rician
 /**
-Produce a random sequence with a Gaussian distribution.  On each iteration,
-a new random number is produced.  The output port is of type DoubleToken.
-The values that are generated are independent and identically distributed
-with the mean and the standard deviation given by parameters.  In addition, the
-seed can be specified as a parameter to control the sequence that is
-generated.
+Produce a random sequence with a Rician distribution. 
+A Rician random variable is defined as follows:
+Let Z = sqrt(X<sup>2</sup> + Y<sup>2</sup>), where X and Y are statically
+independent Gaussian random variables with means given by parameters
+<i>xMean</i> and <i>yMean</i> respectively, and common variance given by
+parameter <i>standardDeviation</i>.
+<p>
+When <i>xMean</i> and <i>yMean</i> are both set to be zero, the Rician
+distribution is also called a Rayleigh distribution. So this actor can
+also be used as a Rayleigh random generator.
+<p>
+On each iteration, a new random number is produced. The output port
+is of type DoubleToken. The values that are generated are independent
+and identically distributed with the means and the standard deviation
+given by parameters. In addition, the seed can be specified as a
+parameter to control the sequence that is generated.
 
-@author Edward A. Lee
+@author Rachel Zhou
 @version $Id$
 @since Ptolemy II 0.2
 */
 
-public class Gaussian extends RandomSource {
+public class Rician extends RandomSource {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -64,26 +79,35 @@ public class Gaussian extends RandomSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Gaussian(CompositeEntity container, String name)
+    public Rician(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        mean = new Parameter(this, "mean", new DoubleToken(0.0));
-        mean.setTypeEquals(BaseType.DOUBLE);
+        xMean = new Parameter(this, "xMean", new DoubleToken(0.0));
+        xMean.setTypeEquals(BaseType.DOUBLE);
+       
+        yMean = new Parameter(this, "yMean", new DoubleToken(0.0));
+        yMean.setTypeEquals(BaseType.DOUBLE);
+
         standardDeviation = new Parameter(this, "standardDeviation",
-                new DoubleToken(1.0));
+              new DoubleToken(1.0));
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The mean of the random number.
+    /** The mean of the random number along X-axis.
      *  This parameter contains a DoubleToken, initially with value 0.
      */
-    public Parameter mean;
+    public Parameter xMean;
+
+     /** The mean of the random number along X-axis.
+     *  This parameter contains a DoubleToken, initially with value 0.
+     */
+    public Parameter yMean;
 
     /** The standard deviation of the random number.
      *  This parameter contains a DoubleToken, initially with value 1.
@@ -93,7 +117,7 @@ public class Gaussian extends RandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send a random number with a Gaussian distribution to the output.
+    /** Send a random number with a Rician distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
@@ -108,12 +132,26 @@ public class Gaussian extends RandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-        double meanValue = ((DoubleToken)(mean.getToken())).doubleValue();
+        double xMeanValue = ((DoubleToken)(xMean.getToken())).doubleValue();
+        double yMeanValue = ((DoubleToken)(yMean.getToken())).doubleValue();
         double standardDeviationValue =
             ((DoubleToken)(standardDeviation.getToken())).doubleValue();
-        double rawNum = _random.nextGaussian();
-        _current = (rawNum*standardDeviationValue) + meanValue;
+        double xRawNum = _random.nextGaussian();
+        double yRawNum = _random.nextGaussian();
+        //_current = ptolemy.math.complex.sqrt(
+        //  ptolemy.math.complex.pow(
+        //  rawNum*standardDeviationValue + meanValue, 2)
+        //  + ptolemy.math.complex.pow(
+        //  raw2Num*standardDeviationValue + mean2Value, 2);
+        //_current = ptolemy.math.Complex.sqrt(2);
+        //_current = ptolemy.math.Complex.pow(2, 2);
+        _current = java.lang.Math.sqrt(
+             java.lang.Math.pow(
+             xRawNum*standardDeviationValue + xMeanValue, 2)
+             + java.lang.Math.pow(
+             yRawNum*standardDeviationValue + yMeanValue, 2));
         return super.prefire();
+
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -56,40 +56,39 @@ parities for the corresponding convolutional encoder.
 The <i>inputBlockSize</i> is the input rate of the encoder, and it is
 actually the output rate of the decoder.
 <p>
-During data transmission, the codewords from the encoder, which
-should be a sequence of 0 and 1, may be corrupted with noise. 
-Therefore, the decoder receives double-type signals from the encoder
-and try to "guess" the most likely input sequence of the encoder.
-This is done by searching all possible input sequence and computing
-the "distance" between the the codewords they produce and the
-received ones. The one that makes the minimum distance is the most
-likely input sequence.
+The input port of the decoder is double type and receives signals from
+the encoder corrupted with noise. The decoder tries to "guess" the most
+likely input sequence of the encoder by searching all possibilities and
+computing the "distance" between the the codewords they produce and the
+received ones. The one that makes the minimum distance is the most likely
+input sequence.
 <p>
 There are 2 choices offered in this actor to compute such "distance".
-If the parameter <i>softDecoding</i> is set to be true, it will
-compute the Euclidean distance. If it is false, the decoder will
-first make a desicion between 0 and 1 for the corrupted signals
-with a threshold of 0.5. Then it computes the Hamming distance.
-The performance of soft decoding is always better than hard decoding.
-But distance computation for hard decoding is easier than soft
-decoding, since it is based on bit-operation. Users can choose
-either mode based on the trade-off between probability of decoding
-error and computational complexity.
+If the parameter <i>softDecoding</i> is set to be true, it will compute
+the Euclidean distance. If it is false, the decoder will first make a
+desicion between 0 and 1 of the corrupted signals with a threshold of 0.5.
+Then it computes the Hamming distance. Soft decoding has lower probability
+of decoding error than hard decoding. But distance computation for hard
+decoding is easier, since it is based on bit-operations. Users can choose
+either mode based on the trade-off between probability of decoding error
+and computational complexity.
 <p>
-The parameter <i>delay</i>, denoted by "D" in this comment and
-all comments below, specifies the number of codeword-blocks that
-the decoder should observe before it makes a decision for the most
-likely one-block of information bits. The larger "D" is, the more
-possibility the decoder can "guess" correctly. The trade-off is
-more waiting time and more complexity in the computation. 
-And the last "D" blocks of codewords is "lost" in the decoder.
-Users who wish to get a complete sequence of the decoded bits
-should attatch "D" blocks of redundant inputs when they send their
-information bits into the ConvolutionalCoder.
+As each new corrupted codeword is received, a final decision is made on
+the most-likely input symbol of "D" firings earlier, where "D" is specified
+by the <i>delay</i> parameter. It should be a positive integer. Therefore,
+the decoder does not produce any outputs during the first "D" firings,
+and the last "D" codewords are "lost" in the decoder. The larger "D" is,
+the more likely the decoder can "guess" correctly. The trade-off is
+more waiting time and more complexity in the computation. Users who wish
+to get a complete sequence of the decoded bits should attatch "D" blocks
+of redundant inputs when they send their information bits into the
+ConvolutionalCoder. It has been found experimentally that a proper value
+for "D" would be 5 times of the highest order of all polynomials, provided
+that the convolutional code has good distance property.
 <p>
 For more information on convolutional codes and Viterbi decoder,
 see the ConvolutionalCoder actor and
-Proakis, Digital Communications, Fourth Edition, McGraw-Hill, 
+Proakis, Digital Communications, Fourth Edition, McGraw-Hill,
 2001, pp. 471-477 and pp. 482-485.
 <p>
 @author Rachel Zhou
@@ -211,6 +210,7 @@ public class ViterbiDecoder extends Transformer {
                     throw new IllegalActionException(this,
                     "Polynomial is required to be strictly positive.");
                 }
+                // Find maximum value in integer of all polynomials.
                 if (_mask[i] > _maxPolyValue) {
                     _maxPolyValue = _mask[i];
                 }
@@ -253,7 +253,7 @@ public class ViterbiDecoder extends Transformer {
 
             if (_inputNumber >= _shiftRegLength) {
                 throw new IllegalActionException(this,
-               "The highest order of polynomials is still too low.");
+               "The highest order of all polynomials is still too low.");
             }
             _inputNumberInvalid = false;
 
@@ -283,7 +283,7 @@ public class ViterbiDecoder extends Transformer {
             // It has 2<i>k</i> possible previous states, where "k"
             // is the <i>inputBlockSize</i>.
             // Hence _truthTable[m][n][1:3] stores the truth values for
-            // the n-th possible previous state. 
+            // the n-th possible previous state.
             // _truthTable[m][n][2] is the corresponding input block.
             // _truthTable[m][n][1] is the "value" of the previous
             // shift register's states.
@@ -351,7 +351,7 @@ public class ViterbiDecoder extends Transformer {
         // If allowed to make a decision, starts to send
         // the decoded bits to the output port.
         if (_flag >= _depth) {
-            // make a "final" decision among minimum distances of all states. 
+            // make a "final" decision among minimum distances of all states.
             double minD = 0;
             int minIndex = 0;
             for (int state = 0; state < _rowNum; state ++) {
@@ -529,7 +529,7 @@ public class ViterbiDecoder extends Transformer {
 
     // The delay specified by the user.
     private int _depth;
-    
+
     // Buffers for minimum distance, possible input sequence
     // for each state. And their temporary versions used
     // when updating.

@@ -48,32 +48,42 @@ import ptolemy.kernel.util.*;
 /**
 Generate a convolutional code by passing the information sequence to be
 transmitted through a linear finite-state shift register.
-The input port only accepts integers 0 or 1. The output port produces
-a sequence of 0 and 1.
+The input port accepts a sequence of integers 0 and 1. The output port
+produces the codeword in a sequence of 0 and 1.
 The initial state of the shift register is given by the <i>initial</i>
 parameter, which should be a non-negative integer.
-The number of bits per firing that should be shifted into and along the
-shift register is given by the <i>inputBlockSize</i> parameter, which
-should be a positive integer.
-The polynomials are given by the <i>polynomialArray</i> parameter, which
-should be an array of positive integers. Each integer indicates one
-polynomial.
-The n-th bit of the polynomial indicates whether the n-th tap of the delay
-line should be taken to compute the exclusive-ored parity.
-The result is produced as a sequence of length <i>N</i>, where <i>N</i>
-is the length of the <i>polynomialArray</i>. The n-th bit in the sequence
-corresponds to the parity computed from the n-th polynomial.
+The <i>inputBlockSize</i> parameter, denoted by "k", is the number of
+bits per firing that should be shifted into and along the shift register.
+It should be a positive integer. We call a k-bit block of input sequence
+as an <i>information symbol</i>.
+The <i>polynomialArray</i> parameter should be an array of positive
+integers. Each integer indicates one polynomial used for computing
+parity. The leading zero in each polynomial indicates it is an octal
+number. The i-th bit of the polynomial indicates whether the i-th
+tap of the delay line should be taken to compute the exclusive-ored
+parity. See more details in Scrambler actor on using an integer to
+define a polynomial.
+The result is produced as a sequence of length "n", where "n" is the
+length of the <i>polynomialArray</i>. The i-th bit in the sequence
+corresponds to the parity computed from the i-th polynomial. We call such
+an n-bit block of result as a <i>codeword</i>.
 <p>
-The leading zero in each polynomial indicates an octal number.
-The order is simply the index of the highest-order non-zero in the polynomial,
-where the low-order bit has index zero.
-Since the polynomial and the shift register are both implemented using type
-"int", the order of the polynomial is limited by the size of the "int" data
-type. For simplicity and portability, the polynomial is not allowed to be
-intepreted as a negative integer, so the sign bit cannot be used.
-Since Java has 32-bit integers, the highest order polynomial allowed
-is 30 (recall that indexing for the order starts at zero, and we cannot
-use the sign bit).
+Therefore, during each firing the encoder consumes "k" bits and produces
+"n" bits. The rate of this convolutional code is k/n.
+<p>
+A good convolutional code should have large Hamming distance between
+any two of its codewords. This generally cannot be easily observed
+unless by checking its complete code book. However, there are some
+basic lines that all "good" codes should satisfy:
+1. "k" should be strictly smaller than "n", otherwise the code is
+not uniquely decodable.
+2. "k" should not be higher than the highest order of all polynomials,
+otherwise, some bits never get involved in computing parities.
+In the above two cases, the actor will throw an exception. However, they
+do not guarantee the codeword can be decoded sucessfully, and it is
+not always true that "the larger the polynomials are, the better."
+User should check tables for convolutional code from professional
+references, which is achieved using computer search methods.
 <p>
 For more information on convolutional codes, see Proakis, Digital
 Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
@@ -130,8 +140,8 @@ public class ConvolutionalCoder extends Transformer {
     public Parameter polynomialArray;
 
     /** Integer defining the intial state of the shift register.
-     *  The n-th bit of the integer indicates the value of the
-     *  n-th register. This parameter should be a non-negative
+     *  The i-th bit of the integer indicates the value of the
+     *  i-th register. This parameter should be a non-negative
      *  integer. Its default value is the integer 0.
      */
     public Parameter initial;
@@ -146,13 +156,13 @@ public class ConvolutionalCoder extends Transformer {
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>initial</i>, then verify
-     *  that it is a non-negative integer; if it is <i>inputNumber</i>,
+     *  that it is a non-negative integer; if it is <i>inputBlockSize</i>,
      *  then verify that it is a positive integer; if it is
      *  <i>polynomailArray</i>, then verify that each of its elements is
-     *  a positive integer and compute the shift register's length,
-     *  which is the highest order of all polynomials.
+     *  a positive integer and find the maximum value among them, which
+     *  is used to compute the highest order among all polynomials.
      *  @exception IllegalActionException If <i>initial</i> is negative
-     *  or <i>inputLength</i> is non-positive or any element of
+     *  or <i>inputBlockSize</i> is non-positive or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
@@ -179,11 +189,15 @@ public class ConvolutionalCoder extends Transformer {
             ArrayToken maskToken = ((ArrayToken)polynomialArray.getToken());
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
+            _maxPolyValue = 0;
             for(int i = 0; i < _maskNumber; i++) {
                 _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
                     "Polynomial is required to be strictly positive.");
+                }
+                if (_mask[i] > _maxPolyValue) {
+                    _maxPolyValue = _mask[i];
                 }
             }
             _inputNumberInvalid = true;
@@ -206,6 +220,10 @@ public class ConvolutionalCoder extends Transformer {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
                 "Output rate should be larger than input rate.");
+            }
+            if ((1<< _inputNumber) > _maxPolyValue) {
+                throw new IllegalActionException(this,
+                        "The highest order of all polynomials is too low.");
             }
             _inputNumberInvalid = false;
         }
@@ -266,8 +284,8 @@ public class ConvolutionalCoder extends Transformer {
     //////////////////////////////////////////////////////////
     ////            private methods                        ////
 
-    /** Calculate the parity given by the polynomial and the
-     *  state of shift register.
+    /** Calculate the parities given by the polynomial array
+     *  and the state of shift register.
      *  @param mask The polynomial array.
      *  @param reg State of shift register.
      *  @return Parities stored in an array.
@@ -310,6 +328,9 @@ public class ConvolutionalCoder extends Transformer {
 
     // Number of polynomials.
     private int _maskNumber;
+
+    // The maximum value in integer among all polynomials.
+    private int _maxPolyValue;
 
     // A flag indicating that the private variable
     // _inputNumber is invalid.
