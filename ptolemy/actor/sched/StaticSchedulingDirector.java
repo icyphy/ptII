@@ -96,6 +96,24 @@ public class StaticSchedulingDirector extends Director{
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    /** Clone the director into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new director with no container, no pending mutations,
+     *  no mutation listeners, and no scheduler.
+     *
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
+     *  @return The new StaticSchedulingDirector.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        StaticSchedulingDirector newobj = (StaticSchedulingDirector)
+                                          super.clone(ws);
+        newobj._scheduler = null;
+        return newobj;
+    }
+
     /** Return the scheduler responsible for scheduling the contained
      *  actors. 
      *  This method is read-synchronized on the workspace.
@@ -109,26 +127,6 @@ public class StaticSchedulingDirector extends Director{
         } finally {
             workspace().doneReading();
         }
-    }
-
-    /** Return the scheduled firing sequence. If the current schedule is
-     *  valid, then return the cached version immediately. Otherwise
-     *  invoke the scheduler to reschedule.
-     *  @return the shceduled firing sequence in an Enumeration.
-     *  @exception IllegalActionException if there's no scheduler in this
-     *   director.
-     *  @exception NotScheduleableException if the scheduler throws it.
-     */
-    public Enumeration schedule() 
-             throws IllegalActionException, NotScheduleableException {
-        if(_scheduler == null) {
-            throw new IllegalActionException(this, 
-                " has no scheduler.");
-        }
-        if(scheduleValid()) {
-            return _cachedschedule;
-        }
-        return getScheduler().schedule();
     }
 
     /** Set the scheduler for this StaticSchedulingDirector.
@@ -160,7 +158,8 @@ public class StaticSchedulingDirector extends Director{
      *  it in the further execution. A false argument indicate that 
      *  the CompositeActor has been significantly change so that the
      *  cached schedule is no longer valid, and the director should
-     *  invoke the scheduler again for a new schedule.
+     *  invoke the scheduler again for a new schedule. This is a facad
+     *  for the setValid() method of Scheduler.
      *  @param true to set the schedule to be valid.
      *  @exception IllegalActionException IF there's no scheduler.
      */
@@ -170,10 +169,11 @@ public class StaticSchedulingDirector extends Director{
             throw new IllegalActionException(this, 
                 " has no scheduler.");
         }
-        _schedulevalid = valid;
+        _scheduler.setValid(valid);
     }
 
     /** Return true if the current (cached) schedule is valid.
+     *  This is a facad for the valid() method of Scheduler.
      *  @return true if the schedule is valid.
      *  @exception IllegalActionException IF there's no scheduler.
      */
@@ -182,37 +182,13 @@ public class StaticSchedulingDirector extends Director{
             throw new IllegalActionException(this, 
                 " has no scheduler.");
         }
-        return _schedulevalid;
+        return _scheduler.valid();
     }
         
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-
-    /** Override the _performMutations of the superclass, such that
-     *  if there's any mutations performed, then set the schedule to be
-     *  invalid, and inform all registered listeners
-     *  of the mutations.  If there's no mutations performed, the 
-     *  _schedulevalid variable remains the previous value.
-     *  Return true if any mutations were performed, and false otherwise.
-     *
-     *  @exception IllegalActionException If the mutation throws it.
-     *  @exception NameDuplicationException If the mutation throws it.
-     */
-    protected boolean _performMutations()
-            throws IllegalActionException, NameDuplicationException {        
-        if(super._performMutations()) {
-            setScheduleValid(false);
-            return true;
-        }
-        return false;
-    }   
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private Scheduler _scheduler;
-    private boolean _schedulevalid = false;
-    private Enumeration _cachedschedule;
 }
