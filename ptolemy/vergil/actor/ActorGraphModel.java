@@ -333,6 +333,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     // link connected to the given relation.  In some cases, it may
     // be necessary to create a vertex to represent the relation as well.
     private void _updateLinks(ComponentRelation relation) {
+
         List linkedPortList = relation.linkedPortList();
 	int allPortCount = linkedPortList.size();
 
@@ -553,7 +554,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	    ComponentPort port = (ComponentPort)location.getContainer();
 
             NamedObj container = _getChangeRequestParent(port);
-            System.out.println("Queueing Change request with: " + container);
+            // System.out.println("Queueing Change request with: " + container);
 
 	    // Delete the port.
 	    StringBuffer moml = new StringBuffer();
@@ -651,7 +652,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
  
             // Make the request in the context of the container.
             NamedObj container = _getChangeRequestParent(deleteObj);
-            System.out.println("Queueing Change request with: " + container);
+            // System.out.println("Queueing Change request with: " + container);
 
             String moml = "<" + elementName + " name=\""
                     + deleteObj.getName(container) + "\"/>\n";
