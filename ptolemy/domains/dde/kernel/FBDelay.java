@@ -148,7 +148,6 @@ public class FBDelay extends DDEActor {
 	*/
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
-	    TimeKeeper keeper = ((DDEThread)thread).getTimeKeeper();
 	    output.send( 0, token, getCurrentTime() + getDelay() );
 	}
 	// System.out.println("end of fire() of FBDelay");

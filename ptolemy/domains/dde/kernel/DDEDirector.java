@@ -134,27 +134,20 @@ public class DDEDirector extends ProcessDirector {
     /** Increment the count of actors blocked on a read.
      */
     synchronized void addReadBlock() {
-	String name = "";
-	double time = -1.0;
-	Thread thr = Thread.currentThread();
-	if( thr instanceof DDEThread ) {
-	    name = ((Nameable)((DDEThread)thr).getActor()).getName();
-	    TimeKeeper tk = ((DDEThread)thr).getTimeKeeper();
-	    time = tk.getCurrentTime();
-	}
-        System.out.println(name+": Added read block at time " + time + ".");
+	new FooBar("DDEDirector.addReadBlock()", "START");
         _readBlocks++;
 	if( _isDeadlocked() ) {
 	    notifyAll();
 	}
+	new FooBar("DDEDirector.addReadBlock()", "END");
     }
 
     /** Increment the count of actors blocked on a write.
      * @param rcvr The DDEReceiver that has a write block.
      */
     synchronized void addWriteBlock(DDEReceiver rcvr) {
+	new FooBar("DDEDirector.addWriteBlock()", "START");
         _writeBlocks++;
-        System.out.println("Added write block. Count = " + _writeBlocks);
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
@@ -162,6 +155,7 @@ public class DDEDirector extends ProcessDirector {
 	if( _isDeadlocked() ) {
 	    notifyAll();
 	}
+	new FooBar("DDEDirector.addWriteBlock()", "END");
     }
 
     /** Decrease by one the count of active processes under the control of
@@ -176,10 +170,6 @@ public class DDEDirector extends ProcessDirector {
      */
     protected synchronized void _decreaseActiveCount() {
 	Thread thr = Thread.currentThread();
-	if( thr instanceof DDEThread ) {
-	    String name = ((Nameable)((DDEThread)thr).getActor()).getName();
-	    System.out.println(name+": called _decreaseActiveCount");
-	}
 	super._decreaseActiveCount();
     }
 
@@ -229,6 +219,7 @@ public class DDEDirector extends ProcessDirector {
         }
 
 	if( _completionTime != -5.0 && time > _completionTime ) {
+	    // System.out.println("fireAt() called after completion time.");
 	    // FIXME: Should TerminateProcessException be thrown here?
 	    return;
 	}
@@ -242,7 +233,6 @@ public class DDEDirector extends ProcessDirector {
 
         TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
         try {
-	    System.out.println("fireAt() called at time = " + time );
             timeKeeper.setCurrentTime(time);
         } catch( IllegalArgumentException e ) {
 	    throw new IllegalActionException(
@@ -315,22 +305,18 @@ public class DDEDirector extends ProcessDirector {
     /** Decrement the count of actors blocked on a read.
      */
     public synchronized void removeReadBlock() {
-	String name = "";
-	Thread thr = Thread.currentThread();
-	if( thr instanceof DDEThread ) {
-	    name = ((Nameable)((DDEThread)thr).getActor()).getName();
-	}
-        System.out.println(name+": Removed read block.");
+	new FooBar("DDEDirector.removeReadBlock()", "START");
         if( _readBlocks > 0 ) {
             _readBlocks--;
         }
+	new FooBar("DDEDirector.removeReadBlock()", "END");
     }
 
     /** Decrement the count of actors blocked on a write.
      * @param rcvr The DDEReceiver that is no longer write blocked.
      */
     public synchronized void removeWriteBlock(DDEReceiver rcvr) {
-        // System.out.println("Removed write block.");
+	new FooBar("DDEDirector.removeWriteBlock()", "START");
         if( _writeBlocks > 0 ) {
             _writeBlocks--;
         }
@@ -338,6 +324,7 @@ public class DDEDirector extends ProcessDirector {
 	    _writeBlockedQs = new LinkedList();
 	}
         _writeBlockedQs.removeOneOf(rcvr);
+	new FooBar("DDEDirector.removeWriteBlock()", "END");
     }
 
     /** Set the completion time of all actors governed by this
@@ -390,8 +377,11 @@ public class DDEDirector extends ProcessDirector {
      * @return True if deadlocks no longer exist; return false otherwise.
      */
     protected boolean _handleDeadlock() throws IllegalActionException {
+	new FooBar("DDEDirector._handleDeadlock()", "START");
         if( _writeBlocks != 0 ) {
             // Artificial Non-timed Deadlock
+            System.out.println("Artificial deadlock!! Write blocks = " 
+                    + _writeBlocks);
             _incrementLowestCapacityPort();
         } else {
             // Real Non-timed Deadlock
@@ -470,31 +460,39 @@ public class DDEDirector extends ProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class			   ////
-
+    
     private class RcvrCapacityComparator implements Comparator {
-
-        /**
-         * @exception ClassCastException If fst and scd are
-         *  not instances of DDEReceiver.
-         */
-        public int compare(Object fst, Object scd) {
-            DDEReceiver first = null;
-            DDEReceiver second = null;
-
-            if( fst instanceof DDEReceiver ) {
-                first = (DDEReceiver)fst;
-            }
-            if( scd instanceof DDEReceiver ) {
-                second = (DDEReceiver)scd;
-            }
-
-            if( first.getCapacity() > second.getCapacity() ) {
-                return 1;
-            } else if( first.getCapacity() < second.getCapacity() ) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
+            
+       /**
+        * @exception ClassCastException If fst and scd are
+        *  not instances of DDEReceiver.
+        */
+       public int compare( Object fst, Object scd ) {
+           DDEReceiver first = null;
+           DDEReceiver second = null;
+           
+           if( fst instanceof DDEReceiver ) {
+               first = (DDEReceiver)fst;
+           }
+           if( scd instanceof DDEReceiver ) {
+               second = (DDEReceiver)scd;
+           }
+           
+           if( first.getCapacity() > second.getCapacity() ) {
+               return 1;
+           } else if( first.getCapacity() < second.getCapacity() ) {
+               return -1;
+           } else {
+               return 0;
+           }
+       }
     }
 }
+
+
+
+
+
+
+
+

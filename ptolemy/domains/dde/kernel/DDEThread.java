@@ -109,9 +109,6 @@ public class DDEThread extends ProcessThread {
 				((DDEReceiver) rcvrs[i][j]).put(null, endTime);
 			    }
 			} catch( TerminateProcessException e ) {
-			    String name = ((Nameable)actor).getName();
-			    System.out.println(name +
-                                    ":  Should have done nothing");
 			    // Do nothing since we are ending
 			}
 		    }
@@ -131,15 +128,11 @@ public class DDEThread extends ProcessThread {
 	Actor actor = getActor();
 	DDEDirector director = (DDEDirector)actor.getDirector();
 	Hashtable table = director.getInitialTimeTable();
-	String name = ((Nameable)actor).getName();
 	if( table != null ) {
-	    System.out.println(name+":  DDEDirector table is not null");
 	    Double dTime = (Double)table.get(actor);
 	    if( dTime != null ) {
 		double time = dTime.doubleValue();
-		System.out.println(name+":  DDEDirector table contains time of " + time);
 		_timeKeeper.setCurrentTime( time );
-		System.out.println(name+":  DDEThread.start() at time" + time);
 	    }
 	}
 	super.start();
@@ -153,11 +146,7 @@ public class DDEThread extends ProcessThread {
      *  thread.
      */
     public void wrapup() throws IllegalActionException {
-	System.out.println( ((Nameable)getActor()).getName() +
-                ": noticeOfTermination().");
 	noticeOfTermination();
-	System.out.println( ((Nameable)getActor()).getName() +
-                ": super.wrapup().");
 	super.wrapup();
     }
 
