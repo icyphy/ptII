@@ -132,7 +132,7 @@ of nodes: Places <i>p_i</i>, Transitions <i>t_i</i>, and PetriNetActors
 <i>PA_i</i>, i.e., <i> V = {p_i} union {t_i} union {PA_i} </i>, where
 each <i>PA_i</i> itself is again defined as a PetriNetActor. Places are
 assigned with non-negative integer markings. The default marking is 0.
-A Place is implmented by the atomic actor Place. A PetriNetActor is a
+A Place is implemented by the atomic actor Place. A PetriNetActor is a
 TypedCompositeActor contains Places, Transitions and/or PetriNetActors.
 
 <p> Each node of <i>V</i> is called a <i>component</i> of the
@@ -141,7 +141,7 @@ PetriNetActor <i>G</i>. Therefore the vertex set <i>V</i> of
 PetriNetActor <i>G</i>. The concept of <i>component</i> is a key
 difference between the basic Petri net model and the hierarchical
 Petri net model defined here. In Ptolemy term, a component is an
-element in the entiteList of the PetriNetActor. A PetriNetActor
+element in the entityList of the PetriNetActor. A PetriNetActor
 consists of components. A component can be a Place, a Transition,
 and a PetriNetActor component. A component can be enabled and fires
 if it is a Transition or it is a PetriNetActor component that contains
@@ -177,7 +177,7 @@ returns the Transition set of <i>G</i>.
 <p> A component has ports through which connections to other
 components are made. A Place or a Transition each has one input port and
 one output port, where multiple connections can be made. In our model,
-a PetriNetActor compoenent can have multiple ports.
+a PetriNetActor component can have multiple ports.
 A PetriNetActor component <i>PA_j</i> can be connected to Places <i>p_i</i>,
 Transitions <i>t_i</i>, or other PetriNetActor components <i>PA_i</i>
 through ports. A Place <i>p_i</i> can be connected to Transitions
@@ -187,12 +187,12 @@ of PetriNetActor components <i>PA_i</i>.
 
 <p> One restriction is that a port of a PetriNetActor component <i>PA_i</i>
 is either connected to Places or to Transitions, but not both.
-Another restriciton is that a Place (Transition) is not allowed to be
+Another restriction is that a Place (Transition) is not allowed to be
 connected to another Place (Transition) through ports. Though no
 verification of these two conditions is checked, any violation of these
 two conditions will be reported by appropriate methods during the execution.
 
-<p> Mutlple arcs can exist between any two components. The arcs can be
+<p> Multiple arcs can exist between any two components. The arcs can be
 marked by an nonnegative integer as their weights. Weight 1 can be
 omitted. The method _getWeightNumber(arc) obtains the weight assigned
 to the arc. If no weight is assigned, the default weight is 1.
@@ -354,8 +354,8 @@ public class PetriNetDirector extends Director {
      *  reachable from the arc. If after all arcs have been enumerated and
      *  the temporaryMarking of all input Places are greater than 0, then
      *  the Transition is ready to fire, otherwise it is not ready to fire.
-     *  The reason that we use a temporaryMarking here is to perserve
-     *  the initialMarking of the places when we test a Transition is
+     *  The reason that we use a temporaryMarking here is to keep
+     *  the initialMarking of the places unchanged when we test a Transition is
      *  ready or not.
      *
      *  @param transition Transition to be tested to be enabled or not.
@@ -609,7 +609,7 @@ public class PetriNetDirector extends Director {
      *  to fire. If the chosen component is a PetriNetActor, this
      *  method is called recursively to fire the chosen PetriNetActor
      *  component; otherwise the chosen component must be a Transition
-     *  represented by any TypedCOmpositeActor, and this method
+     *  represented by any TypedCompositeActor, and this method
      *  calls the method fireTransition() to fire the Transition.
      *
      *  @param container The container of the hierarchical Petri net.

@@ -160,7 +160,7 @@ public class PetriNetActor extends TypedCompositeActor  {
 
     /** This method fires the PetriNetActor by calling the firing method
      *  of the director. It is assumed that the top level of the hierarchy
-     *  is a PetiNetDirector.
+     *  is a PetriNetDirector.
      *  @exception IllegalActionException If director.fire() throws exception.
      *
      *
