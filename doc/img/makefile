@@ -61,6 +61,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	HTML.gif \
+	HyVisualSplash.gif \
 	PDF.gif \
 	Postscript.gif \
 	PtolemyII.jpg \
