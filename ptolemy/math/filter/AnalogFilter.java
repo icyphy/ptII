@@ -42,7 +42,7 @@ design methods were pull out of MathWizard and modified to the new filter
 architecture.
 
 
-@author David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu), Albert Chen
+@author David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu)
 @version %W%	%G%
 
 */
@@ -177,9 +177,8 @@ public abstract class AnalogFilter extends Filter {
                            aPassEdgeFreq, aStopEdgeFreq, epsilon);
         } else if (appmethod == Filter.CHEBYSHEV2) {
             epsilon = Math.sqrt(1.0/(passEdgeGain*passEdgeGain)-1);
-            
             aFilter = _designChebychev2(passEdgeGain, stopEdgeGain,
-                    aPassEdgeFreq, aStopEdgeFreq, epsilon);
+                    aPassEdgeFreq, aStopEdgeFreq,epsilon);
         }
         else { 
             System.out.println("Only Butterworth and Chebyshev approximations are supported"); 
@@ -393,21 +392,43 @@ public abstract class AnalogFilter extends Filter {
         double[] squadnum;
         double[] squadden;
         
+        double n0,n1,n2,d0,d1,d2;
         for (int i=0;i<iternum;i++){
             squadnum = theFactors[i].getNumerator();
             squadden = theFactors[i].getDenominator();
             
-            double n0 = squadnum[0];
-            double n1 = squadnum[1]*filter.analogfc;
-            double n2 = squadnum[2]*filter.analogfc*filter.analogfc;
-            
-            double d0 = squadden[0];
-            double d1 = squadden[1]*filter.analogfc;
-            double d2 = squadden[2]*filter.analogfc*filter.analogfc;
+            if (squadnum.length == 3) {
+                n0 = squadnum[2];
+                n1 = squadnum[1]*filter.analogfc;
+                n2 = squadnum[0]*filter.analogfc*filter.analogfc;
+            }
+            else if (squadnum.length == 2) {
+                n0 = squadnum[1];
+                n1 = squadnum[0]*filter.analogfc;
+                n2 = 0;
+            } else {
+                n0 = squadnum[0];
+                n1 = 0;
+                n2 = 0;
+            }
 
-            theFactors[i].setNumerator(new double[] {n2, n1, n0});
-            theFactors[i].setDenominator(new double[] {d2, d1, d0});
-            
+            if (squadden.length == 3) {
+                d0 = squadden[2];
+                d1 = squadden[1]*filter.analogfc;
+                d2 = squadden[0]*filter.analogfc*filter.analogfc;
+            }
+            else if (squadden.length == 2) {
+                d0 = squadden[1];
+                d1 = squadden[0]*filter.analogfc;
+                d2 = 0;
+            } else {
+                d0 = squadden[0];
+                d1 = 0;
+                d2 = 0;
+            }
+
+            theFactors[i].setNumerator(new double[] {n0, n1, n2});
+            theFactors[i].setDenominator(new double[] {d0, d1, d2});
         }
     }
 
@@ -439,7 +460,8 @@ public abstract class AnalogFilter extends Filter {
      *  @param filter the target of the frequency transformation.
      */
     private static void _toBandPass(RealAnalogFilter filter){ 
-
+        
+        
         // find out the number of iterations 
         int iternum = filter.getNumberOfFactors();
         
@@ -447,31 +469,59 @@ public abstract class AnalogFilter extends Filter {
         RealSFactor[] oldFactors = filter.getFactors();
         
         // new numerator/denominator 
-        RealSFactor[] newFactors = new RealSFactor[2*oldFactors.length];
+        RealSFactor[] newFactors = new RealSFactor[oldFactors.length*2];
 
+        for (int i = 0; i < newFactors.length; i++) {
+            newFactors[i] = new RealSFactor();
+        }
+        
         // coefficents for transformed numer/denom polynomials 
         double nn0, nn1, nn2, nn3, nn4;
         double nd0, nd1, nd2, nd3, nd4;
-
+        
         double fc = filter.analogFreqCenter;   // center frequency
         double wid = filter.analogFreqWidth; // ripple band width
-
+        
         double[] oldnumer;
         double[] olddenom;
-
+        double gain;
+        
         for (int ind = 0; ind < iternum; ind++){
             oldnumer = oldFactors[ind].getNumerator();
             olddenom = oldFactors[ind].getDenominator();
+            gain = oldFactors[ind].getGain();
             
-             // get old coefficients
-             double d0, n0, d1, n1, d2, n2;
-             d0 = olddenom[0]; 
-             d1 = olddenom[1]; 
-             d2 = olddenom[2]; 
-             n0 = oldnumer[0]; 
-             n1 = oldnumer[1]; 
-             n2 = oldnumer[2]; 
-
+            // get old coefficients
+            double d0, n0, d1, n1, d2, n2;
+            
+            if (olddenom.length == 3) {
+                d0 = olddenom[2];
+                d1 = olddenom[1]; 
+                d2 = olddenom[0]; 
+            } else if (olddenom.length == 2) {
+                d0 = olddenom[1];
+                d1 = olddenom[0];
+                d2 = 0;
+            } else {
+                d0 = olddenom[0];
+                d1 = 0;
+                d2 = 0;
+            }
+            
+            if (oldnumer.length == 3) {
+                n0 = oldnumer[2]*gain; 
+                n1 = oldnumer[1]*gain; 
+                n2 = oldnumer[0]*gain; 
+            } else if (oldnumer.length == 2) {
+                n0 = oldnumer[1]*gain;
+                n1 = oldnumer[0]*gain;
+                n2 = 0;
+            } else {
+                n0 = oldnumer[0]*gain;
+                n1 = 0;
+                n2 = 0;
+            }
+            
              // compute the transformed numerator coefficients
              nd0 = d2*fc*fc*fc*fc;
              nd1 = fc*fc*wid*d1;
@@ -487,8 +537,8 @@ public abstract class AnalogFilter extends Filter {
              nn4 = n2;
 
              // form in arrays of coeffients used by factoring function
-             double pnumer [] = {nn0,nn1,nn2,nn3,nn4};
-             double pdenom [] = {nd0,nd1,nd2,nd3,nd4};
+             double pnumer [] = {nn4,nn3,nn2,nn1,nn0};
+             double pdenom [] = {nd4,nd3,nd2,nd1,nd0};
              double quad1 [] = new double[3]; 
              double quad2 [] = new double[3]; 
 
@@ -497,31 +547,31 @@ public abstract class AnalogFilter extends Filter {
 
              // Store the first quadratic in numerator array 
              newFactors[ind].setNumerator(quad1);
-
+             
              // Store the second quadratic in numerator array 
              newFactors[ind+iternum].setNumerator(quad2);
-
+             
              // factor the denominator into two quadratic polynomial
              MathWizard.factor2quadratic(pdenom, quad1, quad2);
 
              // Store the first quadratic in denominator array 
              newFactors[ind].setDenominator(quad1);
-
+             
              // Store the second quadratic in denominator array 
              newFactors[ind+iternum].setDenominator(quad2);
              
-             // delete the old factors
-             filter.clearFactors();
-             
-             // put the new factors into the filter
-             for (int i = 0; i < newFactors.length; i++) {
-                 filter.addFactor(newFactors[i]);
-             }
         }
-
+        
+        // delete the old factors
+        filter.clearFactors();
+             
+        // put the new factors into the filter
+        for (int i = 0; i < newFactors.length; i++) {
+            filter.addFactor(newFactors[i]);
+        }
+        
         // double the order, since there are two edges
         filter.order = filter.order*2;      
-
     }
 
      /**
@@ -561,6 +611,10 @@ public abstract class AnalogFilter extends Filter {
 
         // new numerator/denominator 
         RealSFactor[] newFactors = new RealSFactor[2*oldFactors.length];
+        
+        for (int i = 0; i < newFactors.length; i++) {
+            newFactors[i] = new RealSFactor();
+        }
 
         double nn0, nn1, nn2, nn3, nn4;
         double nd0, nd1, nd2, nd3, nd4;
@@ -570,67 +624,90 @@ public abstract class AnalogFilter extends Filter {
 
         double[] oldnumer;
         double[] olddenom;
-
+        double gain;
+        
         for (int i=0;i<iternum;i++){
             oldnumer = oldFactors[i].getNumerator();
             olddenom = oldFactors[i].getDenominator();
+            gain = oldFactors[i].getGain();
             
-             // get old coefficients
-             double d0, n0, d1, n1, d2, n2;
-             d0 = olddenom[0]; 
-             d1 = olddenom[1]; 
-             d2 = olddenom[2]; 
-             n0 = oldnumer[0]; 
-             n1 = oldnumer[1]; 
-             n2 = oldnumer[2]; 
+            // get old coefficients
+            double d0, n0, d1, n1, d2, n2;
+            if (olddenom.length == 3) {
+                d0 = olddenom[2]; 
+                d1 = olddenom[1]; 
+                d2 = olddenom[0]; 
+            } else if (olddenom.length == 2) {
+                d0 = olddenom[1];
+                d1 = olddenom[0];
+                d2 = 0;
+            } else {
+                d0 = olddenom[0];
+                d1 = 0;
+                d2 = 0;
+            }
 
-             // compute the new numerator polynomial coefficients
-             nd0 = d0*fc*fc*fc*fc;
-             nd1 = fc*fc*wid*d1;
-             nd2 = 2*d0*fc*fc+d2*wid*wid;
-             nd3 = d1*wid;
-             nd4 = d0;
+            if (oldnumer.length == 3) {
+                n0 = oldnumer[2]*gain; 
+                n1 = oldnumer[1]*gain; 
+                n2 = oldnumer[0]*gain; 
+            } else if (oldnumer.length == 2) {
+                n0 = oldnumer[1]*gain;
+                n1 = oldnumer[0]*gain;
+                n2 = 0;
+            } else {
+                n0 = oldnumer[0]*gain;
+                n1 = 0;
+                n2 = 0;
+            }
+           
+            // compute the new numerator polynomial coefficients
+            nd0 = d0*fc*fc*fc*fc;
+            nd1 = fc*fc*wid*d1;
+            nd2 = 2*d0*fc*fc+d2*wid*wid;
+            nd3 = d1*wid;
+            nd4 = d0;
              
-             // compute the new denominator polynomial coefficients
-             nn0 = n0*fc*fc*fc*fc;
-             nn1 = fc*fc*wid*n1;
-             nn2 = 2*n0*fc*fc+n2*wid*wid;
-             nn3 = n1*wid;
-             nn4 = n0;
+            // compute the new denominator polynomial coefficients
+            nn0 = n0*fc*fc*fc*fc;
+            nn1 = fc*fc*wid*n1;
+            nn2 = 2*n0*fc*fc+n2*wid*wid;
+            nn3 = n1*wid;
+            nn4 = n0;
 
-             // form in arrays of coeffients used by factoring function
-             double pnumer [] = {nn0,nn1,nn2,nn3,nn4};
-             double pdenom [] = {nd0,nd1,nd2,nd3,nd4};
-             double quad1 [] = new double[3];
-             double quad2 [] = new double[3];
+            // form in arrays of coeffients used by factoring function
+            double pnumer [] = {nn4,nn3,nn2,nn1,nn0};
+            double pdenom [] = {nd4,nd3,nd2,nd1,nd0};
+            double quad1 [] = new double[3];
+            double quad2 [] = new double[3];
+            
+            // factor the numerator into two quadratic polynomial
+            MathWizard.factor2quadratic(pnumer, quad1, quad2);
  
-             // factor the numerator into two quadratic polynomial
-             MathWizard.factor2quadratic(pnumer, quad1, quad2);
+            // Store the first quadratic in numerator array
+            newFactors[i].setNumerator(quad1);
  
-             // Store the first quadratic in numerator array
-             newFactors[i].setNumerator(quad1);
+            // Store the second quadratic in numerator array
+            newFactors[i+iternum].setNumerator(quad2);
  
-             // Store the second quadratic in numerator array
-             newFactors[i+iternum].setNumerator(quad2);
+            // factor the denominator into two quadratic polynomial
+            MathWizard.factor2quadratic(pdenom, quad1, quad2);
  
-             // factor the denominator into two quadratic polynomial
-             MathWizard.factor2quadratic(pdenom, quad1, quad2);
+            // Store the first quadratic in denominator array
+            newFactors[i].setDenominator(quad1);
  
-             // Store the first quadratic in denominator array
-             newFactors[i].setDenominator(quad1);
- 
-             // Store the second quadratic in denominator array
-             newFactors[i+iternum].setDenominator(quad2);
-             
-             // clear the old factors
-             filter.clearFactors();
-             
-             // put the new factors into the filter
-             for(int j = 0; j < newFactors.length; j++) {
-                 filter.addFactor(newFactors[i]);
-             }
+            // Store the second quadratic in denominator array
+            newFactors[i+iternum].setDenominator(quad2);
         }
-
+        
+        // clear the old factors
+        filter.clearFactors();
+             
+        // put the new factors into the filter
+        for(int j = 0; j < newFactors.length; j++) {
+            filter.addFactor(newFactors[j]);
+        }
+        
         // double the order, since there are two edges
         filter.order = filter.order*2;      
     }
@@ -688,7 +765,8 @@ public abstract class AnalogFilter extends Filter {
 
           // round the order to the nearest int
           int order = (int) Math.round(o);
-          if (order%2!=0) order++;
+          // if (order%2!=0) order++;
+          
           designedFilter.order = order;
 
           // offset is the angluar difference from PI for each pair 
@@ -749,8 +827,9 @@ public abstract class AnalogFilter extends Filter {
                   newFactors[ind].setDenominator(denomcoeff);     
               } else {
                   // conjugate pair of complex poles form zeroes for this term
-                  double [] denomcoeff = { 1.0, (-2)*(pole.real), pole.mag()};
-                  System.out.println("denominator: "+ pole.mag()+" "+(-2)*(pole.real)+" 1.0");
+                  double [] denomcoeff = 
+                     { 1.0, (-2)*(pole.real), pole.magSquared()};
+                  System.out.println("denominator: "+ pole.magSquared()+" "+(-2)*(pole.real)+" 1.0");
                   newFactors[ind].setDenominator(denomcoeff);     
               }
            
@@ -802,253 +881,149 @@ public abstract class AnalogFilter extends Filter {
      * @param epsilon ripple amplitude 
      */
 
-    private static RealAnalogFilter _designChebychev1a(
-            double passg, double stopg, 
-            double passef, double stopef, 
-            double epsilon){
-
-        RealAnalogFilter designedFilter = new RealAnalogFilter();
-        System.out.println("********** inside chebyshev prototype ");
-        // using the two points formed by (passb, passg) and (stopb, stopg) 
-        // to determine the order of the prototype.
-        double num = Math.sqrt( (1/stopg)*(1/stopg) 
-                     - Math.sqrt(1/((1/passg)*(1/passg)-1)) );
-
-        System.out.println("got numerator " + num);
-        if (num < 1) System.out.println("Problem with num, less than one "+num);
-        num = Math.log(num + Math.sqrt(num*num-1));
-        System.out.println("Chebyshev stopef " + stopef+ " passef "+passef);
-        double den = stopef/passef;
-        System.out.println("den " + den);
-        den = Math.log(den + Math.sqrt(den*den-1));
-        System.out.println("got denom " + den);
-
-        double ord = num/den;
-
-        int order = (int)Math.round(ord);
-        System.out.println("got chebyshev order: "+order);      
-        // coefficients of quadratic equation
-        double [] coeff;
-
-        // even order only for now
-        if (order%2!=0){         
-              order++;
-        } 
-        designedFilter.order = order;
-
-        // number of quadratic term
-        int quadterm = order/2;             
-
-        // allocate the space for quadratic terms
-        RealSFactor[] newFactors = new RealSFactor[quadterm];
-        for (int i = 0; i < newFactors.length; i++) {
-            newFactors[i] = new RealSFactor();
-        }
-
-        System.out.println("after allocation of numerator/denominator spaces");
-        // now found the poles location using procedure illustrated 
-        // in P.259 - 262
-        // "Digital Filters" by R.W. Hamming        
-        double beta = ExtendedMath.asinh(1/epsilon);
-        double factor = Math.sqrt(1.0/(1.0+epsilon*epsilon));
-
-        int termnum = 0;
-        double [] numercoeff = { 1.0, 0.0, 0.0 }; 
-        for (int i=0; i < 2*order; i++) {
-            Complex pole = new Complex(-Math.sin(Math.PI*(2*i+1)/(2*order))
-                                       *ExtendedMath.sinh(beta/order), 
-                                       Math.cos(Math.PI*(2*i+1)/(2*order))
-                                       *ExtendedMath.cosh(beta/order));
-
-            System.out.println("in the for loop: " + pole.real+ " "+pole.imag);
-            // only want poles in left half plane for stable filter
-            // poles come in conjugate pairs, so arbitrarily chose 
-            // poles in upper half plane
-            if ((pole.real < 0) && (pole.imag > 0)) {
-                factor *= pole.mag();
-                System.out.println("get a right pole:, "+termnum+" order "+order);
-
-                newFactors[termnum].setNumerator(numercoeff);
-
-                double [] denomcoeff = {pole.mag(), -2*pole.real, 1.0};
-                newFactors[termnum].setDenominator(denomcoeff);
-
-                // increment the number of quad term
-                termnum++;
-            }
-        }
-
-
-        // The filter is not yet normalized, in other words, 
-        // for freq=0, the gain!=1.  We must normalize it by multiply
-        // the first quadratic denominator by 1/factor
-        double[] coef = newFactors[0].getDenominator();
-        for (int i = 0; i < 3; i++) {
-            coef[i] = coef[i]/factor;
-        }
-        newFactors[0].setDenominator(coef); 
-        
-        designedFilter.clearFactors();
-        for (int i = 0; i < newFactors.length; i++) {
-            designedFilter.addFactor(newFactors[i]);
-        }
-
-        // calculate the cut off frequency
-        num = ExtendedMath.cosh(ExtendedMath.acosh(1/epsilon)/order );
-        den = (stopef + passef)/2;
-        designedFilter.analogfc = den/num;
-        return designedFilter;
-    }
-    
-      /** Digital Filters and Signal Processing, Third Edition, by Leland B. 
+     /** Digital Filters and Signal Processing, Third Edition, by Leland B. 
         Jackson
         */
+    
     private static RealAnalogFilter _designChebychev1(
-            double cutoffGain, double stopbandRippleGain, double cutoffFreq, 
-            double stopbandRippleFreq, 
+            double cutoffGain, double stopGain, double cutoffFreq, 
+            double stopFreq, 
             double epsilon) {
-        double order = ExtendedMath.acosh(1/((stopbandRippleGain*epsilon))/
-            ExtendedMath.acosh(stopbandRippleFreq/cutoffFreq));
-        order=(int)order;
-        System.out.println("order = " + order);
-        double gamma = Math.pow((1 + Math.sqrt(1 -
-                Math.pow(epsilon, 2)))/
-                epsilon, 1/order);
+
+        double order = ExtendedMath.acosh(1/(stopGain*epsilon))/
+            ExtendedMath.acosh(stopFreq/cutoffFreq);
+        order = Math.ceil(order);
+        double gamma = Math.pow(((1+Math.sqrt(1+Math.pow(epsilon,2)))/
+                epsilon),1/order);
         double sinhPhi = (gamma - Math.pow(gamma, -1))/2;
         double coshPhi = (gamma + Math.pow(gamma, -1))/2;
         
         RealAnalogFilter designedFilter = new RealAnalogFilter();
         designedFilter.order = (int)order;
-
-        double mu;
-        double sigma;
-        double omega;
-        double[] numer;
-        double[] denom;
-        designedFilter.clearFactors();
-        int N = (int)Math.ceil((double)order/2);
-        System.out.println("N = " + N);
-        System.out.println("remainder = " + Math.IEEEremainder(N,2));
-        
-        for (int i = 1; i <= (N - (int)Math.IEEEremainder(N, 2)); i++) {
-            mu = (2*i-1)*Math.PI/(2*order);
-            sigma = -(sinhPhi*Math.sin(mu))*cutoffFreq;
-            omega = (coshPhi*Math.cos(mu))*cutoffFreq;
-            designedFilter.addPoleZero(new Complex(sigma,omega), 
-                    new Complex(Double.POSITIVE_INFINITY), true);
-        }
-        
-        if ((int)Math.IEEEremainder(N,2) != 0) {
-            mu = (2*N-1)*Math.PI/(2*order);
-            sigma = -(sinhPhi*Math.sin(mu))*cutoffFreq;
-            designedFilter.addPoleZero(new Complex(sigma,0), 
-                    new Complex(Double.POSITIVE_INFINITY), false);
-        }
-        
         designedFilter.analogfc = cutoffFreq;
         
-        System.out.println("right after design Cheby1");
-        RealSFactor[] factors = designedFilter.getFactors();
-        double[] numerator;
-        double[] denominator;
-        for (int i = 0; i < designedFilter.getNumberOfFactors(); i++) {
-            numerator = factors[i].getNumerator();
-            denominator = factors[i].getDenominator();
-            System.out.println("factor " + i);
-            for (int j = 0; j < numerator.length; j++) {
-                System.out.println("numerator = " + 
-                        numerator[j]);
-            }
-            for (int k = 0; k < numerator.length; k++) {
-                System.out.println("denominator = " + denominator[k]);
-            }
-        }
-        Complex[] poles = designedFilter.getPoles();
-            Complex[] zeroes = designedFilter.getZeroes();
-            for (int i = 0; i<poles.length; i++){
-                System.out.println(
-                        "poles are = " + poles[i].real+" and "+poles[i].imag);
-            }
-            for (int i = 0; i<zeroes.length; i++){
-                System.out.println(
-                        "zeroes are = " + zeroes[i].real+" and "+zeroes[i].imag);
-            }
-             
-        return designedFilter;
-    }
-
-    /** Digital Filters and Signal Processing, Third Edition, by Leland B. 
-        Jackson
-        */
-    private static RealAnalogFilter _designChebychev2(
-            double cutoffGain, double stopbandRippleGain, double cutoffFreq, 
-            double stopbandRippleFreq, 
-            double epsilon) {
-        double order = ExtendedMath.acosh(1/((stopbandRippleGain*epsilon))/
-            ExtendedMath.acosh(stopbandRippleFreq/cutoffFreq));
-        order=(int)order;
-        System.out.println("order = " + order);
-        double gamma = Math.pow((1 + Math.sqrt(1 -
-                Math.pow(stopbandRippleGain, 2)))/
-                stopbandRippleGain, 1/order);
-        double sinhPhi = (gamma - Math.pow(gamma, -1))/2;
-        double coshPhi = (gamma + Math.pow(gamma, -1))/2;
-        
-        RealAnalogFilter designedFilter = new RealAnalogFilter();
-        designedFilter.order = (int)order;
-
         double mu;
         double sigma;
         double omega;
         double alpha;
         double beta;
-        double[] numer;
-        double[] denom;
         designedFilter.clearFactors();
-        int N = (int)Math.ceil((double)order/2);
-        System.out.println("N = " + N);
-                
-        for (int i = 1; i <= (N - (int)Math.IEEEremainder(N, 2)); i++) {
-            mu = (2*i-1)*Math.PI/(2*order);
-            sigma = -(sinhPhi*Math.sin(mu))*cutoffFreq;
-            omega = (coshPhi*Math.cos(mu))*cutoffFreq;
-            alpha = (cutoffFreq*stopbandRippleFreq*sigma)/
-                (sigma*sigma + omega*omega);
-            System.out.println("alpha = " + alpha);
-            beta = -(cutoffFreq*stopbandRippleFreq*omega)/
-                (sigma*sigma + omega*omega);
-            System.out.println("beta = " + beta);
-            designedFilter.addPoleZero(new Complex(alpha,beta), 
-                    new Complex(0,(stopbandRippleFreq/Math.cos(mu))), true);
-            System.out.println(stopbandRippleFreq/Math.cos(mu));
-        }
+        int N = (int)Math.ceil(order/2);
+        double factor = 1;
+        double normalizer = Math.sqrt(1.0/(1.0+epsilon*epsilon));
+        boolean odd = false;
         
-        if ((int)Math.IEEEremainder(N,2) != 0) {
+        double scale = cutoffFreq*stopFreq;
+        double reverse = stopFreq/cutoffFreq;
+        
+        if (order%2 != 0) {
             mu = (2*N-1)*Math.PI/(2*order);
-            sigma = -(sinhPhi*Math.sin(mu))*cutoffFreq;
-            omega = (coshPhi*Math.cos(mu))*cutoffFreq;
-            alpha = (cutoffFreq*stopbandRippleFreq*sigma)/
-                (sigma*sigma + omega*omega);
-            System.out.println("alpha = " + alpha);
-            designedFilter.addPoleZero(new Complex(alpha,0), 
-                    new Complex(Double.POSITIVE_INFINITY), false);
+            sigma = -(sinhPhi*Math.sin(mu));
+            omega = (coshPhi*Math.cos(mu));
+            Complex pole = new Complex(sigma, 0);
+            Complex zero = new Complex(Double.POSITIVE_INFINITY);
+            
+            factor = pole.mag();
+            designedFilter.addPoleZero(pole, zero, factor, false);
+            odd = true;
         }
         
-        designedFilter.analogfc = cutoffFreq;
-
-        Complex[] poles = designedFilter.getPoles();
-        Complex[] zeroes = designedFilter.getZeroes();
-        for (int i = 0; i<poles.length; i++){
-            System.out.println(
-                    "poles are = " + poles[i].real+" and "+poles[i].imag);
+        if (N > 0 && odd) {
+            N = N - 1;
         }
-        for (int i = 0; i<zeroes.length; i++){
-            System.out.println(
-                    "zeroes are = " + zeroes[i].real+" and "+zeroes[i].imag);
+        
+        if (N >= 1) {
+            for (int i = 1; i <= N; i++) {
+                mu = (2*i-1)*Math.PI/(2*order);
+                sigma = -(sinhPhi*Math.sin(mu));
+                omega = (coshPhi*Math.cos(mu));
+                Complex pole = new Complex(sigma,omega);
+                Complex zero = new Complex(Double.POSITIVE_INFINITY);
+                
+                factor = pole.magSquared();
+                designedFilter.addPoleZero(pole, zero, factor, true);
+            }
         }
+        
+        if (odd == false ) {
+            designedFilter.addFactor(new RealSFactor(new double[] {0,0,1},
+            new double[] {0,0,1}, normalizer));
+        } else {
+            designedFilter.addFactor(new RealSFactor(new double[] {0,0,1},
+            new double[] {0,0,1}, -1));
+        }
+        
         return designedFilter;
     }
+   
+
+    /** Digital Filters and Signal Processing, Third Edition, by Leland B. 
+        Jackson
+        */
     
+    private static RealAnalogFilter _designChebychev2(
+            double cutoffGain, double stopGain, double cutoffFreq, 
+            double stopFreq, 
+            double epsilon) {
+        
+        double order = ExtendedMath.acosh(1/(stopGain*epsilon))/
+            ExtendedMath.acosh(stopFreq/cutoffFreq);
+        double lambda = 1/stopGain;
+        order = Math.ceil(order);
+        double gamma = Math.pow((lambda+Math.sqrt(Math.pow(lambda,2)-1)),
+                1/order);
+        double sinhPhi = (gamma - Math.pow(gamma, -1))/2;
+        double coshPhi = (gamma + Math.pow(gamma, -1))/2;
+        
+        RealAnalogFilter designedFilter = new RealAnalogFilter();
+        designedFilter.order = (int)order;
+        designedFilter.analogfc = stopFreq;
+        
+        double mu;
+        double sigma=1;
+        double omega=1;
+        double alpha;
+        double beta;
+        designedFilter.clearFactors();
+        int N = (int)Math.ceil(order/2);
+        double factor;
+        boolean odd = false;
+        
+        if (order%2 != 0) {
+            mu = (2*N-1)*Math.PI/(2*order);
+            sigma = -(sinhPhi*Math.sin(mu));
+            omega = (coshPhi*Math.cos(mu));
+            alpha = (sigma)/(sigma*sigma+omega*omega);
+            Complex pole = new Complex(alpha, 0);
+            Complex zero = new Complex(Double.POSITIVE_INFINITY);
+            
+            factor = pole.mag();
+            designedFilter.addPoleZero(pole, zero, factor, false);
+            odd = true;
+        }
+        
+        if (N > 0 && odd) {
+            N = N - 1;
+        }
+        
+        if (N >= 1) {
+            for (int i = 1; i <= N; i++) {
+                mu = (2*i-1)*Math.PI/(2*order);
+                sigma = -(sinhPhi*Math.sin(mu));
+                omega = (coshPhi*Math.cos(mu));
+                alpha = (sigma)/(sigma*sigma+omega*omega);
+                beta = -(omega)/(sigma*sigma+omega*omega);
+                Complex pole = new Complex(alpha, beta);
+                Complex zero = new Complex(0, 1/Math.cos(mu));
+                
+                factor = pole.magSquared()/zero.magSquared();
+                designedFilter.addPoleZero(pole, zero, factor, true);
+            }
+        }
+        
+        return designedFilter;
+    }
+   
         
     /**
      * Does a prewarp that transforms the digital frequencie to 
