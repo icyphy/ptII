@@ -22,7 +22,8 @@
 	</entity>
 	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
 	</entity>
-	
+	<entity name="JAICrop" class="ptolemy.actor.lib.jai.JAICrop">
+	</entity>	
 	<entity name="JAIDataCaster" class="ptolemy.actor.lib.jai.JAIDataCaster">
 	  <property name="dataFormat">
 	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">

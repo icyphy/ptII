@@ -140,7 +140,7 @@ public class JAIRotate extends Transformer {
         } else if (attribute == xOrigin) {
             _xOrigin = ((IntToken)xOrigin.getToken()).intValue();
         } else if (attribute == yOrigin) {
-            _xOrigin = ((IntToken)yOrigin.getToken()).intValue();
+            _yOrigin = ((IntToken)yOrigin.getToken()).intValue();
         } else if (attribute == degrees) {
             _degrees = ((DoubleToken)degrees.getToken()).doubleValue();
         } else {

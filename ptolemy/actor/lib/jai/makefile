@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = JAIAffineTransform.java \
 	JAIBMPWriter.java \
+	JAICrop.java \
 	JAIDataCaster.java \
 	JAIDCT.java \
 	JAIDFT.java \
