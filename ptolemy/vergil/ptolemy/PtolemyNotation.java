@@ -38,7 +38,6 @@ import diva.graph.*;
 import diva.graph.model.*;
 import ptolemy.vergil.graph.*;
 
-
 /**
  * A visual notation that creates views for a ptolemy document in Vergil.
  *
@@ -50,22 +49,25 @@ public class PtolemyNotation extends Attribute implements VisualNotation {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct a graph document that is owned by the given
-     *  application
+    /** Construct a view on the given document.
      */
     public GraphPane createView(Document d) {
-	if(!(d instanceof PtolemyDocument)) {
-	    throw new InternalErrorException("Ptolemy Notation is only " +
-		"compatible with Ptolemy documents.");
-	}
+	if(d instanceof PtolemyDocument) {
+	    return createView((PtolemyDocument) d);
+	} 
+	throw new InternalErrorException("Ptolemy Notation is only " +
+					 "compatible with Ptolemy documents.");
+    }
 
+    /** Construct a view on the given ptolemy document.
+     */
+    public GraphPane createView(PtolemyDocument d) {
 	// These two things control the view of a ptolemy model.
 	GraphController controller = new EditorGraphController();
 	GraphImpl impl = new VergilGraphImpl();
 
 	GraphPane pane = new GraphPane(controller, impl);
-	CompositeEntity entity =
-	    (CompositeEntity) ((PtolemyDocument)d).getModel();
+	CompositeEntity entity = (CompositeEntity) d.getModel();
 	Graph graph = impl.createGraph(entity);
 	controller.setGraph(graph);
 	return pane;

@@ -7,6 +7,7 @@ If an executed model refs other files, then those files should be relative
 	to the model, not to the cwd of the editor.
 In TimedSource, attributeChanged triggers a fireAt().  What happens if 
 	an attribute changes before fireAt can be called?
+Exception reporting window doesn't grow vertically.
 
 TODO:
 Snap to Grid.
@@ -20,7 +21,7 @@ Instantiation by name.
 Multiple vertexes per Relation.
 Changes to ptolemy model should be mutations and a changeListener should
 set the dirty flag on the document.
-
+Manager creation needs to get handled in one place.
 
 DONE:
 Direct connections from Ports to Ports.

@@ -112,28 +112,32 @@ public class CompaanNotation extends Attribute implements VisualNotation {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct a graph document that is owned by the given
-     *  application
+    /** Construct a view on the given document.  
      */
     public GraphPane createView(Document d) {
-	if(!(d instanceof PtolemyDocument)) {
-	    throw new InternalErrorException("Ptolemy Notation is only " +
+	if(d instanceof PtolemyDocument) {
+	    return createView((PtolemyDocument) d);
+	} 
+	throw new InternalErrorException("Ptolemy Notation is only " +
                     "compatible with Ptolemy documents.");
-	}
+    }
 
+    /** Construct a view on the given document.
+     */
+    public GraphPane createView(PtolemyDocument d) {
+	
 	// These two things control the view of a ptolemy model.
 	EditorGraphController controller = new EditorGraphController();
 	controller.getEntityController().setNodeRenderer(
                 new CompaanEntityRenderer());        
 
 	//controller.getLinkController().setEdgeRenderer(new CompaanLinkRenderer());        
-        // Basically, make sure all Node references shoudl become link.
+        // Basically, make sure all Node references should become links.
 
 	GraphImpl impl = new VergilGraphImpl();
 
 	GraphPane pane = new GraphPane(controller, impl);
-	CompositeActor entity = 
-	    (CompositeActor) ((PtolemyDocument)d).getModel();
+	CompositeActor entity = (CompositeActor) d.getModel();
         Manager manager = entity.getManager();
         if(manager == null) {
             try {

@@ -109,8 +109,7 @@ public class PtolemyDocument extends AbstractDocument
      */
     public void copy (Clipboard c) {
 	System.out.println("copy");
-	VergilApplication app = (VergilApplication)getApplication();
-	JGraph jgraph = (JGraph)app.getView(this);
+	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
@@ -154,8 +153,7 @@ public class PtolemyDocument extends AbstractDocument
     public void cut (Clipboard c) {
 	System.out.println("cut");
 	/*
-	VergilApplication app = (VergilApplication)getApplication();
-	JGraph jgraph = (JGraph)app.getView(this);
+	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
@@ -165,7 +163,9 @@ public class PtolemyDocument extends AbstractDocument
 	*/
     }
 
-    /** Construct a view on this document.  In this class, return a 
+    /** Construct a view on this document.  In this class, return an instance
+     *  of JGraph that represents the document.   Future calls to getView() 
+     *  will return the same view until createView is called again.
      */
     public JComponent createView() {
 	//JPanel view = new JPanel();
@@ -195,7 +195,7 @@ public class PtolemyDocument extends AbstractDocument
 	jgraph.setAlignmentX(1);
 	jgraph.setAlignmentY(1);
 	jgraph.setBackground(PtolemyModule.BACKGROUND_COLOR);
-	jgraph.setToolTipText("jgraph");
+	_view = jgraph;
 	return jgraph;
     }
 
@@ -206,9 +206,17 @@ public class PtolemyDocument extends AbstractDocument
 	return _model;
     }
 
+    /** Return the current view on this document.  This is updated every time
+     *  a new view is created.
+     */
+    public JGraph getView() {
+	return _view;
+    }
+
     /** Do nothing.
      */
-    public void lostOwnership(Clipboard clipboard, Transferable transferable) {
+    public void lostOwnership(Clipboard clipboard, 
+			      Transferable transferable) {
     }
 
     /** Open the document from its current file.
@@ -238,7 +246,7 @@ public class PtolemyDocument extends AbstractDocument
     public void paste (Clipboard c) {
 	System.out.println("paste");
 	Transferable transferable = c.getContents(this);
-	JGraph jgraph = (JGraph)VergilApplication.getInstance().getView(this);
+	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
@@ -257,6 +265,9 @@ public class PtolemyDocument extends AbstractDocument
 			ComponentEntity clone = 
 			    (ComponentEntity)object.clone();
 			System.out.println("clone = " + clone);
+			// FIXME the names that this creates are ugly.
+			String name = _model.uniqueName(object.getName());
+			clone.setName(name);
 			clone.setContainer(_model);
 			Icon icon = (Icon)clone.getAttribute("_icon");
 			Node node = impl.createCompositeNode(icon);
@@ -307,7 +318,7 @@ public class PtolemyDocument extends AbstractDocument
      */
     public int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
-        JGraph graph = (JGraph) ((VergilApplication)getApplication()).getView(this);
+        JGraph graph = getView();
         if(graph != null) {
             return graph.print(graphics, format, index);
         }
@@ -450,6 +461,9 @@ public class PtolemyDocument extends AbstractDocument
 
     // The document's model.
     private CompositeEntity _model;
+    
+    // The document's view.
+    private JGraph _view;
 
     // Return a visual notation that can create a view on this document.
     // In this class, we search the toplevel entity in the model for a

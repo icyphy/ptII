@@ -45,4 +45,5 @@ public interface VergilDocument extends Document {
     /** Create a view on this document.
      */
     public JComponent createView();
+
 }
