@@ -56,17 +56,17 @@ public class PrintThreads {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Get the root ThreadGroup of the Java Virtual Machine. This
-    * method assumes that the current Thread is a member of a ThreadGroup
-    * which is a descendant of the root ThreadGroup. 
-    */
+    /** Get the root ThreadGroup of the Java Virtual Machine. This
+     * method assumes that the current Thread is a member of a ThreadGroup
+     * which is a descendant of the root ThreadGroup. 
+     */
     public static ThreadGroup rootThreadGroup() {
 	ThreadGroup parent, rootGroup;
 
 	parent = Thread.currentThread().getThreadGroup();
 	do {
-          rootGroup = parent;
-          parent = parent.getParent();
+            rootGroup = parent;
+            parent = parent.getParent();
         } while (parent != null);
 
 	return rootGroup;
@@ -79,7 +79,7 @@ public class PrintThreads {
 	ThreadGroup rootGroup = rootThreadGroup();
 
 	System.out.println("ThreadGroups: "
-			   + (rootGroup.activeGroupCount() + 1));
+                + (rootGroup.activeGroupCount() + 1));
 
 	System.out.println(rootGroup.toString());
 	ThreadGroup threadGroups[]
@@ -110,11 +110,11 @@ public class PrintThreads {
 	String lineSeparator = _getLineSeparator();
 	String results =
 	    new String("Threads: " + rootGroup.activeCount() + lineSeparator
-		       + "Current Thread (*) "
-		       + (SwingUtilities.isEventDispatchThread() ?
-			  "_is_" : "_is not_")
-		       + " the Swing Event Dispatch Thread" + lineSeparator
-		       + _getHeader() + lineSeparator);
+                    + "Current Thread (*) "
+                    + (SwingUtilities.isEventDispatchThread() ?
+                            "_is_" : "_is not_")
+                    + " the Swing Event Dispatch Thread" + lineSeparator
+                    + _getHeader() + lineSeparator);
 
         Thread threads[]= new Thread[rootGroup.activeCount()];
         rootGroup.enumerate(threads);
@@ -124,7 +124,7 @@ public class PrintThreads {
 	    results += toThreadDescription(thread) + lineSeparator;
 	}
 	return results;
-      }
+    }
 
     /* Return a user friendly description of the thread.
      * We could use Thread.toString(), but that is hard to read.
@@ -137,22 +137,22 @@ public class PrintThreads {
 
 	    String group;
 	    if ((thread.getThreadGroup() == null)
-		|| (thread.getThreadGroup().getName() == null))
+                    || (thread.getThreadGroup().getName() == null))
 		group = "unknown group";
 	    else
 		group = thread.getThreadGroup().getName();
 
 	    return _stringFormat(name, 35) + " "
 		+ _stringFormat(group, 20) + " "  
-		+ _stringFormat(Integer.toString(thread.getPriority()), 3) 
-		+ " "
-		+ _stringFormat(new Boolean(thread.isDaemon()).toString(), 6)
-		+ " "
-		+ _stringFormat(new Boolean(thread.isAlive()).toString(), 5)
-		+ (Thread.currentThread().equals(thread) ? " *": "  ");
+                    + _stringFormat(Integer.toString(thread.getPriority()), 3) 
+                        + " "
+                        + _stringFormat(new Boolean(thread.isDaemon()).toString(), 6)
+                            + " "
+                            + _stringFormat(new Boolean(thread.isAlive()).toString(), 5)
+                                + (Thread.currentThread().equals(thread) ? " *": "  ");
 	} catch (Exception e) {
 	    return _stringFormat("unknown thread with bad state" + e,
-			     _getHeader().length() );
+                    _getHeader().length() );
 	}
     }
 
