@@ -54,7 +54,7 @@ the value to be plotted is not as important as the time axis values.
 
 */
 
-public class TimeAdvance extends TypedAtomicActor {
+public class TimeAdvance extends DDEActor {
 
     /** Construct a TimeAdvance actor with the specified container
      *  and name.
@@ -103,6 +103,11 @@ public class TimeAdvance extends TypedAtomicActor {
 	if( inRcvrs.length == 0 ) {
 	    _continueIterations = false;
 	}
+
+	getNextToken();
+	output.broadcast(token);
+
+	/*
 	for( int i = 0; i < inRcvrs.length; i++ ) {
 	    for( int j = 0; j < inRcvrs[i].length; j++ ) {
 		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
@@ -123,6 +128,7 @@ public class TimeAdvance extends TypedAtomicActor {
 		}
 	    }
 	}
+	*/
     }
 
     /** Return true if this actor will allow subsequent iterations to
