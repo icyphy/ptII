@@ -78,6 +78,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'CompaanNotation$$1.class' \
+	'CompaanNotation$$CompaanEdgeRenderer.class' \
 	'CompaanNotation$$CompaanEntityRenderer.class' \
 	'CompaanNotation$$CompaanListener.class' \
 	'DirectorService$$1.class' \
@@ -86,17 +87,21 @@ OPTIONAL_FILES = \
 	'Ptolemy.properties PtolemyDocument$$FSMFactory.class' \
 	'PtolemyDocument$$Factory.class' \
 	'PtolemyDocument$$IsDirtyListener.class' \
+	'PtolemyGraphView$$PtolemyLayout.class' \
+	'PtolemyGraphView$$PtolemyLayoutTarget.class' \
 	'PtolemyModule$$1.class' \
 	'PtolemyModule$$2.class' \
 	'PtolemyModule$$3.class' \
 	'PtolemyModule$$4.class' \
 	'PtolemyModule$$5.class' \
+	'PtolemyModule$$LayoutAction.class' \
 	'PtolemyModule$$PaletteInitializer.class' \
 	'PtolemyModule$$PtolemyLayout.class' \
 	'PtolemyModule$$PtolemyLayoutTarget.class' \
 	'PtolemyModule$$VergilExecutionListener.class' \
 	'PtolemyModule$$editIconAction.class' \
 	'PtolemyModule$$executeSystemAction.class' \
+	'PtolemyModule$$getDocumentationAction.class' \
 	'PtolemyModule$$layoutAction.class' \
 	'PtolemyModule$$lookInsideAction.class' \
 	'PtolemyModule$$newPortAction.class' \

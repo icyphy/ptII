@@ -72,17 +72,24 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'AbstractPtolemyGraphModel$$GraphChangeListener.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$DTListener.class' \
 	'EditorGraphController$$ConnectedVertexCreator.class' \
 	'EditorGraphController$$LinkCreator.class' \
 	'EditorGraphController$$PortCreator.class' \
 	'EditorGraphController$$RelationCreator.class' \
+	'EntityController$$1.class' \
 	'EntityController$$EntityContextMenuFactory.class' \
+	'EntityController$$EntityLayout.class' \
 	'EntityController$$EntityRenderer.class' \
 	'EntityPortController$$EntityPortRenderer.class' \
 	'EntityPortController$$PortContextMenuFactory$$PortDescriptionFactory.class' \
 	'EntityPortController$$PortContextMenuFactory.class' \
+	'Link$$1.class' \
+	'Link$$2.class' \
+	'Link$$3.class' \
+	'Link$$4.class' \
 	'LinkController$$LinkContextMenuFactory.class' \
 	'LinkController$$LinkRenderer.class' \
 	'LinkController$$LinkTarget.class' \
@@ -90,6 +97,12 @@ OPTIONAL_FILES = \
 	'PtolemyGraphModel$$1.class' \
 	'PtolemyGraphModel$$2.class' \
 	'PtolemyGraphModel$$3.class' \
+	'PtolemyGraphModel$$ExternalPortModel.class' \
+	'PtolemyGraphModel$$IconModel.class' \
+	'PtolemyGraphModel$$LinkModel.class' \
+	'PtolemyGraphModel$$PortModel.class' \
+	'PtolemyGraphModel$$ToplevelModel.class' \
+	'PtolemyGraphModel$$VertexModel.class' \
 	'RelationController$$RelationContextMenuFactory.class' \
 	'RelationController$$RelationRenderer.class' \
 	'ViewerGraphController$$EditDirectorParameterStylesFactory.class' \

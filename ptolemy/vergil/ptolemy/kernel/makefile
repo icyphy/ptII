@@ -65,7 +65,19 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) 
+	$(PTCLASSJAR) \
+	'KernelGraphFrame$$1.class' \
+	'KernelGraphFrame$$2.class' \
+	'KernelGraphFrame$$EditIconAction.class' \
+	'KernelGraphFrame$$EntityContextMenuFactory.class' \
+	'KernelGraphFrame$$GetDocumentationAction.class' \
+	'KernelGraphFrame$$LookInsideAction.class' \
+	'KernelGraphFrame$$PortContextMenuFactory$$PortDescriptionFactory.class' \
+	'KernelGraphFrame$$PortContextMenuFactory.class' \
+	'KernelGraphFrame$$PtolemyLayout.class' \
+	'KernelGraphFrame$$PtolemyLayoutTarget.class' \
+	'KernelGraphFrame$$RelationContextMenuFactory.class' \
+	'KernelGraphTableau$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

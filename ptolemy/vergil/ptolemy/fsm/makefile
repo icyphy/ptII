@@ -71,7 +71,14 @@ OPTIONAL_FILES = \
 	lib \
 	test \
 	$(PTCLASSJAR) \
+	'Arc$$1.class' \
+	'Arc$$2.class' \
 	'FSMGraphController$$LinkCreator.class' \
+	'FSMGraphModel$$ArcModel.class' \
+	'FSMGraphModel$$StateModel.class' \
+	'FSMGraphModel$$ToplevelModel.class' \
+	'FSMGraphTableau$$Factory.class' \
+	'FSMStateController$$StateRenderer.class' \
 	'FSMStateController$$EntityRenderer.class' \
 	'FSMTransitionController$$LinkRenderer.class' \
 	'FSMTransitionController$$LinkTarget.class'
