@@ -8,7 +8,8 @@
       <doc>experimental director library</doc>
       <property name="CI Director" class="ptolemy.domains.ci.kernel.CIDirector"/>
       <property name="DT Director" class="ptolemy.domains.dt.kernel.DTDirector"/>
-      <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector"/>
+      <!-- Don't include HDE -->
+      <!-- property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector"/-->
       <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
       <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
@@ -22,7 +23,8 @@
          </property>
       </property>
       <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector"/>
-      <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector"/>
+      <!-- Don't include DDF -->
+      <!-- property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector"/-->
        </group>
     ?>
   </configure>
