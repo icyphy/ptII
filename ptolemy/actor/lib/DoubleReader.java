@@ -104,6 +104,7 @@ public class DoubleReader extends URLReader {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _dataSize = output.getWidth();
         _data = new double[_dataSize];
         attributeChanged(sourceURL);
