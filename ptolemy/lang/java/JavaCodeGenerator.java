@@ -662,7 +662,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_SUPERTYPE));
         retList.addLast("(");
         retList.addLast(
-         _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_SUPERARGS));
+         _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_SUPERARGS)));
         retList.addLast(") {\n");
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_MEMBERS));
         retList.addLast("}\n");
