@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 62, 800, 846}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 7, 856, 879}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[585, 728]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 761]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{218.5694444444445, 341.8767361111111}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.5694444444445, 358.3767361111111}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to use the NonInterruptibleTimer actor and Pulse actor to&#10;model an assembly line.&#10;&#10;The Clock actor (Jobs) generates a set of jobs at different times, where no two&#10;jobs happen at the same time. The Pulse actor (ServiceTimes) takes a job &#10;request and produces the service time of the job request. &#10;&#10;The NonInterruptibleTimer actor (Station) takes the service time and sets a&#10;timer. The timer goes off when the service time expires. The timer can not&#10;be interrupted to respond to another input when it is running. &#10;&#10;A job has to be passed along all three stations. &#10;&#10;The Plotter monitors the outputs from Stations plots the times when jobs &#10;leaves the station.&#10;&#10;This model is based on the assembly line example described in &quot;Distributed &#10;Discrete-Event Simulation&quot; by Jayadev Misra, Computer Serveys, Vol. 18, &#10;No. 1, March 1986.">
@@ -27,7 +27,7 @@
     <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
         <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Oct 22, 2004 12:00:12 AM">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Oct 22, 2004 12:19:09 AM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Feb 24, 2005 5:05:55 PM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="hyzheng">
         </property>
@@ -49,6 +49,10 @@
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Station 1,Station 2, Station 3">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 499, 458, 231}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 176]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 290.0]">
         </property>
@@ -84,6 +88,10 @@
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 500, 442, 231}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[434, 176]">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 125.0]">
         </property>
         <configure>
@@ -115,17 +123,35 @@
     <entity name="Station 1" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="TimerIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 196, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 175.0]">
         </property>
     </entity>
     <entity name="Station 2" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
         <property name="value" class="ptolemy.data.expr.Parameter" value="2">
         </property>
+        <property name="TimerIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 196, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 255.0]">
         </property>
     </entity>
     <entity name="Station 3" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
         <property name="value" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="TimerIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 196, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[132.5, 340.0]">
         </property>

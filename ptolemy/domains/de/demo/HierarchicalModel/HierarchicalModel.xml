@@ -35,14 +35,6 @@
         </property>
     </property>
     <entity name=" A" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
-        </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
-            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 160.0}">
@@ -246,14 +238,6 @@ output with no delay.</text></svg></configure>
         <link port="noDelay.trigger" relation="triggerRelation"/>
     </entity>
     <entity name="B" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
-        </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
-            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 235.0]">
@@ -457,6 +441,8 @@ output with no delay.</text></svg></configure>
         <link port="noDelay.trigger" relation="triggerRelation"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5}">
+        </property>
         <doc>Create a set of pulses</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 245.0">
         </property>
@@ -474,15 +460,19 @@ output with no delay.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 150.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {485, 512, 508, 254}, maximized = false}">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="delayed outputs, original input">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={308, 405, 508, 254}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 199]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 105.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 70.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -491,7 +481,7 @@ output with no delay.</text></svg></configure>
 <title>Output Events</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0" max="10.0"/>
+<xRange min="0.0" max="5.0"/>
 <yRange min="5.0" max="5.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -507,9 +497,11 @@ output with no delay.</text></svg></configure>
         <vertex name="vertex1" value="465.0, 105.0">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[105.0, 70.0]">
+        </vertex>
     </relation>
     <link port=" A.input" relation="relation5"/>
     <link port=" A.output" relation="relation3"/>
@@ -518,9 +510,10 @@ output with no delay.</text></svg></configure>
     <link port="B.output" relation="relation"/>
     <link port="B.trigger" relation="relation2"/>
     <link port="Clock.output" relation="relation2"/>
-    <link port="Merge.input" relation="relation4"/>
     <link port="Merge.input" relation="relation"/>
+    <link port="Merge.input" relation="relation6"/>
     <link port="Merge.output" relation="relation5"/>
-    <link port="SingleEvent.output" relation="relation4"/>
+    <link port="SingleEvent.output" relation="relation6"/>
     <link port="TimedPlotter.input" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
 </entity>
