@@ -103,6 +103,13 @@ public class DESampler extends DEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public DEIOPort output;
+    public DEIOPort input;
+    public DEIOPort clock;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
 
@@ -174,7 +181,8 @@ public class DESampler extends DEActor {
       workspace().getReadAccess();
 
       LinkedList result = new LinkedList();
-      Inequality constraint = new Inequality(input.getTypeTerm(),output.getTypeTerm());
+      Inequality constraint =
+               new Inequality(input.getTypeTerm(), output.getTypeTerm());
       result.insertLast(constraint);
       return result.elements();
 
@@ -195,9 +203,4 @@ public class DESampler extends DEActor {
 
     // Initial token.
     Parameter _initToken = null;
-
-    // the ports.
-    public DEIOPort output;
-    public DEIOPort input;
-    public DEIOPort clock;
 }
