@@ -101,9 +101,9 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
     }
 
     /** Read all available inputs and plot them as a function of time.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        // FIXME: eliminate the above "throws".
         if (_useCurrentTime) {
             _xvalue = ((Director)getDirector()).getCurrentTime();
         } else {
@@ -111,7 +111,7 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
         }
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
-            while (input.hasToken(i)) {
+            if (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken)input.get(i);
                 double curValue = curToken.doubleValue();
                 plot.addPoint(i, _xvalue, curValue, true);
@@ -132,7 +132,6 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
             if (_panel == null) {
                 // place the plot in its own frame.
                 PlotFrame frame = new PlotFrame(getFullName());
-                // FIXME: Is this cast right?
                 plot = (Plot)(frame.plot);
             } else {
                 plot = new Plot();
