@@ -47,6 +47,7 @@ public abstract class Relation extends NamedObj {
         _portList = new CrossRefList(this);
     }
 
+
     /** 
      * @param name The name of the Relation.
      */	
@@ -57,8 +58,6 @@ public abstract class Relation extends NamedObj {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-
-    
 
     /** Return the Ports which are connected to this Relation.
      * @return Return an Enumeration of Ports; return null if the
@@ -128,9 +127,6 @@ public abstract class Relation extends NamedObj {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
     /* A CrossRefList of Ports which are connected to this Relation.
      * Note : This member has been made protected for the sole purpose of
@@ -138,12 +134,6 @@ public abstract class Relation extends NamedObj {
      * NOT be modified by any other method.
      */
     protected CrossRefList _portList;
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
 
     //////////////////////////////////////////////////////////////////////////
     ////                         inner classes                            ////
@@ -188,10 +178,7 @@ public abstract class Relation extends NamedObj {
         }
 
         private Enumeration _XRefEnum;
-        
         private Port _exceptPort;
         private boolean _skip = false;
     }
-
-
 }
