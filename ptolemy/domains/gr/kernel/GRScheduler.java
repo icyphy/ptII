@@ -1,4 +1,4 @@
-/* A Scheduler for the DD3D domain
+/* A Scheduler for the GR domain
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import java.util.*;
 //// GRScheduler
 /**
 
-A scheduler that implements scheduling of the active parts of a DD3D
+A scheduler that implements scheduling of the active parts of a GR
 scene graph DAG.
 
 @see ptolemy.actor.sched.Scheduler
@@ -1080,7 +1080,7 @@ public class GRScheduler extends Scheduler {
             // If there are any Actors left that we didn't get to, then
             // this is not a connected graph, and we throw an exception.
             if(actors.hasNext()) {
-                String msg = "DD3D scheduler found disconnected actors: ";
+                String msg = "GR scheduler found disconnected actors: ";
                 while (actors.hasNext()) {
                     NamedObj actor = (NamedObj)(actors.next());
                     msg += actor.getFullName() + " ";
