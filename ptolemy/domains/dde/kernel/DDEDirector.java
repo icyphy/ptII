@@ -785,7 +785,8 @@ public class DDEDirector extends ProcessDirector {
     ////                         private variables                 ////
 
     private double _completionTime = TimedQueueReceiver.ETERNITY;
-    private int _internalReadBlocks = 0;
+    // FIXME
+    public int _internalReadBlocks = 0;
     private int _externalReadBlocks = 0;
     private int _writeBlocks = 0;
     private boolean _pendingMutations = false;
