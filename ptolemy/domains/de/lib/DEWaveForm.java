@@ -105,8 +105,8 @@ public class DEWaveForm extends DEActor {
     public void fire() throws IllegalActionException {
         
         double[] value = ((DoubleMatrixToken)_value.getToken()).doubleMatrix()[0];
-        boolean haltAtEnd = ((BooleanToken)_haltAtEnd.getToken()).doubleValue();
-        boolean periodic = ((BooleanToken)_periodic.getToken()).doubleValue();
+        boolean haltAtEnd=((BooleanToken)_haltAtEnd.getToken()).booleanValue();
+        boolean periodic=((BooleanToken)_periodic.getToken()).booleanValue();
         int period = ((IntToken)_period.getToken()).intValue();
 
         // get the triggering clock event.

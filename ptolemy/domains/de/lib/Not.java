@@ -81,7 +81,7 @@ public class Not extends TypedAtomicActor {
         
         // produce the output token.
 	DoubleToken outputToken;
-	if (inputToken.getValue() == 0.0)
+	if (inputToken.doubleValue() == 0.0)
 	    outputToken = new DoubleToken(1.0);
 	else 
 	    outputToken = new DoubleToken(0.0);
