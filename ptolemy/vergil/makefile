@@ -107,6 +107,7 @@ OPTIONAL_FILES = \
 	'VergilApplication$$3.class' \
 	'VergilApplication$$4.class' \
 	'VergilApplication$$ClassReloadingService.class' \
+	'VergilApplication$$ConfigurationFilenameFilter.class' \
 	'VergilApplication$$MouseFocusMover.class' \
 	'VergilApplication$$TitleChanger.class'
 
