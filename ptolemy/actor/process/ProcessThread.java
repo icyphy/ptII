@@ -158,7 +158,8 @@ public class ProcessThread extends PtolemyThread {
                         // Tell the director we're stopped (necessary
                         // for deadlock detection).
                         _director._actorHasStopped();
-                        while (_threadStopRequested && !_director.isStopRequested()) {
+                        while (_threadStopRequested
+                                && !_director.isStopRequested()) {
                             _debug("-- Thread waiting for canceled pause request.");
                             try {
                                 workspace.wait(_director);
