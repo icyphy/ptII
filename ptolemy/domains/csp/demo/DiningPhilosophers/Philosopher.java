@@ -30,6 +30,7 @@
 
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
+// Ptolemy imports.
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.domains.csp.demo.DiningPhilosophers.*;
 import ptolemy.actor.*;
@@ -41,8 +42,12 @@ import ptolemy.data.IntToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import collections.LinkedList;
+
+// Java imports.
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
@@ -152,7 +157,7 @@ public class Philosopher extends CSPActor {
         if (_listeners == null) {
             _listeners = new LinkedList();
         }
-        _listeners.insertLast(newListener);
+        _listeners.add(newListener);
     }
 
     /** Executes the code in this actor. This actor randomly chooses
@@ -250,16 +255,16 @@ public class Philosopher extends CSPActor {
             // No listeners to notify.
             return;
         }
-        Enumeration list = _listeners.elements();
-        while (list.hasMoreElements()) {
-            ((PhilosopherListener)list.nextElement()).philosopherChanged();
+        Iterator listeners = _listeners.iterator();
+        while (listeners.hasNext()) {
+            ((PhilosopherListener)listeners.next()).philosopherChanged();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private LinkedList _listeners;
+    private List _listeners;
 
     private static Random _random = new Random();
 }
