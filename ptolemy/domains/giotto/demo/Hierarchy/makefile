@@ -42,7 +42,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	Hierarchy
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
 
 JSRCS =
 
