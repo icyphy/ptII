@@ -120,7 +120,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		    	if (isUndeclared && inport != outport) {
 			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
-                                    inport.getTypeTerm(), outport.getTypeTerm());
+                                    inport.getTypeTerm(),
+                                    outport.getTypeTerm());
 			    result.add(ineq);
 			}
 		    }
@@ -148,7 +149,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         }
     }
 
-    public FSMTransition createTransition(HDFFSMState source, HDFFSMState dest) {
+    public FSMTransition createTransition(HDFFSMState source,
+            HDFFSMState dest) {
         return (FSMTransition)source.createTransitionTo(dest);
     }
 
@@ -196,13 +198,15 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             Iterator trans = _initialTransitions.iterator();
             while (trans.hasNext()) {
                 FSMTransition tr = (FSMTransition)trans.next();
-                newobj._initialTransitions.add(newobj.getRelation(tr.getName()));
+                newobj._initialTransitions.add(
+                        newobj.getRelation(tr.getName()));
             }
         }
         newobj._currentState = null;
         newobj._takenTransition = null;
         if (_localVariables != null) {
-            newobj._localVariables = (VariableList)newobj.getAttribute("LocalVariables");
+            newobj._localVariables =
+                (VariableList)newobj.getAttribute("LocalVariables");
         }
         // From AtomicActor.
         newobj._inputPortsVersion = -1;
@@ -263,7 +267,9 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	Enumeration nonPreTrans = _currentState.getNonPreemptiveTrans();
 	while (nonPreTrans.hasMoreElements()) {
 	    trans = (FSMTransition)nonPreTrans.nextElement();
-	    if (_debugging) _debug("FSMController:  fire(): transistion name: " + trans.getFullName());
+	    if (_debugging)
+                _debug("FSMController:  fire(): transistion name: "
+                        + trans.getFullName());
 	    if (trans.isEnabled()) {
 		if (_debugging) _debug("FSMController:  fire():" +
                         " transition enabled");
@@ -681,7 +687,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     /** Set the initial state for the FSM. This method must be
      *  called exactly once to set the starting state.
      *  @param state The initial state, an instance of FSMState.
-     *  @exception Thrown if this method is called more than once.
+     *  @exception IllegalActionException If this method is called more
+     *  than once. 
      */
     public void setInitialState(FSMState initialState)
             throws IllegalActionException {
@@ -695,7 +702,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 
     public void setInitialTransition(FSMTransition initialTransition)
             throws IllegalActionException {
-        if (initialTransition != null && initialTransition.getContainer() != this) {
+        if (initialTransition != null &&
+                initialTransition.getContainer() != this) {
             throw new IllegalActionException(this, initialTransition,
                     "Initial transition is not contained by FSMController.");
         }
@@ -743,6 +751,9 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     }
 
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Add a state to this controller with minimal error checking.
      *  This overrides the base-class method to make sure the argument
      *  is an instance of FSMState.
@@ -760,8 +771,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof FSMState)) {
             throw new IllegalActionException(this, entity,
-                    "FSMController can only contain entities that are instances"
-                    + " of FSMState");
+                    "FSMController can only contain entities that are " +
+                    "instances of FSMState");
         }
         // FSMState is not an Actor
         super._addEntity(entity);
@@ -943,31 +954,6 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     }
 
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Create receivers for each input port.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    private void _createReceivers() throws IllegalActionException {
-        Enumeration inports = inputPorts();
-        while (inports.hasMoreElements()) {
-            IOPort inport = (IOPort)inports.nextElement();
-            inport.createReceivers();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The number of times fire() has been called in the current
-    // iteration of the SDF graph containing this FSM.
-    private int _currentIterFireCount;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor, as supplied by
      *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
@@ -1082,7 +1068,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     protected void _updateInputTokenConsumptionRates(TypedCompositeActor actor)
             throws IllegalActionException {
 	// Get all of its input ports.
-	Enumeration refineInPorts = Collections.enumeration(actor.inputPortList());
+	Enumeration refineInPorts =
+            Collections.enumeration(actor.inputPortList());
 	// Get the current refinement's container.
 	ComponentEntity refineInPortContainer =
 	    (ComponentEntity) actor.getContainer();
@@ -1098,7 +1085,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    // linked to on the outside (should only consist
 	    // of 1 port).
 	    Enumeration inPortsOutside =
-		Collections.enumeration(refineInPort.deepConnectedInPortList());
+		Collections.enumeration(
+                        refineInPort.deepConnectedInPortList());
 	    if (!inPortsOutside.hasMoreElements()) {
 		throw new IllegalActionException("Current " +
                         "state's refining actor has an input " +
@@ -1115,7 +1103,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		// container of the current refinment.
 		ComponentEntity thisPortContainer =
 		    (ComponentEntity)inputPortOutside.getContainer();
-		if (thisPortContainer.getFullName() == refineInPortContainer.getFullName()) {
+		if (thisPortContainer.getFullName() ==
+                        refineInPortContainer.getFullName()) {
 		    // The current port  is contained by the
 		    // container of the current refinment.
 		    // Update its consumption rate.
@@ -1139,9 +1128,9 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 			refineInPortRate =
 			    _getTokenConsumptionRate(portWithRateInfo);
 		    }
-		    if (_debugging) _debug("New consumption rate is " +
-                            refineInPortRate);
-				// FIXME: call requestChange in Manager for this?
+		    if (_debugging)
+                        _debug("New consumption rate is " + refineInPortRate);
+		    // FIXME: call requestChange in Manager for this?
                     _setTokenConsumptionRate(refineInPortContainer,
                             inputPortOutside,
                             refineInPortRate);
@@ -1163,7 +1152,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     protected void _updateOutputTokenProductionRates(TypedCompositeActor actor)
             throws IllegalActionException {
 	// Get all of its input ports.
-	Enumeration refineOutPorts = Collections.enumeration(actor.outputPortList());
+	Enumeration refineOutPorts =
+            Collections.enumeration(actor.outputPortList());
 	// Get the current refinement's container.
 	ComponentEntity refineOutPortContainer =
 	    (ComponentEntity) actor.getContainer();
@@ -1179,7 +1169,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    // linked to on the outside (should only consist
 	    // of 1 port).
 	    Enumeration outPortsOutside =
-		Collections.enumeration(refineOutPort.deepConnectedOutPortList());
+		Collections.enumeration(
+                        refineOutPort.deepConnectedOutPortList());
 	    if (!outPortsOutside.hasMoreElements()) {
 		throw new IllegalActionException("Current " +
                         "state's refining actor has an output " +
@@ -1196,7 +1187,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		// container of the current refinment.
 		ComponentEntity thisPortContainer =
 		    (ComponentEntity)outputPortOutside.getContainer();
-		if (thisPortContainer.getFullName() == refineOutPortContainer.getFullName()) {
+		if (thisPortContainer.getFullName() ==
+                        refineOutPortContainer.getFullName()) {
 		    // The current port  is contained by the
 		    // container of the current refinment.
 		    // Update its consumption rate.
@@ -1220,9 +1212,10 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 			refineOutPortRate =
 			    _getTokenProductionRate(portWithRateInfo);
 		    }
-		    if (_debugging) _debug("New consumption rate is " +
-                            refineOutPortRate);
-				// FIXME: call requestChange in Manager for this?
+		    if (_debugging)
+                        _debug("New consumption rate is " + refineOutPortRate);
+				// FIXME: call requestChange in Manager
+                    //for this?
                     _setTokenProductionRate(refineOutPortContainer,
                             outputPortOutside,
                             refineOutPortRate);
@@ -1256,10 +1249,12 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             _inputValueVars.createVariables(inputPorts());
 	    // Add all the input ports of the Controller's container
 	    // to the scope.
-	    //_inputStatusVars.createVariables(((CompositeEntity)getContainer()).getPorts());
-	    _inputStatusVars.createVariables(Collections.enumeration(((CompositeEntity)getContainer()).portList()));
-	    //_inputValueVars.createVariables(((CompositeEntity)getContainer()).getPorts());
-	    _inputValueVars.createVariables(Collections.enumeration(((CompositeEntity)getContainer()).portList()));
+	    _inputStatusVars.createVariables(
+                    Collections.enumeration(
+                            ((CompositeEntity)getContainer()).portList()));
+	    _inputValueVars.createVariables(
+                    Collections.enumeration(
+                            ((CompositeEntity)getContainer()).portList()));
 
         } catch (IllegalActionException ex) {
         } catch (NameDuplicationException ex) {
@@ -1284,5 +1279,25 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             trans.setupScope();
         }
     }
+
+    /** Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    private void _createReceivers() throws IllegalActionException {
+        Enumeration inports = inputPorts();
+        while (inports.hasMoreElements()) {
+            IOPort inport = (IOPort)inports.nextElement();
+            inport.createReceivers();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The number of times fire() has been called in the current
+    // iteration of the SDF graph containing this FSM.
+    private int _currentIterFireCount;
+
+
 }
 
