@@ -424,7 +424,7 @@ public class WirelessChannel extends TypedAtomicActor
      *  @param destination The destination port.
      *  @param properties The transmit properties (ignored in this base class).
      *  @return True if the destination is in range of the source.
-     *  @throws IllegalActionException If it cannot be determined
+     *  @exception IllegalActionException If it cannot be determined
      *   whether the destination is in range (not thrown in this base
      *   class).
      */
@@ -447,7 +447,7 @@ public class WirelessChannel extends TypedAtomicActor
      *  obtaining location information.
      *  @param port A port with a location.
      *  @return The location of the port.
-     *  @throws IllegalActionException If a valid location attribute cannot
+     *  @exception IllegalActionException If a valid location attribute cannot
      *   be found.
      */
     protected double[] _locationOf(IOPort port) throws IllegalActionException {
@@ -597,7 +597,7 @@ public class WirelessChannel extends TypedAtomicActor
      *  @param sender The sending port.
      *  @param receiver The receiver to which to transmit.
      *  @param properties The transmit properties (ignored in this base class).
-     *  @throws IllegalActionException If the token cannot be converted
+     *  @exception IllegalActionException If the token cannot be converted
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
      */

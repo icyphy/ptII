@@ -1,4 +1,4 @@
-/* This actor puts a token to corresponding receivers.
+/* Put a token to corresponding receivers.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ChannelOutput
 /**
-This actor puts a token to corresponding receivers.
+Put a token to corresponding receivers.
 
 @author Yang
 @version $Id$
@@ -74,8 +74,6 @@ public class ChannelOutput extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-
-
     /** The input port.
      */
     public TypedIOPort reception;
@@ -96,7 +94,7 @@ public class ChannelOutput extends TypedAtomicActor {
                 ObjectToken t = (ObjectToken)reception.get(0);
                 Reception rec = (Reception)t.getValue();
                 LinkedList recvs = (LinkedList) rec.receivers;
-                for(int i =0; i < recvs.size(); i++) {
+                for(int i = 0; i < recvs.size(); i++) {
                     WirelessReceiver r = (WirelessReceiver)recvs.removeFirst();
                     _transmitTo(rec.token, r, rec.properties);
                 }
@@ -111,7 +109,7 @@ public class ChannelOutput extends TypedAtomicActor {
      *   the specified receiver.
      *  @param receiver The receiver to which to transmit.
      *  @param properties The transmit properties (ignored in this base class).
-     *  @throws IllegalActionException If the token cannot be converted
+     *  @exception IllegalActionException If the token cannot be converted
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
      */
@@ -136,5 +134,4 @@ public class ChannelOutput extends TypedAtomicActor {
             receiver.clear();
         }
     }
-
 }

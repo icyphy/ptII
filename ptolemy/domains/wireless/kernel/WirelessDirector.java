@@ -1,6 +1,6 @@
 /* The wireless director.
 
- Copyright (c) 1998-2002 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -215,7 +215,7 @@ public class WirelessDirector extends DEDirector {
      *  Derived classes may override this to set the location differently.     *
      *  @param location The specified location.
      *  @param node The node for which to set the location.
-     *  @throws IllegalActionException If the location attribute
+     *  @exception IllegalActionException If the location attribute
      *   cannot be set.
      */
     protected void _setLocationOfNode(double[] location, Entity node)

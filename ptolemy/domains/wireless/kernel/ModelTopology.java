@@ -240,7 +240,7 @@ public class ModelTopology {
      *  This is a convenience method provided for subclasses.
      *  @param port A port with a location.
      *  @return The location of the port.
-     *  @throws IllegalActionException If a valid location attribute cannot
+     *  @exception IllegalActionException If a valid location attribute cannot
      *   be found.
      */
     public static double[] locationOf(
