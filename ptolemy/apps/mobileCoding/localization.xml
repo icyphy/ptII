@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="localization" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="initial_omega" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -3144,7 +3144,7 @@
         </property>
         <property name="blockAwaitingDatagram" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="defaultReturnAddress" class="ptolemy.data.expr.Parameter" value="localizationIP">
+        <property name="defaultReturnAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
         </property>
         <property name="defaultReturnSocketNumber" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -3179,7 +3179,7 @@
         </port>
     </entity>
     <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
-        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="crazyboardIP">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
@@ -3213,7 +3213,7 @@
         </port>
     </entity>
     <entity name="DatagramWriter2" class="ptolemy.actor.lib.net.DatagramWriter">
-        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="nameServerIP">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4006">
         </property>

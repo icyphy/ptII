@@ -345,11 +345,11 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 41, 927, 601}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 0, 927, 601}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 492]">
     </property>
-    <property name="nameServerInit" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialHost 128.32.39.145 -ORBInitialPort 1050&quot;">
+    <property name="nameServerInit" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialPort 1050&quot;">
     </property>
     <property name="localizationIP" class="ptolemy.data.expr.Parameter" value="&quot;128.32.38.74&quot;">
     </property>
@@ -399,7 +399,7 @@
         </port>
     </entity>
     <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
-        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="localizationIP">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="2001">
         </property>
