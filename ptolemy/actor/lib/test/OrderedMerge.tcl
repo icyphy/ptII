@@ -37,7 +37,9 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-test OrderedMerge-2.1 {test with the default output values} {
+test OrderedMerge-2.1 {Two ramps with an OrderedMerge } {
+    # We use a tcl test here so that we can turn on the listeners
+    # and look for deadlock problems		
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set manager [java::new ptolemy.actor.Manager]
     set director [java::new ptolemy.domains.pn.kernel.PNDirector]
@@ -51,13 +53,18 @@ test OrderedMerge-2.1 {test with the default output values} {
 
     set orderedMerge [java::new ptolemy.actor.lib.OrderedMerge $e0 OrderedMerge]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
+    set firingCountLimit [getParameter $ramp firingCountLimit]
+    $firingCountLimit setExpression 10
+
     set ramp2 [java::new ptolemy.actor.lib.Ramp $e0 Ramp2]
     set step [getParameter $ramp2 step]
     $step setExpression 1.5
+    set firingCountLimit [getParameter $ramp2 firingCountLimit]
+    $firingCountLimit setExpression 10
 
-    set test2 [java::new ptolemy.actor.lib.Test $e0 Test2]
+    set test2 [java::new ptolemy.actor.lib.Test $e0 Test]
     set correctValues [getParameter $test2 correctValues]
-    $correctValues setExpression {"{0.0, 0.0, 1.0, 1.5, 2.0, 3.0, 3.0, 4.0}"}
+    $correctValues setExpression {{0.0, 0.0, 1.0, 1.5, 2.0, 3.0, 3.0, 4.0}}
 
     $ramp addDebugListener \
 	[java::new ptolemy.kernel.util.StreamListener]
@@ -71,18 +78,19 @@ test OrderedMerge-2.1 {test with the default output values} {
     $test2 addDebugListener \
 	[java::new ptolemy.kernel.util.StreamListener]
 
-    $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-            [java::field $orderedMerge inputA]
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 relation]
+    set r3 [java::new ptolemy.actor.TypedIORelation $e0 relation3]
+    set r4 [java::new ptolemy.actor.TypedIORelation $e0 relation4]
 
-    $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] \
-            [java::field $orderedMerge inputB]
+    [java::field $orderedMerge inputA] link $r1
+    [java::field $orderedMerge inputB] link $r3
+    [java::field $orderedMerge output] link $r4
 
+    [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] link $r1
+    [java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] link $r3
+    [java::field [java::cast ptolemy.actor.lib.Transformer $test2] input] \
+	link $r4
 
-    $e0 connect \
-            [java::field $orderedMerge output] \
-            [java::field [java::cast ptolemy.actor.lib.Transformer $test2] output]
-
+    [$e0 getManager] execute
     [$e0 getManager] execute
 } {}
