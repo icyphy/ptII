@@ -59,27 +59,27 @@ public class Compose {
      *  @exception Exception If the automata cannot be composed.
      */
     public Compose(String moml1, String moml2) throws Exception {
-	URL url1 = MoMLApplication.specToURL(moml1);
-	URL url2 = MoMLApplication.specToURL(moml2);
+        URL url1 = MoMLApplication.specToURL(moml1);
+        URL url2 = MoMLApplication.specToURL(moml2);
 
         // following the comments in MoMLApplication, use the same URL for
-	// the two arguments (base and URL) to parse(). Also, two instances
-	// of MoMLParser must be used to parse the two files, otherwise
-	// the same automaton will be return the second time parse() is
-	// called.
+        // the two arguments (base and URL) to parse(). Also, two instances
+        // of MoMLParser must be used to parse the two files, otherwise
+        // the same automaton will be return the second time parse() is
+        // called.
         MoMLParser parser1 = new MoMLParser();
-	InterfaceAutomaton automaton1 =
-	                     (InterfaceAutomaton)parser1.parse(url1, url1);
+        InterfaceAutomaton automaton1 =
+                             (InterfaceAutomaton)parser1.parse(url1, url1);
         MoMLParser parser2 = new MoMLParser();
-	InterfaceAutomaton automaton2 =
-	                     (InterfaceAutomaton)parser2.parse(url2, url2);
+        InterfaceAutomaton automaton2 =
+                             (InterfaceAutomaton)parser2.parse(url2, url2);
 
         automaton1.addPorts();
         automaton2.addPorts();
 
-	InterfaceAutomaton composition = automaton1.compose(automaton2);
+        InterfaceAutomaton composition = automaton1.compose(automaton2);
 
-	System.out.println(composition.exportMoML());
+        System.out.println(composition.exportMoML());
     }
 
     /** Pass the command line argument to the constructor.
@@ -88,9 +88,9 @@ public class Compose {
     public static void main (String[] args) {
         try {
             new Compose(args[0], args[1]);
-	} catch (Exception exception) {
-	    System.out.println(exception.getMessage());
-	}
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
