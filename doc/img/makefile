@@ -151,6 +151,7 @@ EXTRA_SRCS = \
 	ptIIplanet.ico \
 	ptolemy32bw.bin \
 	ptolemy32bw.bmp \
+	ptolemyII480x240plain.gif \
 	spacer4.gif \
 	up.gif
 
