@@ -3363,7 +3363,6 @@ if test -z "$PTJAI_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jai/"
 fi
 
-
 #--------------------------------------------------------------------
 #       JHDL is a Java Highlevel Description Language, see
 #	http://www.jhdl.org
@@ -4851,7 +4850,6 @@ else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$SOOT_DIR/sootclasses.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$SOOT_DIR/jasminclasses.jar\"/>"
-EoF
     # What about JAVA_SYSTEM_JAR?
 fi
 
