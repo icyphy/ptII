@@ -144,7 +144,7 @@ test TotallyOrderedSet-5.1 {contains} {
 #
 test TotallyOrderedSet-5.2 {contains: does not contain p5 } {
     $toset contains $p5
-} {1}
+} {0}
 
 
 ######################################################################
@@ -261,10 +261,16 @@ test TotallyOrderedSet-13.1 { clear the set } {
 ######################################################################
 #### get first from an empty set
 #
-test TotallyOrderedSet-14.1 { get first from an empty set } {
+test TotallyOrderedSet-13.2 { get first from an empty set } {
     set f [$toset first]
     list [expr {$f == [java::null]}]
 } {1}
 
-
+######################################################################
+#### contains from an empty set
+#
+test TotallyOrderedSet-13.2 { contains from an empty set } {
+    set f [$toset contains $p1]
+    list [expr {$f == [java::null]}]
+} {0}
 
