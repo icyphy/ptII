@@ -51,6 +51,10 @@ fi
 
 for file in $otherjars
 do
+    if [ ! -f $basedirectory/$file ]; then
+	echo "$0: WARNING: '$basedirectory/$file' could not be found,"
+	echo "     which means that the sizes in the .jnlp file will be wrong"
+    fi	
     # Use ls -lg because Cygwin ls -l includes the group and
     # Solaris 8 ls -l does not
     otherjarssizes="$otherjarssizes `ls -lg $basedirectory/$file | awk '{print $5}' - `"
