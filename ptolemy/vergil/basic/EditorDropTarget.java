@@ -141,20 +141,19 @@ public class EditorDropTarget extends DropTarget {
          */
         public void drop(DropTargetDropEvent dtde) {
 
-            // FIXME: This should really drop the center of the figure
-            // to the specified location, not the origin, but it has to
-            // do this in such a way that you still get snap to grid.
-            // This is nontrivial.
-
 	    Iterator iterator = null;
-            if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+            if (dtde.isDataFlavorSupported(
+                    PtolemyTransferable.namedObjFlavor)) {
 		try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-		    iterator = (Iterator)dtde.getTransferable().
-			getTransferData(PtolemyTransferable.namedObjFlavor);
+		    iterator = (Iterator)dtde.getTransferable().getTransferData(
+                            PtolemyTransferable.namedObjFlavor);
 		} catch(Exception e) {
 		    MessageHandler.error(
-                            "Couldn't find a supported data flavor in " + dtde, e);
+                            "Can't find a supported data flavor for drop in "
+                            + dtde,
+                            e);
+                    return;
 		}
             } else {
                 dtde.rejectDrop();
@@ -169,29 +168,26 @@ public class EditorDropTarget extends DropTarget {
                     dtde.getLocation());
             GraphPane pane = ((JGraph)getComponent()).getGraphPane();
             final Point2D point = new Point2D.Double();
-            // account for the scaling in the pane.
+            // Account for the scaling in the pane.
             try {
                 pane.getTransformContext().getInverseTransform().transform(
                         originalPoint, point);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                MessageHandler.error("Failed to get transform context.", ex);
                 return;
             }
-
 
 	    final GraphController controller = pane.getGraphController();
 	    GraphModel model = controller.getGraphModel();
 	    final CompositeEntity toplevel = (CompositeEntity)model.getRoot();
             NamedObj container = 
-                MoMLChangeRequest.getDeferredToParent(toplevel);
+                    MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
                 container = toplevel;
             }
                  
             while (iterator.hasNext()) {
                 NamedObj dropObj = (NamedObj) iterator.next();
-                // FIXME: Might consider giving a simpler name and then
-                // displaying the classname in the icon.
                 final String name = toplevel.uniqueName(dropObj.getName());
 
                 // Create the MoML command.
@@ -204,12 +200,12 @@ public class EditorDropTarget extends DropTarget {
                 // the object into which this is dropped.
                 moml.append("<group>");
                 if (container != toplevel) {
-                    moml.append("<entity name=\"" + 
-                            toplevel.getName(container) + "\">\n");
+                    moml.append("<entity name=\""
+                            + toplevel.getName(container) + "\">\n");
                 }
                 if (dropObj.getMoMLInfo().deferTo != null) {
                     CompositeEntity sourceContainer =
-                        (CompositeEntity)dropObj.getContainer();
+                            (CompositeEntity)dropObj.getContainer();
                     if (sourceContainer != null) {
                         Iterator imports = sourceContainer.attributeList(
                                 ImportAttribute.class).iterator();
