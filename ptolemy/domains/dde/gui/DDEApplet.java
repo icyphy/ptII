@@ -82,48 +82,53 @@ public class DDEApplet extends PtolemyApplet {
     public void init() {
         super.init();
 
-        // Process the stopTime parameter.
-        double stopTime = 100.0;
+
+        // Instantiate the director and process the 
+	// stopTime parameter.
         try {
+	    _director = new DDEDirector(_toplevel, "DDEDirector");
+
             String stopSpec = getParameter("stopTime");
             if (stopSpec != null) {
-                stopTime = (new Double(stopSpec)).doubleValue();
+                double stopTime = (new Double(stopSpec)).doubleValue();
                 _stopTimeGiven = true;
-            }
+		Parameter dirStopTime = 
+		        (Parameter)_director.getAttribute("stopTime");
+		dirStopTime.setToken( new DoubleToken(stopTime) );
+	    }
+        } catch (IllegalActionException ex) {
+	    report("Error in instantiating the director:\n", ex);
         } catch (Exception ex) {
-            report("Warning: stop time parameter failed: ", ex);
-        }
-
-        try {
-            // Initialization
-            _director = new DDEDirector(_toplevel, "DDEDirector");
-	    Parameter dirStopTime = (Parameter)_director.getAttribute("stopTime");
-	    dirStopTime.setToken( new DoubleToken(stopTime) );
-        } catch (Exception ex) {
-            report("Failed to setup director:\n", ex);
+            report("Error in setting the director's " 
+		    + "stopTime parameter\n", ex);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** In addition to creating the buttons provided by the base class,
-     *  if the stop time has not been specified by the applet parameter
-     *  "stopTime," then create an entry box for that number to be 
-     *  entered. The panel containing the buttons and the entry box is 
-     *  returned.
+    /** In addition to creating the buttons provided by the base 
+     *  class, if the stop time has not been specified by the 
+     *  applet parameter "stopTime," then create an entry box for 
+     *  that number to be entered. If the "showStopTime" parameter 
+     *  is set to true, then display a text entry box for specifying 
+     *  the stop time of the model. The panel containing the buttons 
+     *  and the entry box is returned.
      * @param numbuttons The number of buttons to create.
+     * @param showStopTime A flag indicating whether stop time
+     *  selection box should be displayed.
      * @return The panel containing the controls.
      */
-    protected Panel _createRunControls(int numbuttons) {
-        Panel panel = super._createRunControls(numbuttons);
-        if (!_stopTimeGiven) {
+    protected Panel _createRunControls(int numbuttons, 
+	    boolean showStopTime) {
+        Panel panel = _createRunControls(numbuttons);
+        if (showStopTime ) {
             // To keep the label and entry box together, put them
             // in a new panel.
             Panel stopTimePanel = new Panel();
             stopTimePanel.add(new Label("Stop time:"));
 
-            // Process the defaultiterations parameter.
+            // Process the default iterations parameter.
             String defaultStopSpec = getParameter("defaultStopTime");
             if (defaultStopSpec == null) {
                 defaultStopSpec = "100.0";
