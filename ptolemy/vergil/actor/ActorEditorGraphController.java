@@ -227,18 +227,18 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             .addInteractor(_linkCreator);
         ((CompositeInteractor)_relationController.getNodeInteractor())
             .addInteractor(_linkCreator);
-        ((CompositeInteractor)_portController.getNodeInteractor())
-            .addInteractor(_linkCreator2);
-        ((CompositeInteractor)_entityPortController.getNodeInteractor())
-            .addInteractor(_linkCreator2);
-        ((CompositeInteractor)_relationController.getNodeInteractor())
-            .addInteractor(_linkCreator2);
+ //        ((CompositeInteractor)_portController.getNodeInteractor())
+//             .addInteractor(_linkCreator2);
+//         ((CompositeInteractor)_entityPortController.getNodeInteractor())
+//             .addInteractor(_linkCreator2);
+//         ((CompositeInteractor)_relationController.getNodeInteractor())
+//             .addInteractor(_linkCreator2);
 
-        LinkCreator linkCreator2 = new LinkCreator();
-        linkCreator2.setMouseFilter(
-                new MouseFilter(InputEvent.BUTTON1_MASK,0));
-        ((CompositeInteractor)_entityPortController.getNodeInteractor())
-            .addInteractor(linkCreator2);
+//         LinkCreator linkCreator2 = new LinkCreator();
+//         linkCreator2.setMouseFilter(
+//                 new MouseFilter(InputEvent.BUTTON1_MASK,0));
+//         ((CompositeInteractor)_entityPortController.getNodeInteractor())
+//             .addInteractor(linkCreator2);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -270,7 +270,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
     /** The interactors that interactively creates edges. */
     private LinkCreator _linkCreator;  // For control-click
-    private LinkCreator _linkCreator2;  // For shift-click
+    //   private LinkCreator _linkCreator2;  // For shift-click
 
     /** Factory for listen to actor menu item. */
     private ListenToActorFactory _listenToActorFactory;
@@ -316,7 +316,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
     /** The interactor for creating new relations. */
     private RelationCreator _relationCreator;  // For control-click
-    private RelationCreator _relationCreator2;  // For shift-click
+    //  private RelationCreator _relationCreator2;  // For shift-click
 
     /** The filter for shift operations. */
     private MouseFilter _shiftFilter = new MouseFilter(
