@@ -50,7 +50,8 @@ JSRCS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
 	QueryApplet.htm \
-	ShowRawDocumentApplet.htm
+	ShowRawDocumentApplet.htm \
+	FileChooserQuery.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -58,7 +59,9 @@ MISC_FILES =	# doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'FileChooserQuery$$1.class' \
+	FileChooserQuery.class 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
