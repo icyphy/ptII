@@ -185,7 +185,7 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 # JNLP files that do the actual installation
 JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
-jnlp_all: $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
+jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
 	rm -f $(JNLPS)
@@ -222,7 +222,7 @@ $(KEYSTORE):
 
 # vergil*.jnlp is for Web Start.  For jar signing to work with Web Start,
 # Web Start: DSP version of Vergil - No sources or build env.
-vergilDSP.jnlp: vergilDSP.jnlp.in
+vergilDSP.jnlp: vergilDSP.jnlp.in $(KEYSTORE)
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
@@ -245,7 +245,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in
 		$(DSP_MAIN_JAR) $(KEYALIAS)
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
-vergilPtiny.jnlp: vergilPtiny.jnlp.in
+vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
@@ -269,7 +269,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in
 
 
 # Web Start: Ptiny version of Vergil - No sources or build env., in a sandbox
-vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in
+vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(KEYSTORE)
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
@@ -293,7 +293,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in
 
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
-vergil.jnlp: vergil.jnlp.in
+vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
