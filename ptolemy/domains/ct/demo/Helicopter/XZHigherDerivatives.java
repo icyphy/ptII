@@ -51,7 +51,8 @@ DDDDotPx = (2*Dotth*DotTM*Cos[th))/m +
 DDDotPz = -((DotTM*Cos[th))/m) + (Dotth*TM*Math.sin[th))/m
  
 DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m + 
-   (2*Dotth*DotTM*Math.sin[th))/m + (TM*(a*MM + hM*TM*Math.sin[a))*Math.sin[th))/(Iy*m)
+   (2*Dotth*DotTM*Math.sin[th))/m + 
+   (TM*(a*MM + hM*TM*Math.sin[a))*Math.sin[th))/(Iy*m)
 
 @author  liuj
 @version $Id$
