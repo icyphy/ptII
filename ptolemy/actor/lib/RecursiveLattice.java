@@ -162,7 +162,7 @@ public class RecursiveLattice extends Transformer {
             }
             for (int i = 0; i < valueLength; i++) {
                 _reflectionCoefs[i] = ((DoubleToken)value.getElement(i))
-                        .doubleValue();
+                    .doubleValue();
             }
         } else {
             super.attributeChanged(attribute);

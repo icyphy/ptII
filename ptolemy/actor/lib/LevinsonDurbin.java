@@ -204,7 +204,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
         // for convenience, read the autocorrelation lags into a vector
         for (int i = 0; i <= order; i++) {
             r[i] = ((DoubleToken)autocor
-                   .getElement(autocorLength - order + i - 1)).doubleValue();
+                    .getElement(autocorLength - order + i - 1)).doubleValue();
         }
 
         // Output the zeroth order prediction error power, which is
