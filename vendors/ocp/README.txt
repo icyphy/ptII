@@ -11,13 +11,32 @@ Currently, the ocp is checked in to the cvs repository on gigasource.
 To check out a copy, you must have a cvs account on gigasource, see
 http://www.gigascale.org/softdevel/faq/1/
 
-The command to run is
+To check out the OCP_B0_2 release, run these commands:
+
 cd $PTII/vendors/ocp
-cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co ocp
+cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co -r OCP_B0_2 ocp
+
+Nits about this code:
+1) The tar file creates multiple files and directories in the current
+directory. 
+Most software releases create all their files and directories in a
+single subdirectory so that the current directory does not
+accidentally get files overwritten
+
+The top level directory name should include the version of the release
+(e.g. OCP_B0_2)
+
+2) The website uses numeric account names, which are a pain to lookup
+every time I need to access the website
 
 
-To update the ocp repository, I used cvs's vendor or tracking third
-party sources feature:
+Updating
+--------
+
+To update the ocp repository, I grabbed a tar file from the boeing
+site and then I used cvs's vendor or tracking third party sources
+feature:
+
 mkdir ocp
 cd ocp
 gtar -zxf /tmp/OCP_B0_2.tar.gz
