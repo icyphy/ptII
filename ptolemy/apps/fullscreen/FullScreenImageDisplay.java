@@ -41,6 +41,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics2D;
@@ -138,6 +139,13 @@ public class FullScreenImageDisplay extends Sink {
         for (int i = 0; i < inputWidth; i++) {
 	    ObjectToken objectToken = (ObjectToken) input.get(i);
 	    Image image = (Image) objectToken.getValue();
+	    if (image.getWidth(null) == -1 || image.getHeight(null) == -1) {
+		System.out.println("FullScreenImageDisplay.fire(): "
+				   + "Warning: width and/or height was -1. "
+				   + "This usually indicates that the "
+				   + "pathname to the file was incorrect");
+	    }
+
 	    Graphics2D graphics2D =
 		(Graphics2D) _bufferStrategy.getDrawGraphics();
 	    graphics2D.setColor(Color.black);
@@ -174,6 +182,26 @@ public class FullScreenImageDisplay extends Sink {
 				 null);
 	    _bufferStrategy.show();
 	    graphics2D.dispose();
+
+	    if (1==0) {
+	    // Loop through different alpha values.
+	    // We draw a rectangle of the same color over and over
+	    // again, which gives us a fast fade.
+	    // We could try different functions on alpha here.
+	    AlphaComposite alphaComposite = null;
+	    float alpha = 0.05f;
+	    for( int m = 0; m < 100; m++) { 
+		alphaComposite =
+		    AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					       alpha);
+		graphics2D = (Graphics2D) _bufferStrategy.getDrawGraphics();
+		graphics2D.setComposite(alphaComposite);
+		graphics2D.fillRect(_bounds.x, _bounds.y,
+				    _bounds.width, _bounds.height);
+		graphics2D.dispose();
+		_bufferStrategy.show();
+	    }
+	    }
 	    try {
 		Thread.sleep(delay);
 	    } catch (InterruptedException e) {}
@@ -187,9 +215,6 @@ public class FullScreenImageDisplay extends Sink {
     public boolean prefire() throws IllegalActionException {
 	_graphicsDeviceValue =
 	    (GraphicsDevice)((ObjectToken)graphicsDevice.get(0)).getValue();
-	System.out.println("FullScreenImageDisplay.prefire(): "
-			   + _graphicsDeviceValue);
-
 	if (!_inFullScreenMode) {
 	    _frame = MultiBuffer.enterFullScreenMode(_graphicsDeviceValue,
 						     input.getWidth());

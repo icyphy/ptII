@@ -158,8 +158,10 @@ public class MultiBufferTest {
 		System.out.println("buffer: " + i);
 		if (!bufferStrategy.contentsLost()) {
 		    //if(true) {
-
-		    g.setColor(_COLORS[i]);
+		    //Color backgroundColor = _COLORS.[i];
+		    Color backgroundColor = Color.black; 		    
+		    // Fade to black
+		    g.setColor(backgroundColor);
 		    System.out.println("after setColor");
 		    //g.fillRect(0,0,bounds.width, bounds.height);
 		    System.out.println("Bounds: before fillRectangle"
@@ -211,12 +213,12 @@ public class MultiBufferTest {
 		    System.out.println("About to drawImage");
 		    g.drawImage(scaledImage, xOffset, yOffset,
 		    		width, height,
-		    		_COLORS[i],
+		    		backgroundColor,
 		    		originalImageIcon.getImageObserver());
 		    /*g.drawImage(originalImage, 
 				bounds.x, bounds.y,
 			        bounds.width, bounds.height,
-		    		_COLORS[i],
+		    		backgroundColor,
 		    		originalImageIcon.getImageObserver());
 		    */
 		    System.out.println("About to show");
@@ -225,21 +227,26 @@ public class MultiBufferTest {
 		    g.dispose();
 		    // Fill in the other frame
 		    g = (Graphics2D) bufferStrategy.getDrawGraphics();
-		    g.setColor(_COLORS[i]);
+
+		    //g.setColor(backgroundColor);
 		    g.fillRect(bounds.x, bounds.y,
 			       bounds.width, bounds.height);
 		    g.drawImage(scaledImage, xOffset, yOffset,
 		    		width, height,
-		    		_COLORS[i],
+		    		backgroundColor,
 		    		originalImageIcon.getImageObserver());
 		    bufferStrategy.show();
 		    //mainFrame.show();
 		    g.dispose();
 		    AlphaComposite ac = null;
 
-		    for( int m = 0; m < 100; m++) { 
-			//float alpha = 0.01f; alpha < 0.99f; alpha += 0.01f
-			float alpha = 0.05f;
+		    int alphaCount = 100;
+
+		    for( int m = 0; m < alphaCount; m++) { 
+			//float alpha = (float)m / (float)alphaCount;
+			float alpha = 0.05f
+			    + ((float)m / (float)alphaCount) * 0.5f;
+
 			ac =
 			    AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 					       alpha);
@@ -252,7 +259,7 @@ public class MultiBufferTest {
 			/*
 			g.drawImage(scaledImage, xOffset, yOffset,
 				    width, height,
-				    _COLORS[i],
+				    backgroundColor,
 				    originalImageIcon.getImageObserver());
 			*/
 			g.fillRect(bounds.x, bounds.y,

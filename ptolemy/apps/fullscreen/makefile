@@ -55,7 +55,8 @@ JSRCS = \
 	ImageRotate.java \
 	ImageToString.java \
 	MultiBuffer.java \
-	Transform.java
+	Transform.java \
+	URLToImage.java
 
 OTHER_FILES_TO_BE_JARED = \
 	fullscreen.xml

@@ -1,4 +1,4 @@
-/* An actor that reads an image from a URL
+/* An actor that reads an image from a URL parameter and Object Token that contains a java.awt.Image
 
 @Copyright (c) 2001 The Regents of the University of California.
 All rights reserved.
@@ -47,7 +47,7 @@ import javax.swing.ImageIcon;
 //////////////////////////////////////////////////////////////////////////
 //// ImageReader
 /**
-This actor reads an Image from an URL, and outputs it as an Object
+This actor reads an Image from a URL parameter, and outputs it as an Object
 Token
 
 <p>It is possible to load a file
@@ -64,6 +64,7 @@ should be set to "file:///tmp/test.jpg" The default value is
 
 <p>FIXME: It would be nice if we could read images from stdin.
 
+@see URLToImage
 @author  Christopher Hylands
 @version $Id$ */
 public class ImageReader extends Source {
