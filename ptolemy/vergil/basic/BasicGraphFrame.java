@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
+2
 */
 
 package ptolemy.vergil.basic;
@@ -122,6 +122,8 @@ import diva.canvas.JCanvas;
 import diva.canvas.Site;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
+import diva.canvas.event.LayerAdapter;
+import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphController;
 import diva.graph.GraphEvent;
@@ -133,7 +135,7 @@ import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
 import diva.gui.GUIUtilities;
-import diva.gui.toolbox.FocusMouseListener;
+
 import diva.gui.toolbox.JCanvasPanner;
 import diva.gui.toolbox.JContextMenu;
 import diva.util.java2d.ShapeUtilities;
@@ -218,7 +220,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         _jgraph.setRequestFocusEnabled(true);
-        _jgraph.addMouseListener(new FocusMouseListener());
+        pane.getForegroundEventLayer().setConsuming(false);
+        pane.getForegroundEventLayer().setEnabled(true);
+        pane.getForegroundEventLayer().addLayerListener(
+                new LayerAdapter() {
+                    /** Invoked when the mouse is pressed on a layer
+                     * or figure.
+                     */
+                    public void mousePressed (LayerEvent event) {
+                        Component component = event.getComponent();
+                        if (!component.hasFocus()) {
+                            component.requestFocus();
+                        }
+                    }
+                });
+        
+        // We used to do this, but it would result in context menus
+        // getting lost on the mac.
+        
+        // _jgraph.addMouseListener(new FocusMouseListener());
         _jgraph.setAlignmentX(1);
         _jgraph.setAlignmentY(1);
         _jgraph.setBackground(BACKGROUND_COLOR);
