@@ -77,6 +77,7 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorEditorGraphController
@@ -194,12 +195,16 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         _menuFactory.addMenuItemFactory(_listenToActorFactory);
         _listenToActorFactory.setConfiguration(getConfiguration());
 
-        // Create listeners that creates new relations.  Note that
-        // both control-click AND shift-click are used here, since
-        // control-click is used under the Mac for retrieving context
-        // menus.
+        // Create listeners that creates new relations.
         _relationCreator = new RelationCreator();
-        _relationCreator.setMouseFilter(_controlFilter);
+        if (UIManager.getLookAndFeel().getName().startsWith("MacOS")) {
+            // On the Mac, do not override Control-Click, which is
+            // used to bring up the context menu
+            _relationCreator.setMouseFilter(_metaFilter);
+        } else {
+            _relationCreator.setMouseFilter(_controlFilter);
+        }
+
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
         // Note that shift-click is already bound to the dragSelection
         // interactor when adding things to a selection.
@@ -209,7 +214,13 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
-        _linkCreator.setMouseFilter(_controlFilter);
+        if (UIManager.getLookAndFeel().getName().startsWith("MacOS")) {
+            // On the Mac, do not override Control-Click, which is
+            // used to bring up the context menu
+            _linkCreator.setMouseFilter(_metaFilter);
+        } else {
+            _linkCreator.setMouseFilter(_controlFilter);
+        }
 //         _linkCreator2 = new LinkCreator();
 //         _linkCreator2.setMouseFilter(_shiftFilter);
         // NOTE: Do not use _initializeInteraction() because we are
@@ -268,6 +279,16 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
     /** Factory for listen to actor menu item. */
     private ListenToActorFactory _listenToActorFactory;
+
+    /** The filter for meta-click operations.  Under Mac OS X,
+     *  the command key is the meta key, or keycode 0x2318
+     *  For details, see the Apple java archive
+     *  http://lists.apple.com/archives/java-dev
+     *  User: archives, passwd: archives
+     */
+    private MouseFilter _metaFilter = new MouseFilter(
+            InputEvent.BUTTON1_MASK,
+            InputEvent.META_MASK);
 
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
