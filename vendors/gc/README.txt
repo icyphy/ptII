@@ -12,14 +12,34 @@ http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc.tar.gz
 
 As of 4/03, we were using version 6.1
 
-To install, do
- 
+
+
+If you have cvs access to the the Ptolemy tree, you can
+download a modified copy with
+
 cd $PTII/vendors/gc
-# Download
-http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/
+cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co gc
+cd gc
+./configure --prefix=$PTII
+make
+make check
+make install
+
+
+Or, if you do not have cvs access to the Ptolemy tree, do
+
+cd $PTII/vendors/gc
+
+# Download http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/
+
 tar -zxf gc.tar.gz
 cd gc6.1
 ./configure --prefix=$PTII
 make
 make check
 make install
+
+
+Note that under Windows, PTII cannot have a backslash in it or
+else make will have problems.
+
