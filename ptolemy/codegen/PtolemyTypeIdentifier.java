@@ -556,7 +556,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         try {
             CompileUnitNode typedAtomicActorUnit = StaticResolution.loadFile(
                     SearchPath.NAMED_PATH.openSource(
-                            "ptolemy.actor.TypedAtomicActor"), 1);
+                            "ptolemy.actor.TypedAtomicActor"), 1,
+                            "ptolemy.actor.TypedAtomicActor");
             TYPED_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
                     typedAtomicActorUnit, "TypedAtomicActor", CG_CLASS);
             TYPED_ATOMIC_ACTOR_TYPE = TYPED_ATOMIC_ACTOR_DECL.getDefType();
