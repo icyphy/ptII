@@ -32,6 +32,7 @@ import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -192,12 +193,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 Attribute attribute = (Attribute)attributeList.get(i);
                 if (attribute instanceof Parameter) {
                     String type = ((Parameter)attribute).getType().toString();
+                    boolean isArrayType = false;
                     if (type.equals("boolean")) {
                         type = "bool";
+                    } else if (type.charAt(0) == '{') {
+                        // This should be an ArrayType.
+                        StringTokenizer tokenizer
+                            = new StringTokenizer("{}");
+                        type = tokenizer.nextToken();
                     }
                     code.append(type);
                     code.append(" ");
                     code.append(attribute.getFullName().replace('.', '_'));
+                    if (isArrayType) {
+                        code.append("[ ]");
+                    }
                     code.append(" = ");
                     code.append(((Variable) attribute).getToken().toString());
                     code.append(";\n");
@@ -232,16 +242,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             while (outputPorts.hasNext()) {
                 TypedIOPort outputPort = (TypedIOPort)outputPorts.next();
                 // Only generate declarations for those output ports with
-                // port width zero.
-                // FIXME: we need to think about how to deal with output
-                // ports that does not have downstream connections.
+                // port width zero. 
                 if (outputPort.getWidth() == 0) {
+                    // The buffer size of this port is always 1.
                     code.append(outputPort.getType().toString());
                     code.append(" ");
                     code.append(outputPort.getFullName().replace('.', '_'));
-                    if (outputPort.isMultiport()) {
-                        code.append("[1]");
-                    }
                     code.append(";\n");
                 }
             }

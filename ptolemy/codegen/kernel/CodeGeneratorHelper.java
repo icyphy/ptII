@@ -134,15 +134,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         Receiver[][] remoteReceivers 
             = (outputPort.getRemoteReceivers());
         
-        if (remoteReceivers.length <= channelNumber) {
+        if (remoteReceivers.length == 0) {
             // This channel of this output port doesn't have any sink.
             result.append(_component.getFullName().replace('.', '_'));
             result.append("_");
             result.append(outputPort.getName());
-            if (outputPort.isMultiport() && channelNumber > 0) {
-                result.append("_");
-                result.append((new Integer(channelNumber)).toString());
-            }
             return result.toString();
         }
         
