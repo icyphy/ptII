@@ -115,6 +115,15 @@ public class DEActor extends TypedAtomicActor {
         dir.fireAfterDelay(this, delay);
     }
 
+    /** Schedule this actor to be fired at a specified time in the future.
+     *  If the time is not in the future, then throw an exception.
+     *  @param timeStamp The time stamp at which the actor will be fired.
+     *  @exception IllegalActionException If the time stamp is in the past.
+     */
+    public void fireAt(double timeStamp) throws IllegalActionException {
+        DEDirector dir = (DEDirector)getDirector();
+        dir.fireAt(this, timeStamp);
+    }
 
     /** Empty all input ports.
      *
