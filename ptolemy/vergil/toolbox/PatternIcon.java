@@ -47,19 +47,14 @@ import diva.canvas.toolbox.*;
 This icon represents an icon with a similar look to another icon (its
 'pattern').  This is useful for using an icon in more than one place, while
 keeping a reference to it's original, in case the original is changed.
+This class is minimally useful by itself, since it doesn't understand MoML.
+Subclasses should  implement different ways of setting the
+pattern (such as referring to a library of icons).
 
 @author Steve Neuendorffer
 @version $Id$
 */
 public class PatternIcon extends EditorIcon {
-
-    /**
-     * Create a new icon with the name "_icon" in the given container.
-     */
-    public PatternIcon(NamedObj container)
-            throws NameDuplicationException, IllegalActionException {
-        this(container, "_icon");
-    }
 
     /**
      * Create a new icon with the given name in the given container.

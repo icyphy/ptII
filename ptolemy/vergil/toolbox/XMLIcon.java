@@ -58,16 +58,6 @@ it will have a default figure.
 public class XMLIcon extends EditorIcon implements Configurable {
 
     /**
-     * Create a new icon with the name "_icon" in the given container.
-     * By default, the icon contains no graphic
-     * representations.
-     */
-    public XMLIcon(NamedObj container)
-            throws NameDuplicationException, IllegalActionException {
-        this(container, "_icon");
-    }
-
-    /**
      * Create a new icon with the given name in the given container.
      * By default, the icon contains no graphic
      * representations.
@@ -212,6 +202,38 @@ public class XMLIcon extends EditorIcon implements Configurable {
         return result;
     }
 
+    /** Write a MoML description of the contents of this object, which
+     *  in this base class is the attributes.  This method is called
+     *  by _exportMoML().  If there are attributes, then
+     *  each attribute description is indented according to the specified
+     *  depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     *  @see NamedObj#_exportMoMLContents
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+	super._exportMoMLContents(output, depth);
+	output.write(_getIndentPrefix(depth));
+	output.write("<configure>\n");
+	output.write(_getIndentPrefix(depth));
+	output.write("<![CDATA[\n");
+	output.write(_getIndentPrefix(depth + 1));
+	output.write("<xmlgraphic>\n");
+	Iterator i = _graphics.iterator();
+	while(i.hasNext()) {
+	    GraphicElement element = (GraphicElement) i.next();
+	    element.exportMoML(output, _getIndentPrefix(depth + 1));
+	}
+	output.write(_getIndentPrefix(depth + 1));
+	output.write("</xmlgraphic>\n");
+	output.write(_getIndentPrefix(depth));
+	output.write("]]>\n");
+	output.write(_getIndentPrefix(depth));
+	output.write("</configure>\n");
+    }
+
     private GraphicElement _createGraphicElement(XmlElement e)
             throws IllegalActionException {
 
@@ -235,8 +257,6 @@ public class XMLIcon extends EditorIcon implements Configurable {
         element.setLabel(e.getPCData());
         return element;
     }
-
-
 
     private LinkedList _graphics;
 }

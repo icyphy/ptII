@@ -30,15 +30,15 @@
 
 package ptolemy.vergil.toolbox;
 
+import ptolemy.data.*;
 import ptolemy.kernel.util.*;
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
 import diva.canvas.toolbox.*;
 import diva.util.java2d.*;
+import diva.util.xml.*;
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.*;
 import java.util.*;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicElement
@@ -49,7 +49,7 @@ i.e. a line, box, textbox, etc.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class GraphicElement extends Object {
+public class GraphicElement {
     /**
      * Create a new GraphicElement with the given type.
      * By default, the GraphicElement contains no graphic
@@ -142,7 +142,7 @@ public class GraphicElement extends Object {
     }
 
     /**
-     * Return a string this representing Icon.
+     * Return a string this representing this GraphicElement.
      */
     public String toString() {
         String result = "{";
@@ -158,6 +158,16 @@ public class GraphicElement extends Object {
         result += "} label {" + getLabel() + "}}";
 
         return result;
+    }
+
+    /**
+     * Write the GraphicElement in XML format to the given writer.
+     */
+    public void exportMoML(Writer out, String prefix)
+	throws IOException {
+	XmlElement element = new XmlElement(_type, _attributes);
+	element.setPCData(_label);
+	element.writeXML(out, prefix);
     }
 
     private static final PaintedString _errorObject =

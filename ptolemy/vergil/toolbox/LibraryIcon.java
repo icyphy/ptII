@@ -48,8 +48,8 @@ import diva.canvas.toolbox.*;
 An icon is the graphical representation of a schematic entity.
 Some generic icons are stored in icon libraries to serve as generic templates.
 This icon references such an icon as its pattern.
-
-If the icon is never configured, then it will use a default figure for its
+If the icon is never configured or the name of the icon in the library
+that it represents is not set, then it will use a default figure for its
 pattern.
 
 @author Steve Neuendorffer
@@ -59,27 +59,18 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 
     /**
      * Create a new icon with the name "_icon" in the given container.
-     * By default, the icon contains no graphic
-     * representations.
-     */
-    public LibraryIcon(NamedObj container)
-            throws NameDuplicationException, IllegalActionException {
-        this(container, "_icon");
-    }
-
-    /**
-     * Create a new icon with the name "_icon" in the given container.
      */
     public LibraryIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_iconName = "";
+	_iconName = null;
     }
 
-    /** Configure the object with data from the specified input stream.
-     *  This method is defined to throw a very general exception to allow
-     *  classes that implement the interface to use whatever exceptions
-     *  are appropriate.
+    /** Read a string representing an icon name from the input stream and
+     *  set the pattern of this
+     *  icon to the icon in the icon library with that name.  If the 
+     *  string is not the name of an icon in the icon library, or if the 
+     *  icon library has not been set, then do not change the pattern.
      *  @param base The base relative to which references within the input
      *   stream are found, or null if this is not known.
      *  @param in InputStream
@@ -95,6 +86,25 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 	    throw new RuntimeException("buffer overrun");
 	}
 	String name = new String(b, 0, bytesread);
+	setIconName(name);
+    }
+
+    /** 
+     * Return the name of the pattern in the icon library.
+     */
+    public String getIconName() {
+	return _iconName;
+    }
+
+    /** 
+     * Set the pattern of this icon to the icon with the given name. 
+     * If the string is the name of an icon in the icon library, then set the
+     * icon name to the given string, and set the pattern of this icon to that
+     * icon.
+     * If the library is null or if the icon was not found 
+     * in the library, then do nothing.  
+     */
+    public void setIconName(String name) {   
         CompositeEntity library = LibraryIcon.getIconLibrary();
         if(library == null) return;
 	EditorIcon icon = (EditorIcon)library.getAttribute(name);
@@ -105,20 +115,7 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 	}
     }        
 
-    /** Return the name of this icon's name in the icon library.
-     */
-    public String getIconName() {
-	return _iconName;
-    }
-
-    /**
-     * Return a string this representing Icon.
-     */
-    public String toString() {
-	String str = super.toString() + "(";
-        return str + ")";
-    }
-
+ 
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
 
@@ -140,8 +137,6 @@ public class LibraryIcon extends PatternIcon implements Configurable {
             result += super._description(detail, indent, 0);
         else
             result += super._description(detail, indent, 1);
-	//	result += " graphics {\n";
-        //result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 
         return result;
@@ -160,20 +155,24 @@ public class LibraryIcon extends PatternIcon implements Configurable {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
 	super._exportMoMLContents(output, depth);
-	output.write(_getIndentPrefix(depth));
-	output.write("<configure>" + _iconName + "</configure>\n");
+	if(_iconName != null) {
+	    output.write(_getIndentPrefix(depth));
+	    output.write("<configure>" + _iconName + "</configure>\n");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         static variables                  ////
 
-    /** Return the root icon library from which to search for icons.
+    /** 
+     * Return the root icon library from which to search for icons.
      */
     public static CompositeEntity getIconLibrary() {
 	return _iconLibrary;
     }
 
-    /** Set the root icon library from which to search for icons.
+    /** 
+     * Set the root icon library from which to search for icons.
      */
     public static void setIconLibrary(CompositeEntity library) {
 	_iconLibrary = library;

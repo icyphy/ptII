@@ -49,31 +49,22 @@ import javax.swing.SwingConstants;
 /**
 
 An icon is the graphical representation of a schematic entity.
-EditorIcons are stored hierarchically in icon libraries.   Every icon has a
-name, along with a graphical representation.
+Every icon has a name, along with a graphical representation.
 EditorIcons are capable of creating a visual representation representing
 the icon as either a swing icon, or as a diva figure.
 In general, one or the other will form the basis of the visual representation, 
 and the other will be created from the first, using either a SwingWrapper
-or a FigureIcon.  This class assumes that the figure forms the basis, 
+or a FigureIcon. This class assumes that the figure forms the basis, 
 so it is only necessary to override createBackgroundFigure.  If the reverse
 is true, then you should override createBackgroundFigure and createIcon to
 avoid unnecessarily converting to a figure and back again.
+This base class icon is just a simple white box.  For a more interesting
+Icon, see the XMLIcon class.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
 public class EditorIcon extends Icon {
-
-    /**
-     * Create a new icon with the name "_icon" in the given container.
-     * By default, the icon contains no graphic
-     * representations.
-     */
-    public EditorIcon(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        this(container, "_icon");
-    }
 
     /**
      * Create a new icon with the given name in the given container.
@@ -88,7 +79,10 @@ public class EditorIcon extends Icon {
     /**
      * Create a figure based on this icon.  The figure will be a
      * Composite Figure with the figure returned by createBackgroundFigure
-     * as its background.
+     * as its background.  This method adds a nice label as well.
+     * Subclasses of this
+     * class should never return null, even if the icon has not been properly
+     * initialized. 
      */
     public Figure createFigure() {
 	Figure background = createBackgroundFigure();
@@ -107,23 +101,29 @@ public class EditorIcon extends Icon {
     /**
      * Create the background figure based on this icon.  This should
      * manufacture a new figure each time, since figures are cheap and contain
-     * their own location.
+     * their own location.  This base class returns a default background 
+     * figure which is a simple white box.  Subclasses will generally override
+     * this method to create more interesting figures.  Subclasses of this
+     * class should never return null, even if the icon has not been properly
+     * initialized. 
      */
     public Figure createBackgroundFigure() {
 	return _createDefaultBackgroundFigure();
     }
 
     /** 
-     * Create a new graphical icon that represents this class visually.  This
-     * method will generally want to cache the swing icon that is created,
-     * since swing icons are expensive and don't contain state.
+     * Create a new graphical icon that represents this class visually. 
      * The default implementation in this base class creates the Icon
      * from the background figure, so it is not necessary to override this 
-     * method in most cases.
+     * method in most cases.  Note that the swing Icon does NOT include a
+     * label for the name, since that is usually added separately in a
+     * swing component.
      * @exception UnsupportedOperationException If a swing icon cannot be
      * created.
      */
     public javax.swing.Icon createIcon() {
+	// Note that the implementation of this method caches the 
+	// rendered icon in a Variable.  This may not be the right thing. 
         // First check to see if the icon has a rendering cached.
         NamedObj renderedObject=
             getAttribute("renderedIcon");
@@ -157,9 +157,11 @@ public class EditorIcon extends Icon {
 
     /**
      * The default background figure, if nothing else is available.
+     * Subclasses of this class should generally override 
+     * the createBackgroundFigure method instead and use this method only if
+     * the icon has not been properly initialized.
      */
     protected static Figure _createDefaultBackgroundFigure() {
 	return new BasicRectangle(0, 0, 60, 40, Color.white, 1);
     }
-
 }
