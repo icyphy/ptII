@@ -72,7 +72,7 @@ public class MoMLSimpleApplication implements ChangeListener {
 
     /** React to a change request has been successfully executed.
      *  This method is called after a change request
-     *  has been executed successfully.  In this class, we 
+     *  has been executed successfully.  In this class, we
      *  do nothing.
      *  @param change The change that has been executed, or null if
      *   the change was not done via a ChangeRequest.
