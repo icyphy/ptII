@@ -127,7 +127,18 @@ file. This file includes support for
 <h2><a name="InvokingTheDebugger">Invoking the debugger</a></h2>
 
 The Ptolemy II start up scripts in <code>$PTII/bin</code>
-have the following options that interact with the debugger
+have the following options that interact with the debugger.
+
+<br>Under Windows, these options will <b>not</b> work with the DOS
+scripts, you must run the shell script versions of these scripts.
+<br>The easiest way to run these scripts under Windows is to start up
+the Cygwin bash shell.  
+<br>Another way is to use the DOS shell and
+preface the commands with <code>bash -C</code>:
+<pre>
+cd %PTI%
+bash -C ptolemy -debug ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
+</pre>
 
 <dl>
 <dt> <CODE>-debug</CODE>
