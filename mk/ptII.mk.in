@@ -422,7 +422,7 @@ X10_JAR =       @X10_CLASSES@
 DIVA_JAR = $(PTII)/lib/diva.jar
 
 # JSAT jar location
-MESCAL_DEPEND_JAR = $(PTII)/mescal/lib/jsat.jar$(CLASSPATHSEPARATOR)$(PTII)/mescal/lib/mescal_java_cup.jar$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
+MESCAL_DEPEND_JAR = $(PTII)/mescal/lib/jsat.jar$(CLASSPATHSEPARATOR)$(PTII)/mescal/lib/mescal_java_cup.jar$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(PTII)/mescal/lib/chloe.jar
 
 # Commands used to install scripts and data
 # Use $(ROOT) instead of $(PTII) for install so that we don't
