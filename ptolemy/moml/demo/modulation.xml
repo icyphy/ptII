@@ -10,12 +10,12 @@
   <import source="sinewave.xml"/>
 
   <!-- Define the actors -->
-  <entity name="carrier" class=".lib.sinewave">
+  <entity name="carrier" class=".sinewave">
     <attribute name="samplingFrequency" value="2*PI"></attribute>
     <attribute name="frequency" value="PI*0.2"></attribute>
   </entity>
 
-  <entity name="signal" class=".lib.sinewave">
+  <entity name="signal" class=".sinewave">
     <attribute name="samplingFrequency" value="2*PI"></attribute>
     <attribute name="frequency" value="PI*0.02"></attribute>
   </entity>

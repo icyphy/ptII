@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
@@ -36,11 +36,16 @@ import java.util.Enumeration;
 
 import com.microstar.xml.XmlException;
 
-import ptolemy.moml.*;
 import ptolemy.gui.*;
+import ptolemy.actor.Configurable;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplet
@@ -66,6 +71,11 @@ Any entity that is created in parsing the MoML file that implements
 the Placeable interface is placed in the applet.  Thus, entities
 with visual displays automatically have their visual displays
 appearing in the applet.
+<p>
+If the top-level object in the MoML file is an instance of
+TypedCompositeActor, then the _toplevel protected member is set
+to refer to it, and an instance of Manager is created for it.
+Otherwise, the _toplevel member will be null.
 
 @author  Edward A. Lee
 @version $Id$
@@ -107,6 +117,10 @@ public class MoMLApplet extends PtolemyApplet {
      */
     public void init() {
 
+        // Do not call super.init() because it creates a toplevel
+        // manager.  Since we don't call it, we have to process the
+        // background parameter.
+
         // Process the background parameter.
         _background = Color.white;
         try {
@@ -145,10 +159,16 @@ public class MoMLApplet extends PtolemyApplet {
             MoMLParser parser = new MoMLParser(null, this);
             URL docBase = getDocumentBase();
             URL xmlFile = new URL(docBase, modelURL);
-            _toplevel = parser.parse(docBase, xmlFile.openStream());
-            _manager = _toplevel.getManager();
-            _manager.addExecutionListener(this);
-            _workspace = _toplevel.workspace();
+            _toplevel = null;
+            _manager = null;
+            NamedObj toplevel = parser.parse(docBase, xmlFile.openStream());
+            _workspace = toplevel.workspace();
+            if (toplevel instanceof TypedCompositeActor) {
+                _toplevel = (TypedCompositeActor)toplevel;
+                _manager = new Manager(_workspace, "manager");
+                _toplevel.setManager(_manager);
+                _manager.addExecutionListener(this);
+            }
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
                 XmlException xmlEx = (XmlException)ex;

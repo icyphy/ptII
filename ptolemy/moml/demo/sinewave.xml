@@ -1,7 +1,6 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../moml.dtd">
-<model name="lib" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="sinewave" class="ptolemy.actor.TypedCompositeActor">
+<!DOCTYPE class SYSTEM "../moml.dtd">
+<class name="sinewave" extends="ptolemy.actor.TypedCompositeActor">
     <doc>
     This composite actor generates a sine wave.
     </doc>
@@ -46,5 +45,4 @@
     <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
     <link port="sine.output" relation="r2"/>
     <link port="output" relation="r2"/>
-  </entity>
-</model>
+</class>

@@ -33,12 +33,15 @@ package ptolemy.moml;
 // Ptolemy imports.
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Configurable;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.expr.Variable;
 
 // Java imports.
 import java.awt.Panel;
+import java.util.EmptyStackException;
 import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
@@ -202,7 +205,11 @@ public class MoMLParser extends HandlerBase {
                 || elementName.equals("relation")
                 || elementName.equals("rendition")
                 || elementName.equals("vertex")) {
-            _current = _containers.pop();
+            try {
+                _current = _containers.pop();
+            } catch (EmptyStackException ex) {
+                // We are back at the top level.  Ignore.
+            }
         }
     }
 
@@ -239,11 +246,11 @@ public class MoMLParser extends HandlerBase {
      *     MoMLParser parser = new MoMLParser();
      *     URL docBase = getDocumentBase();
      *     URL xmlFile = new URL(docBase, modelURL);
-     *     TypedCompositeActor toplevel =
-     *             parser.parse(docBase, xmlFile.openStream());
+     *     NamedObj toplevel = parser.parse(docBase, xmlFile.openStream());
      *  </pre>
-     *  If the first argument is null, then it is assumed that
-     *  all URLs are absolute.
+     *  If the first argument to parse() is null, then it is assumed that
+     *  all URLs in the MoML file are absolute.
+     *  <p>
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid MoML file.
      *  @param base The base URL for relative references, or null if
@@ -252,7 +259,7 @@ public class MoMLParser extends HandlerBase {
      *  @return The top-level composite entity of the Ptolemy II model.
      *  @throws Exception If the parser fails.
      */
-    public TypedCompositeActor parse(URL base, InputStream input)
+    public NamedObj parse(URL base, InputStream input)
             throws Exception {
         _parser.setHandler(this);
         _base = base;
@@ -324,19 +331,11 @@ public class MoMLParser extends HandlerBase {
                     _checkForNull(className,
                             "No class for element \"attribute\"");
 
-                    // Get a constructor for the attribute.
-                    Class attributeClass = Class.forName(className);
-                    Class[] argTypes = new Class[2];
-                    argTypes[0] = NamedObj.class;
-                    argTypes[1] = String.class;
-                    Constructor attributeConstructor
-                            = attributeClass.getConstructor(argTypes);
-                    
                     // Invoke the constructor.
                     Object[] arguments = new Object[2];
                     arguments[0] = _current;
                     arguments[1] = attributeName;
-                    attribute = attributeConstructor.newInstance(arguments);
+                    attribute = _createInstance(className, arguments);
 
                     if (value != null) {
                         if (!(attribute instanceof Variable)) {
@@ -364,17 +363,22 @@ public class MoMLParser extends HandlerBase {
              } else if (elementName.equals("class")) {
                 String className = (String)_attributes.get("extends");
                 _checkForNull(className,
-                        "No extends attribute for element \"class\"");
+                        "Missing extends attribute for element \"class\"");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"class\"");
-                _checkClass(_current, TypedCompositeActor.class,
-                       "Element \"class\" found inside an element that "
-                       + "is not a TypedCompositeActor. It is: "
-                       + _current.toString());
-
-                Object newEntity = _createEntity(className, entityName);
-                _containers.push(_current);
-                _current = newEntity;
+                if (_current != null) {
+                    _checkClass(_current, CompositeEntity.class,
+                           "Element \"class\" found inside an element that "
+                           + "is not a CompositeEntity. It is: "
+                           + _current);
+                    _containers.push(_current);
+                    Object newEntity = _createEntity(className, entityName);
+                    _current = newEntity;
+                } else {
+                    Object newEntity = _createEntity(className, entityName);
+                    _current = newEntity;
+                    _toplevel = (NamedObj)_current;
+                }
 
             } else if (elementName.equals("configure")) {
                 String source = (String)_attributes.get("source");
@@ -394,21 +398,15 @@ public class MoMLParser extends HandlerBase {
                 _checkForNull(className, "No class for element \"director\"");
                 String dirName = (String)_attributes.get("name");
                 _checkForNull(dirName, "No name for element \"director\"");
-                Class dirClass = Class.forName(className);
-                Class[] argTypes = new Class[2];
-                argTypes[0] = TypedCompositeActor.class;
-                argTypes[1] = String.class;
-                Constructor dirConstructor
-                        = dirClass.getConstructor(argTypes);
-                Object[] arguments = new Object[2];
                 _checkClass(_current, CompositeActor.class,
                         "Element \"director\" found inside an element that "
                         + "is not a CompositeActor. It is: "
                         + _current.toString());
+                Object[] arguments = new Object[2];
                 arguments[0] = _current;
                 arguments[1] = dirName;
                 _containers.push(_current);
-                _current = dirConstructor.newInstance(arguments);
+                _current = _createInstance(className, arguments);
 
             } else if (elementName.equals("doc")) {
                 _currentCharData = new StringBuffer();
@@ -418,9 +416,9 @@ public class MoMLParser extends HandlerBase {
                 _checkForNull(className, "No class for element \"entity\"");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"entity\"");
-                _checkClass(_current, TypedCompositeActor.class,
+                _checkClass(_current, CompositeEntity.class,
                         "Element \"entity\" found inside an element that "
-                        + "is not a TypedCompositeActor. It is: "
+                        + "is not a CompositeEntity. It is: "
                         + _current.toString());
                 Object newEntity = _createEntity(className, entityName);
                 if (_panel != null && newEntity instanceof Placeable) {
@@ -436,7 +434,7 @@ public class MoMLParser extends HandlerBase {
                 // Read external model definition and then clone it.
                 MoMLParser newParser = new MoMLParser(_workspace);
                 URL xmlFile = new URL(_base, source);
-                TypedCompositeActor reference =
+                NamedObj reference =
                         newParser.parse(_base, xmlFile.openStream());
                 if (_imports == null) {
                     _imports = new LinkedList();
@@ -506,18 +504,10 @@ public class MoMLParser extends HandlerBase {
                 String modelName = (String)_attributes.get("name");
                 _checkForNull(modelName, "No name for element \"model\"");
 
-                Class toplevelClass = Class.forName(className);
-                Class[] argTypes = new Class[1];
-                argTypes[0] = Workspace.class;
-                Constructor toplevelConstructor
-                        = toplevelClass.getConstructor(argTypes);
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
-                _toplevel = (TypedCompositeActor)
-                        toplevelConstructor.newInstance(arguments);
-                _manager = new Manager(_workspace, "manager");
+                _toplevel = (NamedObj)_createInstance(className, arguments);
                 _toplevel.setName(modelName);
-                _toplevel.setManager(_manager);
                 _current = _toplevel;
 
             } else if (elementName.equals("port")) {
@@ -526,56 +516,45 @@ public class MoMLParser extends HandlerBase {
                 String portName = (String)_attributes.get("name");
                 _checkForNull(portName, "No name for element \"port\"");
 
-                // Get a constructor for the port.
-                Class portClass = Class.forName(className);
-                Class[] argTypes = new Class[2];
-                argTypes[0] = ComponentEntity.class;
-                argTypes[1] = String.class;
-                Constructor portConstructor
-                        = portClass.getConstructor(argTypes);
-
-                // Invoke the constructor.
-                Object[] arguments = new Object[2];
                 _checkClass(_current, ComponentEntity.class,
                         "Element \"port\" found inside an element that "
                         + "is not a ComponentEntity. It is: "
                         + _current.toString());
+
+                Object[] arguments = new Object[2];
                 arguments[0] = (ComponentEntity)_current;
                 arguments[1] = portName;
+                Port port = (Port)_createInstance(className, arguments);
+
                 _containers.push(_current);
-                IOPort port = (IOPort)portConstructor.newInstance(arguments);
                 _current = port;
 
-                String direction = (String)_attributes.get("direction");
-                _checkForNull(direction, "No direction for element \"port\"");
-                port.setOutput(direction.equals("output")
-                        || direction.equals("both"));
-                port.setInput(direction.equals("input")
-                        || direction.equals("both"));                    
+                if (port instanceof IOPort) {
+                    String direction = (String)_attributes.get("direction");
+                    _checkForNull(direction,
+                            "No direction for element \"port\"");
+                    IOPort ioport = (IOPort)port;
+                    ioport.setOutput(direction.equals("output")
+                            || direction.equals("both"));
+                    ioport.setInput(direction.equals("input")
+                            || direction.equals("both"));                    
+                }
 
             } else if (elementName.equals("relation")) {
                 String className = (String)_attributes.get("class");
                 _checkForNull(className, "No class for element \"relation\"");
                 String relationName = (String)_attributes.get("name");
                 _checkForNull(relationName, "No name for element \"relation\"");
-                _checkClass(_current, TypedCompositeActor.class,
+                _checkClass(_current, CompositeEntity.class,
                         "Element \"relation\" found inside an element that "
-                        + "is not a TypedCompositeActor. It is: "
+                        + "is not a CompositeEntity. It is: "
                         + _current.toString());
-                // Get a constructor for the relation.
-                Class relationClass = Class.forName(className);
-                Class[] argTypes = new Class[2];
-                argTypes[0] = TypedCompositeActor.class;
-                argTypes[1] = String.class;
-                Constructor relationConstructor
-                        = relationClass.getConstructor(argTypes);
             
-                // Invoke the constructor.
                 Object[] arguments = new Object[2];
-                arguments[0] = (TypedCompositeActor)_current;
+                arguments[0] = (CompositeEntity)_current;
                 arguments[1] = relationName;
                 _containers.push(_current);
-                _current = relationConstructor.newInstance(arguments);
+                _current = _createInstance(className, arguments);
 
             } else if (elementName.equals("rendition")) {
                 String className = (String)_attributes.get("class");
@@ -586,21 +565,12 @@ public class MoMLParser extends HandlerBase {
                         + "is not a NamedObj. It is: "
                         + _current.toString());
 
-                // Get a constructor for the rendition.
-                Class renditionClass = Class.forName(className);
-                Class[] argTypes = new Class[2];
-                argTypes[0] = NamedObj.class;
-                argTypes[1] = String.class;
-                Constructor renditionConstructor
-                      = renditionClass.getConstructor(argTypes);
-            
-                // Invoke the constructor.
                 Object[] arguments = new Object[2];
                 arguments[0] = (NamedObj)_current;
                 arguments[1] = "_icon";
 
                 _containers.push(_current);
-                _current = renditionConstructor.newInstance(arguments);
+                _current = _createInstance(className, arguments);
 
             } else if (elementName.equals("vertex")) {
                 String vertexName = (String)_attributes.get("name");
@@ -694,47 +664,82 @@ public class MoMLParser extends HandlerBase {
     // an entity that has been previously created (by an absolute
     // or relative name), then that entity is cloned.  Otherwise,
     // the class name is interpreted as a Java class name and we
-    // attempt to construct the entity.
+    // attempt to construct the entity.  This method assumes that
+    // _current is an instance of CompositeEntity, or a class cast
+    // exception is thrown.
     private Object _createEntity(String className, String entityName)
                  throws Exception {
         // First check to see if the class extends a named entity.
         ComponentEntity reference = _searchForEntity(className);
         if (reference == null) {
             // Not a named entity. Invoke the class loader.
-            // Get a constructor for the entity.
-            Class entityClass = Class.forName(className);
-            Class[] argTypes = new Class[2];
-            argTypes[0] = TypedCompositeActor.class;
-            argTypes[1] = String.class;
-            Constructor entityConstructor
-                   = entityClass.getConstructor(argTypes);
-            
-            // Invoke the constructor.
-            Object[] arguments = new Object[2];
-            arguments[0] = (TypedCompositeActor)_current;
-            arguments[1] = entityName;
-            return entityConstructor.newInstance(arguments);
+            if (_current != null) {
+                Object[] arguments = new Object[2];
+                arguments[0] = _current;
+                arguments[1] = entityName;
+                return _createInstance(className, arguments);
+            } else {
+                Object[] arguments = new Object[1];
+                arguments[0] = _workspace;
+                Object result = _createInstance(className, arguments);
+                if (result instanceof NamedObj) {
+                    ((NamedObj)result).setName(entityName);
+                }
+                return result;
+            }
         } else {
             // Extending a previously defined entity.  Clone it.
-            ComponentEntity newActor = (ComponentEntity)reference.clone();
+            ComponentEntity newEntity = (ComponentEntity)reference.clone();
             
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
             // name conflict here.  If we were to set the name after
             // setting the container, we could get a spurious name conflict.
-            newActor.setName(entityName);
+            newEntity.setName(entityName);
 
             // Set the container of the clone.
-            newActor.setContainer((TypedCompositeActor)_current);
+            newEntity.setContainer((CompositeEntity)_current);
             
-            return newActor;
+            return newEntity;
         }
     }
 
+    // Create an instance of the specified class name by finding a
+    // constructor that matches the specified arguments.
+    // @param className The name of the class.
+    // @param arguments The constructor arguments.
+    // @throws Exception If no matching constructor is found, or if
+    //  invoking the constructor triggers an exception.
+    private Object _createInstance(String className, Object[] arguments)
+            throws Exception {
+        Class attributeClass = Class.forName(className);
+        Constructor[] constructors = attributeClass.getConstructors();
+        for (int i = 0; i < constructors.length; i++) {
+            Constructor constructor = constructors[i];
+            Class[] parameterTypes = constructor.getParameterTypes();
+            if (parameterTypes.length != arguments.length) continue;
+            boolean match = true;
+            for (int j = 0; j < parameterTypes.length; j++) {
+                if (!(parameterTypes[j].isInstance(arguments[j]))) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                return constructor.newInstance(arguments);
+            }
+        }
+        // If we get here, then there is no matching constructor.
+        throw new XmlException("Failed to construct " + className,
+                _currentExternalEntity(),
+                _parser.getLineNumber(),
+                _parser.getColumnNumber());
+    }
+
     // Return the port corresponding to the specified port name in the
-    // specified composite actor.  If the port belongs directly to the
-    // composite actor, then the argument is a simple name.  If the
-    // port belongs to a component actor, then the name is the actor
+    // specified composite entity.  If the port belongs directly to the
+    // composite entity, then the argument is a simple name.  If the
+    // port belongs to a component entity, then the name is the entity
     // name, a period, and the port name.
     // Throw an exception if there is no such port.
     // The returned value is never null.
@@ -763,17 +768,23 @@ public class MoMLParser extends HandlerBase {
             }
             Iterator entries = _imports.iterator();
             while (entries.hasNext()) {
-                TypedCompositeActor candidate
-                        = (TypedCompositeActor)entries.next();
-                if (candidate.getName().equals(topLevelName)) {
-                    if (nextPeriod < 1) {
-                        // Found a match.
-                        return candidate;
-                    } else {
-                        ComponentEntity result = candidate.getEntity(
-                                name.substring(nextPeriod + 1));
-                        if (result != null) {
-                            return result;
+                Object possibleCandidate = entries.next();
+                if (possibleCandidate instanceof ComponentEntity) {
+                    ComponentEntity candidate =
+                            (ComponentEntity)possibleCandidate;
+                    if (candidate.getName().equals(topLevelName)) {
+                        if (nextPeriod < 1) {
+                            // Found a match.
+                            return candidate;
+                        } else {
+                            if (candidate instanceof CompositeEntity) {
+                                ComponentEntity result =
+                                ((CompositeEntity)candidate).getEntity(
+                                        name.substring(nextPeriod + 1));
+                                if (result != null) {
+                                    return result;
+                                }
+                            }
                         }
                     }
                 }
@@ -812,9 +823,6 @@ public class MoMLParser extends HandlerBase {
     // List of top-level entities imported via import element.
     private List _imports;
 
-    // The manager for this model.
-    private Manager _manager;
-
     // The panel into which to place Placeable entities.
     private Panel _panel;
 
@@ -822,7 +830,7 @@ public class MoMLParser extends HandlerBase {
     private XmlParser _parser = new XmlParser();
 
     // Top-level entity.
-    private TypedCompositeActor _toplevel = null;
+    private NamedObj _toplevel = null;
 
     // The workspace for this model.
     private Workspace _workspace;
