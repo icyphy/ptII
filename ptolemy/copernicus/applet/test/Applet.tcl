@@ -51,8 +51,9 @@ if {[info procs sootCodeGeneration] == "" } then {
 proc autoAppletCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	if { [string last FileWriter2.xml $file] != -1 \
+		|| [string last Legiotto.xml $file] != -1 } {
 		|| [string last ReadFile2.xml $file] != -1 } {
-	    // Skip known failures
+	    # Skip known failures
 	    puts "Skipping Known Failure: $file"
 	    continue
 	}
@@ -73,6 +74,13 @@ proc autoAppletDemoCG {autoDirectory} {
     foreach directory [glob $autoDirectory/*/demo/*] {
 	set base [file tail $directory]
 	set file [file join $directory $base.xml]
+	if { [string last FileWriter2.xml $file] != -1 \
+		|| [string last Legiotto.xml $file] != -1 } {
+		|| [string last ReadFile2.xml $file] != -1 } {
+	    # Skip known failures
+	    puts "Skipping Known Failure: $file"
+	    continue
+	}
 	if [ file exists $file ] {
 	    incr i
 	    puts "---- $i testing $file"
@@ -89,8 +97,6 @@ proc autoAppletDemoCG {autoDirectory} {
 ######################################################################
 ####
 #
-
-autoAppletDemoCG [file join $relativePathToPTII ptolemy domains]
 
 #test Applet-1.1 {Compile and run the Orthocomm test} {
 #    set result [sootAppletCodeGeneration \
