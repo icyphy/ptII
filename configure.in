@@ -523,8 +523,12 @@ fi
 # $PTII/ptolemy/codegen/makefile if jmf was found
 PTJMF_DIR=
 
+# Under Windows, installing JMF will adjust the CLASSPATH.
+# Ideally, we would check this.
+JMFHOME="c:/Program Files/JMF2.1.1"
+
 # Directory that contains the jmf jar files
-JMF_JAR='${PTII}/vendors/jmf/JMF_0_3_4.jar'
+JMF_JAR='${JMFHOME}/lib/jmf.jar'
 
 # We only need to look for jmf if $PTII/ptolemy/apps/jmf exists
 if test ! -d "$PTII/ptolemy/apps/jmf"; then
@@ -543,20 +547,8 @@ else
 	# Set to jmf and used in
 	# $PTII/ptolemy/apps/makefile if jmf was found
 	PTJMF_DIR=jmf
-    else
-	JMF_JAR=$PTII/vendors/jmf/JMF_0_3_4_1.jar
-	if test -f "$JMF_JAR"; then
-	    AC_MSG_RESULT([$JMF_JAR])
-	    # Set to jmf and used in
-	    # $PTII/ptolemy/apps/makefile if jmf was found
-	    PTJMF_DIR=jmf
-	fi    
     fi	
 
-    if test "$JMFHOME" = ""; then
-        AC_MSG_WARN(['\$JMFHOME is not set, perhaps you
-    did not reboot after installing JMF?']) 		
-    fi	
     if test "$PTJMF_DIR" = ""; then
         AC_MSG_WARN(['Failed to find \$JMFHOME/lib/jmf.jar
     perhaps Jmf is not installed?
