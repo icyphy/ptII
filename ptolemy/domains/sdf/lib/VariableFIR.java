@@ -181,7 +181,8 @@ public class VariableFIR extends FIR {
         // this is the first fire(), then renitialize.
         if (_reinitializeNeeded) _reinitialize();
 
-        if (input.hasToken(0, _dec * _blockSizeValue)) return true;
+        if (input.hasToken(0, _dec * _blockSizeValue) &&
+                newTaps.hasToken(0)) return super.prefire();
         else return false;
     }
 
