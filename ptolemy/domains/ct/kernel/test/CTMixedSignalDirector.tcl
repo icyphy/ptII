@@ -1,4 +1,4 @@
-# Tests for the CTEmbeddedDirector class
+# Tests for the CTMixedSignalDirector class
 #
 # @Author: Haiyang Zheng
 #
@@ -43,29 +43,20 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####  Test constructors.
 #
-test CTEmbeddedDirector-1.1 {Construct a Director and get name} {
-    set d1 [java::new ptolemy.domains.ct.kernel.CTEmbeddedDirector]
+test CTMixedSignalDirector-1.1 {Construct a Director and get name} {
+    set d1 [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector]
     list  [$d1 getName]
 } {{}}
 
-test CTEmbeddedDirector-1.2 {Construct a Director in a workspace} {
+test CTMixedSignalDirector-1.2 {Construct a Director in a workspace} {
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set d1 [java::new ptolemy.domains.ct.kernel.CTEmbeddedDirector $w]
+    set d1 [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $w]
     list  [$d1 getFullName]
 } {.}
 
-test CTEmbeddedDirector-1.3 {Construct with a name and a container} {
+test CTMixedSignalDirector-1.3 {Construct with a name and a container} {
     set ca [java::new ptolemy.actor.TypedCompositeActor $w]
     $ca setName CA
-    set d2 [java::new ptolemy.domains.ct.kernel.CTEmbeddedDirector $ca DIR2]
+    set d2 [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ca DIR2]
     list [$d2 getFullName]
 } {.CA.DIR2}
-
-######################################################################
-####  Test the canBeTopLevelDirector() method.
-#
-test CTEmbeddedDirector-2.1 {CTest the canBeTopLevelDirector() method} {
-	# CTEmbeddedDirector can not be top-level director
-    set d1 [java::new ptolemy.domains.ct.kernel.CTEmbeddedDirector]
-    list  [$d1 canBeTopLevelDirector]
-} {0}
