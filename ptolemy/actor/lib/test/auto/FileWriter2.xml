@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="125.0, 40.0">
         </property>
     </property>
-    <entity name="Reader" class="ptolemy.actor.lib.Reader">
+    <entity name="DoubleReader" class="ptolemy.actor.lib.DoubleReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/test/auto/FileWriter1Output.txt&quot;">
         </property>
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="false">
@@ -49,6 +49,6 @@
         <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="Reader.output" relation="relation"/>
+    <link port="DoubleReader.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
 </entity>
