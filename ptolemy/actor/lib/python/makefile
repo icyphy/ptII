@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/python
 
-DIRS = test
+DIRS = 		test demo
 
 # Root of the Java directory
 ROOT =          ../../../..
