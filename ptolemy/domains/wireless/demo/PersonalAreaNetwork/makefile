@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II PowerVariability demo
+# Makefile for Ptolemy II PersonalAreaNetwork demo
 #
 # @Authors: Christopher Hylands Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/wireless/demo/PowerVariability
+ME =		ptolemy/domains/wireless/demo/PersonalAreaNetwork
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PowerVariability
+PTPACKAGE = 	PersonalAreaNetwork
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -49,7 +49,8 @@ JSRCS = \
 	BluetoothNode.java
 
 OTHER_FILES_TO_BE_JARED = \
-	PowerVariability.xml
+	PersonalAreaNetwork.xml \
+	PersonalAreaNetwork2.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -73,14 +74,14 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 # Run the demo in all its different formats
-# Run demo_application first so that we generate PowerVariability.xml
+# Run demo_application first so that we generate PersonalAreaNetwork.xml
 demo: demo_vergil
 
 #demo_applet: $(PTCLASSJAR)
-#	CLASSPATH="$(CLASSPATH)" appletviewer PowerVariability.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer PersonalAreaNetwork.htm
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PowerVariability.xml
+	"$(PTII)/bin/vergil" PersonalAreaNetwork.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
