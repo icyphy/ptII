@@ -1,0 +1,71 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Hysteresis demo with Hierarchical FSM's and SDF</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Hysteresis demo with Hierarchical FSM's and SDF</H1>
+
+The following plot shows the noisy input signal (blue) and the output
+signal (red). The noisy input signal consists of a sinusoid plus a white Gaussian noise source.
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first 
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ width="600" height="350"
+ name="Hysteresis"
+ codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME="code" VALUE="ptolemy.domains.fsm.demo.Hysteresis.HysteresisApplet.class">
+<PARAM NAME="codebase" VALUE="../../../../..">
+<PARAM NAME="archive" VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/fsm/fsm.jar">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<PARAM NAME="defaultIterations" value="200">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+ code=ptolemy.domains.fsm.demo.Hysteresis.HysteresisApplet
+ codebase="../../../../.."
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/fsm/fsm.jar"
+ name="Hysteresis"
+ width="600" height="350"
+ background="#faf0e6"
+ defaultIterations="200"
+ pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
+
+One possible application of hysteresis is a heater control, where the noisy input signal (blue) could be the input from a temperature sensor. The output signal (red) would then correspond to the heater on/off, with +1 denoting the on state and -1 denoting the off state.
+
+<P>
+The topology of the model is shown below (here, all SDF actors are homogeneous).:
+<P>
+<center>
+<img src="hysteresis_model.gif" alt="topology">
+</center>
+<P>
+<H1>
+References</H1>
+
+<OL>
+<LI>
+A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
+Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
+1998.</LI>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</BODY>
+</HTML>
