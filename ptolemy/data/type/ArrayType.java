@@ -115,6 +115,8 @@ public class ArrayType extends StructuredType {
 	    argArrTok = (ArrayToken)t;
 	}
 
+        // may not need to distinguish constant and non-constant, can alway
+	// call the convert method to convert all elements.
 	if (isConstant()) {
 	    if (isEqualTo(argArrTok.getType())) {
 		return argArrTok;
@@ -157,8 +159,7 @@ public class ArrayType extends StructuredType {
 	}
     }
 
-    /** Return the type of the array elements. This methods always
-     *  returns the argument passed into the constructor.
+    /** Return the type of the array elements.
      *  @return a Type.
      */
     public Type getElementType() {
@@ -212,6 +213,9 @@ public class ArrayType extends StructuredType {
 	    }
 	}
 
+        // may not need to distinguish constant or non-constant, can
+	// just check if the element type of argument token is compatible
+	// with the _elementType of this ArrayType.
 	if (isConstant()) {
 	    int typeInfo = TypeLattice.compare(this, argType);
 	    if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
