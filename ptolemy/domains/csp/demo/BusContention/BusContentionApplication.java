@@ -30,7 +30,7 @@
 
 package ptolemy.domains.csp.demo.BusContention;
 
-import diva.graph.*;
+import diva.graph.compat.*;
 import diva.graph.model.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
