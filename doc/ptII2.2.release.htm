@@ -887,9 +887,17 @@ in an array.  This causes problems when Ptolemy is run on
 European machines that use a comma "1,0" instead of a period "1.1"
 in floating point numbers.
 
-<li> The readFile() parameter function does not work with applets.
+<li> The CT ContinuousTransferFunction actor is a Higher Order
+Function (HOF) actor that modifies the graph when it is run.  As a
+result, when a model that uses this actor is run, the model is
+modified and when the model is closed, the user will be asked if they
+would like to save the model.  The CT SquareWave demonstration
+exhibits this behaviour.
 
 <!--/hyVisualDocs-->
+<li> The readFile() parameter function does not work with applets.
+
+
 <!-- If you change the next paragraph update install.htm -->
 
 <li>The Matlab interface works only under Windows and it requires that
