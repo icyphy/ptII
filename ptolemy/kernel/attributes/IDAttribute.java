@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// IDAttribute
@@ -116,7 +117,14 @@ public class IDAttribute extends SingletonAttribute {
         lastUpdated.setVisibility(Settable.NOT_EDITABLE);
         
         author = new StringAttribute(this, "author");
-        String userName = System.getProperty("user.name");
+        String userName = null;
+        try {
+            userName = StringUtilities.getProperty("user.name");
+        } catch (Exception ex) {
+            System.out.println("Warning, in IDAttribute, failed to read "
+                    + "'user.name' property (-sandbox or applets always cause "
+                    + "this)");
+        }
         if (userName != null) {
             author.setExpression(userName);
         }
