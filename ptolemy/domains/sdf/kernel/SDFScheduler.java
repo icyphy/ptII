@@ -265,7 +265,7 @@ public class SDFScheduler extends Scheduler {
      *  the given rate.  If no parameter exists, then create a new one.
      *  The new one is an instance of Variable, so it is not persistent.
      *  That is, it will not be saved in the MoML file if the model is
-     *  saved. The port is normally an input port, but this is not
+     *  saved. The port is normally an output port, but this is not
      *  checked.
      *  @exception IllegalActionException If the rate is negative.
      */
