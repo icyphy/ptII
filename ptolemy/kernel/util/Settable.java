@@ -66,12 +66,15 @@ import java.io.Serializable;
    This interface also supports annotations that hint to a user
    interface the level of visibility that an instance should have.
    The visibility is specified as one of the static instances of
-   the inner class Visibility, currently NONE, EXPERT and FULL.
+   the inner class Visibility, currently NONE, EXPERT, FULL, and NOT_EDITABLE
    NONE indicates that the user should never see the instance,
    and should not be able to set its value through the user interface.
    EXPERT means that only expert users should see the instance.
    FULL means that the instance is always visible, and a user interface
    should always allow it to be set.
+   NOT_EDITABLE is similar to FULL, except that the value of the
+   expression is visible, but not editable by the user.  This is
+   commonly used for feedback from the model.
 
    @author Edward A. Lee
    @version $Id$
@@ -158,6 +161,11 @@ public interface Settable extends Nameable {
     /** Indicator that a user interface should make an instance visible.
      */
     public static Visibility FULL = new Visibility();
+
+    /** Indicator that a user interface should make an instance
+     *  visible, but not allow editing of the variable.
+     */
+    public static Visibility NOT_EDITABLE = new Visibility();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
