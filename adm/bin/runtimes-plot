@@ -1,0 +1,39 @@
+#!/bin/sh
+# Generate plot data from runtimes-past
+
+
+runtimedir=/vol/carson/carson1/cxh/runtimes
+
+grep -h Time $runtimedir/logs/* | grep ms | grep sdf.lib |
+    awk '
+	$0 ~ /elapsed time:/ {print $1, $(NF-1)}
+	$0 ~ /Elapsed time:/ {split($4,f,":"); print $1, f[2]}' |
+    awk '
+    BEGIN {
+	print "Title: Ptolemy time tests" 
+	print "Xlabel: month/year"
+	print "Ylabel: time (ms.)"
+	print "Dataset: de test"
+    }
+    {	
+	mo[1]=0; mo[2]=31; mo[3]=59; mo[4]=90
+	mo[5]=120; mo[6]=151; mo[7]=181; mo[8]=212
+	mo[9]=243; mo[10]=273; mo[11]=304; mo[12]=334
+
+	if (firstYear == 0) {
+	    firstYear = d[1]
+	}
+	split($1,d,".")
+	dayOfYear = (mo[d[2]+0]+ d[3])/365.0
+	print d[1] + dayOfYear, $2
+    }
+    END {
+	# Generate the ticks
+	printf ("XTicks:")
+	for(year=firstYear; year <= d[1]; year++) {
+	    for(month=1; month <= 12; month++ ) {
+		printf(" %d/%02d %g,", month, year-2000, year + (mo[month]/365.0))
+	    }
+	}
+	printf("\n");
+    }'
