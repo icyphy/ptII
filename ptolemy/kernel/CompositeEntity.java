@@ -137,6 +137,39 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a list that consists of all the atomic entities in a model.
+     *  This method differs from CompositeEntity.deepEntityList() in that
+     *  this method looks inside opaque entities, whereas deepEntityList()
+     *  does not.
+     *
+     *  @return a List of all atomic entities in the model.
+     */
+    public List allAtomicEntityList() {
+        // We don't use an Iterator here so that we can modify the list
+        // rather than having both an Iterator and a result list.
+        //
+        // Note: 
+        // deepEntityList() should be renamed to deepOpaqueEntityList()
+        // allAtomicEntityList() to deepAtomicEntityList()
+        // However, the change would require a fair amount of work.
+        LinkedList entities = (LinkedList)deepEntityList();
+        for(int i = 0; i < entities.size(); i++) {
+            Object entity = entities.get(i);
+            if (entity instanceof CompositeEntity) {
+                // Remove the composite actor and add its containees.
+                entities.remove(i);
+                // Note that removing an element from the list causes
+                // the indices of later elements to shift forward by 1.
+                // We reduce the index i by one to match the index in
+                // the list.
+                i--;
+                entities.addAll(
+                        ((CompositeEntity) entity).allAtomicEntityList());
+            }
+        }
+        return entities;
+    }
+
     /** Allow or disallow connections that are created using the connect()
      *  method to cross levels of the hierarchy.
      *  The default is that such connections are disallowed.
