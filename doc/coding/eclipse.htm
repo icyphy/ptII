@@ -132,20 +132,23 @@ a login for cvs access
 want to use compression to transfer files:
 In Window -&gt; Preferences -&gt; Team -&gt; CVS, change Compression Level
 to 9.
-<br>If you receive a message "Terminated with fatal signal 10", then
+<br>If, under Eclipse 2.1,
+you receive a message "Terminated with fatal signal 10", then
 try using a different compression level, see the
-<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3">The Eclipse CVS FAQ</a>
-for details
+<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse CVS FAQ</a>
+for details.
+<br><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724" target="_top"><code>https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724</code></a> suggests using
+a compression level of 5
 
 <li> In the CVS Repositories View window, click on the repository and then on
-HEAD until you see the ptII Head and right click on this
-<li> Select the "Check Out As...." option
+HEAD until you see the ptII Head.
+<li> Right click on the ptII Head Select the "Check Out As...." option
 
 <li> Go through the various menus to create a Java Project named
 ptII. Don't use the "Default Location". Instead specify the location
-where you want ptII to go (e.g. <CODE>c:\ptII</CODE>)
+where you want ptII to go (e.g. <CODE>c:\ptII</CODE>).
 
-<li> Click OK. And, wait for the checkout to finish
+<li> Click OK, wait for the checkout to finish.
 
 <li> The result should be the ptII project. There will probably be
 several errors reported that are due to the .classpath that was just
