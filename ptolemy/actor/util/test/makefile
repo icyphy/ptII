@@ -33,7 +33,7 @@
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 ME =		java/pt/actor/util/test
 
@@ -41,7 +41,7 @@ ME =		java/pt/actor/util/test
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH = ../../..
+CLASSPATH = ../../../..
 
 TCL_SRCS = \
 	testDefs.tcl
@@ -51,6 +51,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	FIFOQueue.tcl \
 	SortedQueue.tcl
 
 # Graphical Java tests that use Tcl.
