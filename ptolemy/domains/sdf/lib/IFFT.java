@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -44,15 +44,13 @@ import ptolemy.math.SignalProcessing;
 //// IFFT
 
 /**
-This actor implements a forward IFFT transform of a real input array of
-doubles. The order of the IFFT determines the number of tokens that
-will be consumed and produced. The order gives the size of the
-transform as the base-2 logarithm of the size. The default order is 8,
-which means that 2^8 = 256 tokens are read and 2^8 = 256 tokens are
-produced. The result of the IFFT is a new array of Complex's.
-<p>
-The input is a sequence of 2^<i>order</i> DoubleTokens, and the 
-output is a sequence of 2^<i>order</i> ComplexTokens.
+This actor calculates the inverse FFT of a complex input array.
+The order of the IFFT determines the number of tokens that
+will be consumed and produced on each firing. The order is
+the base-2 logarithm of the size. The default order is 8,
+which means that 2<sup>8</sup> = 256 tokens are read and 2<sup>8</sup>
+= 256 tokens are produced.
+The result of the IFFT is a new array of Complex tokens.
 
 @author Bart Kienhuis, Steve Neuendorffer
 @version $Id$
@@ -91,49 +89,57 @@ public class IFFT extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** If the argument is the <i>order</i> parameter, then
+     *  set up the consumption and production constants, and invalidate
+     *  the schedule of the director.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the parameters are out of range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == order) {
+            // Get the size of the FFT transform
+            _orderValue = ((IntToken)order.getToken()).intValue();
+            if(_orderValue <= 0) {
+                throw new IllegalActionException("Order was " + _orderValue
+                + " but must be greater than zero.");
+            }
+            _transformSize = (int)Math.pow(2, _orderValue );
+            
+            // Set the correct consumption/production values
+            _productionRate = _transformSize;
+            _consumptionRate = _transformSize;
+            
+            input.setTokenConsumptionRate(_consumptionRate);
+            output.setTokenProductionRate(_productionRate);
+
+            _inComplexArray = new Complex[_consumptionRate];
+            _outTokenArray = new ComplexToken[_productionRate];
+
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateSchedule();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
     /** Consume the inputs and produce the outputs of the IFFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
     public void fire() throws IllegalActionException {
         int i;
-	inTokenArray = input.get(0, _consumptionRate);
+	Token[] inTokenArray = input.get(0, _consumptionRate);
         for (i = 0; i < _consumptionRate; i++) {
-            inComplexArray[i] = ((ComplexToken)inTokenArray[i]).complexValue();
+            _inComplexArray[i] = ((ComplexToken)inTokenArray[i]).complexValue();
         }
         Complex[] outComplexArray =
-            SignalProcessing.IFFTComplexOut(inComplexArray, _orderValue);
+            SignalProcessing.IFFTComplexOut(_inComplexArray, _orderValue);
         for (i = 0; i < _productionRate; i++) {
-            outTokenArray[i] = new ComplexToken(outComplexArray[i]);
+            _outTokenArray[i] = new ComplexToken(outComplexArray[i]);
         }
-	output.send(0, outTokenArray, _productionRate);
-    }
-
-    /** Set up the consumption and production constants.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-
-        // Get the size of the IFFT transform
-        _orderValue = ((IntToken)order.getToken()).intValue();
-        if(_orderValue <= 0) 
-            throw new IllegalActionException("Order was " + _orderValue + 
-                    " but must be greater than zero.");
-        _transformSize = (int)Math.pow(2, _orderValue);
-
-        // Set the correct consumption/production values
-        _productionRate = _transformSize;
-        _consumptionRate = _transformSize;
-
-        input.setTokenConsumptionRate(_consumptionRate);
-        output.setTokenProductionRate(_productionRate);
-
-        inComplexArray = new Complex[_consumptionRate];
-        outComplexArray = new Complex[_productionRate];
-
-        inTokenArray = new DoubleToken[_consumptionRate];
-        outTokenArray = new ComplexToken[_productionRate];
-
+	output.send(0, _outTokenArray, _productionRate);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -145,9 +151,6 @@ public class IFFT extends SDFTransformer {
     private int _transformSize;
     private int _orderValue;
 
-    private Token[] inTokenArray;
-    private ComplexToken[] outTokenArray;
-
-    private Complex[] inComplexArray;
-    private Complex[] outComplexArray;
+    private ComplexToken[] _outTokenArray;
+    private Complex[] _inComplexArray;
 }

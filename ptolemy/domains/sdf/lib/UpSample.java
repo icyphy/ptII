@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -50,13 +50,13 @@ import java.util.List;
 This actor upsamples an input stream by an integer factor by inserting
 tokens with value zero.  The upsample factor is given by the 
 <i>tokenProductionRate</i> parameter of the output port.  
-Each firing, this actor reads one sample from the input
+On each firing, this actor reads one sample from the input
 and copies that token to the output.  Then it outputs a sequence of zero
 tokens of the same type as the input token so that the total number
 of tokens created during the firing is the same as the 
 <i>tokenProductionRate</i> parameter of the output port. 
-By default, this actor sets the value of this parameter to be one, 
-indicating that no upsampling is done.
+By default, this actor sets the value of this parameter to be two,
+so the output sample rate is twice that of the input.
 <p>
 This actor is data polymorphic. It can accept any token
 type on the input that supports the zero() method
@@ -84,8 +84,8 @@ public class UpSample extends SDFTransformer {
      	// tokenConsumptionRate is 1.
 	input.setTokenConsumptionRate(1);
 
-	// Set tokenProductionRate to default 1.
-	output.setTokenProductionRate(1);
+	// Set tokenProductionRate to default 2.
+	output.setTokenProductionRate(2);
 
         output.setTypeAtLeast(input);
     }
@@ -96,7 +96,9 @@ public class UpSample extends SDFTransformer {
     /** Consume the input Token and produce the same token on the output.
      *  Then create a number of zero tokens of the same type as the 
      *  input token on the output port, so that output.tokenProductionRate
-     *  tokens are created in total.
+     *  tokens are created in total.  If there is not token on the input,
+     *  then this method throws a NoTokenException (which is a runtime
+     *  exception).
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
     public void fire() throws IllegalActionException {

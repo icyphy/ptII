@@ -50,12 +50,12 @@ import java.util.List;
 This actor downsamples an input stream by an integer factor by
 removing tokens.  The downsample factor is given by the 
 <i>tokenConsumptionRate</i> parameter of the input port.  
-Each firing, this actor reads a number of tokens from the input
+On each firing, this actor reads a number of tokens from the input
 and copies only the first token to the output.  
 The number of tokens consumed during the firing is the same as the 
 <i>tokenConsumptionRate</i> parameter of the input port. 
-By default, this actor sets the value of this parameter to be one, 
-indicating that no downsampling is done.
+By default, this actor sets the value of this parameter to be two,
+so the input sample rate is twice that of the output.
 <p>
 This actor is data polymorphic. It can accept any token
 type on the input.
@@ -79,8 +79,8 @@ public class DownSample extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-     	// Set tokenConsumptionRate to default 1.
-	input.setTokenConsumptionRate(1);
+     	// Set tokenConsumptionRate to default 2.
+	input.setTokenConsumptionRate(2);
 
 	// tokenProductionRate is 1.
 	output.setTokenProductionRate(1);
@@ -93,9 +93,13 @@ public class DownSample extends SDFTransformer {
 
     /** Consume the first input Token and produce the same token on the output.
      *  Then consume a number of tokens from the input port
-     *  so that input.tokenProductionRate tokens are consumed in total.
-     *  All tokens after the first are discarded.
-     *  @exception IllegalActionException If a runtime type conflict occurs.
+     *  so that input.tokenConsumptionRate tokens are consumed in total.
+     *  All tokens after the first are discarded. If there is not
+     *  enough tokens on the input,
+     *  then this method throws a NoTokenException (which is a runtime
+     *  exception).  This exception should not be thrown because the
+     *  prefire() method checks token availability.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
 	Token token = input.get(0);
@@ -106,5 +110,17 @@ public class DownSample extends SDFTransformer {
         int count = input.getTokenConsumptionRate() - 1;   
         Token array[] = input.get(0, count);
         // ignore the other consumed tokens.
+    }
+
+    /** Return false if the number of tokens available on the input
+     *  is less than the <i>tokenConsumptionRate</i> parameter of the input
+     *  port.  Otherwise, return whatever the superclass returns.
+     *  @return False if there are not enough input tokens to fire.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        int count = input.getTokenConsumptionRate();
+        if (!input.hasToken(0, count)) return false;
+        else return super.prefire();
     }
 }
