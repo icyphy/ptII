@@ -72,9 +72,11 @@ test Expression-2.1 {run with default empty expression} {
     set m [$e0 getManager]
     catch {$m execute} msg
     list [string range $msg 0 135]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "":
-Encountered "<EOF>" at line 0, column 0.
-Was expecting one of:}}
+} {{ptolemy.kernel.util.IllegalActionException: Expression invalid.
+  in .top.expr
+Because:
+Error parsing expression "":
+Encountered "<EOF>"}}
 
 test Expression-3.1 {run with a simple expression} {
     set expression [java::field $expr expression]

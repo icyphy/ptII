@@ -174,6 +174,10 @@ public class Expression extends TypedAtomicActor {
  	    throws CloneNotSupportedException {
         Expression newObject = (Expression)super.clone(workspace);
         newObject._iterationCount = 1;
+        newObject._tokenMap = null;
+        newObject._parseTree = null;
+        newObject._parseTreeEvaluator = null;
+        newObject._scope = null;
         return newObject;
     }
 
@@ -248,7 +252,7 @@ public class Expression extends TypedAtomicActor {
          */
         public Token get(String name) throws IllegalActionException {
             Variable result = null;
-
+                      
             if(name.equals("time")) {
                 return new DoubleToken(getDirector().getCurrentTime());
             } else if(name.equals("iteration")) {
