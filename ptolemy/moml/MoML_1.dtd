@@ -102,9 +102,8 @@
 <!ELEMENT unlink EMPTY>
 <!ATTLIST unlink index CDATA #IMPLIED
                  insideIndex CDATA #IMPLIED
-		 insideIndex CDATA #IMPLIED
                  port CDATA #REQUIRED
-                 relation CDATA #REQUIRED>
+                 relation CDATA #IMPLIED>
 
 <!ELEMENT vertex (configure | doc | location | property | rename)*>
 <!ATTLIST vertex name CDATA #REQUIRED
