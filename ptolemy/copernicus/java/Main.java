@@ -98,10 +98,11 @@ public class Main extends KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add transforms to the Scene.
-     */
-    public void addTransforms() {
-	super.addTransforms();
+    /** Add to the scene a standard set of transformations that are useful
+     *  for optimizing efficiency.
+     *  @param toplevel The composite actor we are generating code for.
+     */ 
+    public static void addStandardTransforms(CompositeActor toplevel) {
 
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
@@ -113,24 +114,24 @@ public class Main extends KernelMain {
         // We change the names to all be valid java identifiers
         // so that we can
         //      Scene.v().getPack("wjtp").add(new Transform("wjtp.ns",
-        //         NameSanitizer.v(_toplevel)));
+        //         NameSanitizer.v(toplevel)));
 
         // Create a class for the composite actor of the model, and
         // additional classes for all actors (both composite and
         // atomic) used by the model.
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.mt", ModelTransformer.v(_toplevel)));
+                new Transform("wjtp.mt", ModelTransformer.v(toplevel)));
         
    
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.idt",
-                        InlineDirectorTransformer.v(_toplevel)));
+                        InlineDirectorTransformer.v(toplevel)));
         
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
-                        CommandLineTransformer.v(_toplevel)));
+                        CommandLineTransformer.v(toplevel)));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
@@ -139,7 +140,7 @@ public class Main extends KernelMain {
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
-                         FieldsForEntitiesTransformer.v(_toplevel)));
+                         FieldsForEntitiesTransformer.v(toplevel)));
         
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
@@ -152,14 +153,14 @@ public class Main extends KernelMain {
         // to getAttribute with references to those fields.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffat",
-                        FieldsForAttributesTransformer.v(_toplevel)));
+                        FieldsForAttributesTransformer.v(toplevel)));
         
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPort with references to those fields.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffpt",
-                        FieldsForPortsTransformer.v(_toplevel)));
+                        FieldsForPortsTransformer.v(toplevel)));
 
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
@@ -184,7 +185,7 @@ public class Main extends KernelMain {
         // assignments to attributes and handle them differently.)
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.iat",
-                        InlineParameterTransformer.v(_toplevel)));
+                        InlineParameterTransformer.v(toplevel)));
       
         // Remove equality checks, which arise from inlining attributeChanged.
        //  Scene.v().getPack("wjtp").add(
@@ -192,7 +193,7 @@ public class Main extends KernelMain {
 //                         new TransformerAdapter(TypeAssigner.v())));
 //         Scene.v().getPack("wjtp").add(
 //                 new Transform("wjtp.nee",
-//                         NamedObjEqualityEliminator.v(_toplevel)));
+//                         NamedObjEqualityEliminator.v(toplevel)));
 
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
@@ -202,7 +203,7 @@ public class Main extends KernelMain {
         // of port reads and writes.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
-                        InlineTokenTransformer.v(_toplevel)));
+                        InlineTokenTransformer.v(toplevel)));
          
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
@@ -241,7 +242,7 @@ public class Main extends KernelMain {
         // buffers.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ipt",
-                        InlinePortTransformer.v(_toplevel)));
+                        InlinePortTransformer.v(toplevel)));
         
         // This appears again because Inlining the parameters
         // also inlines calls to connectionsChanged, which by default
@@ -250,13 +251,13 @@ public class Main extends KernelMain {
         // FIXME: This should be done in a better way...
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffat",
-                        FieldsForAttributesTransformer.v(_toplevel)));
+                        FieldsForAttributesTransformer.v(toplevel)));
 
         // Deal with any more statically analyzeable token
         // references that were created.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
-                        InlineTokenTransformer.v(_toplevel)));
+                        InlineTokenTransformer.v(toplevel)));
         
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
@@ -288,7 +289,7 @@ public class Main extends KernelMain {
           
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.nee",
-                        NamedObjEqualityEliminator.v(_toplevel)));
+                        NamedObjEqualityEliminator.v(toplevel)));
 
         // Remove casts and instanceof Checks.
         Scene.v().getPack("wjtp").add(
@@ -310,7 +311,7 @@ public class Main extends KernelMain {
         // Remove references to named objects.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
-                        ExceptionEliminator.v(_toplevel)));
+                        ExceptionEliminator.v(toplevel)));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
@@ -327,7 +328,7 @@ public class Main extends KernelMain {
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.noe",
-                        NamedObjEliminator.v(_toplevel)));
+                        NamedObjEliminator.v(toplevel)));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
@@ -368,7 +369,7 @@ public class Main extends KernelMain {
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
-                        TokenToNativeTransformer.v(_toplevel)));
+                        TokenToNativeTransformer.v(toplevel)));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ufr", 
@@ -381,7 +382,7 @@ public class Main extends KernelMain {
         // Remove references to named objects.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
-                        ExceptionEliminator.v(_toplevel)));
+                        ExceptionEliminator.v(toplevel)));
          
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.doe",
@@ -392,7 +393,7 @@ public class Main extends KernelMain {
    /*
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ts",
-                        TypeSpecializer.v(_toplevel)));
+                        TypeSpecializer.v(toplevel)));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.tie",
@@ -456,15 +457,15 @@ public class Main extends KernelMain {
                         new TransformerAdapter(TypeAssigner.v())));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.nee",
-                        NamedObjEqualityEliminator.v(_toplevel)));
+                        NamedObjEqualityEliminator.v(toplevel)));
         
         // Remove references to named objects.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
-                        ExceptionEliminator.v(_toplevel)));
+                        ExceptionEliminator.v(toplevel)));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.noe",
-                        NamedObjEliminator.v(_toplevel)));
+                        NamedObjEliminator.v(toplevel)));
         
         // We REALLY need to cleanup here or the code is not correct..
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
@@ -480,7 +481,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot6", ClassWriter.v()));
                  
         //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
-        //                                               TypeSpecializer.v(_toplevel)));
+        //                                               TypeSpecializer.v(toplevel)));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.tie",
@@ -489,11 +490,11 @@ public class Main extends KernelMain {
     
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
-                        TokenToNativeTransformer.v(_toplevel)));
+                        TokenToNativeTransformer.v(toplevel)));
                     
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
-                        ExceptionEliminator.v(_toplevel)));
+                        ExceptionEliminator.v(toplevel)));
          
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
@@ -516,6 +517,14 @@ public class Main extends KernelMain {
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));
      
+    }
+
+
+    /** Add transforms to the Scene.
+     */
+    public void addTransforms() {
+	super.addTransforms();
+    addStandardTransforms(_toplevel);
         // And write C!
        //  Scene.v().getPack("wjtp").add(
 //                 new Transform("wjtp.finalSnapshot", CWriter.v()));
@@ -569,7 +578,7 @@ public class Main extends KernelMain {
     /** Add transforms corresponding to the standard soot optimizations
      *  to the given pack.
      */
-    private void _addStandardOptimizations(Pack pack) {
+    private static void _addStandardOptimizations(Pack pack) {
         pack.add(new Transform("jop.cse",
                          new TransformerAdapter(CommonSubexpressionEliminator.v())));
         pack.add(new Transform("jop.cp",
