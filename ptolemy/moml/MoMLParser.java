@@ -2246,12 +2246,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                     // First check that there will be no name collision
                     // when this is propagated. Note that we need to
-                    // include all heritage objects, irrespective of whether
+                    // include all derived objects, irrespective of whether
                     // they are locally changed.
-                    List heritageList = container.getDerivedList();
-                    Iterator heritage = heritageList.iterator();
-                    while (heritage.hasNext()) {
-                        Entity derived = (Entity)heritage.next();
+                    List derivedList = container.getDerivedList();
+                    Iterator derivedObjects = derivedList.iterator();
+                    while (derivedObjects.hasNext()) {
+                        Entity derived = (Entity)derivedObjects.next();
                         if (derived.getPort(portName) != null) {
                             throw new IllegalActionException(container,
                                     "Cannot create port because a subclass or instance "
@@ -2382,12 +2382,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                     // First check that there will be no name collision
                     // when this is propagated. Note that we need to
-                    // include all heritage objects, irrespective of whether
+                    // include all derived objects, irrespective of whether
                     // they are locally changed.
-                    List heritageList = container.getDerivedList();
-                    Iterator heritage = heritageList.iterator();
-                    while (heritage.hasNext()) {
-                        CompositeEntity derived = (CompositeEntity)heritage.next();
+                    List derivedList = container.getDerivedList();
+                    Iterator derivedObjects = derivedList.iterator();
+                    while (derivedObjects.hasNext()) {
+                        CompositeEntity derived = (CompositeEntity)derivedObjects.next();
                         if (derived.getRelation(relationName) != null) {
                             throw new IllegalActionException(container,
                                     "Cannot create relation because a subclass or instance "
@@ -2482,13 +2482,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Propagate.  Note that a rename in a derived class
                     // could cause a NameDuplicationException.  We have to
                     // be able to unroll the changes if that occurs.
-                    Iterator heritage = _current.getDerivedList().iterator();
+                    Iterator derivedObjects = _current.getDerivedList().iterator();
                     Set changedName = new HashSet();
                     HashMap changedClassName = new HashMap();
                     NamedObj derived = null;
                     try {
-                        while (heritage.hasNext()) {
-                            derived = (NamedObj)heritage.next();
+                        while (derivedObjects.hasNext()) {
+                            derived = (NamedObj)derivedObjects.next();
                             // If the derived object has the same
                             // name as the old name, then we assume it
                             // should change.
@@ -2503,7 +2503,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 Instantiable parent = ((Instantiable)derived)
                                     .getParent();
                                 // This relies on the depth-first search
-                                // order of the getHeritageList() method
+                                // order of the getDerivedList() method
                                 // to be sure that the base class will
                                 // already be in the changedName set if
                                 // its name will change.
@@ -3184,12 +3184,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 // First check that there will be no name collision
                 // when this is propagated. Note that we need to
-                // include all heritage objects, irrespective of whether
+                // include all derived objects, irrespective of whether
                 // they are locally changed.
-                List heritageList = container.getDerivedList();
-                Iterator heritage = heritageList.iterator();
-                while (heritage.hasNext()) {
-                    CompositeEntity derived = (CompositeEntity)heritage.next();
+                List derivedList = container.getDerivedList();
+                Iterator derivedObjects = derivedList.iterator();
+                while (derivedObjects.hasNext()) {
+                    CompositeEntity derived = (CompositeEntity)derivedObjects.next();
                     if (derived.getEntity(entityName) != null) {
                         throw new IllegalActionException(container,
                                 "Cannot create entity because a subclass or instance "
@@ -3236,16 +3236,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // First check that there will be no name collision
             // when this is propagated. Note that we need to
-            // include all heritage objects, irrespective of whether
+            // include all derived objects, irrespective of whether
             // they are locally changed.
             // If the container is null, then we can't possibly get
             // a name collision.
-            List heritageList = null;
+            List derivedList = null;
             if (container != null) {
-                heritageList = container.getDerivedList();
-                Iterator heritage = heritageList.iterator();
-                while (heritage.hasNext()) {
-                    CompositeEntity derived = (CompositeEntity)heritage.next();
+                derivedList = container.getDerivedList();
+                Iterator derivedObjects = derivedList.iterator();
+                while (derivedObjects.hasNext()) {
+                    CompositeEntity derived
+                            = (CompositeEntity)derivedObjects.next();
                     if (derived.getEntity(entityName) != null) {
                         throw new IllegalActionException(container,
                                 "Cannot create entity because a subclass or instance "
@@ -3397,26 +3398,26 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
-        // we look for its heritage, not the context's heritage.
+        // we look for its derived objects, not the context's derived objects.
         // We have to do this before actually deleting it,
         // which also has the side effect of triggering errors
         // before the deletion.
         // Note that deletion and undo need to occur in the opposite
         // order, so we first create the undo in the order given
-        // by the heritage list, then do the deletion in the
+        // by the derived list, then do the deletion in the
         // opposite order.
         try {
-            Iterator heritage = toDelete.getDerivedList().iterator();
+            Iterator derivedObjects = toDelete.getDerivedList().iterator();
             // NOTE: Deletion needs to occur in the reverse order from
-            // what appears in the heritage list. So first we construct
+            // what appears in the derived list. So first we construct
             // a reverse order list.
             List reverse = new LinkedList();
-            while (heritage.hasNext()) {
-                reverse.add(0, heritage.next());
+            while (derivedObjects.hasNext()) {
+                reverse.add(0, derivedObjects.next());
             }
-            heritage = reverse.iterator();
-            while (heritage.hasNext()) {
-                ComponentEntity derived = (ComponentEntity)heritage.next();
+            derivedObjects = reverse.iterator();
+            while (derivedObjects.hasNext()) {
+                ComponentEntity derived = (ComponentEntity)derivedObjects.next();
                 // Have to get this _before_ deleting.
                 String toUndo = _getUndoForDeleteEntity(derived);
                 derived.setContainer(null);
@@ -3496,24 +3497,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
-        // we look for its heritage, not the context's heritage.
+        // we look for its derived objects, not the context's derived objects.
         // We have to do this before actually deleting it,
         // which also has the side effect of triggering errors
         // before the deletion.
         // Note that deletion and undo need to occur in the opposite
         // order.
         try {
-            Iterator heritage = toDelete.getDerivedList().iterator();
+            Iterator derivedObjects = toDelete.getDerivedList().iterator();
             // NOTE: Deletion needs to occur in the reverse order from
-            // what appears in the heritage list. So first we construct
+            // what appears in the derived list. So first we construct
             // a reverse order list.
             List reverse = new LinkedList();
-            while (heritage.hasNext()) {
-                reverse.add(0, heritage.next());
+            while (derivedObjects.hasNext()) {
+                reverse.add(0, derivedObjects.next());
             }
-            heritage = reverse.iterator();
-            while (heritage.hasNext()) {
-                Port derived = (Port)heritage.next();
+            derivedObjects = reverse.iterator();
+            while (derivedObjects.hasNext()) {
+                Port derived = (Port)derivedObjects.next();
                 // Create the undo MoML.
                 // Have to get this _before_ deleting.
                 // Put at the _start_ of the undo MoML, to ensure
@@ -3575,21 +3576,21 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
-        // we look for its heritage, not the context's heritage.
+        // we look for its derived objects, not the context's derived objects.
         // We have to do this before actually deleting it,
         // which also has the side effect of triggering errors
         // before the deletion.
         try {
             // NOTE: Deletion can occur in the the same order as
-            // what appears in the heritage list.
-            Iterator heritage = toDelete.getDerivedList().iterator();
+            // what appears in the derived list.
+            Iterator derivedObjects = toDelete.getDerivedList().iterator();
 
             String toUndo = _getUndoForDeleteAttribute(toDelete);
             toDelete.setContainer(null);
             undoMoML.append(toUndo);
 
-            while (heritage.hasNext()) {
-                Attribute derived = (Attribute)heritage.next();
+            while (derivedObjects.hasNext()) {
+                Attribute derived = (Attribute)derivedObjects.next();
                 toUndo = _getUndoForDeleteAttribute(derived);
                 derived.setContainer(null);
                 undoMoML.append(toUndo);
@@ -3639,25 +3640,25 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
-        // we look for its heritage, not the context's heritage.
+        // we look for its derived objects, not the context's derived objects.
         // We have to do this before actually deleting it,
         // which also has the side effect of triggering errors
         // before the deletion.
         // Note that deletion and undo need to occur in the opposite
         // order.
         try {
-            Iterator heritage = toDelete.getDerivedList().iterator();
+            Iterator derivedObjects = toDelete.getDerivedList().iterator();
             // NOTE: Deletion needs to occur in the reverse order from
-            // what appears in the heritage list. So first we construct
+            // what appears in the derived objects list. So first we construct
             // a reverse order list.
             List reverse = new LinkedList();
-            while (heritage.hasNext()) {
-                reverse.add(0, heritage.next());
+            while (derivedObjects.hasNext()) {
+                reverse.add(0, derivedObjects.next());
             }
-            heritage = reverse.iterator();
-            while (heritage.hasNext()) {
+            derivedObjects = reverse.iterator();
+            while (derivedObjects.hasNext()) {
                 ComponentRelation derived
-                    = (ComponentRelation)heritage.next();
+                    = (ComponentRelation)derivedObjects.next();
                 // Since the Relation can't be a
                 // class itself (currently), it has derived objects
                 // only if its container has derived objects.
@@ -4010,9 +4011,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             ((IOPort)_current).setMultiport(newValue);
 
             // Propagate.
-            Iterator heritage = _current.getDerivedList().iterator();
-            while (heritage.hasNext()) {
-                IOPort derived = (IOPort)heritage.next();
+            Iterator derivedObjects = _current.getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                IOPort derived = (IOPort)derivedObjects.next();
                 derived.setMultiport(newValue);
             }
 
@@ -4064,9 +4065,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             ((IOPort)_current).setOutput(newValue);
 
             // Propagate.
-            Iterator heritage = _current.getDerivedList().iterator();
-            while (heritage.hasNext()) {
-                IOPort derived = (IOPort)heritage.next();
+            Iterator derivedObjects = _current.getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                IOPort derived = (IOPort)derivedObjects.next();
                 derived.setOutput(newValue);
             }
 
@@ -4119,9 +4120,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             ((IOPort)_current).setInput(newValue);
 
             // Propagate.
-            Iterator heritage = _current.getDerivedList().iterator();
-            while (heritage.hasNext()) {
-                IOPort derived = (IOPort)heritage.next();
+            Iterator derivedObjects = _current.getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                IOPort derived = (IOPort)derivedObjects.next();
                 derived.setInput(newValue);
             }
 
@@ -4216,12 +4217,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                     // First check that there will be no name collision
                     // when this is propagated. Note that we need to
-                    // include all heritage objects, irrespective of whether
+                    // include all derived objects, irrespective of whether
                     // they are locally changed.
-                    List heritageList = _current.getDerivedList();
-                    Iterator heritage = heritageList.iterator();
-                    while (heritage.hasNext()) {
-                        NamedObj derived = (NamedObj)heritage.next();
+                    List derivedList = _current.getDerivedList();
+                    Iterator derivedObjects = derivedList.iterator();
+                    while (derivedObjects.hasNext()) {
+                        NamedObj derived = (NamedObj)derivedObjects.next();
                         Attribute other = derived.getAttribute(propertyName);
                         if (other != null && !(other instanceof Singleton)) {
                             throw new IllegalActionException(_current,
@@ -4678,16 +4679,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             port.link(relation);
         }
 
-        // Propagate. Get the heritage list for the relation,
+        // Propagate. Get the derived list for the relation,
         // then use its container as the context in which to
         // find the port. NOTE: The relation can be null
         // (to insert an empty link in a multiport), so
         // we have two cases to consider.
         if (relation != null) {
-            Iterator heritage = relation.getDerivedList().iterator();
-            while (heritage.hasNext()) {
+            Iterator derivedObjects = relation.getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
                 ComponentRelation derivedRelation
-                    = (ComponentRelation)heritage.next();
+                    = (ComponentRelation)derivedObjects.next();
                 CompositeEntity derivedContext
                     = (CompositeEntity)derivedRelation.getContainer();
                 ComponentPort derivedPort
@@ -4702,10 +4703,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
         } else {
-            Iterator heritage = port.getDerivedList().iterator();
-            while (heritage.hasNext()) {
+            Iterator derivedObjects = port.getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
                 ComponentPort derivedPort
-                    = (ComponentPort)heritage.next();
+                    = (ComponentPort)derivedObjects.next();
                 // NOTE: Duplicate the above logic exactly.
                 if (insertAtSpec != null) {
                     derivedPort.insertLink(insertAt, null);
@@ -4850,13 +4851,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
-            // Propagate. Get the heritage list for the relation,
+            // Propagate. Get the derived list for the relation,
             // then use its container as the context in which to
             // find the port.
-            Iterator heritage = relation.getDerivedList().iterator();
-            while (heritage.hasNext()) {
+            Iterator derivedObjects = relation.getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
                 ComponentRelation derivedRelation
-                    = (ComponentRelation)heritage.next();
+                    = (ComponentRelation)derivedObjects.next();
                 CompositeEntity derivedContext
                     = (CompositeEntity)derivedRelation.getContainer();
                 ComponentPort derivedPort
@@ -4901,10 +4902,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
 
             // Propagate.
-            Iterator heritage = port.getDerivedList().iterator();
-            while (heritage.hasNext()) {
+            Iterator derivedObjects = port.getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
                 ComponentPort derivedPort
-                    = (ComponentPort)heritage.next();
+                    = (ComponentPort)derivedObjects.next();
                 derivedPort.unlink(index);
             }
 
@@ -4944,10 +4945,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _undoContext.appendUndoMoML(" />\n");
             }
             // Propagate.
-            Iterator heritage = port.getDerivedList().iterator();
-            while (heritage.hasNext()) {
+            Iterator derivedObjects = port.getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
                 ComponentPort derivedPort
-                    = (ComponentPort)heritage.next();
+                    = (ComponentPort)derivedObjects.next();
                 derivedPort.unlinkInside(index);
             }
 
