@@ -111,11 +111,11 @@ public class DEFIRfilter extends DEActor {
             String taps)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         // set the parameters.
         //double[][] taps2d = new double[1][];
         //taps2d[0]=dtaps;
-         
+
         _paramTaps = new Parameter(this, "taps", new StringToken(taps));
         _paramDelay = new Parameter( this, "Delay", new DoubleToken(_delay));
 
@@ -125,9 +125,9 @@ public class DEFIRfilter extends DEActor {
         // create an input port
         input = new DEIOPort(this, "input", true, false);
         input.setTypeEquals(DoubleToken.class);
-        
+
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -158,13 +158,13 @@ public class DEFIRfilter extends DEActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException {
-        
+
         if (input.hasToken(0)) {
             double newdata = ((DoubleToken)input.get(0)).doubleValue();
             //figure out the number of taps.
             //DoubleMatrixToken tapsToken = (DoubleMatrixToken)_taps.getToken();
             //int numTaps = tapsToken.getColumnCount();
-       
+
             int numTaps = _taps.length;
             // check if the number of taps match to the contentTaps length.
             // If not, then create a new contentTaps with the appropriate
@@ -186,7 +186,7 @@ public class DEFIRfilter extends DEActor {
                 _tapContents[i] = _tapContents[i-1];
             }
             _tapContents[0] = newdata;
-        
+
             // calculate the output.
             double sum = 0;
             for (int i = 0; i < numTaps; i++) {
@@ -221,7 +221,7 @@ public class DEFIRfilter extends DEActor {
     // The value of the filter taps.
     private Parameter _paramTaps;
     private double[] _taps;
-    
+
     // The content of the filter taps.
     private double[] _tapContents = new double[0];
 
@@ -232,6 +232,5 @@ public class DEFIRfilter extends DEActor {
 
     // the default filter taps.
     private static final double[] _DEFAULT_TAPS = {1, 1}; 
-    
-}
 
+}

@@ -482,4 +482,3 @@ public class CTBaseIntegrator extends CTActor
     // them by index.
     private double[] _history = new double[2];
 }
-

@@ -126,7 +126,7 @@ public class StickyBallApplet extends CTApplet {
             TypedIOPort hsout2 = (TypedIOPort)hs.newPort("P2");
             hsout2.setOutput(true);
             hsout2.setTypeEquals(DoubleToken.class);
-            
+
             //System.out.println("Building the FSM controller.");
             HSController ctrl = new HSController(hs, "Controller");
             FSMState ctrlInc = new FSMState(ctrl, "Separate");
@@ -235,7 +235,7 @@ public class StickyBallApplet extends CTApplet {
             ctIncOV1.link(ctIncRB0);
             Relation ctIncRB1 = ctInc.connect(ctIncP1.output, ctIncE1P1);
             ctIncOP1.link(ctIncRB1);
-            
+
             //ctInc.connect(ctIncF2, ctIncH2.input);
             //ctInc.connect(ctIncH2.output, ctIncE2In);
             ctInc.connect(ctIncF2, ctIncE2In);
@@ -308,7 +308,7 @@ public class StickyBallApplet extends CTApplet {
             ctDec.connect(ctDecSTI.input, _ctGain.output);
             Relation ctDecR1 = ctDec.connect(ctDecSTI.output, _ctGain.input);
             ctDecOSTI.link(ctDecR1);
-            
+
             ctDec.connect(ctDecE1.output, ctDecV1.input);
             Relation ctDecR3 = ctDec.connect(ctDecV1.output, ctDecP1.input);
             ctDecOV1.link(ctDecR3);
@@ -353,12 +353,12 @@ public class StickyBallApplet extends CTApplet {
             // try to run the system
             //topdir.StartTime.setToken(new DoubleToken(-100.0));
             topdir.StopTime.setToken(new DoubleToken(100.0));
-           
+
             // CT embedded director 1 parameters
             ctIncDir.InitStepSize.setToken(new DoubleToken(0.01));
-            
+
             ctIncDir.MinStepSize.setToken(new DoubleToken(1e-5));
-            
+
             StringToken tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             ctIncDir.BreakpointODESolver.setToken(tok);
@@ -387,15 +387,15 @@ public class StickyBallApplet extends CTApplet {
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             topdir.ODESolver.setToken(tok);
-            
+
         }catch (KernelException ex) {
             report("Setup failed:", ex);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Execute the system.  This overrides the base class to read the
      *  values in the query box first.
      *  @exception IllegalActionException Not thrown.
@@ -436,5 +436,3 @@ public class StickyBallApplet extends CTApplet {
     }
 
 }
-
-         

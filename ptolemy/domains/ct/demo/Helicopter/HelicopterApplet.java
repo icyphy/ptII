@@ -88,7 +88,7 @@ public class HelicopterApplet extends CTApplet {
         _actionButton = new Button("Climb");
         _actionButton.addActionListener(new ActionButtonListener());
         runcontrols.add(_actionButton);
- 
+
 
         Panel plotpanel = new Panel();
         plotpanel.setLayout(new GridLayout(2, 2));
@@ -133,7 +133,7 @@ public class HelicopterApplet extends CTApplet {
             TypedIOPort subinD4Px = new TypedIOPort(sub, "inputD4Px");
             subinD4Px.setInput(true);
             subinD4Px.setOutput(false);
-            
+
             TypedIOPort subinPz = new TypedIOPort(sub, "inputPz");
             subinPz.setInput(true);
             subinPz.setOutput(false);
@@ -153,14 +153,14 @@ public class HelicopterApplet extends CTApplet {
             TypedIOPort subinAction = new TypedIOPort(sub, "inputAction");
             subinAction.setInput(true);
             subinAction.setOutput(false);
-            
+
             TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
             suboutVx.setInput(false);
             suboutVx.setOutput(true);
             TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
             suboutVz.setInput(false);
             suboutVz.setOutput(true);
-            
+
             HSController hsctrl = new HSController(sub, "HSController");
             _hsdir.setController(hsctrl);
 
@@ -302,7 +302,7 @@ public class HelicopterApplet extends CTApplet {
             ControllerActor ctrl = new ControllerActor(_toplevel, "Controller");
             XZHigherDerivatives higher = new XZHigherDerivatives(_toplevel, 
                     "XZHigherDerivatives");     
-            
+
             CTIntegrator Px = new CTIntegrator(_toplevel, "IntegratorPx");
             CTIntegrator DPx = new CTIntegrator(_toplevel, "IntegratorDPx");
 
@@ -354,7 +354,7 @@ public class HelicopterApplet extends CTApplet {
             thPlot.plot.setYRange(-0.05, 0.05);
             thPlot.plot.setSize(200, 200);
             thPlot.plot.addLegend(0,"Th");
-                
+
             // CTConnections
             TypedIORelation rPx = new TypedIORelation(_toplevel, "rPx");
             TypedIORelation rDPx = new TypedIORelation(_toplevel, "rDPx");
@@ -387,7 +387,7 @@ public class HelicopterApplet extends CTApplet {
             sub.getPort("inputDDPx").link(rDDPx);
             sub.getPort("inputD3Px").link(rD3Px);
             sub.getPort("inputD4Px").link(rD4Px);
-            
+
             sub.getPort("inputPz").link(rPz);
             sub.getPort("inputDPz").link(rDPz);
             sub.getPort("inputDDPz").link(rDDPz);
@@ -405,7 +405,7 @@ public class HelicopterApplet extends CTApplet {
             heli.outputDDPz.link(rDDPz);
             higher.outputD3Pz.link(rD3Pz);
             higher.outputD4Pz.link(rD4Pz);
-            
+
             Th.output.link(rTh);
             DTh.output.link(rDTh);
             heli.outputDDTh.link(rDDTh);
@@ -414,7 +414,7 @@ public class HelicopterApplet extends CTApplet {
             DTm.output.link(rDTm);
             DDTm.output.link(rDDTm);
             A.output.link(rA);
-       
+
             // Connect integrators
             Px.input.link(rDPx);
             DPx.input.link(rDDPx);
@@ -453,7 +453,7 @@ public class HelicopterApplet extends CTApplet {
             higher.inputA.link(rA);
 
             // Connect HoverLinearizer
-            
+
             TypedIORelation rmPz = new TypedIORelation(_toplevel, "RMPz");
             MINUS.input.link(rPz);
             MINUS.output.link(rmPz);
@@ -473,7 +473,7 @@ public class HelicopterApplet extends CTApplet {
             //Parameter minstep =
             //    (Parameter)_dir.getAttribute("MinimumStepSize");
             _dir.MinStepSize.setToken(new DoubleToken(1e-6));
-            
+
             //Parameter maxstep =
             //    (Parameter)_dir.getAttribute("MaximumStepSize");
             _dir.MaxStepSize.setToken(new DoubleToken(0.5));
@@ -483,14 +483,14 @@ public class HelicopterApplet extends CTApplet {
             StringToken token1 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             _dir.BreakpointODESolver.setToken(token1);
-           
+
             //Parameter solver2 =
             //    (Parameter)_dir.getAttribute("ODESolver");
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             _dir.ODESolver.setToken(token2);
 
-           
+
             // CTActorParameters
             //Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
             Px.InitialState.setToken(new DoubleToken(0.0));
@@ -500,9 +500,9 @@ public class HelicopterApplet extends CTApplet {
 
             //Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
             Tm.InitialState.setToken(new DoubleToken(48.02));            
-            
+
             MINUS.gain.setToken(new DoubleToken(-1.0));
-            
+
             //_paramButton = (Parameter)button.getAttribute("ButtonClicked");
             // System.out.println(_toplevel.description());
             // System.out.println(_dir.getScheduler().description());
@@ -541,7 +541,7 @@ public class HelicopterApplet extends CTApplet {
         TypedIOPort subinD4Px = new TypedIOPort(sub, "inputD4Px");
         subinD4Px.setInput(true);
         subinD4Px.setOutput(false);
-            
+
         TypedIOPort subinPz = new TypedIOPort(sub, "inputPz");
         subinPz.setInput(true);
         subinPz.setOutput(false);
@@ -557,7 +557,7 @@ public class HelicopterApplet extends CTApplet {
         TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
         subinD4Pz.setInput(true);
         subinD4Pz.setOutput(false);
-            
+
         TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
         suboutVx.setInput(false);
         suboutVx.setOutput(true);
@@ -612,7 +612,7 @@ public class HelicopterApplet extends CTApplet {
         default:
             break;
         }
-    
+
         CTZeroOrderHold hPx = new CTZeroOrderHold(sub, "HPx");
         CTZeroOrderHold hDPx = new CTZeroOrderHold(sub, "HDPx");
         CTZeroOrderHold hDDPx = new CTZeroOrderHold(sub, "HDDPx");
@@ -623,13 +623,13 @@ public class HelicopterApplet extends CTApplet {
         CTZeroOrderHold hDDPz = new CTZeroOrderHold(sub, "HDDPz");
         CTZeroOrderHold hD3Pz = new CTZeroOrderHold(sub, "HD3Pz");
         CTZeroOrderHold hD4Pz = new CTZeroOrderHold(sub, "HD4Pz");
-            
+
         sub.connect(hPx.input, subinPx);
         sub.connect(hDPx.input, subinDPx);
         sub.connect(hDDPx.input, subinDDPx);
         sub.connect(hD3Px.input, subinD3Px);
         sub.connect(hD4Px.input, subinD4Px);
-            
+
         Relation rInPz = sub.connect(hPz.input, subinPz);
         sub.connect(hDPz.input, subinDPz);
         sub.connect(hDDPz.input, subinDDPz);
@@ -641,7 +641,7 @@ public class HelicopterApplet extends CTApplet {
         sub.connect(hDDPx.output, (ComponentPort)lin.getPort("inputDDPx"));
         sub.connect(hD3Px.output, (ComponentPort)lin.getPort("inputD3Px"));
         sub.connect(hD4Px.output, (ComponentPort)lin.getPort("inputD4Px"));
-            
+
         sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
         sub.connect(hDPz.output, (ComponentPort)lin.getPort("inputDPz"));
         sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
@@ -702,13 +702,13 @@ public class HelicopterApplet extends CTApplet {
         //Parameter minstep =
         //        (Parameter)subdir.getAttribute("MinimumStepSize");
         subdir.MinStepSize.setToken(new DoubleToken(1e-6));
-            
+
         //Parameter solver1 =
         //        (Parameter)subdir.getAttribute("BreakpointODESolver");
         Token token1 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
         subdir.BreakpointODESolver.setToken(token1);
-                      
+
         //Parameter solver2 =
         //        (Parameter)subdir.getAttribute("ODESolver");
         Token token2 = new StringToken(
@@ -798,7 +798,7 @@ public class HelicopterApplet extends CTApplet {
                     }
                     _currentState = 4;
                 }
-                
+
                 // get the current time from director.
                 double currenttime = _dir.getCurrentTime();
                 double ratio = (currenttime/_stopTime)*140.0;
@@ -839,7 +839,7 @@ public class HelicopterApplet extends CTApplet {
         public void paint(Graphics g) {
             g.setColor(new Color(128, 128, 128));
             g.draw3DRect(8, 8, 144, 24, false);
-           
+
             switch(_currentState) {
             case 0:
                 g.setColor(new Color(255, 0, 0));
@@ -897,7 +897,7 @@ public class HelicopterApplet extends CTApplet {
          */
         public void setWidth(int width) {
             _width = width;
-            
+
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -905,6 +905,3 @@ public class HelicopterApplet extends CTApplet {
         private int _width= 0;
     }
 }
-
-
-

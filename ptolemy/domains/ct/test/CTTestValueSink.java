@@ -132,7 +132,3 @@ public class CTTestValueSink extends TypedAtomicActor {
 
     private Token _lastToken;
 }
-
-
-
-
