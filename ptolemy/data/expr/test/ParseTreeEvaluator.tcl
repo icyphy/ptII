@@ -516,6 +516,16 @@ test ParseTreeEvaluator-23.5 {Test various function calls} {
 #          [theTest {csch([1+i, 1-i])}]
 #  } {} {We don't have this method}
 
+
+test ParseTreeEvaluator-23.6.5 {Test various function calls} {
+    # FIXME: what about UnsignedByteArray and FixMatrixToken
+    list \
+	[theTest {createArray([1,2;3,4])}] \
+	[theTest {createArray([1L,2L;3L,4L])}] \
+	[theTest {createArray([1.0,2.0;3.0,4.0])}] \
+	[theTest {createArray([1.0 + 0i, 2.0 + 1i; 3.0 - 1i, 4.0 + 4i])}]
+} {{{1, 2, 3, 4}} {{1L, 2L, 3L, 4L}} {{1.0, 2.0, 3.0, 4.0}} {{1.0 + 0.0i, 2.0 + 1.0i, 3.0 - 1.0i, 4.0 + 4.0i}}}
+
 test ParseTreeEvaluator-23.7 {Test various function calls} {
     list [theTest {exp(1+i)}] \
          [theTest {exp({1+i, 1-i})}] \
