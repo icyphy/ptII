@@ -9,16 +9,38 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 30.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 217, 766, 367}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 223, 766, 459}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[551, 256]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[551, 350]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Ports of the modal model specify
+consumption and production rates
+as parameters.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 165.0">
+        </property>
     </property>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
@@ -36,6 +58,23 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 145.0">
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states.  Create transitions
+by holding the control key and dragging from one state
+to another. Then delete this annotation.</text>
+</svg></configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
         </property>
         <port name="in" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
@@ -62,36 +101,19 @@
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the control key and dragging from one state
-to another. Then delete this annotation.</text>
-</svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
             <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 75.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 190.0">
                 </property>
             </port>
             <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 65.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 185.0">
                 </property>
             </port>
             <entity name="first" class="ptolemy.domains.fsm.kernel.State">
@@ -115,7 +137,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 175.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -139,7 +161,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -179,9 +201,9 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
-                <property name="title" class="ptolemy.kernel.util.StringAttribute">
+                <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Output of First Mode Refinement">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 267, 252, 234}}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 481, 292, 222}}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 135.0">
                 </property>
@@ -266,7 +288,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="-195.0, -110.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 50.0">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
@@ -275,12 +297,12 @@ to another. Then delete this annotation.</text>
             </property>
             <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="-235.0, 5.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 165.0">
                 </property>
             </port>
             <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 5.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 165.0">
                 </property>
             </port>
             <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -288,11 +310,11 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
-                <property name="title" class="ptolemy.kernel.util.StringAttribute">
+                <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Output of Second Mode Refinement">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 267, 252, 234}}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={566, 477, 292, 222}}">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, -65.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 95.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -302,7 +324,7 @@ to another. Then delete this annotation.</text>
             <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
                 <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="-175.0, 5.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 165.0">
                 </property>
                 <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                     <property name="input"/>
@@ -328,7 +350,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="-80.0, 5.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 165.0">
                 </property>
                 <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                     <property name="input"/>
@@ -350,7 +372,7 @@ to another. Then delete this annotation.</text>
                 </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="0.0, 5.0">
+                <vertex name="vertex1" value="280.0, 165.0">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -383,9 +405,9 @@ to another. Then delete this annotation.</text>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Original Ramp">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 267, 252, 234}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={191, 0, 292, 222}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 75.0">
         </property>
@@ -399,9 +421,9 @@ to another. Then delete this annotation.</text>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Output of Modal Model">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 267, 252, 234}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={572, -1, 292, 222}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 145.0">
         </property>
