@@ -931,7 +931,7 @@ public class PlotBox extends Panel {
 
         // NOTE: 5 pixel padding on the bottom.
         if (_xlabel != null && _bottomPadding < labelheight + 5) {
-            _bottomPadding = titlefontheight + 5;
+            _bottomPadding = labelheight + 5;
         }
 
         // Compute the space needed around the plot, starting with vertical.
