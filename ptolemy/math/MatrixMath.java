@@ -406,7 +406,7 @@ public class MatrixMath {
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scalefactor.
      *  @param matrix A matrix of doubles.
-     *  @scalefactor The constant by whch to multiply the matrix.
+     *  @scalefactor The constant by which to multiply the matrix.
      */
     public static final double[][] multiply(double[][] matrix,
                                             double scalefactor) {
