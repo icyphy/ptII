@@ -77,19 +77,3 @@ proc getJavaInfo {obj} {
     properties:    [_splitline [lsort [java::info properties $obj]]]\n \
     superclass:    [_splitline [java::info superclass $obj]]\n"
 }
-
-if { $tcl_platform(os) == "SunOS"} {
-    set majorOSVersion [lindex [split $tcl_platform(osVersion) .] 0]
-    if {$majorOSVersion >=5} {
-	# Run psrinfo to determine the number of processors
-	if ![catch {exec psrinfo -s 1}] {
-	    puts stderr " ******************************************\n\
-		    In tclBlend1.0a1, you must run on a single processor\
-		    machine\n psrinfo -s 1 should return an error on a \
-		    single\n processor machines, but it did not\n\
-		    ******************************************\n"
-	    #exit -9
-	}
-    }
-}
-	
