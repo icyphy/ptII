@@ -502,115 +502,13 @@ public class StringUtilities {
      *  @exception IOException If the file cannot be read, or
      *   if the file cannot be represented as a URL (e.g. System.in), or
      *   the name specification cannot be parsed.
-     *  @exception MalformedURLException If the
+     *  @exception MalformedURLException If the URL is malformed.
+     *  @deprecated Use FileUtilities.nameToURL instead.
      */
     public static URL stringToURL(
             String name, URI baseDirectory, ClassLoader classLoader)
             throws IOException {
-
-        if (name == null || name.trim().equals("")) {
-            return null;
-        }
-        // If the name begins with "$CLASSPATH", then attempt to
-        // open the file relative to the classpath.
-        // NOTE: Use the dummy variable constant set up in the constructor.
-        if (name.startsWith(_CLASSPATH_VALUE)) {
-            // Try relative to classpath.
-            // The +1 is to skip over the delimiter after $CLASSPATH.
-            String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
-            if (classLoader == null) {
-                try {
-                    // WebStart: We might be in the Swing Event thread, so
-                    // Thread.currentThread().getContextClassLoader()
-                    // .getResource(entry) probably will not work so we
-                    // use a marker class.
-                    Class refClass =
-                        Class.forName("ptolemy.kernel.util.NamedObj");
-                    classLoader = refClass.getClassLoader();
-                } catch (Exception ex) {
-                    // IOException constructor does not take a cause
-                    IOException ioException =
-                        new IOException("Cannot find file '" + trimmedName
-                                + "' in classpath");
-                    ioException.initCause(ex);
-                    throw ioException;
-                }
-            }
-            // Use Thread.currentThread()... for Web Start.
-            URL result = classLoader.getResource(trimmedName);
-            if (result == null) {
-                new IOException("Cannot find file '" + trimmedName
-                        + "' in classpath");
-            }
-            return result;
-        }
-
-        File file = new File(name);
-        if (file.isAbsolute()) {
-            if (!file.canRead()) {
-                // FIXME: This is a hack.
-                // Expanding the configuration with Ptolemy II installed
-                // in a directory with spaces in the name fails on
-                // JAIImageReader because PtolemyII.jpg is passed in
-                // to this method as C:\Program%20Files\Ptolemy\...
-                file = new File(StringUtilities.substitute(name, "%20", " "));
-                if (!file.canRead()) {
-                    throw new IOException(
-                            "Cannot read file '" + name + "' or '"
-                            + StringUtilities.substitute(name, "%20", " ")
-                            + "'");
-                }
-            }
-            return file.toURL();
-        } else {
-            // Try relative to the base directory.
-            if (baseDirectory != null) {
-                // Try to resolve the URI.
-                URI newURI;
-                try {
-                    newURI = baseDirectory.resolve(name);
-                } catch (IllegalArgumentException ex) {
-                    // FIXME: Another hack
-                    // This time, if we try to open some of the JAI
-                    // demos that have actors that have defaults FileParameters
-                    // like "$PTII/doc/img/PtolemyII.jpg", then resolve()
-                    // bombs.
-                    String name2 =
-                        StringUtilities.substitute(name, "%20", " ");
-                    try {
-                        newURI = baseDirectory.resolve(name2);
-                        name = name2;
-                    } catch (IllegalArgumentException ex2) {
-                        IOException io = new IOException(
-                                "Problem with URI format in '" + name + "'. "
-                                + "and '" + name2 + "'"
-                                + "This can happen if the file name "
-                                + " is not absolute"
-                                + " and is not present relative to the directory"
-                                + " in which the specified model was read"
-                                + " (which was '" + baseDirectory + "')");
-                        io.initCause(ex2);
-                        throw io;
-                    }
-                }
-                try {
-                    return newURI.toURL();
-                } catch (IllegalArgumentException ex3) {
-                    IOException io = new IOException(
-                            "Problem with URI format in '" + name + "'. "
-                            + "This can happen if the '" + name
-                            + "' is not absolute"
-                            + " and is not present relative to the directory"
-                            + " in which the specified model was read"
-                            + " (which was '" + baseDirectory + "')");
-                    io.initCause(ex3);
-                    throw io;
-                }
-            }
-
-            // As a last resort, try an absolute URL.
-            return new URL(name);
-        }
+    	return FileUtilities.nameToURL(name, baseDirectory, classLoader);
     }
 
     /** Replace all occurrences of <i>pattern</i> in the specified
@@ -873,15 +771,6 @@ public class StringUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                  ////
-
-    /** Tag value used by this class and registered as a parser
-     *  constant for the identifier "CLASSPATH" to indicate searching
-     *  in the classpath.  This is a hack, but it deals with the fact
-     *  that Java is not symmetric in how it deals with getting files
-     *  from the classpath (using getResource) and getting files from
-     *  the file system.
-     */
-    private static String _CLASSPATH_VALUE = "xxxxxxCLASSPATHxxxxxx";
 
     /** Set to true if we print the cygwin warning in getProperty(). */
     private static boolean _printedCygwinWarning = false;
