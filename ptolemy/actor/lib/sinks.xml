@@ -13,19 +13,19 @@
 </rendition>
 </entity>
 
-<entity name="Display" class="ptolemy.actor.gui.Display">
+<entity name="Display" class="ptolemy.actor.lib.gui.Display">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
-<entity name="HistogramPlotter" class="ptolemy.actor.gui.HistogramPlotter">
+<entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
-<entity name="MatrixViewer" class="ptolemy.actor.gui.MatrixViewer">
+<entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
@@ -37,13 +37,13 @@
 </rendition>
 </entity>
 
-<entity name="SequencePlotter" class="ptolemy.actor.gui.SequencePlotter">
+<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
-<entity name="SequenceScope" class="ptolemy.actor.gui.SequenceScope">
+<entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
@@ -55,25 +55,25 @@
 </rendition>
 </entity>
 
-<entity name="TimedPlotter" class="ptolemy.actor.gui.TimedPlotter">
+<entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
-<entity name="TimedScope" class="ptolemy.actor.gui.TimedScope">
+<entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
-<entity name="XYPlotter" class="ptolemy.actor.gui.XYPlotter">
+<entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
-<entity name="XYScope" class="ptolemy.actor.gui.XYScope">
+<entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
