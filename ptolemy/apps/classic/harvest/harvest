@@ -1,0 +1,14 @@
+#!/bin/sh
+# $Id$
+# Script to harvest Ptolemy Classic SDF CGC actors.
+#
+if [ ! -d $PTOLEMY ]; then
+    PTOLEMY=/users/ptolemy
+fi
+
+cgc=$PTOLEMY/src/domains/cgc
+
+# Stars from Ptolemy Classic CGC.  Include only stars and dsp
+stars=`find $cgc -name "*.pl" | egrep -v "targets|tcltk|contrib|vis"`
+
+
