@@ -670,8 +670,8 @@ public class Variable extends Attribute
      *  immediately evaluated.
      *  @param lazy True to make the variable lazy.
      *  @see #validate()
-     *  @see NamedObj#attributeChanged()
-     *  @see NamedObj#attributeTypeChanged()
+     *  @see NamedObj#attributeChanged(Attribute)
+     *  @see NamedObj#attributeTypeChanged(Attribute)
      */
     public void setLazy(boolean lazy) {
         _isLazy = lazy;
