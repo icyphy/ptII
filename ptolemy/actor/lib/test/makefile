@@ -68,6 +68,7 @@ JSIMPLE_TESTS = \
 	Ramp.tcl \
 	Scale.tcl \
 	Sine.tcl \
+	SquareRoot.tcl \
 	VariableClock.tcl
 
 # Graphical Java tests that use Tcl.
