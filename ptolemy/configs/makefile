@@ -45,6 +45,8 @@ include $(CONFIG)
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
+	dspConfiguration.xml \
+	dspIntro.htm \
 	intro.htm \
 	introPtiny.htm \
 	runWelcomeWindow.xml \
