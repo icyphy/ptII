@@ -165,7 +165,7 @@ used to configure the calendar queue. Changes to these parameters
 are ignored when the model is running.
 <p>
 If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
-then the director not process events until the real time elapsed
+then the director will not process events until the real time elapsed
 since the model started matches the time stamp of the event.
 This ensures that the director does not get ahead of real time,
 but, of course, it does not ensure that the director keeps up with
@@ -454,7 +454,10 @@ public class DEDirector extends Director {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
-
+        if (_eventQueue == null) {
+            throw new IllegalActionException(this,
+            "Calling fireAt() before preinitialize().");
+        }
         synchronized(_eventQueue) {
             // NOTE: This does not check whether the actor is in the
             // composite actor containing this
@@ -478,7 +481,10 @@ public class DEDirector extends Director {
      */
     public void fireAtCurrentTime(Actor actor)
             throws IllegalActionException {
-
+        if (_eventQueue == null) {
+            throw new IllegalActionException(this,
+            "Calling fireAtCurrentTime() before preinitialize().");
+        }
         synchronized(_eventQueue) {
             // NOTE: This does not check whether the actor is in the
             // composite actor containing this
@@ -502,6 +508,10 @@ public class DEDirector extends Director {
      */
     public void fireAtRelativeTime(Actor actor, double time)
             throws IllegalActionException {
+        if (_eventQueue == null) {
+            throw new IllegalActionException(this,
+            "Calling fireAtRelativeTime() before preinitialize().");
+        }
         synchronized(_eventQueue) {
             // NOTE: This does not check whether the actor is in the
             // composite actor containing this
