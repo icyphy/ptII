@@ -88,6 +88,10 @@ public class SDFPitchShift extends SDFAtomicActor {
         input.setTypeEquals(DoubleToken.class);
 	input.setTokenConsumptionRate(consumptionRate);
 
+	scaleFactor = new SDFIOPort(this, "scaleFactor", true, false);
+        scaleFactor.setTypeEquals(DoubleToken.class);
+	scaleFactor.setTokenConsumptionRate(1);
+
 	pitchIn = new SDFIOPort(this, "pitchIn", true, false);
         pitchIn.setTypeEquals(DoubleToken.class);
 	pitchIn.setTokenConsumptionRate(consumptionRate);
@@ -102,11 +106,14 @@ public class SDFPitchShift extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. */
+    /** The input port for audio data. */
     public SDFIOPort input;
 
     /** The pitch value input port. */
     public SDFIOPort pitchIn;
+
+     /** The pitch scale factor input port. */
+    public SDFIOPort scaleFactor;
 
     /** The output port. */
     public SDFIOPort output;
@@ -151,6 +158,7 @@ public class SDFPitchShift extends SDFAtomicActor {
 	     SDFPitchShift newobj = (SDFPitchShift)super.clone(ws);
 	     newobj.output = (SDFIOPort)newobj.getPort("output");
 	     newobj.input = (SDFIOPort)newobj.getPort("input");
+	     newobj.scaleFactor = (SDFIOPort)newobj.getPort("scaleFactor");
 	     newobj.pitchIn = (SDFIOPort)newobj.getPort("pitchIn");
 	     newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
 	     newobj.consumptionProductionRate = (Parameter)newobj.getAttribute("consumptionProductionRate");
@@ -171,18 +179,23 @@ public class SDFPitchShift extends SDFAtomicActor {
 
         input.getArray(0, audioTokenArray);
 	pitchIn.getArray(0, pitchTokenArray);
+	scaleFactor.getArray(0, scaleFactorTokenArray);
 	
         int i;
         for (i = 0; i < consumptionRate; i++) {
             audioInDoubleArray[i] = audioTokenArray[i].doubleValue();
-        }
-	for (i = 0; i < consumptionRate; i++) {
-	    //System.out.println("pitchTokenArray.length = " + pitchTokenArray.length);        
+       	    
             pitchInDoubleArray[i] = pitchTokenArray[i].doubleValue();
+        
+	   
         }
-	// Default pitch scale factor(s). FIXME: should get this
-	// from an input port.
-	double pitchScaleIn = 1.0;
+	// FIXME: May want to eventually make scaleFactorDoubleArray,
+	// scaleFactorTokenArray be length consumptionRate to have
+	// finer granularity pitch scale control.
+	 scaleFactorDoubleArray[0] = scaleFactorTokenArray[0].doubleValue();
+	// FIXME: Should pass scaleFactorDoubleArray[] to 
+	// performPitchShift(), not just the first element.
+	double pitchScaleIn = scaleFactorDoubleArray[0];
 
 	
 	audioOutDoubleArray = ps.performPitchShift(audioInDoubleArray,
@@ -208,9 +221,11 @@ public class SDFPitchShift extends SDFAtomicActor {
 	    
 	audioTokenArray = new DoubleToken[consumptionRate];
 	pitchTokenArray = new DoubleToken[consumptionRate];
+	scaleFactorTokenArray = new DoubleToken[1];
 	audioInDoubleArray = new double[consumptionRate];
 	pitchInDoubleArray = new double[consumptionRate];
 	audioOutDoubleArray = new double[consumptionRate];
+	scaleFactorDoubleArray = new double[1];
     }
 
 
@@ -229,9 +244,11 @@ public class SDFPitchShift extends SDFAtomicActor {
 
     private DoubleToken[] audioTokenArray;
     private DoubleToken[] pitchTokenArray;
+    private DoubleToken[] scaleFactorTokenArray;
 
     private double[] audioInDoubleArray;
     private double[] pitchInDoubleArray;
+    private double[] scaleFactorDoubleArray;
 
     private double[] audioOutDoubleArray;
 }
