@@ -78,6 +78,7 @@ modulo, and loses the input when the function is changed back.
 @author C. Fong
 @version $Id$
 @see AbsoluteValue
+@see Remainder
 @see Scale
 @see TrigFunction
 */

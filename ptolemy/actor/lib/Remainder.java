@@ -64,6 +64,7 @@ argument. Special cases:
 
 @author Edward A. Lee
 @version $Id$
+@see MathFunction
 */
 
 public class Remainder extends Transformer {
