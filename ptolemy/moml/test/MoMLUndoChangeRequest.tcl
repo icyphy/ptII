@@ -230,3 +230,27 @@ test MoMLUndoChangeRequest-2.1 {Make three changes, merge the first and the last
 <         </port>
 <     </entity>
 <     <entity name="discard3" class="ptolemy.actor.lib.Discard">}
+
+
+######################################################################
+####
+#
+test MoMLUndoChangeRequest-5.1 {getDeferredToParent} {
+    set e3 [java::new ptolemy.actor.TypedCompositeActor $toplevel E3]
+
+    # FIXME: not sure if this is right?	
+    $e3 setDeferMoMLDefinitionTo $toplevel
+
+    set r1 [expr {[java::call \
+	    ptolemy.moml.MoMLUndoChangeRequest getDeferredToParent [java::null]] \
+	    == [java::null]}] 
+    set r2 [expr {[java::call \
+	    ptolemy.moml.MoMLUndoChangeRequest getDeferredToParent $toplevel] \
+	    == [java::null]}] 
+
+    set a [java::call ptolemy.moml.MoMLUndoChangeRequest getDeferredToParent $e3]
+    set r3 [$a getName]	
+
+    list $r1 $r2 $r3
+} {1 0 top} {FIXME: This is not a real test for getDeferredToParent}
+
