@@ -216,7 +216,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 currentPackage, categories);
 
         if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
-            if ((categories & CG_USERTYPE) != 0) {
+            if ((categories & (CG_USERTYPE | CG_PACKAGE)) != 0 ) {
                 System.err.println("Warning: ambiguous reference to '" +
                         name.getIdent() +
                         // " in " +
@@ -226,16 +226,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         //((currentClass == null) ?
                         //        "?" : currentClass.toString()) +
                         "', using most specific one.");
-
             } else {
                 throw new RuntimeException("ambiguous reference to '"
                         + name.getIdent()
-                        + "' in scope " + scope
-                        + "\nNote: You might see this problem if you have "
-                        + "two directories in your classpath that have the "
-                        + "same name as a package.  For example, if $PTII/cg "
-                        + "and ./cg both exist, then you might get this "
-                        + "message.  This is a bug in the codegen.");
+                        + "' which is not a usertype or package "
+                        + "in scope " + scope);
             }
         }
 
