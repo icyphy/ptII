@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NamedObj.*;
 This typed composite actor supports mirroring of its ports in its container
 (which is required to be a ModalModel), which in turn assures
 mirroring of ports in each of the refinements and the controller.
-This class the CTStepSizeControlActor interface so that
+This class implements the CTStepSizeControlActor interface so that
 it can be used to construct hybrid systems using the CT domain.
 
 @author Edward A. Lee
