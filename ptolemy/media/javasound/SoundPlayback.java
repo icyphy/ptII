@@ -617,10 +617,10 @@ public class SoundPlayback {
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
 		// Perform clipping, if necessary.
-		if (doubleArray[currChannel][currSamp] > 1) {
-		    l = (int)maxSample;
-		} else if (doubleArray[currChannel][currSamp] < -1) {
-		    l = (int)(-maxSample);
+		if (doubleArray[currChannel][currSamp] >= 1) {
+		    l = (int)maxSample - 1;
+		} else if (doubleArray[currChannel][currSamp] <= -1) {
+		    l = (int)(-maxSample) + 1;
 		} else {
 		    // signed integer representation of current sample of the
 		    // current channel.
@@ -670,12 +670,29 @@ public class SoundPlayback {
 
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
-		// FIXME: Perform hard-clipping, if necessary.
-
 		// signed integer representation of current sample of the
 		// current channel.
 		int l =
 		    intArray[currChannel][currSamp];
+		// Perform clipping, if necessary.
+		int maxSample;
+		if (bytesPerSample == 2) {
+		    maxSample = 32768;
+		} else if (bytesPerSample == 1) {
+		    maxSample = 128;
+		} else if (bytesPerSample == 3) {
+		    maxSample = 8388608;
+		} else if (bytesPerSample == 4) {
+		    maxSample = 1474836480;
+		} else {
+		    // Should not happen.
+		    maxSample = 0;
+		}
+		if (l > (maxSample - 1)) {
+		    l = maxSample - 1;
+		} else if (l < (-maxSample + 1)) {
+		    l = -maxSample + 1;
+		}
 		// Create byte representation of current sample.
 		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
 		    b[bytesPerSample - i - 1] = (byte) l;
