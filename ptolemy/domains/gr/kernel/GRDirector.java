@@ -155,7 +155,6 @@ public class GRDirector extends StaticSchedulingDirector {
      *  director returns false in its prefire().
      */
     public void fire() throws IllegalActionException {
-        // -fire-
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Director outsideDirector = _getOutsideDirector();
 
@@ -181,10 +180,13 @@ public class GRDirector extends StaticSchedulingDirector {
         if (scheduler == null)
             throw new IllegalActionException(this,"Attempted to fire " +
                     "GR system with no scheduler");
-        Enumeration allactors = scheduler.schedule();
-        while (allactors.hasMoreElements()) {
+                    
+        Schedule schedule = scheduler.getSchedule();
+        
+        Iterator allActors = schedule.actorIterator();
+        while (allActors.hasNext()) {
 
-            Actor actor = (Actor)allactors.nextElement();
+            Actor actor = (Actor)allActors.next();
             
             // If an actor returns true to prefire(), fire() and postfire()
             // will be called.
@@ -259,7 +261,6 @@ public class GRDirector extends StaticSchedulingDirector {
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        //  -initialize-
         super.initialize();
         _buildActorTable();
         _buildReceiverTable();
@@ -277,7 +278,6 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
     public void invalidateSchedule() {
-        //  -invalidateSchedule-
         // This method is called when an entity is instantiated under 
         // this director. This method is also called when a link is 
         // made between ports and/or relations.
@@ -315,16 +315,15 @@ public class GRDirector extends StaticSchedulingDirector {
      *  one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        //  -preinitialize-
         super.preinitialize();
         _iteration = 0;
     }
 
 
-    /** Return false if the system has finished executing, when the 
-     *  iteration limit is reached. Increment the number of iterations.
-     *  If the "iterations" parameter is greater than zero, then
-     *  check if the limit has been reached.  If so, return false.
+    /** Return false if the system has finished executing. This happens when
+     *  the iteration limit is reached. The iteration limit is specified by
+     *  the "iterations" parameter. If the "iterations" parameter is set to
+     *  zero, the model will run indefinitely.
      *
      *  @return True if the Director wants to be fired again in the
      *  future.
@@ -332,7 +331,6 @@ public class GRDirector extends StaticSchedulingDirector {
      *  <i>iterations</i>
      */
     public boolean postfire() throws IllegalActionException {
-        //  -postfire-
         // Note: actors return false on postfire(), if they wish never to be 
         // fired again during the execution. This can be interpreted as the
         // actor being dead. Also, fireAt() calls by the actor will be ignored.
@@ -355,7 +353,6 @@ public class GRDirector extends StaticSchedulingDirector {
      *  throws it
      */
     public void wrapup() throws IllegalActionException {
-        //  -wrapup-
         super.wrapup();
         _reset();
     }
@@ -386,12 +383,14 @@ public class GRDirector extends StaticSchedulingDirector {
         if (currentScheduler== null)
             throw new IllegalActionException(this,"Attempted to fire " +
                     "GR system with no scheduler");
-        Enumeration allActorsScheduled = currentScheduler.schedule();
+        
+        Schedule schedule = currentScheduler.getSchedule();
+        Iterator allActorsScheduled = schedule.actorIterator();
 
 
         int actorsInSchedule = 0;
-        while (allActorsScheduled.hasMoreElements()) {
-            Actor actor = (Actor) allActorsScheduled.nextElement();
+        while (allActorsScheduled.hasNext()) {
+            Actor actor = (Actor) allActorsScheduled.next();
             String name = ((Nameable)actor).getFullName();
             ContainedGRActor grActor =
                          (ContainedGRActor) _allActorsTable.get(actor);
