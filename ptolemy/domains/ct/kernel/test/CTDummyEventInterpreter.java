@@ -64,7 +64,7 @@ public class CTDummyEventInterpreter extends CTActor
     ////                         public methods                    ////
     /** Dummy method. Do nothing.
      */
-    public void consumeCurrentEvents(){
+    public void consumeCurrentEvents() {
     }
 
     ///////////////////////////////////////////////////////////////////
