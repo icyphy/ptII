@@ -22,19 +22,6 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 126, 819, 563}}">
     </property>
-    <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../../doc/img/PtolemyII.jpg&quot;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="133.078125, 232.203125">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="ImageToString" class="ptolemy.actor.lib.image.ImageToString">
         <property name="_location" class="ptolemy.kernel.util.Location" value="374.9375, 232.1328125">
         </property>
@@ -74,16 +61,29 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/doc/img/PtolemyII.jpg">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 230.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ImageReader.output" relation="relation"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ImageToString.input" relation="relation2"/>
     <link port="ImageToString.output" relation="relation3"/>
     <link port="Test.input" relation="relation3"/>
     <link port="ImageRotate.input" relation="relation"/>
     <link port="ImageRotate.output" relation="relation2"/>
+    <link port="ImageReader.output" relation="relation"/>
 </entity>

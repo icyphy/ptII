@@ -1,5 +1,5 @@
-/* An actor that reads an image from a URL parameter and Object Token
-that contains a java.awt.Image
+/* An actor that reads an image from a FileAttribute and outputs
+an AWTImageToken.
 
 @Copyright (c) 2001-2003 The Regents of the University of California.
 All rights reserved.
@@ -33,12 +33,12 @@ package ptolemy.actor.lib.image;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -51,24 +51,13 @@ import javax.swing.ImageIcon;
 //////////////////////////////////////////////////////////////////////////
 //// ImageReader
 /**
-This actor reads an Image from a URL parameter, and outputs it as an Object
-Token
-
-<p>It is possible to load a file
-from the local file system by using the prefix "file://" instead of
-"http://". Relative file paths are allowed. To specify a file
-relative to the current directory, use "../" or "./". For example,
-if the current directory contains a file called "test.jpg", then
-<i>sourceURL</i> should be set to "file:./test.jpg". If the parent
-directory contains a file called "test.jpg", then <i>sourceURL</i>
-should be set to "file:../test.jpg". To reference the file
-test.jpg, located at "/tmp/test.jpg", <i>sourceURL</i>
-should be set to "file:///tmp/test.jpg" The default value is
-"file:///tmp/test.jpg".
+This actor reads an Image from a FileAttribute, and outputs it as an 
+AWTImageToken.
 
 <p>FIXME: It would be nice if we could read images from stdin.
 
-@see URLToImage
+@see FileAttribute
+@see AWTImageToken
 @author  Christopher Hylands
 @version $Id$
 */
@@ -93,21 +82,18 @@ public class ImageReader extends Source {
         //output.setMultiport(true);
         output.setTypeEquals(BaseType.OBJECT);
 
-        sourceURL = new Parameter(this, "sourceURL", new StringToken(""));
-        sourceURL.setTypeEquals(BaseType.STRING);
+        fileOrURL = new FileAttribute(this, "fileOrURL");
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The URL of the file to read from. This parameter contains
-     *  a StringToken.  By default, it contains an empty string, which
-     *  is interpreted to mean that input should be directed to the
-     *  standard input.
-     *  FIXME: Should this bring up a dialog box to type (or select) a URL?
+    /** The file name or URL from which to read.  This is a string with
+     *  any form accepted by File Attribute.
+     *  @see FileAttribute
      */
-    public Parameter sourceURL;
+    public FileAttribute fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -120,10 +106,10 @@ public class ImageReader extends Source {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == sourceURL) {
+        if (attribute == fileOrURL) {
             // Would it be worth checking to see if the URL exists and
             // is readable?
-            StringToken URLToken = (StringToken)sourceURL.getToken();
+            _url = fileOrURL.asURL();
         }
         super.attributeChanged(attribute);
     }
@@ -153,28 +139,23 @@ public class ImageReader extends Source {
     /** Open the file at the URL, and set the width of the output.
      */
     public void initialize() throws IllegalActionException {
-        attributeChanged(sourceURL);
+        attributeChanged(fileOrURL);
     }
 
     /** Read in an image.
      *  @exception IllegalActionException If an IO error occurs.
      */
     public boolean prefire() throws IllegalActionException {
-        StringToken sourceURLToken = (StringToken)sourceURL.getToken();
-        if (sourceURLToken == null) {
+        if (_url == null) {
             throw new IllegalActionException("sourceURL was null");
         }
-
-	// Note that sourceURLValue might be a filepath or a URL 
-	String sourceURLValue = sourceURLToken.stringValue();
-		
-        _image = new ImageIcon(sourceURLValue).getImage();
-
+        _fileRoot = _url.getFile();		
+        _image = new ImageIcon(_fileRoot).getImage();
 	if (_image.getWidth(null) == -1
 	    && _image.getHeight(null) == -1) {
 	    throw new IllegalActionException(this,
 		"Image size is -1 x -1.  Failed to open '"
-                + sourceURLValue + "'");
+                + _fileRoot + "'");
 	}
         return super.prefire();
     }
@@ -182,9 +163,12 @@ public class ImageReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    // String for the URL.
-    private String _source;
+    // The URL as a string.
+    private String _fileRoot;
 
     // Image that is read in.
     private Image _image;
+
+    // The URL of the file.
+    private URL _url;
 }
