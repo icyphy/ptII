@@ -1,3 +1,4 @@
+/*                        -*- Mode: java -*-                     */
 /* Input file to JJTree and JavaCC to generate Matrix Parser */
 
 options {
