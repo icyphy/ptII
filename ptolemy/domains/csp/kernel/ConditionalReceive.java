@@ -34,7 +34,6 @@ package ptolemy.domains.csp.kernel;
 import ptolemy.actor.*;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.*;
-import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalReceive
@@ -152,7 +151,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                          " of type CSPReceiver.");
              }
              _receiver = (CSPReceiver)receivers[channel][0];
-
 	 } finally {
              port.workspace().doneReading();
 	 }
@@ -168,11 +166,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      */
     public void run() {
         try {
-            // FIXME: For testing purposes only. Needed so that threads are
-            // not always executed in the same order.
-            // Random rand = new Random();
-            //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-
             synchronized(getReceiver()) {
                 if (getReceiver()._isConditionalReceiveWaiting()
                      || getReceiver()._isGetWaiting() ) {

@@ -169,10 +169,7 @@ public abstract class ConditionalBranch {
         return _alive;
     }
 
-    /** Set whether this branch is still alive.
-     *  FIXME: this method is only ever called with a false value, perhaps
-     *  should modify method to public void finishUp ??
-     *
+    /** Set a flag indicating this branch should fail.
      *  @param value boolean indicating whether this branch is still alive.
      */
     public void setAlive(boolean value) {
