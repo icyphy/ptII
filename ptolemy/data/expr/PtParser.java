@@ -284,6 +284,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             Complex i = new Complex(0.0, 1.0);
             registerConstant("i", new ComplexToken(i));
             registerConstant("j", new ComplexToken(i));
+            registerConstant("true", new BooleanToken(true));
+            registerConstant("false", new BooleanToken(false));
             registerFunctionClass("java.lang.Math");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
         }

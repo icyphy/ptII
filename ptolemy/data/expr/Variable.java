@@ -1269,6 +1269,18 @@ public class Variable extends Attribute implements Typeable {
 	    return false;
         }
 
+        /** Check whether the current type of this term is acceptable,
+         *  and return true if it is.  A type is acceptable
+         *  if it represents an instantiable object.
+         *  @return True if the current type is acceptable.
+         */
+        public boolean isTypeAcceptable() {
+            if (TypeLattice.isInstantiableType(getType())) {
+                return true;
+            }
+            return false;
+        }
+
         /** Set the type of this port if it is not set throught
 	 *  setTypeEquals().
          *  @exception IllegalActionException If the type is already set
