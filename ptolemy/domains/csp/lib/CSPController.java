@@ -77,6 +77,16 @@ public class CSPController extends CSPActor {
      */
     public void fire() throws IllegalActionException {
         
+        if( _numRequestInChannels == -1 ) {
+            _numRequestInChannels = 0; 
+            Receiver[][] rcvrs = _requestIn.getReceivers();
+            for( int i = 0; i < rcvrs.length; i++ ) {
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+                    _numRequestInChannels++; 
+                }
+            }
+        }
+        
         int br; 
         int code;
         BooleanToken posAck = new BooleanToken( true ); 
@@ -87,10 +97,13 @@ public class CSPController extends CSPActor {
             //
             // State 1: Wait for 1st Request
             //
+	    System.out.println("STATE 1: " +getName());
             ConditionalBranch[] reqBrchs = 
                     new ConditionalBranch[_numRequestInChannels];
+            /*
             System.out.println("There are "+_numRequestInChannels+
                     " request input channels for "+getName());
+            */
             for( int i=0; i<_numRequestInChannels; i++ ) {
                 reqBrchs[i] = new 
                         ConditionalReceive(true, _requestIn, i, i);
@@ -99,7 +112,8 @@ public class CSPController extends CSPActor {
             br = chooseBranch(reqBrchs);
             
             if( br != -1 ) {
-                IntToken token = (IntToken)_requestIn.get(br);
+                IntToken token = (IntToken)reqBrchs[br].getToken();
+                // IntToken token = (IntToken)_requestIn.get(br);
                 code = token.intValue(); 
                 _winningPortChannelCode = 
                         new PortChannelCode(_requestIn, br, code);
@@ -109,12 +123,14 @@ public class CSPController extends CSPActor {
             //
             // State 2: Notify Contention Alarm of 1st Request
             //
+	    System.out.println("STATE 2: " +getName());
             _contendOut.send(0, new Token() );
             
             
             //
             // State 3: Wait for Contenders and Send Ack's
             //
+	    System.out.println("STATE 3: " +getName());
             _losingPortChannelCodes = new LinkedList(); 
             boolean continueCDO = true;
             while( continueCDO ) {
@@ -129,8 +145,9 @@ public class CSPController extends CSPActor {
                 
                 
                 // Contention Occurred...and might happen again
-                if( br >= 0 || br < _numRequestInChannels ) {
-                    IntToken token = (IntToken)_requestIn.get(br);
+                if( br >= 0 && br < _numRequestInChannels ) {
+                   IntToken token = (IntToken)reqBrchs[br].getToken();
+                    // IntToken token = (IntToken)_requestIn.get(br);
                     code = token.intValue(); 
                     if( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
@@ -147,6 +164,8 @@ public class CSPController extends CSPActor {
                 // Contention is Over
                 else if( br == _numRequestInChannels ) {
                 
+                    reqBrchs[br].getToken();
+                    
                     // Send Positive Ack
                     int ch =  _winningPortChannelCode.getChannel();
                     _requestOut.send(ch, posAck);
@@ -192,7 +211,7 @@ public class CSPController extends CSPActor {
     private IOPort _contendIn;
     private IOPort _contendOut;
     
-    private int _numRequestInChannels;
+    private int _numRequestInChannels = -1;
     
     private PortChannelCode _winningPortChannelCode;
     private LinkedList _losingPortChannelCodes;
