@@ -431,6 +431,15 @@ public class Plot extends PlotBox {
                     continue;
                 } else if (arg.equals("-binary")) {
                     setBinary(true);
+                    _endian = NATIVE_ENDIAN;
+                    continue;
+                } else if (arg.equals("-bigendian")) {
+                    setBinary(true);
+                    _endian = BIG_ENDIAN;
+                    continue;
+                } else if (arg.equals("-littleendian")) {
+                    setBinary(true);
+                    _endian = LITTLE_ENDIAN;
                     continue;
                 } else if (arg.equals("-db")) {
                     _debug = 6;
@@ -1178,9 +1187,30 @@ public class Plot extends PlotBox {
         // This method is similar to _parseLine() below, except it parses
         // an entire file at a time.
         int c;
-        float x, y;
+        float x = 0, y = 0, pointCount = 0;
+        boolean byteSwapped = false;
         boolean connected = false;
+        byte input[] = new byte[4];
+
         if (_connected) connected = true;
+
+        switch (_endian) {
+        case NATIVE_ENDIAN:
+            try {
+                if ( System.getProperty("os.arch").equals("x86")) {
+                    byteSwapped = true;
+                }
+            } catch (SecurityException e) {}
+            break;
+        case BIG_ENDIAN:
+            break;
+        case LITTLE_ENDIAN:
+            byteSwapped = true;
+            break;
+        default:
+            throw new PlotDataException("Internal Error: Don't know about '"+
+                    _endian + "' style of endian");
+        }
 
         if (_debug > 8) {
             System.out.println("Plot: _parseBinaryStream _connected = "+
@@ -1192,6 +1222,9 @@ public class Plot extends PlotBox {
                 // Assume that the data is one data set, consisting
                 // of 4 byte floats.  None of the Ptolemy pxgraph
                 // binary format extensions apply.
+                // Note that the binary format is bigendian, or network
+                // order.  Little-endian machines, like x86 will not
+                // be able to write binary data directly.
 
                 // Read 3 more bytes, create the x float.
                 int bits = c;
@@ -1231,8 +1264,24 @@ public class Plot extends PlotBox {
                     case 'd':
                         {
                             // Data point.
-                            x = in.readFloat();
-                            y = in.readFloat();
+                            if (byteSwapped) {
+                                in.readFully(input);
+                                x = Float.intBitsToFloat(
+                                    (( input[3] & 0xFF ) << 24) | 
+                                    (( input[2] & 0xFF ) << 16) |
+                                    (( input[1] & 0xFF ) << 8) |
+                                    ( input[0] & 0xFF ));
+                                in.readFully(input);
+                                y = Float.intBitsToFloat(
+                                    (( input[3] & 0xFF ) << 24) | 
+                                    (( input[2] & 0xFF ) << 16) |
+                                    (( input[1] & 0xFF ) << 8) |
+                                    ( input[0] & 0xFF ));
+                            } else {
+                                x = in.readFloat();
+                                y = in.readFloat();
+                            }
+                            pointCount++;
                             connected = _addLegendIfNecessary(connected);
                             addPoint(_currentdataset, x, y, connected);
                             if (_connected) connected = true;
@@ -1266,7 +1315,9 @@ public class Plot extends PlotBox {
                         throw new PlotDataException("Don't understand `" + 
                                 (char)c + "' character " +
                                 "(decimal value = " + c +
-                                ") in binary file");
+                                ") in binary file.  Last point was (" + x +
+                                "," + y + ").\nProcessed " + pointCount +
+                            " points sucessfully");
                     }
                     c = in.readByte();
                 }
@@ -1694,6 +1745,16 @@ public class Plot extends PlotBox {
     private int _diameter = 6;
     
     private Vector _dataurls = null;
+
+    // Check the osarch and use the appropriate endian
+    private static final int NATIVE_ENDIAN = 0;
+    // Data is in big-endian
+    private static final int BIG_ENDIAN = 1;
+    // Data is in little-endian
+    private static final int LITTLE_ENDIAN = 2;
+
+    // Format to read data in.
+    private int _endian = NATIVE_ENDIAN;
 
     // Information about the previously plotted point.
     private long _prevx[], _prevy[];
