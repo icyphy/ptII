@@ -5,6 +5,21 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1><a name="ptplot changes">Ptplot Changes</a></h1>
+<H2>The changes between ptplot1.2 and ptplot1.2p1</H2>
+Ptplot1.2p1 is a bug fix release. 
+<MENU>
+<LI> Ptplot1.1 was able able to parse scientific notation numbers such
+as <CODE>1.0E-12</CODE>, but Ptplot1.2 could not.  
+The change that caused the bug was that in Ptplot1.2, we used
+<CODE>java.io.StreamTokenizer</CODE> to parse the
+numbers.  Unfortunately, StreamTokenizer is buggy, it fails to parse
+scientific notation.  For more information, see
+<A HREF="http://developer.javasoft.com/developer/bugParade/bugs/4079180.html"><CODE>http://developer.javasoft.com/developer/bugParade/bugs/4079180.html</CODE></A>.
+The fix was to adapt the Ptplot1.1 number parsing code to handle error bars.
+ <br>
+This bug was reported by Marion Schroeder &lt;schroeder@hmi.de&gt;.
+</MENU>
+
 <H2>The changes between ptplot1.1 and ptplot1.2</H2>
 <MENU>
 <LI> Added support for JAR files.
