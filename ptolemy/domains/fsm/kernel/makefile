@@ -39,7 +39,7 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		util test # demo
+DIRS = 		test
 
 CLASSPATH =	../../../..
 
@@ -49,8 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		util/util.jar
+PTCLASSALLJARS =
 
 PTCLASSALLJAR = kernel.jar
 
@@ -60,15 +59,11 @@ JSRCS = \
 	ChoiceAction.java \
 	CommitAction.java \
 	FSMActor.java \
-	FSMController.java \
 	FSMDirector.java \
-	FSMState.java \
-	FSMTransition.java \
-	NewFSMDirector.java \
 	ProduceOutput.java \
+	SetVariable.java \
 	State.java \
-	Transition.java \
-	TransitionAction.java
+	Transition.java
 
 EXTRA_SRCS =	$(JSRCS)
 
