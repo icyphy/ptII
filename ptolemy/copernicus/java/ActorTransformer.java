@@ -51,6 +51,7 @@ import soot.*;
 import soot.util.Chain;
 import soot.jimple.AssignStmt;
 import soot.jimple.IntConstant;
+import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
@@ -133,6 +134,12 @@ public class ActorTransformer extends SceneTransformer {
 //             }
 
             String className = entity.getClass().getName();
+
+          //   if(className.equals("ptolemy.actor.lib.Expression")) {
+//                 // Generate code for the expression 
+
+//             } else {
+
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
             entityClass.setLibraryClass();
 
@@ -396,6 +403,8 @@ public class ActorTransformer extends SceneTransformer {
                     }
                     // Inline other NamedObj methods here, too..
 
+                    // FIXME: avoid inlining method calls 
+                    // that don't have tokens in them 
                 }
             }
         }
@@ -428,6 +437,42 @@ public class ActorTransformer extends SceneTransformer {
                             r.getMethod().getName()
                             .equals("setTokenInitProduction")) {
                         body.getUnits().remove(stmt);
+                    }
+                    if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.variableConstructorWithToken.getSubSignature())) {
+                        SootClass variableClass =
+                            r.getMethod().getDeclaringClass();
+                        SootMethod constructorWithoutToken =
+                            variableClass.getMethod(
+                                    PtolemyUtilities.variableConstructorWithoutToken.getSubSignature());
+                        // Replace the three-argument
+                        // constructor with a two-argument
+                        // constructor.  We do this for
+                        // several reasons:
+                        
+                        // 1) The assignment is
+                        // redundant...  all parameters
+                        // are initialized with the
+                        // appropriate value.
+                        
+                        // 2) The type of the token is
+                        // often wrong for polymorphic
+                        // actors.
+                        
+                        // 3) Later on, when we inline all
+                        // token constructors, there is no
+                        // longer a token to pass to the
+                        // constructor.  It is easier to
+                        // just deal with it now...
+                        
+                        // Create a new two-argument constructor.
+                        InstanceInvokeExpr expr = (InstanceInvokeExpr)r;
+                        stmt.getInvokeExprBox().setValue(
+                                Jimple.v().newSpecialInvokeExpr(
+                                        (Local)expr.getBase(), 
+                                        constructorWithoutToken,
+                                        r.getArg(0),
+                                        r.getArg(1)));
                     }
                 }
             }

@@ -370,7 +370,7 @@ public class ModelTransformer extends SceneTransformer {
                 attribute instanceof LocationAttribute) {
                 continue;
             }
-
+            
             String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
@@ -378,7 +378,7 @@ public class ModelTransformer extends SceneTransformer {
 
             Local local;
             if (createdSet.contains(attribute.getFullName())) {
-                //    System.out.println("already has " + attributeName);
+                System.out.println("already has " + attributeName);
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
                 // Note that if the class creates the attribute, but
@@ -401,7 +401,7 @@ public class ModelTransformer extends SceneTransformer {
 //                     continue;
 //                 }
             } else {
-                //   System.out.println("creating " + attributeName);
+                System.out.println("creating " + attributeName);
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
                 local = PtolemyUtilities.createNamedObjAndLocal(
@@ -416,69 +416,70 @@ public class ModelTransformer extends SceneTransformer {
                 // Initialize the newly created variable.
                 if (attribute instanceof Variable) {
                     // If the attribute is a parameter, then set its
-                // token to the correct value.
-		// cast to Variable.
-                Stmt assignStmt = Jimple.v().newAssignStmt(
-                        variableLocal,
-                        Jimple.v().newCastExpr(
-                                local,
-                                variableType));
+                    // token to the correct value.
+                    // cast to Variable.
+                    Stmt assignStmt = Jimple.v().newAssignStmt(
+                            variableLocal,
+                            Jimple.v().newCastExpr(
+                                    local,
+                                    variableType));
                                
-              	body.getUnits().add(assignStmt);
+                    body.getUnits().add(assignStmt);
                 
-                Token token = null;
-                try {
-                    token = ((Variable)attribute).getToken();
-                } catch (IllegalActionException ex) {
-                    throw new RuntimeException(ex.getMessage());
+                    Token token = null;
+                    try {
+                        token = ((Variable)attribute).getToken();
+                    } catch (IllegalActionException ex) {
+                        throw new RuntimeException(ex.getMessage());
+                    }
+
+                    // Some parameters (like _hideName) occasionally have no
+                    // value.. this is stupid, but we have to deal with it.
+                    if(token == null) {
+                        token = new Token();
+                    }
+
+                    Local tokenLocal =
+                        PtolemyUtilities.buildConstantTokenLocal(body,
+                                assignStmt, token, "token");
+                
+                    // call setToken.
+                    body.getUnits().add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            variableLocal,
+                                            PtolemyUtilities.variableSetTokenMethod,
+                                            tokenLocal)));
+                    // call validate to ensure that attributeChanged is called.
+                    body.getUnits().add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newInterfaceInvokeExpr(
+                                            variableLocal,
+                                            PtolemyUtilities.validateMethod)));
+                } else if (attribute instanceof Settable) {
+                    // If the attribute is settable, then set its
+                    // expression.
+                
+                    // cast to Settable.
+                    body.getUnits().add(Jimple.v().newAssignStmt(
+                                                settableLocal,
+                                                Jimple.v().newCastExpr(
+                                                        local,
+                                                        PtolemyUtilities.settableType)));
+                    String expression = ((Settable)attribute).getExpression();
+
+                    // call setExpression.
+                    body.getUnits().add(Jimple.v().newInvokeStmt(
+                                                Jimple.v().newInterfaceInvokeExpr(
+                                                        settableLocal,
+                                                        PtolemyUtilities.setExpressionMethod,
+                                                        StringConstant.v(expression))));
+                    // call validate to ensure that attributeChanged is called.
+                    body.getUnits().add(Jimple.v().newInvokeStmt(
+                                                Jimple.v().newInterfaceInvokeExpr(
+                                                        settableLocal,
+                                                        PtolemyUtilities.validateMethod)));
                 }
-
-                if (token == null) {
-                    throw new RuntimeException("Calling getToken() on '"
-                            + attribute + "' returned null.  This may occur "
-                            + "if an attribute has no value in the moml file");
-                }
-
-                Local tokenLocal = 
-                    PtolemyUtilities.buildConstantTokenLocal(body,
-                        assignStmt, token, "token");
-                        
-		// call setToken.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(
-                                variableLocal,
-                                PtolemyUtilities.variableSetTokenMethod,
-                                tokenLocal)));
-                // call validate to ensure that attributeChanged is called.
-                body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                variableLocal,
-                                PtolemyUtilities.validateMethod)));
-                
-            } else if (attribute instanceof Settable) {
-                // If the attribute is settable, then set its
-                // expression.
-                
-		// cast to Settable.
-		body.getUnits().add(Jimple.v().newAssignStmt(
-                        settableLocal,
-                        Jimple.v().newCastExpr(
-                                local,
-                                PtolemyUtilities.settableType)));
-                String expression = ((Settable)attribute).getExpression();
-
-		// call setExpression.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                settableLocal,
-                                PtolemyUtilities.setExpressionMethod,
-                                StringConstant.v(expression))));
-                // call validate to ensure that attributeChanged is called.
-                body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                settableLocal,
-                                PtolemyUtilities.validateMethod)));
-            }
             }
 
             // Create a new field for the attribute, and initialize
@@ -642,14 +643,17 @@ public class ModelTransformer extends SceneTransformer {
 	    //System.out.println("ModelTransformer: port: " + port);
 	  
             String className = port.getClass().getName();
+            RefType portType = RefType.v(className);
+
             String portName = port.getName(container);
             String fieldName = getFieldNameForPort(port, container);
-	    Local portLocal = Jimple.v().newLocal("port",
-                        PtolemyUtilities.portType);
-            body.getLocals().add(portLocal);
+	    Local portLocal;
             
             if (createdSet.contains(port.getFullName())) {
                 //    System.out.println("already created!");
+                portLocal = Jimple.v().newLocal("port",
+                        portType); 
+                body.getLocals().add(portLocal);
                 // If the class for the object already creates the
                 // port, then get a reference to the existing port.
                 // First assign to temp
@@ -664,7 +668,7 @@ public class ModelTransformer extends SceneTransformer {
                 body.getUnits().add(
                             Jimple.v().newAssignStmt(portLocal,
                                     Jimple.v().newCastExpr(tempPortLocal,
-                                            PtolemyUtilities.portType)));
+                                            portType)));
                //  } else {
 //                     System.out.println("Warning: " + modelClass + " does " +
 //                             "not declare a field " + fieldName);
@@ -724,20 +728,14 @@ public class ModelTransformer extends SceneTransformer {
                                             ioportLocal,
                                             PtolemyUtilities.portSetTypeMethod,
                                             typeLocal)));
-                }
-                // and then cast to portLocal
-                body.getUnits().add(
-                        Jimple.v().newAssignStmt(portLocal,
-                                Jimple.v().newCastExpr(local,
-                                        PtolemyUtilities.portType)));
-                
+                }                
+                portLocal = local;
             }
 
             _portLocalMap.put(port, portLocal);
             if (!modelClass.declaresFieldByName(fieldName)) {
                 SootUtilities.createAndSetFieldFromLocal(body,
-                        portLocal, modelClass, PtolemyUtilities.portType,
-                        fieldName);
+                        portLocal, modelClass, portType, fieldName);
             }
         }
     }

@@ -132,9 +132,9 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-
-
         
+        
+              
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
@@ -147,6 +147,8 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffpt",
                         FieldsForPortsTransformer.v(_toplevel)));
+
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", JimpleWriter.v()));
@@ -165,7 +167,15 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.iat",
                         InlineParameterTransformer.v(_toplevel)));
-        
+      
+        // Remove equality checks, which arise from inlining attributeChanged.
+       //  Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.ta",
+//                         new TransformerAdapter(TypeAssigner.v())));
+//         Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.nee",
+//                         NamedObjEqualityEliminator.v(_toplevel)));
+
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
         // created by inlining parameters), inline those calls.
@@ -246,8 +256,8 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
-
-          
+        /*
+        
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
@@ -277,7 +287,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.tie",
                         new TransformerAdapter(
                                 TokenInstanceofEliminator.v())));
-
+        
         // Some cleanup.
         // Remove object creations that are now dead (i.e. aren't used
         // and have no side effects).  This currently only deals with
@@ -329,7 +339,14 @@ public class Main extends KernelMain {
         // one, lets use the only one that is reachable. 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
-
+        
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ta",
+                        new TransformerAdapter(TypeAssigner.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.nee",
+                        NamedObjEqualityEliminator.v(_toplevel)));
+        
         // Remove references to named objects.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
@@ -350,14 +367,14 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot6", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", ClassWriter.v()));
- 
+                 
         //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
         //                                               TypeSpecializer.v(_toplevel)));
-    
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(_toplevel)));
-        
+                    
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ee",
                         ExceptionEliminator.v(_toplevel)));
@@ -376,9 +393,9 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-         
+         */
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-        
+         
         // This snapshot should be last...
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
@@ -387,6 +404,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",
                         WatchDogTimer.v(), "cancel:true"));
+                  
     }
 
     /** Read in a MoML model, generate java files.

@@ -111,7 +111,7 @@ public class InlineTokenTransformer extends SceneTransformer {
     }
 
     private void _inlineTokenCalls(SootClass actorClass, ComponentEntity actor) {
-        if (_debug) System.out.println("class = " + actorClass);
+        if (_debug) System.out.println("InlineTokenTransformer in class = " + actorClass);
 
         // Inline calls to token methods that can be statically
         // evaluated.

@@ -99,31 +99,40 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
         System.out.println("NamedObjEqualityEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        Map attributeToValueFieldMap = new HashMap();
+        _options = options;
+        _debug = Options.getBoolean(options, "debug");
 
-        boolean debug = Options.getBoolean(options, "debug");
+        _eliminateAllComparisons(_model);
 
+    }
+
+    private void _eliminateAllComparisons(CompositeActor model) {
         // Loop over all the actor instance classes.
-        for (Iterator entities = _model.deepEntityList().iterator();
+        for (Iterator entities = model.deepEntityList().iterator();
              entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =
-                ActorTransformer.getInstanceClassName(entity, options);
+                ActorTransformer.getInstanceClassName(entity, _options);
             SootClass entityClass =
                 Scene.v().loadClassAndSupport(className);
 
             for (Iterator methods = entityClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                _eliminateComparisons(entityClass, method, entity, debug);
+                _eliminateComparisons(entityClass, method, entity);
+            }
+
+            // Recurse
+            if(entity instanceof CompositeActor) {
+                _eliminateAllComparisons((CompositeActor)entity);
             }
         }
     }
 
-    private static boolean _eliminateComparisons(SootClass theClass,
-            SootMethod method, Entity entity, boolean debug) {
+    private boolean _eliminateComparisons(SootClass theClass,
+            SootMethod method, Entity entity) {
         boolean doneSomething = false;
-        if (debug) System.out.println("Removing object comparisons in " +
+        if (_debug) System.out.println("Removing object comparisons in " +
                 method);
 
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
@@ -271,6 +280,8 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
         }
     }
 
+    private Map _options;
+    private boolean _debug;
     private CompositeActor _model;
 }
 

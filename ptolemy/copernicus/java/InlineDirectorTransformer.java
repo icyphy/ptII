@@ -30,13 +30,17 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.sched.*;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.actor.IOPort;
 
 import soot.Body;
+import soot.jimple.Expr;
 import soot.Hierarchy;
 import soot.Local;
 import soot.Modifier;
@@ -49,6 +53,7 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
+import soot.IntType;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
@@ -283,6 +288,29 @@ public class InlineDirectorTransformer extends SceneTransformer {
         }
 
         {
+            // populate the postfire method
+            SootMethod classMethod = new SootMethod("prefire",
+                    new LinkedList(), BooleanType.v(),
+                    Modifier.PUBLIC);
+            modelClass.addMethod(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            classMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Local prefireReturnsLocal = Jimple.v().newLocal("preReturns", BooleanType.v());
+            body.getLocals().add(prefireReturnsLocal);
+            units.add(Jimple.v().newAssignStmt(prefireReturnsLocal,
+                              IntConstant.v(1)));
+            units.add(Jimple.v().newReturnStmt(prefireReturnsLocal));
+
+            LocalSplitter.v().transform(body, phaseName + ".lns");
+            LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+            TypeResolver.resolve(body, Scene.v());
+        }
+
+        {
             // populate the fire method
             SootMethod classMethod = new SootMethod("fire",
                     new LinkedList(), VoidType.v(),
@@ -300,11 +328,97 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
             body.getLocals().add(postfireReturnsLocal);
 
+            Local indexLocal = Jimple.v().newLocal("index", IntType.v());
+            body.getLocals().add(indexLocal);
+            Local tokenLocal = Jimple.v().newLocal("token", 
+                    PtolemyUtilities.tokenType);
+            body.getLocals().add(tokenLocal);
+            
+            // Transfer Inputs from input ports.
+            for(Iterator ports = model.inputPortList().iterator();
+                ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                int rate;
+                try {
+                    rate = SDFScheduler.getTokenConsumptionRate(port);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex.getMessage());
+                }
 
-            // FIXME: Transfer Inputs!
+                String fieldName = ModelTransformer.getFieldNameForPort(
+                        port, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                
+                // Get a reference to the port.
+                Local portLocal = Jimple.v().newLocal("port",
+                        PtolemyUtilities.ioportType);
+                body.getLocals().add(portLocal);
+                Local tempPortLocal = Jimple.v().newLocal("tempPort",
+                        PtolemyUtilities.ioportType);
+                body.getLocals().add(tempPortLocal);
+                units.add(
+                        Jimple.v().newAssignStmt(tempPortLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        thisLocal, field)));
+                units.add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newCastExpr(
+                                        tempPortLocal,
+                                        PtolemyUtilities.ioportType)));
             
 
-            Local localPostfireReturnsLocal = Jimple.v().newLocal("localPostfireReturns", BooleanType.v());
+                for (int i = 0; i < port.getWidth(); i++) {
+                    // The list of initializer instructions.
+                    List initializerList = new LinkedList();
+                    initializerList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    IntConstant.v(0)));
+
+                    // The list of body instructions.
+                    List bodyList = new LinkedList();
+                    // Read
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    tokenLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.getMethod,
+                                            IntConstant.v(i))));
+                    // Write
+                    bodyList.add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.sendInsideMethod,
+                                            IntConstant.v(i),
+                                            tokenLocal)));
+                    // Increment the index.
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    Jimple.v().newAddExpr(
+                                            indexLocal,
+                                            IntConstant.v(1))));
+                    
+                    Expr conditionalExpr =
+                        Jimple.v().newLtExpr(
+                                indexLocal,
+                                IntConstant.v(rate));
+                    
+                    Stmt stmt = Jimple.v().newNopStmt();
+                    units.add(stmt);
+                    SootUtilities.createForLoopBefore(body,
+                            stmt,
+                            initializerList,
+                            bodyList,
+                            conditionalExpr);
+                }
+            }
+  
+
+            Local localPostfireReturnsLocal = 
+                Jimple.v().newLocal("localPostfireReturns", BooleanType.v());
             body.getLocals().add(localPostfireReturnsLocal);
 
             units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
@@ -316,13 +430,16 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Iterator schedule = null;
             try {
                 schedule =
-                    director.getScheduler().getSchedule().actorIterator();
+                    director.getScheduler().getSchedule().firingIterator();
             } catch (Exception ex) {
                 throw new KernelRuntimeException(ex,
                         "Failed to get schedule");
             }
             while (schedule.hasNext()) {
-                Entity entity = (Entity)schedule.next();
+                Firing firing = (Firing)schedule.next();
+
+                Entity entity = (Entity)firing.getActor();
+                int firingCount = firing.getIterationCount();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -338,25 +455,166 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 SootMethod actorPostfireMethod =
                     SootUtilities.searchForMethodByName(
                             theClass, "postfire");
+                 
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));
-                units.add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                actorPrefireMethod)));
-                units.add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                actorFireMethod)));
-                units.add(Jimple.v().newAssignStmt(localPostfireReturnsLocal,
-                                  Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                          actorPostfireMethod)));
-                units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                  Jimple.v().newAndExpr(postfireReturnsLocal,
-                                          localPostfireReturnsLocal)));
+                
+                // The threshold at which it is better to generate loops,
+                // than to inline code.  A threshold of 2 means that loops will
+                // always be used.
+                // FIXME: This should be a command line option.
+                int threshold = 2;
+                
+                if(firingCount < threshold) {
+                    for(int i = 0; i < firingCount; i++) {
+                        units.add(Jimple.v().newInvokeStmt(
+                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                  actorPrefireMethod)));
+                        units.add(Jimple.v().newInvokeStmt(
+                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                  actorFireMethod)));
+                        units.add(Jimple.v().newAssignStmt(
+                                          localPostfireReturnsLocal,
+                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                  actorPostfireMethod)));
+                        units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                                          Jimple.v().newAndExpr(postfireReturnsLocal,
+                                                  localPostfireReturnsLocal)));
+              
+             
+                    }
+                } else {
+                    // The list of initializer instructions.
+                    List initializerList = new LinkedList();
+                    initializerList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    IntConstant.v(0)));
+
+                    // The list of body instructions.
+                    List bodyList = new LinkedList();
+                    bodyList.add(Jimple.v().newInvokeStmt(
+                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                 actorPrefireMethod)));
+                    bodyList.add(Jimple.v().newInvokeStmt(
+                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                 actorFireMethod)));
+                    bodyList.add(Jimple.v().newAssignStmt(
+                                         localPostfireReturnsLocal,
+                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                 actorPostfireMethod)));
+                    bodyList.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                                         Jimple.v().newAndExpr(postfireReturnsLocal,
+                                                 localPostfireReturnsLocal)));
+                    // Increment the index.
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    Jimple.v().newAddExpr(
+                                            indexLocal,
+                                            IntConstant.v(1))));
+                    
+                        
+                    Expr conditionalExpr =
+                        Jimple.v().newLtExpr(
+                                indexLocal,
+                                IntConstant.v(firingCount));
+                    
+                    Stmt stmt = Jimple.v().newNopStmt();
+                    units.add(stmt);
+                    SootUtilities.createForLoopBefore(body,
+                            stmt,
+                            initializerList,
+                            bodyList,
+                            conditionalExpr);
+                }
             }
 
-            // FIXME: Transfer Outputs!
+            // Transfer outputs from output ports
+            for(Iterator ports = model.outputPortList().iterator();
+                ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                int rate;
+                try {
+                    rate = SDFScheduler.getTokenProductionRate(port);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex.getMessage());
+                }
 
+                String fieldName = ModelTransformer.getFieldNameForPort(
+                        port, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                
+                // Get a reference to the port.
+                Local portLocal = Jimple.v().newLocal("port",
+                        PtolemyUtilities.ioportType);
+                body.getLocals().add(portLocal);
+                Local tempPortLocal = Jimple.v().newLocal("tempPort",
+                        PtolemyUtilities.ioportType);
+                body.getLocals().add(tempPortLocal);
+                units.add(
+                        Jimple.v().newAssignStmt(tempPortLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        thisLocal, field)));
+                units.add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newCastExpr(
+                                        tempPortLocal,
+                                        PtolemyUtilities.ioportType)));
+            
+
+                for (int i = 0; i < port.getWidth(); i++) {
+                    // The list of initializer instructions.
+                    List initializerList = new LinkedList();
+                    initializerList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    IntConstant.v(0)));
+
+                    // The list of body instructions.
+                    List bodyList = new LinkedList();
+                 
+                    // Read
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    tokenLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.getInsideMethod,
+                                            IntConstant.v(i))));
+                    // Write
+                    bodyList.add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.sendMethod,
+                                            IntConstant.v(i),
+                                            tokenLocal)));
+                    // Increment the index.
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    Jimple.v().newAddExpr(
+                                            indexLocal,
+                                            IntConstant.v(1))));
+                    
+                    Expr conditionalExpr =
+                        Jimple.v().newLtExpr(
+                                indexLocal,
+                                IntConstant.v(rate));
+                    
+                    Stmt stmt = Jimple.v().newNopStmt();
+                    units.add(stmt);
+                    SootUtilities.createForLoopBefore(body,
+                            stmt,
+                            initializerList,
+                            bodyList,
+                            conditionalExpr);
+                }
+            }
+
+            // Return.
             units.add(Jimple.v().newAssignStmt(
                               Jimple.v().newInstanceFieldRef(thisLocal, 
                                       postfireReturnsField),

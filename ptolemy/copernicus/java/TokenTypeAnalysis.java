@@ -188,8 +188,14 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             } else if (rightOp instanceof InstanceInvokeExpr) {
                 InstanceInvokeExpr r = (InstanceInvokeExpr)rightOp;
                 String methodName = r.getMethod().getName();
-                //   System.out.println("invokeExpr = " + r);
-                SootClass baseClass = ((RefType)r.getBase().getType()).getSootClass();
+                System.out.println("invokeExpr = " + r);
+                Type type = r.getBase().getType();
+                if(type instanceof NullType) {
+                    // Note: The control path that causes this to be
+                    // null should never occur in practice.
+                    return;
+                }
+                SootClass baseClass = ((RefType)type).getSootClass();
                 // FIXME: match better.
                 // If we are invoking a method on a token, then...
                 if (SootUtilities.derivesFrom(baseClass,
