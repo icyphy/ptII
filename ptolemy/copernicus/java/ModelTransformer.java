@@ -1769,7 +1769,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
     // during code generation...
     public static boolean _isIgnorableAttribute(Attribute attribute) {
         // Ignore things like Variable.
-        if (attribute.isPersistent()) {
+        if (!attribute.isPersistent()) {
             return true;
         }
         
