@@ -86,7 +86,7 @@ public abstract class Action extends Attribute {
     ////                         public methods                    ////
 
     /** Execute the action.
-     *  @exception IllegalActionException When the action cannot be
+     *  @exception IllegalActionException If the action cannot be
      *   successfully completed.
      */
     abstract public void execute() throws IllegalActionException;
