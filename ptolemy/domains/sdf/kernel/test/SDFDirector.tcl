@@ -91,8 +91,8 @@ test SDFDirector-4.1 {Test _makeDirectorOf} {
 ####
 #
 test SDFDirector-5.1 {Test action methods} {
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e1 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e1 Consumer]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
     $e1 connect [java::field $a1 output] [java::field $a2 input] R1
     set iter [$d3 getAttribute iterations]
 
@@ -116,9 +116,9 @@ test SDFDirector-5.2 {Test action methods} {
     $e1 setName E0
     $e1 setManager $manager
     $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e1 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $e1 Delay]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e1 Consumer]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $e1 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
     $e1 connect [java::field $a1 output] [java::field $a2 input] R1
     $e1 connect [java::field $a2 output] [java::field $a3 input] R2
     set iter [$d3 getAttribute iterations]
@@ -140,10 +140,10 @@ test SDFDirector-5.3 {Test action methods} {
     $e1 setName E0
     $e1 setManager $manager
     $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e1 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFSplit $e1 Dist]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e1 Consumer1]
-    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e1 Consumer2]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestSplit $e1 Dist]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer1]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer2]
     $e1 connect [java::field $a1 output] [java::field $a2 input] R1
     $e1 connect [java::field $a2 output1] [java::field $a3 input] R2
     $e1 connect [java::field $a2 output2] [java::field $a4 input] R3
@@ -172,10 +172,10 @@ test SDFDirector-5.4 {Test action methods} {
     $e1 setName E0
     $e1 setManager $manager
     $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e1 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFSplit $e1 Dist]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFJoin $e1 Comm]
-    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e1 Consumer1]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestSplit $e1 Dist]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestJoin $e1 Comm]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer1]
     $e1 connect [java::field $a1 output] [java::field $a2 input] R1
     $e1 connect [java::field $a2 output1] [java::field $a3 input1] R2a
     $e1 connect [java::field $a2 output2] [java::field $a3 input2] R2d
@@ -208,15 +208,15 @@ test SDFDirector-6.1 {Test wormhole activation} {
     $e1 setName E0
     $e1 setManager $manager
     $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e1 Ramp]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $e1 Cont]
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
     $p1 setInput 1
     set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
     $p2 setOutput 1
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $c1 Delay]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e1 Consumer]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
     $e1 connect [java::field $a1 output] $p1 R1
     $c1 connect $p1 [java::field $a2 input] R2
     $c1 connect [java::field $a2 output] $p2 R3
@@ -249,14 +249,14 @@ test SDFDirector-6.2 {Test transparent activation} {
     $e1 setName E0
     $e1 setManager $manager
     $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e1 Ramp]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $e1 Cont]
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
     $p1 setInput 1
     set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
     $p2 setOutput 1
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $c1 Delay]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e1 Consumer]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
     $e1 connect [java::field $a1 output] $p1 R1
     $c1 connect $p1 [java::field $a2 input] R2
     $c1 connect [java::field $a2 output] $p2 R3

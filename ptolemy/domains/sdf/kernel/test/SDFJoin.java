@@ -37,16 +37,16 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// SDFJoin
+//// SDFTestJoin
 /**
  * A deterministic merge of two token streams.
  * @author Stephen Neuendorffer
  * @version $Id$
 */
 
-public class SDFJoin extends SDFAtomicActor {
+public class SDFTestJoin extends SDFAtomicActor {
 
-    public SDFJoin(TypedCompositeActor container, String name)
+    public SDFTestJoin(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
@@ -66,7 +66,7 @@ public class SDFJoin extends SDFAtomicActor {
             output.setTypeEquals(Token.class);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFJoin: constructor error");
+            System.out.println("SDFTestJoin: constructor error");
         }
     }
 
@@ -85,7 +85,7 @@ public class SDFJoin extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFJoin newobj = (SDFJoin)(super.clone(ws));
+            SDFTestJoin newobj = (SDFTestJoin)(super.clone(ws));
             newobj.input1 = (SDFIOPort)newobj.getPort("input1");
             newobj.input2 = (SDFIOPort)newobj.getPort("input2");
             newobj.output = (SDFIOPort)newobj.getPort("output");

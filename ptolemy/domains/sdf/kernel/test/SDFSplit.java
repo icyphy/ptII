@@ -41,8 +41,8 @@ import ptolemy.domains.sdf.kernel.*;
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class SDFSplit extends SDFAtomicActor {
-    public SDFSplit(TypedCompositeActor container, String name)
+public class SDFTestSplit extends SDFAtomicActor {
+    public SDFTestSplit(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
@@ -62,7 +62,7 @@ public class SDFSplit extends SDFAtomicActor {
             output2.setTypeEquals(IntToken.class);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFSplit: constructor error");
+            System.out.println("SDFTestSplit: constructor error");
         }
     }
     ///////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ public class SDFSplit extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFSplit newobj = (SDFSplit)(super.clone(ws));
+            SDFTestSplit newobj = (SDFTestSplit)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj.output1 = (SDFIOPort)newobj.getPort("output1");
             newobj.output2 = (SDFIOPort)newobj.getPort("output2");

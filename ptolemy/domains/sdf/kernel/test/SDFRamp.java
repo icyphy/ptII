@@ -45,8 +45,8 @@ import ptolemy.domains.sdf.kernel.*;
  * @version $Id$
  * @author Steve Neuendorffer
  */
-public class SDFRamp extends SDFAtomicActor {
-    public SDFRamp(TypedCompositeActor container, String name)
+public class SDFTestRamp extends SDFAtomicActor {
+    public SDFTestRamp(TypedCompositeActor container, String name)
             throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
@@ -57,7 +57,7 @@ public class SDFRamp extends SDFAtomicActor {
             output.setTypeEquals(IntToken.class);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFRamp: constructor error");
+            System.out.println("SDFTestRamp: constructor error");
         }
         _value = 0;
 
@@ -76,7 +76,7 @@ public class SDFRamp extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFRamp newobj = (SDFRamp)(super.clone(ws));
+            SDFTestRamp newobj = (SDFTestRamp)(super.clone(ws));
             newobj.output = (SDFIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {

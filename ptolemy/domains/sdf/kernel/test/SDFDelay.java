@@ -42,9 +42,9 @@ import ptolemy.domains.sdf.kernel.*;
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class SDFDelay extends SDFAtomicActor {
+public class SDFTestDelay extends SDFAtomicActor {
     /*
-     * Object constructor. This creates an object of class SDFDelay.
+     * Object constructor. This creates an object of class SDFTestDelay.
      * The object will have a name given by the 'name' argument and will
      * be contained within the composite actor given by the 'container'
      * argument.   This method throws two exceptions, which are error
@@ -52,13 +52,13 @@ public class SDFDelay extends SDFAtomicActor {
      * detected (notice the @exception tag).
      */
     /**
-     * Create an SDFDelay actor in the given container with the given name.
+     * Create an SDFTestDelay actor in the given container with the given name.
      * This actor copies one token from the input port named "input" to the
      * output port named "output" when fired.
      * @exception IllegalActionException If the contained methods throw it
      * @exception NameDuplicationException If the contained methods throw it
      */
-    public SDFDelay(TypedCompositeActor container, String name)
+    public SDFTestDelay(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         /* This starts out by calling SDFAtomicActor's constructor.
          * allows us to add some extra code specific to this actor, in
@@ -101,7 +101,7 @@ public class SDFDelay extends SDFAtomicActor {
 	    output.setTypeEquals(IntToken.class);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFDelay: constructor error");
+            System.out.println("SDFTestDelay: constructor error");
             e1.printStackTrace();
             throw e1;
         }
@@ -118,7 +118,7 @@ public class SDFDelay extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFDelay newobj = (SDFDelay)(super.clone(ws));
+            SDFTestDelay newobj = (SDFTestDelay)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj.output = (SDFIOPort)newobj.getPort("output");
             return newobj;
@@ -158,7 +158,7 @@ public class SDFDelay extends SDFAtomicActor {
         int tokens = input.getTokenConsumptionRate();
         if(output.getTokenProductionRate() != tokens)
             throw new IllegalActionException(
-                    "SDFDelay: Rates on input port and output port " +
+                    "SDFTestDelay: Rates on input port and output port " +
                     "must match!");
 
         int i;
