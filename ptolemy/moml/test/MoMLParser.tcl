@@ -1110,7 +1110,7 @@ test MoMLParser-2.9 {Test link with insertAt attribute, inside links} {
     </entity>
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
-    <link port="p" relation="r" insertAt="1"/>
+    <link port="p" insertAt="1" relation="r"/>
 </model>
 }
 
@@ -1135,7 +1135,7 @@ test MoMLParser-2.10 {Test link with insertAt attribute, inside links} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" relation="r" insertAt="2"/>
+    <link port="p" insertAt="2" relation="r"/>
 </model>
 }
 
@@ -1160,7 +1160,7 @@ test MoMLParser-2.11 {Test link with insertAt attribute} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" relation="r" insertAt="2"/>
+    <link port="p" insertAt="2" relation="r"/>
     <link port="a.p" relation="r"/>
 </model>
 }
@@ -1169,7 +1169,7 @@ test MoMLParser-2.11 {Test link with insertAt attribute} {
 test MoMLParser-2.12 {Test link with insertAt attribute} {
    $parser parse {
 <model name=".top">
-   <link port="a.p" relation="r" insertAt="2"/>
+   <link port="a.p" insertAt="2" relation="r"/>
 </model>
 }
     $toplevel exportMoML
@@ -1186,9 +1186,9 @@ test MoMLParser-2.12 {Test link with insertAt attribute} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" relation="r" insertAt="2"/>
+    <link port="p" insertAt="2" relation="r"/>
     <link port="a.p" relation="r"/>
-    <link port="a.p" relation="r" insertAt="2"/>
+    <link port="a.p" insertAt="2" relation="r"/>
 </model>
 }
 
@@ -1213,8 +1213,8 @@ test MoMLParser-2.13 {Test unlink with index} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" relation="r" insertAt="2"/>
-    <link port="a.p" relation="r" insertAt="1"/>
+    <link port="p" insertAt="2" relation="r"/>
+    <link port="a.p" insertAt="1" relation="r"/>
 </model>
 }
 
@@ -1239,7 +1239,7 @@ test MoMLParser-2.14 {Test unlink with index} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" relation="r" insertAt="2"/>
+    <link port="p" insertAt="2" relation="r"/>
 </model>
 }
 
@@ -1263,7 +1263,7 @@ test MoMLParser-2.15 {Test unlink with index} {
     </entity>
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
-    <link port="p" relation="r" insertAt="1"/>
+    <link port="p" insertAt="1" relation="r"/>
 </model>
 }
 
