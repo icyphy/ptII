@@ -69,15 +69,15 @@ public class Query extends Panel {
      *   need not be declared explicitly.
      */
     public boolean booleanValue(String name)
-             throws NoSuchElementException, NumberFormatException
-    {
-        Checkbox result = (Checkbox)(_entries.get(name));
-        if(result == null) {
-            throw new NoSuchElementException("No item named \"" +
-                    name + " \" in the query box.");
+            throws NoSuchElementException, NumberFormatException
+        {
+            Checkbox result = (Checkbox)(_entries.get(name));
+            if(result == null) {
+                throw new NoSuchElementException("No item named \"" +
+                        name + " \" in the query box.");
+            }
+            return (new Boolean(result.getState())).booleanValue();
         }
-        return (new Boolean(result.getState())).booleanValue();
-    }
 
     /** Get the current value in the entry with the given name
      *  and return as an integer.  If the value of the entry is not
@@ -91,15 +91,15 @@ public class Query extends Panel {
      *   need not be declared explicitly.
      */
     public int intValue(String name)
-             throws NoSuchElementException, NumberFormatException
-    {
-        TextField result = (TextField)(_entries.get(name));
-        if(result == null) {
-            throw new NoSuchElementException("No item named \"" +
-                    name + " \" in the query box.");
+            throws NoSuchElementException, NumberFormatException
+        {
+            TextField result = (TextField)(_entries.get(name));
+            if(result == null) {
+                throw new NoSuchElementException("No item named \"" +
+                        name + " \" in the query box.");
+            }
+            return (new Integer(result.getText())).intValue();
         }
-        return (new Integer(result.getText())).intValue();
-    }
 
     /** Create a single-line entry box with the specified name, label, and
      *  default value.  The width will be the default width.
