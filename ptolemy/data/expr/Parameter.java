@@ -452,7 +452,7 @@ public class Parameter extends Attribute implements ParameterListener {
      *  be thrown. If so, the state of the parameter is unchanged.
      *  @param newType The class object representing the new type
      *   of this parameter.
-     *  @exception IllegalArgumentException Thrown if the new type
+     *  @exception IllegalArgumentException If the new type
      *   is too restrictive for the currently contained token.
      */
     public void setType(Class newType) throws IllegalArgumentException {

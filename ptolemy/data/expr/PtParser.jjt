@@ -138,7 +138,7 @@ public class PtParser {
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
      *  @param stringIn The expression to be parsed
-     *  @exception IllegalArgumentException Thrown if the parse failed.
+     *  @exception IllegalArgumentException If the parse failed.
      *  @return The root node of the parse tree.
      */
     public ASTPtRootNode generateParseTree(String stringIn)
@@ -164,7 +164,7 @@ public class PtParser {
      *  should be called on the rootNode
      *  @param stringIn The expression to be parsed.
      *  @param scope Parameters to which the expression can refer.
-     *  @exception IllegalArgumentException Thrown if the parse failed.
+     *  @exception IllegalArgumentException If the parse failed.
      *  @return The root node of the parse tree.
      */
     public ASTPtRootNode generateParseTree(String stringIn, NamedList scope) 
