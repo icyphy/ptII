@@ -494,7 +494,6 @@ public class CachedMethod {
 
         Object result = null;
 
-        int type = getCachedMethodType();
         Method method = getMethod();
 
         if (isMethod()) {
@@ -1020,9 +1019,6 @@ public class CachedMethod {
     private Type _returnType;
     // The type.
     private int _type;
-    // Flag determining validity of the method.  (i.e. whether or not
-    // it was actually found)
-    private boolean _valid;
     // The static table containing cached methods.  Note that a
     // synchronized hashtable is used to provide safe access to the
     // table of methods from multiple threads.
@@ -1211,9 +1207,6 @@ public class CachedMethod {
          */
         public ptolemy.data.Token invoke(Object[] argValues)
                 throws IllegalActionException {
-
-            Object result = null;
-
             int dim = 0;
             // Check the argument lengths.
             for (int i = 0; i < argValues.length; i++) {
@@ -1314,9 +1307,6 @@ public class CachedMethod {
          */
         public ptolemy.data.Token invoke(Object[] argValues)
                 throws IllegalActionException {
-
-            Object result = null;
-
             int xdim = 0, ydim = 0;
             // Check the argument lengths.
             for (int i = 0; i < argValues.length; i++) {

@@ -176,7 +176,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         // Handle as an array or matrix index into a named
         // variable reference.
         if (baseType instanceof FunctionType) {
-            FunctionType functionType = (FunctionType)baseType;
             _setType(node, ((FunctionType)baseType).getReturnType());
             return;
         } else if (argCount == 1) {
@@ -429,7 +428,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      */
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
-        Type[] childTypes = _inferAllChildren(node);
+        /* Type[] childTypes = */ _inferAllChildren(node);
         // FIXME: Check args are booleans?
         _setType(node, BaseType.BOOLEAN);
     }

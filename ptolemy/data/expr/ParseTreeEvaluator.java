@@ -278,9 +278,6 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
-        // A flag for debugging.
-        boolean debug = false;
-
         // First check to see if the name references a valid variable.
         ptolemy.data.Token value = null;
         String functionName = node.getFunctionName();
@@ -585,7 +582,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         ptolemy.data.Token result = null;
         if (node.getForm() == 1) {
-            int numChildren = node.jjtGetNumChildren();
+            //int numChildren = node.jjtGetNumChildren();
             result = MatrixToken.create(tokens, node.getRowCount(),
                              node.getColumnCount());
         } else if (node.getForm() == 2) {
@@ -1011,7 +1008,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token[] tokens =
             new ptolemy.data.Token[numChildren];
         for (int i = 0; i < numChildren; i++) {
-            ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+            /* ASTPtRootNode child = (ASTPtRootNode) */ node.jjtGetChild(i);
             tokens[i] = _evaluateChild(node, i);
         }
         return tokens;
