@@ -314,7 +314,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // The effigy will handle saving the modified
                             // moml for us, so MoMLParser need
                             // not care anymore.
-                            MoMLParser.isModified(false);
+                            MoMLParser.setModified(false);
 
 			    // Identify the URL from which the model was read
 			    // by inserting an attribute into both the model
