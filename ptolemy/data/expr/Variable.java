@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
@@ -180,6 +181,27 @@ or call setPersistent(true).
 A variable is also normally not settable by casual users from the user
 interface.  This is because, by default, getVisibility() returns EXPERT.
 The derived class Parameter is fully visible by default.
+<p>
+In addition, this class provides as a convenience a "string mode."
+If the variable is in string mode, then when setting the value of
+this variable, the string that you pass to setExpression(String)
+is taken to be literally the value of the instance of StringToken
+that represents the value of this parameter. It is not necessary
+to enclose it in quotation marks (and indeed, if you do, the quotation
+marks will become part of the value of the string).  In addition,
+the type of this parameter will be set to string. In addition,
+getToken() will never return null; if the value of the string
+has never been set, then an instance of StringToken is returned
+that has an empty string as its value. A parameter is
+in string mode if either setStringMode(true) has been called or
+it contains an attribute named "_stringMode".
+<p>
+In string mode, the value passed to setExpression(String) may contain
+references to other variables in scope using the syntax $id,
+${id} or $(id).  The first case only works if the id consists
+only of alphanumeric characters and/or underscore, and if the
+character immediately following the id is not one of these.
+To get a simple dollar sign, use $$.
 
 @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
 @version $Id$
@@ -457,7 +479,9 @@ public class Variable extends Attribute
         // If the value has been set with an expression, then
         // reevaluate the token.
         if (_needsEvaluation) _evaluate();
-        // FIXME: find out if necessary to force to empty string.
+        if (_token == null && isStringMode()) {
+            _token = _EMPTY_STRING_TOKEN;
+        }
         return _token;
     }
 
@@ -740,7 +764,6 @@ public class Variable extends Attribute
         _parseTreeEvaluator = parseTreeEvaluator;
     }
 
-    
     /** Specify whether this parameter should be in string mode.
      *  If the argument is true, then specify that the type of this
      *  parameter is string. Otherwise, specify that the type is
@@ -1590,6 +1613,9 @@ public class Variable extends Attribute
 
     // Used to check for dependency loops among variables.
     private transient boolean _dependencyLoop = false;
+    
+    // Empty string token.
+    private static StringToken _EMPTY_STRING_TOKEN = new StringToken("");
 
     // Stores the expression used to initialize this variable. It is null if
     // the first token placed in the variable is not the result of evaluating
