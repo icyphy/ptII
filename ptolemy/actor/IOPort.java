@@ -653,7 +653,11 @@ public class IOPort extends ComponentPort {
             // If the port is opaque, return the local Receivers for the
             // relation.
             if(opaque) {
-                if(_localReceiversTable.containsKey(relation) ) {
+                // FIXME: What happens if _localReceiversTable is null?
+                // see test/IOPort.tcl IOPort-10.7
+                // The problem is that we don't call createReceiverw, so
+                // _localReceiversTable is null
+                if( _localReceiversTable.containsKey(relation) ) {
                     // Get the list of receivers for this relation.
                     result = (Receiver[][])_localReceiversTable.get(relation);
                     if (result.length != width)  {
