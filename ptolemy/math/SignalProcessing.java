@@ -22,6 +22,12 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+
 */
 
 package ptolemy.math;
@@ -34,8 +40,8 @@ import java.util.*;
 /**
  * This class provides signal processing functions.
  *
- * @Author: Albert Chen, William Wu, Edward A. Lee
- * @Version: $Id$
+ * @author Albert Chen, William Wu, Edward A. Lee
+ * @version $Id$
  */
 
 public final class SignalProcessing {
@@ -71,7 +77,7 @@ public final class SignalProcessing {
      */
     public static double[] db(double[] values) {
         double[] result = new double[values.length];
-        for (int i=values.length-1; i>= 0; i--) {
+        for (int i = values.length-1; i >= 0; i--) {
             result[i] = db(values[i]);
         }
         return result;
@@ -193,7 +199,7 @@ public final class SignalProcessing {
      */
     public static double[] phase(Complex[] array) {
         double[] angles = new double[array.length];
-        for (int i=array.length-1; i >= 0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             angles[i] = array[i].angle();
         }
         return angles;
@@ -320,7 +326,7 @@ public final class SignalProcessing {
      public static double[] raisedCosinePulse(double start, int length,
              double period, double T, double excess) {
          double[] result = new double[length];
-         for (int i=0; i < length; i++) {
+         for (int i = 0; i < length; i++) {
              result[i] = raisedCosine(start + i*period, T, excess);
          }
          return result;
@@ -455,7 +461,7 @@ public final class SignalProcessing {
      public static double[] sqrtRaisedCosinePulse(double start, int length,
              double period, double T, double excess) {
          double[] result = new double[length];
-         for (int i=0; i < length; i++) {
+         for (int i = 0; i < length; i++) {
              result[i] = sqrtRaisedCosine(start + i*period, T, excess);
          }
          return result;
@@ -488,7 +494,7 @@ public final class SignalProcessing {
      */
     public void unwrap(double[] angles) {
         double previous = 0.0;
-        for (int i=angles.length-1; i >= 0; i--) {
+        for (int i = angles.length-1; i >= 0; i--) {
             while (angles[i] - previous < -Math.PI) {
                 angles[i] += 2*Math.PI;
             }
@@ -552,7 +558,7 @@ public final class SignalProcessing {
             // Then the starting twiddle factor
             Complex wrecur = new Complex(rotationvec.real, rotationvec.imag);
             int index;
-            for (index=0; index < le - 1; index++) {
+            for (index = 0; index < le - 1; index++) {
                 twiddle[index] = new Complex(wrecur.real, wrecur.imag);
                 wrecur.multiply(rotationvec);
             }
@@ -564,9 +570,9 @@ public final class SignalProcessing {
             le = le >> 1;
 
             // first iteration has no mutiplies
-            for (int i=0;i<size;i += 2*le) {
+            for (int i = 0; i < size; i += 2*le) {
                 int k = i+le;
-                Complex temp = Complex.add(x[i],x[k]);
+                Complex temp = Complex.add(x[i], x[k]);
                 x[k].subtract(x[i]);
                 x[k].negate();
                 x[i] = temp;
@@ -584,9 +590,9 @@ public final class SignalProcessing {
                 } else {
                     wptr = twiddle[ii];
                 }
-                for (int i = j; i<size; i= i+2*le) {
+                for (int i = j; i < size; i = i+2*le) {
                     int k = i+le;
-                    Complex temp = Complex.add(x[i],x[k]);
+                    Complex temp = Complex.add(x[i], [k]);
                     x[k].subtract(x[i]);
                     x[k].negate();
                     x[k].multiply(wptr);
@@ -601,7 +607,7 @@ public final class SignalProcessing {
         int j = 0;
         for (int i = 1;i<(size-1);i++){
             int k = size/2;
-            while(k<=j){
+            while(k <= j){
                j = j - k;
                k = k/2;
             }
@@ -616,7 +622,7 @@ public final class SignalProcessing {
         // scale all result by 1/size if we are performing the inverse fft
         if (inverse) {
             Complex scale = new Complex((1.0/size), 0.0);
-            for (int i=0;i<size;i++){
+            for (int i = 0; i < size; i++){
                 x[i].multiply(scale);
             }
         }
@@ -639,7 +645,7 @@ public final class SignalProcessing {
         } else {
             // Adapted from "Numerical Recipes in C: The Art of Scientific
             // Computing" (ISBN 0-521-43108-5), pgs 183-84
-            double q= -0.5*(b+ExtendedMath.sgn(b)*Math.sqrt(discrim));
+            double q = -0.5*(b+ExtendedMath.sgn(b)*Math.sqrt(discrim));
             roots[0] = new Complex(q/a);
             roots[1] = new Complex(c/q);
         }

@@ -23,6 +23,11 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -38,8 +43,8 @@ import java.lang.reflect.*;
  * ExtendedMath is a library of additional mathematical operations
  * beyond those provided by the Java Math class.
  *
- * @Author: Albert Chen, William Wu, Edward A. Lee
- * @Version: $Id$
+ * @author: Albert Chen, William Wu, Edward A. Lee
+ * @version: $Id$
  */
 
 public final class ExtendedMath {

@@ -22,6 +22,11 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -41,8 +46,8 @@ import java.lang.reflect.*;
  * that suffix modifies the array argument rather than constructing a new
  * array.
  *
- * @Author: Albert Chen, William Wu, Edward A. Lee
- * @Version: $Id$
+ * @author: Albert Chen, William Wu, Edward A. Lee
+ * @version: $Id$
  */
 
 public final class ArrayMath {
@@ -61,7 +66,7 @@ public final class ArrayMath {
      */
     public static Complex[] add(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
-        for (int i=array.length-1; i>=0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             result[i] = Complex.add(array[i], z);
         }
         return result;
@@ -73,7 +78,7 @@ public final class ArrayMath {
      *  @param z The complex number to add
      */
     public static void addR(Complex[] array, Complex z) {
-        for (int i=array.length-1; i>=0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             array[i].add(z);
         }
     }
@@ -84,7 +89,7 @@ public final class ArrayMath {
      */
     public static Complex[] conjugate(Complex[] array) {
         Complex[] result = new Complex[array.length];
-        for (int i=array.length-1; i>=0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             result[i] = Complex.conjugate(array[i]);
         }
         return result;
@@ -95,7 +100,7 @@ public final class ArrayMath {
      *  @param array An array of complex numbers.
      */
     public static void conjugateR(Complex[] array) {
-        for (int i=array.length-1; i>=0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             array[i].conjugate();
         }
     }
@@ -122,7 +127,7 @@ public final class ArrayMath {
         for (int i = 0; i<array1.length; i++) {
             for (int j = 0; j<array2.length; j++) {
                 Complex c = result[i+j];
-                c.add(c.multiply(array1[i],array2[j]));
+                c.add(c.multiply(array1[i], array2[j]));
             }
         }
         return result;
@@ -162,7 +167,7 @@ public final class ArrayMath {
      */
     public static double[] limit(double[] array, double bottom, double top) {
         double[] result = new double[array.length];
-        for (int i=array.length-1; i>=0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             if (array[i] > top ||
                     array[i] == Double.NaN ||
                     array[i] == Double.POSITIVE_INFINITY) {
@@ -188,7 +193,7 @@ public final class ArrayMath {
      *  @param top The top limit.
      */
     public static void limitR(double[] array, double bottom, double top) {
-        for (int i=array.length-1; i>=0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             if (array[i] > top ||
                     array[i] == Double.NaN ||
                     array[i] == Double.POSITIVE_INFINITY) {
@@ -264,7 +269,7 @@ public final class ArrayMath {
      */
     public static Complex[] subtract(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
-        for (int i=array.length-1; i>=0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             result[i] = Complex.subtract(array[i], z);
         }
         return result;
@@ -276,7 +281,7 @@ public final class ArrayMath {
      *  @param z The complex number to subtract.
      */
     public static void subtractR(Complex[] array, Complex z) {
-        for (int i=array.length-1; i>=0; i--) {
+        for (int i = array.length-1; i >= 0; i--) {
             array[i].subtract(z);
         }
     }
