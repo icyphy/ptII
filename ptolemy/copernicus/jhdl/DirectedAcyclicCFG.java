@@ -89,7 +89,13 @@ public class DirectedAcyclicCFG extends DirectedGraph {
     }
 
     public List topologicalSort() {
-	return (List) _sortedNodes;
+	return _sortedNodes;
+    }
+    
+    /** Returns true if Node n1 is deeper than n2 in the 
+     * Topological Sort **/
+    public boolean deeper(Node n1, Node n2) {
+	return (_sortedNodes.indexOf(n1) > _sortedNodes.indexOf(n2));
     }
 
     /**
@@ -157,12 +163,12 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 	}
 
 	// Obtain a topological sort of the graph 
-	_sortedNodes = attemptTopologicalSort(nodes());
-	
+	update();
+
     }
 
     public void update() throws IllegalActionException {
-	_sortedNodes = attemptTopologicalSort(nodes());
+	_sortedNodes = (List) attemptTopologicalSort(nodes());
     }
 
     public String nodeString(Node n) {
@@ -224,7 +230,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
     }
 
     protected BriefBlockGraph _bbgraph;
-    protected Collection _sortedNodes;
+    protected List _sortedNodes;
     protected Node _source;
     protected Node _sink;
 

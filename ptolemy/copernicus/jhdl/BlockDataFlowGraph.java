@@ -145,7 +145,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	_block = block;	
 	_requiredNodeSet = new HashSet();
 	_nodeMap = new HashMap();
-
+	_lValues = new HashMap();
 	
 	// Iterate over all units within block
 	for(Iterator units = _block.iterator(); units.hasNext();) {
@@ -155,6 +155,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    if (DEBUG) System.out.println("Statement "+
 					  stmt.getClass().getName()+
 					  "="+stmt);
+	
 	    // Each statement is treated differently. Search for the
 	    // appropriate statement type and process it according
 	    // to its semantics.
@@ -187,6 +188,14 @@ public class BlockDataFlowGraph extends DirectedGraph {
 						   stmt.getClass().getName());
 	    }
 	}
+    }
+
+    public boolean isLValue(Node n) {
+	return _lValues.containsKey(n);
+    }
+
+    public AssignStmt getLValueStmt(Node n) {
+	return (AssignStmt) _lValues.get(n);
     }
 
     public HashSet getRequiredNodeSet() {
@@ -353,7 +362,8 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    throw new JHDLUnsupportedException("Unsupported Left AssignOp=" +
 					     leftOp.getClass().getName());
 	}
-                                
+	_lValues.put(leftOpNode,stmt);
+
 	// Create Node for RightOp
 	Value rightOp = stmt.getRightOp();
 	Node rightOpNode = null;
@@ -644,8 +654,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 		dataFlowGraph=new BlockDataFlowGraph(block);
 		graphs[blockNum] = dataFlowGraph;
 	    } catch (JHDLUnsupportedException e) {
-		System.err.println(e);
-		System.exit(1);
+		throw new RuntimeException(e.toString());
 	    }
 	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+blockNum,
 						dataFlowGraph);
@@ -657,7 +666,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	BlockDataFlowGraph[] graphs = getBlockDataFlowGraphs(args);
     }
 	
-    /** The Soot block used to create this graph **/
+    /** The original Soot block used to create this graph **/
     protected Block _block;
 
     /** 
@@ -670,6 +679,11 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * graph contain a "Value" for their weight.
      **/
     protected Map _nodeMap;
+
+    /** key= a Value object that is the leftOp of an Assignment statement
+     *  value= The original assignment statement unit.
+     **/
+    protected Map _lValues;
 
     protected HashSet _requiredNodeSet;
 

@@ -279,18 +279,49 @@ public class test1 extends TypedAtomicActor {
 	    d++;
     }
 
-    /** Used to test serial combining **/
+    /** Used to test serial combining (two forks) **/
     public int method34(int a) {
 	int d=0;
 	if (a > 5) {
-	    d = a * 2 + 3;
+	    d = a * 2 + 3 + d;
 	    d += a;
 	} else {
 	    d += a;
 	    d = d * 2 + a;
 	}
+	d = d * 2 + a;
 	d += a + 5;
 	return d;
+    }
+
+    /** Used to test serial combining (one fork) **/
+    public int method35(int a) {
+	int d=0;
+	if (a > 5) {
+	    d = a * 2 + 3 + d;
+	    d += a;
+	}
+	d = d * 2 + a;
+	d += a + 5;
+	return d;
+    }
+
+    /** Used to test serial combining (one fork) **/
+    public int method36(int a) {
+	int b=1;
+	int c=2;
+	int d=3;
+	// b defined by both branches
+	// c defined by true branch
+	// d defined by false branch
+	if (a > 5) {
+	    b += a;
+	    c = a * 2 + d;
+	} else {
+	    b -= a;
+	    d = c * 2 + a;
+	}
+	return b;
     }
 
     /* Simple method with one basic block and one operation */
