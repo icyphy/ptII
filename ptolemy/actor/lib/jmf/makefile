@@ -49,7 +49,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	VideoCamera.java
+	BufferToImageConversion.java\
+	GreenFinder.java\
+	ImageDisplay.java\
+	VideoCamera.java\
+	VideoToImage.java
 
 OTHER_FILES_TO_BE_JARED = \
 	jmf.xml

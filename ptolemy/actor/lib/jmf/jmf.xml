@@ -6,7 +6,22 @@
     <?moml
       <group>
         <doc>JMF processing actors</doc>
-	<entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera"/>
+	
+	<entity name="BufferToImageConversion" class="ptolemy.actor.lib.jmf.BufferToImageConversion">
+	</entity>
+	
+	<entity name="GreenFinder" class="ptolemy.actor.lib.jmf.GreenFinder">
+	</entity>
+	
+	<entity name="ImageDisplay" class="ptolemy.actor.lib.jmf.ImageDisplay">
+	</entity>
+	
+	<entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
+	</entity>
+
+	<entity name="VideoToImage" class="ptolemy.actor.lib.jmf.VideoToImage">
+	</entity>
+	
       </group>
     ?>
   </configure>

@@ -118,8 +118,7 @@ public class VideoCamera extends Source implements ControllerListener {
         // FIXME: output should perhaps be named "video"?
         // In case there is audio track.
         // Don't derive from source in this case.
-        output.setTypeEquals(BaseType.OBJECT);
-    }
+        output.setTypeEquals(BaseType.OBJECT);    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -129,10 +128,14 @@ public class VideoCamera extends Source implements ControllerListener {
      *   devices.
      */
     public void initialize() throws IllegalActionException {
+	super.initialize();
 	CaptureDeviceManager captureManager = new CaptureDeviceManager();
         // FIXME: Format should be a parameter?
-        VideoFormat format = new RGBFormat();
+        // FIXME: This one too (look below)
+	VideoFormat format = new YUVFormat();
 	Vector deviceList = captureManager.getDeviceList(format);
+	// FIXME: Devicelist should be a static private member
+
 
         if (deviceList.size() == 0) {
             throw new IllegalActionException(this,
@@ -201,9 +204,9 @@ public class VideoCamera extends Source implements ControllerListener {
         }
 
 	// Instantiate and set the frame access codec to the data flow path.
-        // FIXME: Why two codecs? 
 	try {
-	    Codec codec[] = { new PreAccessCodec(), new PostAccessCodec()};
+	    JamesCodec = new PreAccessCodec();
+	    Codec codec[] = {JamesCodec};
 	    videoTrack.setCodecChain(codec);
 	} catch (UnsupportedPlugInException e) {
 	    throw new IllegalActionException(
@@ -233,16 +236,29 @@ public class VideoCamera extends Source implements ControllerListener {
      *  to the output port.	
      *  @exception IllegalActionException If there's no director.
      */
-    public synchronized void fire() throws IllegalActionException {
-        while (_image == null) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                throw new IllegalActionException(this,
-                "Interrupted while waiting for the first video frame.");
-            }
-        }
-	output.send(0, new ObjectToken(_image));
+    public void fire() throws IllegalActionException {
+        super.fire();
+// 	while (!_newFrame) {
+// 	    if (_debugging) {
+// 		_debug("image not new");
+// 	    }
+//             try {
+//                 wait();
+//             } catch (InterruptedException ex) {
+//                 throw new IllegalActionException(this,
+// 		"Interrupted while waiting for the first video frame.");
+//             }
+//         }	
+	//_imageNew = JamesCodec.getFrame();
+	//output.send(0, new ObjectToken(frameBuffer));
+	_bufferNew = JamesCodec.getFrame();
+	if (_bufferNew != null) {
+	    //_bufferNew.setFormat(new YUVFormat());
+	    output.send(0, new ObjectToken(_bufferNew));
+	}
+	if (_debugging) {
+	    _debug("just fired and I am yuv format!!!");
+	}
     }
 
     /** Close the media processor.
@@ -295,43 +311,6 @@ public class VideoCamera extends Source implements ControllerListener {
     }
 
 
-
-    /**
-     * Main program
-     */
-//      public static void main(String [] args) {
-
-//  	if (args.length == 0) {
-//  	    prUsage();
-//  	    System.exit(0);
-//   	}
-
-//  	String url = args[0];
-
-//  	if (url.indexOf(":") < 0) {
-//  	    prUsage();
-//  	    System.exit(0);
-//  	}
-
-//  	MediaLocator locator;
-
-//  	if ((locator = new MediaLocator(url)) == null) {
-//  	    System.err.println("Cannot build media locator from: " + url);
-//  	    System.exit(0);
-//  	}
-
-//  	FrameAccess fa = new FrameAccess();
-
-//  	if (!fa.open(locator))
-//  	    System.exit(0);
-//      }
-
-//      static void prUsage() {
-//  	System.err.println("Usage: java FrameAccess <url>");
-//      }
-
-
-
     /*********************************************************
      * Inner class.
      *
@@ -339,35 +318,59 @@ public class VideoCamera extends Source implements ControllerListener {
      *********************************************************/
 
     public class PreAccessCodec implements Codec {
-
+	public PreAccessCodec() throws IllegalActionException {
+	    // supportedIns = new Format [] {
+	    //	new YUVFormat()
+	    //}
+	}
 	/**
          * Callback to access individual video frames.
-         */
-	void accessFrame(Buffer frame) {
-
-	    // For demo, we'll just print out the frame #, time &
-	    // data length.
-
+         */	
+	
+	synchronized void accessFrame(Buffer frame) {
 	    long t = (long)(frame.getTimeStamp()/10000000f);
-
-	    System.err.println("Pre: frame #: " + frame.getSequenceNumber() + 
-			", time: " + ((float)t)/100f + 
-			", len: " + frame.getLength());
+	    //VideoFormat videoFormat = (VideoFormat)frame.getFormat();
+	    //BufferToImage bufferToImage = new BufferToImage(videoFormat);
+	    
+	    //Perhaps the next step is to instead output frames, and 
+	    //implement a transformer
+	    //_image = bufferToImage.createImage(frame);
+	    frameBuffer = frame;
+	    _newFrame = true;
+	    notifyAll();
+	    
 	}
-
 
 	/**
  	 * The code for a pass through codec.
 	 */
+	
+	synchronized Buffer getFrame() throws IllegalActionException {
+	    while (!_newFrame) {
+		//		try {
+		//   wait();
+		//} catch (InterruptedException ex) {
+		//    throw new IllegalActionException(this,
+		//    "blahblahblah");
+		//}
+		try {
+		    wait();
+		} catch (InterruptedException ex) {
+		    throw new IllegalActionException("sdf");}
+	    }
+	    _newFrame = false;
+	    return frameBuffer;
+	}
 
 	// We'll advertize as supporting all video formats.
 	protected Format supportedIns[] = new Format [] {
-	    new VideoFormat(null)
+	    new YUVFormat()
 	};
 
 	// We'll advertize as supporting all video formats.
 	protected Format supportedOuts[] = new Format [] {
-	    new VideoFormat(null)
+	    new YUVFormat()
+	    //new VideoFormat(null)
 	};
 
 	Format input = null, output = null;
@@ -442,56 +445,21 @@ public class VideoCamera extends Source implements ControllerListener {
 	}
     }
 
-    public class PostAccessCodec extends PreAccessCodec {
-	// We'll advertize as supporting all video formats.
-	public PostAccessCodec() {
-	    supportedIns = new Format [] {
-		new RGBFormat()
-	    };
-	}
 
-	/**
-         * Callback to access individual video frames.
-         */
-	void accessFrame(Buffer frame) {
-
-	    // For demo, we'll just print out the frame #, time &
-	    // data length.
-
-	    long time = (long)(frame.getTimeStamp()/10000000f);
-
-
-	    VideoFormat videoFormat = (VideoFormat)frame.getFormat();
-
-	    System.err.println("Post: frame #: " + frame.getSequenceNumber() + 
-			       ", time: " + ((float)time)/100f + 
-			       ", length: " + frame.getLength()
-			       + ", offset: " + frame.getOffset()
-			       + ", format: " + videoFormat
-			       + ", format.getEncoding: "
-			       + videoFormat.getEncoding()
-			       + ", format.getdataType: "
-			       + videoFormat.getDataType()
-			       );
-			       
-	    BufferToImage bufferToImage = new BufferToImage(videoFormat);
-	    _image = bufferToImage.createImage(frame); 
-	}
-
-	public String getName() {
-	    return "Post-Access Codec";
-	}
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The java.awt.Image that we are producing
     private Image _image;
-
+    private Image _imageNew;
+    private Buffer _bufferNew;
+    private boolean _newFrame = false;
+    private Thread _busyFlag = null;
     // The video processor.
     Processor _processor;
-
+    PreAccessCodec JamesCodec;
     Object waitSync = new Object();
     boolean stateTransitionOK = true;
+    Buffer frameBuffer = new Buffer();
 }
