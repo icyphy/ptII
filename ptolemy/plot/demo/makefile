@@ -49,9 +49,9 @@ EXTRA_SRCS = $(JSRCS) \
 	Live.html \
 	Marks.html \
 	Sinusoids.html \
+	bargraph.plt \
 	data.plt \
-	bargraph.plt
-	index.html \
+	index.html
 
 MISC_FILES = data #doc test 
 
