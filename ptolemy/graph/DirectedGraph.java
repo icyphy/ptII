@@ -28,7 +28,7 @@
 @AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 
 review methods attemptTopologicalSort(), sccDecomposition(), subgraph(), and
-               successorSet()
+               successorSet(), edgeExists()
 */
 
 package ptolemy.graph;
@@ -260,10 +260,11 @@ public class DirectedGraph extends Graph {
      */
     public boolean edgeExists(Object node1, Object node2) {
 
-        Object[] successors = successorSet(node1);
-        for (int i = 0; i < successors.length; i++) {
-            if (successors[i] == node2)
-                return true;
+        ArrayList edge = (ArrayList)(_graph.get(_getNodeId(node1)));
+        // for all edges from the object
+        for (int j = 0; j < edge.size(); j++) {
+            int k = ((Integer)edge.get(j)).intValue();
+            if (_getNodeObject(k) == node2) return true;
         }
 
         return false;

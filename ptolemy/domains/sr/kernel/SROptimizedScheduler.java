@@ -190,14 +190,8 @@ public class SROptimizedScheduler extends Scheduler {
                         while (dependentOutputIterator.hasNext()) {
                             Object dependentOutput =
                                 dependentOutputIterator.next();
-                            Object[] successors =
-                                dependencyGraph.successorSet(outputPort);
-                            boolean alreadySuccessor = false;
-                            for (int i = 0; i < successors.length; i++) {
-                                if (successors[i] == dependentOutput)
-                                    alreadySuccessor = true;
-                            }
-                            if (!alreadySuccessor) {
+                            if (!dependencyGraph.edgeExists(outputPort,
+                                    dependentOutput)) {
                                 dependencyGraph.addEdge(outputPort,
                                         dependentOutput);
                             }
@@ -224,6 +218,7 @@ public class SROptimizedScheduler extends Scheduler {
             firing.setActor(actor);
             schedule.add(firing);
         }
+
         return schedule;
 
     }
