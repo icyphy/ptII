@@ -158,12 +158,12 @@ public class ArrayMem extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Get the value of the lenght parameter
+    /** Get the value of the length parameter
      *  Initialize the memory array
      */
 
     public void initialize() throws IllegalActionException{
-        _aLength =((IntToken)length.getToken()).intValue();
+        _aLength = ((IntToken)length.getToken()).intValue();
         _mem = new Token[_aLength];
     }
     /** If read has a token, copy the ith elment of the memory to
