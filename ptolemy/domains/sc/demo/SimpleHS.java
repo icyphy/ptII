@@ -67,10 +67,12 @@ public class SimpleHS {
             sys.setManager(mgr);
 
             // the top level DE director
-            CTMixedSignalDirector dedir = new CTMixedSignalDirector("CTTopLevelDirector");
+            CTMultiSolverDirector dedir = new CTMultiSolverDirector("CTTopLevelDirector");
             sys.setDirector(dedir);
 
             dedir.setVERBOSE(true);
+            dedir.setDEBUG(true);
+
 
             // a DE clock
             //DEClock clk = new DEClock(sys, "Clock");
@@ -138,7 +140,7 @@ public class SimpleHS {
             TypedIOPort ctIncGFo = (TypedIOPort)ctIncGF.newPort("out");
             ctIncGFo.setOutput(true);
             ctIncGFo.setDeclaredType(DoubleToken.class);
-            ctIncGF.setOutputExpression("out", "in - 2.5");
+            ctIncGF.setOutputExpression("out", "in - 0.2");
             // the ports
             TypedIOPort ctIncIn = (TypedIOPort)ctInc.newPort("input");
             ctIncIn.setInput(true);
@@ -168,7 +170,7 @@ public class SimpleHS {
             ctIncD.input.link(ctIncR1);
             ctIncGFi.link(ctIncR1);
             ctIncSt.link(ctIncR1);
-            CTMixedSignalDirector ctIncDir = new CTMixedSignalDirector("CTIncDir");
+            CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector("CTIncDir");
             ctInc.setDirector(ctIncDir);
 
             // the second ct subsystem
@@ -216,7 +218,7 @@ public class SimpleHS {
             ctDecD.input.link(ctDecR1);
             ctDecGFi.link(ctDecR1);
             ctDecSt.link(ctDecR1);
-            CTMixedSignalDirector ctDecDir = new CTMixedSignalDirector("CTDecDir");
+            CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector("CTDecDir");
             ctDec.setDirector(ctDecDir);
 
             ctrlInc.setRefinement(ctInc);
@@ -261,7 +263,7 @@ public class SimpleHS {
             minStep.setExpression("1e-3");
             minStep.parameterChanged(null);
             Parameter bpsol = (Parameter)ctIncDir.getAttribute("BreakpointODESolver");
-            StringToken tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            StringToken tok = new StringToken("ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             bpsol.setToken(tok);
             bpsol.parameterChanged(null);
             Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
@@ -281,11 +283,11 @@ public class SimpleHS {
             minStep.setExpression("1e-3");
             minStep.parameterChanged(null);
             bpsol = (Parameter)ctDecDir.getAttribute("BreakpointODESolver");
-            tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            tok = new StringToken("ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             bpsol.setToken(tok);
             bpsol.parameterChanged(null);
             dfsol = (Parameter)ctDecDir.getAttribute("ODESolver");
-            tok = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+            tok = new StringToken("ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             dfsol.setToken(tok);
             dfsol.parameterChanged(null);
 
@@ -312,6 +314,8 @@ public class SimpleHS {
             dfsol.setToken(tok);
             dfsol.parameterChanged(null);
 
+
+            System.out.println(ctIncDir.getScheduler().description());
             mgr.startRun();
 
         } catch (KernelException ex) {
