@@ -70,6 +70,13 @@ public class Branch {
 
     /** Construct a Branch object.
      */
+    public Branch(BranchController cntlr) throws 
+    	    IllegalActionException {
+        _controller = cntlr;
+    }
+ 
+    /** Construct a Branch object.
+     */
     public Branch(BoundaryReceiver prodRcvr, BoundaryReceiver consRcvr, 
 	    BranchController cntlr) throws IllegalActionException {
         _controller = cntlr;
@@ -150,6 +157,15 @@ public class Branch {
     /** 
      */
     public boolean isBranchPermitted() {
+        try {
+            if( !_prodRcvr.hasRoom() ) {
+                return false;
+            }
+        } catch( IllegalActionException e ) {
+            // FIXME
+            // This should not be thrown but for 
+            // let's ignore.
+        }
         if( _controller.canBranchEngage(this) ) {
             return true;
         }
@@ -198,7 +214,15 @@ public class Branch {
     public synchronized void endIteration(boolean endIteration) {
 	_isIterationOver = endIteration;
 	// FIXME: Here I wake up the branch; What about the receiver?
-	notifyAll();
+        BoundaryReceiver rcvr = null;
+        rcvr = getProdReceiver();
+        synchronized(rcvr) {
+            rcvr.notifyAll();
+        }
+        rcvr = getConsReceiver();
+        synchronized(rcvr) {
+            rcvr.notifyAll();
+        }
     }
 
     /** 

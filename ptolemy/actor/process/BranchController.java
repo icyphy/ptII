@@ -127,10 +127,6 @@ public class BranchController implements Runnable {
                 return true;
             }
             
-            if( _engagements == null ) {
-            	_engagements = new LinkedList();
-            }
-            
             if( _engagements.contains(branch) ) {
                 if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
                     return true;
@@ -194,9 +190,9 @@ public class BranchController implements Runnable {
     public void createBranches(IOPort port) throws 
             IllegalActionException {
 	if( port.getContainer() != getParent() ) {
-	    throw new IllegalActionException("Can not have a "
-		    + "branch for a port not owned by this "
-		    + "controller's container.");
+	    throw new IllegalActionException("Can not contain "
+		    + "a port that is not contained by this "
+		    + "BranchController's container.");
 	}
         
         if( _ports == null ) {
@@ -211,19 +207,15 @@ public class BranchController implements Runnable {
         // Java is like C
         if( hasInputPorts() && !port.isInput() ) {
 	    throw new IllegalActionException("BranchControllers "
-            	    + "must have only input ports or only output "
+            	    + "must contain only input ports or only output "
                     + "ports; not both");
         }
         if( hasOutputPorts() && !port.isOutput() ) {
 	    throw new IllegalActionException("BranchControllers "
-            	    + "must have only input ports or only output "
+            	    + "must contain only input ports or only output "
                     + "ports; not both");
         }
         _ports.add(port);
-
-	if( _branches == null ) {
-	    _branches = new LinkedList();
-	}
 
 	Branch branch = null;
 	BoundaryReceiver prodRcvr = null;
@@ -311,9 +303,7 @@ public class BranchController implements Runnable {
      */
     public void activateBranches() {
         synchronized(this) {
-	    if( _branches == null ) {
-		return;
-	    }
+            setActive(true);
             LinkedList threadList = new LinkedList();
             BranchThread bThread = null;
             Branch branch = null;
@@ -522,9 +512,9 @@ public class BranchController implements Runnable {
     // The MultiBranchActor who owns this controller object.
     private MultiBranchActor _parentActor;
 
-    private LinkedList _branches;
+    private LinkedList _branches = new LinkedList(); 
     private LinkedList _ports;
-    private LinkedList _engagements;
+    private LinkedList _engagements = new LinkedList();
     
     private int _maxEngagements = -1;
     private int _maxEngagers = -1;

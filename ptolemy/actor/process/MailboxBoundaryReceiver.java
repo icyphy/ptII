@@ -212,7 +212,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             
             if( _terminate ) {
             	throw new TerminateProcessException("");
-            } else if( !brnch.isActive() ) {
+            } else if( brnch.isIterationOver() ) {
             	throw new TerminateBranchException("");
             } else {
                 //
