@@ -60,7 +60,6 @@ JSRCS = \
 	IFace.java \
 	InnerClass.java \
 	InnerIFace.java \
-	JavaScope.java \
 	Methods.java \
 	OneFM.java \
 	OneField.java \
@@ -91,7 +90,9 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+	JavaScope.java \
+	$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
