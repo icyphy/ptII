@@ -64,10 +64,10 @@ test cycle-1.0 {Cycle Scheduling tests} {
 
     set r1 [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]
     set r2 [$toplevel connect [java::field $a2 output] \
-            [java::field [java::cast ptolemy.actor.lib.Transformer $a3] input] \
+            [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a3] input] \
             R2]
     set r3 [$toplevel connect \
-            [java::field [java::cast ptolemy.actor.lib.Transformer $a3] \
+            [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a3] \
             output] [java::field $a1 input] R3]
 
     $scheduler setValid false
