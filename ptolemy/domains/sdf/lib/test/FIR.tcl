@@ -70,9 +70,11 @@ test FIR-1.1 {Test FIR for double FIR} {
     $tapParam setToken $tapMatrix
 
     [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
+    epsilonDiff \
+	    {-0.040609 -0.001628 0.17853 0.37665 0.37665 0.17853 -0.001628 -0.040609 0.0 0.0} \
+	    [enumToTokenValues [$rec getRecord 0]]
 
-} {-0.041 -0.002 0.179 0.377 0.377 0.179 -0.002 -0.041 0.0 0.0}
+} {}
 
 
 test FIR-2.1 {Test FIR type exeception} {
