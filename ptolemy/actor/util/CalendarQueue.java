@@ -874,8 +874,9 @@ public class CalendarQueue {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-            ////                 private inner class                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private inner class               ////
+
 
             // CQEntry: encapsulate both the objects and its priority
             // to be inserted into the queue.
