@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS =		QR
+DIRS =		OrderedMerge QR
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -49,6 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	OrderedMerge/OrderedMerge.jar \
 	QR/QR.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
