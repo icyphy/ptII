@@ -57,6 +57,8 @@
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
+        </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="400.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="200.0">
@@ -92,6 +94,8 @@ attributes with visual elements.</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="1024.0">
         </property>

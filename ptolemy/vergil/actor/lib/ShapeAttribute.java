@@ -30,6 +30,9 @@
 
 package ptolemy.vergil.actor.lib;
 
+import java.awt.Color;
+
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -75,6 +78,9 @@ public abstract class ShapeAttribute extends Attribute {
         lineWidth = new Parameter(this, "lineWidth");
         lineWidth.setTypeEquals(BaseType.DOUBLE);
         lineWidth.setExpression("1.0");
+        
+        lineColor = new ColorAttribute(this, "lineColor");
+        lineColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
 
         // FIXME: controller for resizing.
         // Create a custom controller.
@@ -84,6 +90,13 @@ public abstract class ShapeAttribute extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** The line color.  This is a string representing an array with
+     *  four elements, red, green, blue, and alpha, where alpha is
+     *  transparency. The default is "{0.0, 0.0, 0.0, 1.0}", which
+     *  represents an opaque black.
+     */
+    public ColorAttribute lineColor;
+    
     /** The line width.  This is a double that defaults to 1.0.
      */
     public Parameter lineWidth;
@@ -103,6 +116,9 @@ public abstract class ShapeAttribute extends Attribute {
             double lineWidthValue =
                 ((DoubleToken) lineWidth.getToken()).doubleValue();
             _icon.setLineWidth((float) lineWidthValue);
+        } else if (attribute == lineColor) {
+            Color lineColorValue = lineColor.asColor();
+            _icon.setLineColor(lineColorValue);
         } else {
             super.attributeChanged(attribute);
         }
