@@ -181,8 +181,9 @@ $(PTIIDIST):
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
 	@echo "  tar -X does not seem to work under Cygwin"
-	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar
-	-find $(PTIIDIST) -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core -exec rm -rf {} \;
+	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar \
+		$(PTIIDIST)/config/*.class
+	-find $(PTIIDIST) \( -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core \)  -exec rm -rf {} \;
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	@echo "Regenerate the documentation with gr and javasound"
 	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
