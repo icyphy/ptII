@@ -38,7 +38,9 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.util.VariableList;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMState
@@ -170,10 +172,10 @@ public class FSMState extends ComponentEntity {
      */
     public Enumeration getPreemptiveTrans() {
         if (workspace().getVersion() == _transVersion) {
-            return _preTrans.elements();
+            return Collections.enumeration(_preTrans);
         }
         _createTransLists();
-        return _preTrans.elements();
+        return Collections.enumeration(_preTrans);
     }
 
     /** Get an enumeration of outgoing non-preemptive transitions.
@@ -181,10 +183,10 @@ public class FSMState extends ComponentEntity {
      */
     public Enumeration getNonPreemptiveTrans() {
         if (workspace().getVersion() == _transVersion) {
-            return _nonPreTrans.elements();
+            return Collections.enumeration(_nonPreTrans);
         }
         _createTransLists();
-        return _nonPreTrans.elements();
+        return Collections.enumeration(_nonPreTrans);
     }
 
     /** Set the container of the state. The refinement is lost.
@@ -242,9 +244,9 @@ public class FSMState extends ComponentEntity {
                         continue;
                     }
                     if (trans.isPreemptive()) {
-                        _preTrans.insertFirst(trans);
+                        _preTrans.addFirst(trans);
                     } else {
-                        _nonPreTrans.insertFirst(trans);
+                        _nonPreTrans.addFirst(trans);
                     }
                 }
             }

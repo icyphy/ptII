@@ -34,7 +34,8 @@ package ptolemy.domains.fsm.kernel.util;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
@@ -252,21 +253,21 @@ public class VariableList extends Attribute {
         }
         if (_dependents != null) {
             LinkedList newlist = new LinkedList();
-            Enumeration vars = _dependents.elements();
-            while (vars.hasMoreElements()) {
-                Variable next = (Variable)vars.nextElement();
-                newlist.insertFirst(next);
+            Iterator vars = _dependents.iterator();
+            while (vars.hasNext()) {
+                Variable next = (Variable)vars.next();
+                newlist.addFirst(next);
             }
-            vars = newlist.elements();
-            while (vars.hasMoreElements()) {
-                Variable next = (Variable)vars.nextElement();
+            vars = newlist.iterator();
+            while (vars.hasNext()) {
+                Variable next = (Variable)vars.next();
                 next.removeFromScope(getVariables());
             }
             // CHECK
             // here this list should be empty
             //_dependents.clear();
-            vars = _dependents.elements();
-            if (vars.hasMoreElements()) {
+            vars = _dependents.iterator();
+            if (vars.hasNext()) {
                 throw new InvalidStateException(this, "Dangling dependencies.");
             }
         }
@@ -349,10 +350,10 @@ public class VariableList extends Attribute {
     protected void _addDependent(Variable var) {
         if (_dependents == null) {
             _dependents = new LinkedList();
-        } else if (_dependents.includes(var)) {
+        } else if (_dependents.contains(var)) {
             return;
         }
-        _dependents.insertAt(0, var);
+        _dependents.addFirst(var);
     }
 
     /** Remove the given attribute. The attribute should be a variable
@@ -373,7 +374,7 @@ public class VariableList extends Attribute {
      *  @param var The variable to be removed from dependent list.
      */
     protected void _removeDependent(Variable var) {
-        _dependents.exclude(var);
+        _dependents.remove(var);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -391,9 +392,9 @@ public class VariableList extends Attribute {
         if (_dependents == null ) {
             return;
         }
-        Enumeration vars = _dependents.elements();
-        while (vars.hasMoreElements()) {
-            Variable next = (Variable)vars.nextElement();
+        Iterator vars = _dependents.iterator();
+        while (vars.hasNext()) {
+            Variable next = (Variable)vars.next();
             next.addToScope(var);
         }
     }
@@ -406,9 +407,9 @@ public class VariableList extends Attribute {
         if (_dependents == null ) {
             return;
         }
-        Enumeration vars = _dependents.elements();
-        while (vars.hasMoreElements()) {
-            Variable next = (Variable)vars.nextElement();
+        Iterator vars = _dependents.iterator();
+        while (vars.hasNext()) {
+            Variable next = (Variable)vars.next();
             next.removeFromScope(var);
         }
     }

@@ -39,7 +39,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.util.VariableList;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.LinkedList;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.fsm.lib.*;
 

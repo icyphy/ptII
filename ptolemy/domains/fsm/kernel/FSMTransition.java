@@ -39,7 +39,8 @@ import ptolemy.actor.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.util.VariableList;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMTransition
@@ -103,16 +104,16 @@ public class FSMTransition extends ComponentRelation {
         if (_transActions == null) {
             _transActions = new LinkedList();
         }
-        _transActions.insertFirst(act);
+        _transActions.addFirst(act);
     }
 
     public void executeTransitionActions() throws IllegalActionException {
         if (_transActions == null) {
             return;
         }
-        Enumeration tas = _transActions.elements();
-        while (tas.hasMoreElements()) {
-            TransitionAction ta = (TransitionAction)tas.nextElement();
+        Iterator tas = _transActions.iterator();
+        while (tas.hasNext()) {
+            TransitionAction ta = (TransitionAction)tas.next();
             ta.execute();
         }
     }
@@ -349,9 +350,9 @@ public class FSMTransition extends ComponentRelation {
 
         // initialize the transition actions
         if (_transActions != null) {
-            Enumeration tas = _transActions.elements();
-            while (tas.hasMoreElements()) {
-                TransitionAction ta = (TransitionAction)tas.nextElement();
+            Iterator tas = _transActions.iterator();
+            while (tas.hasNext()) {
+                TransitionAction ta = (TransitionAction)tas.next();
                 ta.initialize();
             }
         }
