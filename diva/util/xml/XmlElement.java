@@ -73,7 +73,7 @@ public class XmlElement {
      * Create a new XmlElement with element type given by the string.
      * The element has no attributes and no child elements.
      *
-     * @param name The element type
+     * @param type The element type
      */
     public XmlElement(String type) {
         _children = new ArrayList();
@@ -92,7 +92,7 @@ public class XmlElement {
      * Create a new XmlElement with element type with the given name and the
      * given attributes.  The element starts with no child elements.
      *
-     * @param name The element type
+     * @param type The element type
      * @param attrs The attributes of this XmlElement.
      */
     public XmlElement(String type, Map attrs) {
