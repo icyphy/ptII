@@ -142,23 +142,6 @@ public class Select extends Transformer {
         _channel = 0;
     }
 
-    /** Read a control token, if there is one, and check to see
-     *  whether an input is available on the input channel specified by
-     *  the most recent control token, if it is in range.
-     *  Return false if there is no input token to read.
-     *  Otherwise, return whatever the superclass returns.
-     *  @return True if the actor is ready to fire.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (_channel < 0
-                || _channel > input.getWidth()
-                || !input.hasToken(_channel)) {
-            return false;
-        }
-        return super.prefire();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
