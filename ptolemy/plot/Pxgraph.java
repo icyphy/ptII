@@ -28,6 +28,18 @@
 package plot;
 import tycho.Cool_Beans.util.AppletFrame;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import java.lang.Byte;
+
+import java.net.URL;
+import java.net.MalformedURLException;
+
 //////////////////////////////////////////////////////////////////////////
 //// Pxgraph
 /** 
@@ -52,6 +64,8 @@ public class Pxgraph {
 
 
 	pxgraph.parseArgs(arg);
+
+	pxgraph.preprocess();
 
         args[0] = new String("-width");
         args[1] = new String(pxgraph.getWidth());
@@ -117,15 +131,86 @@ public class Pxgraph {
 	return width;
     }
 
+     /** Preprocess the datafile by converting from binary if necessary
+       * and adding any header information.  If it is necessary	  
+       * to preprocess, then we create a temporary file.
+     */	
+    public void preprocess() {
+	// FIXME: we need a better tmpname mechanism
+	String tmpfilename = new String("/tmp/pxgraph.tmp");
+	File tmpfile = new File(tmpfilename);
+
+        if (debug)  
+	    System.out.print("preprocess: top\n");
+	
+	try {
+	    FileOutputStream fos = new FileOutputStream(tmpfile);
+	    addHeader(fos);
+	    if (getCommandFlag("-binary")) {
+		convertBinaryFile(fos);
+	    } else {
+		copyDataURLFile(fos);
+	    }
+	    fos.close();
+	} catch (IOException e) {
+	    System.err.println("preprocess: " + e);
+	}
+	dataurl=tmpfilename;
+    }
+
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
-     /** Parse the command line arguments.
+    /* Based on the command line arguments, add a header to the temporary
+       file.
      */	
-    ////                         private methods                          ////
+    private void addHeader(FileOutputStream fos){
+	if (debug)
+	    System.out.print("addHeader: top\n");
+	try {
+	    int i;
+	    for(i=0;i<commandFlags.length;i++) {
+		if (commandFlags[i][2].equals("true")) {
+		    String plotDirective = new String(commandFlags[i][3]);
+		    if (debug)
+			System.out.print("addHeader: " + plotDirective + "\n");
+		    fos.write(plotDirective.getBytes());
+		}
+	    }
+	} catch (FileNotFoundException e) {
+	    System.err.println("FileStreamsTest: " + e);
+	} catch (IOException e) {
+	    System.err.println("FileStreamsTest: " + e);
+	}
+    }
+
+    /* Convert a binary pxgraph file to a ascii file
+     */	
+    private void convertBinaryFile(FileOutputStream fos){ 
+    }
+
+    /* Copy the dataurl file to the already open temporary file
+     */	
+    private void copyDataURLFile(FileOutputStream fos){ 
+	try {
+	    URL data = new URL(dataurl);
+		DataInputStream dis = new DataInputStream(data.openStream());
+	    String inputLine;
+	    while ((inputLine = dis.readLine()) != null) {
+		fos.write(inputLine.getBytes());
+		fos.write('\n');
+	    }
+	    dis.close();
+	} catch (MalformedURLException me) {
+	    System.out.println("MalformedURLException: " + me);
+	} catch (IOException ioe) {
+	    System.out.println("IOException: " + ioe);
+	}
+    }
+
 
     /* DumpArgs - print the argument table
-
      */	
     private void dumpArgs () {
         int j;
@@ -229,19 +314,28 @@ public class Pxgraph {
     };
 
     // Array of command line flags that are booleans.
+    // For example, if we have:
+    //  {"-bar", "BarGraph", "false", "Bars: on"}
+    // The elements in the row are as follows:
+    // -bar         - The command line argument we search for.
+    // BarGraph     - The X Resource or option name, currently not used.
+    // false        - The initial default, which is updated with the
+    //                value true if this arg is present in the command line.
+    // Bars: on     - If the arg is set, then we add this string to
+    //                the header file.
     private String commandFlags[][] = {
-        {"-bar", "BarGraph", "false"},
-        {"-bb", "BoundBox", "false"},
-        {"-binary", "Binary", "false"},
-        {"-db", "Debug", "false"},
-        {"-lnx", "LogX", "false"},
-        {"-lny", "LogY", "false"},
-        {"-m", "Markers", "false"},
-        {"-M", "StyleMarkers", "false"},
-        {"-nl", "NoLines", "false"},
-        {"-p", "PixelMarkers", "false"},
-        {"-P", "LargePixel", "false"},
-        {"-rv", "ReverseVideo", "false"},
-        {"-tk", "Ticks", "false"},
+        {"-bar", "BarGraph", "false", "Bars: on"},
+        {"-bb", "BoundBox", "false", ""},
+        {"-binary", "Binary", "false", ""},
+        {"-db", "Debug", "false", ""},
+        {"-lnx", "LogX", "false", "NotSupported"},
+        {"-lny", "LogY", "false", "NotSupported"},
+        {"-m", "Markers", "false", "Marks: various" },
+        {"-M", "StyleMarkers", "false", "Marks: various" },
+        {"-nl", "NoLines", "false", "Lines: off" },
+        {"-p", "PixelMarkers", "false", "Marks: points" },
+        {"-P", "LargePixel", "false", "Marks: dots" },
+        {"-rv", "ReverseVideo", "false", ""},
+        {"-tk", "Ticks", "false", ""},
     };
 }
