@@ -48,7 +48,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.event.*;
-import java.util.Enumeration;
+import java.util.Iterator;
 import javax.swing.*;
 
 ///////////////////////////////////////////////////////////
@@ -227,9 +227,9 @@ public class HelicopterApplet extends CTApplet {
 
             sub.connect(subinAction, hscInAct);
             hscInPz.link(rSubPz);
-            Enumeration entities = sub.getEntities();
-            while(entities.hasMoreElements()) {
-                Entity ent = (Entity)entities.nextElement();
+            Iterator entities = sub.entityList().iterator();
+            while(entities.hasNext()) {
+                Entity ent = (Entity)entities.next();
                 Port p = ent.getPort("inputPx");
                 if (p != null) {
                     p.link(rSubPx);
