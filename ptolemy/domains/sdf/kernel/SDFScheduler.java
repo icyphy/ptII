@@ -49,7 +49,7 @@ import collections.HashedSet;
 A scheduler that implements basic scheduling of SDF graphs.
 This class calculates the SDF schedule in two phases.  
 First, the balance equations for the rates between actors are solved to 
-determine the <i>firing vector</i> (also known as the repetitions vector).
+tdetermine the <i>firing vector</i> (also known as the repetitions vector).
 The firing vector is the least integer solution such that the number of 
 tokens created on each channel of each relation is equal to the number of 
 tokens consumed.   In some cases, no solution exists.  Such graphs are not
@@ -197,7 +197,7 @@ public class SDFScheduler extends Scheduler {
      *  casting the result to an integer.
      */
     private int _getFiringCount(Entity entity) {
-        Debug.println(_firingvector.toString());
+        _debug(_firingvector.toString() + "\n");
         return ((Integer) _firingvector.at(entity)).intValue();
     }
 
@@ -281,7 +281,7 @@ public class SDFScheduler extends Scheduler {
         Enumeration unnormalizedFirings = firings.elements();
         int lcm = 1;
 
-        Debug.println("Normalizing Firings");
+        _debug("Normalizing Firings" + "\n");
         // First find the lcm of all the denominators
         while(unnormalizedFirings.hasMoreElements()) {
             Fraction f = (Fraction) unnormalizedFirings.nextElement();
@@ -289,7 +289,7 @@ public class SDFScheduler extends Scheduler {
             lcm = Fraction.lcm(lcm, den);
         }
 
-        Debug.println("lcm = " + (new Integer(lcm)).toString());
+        _debug("lcm = " + (new Integer(lcm)).toString() + "\n");
         Enumeration Actors = firings.keys();
 
         Fraction lcmFraction = new Fraction(lcm);
@@ -298,8 +298,8 @@ public class SDFScheduler extends Scheduler {
         while(Actors.hasMoreElements()) {
 
             Object actor = Actors.nextElement();
-            Debug.println("normalizing Actor " + 
-                    ((ComponentEntity) actor).getName());
+            _debug("normalizing Actor " + 
+                    ((ComponentEntity) actor).getName() + "\n");
             Fraction reps = (Fraction) firings.at(actor);
             reps = reps.multiply(lcmFraction);
             if(reps.getDenominator() != 1)
@@ -353,8 +353,8 @@ public class SDFScheduler extends Scheduler {
                     ComponentEntity connectedActor =
                         (ComponentEntity) connectedPort.getContainer();
 
-                    Debug.println("Propagating input to " +
-                            connectedActor.getName());
+                    _debug("Propagating input to " +
+                            connectedActor.getName() + "\n");
 
                     int connectedRate =
                         _getTokenProductionRate(connectedPort);
@@ -400,8 +400,8 @@ public class SDFScheduler extends Scheduler {
                                 "does not appear in the firings LLMap");
                     }
 
-                    Debug.print("New Firing: ");
-                    Debug.println(firings.toString());
+                    _debug("New Firing: ");
+                    _debug(firings.toString() + "\n");
                 }
             }
     }
@@ -467,10 +467,9 @@ public class SDFScheduler extends Scheduler {
                     ComponentEntity connectedActor =
                         (ComponentEntity) connectedPort.getContainer();
 
-                    Debug.println("Propagating output to " +
-                            connectedActor.getName());
+                    _debug("Propagating output to " +
+                            connectedActor.getName() + "\n");
 
-              //   Debug.assert(connectedActor instanceof DataflowActor);
                     int connectedRate =
                         _getTokenConsumptionRate(connectedPort);
 
@@ -573,16 +572,16 @@ public class SDFScheduler extends Scheduler {
 
         _setFiringVector(firings);
 
-        Debug.print("Firing Vector:");
-        Debug.println(firings.toString());
+        _debug("Firing Vector:");
+        _debug(firings.toString() + "\n");
 
         // Schedule all the actors using the calculated firings.
         CircularList result = _scheduleConnectedActors(AllActors);
 
         _setFiringVector(firings);
 
-        Debug.print("Firing Vector:");
-        Debug.println(firings.toString());
+        _debug("Firing Vector:");
+        _debug(firings.toString() + "\n");
 
         _setContainerRates();
 
@@ -664,16 +663,16 @@ public class SDFScheduler extends Scheduler {
             // map a->InputCount
             unfulfilledInputs.putAt(a, new Integer(inputcount));
 
-            Debug.print("Actor ");
-            Debug.print(((ComponentEntity) a).getName());
-            Debug.print(" has ");
-            Debug.print((new Integer(inputcount)).toString());
-            Debug.println(" unfulfilledInputs.");
+            _debug("Actor ");
+            _debug(((ComponentEntity) a).getName());
+            _debug(" has ");
+            _debug((new Integer(inputcount)).toString());
+            _debug(" unfulfilledInputs." + "\n");
         }
 
         while(!Done) {
-                Debug.print("waitingTokens: ");
-                Debug.println(waitingTokens.toString());
+                _debug("waitingTokens: ");
+                _debug(waitingTokens.toString() + "\n");
 
                 // pick an actor that is ready to fire.
                 ComponentEntity currentActor
@@ -682,7 +681,7 @@ public class SDFScheduler extends Scheduler {
                 // remove it from the list of actors we are waiting to fire
                 ReadyToScheduleActors.removeAt(0);
 
-                Debug.println("Scheduling Actor "+currentActor.getName());
+                _debug("Scheduling Actor "+currentActor.getName() + "\n");
 
 
                 boolean stillReadyToSchedule =
@@ -698,9 +697,9 @@ public class SDFScheduler extends Scheduler {
                 firingsRemaining -= 1;
                 _setFiringCount(currentActor, firingsRemaining);
 
-                Debug.print(currentActor.getName() + " should fire ");
-                Debug.print((new Integer(firingsRemaining)).toString());
-                Debug.println(" more times");
+                _debug(currentActor.getName() + " should fire ");
+                _debug((new Integer(firingsRemaining)).toString());
+                _debug(" more times" + "\n");
 
                 // Figure out what to do with the actor, now that it has been
                 // scheduled.
@@ -783,11 +782,11 @@ public class SDFScheduler extends Scheduler {
                                 int ival = i.intValue() - 1;
                                 unfulfilledInputs.putAt(connectedActor,
                                         new Integer(ival));
-                                Debug.print("Actor ");
-                                Debug.print(connectedActor.getName());
-                                Debug.print(" now has ");
-                                Debug.print((new Integer(ival)).toString());
-                                Debug.println(" unfulfilledInputs.");
+                                _debug("Actor ");
+                                _debug(connectedActor.getName());
+                                _debug(" now has ");
+                                _debug((new Integer(ival)).toString());
+                                _debug(" unfulfilledInputs." + "\n");
                                 // If this Actor has no more
                                 // UnfulfilledInputs, then
                                 // add it to the list of actors
@@ -808,8 +807,8 @@ public class SDFScheduler extends Scheduler {
         // FIXME: This should probably throw another exception if
         // unscheduledActors still contains elements.
         catch (NoSuchElementException e) {
-            Debug.print("Caught NSEE:");
-            Debug.println(e.getMessage());
+            _debug("Caught NSEE:");
+            _debug(e.getMessage() + "\n");
             Done = true;
         }
         catch (IllegalActionException iae) {
@@ -822,14 +821,14 @@ public class SDFScheduler extends Scheduler {
                     "Internal consistancy check: " + iae.getMessage());
         }
         finally {
-            Debug.println("finishing loop");
+            _debug("finishing loop" + "\n");
         }
         
         Enumeration eschedule = newSchedule.elements();
-        Debug.println("Schedule is:");
+        _debug("Schedule is:" + "\n");
         while(eschedule.hasMoreElements())
-            Debug.println(
-                    ((ComponentEntity) eschedule.nextElement()).toString());
+            _debug(
+                    ((ComponentEntity) eschedule.nextElement()).toString() + "\n");
         return newSchedule;
     }
 
@@ -866,10 +865,10 @@ public class SDFScheduler extends Scheduler {
                     _getTokenProductionRate(cport);
                 initproduction = _getFiringCount(cactor) * 
                     _getTokenInitProduction(cport);
-                Debug.println("CPort " + cport.getName());
-                Debug.println("consumptionrate = " + consumptionrate);
-                Debug.println("productionrate = " + productionrate);
-                Debug.println("initproduction = " + initproduction);
+                _debug("CPort " + cport.getName());
+                _debug("consumptionrate = " + consumptionrate + "\n");
+                _debug("productionrate = " + productionrate + "\n");
+                _debug("initproduction = " + initproduction + "\n");
             }
             // All the ports connected to this port must have the same rate
             while(connectedports.hasMoreElements()) {
@@ -901,10 +900,10 @@ public class SDFScheduler extends Scheduler {
                         "!");
                 
             }
-            Debug.println("Port " + port.getName());
-            Debug.println("consumptionrate = " + consumptionrate);
-            Debug.println("productionrate = " + productionrate);
-            Debug.println("initproduction = " + initproduction);
+            _debug("Port " + port.getName() + "\n");
+            _debug("consumptionrate = " + consumptionrate + "\n");
+            _debug("productionrate = " + productionrate + "\n");
+            _debug("initproduction = " + initproduction + "\n");
             // SDFAtomicActor blindly creates parameters with bad values.
 
             /*
@@ -1189,12 +1188,12 @@ public class SDFScheduler extends Scheduler {
         }
 
         while(! Done) try {
-            Debug.print("pendingActors: ");
-            Debug.println(pendingActors.toString());
+            _debug("pendingActors: ");
+            _debug(pendingActors.toString() + "\n");
             // Get the next actor to recurse over
             Actor currentActor = (Actor) pendingActors.take();
-            Debug.println("Balancing from " +
-                    ((ComponentEntity) currentActor).getName());
+            _debug("Balancing from " +
+                    ((ComponentEntity) currentActor).getName() + "\n");
 
             // traverse all the input and output ports, setting the firings
             // for the actor(s)???? that each port is connected to relative
