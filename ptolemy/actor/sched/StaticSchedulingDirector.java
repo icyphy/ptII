@@ -266,27 +266,6 @@ public class StaticSchedulingDirector extends Director {
         }
     }
 
-    /** Set the scheduler for this StaticSchedulingDirector.
-     *  The container of the specified scheduler is set to this director.
-     *  If there was a previous scheduler, the container of that scheduler
-     *  is set to null. This method is write-synchronized on the workspace.
-     *  If the scheduler is not compatible with the director, an
-     *  IllegalActionException is thrown.
-     *  @param scheduler The scheduler that this director will use.
-     *  @exception IllegalActionException Not thrown in this base class,
-     *   but derived classes may throw it if the scheduler is not compatible.
-     *  @exception NameDuplicationException Not thrown in this base class,
-     *   but derived classes may throw it if the scheduler is not compatible.
-     */
-    public void setScheduler(Scheduler scheduler)
-            throws IllegalActionException, NameDuplicationException {
-        if (scheduler != null) {
-            scheduler.setContainer(this);
-        } else {
-            _setScheduler(null);
-        }
-    }
-
     /** Validate/Invalidate the schedule. A true argument indicate that
      *  the current (cached) schedule is valid, and the director can use
      *  it in the further execution. A false argument indicate that
@@ -309,6 +288,27 @@ public class StaticSchedulingDirector extends Director {
                     "has no scheduler.");
         }
         _scheduler.setValid(valid);
+    }
+
+    /** Set the scheduler for this StaticSchedulingDirector.
+     *  The container of the specified scheduler is set to this director.
+     *  If there was a previous scheduler, the container of that scheduler
+     *  is set to null. This method is write-synchronized on the workspace.
+     *  If the scheduler is not compatible with the director, an
+     *  IllegalActionException is thrown.
+     *  @param scheduler The scheduler that this director will use.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *   but derived classes may throw it if the scheduler is not compatible.
+     *  @exception NameDuplicationException Not thrown in this base class,
+     *   but derived classes may throw it if the scheduler is not compatible.
+     */
+    public void setScheduler(Scheduler scheduler)
+            throws IllegalActionException, NameDuplicationException {
+        if (scheduler != null) {
+            scheduler.setContainer(this);
+        } else {
+            _setScheduler(null);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
