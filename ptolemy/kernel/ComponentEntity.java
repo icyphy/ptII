@@ -177,6 +177,14 @@ public class ComponentEntity extends Entity {
         clone.setContainer((CompositeEntity)container);
         
         clone._adjustDeferrals();
+        
+        // Now that there is a new parent-child relationship,
+        // we need to propagate values from the parent to the child.
+        // Note that this isn't needed to get the
+        // right values, since the child has been cloned
+        // from the parent. However, this will set the override
+        // levels appropriately in the child.
+        propagateValues();
 
         return clone;
     }
