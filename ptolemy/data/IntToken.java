@@ -34,7 +34,7 @@ import pt.kernel.*;
 A token that contains an integer value.
 The value is never null, the default being 0.
 
-@author Mudit Goel, Yuhong Xiong
+@author Mudit Goel, Yuhong Xiong, Neil Smyth
 @version $Id$
 */
 public class IntToken extends ScalarToken {
@@ -187,6 +187,8 @@ public class IntToken extends ScalarToken {
     }
  
     /** Divide the value of the argument Token with the current Token.
+     *  If the argument is an IntToken or a LongToken, a DoubleToken 
+     *  is returned. For the case of Long, is this what we want?
      *  @param The token whose value we divide with this Token.
      *  @return A token of the appropriate type.
      */
@@ -201,9 +203,9 @@ public class IntToken extends ScalarToken {
 					((DoubleToken)a).doubleValue());
 //	} else if (a instanceof FixToken) {
 	} else if (a instanceof IntToken) {
-	    return new IntToken(_value / ((IntToken)a).intValue());
-	} else if (a instanceof LongToken) {
-	    return new LongToken(this.longValue() / ((LongToken)a).longValue());
+	    return new DoubleToken(_value / ((IntToken)a).doubleValue());
+	} else if (a instanceof LongToken) { // FIXME: what do here...! Wrong! 2/4L !=0
+	    return new DoubleToken(this.doubleValue() / ((LongToken)a).longValue());
 	} else {
 	    throw new IllegalActionException("Can't divide " +
 		getClass().getName() + "by " + a.getClass().getName());
