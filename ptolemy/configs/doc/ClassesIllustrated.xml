@@ -4,7 +4,7 @@
 <entity name="ClassesIllustrated" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 5, 815, 516}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 5, 815, 509}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,13 +19,13 @@
         </property>
     </property>
     <property name="ModelID" class="ptolemy.kernel.attributes.IDAttribute">
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 23, 2004 11:50:22 AM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 7, 2004 8:18:00 AM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 355.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -35,7 +35,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 250.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
