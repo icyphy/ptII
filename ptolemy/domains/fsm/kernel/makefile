@@ -46,12 +46,7 @@ CLASSPATH =	../../../..
 # Used to build zip files
 PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-PTCLASSALLJAR = kernel.jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	Action.java \
@@ -79,7 +74,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: all jars
 
 
 depend:
