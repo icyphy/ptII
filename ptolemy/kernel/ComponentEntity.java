@@ -249,7 +249,7 @@ public class ComponentEntity extends Entity {
                 container.getEntity(name);
             if((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                    "already contains an entity with the name "+name+".");
+                        "already contains an entity with the name "+name+".");
             }
         }
         super.setName(name);
