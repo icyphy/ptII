@@ -316,9 +316,9 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Cause the system to exit after wrapup().
-     *  If the ptolemy.ptII.isRunningNightlyBuild property is <b>not</b>
+     *  If the ptolemy.ptII.exitAfterWrapup property is <b>not</b>
      *  set, then when wrapup() is almost finished, we call System.exit().
-     *  If the ptolemy.ptII.isRunningNightlyBuild property is set, then
+     *  If the ptolemy.ptII.exitAfterWrapup property is set, then
      *  we throw an Exception.
      */   
     public void exitAfterWrapup() {
@@ -1027,13 +1027,15 @@ public class Manager extends NamedObj implements Runnable {
         _workspace.incrVersion();
 
         if (_exitAfterWrapup) {
+            // $PTII/util/testsuite/testDefs.tcl sets 
+            // ptolemy.ptII.exitAfterWrapup
             if (StringUtilities
-                .getProperty("ptolemy.ptII.isRunningNightlyBuild")
+                .getProperty("ptolemy.ptII.exitAfterWrapup")
                 .length() > 0) {
                 throw new KernelRuntimeException(this, "Normally, we would "
                         + "exit here because Manager.exitAfterWrapup() "
                         + "was called.  However, because the "
-                        + "ptolemy.ptII.isRunningNightlyBuild property "
+                        + "ptolemy.ptII.exitAfterWrapup property "
                         + "is set, we throw this exception instead.");
             } else {
                 // Non-zero indicates a problem.

@@ -67,10 +67,10 @@ public class Exit extends Sink {
 
     /** Exit the Java process by calling System.exit() after all the
      *  wrapup() methods have been called.
-     *  If the ptolemy.ptII.isRunningNightlyBuild property is <b>not</b>
+     *  If the ptolemy.ptII.exitAfterWrapup property is <b>not</b>
      *  set, then when wrapup() is almost finished, we call System.exit()
      *  after all the wrapup() methods have been called.
-     *  If the ptolemy.ptII.isRunningNightlyBuild property is set, then
+     *  If the ptolemy.ptII.exitAfterWrapup property is set, then
      *  we throw an Exception.
      */
     public void wrapup() throws IllegalActionException {
