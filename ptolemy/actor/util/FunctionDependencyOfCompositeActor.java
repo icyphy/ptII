@@ -31,12 +31,16 @@ package ptolemy.actor.util;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.Sink;
+import ptolemy.actor.lib.Source;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -152,6 +156,39 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
     
+    /** Categorize the given list of actors into three kinds: sinks, sources,
+     *  and transformers. 
+     *  @param actorList The given list of actors.
+     */
+    private void _categorizeActors(List actorList) {
+        Iterator actors = actorList.listIterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor instanceof AtomicActor) {
+                // Atomic actors have type.
+                if (actor instanceof Source) {
+                    _sourceActors.add(actor);
+                } else if (actor instanceof Sink) {
+                    _sinkActors.add(actor);
+                } else {
+                    _otherActors.add(actor);
+                }
+            } else {
+                // Composite actors are categorized based
+                // on their ports
+                int numberOfInputs = actor.inputPortList().size();
+                int numberOfOutputs = actor.outputPortList().size();
+                if (numberOfInputs == 0) {
+                    _sourceActors.add(actor);
+                } else if (numberOfOutputs == 0) {
+                    _sinkActors.add(actor);
+                } else {
+                    _otherActors.add(actor);
+                }
+            }
+        }
+    }
+
     /** Construct a directed graph with the nodes representing input and
      *  output ports, and directed edges representing dependencies. This
      *  graph includes both the ports of this actor and the ports of all
@@ -180,29 +217,28 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         // FIXME: the situation that a state has multiple refinements 
         // has to be considered.  
         List embeddedActors = _getEntities();
+        
+        // initialize the list of actors
+        _sinkActors = new LinkedList();
+        _sourceActors = new LinkedList();
+        _otherActors = new LinkedList();
+        
+        _categorizeActors(embeddedActors);
 
-        // Merge dependency graphs of the internal actors into 
-        // the dependency graph of the actor.
-        Iterator embeddedActorsIterator = embeddedActors.iterator();
-        while (embeddedActorsIterator.hasNext()) {
-            Actor embeddedActor = (Actor)embeddedActorsIterator.next();
-            FunctionDependency functionDependency =
-                embeddedActor.getFunctionDependency();
-            if (functionDependency != null) {
-                _detailedDependencyGraph.addGraph(
-                    functionDependency.getDependencyGraph());
-            } else {
-                throw new InternalErrorException("FunctionDependency can "
-                        + "not be null. Check all four types of function "
-                        + "dependencies. There must be something wrong.");
-            }
-        }
+        // Constuct the portsGraph: give the graphs that begin with the
+        // ports of source actors the highest priority, the graphs that
+        // begin with the ports of sink actors the lowest priority, 
+        // and others (do they matter?)...
+
+        _mergeActorsGraph(_sourceActors);
+        _mergeActorsGraph(_otherActors);
+        _mergeActorsGraph(_sinkActors);
 
         // Next, create the directed edges according to the connections at
         // the container level, communication dependencies between internal
         // actors
         List outputPorts = actor.outputPortList();
-        embeddedActorsIterator = embeddedActors.iterator();
+        Iterator embeddedActorsIterator = embeddedActors.iterator();
         // iterate all embedded actors (including opaque composite actors
         // and flattening transparent composite actors)
         while (embeddedActorsIterator.hasNext()) {
@@ -266,10 +302,36 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         }
     }
 
+    private void _mergeActorsGraph(List actorList) {
+        // Merge dependency graphs of the internal actors into 
+        // the dependency graph of the actor.
+        Iterator actors = actorList.iterator();
+        while (actors.hasNext()) {
+            Actor embeddedActor = (Actor)actors.next();
+            FunctionDependency functionDependency =
+                embeddedActor.getFunctionDependency();
+            if (functionDependency != null) {
+                _detailedDependencyGraph.addGraph(
+                    functionDependency.getDependencyGraph());
+            } else {
+                throw new InternalErrorException("FunctionDependency can "
+                        + "not be null. Check all four types of function "
+                        + "dependencies. There must be something wrong.");
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
     
     // The detailed dependency graph that includes both the ports of
     // this actor and the ports of all deeply contained opaque actors. 
     private DirectedGraph _detailedDependencyGraph;
+    
+    // Sink actors
+    private List _sinkActors;
+    // Source actors
+    private List _sourceActors;
+    // Actors other than sink and source.
+    private List _otherActors;
 }
