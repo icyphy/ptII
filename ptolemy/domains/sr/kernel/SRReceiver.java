@@ -98,6 +98,22 @@ public class SRReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Set the state of this receiver to be known and to contain no token.
+     *  Note that during an iteration, SR semantics does not allow a receiver
+     *  to receive a token and then be cleared.  Thus, the clear will
+     *  trigger an exception.
+     *  @exception IllegalActionException If the receiver state is known
+     *   and the receiver has a token.
+     */
+    public void clear() throws IllegalActionException {
+        if (isKnown() && hasToken()) {
+            throw new IllegalActionException(getContainer(),
+            "Cannot transition from a present state to an absent state.");
+        }
+        _known = true;
+        super.clear();
+    }
+
     /** Get the contained Token without modifying or removing it.  If there
      *  is none, throw an exception.
      *  @return The token contained in the receiver.
@@ -204,32 +220,21 @@ public class SRReceiver extends Mailbox {
         }
     }
 
-    /** Set the state of this receiver to be known and to contain no token.
-     *  Note that during an iteration, SR semantics does not allow a receiver
-     *  to receive a token and then be cleared.  Thus, the clear will
-     *  trigger an exception.
-     *  @throws IllegalOutputException If this receiver has a token in it.
-     */
-    public void clear() {
-        if (isKnown() && hasToken()) {
-            throw new IllegalOutputException(getContainer(),
-            "SRReceiver cannot transition from a present " +
-            "state to an absent state.");
-        }
-        super.clear();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /** Reset the receiver by removing any contained token and setting
      *  the state of this receiver to be unknown.  Should be called
      *  only by the director.  Note that this method has no access specifier,
      *  so it defaults to package protection.  Thus, the director can invoke
      *  this method, but actors in other packages cannot.
      */
-    void reset() {
-        clear();
+    public void reset() {
+        // Cannot call clear() of this class, because it will trigger
+        // an exception.
+        try {
+            super.clear();
+        } catch (IllegalActionException ex) {
+            // Should not occur.
+            throw new InternalErrorException(ex);
+        }
         _known = false;
     }
 

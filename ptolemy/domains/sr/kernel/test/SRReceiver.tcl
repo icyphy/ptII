@@ -98,6 +98,12 @@ test SRReceiver-2.1 {Check put and get and hasToken} {
     catch {$receiver hasToken} result1
     catch {$receiver hasToken 1} result1_1
 
+    list $result1 $result1_1
+} {{ptolemy.domains.sr.kernel.UnknownTokenException: hasToken() called on SRReceiver with unknown state.} {ptolemy.domains.sr.kernel.UnknownTokenException: hasToken(1) called on SRReceiver with unknown state.}}
+
+# NOTE: Continues from previous test.
+test SRReceiver-2.1.1 {Check put and get and hasToken} {
+
     # Now put a token.
     $receiver {put ptolemy.data.Token} $token
 
@@ -126,8 +132,7 @@ test SRReceiver-2.1 {Check put and get and hasToken} {
     list $result1 $result1_1 $result2 $result2_1 \
 	    $result3 $result3_1 $result4 $result4_1 \
 	    [$receivedToken toString] [$receivedToken2 toString]
-} {{ptolemy.domains.sr.kernel.UnknownTokenException: hasToken() called on SRReceiver with unknown state.} {ptolemy.domains.sr.kernel.UnknownTokenException: hasToken(1) called on SRReceiver with unknown state.} 1 1 1 1 1 1 {"foo"} {"foo"}}
-
+} {1 1 1 1 1 1 {"foo"} {"foo"}}
 
 test SRReceiver-2.2 {Check put and get and hasToken with more than 1 token in the queue} {
 
@@ -217,14 +222,12 @@ test SRReceiver-4.2 {clear after put} {
     $receiver {put ptolemy.data.Token} $token
     catch {$receiver clear} result1
     list $result1
-} {{ptolemy.domains.sr.kernel.IllegalOutputException: SRReceiver cannot transition from a present state to an absent state.}}
-
+} {{ptolemy.kernel.util.IllegalActionException: Cannot transition from a present state to an absent state.}}
 
 test SRReceiver-4.2.1 {clear, then get} {
-
     set director [java::new ptolemy.domains.sr.kernel.SRDirector]
     set receiver [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
-    $receiver clear
+    $receiver reset
     catch {$receiver get} result1
     list $result1
 } {{ptolemy.domains.sr.kernel.UnknownTokenException: get() called on SRReceiver with unknown state.}}
