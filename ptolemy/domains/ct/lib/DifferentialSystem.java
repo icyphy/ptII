@@ -117,8 +117,11 @@ public class DifferentialSystem extends TypedCompositeActor {
                 + "style=\"fill:white\"/>\n"
                 + "<text x=\"5\" y=\"20\" "
                 + "style=\"font-size:14\">\n"
-                + "dx/dt=f(x, u, t) \n"
-                + "    y=g(x, u, t) \n"
+                + "dx/dt=f(x, u, t)"
+                + "</text>\n"
+                + "<text x=\"5\" y=\"40\" "
+                + "style=\"font-size:14\">\n"
+                + "     y=g(x, u, t)"
                 + "</text>\n"
                 + "style=\"fill:blue\"/>\n"
                 + "</svg>\n");
