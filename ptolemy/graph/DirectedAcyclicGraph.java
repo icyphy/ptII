@@ -360,7 +360,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      * is not in the graph, or if the specified nodes are identical.
      * @exception NullPointerException If the edge is to be weighted, but
      * the specified weight is null.
-     */ 
+     */
     protected Edge _addEdge(Node node1, Node node2, boolean weighted,
             Object weight) {
         if (node1 == node2) {
@@ -372,7 +372,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         }
     }
 
-    /** Return an empty DAG. 
+    /** Return an empty DAG.
      *  @return An empty DAG.
      */
     protected static Graph _emptyGraph() {
@@ -406,7 +406,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     // upSet
     //   |
     // _upSetShared
-    
+
     // compute transitive closure.  Throws InvalidStateException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
@@ -723,7 +723,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     private boolean[][] _tranClosureTranspose = null;
 
     // The graph listener for computation of the transitive closure.
-    private GraphListener _transitiveClosureListener; 
+    private GraphListener _transitiveClosureListener;
 
     private Object _bottom = null;
     private Object _top = null;

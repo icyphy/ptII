@@ -31,7 +31,7 @@ package ptolemy.graph;
 //////////////////////////////////////////////////////////////////////////
 //// Edge
 /**
-A weighted or unweighted edge for a directed or undirected graph. 
+A weighted or unweighted edge for a directed or undirected graph.
 Edges are immutable, and should
 normally created only by classes of
 graphs that contain them. The connectivity of edges is specified by
@@ -96,7 +96,7 @@ public final class Edge {
     }
 
     /** Return true if this is a self-loop edge.
-     *  @return True if this is a self-loop edge. 
+     *  @return True if this is a self-loop edge.
      */
     public boolean isSelfLoop() {
         return _source == _sink;
@@ -117,20 +117,20 @@ public final class Edge {
     }
 
     /** Return a string representation of the edge. The string
-     *  representation is of the form 
+     *  representation is of the form
      *
-     *  <p> <code>(source, sink, weight)</code>, 
+     *  <p> <code>(source, sink, weight)</code>,
      *
-     *  <p> where <code>source</code>, <code>sink</code>, and 
-     *  <code>weight</code> 
+     *  <p> where <code>source</code>, <code>sink</code>, and
+     *  <code>weight</code>
      *
      *  are string representations
      *  of the source node, sink node, and edge weight, respectively.
-     *  If the edge is unweighted or the <code>showWeight</code> argument is 
+     *  If the edge is unweighted or the <code>showWeight</code> argument is
      *  false, then the string representation is
      *  is simply
      *
-     *  <p> <code>(source, sink)</code>. 
+     *  <p> <code>(source, sink)</code>.
      *
      *  @param showWeight True to include a string representation of the edge
      *  weight in the string representation of the edge.

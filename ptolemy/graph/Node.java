@@ -30,7 +30,7 @@ package ptolemy.graph;
 //////////////////////////////////////////////////////////////////////////
 //// Node
 /**
-An optionally-weighted node for an undirected or directed graph. 
+An optionally-weighted node for an undirected or directed graph.
 More specifically, a node consists
 of an optional <em>weight</em> (an arbitrary object that is associated with the
 node), and information about the edges that are incident to the node.
@@ -126,7 +126,7 @@ public final class Node {
     public Object weight() {
         if (!hasWeight()) {
             throw new IllegalStateException("Attempt to access the weight "
-                    + "of an unweighted node.\n"); 
+                    + "of an unweighted node.\n");
         } else {
             return _weight;
         }

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.InternalErrorException;
 A directed graph and some graph algorithms.
 <p>
 Some methods in this class have two versions, one that operates
-on graph nodes, and another that operations on 
+on graph nodes, and another that operations on
 node weights. The latter form is called the <em>weights version</em>.
 More specifically, the weights version of an operation takes individual
 node weights or arrays of weights as arguments, and, when applicable, returns
@@ -165,7 +165,7 @@ public class DirectedGraph extends Graph {
      *  The reachable nodes do not include the argument unless
      *  there is a loop from the specified node back to itself.
      *  @param node A node in this graph.
-     *  @return The collection of nodes that is backward-reachable from the 
+     *  @return The collection of nodes that is backward-reachable from the
      *  specified node; each element is a {@link Node}.
      *  @exception IllegalArgumentException If the specified node is
      *  not a node in this graph.
@@ -191,7 +191,7 @@ public class DirectedGraph extends Graph {
      *  The reachable nodes do not include the argument unless
      *  there is a loop from the specified node back to itself.
      *  @param node A node weight in this graph.
-     *  @return An array of node weights that are backward-reachable from the 
+     *  @return An array of node weights that are backward-reachable from the
      *  nodes that have the specified weight; each element is an {@link Object}.
      *  @exception IllegalArgumentException If the specified weight is
      *  not a node weight in this graph.
@@ -207,7 +207,7 @@ public class DirectedGraph extends Graph {
      *  @param nodes A collection of nodes in this graph; each element is
      *  a {@link Node}.
      *  @return The collection of nodes that are backward-reachable from
-     *  the specified nodes; each element is a {@link Node}. 
+     *  the specified nodes; each element is a {@link Node}.
      */
     public Collection backwardReachableNodes(Collection nodeCollection) {
 	    _computeTransitiveClosure();
@@ -237,12 +237,12 @@ public class DirectedGraph extends Graph {
      *  specified collection of nodes (weights version).
      *  The reachable nodes do not include the weights in the argument unless
      *  there is a loop from the specified node back to itself.
-     *  @param weights An array of node weights in this graph; each 
+     *  @param weights An array of node weights in this graph; each
      *  element is an {@link Object}.
-     *  @return An array of node weights that are backward-reachable from the 
-     *  nodes that have the specified weights; each element is an 
+     *  @return An array of node weights that are backward-reachable from the
+     *  nodes that have the specified weights; each element is an
      *  {@link Object}.
-     *  @exception IllegalArgumentException If the one or more of the specified 
+     *  @exception IllegalArgumentException If the one or more of the specified
      *  weights is not a node weight in this graph.
      */
     public Object[] backwardReachableNodes(Object[] weights) {
@@ -315,8 +315,8 @@ public class DirectedGraph extends Graph {
                 Node candidateSink = (Node)sinks.next();
                 if (edgeExists(candidateSource, candidateSink)) {
                     return true;
-                } 
-            } 
+                }
+            }
         }
         return false;
     }
@@ -330,10 +330,10 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return the collection of input edges for
-     *  a specified node. 
+     *  a specified node.
      *
      *  @param node The specified node.
-     *  @return The collection of input edges; each element is a {@link Node}. 
+     *  @return The collection of input edges; each element is a {@link Node}.
      */
     public Collection inputEdges(Node node) {
         return Collections.unmodifiableList(_inputEdgeList(node));
@@ -361,7 +361,7 @@ public class DirectedGraph extends Graph {
         return _outputEdgeList(node).size();
     }
 
-    /** Return the collection of output edges for a specified node. 
+    /** Return the collection of output edges for a specified node.
      *
      *  @param node The specified node.
      *  @return The collection of output edges; each element is a {@link Node}.
@@ -370,7 +370,7 @@ public class DirectedGraph extends Graph {
         return Collections.unmodifiableList(_outputEdgeList(node));
     }
 
-    /** Return all of the predecessors of a given node in the form of a 
+    /** Return all of the predecessors of a given node in the form of a
      *  a collection. Each element of the collection is a Node.
      *  A predecessor of a node X is a node that is the source
      *  of an edge whose sink is X. All elements in the returned collection
@@ -386,7 +386,7 @@ public class DirectedGraph extends Graph {
             Node source = ((Edge)(inputEdges.next())).source();
             if (!result.contains(source)) {
                 result.add(source);
-            } 
+            }
         }
         return result;
     }
@@ -415,7 +415,7 @@ public class DirectedGraph extends Graph {
     }
 
     /** Find all the nodes that can be reached from the specified node weight
-     *  (weights version). 
+     *  (weights version).
      *  The reachable nodes do not include the specific one unless
      *  there is a loop from the specified node back to itself.
      *  @param node The specified node weight.
@@ -429,8 +429,8 @@ public class DirectedGraph extends Graph {
     }
 
     /** Find all the nodes that can be reached from the specified collection
-     *  of nodes (weights version). The reachable nodes do not include a 
-     *  specified one unlessthere is a loop from the specified node back to 
+     *  of nodes (weights version). The reachable nodes do not include a
+     *  specified one unlessthere is a loop from the specified node back to
      *  itself.
      *  @param An array of node weights; each element is an {@link Object}.
      *  @return The array of nodes that are reachable from
@@ -566,9 +566,9 @@ public class DirectedGraph extends Graph {
         // graphs, so we override the method from the base class.
         // A self loop edge appears in both the input and output edge lists.
         // Thus, the number of self loop edges is simply the total number
-        // of input and output edges minus the number of edges that 
+        // of input and output edges minus the number of edges that
         // are connected to this node.
-        return inputEdgeCount(node) + outputEdgeCount(node) - 
+        return inputEdgeCount(node) + outputEdgeCount(node) -
                 incidentEdgeCount(node);
     }
 
@@ -626,7 +626,7 @@ public class DirectedGraph extends Graph {
         return Collections.unmodifiableList(_sourceNodes);
     }
 
-    /** Return all of the successors of a given node in the form of a 
+    /** Return all of the successors of a given node in the form of a
      *  a collection. Each element of the collection is a Node.
      *  A successor of a node X is a node that is the sink
      *  of an edge whose source is X. All elements in the returned collection
@@ -642,7 +642,7 @@ public class DirectedGraph extends Graph {
             Node sink = ((Edge)(outputEdges.next())).sink();
             if (!result.contains(sink)) {
                 result.add(sink);
-            } 
+            }
         }
         return result;
     }
@@ -708,7 +708,7 @@ public class DirectedGraph extends Graph {
      * been connected to the node.
      */
     protected void _connect(Edge edge, Node node) {
-        super._connect(edge, node); 
+        super._connect(edge, node);
         if (edge.source() == node) {
             _outputEdgeList(node).add(edge);
         }
@@ -717,7 +717,7 @@ public class DirectedGraph extends Graph {
         }
     }
 
-    /* Disconnect an edge from a node that it is incident to. 
+    /* Disconnect an edge from a node that it is incident to.
      * Do nothing if the edge is not incident to the node.
      *  @param edge The edge.
      *  @param node The node.
@@ -748,7 +748,7 @@ public class DirectedGraph extends Graph {
      *  @param edge the new edge;
      */
     protected void _registerEdge(Edge edge) {
-        super._registerEdge(edge);    
+        super._registerEdge(edge);
         _transitiveClosure = null;
     }
 
@@ -756,7 +756,7 @@ public class DirectedGraph extends Graph {
      *  @param node the new node;
      */
     protected void _registerNode(Node node) {
-        super._registerNode(node);    
+        super._registerNode(node);
         _inputEdgeMap.put(node, new ArrayList());
         _outputEdgeMap.put(node, new ArrayList());
         _transitiveClosure = null;
