@@ -204,8 +204,9 @@ public class Configuration extends CompositeEntity {
                         + effigy.identifier.getExpression(), ex);
                 try {
                     effigy.setContainer(null);
-                } catch (KernelException e) {
-                    throw new InternalErrorException(e.toString());
+                } catch (KernelException kernelException) {
+                    throw new InternalErrorException(this, kernelException,
+                            null);
                 }
             }
         }
