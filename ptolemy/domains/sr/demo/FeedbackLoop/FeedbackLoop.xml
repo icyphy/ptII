@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
                 </property>
@@ -16,8 +16,6 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 60.0">
-        </property>
-        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 33, 815, 518}, maximized=false}">

@@ -10,12 +10,16 @@
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                </property>
+            </property>
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="9">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 48.0">
-        </property>
-        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 100, 819, 567}}">
