@@ -84,7 +84,7 @@ or the transmit() public method.
 @since Ptolemy II 2.1
 */
 public class AtomicWirelessChannel extends TypedAtomicActor
-        implements WirelessChannel, ValueListener {
+    implements WirelessChannel, ValueListener {
 
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -633,15 +633,15 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
         if(_portPropertyTransformer.get(sender) != null) {
             PropertyTransformer propertyTransformer = (PropertyTransformer)
-                    _portPropertyTransformer.get(sender);
+                _portPropertyTransformer.get(sender);
             result = propertyTransformer.
-                    getProperty(result, sender, destination);
+                getProperty(result, sender, destination);
         }
         if(_portPropertyTransformer.get(destination) != null) {
             PropertyTransformer propertyTransformer = (PropertyTransformer)
-                    _portPropertyTransformer.get(destination);
+                _portPropertyTransformer.get(destination);
             result = propertyTransformer.
-                    getProperty(result, sender, destination);
+                getProperty(result, sender, destination);
         }
         return result;
     }

@@ -156,7 +156,7 @@ public class ChannelPort extends WirelessIOPort {
             _sourcePortList.addAll(channel.sendingInputPorts());
             _sourcePortListVersion = workspace().getVersion();
             return _sourcePortList;
-      } catch (IllegalActionException e) {
+        } catch (IllegalActionException e) {
             // This is not ideal, but the base class doesn't
             // declare exceptions here.
             throw new InternalErrorException(e);
