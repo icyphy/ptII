@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="_Controller" class="ptolemy.actor.TypedCompositeActor">
+<entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
@@ -76,7 +76,7 @@
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="26.264020509825656"/>
+<xRange min="0.0" max="17.899999999999984"/>
 <yRange min="9.027550412032514E-8" max="10.0"/>
 </plot>?>
         </configure>
@@ -106,6 +106,20 @@
             </property>
         </port>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
+            <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
+            </property>
+            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="400">
+            </property>
+            <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="scalable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="translatable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
             </property>
             <property name="vertical resolution" class="ptolemy.data.expr.Parameter" value="400">
@@ -118,9 +132,9 @@
             </property>
             <property name="show axes" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="one frame per iteration" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="one frame per iteration" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="431.0, 176.0">
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 219.5">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -143,13 +157,19 @@
         <entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
             </property>
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
             <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="234.0, 176.0">
+            <property name="_location" class="ptolemy.moml.Location" value="331.0, 131.5">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -158,18 +178,18 @@
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="135.0, 197.0">
+            <property name="_location" class="ptolemy.moml.Location" value="137.0, 179.5">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -217,13 +237,19 @@
         <entity name="Translate3D10" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
             </property>
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
             <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="331.0, 256.0">
+            <property name="_location" class="ptolemy.moml.Location" value="338.0, 310.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -232,13 +258,13 @@
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
@@ -246,7 +272,7 @@
             <property name="value" class="ptolemy.data.expr.Parameter" value="-0.65">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="190.0, 342.0">
+            <property name="_location" class="ptolemy.moml.Location" value="183.0, 343.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -262,8 +288,6 @@
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" class="ptolemy.moml.Vertex" value="114.0, 250.0">
             </vertex>
@@ -272,7 +296,11 @@
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="200.0, 160.0">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="position" relation="relation"/>
         <link port="ViewScreen.sceneGraphIn" relation="relation3"/>
@@ -280,16 +308,16 @@
         <link port="Sphere3D.sceneGraphOut" relation="relation2"/>
         <link port="Translate3D.sceneGraphIn" relation="relation2"/>
         <link port="Translate3D.sceneGraphOut" relation="relation3"/>
-        <link port="Translate3D.ytranslate" relation="relation4"/>
+        <link port="Translate3D.yTranslate" relation="relation6"/>
         <link port="AddSubtract.plus" relation="relation"/>
         <link port="AddSubtract.minus" relation="relation9"/>
-        <link port="AddSubtract.output" relation="relation4"/>
+        <link port="AddSubtract.output" relation="relation6"/>
         <link port="Const.output" relation="relation9"/>
         <link port="Box3D.sceneGraphOut" relation="relation11"/>
         <link port="Translate3D10.sceneGraphIn" relation="relation11"/>
         <link port="Translate3D10.sceneGraphOut" relation="relation12"/>
-        <link port="Translate3D10.ytranslate" relation="relation5"/>
-        <link port="Copy1:Const.output" relation="relation5"/>
+        <link port="Translate3D10.yTranslate" relation="relation4"/>
+        <link port="Copy1:Const.output" relation="relation4"/>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -469,9 +497,9 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[50, 232]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="2.079773116E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="1.862130471582258E-6">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.3184938">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="4.9310902387755">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
