@@ -118,15 +118,19 @@ public class SRReceiver extends AbstractReceiver
                     "SRReceiver: Cannot transition from a present state "
                     + "to an absent state.");
         }
-        _token = null;
-        _known = true;
-
         // Ivan Jeukens: Signal the SR director to increment the
         // _currentNumberOfKnownReceivers variable. Clearing a
         // SRReceiver in the unknown state means changing its state to
         // known. Without that, you can get a nondeterministic
         // behavior.
-        _director.receiverChanged(this);
+        if(!isKnown()) {
+            // If we don't check !isKnown(), then we get a hang in 
+            // sr/lib/test/auto/EnabledComposite.xml
+            // If we don't call receiverChanged, then SendClearTest fails.
+            _director.receiverChanged(this);
+	}
+        _token = null;
+        _known = true;
     }
 
     /** Get the contained Token without modifying or removing it.  If there
