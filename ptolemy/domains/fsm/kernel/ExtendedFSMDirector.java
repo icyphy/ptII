@@ -182,7 +182,7 @@ public class ExtendedFSMDirector extends FSMDirector {
 
     /** Given a transition, get a list of referred input ports in the
      *  outputActions of that transition.
-     * @param currentState The given state.
+     * @param transition The transition. 
      * @exception IllegalActionException If there is no controller or if
      *  the outputActions is illegal.
      */
