@@ -1,4 +1,4 @@
-/* An attribute with a reference to a rectangle.
+/* An attribute that displays the value of an attribute of the container.
 
 Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.

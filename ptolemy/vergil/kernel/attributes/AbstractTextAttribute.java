@@ -1,4 +1,4 @@
-/* An attribute for a visible text annotation.
+/* An abstract attribute for a visible text annotation.
 
 Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
@@ -33,7 +33,6 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -44,7 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 

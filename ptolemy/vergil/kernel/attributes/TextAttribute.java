@@ -28,25 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.kernel.attributes;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.style.TextStyle;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.icon.TextIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextAttribute
