@@ -45,36 +45,39 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependency
-/** A FunctionDependency is an abstract class that describes the internal 
-    function dependency relation between the externally visible input and 
-    output ports of an actor. 
+
+/** A FunctionDependency is an abstract class that describes the 
+    function dependency that output ports of an associated actor
+    have on its input ports.  The associated actor is specified by
+    the constructor argument and cannot be changed once this object
+    is constructed.
     <p>
-    An output port is dependent on an input port of the same actor if the 
-    token sent by the output port depends on the token got from the input
-    port in the same firing.  
+    An output port has a function dependency on an input port if
+    in its fire method, it sends tokens on the output port that
+    depend on tokens gotten from the input port.
     <p> 
-    This class uses a graph to describe the function dependency relation of
-    an actor, where the nodes corespond to the actor ports and the edges 
-    indicate the dependency relationship between ports. The edges have 
-    directions, indicating the destination port depends on the source port 
-    but not the other way. 
+    This class uses a graph to describe the function dependency,
+    where the nodes of the graph correspond to the ports and an edge
+    indicates a function dependency. The edges go from input ports
+    to output ports that depend on them.
     <p>
-    The dependency graph by default is constructed in such a way that 
-    each output port depends on each input port, which is a conservative
-    approximation. Subclasses need to override the protected method 
-    {@link #_constructDependencyGraph} to construct a more accurate 
-    dependency graph. See the {@link FunctionDependencyOfAtomicActor}, 
-    {@link FunctionDependencyOfCompositeActor} for example implementations. 
+    The dependency graph by default indicates complete dependency,
+    which means that each output port depends on all input ports.
+    This default dependency graph is constructed in the protected
+    method {@link #_constructDependencyGraph()}, which can be
+    overridden in subclasses to construct a more accurate 
+    dependency graph. See {@link FunctionDependencyOfAtomicActor}
+    and {@link FunctionDependencyOfCompositeActor} for example
+    concrete subclasses. The composite actor version analyzes
+    the contained model to determine from the function dependencies
+    of the contained actors and from the connections what the
+    function dependencies of the composite actor are.
  
-    @see FunctionDependencyOfAtomicActor
-    @see FunctionDependencyOfCompositeActor
-    @see ptolemy.domains.fsm.kernel.FunctionDependencyOfFSMActor
-    @see ptolemy.domains.de.kernel.DEEDirector
     @author Haiyang Zheng
     @version $Id$
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (hyzheng)
-    @Pt.AcceptedRating Red (hyzheng)
+    @Pt.ProposedRating Green (hyzheng)
+    @Pt.AcceptedRating Green (eal)
 */
 public abstract class FunctionDependency {
 
@@ -91,11 +94,10 @@ public abstract class FunctionDependency {
     ////                         public methods                    ////
 
     /** Return the dependency graph representing the function 
-     *  dependency of an actor. It only includes the externally visible 
-     *  ports of the actor as nodes. This graph is used to construct 
-     *  the function dependency for the container of the actor. 
-     *  @return A dependency graph reflecting the function 
-     *  dependency information.
+     *  dependency of an actor. The nodes of the graph are the
+     *  ports of the actor. Each edge indicates a function
+     *  dependency between an input port and an output port.
+     *  @return A dependency graph for the associated actor.
      */
     public DirectedGraph getDependencyGraph() {
         _validate();
@@ -111,7 +113,8 @@ public abstract class FunctionDependency {
 
     /** Get the output ports that depend on the given input port.
      *  @param inputPort The given input port.
-     *  @return A set of output ports that depend on the input.
+     *  @return A set of output ports that depend on the input port.
+     *   The elements of the set are all instances of IOPort.
      */
     public Set getDependentOutputPorts(IOPort inputPort) {
         _validate();
@@ -135,7 +138,8 @@ public abstract class FunctionDependency {
 
     /** Get the input ports on which the given output port is dependent.
      *  @param outputPort The given output port.
-     *  @return A set of input ports.
+     *  @return A set of input ports on which the output port is dependent.
+     *   The elements of the set are all instances of IOPort.
      */
     public Set getInputPortsDependentOn(IOPort outputPort) {
         _validate();
@@ -160,23 +164,53 @@ public abstract class FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Construct the dependency graph associated with the actor.
-     *  This base class provides a connected graph. The 
-     *  subclasses may need to overwrite its implementation.
-     *  This method should only be called from by the protected method
-     *  _validate(). 
+    /** Construct a complete dependency graph with all the
+     *  ports of the associated actor as nodes and edges going from 
+     *  each input port node to each output port node.
+     *  This is provided as a convenience for subclasses that override
+     *  _constructDependencyGraph() to build a starting point.
+     *  @return A complete dependency graph. 
      */
-    protected void _constructDependencyGraph() {
-        _dependencyGraph = 
-            _initializeConnectedDependencyGraph();
+    protected final DirectedGraph _constructConnectedDependencyGraph() {
+        // construct new directed graph
+        DirectedGraph dependencyGraph = 
+            _constructDisconnectedDependencyGraph();
+
+        // For each input and output port pair, add a directed 
+        // edge going from the input port to the output port.
+        Iterator inputs = _actor.inputPortList().listIterator();
+        while (inputs.hasNext()) {
+            IOPort inputPort = (IOPort) inputs.next();
+            Iterator outputs = 
+                _actor.outputPortList().listIterator();
+            while (outputs.hasNext()) {
+                // add an edge from the input port to the output port
+                dependencyGraph.addEdge(inputPort, outputs.next());
+            }
+        }
+        
+        return dependencyGraph;
     }
 
-    /** Initialize a dependency graph by adding all the externally
-     *  visible ports of the associated actor as nodes, where all 
-     *  the nodes are disconnected.
-     *  @return A dependency graph with its nodes disconncted.
+    /** Construct the dependency graph for the associated actor.
+     *  This base class provides a complete dependency graph. The 
+     *  subclasses may need to override this implementation.
+     *  This method should only be called from by the protected method
+     *  _validate(). It is protected only so that subclasses can
+     *  override it, not so they can call it.
      */
-    protected final DirectedGraph _initializeDisconnectedDependencyGraph() {
+    protected void _constructDependencyGraph() {
+        _dependencyGraph
+                = _constructConnectedDependencyGraph();
+    }
+
+    /** Construct and return a dependency graph containing all the
+     *  ports of the associated actor as nodes and no edges.
+     *  This is provided as a convenience for subclasses that override
+     *  _constructDependencyGraph() to build a starting point.
+     *  @return A dependency graph with nodes for ports but no edges.
+     */
+    protected final DirectedGraph _constructDisconnectedDependencyGraph() {
         // construct new directed graph
         DirectedGraph dependencyGraph = new DirectedGraph();
 
@@ -195,35 +229,12 @@ public abstract class FunctionDependency {
         return dependencyGraph;
     }
 
-    /** Initialize a dependency graph by adding all the externally visible
-     *  ports of the associated actor as nodes and adding edges going from 
-     *  each input-port node to each output-port node.
-     *  @return A dependency graph with all input-port nodes conncted
-     *  to all the output-port nodes. 
-     */
-    protected final DirectedGraph _initializeConnectedDependencyGraph() {
-        // construct new directed graph
-        DirectedGraph dependencyGraph = 
-            _initializeDisconnectedDependencyGraph();
-
-        // For each input and output port pair, add a directed 
-        // edge going from the input port to the output port.
-        Iterator inputs = _actor.inputPortList().listIterator();
-        while (inputs.hasNext()) {
-            IOPort inputPort = (IOPort) inputs.next();
-            Iterator outputs = 
-                _actor.outputPortList().listIterator();
-            while (outputs.hasNext()) {
-                // add an edge from the input port to the output port
-                dependencyGraph.addEdge(inputPort, outputs.next());
-            }
-        }
-        
-        return dependencyGraph;
-    }
-
-    /** Check the validity of the FunctionDependency object. 
-     *  If it is invalid, reconstruct it. Otherwise, do nothing.
+    /** Update the FunctionDependency object. If it has not been
+     *  previously constructed, then construct it. If the topology
+     *  has been changed since it was last constructed (as indicated
+     *  by the getVersion() method of the workspace of the associated
+     *  actor), then reconstruct it. Otherwise, do nothing.
+     *  @see ptolemy.kernel.util.Workspace#getVersion()
      */
     protected final void _validate() {
         Workspace workspace = ((NamedObj)_actor).workspace();
@@ -242,6 +253,9 @@ public abstract class FunctionDependency {
         // assumption that only the topology change increases the 
         // workspace version. 
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected variables                  ////
 
     /** The dependency graph of the associated actor. */
     protected DirectedGraph _dependencyGraph;

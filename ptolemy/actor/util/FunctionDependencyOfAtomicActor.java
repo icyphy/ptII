@@ -39,26 +39,32 @@ import ptolemy.graph.Edge;
 //// FunctionDependencyOfAtomicActor
 /**
    An instance of FunctionDependencyOfAtomicActor describes the function
-   dependence relation of an atomic actor. 
-   <p>
-   Most atomic actors have all their output ports depend on their input 
-   ports. For some atomic actors, such as the TimedDelay actor, its output 
-   does not depend on its input port. See {@link FunctionDependency} for 
-   accurate definition of dependency. Therefore, this class provides a
-   removeDependence() method to specify this special cases.  
-   <p>
-   Take the {@link ptolemy.domains.de.lib.TimedDelay} actor as an example,
-   to declare that its output is independent of its input, specify 
-   removeDependency(input, output) inside the removeDependencies() method. 
+   dependency of an atomic actor. By default, each output port
+   of an atomic actor depends on all input ports of the actor.
+   For some atomic actors, such as the TimedDelay actor, an output in
+   a firing does not depend on an input port.
+   (See {@link FunctionDependency} for the definition of dependency.)
+   Such actors should override the pruneDependencies() method of
+   AtomicActor to remove dependencies between these ports.
+   For example, {@link ptolemy.domains.de.lib.TimedDelay}
+   declares that its <i>output</i> port is independent of its <i>input</i>
+   port by defining this method:
+   <pre>
+        public void pruneDependencies() {
+            super.pruneDependencies();
+            removeDependency(input, output);
+        }
+   </pre>
 
    @see FunctionDependency
    @see ptolemy.domains.de.lib.TimedDelay
+   @see ptolemy.actor.AtomicActor#pruneDependencies()
    @author Haiyang Zheng
    @version $Id: FunctionDependencyOfAtomicActor.java,v 1.2 2004/02/21
    07:57:24 hyzheng Exp $
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (eal)
 */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 
@@ -72,10 +78,17 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Declares that an output port does not depend on an input port.
-     *
-     *  @param inputPort An input port.
-     *  @param outputPort An output Port.
+    /** Remove the dependency that the specified output port has,
+     *  by default, on the specified input port. By default, each
+     *  output port is assumed to have a dependency on all input
+     *  ports. This method is called by the removeDependency() method
+     *  of AtomicActor, which in turn is called by actors in
+     *  their pruneDependencies() method.
+     *  @param input The input port.
+     *  @param output The output port that does not depend on the
+     *   input port.
+     *  @see ptolemy.actor.AtomicActor#removeDependency(IOPort, IOPort)
+     *  @see ptolemy.actor.AtomicActor#pruneDependencies()
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
         // We do not need the validity checking because this method is 
@@ -102,12 +115,13 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Construct a dependency graph. This method calls the 
-     *  {@link #removeDependency} method. 
+    /** Construct a dependency graph. This method first constructs
+     *  the default dependency graph, which asserts that each output
+     *  depends on all inputs, and then calls the 
+     *  {@link ptolemy.actor.AtomicActor#pruneDependencies()} method.
      */
     protected void _constructDependencyGraph() {
         super._constructDependencyGraph();
-        ((AtomicActor)getActor()).removeDependencies();
+        ((AtomicActor)getActor()).pruneDependencies();
     }
-    
 }
