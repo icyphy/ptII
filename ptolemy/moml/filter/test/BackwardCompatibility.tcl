@@ -599,7 +599,7 @@ model is known as a Lorenz attractor.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </property>
 </entity>
@@ -681,7 +681,14 @@ test BackwardCompatibility-12.1 {Setting a multiport can result in a null contai
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <entity name="test" class="ptolemy.actor.lib.Test">
-    </entity>}}
+    </entity>
+</entity>
+}}
+
+# NonStrictTest reads ptolemy.actor.lib.NonStrictTest.fire.compat 
+# and ignores fire() not being called if the property is true.
+java::call System setProperty \
+	ptolemy.actor.lib.NonStrictTest.fire.compat "true"
 
 test BackwardCompatiblity-20.1 {Try running old models, first check that the makefile created the compat/ directory} { 
     if {! [file exists compat]} {

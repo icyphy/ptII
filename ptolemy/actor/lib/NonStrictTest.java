@@ -190,7 +190,7 @@ public class NonStrictTest extends Sink {
                 throw new IllegalActionException(this,
                         TRAINING_MODE_ERROR_MESSAGE);
             } else {
-                System.err.println("Warning: '" + this.getFullName()
+                System.err.println("Warning: '" + getFullName()
                         + "' is in training mode, set the trainingMode "
                         + "parameter to false before checking in");
             }
@@ -283,10 +283,23 @@ public class NonStrictTest extends Sink {
         if (!training
                 && _initialized) {
             if (! _firedOnce ) {
-                throw new IllegalActionException(this,
+                String errorMessage =
                         "The fire() method of this actor was never called. "
                         + "Usually, this is an error indicating that "
-                        + "starvation is occurring");
+                        + "starvation is occurring.";
+                String fireCompatProperty = 
+                    "ptolemy.actor.lib.NonStrictTest.fire.compat";
+                if (StringUtilities
+                        .getProperty(fireCompatProperty).length() > 0) {
+                    System.err.println("Warning: '" + getFullName() + "' "
+                            + errorMessage
+                            + "\nThis error is being ignored because "
+                            + "the " + fireCompatProperty
+                            + "property was set.");
+                } else {
+                    throw new IllegalActionException(this, errorMessage);
+                }
+
             }
             if ( _numberOfInputTokensSeen
                      < ((ArrayToken)(correctValues.getToken())).length()) {
@@ -298,8 +311,8 @@ public class NonStrictTest extends Sink {
                     + " tokens.";
 
                 if (isRunningNightlyBuild()) {
-                    System.out.println("Warning: NonStrictTest: " 
-                            + getName() + errorMessage
+                    System.err.println("Warning: '" + getFullName() + "' "
+                            + errorMessage
                             + "\nNote that the nightly build is running"
                             + " so we are not throwing an exception here");
                 } else {
