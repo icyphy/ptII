@@ -127,7 +127,6 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.moml \
 			ptolemy.vergil \
 			ptolemy.vergil.debugger \
-			ptolemy.vergil.graph \
 			ptolemy.vergil.icon \
 			ptolemy.vergil.ptolemy \
 			ptolemy.vergil.ptolemy.fsm \
@@ -188,7 +187,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/moml/*.java \
 			../ptolemy/vergil/*.java \
 			../ptolemy/vergil/debugger/*.java \
-			../ptolemy/vergil/graph/*.java \
 			../ptolemy/vergil/icon/*.java \
 			../ptolemy/vergil/ptolemy/*.java \
 			../ptolemy/vergil/ptolemy/fsm/*.java \
