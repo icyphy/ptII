@@ -1199,7 +1199,7 @@ public class Variable extends Attribute
             if (!_parseTreeValid) {
                 PtParser parser = new PtParser();
                 _parseTree = parser.generateParseTree(_currentExpression);
-                _parseTreeValid = true;
+                _parseTreeValid = (_parseTree != null);
             }
             if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
@@ -1738,9 +1738,6 @@ public class Variable extends Attribute
          */
         public VariableScope(NamedObj reference) {
             _reference = reference;
-            if (_reference == null) {
-                _reference = (NamedObj)Variable.this.getContainer();
-            }
         }
 
         /** Look up and return the attribute with the specified name in the
@@ -1769,9 +1766,13 @@ public class Variable extends Attribute
             // Either cache is not valid, or the variable is not in the cache.
             _variablesDependentOnVersion = workspace().getVersion();
             
+            NamedObj reference = _reference;
+            if (_reference == null) {
+                reference = (NamedObj)Variable.this.getContainer();
+            }
             Variable result = getScopedVariable(
                     Variable.this,
-                    _reference,
+                    reference,
                     name);
 
             if (result != null) {
@@ -1796,9 +1797,14 @@ public class Variable extends Attribute
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
+            NamedObj reference = _reference;
+            if (_reference == null) {
+                reference = (NamedObj)Variable.this.getContainer();
+            }
+
             Variable result = getScopedVariable(
                     Variable.this,
-                    _reference,
+                    reference,
                     name);
             if (result != null) {
                 return result.getType();
@@ -1811,7 +1817,11 @@ public class Variable extends Attribute
          *  @return The list of variable names within the scope.
          */
         public Set identifierSet() {
-            return getAllScopedVariableNames(Variable.this, _reference);
+            NamedObj reference = _reference;
+            if (_reference == null) {
+                reference = (NamedObj)Variable.this.getContainer();
+            }
+            return getAllScopedVariableNames(Variable.this, reference);
         }
         
         // Reference object for the scope.
