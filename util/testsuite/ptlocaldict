@@ -108,6 +108,7 @@ cygnus
 cygwin
 cygwin32
 davisj
+developer.netscape.com
 eal
 edu
 eecs
@@ -143,6 +144,7 @@ jdk
 jindent
 johnr
 liuj
+lmuliadi
 majordomo
 makefile
 makefile,v
@@ -157,6 +159,7 @@ nbsp
 nbsp;&nbsp
 nbsp;&nbsp;nbsp
 nbsp;&nbsp;nbsp;&nbsp
+neuendor
 newsgroup
 newsgroups
 nmake
@@ -171,7 +174,6 @@ println
 ptolemy
 ptolemy.eecs.berkeley.edu
 rowspan
-scriptics
 sdf
 servlets
 setenv
@@ -187,3 +189,5 @@ toplevel
 tr
 util
 website
+www.scriptics.com
+yuhong
