@@ -70,7 +70,7 @@ by an input port, its type is the same as the corresponding field in the
 input record. For example, if the input record has type
 {item: string, value: int}, and this actor has two added input ports with
 name/type: value/double and id/int, then the output record will have type
-{item: string, vlaue: double, id: int}
+{item: string, value: double, id: int}
 
 @author Michael Shilman
 @version $Id$
