@@ -198,13 +198,11 @@ public class PTMLParser extends HandlerBase{
  
     /** 
      * Implement com.microstar.xml.XMLHandler.startDocument
-     * Initialize the parse tree to contain a single element of type 
-     * "document".
+     * Initialize the parse tree to contain no elements.
      */
     public void startDocument() {
         attributes = (HashedMap) new HashedMap();
-        current = new XMLElement("Document");
-        root = current;
+        root = null;
     }
 
     /**
@@ -212,7 +210,10 @@ public class PTMLParser extends HandlerBase{
      * Create a new XMLElement, or derived class of XMLElement, based on 
      * the element type.   Set the attributes of the new XMLElement equal 
      * to the attributes that have been accumulated since the last 
-     * call to this method.  Descend the parse tree into the new XMLElement
+     * call to this method.  If this is the first element encountered
+     * during this parse, set the root of the parse tree equal to the 
+     * newly created element.
+     * Descend the parse tree into the new element
      *
      * @param name the element type of the element that is beginning.
      */
@@ -247,8 +248,11 @@ public class PTMLParser extends HandlerBase{
             e=new XMLElement(name,attributes);
         }
         e.setParent(current);
-        current.addChildElement(e);
-        current=e;
+        if(current == null) 
+            root = e;
+        else
+            current.addChildElement(e);
+        current = e;
         attributes = (HashedMap) new HashedMap();
     }
     
