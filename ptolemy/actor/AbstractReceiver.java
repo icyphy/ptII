@@ -188,6 +188,19 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public abstract boolean hasToken(int numberOfTokens);
 
+    /** Return true if this receiver has known state, that is, the tokens in 
+     *  this receiver are known or if this receiver is known not to contain
+     *  any tokens.
+     *  <p>
+     *  In this base class, assume that the receiver has known state, so 
+     *  return true.  Receivers that may have unknown state must override
+     *  this method.
+     *  @return True.
+     */
+    public boolean isKnown() {
+        return true;
+    }
+
     /** Put the specified token into this receiver.
      *  @param token The token to put into the receiver.
      *  @exception NoRoomException If there is no room in the receiver.
