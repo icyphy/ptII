@@ -471,13 +471,6 @@ public class FixPoint implements Cloneable, Serializable {
      * @return A decimal string representation of the value.
      */
     public String toString() {
-
-        // Java 1.5: The DecimalFormat class has been enhanced to format and
-        // parse BigDecimal and BigInteger values without loss of
-        // precision. Formatting of such values is enhanced
-        // automatically; parsing into BigDecimal needs to be enabled
-        // using the setParseBigDecimal method.
-
         String bigString = bigDecimalValue().toString();
         if (bigString.indexOf('.') < 0) {
             if (bigString.indexOf('E') < 0) {
