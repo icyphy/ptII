@@ -134,8 +134,10 @@ install: jclass $(PTCLASSJAR)
 Yylex.java: Yylex
 	CLASSPATH=$(CLASSPATH) $(JAVA) com.JLex.Main Yylex
 
-run_GenerateVisitor JavaVisitor.java: NodeTypes.def
+run_GenerateVisitor JavaVisitor.java: NodeTypes.def ../GenerateVisitor.class
 	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.lang.GenerateVisitor NodeTypes.def JavaVisitor TreeNode nodetypes
+../GenerateVisitor.class: ../GenerateVisitor.java
+	(cd ..; $(MAKE) GenerateVisitor.class)
 
 # Note that we DON'T want to run Skeleton in any directory that contain
 # actors, like actor/lib or domains/sdf/lib because the code generator
