@@ -48,15 +48,15 @@ An actor that calls Thread.sleep() on the current thread the first
 time fire() is called.  The sleep delays the inputs for a certain
 amount of real time, specified by the <i>sleepTime</i> parameter.
 
-<p>Note that one way to slow dow the execution of a model while running
+<p>Note that one way to slow down the execution of a model while running
 inside vergil is to turn on animation.
 
 <p>If the width of the output port is less than that of the input port,
 the tokens in the extra channels are lost.
 
-@author Jie Liu, Christopher Hylands
+@author Yang Zhao, based on Queue by Jie Liu, Christopher Hylands
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 2.2
 */
 public class Queue extends Transformer {
 
