@@ -76,7 +76,7 @@
 # C_INCL INCL		The C and C++ Include Flags
 #
 # Java Variables
-# JAVAHOME	The home of the Java Developer's Kit (JDK)
+# PTJAVA_DIR	The home of the Java Developer's Kit (JDK)
 # JAVAC		The 'javac' compiler.
 # JFCHOME	The home of the Java Foundation Classes (JFC) aka Swing
 # JFLAGS	Flags to pass to javac.
@@ -286,7 +286,7 @@ doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
 	else \
 	if [ ! -d doc/codeDoc ]; then mkdir -p doc/codeDoc; fi; \
 	rm -f doc/codeDoc/*.html; \
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVAHOME)/lib/classes.zip$(AUXCLASSPATH)" \
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(AUXCLASSPATH)" \
 	   $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc \
 		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS); \
 	for x in doc/codeDoc/*.html; do \
