@@ -1,4 +1,4 @@
-/* Reads a token from a stream and writes a token to a stream
+/* This generates a stream of integer beginning with the seed
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -30,28 +30,28 @@ import pt.kernel.*;
 import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
-//// PNRedirect
+//// PNRamp
 /** 
 
 @author Mudit Goel
-@version @(#)PNRedirect.java	1.11	02/23/98
+@version $Id$
 */
-public class PNRedirect extends PNStar{
+public class PNRamp extends PNStar{
     /** Constructor
      */	
-    public PNRedirect() {
+    public PNRamp() {
         super();
     }
 
     /** Constructor 
      */
-    public PNRedirect(Workspace workspace) {
+    public PNRamp(Workspace workspace) {
         super(workspace);
     }
 
     /** Constructor
      */
-    public PNRedirect(CompositeEntity container, String name)
+    public PNRamp(CompositeEntity container, String name)
              throws NameDuplicationException {
         super(container, name);
     }
@@ -66,42 +66,35 @@ public class PNRedirect extends PNStar{
      * @exception IllegalActionException a port with name null is being added
      *  to the star
      */
-    public void initialize(int initValue)
+    public void initialize(int seed)
             throws NameDuplicationException, IllegalActionException {
-        _initValue = new IntToken(initValue);
-        _input = newInPort(this, "input");
+        _seed = seed;
         _output = newOutPort(this, "output");
         super.initialize(this);
     }
-
-    /** Reads a token from it's input stream and writes it to the output
+    
+    /** Writes successive integers to the output
      */
     public void run() {
         int i;
         IntToken data;
         try {
-            writeTo(_output, _initValue);
-            System.out.println(this.getName()+" writes "+_initValue.intValue()+" to "+_output.getName());
-            for(i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                data = (IntToken)readFrom(_input);
-                writeTo(_output, data);
-                System.out.println(this.getName()+" writes "+data.intValue()+" to "+_output.getName());
+            for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
+                data = new IntToken(_seed);
+                writeTo(_output, _data);
+                _seed++;
             }
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+this.getName());
             return;
         }
     }
-
+    
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
     /* This is the initial value that the star puts in the stream */
-    private IntToken _initValue;
-    /* Input port */
-    private PNInPort _input;
+    private int _seed;
     /* Output port */
     private PNOutPort _output;
-    
-
 }
