@@ -402,7 +402,7 @@ public class SCTransition extends ComponentRelation {
 
         if (_teSet) {
 
-System.out.println("Testing trigger event of " + this.getFullName());
+//System.out.println("Testing trigger event of " + this.getFullName());
 
             _te.evaluate();
             if (((BooleanToken)_te.getToken()).booleanValue() == false) {
@@ -411,7 +411,7 @@ System.out.println("Testing trigger event of " + this.getFullName());
         }
         if (_tcSet) {
 
-System.out.println("Testing condition of " + this.getFullName());
+//System.out.println("Testing condition of " + this.getFullName());
 
             _tc.evaluate();
             if (((BooleanToken)_tc.getToken()).booleanValue() == false) {
