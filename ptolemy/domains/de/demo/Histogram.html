@@ -1,19 +1,30 @@
-<!-- $Id$-->
-<HTML>
-<HEAD>
-<TITLE>Discrete Event Simulation Demo</TITLE>
-</HEAD>
-<BODY BGCOLOR="#FAF0E6">
-
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II DE Demo</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Illustration of the Inspection Paradox</H1>
 <CENTER>
-<H1>
-Demo of DE simulation applet</H1></CENTER>
+<P><APPLET name="HistogramApplet"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/de/demo/demo.jar,
+	ptolemy/domains/de/de.jar,
+	ptolemy/ptsupport.jar"
+   code=ptolemy.domains.de.demo.HistogramApplet.class
+   codebase=../../../..
+   width=700 height=500>
+<param name="background" value="#faf0e6">
+<BR><I>If you were able to run applets, you would have a waveform demo
+here.</I>
+<BR></APPLET></CENTER>
 
-<H3>
-DE Simulation:</H3>
-The following applet uses the Ptolemy II Discrete Event (DE) domain
+<P>
+The above applet uses the Ptolemy II Discrete Event (DE) domain
 to simulate a bus stop where passengers arrive with random probability
-(according to Poisson process with unity mean inter-arrival time), and
+(according to a Poisson process with unity mean inter-arrival time), and
 buses arrive with either a fix inter-arrival time or random probability
 (again according to Poisson process with variable mean inter-arrival time).
 <P>
@@ -41,21 +52,6 @@ On the other hand, if the bus arrives according to Poisson process,
 then the average waiting time will be equal to <I>T</I> and will be 
 exponentially distributed with mean <I>T</I>, where <I>T</I> is equal 
 to the mean inter-arrival time.
-<BR>&nbsp;
-<BR>&nbsp;
-<CENTER>
-<P><APPLET name="HistogramApplet"
-   bgcolor=#FAF0E6
-   archive="ptolemy/domains/de/demo/demo.jar,
-	ptolemy/domains/de/de.jar,
-	ptolemy/ptsupport.jar"
-   code=ptolemy.domains.de.demo.HistogramApplet.class
-   codebase=../../../..
-   width=700 height=500>
-<param name="background" value="#faf0e6">
-<BR><I>If you were able to run applets, you would have a waveform demo
-here.</I>
-<BR></APPLET></CENTER>
 
 <P>This applet is implemented by
 <TT><A HREF="HistogramApplet.java">HistogramApplet.java</A></TT>.
@@ -89,9 +85,5 @@ Actor.
 <IMG SRC="img/Histogram.gif" HEIGHT=251 WIDTH=566
 Alt="Imagemap" Usemap="#ActorsMap" Ismap>
 </CENTER>
-<BR>
-<HR>Copyright &copy; 1998-1999 The Regents of the University of California.
-All rights reserved.
-<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
 </BODY>
 </HTML>
