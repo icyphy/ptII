@@ -224,7 +224,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             } else {
                 throw new RuntimeException("ambiguous reference to " +
 					 name.getIdent() +
-					 " in environment " + env);
+					 " in scope " + env);
             }
         }
 
@@ -546,7 +546,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         //System.out.println("StaticResolution<static>: " +
         //      "UNNAMED_PACKAGE: " + UNNAMED_PACKAGE.getScope().toString());
 
-        // dummy environment
+        // dummy scope
         Scope env = new Scope();
 
         System.out.println("StaticResolution<static>: --- loading java.lang package ---" + (System.currentTimeMillis() - startTime));
@@ -620,7 +620,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     public static PackageDecl _importPackage(Scope env, NameNode name) {
-	// The getScope() call is what loads up the environment with
+	// The getScope() call is what loads up the scope with
 	// info about what is in the package by looking in the
 	// appropriate directory
         resolveAName(name, SYSTEM_PACKAGE.getScope(), null, null,
@@ -750,7 +750,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	    String envString = env.toString();
 
             message += "Symbol name: \"" +
-                name.getIdent() + "\" is undefined in the environment.\n" +
+                name.getIdent() + "\" is undefined in the scope.\n" +
                 "Able to find: " + envString + "\n" +
 		"Current Class: " +
 		((currentClass == null) ? "null " : currentClass.toString()) +
@@ -801,7 +801,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
 
-    // Load classes into the environment.
+    // Load classes into the scope.
     // This method is only called a few times to bootstrap the JDK system
     // classes like Object
     private static final ClassDecl _requireClass(Scope env, String name) {
@@ -829,7 +829,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		if (classDecl == null) {
 		    throw new RuntimeException("could not find class or " +
 					     "interface \"" + name + 
-					     "\" in bootstrap environment: "
+					     "\" in bootstrap scope: "
 					     + env);
 		}
 		env.add(classDecl);
@@ -848,7 +848,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		if (classDecl == null) {
 		    throw new RuntimeException("could not find class or " +
 					     "interface \"" + name + 
-					     "\" in bootstrap environment: "
+					     "\" in bootstrap scope: "
 					     + env);
 		}
 		env.add(classDecl);

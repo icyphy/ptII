@@ -84,14 +84,14 @@ public class PackageDecl extends JavaDecl
 
     public final Scope getScope() {
 	//System.out.println("PackageDecl.getScope()" + getName());
-        if (_environ == null) {
+        if (_scope == null) {
             _initScope();
         }
-        return _environ;
+        return _scope;
     }
 
     public final void setScope(Scope environ) {
-        _environ = environ;
+        _scope = environ;
     }
 
     public final boolean hasScope() { return true; }
@@ -101,7 +101,7 @@ public class PackageDecl extends JavaDecl
 
     protected JavaDecl  _container;
 
-    protected Scope _environ = null;
+    protected Scope _scope = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -128,10 +128,10 @@ public class PackageDecl extends JavaDecl
 
         if (_container == null) {
             //System.out.println("_initScope : no container");
-            _environ = new Scope(null);
+            _scope = new Scope(null);
         } else {
             //System.out.println("_initScope : has container");
-            _environ = new Scope(_container.getScope());
+            _scope = new Scope(_container.getScope());
         }
 
         // Use the contents of the system jar file to get java.* etc. files 
@@ -160,7 +160,7 @@ public class PackageDecl extends JavaDecl
                 // the .java files and get the bodies in to the AST.
                 //System.out.println("PackageDecl._initScope" +
                 // "Packages(): saw ptolemy/data ");
-                _environ.add(new PackageDecl("expr", this));
+                _scope.add(new PackageDecl("expr", this));
             }
             return;
         }
@@ -212,13 +212,13 @@ public class PackageDecl extends JavaDecl
 
                         // make sure we don't create 2 class decls if there are two files
                         // with the same base name, but with different extensions.
-                        if (_environ.lookupProper(className, CG_USERTYPE) == null) {
+                        if (_scope.lookupProper(className, CG_USERTYPE) == null) {
 
                             //System.out.println("adding class/interface " +
                             //                   className + " from " +
                             //                   dirName);
 
-                            _environ.add(new ClassDecl(className, this));
+                            _scope.add(new ClassDecl(className, this));
 
                             empty = false;
 
@@ -232,7 +232,7 @@ public class PackageDecl extends JavaDecl
                         File fs = new File(fullname);
 
                         if (fs.isDirectory()) {
-                            _environ.add(new PackageDecl(name, this));
+                            _scope.add(new PackageDecl(name, this));
 	                    empty = false;
                             //System.out.println(fullName() + " " +
 			    // getName() + " : found subpackage in " +
@@ -266,14 +266,14 @@ public class PackageDecl extends JavaDecl
                 String systemPackageName =
                     StringManip.partBeforeLast(className, '.');
                 if (systemPackageName.equals(packageName)) {
-                    if (_environ.lookupProper(className, CG_USERTYPE) == null) {
+                    if (_scope.lookupProper(className, CG_USERTYPE) == null) {
                 String shortClassName =
                     className.substring(packageName.length() + 1);
                 //System.out.println("PackageDecl._initScope" +
                 //                "SystemPackages():"+
                 //                shortClassName);
 
-                        _environ.add(new ClassDecl(shortClassName, this));
+                        _scope.add(new ClassDecl(shortClassName, this));
                     }
                 }
             }
@@ -303,7 +303,7 @@ public class PackageDecl extends JavaDecl
                     systemPackageName.substring(packageName.length() + 1);
                 //System.out.println("PackageDecl._initScopeSystem" +
 		//		   "Packages(): adding package: " + shortSystemPackageName);
-                _environ.add(new PackageDecl(shortSystemPackageName, this));
+                _scope.add(new PackageDecl(shortSystemPackageName, this));
             } else {
                 if (packageName.equals("") && 
                         systemPackageName.indexOf('.') == -1 &&
@@ -312,7 +312,7 @@ public class PackageDecl extends JavaDecl
                     //System.out.println("PackageDecl._initScopeSystem" +
                     // "Packages(): adding toplevel package: " +
                     // systemPackageName);
-                _environ.add(new PackageDecl(systemPackageName, this));
+                _scope.add(new PackageDecl(systemPackageName, this));
                 }
             }
         }

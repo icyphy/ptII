@@ -89,7 +89,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
         _visitUserTypeNode(node, args);
 
-        // resolve the super class with the same input environment
+        // resolve the super class with the same input scope
         node.getSuperClass().accept(this, args);
 
         return null;
@@ -108,20 +108,20 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     }
 
     /** The default visit method. Visits all child nodes with the same
-     *  environment as in the argument list. Nodes that do not have their
-     *  own environment should call this method.
+     *  scope as in the argument list. Nodes that do not have their
+     *  own scope should call this method.
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        // just pass on the same environment to the children
+        // just pass on the same scope to the children
         return TNLManip.traverseList(this, args, node.children());
     }
 
-    /** Get environment from this node, and pass it to the children.
-     *  Only nodes that have their own environment should call this method.
+    /** Get scope from this node, and pass it to the children.
+     *  Only nodes that have their own scope should call this method.
      */
     protected Object _visitNodeWithScope(TreeNode node) {
 
-        // environment for this class is argument for children
+        // scope for this class is argument for children
         LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY));
 
         TNLManip.traverseList(this, childArgs, node.children());
@@ -134,7 +134,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
     /** Handle ClassDeclNodes and InterfaceDeclNodes. */
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
-        // environment for this class is argument for children
+        // scope for this class is argument for children
         LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY));
 
 	//System.out.println("ResolveTypesVisitor:_visitUserTypeNode: " +

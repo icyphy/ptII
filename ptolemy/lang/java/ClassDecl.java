@@ -73,7 +73,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         removeVisitor(ResolveClassVisitor.visitorClass());
         removeVisitor(ResolveInheritanceVisitor.visitorClass());
 
-        _environ = null;
+        _scope = null;
 
         _source = null;
     }
@@ -86,15 +86,15 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
             _buildScope();
         }
         //System.out.println("getScope() for " + _name + ": scope already in place");
-        return _environ;
+        return _scope;
     }
 
     public final Scope getTypeScope() {
-        return _environ;
+        return _scope;
     }
 
     public final void setScope(Scope environ) {
-        _environ = environ;
+        _scope = environ;
     }
 
     public final boolean hasModifiers() {
@@ -195,11 +195,11 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         StaticResolution.buildScopements();
 
         // If class didn't load, give it a dummy scope, etc
-        if (_environ == null) {
+        if (_scope == null) {
             System.err.println("Warning: class " + _name + " did not load, " +
                     "using dummy scope.");
 
-            _environ =
+            _scope =
 		new Scope(StaticResolution.SYSTEM_PACKAGE.getScope());
 
             setSuperClass(StaticResolution.OBJECT_DECL);
@@ -218,7 +218,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     protected int  _modifiers;
     protected TreeNode  _source;
     protected JavaDecl  _container;
-    protected Scope   _environ = null;
+    protected Scope   _scope = null;
     protected List _interfaces = new LinkedList();
     protected ClassDecl _superClass;
 }
