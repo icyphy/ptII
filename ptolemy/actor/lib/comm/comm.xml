@@ -10,7 +10,6 @@
 <entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler"/>
 <entity name="FlipFlop" class="ptolemy.actor.lib.comm.FlipFlop"/>
 <entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode"/>
-<entity name="Interleaver" class="ptolemy.actor.lib.comm.Interleaver"/>
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
 <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
