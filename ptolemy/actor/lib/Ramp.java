@@ -58,7 +58,7 @@ of any token type that supports addition.
 public class Ramp extends SequenceSource {
 
     /** Construct an actor with the given container and name.
-     *  In addition to invoking the base class constructors, contruct
+     *  In addition to invoking the base class constructors, construct
      *  the <i>init</i> and <i>step</i> parameters. Initialize <i>init</i>
      *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
      *  @param container The container.
