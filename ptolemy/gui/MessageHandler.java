@@ -107,7 +107,10 @@ public class MessageHandler {
 
     /** Show the specified message and exception information.
      *  If the exception is an instance of CancelException, then it
-     *  is not shown.
+     *  is not shown.  By default, only the message of the exception
+     *  is thrown.  The stack trace information is only shown if the
+     *  user clicks on the "Display Stack Trace" button.
+     * 
      *  @param info The message.
      *  @param exception The exception.
      *  @see CancelException
@@ -218,6 +221,42 @@ public class MessageHandler {
                 options[0]);
         
         if(selected == 1) {
+            throw new CancelException();
+        }
+    }
+
+    /** Show the specified message and exception information 
+     *  in a modal dialog.  If the user
+     *  clicks on the "Cancel" button, then throw an exception.
+     *  This gives the user the option of not continuing the
+     *  execution, something that is particularly useful if continuing
+     *  execution will result in repeated warnings.  
+     *  By default, only the message of the exception
+     *  is thrown.  The stack trace information is only shown if the
+     *  user clicks on the "Display Stack Trace" button.
+     *  @param info The message.
+     *  @exception CancelException If the user clicks on the "Cancel" button.
+     */
+    public static void warning(String info, Exception exception)
+            throws CancelException {
+        Object[] message = new Object[1];
+        message[0] = info;
+        Object[] options = {"OK", "Display Stack Trace", "Cancel"};
+
+        // Show the MODAL dialog
+        int selected = JOptionPane.showOptionDialog(
+                _context,
+                message,
+                "Warning",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE, 
+                null,
+                options,
+                options[0]);
+        
+        if(selected == 1) {
+            showStackTrace(exception, info);
+        } else if(selected == 2) {
             throw new CancelException();
         }
     }
