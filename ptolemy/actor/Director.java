@@ -443,7 +443,8 @@ public class Director extends NamedObj implements Executable {
      *  @param change The requested change.
      *  @exception ChangeFailedException If the manager throws it.
      */
-    public void requestChange(ChangeRequest change) throws ChangeFailedException {
+    public void requestChange(ChangeRequest change)
+	throws ChangeFailedException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Manager manager = container.getManager();
