@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib;
 
 import ptolemy.kernel.util.*;
+import ptolemy.data.Token;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
@@ -40,7 +41,7 @@ import java.awt.*;
  *  of input channels and prints their string values to the specified
  *  output file.  If no file name is given, then the values are printed
  *  to the standard output.
- *  Note changes to the filename
+ *  Note that changes to the filename
  *  parameter during execution are ignored until the next execution.
  *  <p>
  *  The input type is StringToken.  Since any other type of token
@@ -50,27 +51,25 @@ import java.awt.*;
  *  @author  Yuhong Xiong, Edward A. Lee
  *  @version $Id$
  */
-public class FileWrite extends TypedAtomicActor {
+public class FileWrite extends Sink {
 
     public FileWrite(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // create the input port and make it a multiport.
-        input = new TypedIOPort(this, "input", true, false);
-        input.setMultiport(true);
-        input.setTypeEquals(StringToken.class);
+        // Set the type of the input port.
+        input.setTypeEquals(Token.class);
 
         filename = new Parameter(this, "filename", new StringToken(""));
+        filename.setTypeEquals(StringToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port, which has type StringToken. */
-    public TypedIOPort input;
-
-    /** The name of the file to write to. */
+    /** The name of the file to write to. This parameter contains
+     *  a StringToken.
+     */
     public Parameter filename;
 
     ///////////////////////////////////////////////////////////////////
@@ -82,16 +81,9 @@ public class FileWrite extends TypedAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-        try {
-            FileWrite newobj = (FileWrite)super.clone(ws);
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.filename = (Parameter)newobj.getAttribute("filename");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        FileWrite newobj = (FileWrite)super.clone(ws);
+        newobj.filename = (Parameter)newobj.getAttribute("filename");
+        return newobj;
     }
 
     /** Read at most one token from each input channel and write its
@@ -105,7 +97,7 @@ public class FileWrite extends TypedAtomicActor {
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                StringToken token = (StringToken)input.get(i);
+                Token token = input.get(i);
                 String value = token.stringValue();
                 System.out.println(value + "\n");
             }
