@@ -215,7 +215,7 @@ public class Port extends NamedObj {
     public Enumeration linkedRelations() {
         try {
             workspace().getReadAccess();
-            return _relationsList.getLinks();
+            return _relationsList.getContainers();
         } finally {
             workspace().doneReading();
         }

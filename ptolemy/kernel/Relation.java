@@ -142,7 +142,7 @@ public class Relation extends NamedObj {
     public Enumeration linkedPorts() {
         try {
             workspace().getReadAccess();
-            return _portList.getLinks();
+            return _portList.getContainers();
         } finally {
             workspace().doneReading();
         }

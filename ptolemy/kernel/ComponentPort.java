@@ -319,7 +319,7 @@ public class ComponentPort extends Port {
     public Enumeration insideRelations() {
         try {
             workspace().getReadAccess();
-            return _insideLinks.getLinks();
+            return _insideLinks.getContainers();
         } finally {
             workspace().doneReading();
         }
