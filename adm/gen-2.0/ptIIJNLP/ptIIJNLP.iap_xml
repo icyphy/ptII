@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This script was automatically generated using Zero G's InstallAnywhere 5.0.2 Enterprise, Build 1559
+<!-- This script was automatically generated using Zero G's InstallAnywhere 5.0.3 Enterprise, Build 1584
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Thu Jul 18 17:59:55 PDT 2002 -->
-<InstallAnywhere_Deployment_Project increments="4161">
+     DATE:   Tue Aug 06 12:46:31 PDT 2002 -->
+<InstallAnywhere_Deployment_Project increments="4236">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
-		<versionID major="5" minor="0" revision="2"/>
-		<editionID>53,46,48,46,50,32,69,110,116,101,114,112,114,105,115,101,32,66,117,105,108,100,32,49,53,53,57</editionID>
+		<versionID major="5" minor="0" revision="3"/>
+		<editionID>53,46,48,46,51,32,69,110,116,101,114,112,114,105,115,101,32,66,117,105,108,100,32,49,53,56,52</editionID>
 		<scriptID>12,42,11,90,88,49,49,49,52,53,56,75,82,69,70,88</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,50,48,48,48,44,32,53,46,48,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,51,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-32,35,107,-64,-128,80,112,114,103,83,98,113,97,113,81,49,67,90,65,74,77,72,68,64,69,66,69,48,63,87,5,2,7,2,-128,96,15,0,0,0</authorizationID>
+		<authorizationID>1,0,0,-32,-125,31,-96,-32,80,112,114,103,83,98,113,97,113,81,49,67,90,65,74,77,72,68,64,69,66,69,48,63,87,5,2,5,6,-118,97,15,0,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="252">
+	<installationObjects uniqueObjects="256">
 		<object class="com.zerog.ia.installer.Installer" objectID="a3d1e30197df">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="a3e408bf981b">
@@ -166,7 +166,7 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32d6638c8da0">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="8edfc0d98e74">
 									<property name="propertyValue">
 										<string><![CDATA[ptolemy.vergil.VergilApplication]]></string>
 									</property>
@@ -751,7 +751,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[copernicus.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>260609</long>
+														<long>260608</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -1131,7 +1131,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[ct.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>99981</long>
+																<long>99980</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -1375,7 +1375,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[domains.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>352864</long>
+														<long>351395</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -1563,7 +1563,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[experimentalDomains.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>181184</long>
+														<long>166219</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2209,7 +2209,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[pn.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>15510</long>
+																<long>14042</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -2831,7 +2831,7 @@ and any path to a file to read from that file]]></string>
 																		<string><![CDATA[doc.jar]]></string>
 																	</property>
 																	<property name="fileSize">
-																		<long>5106</long>
+																		<long>5111</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -3135,7 +3135,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[ptsupport.jar]]></string>
 											</property>
 											<property name="fileSize">
-												<long>1231070</long>
+												<long>1234728</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -3187,7 +3187,33 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[vergil.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>299246</long>
+														<long>299430</long>
+													</property>
+													<property name="macBinary">
+														<boolean>false</boolean>
+													</property>
+												</object>
+												<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="94429a5490f2">
+													<property name="unixPermissions">
+														<string><![CDATA[664]]></string>
+													</property>
+													<property name="sourceName">
+														<string><![CDATA[vergilApplet.jar]]></string>
+													</property>
+													<property name="overrideUnixPermissions">
+														<boolean>false</boolean>
+													</property>
+													<property name="sourcePath">
+														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\vergil\]]></string>
+													</property>
+													<property name="shouldUninstall">
+														<boolean>true</boolean>
+													</property>
+													<property name="destinationName">
+														<string><![CDATA[vergilApplet.jar]]></string>
+													</property>
+													<property name="fileSize">
+														<long>248940</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -3321,7 +3347,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[matlabWindows.jar]]></string>
 											</property>
 											<property name="fileSize">
-												<long>14161</long>
+												<long>14160</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -3401,7 +3427,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[codeDoc.jar]]></string>
 											</property>
 											<property name="fileSize">
-												<long>4334541</long>
+												<long>4486584</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -3453,7 +3479,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[design.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>4082392</long>
+														<long>4155404</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -3481,7 +3507,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[docConfig.jar]]></string>
 											</property>
 											<property name="fileSize">
-												<long>1367604</long>
+												<long>1634795</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -3640,7 +3666,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32d665788dcf">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="8edfc2d88ea0">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.plot.plotml.EditablePlotMLApplication]]></string>
 													</property>
@@ -3845,7 +3871,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32d665a08dd5">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="8edfc3008ea7">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.plot.plotml.HistogramMLApplication]]></string>
 													</property>
@@ -4051,7 +4077,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32d665bd8ddc">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="8edfc31e8eae">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.actor.gui.MoMLApplication]]></string>
 													</property>
@@ -4256,7 +4282,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32d665e58de1">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="8edfc3468eb4">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.actor.gui.MoMLApplication]]></string>
 													</property>
@@ -4445,7 +4471,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32d666038de8">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="8edfc36e8eba">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.actor.gui.MoMLApplication]]></string>
 													</property>
@@ -4481,6 +4507,32 @@ and any path to a file to read from that file]]></string>
 									</property>
 									<property name="mainClass">
 										<string><![CDATA[ptolemy.actor.gui.MoMLApplication]]></string>
+									</property>
+								</object>
+								<object class="com.zerog.ia.installer.actions.InstallFile" objectID="93e45ffd90d3">
+									<property name="unixPermissions">
+										<string><![CDATA[664]]></string>
+									</property>
+									<property name="sourceName">
+										<string><![CDATA[ptmatlab.dll]]></string>
+									</property>
+									<property name="overrideUnixPermissions">
+										<boolean>false</boolean>
+									</property>
+									<property name="sourcePath">
+										<string><![CDATA[D:\tmp\ptII2.0.1\bin\]]></string>
+									</property>
+									<property name="shouldUninstall">
+										<boolean>true</boolean>
+									</property>
+									<property name="destinationName">
+										<string><![CDATA[ptmatlab.dll]]></string>
+									</property>
+									<property name="fileSize">
+										<long>49677</long>
+									</property>
+									<property name="macBinary">
+										<boolean>false</boolean>
 									</property>
 								</object>
 							</visualChildren>
@@ -5078,7 +5130,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[Thu Jul 18 17:59:55 PDT 2002]]></string>
+						<string><![CDATA[Tue Aug 06 12:46:30 PDT 2002]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -5094,7 +5146,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.unix.novm]]></string>
-						<string><![CDATA[true]]></string>
+						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.cdrom]]></string>
@@ -5110,7 +5162,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[Thu Jul 18 17:38:17 PDT 2002]]></string>
+						<string><![CDATA[Tue Aug 06 11:58:51 PDT 2002]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -5130,7 +5182,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.linux.novm]]></string>
-						<string><![CDATA[true]]></string>
+						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.platform.macosx.authentication.gui]]></string>
@@ -5142,7 +5194,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.vmpack.windows.path]]></string>
-						<string><![CDATA[SunJRE131_03Win32.vm]]></string>
+						<string><![CDATA[SunJRE131_04Win32_Java3D121_04.vm]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.valid.vm.list]]></string>
@@ -5154,7 +5206,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.macosx.novm]]></string>
-						<string><![CDATA[true]]></string>
+						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.output.cdrom]]></string>
@@ -5166,7 +5218,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.windows.vm]]></string>
-						<string><![CDATA[true]]></string>
+						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stdout.redirect]]></string>
@@ -5238,7 +5290,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 						<string><![CDATA[customIcon.png]]></string>
 					</property>
 					<property name="shortName">
-						<string><![CDATA[]]></string>
+						<string><![CDATA[Custom]]></string>
 					</property>
 					<property name="installSetName">
 						<string><![CDATA[Custom]]></string>
@@ -5340,14 +5392,14 @@ heterogeneous concurrent modeling and design.
 					</property>
 					<property name="description">
 						<string><![CDATA[All of the Ptolemy II features will be installed.  
-This option is recommended for all users and will consume roughly 19.1 Mb of disk space.
+This option is recommended for all users and will consume roughly 20.0 Mb of disk space.
 ]]></string>
 					</property>
 					<property name="imageName">
 						<string><![CDATA[typicalIcon.png]]></string>
 					</property>
 					<property name="shortName">
-						<string><![CDATA[]]></string>
+						<string><![CDATA[Full]]></string>
 					</property>
 					<property name="installSetName">
 						<string><![CDATA[Full]]></string>
@@ -5362,7 +5414,7 @@ This option is recommended for all users and will consume roughly 19.1 Mb of dis
 							</property>
 							<property name="description">
 								<string><![CDATA[The common domains: CT, DE, FSM, PN and SDF.
-This feature will consume roughly 7.5Mb of disk space.]]></string>
+This feature will consume roughly 7.7Mb of disk space.]]></string>
 							</property>
 							<property name="shortName">
 								<string><![CDATA[Ptiny]]></string>
@@ -5380,10 +5432,10 @@ This feature will consume roughly 7.5Mb of disk space.]]></string>
 - The PDF Design Document
 - The developer documentation
 - The javadoc Java Class documentation
-Ptiny and the documentation require 16.3Mb of disk space.]]></string>
+Ptiny and the documentation require 16.6Mb of disk space.]]></string>
 									</property>
 									<property name="shortName">
-										<string><![CDATA[]]></string>
+										<string><![CDATA[Documentation]]></string>
 									</property>
 									<property name="preferredLocalizationVariant">
 										<string><![CDATA[help]]></string>
@@ -5465,7 +5517,7 @@ Ptiny and the documentation require 16.3Mb of disk space.]]></string>
 - The javadoc Java Class documentation]]></string>
 											</property>
 											<property name="shortName">
-												<string><![CDATA[]]></string>
+												<string><![CDATA[AG- Document]]></string>
 											</property>
 											<property name="uniqueId">
 												<object class="com.zerog.registry.UUID">
@@ -5567,6 +5619,47 @@ Ptiny and the documentation require 16.3Mb of disk space.]]></string>
 												</object>
 											</installChildren>
 										</object>
+										<object class="com.zerog.ia.installer.InstallComponent" objectID="93e46b5f90d4">
+											<property name="componentName">
+												<string><![CDATA[AG- Documentation, Full]]></string>
+											</property>
+											<property name="comment">
+												<string><![CDATA[AUTOGENERATED COMMENT: The following comment is an autogenerated aggregation of all the Feature descriptions from from which this component was generated:
+
+-This installs the Ptiny feature and documentation such as:
+- The PDF Design Document
+- The developer documentation
+- The javadoc Java Class documentation
+Ptiny and the documentation require 16.6Mb of disk space.
+
+-The Full feature includes
+- The Experimental Domains: DDE, DT, Giotto, GR, Petrinet, TM, SR.
+- The Code Generator
+Ptiny, the documentation and the Full feature will consume roughly 19.6Mb of diskspace.]]></string>
+											</property>
+											<property name="shortName">
+												<string><![CDATA[AG- Documentation, Full]]></string>
+											</property>
+											<property name="uniqueId">
+												<object class="com.zerog.registry.UUID">
+													<method name="update">
+														<string><![CDATA[93e46b60-1ec1-11b2-90d4-8511378b3292]]></string>
+													</method>
+												</object>
+											</property>
+											<property name="versionMajor">
+												<int>1</int>
+											</property>
+											<property name="versionMinor">
+												<int>0</int>
+											</property>
+											<property name="versionRevision">
+												<int>0</int>
+											</property>
+											<property name="versionSubRevision">
+												<int>0</int>
+											</property>
+										</object>
 									</installChildren>
 								</object>
 								<object class="com.zerog.ia.installer.InstallBundle" objectID="a3eb27d6986e">
@@ -5577,7 +5670,7 @@ Ptiny and the documentation require 16.3Mb of disk space.]]></string>
 										<string><![CDATA[The Full feature includes
 - The Experimental Domains: DDE, DT, Giotto, GR, Petrinet, TM, SR.
 - The Code Generator
-Ptiny, the documentation and the Full feature will consume roughly 19.1Mb of diskspace.]]></string>
+Ptiny, the documentation and the Full feature will consume roughly 20.0 Mb of diskspace.]]></string>
 									</property>
 									<property name="shortName">
 										<string><![CDATA[Full]]></string>
@@ -5595,7 +5688,7 @@ Ptiny, the documentation and the Full feature will consume roughly 19.1Mb of dis
 -The Experimental feature includes Experimental domains.]]></string>
 											</property>
 											<property name="shortName">
-												<string><![CDATA[]]></string>
+												<string><![CDATA[AG- Full]]></string>
 											</property>
 											<property name="uniqueId">
 												<object class="com.zerog.registry.UUID">
@@ -5692,8 +5785,49 @@ Ptiny, the documentation and the Full feature will consume roughly 19.1Mb of dis
 												<object refID="10436b168ee4"/>
 												<object refID="a488f60c93fc"/>
 												<object refID="a488f5d993e9"/>
+												<object refID="94429a5490f2"/>
+												<object refID="a488f6479404"/>
 												<object refID="a488f5c693e1"/>
 											</installChildren>
+										</object>
+										<object refID="93e46b5f90d4"/>
+										<object class="com.zerog.ia.installer.InstallComponent" objectID="93e4899290d4">
+											<property name="componentName">
+												<string><![CDATA[AG- Full, Ptiny]]></string>
+											</property>
+											<property name="comment">
+												<string><![CDATA[AUTOGENERATED COMMENT: The following comment is an autogenerated aggregation of all the Feature descriptions from from which this component was generated:
+
+-The Full feature includes
+- The Experimental Domains: DDE, DT, Giotto, GR, Petrinet, TM, SR.
+- The Code Generator
+Ptiny, the documentation and the Full feature will consume roughly 19.6Mb of diskspace.
+
+-The common domains: CT, DE, FSM, PN and SDF.
+This feature will consume roughly 7.7Mb of disk space.]]></string>
+											</property>
+											<property name="shortName">
+												<string><![CDATA[AG- Full, Ptiny]]></string>
+											</property>
+											<property name="uniqueId">
+												<object class="com.zerog.registry.UUID">
+													<method name="update">
+														<string><![CDATA[93e48993-1ec1-11b2-90d4-8511378b3292]]></string>
+													</method>
+												</object>
+											</property>
+											<property name="versionMajor">
+												<int>1</int>
+											</property>
+											<property name="versionMinor">
+												<int>0</int>
+											</property>
+											<property name="versionRevision">
+												<int>0</int>
+											</property>
+											<property name="versionSubRevision">
+												<int>0</int>
+											</property>
 										</object>
 									</installChildren>
 								</object>
@@ -5711,7 +5845,7 @@ Ptiny, the documentation and the Full feature will consume roughly 19.1Mb of dis
 -The Ptiny Feature includes the common domains: CT, DE, FSM, PN and SDF]]></string>
 									</property>
 									<property name="shortName">
-										<string><![CDATA[]]></string>
+										<string><![CDATA[AG- Ptiny]]></string>
 									</property>
 									<property name="uniqueId">
 										<object class="com.zerog.registry.UUID">
@@ -5840,7 +5974,6 @@ Ptiny, the documentation and the Full feature will consume roughly 19.1Mb of dis
 										<object refID="a488f6479402"/>
 										<object refID="a488f6489403"/>
 										<object refID="a488f6489404"/>
-										<object refID="a488f6479404"/>
 										<object refID="a488f5f793f8"/>
 										<object refID="a488f5f893f7"/>
 										<object refID="a488f60193f8"/>
@@ -5857,9 +5990,12 @@ Ptiny, the documentation and the Full feature will consume roughly 19.1Mb of dis
 										<object refID="a488f60293f8"/>
 										<object refID="a488f5c693de"/>
 										<object refID="a488f5d993e9"/>
+										<object refID="93e45ffd90d3"/>
+										<object refID="a488f6479404"/>
 										<object refID="a488f5c693e1"/>
 									</installChildren>
 								</object>
+								<object refID="93e4899290d4"/>
 							</installChildren>
 						</object>
 						<object refID="a3d1e35c97e3"/>
@@ -5871,13 +6007,13 @@ Ptiny, the documentation and the Full feature will consume roughly 19.1Mb of dis
 						<string><![CDATA[com/zerog/ia/installer/images/]]></string>
 					</property>
 					<property name="description">
-						<string><![CDATA[This option installs only the common domains: CT, DE, FSM, PN and SDF along with the actor and user documentation. This option will consume roughly 7.5Mb, and is recommended only for users with limited disk space.]]></string>
+						<string><![CDATA[This option installs only the common domains: CT, DE, FSM, PN and SDF along with the actor and user documentation. This option will consume roughly 16.6 Mb, and is recommended only for users with limited disk space.]]></string>
 					</property>
 					<property name="imageName">
 						<string><![CDATA[minimalIcon.png]]></string>
 					</property>
 					<property name="shortName">
-						<string><![CDATA[]]></string>
+						<string><![CDATA[Minimal]]></string>
 					</property>
 					<property name="installSetName">
 						<string><![CDATA[Minimal]]></string>
@@ -5895,6 +6031,8 @@ Ptiny, the documentation and the Full feature will consume roughly 19.1Mb of dis
 				<object refID="a3eda171986e"/>
 				<object refID="a3ee006c986e"/>
 				<object refID="a3ef6db7986e"/>
+				<object refID="93e46b5f90d4"/>
+				<object refID="93e4899290d4"/>
 				<object refID="a3d1e35b97e0"/>
 				<object class="com.zerog.ia.installer.GhostDirectory" objectID="a3e4b8289821">
 					<property name="destinationFolder">
