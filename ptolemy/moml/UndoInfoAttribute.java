@@ -279,7 +279,7 @@ public class UndoInfoAttribute extends SingletonAttribute
     // The stack of available undo entries
     private Stack _undoEntries = new Stack();
 
-    // Flag to indicate if the inforamtion in the redo stack needs to
+    // Flag to indicate if the information in the redo stack needs to
     // be cleared
     private boolean _clearRedoInfo;
 }
