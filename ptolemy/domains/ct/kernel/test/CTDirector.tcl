@@ -314,7 +314,7 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     set stoptime [$bptable first]
     list $starttime $first $second $secondAgain $third $fourth \
             $fifth $sixth $stoptime
-} {0.0 0.0999999999 0.1 0.1 0.1999999999 0.2 0.3999999999 0.4 1.0}
+} {0.0 0.09999 0.1 0.1 0.19999 0.2 0.39999 0.4 1.0}
 
 test CTMultiSolverDirector-3.2 {access empty breakpoint table} {     
     #Note: use above set up.
