@@ -61,7 +61,6 @@ JSRCS = \
 	CurrentTime.java \
 	Distributor.java \
 	Expression.java \
-	FileWrite.java \
 	Gaussian.java \
 	Interpolator.java \
 	Maximum.java \
@@ -82,7 +81,8 @@ JSRCS = \
 	TimedActor.java \
 	TimedSource.java \
 	Transformer.java \
-	VariableClock.java
+	VariableClock.java \
+	Writer.java
 
 EXTRA_SRCS =	$(JSRCS)
 
