@@ -130,7 +130,11 @@ if [ $retval = 0 ]; then
 		    # in reverse order
 		    classPathDirectories="$dirOrJar $classPathDirectories"
 		else    
-		    classPathJarFiles="$dirOrJar $classPathJarFiles"
+		    if [ -r "$dirOrJar" ]; then  
+			classPathJarFiles="$dirOrJar $classPathJarFiles"
+		    else	
+			echo "$0: $dirOrJar either does not exist or is not readable"
+		    fi	
 		fi
 	    done	
             #echo "classPathDirectories:	$classPathDirectories"
