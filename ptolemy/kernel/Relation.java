@@ -38,6 +38,8 @@ Entities, the vertices of a graph, via Ports.  Ports may attach themselves
 to Relations, but the other direction does not hold.
 @author Neil Smyth
 @version $Id$
+@see Port
+@see Entity
 */
 public class Relation extends NamedObj {
     /** 
@@ -85,8 +87,6 @@ public class Relation extends NamedObj {
      */	
     public Enumeration enumEntities() {
 
-        // JFIXME: Enumeration XRefs = _portList.elements();
-	// Should this not be:
 	Enumeration XRefs = _portList.elements();
         LinkedList storedEntities = new LinkedList();
 
@@ -106,8 +106,6 @@ public class Relation extends NamedObj {
      *  false otherwise.
      */	
     public boolean isPortConnected(String portName) {
-        // JFIXME: Enumeration XRefs = _portList.elements();
-	// Should this not be:
 	Enumeration XRefs = _portList.elements();
         while (XRefs.hasMoreElements()) {
             Port nextPort = (Port)XRefs.nextElement();
