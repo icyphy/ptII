@@ -47,7 +47,8 @@ PTPACKAGE = 	moml
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =	EntityLibrary.java \
+JSRCS =	Documentation.java \
+	EntityLibrary.java \
 	ErrorHandler.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
