@@ -354,14 +354,14 @@ public class StringUtilities {
                 // as the place to insert a newline.
                 int lastSpaceIndex
                     = token.substring(i, i + 79).lastIndexOf(" ");
-
                 if (lastSpaceIndex < 0 ) {
                     // No space found, just insert a new line after 79.
                     results.append(token.substring(i, i + 79) + "\n");
                     i += 79;
                 } else {
-                    results.append(token.substring(i, lastSpaceIndex) + "\n");
-                    i = lastSpaceIndex + 1;
+                    results.append(token.substring(i,
+                                           i + lastSpaceIndex) + "\n");
+                    i += lastSpaceIndex + 1;
                 }
             }
             results.append(token.substring(i));
