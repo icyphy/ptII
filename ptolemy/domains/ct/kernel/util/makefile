@@ -48,8 +48,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	TotallyOrderedSet.java \
-	DoubleComparator.java
+	CTApplet.java \
+	DoubleComparator.java \
+	TotallyOrderedSet.java 
+
 
 EXTRA_SRCS =	$(JSRCS)
 
