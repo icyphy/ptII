@@ -606,7 +606,7 @@ public class Variable extends Attribute implements Typeable {
      *   are not in the same workspace, or the proposed container would
      *   result in recursive containment.
      *  @exception NameDuplicationException If the container already has
-     *   an attriubte with the name of this variable.
+     *   an attribute with the name of this variable.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
