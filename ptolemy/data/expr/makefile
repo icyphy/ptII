@@ -115,7 +115,7 @@ JCLASS =  \
 
 
 all:  $(OPTIONAL_JSRCS) $(JCLASS)
-install: PtParser javadocs $(PTCLASSJAR)
+install: PtParser $(PTCLASSJAR)
 docs: javadocs
 
 depend:

@@ -105,7 +105,7 @@ OPTIONAL_FILES =	#codeDoc
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass javadocs jars
+install: jclass jars
 docs: javadocs
 
 depend:

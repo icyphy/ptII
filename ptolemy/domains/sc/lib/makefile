@@ -71,7 +71,7 @@ OPTIONAL_FILES =
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass javadocs $(JARFILE)
+install: jclass $(JARFILE)
 docs: javadocs
 
 depend:

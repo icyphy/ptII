@@ -88,7 +88,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass javadocs subinstall $(PTCLASSJAR)
+install: jclass subinstall $(PTCLASSJAR)
 docs: javadocs
 
 depend:

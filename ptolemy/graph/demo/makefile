@@ -61,7 +61,7 @@ OPTIONAL_FILES =	#codeDoc
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass $(JZIP)
-install: sources jclass javadocs $(JZIP)
+install: sources jclass $(JZIP)
 docs: javadocs
 
 tests:: $(EXTRA_SRCS)

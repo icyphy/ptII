@@ -142,7 +142,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: suball jclass ptcollections.jar
-install: subinstall jclass ptcollections.jar javadocs
+install: subinstall jclass ptcollections.jar 
 docs: javadocs
 PTAUXJAR = ptcollections.jar
 

@@ -74,7 +74,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass RLEDivaApplet.jar
 
-install: jclass javadocs
+install: jclass 
 docs: javadocs
 
 # 'make clean' removes everything in KRUFT

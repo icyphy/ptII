@@ -80,7 +80,7 @@ MISC_FILES = data $(DIRS) doc #test
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass suball #$(JZIP)
-install: sources jclass javadocs subinstall #$(JZIP)
+install: sources jclass subinstall #$(JZIP)
 docs: javadocs
 
 tests:: $(EXTRA_SRCS)

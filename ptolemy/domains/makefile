@@ -59,7 +59,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 all: jclass
-install: jclass javadocs jars
+install: jclass jars
 docs: javadocs
 
 # Get the rest of the rules

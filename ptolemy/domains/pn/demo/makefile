@@ -76,7 +76,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass pndemo.jar
 
-install: jclass pndemo.jar javadocs
+install: jclass pndemo.jar 
 docs: javadocs
 
 

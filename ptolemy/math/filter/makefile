@@ -78,7 +78,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 LIB = dummylib
 
 all: jclass
-install: jclass javadocs $(JARFILE)
+install: jclass $(JARFILE)
 docs: javadocs
 
 depend:
