@@ -53,6 +53,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.lang.IVisitor;
+import ptolemy.lang.ITreeNode;
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.JavaVisitor;
 
@@ -66,8 +67,9 @@ package ptolemy.lang.java.nodetypes;
 </iheader>
 
 // interfaces
-NamedNode I <none> m NameNode getName m m void setName NameNode name m
-ModifiedNode I <none> m int getModifiers m m void setModifiers int modifiers m
+NamedNode I ITreeNode m NameNode getName m m void setName NameNode name m
+ModifiedNode I ITreeNode m int getModifiers m m void setModifiers int modifiers m
+StatementNode I ITreeNode
 
 NameNode C TreeNode k 0 TreeNode qualifier String ident k
 AbsentTreeNode S TreeNode
@@ -77,19 +79,18 @@ TypeNode A TreeNode c 0 c
 PrimitiveTypeNode A TypeNode c 0 c
 ReferenceTypeNode A TypeNode c 0 c
 
-StatementNode A TreeNode c 0 c
-ConstructorCallNode A StatementNode k 0 List args k
-IterationNode A StatementNode c 0 c
-JumpStmtNode A StatementNode k 0 TreeNode label k
+VarDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode defType NameNode name k
+VarInitDeclNode A VarDeclNode k 3 int modifiers TypeNode defType NameNode name TreeNode initExpr k
 
+ConstructorCallNode A TreeNode i StatementNode i k 0 List args k
+IterationNode A TreeNode i StatementNode i c 0 c
+JumpStmtNode A TreeNode i StatementNode i k 0 TreeNode label k
 ExprNode A TreeNode c 0 c
 FieldAccessNode A ExprNode i NamedNode i k 0 NameNode name k
-
 SingleExprNode A ExprNode k 0 ExprNode expr k
 SingleOpNode A SingleExprNode c 1 ExprNode expr c
 IncrDecrNode A SingleOpNode c 1 ExprNode expr c
 UnaryArithNode A SingleOpNode c 1 ExprNode expr c
-
 DoubleExprNode A ExprNode k 0 ExprNode expr1 ExprNode expr2 k
 BinaryOpNode A DoubleExprNode c 2 ExprNode expr1 ExprNode expr2 c
 BinaryArithNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
@@ -104,9 +105,9 @@ BitwiseAssignNode A BinaryOpAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 LogCondNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
 OuterClassAccessNode A ExprNode k 0 TypeNameNode type k
 UserTypeDeclNode A ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name List interfaces List members k
+LiteralNode A ExprNode k 0 String literal k
 
 // literals
-LiteralNode A ExprNode k 0 String literal k
 IntLitNode C LiteralNode c 1 String literal c
 LongLitNode C LiteralNode c 1 String literal c
 FloatLitNode C LiteralNode c 1 String literal c
@@ -146,10 +147,8 @@ ImportOnDemandNode C TreeNode i NamedNode i k 0 NameNode name k
 
 ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members TreeNode superClass k
 
-VarDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode defType NameNode name k
-VarInitDeclNode A VarDeclNode k 3 int modifiers TypeNode defType NameNode name TreeNode initExpr k
 FieldDeclNode C VarInitDeclNode c 4 int modifiers TypeNode defType NameNode name TreeNode initExpr c
-LocalVarDeclNode C VarInitDeclNode c 4 int modifiers TypeNode defType NameNode name TreeNode initExpr c
+LocalVarDeclNode C VarInitDeclNode i StatementNode i c 4 int modifiers TypeNode defType NameNode name TreeNode initExpr c
 
 InvokableDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name List params List throwsList k
 // body may be absent
@@ -162,17 +161,20 @@ StaticInitNode C TreeNode k 0 BlockNode block k
 InstanceInitNode C TreeNode k 0 BlockNode block k
 InterfaceDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members k
 ParameterNode C VarDeclNode c 3 int modifiers TypeNode defType NameNode name c
-BlockNode C StatementNode k 0 List stmts k
-EmptyStmtNode C StatementNode c 0 c
-LabeledStmtNode C StatementNode i NamedNode i k 0 NameNode name StatementNode stmt k
-IfStmtNode C StatementNode k 0 ExprNode condition StatementNode thenPart TreeNode elsePart k
-SwitchNode C StatementNode k 0 ExprNode expr List switchBlocks k
+
+// Statements
+
+BlockNode C TreeNode i StatementNode i k 0 List stmts k
+EmptyStmtNode C TreeNode i StatementNode i c 0 c
+LabeledStmtNode C TreeNode i NamedNode StatementNode i k 0 NameNode name StatementNode stmt k
+IfStmtNode C TreeNode i StatementNode i k 0 ExprNode condition StatementNode thenPart TreeNode elsePart k
+SwitchNode C TreeNode i StatementNode i k 0 ExprNode expr List switchBlocks k
 // expr may be absent
 CaseNode C TreeNode k 0 TreeNode expr k
 SwitchBranchNode C TreeNode k 0 List cases List stmts k
 LoopNode C IterationNode k 0 TreeNode foreStmt ExprNode test TreeNode aftStmt k
-ExprStmtNode C StatementNode k 0 ExprNode expr k
-UserTypeDeclStmtNode C StatementNode k 0 UserTypeDeclNode defType k
+ExprStmtNode C TreeNode i StatementNode i k 0 ExprNode expr k
+UserTypeDeclStmtNode C TreeNode i StatementNode i k 0 UserTypeDeclNode defType k
 
 // test will be a BoolLitNode in "for(;;)"
 ForNode C IterationNode k 0 List init ExprNode test List update StatementNode stmt k
@@ -183,14 +185,14 @@ BreakNode C JumpStmtNode k 1 TreeNode label k
 ContinueNode C JumpStmtNode k 1 TreeNode label k
 
 // expr may be absent
-ReturnNode C StatementNode k 0 TreeNode expr k
+ReturnNode C TreeNode i StatementNode i k 0 TreeNode expr k
 
-ThrowNode C StatementNode k 0 ExprNode expr k
-SynchronizedNode C StatementNode k 0 ExprNode expr TreeNode stmt k
+ThrowNode C TreeNode i StatementNode i k 0 ExprNode expr k
+SynchronizedNode C TreeNode i StatementNode i k 0 ExprNode expr TreeNode stmt k
 CatchNode C TreeNode k 0 ParameterNode param BlockNode block k
 
 // finly may be ABSENT
-TryNode C StatementNode k 0 BlockNode block List catches TreeNode finly k
+TryNode C TreeNode i StatementNode i k 0 BlockNode block List catches TreeNode finly k
 
 // Expressions
 
@@ -235,7 +237,7 @@ LTNode C RelationNode c 2 ExprNode expr1 ExprNode expr2 c
 GTNode C RelationNode c 2 ExprNode expr1 ExprNode expr2 c
 LENode C RelationNode c 2 ExprNode expr1 ExprNode expr2 c
 GENode C RelationNode c 2 ExprNode expr1 ExprNode expr2 c
-InstanceOfNode C ExprNode k 0 ExprNode expr TypeNode dtype k
+InstanceOfNode C ExprNode k 0 ExprNode expr TypeNameNode dtype k
 EQNode C EqualityNode c 2 ExprNode expr1 ExprNode expr2 c
 NENode C EqualityNode c 2 ExprNode expr1 ExprNode expr2 c
 BitAndNode C BitwiseNode c 2 ExprNode expr1 ExprNode expr2 c

@@ -120,7 +120,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
         
         String noExtensionFilename = 
-         StringManip.partAfterLast(canonicalFilename, '.');
+         StringManip.partBeforeLast(canonicalFilename, '.');
         
         boolean found = false;
         
