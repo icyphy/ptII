@@ -10,6 +10,7 @@
 	        class="ptolemy.actor.lib.BooleanMultiplexor"/>
 	<entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect"/>
 	<entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch"/>
+	<entity name="CountTrues" class="ptolemy.domains.sdf.lib.CountTrues"/>
 
       </group>
     ?>
