@@ -32,7 +32,7 @@
 ME =		ptII/doc
 
 # Sub directories to run make in.
-DIRS =		 coding #internals #usersGuides
+DIRS =		 coding design #internals #usersGuides
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -66,7 +66,8 @@ EXTRA_SRCS = \
 	toc.htm \
 	troubleshooting.htm
 
-# The files in design and img are not under CVS because they are binaries.
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS) design img
 
 # make checkjunk will not report OPTIONAL_FILES as trash
