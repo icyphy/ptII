@@ -228,7 +228,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
         position.send(0, _lastData.getElement(3));
     }
 
-    /** Check whether the newly comed set of data is correct,
+    /** Check whether the new set of data is correct,
      *  if there is any.
      */
     public boolean postfire() throws IllegalActionException {
