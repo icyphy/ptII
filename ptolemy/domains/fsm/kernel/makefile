@@ -54,6 +54,7 @@ JSRCS = \
 	ChoiceAction.java \
 	CommitAction.java \
 	CommitActionsAttribute.java \
+	ExtendedFSMDirector.java \
 	FSMActor.java \
 	FSMDirector.java \
 	FunctionDependencyOfFSMActor.java \

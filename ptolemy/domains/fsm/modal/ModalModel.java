@@ -333,6 +333,7 @@ public class ModalModel extends CTCompositeActor {
     protected String[] modalDirectorClassNames = {
         "ptolemy.domains.fsm.kernel.HSDirector",
         "ptolemy.domains.fsm.kernel.FSMDirector",
+        "ptolemy.domains.fsm.kernel.ExtendedFSMDirector",
         "ptolemy.domains.hdf.kernel.HDFFSMDirector"
     };
 
