@@ -38,29 +38,25 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.gr.kernel.GRActor3D;
-import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.domains.gr.kernel.*;
 
-import javax.media.j3d.Appearance;
-import javax.media.j3d.Material;
-import javax.media.j3d.Node;
-import javax.vecmath.Color3f;
+import diva.canvas.*;
+import diva.canvas.toolbox.*;
+import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// GRShadedShape
-/** An abstract base class for GR Actors that have material and color
-properties. The parameters <i>redComponent</i>, <i>greenComponent</i>,
-<i>blueComponent</i> determine the color of the object.  The parameter
-<i>shininess</i> determines the Phong exponent used in calculating
-the shininess of the object.
+//// GRShape2D
+/** An abstract base class for two-dimensional GR Actors representing
+figures. The parameters <i>redComponent</i>, <i>greenComponent</i>,
+<i>blueComponent</i> determine the color of the object.  
 
-@author C. Fong, Steve Neuendorffer
+@author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
-abstract public class GRShadedShape extends GRActor3D {
+abstract public class GRShape2D extends GRActor2D {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -70,19 +66,25 @@ abstract public class GRShadedShape extends GRActor3D {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GRShadedShape(CompositeEntity container, String name)
+    public GRShape2D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
-        sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
+        sceneGraphOut.setTypeEquals(Scene2DToken.TYPE);
 
-        rgbColor = new Parameter(this,"RGB color",
-                new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
+        rgbFillColor = new Parameter(this, "rgbFillColor",
+                new DoubleMatrixToken(new double[][] {{ 1.0, 1.0, 1.0}} ));
+        rgbFillColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        
+        rgbOutlineColor = new Parameter(this, "rgbOutlineColor",
+                new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
+        rgbOutlineColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        shininess = new Parameter(this,"shininess", new DoubleToken(0.0));
-        _color = new Color3f(1.0f, 1.0f, 1.0f);
+        outlineWidth = new Parameter(this, "outlineWidth",
+                new DoubleToken(1.0));
+        outlineWidth.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,28 +95,35 @@ abstract public class GRShadedShape extends GRActor3D {
      */
     public TypedIOPort sceneGraphOut;
 
-
-    /** The red, green, and blue color components of the 3D shape
+    /** The red, green, and blue color components of the interior of
+     *  the figure.  This parameter must contain a DoubleMatrixToken.
+     *  The default value is [1.0,1.0,1.0], corresponding to white.
      */
-    public Parameter rgbColor;
+    public Parameter rgbFillColor;
 
-    /** The shininess of the 3D shape.
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is DoubleToken ??FIXME
+    /** The red, green, and blue color components of the outside of
+     *  the figure.  This parameter must contain a DoubleMatrixToken.
+     *  The default value is [0.0,0.0,0.0], corresponding to black.
      */
-    public Parameter shininess;
+    public Parameter rgbOutlineColor;
+
+    /** The width of the figure's outline.  This parameter must contain a 
+     *  DoubleToken.  The default value is 1.0.
+     */
+    public Parameter outlineWidth;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /*  Create the Java3D geometry and appearance for this GR actors
+    /** Create the figure for this actor.
      *
      *  @exception IllegalActionException If the current director
      *  is not a GRDirector.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _createModel();
+        _figure = _createFigure();
+        _setAppearance(_figure);
     }
 
 
@@ -134,50 +143,42 @@ abstract public class GRShadedShape extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the material appearance of the shaded 3D actor
-     */
-    protected void _createAppearance() {
-
-        _material = new Material();
-        _appearance = new Appearance();
-
-        _material.setDiffuseColor(_color);
-        if (_shine > 1.0) {
-            _material.setSpecularColor(_whiteColor);
-            _material.setShininess(_shine);
-        } else {
-            _material.setSpecularColor(_color);
-        }
-        _appearance.setMaterial(_material);
-    }
-
-    /** Create the color of this shaded GR actor
+    /** Create the figure for this actor.  Derived classes should implement
+     *  this method to create the correct figure.
      *
-     *  @exception IllegalActionException If unable to setup the color.
+     *  @exception IllegalActionException If a parameter is not valid.
      */
-    protected void _createModel() throws IllegalActionException {
-        DoubleMatrixToken color = (DoubleMatrixToken) rgbColor.getToken();
-
-        _color.x = (float) color.getElementAt(0, 0);
-        _color.y = (float) color.getElementAt(0, 1);
-        _color.z = (float) color.getElementAt(0, 2);
-        _shine = (float) ((DoubleToken) shininess.getToken()).doubleValue();
-
-        _createAppearance();
-    }
-
+    abstract protected BasicFigure _createFigure() 
+            throws IllegalActionException;
+ 
+    /** Setup the scene graph connections of this actor.
+     *
+     *  @exception IllegalActionException Always thrown for this base class.
+     */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
-        sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
+        sceneGraphOut.send(0, new Scene2DToken(_figure));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private methods                   ////
 
-    protected Color3f _color;
-    protected Appearance _appearance;
-    protected Material _material;
-    protected float _shine;
+    // Set the appearance of the given figure consistent with the
+    // parameters of this class.
+    private void _setAppearance(Figure figure) throws IllegalActionException {
+        Paint fillPaint = GRUtilities2D.makeColor(   
+                (DoubleMatrixToken) rgbFillColor.getToken());
+        Paint strokePaint = GRUtilities2D.makeColor(
+                (DoubleMatrixToken) rgbOutlineColor.getToken());
+        float lineWidth = (float)
+            ((DoubleToken) outlineWidth.getToken()).doubleValue();
+        
+        _figure.setFillPaint(fillPaint);
+        _figure.setStrokePaint(strokePaint);
+        _figure.setLineWidth(lineWidth);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    protected static final Color3f _whiteColor = new Color3f(1.0f, 1.0f, 1.0f);
-    protected static final Color3f _blueColor = new Color3f(0.0f, 0.0f, 1.0f);
+    private BasicFigure _figure;
 }

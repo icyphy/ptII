@@ -47,8 +47,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.gr.kernel.GRActor;
-import ptolemy.domains.gr.kernel.SceneGraphToken;
+import ptolemy.domains.gr.kernel.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -87,7 +86,8 @@ import java.util.Enumeration;
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class ViewScreen extends GRActor implements Placeable {
+public class ViewScreen extends GRActor3D 
+    implements Placeable, ViewScreenInterface {
 
     /** Construct a ViewScreen in the given container with the given name.
      *  If the container argument is null, a NullPointerException will

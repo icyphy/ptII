@@ -38,27 +38,29 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.gr.kernel.GRActor3D;
-import ptolemy.domains.gr.kernel.SceneGraphToken;
+import ptolemy.domains.gr.kernel.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
-import javax.media.j3d.Node;
+import diva.canvas.*;
+import diva.canvas.toolbox.*;
+
 
 //////////////////////////////////////////////////////////////////////////
-//// GRTransform
+//// GRTransform2D
 
-/** An abstract base class for a transform operator of GR shapes. This actor
-will only have meaning in the GR domain.
+/** 
+An abstract base class for a transform operator of two-dimensional
+GR shapes.
 
 The parameter <i>accumulate</i> determines whether transformations are
 accumulated or reset during firing.
 
-@author C. Fong, Steve Neuendorffer
+@author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
-abstract public class GRTransform extends GRActor3D {
+abstract public class GRTransform2D extends GRActor2D {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -68,18 +70,17 @@ abstract public class GRTransform extends GRActor3D {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GRTransform(CompositeEntity container, String name)
+    public GRTransform2D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-
         super(container, name);
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);
         sceneGraphIn.setMultiport(true);
-        sceneGraphIn.setTypeEquals(SceneGraphToken.TYPE);
+        sceneGraphIn.setTypeEquals(Scene2DToken.TYPE);
 
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
-        sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
+        sceneGraphOut.setTypeEquals(Scene2DToken.TYPE);
 
         accumulate = new Parameter(this,
                 "accumulate", new BooleanToken(false));
@@ -106,12 +107,25 @@ abstract public class GRTransform extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Setup the transform object
+    /** Setup the transform object.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        CompositeFigure compositeFigure = new CompositeFigure();
+        _figure = compositeFigure;
+        _applyInitialTransform(_figure);
     }
 
+    /** Consume inputs from any input ports and apply transformation
+     *  according to the state of this actor.
+     *  @exception IllegalActionException If the value of some parameters
+     *   can't be obtained.
+     */
+    public void fire() throws IllegalActionException {
+        //  all state changes must be done in postfire()
+        super.fire();
+        _applyTransform(_figure);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -125,16 +139,42 @@ abstract public class GRTransform extends GRActor3D {
         return ((BooleanToken) accumulate.getToken()).booleanValue();
     }
 
+    /** Setup the scene graph connections of this actor.
+     *
+     *  @exception IllegalActionException Always thrown for this base class.
+     */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
         for (int i = 0; i < width; i++) {
             if (sceneGraphIn.hasToken(i)) {
-                SceneGraphToken nodeToken = (SceneGraphToken)
+                Scene2DToken figureToken = (Scene2DToken)
                     sceneGraphIn.get(i);
-                Node node = (Node) nodeToken.getSceneGraphNode();
-                _addChild(node);
+                Figure figure = figureToken.getFigure();
+                _figure.add(figure);
             }
         }
-        sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
+        sceneGraphOut.send(0, new Scene2DToken(_figure));
     }
+
+    /** Set the initial transform of the given figure.  This method is
+     * invoked by this base class during the initialize() method.
+     * Derived classes should implement it to provide class-specific
+     * behavior.
+     *  @exception IllegalActionException If the value of some
+     *  parameters can't be obtained.
+     */
+    abstract protected void _applyInitialTransform(Figure figure)
+            throws IllegalActionException;
+    
+    /** Consume input tokens, and transform the given figure according
+     * to the current state of the transform.  This method is invoked
+     * by this base classes during the fire() method.  Derived classes
+     * should implement it to provide class-specific behavior.
+     *  @exception IllegalActionException If the value of some
+     *  parameters can't be obtained.
+     */
+    abstract protected void _applyTransform(Figure figure)
+            throws IllegalActionException;
+    
+    private CompositeFigure _figure;
 }

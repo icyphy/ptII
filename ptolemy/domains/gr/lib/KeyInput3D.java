@@ -35,7 +35,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.gr.kernel.GRActor;
+import ptolemy.domains.gr.kernel.GRActor3D;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -57,7 +57,7 @@ An actor that listens for keys pressed on the viewscreen.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class KeyInput3D extends GRActor {
+public class KeyInput3D extends GRActor3D {
 
     public KeyInput3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

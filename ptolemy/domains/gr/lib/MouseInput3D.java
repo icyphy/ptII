@@ -36,7 +36,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.gr.kernel.GRActor;
+import ptolemy.domains.gr.kernel.GRActor3D;
 import ptolemy.kernel.util.*;
 
 import javax.media.j3d.Behavior;
@@ -57,7 +57,7 @@ import java.util.Enumeration;
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class MouseInput3D extends GRActor {
+public class MouseInput3D extends GRActor3D {
 
     public MouseInput3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
