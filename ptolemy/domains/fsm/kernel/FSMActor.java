@@ -1141,7 +1141,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             throws IllegalActionException {
         HashSet stateNames = new HashSet();
         StringTokenizer nameTokens =
-                new StringTokenizer(names, ",");
+            new StringTokenizer(names, ",");
         while (nameTokens.hasMoreElements()) {
             String name = (String)nameTokens.nextElement();
             name = name.trim();
