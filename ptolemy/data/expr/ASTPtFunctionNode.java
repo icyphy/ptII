@@ -242,7 +242,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 temp[j] = new FixToken((FixPoint)((FixPoint[])object)[j]);
             }
             returnValue = new ArrayToken(temp);
-        } else if(object instanceof Object) {
+        } else if (object instanceof Object) {
             // Package into an ObjectToken.
             returnValue = new ObjectToken(object);
         }
@@ -261,7 +261,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 return type;
             } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
                 Type type = BaseType.forClassName(tokenClass.getName());
-                if(type == null) {
+                if (type == null) {
                     throw new IllegalActionException(
                             "Could not return type for class " + tokenClass);
                 }

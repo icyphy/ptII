@@ -99,7 +99,7 @@ public class CachedMethod {
         _methodName = methodName;
         _argTypes = (Type[]) argTypes.clone();
         _method = method;
-        if(conversions != null) {
+        if (conversions != null) {
             _conversions = (ArgumentConversion[]) conversions.clone();
         } else {
             _conversions = null;
@@ -141,7 +141,7 @@ public class CachedMethod {
         if (arg == this) {
             return true;
         }
-        if(!(arg instanceof CachedMethod)) {
+        if (!(arg instanceof CachedMethod)) {
             return false;
         }
         CachedMethod argMethod = (CachedMethod)arg;
@@ -212,7 +212,7 @@ public class CachedMethod {
             try {
                 Method method = _polymorphicGetMethod(destTokenClass,
                         methodName, methodArgTypes, conversions);
-                if(method != null) {
+                if (method != null) {
                     cachedMethod = new CachedMethod(methodName, argTypes,
                             method, conversions, type+REAL);
                 }
@@ -223,7 +223,7 @@ public class CachedMethod {
                 // java.lang.Math.
             }
 
-            if(cachedMethod == null) {
+            if (cachedMethod == null) {
                 // Native convert the base class.
                 //  System.out.println("Checking for array map");
                 destTokenClass = ASTPtFunctionNode
@@ -231,13 +231,13 @@ public class CachedMethod {
 
                 Method method = _polymorphicGetMethod(destTokenClass,
                         methodName, methodArgTypes, conversions);
-                if(method != null) {
+                if (method != null) {
                     cachedMethod = new BaseConvertCachedMethod(
                             methodName, argTypes, method, NATIVE, conversions,
                             type+REAL);
                 }
             }
-        } else { //if(type == FUNCTION) {
+        } else { //if (type == FUNCTION) {
             ArgumentConversion[] conversions =
                    new ArgumentConversion[argTypes.length];
             // Search the registered function classes
@@ -254,7 +254,7 @@ public class CachedMethod {
                 try {
                     Method method = _polymorphicGetMethod
                             (nextClass, methodName, argTypes, conversions);
-                    if(method != null) {
+                    if (method != null) {
                         // System.out.println("Found match: " + method);
                         // Compare to previous match, if there has
                         // been one.
@@ -289,7 +289,7 @@ public class CachedMethod {
             }
         }
 
-        if(cachedMethod == null) {
+        if (cachedMethod == null) {
             // System.out.println("Checking for array map");
 
             // Go Look for an ArrayMapped method, instead.
@@ -309,10 +309,10 @@ public class CachedMethod {
                     isArrayArg[i] = false;
                 }
             }
-            if(hasArray) {
+            if (hasArray) {
                 CachedMethod mapCachedMethod =
                         findMethod(methodName, newArgTypes, type);
-                if(!mapCachedMethod.isMissing()) {
+                if (!mapCachedMethod.isMissing()) {
                     cachedMethod = new ArrayMapCachedMethod(
                             methodName, argTypes, type+REAL,
                             mapCachedMethod, isArrayArg);
@@ -320,7 +320,7 @@ public class CachedMethod {
             }
         }
 
-        if(cachedMethod == null) {
+        if (cachedMethod == null) {
             // System.out.println("Checking for matrix map");
             // Go Look for a MatrixMapped method, instead.
             // Check if any arguments are of matrix type.
@@ -341,10 +341,10 @@ public class CachedMethod {
                 }
             }
 
-            if(hasArray) {
+            if (hasArray) {
                 CachedMethod mapCachedMethod =
                         findMethod(methodName, newArgTypes, type);
-                if(!mapCachedMethod.isMissing()) {
+                if (!mapCachedMethod.isMissing()) {
                     cachedMethod = new MatrixMapCachedMethod(
                              methodName, argTypes, type+REAL,
                              mapCachedMethod, isArrayArg);
@@ -352,7 +352,7 @@ public class CachedMethod {
             }
         }
 
-        if(cachedMethod == null) {
+        if (cachedMethod == null) {
             // System.out.println("not found...");
             // If we haven't found anything by this point, then give
             // up...
@@ -407,7 +407,7 @@ public class CachedMethod {
      *   was not found (it is MISSING).
      */
     public Type getReturnType() throws IllegalActionException {
-        if(isMissing()) {
+        if (isMissing()) {
             throw new IllegalActionException("The return type of the method "
                     + toString() + " cannot be determined because "
                     + "no matching method was found.");
@@ -440,11 +440,11 @@ public class CachedMethod {
     public ptolemy.data.Token invoke(Object[] argValues)
             throws IllegalActionException {
         // System.out.println("invoking " + toString() + " on:");
-        // for(int i = 0; i < argValues.length; i++) {
+        // for (int i = 0; i < argValues.length; i++) {
         //     System.out.println("arg " + i + " = " + argValues[i]);
         // }
 
-        if(isMissing()) {
+        if (isMissing()) {
             throw new IllegalActionException("A method compatible with "
                     + toString() + " cannot be found");
         }
@@ -463,7 +463,7 @@ public class CachedMethod {
                 methodArgValues[i-1] = _conversions[i-1].convert(
                         (ptolemy.data.Token)argValues[i]);
             }
-            // for(int i = 0; i < num - 1; i++) {
+            // for (int i = 0; i < num - 1; i++) {
             //    System.out.println("ConvertedArg " + i + " = "
             //            + methodArgValues[i] + " class = "
             //            + methodArgValues[i].getClass());
@@ -482,7 +482,7 @@ public class CachedMethod {
                         argValues[0] + "\n");
             }
             return ASTPtFunctionNode.convertJavaTypeToToken(result);
-        } else if(isFunction()) {
+        } else if (isFunction()) {
             int num = argValues.length;
             Object[] methodArgValues = new Object[num];
             if (num == 0)
@@ -492,7 +492,7 @@ public class CachedMethod {
                 methodArgValues[i] = _conversions[i].convert(
                         (ptolemy.data.Token)argValues[i]);
             }
-            // for(int i = 0; i < num; i++) {
+            // for (int i = 0; i < num; i++) {
             //    System.out.println("ConvertedArg " + i + " = "
             //           + methodArgValues[i] + " class = "
             //           + methodArgValues[i].getClass());
@@ -545,7 +545,7 @@ public class CachedMethod {
     public String toString() {
         int initialArg = 0;
         StringBuffer buffer = new StringBuffer();
-        if(isMethod()) {
+        if (isMethod()) {
             initialArg = 1;
             buffer.append(_argTypes[0].toString());
             buffer.append(".");
@@ -643,12 +643,12 @@ public class CachedMethod {
             throw new InternalErrorException(
                     "Conversion arrays have to have the same length.");
         }
-        for(int j = 0; j < conversions1.length; j++) {
-            if(conversions2[j].isPreferableTo(conversions1[j])) {
+        for (int j = 0; j < conversions1.length; j++) {
+            if (conversions2[j].isPreferableTo(conversions1[j])) {
                 // Found one conversion where the second argument is
                 // preferable.  That is enough to return false.
                 return false;
-            } else if(conversions2[j].equals(conversions1[j])) {
+            } else if (conversions2[j].equals(conversions1[j])) {
                 // Conversions are the same.
                 // Use the types of the arguments to get more specific.
                 Class class1 = arguments1[j];
@@ -658,7 +658,7 @@ public class CachedMethod {
                             .convertJavaTypeToTokenType(class1);
                     Type type2 = ASTPtFunctionNode
                             .convertJavaTypeToTokenType(class2);
-                    if(TypeLattice.compare(type2, type1)
+                    if (TypeLattice.compare(type2, type1)
                             == ptolemy.graph.CPO.LOWER) {
                         // Found one conversion where the second method
                         // is preferable. This is enough to return false.
@@ -688,18 +688,18 @@ public class CachedMethod {
     protected static ArgumentConversion _getConversion(
             Class formal, Type actual) {
         // No conversion necessary.
-        if(formal.isAssignableFrom(actual.getTokenClass()))
+        if (formal.isAssignableFrom(actual.getTokenClass()))
             return IDENTITY;
 
         // ArrayTokens can be converted to Token[]
-        if(actual instanceof ArrayType &&
+        if (actual instanceof ArrayType &&
                 formal.isArray() &&
                 formal.getComponentType().isAssignableFrom(
                         ptolemy.data.Token.class))
             return ARRAYTOKEN;
         try {
             // Tokens can be converted to native types.
-            if(formal.isAssignableFrom(
+            if (formal.isAssignableFrom(
                        ASTPtFunctionNode.convertTokenTypeToJavaType(actual))) {
                 return NATIVE;
             }
@@ -711,10 +711,10 @@ public class CachedMethod {
             // We have to do this because Java is stupid and doesn't
             // give us a way to tell if primitive arguments are
             // acceptable
-            if(formal.isPrimitive()) {
+            if (formal.isPrimitive()) {
                 Type type =
                     ASTPtFunctionNode.convertJavaTypeToTokenType(formal);
-                if(ptolemy.graph.CPO.LOWER ==
+                if (ptolemy.graph.CPO.LOWER ==
                         TypeLattice.compare(actual, type)) {
                     return NATIVE;
                 }
@@ -772,7 +772,7 @@ public class CachedMethod {
 
                 Class[] arguments = methods[i].getParameterTypes();
                 int actualArgCount;
-                if(argTypes == null) {
+                if (argTypes == null) {
                     actualArgCount = 0;
                 } else {
                     actualArgCount = argTypes.length;
@@ -928,11 +928,11 @@ public class CachedMethod {
 
             int dim = 0;
             // Check the argument lengths.
-            for(int i = 0; i < argValues.length; i++) {
-                if(_reducedArgs[i]) {
-                    if(argValues[i] instanceof ArrayToken) {
+            for (int i = 0; i < argValues.length; i++) {
+                if (_reducedArgs[i]) {
+                    if (argValues[i] instanceof ArrayToken) {
                         ArrayToken arrayToken = (ArrayToken)argValues[i];
-                        if(dim != 0 && arrayToken.length() != dim) {
+                        if (dim != 0 && arrayToken.length() != dim) {
                             throw new IllegalActionException(
                                     "Argument " + i +
                                     " is a reducible arrayToken that " +
@@ -952,9 +952,9 @@ public class CachedMethod {
             Object[] subArgs = (Object[]) argValues.clone();
             ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[dim];
 
-            for(int j = 0; j < dim; j++) {
-                for(int i = 0; i < argValues.length; i++) {
-                    if(_reducedArgs[i]) {
+            for (int j = 0; j < dim; j++) {
+                for (int i = 0; i < argValues.length; i++) {
+                    if (_reducedArgs[i]) {
                         subArgs[i] = ((ArrayToken)argValues[i]).getElement(j);
                     }
                 }
@@ -970,7 +970,7 @@ public class CachedMethod {
          *  @return An ArrayType with an appropriate element type.
          */
         public Type getReturnType() throws IllegalActionException {
-            if(isMissing()) {
+            if (isMissing()) {
                 throw new IllegalActionException(
                         "The return type of the method "
                         + toString() + " cannot be determined because "
@@ -1016,11 +1016,11 @@ public class CachedMethod {
 
             int xdim = 0, ydim = 0;
             // Check the argument lengths.
-            for(int i = 0; i < argValues.length; i++) {
-                if(_reducedArgs[i]) {
-                    if(argValues[i] instanceof MatrixToken) {
+            for (int i = 0; i < argValues.length; i++) {
+                if (_reducedArgs[i]) {
+                    if (argValues[i] instanceof MatrixToken) {
                         MatrixToken matrixToken = (MatrixToken)argValues[i];
-                        if(xdim != 0 && ydim != 0 &&
+                        if (xdim != 0 && ydim != 0 &&
                                 (matrixToken.getRowCount() != ydim ||
                                  matrixToken.getColumnCount() != xdim)) {
                             throw new IllegalActionException(
@@ -1045,10 +1045,10 @@ public class CachedMethod {
                 new ptolemy.data.Token[xdim*ydim];
 
             int pos = 0;
-            for(int j = 0; j < ydim; j++) {
-                for(int k = 0; k < xdim; k++) {
-                    for(int i = 0; i < argValues.length; i++) {
-                        if(_reducedArgs[i]) {
+            for (int j = 0; j < ydim; j++) {
+                for (int k = 0; k < xdim; k++) {
+                    for (int i = 0; i < argValues.length; i++) {
+                        if (_reducedArgs[i]) {
                             subArgs[i] = ((MatrixToken)argValues[i])
                                     .getElementAsToken(j, k);
                         }
@@ -1061,7 +1061,7 @@ public class CachedMethod {
         }
 
         public Type getReturnType() throws IllegalActionException {
-            if(isMissing()) {
+            if (isMissing()) {
                 throw new IllegalActionException(
                         "The return type of the method "
                         + toString() + " cannot be determined because "

@@ -95,7 +95,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         final Map map = new HashMap();
-        for(int i = 0; i < node._argTypes.length; i++) {
+        for (int i = 0; i < node._argTypes.length; i++) {
             map.put(node.getArgumentNameList().get(i),
                     node.getArgumentTypes()[i]);
         }
@@ -108,7 +108,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 public Type getType(String name)
                         throws IllegalActionException {
                     Type type = (Type)map.get(name);
-                    if(type == null && currentScope != null) {
+                    if (type == null && currentScope != null) {
                         return currentScope.getType(name);
                     } else {
                         return type;
@@ -138,7 +138,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         for (int i = 0; i < argCount; i++) {
             childTypes[i] =
                 ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
-            if(childTypes[i] == null) {
+            if (childTypes[i] == null) {
                 throw new RuntimeException("node " +
                         node + " has null type.");
             }
@@ -148,20 +148,20 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
         // Handle as an array or matrix index into a named
         // variable reference.
-        if(baseType instanceof FunctionType) {
+        if (baseType instanceof FunctionType) {
             FunctionType functionType = (FunctionType)baseType;
             _setType(node, ((FunctionType)baseType).getReturnType());
             return;
-        } else if(argCount == 1) {
-            if(baseType instanceof ArrayType) {
+        } else if (argCount == 1) {
+            if (baseType instanceof ArrayType) {
                 _setType(node, ((ArrayType)baseType).getElementType());
                 return;            } else {
                 _assert(true, node, "Cannot use array "
                         + "indexing on '" + node.getFunctionName()
                         + "' because it does not have an array type.");
             }
-        } else if(argCount == 2) {
-            if(baseType instanceof UnsizedMatrixType) {
+        } else if (argCount == 2) {
+            if (baseType instanceof UnsizedMatrixType) {
                 _setType(node, ((UnsizedMatrixType) baseType).getElementType());
                 return;
             } else {
@@ -172,7 +172,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         String functionName = node.getFunctionName();
-        if(functionName == null) {
+        if (functionName == null) {
             throw new IllegalActionException("Wrong number of indices "
                     + "when referencing " + node.getFunctionName());
         }
@@ -216,7 +216,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             CachedMethod.findMethod(functionName,
                     childTypes, CachedMethod.FUNCTION);
 
-        if(!cachedMethod.isMissing()) {
+        if (!cachedMethod.isMissing()) {
             Type type = cachedMethod.getReturnType();
             _setType(node, type);
         } else {
@@ -240,7 +240,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _visitAllChildren(node);
 
         Type conditionalType = ((ASTPtRootNode)node.jjtGetChild(0)).getType();
-        if(conditionalType != BaseType.BOOLEAN) {
+        if (conditionalType != BaseType.BOOLEAN) {
             throw new IllegalActionException(
                "Functional-if must branch on a boolean, but instead type was "
                + conditionalType);
@@ -256,7 +256,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
     public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
-        if(node.isConstant() && node.isEvaluated()) {
+        if (node.isConstant() && node.isEvaluated()) {
             _setType(node,
                     node.getToken().getType());
             return;
@@ -292,10 +292,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type[] childTypes = _getChildTypes(node);
 
         // Handle indexing into a record.
-        if(childTypes.length == 1 &&
+        if (childTypes.length == 1 &&
                 childTypes[0] instanceof RecordType) {
             RecordType type = (RecordType)childTypes[0];
-            if(type.labelSet().contains(node.getMethodName())) {
+            if (type.labelSet().contains(node.getMethodName())) {
                 _setType(node, type.get(node.getMethodName()));
                 return;
             }
@@ -305,7 +305,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             CachedMethod.findMethod(node.getMethodName(),
                     childTypes, CachedMethod.METHOD);
 
-        if(!cachedMethod.isMissing()) {
+        if (!cachedMethod.isMissing()) {
             Type type = cachedMethod.getReturnType();
             _setType(node, type);
          } else {
@@ -394,7 +394,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      * the given message.
      */
     protected void _assert(boolean flag, ASTPtRootNode node, String message) {
-        if(!flag) {
+        if (!flag) {
             throw new InternalErrorException(message + ": " + node.toString());
         }
     }
@@ -406,7 +406,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type[] types = new Type[node.jjtGetNumChildren()];
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             types[i] =  ((ASTPtRootNode) node.jjtGetChild(i)).getType();
-            if(types[i] == null) {
+            if (types[i] == null) {
                 throw new RuntimeException("node " + node
                         + " has null child.");
             }
@@ -419,9 +419,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      */
     protected Type _getTypeForName(String name)
             throws IllegalActionException {
-        if(_scope != null) {
+        if (_scope != null) {
             Type type = _scope.getType(name);
-            if(type != null) {
+            if (type != null) {
                 return type;
             }
         }
@@ -439,7 +439,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      */
      protected boolean _isValidName(String name)
             throws IllegalActionException {
-        if(_scope != null) {
+        if (_scope != null) {
             try {
                 return (_scope.getType(name) != null);
             } catch (Exception ex) {
@@ -466,7 +466,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             _visitChild(node, i);
             ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
             Type type = getType(child);
-            if(type == null) {
+            if (type == null) {
                 throw new RuntimeException("node " + child + " has no type.");
             }
         }
