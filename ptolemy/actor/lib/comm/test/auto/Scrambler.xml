@@ -41,34 +41,6 @@ Dot-product should be -1.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 40.0">
         </property>
     </property>
-    <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="3">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 200.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="Scrambler2" class="ptolemy.actor.lib.comm.Scrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="16">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 450.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="DotProduct" class="ptolemy.domains.sdf.lib.DotProduct">
         <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 325.0">
         </property>
@@ -183,6 +155,34 @@ Dot-product should be -1.</text></svg></configure>
             <property name="input"/>
         </port>
     </entity>
+    <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
+        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
+        </property>
+        <property name="initial" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 195.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Scrambler2" class="ptolemy.actor.lib.comm.Scrambler">
+        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
+        </property>
+        <property name="initial" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 455.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -203,8 +203,6 @@ Dot-product should be -1.</text></svg></configure>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Scrambler.output" relation="relation"/>
-    <link port="Scrambler2.output" relation="relation6"/>
     <link port="DotProduct.input1" relation="relation4"/>
     <link port="DotProduct.input2" relation="relation3"/>
     <link port="DotProduct.output" relation="relation8"/>
@@ -217,4 +215,6 @@ Dot-product should be -1.</text></svg></configure>
     <link port="Expression.bit" relation="relation"/>
     <link port="Expression2.output" relation="relation5"/>
     <link port="Expression2.bit" relation="relation6"/>
+    <link port="Scrambler.output" relation="relation"/>
+    <link port="Scrambler2.output" relation="relation6"/>
 </entity>
