@@ -107,6 +107,8 @@ public class MessageHandler {
 
     /** Return the message handler instance that is used by the static
      *  methods in this class.
+     *  @return The message handler.
+     *  @see #setMessageHandler(MessageHandler)
      */
     public static MessageHandler getMessageHandler() {
         return _handler;
@@ -124,6 +126,7 @@ public class MessageHandler {
      *  methods in this class.  If the given handler is null, then
      *  do nothing.
      *  @param handler The message handler.
+     *  @see #getMessageHandler()
      */
     public static void setMessageHandler(MessageHandler handler) {
         if (handler != null) {
@@ -156,6 +159,7 @@ public class MessageHandler {
      *  is shown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
+     *  @param throwable The throwable associated with this warning.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
     public static void warning(String info, Throwable throwable)
@@ -168,6 +172,7 @@ public class MessageHandler {
      *  NOTE: If the set error handler is graphical, then this must
      *  be called from within the swing event thread, or deadlock or
      *  rendering problems may occur.
+     *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
     public static boolean yesNoQuestion(String question) {

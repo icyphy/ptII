@@ -55,6 +55,7 @@ public class CancelException extends Exception {
     }
 
     /** Construct an exception with the specified message.
+     *  @param message The message.
      */
     public CancelException(String message) {
         super(message);

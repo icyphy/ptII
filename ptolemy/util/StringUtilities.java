@@ -70,9 +70,10 @@ public class StringUtilities {
      *  displaying the first 37 chars, then ". . .", then the last 38
      *  characters.
      *  If the <i>longName</i> argument is null, then the string
-     *  "<Unnamed>" is returned.
-     *  @see #split(String)
+     *  "&gt;Unnamed&lt;" is returned.
+     *  @param The string to be abbreviated.
      *  @return The name.
+     *  @see #split(String)
      */
     public static String abbreviate(String longName) {
         if (longName == null) {
@@ -89,12 +90,13 @@ public class StringUtilities {
      *  characters, limited to the given number of characters.
      *  If there are more than 10 newlines, then the string is truncated
      *  after 10 lines.
-     *  If the string is truncated, an ellipsis will be appended to
-     *  the end  of the string.
+     *  If the string is truncated, an ellipsis (three periods in a
+     *  row: "...") will be appended to the end of the string.
      *  Lines that are longer than 160 characters are split into lines
-     *  that are shorter than 160 characters
+     *  that are shorter than 160 characters.
      *  @param string The string to truncate.
      *  @param length The length to which to truncate the string.
+     *  @return The possibly truncated string with ellipsis possibly added.
      */
     public static String ellipsis(String string, int length) {
         // If necessary, insert newlines into long strings.
@@ -419,7 +421,7 @@ public class StringUtilities {
      *  displaying adding newlines in all newline delimited substrings
      *  that are longer than 79 characters.
      *  If the <i>longName</i> argument is null, then the string
-     *  "<Unnamed>" is returned.
+     *  "&gt;Unnamed&lt;" is returned.
      *  @see #abbreviate(String)
      *  @see #split(String, int)
      *  @param longName The string to optionally split up
@@ -435,7 +437,7 @@ public class StringUtilities {
      *  newline delimited substrings that are longer than <i>length</i>
      *  characters.
      *  If the <i>longName</i> argument is null, then the string
-     *  "<Unnamed>" is returned.
+     *  "&gt;Unnamed&lt;" is returned.
      *  @see #abbreviate(String)
      *  @see #split(String)
      *  @param longName The string to optionally split.
@@ -496,13 +498,14 @@ public class StringUtilities {
      *  @param classLoader The class loader to use to locate system
      *   resources, or null to use the system class loader.
      *  @return A URL, or null if no file name or URL has been specified.
-     *  @exception IllegalActionException If the file cannot be read, or
+     *  @exception IOException If the file cannot be read, or
      *   if the file cannot be represented as a URL (e.g. System.in), or
      *   the name specification cannot be parsed.
+     *  @exception MalformedURLException If the 
      */
     public static URL stringToURL(
             String name, URI baseDirectory, ClassLoader classLoader)
-            throws IOException, MalformedURLException {
+            throws IOException {
 
         if (name == null || name.trim().equals("")) {
             return null;
@@ -511,6 +514,7 @@ public class StringUtilities {
         // open the file relative to the classpath.
         // NOTE: Use the dummy variable constant set up in the constructor.
         if (name.startsWith(_CLASSPATH_VALUE)) {
+            System.out.println("StringUtilities: startsWith CLASS" + name);
             // Try relative to classpath.
             // The +1 is to skip over the delimitter after $CLASSPATH.
             String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
@@ -557,6 +561,7 @@ public class StringUtilities {
                             + "'");
                 }
             }
+            System.out.println("StringUtilities: " + name + " file.toURL()" + file.toURL());
             return file.toURL();
         } else {
             // Try relative to the base directory.
@@ -590,6 +595,7 @@ public class StringUtilities {
                     }
                 }
                 try {
+                    System.out.println("StringUtilities: " + name + " newURI.toURL()" + newURI.toURL());
                     return newURI.toURL();
                 } catch (IllegalArgumentException ex3) {
                     IOException io = new IOException(
@@ -605,6 +611,7 @@ public class StringUtilities {
             }
 
             // As a last resort, try an absolute URL.
+            System.out.println("StringUtilities: " + name + "last resort" + (new URL(name)).toString());
             return new URL(name);
         }
     }
@@ -642,7 +649,7 @@ public class StringUtilities {
      *
      *  <p>If <i>prefix</i> is not a simple prefix of <i>string</i>, then
      *  we use the file system to find the canonical names of the files.
-     *  For this to work, <i>prefix<i> and <i>string</i> should name
+     *  For this to work, <i>prefix</i> and <i>string</i> should name
      *  files that exist, see java.io.File.getCanonicalFile() for details.
      *
      *  <p>If <i>prefix</i> is not a prefix of <i>string</i>, then
