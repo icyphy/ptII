@@ -42,10 +42,16 @@ proc jdkProperties {} {
 }
 
 # Get Runtime information
-proc jdkRuntime {} {
+proc jdkRuntimeStatistics {} {
+    # Ptolemy 1.2 and later has this method
+    #puts "$prefix [java::call ptolemy.actor.Manager timeAndMemory -1]"
+
+    # Ptolemy 1.0.1 does not have Manager.timeAndMemory, so we use this:
     set runtime [java::call Runtime getRuntime]
-    puts "totalMemory: [$runtime totalMemory]"
-    puts "freeMemory:  [$runtime freeMemory]"
+    set totalMemory [expr {[$runtime totalMemory] /1024}]
+    set freeMemory [expr {[$runtime freeMemory] /1024}]
+    set percent [expr { round ( (double($freeMemory) / double($totalMemory)) * 100 )}]
+    return "Memory: ${totalMemory}K Free: ${freeMemory}K ${percent}%"
 }
 
 # Return the classpath separator charactor
@@ -75,7 +81,7 @@ proc jdkVersion {} {
 	    tcl patch level: $tcl_patchLevel"
     puts "java package: [package versions java]   \
 	    info loaded: [info loaded]"
-    jdkRuntime
+    puts [jdkRuntimeStatistics]
 }
 
 # Capture output to System.out
