@@ -75,15 +75,15 @@ public class Loader3D extends Shaded3DActor {
     	}
 	    catch (FileNotFoundException e) {
     	  System.err.println(e);
-    	  System.exit(1);
+    	  throw new IllegalActionException("File not found!");
 	    }
     	catch (ParsingErrorException e) {
 	      System.err.println(e);
-    	  System.exit(1);
+    	  throw new IllegalActionException("File is not a valid 3D OBJ file");
 	    }
     	catch (IncorrectFormatException e) {
 	      System.err.println(e);
-    	  System.exit(1);
+          throw new IllegalActionException("File is not a valid 3D OBJ file");
 	    }
     	obj = s;
    }
