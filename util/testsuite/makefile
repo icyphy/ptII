@@ -42,7 +42,8 @@ include $(CONFIG)
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	PrintThreads.java
+	PrintThreads.java \
+	WatchDog.java
 
 TCL_SRCS = \
 	auto.tcl \
