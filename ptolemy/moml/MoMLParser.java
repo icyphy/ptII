@@ -1830,7 +1830,6 @@ public class MoMLParser extends HandlerBase {
     private ComponentEntity _attemptToFindMoMLClass(
             String className, String source) throws Exception {
         String classAsFile = null;
-        String altClassAsFile = null;
         ComponentEntity reference = null;
         if (source == null) {
             // No source defined.  Use the classpath.
@@ -1840,11 +1839,7 @@ public class MoMLParser extends HandlerBase {
             // NOTE: This should perhaps be handled by the
             // class loader, but it seems rather complicated to
             // do that.
-            // Search for the .xml file before searching for the .moml
-            // file.  .moml files are obsolete, and we should probably
-            // not bother searching for them at all.
             classAsFile = className.replace('.','/') + ".xml";
-            altClassAsFile = className.replace('.','/') + ".moml";
         } else {
             // Source is given.
             classAsFile = source;
@@ -1855,29 +1850,8 @@ public class MoMLParser extends HandlerBase {
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
 
         NamedObj candidateReference = null;
-        try {
-            candidateReference =
-                _parse(newParser, _base, classAsFile);
-        } catch (Exception ex2) {
-            // Try the alternate file, if it's not null.
-            if (altClassAsFile != null) {
-                try {
-                    candidateReference =
-                        _parse(newParser, _base, altClassAsFile);
-                    classAsFile = altClassAsFile;
-                } catch (Exception ex3) {
-                    // Cannot find class definition.
-                    throw new XmlException(
-                            ex3.getMessage(),
-                            _currentExternalEntity(),
-                            _parser.getLineNumber(),
-                            _parser.getColumnNumber());
-                }
-            } else {
-                // No alternative. Rethrow exception.
-                throw ex2;
-            }
-        }
+        candidateReference = _parse(newParser, _base, classAsFile);
+
         if (candidateReference instanceof ComponentEntity) {
             reference = (ComponentEntity)candidateReference;
         } else {
