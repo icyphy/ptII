@@ -47,12 +47,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Thermostat.java
 
-EXTRA_SRCS = \
-	$(JSRCS) \
+OTHER_FILES_TO_BE_JARED = \
 	Thermostat.gif \
 	Thermostat.htm \
-	Thermostat.vsd \
 	Thermostat.xml
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
+	Thermostat.vsd
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
