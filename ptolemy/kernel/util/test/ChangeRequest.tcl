@@ -116,7 +116,7 @@ test ChangeRequest-4.0 {StreamChangeListener} {
 	# This will always return immeadiately because the change is
 	# not pending
 	$changeRequest waitForCompletion
-    } stdoutResults 1000
+    } stdoutResults
     $printStream flush
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
