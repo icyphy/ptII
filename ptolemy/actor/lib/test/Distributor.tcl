@@ -130,4 +130,4 @@ test Distributor-5.1 {test under DE} {
     $m execute
     list [enumToStrings [$rec1 getTimeRecord]] \
             [enumToStrings [$rec2 getTimeRecord]]
-} {{0.0 2.0 4.0} {1.0 3.0 5.0}}
+} {{0.0 2.0 4.0 6.0} {1.0 3.0 5.0}}

@@ -102,3 +102,32 @@ test Commutator-4.1 {run with mutations} {
     $m wrapup
     enumToTokenValues [$rec getRecord 0]
 } {0 0 1}
+
+test Commutator-5.1 {test under DE} {
+    set e0 [deModel 6.0]
+    set dir [$e0 getDirector]
+    set m [$e0 getManager]
+    set clock1 [java::new ptolemy.actor.lib.Clock $e0 clock1]
+    set p [getParameter $clock1 period]
+    $p setExpression {3.0}
+    set p [getParameter $clock1 values]
+    $p setExpression {[-1, -2]}
+    set commutator [java::new ptolemy.actor.lib.Commutator $e0 commutator]
+    set in1 [java::field [java::cast ptolemy.actor.lib.Transformer \
+            $commutator] input]
+    set clock2 [java::new ptolemy.actor.lib.Clock $e0 clock2]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $clock1] output] \
+            $in1
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $clock2] output] \
+            $in1
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Transformer \
+            $commutator] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    $m execute
+    list [enumToTokenValues [$rec getRecord 0]] \
+            [enumToStrings [$rec getTimeRecord]]
+} {{-1 1 -2 0 -1 1 -2 0 -1 1} {0.0 0.0 1.0 1.0 3.0 3.0 4.0 4.0 6.0 6.0}}

@@ -67,11 +67,11 @@ test Clock-2.1 {test with the default output value} {
             [java::new ptolemy.actor.DefaultExecutionListener]
     $manager execute
     enumToTokenValues [$rec getRecord 0]
-} {1 0 1 0}
+} {1 0 1 0 1}
 
 test Clock-2.2 {check times} {
     enumToStrings [$rec getTimeRecord]
-} {0.0 1.0 2.0 3.0}
+} {0.0 1.0 2.0 3.0 4.0}
 
 test Clock-2.3 {change output value and type and rerun} {
     set p [getParameter $clock values]
@@ -82,4 +82,4 @@ test Clock-2.3 {change output value and type and rerun} {
     $mt stringValue
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {0.5 -0.5 0.5 -0.5}
+} {0.5 -0.5 0.5 -0.5 0.5}
