@@ -360,7 +360,8 @@ public class CSPDirector extends CompositeProcessDirector {
             // } else if ( _actorsBlocked == _getActiveActorsCount() ) {
         } else if ( _getBlockedActorsCount() == _getActiveActorsCount() ) {
             // Real deadlock.
-            System.out.println("REAL DEADLOCK");
+            System.out.println("REAL DEADLOCK. Number of active actors: "
+                    + _getActiveActorsCount());
             return false;
         }
         // Return true for topology changes and time deadlock.
