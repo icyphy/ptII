@@ -46,7 +46,7 @@ $Id$
 
 */
 
-public class DimensionType implements Type 
+public class DimensionType implements Type implements CPO
 {
     /** Return true if the given type is equal to this type.   In other words, 
      *  an object with this type can be expressed as an object of Type t with 
