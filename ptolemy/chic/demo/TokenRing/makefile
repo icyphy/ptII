@@ -28,10 +28,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/chic/demo
+ME =		ptolemy/chic/demo/TokenRing
 
 # Keep these alphabetical please.
-DIRS = 		TokenRing
+DIRS = 		
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
+PTPACKAGE = 	TokenRing
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
