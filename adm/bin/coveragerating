@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Thu Feb  5 09:51:36 2004 by cxh]-
+# -[Thu Feb  5 16:21:27 2004 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -175,7 +175,12 @@ awk '{
 		packageAsDirectory = packageAsDirectory "/" pkg[i]
 	    }
 
-	    printf("%s %s <a name=%c%s%c>%s</a> <a href=%chttp://chess.eecs.berkeley.edu/ptolemy/reviews%s/%c>Reviews</a></th></TR>\n", $1, $2, 34, package, 34, package, 34, packageAsDirectory, 34)
+	    printf("%s %s <a name=%c%s%c>%s</a>\n", $1, $2, 34, package, 34, package)
+	    printf(" (<a href=%chttp://chess.eecs.berkeley.edu/ptolemy/reviews%s/%c>Reviews</a>,\n",34, packageAsDirectory, 34)
+
+	    printf(" <a href=%chttp://chess.eecs.berkeley.edu/ptolemy/src/ptII/doc/codeDoc%s/package-summary.html%c>JavaDoc</a>,\n ", 34, packageAsDirectory, 34)
+
+	    printf(" <a href=%cdoccheck%s/PackageErrors.html%c>Doccheck</a>)</th></TR>\n", 34, packageAsDirectory, 34)
 	} else {
 	    if ( $0 ~ /<TR><th align="center">/) {
 		if ($0 !~ /TOTAL/) {
@@ -266,7 +271,8 @@ awk '{
 	}
      }
      END {
-	print "<a name=\"complexity\">Complexity:</a>" 
+	print "<h2><a name=\"definitions\">Definitions</a></h3>" 
+	print "<h3><a name=\"complexity\">Complexity</a></h3>" 
 	print "The complexity column measures the cyclomatic complexity"
 	print "<br>The first number is the cyclomatic complexity as reported"
 	print "by the GNU jv-scan program.  In general, low numbers are"
@@ -287,6 +293,12 @@ awk '{
 	print "be refactored to aid in testability"
 	print "<br>If a file has only a percentage, then jv-scan failed"
 	print "to process it."
+	print "<h3><a name=\"doccheck\">Doccheck</a></h3>" 
+	print "Doccheck is a javadoc doclet that checks for javadoc bugs."
+	print "See "
+	print "<a href=\"http://java.sun.com/developer/earlyAccess/doccheck/\"><code>http://java.sun.com/developer/earlyAccess/doccheck/</code></a>"
+	print "<p>You may also find the "
+	print "<a href=\"doccheck/\">Doccheck Main Page</a> of interest"
      }' > /tmp/coveragerating.out
 
 # Create a TOC
@@ -299,6 +311,8 @@ awk ' BEGIN {
 	print "<href=\"http://chess.eecs.berkeley.edu/ptolemy/reviews/index.htm\" target=\"_top\">review</a>"
 	print "because the <code>@AcceptedRating</code> and the"
 	print "<code>@ProposedRating</code> are different."
+	print "<p>&nbsp;&nbsp;Other definitions/explanations can be found"
+	print "<a href=\#definitions\">below</a>."
 	print "<menu>"
     }
     { if (printedDate == 0) {
