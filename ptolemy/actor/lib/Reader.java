@@ -208,7 +208,7 @@ public class Reader extends Source {
         }
     }
 
-    /** initalize the data array.
+    /** initialize the data array.
      */
     public void initialize() throws IllegalActionException {
         _dataSize = output.getWidth();
