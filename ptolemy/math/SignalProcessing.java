@@ -51,7 +51,7 @@ import java.util.*;
  * Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with 
  * Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
  *
- * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+ * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay, Elaine Cheong
  * @version $Id$
  */
 public class SignalProcessing {
@@ -257,6 +257,21 @@ public class SignalProcessing {
      */
     public static final double[] downsample(double[] x, int n,
      int startIndex) {
+        if (x.length <= 0) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.downsample() : array length must be greater than 0.");
+        }
+
+        if (n <= 0) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.downsample() : downsampling factor must be greater than 0.");
+        } 
+
+        if (startIndex < 0 || startIndex > x.length - 1) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.downsample() : startIndex must be between 0 and L - 1, where L is the size of the input array.");
+        }
+
         int length = (x.length - startIndex) / n;
         double[] retval = new double[length];
 
@@ -875,7 +890,7 @@ public class SignalProcessing {
     public static final int nextPowerOfTwo(double x) {
         if (x <= 0.0) {
             throw new IllegalArgumentException(
-                    "SignalProcessing.nextPowerOfTwo: argument (" + x +
+                    "ptolemy.math.SignalProcessing.nextPowerOfTwo: argument (" + x +
                     ") is not a positive number.");
         }
         double m = Math.log(x)*_LOG2SCALE;
@@ -891,14 +906,28 @@ public class SignalProcessing {
      *  begins at the falling edge with value -1.0.
      *  If it is 0.25, it begins at +0.5.
      *
+     *  Throw an exception if the period is less than or equal to 0.
+     *
      *  @param period The period of the sawtooth wave.
      *  @param phase The phase of the sawtooth wave.
      *  @param time The time of the sample.
      *  @return A double in the range -1.0 to +1.0.
      */
     public static double sawtooth(double period, double phase, double time) {
-        double point = ((time/period)+phase+0.5)%1.0;
-        return 2.0*point-1.0;
+        if (period <= 0) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.sawtooth(): " +
+                    "period should be greater than 0.");
+        }
+
+        double point = (2/period) * 
+            Math.IEEEremainder(time + (phase * period), period);
+
+        // get rid of negative zero
+        point = (point == -0.0) ? 0.0 : point;
+
+        // hole at +1.0
+        return (point == 1.0) ? -1.0 : point;
     }
 
     /** Return sin(x)/x, the so-called sinc function.
@@ -923,14 +952,25 @@ public class SignalProcessing {
      *  begins at the start of the -1.0 phase. If it is 0.25, it begins halfway
      *  through the +1.0 portion of the wave.
      *
+     *  Throw an exception if the period is less than or equal to 0.
+     *
      *  @param period The period of the square wave.
      *  @param phase The phase of the square wave.
      *  @param time The time of the sample.
      *  @return +1.0 or -1.0.
      */
     public static double square(double period, double phase, double time) {
-        double point = (time+(phase*period))%period;
-        return (point < period/2.0)?1.0:-1.0;
+        if (period <= 0) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.square(): " +
+                    "period should be greater than 0.");
+        }
+
+        double point = (2/period) * 
+            Math.IEEEremainder(time + (phase * period), period);
+ 
+        // hole at +1.0
+        return (point >= 0 && point < 1) ? 1.0 : -1.0;  
     }
 
     /** Return a sample of a triangle wave with the specified period and
@@ -940,25 +980,49 @@ public class SignalProcessing {
      *  the wave begins at zero with a rising slope.  If it is 0.5, it
      *  begins at zero with a falling slope. If it is 0.25, it begins at +1.0.
      *
+     *  Throw an exception if the period is less than or equal to 0.
+     *
      *  @param period The period of the triangle wave.
      *  @param phase The phase of the triangle wave.
      *  @param time The time of the sample.
      *  @return A number in the range -1.0 to +1.0.
      */
     public static double triangle(double period, double phase, double time) {
-        double point = ((time/period)+phase+0.25)%1.0;
-        return (point < 0.5)?(4.0*point-1.0):(((1.0-point)*4.0)-1.0);
-    }
+        if (period <= 0) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.triangle(): " +
+                    "period should be greater than 0.");
+        }
 
+        double point = Math.IEEEremainder(time + (phase * period), period);
+ 
+        if (-period/2.0 <= point && point < -period/4.0) {
+            point = -(4.0/period * point) - 2;
+        } else if (-period/4.0 <= point && point < period/4.0) {
+            point = 4.0/period * point;
+        } else { // if (T/4.0 <= point && point < T/2.0)
+            point = -(4.0/period * point) + 2;
+        }
+
+        return point;
+    }
 
     /** Return a new array that is the result of inserting (n-1) zeroes
      *  between each successive sample in the input array, resulting in an
      *  array of length n * L, where L is the length of the original array.
+     *
+     *  Throw an exception for n < 0.
+     *
      *  @param x The input array of doubles.
      *  @param n An integer specifying the upsampling factor.
      *  @return A new array of doubles.
      */
     public static final double[] upsample(double[] x, int n) {
+        if (n < 0) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.upsample() : upsampling factor must be greater than or equal to 0.");
+        } 
+
         int length = x.length * n;
         double[] retval = new double[length];
         int srcIndex = 0;
@@ -973,21 +1037,24 @@ public class SignalProcessing {
         return retval;
     }
 
-    /** Modify the specified array to unwrap the angles.
-     *  That is, if the difference between successive values is greater than
+    /** Modify the specified array to unwrap the angles.  That is, if
+     *  the difference between successive values is greater than *
      *  <em>PI</em> in magnitude, then the second value is modified by
-     *  multiples of 2<em>PI</em> until the difference is less than <em>PI</em>.
-     *  In addition, the first element is modified so that its difference from
-     *  zero is less than <em>PI</em> in magnitude.  This method is used
-     *  for generating more meaningful phase plots.
+     *  * multiples of 2<em>PI</em> until the difference is less than
+     *  or * equal to <em>PI</em>.
+     *
+     *  In addition, the first element is modified so that its
+     *  difference from zero is less than or equal to <em>PI</em> in
+     *  magnitude.  This method is used for generating more meaningful
+     *  phase plots.
      */
     public static final void unwrap(double[] angles) {
         double previous = 0.0;
-        for (int i = angles.length-1; i >= 0; i--) {
+        for (int i = 0; i < angles.length; i++) {
             while (angles[i] - previous < -Math.PI) {
                 angles[i] += 2*Math.PI;
             }
-            while (angles[i] - previous > -Math.PI) {
+            while (angles[i] - previous > Math.PI) {
                 angles[i] -= 2*Math.PI;
             }
             previous = angles[i];
@@ -1121,8 +1188,8 @@ public class SignalProcessing {
      *  The function computed is :
      *  <p>
      *  <pre>
-     *  h(t) = (1/(sqrt(2*PI) * stdDev) *
-     *         exp(-(t - mean)<sup>2</sup>/stdDev<sup>2</sup>)
+     *  h(t) = (1/(sqrt(2 * PI) * stdDev) *
+     *         exp(-(t - mean)<sup>2</sup> / (2 * stdDev<sup>2</sup>))
      *  </pre>
      *  </p>
      */
@@ -1134,7 +1201,7 @@ public class SignalProcessing {
          */
         public GaussianSampleGenerator(double mean, double standardDeviation) {
             _mean = mean;
-            _oneOverVariance = 1.0 / (standardDeviation * standardDeviation);
+            _oneOverTwoVariance = 1.0 / (2.0 * standardDeviation * standardDeviation);
             _factor = ONE_OVER_SQRT_TWO_PI / standardDeviation;
         }
 
@@ -1144,10 +1211,10 @@ public class SignalProcessing {
         public final double operate(double time) {
             double shiftedTime = time - _mean;
             return _factor *
-                Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
+                Math.exp(-shiftedTime * shiftedTime * _oneOverTwoVariance);
         }
 
-        private final double _mean, _oneOverVariance, _factor;
+        private final double _mean, _oneOverTwoVariance, _factor;
         private static final double ONE_OVER_SQRT_TWO_PI =
         1.0 / Math.sqrt(2 * Math.PI);
     }
@@ -1185,7 +1252,7 @@ public class SignalProcessing {
             _coeffLength = coefficients.length;
                         
             // copy coefficient array            
-            _coefficients = DoubleArrayMath.resize(coefficients, _coeffLength);            
+            _coefficients = DoubleArrayMath.resize(coefficients, _coeffLength);
             _direction = direction;
         }
                                                                    
@@ -1225,7 +1292,7 @@ public class SignalProcessing {
          *  begins at the falling edge with value -1.0.
          *  If it is 0.25, it begins at +0.5.
          */
-        SawtoothSampleGenerator(double period, double phase) {
+        public SawtoothSampleGenerator(double period, double phase) {
             _period = period;
             _phase = phase;
         }
@@ -1234,8 +1301,7 @@ public class SignalProcessing {
          *  specified time.
          */
         public final double operate(double time) {
-            double point = ((time / _period) + _phase + 0.5) % 1.0;
-            return 2.0 * point - 1.0;
+            return sawtooth(_period, _phase, time);
         }
 
         private final double _period, _phase;
@@ -1337,6 +1403,9 @@ public class SignalProcessing {
         private final double _excess;
     }
 
+    /** This class generates samples of a sinc wave with the specified
+     *  first zero crossing.
+     */
     public static class SincSampleGenerator implements DoubleUnaryOperation {
         public SincSampleGenerator(double firstZeroCrossing) {
             _piOverFZC = Math.PI / firstZeroCrossing;

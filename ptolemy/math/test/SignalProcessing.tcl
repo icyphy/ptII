@@ -1,6 +1,6 @@
 # Tests for the SignalProcessing Class
 #
-# @Author: Edward A. Lee, Christopher Hylands, Jeff Tsay
+# @Author: Edward A. Lee, Christopher Hylands, Jeff Tsay, Elaine Cheong
 #
 # @Version: $Id$
 #
@@ -225,7 +225,6 @@ test SignalProcessing-4.1 {decibel} {
 	    ] {NaN -Infinity -20 0.0 20 }
 } {}
 
-
 ####################################################################
 test SignalProcessing-4.2 {decibel array: empty array} {
     set dbresults [java::call ptolemy.math.SignalProcessing \
@@ -269,7 +268,7 @@ test SignalProcessing-5.3 {DCT double[] implicit order 4} {
 ####################################################################
 test SignalProcessing-5.4 {DCT double[] order 0 normalized} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
-                   {DCT double[] int int} $a1 0 0]
+                   {DCT double[] int int} $a1 0 $normdct]
     # this is -36.32 / sqrt(2)
     epsilonDiff [$dctresult getrange 0] {-25.68211829}
 } {}
@@ -576,7 +575,7 @@ test SignalProcessing-10.3 {IDCT double[] implicit order 4} {
 test SignalProcessing-10.4 {IDCT double[] order 0 normalized} {
     set tin [java::new {double[]} 1 [list -25.68211829]]
     set idctresult [java::call ptolemy.math.SignalProcessing \
-                   {IDCT double[] int int} $tin 0 0]
+                   {IDCT double[] int int} $tin 0 $normdct]
     set tin [java::new {double[]} 1 [list -25.68211829]]
     epsilonDiff [$a1 getrange 0] [$idctresult getrange 0]
 } {}
@@ -607,7 +606,7 @@ test SignalProcessing-10.7 {IDCT double[] order 1 normalized} {
 } {}
 
 ####################################################################
-test SignalProcessing-10.8 {DCT double[] order 1 un-normalized} {
+test SignalProcessing-10.8 {IDCT double[] order 1 un-normalized} {
     set tin [java::new {double[]} 2 [list 45.59 35.942237687712]]
     set idctresult [java::call ptolemy.math.SignalProcessing \
             	   {IDCT double[] int int} $tin 1 $unnormdct]       
@@ -655,7 +654,7 @@ test SignalProcessing-11.1 {IFFTComplexOut Complex: empty array} {
 
 ####################################################################
 test SignalProcessing-11.2 {IFFTComplexOut Complex : order 1} {
-    # The inverse of test 5.4 above
+    # The inverse of test 6.4 above (FFTComplexOut Complex[] order 1)
     set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1 ]]
     set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca2]
@@ -678,7 +677,7 @@ test SignalProcessing-11.4 {IFFTComplexOut: order 0} {
 } {}
 
 ####################################################################
-test SignalProcessing-11.5 {IFFTComplexOut Complex: order 1} {
+test SignalProcessing-11.5 {IFFTComplexOut Complex int: order 1} {
     # The inverse of test 5.4 above
     set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1]]
     set result [java::call ptolemy.math.SignalProcessing \
@@ -687,7 +686,7 @@ test SignalProcessing-11.5 {IFFTComplexOut Complex: order 1} {
 } {{1.0 + 0.0i} {0.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-11.6 {IFFTComplexOut Complex: array that is not a power of two in length} {
+test SignalProcessing-11.6 {IFFTComplexOut Complex int: array that is not a power of two in length} {
     set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
     set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca3 2]
@@ -695,7 +694,7 @@ test SignalProcessing-11.6 {IFFTComplexOut Complex: array that is not a power of
 } {}
 
 ####################################################################
-test SignalProcessing-11.7 {IFFTComplexOut Complex: array is longer than order} {
+test SignalProcessing-11.7 {IFFTComplexOut Complex int: array is longer than order} {
     set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
     set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca3 1]
@@ -703,12 +702,46 @@ test SignalProcessing-11.7 {IFFTComplexOut Complex: array is longer than order} 
 } {{0.5 + 0.0i} {0.5 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-11.8 {poleZeroToFreq:} {
+test SignalProcessing-12.1 {poleZeroToFreq} {
     list "We need tests for poleZeroToFreq with realistic input data"
-} {1} {KNOW_ERROR}
+
+    # some complex numbers
+    set zero0 [java::new ptolemy.math.Complex -0.1 0]
+    set pole0 [java::new ptolemy.math.Complex -5 0]
+    set gain  [java::new ptolemy.math.Complex 1 0]
+
+    # list of zeros
+    set zeros [java::new {ptolemy.math.Complex[]} 1 [list $zero0]]
+
+    # list of poles
+    set poles [java::new {ptolemy.math.Complex[]} 1 [list $pole0]]
+
+    # try with 6 steps
+    set result [java::call ptolemy.math.SignalProcessing \
+            poleZeroToFreq $poles $zeros $gain 6]
+
+    javaPrintArray $result
+
+#    epsilonDiff [javaPrintArray $result] { \
+#            {-0.22500000000000 + 0.0i} \
+#            {-0.05000000000000 - 0.20207259421637i} \
+#            {0.13064516129032 - 0.13688788640464i} \
+#            {0.18333333333333 + 0.0i} \
+#            {0.13064516129032 + 0.13688788640464i} \
+#            {-0.05000000000000 + 0.20207259421637i}}
+
+# 4
+# {-0.22500000000000 + 0.0i}
+# {+0.05769230769231 - 0.18846153846154i}
+# {+0.18333333333333 + 0.0i}
+# {+0.05769230769231 + 0.18846153846154i}
+
+# FIX!! epsilonDiff doesn't like complex numbers??
+
+} {} {KNOWN_ERROR}
 
 ####################################################################
-test SignalProcessing-12.1  {nextPowerOfTwo: check range} {
+test SignalProcessing-13.1  {nextPowerOfTwo: check range} {
     set negative [catch {[java::call \
 	    ptolemy.math.SignalProcessing nextPowerOfTwo -0.01]} errMsg]
     set zero [catch {[java::call \
@@ -721,7 +754,7 @@ test SignalProcessing-12.1  {nextPowerOfTwo: check range} {
 } {1 1 4 16}
 
 ####################################################################
-test SignalProcessing-13.1 {sampleWave polynomial - line} {
+test SignalProcessing-14.1 {sampleWave Polynomial - line} {
     set tin [java::new {double[]} 2 [list 2.0 -3.0]]
     set lineGen [java::new ptolemy.math.SignalProcessing\$PolynomialSampleGenerator \
     $tin 1]
@@ -731,7 +764,7 @@ test SignalProcessing-13.1 {sampleWave polynomial - line} {
 } {}
 
 ####################################################################
-test SignalProcessing-13.2 {sampleWave raisedCosine with + excess} {
+test SignalProcessing-15.1 {sampleWave RaisedCosine with + excess} {
     set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 7.2 5.0]
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 4 -2.2 \
     1.1 $rcGen]
@@ -740,7 +773,7 @@ test SignalProcessing-13.2 {sampleWave raisedCosine with + excess} {
 } {}
 
 ####################################################################
-test SignalProcessing-13.3 {sampleWave raisedCosine with 0 excess} {
+test SignalProcessing-15.2 {sampleWave RaisedCosine with 0 excess} {
     set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 3.2 0.0]
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 4 -2.2 \
     1.1 $rcGen]
@@ -749,7 +782,7 @@ test SignalProcessing-13.3 {sampleWave raisedCosine with 0 excess} {
 } {}
 
 ####################################################################
-test SignalProcessing-14.1 {sampleWave sqrtRaisedCosine excess 0} {
+test SignalProcessing-16.1 {sampleWave SqrtRaisedCosine excess 0} {
     set rcGen [java::new ptolemy.math.SignalProcessing\$SqrtRaisedCosineSampleGenerator 3.2 0.0]
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 4 -1.0 \
     1.0 $rcGen]
@@ -758,7 +791,7 @@ test SignalProcessing-14.1 {sampleWave sqrtRaisedCosine excess 0} {
 } {}
 
 ####################################################################
-test SignalProcessing-14.2 {sampleWave sqrtRaisedCosine with + excess} {
+test SignalProcessing-16.2 {sampleWave SqrtRaisedCosine with + excess} {
     set rcGen [java::new ptolemy.math.SignalProcessing\$SqrtRaisedCosineSampleGenerator 3.2 0.6]
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 4 -1.0 \
     1.0 $rcGen]
@@ -767,24 +800,109 @@ test SignalProcessing-14.2 {sampleWave sqrtRaisedCosine with + excess} {
 } {}
 
 ####################################################################
-test SignalProcessing-15.2 {sampleWave sinusoid} {
-    set sinGen [java::new ptolemy.math.SignalProcessing\$SinusoidSampleGenerator     -3.0 -2.0]
+test SignalProcessing-17.1 {sampleWave Sinusoid} {
+    set sinGen [java::new ptolemy.math.SignalProcessing\$SinusoidSampleGenerator \
+            -3.0 -2.0]
     set sinOut [java::call ptolemy.math.SignalProcessing sampleWave 9 -5.0 \
-    1.25 $sinGen]
+            1.25 $sinGen]
     epsilonDiff [$sinOut getrange 0] \
- {0.90744678145020 -0.98476517346732 0.70866977429126  -0.17824605564949 \
-  -0.41614683654714 0.86119241716152 -0.99717215619638 0.77528547012929 \
-  -0.27516333805160}
+            {0.90744678145020 -0.98476517346732 0.70866977429126  \
+            -0.17824605564949 -0.41614683654714 0.86119241716152 \
+            -0.99717215619638 0.77528547012929 -0.27516333805160}
 } {}
 
 ####################################################################
-test SignalProcessing-16.1 {sinc} {
+test SignalProcessing-17.2 {sampleWave Sinusoid negative frequency} {
+    set sinGen [java::new ptolemy.math.SignalProcessing\$SinusoidSampleGenerator \
+            -3.0 -2.0]
+    set sinOut [java::call ptolemy.math.SignalProcessing sampleWave 9 -5.0 \
+            1.25 $sinGen]
+    epsilonDiff [$sinOut getrange 0] \
+            {0.90744678145020 -0.98476517346732 0.70866977429126  \
+            -0.17824605564949 -0.41614683654714 0.86119241716152 \
+            -0.99717215619638 0.77528547012929 -0.27516333805160}
+    # what is a negative frequency?  this is just a copy of the previous test
+} {} {KNOWN_ERROR}
+
+####################################################################
+test SignalProcessing-18.1 {sampleWave Sawtooth holes} {
+    set sawGen [java::new ptolemy.math.SignalProcessing\$SawtoothSampleGenerator \
+            1.0 0.5]
+    set sawOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -1.0 \
+            0.2 $sawGen]
+    epsilonDiff [$sawOut getrange 0] \
+            {-1.0 -0.6 -0.2 0.2 0.6 -1.0 -0.6 -0.2 0.2 0.6}
+    # sampleWave accumulates slight inaccuracies in the time:
+#sampleWave: time = -0.8
+#sampleWave: time = -0.6000000000000001
+#sampleWave: time = -0.4000000000000001
+#sampleWave: time = -0.20000000000000007
+#sampleWave: time = -5.551115123125783E-17
+#sampleWave: time = 0.19999999999999996
+#sampleWave: time = 0.39999999999999997
+#sampleWave: time = 0.6
+#sampleWave: time = 0.8
+#sampleWave: time = 1.0  
+    # this will cause problems for the hole at +1.0
+} {} {KNOWN_ERROR}
+
+####################################################################
+test SignalProcessing-18.2 {sampleWave Sawtooth no holes} {
+    set sawGen [java::new ptolemy.math.SignalProcessing\$SawtoothSampleGenerator \
+            1.0 0.0]
+    set sawOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -1.0 \
+            0.2 $sawGen]
+    epsilonDiff [$sawOut getrange 0] \
+            {0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4}
+} {}
+
+####################################################################
+test SignalProcessing-19.1 {sampleWave Sinc} {
+    set sincGen [java::new ptolemy.math.SignalProcessing\$SincSampleGenerator \
+            3.14]
+    set sincOut [java::call ptolemy.math.SignalProcessing sampleWave 20 -4.0 \
+            0.5 $sincGen]
+    epsilonDiff [$sincOut getrange 0] \
+            {
+  -0.18943568720351  -0.10064755568875   0.04651421716791   0.23886115977000 \
+   0.45420702340276   0.66469520114496   0.84131819692457   0.95880984671039 \
+   1.00000000000000   0.95880984671039   0.84131819692457   0.66469520114496 \
+   0.45420702340276   0.23886115977000   0.04651421716791  -0.10064755568875 \
+  -0.18943568720351  -0.21722508807246  -0.19154320726457  -0.12785526285895 
+    }
+} {}
+
+####################################################################
+test SignalProcessing-19.2 {sampleWave Sinc zero crossing at 0} {
+    set sincGen [java::new ptolemy.math.SignalProcessing\$SincSampleGenerator \
+            0]
+    set sincOut [java::call ptolemy.math.SignalProcessing sampleWave 20 -4.0 \
+            0.5 $sincGen]
+    # FIX!!  SincSampleGenerator does not properly accept zero crossing at 0
+    # (divide by zero generates NaN!!!)
+} {} {KNOWN_ERROR}
+
+####################################################################
+test SignalProcessing-20.1 {sampleWave Gaussian} {
+    set gaussGen [java::new ptolemy.math.SignalProcessing\$GaussianSampleGenerator \
+            0.0 1.0]
+    set gaussOut [java::call ptolemy.math.SignalProcessing sampleWave 9 -4.0 \
+            1.0 $gaussGen]
+    epsilonDiff [$gaussOut getrange 0] \
+            {0.00013383022576 0.00443184841194 0.05399096651319 0.24197072451914 \
+             0.39894228040143 0.24197072451914 0.05399096651319 0.00443184841194 \
+             0.00013383022576}
+} {}
+
+####################################################################
+test SignalProcessing-21.1 {sinc} {
     SignalProcessingApply sinc {0.0  -0.20674833578317 0.41349667156634 1.0 \
 	    0.41349667156634  -0.20674833578317  0.0} \
 {-6.28318530717959 -4.18879020478639 -2.09439510239320 0.0 \
 2.09439510239319 4.18879020478639 6.28318530717959}
 } {}
-  
+
+####################################################################
 # Used to test sawtooth, square and triangle
 proc _testSignalProcessingFunction { function period phase \
 	starttime endtime steptime} {
@@ -820,67 +938,145 @@ proc _testSignalProcessingFunction { function period phase \
 }
 
 ####################################################################
-test SignalProcessing-16.1 {sawtooth} {
+test SignalProcessing-19.1 {sawtooth} {
     _testSignalProcessingFunction sawtooth 1.0 0.0 -1.0 2.0 0.2
-} {-2.0 -1.6 -1.2 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4}
+} {0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4}
 
 ####################################################################
-test SignalProcessing-16.2 {sawtooth: negative period} {
-    # FIXME, some of the results are less than -1.0?
-    _testSignalProcessingFunction sawtooth -1.0 0.5 -1.0 2.0 0.2
-} {} {KNOWN_ERROR}
+test SignalProcessing-19.2 {sawtooth: negative period} {
+    catch {set result [java::call ptolemy.math.SignalProcessing \
+            sawtooth -1.0 0.5 -1.0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.sawtooth(): period should be greater than 0.}}
 
 ####################################################################
-test SignalProcessing-16.3 {sawtooth: negative phase} {
-    # FIXME, some of the results are less than -1.0?
+test SignalProcessing-19.3 {sawtooth: negative phase} {
     _testSignalProcessingFunction sawtooth 1.0 -0.5 -1.0 2.0 0.2
-    #{-1.0 0.6 0.2 -0.2 -0.6 -1.0 0.6 0.2 -0.2 -0.6 -1.0 -1.4 -1.8 -2.2 -2.6}
-} {} {KNOWN_ERROR}
+} {-1.0 -0.6 -0.2 0.2 0.6 -1.0 -0.6 -0.2 0.2 0.6 -1.0 -0.6 -0.2 0.2 0.6}
 
 ####################################################################
-test SignalProcessing-17.1 {square} {
-    # FIXME, should these vary more at the beginning
+test SignalProcessing-20.1 {square} {
     _testSignalProcessingFunction square 1.0 0.5 -1.0 2.0 0.2
-    #1.0 1.0 1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0
-} {} {KNOWN_ERROR}
+} {-1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0}
 
 ####################################################################
-test SignalProcessing-17.2 {square: negative period} {
-    # FIXME, the value goes to -1 and stays there?
-    _testSignalProcessingFunction square -1.0 0.5 -1.0 2.0 0.2
-    #-1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
-} {} {KNOWN_ERROR}
+test SignalProcessing-20.2 {square: negative period} {
+    catch {set result [java::call ptolemy.math.SignalProcessing \
+            square -1.0 0.5 -1.0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.square(): period should be greater than 0.}}
 
 ####################################################################
-test SignalProcessing-17.3 {square: negative phase} {
-    # FIXME, the value is always -1?
-    _testSignalProcessingFunction square -1.0 -0.5 -1.0 2.0 0.2
-    #-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
-} {} {KNOWN_ERROR}
-
+test SignalProcessing-20.3 {square: negative phase} {
+    _testSignalProcessingFunction square 1.0 -0.5 -1.0 2.0 0.2
+} {-1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0}
 
 ####################################################################
-test SignalProcessing-20.1 {triangle} {
-    # FIXME: Does not look very triangular to me
+test SignalProcessing-21.1 {triangle} {
     _testSignalProcessingFunction triangle 1.0 0.5 -1.0 2.0 0.2
-    #-2.0 -1.2 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8
-} {} {KNOWN_ERROR}
+} {0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8}
 
 ####################################################################
-test SignalProcessing-20.2 {triangle: negative period} {
-    # FIXME: values are less than -1.0
-    _testSignalProcessingFunction triangle -1.0 0.5 -1.0 2.0 0.2
-    #0.0 0.8 0.4 -0.4 -0.8 0.0 0.8 0.4 -0.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2
-} {} {KNOW_ERROR}
+test SignalProcessing-21.2 {triangle: negative period} {
+    catch {set result [java::call ptolemy.math.SignalProcessing \
+            triangle -1.0 0.5 -1.0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.triangle(): period should be greater than 0.}}
 
 ####################################################################
-test SignalProcessing-20.3 {triangle: negative phase} {
-    # FIXME: values are less than -1.0
-    _testSignalProcessingFunction triangle -1.0 -0.5 -1.0 2.0 0.2
-    #0.0 0.8 0.4 -0.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2
-} {} {KNOW_ERROR}
+test SignalProcessing-21.3 {triangle: negative phase} {
+    _testSignalProcessingFunction triangle 1.0 -0.5 -1.0 2.0 0.2
+} {0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8}
 
 ####################################################################
-test SignalProcessing-21.1 {unwrap} {
-    list "We need tests for unwrap with realistic input data"
-} {1} {KNOW_ERROR}
+test SignalProcessing-22.1 {unwrap double[] start at 0.0} {
+    set uwarray [java::new {double[]} 3 [list 0.0 4.14 -15.7]]
+    java::call ptolemy.math.SignalProcessing {unwrap double[]} $uwarray
+    epsilonDiff [$uwarray getrange 0] \
+            {0.0 -2.14318530717959 -3.13362938564083}
+} {}
+
+####################################################################
+test SignalProcessing-22.2 {unwrap double[] start at > pi} {
+    set uwarray [java::new {double[]} 3 [list 4.14 7.28 15.7]]
+    java::call ptolemy.math.SignalProcessing {unwrap double[]} $uwarray
+    epsilonDiff [$uwarray getrange 0] \
+            {-2.14318530717959 0.99681469282041 3.13362938564083}
+} {}
+
+####################################################################
+test SignalProcessing-22.3 {unwrap double[] empty array} {
+    set a0 [java::new {double[]} 0]
+    java::call ptolemy.math.SignalProcessing {unwrap double[]} $a0
+    $a0 getrange 0
+} {}
+
+####################################################################
+test SignalProcessing-23.1 {downsample double[]} {
+    set da1 [java::new {double[]} 10 {0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0}]
+    set da2 [java::call ptolemy.math.SignalProcessing \
+	    {downsample double[] int} $da1 2]
+    epsilonDiff [$da2 getrange 0] {0.0 2.0 4.0 6.0 8.0}
+} {}
+
+####################################################################
+test SignalProcessing-24.1 {downsample double[] startIndex: normal} {
+    set da1 [java::new {double[]} 10 {0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0}]
+    set da2 [java::call ptolemy.math.SignalProcessing \
+	    {downsample double[] int int} $da1 2 2]
+    epsilonDiff [$da2 getrange 0] {2.0 4.0 6.0 8.0}
+} {}
+
+####################################################################
+test SignalProcessing-24.2 {downsample double[] startIndex: empty array} {
+    catch {set da2 [java::call ptolemy.math.SignalProcessing \
+	    {downsample double[] int int} $a0 2 0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample() : array length must be greater than 0.}}
+
+####################################################################
+test SignalProcessing-24.3 {downsample double[] startIndex: bad downsample} {
+    set da1 [java::new {double[]} 10 {0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0}]
+    catch {set da2 [java::call ptolemy.math.SignalProcessing \
+	    {downsample double[] int int} $da1 0 0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample() : downsampling factor must be greater than 0.}}
+
+####################################################################
+test SignalProcessing-24.4 {downsample double[] startIndex: startIndex negative} {
+    set da1 [java::new {double[]} 10 {0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0}]
+    catch {set da2 [java::call ptolemy.math.SignalProcessing \
+	    {downsample double[] int int} $da1 2 -1]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample() : startIndex must be between 0 and L - 1, where L is the size of the input array.}}
+
+####################################################################
+test SignalProcessing-24.5 {downsample double[] startIndex: startIndex too big} {
+    set da1 [java::new {double[]} 10 {0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0}]
+    catch {set da2 [java::call ptolemy.math.SignalProcessing \
+	    {downsample double[] int int} $da1 2 10]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample() : startIndex must be between 0 and L - 1, where L is the size of the input array.}}
+
+####################################################################
+test SignalProcessing-25.1 {upsample double[]} {
+    set da1 [java::new {double[]} 4 {0.0 1.0 2.0 3.0}]
+    set da2 [java::call ptolemy.math.SignalProcessing \
+	    {upsample double[] int} $da1 2]
+    epsilonDiff [$da2 getrange 0] {0.0 0.0 1.0 0.0 2.0 0.0 3.0 0.0}
+} {}
+
+####################################################################
+test SignalProcessing-25.2 {upsample double[] empty array} {
+    set a0 [java::new {double[]} 0]
+    java::call ptolemy.math.SignalProcessing {upsample double[] int} $a0 2
+    $a0 getrange 0
+} {}
+
+####################################################################
+test SignalProcessing-25.3 {upsample double[] startIndex: bad upsample} {
+    set da1 [java::new {double[]} 4 {0.0 1.0 2.0 3.0}]
+    catch {set da2 [java::call ptolemy.math.SignalProcessing \
+	    {upsample double[] int} $da1 -1]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.upsample() : upsampling factor must be greater than or equal to 0.}}
