@@ -135,7 +135,7 @@ public class Relation extends NamedObj {
     }
 
     /** Enumerate the linked ports.  Note that a port may appear more than
-     *  once if more than on link to it has been established.
+     *  once if more than one link to it has been established.
      *  This method is read-synchronized on the workspace.
      *  @return An Enumeration of Port objects.
      */
@@ -193,7 +193,21 @@ public class Relation extends NamedObj {
     public void unlinkAll() {
         try {
             workspace().getWriteAccess();
-            _portList.unlinkAll();
+            // NOTE: Do not just use _portList.unlinkAll() because then the
+            // containers of the ports are not notified of the change.
+            // Also, have to first copy the ports references, then remove
+            // them, to avoid a corrupted enumeration exception.
+            int size = _portList.size();
+            Port portArray[] = new Port[size];
+            int i = 0;
+            Enumeration ports = _portList.getContainers();
+            while(ports.hasMoreElements()) {
+                Port p = (Port)ports.nextElement();
+                portArray[i++] = p;
+            }
+            for (i = 0; i < size; i++) {
+                portArray[i].unlink(this);
+            }
         } finally {
             workspace().doneWriting();
         }

@@ -342,6 +342,7 @@ public class Port extends NamedObj {
 
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing.
+     *  If there is a container, notify it by calling connectionsChanged().
      *  This method is write-synchronized on the
      *  workspace and increments its version number.
      *  @param relation The relation to unlink.
@@ -353,9 +354,14 @@ public class Port extends NamedObj {
         } finally {
             workspace().doneWriting();
         }
+        Entity container = (Entity)getContainer();
+        if (container != null) {
+            container.connectionsChanged(this);
+        }
     }
 
     /** Unlink all relations.
+     *  If there is a container, notify it by calling connectionsChanged().
      *  This method is write-synchronized on the
      *  workspace and increments its version number.
      */
@@ -366,6 +372,10 @@ public class Port extends NamedObj {
             workspace().incrVersion();
         } finally {
             workspace().doneWriting();
+        }
+        Entity container = (Entity)getContainer();
+        if (container != null) {
+            container.connectionsChanged(this);
         }
     }
 
@@ -422,6 +432,7 @@ public class Port extends NamedObj {
      *  directly.  Use the public version instead.
      *  If the argument is null, do nothing.
      *  If this port has no container, throw an exception.
+     *  The container is notified by calling connectionsChanged().
      *  Derived classes may constrain the argument to be a subclass of
      *  Relation. Level-crossing links are allowed.
      *  This port and the relation are assumed to be in the same workspace,
@@ -434,14 +445,16 @@ public class Port extends NamedObj {
     protected void _link(Relation relation)
             throws IllegalActionException {
         if (relation != null) {
-            if (getContainer() == null) {
+            Entity container = (Entity)getContainer();
+            if (container == null) {
                 throw new IllegalActionException(this, relation,
-                        "Port must have a container to establish a link.");
+                "Port must have a container to establish a link.");
             }
             // Throw an exception if this port is not of an acceptable
             // class for the relation.
             relation._checkPort(this);
             _relationsList.link( relation._getPortList() );
+            container.connectionsChanged(this);
         }
     }
 

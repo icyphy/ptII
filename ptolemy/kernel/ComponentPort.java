@@ -657,7 +657,8 @@ public class ComponentPort extends Port {
             throw new IllegalActionException(this,
                     "Attempt to link to an incompatible relation.");
         }
-        if (getContainer() == null) {
+        Entity container = (Entity)getContainer();
+        if (container == null) {
             throw new IllegalActionException(this, relation,
                     "Port must have a container to establish a link.");
         }
@@ -666,6 +667,7 @@ public class ComponentPort extends Port {
         relation._checkPort(this);
         // It is acceptable.
         _insideLinks.link( relation._getPortList() );
+        container.connectionsChanged(this);
     }
 
     /** Return true if the port is either a port of the specified entity,

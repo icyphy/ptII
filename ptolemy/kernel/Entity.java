@@ -177,6 +177,14 @@ public class Entity extends NamedObj {
         }
     }
 
+    /** Notify this entity that the links to the specified port have
+     *  been altered.  The default implementation in this base class
+     *  is to do nothing, but derived classes may want to react to new
+     *  connections.
+     */
+    public void connectionsChanged(Port port) {
+    }
+
     /** Return the port contained by this entity that has the specified name.
      *  If there is no such port, return null.
      *  This method is read-synchronized on the workspace.
