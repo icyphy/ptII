@@ -267,20 +267,20 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-    /** If a public ID is given, and is not that of MoML version 1,
+    /** If a public ID is given, and is not that of MoML,
      *  then throw a CancelException, which causes the parse to abort
-     *  and return null.
+     *  and return null.  Note that the version number is not checked,
+     *  so future versions of MoML should also work.
      *  @param name The name of the document type.
      *  @param publicId The public ID of the document type.
      *  @param systemId The system ID of the document type.
-     *  @exception CancelException If the public ID is not that of MoML
-     *   version 1.
+     *  @exception CancelException If the public ID is not that of MoML.
      */
     public void doctypeDecl (String name, String publicId, String systemId)
             throws CancelException {
         if (publicId != null
                 && !publicId.trim().equals("")
-                && !publicId.equals(MoML_PUBLIC_ID_1)) {
+                && !publicId.startsWith("-//UC Berkeley//DTD MoML")) {
             throw new CancelException(
                     "Public ID is not that of MoML version 1: " + publicId);
         }
