@@ -48,4 +48,7 @@ test Vertex-1.1 {Call workspace constructor, exportMoML and toString } {
     $v1 exportMoML $output 1
     list [$v1 toString] [$output toString]
 } {{(ptolemy.moml.Vertex, Location = null)} {    <vertex name="">
-    </vertex>}
+    </vertex>
+}}
+
+
