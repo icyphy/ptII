@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -42,30 +42,29 @@ import java.io.Serializable;
 //// AbstractNotConvertibleToken
 /**
 The Token base class provides a very general interface for building
-new data types.  However, in many ways, the interface is rather complex
-in order to allow consistent implementation of Token operations that
-operate on tokens that are defined in different classes.  In particular,
-this requires the duplicate operation and operationReverse methods.
+new data types.  However, in many ways, the interface is rather
+complex in order to allow operations between tokens that are defined
+in different classes.  In particular, this requires the duplicate
+operation() and operationReverse() methods.
 
 <p> This base class is intended to make it easy to implement tokens
-that only require operations on the same data type.  In these cases,
-the operations and their reverses perform exactly the same operation.
-This class provides a base class implementation of the operation
-methods which checks to make sure that the arguments are actually both
-implemented in the same class, and then defers to a protected
-_operation method.  These protected methods should be overridden in
-derived classes to provide type-specific operations.
+where operations are only defined for other tokens that are defined in
+the same class.  In these cases, the operation() and
+operationReverse() method can share the same code.  This class
+implements these methods to ensure that the argument of each operation
+is actually an instance of the correct class.  The implementation then
+defers to a protected _operation() method.  These protected methods
+should be overridden in derived classes to provide type-specific
+operations.
 
-<p> Note that the tokens operated on must only be implemented in the
-same class, which does not require that they have the same Ptolemy
-data type.  This commonly happens when StructuredTypes are used, as
-with record and array tokens.
+<p> This class is used a base class for ArrayToken and RecordToken.
+Note that these classes actually represent tokens having different
+types in the type lattice.
 
 @author Steve Neuendorffer
 @version $Id$
 */
-public abstract class AbstractNotConvertibleToken extends Token
-    implements Serializable {
+public abstract class AbstractNotConvertibleToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -78,18 +77,25 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  @param rightArgument The token to add to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token add(Token rightArgument) throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("add",
+                    notSupportedDifferentClassesMessage("add",
                             this, rightArgument));
         }
-
-        Token result = _add(rightArgument);
-        return result;
+        try {
+            return _add(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("add",
+                            this, rightArgument));
+        }
     }
 
     /** Return a new token whose value is the sum of this token and
@@ -99,21 +105,27 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  perform type-specific operation.
      *  @param leftArgument The token to add this token to.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token is not
-     *  of a type that can be added to this token, or the units of
-     *  this token and the argument token are not the same.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
         if(!getClass().equals(leftArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("addReverse",
+                    notSupportedDifferentClassesMessage("addReverse",
                             this, leftArgument));
         }
-
-        Token result =
-            ((AbstractNotConvertibleToken)leftArgument)._add(this);
-        return result;
+        try {
+            return ((AbstractNotConvertibleToken)leftArgument)._add(this);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("addReverse",
+                            this, leftArgument));
+        }
     }
 
     /** Return a new token whose value is the value of this token
@@ -124,18 +136,25 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  @param rightArgument The token to divide into this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token divide(Token rightArgument) throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("divide",
+                    notSupportedDifferentClassesMessage("divide",
                             this, rightArgument));
         }
-
-        Token result = _divide(rightArgument);
-        return result;
+        try {
+            return _divide(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("divide",
+                            this, rightArgument));
+        }
     }
 
     /** Return a new token whose value is the value of the argument
@@ -147,24 +166,31 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         if(!getClass().equals(leftArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("divideReverse",
+                    notSupportedDifferentClassesMessage("divideReverse",
                             this, leftArgument));
         }
-
-        Token result =
-            ((AbstractNotConvertibleToken)leftArgument)._divide(this);
-        return result;
+        
+        try {
+            return ((AbstractNotConvertibleToken)leftArgument)._divide(this);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("divideReverse",
+                            this, leftArgument));
+        }
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  This base class ensures that the arguments are
+    /** Test that the value of this token is close to the argument
+     *  token.  This base class ensures that the arguments are
      *  implemented in the same class, and then defers to the
      *  _isCloseTo() method.  Subclasses should override that method to
      *  perform type-specific operation.
@@ -173,44 +199,62 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  @param epsilon  The value that we use to determine whether two
      *  tokens are close.
      *  @return A boolean token that contains the value true if the
-     *   value of this token is close to those of the argument
-     *   token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
+     *  value of this token is close to that of the argument
+     *  token.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are implemented in different classes.
      */
     public BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("isCloseTo",
+                    notSupportedDifferentClassesMessage("isCloseTo",
                             this, rightArgument));
         }
-
-        BooleanToken result = _isCloseTo(rightArgument, epsilon);
-        return result;
+        
+        try {
+            return _isCloseTo(rightArgument, epsilon);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("isCloseTo",
+                            this, rightArgument));
+        }
     }
 
-    /** Test for equality of the values of this Token and the argument
-     *  Token.   This base class ensures that the arguments are
+    /** Test for equality of the values of this token and the argument
+     *  token.   This base class ensures that the arguments are
      *  implemented in the same class, and then defers to the
      *  _isEqualTo() method.  Subclasses should override that method to
      *  perform type-specific operation.
      *
      *  @param rightArgument The token with which to test equality.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken which contains the result of the test.
+     *  @return A boolean token that contains the value true if the
+     *  value of this token is equal to that of the argument
+     *  token.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are implemented in different classes.
      */
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("isEqualTo",
+                    notSupportedDifferentClassesMessage("isEqualTo",
                             this, rightArgument));
         }
 
-        BooleanToken result = _isEqualTo(rightArgument);
-        return result;
+        try {
+            return _isEqualTo(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("isEqualTo",
+                            this, rightArgument));
+        }
     }
 
     /** Return a new token whose value is the value of this token
@@ -221,18 +265,25 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  @param rightArgument The token to divide into this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("modulo",
+                    notSupportedDifferentClassesMessage("modulo",
                             this, rightArgument));
         }
-
-        Token result = _modulo(rightArgument);
-        return result;
+        try {
+            return _modulo(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("modulo",
+                            this, rightArgument));
+        }
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -244,20 +295,27 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  of this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         if(!getClass().equals(leftArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("moduloReverse",
+                    notSupportedDifferentClassesMessage("moduloReverse",
                             this, leftArgument));
         }
 
-        Token result =
-            ((AbstractNotConvertibleToken)leftArgument)._modulo(this);
-        return result;
+        try {
+            return ((AbstractNotConvertibleToken)leftArgument)._modulo(this);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("moduloReverse",
+                            this, leftArgument));
+        }
     }
 
     /** Return a new token whose value is the value of this token
@@ -267,19 +325,27 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  override that method to perform type-specific operation.
      *  @param rightArgument The token to multiply this token by.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token
-     *   and this token are of incomparable types, or the operation
-     *   does not make sense for the given types.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token multiply(Token rightArgument) throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("multiply",
+                    notSupportedDifferentClassesMessage("multiply",
                             this, rightArgument));
         }
-
-        Token result = _multiply(rightArgument);
-        return result;
+        
+        try {
+            return _multiply(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("multiply",
+                            this, rightArgument));
+        }
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -291,106 +357,149 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
         if(!getClass().equals(leftArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("multiplyReverse",
+                    notSupportedDifferentClassesMessage("multiplyReverse",
                             this, leftArgument));
         }
 
-        Token result =
-            ((AbstractNotConvertibleToken)leftArgument)._multiply(this);
-        return result;
+        try {
+            return ((AbstractNotConvertibleToken)leftArgument)._multiply(this);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("multiplyReverse",
+                            this, leftArgument));
+        }
+    }
+
+    /** Return a string with an error message that states that the
+     *  given operation is not supported between two tokens, because
+     *  they have incomparable types and cannot be converted to the
+     *  same type.
+     *  @param operation A string naming the unsupported token
+     *  operation.
+     *  @param firstToken The first token in the message.
+     *  @param secondToken The second token in the message.
+     *  @return A string error message.
+     */
+    public static String notSupportedDifferentClassesMessage(String operation,
+            Token firstToken, Token secondToken) {
+        // We use this method to factor out a very common message
+        return (operation + " method not supported between "
+                + firstToken.getClass().getName()
+                + " '" + firstToken.toString()
+                + "' and "
+                + secondToken.getClass().getName()
+                + " '" + secondToken.toString()
+                + "' because the tokens have different classes.");
     }
 
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  This base class
      *  ensures that the arguments are implemented in the same class,
-     *  and then defers to the _multiply() method.  Subclasses should
+     *  and then defers to the _subtract() method.  Subclasses should
      *  override that method to perform type-specific operation.
      *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token subtract(Token rightArgument)
             throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("subtract",
+                    notSupportedDifferentClassesMessage("subtract",
                             this, rightArgument));
         }
-
-        Token result = _subtract(rightArgument);
-        return result;
+        try {
+            return _subtract(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("subtract",
+                            this, rightArgument));
+        }
     }
 
     /** Return a new token whose value is the value of this token
      *  subtracted from the value of the argument token.  This base class
      *  ensures that the arguments are implemented in the same class,
-     *  and then defers to the _multiply() method.  Subclasses should
+     *  and then defers to the _subtract() method.  Subclasses should
      *  override that method to perform type-specific operation.
      *  @param leftArgument The token to subtract this token from.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *  this token are implemented in different classes, or the
+     *  operation does not make sense for the given types.
      */
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
         if(!getClass().equals(leftArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("subtractReverse",
+                    notSupportedDifferentClassesMessage("subtractReverse",
                             this, leftArgument));
         }
 
-        Token result =
-            ((AbstractNotConvertibleToken)leftArgument)._subtract(this);
-        return result;
+        try {
+            return ((AbstractNotConvertibleToken)leftArgument)._subtract(this);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("subtractReverse",
+                            this, leftArgument));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return a new token whose value is the value of the argument
-     *  Token added to the value of this Token.  It is assumed that
-     *  the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type specific actions for add.
+     *  token added to the value of this token.  It is guaraunteed by
+     *  the caller that the type of the argument is the same as the
+     *  type of this class.  This method should be overridden in
+     *  derived classes to provide type specific actions for add.
      *  @param rightArgument The token whose value we add to the value
      *  of this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A new Token containing the result that is of the same
+     *  @return A new token containing the result that is of the same
      *  class as this token.
      */
     protected abstract Token _add(Token rightArgument)
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token. It is assumed that
-     *  the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type specific actions for divide.
+     *  divided by the value of the argument token.  It is guaraunteed
+     *  by the caller that the type of the argument is the same as the
+     *  type of this class.  This method should be overridden in
+     *  derived classes to provide type specific actions for divide.
      *  @param rightArgument The token to divide this token by.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A new Token containing the result that is of the same
+     *  @return A new token containing the result that is of the same
      *  class as this token.
      */
     protected abstract Token _divide(Token rightArgument)
             throws IllegalActionException;
 
-    /** Test for closeness of the values of this Token and the
-     *  argument Token.  It is assumed that the type of the argument
-     *  is the same as the type of this class.  This method should be
-     *  overridden in derived classes to provide type specific actions
-     *  for divide.
+    /** Test for closeness of the values of this token and the
+     *  argument token.  It is guaraunteed by the caller that the type
+     *  of the argument is the same as the type of this class.  This
+     *  method should be overridden in derived classes to provide type
+     *  specific actions for divide.
      *  @param rightArgument The token with which to test closeness.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -400,11 +509,11 @@ public abstract class AbstractNotConvertibleToken extends Token
             Token rightArgument, double epsilon)
             throws IllegalActionException;
 
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is the
-     *  same as the type of this class.  This method should be
-     *  overridden in derived classes to provide type specific actions
-     *  for divide.
+    /** Test for equality of the values of this token and the argument
+     *  token.  It is guaraunteed by the caller that the type of the
+     *  argument is the same as the type of this class.  This method
+     *  should be overridden in derived classes to provide type
+     *  specific actions for divide.
      *  @param rightArgument The token with which to test equality.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -414,42 +523,44 @@ public abstract class AbstractNotConvertibleToken extends Token
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token.  It is assumed that
-     *  the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type specific actions for modulo.
+     *  modulo the value of the argument token.  It is guaraunteed by
+     *  the caller that the type of the argument is the same as the
+     *  type of this class.  This method should be overridden in
+     *  derived classes to provide type specific actions for modulo.
      *  @param rightArgument The token to modulo this token by.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
-     *  @return A new Token containing the result that is of the same
+     *  @return A new token containing the result that is of the same
      *  class as this token.
      */
     protected abstract Token _modulo(Token rightArgument)
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token.  It is assumed
-     *  that the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type specific actions for multiply.
+     *  multiplied by the value of the argument token.  It is
+     *  guaraunteed by the caller that the type of the argument is the
+     *  same as the type of this class.  This method should be
+     *  overridden in derived classes to provide type specific actions
+     *  for multiply.
      *  @param rightArgument The token to multiply this token by.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
-     *  @return A new Token containing the result that is of the same
+     *  @return A new token containing the result that is of the same
      *  class as this token.
      */
     protected abstract Token _multiply(Token rightArgument)
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of the argument
-     *  token subtracted from the value of this token.  It is assumed
-     *  that the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type specific actions for subtract.
+     *  token subtracted from the value of this token.  It is
+     *  guaraunteed by the caller that the type of the argument is the
+     *  same as the type of this class.  This method should be
+     *  overridden in derived classes to provide type specific actions
+     *  for subtract.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
-     *  @return A new Token containing the result that is of the same
+     *  @return A new token containing the result that is of the same
      *  class as this token.
      */
     protected abstract Token _subtract(Token rightArgument)

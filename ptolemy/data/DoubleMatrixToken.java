@@ -100,9 +100,14 @@ public class DoubleMatrixToken extends MatrixToken {
     public DoubleMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        DoubleMatrixToken token = (DoubleMatrixToken)tree.evaluateParseTree();
-        double[][] value = token.doubleMatrix();
-        _initialize(value, DO_COPY);
+        Token token = tree.evaluateParseTree();
+        if(token instanceof DoubleMatrixToken) {
+            double[][] value = ((DoubleMatrixToken)token).doubleMatrix();
+            _initialize(value, DO_COPY);
+        } else {
+            throw new IllegalActionException("A DoubleMatrixToken cannot be"
+                    + " created from the expression '" + init + "'");
+        }
     }
 
     /** Construct an DoubleMatrixToken from the specified array of

@@ -71,8 +71,13 @@ public class ComplexToken extends ScalarToken {
     public ComplexToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        ComplexToken token = (ComplexToken)tree.evaluateParseTree();
-        _value = token.complexValue();
+        Token token = tree.evaluateParseTree();
+        if(token instanceof ComplexToken) {
+            _value = ((ComplexToken)token).complexValue();
+        } else {
+            throw new IllegalActionException("A ComplexToken cannot be"
+                    + " created from the expression '" + init + "'");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -109,10 +109,14 @@ public class ComplexMatrixToken extends MatrixToken {
     public ComplexMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        ComplexMatrixToken token =
-            (ComplexMatrixToken)tree.evaluateParseTree();
-        Complex[][] value = token.complexMatrix();
-        _initialize(value, DO_COPY);
+        Token token = tree.evaluateParseTree();
+        if(token instanceof ComplexMatrixToken) {
+            Complex[][] value = ((ComplexMatrixToken)token).complexMatrix();
+            _initialize(value, DO_COPY);
+        } else {
+            throw new IllegalActionException("A ComplexMatrixToken cannot be"
+                    + " created from the expression '" + init + "'");
+        }
     }
 
     /** Construct an ComplexMatrixToken from the specified array of

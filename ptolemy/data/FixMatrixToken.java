@@ -75,7 +75,7 @@ public class FixMatrixToken extends MatrixToken {
      *   entries in the matrix are not all identical, or the specified
      *   matrix is null.
      */
-    public FixMatrixToken(FixPoint[][] value ) throws IllegalActionException {
+    public FixMatrixToken(FixPoint[][] value) throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("FixMatrixToken: The specified "
                     + "matrix is null.");
@@ -91,9 +91,14 @@ public class FixMatrixToken extends MatrixToken {
     public FixMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        FixMatrixToken token = (FixMatrixToken)tree.evaluateParseTree();
-        FixPoint[][] value = token.fixMatrix();
-        _initialize(value);
+        Token token = tree.evaluateParseTree();
+        if(token instanceof FixMatrixToken) {
+            FixPoint[][] value = ((FixMatrixToken)token).fixMatrix();
+            _initialize(value);
+        } else {
+            throw new IllegalActionException("A FixMatrixToken cannot be"
+                    + " created from the expression '" + init + "'");
+        }
     }
 
     /** Construct an FixMatrixToken from the specified array of

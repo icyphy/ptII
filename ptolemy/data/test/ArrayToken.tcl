@@ -79,7 +79,7 @@ test ArrayToken-2.0 {test add} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{4, 5, 6}"]
     set t3 [java::new {ptolemy.data.IntToken String} "5"]
     set tadd [$t1 add $t2]
-    set tadd2 [$t1 addElement $t3]
+    set tadd2 [$t1 elementAdd $t3]
     list [$tadd toString] [$tadd2 toString]
 } {{{5, 7, 9}} {{6, 7, 8}}}
 
@@ -88,7 +88,7 @@ test ArrayToken-2.1 {test subtract} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t3 [java::new {ptolemy.data.IntToken String} "5"]
     set tadd [$t1 subtract $t2]
-    set tadd2 [$t1 subtractElement $t3]
+    set tadd2 [$t1 elementSubtract $t3]
     list [$tadd toString] [$tadd2 toString]
 } {{{0.5, 0.5, -3.0}} {{-4, -3, -2}}}
 
@@ -97,7 +97,7 @@ test ArrayToken-2.2 {test multiply} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t3 [java::new {ptolemy.data.IntToken String} "5"]
     set tadd [$t1 multiply $t2]
-    set tadd2 [$t1 multiplyElement $t3]
+    set tadd2 [$t1 elementMultiply $t3]
     list [$tadd toString] [$tadd2 toString]
 } {{{0.5, 3.0, 18.0}} {{5, 10, 15}}}
 
@@ -106,7 +106,7 @@ test ArrayToken-2.3 {test divide} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t3 [java::new {ptolemy.data.IntToken String} "5"]
     set tadd [$t1 divide $t2]
-    set tadd2 [$t1 divideElement $t3]
+    set tadd2 [$t1 elementDivide $t3]
     list [$tadd toString] [$tadd2 toString]
 } {{{2.0, 2.0, 0.5}} {{0, 0, 0}}}
 
@@ -131,7 +131,7 @@ test ArrayToken-3.1 {test hashCode on an array of Doubles} {
     set t3 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, -6.0}"]
 
     list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
-} {7 7 -5}
+} {0 0 0}
 
 ######################################################################
 ####

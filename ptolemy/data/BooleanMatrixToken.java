@@ -81,9 +81,14 @@ public class BooleanMatrixToken extends MatrixToken {
     public BooleanMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        BooleanMatrixToken token = (BooleanMatrixToken)tree.evaluateParseTree();
-        boolean[][] value = token.booleanMatrix();
-        _initialize(value);
+        Token token = tree.evaluateParseTree();
+        if(token instanceof BooleanMatrixToken) {
+            boolean[][] value = ((BooleanMatrixToken)token).booleanMatrix();
+            _initialize(value);
+        } else {
+            throw new IllegalActionException("A BooleanMatrixToken cannot be"
+                    + " created from the expression '" + init + "'");
+        }
     }
 
     /** Construct an BooleanMatrixToken from the specified array of

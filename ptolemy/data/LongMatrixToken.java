@@ -99,9 +99,14 @@ public class LongMatrixToken extends MatrixToken {
     public LongMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        LongMatrixToken token = (LongMatrixToken)tree.evaluateParseTree();
-        long[][] value = token.longMatrix();
-        _initialize(value, DO_NOT_COPY);
+        Token token = tree.evaluateParseTree();
+        if(token instanceof LongMatrixToken) {
+            long[][] value = ((LongMatrixToken)token).longMatrix();
+            _initialize(value, DO_COPY);
+        } else {
+            throw new IllegalActionException("A LongMatrixToken cannot be"
+                    + " created from the expression '" + init + "'");
+        }
     }
 
     /** Construct an LongMatrixToken from the specified array of

@@ -119,9 +119,14 @@ public class IntMatrixToken extends MatrixToken {
     public IntMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        IntMatrixToken token = (IntMatrixToken)tree.evaluateParseTree();
-        int[][] value = token.intMatrix();
-        _initialize(value, DO_COPY);
+        Token token = tree.evaluateParseTree();
+        if(token instanceof IntMatrixToken) {
+            int[][] value = ((IntMatrixToken)token).intMatrix();
+            _initialize(value, DO_COPY);
+        } else {
+            throw new IllegalActionException("A record token cannot be"
+                    + " created from the expression '" + init + "'");
+        }
     }
 
     /** Construct an IntMatrixToken from the specified array of

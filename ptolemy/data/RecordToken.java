@@ -57,7 +57,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     /** Construct a RecordToken with the specified labels and values.
      *  The labels and values arrays must have the same length, and have one
-     *  to one correspondence with each other. That is, the i'th entry in
+     *  to one correspondence with each other.  That is, the i'th entry in
      *  the labels array is the label for the i'th value in the values array.
      *  Both arrays must be non-empty.
      *  @param labels An array of labels.
@@ -73,32 +73,39 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     /** Construct a RecordToken from the specified string.
      *  @param init A string expression of a record.
-     *  @exception IllegalActionException If the string does
-     *   not contain a parsable record.
+     *  @exception IllegalActionException If the string does not
+     *  contain a parsable record.
      */
     public RecordToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        RecordToken token = (RecordToken)tree.evaluateParseTree();
-
-        Object[] labelObjects = token.labelSet().toArray();
-        String[] labels = new String[labelObjects.length];
-        Token[] values = new Token[labelObjects.length];
-        for (int i = 0; i < labelObjects.length; i++) {
-            labels[i] = (String)labelObjects[i];
-            values[i] = token.get(labels[i]);
+        Token token = tree.evaluateParseTree();
+        
+        if(token instanceof RecordToken) {
+            RecordToken recordToken = (RecordToken)token;
+            Object[] labelObjects = recordToken.labelSet().toArray();
+            String[] labels = new String[labelObjects.length];
+            Token[] values = new Token[labelObjects.length];
+            for (int i = 0; i < labelObjects.length; i++) {
+                labels[i] = (String)labelObjects[i];
+                values[i] = recordToken.get(labels[i]);
+            }
+            _initialize(labels, values);
+        } else {
+            throw new IllegalActionException("A record token cannot be"
+                    + " created from the expression '" + init + "'");
         }
-        _initialize(labels, values);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the argument is an instance of RecordToken with the
-     *  same set of labels and the corresponding fields are equal.
+    /** Return true if the class of the argument is RecordToken, and
+     *  the argument has the same set of labels as this token and the
+     *  corresponding fields are equal, as determined by the equals
+     *  method of the contained tokens.
      *  @param object An instance of Object.
-     *  @return True if the argument is an instance of RecordToken with the
-     *   same set of labels and the corresponding fields are equal.
+     *  @return True if the argument is equal to this token.
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
@@ -127,7 +134,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         return true;
     }
 
-    /** Return the Token with the specified label. If this token does not
+    /** Return the token with the specified label. If this token does not
      *  contain the specified label, return null.
      *  @param label A String label.
      *  @return A Token.
@@ -261,7 +268,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     /** Return a new token whose value is the field-wise addition of
      *  this token and the argument. It is assumed
-     *  that the type of the argument is an RecordToken.
+     *  that the class of the argument is RecordToken.
      *  @param rightArgument The token to add to this token.
      *  @return A new RecordToken.
      *  @exception IllegalActionException If calling the add method on
@@ -281,33 +288,25 @@ public class RecordToken extends AbstractNotConvertibleToken {
         int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
-        try {
-            for (int i = 0; i < size; i++) {
-                labels[i] = (String)labelsObjects[i];
-                Token value1 = this.get(labels[i]);
-                Token value2 = recordToken.get(labels[i]);
-                if (value1 == null) {
-                    values[i] = value2;
-                } else if (value2 == null) {
-                    values[i] = value1;
-                } else {
-                    values[i] = value1.add(value2);
-                }
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
+            Token value1 = this.get(labels[i]);
+            Token value2 = recordToken.get(labels[i]);
+            if (value1 == null) {
+                values[i] = value2;
+            } else if (value2 == null) {
+                values[i] = value1;
+            } else {
+                values[i] = value1.add(value2);
             }
-        } catch (IllegalActionException ex) {
-            // If the field operation fails, then create a
-            // better error message that has the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("add", this, rightArgument));
         }
-
+        
         return new RecordToken(labels, values);
     }
 
     /** Return a new token whose value is the field-wise division of
      *  this token and the argument. It is assumed
-     *  that the type of the argument is an RecordToken.
+     *  that the class of the argument is RecordToken.
      *  @param rightArgument The token to divide this token by.
      *  @return A new RecordToken.
      *  @exception IllegalActionException If calling the divide method on
@@ -327,30 +326,23 @@ public class RecordToken extends AbstractNotConvertibleToken {
         int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
-        try {
-            for (int i = 0; i < size; i++) {
-                labels[i] = (String)labelsObjects[i];
-                Token value1 = this.get(labels[i]);
-                Token value2 = recordToken.get(labels[i]);
-                if (value1 == null) {
-                    values[i] = value2;
-                } else if (value2 == null) {
-                    values[i] = value1;
-                } else {
-                    values[i] = value1.divide(value2);
-                }
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
+            Token value1 = this.get(labels[i]);
+            Token value2 = recordToken.get(labels[i]);
+            if (value1 == null) {
+                values[i] = value2;
+            } else if (value2 == null) {
+                values[i] = value1;
+            } else {
+                values[i] = value1.divide(value2);
             }
-        } catch (IllegalActionException ex) {
-            // If the field operation fails, then create a
-            // better error message that has the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("divide", this, rightArgument));
         }
+       
         return new RecordToken(labels, values);
     }
 
-    /** Test for closeness of the values of this Token and the argument
+    /** Test for closeness of the values of this token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  RecordToken.
      *  @param rightArgument The token to add to this token.
@@ -367,29 +359,22 @@ public class RecordToken extends AbstractNotConvertibleToken {
         if ( !myLabelSet.equals(argLabelSet)) {
             return BooleanToken.FALSE;
         }
-        try {
-            // Loop through all of the fields, checking each one for closeness.
-            Iterator iterator = myLabelSet.iterator();
-            while (iterator.hasNext()) {
-                String label = (String)iterator.next();
-                Token token1 = this.get(label);
-                Token token2 = recordToken.get(label);
-                BooleanToken result = token1.isCloseTo(token2, epsilon);
-                if (result.booleanValue() == false) {
-                    return BooleanToken.FALSE;
-                }
+        // Loop through all of the fields, checking each one for closeness.
+        Iterator iterator = myLabelSet.iterator();
+        while (iterator.hasNext()) {
+            String label = (String)iterator.next();
+            Token token1 = this.get(label);
+            Token token2 = recordToken.get(label);
+            BooleanToken result = token1.isCloseTo(token2, epsilon);
+            if (result.booleanValue() == false) {
+                return BooleanToken.FALSE;
             }
-        } catch (IllegalActionException ex) {
-            // If the field operation fails, then create a
-            // better error message that has the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("isCloseTo", this, rightArgument));
         }
+        
         return BooleanToken.TRUE;
     }
 
-    /** Test for closeness of the values of this Token and the argument
+    /** Test for closeness of the values of this token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  RecordToken.
      *  @param rightArgument The token to add to this token.
@@ -406,31 +391,23 @@ public class RecordToken extends AbstractNotConvertibleToken {
         if ( !myLabelSet.equals(argLabelSet)) {
             return BooleanToken.FALSE;
         }
-
-        try {
-            Iterator iterator = myLabelSet.iterator();
-            while (iterator.hasNext()) {
-                String label = (String)iterator.next();
-                Token token1 = this.get(label);
-                Token token2 = recordToken.get(label);
-                BooleanToken result = token1.isEqualTo(token2);
-                if (result.booleanValue() == false) {
-                    return BooleanToken.FALSE;
-                }
+        Iterator iterator = myLabelSet.iterator();
+        while (iterator.hasNext()) {
+            String label = (String)iterator.next();
+            Token token1 = this.get(label);
+            Token token2 = recordToken.get(label);
+            BooleanToken result = token1.isEqualTo(token2);
+            if (result.booleanValue() == false) {
+                return BooleanToken.FALSE;
             }
-        } catch (IllegalActionException ex) {
-            // If the field operation fails, then create a
-            // better error message that has the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("isEqualTo", this, rightArgument));
         }
+        
         return BooleanToken.TRUE;
     }
 
     /** Return a new token whose value is the field-wise multiplication of
      *  this token and the argument. It is assumed
-     *  that the type of the argument is an RecordToken.
+     *  that the class of the argument is RecordToken.
      *  @param rightArgument The token to multiply this token by.
      *  @return A new RecordToken.
      *  @exception IllegalActionException If calling the multiply method on
@@ -450,32 +427,25 @@ public class RecordToken extends AbstractNotConvertibleToken {
         int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
-        try {
-            for (int i = 0; i < size; i++) {
-                labels[i] = (String)labelsObjects[i];
-                Token value1 = this.get(labels[i]);
-                Token value2 = recordToken.get(labels[i]);
-                if (value1 == null) {
-                    values[i] = value2;
-                } else if (value2 == null) {
-                    values[i] = value1;
-                } else {
-                    values[i] = value1.modulo(value2);
-                }
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
+            Token value1 = this.get(labels[i]);
+            Token value2 = recordToken.get(labels[i]);
+            if (value1 == null) {
+                values[i] = value2;
+            } else if (value2 == null) {
+                values[i] = value1;
+            } else {
+                values[i] = value1.modulo(value2);
             }
-        } catch (IllegalActionException ex) {
-            // If the field operation fails, then create a
-            // better error message that has the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("modulo", this, rightArgument));
         }
+        
         return new RecordToken(labels, values);
     }
 
     /** Return a new token whose value is the field-wise modulo of
      *  this token and the argument. It is assumed
-     *  that the type of the argument is an RecordToken.
+     *  that the class of the argument is RecordToken.
      *  @param rightArgument The token to modulo this token by.
      *  @return A new RecordToken.
      *  @exception IllegalActionException If calling the modulo method on
@@ -495,36 +465,29 @@ public class RecordToken extends AbstractNotConvertibleToken {
         int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
-        try {
-            for (int i = 0; i < size; i++) {
-                labels[i] = (String)labelsObjects[i];
-                Token value1 = this.get(labels[i]);
-                Token value2 = recordToken.get(labels[i]);
-                if (value1 == null) {
-                    values[i] = value2;
-                } else if (value2 == null) {
-                    values[i] = value1;
-                } else {
-                    values[i] = value1.multiply(value2);
-                }
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
+            Token value1 = this.get(labels[i]);
+            Token value2 = recordToken.get(labels[i]);
+            if (value1 == null) {
+                values[i] = value2;
+            } else if (value2 == null) {
+                values[i] = value1;
+            } else {
+                values[i] = value1.multiply(value2);
             }
-        } catch (IllegalActionException ex) {
-            // If the field operation fails, then create a
-            // better error message that has the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("multiply", this, rightArgument));
         }
+        
         return new RecordToken(labels, values);
     }
 
     /** Return a new token whose value is the field-wise subtraction of
      *  this token and the argument. It is assumed
-     *  that the type of the argument is an RecordToken.
+     *  that the class of the argument is RecordToken.
      *  @param rightArgument The token to subtract from this token.
      *  @return A new RecordToken.
-     *  @exception IllegalActionException If calling the add method on
-     *  one of the record fields throws it.
+     *  @exception IllegalActionException If calling the subtract
+     *  method on one of the record fields throws it.
      */
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
@@ -540,21 +503,13 @@ public class RecordToken extends AbstractNotConvertibleToken {
         int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
-        try {
-            for (int i = 0; i < size; i++) {
-                labels[i] = (String)labelsObjects[i];
-                Token value1 = this.get(labels[i]);
-                Token value2 = recordToken.get(labels[i]);
-                values[i] = value1.subtract(value2);
-            }
-        } catch (IllegalActionException ex) {
-            // If the field operation fails, then create a
-            // better error message that has the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("subtract", this, rightArgument));
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
+            Token value1 = this.get(labels[i]);
+            Token value2 = recordToken.get(labels[i]);
+            values[i] = value1.subtract(value2);
         }
-
+    
         return new RecordToken(labels, values);
     }
 

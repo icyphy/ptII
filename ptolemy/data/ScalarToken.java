@@ -929,11 +929,11 @@ public abstract class ScalarToken extends Token
     protected abstract ScalarToken _absolute();
 
     /** Return a new token whose value is the value of the argument
-     *  token added to the value of this token.  It is assumed that
-     *  the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type-specific operation and return a token of the
-     *  appropriate subclass.
+     *  token added to the value of this token.  It is guaraunteed by
+     *  the caller that the type of the argument is the same as the
+     *  type of this class.  This method should be overridden in
+     *  derived classes to provide type-specific operation and return
+     *  a token of the appropriate subclass.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -1013,11 +1013,11 @@ public abstract class ScalarToken extends Token
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token.  It is assumed that
-     *  the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type-specific operation and return a token of the
-     *  appropriate subclass.
+     *  divided by the value of the argument token.  It is guaraunteed
+     *  by the caller that the type of the argument is the same as the
+     *  type of this class.  This method should be overridden in
+     *  derived classes to provide type-specific operation and return
+     *  a token of the appropriate subclass.
      *  @param rightArgument The token to divide this token by.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -1026,11 +1026,12 @@ public abstract class ScalarToken extends Token
     protected abstract ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException;
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type and units of the argument
-     *  is the same as the type of this class.  This method should be
-     *  overridden in derived classes to provide type-specific
-     *  operation and return a token of the appropriate subclass.
+    /** Test for closeness of the values of this Token and the
+     *  argument Token.  It is guaraunteed by the caller that the type
+     *  and units of the argument is the same as the type of this
+     *  class.  This method should be overridden in derived classes to
+     *  provide type-specific operation and return a token of the
+     *  appropriate subclass.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -1041,10 +1042,11 @@ public abstract class ScalarToken extends Token
             throws IllegalActionException;
 
     /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type and units of the argument
-     *  is the same as the type of this class.  This method should be
-     *  overridden in derived classes to provide type-specific
-     *  operation and return a token of the appropriate subclass.
+     *  Token.  It is guaraunteed by the caller that the type and
+     *  units of the argument is the same as the type of this class.
+     *  This method should be overridden in derived classes to provide
+     *  type-specific operation and return a token of the appropriate
+     *  subclass.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -1054,10 +1056,11 @@ public abstract class ScalarToken extends Token
             throws IllegalActionException;
 
     /** Test for ordering of the values of this Token and the argument
-     *  Token.  It is assumed that the type and units of the argument
-     *  is the same as the type of this class.  This method should be
-     *  overridden in derived classes to provide type-specific
-     *  operation and return a token of the appropriate subclass.
+     *  Token.  It is guaraunteed by the caller that the type and
+     *  units of the argument is the same as the type of this class.
+     *  This method should be overridden in derived classes to provide
+     *  type-specific operation and return a token of the appropriate
+     *  subclass.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -1074,11 +1077,11 @@ public abstract class ScalarToken extends Token
     }
 
     /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token.  It is assumed that
-     *  the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type-specific operation and return a token of the
-     *  appropriate subclass.
+     *  modulo the value of the argument token.  It is guaraunteed by
+     *  the caller that the type of the argument is the same as the
+     *  type of this class.  This method should be overridden in
+     *  derived classes to provide type-specific operation and return
+     *  a token of the appropriate subclass.
      *  @param rightArgument The token to modulo this token by.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
@@ -1088,11 +1091,11 @@ public abstract class ScalarToken extends Token
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token.  It is assumed
-     *  that the type of the argument is the same as the type of this class.
-     *  This method should be overridden in derived
-     *  classes to provide type-specific operation and return a token of the
-     *  appropriate subclass.
+     *  multiplied by the value of the argument token.  It is
+     *  guaraunteed by the caller that the type of the argument is the
+     *  same as the type of this class.  This method should be
+     *  overridden in derived classes to provide type-specific
+     *  operation and return a token of the appropriate subclass.
      *  @param rightArgument The token to multiply this token by.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -1102,11 +1105,11 @@ public abstract class ScalarToken extends Token
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of the argument
-     *  token subtracted from the value of this token.  It is assumed
-     *  that the type of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type-specific operation and return a token of the
-     *  appropriate subclass.
+     *  token subtracted from the value of this token.  It is
+     *  guaraunteed by the caller that the type of the argument is the
+     *  same as the type of this class.  This method should be
+     *  overridden in derived classes to provide type-specific
+     *  operation and return a token of the appropriate subclass.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -1151,13 +1154,13 @@ public abstract class ScalarToken extends Token
     ////                         private methods                   ////
 
     /** Return a new token whose value is the value of the argument
-     *  Token added to the value of this Token.  It is assumed that
-     *  the type of the argument is the same as the type of this class
-     *  and has the same units as this token.  The resulting token
-     *  will also have the same type and units.  This method defers to
-     *  the _add() method that takes a ScalarToken.  Derived classes
-     *  should implement that method instead to provide type-specific
-     *  operation.
+     *  Token added to the value of this Token.  It is guaraunteed by
+     *  the caller that the type of the argument is the same as the
+     *  type of this class and has the same units as this token.  The
+     *  resulting token will also have the same type and units.  This
+     *  method defers to the _add() method that takes a ScalarToken.
+     *  Derived classes should implement that method instead to
+     *  provide type-specific operation.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If the units are not
      *  compatible, or this operation is not supported by the derived
@@ -1178,12 +1181,13 @@ public abstract class ScalarToken extends Token
     }
 
     /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token.  It is assumed
-     *  that the type of the argument is the same as the type of this
-     *  class.  The resulting token will also have the same type and
-     *  appropriate units.  This method defers to the _divide method
-     *  that takes a ScalarToken.  Derived classes should implement
-     *  that method instead to provide type-specific operation.
+     *  divided by the value of the argument token.  It is guaraunteed
+     *  by the caller that the type of the argument is the same as the
+     *  type of this class.  The resulting token will also have the
+     *  same type and appropriate units.  This method defers to the
+     *  _divide method that takes a ScalarToken.  Derived classes
+     *  should implement that method instead to provide type-specific
+     *  operation.
      *  @param rightArgument The token to divide this token by.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -1199,11 +1203,11 @@ public abstract class ScalarToken extends Token
     }
 
     /** Test for closeness of the values of this Token and the
-     *  argument Token.  It is assumed that the type and units of the
-     *  argument is the same as the type of this class. This method
-     *  may defer to the _isCloseTo() method that takes a ScalarToken.
-     *  Derived classes should implement that method instead to
-     *  provide type-specific operation.
+     *  argument Token.  It is guaraunteed by the caller that the type
+     *  and units of the argument is the same as the type of this
+     *  class. This method may defer to the _isCloseTo() method that
+     *  takes a ScalarToken.  Derived classes should implement that
+     *  method instead to provide type-specific operation.
      *  @param rightArgument The token with which to test closeness.
      *  @exception IllegalActionException If the units of the argument
      *  are not the same as the units of this token, or the method is
@@ -1224,10 +1228,10 @@ public abstract class ScalarToken extends Token
     }
 
     /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is the
-     *  same as the type of this class.  This method returns
-     *  BooleanToken.FALSE if the units of this token and the given
-     *  token are not identical.  This method may defer to the
+     *  Token.  It is guaraunteed by the caller that the type of the
+     *  argument is the same as the type of this class.  This method
+     *  returns BooleanToken.FALSE if the units of this token and the
+     *  given token are not identical.  This method may defer to the
      *  _isEqualTo() method that takes a ScalarToken.  Derived classes
      *  should implement that method instead to provide type-specific
      *  operation.
@@ -1247,11 +1251,11 @@ public abstract class ScalarToken extends Token
     }
 
     /** Test for ordering of the values of this Token and the argument
-     *  Token.  It is assumed that the type and units of the argument
-     *  is the same as the type of this class.  This method may defer
-     *  to the _isLessThan() method that takes a ScalarToken.  Derived
-     *  classes should implement that method instead to provide
-     *  type-specific operation.
+     *  Token.  It is guaraunteed by the caller that the type and
+     *  units of the argument is the same as the type of this class.
+     *  This method may defer to the _isLessThan() method that takes a
+     *  ScalarToken.  Derived classes should implement that method
+     *  instead to provide type-specific operation.
      *  @param rightArgument The token with which to test ordering.
      *  @exception IllegalActionException If the units of the argument
      *  are not the same as the units of this token, or the method is
@@ -1271,13 +1275,13 @@ public abstract class ScalarToken extends Token
     }
 
     /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token.  It is assumed that
-     *  the type of the argument is the same as the type of this class
-     *  and has the same units as this token.  The resulting token
-     *  will also have the same type and units.  This method defers to
-     *  the _modulo() method that takes a ScalarToken.  Derived classes
-     *  should implement that method instead to provide type-specific
-     *  operation.
+     *  modulo the value of the argument token.  It is guaraunteed by
+     *  the caller that the type of the argument is the same as the
+     *  type of this class and has the same units as this token.  The
+     *  resulting token will also have the same type and units.  This
+     *  method defers to the _modulo() method that takes a
+     *  ScalarToken.  Derived classes should implement that method
+     *  instead to provide type-specific operation.
      *  @param rightArgument The token to modulo this token by.
      *  @exception IllegalActionException If the units are not
      *  compatible, or this operation is not supported by the derived
@@ -1298,12 +1302,13 @@ public abstract class ScalarToken extends Token
     }
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token.  It is assumed
-     *  that the type of the argument is the same as the type of this
-     *  class.  The resulting token will also have the same type and
-     *  appropriate units.  This method defers to the _multiply() method
-     *  that takes a ScalarToken.  Derived classes should implement
-     *  that method instead to provide type-specific operation.
+     *  multiplied by the value of the argument token.  It is
+     *  guaraunteed by the caller that the type of the argument is the
+     *  same as the type of this class.  The resulting token will also
+     *  have the same type and appropriate units.  This method defers
+     *  to the _multiply() method that takes a ScalarToken.  Derived
+     *  classes should implement that method instead to provide
+     *  type-specific operation.
      *  @param rightArgument The token to multiply this token by.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -1320,13 +1325,13 @@ public abstract class ScalarToken extends Token
     }
 
     /** Return a new token whose value is the value of the argument
-     *  token subtracted from the value of this token.  It is assumed
-     *  that the type of the argument is the same as the type of this
-     *  class and has the same units as this token.  The resulting
-     *  token will also have the same type and units.  This method
-     *  defers to the _subtract method that takes a ScalarToken.
-     *  Derived classes should implement that method instead to provide
-     *  type-specific operation.
+     *  token subtracted from the value of this token.  It is
+     *  guaraunteed by the caller that the type of the argument is the
+     *  same as the type of this class and has the same units as this
+     *  token.  The resulting token will also have the same type and
+     *  units.  This method defers to the _subtract method that takes
+     *  a ScalarToken.  Derived classes should implement that method
+     *  instead to provide type-specific operation.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If the units are not
      *  compatible, or this operation is not supported by the derived
