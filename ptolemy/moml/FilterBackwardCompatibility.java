@@ -148,7 +148,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	// which will open up a large xml file and then close after 2 seconds.
 	// If you place the above command in a file five times, you
 	// can get averages with:
-	// sh c:/tmp/timeit | awk '{sum+=$4; print sum, sum/NR, $0}'
+	// sh c:/tmp/timeit | awk '{sum += $4; print sum, sum/NR, $0}'
 
 	if (attributeName.equals("class")) {
 	    // Look for lines like:
@@ -500,13 +500,15 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 	// In alphabetic order by actor class name.
 	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Const",
-                "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+                "<property name=\"_icon\" "
+                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
                 + "<property name=\"attributeName\" value=\"value\"/>\n"
                 + "<property name=\"displayWidth\" value=\"40\"/>\n"
                 + "</property>\n");
 
 	String functionIcon =
-	    "<property name=\"_icon\" class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
+	    "<property name=\"_icon\" "
+            + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
 	    + "<property name=\"attributeName\" value=\"function\"/>\n"
 	    + "</property>\n";
 
@@ -514,7 +516,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
                 functionIcon);
 
 	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Scale",
-                "<property name=\"_icon\" class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
+                "<property name=\"_icon\" "
+                + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
                 + "<property name=\"attributeName\" value=\"factor\"/>\n"
                 + "</property>\n");
 
