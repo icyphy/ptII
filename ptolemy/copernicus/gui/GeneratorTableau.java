@@ -259,7 +259,7 @@ public class GeneratorTableau extends Tableau {
             // configuration information, use that.  Otherwise, make one.
             GeneratorAttribute attribute =
                 (GeneratorAttribute)
-                model.getAttribute(Copernicus.GENERATOR_NAME);
+                model.getAttribute(Copernicus.GENERATOR_NAME,
                         GeneratorAttribute.class);
             if (attribute == null) {
                 attribute = new GeneratorAttribute(
