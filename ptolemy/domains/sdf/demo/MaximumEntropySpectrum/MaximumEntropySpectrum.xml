@@ -1,0 +1,200 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MaximumEntropySpectrum" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="72.0, 33.0">
+        </property>
+    </property>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+            <doc>The sampling frequency, in the same units as the frequency.</doc>
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+            <doc>The phase, in radians.</doc>
+        </property>
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 122.0">
+        </property>
+    </entity>
+    <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+            <doc>The sampling frequency, in the same units as the frequency.</doc>
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="1000.0">
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+            <doc>The phase, in radians.</doc>
+        </property>
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 181.0">
+        </property>
+    </entity>
+    <entity name="Sinewave3" class="ptolemy.actor.lib.Sinewave">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+            <doc>The sampling frequency, in the same units as the frequency.</doc>
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2000.0">
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+            <doc>The phase, in radians.</doc>
+        </property>
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 242.0">
+        </property>
+    </entity>
+    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="116.0, 303.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.moml.Location" value="259.0, 161.0">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+        </property>
+        <property name="Copy1:3:0:annotation1" class="ptolemy.kernel.util.Attribute">
+            <property name="_location" class="ptolemy.moml.Location" value="265.0, 91.0">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This composite actor estimates the power spectrum of an input using
+the maximum-entropy method.  This method estimates the autocorrelation,
+then constructs a minimum-mean-square-error (MMSE) linear predictor
+for that autocorrelation.  The frequency response of the prediction
+error filter is then found and inverted to yield the power spectral
+estimate. The number of inputs required to produce any output is a
+parameter, and the number of outputs produced will be 2^(log2resolution).
+The order parameter specifies the number of coefficients of linear
+predictor. The output represents frequencies from -pi to pi
+radians per second, centered at zero frequency, in decibels (dB).</text>
+           </svg>
+           </configure>
+            </property>
+        </property>
+        <property name="order" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="256">
+        </property>
+        <property name="log2resolution" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="411.0, 169.0">
+        </property>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="484.0, 189.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Maximum Entropy Spectrum</title>
+<xLabel>Frequency (radians/sec)</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="255.0"/>
+<yRange min="-18.782294521731824" max="23.45474020269755"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="IIR Coloring Filter" class="ptolemy.actor.lib.IIR">
+        <property name="numerator" class="ptolemy.data.expr.Parameter" value="{1.0, -1.6, 1.28}">
+        </property>
+        <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, -0.9}">
+        </property>
+        <doc>IIR filter</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="248.0, 308.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Sinewave.output" relation="relation"/>
+    <link port="Sinewave2.output" relation="relation4"/>
+    <link port="Sinewave3.output" relation="relation5"/>
+    <link port="Gaussian.output" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation9"/>
+    <link port="AddSubtract.output" relation="relation7"/>
+    <link port="MaximumEntropySpectrum.input" relation="relation7"/>
+    <link port="MaximumEntropySpectrum.output" relation="relation8"/>
+    <link port="SequencePlotter.input" relation="relation8"/>
+    <link port="IIR Coloring Filter.input" relation="relation6"/>
+    <link port="IIR Coloring Filter.output" relation="relation9"/>
+</entity>
