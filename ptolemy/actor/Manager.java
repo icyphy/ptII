@@ -134,6 +134,7 @@ public final class Manager extends NamedObj {
             _isRunning = true;
             _isPaused = false;
             _iteration = 0;
+	    _typeResolved = false;
         }
 
         // Notify all the listeners that execution has started.
@@ -488,7 +489,10 @@ public final class Manager extends NamedObj {
             workspace().getReadAccess();
             
 	    try {
-                resolveTypes();
+		if (!_typeResolved) {
+                    resolveTypes();
+                    _typeResolved = true;
+                }
             }
             catch (TypeConflictException e) {
                 event = new ExecutionEvent(this,_iteration, e);
@@ -563,6 +567,8 @@ public final class Manager extends NamedObj {
     private Thread _runningthread;
     private HashedSet _ExecutionListeners;
 
+    // FIXME: a hack until mutation got implemented.
+    private boolean _typeResolved = false;
 }
 
 
