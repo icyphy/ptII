@@ -151,6 +151,10 @@ public class Transition extends ComponentRelation {
      *  Increment the version of the workspace.
      *  @param workspace The workspace for synchronization and version
      *  tracking.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this transition.
+     *  @exception NameDuplicationException If the name coincides with
+     *   any relation already in the container.
      */
     public Transition(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -348,6 +352,7 @@ public class Transition extends ComponentRelation {
     /** Return the guard expression. The guard expression should evaluate
      *  to a boolean value.
      *  @return The guard expression.
+     *  @see #setGuardExpression
      */
     public String getGuardExpression() {
         return guardExpression.getExpression();
@@ -485,6 +490,7 @@ public class Transition extends ComponentRelation {
     /** Return the trigger expression. The trigger expression should evaluate
      *  to a boolean value.
      *  @return The trigger expression.
+     *  @see #setTriggerExpression
      */
     public String getTriggerExpression() {
         return triggerExpression.getExpression();
@@ -618,6 +624,7 @@ public class Transition extends ComponentRelation {
     /** Set the guard expression. The guard expression should evaluate
      *  to a boolean value.
      *  @param expression The guard expression.
+     *  @see #getGuardExpression
      */
     public void setGuardExpression(String expression) {
         try {
@@ -632,6 +639,7 @@ public class Transition extends ComponentRelation {
     /** Set the trigger expression. The trigger expression should evaluate
      *  to a boolean value.
      *  @param expression The trigger expression.
+     *  @see #getTriggerExpression
      */
     public void setTriggerExpression(String expression) {
         try {

@@ -147,11 +147,14 @@ public abstract class AbstractActionsAttribute extends Action
 
     /** Return the channel number associated with the given name, assuming
      *  that the destination is a port object.
+     *  @param name The name of the channel.
+     *  @return The channel number associated with the given name.
      *  @exception IllegalActionException If the name does not refer to a
      *  port, or a channel has not been specified for the name.
      */
     public int getChannel(String name) throws IllegalActionException {
-        Integer integer = (Integer) _numbers.get(_destinationNames.indexOf(name));
+        Integer integer = 
+            (Integer) _numbers.get(_destinationNames.indexOf(name));
 
         if (integer == null) {
             throw new IllegalActionException("No channel was specified for "
@@ -164,6 +167,8 @@ public abstract class AbstractActionsAttribute extends Action
     /** Return the destination object referred to by the given name.
      *  Depending on the subclass of this class, this might be a variable,
      *  or an output port.
+     *  @param name The name of the destination object.
+     *  @return The destination object with the given name. 
      *  @exception IllegalActionException If the given name is not a valid
      *  destination for this action.
      */
@@ -174,6 +179,7 @@ public abstract class AbstractActionsAttribute extends Action
     /** Return the list of destination names given in expression set
      *  for this attribute.  If no destinations are specified, then return
      *  an empty list.
+     *  @return the list of destination names.
      */
     public List getDestinationNameList() {
         if (_destinationNames == null) {
@@ -186,6 +192,9 @@ public abstract class AbstractActionsAttribute extends Action
     /** Return the expression referred to by the given name.  When the
      *  action is executed, this expression will be evaluated and
      *  assigned to the object associated with the name.
+     *  @param name The name of an expression.
+     *  @return The expression referred to by the given name.
+     *  @see #setExpression
      */
     public String getExpression(String name) {
         ParseTreeWriter writer = new ParseTreeWriter();
@@ -194,6 +203,7 @@ public abstract class AbstractActionsAttribute extends Action
     }
 
     /** Test if a channel number is associated with the given name.
+     *  @param name The channel name.
      *  @return true If a channel was specified.
      */
     public boolean isChannelSpecified(String name) {
@@ -207,7 +217,8 @@ public abstract class AbstractActionsAttribute extends Action
      *  been registered using addValueListener().
      *  @param expression The action.
      *  @exception IllegalActionException If the change is not acceptable
-     *   to the container, or if the action is syntactically incorrect.
+     *  to the container, or if the action is syntactically incorrect.
+     *  @see #getExpression
      */
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
@@ -316,26 +327,27 @@ public abstract class AbstractActionsAttribute extends Action
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // List of channels.
+    /** List of channels. */
     protected List _numbers;
 
-    // List of destinations.
+    /** List of destinations. */
     protected List _destinations;
 
-    // List of destination names.
+    /** List of destination names. */
     protected List _destinationNames;
 
-    // The workspace version number when the _destinations list is last
-    // updated.
+    /** The workspace version number when the _destinations list is last
+     *  updated.
+     */
     protected long _destinationsListVersion = -1;
 
-    // The list of parse trees.
+    /** The list of parse trees. */
     protected List _parseTrees;
 
-    // The parse tree evaluator.
+    /** The parse tree evaluator. */
     protected ParseTreeEvaluator _parseTreeEvaluator;
 
-    // The scope.
+    /** The scope. */
     protected ParserScope _scope;
 
     ///////////////////////////////////////////////////////////////////

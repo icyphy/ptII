@@ -57,8 +57,9 @@ import ptolemy.kernel.util.StringAttribute;
    the parameter name.
    <p>
    The guard of each transition is set automatically. Users should not set
-   the guard. For an input transition, the guard is set to <inputPort>_isPresent,
-   where <inputPort> is the port corresponding to this transition; For output
+   the guard. For an input transition, the guard is set to &lt;inputPort&gt;
+   _isPresent,
+   where &lt;inputPort&gt; is the port corresponding to this transition; For output
    and internal transitions, the guard is set to true. Each of the output
    and internal transitions contain an Action. The expression of the Action
    is also set automatically. For output transition, the action is set to
@@ -238,8 +239,10 @@ public class InterfaceAutomatonTransition extends Transition {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // Transition types.
+    /** The input transition type. */
     protected static final int _INPUT_TRANSITION = 0;
+    /** The output transition type. */
     protected static final int _OUTPUT_TRANSITION = 1;
+    /** The internal transition type. */
     protected static final int _INTERNAL_TRANSITION = 2;
 }

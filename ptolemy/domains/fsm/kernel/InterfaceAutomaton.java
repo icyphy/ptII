@@ -173,7 +173,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  one incoming and one outgoing internal transitions, and it is
      *  not the initial state, it is removed and the two transitions are
      *  combined into one. The label on the new transition is formed by
-     *  <incomingLabel><NAME_CONNECTOR><outgoingLabel>.
+     *  &lt;incomingLabel&gt;&lt;NAME_CONNECTOR&gt;&lt;outgoingLabel&gt;.
      */
     public void combineInternalTransitions() {
         State initialState = (State) getEntity(initialStateName.getExpression());
@@ -578,6 +578,7 @@ public class InterfaceAutomaton extends FSMActor {
      *    Internal Transition Names:
      *      (list of internal transition names)
      *  </pre>
+     *  @return A high-level description of this automaton.
      */
     public String getInfo() {
         String info = getFullName() + "\n";

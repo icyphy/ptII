@@ -116,7 +116,7 @@ import ptolemy.kernel.util.Workspace;
    @version $Id$
    @since Ptolemy II 0.4
    @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating red (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
    @see FSMActor
 */
 public class FSMDirector extends Director implements ModelErrorHandler,
@@ -428,6 +428,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  container of this director.  This class returns all variables
      *  that are assigned in the actions of transitions.
      *  @return A list of variables.
+     *  @exception IllegalActionException If no controller can be found, 
+     *  or the variables to be assigned by the actions can not be found.
      */
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();

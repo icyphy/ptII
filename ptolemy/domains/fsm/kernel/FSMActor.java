@@ -405,6 +405,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      * commit identifiers, even those not contained by the finite
      * state machine.
      * @return A list of variables.
+     * @exception IllegalActionException If a valid destination object can not
+     * be found.
      * @see FSMDirector#getModifiedVariables()
      */
     public List getModifiedVariables() throws IllegalActionException {
@@ -459,6 +461,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Return a scope object that has current values from input ports
      *  of this FSMActor in scope.  This scope is used to evaluate
      *  guard expressions and set and output actions.
+     *  @return A scope object that has current values from input ports of
+     *  this FSMActor in scope.
      */
     public ParserScope getPortScope() {
         // FIXME: this could be cached.
@@ -741,7 +745,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Set the flag indicating whether we are at the start of
      *  a new iteration (firing).  Normally, the flag is set to true.
      *  It is only set to false in HDF.
-     *  @param newIteration
+     *  @param newIteration A boolean variable indicating whether this is
+     *  a new iteration.
      */
     public void setNewIteration(boolean newIteration) {
         _newIteration = newIteration;
@@ -1188,13 +1193,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // Current state.
+    /** Current state. */
     protected State _currentState = null;
 
-    // A map from ports to corresponding input variables.
+    /** A map from ports to corresponding input variables. */
     protected Map _inputTokenMap = new HashMap();
 
-    // The last chosen transition.
+    /** The last chosen transition. */
     protected Transition _lastChosenTransition = null;
 
     /** Indicator that a stop has been requested by a call to stop(). */

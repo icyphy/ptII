@@ -39,41 +39,50 @@ import ptolemy.kernel.util.Workspace;
 
 
 /**
- * @author zhouye
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+   This class is very preliminary. The purpose of this director is to allow
+   modal models to consume 0 or more tokens for each input port and send 0
+   or more tokens to each output port.
+   
+   @author zhouye
+   @version $Id$
+   @since Ptolemy II 5.0
+   @Pt.ProposedRating Red (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
+   @see FSMDirector
  */
 public class MultirateFSMDirector extends FSMDirector {
-    /**
-     *
+
+    /** Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
      */
     public MultirateFSMDirector() {
-        super();
+        super();    }
 
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
-     * @param workspace
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace of this director.
      */
     public MultirateFSMDirector(Workspace workspace) {
         super(workspace);
-
-        // TODO Auto-generated constructor stub
     }
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct a director in the given container with the given name.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *  @param container Container of this director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
     public MultirateFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // TODO Auto-generated constructor stub
     }
 
     ///////////////////////////////////////////////////////////////////
