@@ -412,11 +412,12 @@ test IOPort-9.1.1 {Check hasRoom and hasToken methods} {
     catch {$p2 hasRoom 0} res7
     set res8 [$p2 hasToken 0]
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8
-} {1 {ptolemy.kernel.util.IllegalActionException: hasToken: channel index is out of range.
+} {1 {ptolemy.kernel.util.IllegalActionException: Port is not an input port!
   in .<Unnamed Object>.E1.P1} {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
-  in .<Unnamed Object>.E2.P2} 0 0 {ptolemy.kernel.util.IllegalActionException: hasToken: channel index is out of range.
+  in .<Unnamed Object>.E2.P2} 0 0 {ptolemy.kernel.util.IllegalActionException: Port is not an input port!
   in .<Unnamed Object>.E1.P1} {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
   in .<Unnamed Object>.E2.P2} 1}
+
 
 test IOPort-9.2 {Check unlink and send to dangling relation} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -441,7 +442,7 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     $p1 {send int ptolemy.data.Token} 0 $token
     catch {$p2 get 0} msg
     list [$p2 getWidth] $msg
-} {0 {ptolemy.kernel.util.IllegalActionException: get: channel index is out of range.
+} {0 {ptolemy.kernel.util.IllegalActionException: Channel index 0 is out of range, because width is only 0.
   in .<Unnamed Object>.E2.P2}}
 
 test IOPort-9.3 {Check unlink and get from unlinked port} {
