@@ -71,15 +71,15 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** If true, fill the histogram when wrapup is called.
+    /** @serial If true, fill the histogram when wrapup is called.
      *  This parameter has type BooleanToken, and default value true.
      */
     public Parameter fillOnWrapup;
 
-    /** The histogram object. */
+    /** @serial The histogram object. */
     public Histogram histogram;
 
-    /** Input port, which has type DoubleToken. */
+    /** @serial Input port, which has type DoubleToken. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
@@ -180,5 +180,6 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    /** @serial Panel into which this histogram should be placed */
     private Panel _panel;
 }
