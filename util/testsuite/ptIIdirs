@@ -1,12 +1,12 @@
-#! /usr/bin/csh
-# -[Thu Nov 19 11:22:56 1998 by cxh]-
+#! /bin/sh
+# -[Thu Nov 19 11:28:12 1998 by cxh]-
 # List the Ptolemy II directories
 # Use this to update
 # find . -type d -print | grep -v SCCS | grep -v shilman | grep -v devel | grep -v adm  | grep -v codeDoc | grep -v filter
 
 
 # Directories we don't look into
-set NOTDIRS = ( \
+NOTDIRS=" \
 com/microstar/xml/doc \
 com/microstar/xml/demo/doc \
 com/microstar/xml/demo \
@@ -23,10 +23,9 @@ ptolemy/filter/filtermodel \
 ptolemy/filter/controller/doc \
 ptolemy/filter/controller \
 ptolemy/filter \
-)
+"
 
-cd $PTOLEMY/tycho
-set SRCDIRS = ( \
+SRCDIRS=" \
 bin \
 collections/images \
 collections/doc \
@@ -144,5 +143,5 @@ ptolemy \
 util/testsuite/doc \
 util/testsuite \
 util \
-  )
+"
 echo $SRCDIRS
