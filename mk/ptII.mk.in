@@ -126,6 +126,12 @@ LEJOS_DIR = @LEJOS_DIR@
 # used by bin/ptinvoke.in
 CAL_DIR = @CAL_DIR@
 
+# Directory that contains chic.jar.
+# Chic is a modular verifier for behavioral compatibility checking of
+# software and hardware components.
+# Used in bin/ptinvoke.in
+CHIC_DIR = @CHIC_DIR@
+
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 CMKIT_DIR = @CMKIT_DIR@
@@ -218,11 +224,14 @@ MATLAB_DIR = 	@MATLAB_DIR@
 # Location of Matlab's engine libraries (libeng.so, libmx.so)
 MATLAB_LIBDIR =	@MATLAB_LIBDIR@
 
-# Set to cal and used in $PTII/ptoelmy/makefile if Cal was found.
+# Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
 PTCAL_DIR = @PTCAL_DIR@
 
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 PTCC =	@PTCC@
+
+# Set to chic and used in $PTII/ptolemy/makefile if chic was found.
+PTCHIC_DIR = @PTCHIC_DIR@
 
 # PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
 # if the CaffeineMark Java Benchmark kit is found.
@@ -358,8 +367,4 @@ MESCAL_DEPEND_JAR = $(PTII)/mescal/lib/jsat.jar$(CLASSPATHSEPARATOR)$(PTII)/mesc
 INSTALL =		$(ROOT)/config/install-sh -c
 INSTALL_PROGRAM =	${INSTALL}
 INSTALL_DATA =		${INSTALL} -m 644
-
-#Location of the chic.jar file.
-CHIC_JAR = $(PTII)/lib/chic.jar
-
 
