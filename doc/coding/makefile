@@ -46,6 +46,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	addinganactor.htm \
+	ant.htm \
 	applets.htm \
 	body.htm \
 	buttons.htm \
