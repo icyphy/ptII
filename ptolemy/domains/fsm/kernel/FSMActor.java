@@ -45,7 +45,8 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
-import ptolemy.domains.hdf.kernel.HDFFSMDirector;
+
+//import ptolemy.domains.hdf.kernel.HDFFSMDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
@@ -474,9 +475,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             workspace().getWriteAccess();
             Director director = getDirector();
             Transition tr = new Transition(this, name);
-            if (director instanceof HDFFSMDirector){
-                (tr.preemptive).setVisibility(Settable.NONE);
-            }
+            // FIXME: FSM should not depend on hdf
+            //if (director instanceof HDFFSMDirector){
+            //    (tr.preemptive).setVisibility(Settable.NONE);
+            //}
             return tr;
         } finally {
             workspace().doneWriting();
@@ -1047,11 +1049,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         CompositeActor container = (CompositeActor)getContainer();
         Director director = container.getDirector();
-        if (director instanceof HDFFSMDirector) {
-            _firingsSoFar = ((HDFFSMDirector)director).getFiringsSoFar();
-            _firingsPerScheduleIteration = 
-                ((HDFFSMDirector)director).getFiringsPerIteration();
-        }
+        // FIXME: FSM should not depend on hdf
+        //if (director instanceof HDFFSMDirector) {
+        //    _firingsSoFar = ((HDFFSMDirector)director).getFiringsSoFar();
+        //    _firingsPerScheduleIteration = 
+        //        ((HDFFSMDirector)director).getFiringsPerIteration();
+        //}
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();
