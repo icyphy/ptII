@@ -47,7 +47,8 @@ TYPACKAGE_DIR = ptolemy/domains/de/demo
 
 JSRCS = \
 	ClockApplet.java \
-	ClockSystem.java
+	ClockSystem.java \
+	HistogramApplet.java
 
 # Non-graphical Java demos written in Tcl
 # Since there are no demos, we use a dummy file so that the script that builds
@@ -138,7 +139,6 @@ CLOCK_CLASSFILES = \
 	ptolemy/data/IntToken.class \
 	ptolemy/data/ScalarToken.class \
 	ptolemy/data/Token.class \
-	ptolemy/data/TokenPublisher.class \
 	'ptolemy/domains/de/demo/ClockApplet$$GoButtonListener.class' \
 	'ptolemy/domains/de/demo/ClockApplet$$StopTimeListener.class' \
 	ptolemy/domains/de/demo/ClockApplet.class \
