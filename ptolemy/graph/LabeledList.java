@@ -54,15 +54,15 @@ More generally, element labels can be used to maintain arbitrary
 (via the associated element labels).
 
 <p> Element labels maintain their consistency (remain constant) during periods
-when no elements are removed from the list, and the list is not modified
-through a sub list (i.e., by using a list obtained through {@link #subList(int,
-int)}. When elements are removed, the labels assigned to the remaining elements
-may change (see {@link #remove(Object)} for details.  When a sub list is used
-to modify the list, the effect on the labels of the list is unpredictable, and
-to be safe, it should be assumed that all labels have changed.
+when no elements are removed from the list. When elements are removed, the
+labels assigned to the remaining elements may change (see {@link
+#remove(Object)} for details.  
 
 <p> Elements themselves must be non-null and distinct, as determined by the
 <code>equals</code> method.
+
+<p> This class supports all required operations of the list interface, except
+for the subList() operation, which results in an UnsupportedOperationException. 
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
@@ -352,18 +352,11 @@ public class LabeledList implements List {
         return _elements.size();
     }
 
-    /** Return a view of the portion of this list between fromIndex, inclusive,
-     *  and toIndex, exclusive.
-     *  @param fromIndex The low endpoint (inclusive) of the subList.
-     *  @param toIndex The high endpoint (exclusive) of the subList.
-     *  @return A view of the specified range within this list.
-     *  @exception IndexOutOfBoundsException If an endpoint index value is out
-     *  of range (fromIndex < 0 || toIndex > size).
-     *  @exception IllegalArgumentException If endpoint indices are out of order
-     *  (fromIndex > toIndex).
+    /**  Unsupported method of the list interface.
+     *  @exception UnsupportedOperationException Always thrown.
      */
     public List subList(int fromIndex, int toIndex) {
-        return new SubList(this, fromIndex, toIndex);
+        throw new UnsupportedOperationException();
     }
 
     /** Returns an array containing all of the elements in this list in
@@ -421,132 +414,6 @@ public class LabeledList implements List {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner class                     ////
-
-    // This inner class is adapted from the SubList class in
-    // java.util.AbstractList.java (jdk1.3.1).
-    private class SubList extends LabeledList {
-        private LabeledList list;
-        private int offset;
-        private int size;
-
-        SubList(LabeledList parent, int fromIndex, int toIndex) {
-            if (fromIndex < 0) {
-                throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
-            } else if (toIndex > parent.size()) {
-                throw new IndexOutOfBoundsException("toIndex = " + toIndex);
-            } else if (fromIndex > toIndex) {
-                throw new IllegalArgumentException("fromIndex(" + fromIndex +
-                        ") > toIndex(" + toIndex + ")");
-            } else {
-                list = parent;
-                offset = fromIndex;
-                size = toIndex - fromIndex;
-            }
-        }
-
-        public boolean add(Object element) {
-            add(size, element);
-            return true;
-        }
-
-        public Object get(int index) {
-            _rangeCheck(index);
-            return list.get(index+offset);
-        }
-
-        public int size() {
-            return size;
-        }
-
-        public void add(int index, Object element) {
-            if (index < 0 || index > size)
-                throw new IndexOutOfBoundsException();
-            list._add(index+offset, element);
-            size++;
-        }
-
-        public Object remove(int index) {
-            _rangeCheck(index);
-            Object result = list.remove(index+offset);
-            size--;
-            return result;
-        }
-
-        public Iterator iterator() {
-            return listIterator(0);
-        }
-
-        public ListIterator listIterator(final int index) {
-            if (index < 0 || index > size)
-                throw new IndexOutOfBoundsException(
-                        "Index: "+index+", Size: "+size);
-
-            return new ListIterator() {
-                    private ListIterator elements = list.listIterator(index+offset);
-
-                    public boolean hasNext() {
-                        return nextIndex() < size;
-                    }
-
-                    public Object next() {
-                        if (hasNext()) {
-                            return elements.next();
-                        }
-                        else {
-                            throw new NoSuchElementException();
-                        }
-                    }
-
-                    public boolean hasPrevious() {
-                        return previousIndex() >= 0;
-                    }
-
-                    public Object previous() {
-                        if (hasPrevious()) {
-                            return elements.previous();
-                        }
-                        else {
-                            throw new NoSuchElementException();
-                        }
-                    }
-
-                    public int nextIndex() {
-                        return elements.nextIndex() - offset;
-                    }
-
-                    public int previousIndex() {
-                        return elements.previousIndex() - offset;
-                    }
-
-                    public void remove() {
-                        elements.remove();
-                        size--;
-                    }
-
-                    public void set(Object object) {
-                        elements.set(object);
-                    }
-
-                    public void add(Object object) {
-                        elements.add(object);
-                        size++;
-                    }
-                };
-        }
-
-        public List subList(int fromIndex, int toIndex) {
-            return new SubList(this, fromIndex, toIndex);
-        }
-
-        private void _rangeCheck(int index) {
-            if (index < 0 || index >= size)
-                throw new IndexOutOfBoundsException("Index: "+index+
-                        ",Size: "+size);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     // This method is provide to provide support for sub lists, as specified
@@ -571,8 +438,6 @@ public class LabeledList implements List {
             _labels.put(_elements.get(i), new Integer(i));
         }
     }
-
-    private SubList l;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
