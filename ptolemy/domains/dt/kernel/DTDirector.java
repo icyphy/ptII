@@ -133,10 +133,19 @@ getCurrentTime(channel_number) before get(channel_number).
  @version $Id$
 */
 /* Fixme (known bugs)
- 1.) Put more tests on this case: when events come in faster than the period of a DT
-     composite actor (e.g clock feeding DT)
- 2.) Put more tests on this case: when DT composite actor doesn't fire because there aren't
-     enough tokens.
+ 1.) Put more tests on this case: when events come in faster than the period
+     of a DT composite actor (e.g clock feeding DT)
+ 2.) Put more tests on this case: when DT composite actor doesn't fire because
+     there aren't enough tokens.
+ 3.) Domain-polymorphic actors that use getCurrentTime() should be modified
+     to use DT's multirate timing capabilities.
+     CurrentTime  - modified
+     TimedPlotter - modified
+     TimedScope   - modified
+     SequentialClock - no input ports, gets global time only
+     PoissonClock - under investigation
+     Clock        - under investigation
+     Expression   - under investigation
  */
 public class DTDirector extends SDFDirector {
 
