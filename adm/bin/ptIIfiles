@@ -1,6 +1,8 @@
 #!/bin/sh
-# -[Sun Feb  7 02:36:37 1999 by cxh]-
+# -[Thu Jan  9 14:47:25 2003 by cxh]-
 # Return all the source files (with exceptions) in the ptII tree
 
-find . -type f -print | grep -v SCCS | grep -v shilman | grep -v devel | grep -v adm  | grep -v codeDoc | grep -v filter | grep -v com/microstar | grep -v diva | grep -v CVS | grep -v collections | grep -v /cg/
+# Filter out ptolemy/filter not moml/filter
+
+find . -type f -print | grep -v SCCS | grep -v shilman | grep -v devel | grep -v adm  | grep -v codeDoc | grep -v ptolemy/filter | grep -v com/microstar | grep -v diva | grep -v CVS | grep -v collections | grep -v /cg/
 
