@@ -50,13 +50,13 @@ import java.lang.Comparable;
  *  which is an actor and possibly a receiver (for non-pure events).
  *  A pure event has no destination receiver and no token, so methods
  *  for accessing those return null.
- *  The tag consists of a time stamp and a depth.
+ *  The tag consists of a time stamp, a microstep, and a depth.
  *  The depth is the index of the destination actor in a topological
  *  sort.  A larger value of depth represents a lower priority when
  *  processing events.
  *  <p>
- *  This class implements the Comparable interface.  The time stamp
- *  and depth are compared in that order by the compareTo()
+ *  This class implements the Comparable interface.  The time stamp,
+ *  microstep, and depth are compared in that order by the compareTo()
  *  method. 
  *  <p>
  *  @author Lukito Muliadi, Edward A. Lee
@@ -69,32 +69,37 @@ import java.lang.Comparable;
 public class DEEvent implements Comparable {
 
     /** Construct an event with the specified destination receiver,
-     *  token, time stamp and depth. The destination actor is
+     *  token, time stamp, microstep, and depth. The destination actor is
      *  the one containing the destination receiver.
      *  @param receiver The destination receiver.
      *  @param token The transferred token.
      *  @param timeStamp The time when the event occurs.
+     *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination receiver.
      *  @exception NullPointerException If the receiver is null or is
      *   not contained by a port contained by an actor.
      */
-    DEEvent(DEReceiver receiver, Token token, double timeStamp, int depth) {
+    DEEvent(DEReceiver receiver, Token token, double timeStamp,
+                int microstep, int depth) {
         _receiver = receiver;
         _actor = (Actor)receiver.getContainer().getContainer();
         _token = token;
         _timeStamp = timeStamp;
+        _microstep = microstep;
         _receiverDepth = depth;
     }
 
     /** Construct a pure event with the specified destination actor, time
-     *  stamp and depth.
+     *  stamp, microstep, and depth.
      *  @param actor The destination actor
      *  @param timeStamp The time when the event occurs.
+     *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination receiver.
      */
-    DEEvent(Actor actor, double timeStamp, int depth) {
+    DEEvent(Actor actor, double timeStamp, int microstep, int depth) {
         _actor = actor;
         _timeStamp = timeStamp;
+        _microstep = microstep;
         _receiverDepth = depth;
     }
 
@@ -112,7 +117,8 @@ public class DEEvent implements Comparable {
      *  Return a negative integer, zero, or a positive integer if this
      *  event is less than, equal to, or greater than the specified event.
      *  The time stamp is checked first.  If the two time stamps are
-     *  identical, then the receiver depth is checked.
+     *  identical, then the microstep is checked.  If those are identical,
+     *  then the receiver depth is checked.
      *  The argument has to be an instance of DEEvent or a
      *  ClassCastException will be thrown.
      *
@@ -127,6 +133,10 @@ public class DEEvent implements Comparable {
          if ( _timeStamp > castEvent._timeStamp)  {
              return 1;
          } else if ( _timeStamp < castEvent._timeStamp) {
+             return -1;
+         } else if ( _microstep > castEvent._microstep) {
+             return 1;
+         } else if ( _microstep < castEvent._microstep) {
              return -1;
          } else if ( _receiverDepth > castEvent._receiverDepth) {
              return 1;
@@ -143,6 +153,13 @@ public class DEEvent implements Comparable {
      */
     public final int depth() {
         return _receiverDepth;
+    }
+
+    /** Return the microstep.
+     *  @return The microstep.
+     */
+    public final int microstep() {
+        return _microstep;
     }
 
     /** Return the destination receiver of this event. If the event is pure,
@@ -165,8 +182,10 @@ public class DEEvent implements Comparable {
      *   of DEEvent.
      */
      public final boolean isSimultaneousWith(Object event) {
+
          DEEvent castEvent = (DEEvent) event;
          return ( _timeStamp == castEvent._timeStamp) &&
+                ( _microstep == castEvent._microstep) &&
                 ( _receiverDepth == castEvent._receiverDepth);
      }
 
@@ -206,9 +225,13 @@ public class DEEvent implements Comparable {
     // The token contained by this event.
     private Token _token;
 
+    // The microstep.
+    private int _microstep;
+
     // The depth of the destination receiver.
     private int _receiverDepth;
 
     // The time stamp of the event.
     private double _timeStamp;
+
 }
