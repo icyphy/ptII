@@ -491,7 +491,8 @@ public class Copernicus {
         } catch (IllegalActionException ex) {
 	    // IOException does not have a constructor that takes a 
 	    // cause argument.
-	    IOException exception = new IOException("Problem with "
+	    IOException exception = new IOException("Problem generating a "
+						    "substitution map for "
 						    + namedObj.getName());
 	    exception.initCause(ex);
 	    throw exception;
