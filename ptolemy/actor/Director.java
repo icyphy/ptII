@@ -669,7 +669,10 @@ public class Director extends NamedObj implements Executable {
         while (enum.hasMoreElements()) {
             TopologyChangeRequest r = (TopologyChangeRequest)enum.nextElement();
 
-            // Record any new actors
+            // Change the topology. This might throw a TopologyChangeFailedException
+            r.performRequest();
+
+            // Record any new actors that in this request
             Enumeration events = r.queuedEvents();
             while (events.hasMoreElements()) {
                 TopologyEvent e = (TopologyEvent) events.nextElement();
@@ -679,21 +682,13 @@ public class Director extends NamedObj implements Executable {
                         _newActors.insertLast(e.entity);
                     }
                 } else if (e.getID() == TopologyEvent.ENTITY_REMOVED) {
+                    // Why on earth would you want do do this???
                     _newActors.removeOneOf(e.entity);
                 }
             }
 
-            // Change the topology
-            try {
-                r.performRequest();
-            }
-            catch (TopologyChangeFailedException topologyException) {
-                _newActors.clear();
-                throw topologyException;
-            }
-
-            // Inform all listeners, as long as the previous call
-            // didn't throw an exception
+            // Inform all listeners. Of course, this won't happen
+            // if the change request failed
             if (_topologyListeners != null) {
                 r.notifyListeners(_topologyListeners);
             }
