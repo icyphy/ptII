@@ -59,7 +59,7 @@ JSRCS = \
 	ASTPtArrayConstructNode.java \
 	ASTPtAssignmentNode.java \
 	ASTPtBitwiseNode.java \
-	ASTPtFunctionNode.java \
+	ASTPtFunctionApplicationNode.java \
         ASTPtFunctionDefinitionNode.java \
 	ASTPtFunctionalIfNode.java \
 	ASTPtLeafNode.java \
