@@ -404,7 +404,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     }
 
     /** Set the type of the given node to be a record token that
-     *  contains fields for each name in the record construnction,
+     *  contains fields for each name in the record construction,
      *  where the type of each field in the record is determined by
      *  the corresponding type of the child nodes.
      *  @param node The specified node.
