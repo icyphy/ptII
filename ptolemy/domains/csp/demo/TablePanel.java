@@ -13,7 +13,7 @@ import ptolemy.domains.csp.demo.Coordinate;
 import ptolemy.domains.csp.lib.CSPPhilosopher;
 
 class TablePanel extends Panel {
-    private ForkCoords[] forksLoc = new ForkCoords[5];			// coordinates of forks
+    private ChopstickCoords[] chopsticksLoc = new ChopstickCoords[5];			// coordinates of chopsticks
     private PhilosopherCoords[] philsLoc = new PhilosopherCoords[5];	// coordinates of philosophers
     private CSPPhilosopher[] _philosophers;
 
@@ -24,7 +24,7 @@ class TablePanel extends Panel {
         _philosophers = philosophers;
         for (int i = 0; i < 5; i++) {
             philsLoc[i] = new PhilosopherCoords();
-            forksLoc[i] = new ForkCoords();
+            chopsticksLoc[i] = new ChopstickCoords();
         }
         initPos();
     }
@@ -36,14 +36,14 @@ class TablePanel extends Panel {
     private Coordinate origin = new Coordinate(100, 100);	// the origin coordinate.
     private final int pR = 10;			// radius of the philosophers
     private final double r1 = 70d;		// polar position of the philosophers
-    private final double r2 = 25d;		// polar position of the forks
-    private final double r3 = 15d;		// polar position of the forks from the philosophers when in use
-    private final double l = 10d;		// length of the forks
+    private final double r2 = 25d;		// polar position of the chopsticks
+    private final double r3 = 15d;		// polar position of the chopsticks from the philosophers when in use
+    private final double l = 10d;		// length of the chopsticks
     private final int tableGap = 30;
     private final int tableR = (int) r1 - tableGap;
 
     /**
-     * Sets all the coordinates of the forks and philosophers. 
+     * Sets all the coordinates of the chopsticks and philosophers. 
      * Lots of simple but tedious trig. :(  4 philosophers would have been so much easier.
      */
     private void initPos() {
@@ -88,23 +88,23 @@ class TablePanel extends Panel {
 
         p = new Coordinate(origin.X + (int) (r2 * sin36), origin.Y - (int) (r2 * cos36));
         q = new Coordinate(origin.X + (int) ((r2 + l) * sin36), origin.Y - (int) ((r2 + l) * cos36));
-        forksLoc[0].setPos(p, q);
+        chopsticksLoc[0].setPos(p, q);
         p = new Coordinate(origin.X - (int) (r2 * sin36), origin.Y - (int) (r2 * cos36));
         q = new Coordinate(origin.X - (int) ((r2 + l) * sin36), origin.Y - (int) ((r2 + l) * cos36));
-        forksLoc[1].setPos(p, q);
+        chopsticksLoc[1].setPos(p, q);
         p = new Coordinate(origin.X - (int) (r2 * cos18), origin.Y + (int) (r2 * sin18));
         q = new Coordinate(origin.X - (int) ((r2 + l) * cos18), origin.Y + (int) ((r2 + l) * sin18));
-        forksLoc[2].setPos(p, q);
+        chopsticksLoc[2].setPos(p, q);
         p = new Coordinate(origin.X, origin.Y + (int) r2);
         q = new Coordinate(origin.X, origin.Y + (int) (r2 + l));
-        forksLoc[3].setPos(p, q);
+        chopsticksLoc[3].setPos(p, q);
         p = new Coordinate(origin.X + (int) (r2 * cos18), origin.Y + (int) (r2 * sin18));
         q = new Coordinate(origin.X + (int) ((r2 + l) * cos18), origin.Y + (int) ((r2 + l) * sin18));
-        forksLoc[4].setPos(p, q);
+        chopsticksLoc[4].setPos(p, q);
     }
 
     /**
-     * Paint the panel. The state of all the forks and philosophers must be
+     * Paint the panel. The state of all the chopsticks and philosophers must be
      * checked.
      */
     public void paint(Graphics g) {
@@ -137,8 +137,8 @@ class TablePanel extends Panel {
 
                 int j = (i - 1 + 5) % 5;
                 if (! (_philosophers[i].gotLeft || _philosophers[j].gotRight)) {
-                    // fork is on the table.
-                    g.drawLine(forksLoc[i].pos[0].X, forksLoc[i].pos[0].Y, forksLoc[i].pos[1].X, forksLoc[i].pos[1].Y);
+                    // chopstick is on the table.
+                    g.drawLine(chopsticksLoc[i].pos[0].X, chopsticksLoc[i].pos[0].Y, chopsticksLoc[i].pos[1].X, chopsticksLoc[i].pos[1].Y);
                 }
                 else {
                     if (_philosophers[i].gotLeft) {
@@ -165,7 +165,7 @@ class TablePanel extends Panel {
 
     // Inner Classes implementing the coordinates
     
-    public class ForkCoords {
+    public class ChopstickCoords {
         Coordinate[] pos = new Coordinate[2];
 
         public void setPos(Coordinate p, Coordinate q) {

@@ -121,11 +121,11 @@ public class DiningApplet extends Applet implements Runnable, PhilosopherListene
                 }
             }
 
-            CSPFork f1 = new CSPFork(univ, "Fork1");
-            CSPFork f2 = new CSPFork(univ, "Fork2");
-            CSPFork f3 = new CSPFork(univ, "Fork3");
-            CSPFork f4 = new CSPFork(univ, "Fork4");
-            CSPFork f5 = new CSPFork(univ, "Fork5");
+            CSPChopstick f1 = new CSPChopstick(univ, "Chopstick1");
+            CSPChopstick f2 = new CSPChopstick(univ, "Chopstick2");
+            CSPChopstick f3 = new CSPChopstick(univ, "Chopstick3");
+            CSPChopstick f4 = new CSPChopstick(univ, "Chopstick4");
+            CSPChopstick f5 = new CSPChopstick(univ, "Chopstick5");
 
             // Now connect up the Actors
             IORelation r1 = (IORelation)univ.connect(p1.leftIn, f5.rightOut);
