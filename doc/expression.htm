@@ -33,69 +33,67 @@ examples of expressions:
 </pre>
 These examples assume that <code>x</code>, <code>y</code>,
 and <code>theta</code> are variables within scope.
-</P>
+<p></P>
 <H2> Variables</H2>
 <P>
 Expressions can contain references by name to variables that
-are with scope.  What this means, exactly, depends on how the
+are within scope.  What this means, exactly, depends on how the
 expression is being used.  Here are two common cases:
 <ul>
 <li>
 When an expression is giving the value of a parameter of an actor,
-then all parameters of the actor and the container of the actor
+say <code>A</code>,
+then all parameters of actor <code>A</code> and the actors that contain
+<code>A</code> directly or indirectly
 are within scope.  That is, these parameters can appear (by name)
 in an expression giving the value of the parameter.  A common
 pattern is give the value of a parameter by giving the name
 of another parameter that is in scope.
 <li> 
 When an expression is given in the Expression actor to define an
-output value in terms of the input, then the inputs of the expression
-actor may also be referenced by name. As with parameters, the parameters
-of the container of the Expression actor are also withing scope.
+output value in terms of the input, then the inputs of the Expression
+actor may also be referenced by name, in addition to all parameters of 
+the Expression actor and all actors that contain it directly or indirectly.
+
 </ul>
 <H2>Arithmetic operators</H2>
 <P>
-The arithmetic operators are +, -, *, / and %,
+The arithmetic operators are <code>+</code>, <code>-</code>, <code>*</code>,
+<code>/</code>, and <code>%</code>,
 where the latter is the remainder operator.
 </P>
 <P>
 <H2>Bit manipulation</H2>
 <P>
-The bitwise operators are &amp;, |, ^ and &#126;. They operate 
-on integers.</P>
+The bitwise operators are <code>&amp;</code>, <code>|</code>,
+and <code>&#126;</code>. They operate on integers.</P>
 <H2> Relational operators</H2>
-<P>
-The relational operators are &lt;, &lt;=, &gt;, &gt;=,
-<code>==</code> and !=. They return booleans.</P>
+<P> The relational operators are <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, 
+  <code>&gt;=</code>, <code>==</code>, and <code>!=</code>. They return booleans.</P>
 <H2> Logical operators</H2>
-<P>
-The logical boolean operators are &amp;&amp;, ||, !, &amp; 
-and |. They operate on booleans and return booleans. Note that the difference 
-between logical &amp;&amp; and logical &amp; is that &amp; evaluates all 
-the operands regardless of whether their value is now irrelevant. Similarly 
-for logical || and |. This approach is borrowed from Java.</P>
+<P> The logical boolean operators are <code>&amp;&amp;</code>, <code>||</code>, 
+  <code>!</code>, <code>&amp;</code>, and <code>|</code>. They operate on booleans 
+  and return booleans. Note that the difference between logical <code>&amp;&amp;</code> 
+  and logical <code>&amp;</code> is that <code>&amp;</code> evaluates all the 
+  operands regardless of whether their value is now irrelevant. Similarly for 
+  logical <code>||</code> and <code>|</code>. This approach is borrowed from Java.</P>
 <H2> Conditionals</H2>
-<P> The syntax for conditionals is: </PRE>
+<P> The syntax for conditionals is: 
 <PRE>
     boolean ? value1 : value2
 </PRE>
-<P> If the boolean is true, <EM CLASS="Code"> value1</EM> is 
-  returned, otherwise <EM CLASS="Code"> value2</EM> is returned.</P>
+<P> If the <code>boolean</code> is true, <code>value1</code> is returned, otherwise 
+  <code> value2</code> is returned.</P>
 <H2> Comments</H2>
 <P> Anything inside /*...*/ in an expression is ignored.</P>
 <H2> Constants</H2>
-<P>
-The following constants are built in:
-<i>PI</i>, <i>pi</i>, <i>E</i>, <i>e</i>, <i>true</i>, <i>false</i>,
-<i>i</i>, and <i>j</i>. The constants i and j are complex numbers with
-value equal to the 0.0 + 1.0i. In addition, literal constants are
-supported. Anything between quotes, &quot;...&quot;, is interpreted as
-a string constant. Numerical values without decimal points, such as
-10 or -3 are integers. Numerical values with
-decimal points, such as 10.0 or 3.14159 are
-doubles. Integers followed by the character l (el) or
-L are long integers.
-</P>
+<P> The following constants are built in: <i>PI</i>, <i>pi</i>, <i>E</i>, <i>e</i>, 
+  <i>true</i>, <i>false</i>, <i>i</i>, and <i>j</i>. The constants i and j are 
+  complex numbers with value equal to 0.0 + 1.0i. In addition, literal string 
+  constants are supported. Anything between quotes, &quot;...&quot;, is interpreted 
+  as a string constant. Numerical values without decimal points, such as 10 or 
+  -3 are integers. Numerical values with decimal points, such as 10.0 or 3.14159 
+  are doubles. Integers followed by the character l (el) or L are long integers.</P>
 <H2>
 Arrays</H2>
 <P>
@@ -112,257 +110,398 @@ elements of the array can be given by expressions, as in the example
 </P>
 
 <H2>Matrices</H2>
-<P>
+<P> Matrices are specified with square brackets, using commas to separate row 
+  elements and semicolons to separate rows. E.g., <code>[1, 2, 3; 4, 5, 5+1]</code> 
+  gives a two by three integer matrix (2 rows and 3 columns). A row vector can 
+  be given as <code>[1, 2, 3]</code> and a column vector as <code>[1; 2; 3]</code>. 
+  Some Matlab-style array constructors are supported. For example, <code>[1:2:9]</code> 
+  gives an array of odd numbers from 1 to 9, and is equivalent to <code>[1, 3, 
+  5, 7, 9]</code>. Similarly, <code>[1:2:9; 2:2:10]</code> is equivalent to <code>[1, 
+  3, 5, 7, 9; 2, 4, 6, 8, 10]</code>. </P>
+<H2>Array and matrix references</H2>
+<P> Reference to array elements has the form <em class="Emphasis"> name</em> (<em class="Emphasis"> 
+  n</em> ) where <em class="Emphasis"> name</em> is the name of an array variable 
+  in scope (or a constant array), <em class="Emphasis"> n</em> is the index. Reference 
+  to matrix elements has the form <EM CLASS="Emphasis"> name</EM> (<EM CLASS="Emphasis"> 
+  n</EM> , <EM CLASS="Emphasis"> m</EM> ) where <EM CLASS="Emphasis"> name</EM> 
+  is the name of a matrix variable in scope (or a constant matrix), <EM CLASS="Emphasis"> 
+  n</EM> is the row index, and <EM CLASS="Emphasis"> m</EM> is the column index. 
+  Index numbers start with zero, as in Java, not 1, as in Matlab. </P>
 
-Matrices are specified with square brackets, using commas to separate
-row elements and semicolons to separate rows. E.g.,
-<code>[1, 2, 3; 4, 5, 5+1]</code> gives a two by three integer matrix
-(2 rows and 3 columns). Note
-that an array or matrix element can be given by an expression. A row
-vector can be given as <code>[1, 2, 3]</code> and a column vector as
-<code>[1; 2; 3]</code>. Some
-Matlab-style array constructors are supported. For example,
-<code>[1:2:9]</code>
-gives an array of odd numbers from 1 to 9, and is equivalent to
-<code>[1, 3, 5, 7, 9]</code>. Similarly,
-<code>[1:2:9; 2:2:10]</code> is equivalent to
-<code>[1, 3, 5, 7, 9; 2, 4, 6, 8, 10]</code>.
-</P>
-<H2>Matrix references</H2>
-<P>
-Reference to matrices have the form <EM CLASS="Emphasis">
-name</EM>
-(<EM CLASS="Emphasis">
-n</EM>
-, <EM CLASS="Emphasis">
-m</EM>
-) where <EM CLASS="Emphasis">
-name</EM>
- is the name of a matrix variable in scope (or a constant matrix), <EM CLASS="Emphasis">
-n</EM>
- is the row index, and <EM CLASS="Emphasis">
-m</EM>
- is the column index. Index numbers start with zero, as in Java, not 1, as in Matlab. With row vectors, it is not necessary to specify both indices. Thus, if <EM CLASS="Emphasis">
-name</EM>
- = [1, 3, 5, 7], then <EM CLASS="Emphasis">
-name</EM>
-(2) will evaluate to 5. To access elements of a column vector, you must specify both indices, so if <EM CLASS="Emphasis">
-name</EM>
- = [1; 3; 5; 7] then <EM CLASS="Emphasis">
-name</EM>
-(2,0) evaluates to 5.</P>
-</DIV>
-<DIV>
-<H2>Records</H2>
-<P>
-A record token is a composite type where each element is named, and
-each element can have a distinct type. Records are delimited by curly
-braces, with each element given a name. For example,
-<code>{a=1, b=&quot;foo&quot;}</code> is a record with two elements, named
-<i>a</i> and <i>b</i>, with values 1 (an integer) and &quot;foo&quot;
-(a string), respectively. The
-value of a record element can be an arbitrary expression, and records
-can be nested (an element of a record token may be a record token).
-</P>
-<H2>Functions</H2>
-<P>
-The language includes an extensible set of functions, such as sin(),
-cos(), etc. The functions that are built in include all static methods
-of the java.lang.Math class and the ptolemy.data.expr.UtilityFunctions
-class. The functions
-currently available are shown below, with their argument types
-and return types. At this time, in release 1.0, the types must match
-exactly for the expression evaluator to work. Thus, sin(1)
-fails, because the argument to the sin() function is required to be a
-double.
-<P>
-One slightly subtle function is the random() function. It takes no
-arguments, and hence is written <code>random()</code> . It
-returns a random number. However, this function is evaluated only when
-the expression within which it appears is evaluated. The result of the
-expression may be used repeatedly without re-evaluating the expression.
-The random() function is not called again. Thus, for example, if the
-value parameter of the Const actor is set to
-<code>random()</code> , then its output will be a random constant; i.e., it
-will not change on each firing.</P>
-<P>
-<center>
-<table border="1">
-<caption><b>Functions in the java.lang.Math class available to
-the expression language</b></caption>
-<tr><td><b>function</b><td><b>argument type(s)</b><td><b>return type</b><td><b>description</b>
-<tr><td>abs<td>double<td>double<td>absolute value
-<tr><td>abs<td>int<td>int<td>absolute value
-<tr><td>abs<td>long<td>long<td>absolute value
-<tr><td>acos<td>double<td>double<td>arc cosine
-<tr><td>asin<td>double<td>double<td>arc sine
-<tr><td>atan<td>double<td>double<td>arc tangent
-<tr><td>atan2<td>double, double<td>double<td>angle of a vector
-<tr><td>ceil<td>double<td>double<td>ceiling function
-<tr><td>cos<td>double<td>double<td>cosine
-<tr><td>exp<td>double<td>double<td>exponential function (e^argument)
-<tr><td>floor<td>double<td>double<td>floor function
-<tr><td>IEEEremainder<td>double, double<td>double<td>remainder after division
-<tr><td>lob<td>double<td>double<td>natural logarithm
-<tr><td>max<td>double, double<td>double<td>maximum
-<tr><td>max<td>int, int<td>int<td>maximum
-<tr><td>max<td>long, long<td>long<td>maximum
-<tr><td>min<td>double, double<td>double<td>minimum
-<tr><td>min<td>int, int<td>int<td>minimum
-<tr><td>min<td>long, long<td>long<td>minimum
-<tr><td>pow<td>double, double<td>double<td>first argument to the power of the second
-<tr><td>random<td>&nbsp;<td>double<td>random number between 0.0 and 1.0
-<tr><td>rint<td>double<td>double<td>round to the nearest integer
-<tr><td>round<td>double<td>long<td>round to the nearest integer
-<tr><td>sin<td>double<td>double<td>sine function
-<tr><td>sqrt<td>double<td>double<td>square root
-<tr><td>tan<td>double<td>double<td>tangent function
-<tr><td>toDegrees<td>double<td>double<td>convert radians to degrees
-<tr><td>toRadians<td>double<td>double<td>convert degrees to radians
-</table>
-</center>
-<P>
-<center>
-<table border="1">
-<caption><b>Functions in the ptolemy.data.expr.UtilityFunctions
- class available to the expression language</b></caption>
-<tr><td><b>function</b><td><b>argument type(s)</b><td><b>return type</b><td><b>description</b>
-<tr><td>freeMemory<td>;nbsp<td>long<td>Return the approximate number of bytes available for future object allocation
-<tr><td>gaussian<td>double, double<td>double<td>Gaussian random variable with the specified mean, and standard deviation
-<tr><td>gaussian<td>double, double, int, int<td>double matrix<td>Gaussian random matrix with the specified mean, standard deviation, rows, and columns
-<tr><td>totalMemory<td>;nbsp<td>long<td>Return the approximate number of bytes used by current objects and available for future object allocation.
-</table>
-</center>
-</P>
-</P>
-<H2>Methods</H2>
-<P>
-Every element and subexpression in an expression represents an instance of
-the class ptolemy.data.Token (or more likely, a class derived from Token).
-The expression language
-supports invocation of methods of a given token. The syntax for
-this is (<EM>token</EM>).
-<EM>name</EM>(<EM>args</EM>), where <EM>name</EM> is the name of the
-method and <EM>args</EM> is a comma-separated set of arguments.
-Each argument can itself be an expression. Note that the parentheses
-around the <EM>token</EM> are not required, but might be useful for clarity.
-As an example, the ArrayToken class has a getElement(int) method, which can
-be used as follows:</P>
-<PRE>
+  <H2>Records</H2>
+  <P> A record token is a composite type where each element is named, and each 
+    element can have a distinct type. Records are delimited by curly braces, with 
+    each element given a name. For example, <code>{a=1, b=&quot;foo&quot;}</code> 
+    is a record with two elements, named <i>a</i> and <i>b</i>, with values 1 
+    (an integer) and &quot;foo&quot; (a string), respectively. The value of a 
+    record element can be an arbitrary expression, and records can be nested (an 
+    element of a record token may be a record token). </P>
+  <H2>Functions</H2>
+  
+<P> The language includes an extensible set of functions, such as sin(), cos(), 
+  etc. The functions that are built in include all static methods of the java.lang.Math, 
+  java.lang.Double, java.lang.String, ptolemy.data.expr.UtilityFunctions, and 
+  ptolemy.data.expr.FixPointFunctions classes. Part of the functions currently 
+  available are shown below, with their argument types and return types. In release 
+  2.0, when a function that takes argument of a particular type is called on an 
+  array or a matrix whose elements are of that type, the function is applied element-wize. 
+  For example, <code>abs({1.0, -1.0})</code> will evaluate to <code>{1.0, 1.0}</code>. 
+  Besides this, the types must match exactly for the expression evaluator to work. 
+  Thus, <code>sin(1)</code> fails, because the argument to the sin() function 
+  is required to be a double. 
+<P> One slightly subtle function is the random() function. It takes no arguments, 
+    and hence is written <code>random()</code> . It returns a random number. However, 
+    this function is evaluated only when the expression within which it appears 
+    is evaluated. The result of the expression may be used repeatedly without 
+    re-evaluating the expression. The random() function is not called again. Thus, 
+    for example, if the value parameter of the Const actor is set to <code>random()</code> 
+    , then its output will be a random constant; i.e., it will not change on each 
+    firing.</P>
+  <P> 
+  <center>
+    <table border="1">
+      <caption><b>Functions in the java.lang.Math class available to the expression 
+      language</b></caption>
+      <tr>
+        <td><b>function</b>
+        <td><b>argument type(s)</b>
+        <td><b>return type</b>
+        <td><b>description</b> 
+      <tr>
+        <td>abs
+        <td>double
+        <td>double
+        <td>absolute value 
+      <tr>
+        <td>abs
+        <td>int
+        <td>int
+        <td>absolute value 
+      <tr>
+        <td>abs
+        <td>long
+        <td>long
+        <td>absolute value 
+      <tr>
+        <td>acos
+        <td>double
+        <td>double
+        <td>arc cosine 
+      <tr>
+        <td>asin
+        <td>double
+        <td>double
+        <td>arc sine 
+      <tr>
+        <td>atan
+        <td>double
+        <td>double
+        <td>arc tangent 
+      <tr>
+        <td>atan2
+        <td>double, double
+        <td>double
+        <td>angle of a vector 
+      <tr>
+        <td>ceil
+        <td>double
+        <td>double
+        <td>ceiling function 
+      <tr>
+        <td>cos
+        <td>double
+        <td>double
+        <td>cosine 
+      <tr>
+        <td>exp
+        <td>double
+        <td>double
+        <td>exponential function (e^argument) 
+      <tr>
+        <td>floor
+        <td>double
+        <td>double
+        <td>floor function 
+      <tr>
+        <td>IEEEremainder
+        <td>double, double
+        <td>double
+        <td>remainder after division 
+      <tr>
+        <td>lob
+        <td>double
+        <td>double
+        <td>natural logarithm 
+      <tr>
+        <td>max
+        <td>double, double
+        <td>double
+        <td>maximum 
+      <tr>
+        <td>max
+        <td>int, int
+        <td>int
+        <td>maximum 
+      <tr>
+        <td>max
+        <td>long, long
+        <td>long
+        <td>maximum 
+      <tr>
+        <td>min
+        <td>double, double
+        <td>double
+        <td>minimum 
+      <tr>
+        <td>min
+        <td>int, int
+        <td>int
+        <td>minimum 
+      <tr>
+        <td>min
+        <td>long, long
+        <td>long
+        <td>minimum 
+      <tr>
+        <td>pow
+        <td>double, double
+        <td>double
+        <td>first argument to the power of the second 
+      <tr>
+        <td>random
+        <td>&nbsp;
+        <td>double
+        <td>random number between 0.0 and 1.0 
+      <tr>
+        <td>rint
+        <td>double
+        <td>double
+        <td>round to the nearest integer 
+      <tr>
+        <td>round
+        <td>double
+        <td>long
+        <td>round to the nearest integer 
+      <tr>
+        <td>sin
+        <td>double
+        <td>double
+        <td>sine function 
+      <tr>
+        <td>sqrt
+        <td>double
+        <td>double
+        <td>square root 
+      <tr>
+        <td>tan
+        <td>double
+        <td>double
+        <td>tangent function 
+      <tr>
+        <td>toDegrees
+        <td>double
+        <td>double
+        <td>convert radians to degrees 
+      <tr>
+        <td>toRadians
+        <td>double
+        <td>double
+        <td>convert degrees to radians 
+    </table>
+  <p>&nbsp;</p></center>
+  <P> 
+  <center>
+  <table border="1">
+    <caption><b>Functions in the java.lang.Double class available to the expression 
+    language</b></caption>
+    <tr> 
+      <td width="112"><b>function</b> 
+      <td width="94"><b>argument type(s)</b> 
+      <td width="98"><b>return type</b> 
+      <td width="398"><b>description</b> 
+    <tr> 
+      <td width="112"> 
+        <p></p>
+        <p>doubleToLongBits</p>
+      <td width="94">double 
+      <td width="98">long 
+      <td width="398">Returns a representation of the specified floating-point 
+        value according to the IEEE 754 floating-point &quot;double format&quot; 
+        bit layout.
+    <tr> 
+      <td width="112">isInfinite
+      <td width="94">double
+      <td width="98">boolean
+      <td width="398">Returns true if the specified number is infinitely large 
+        in magnitude.
+    <tr> 
+      <td width="112">isNaN
+      <td width="94">double
+      <td width="98">boolean
+      <td width="398">Returns true if the specified number is the special Not-a-Number 
+        (NaN) value.
+    <tr> 
+      <td height="22" width="112">longBitsToDouble
+      <td height="22" width="94">long
+      <td height="22" width="98">double
+      <td height="22" width="398">Returns the double-float corresponding to a 
+        given bit represention.
+    <tr> 
+      <td width="112">parseDouble
+      <td width="94">string 
+      <td width="98">double
+      <td width="398">Returns the double value represented by the specified string.
+    <tr> 
+      <td width="112">toString
+      <td width="94">double
+      <td width="98">string
+      <td width="398">Creates a string representation of the double argument.
+  </table>
+  <p>&nbsp;</p><table border="1">
+    <caption><b>Functions in the ptolemy.data.expr.UtilityFunctions class available 
+    to the expression language</b></caption>
+    <tr> 
+      <td><b>function</b> 
+      <td><b>argument type(s)</b> 
+      <td><b>return type</b> 
+      <td><b>description</b> 
+    <tr> 
+      <td>freeMemory 
+      <td>&nbsp; 
+      <td>long 
+      <td>Return the approximate number of bytes available for future object allocation. 
+    <tr> 
+      <td>gaussian 
+      <td>double, double 
+      <td>double 
+      <td>Gaussian random variable with the specified mean, and standard deviation. 
+    <tr> 
+      <td>gaussian 
+      <td>double, double, int, int 
+      <td>double matrix 
+      <td>Gaussian random matrix with the specified mean, standard deviation, 
+        rows, and columns. 
+    <tr> 
+      <td height="22">property
+      <td height="22">string
+      <td height="22">string
+      <td height="22">Get the specified property from the environment.
+    <tr> 
+      <td>readFile
+      <td>string
+      <td>string
+      <td>Get the string text contained in the specified file.
+    <tr> 
+      <td>readMatrix
+      <td>string
+      <td>double matrix
+      <td>Read a matrix stored in the specified file using the Matlab notation.
+    <tr>
+      <td>repeat
+      <td>int, any
+      <td>array
+      <td>Create an array that contains the specified element of any type repeated 
+        the specified number of times.
+    
+    <tr> 
+      <td>totalMemory 
+      <td>&nbsp; 
+      <td>long 
+      <td>Return the approximate number of bytes used by current objects and available 
+        for future object allocation. 
+  </table>
+  <p>&nbsp;</p></center>
+  <H2>Methods</H2>
+  <P> Every element and subexpression in an expression represents an instance 
+    of the class ptolemy.data.Token (or more likely, a class derived from Token). 
+    The expression language supports invocation of methods of a given token. The 
+    syntax for this is (<EM>token</EM>). <EM>name</EM>(<EM>args</EM>), where <EM>name</EM> 
+    is the name of the method and <EM>args</EM> is a comma-separated set of arguments. 
+    Each argument can itself be an expression. Note that the parentheses around 
+    the <EM>token</EM> are not required, but might be useful for clarity. As an 
+    example, the ArrayToken class has a getElement(int) method, which can be used 
+    as follows:</P>
+  <PRE>
     {1, 2, 3}.getElement(1)
 </PRE>
-<P>
-This returns the integer 2. Another useful function of array token is
-illustrated by the following example:</P>
-<PRE>
+  <P> This returns the integer 2. Another useful function of array token is illustrated 
+    by the following example:</P>
+  <PRE>
     {1, 2, 3}.length()
 </PRE>
-<P>
-which returns the integer 3.
-The MatrixToken classes have three particularly useful methods, illustrated in the following examples:
-</P>
-<PRE>
+  <P> which returns the integer 3. The MatrixToken classes have three particularly 
+    useful methods, illustrated in the following examples: </P>
+  <PRE>
     [1, 2; 3, 4; 5, 6].getRowCount()
 </PRE>
-<P>
-which returns 3, and
-</P>
-<PRE>
+  <P> which returns 3, and </P>
+  <PRE>
     [1, 2; 3, 4; 5, 6].getColumnCount()
 </PRE>
-<P>
-which returns 2, and</P>
-<PRE>
+  <P> which returns 2, and</P>
+  <PRE>
     [1, 2; 3, 4; 5, 6].toArray()
 </PRE>
-<P>
-which returns <code>{1, 2, 3, 4, 5, 6}</code>. The latter function can
-be particularly useful for creating arrays using Matlab-style syntax.
-For example, to contain an array with the integers from 1 to 100, you
-can enter:</P>
-<PRE>
+  <P> which returns <code>{1, 2, 3, 4, 5, 6}</code>. The latter function can be 
+    particularly useful for creating arrays using Matlab-style syntax. For example, 
+    to contain an array with the integers from 1 to 100, you can enter:</P>
+  <PRE>
     [1:1:100].toArray()
 </PRE>
-<P>
-The get() method of RecordToken accesses a record, as in the following example:
-</P>
-<PRE>
+  <P> The get() method of RecordToken accesses a record, as in the following example: 
+  </P>
+  <PRE>
     {a=1, b=2}.get(&quot;a&quot;)
 </PRE>
-<P>
-which returns 1.
-</P>
-<H2>Types</H2>
-<P>
-The types currently supported in the language are boolean, complex,
-fixed point, double, int, long, arrays, matrices and string. Note that
-there is no float or byte. Use double or int instead. A complex is
-defined by appending an <code>i</code> or a <code>j</code> to a double
-for the imaginary part. Thus 2 + 3i will result in the
-expected complex number.
-</P>
-<P>
-The Token classes from the data package form the primitives of the
-language. For example the number 10 becomes an IntToken with the value
-10 when evaluating an expression. Normally this is invisible to the
-user. The expression language is object-oriented, of course, so methods
-can be invoked on these primitives. A sophisticated user, therefore,
-can make use of the fact that 10 is in fact an object to invoke methods
-of that object.
-</P>
-<P>
-In particular, the convert() method of the Token class might be useful,
-albeit a bit subtle in how it is used. For example:
-</P>
-<PRE>
+  <P> which returns 1. </P>
+  <H2>Types</H2>
+  
+<P> The types currently supported in the language are boolean, byte, int, long, 
+  double, complex, fixed point, arrays, matrices, records, and string. Note that 
+  there is no float type. Use double instead. A complex is defined by appending 
+  an <code>i</code> or a <code>j</code> to a double for the imaginary part. Thus 
+  <code>2 + 3i</code> will result in the expected complex number. </P>
+  <P> The Token classes from the data package form the primitives of the language. 
+    For example the number 10 becomes an IntToken with the value 10 when evaluating 
+    an expression. Normally this is invisible to the user. The expression language 
+    is object-oriented, of course, so methods can be invoked on these primitives. 
+    A sophisticated user, therefore, can make use of the fact that 10 is in fact 
+    an object to invoke methods of that object. </P>
+  <P> In particular, the convert() method of the Token class might be useful, 
+    albeit a bit subtle in how it is used. For example: </P>
+  <PRE>
     (1.2).convert(1)
 </PRE>
-<P>
-creates a DoubleToken with value 1.2, and then invokes its convert()
-method with argument 1, which is an IntToken. The convert() method of
-DoubleToken converts the argument to a DoubleToken, so the result of
-this expression is (somewhat surprisingly) 1.0.
-</P>
-<P>
-The convert() method
-supports only lossless type conversion.
-Lossy conversion has to be done explicitly via a
-function call .
-<H2>Fixed Point Data</H2>
-<P>
-A fixed-point value in the expression language is given
-using the following format: 
-<pre>
-    fix(<i>value</i>, <i>integerBits</i>, <i>fractionBits</i>)
+  
+<P> creates a DoubleToken with value 1.2, and then invokes its convert() method 
+  with argument 1, which is an IntToken. The convert() method of DoubleToken converts 
+  the argument to a DoubleToken, so the result of this expression is (somewhat 
+  surprisingly) 1.0. The convert() method supports only lossless type conversion. 
+  Lossy conversion has to be done explicitly via a function call. </P>
+  <H2>Fixed Point Data</H2>
+  <P> A fixed-point value in the expression language is given using the following 
+    format: 
+  <pre>
+    fix(<i>value</i>, <i>numberOfBits</i>, <i>integerBits</i>)
 </pre>
-Thus, a fixed point value of 5.375 that uses 8 bit precision,
-of which 4 bits are used to represent the integer part,
-can be represented as:
-<pre>
+  Thus, a fixed point value of 5.375 that uses 8 bit precision, of which 4 bits 
+  are used to represent the integer part, can be represented as: 
+  <pre>
     fix(5.375, 8, 4)
 </pre>
-</P>
-<H2>Limitations</H2>
-<P>
-The expression language has a rich potential, and only some of this potential
-has been realized. Here are some of the current limitations:</P>
+  <p></P>
+  <H2>Limitations</H2>
+  <P> The expression language has a rich potential, and only some of this potential 
+    has been realized. Here are some of the current limitations:</P>
+  
 <UL>
-<LI>
-The class ptolemy.data.util.UtilityFunctions containing the utility
-functions is far from complete.</LI>
-<LI>
-Functions in the ptolemy.math package need to be supported in much the
-same way that java.lang.Math is supported.</LI>
-<LI>
-Method calls are currently only allowed on tokens in the ptolemy.data package,
-not arbitrary Java objects.
-</LI>
-<LI>
-Statements are not supported. It is not clear that they ever will be,
-since currently the expression language is strictly functional,
-and converting it to imperative semantics could drastically change
-its flavor.
-</LI>
+  <LI> The class ptolemy.data.util.UtilityFunctions containing the utility functions 
+    is far from complete.</LI>
+  <LI> Method calls are currently only allowed on tokens in the ptolemy.data package, 
+    not arbitrary Java objects. </LI>
+  <LI> Statements are not supported. It is not clear that they ever will be, since 
+    currently the expression language is strictly functional, and converting it 
+    to imperative semantics could drastically change its flavor.</LI>
 </UL>
 </BODY>
 </HTML>
