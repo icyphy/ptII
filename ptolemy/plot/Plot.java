@@ -550,27 +550,27 @@ public class Plot extends PlotBox {
                                 index = plusIndex;
                             }
                             _height = Integer.valueOf(arg.substring(
-                                        arg.indexOf('x')+1,
-                                        index)).intValue();
+                                    arg.indexOf('x')+1,
+                                    index)).intValue();
                         } else {
                             if (plusIndex != -1) {
                                 // =WxH+X+Y
                                 _height = Integer.valueOf(arg.substring(
-                                            arg.indexOf('x')+1,
-                                            plusIndex)).intValue();
+                                        arg.indexOf('x')+1,
+                                        plusIndex)).intValue();
                             } else {
                                 // =WxH-X-Y
                                 _height = Integer.valueOf(arg.substring(
-                                            arg.indexOf('x')+1,
-                                            minusIndex)).intValue();
+                                        arg.indexOf('x')+1,
+                                        minusIndex)).intValue();
                             }
                         }
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
                             // =WxH
                             _height = Integer.valueOf(arg.substring(
-                                        arg.indexOf('x')+1,
-                                        arg.length())).intValue();
+                                    arg.indexOf('x')+1,
+                                    arg.length())).intValue();
                         }
                     }
                     // FIXME: it is unclear what X and Y in =WxH+X+Y mean
@@ -1291,16 +1291,16 @@ public class Plot extends PlotBox {
                             if (byteSwapped) {
                                 in.readFully(input);
                                 x = Float.intBitsToFloat(
-                                    (( input[3] & 0xFF ) << 24) |
-                                    (( input[2] & 0xFF ) << 16) |
-                                    (( input[1] & 0xFF ) << 8) |
-                                    ( input[0] & 0xFF ));
+                                        (( input[3] & 0xFF ) << 24) |
+                                        (( input[2] & 0xFF ) << 16) |
+                                        (( input[1] & 0xFF ) << 8) |
+                                        ( input[0] & 0xFF ));
                                 in.readFully(input);
                                 y = Float.intBitsToFloat(
-                                    (( input[3] & 0xFF ) << 24) |
-                                    (( input[2] & 0xFF ) << 16) |
-                                    (( input[1] & 0xFF ) << 8) |
-                                    ( input[0] & 0xFF ));
+                                        (( input[3] & 0xFF ) << 24) |
+                                        (( input[2] & 0xFF ) << 16) |
+                                        (( input[1] & 0xFF ) << 8) |
+                                        ( input[0] & 0xFF ));
                             } else {
                                 x = in.readFloat();
                                 y = in.readFloat();
@@ -1341,7 +1341,7 @@ public class Plot extends PlotBox {
                                 "(decimal value = " + c +
                                 ") in binary file.  Last point was (" + x +
                                 "," + y + ").\nProcessed " + pointCount +
-                            " points sucessfully");
+                                " points sucessfully");
                     }
                     c = in.readByte();
                 }
