@@ -794,6 +794,7 @@ public class MoMLParser extends HandlerBase {
                             // Force evaluation so that any listeners
                             // are notified.
                             variable.getToken();
+
                         }
                     }
                     _containers.push(_current);
