@@ -6,7 +6,11 @@ core
 */*\~
 */.??*
 */,*
+*.class
 *.exe
+*.fm
+*.jar
+*.vsd
 */SCCS
 */RCS
 */CVS
@@ -22,3 +26,4 @@ OLD
 */public_html/*
 *htmlchek*
 */vendors/*
+
