@@ -406,6 +406,7 @@ public final class Manager extends NamedObj implements Runnable {
         _debug(errorMessage);
         if (_executionListeners == null) {
             System.err.println(errorMessage);
+            ex.printStackTrace();
         } else {
             Enumeration listeners = _executionListeners.elements();
             while(listeners.hasMoreElements()) {
