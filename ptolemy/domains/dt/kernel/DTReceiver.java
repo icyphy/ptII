@@ -54,13 +54,13 @@ import javax.swing.*;
 A first-in, first-out (FIFO) queue receiver with variable capacity. Tokens
 are put into the receiver with the put() method, and removed from the
 receiver with the get() method. The token removed is the oldest one in
-the receiver.  Time is incremented by a fixed amount <i>deltaT</i> everytime
-the get() method is called. Each receiver has its own value of deltaT.
-We calculate deltaT as "period / (rate * repeats)" where:
+the receiver.  Time is incremented by a fixed amount <i>delta time</i> everytime
+the get() method is called. Each receiver has its own value of delta time.
+We calculate delta time as "period / (rate * repetitions)" where:
 <UL>
     <LI> period is the execution time of the director per iteration
     <LI> rate   is the rate of the port that holds this receiver
-    <LI> repeats is the firing count per iteration of the actor
+    <LI> repetitions is the firing count per iteration of the actor
               that holds this receiver
 </UL>
 @author C. Fong
@@ -84,6 +84,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
     /** Construct an empty receiver with the specified container.
+     *
      *  @param container The container of the receiver.
      *  @throws IllegalActionException If the container does
      *   not accept this receiver.
@@ -94,6 +95,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
     /** Construct an empty receiver with the specified container and size.
+     *
      *  @param container The container of the receiver.
      *  @param size  The size of the buffer for the receiver.
      *  @throws IllegalActionException If the container does
@@ -113,10 +115,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
      *  should only be invoked after the preinitialize() stage of the director.
      *  Prior to that, certain information about the SDF dataflow graph
      *  topology is not yet available.
+     *
      *  @exception IllegalActionException If there is an error in
      *  getting attribute information from the ports.
      */
-    public void calculateDeltaT() throws IllegalActionException {
+    public void calculateDeltaTime() throws IllegalActionException {
         int repeats;
         double periodValue;
         boolean isCompositeContainer = !((ComponentEntity) _to).isAtomic();
@@ -145,21 +148,28 @@ public class DTReceiver extends SDFReceiver implements Receiver {
                 }
             }
 
-            if (_toPort.isOutput()) {
-
-            } else {
-            }
-
+            IOPort containerPort = (IOPort) this.getContainer();
+    	    Actor containerActor = (Actor) _toPort.getContainer();
+    	    DTDirector localDirector;
+    	    
+    	    if ((containerActor instanceof TypedCompositeActor ) &&
+    	        (!containerPort.isOutput())) {
+    	        localDirector = (DTDirector) containerActor.getExecutiveDirector();
+    	    } else {
+    	        localDirector = (DTDirector) containerActor.getDirector();
+    	    }
+    	   
+            
             // FIXME: check tunneling topology
-            periodValue = _localDirector.getPeriod();
+            periodValue = localDirector.getPeriod();
             if (_toPort.isOutput()) {
-                repeats = _localDirector.getRepetitions(_from);
+                repeats = localDirector._getRepetitions(_from);
                 _periodDivider = repeats * _outrate;
-                _deltaT = periodValue / _periodDivider;
+                _deltaTime = periodValue / _periodDivider;
             } else {
-                repeats = _localDirector.getRepetitions(_to);
+                repeats = localDirector._getRepetitions(_to);
                 _periodDivider = repeats * _inrate;
-            	_deltaT = periodValue / _periodDivider;
+            	_deltaTime = periodValue / _periodDivider;
 
             }
         }
@@ -167,19 +177,17 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
 
     /** Determine the source and destination ports that use this
-     *  receiver in their communications.  The source and destination
-     *  ports are distinct for each receiver.
-     *  @param dtDirector The director that directs this receiver
+     *  receiver in their communications.  In DT, the source and 
+     *  destination ports are distinct for each receiver because
+     *  "non-deterministic merge" type relations are not allowed.
      */
-    public void determineEnds(DTDirector dtDirector) {
+    public void determineEnds() {
         _toPort = this.getContainer();
     	_to = (Actor) _toPort.getContainer();
     	_fromPort = null;
         IOPort connectedPort = null;
         List listOfConnectedPorts = null;
         boolean isCompositeContainer = !((ComponentEntity) _to).isAtomic();
-
-    	_localDirector = dtDirector;
 
     	if (isCompositeContainer && (_toPort.isOutput()) ) {
     	    listOfConnectedPorts = _toPort.insidePortList();
@@ -234,7 +242,8 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
-     *  exception.  Increment the local time by deltaT.
+     *  exception.  Increment the local time by deltaTime.
+     *
      *  @return The oldest token in the receiver.
      */
     public Token get() {
@@ -255,20 +264,22 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         String destinationName = ((Nameable) _from).getName();
 
         // FIXME: timing has bugs for DT inside DT
-        _localTime = _localTime + _deltaT;
+        _localTime = _localTime + _deltaTime;
         return super.get();
     }
 
 
     /** Return the time interval between tokens for
      *  this receiver.
+     *
      *  @return The time interval between tokens
      */ 
-    public double getDeltaT() {
-        return _deltaT;
+    public double getDeltaTime() {
+        return _deltaTime;
     }
     
     /** Return the port that feeds this Receiver
+     *
      *  @return The port that feeds this receiver.
      */
     public TypedIOPort getSourcePort() {
@@ -276,6 +287,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
     /** Return the token flow rate for this receiver
+     *
      *  @return The token flow rate of this receiver
      */
     public int getTokenFlowRate() {
@@ -285,6 +297,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     /** Put a token to the receiver. If the port feeding this
      *  receiver is null, report an internal error.
+     *
      *  @param token The token to be put to the receiver.
      *  @exception InternalErrorException If the source port is null.
      */
@@ -297,6 +310,8 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
     /** Return true if get() will succeed in returning a token.
+     *  <FIXME: mention DE and CT maybe>
+     *
      *  @return A boolean indicating whether there is a token in this
      *  receiver.
      */
@@ -337,7 +352,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
         toString += " (" + ((TypedIOPort)_toPort).getType() + ")";
 
-        debug.println(fromString+" "+toString+" "+_deltaT);
+        debug.println(fromString+" "+toString+" "+_deltaTime);
     }
 
 
@@ -346,14 +361,14 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     /** Initialize the DTReceiver.  Set the cached information regarding
      *  source and destination actors to null.  Set the local time to
-     *  zero.  Set deltaT to zero.
+     *  zero.  Set deltaTime to zero.
      */
     private void _init() {
         _from = null;
         _to   = null;
         _localTime = 0.0;
         _periodDivider = 0;
-        _deltaT = 0.0;
+        _deltaTime = 0.0;
         overrideHasToken = false;
         debug = new DTDebug(false);
     }
@@ -369,7 +384,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     ////                         private variables                 ////
 
     // The amount of time increment for every get() method call
-    private double _deltaT;
+    private double _deltaTime;
 
     // The actor feeding this receiver
     private Actor _from;

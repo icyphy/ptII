@@ -51,18 +51,18 @@ import java.util.*;
 <h1>DT overview</h1>
 The Discrete Time (DT) domain is a timed extension of the Synchronous Dataflow
 (SDF) domain.  Like SDF, it has static scheduling of the dataflow graph
-model. Likewise, DT requires that the rates on the ports of all actors be
-known beforehand and fixed. DT handles feedback systems in the same way that
-SDF does, but with additional constraints on initial tokens.
+model. Similarly, DT requires that the data rates on the ports of all actors 
+be known beforehand and fixed. DT handles feedback systems in the same way
+that SDF does, but with additional constraints on initial tokens.
 <p>
 <h1>Local and Global Time</h1>
-Because of the inherent concurency occuring within SDF dataflow graph models,
+Because of the inherent concurrency occuring within SDF models,
 there are two notions of time in DT -- global time and local time.  Global time
-increases steadily as execution progresses.  Moreover, global time increments by
-fixed discrete chunks of time based on the value of the <i>period</i> parameter.
-On the other hand, local time applies to each of the actors in the model. All the
-actors have distinct local times as an iteration proceeds. The local time of
-an actor during an iteration depends on the global time, period, firing count,
+increases steadily as execution progresses.  Moreover, global time increases by
+fixed discrete amounts given by the <i>period</i> parameter. On the other hand,
+each receiver is associated with an independent local time. All the
+receivers have distinct local times as an iteration proceeds. The local time of
+a receiver during an iteration depends on the global time, period, firing count,
 port rates, and the schedule. These local times obey the following constraint:
 
 <center>Global Time  <=  Local Time <= (Global Time + period)</center>
@@ -81,10 +81,10 @@ The design of the DT domain is motivated by the following criteria:
     director's <i>period</I>.  Local time is incremented every time the get()
     method is called to obtain a token.
 <LI>) Causality: Tokens produced by an actor should only depend on tokens produced
-    or consumed in the past. This makes sense because we don't expect an actors to
+    or consumed in the past. This makes sense because we don't expect an actor to
     produce a token before it can calculate the token's value.  For example,
-    if an actor needs three tokens A, B, and C to  compute token D, then the time
-    when tokens A, B, and C are consumed should be earlier than than or equal to
+    if an actor needs three tokens A, B, and C to compute token D, then the time
+    when tokens A, B, and C are consumed should be earlier than or equal to
     the time when token D is produced.  Note that in DT, time does not get
     incremented due to computation.
 <LI>) SDF-style semantics: Ideally, we want DT to be a timed-superset of SDF
@@ -103,7 +103,7 @@ DT (Discrete Time) is a timed model of computation.  In order
 to benefit from the internal time-keeping mechanism of DT, one should
 use actors aware of time. For example, one should use TimedPlotter or
 TimedScope instead of SequencePlotter or SequenceScope.
-
+<p>
 Top-level DT Directors have a <i>period</i> parameter that can be set by the
 user.  Setting the period parameter of a non-top-level DT Director
 under hierarchical DT has no meaning; and hence will be ignored.
@@ -116,15 +116,14 @@ under hierarchical DT has no meaning; and hence will be ignored.
 
 
  @author C. Fong
- @version
+ @version $Id$
 */
 /* Fixme (known bugs)
  1.) Put more tests on this case: when events come in faster than the period of a DT 
      composite actor (e.g clock feeding DT)
  2.) Put more tests on this case: when DT composite actor doesn't fire because there aren't
      enough tokens. 
- 
-*/
+ */
 public class DTDirector extends SDFDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -175,8 +174,8 @@ public class DTDirector extends SDFDirector {
      *  Instead, it will have a fixed value: "outsidePeriod / repetitions ",
      *  where 'outsidePeriod' is the period of the outside director; and
      *  'repetitions' is the firing count of the composite actor that contains
-     *  the inside director.
-     *  For heterogeneous hierarchical DT (i.e. DT inside DE or CT), the
+     *  the inside director. For heterogeneous hierarchical DT (i.e. DT inside
+     *  DE or CT), the
      *  period parameter is used to determine how often the fireAt()
      *  method is called to request firing from the outside director.
      */
@@ -187,7 +186,7 @@ public class DTDirector extends SDFDirector {
     ////                         public methods                    ////
     
     /** Override the base class to reinitialize the state if the
-     *  <i>period</i> parameter is changed.
+     *  <i>period</i> parameter is changed.    <change doc>
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -217,9 +216,8 @@ public class DTDirector extends SDFDirector {
         return newObject;
     }
 
-
     /** Go through the schedule and iterate every actor with calls to
-     *  prefire() , fire() , and postfire().
+     *  prefire() , fire() , and postfire().  <more info>
      *
      *  @exception IllegalActionException If an actor executed by this
      *  director return false in its prefire().
@@ -311,7 +309,7 @@ public class DTDirector extends SDFDirector {
     }
     
 
-    /** Return the current time.
+    /** Return the current time. <more info>
      *  @return the current time
      */
     public double getCurrentTime() {
@@ -337,6 +335,7 @@ public class DTDirector extends SDFDirector {
 
 
     /** Return the time value of the next iteration.
+     *  < FIXME: hack to this>
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
@@ -369,7 +368,7 @@ public class DTDirector extends SDFDirector {
         if (outsideDirector instanceof DTDirector) {
             DTDirector outsideDTDirector = (DTDirector) outsideDirector;
             periodToken = outsideDTDirector.period.getToken();
-            periodValue = 1.0 / outsideDTDirector.getRepetitions(container);
+            periodValue = 1.0 / outsideDTDirector._getRepetitions(container);
             // used as a multiplier to the actual value
             shouldUpdatePeriod = true;
         } else {
@@ -398,11 +397,11 @@ public class DTDirector extends SDFDirector {
     /** Initialize all the actors associated with this director by calling
      *  super.initialize(). Determine which actors need to generate
      *  initial tokens for causality. All actors with nonhomogeneous input
-     *  ports will need to generate initial tokens for all its output ports.
-     *  For example, if actor A has a nonhomogeneous input port and an output
-     *  port with production rate 'm' then actor A needs to produce 'm' initial
-     *  tokens on the output port.  
-     *  @exception IllegalActionException If the preinitialize() method of
+     *  ports will need to generate initial tokens for all of there output 
+     *  ports. For example, if actor A has a nonhomogeneous input port and an
+     *  output port with production rate 'm' then actor A needs to produce 'm'
+     *  initial tokens on the output port.  
+     *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -495,15 +494,14 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** Process the mutation that occurred.  Reset this director
-     *  to an uninitialized state.  Notify parent class about
+    /** Process the mutation that occurred.  Notify the parent class about
      *  invalidated schedule.  This method is called when an entity
      *  is instantiated under this director. This method is also
      *  called when a link is made between ports and/or relations.
      *  see also other mutation methods:
      *    <p><UL>
-     *    <LI> void attributeChanged(Attribute)
-     *    <LI> void attributeTypeChanged(Attribute)
+     *    <LI> @see ptolemy.kernel.util.NamedObj.#attributeChanged
+     *    <LI> @see ptolemy.kernel.util.NamedObj.#attributeTypeChanged
      *    </UL></p>
      */
     public void invalidateSchedule() {
@@ -531,7 +529,6 @@ public class DTDirector extends SDFDirector {
      */
     public void preinitialize() throws IllegalActionException {
     //  -preinitialize-
-
         super.preinitialize();
     }
     
@@ -559,7 +556,14 @@ public class DTDirector extends SDFDirector {
 
     }
     
-    
+    /** Check the input ports of the container composite actor (if there
+     *  are any) to see whether they have enough tokens. Always return 
+     *  true in order to allow firing or pseudo-firing. Pseudo-firing is
+     *  needed when DT is interacting hierarchically with DE.
+     *  @exception IllegalActionException If the parent class throws 
+     *  it.
+     *  @return True.
+     */ 
     public boolean prefire() throws IllegalActionException {
     //  -prefire-
         _inputTokensAvailable = super.prefire();
@@ -568,7 +572,9 @@ public class DTDirector extends SDFDirector {
     
     
     /** Set the local time of an actor in the  model under 
-     *  this director.
+     *  this director. This method is called by the DTReceiver 
+     *  class and doesn't need to be called by any other classes.
+     *  
      *  @param newTime The new current simulation time.
      *  @param actor The actor to be assigned a new local time
      */
@@ -588,12 +594,12 @@ public class DTDirector extends SDFDirector {
     }
     
     
-    /** Override the base class method to transfer enough tokens to
-     *  complete an internal iteration.
+    /** Override the base class method to make sure that enough tokens to
+     *  available to complete one iteration.
      *  This behavior is required to handle the case of non-homogeneous
      *  opaque composite actors. The port argument must be an opaque
      *  input port. If any channel of the input port has no data, then
-     *  that channel is ignored.
+     *  that channel is ignored.  <FIX doc of this and Base class dir>
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
@@ -612,10 +618,12 @@ public class DTDirector extends SDFDirector {
     
 
 
-    /** This is called by the outside director to get tokens
-     *  from the inside director. Return true if transfers data 
-     *  from an output port of the container to the ports it is 
-     *  connected to on the outside. This method differs from the 
+    /** <FIXME: look at Director documentation>
+     *  This is called by the outside director to get tokens
+     *  from an opaque composite actor. Return true if data is 
+     *  transferred from an output port of the container to the 
+     *  ports it is connected to on the outside. This method differs
+     *  from the 
      *  base class method in that this method will transfer all 
      *  available tokens in the receivers, while the base class 
      *  method will transfer at most one token. This behavior is 
@@ -665,7 +673,9 @@ public class DTDirector extends SDFDirector {
 
 
 
-   /** Reset this director to an uninitialized state.
+   /** <FIXME: what is uninitialized state.>
+    *  Reset this director to an uninitialized state.
+    *
     *  @exception IllegalActionException If the parent class
     *  throws it
     */
@@ -678,12 +688,13 @@ public class DTDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /**Get the number of times an actor repeats in the schedule of an
-     * SDF graph.  If the actor does not exist, throw an exception.
-     * @param actor The actor whose firing count is needed
-     * @exception IllegalActionException If actor does not exist.
+    /** Get the number of times an actor repeats in the schedule of an
+     *  SDF graph.  If the actor does not exist, throw an exception.
+     *
+     *  @param actor The actor whose firing count is needed
+     *  @exception IllegalActionException If actor does not exist.
      */
-    protected int getRepetitions(Actor actor) throws IllegalActionException {
+    protected int _getRepetitions(Actor actor) throws IllegalActionException {
         ListIterator actorIterator = _actorTable.listIterator();
         int repeats = 0;
 
@@ -712,6 +723,7 @@ public class DTDirector extends SDFDirector {
 
     /** Create an actor table that caches all the actors directed by this
      *  director.  This method is called once at initialize();
+     *
      *  @exception IllegalActionException If the scheduler is null
      */
     private void _buildActorTable() throws IllegalActionException {
@@ -748,14 +760,14 @@ public class DTDirector extends SDFDirector {
         ListIterator receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
-            currentReceiver.determineEnds(this);
+            currentReceiver.determineEnds();
         }
 
         receiverIterator = _receiverTable.listIterator();
 
         while(receiverIterator.hasNext()) {
     	   DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
-    	   currentReceiver.calculateDeltaT();
+    	   currentReceiver.calculateDeltaTime();
         }
 
         _debugViewActorTable();
@@ -764,6 +776,7 @@ public class DTDirector extends SDFDirector {
 
     /** Build the internal cache of all the receivers directed by this 
      *  director.
+     *
      *  @exception IllegalActionException If methods called throw it.
      */
     private void _buildReceiverTable() throws IllegalActionException {
@@ -814,6 +827,7 @@ public class DTDirector extends SDFDirector {
                                         
 
     /** Build the internal cache of all the ports directed by this director
+     *
      *  @exception IllegalActionException If methods called throw it.
      */
     private void _buildOutputPortTable() throws IllegalActionException {
@@ -831,6 +845,7 @@ public class DTDirector extends SDFDirector {
     /** Check if the current time is a valid time for execution. If the 
      *  current time is not a integer multiple of the DT period, firing 
      *  must not occur.
+     *
      *  @exception IllegalActionException If methods called throw it.
      */
     private final void _checkValidTimeIntervals() throws IllegalActionException {
@@ -899,8 +914,8 @@ public class DTDirector extends SDFDirector {
                 _DTIOPort dtport = (_DTIOPort) outputPorts.next();
 
                 insideReceivers = dtport._port.getInsideReceivers();
-                double deltaT = ((DTReceiver)insideReceivers[0][0]).getDeltaT();
-                double ratio = timeElapsed / deltaT;
+                double deltaTime = ((DTReceiver)insideReceivers[0][0]).getDeltaTime();
+                double ratio = timeElapsed / deltaTime;
 
                 if (Math.abs(Math.round(ratio) - ratio) < _TOLERANCE) {
                     // firing at a time when transferOutputs should be called
@@ -979,6 +994,7 @@ public class DTDirector extends SDFDirector {
     
     /** For debugging purposes.  Display the list of attributes
      *  inside a given named object
+     *
      *  @param obj The named object that has a list of attributes
      */
     private void _debugViewAttributesList(NamedObj obj)
@@ -1013,6 +1029,7 @@ public class DTDirector extends SDFDirector {
     
     /** For debugging purposes.  Display the list of contained entities
      *  inside the composite object
+     *
      *  @param obj The composite entity with a list of contained entities.
      */
     private void _debugViewEntityList(CompositeEntity obj) {
@@ -1069,7 +1086,7 @@ public class DTDirector extends SDFDirector {
 
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
-            currentReceiver.displayReceiverInfo();
+            currentReceiver._debugViewReceiverInfo();
         }
         debug.println("\n");
     }
@@ -1153,12 +1170,12 @@ public class DTDirector extends SDFDirector {
             IOPort port = (IOPort) listIterator.next();
             insideReceivers = port.getInsideReceivers();
             DTReceiver receiver = (DTReceiver) insideReceivers[0][0];
-            double deltaT = receiver.getDeltaT();
+            double deltaTime = receiver.getDeltaTime();
             int periodDivider = receiver.getTokenFlowRate();
-            debug.println("request pseudo-fire at "+deltaT+" intervals. "+periodDivider);
+            debug.println("request pseudo-fire at "+deltaTime+" intervals. "+periodDivider);
             for(int n=1; n < periodDivider ;n++) {
-                _requestRefireAt(currentTime + n*deltaT);
-                debug.println(" request pseudo-fire at "+(currentTime + n*deltaT));
+                _requestRefireAt(currentTime + n * deltaTime);
+                debug.println(" request pseudo-fire at "+(currentTime + n * deltaTime));
             }
         }
     }
