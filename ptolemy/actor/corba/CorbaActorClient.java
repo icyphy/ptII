@@ -214,7 +214,7 @@ public class CorbaActorClient extends TypedAtomicActor {
             while (attributes.hasNext()) {
                 Attribute att = (Attribute)attributes.next();
                 if((att != ORBInitProperties) && (att != remoteActorName) &&
-                   (att instanceof Parameter)) {
+                        (att instanceof Parameter)) {
                     _debug(getName(),
                             " check remote parameter: ", att.getName());
                     if (!_remoteActor.hasParameter(att.getName())) {
