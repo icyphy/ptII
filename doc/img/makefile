@@ -128,6 +128,12 @@ OTHER_FILES_TO_BE_JARED = \
 	PtolemyIISmall.gif
 
 
+# Not shipped
+PHOTOSHOP_SRCS =
+	PtolemyIISplash.psd \
+	banner.psd \
+	ptIIbanner2.psd \
+
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	HTML.gif \
@@ -137,15 +143,12 @@ EXTRA_SRCS = \
 	PtolemyIIIcon.gif \
 	PtolemyIISmallIcon.gif \
         PtolemyIISplash.gif \
-	PtolemyIISplash.psd \
 	banner.gif \
-	banner.psd \
 	next.gif \
 	next_g.gif \
 	prev.gif \
 	prev_g.gif \
 	ptIIbanner2.gif \
-	ptIIbanner2.psd \
 	ptIIbanner3.gif \
 	ptIIexample.gif \
 	ptIIplanet.ico \
