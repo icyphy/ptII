@@ -168,6 +168,12 @@ public class Port extends NamedObj {
         }
     }
 
+    /** Return true if the given Relation is linked to this port.
+     */
+    public isLinked(Relation r) {
+        return _relationsList.isLinked(r);
+    }
+    
     /** Enumerate the linked relations.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of Relation objects. 
