@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = TestUnboxingMain.java \
+	TestSpecializeTypesMain.java \
 	Unboxing1.java \
 	Unboxing1b.java \
 	Unboxing1c.java \

@@ -45,6 +45,20 @@ import ptolemy.copernicus.java.*;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestUnboxingMain extends KernelMain {
+    
+    /** First argument is the output directory.
+     *  Second argument is the class name.
+     */
+    public static void main(String args[]) {
+        PtolemyUtilities.loadSootReferences();
+        TestUnboxingMain main = new TestUnboxingMain();
+        main.setOutputDirectory(args[0]);
+        main.addTransforms();
+        SootClass theClass = Scene.v().loadClassAndSupport(args[1]);
+        theClass.setApplicationClass();
+        main.generateCode(args);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
