@@ -93,14 +93,6 @@ public class BusDisassembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        if (inputPortList().size() > 1) {
-            throw new IllegalActionException
-                (this, "can have only one input port.");
-        }
-    }
-
     public void fire() throws IllegalActionException {
         int inputWidth = input.getWidth();
         Iterator outputPorts = outputPortList().iterator();
@@ -127,4 +119,15 @@ public class BusDisassembler extends TypedAtomicActor {
             }
         }
     }
+
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        if (inputPortList().size() > 1) {
+            throw new IllegalActionException
+                (this, "can have only one input port.");
+        }
+    }
+
+
 }
+
