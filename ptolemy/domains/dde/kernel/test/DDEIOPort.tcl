@@ -2,7 +2,7 @@
 #
 # @Author: John S. Davis II
 #
-# @Version: %W%	%G%
+# @Version: $Id$
 #
 # @Copyright (c) 1997-2001 The Regents of the University of California.
 # All rights reserved.
@@ -134,7 +134,7 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
 	set val 0
     }
 
-    $outPort broadcast $tok 5.0
+    $outPort {broadcast ptolemy.data.Token double} $tok 5.0
 
     if { [$rcvr2 hasRoom] != 0 } {
 	set val 0
