@@ -12,6 +12,9 @@ if (! $?PTII ) setenv PTII $HOME
 # Try to set up for Java.
 if ( ! $?PTJAVA_HOME ) then
 	# Search the likely places
+	if ( ! $?PTJAVA_HOME && -d /opt/jdk1.2latest ) then
+		setenv PTJAVA_HOME /opt/jdk1.2latest
+	endif
 	if ( ! $?PTJAVA_HOME && -d /usr/java ) then
 		setenv PTJAVA_HOME /usr/java
 	endif
