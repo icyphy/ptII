@@ -228,12 +228,48 @@ The following table shows these settings.
 <h2></h2>
 <TABLE BORDER="2">
  <caption align="bottom">Preferences set by $PTII/.eclipse.epf</caption>
- <TR> <TH>Prefernce</TH><TH>Value</TH><TH>Description</TH></TR>
- <TR> <TD> CVS Ignore Files</TD> <TD ALIGN="right">  *.class, *.jar, *.lnk, alljsimpletests.tcl, alljtests.tcl</TD> <TD> CVS will ignore these files. Can be overidden on a case by case basis</TD>   </TR>
- <TR> <TD> Java Editor Spaces for Tabs</TD> <TD ALIGN="right">  true</TD> <TD> Java Editor will use spaces for indentation, not tabs</TD>   </TR>
-<TR> <TD> Tcl file Editor</TD> <TD ALIGN="right">  Text Editor</TD> <TD> Default Editor for .tcl files is Text Editor</TD>   </TR>
-<TR> <TD> Auto Rebuild on Resource Modification</TD> <TD ALIGN="right">false</TD> <TD> Don't rebuild everytime a resource is modified</TD>   </TR>
-<TR> <TD> Label Decorations</TD> <TD ALIGN="right">CVS, Linked Resources</TD> <TD> Resources under CVS control are labelled with CVS info</TD>   </TR>
+ <TR>
+  <TH>Preference</TH>
+  <TH>Value</TH>
+  <TH>Description</TH>
+</TR>
+
+ <TR>
+  <TD><a href="#autorebuild">Auto Rebuild on Resource Modification</a></TD>
+  <TD ALIGN="right">false</TD>
+  <TD>Don't rebuild everytime a resource is modified</TD>
+ </TR>
+
+ <TR>
+  <TD><a href="#tabs">Java Editor Spaces for Tabs</a></TD>
+  <TD ALIGN="right">true</TD>
+  <TD>Java Editor will use spaces for indentation, not tabs</TD>
+ </TR>
+
+ <TR>
+  <TD><a href="#ignoreClassAndJar">CVS Ignore Files</a></TD>
+  <TD ALIGN="right">  *.class, *.jar, *.lnk, alljsimpletests.tcl,
+       alljtests.tcl</TD>
+  <TD> CVS will ignore these files. Can be overidden on a case by case basis
+  </TD> 
+ </TR>
+
+ <TR>
+  <TD><a href="#tcl">Tcl file Editor</a></TD>
+  <TD ALIGN="right">Text Editor</TD>
+  <TD> Default Editor for .tcl files is Text Editor</TD>
+ </TR>
+
+ <TR>
+  <TD>Label Decorations</TD>
+  <TD ALIGN="right">CVS, Linked Resources</TD>
+  <TD>Resources under CVS control are labelled with CVS info</TD>
+ </TR>
+ <TR>
+  <TD><a href="#fixmes">Task Tags Highlight FIXMES</a></TD>
+  <TD ALIGN="right">FIXME</TD>
+  <TD>FIXMEs are highlighted</TD>
+ </TR>
 </TABLE>
 
 <h2></h2>
@@ -264,7 +300,9 @@ before setting up Eclipse.
 <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
 
  <li> Start Eclipse.
- <li> Window-&gt;Preferences. Deselect Workbench-&gt;"Perform build automatically on resource modification."
+ <li> <a name="autorebuild">Disable auto rebuild with:</a>
+Window-&gt;Preferences. 
+Deselect Workbench-&gt;"Perform build automatically on resource modification."
 Deselect Debug-&gt;"Build (if required) before launching"
  <li> File-&gt;New-&gt;Project. Select 'Java project'. Name it PtolemyII.
 Deselect 'Use default' and browse to the PTII directory. Finish.
@@ -291,8 +329,6 @@ then click on the Exclusion Filter and hit Edit.
 </ol>
 
 
-
-
 <h2><a name="tabs">Don't use tabs in the editor</a></h2>
 This setting is in the <code>$PTII/.eclipse.epf</code> file.
 See <a href="#importPreferences">Import the Ptolemy II specific preferences</a>
@@ -305,8 +341,9 @@ the steps below
 
 
 <ol>
-<li> Window -&gt;Preferences: expand the Java tree, select
-'Code Formatter' and then the Style tab.  Uncheck 'Insert tabs for indentation, not spaces'.
+<li> Window -&gt;Preferences
+<li> Expand the Java tree, select 'Code Formatter' and then the Style tab.
+<li> Uncheck 'Insert tabs for indentation, not spaces'.
 
 <li> Go back to to the Java tree on the left, select
 'Editor' and then the Typing tab.
@@ -364,6 +401,13 @@ mv tmp.tcl Foo.tcl
 cvs commit -m "Got rid of binary chars" Foo.tcl
 </pre>
 
+<h2><a name="fixmes">Task Tags Highlight FIXMES</a></h2>
+Eclipse can be set up to hightlight FIXMEs:
+<ol>
+<li> Window -&gt; Preferences -&gt; 
+<li> Expand the Java tree, select 'Task Tags'
+<li> Select New and then add FIXME as a Normal priority task.
+</ol>
 
 <hr>
 <h1><a name="UsingEclipse">Using Eclipse</a></h1>
