@@ -72,6 +72,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar clean
+#make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 
 USER =		ptII
 PTIIHOME =	/users/ptII
