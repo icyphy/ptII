@@ -55,6 +55,7 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	Domain.java \
+	DomainLibrary.java \
 	EntityType.java \
 	Icon.java \
 	IconLibrary.java \
