@@ -43,7 +43,8 @@ public class Checkpoint {
 
     public int getTimestamp() {
         // TODO: to be implemented.
-        return -1;
+        return _currentTimestamp++;
     }
     
+    private int _currentTimestamp = 0;
 }

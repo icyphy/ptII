@@ -284,7 +284,10 @@ public class ASTFormatter extends ASTVisitor {
             _output("[]");
         }
         if (node.getInitializer() != null) {
+            _newLineAfterBlock = false;
+            _increaseIndent();
             node.getInitializer().accept(this);
+            _decreaseIndent();
         }
         return false;
     }
@@ -296,13 +299,15 @@ public class ASTFormatter extends ASTVisitor {
         _output(" ");
         _openBrace();
         for (Iterator it = node.expressions().iterator(); it.hasNext(); ) {
+            _output(_indent);
             Expression e = (Expression) it.next();
             e.accept(this);
             if (it.hasNext()) {
-                _output(", ");
+                _output(",");
             }
+            _output("\n");
         }
-        _closeBrace();
+        _closeBrace(false);
         return false;
     }
 

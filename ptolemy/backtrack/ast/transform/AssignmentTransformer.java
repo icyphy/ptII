@@ -38,6 +38,9 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.ArrayAccess;
+import org.eclipse.jdt.core.dom.ArrayCreation;
+import org.eclipse.jdt.core.dom.ArrayInitializer;
+import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
@@ -65,7 +68,6 @@ import ptolemy.backtrack.ast.ASTClassNotFoundException;
 import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.FieldRecordArray;
 
 //////////////////////////////////////////////////////////////////////////
 //// AssignmentTransformer
@@ -278,62 +280,30 @@ public class AssignmentTransformer
         timestampGetter.setName(ast.newSimpleName("getTimestamp"));
 
         // Method call to store old value.
-        // Examples:
-        //   1. $RECORD$buf.add(buf, $CHECKPOINT.getTimestamp());
-        //   2. $RECORD$buf$1.getRecord(index0).add(buf[index0], $CHECKPOINT.getTimestamp());
-        //   3. $RECORD$buf$2.getArray(index0).getRecord(index1).add(buf[index0][index1], $CHECKPOINT.getTimestamp());
         MethodInvocation recordInvocation = ast.newMethodInvocation();
-        String recordName = _getRecordName(variableName, indices);
-        Expression recordExpression = ast.newSimpleName(recordName);
-        for (int i = 0; i < indices; i++) {
-            MethodInvocation methodInvocation = ast.newMethodInvocation();
-            methodInvocation.setExpression(recordExpression);
-            methodInvocation.setName(ast.newSimpleName(
-                    i < indices - 1 ? "getArray" : "getRecord"));
-            methodInvocation.arguments().add(ast.newSimpleName("index" + i));
-            recordExpression = methodInvocation;
-        }
-        recordInvocation.setExpression(recordExpression);
+        recordInvocation.setExpression(
+                ast.newSimpleName(_getRecordName(variableName)));
         recordInvocation.setName(ast.newSimpleName("add"));
+
+        if (indices == 0)
+            recordInvocation.arguments().add(ast.newNullLiteral());
+        else {
+            ArrayCreation arrayCreation = ast.newArrayCreation();
+            ArrayType arrayType = 
+                ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT));
+            ArrayInitializer initializer = ast.newArrayInitializer();
+            for (int i = 0; i < indices; i++)
+                initializer.expressions().add(
+                        ast.newSimpleName("index" + i));
+            arrayCreation.setType(arrayType);
+            arrayCreation.setInitializer(initializer);
+            recordInvocation.arguments().add(arrayCreation);
+        }
         recordInvocation.arguments().add(field);
         recordInvocation.arguments().add(timestampGetter);
         ExpressionStatement recordStatement = 
             ast.newExpressionStatement(recordInvocation);
         thenBranch.statements().add(recordStatement);
-        
-        // Method call to ensure array capacity.
-        // Examples:
-        //   1. $RECORD$buf$1.setSize(newValue, 1);
-        //      $RECORD$buf$2.setSize(newValue, 2);
-        //   2. $RECORD$buf$2.getArray(index0).setSize(newValue, 1);
-        //   3. (Not needed for element assignment.)
-        List indicesList = _getAccessedField(className, variableName);
-        Iterator indicesIter = indicesList.iterator();
-        while (indicesIter.hasNext()) {
-            int i = ((Integer)indicesIter.next()).intValue();
-            if (i > indices) {
-                MethodInvocation methodInvocation = 
-                    ast.newMethodInvocation();
-                Expression prefix = 
-                    ast.newSimpleName(_getRecordName(variableName, i));
-                for (int j = 0; j < indices; j++) {
-                    MethodInvocation methodInvocation2 = 
-                        ast.newMethodInvocation();
-                    methodInvocation2.setExpression(prefix);
-                    methodInvocation2.setName(ast.newSimpleName("getArray"));
-                    methodInvocation2.arguments().add(
-                            ast.newSimpleName("index" + j));
-                    prefix = methodInvocation2;
-                }
-                methodInvocation.setExpression(prefix);
-                methodInvocation.setName(ast.newSimpleName("setSize"));
-                methodInvocation.arguments().add(ast.newSimpleName("newValue"));
-                methodInvocation.arguments().add(
-                        ast.newNumberLiteral(Integer.toString(i - indices)));
-                thenBranch.statements().add(
-                        ast.newExpressionStatement(methodInvocation));
-            }
-        }
         
         ifStatement.setThenStatement(thenBranch);
         block.statements().add(ifStatement);
@@ -352,17 +322,13 @@ public class AssignmentTransformer
     }
     
     private FieldDeclaration _createFieldRecord(Class currentClass, AST ast, 
-            String fieldName, int indices, boolean isStatic) {
-        String recordName = _getRecordName(fieldName, indices);
+            String fieldName, boolean isStatic) {
+        String recordName = _getRecordName(fieldName);
         if (_isFieldDuplicated(currentClass, recordName))
             throw new ASTDuplicatedFieldException(currentClass.getName(), 
                     recordName);
         
-        String typeName;
-        if (indices > 0)
-            typeName = FieldRecordArray.class.getName();
-        else
-            typeName = FieldRecord.class.getName();
+        String typeName = FieldRecord.class.getName();
 
         VariableDeclarationFragment fragment = 
             ast.newVariableDeclarationFragment();
@@ -429,10 +395,8 @@ public class AssignmentTransformer
         return ASSIGN_PREFIX + fieldName;
     }
     
-    private String _getRecordName(String fieldName, int indices) {
-        return RECORD_PREFIX +
-                fieldName +
-                (indices == 0 ? "" : "$" + indices);
+    private String _getRecordName(String fieldName) {
+        return RECORD_PREFIX + fieldName;
     }
     
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
@@ -473,9 +437,9 @@ public class AssignmentTransformer
                             newMethods.add(_createAssignMethod(currentClass, 
                                     ast, fieldName, type, indices, isStatic, 
                                     state.getClassLoader()));
-                            newFields.add(_createFieldRecord(currentClass, 
-                                    ast, fieldName, indices, isStatic));
                         }
+                        newFields.add(_createFieldRecord(currentClass, ast, 
+                                fieldName, isStatic));
                     }
                 }
             }
