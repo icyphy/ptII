@@ -40,8 +40,9 @@ infrastructure.
 	<MENU>
 	<LI> <A HREF="#mydata"><B>3.1 Plot my own data?</B></A>
 	<LI> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
-	<LI> <A HREF="#appletprinting"><B>3.3 How do I print an plot from a Plot applet?</B></A>
-	<LI> <A HREF="#twofiles"><B>3.4 How do I plot two datafiles in an applet? </B></A>
+	<LI> <A HREF="#endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
+	<LI> <A HREF="#appletprinting"><B>3.4 How do I print an plot from a Plot applet?</B></A>
+	<LI> <A HREF="#twofiles"><B>3.5 How do I plot two datafiles in an applet? </B></A>
 	</MENU>
 
 </MENU>
@@ -184,6 +185,34 @@ find the
 <A HREF="../codeDoc/ptplot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
 easier to read.
 
+<DT> <A NAME="endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
+<DD> Binary data is encoded in different ways on different platforms
+<menu>
+<li> Big-endian - SPARCs and the network in general use this format.
+<li> Little-endian - Intel x86 chips use this format. 
+</menu>
+Problems can occur when you try to read a binary format file on a
+machine other than the machine it was created on.  <CODE>pxgraph</CODE>
+and the <CODE>pxgraphargs</CODE> applet parameter take the
+following arguments:
+<menu>
+<li> <CODE>-binary</CODE> - use the endian format of the machine
+that the Java virtual machine is running on.
+
+<li> <CODE>-bigendian</CODE> - the file is in big-endian format,
+convert it if the Java virtual machine is running on a little-endian machine.
+
+<li> <CODE>-littlendian</CODE> - the file is in little-endian format,
+convert it if the Java virtual machine is running on a big-endian machine.
+
+</menu>
+
+See the <a href="../../demo/Endian.html">Endian Examples</a> for
+example that use the above flags.
+
+The 
+<a href="http://www.afu.com/javafaq.html">Java Programmer's FAQ</a>
+has more information about endian issues.
 <DT>  <A NAME="appletprinting"><B>3.3 How do I print an plot from a Plot applet?</B></A>
 <DD> Unfortunately, most browsers cannot print applets.  There are
 work arounds, but in general, it is hard, and involves security
