@@ -623,8 +623,21 @@ public class CTScheduler extends Scheduler {
         DirectedAcyclicGraph discreteGraph = _toGraph(discreteActors);
         Object[] discreteSorted = discreteGraph.topologicalSort();
         for (int i = 0; i < discreteSorted.length; i++) {
-            discreteActorSchedule.add(new
-                Firing((Actor)discreteSorted[i]));
+            Actor actor = (Actor) discreteSorted[i];
+                
+            discreteActorSchedule.add(new Firing(actor));
+
+            // FIXME: For a CTCompositeActor, if it only has outputs
+            // and the outputs are "DISCRETE", it is treated as a
+            // discrete actor. Consequently, it is not included in 
+            // the sinkActors, not in the outputSSCActors. 
+            // The following code adds it into the continuousActor list.
+            if ((actor instanceof CompositeActor) &&
+                (actor instanceof CTStepSizeControlActor)) {
+                    if (!continuousActors.contains(actor)) {
+                        continuousActors.add(actor);
+                    }
+                }            
         }
 
         // Actors remain in the continuousActors list are real continuous
@@ -753,7 +766,7 @@ public class CTScheduler extends Scheduler {
             }
 
         }
-
+        
         // Create the CTSchedule. Note it must be done in this order.
         ctSchedule.add(discreteActorSchedule);
         ctSchedule.add(continuousActorSchedule);
