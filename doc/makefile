@@ -185,8 +185,8 @@ PTINYPACKAGES = \
 			ptolemy.domains.de.lib \
 
 # Packages for the SUPERB classes
-SUPERBPACKAGES = \
-			ptolemy.apps.superb.actor.lib
+#SUPERBPACKAGES = \
+#			ptolemy.apps.superb.actor.lib
 
 # actor.lib.comm uses the Java comm api for communicating with
 # serial ports.  javacomm is not always available, so actor.lib.comm
