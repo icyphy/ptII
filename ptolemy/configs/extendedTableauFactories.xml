@@ -20,6 +20,8 @@
             class="ptolemy.actor.gui.MatrixTokenTableau$Factory"/>
   <property name="Token viewer"
             class="ptolemy.actor.gui.TokenTableau$Factory"/>
+  <property name="Expression Evaluator"
+            class="ptolemy.actor.gui.ExpressionShellTableau$Factory"/>
   <property name="Text Editor"
             class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
   <!-- FIXME: plot data tableau, etc. -->
