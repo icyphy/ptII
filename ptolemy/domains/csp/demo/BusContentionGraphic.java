@@ -145,7 +145,7 @@ public class BusContentionGraphic extends Frame {
 	outerConstraints.fill = GridBagConstraints.BOTH;
 	outerConstraints.weightx = 1;
 	outerConstraints.weighty = 0.1;
-	outerConstraints.gridheight= 1;
+	outerConstraints.gridheight = 1;
 	outerConstraints.gridwidth = GridBagConstraints.REMAINDER;
 	outerGBag.setConstraints(top, outerConstraints);
 	add(top);
@@ -156,7 +156,7 @@ public class BusContentionGraphic extends Frame {
 	outerConstraints.fill = GridBagConstraints.BOTH;
 	outerConstraints.weightx = 1;
 	outerConstraints.weighty = 0.9;
-	outerConstraints.gridheight= 4;
+	outerConstraints.gridheight = 4;
 	outerConstraints.gridwidth = GridBagConstraints.REMAINDER;
 	outerGBag.setConstraints(bottom , outerConstraints);
 	add(bottom);
@@ -200,7 +200,7 @@ public class BusContentionGraphic extends Frame {
     }
 
     /*
-      public void resetMark( int i, int j ) {
+      public void resetMark(int i, int j) {
       if( _random == null ) {
       _random = new Random();
       }
@@ -226,7 +226,7 @@ public class BusContentionGraphic extends Frame {
     */
 
     /*
-      public void actionPerformed( ActionEvent event ) {
+      public void actionPerformed(ActionEvent event) {
       Point myLocation = getLocationOnScreen();
       if( _infoMessage == null ) {
       _infoMessage = new InfoMessage(this);
