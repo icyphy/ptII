@@ -263,10 +263,12 @@ public class CTBaseIntegrator extends CTActor
         _potentialState = _initState;
     }
 
-    /** Emit the potential states.
-     *  @exception IllegalActionException Never thrown in this class.
+    /** Emit the tentative output, which is the tentative state of the
+     *  integrator.
+     *  @exception IllegalActionException If the data transfer is not 
+     *  completed.
      */
-    public void emitPotentialStates() throws IllegalActionException {
+    public void emitTentativeOutputs() throws IllegalActionException {
         output.broadcast(new DoubleToken(_potentialState));
     }
 

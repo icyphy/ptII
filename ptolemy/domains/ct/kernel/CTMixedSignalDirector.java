@@ -530,7 +530,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 System.out.println("Excite State..."+
                     ((Nameable)integrator).getName());
             }
-            integrator.emitPotentialStates();
+            integrator.emitTentativeOutputs();
         }
         // outputSchdule.fire()
         Enumeration edactors = scheduler.eventGenerationSchedule();

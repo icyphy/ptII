@@ -304,7 +304,7 @@ public class CTSingleSolverDirector extends CTDirector {
                 System.out.println("Excite State..."+
                     ((Nameable)dyn).getName());
             }
-            dyn.emitPotentialStates();
+            dyn.emitTentativeOutputs();
         }
         // outputSchdule.fire()
         Enumeration outputactors = scheduler.outputSchedule();

@@ -296,7 +296,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 System.out.println("Excite State..."+
                     ((Nameable)integrator).getName());
             }
-            integrator.emitPotentialStates();
+            integrator.emitTentativeOutputs();
         }
         // outputSchdule.fire()
         Enumeration outputactors = scheduler.outputSchedule();
