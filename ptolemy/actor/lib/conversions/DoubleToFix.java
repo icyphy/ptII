@@ -35,6 +35,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.FixToken;   // For javadoc
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
