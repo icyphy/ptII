@@ -236,7 +236,6 @@ public class StringUtilities {
                         + "is occurs when one does PTII=`pwd`.  Instead, do "
                         + "PTII=c:/foo/ptII");
             }
-
             return property;
         }
         if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
@@ -268,13 +267,18 @@ public class StringUtilities {
                 String namedObjFileName = namedObjURL.getFile().toString();
                 // FIXME: How do we get from a URL to a pathname?
                 if (namedObjFileName.startsWith("file:")) {
-                    // We get rid of either file:/ or file:\
-                    namedObjFileName = namedObjFileName.substring(6);
+                    if (namedObjFileName.startsWith("file:/")
+                            || namedObjFileName.startsWith("file:\\")) {
+                        // We get rid of either file:/ or file:\
+                        namedObjFileName = namedObjFileName.substring(6);
+                    } else {
+                        // Get rid of file:
+                        namedObjFileName = namedObjFileName.substring(5);
+                    }
                 }
                 String abnormalHome = namedObjFileName.substring(0,
                         namedObjFileName.length()
                         - namedObjPath.length());
-
                 // abnormalHome will have values like: "/C:/ptII/"
                 // which cause no end of trouble, so we construct a File
                 // and call toString().
@@ -288,23 +292,26 @@ public class StringUtilities {
                         home.substring(0, home.length() - 1);
                 }
 
-                // Web Start
+                // Web Start, we might have
+                // RMptsupport.jar or 
+                // XMptsupport.jar1088483703686
                 String ptsupportJarName = File.separator + "DMptolemy"
                     + File.separator + "RMptsupport.jar";
                 if (home.endsWith(ptsupportJarName)) {
                     home =
                         home.substring(0, home.length()
                                 - ptsupportJarName.length());
-                }
 
-                ptsupportJarName = File.separator + "ptolemy"
-                    + File.separator + "ptsupport.jar";
-                if (home.endsWith(ptsupportJarName)) {
-                    home =
-                        home.substring(0, home.length()
-                                - ptsupportJarName.length());
+                } else {
+                    ptsupportJarName = "/DMptolemy/XMptsupport.jar";
+                    if (home.lastIndexOf(ptsupportJarName) != -1) {
+                        home.substring(0, home.lastIndexOf(ptsupportJarName));
+                    }
                 }
             }
+
+            // Convert %20 to spaces
+            home = StringUtilities.substitute(home, "%20", " ");
 
             if (home == null) {
                 throw new RuntimeException(
