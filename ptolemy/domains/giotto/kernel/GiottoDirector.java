@@ -32,22 +32,30 @@ package ptolemy.domains.giotto.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.sched.*;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StreamListener;
+import ptolemy.kernel.util.StringUtilities;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 
+// FIXME: replace this with per-class imports.
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Collections;
@@ -124,8 +132,123 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public Parameter period;
 
+    /** Code generation file name. */
+    public Parameter filename;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the specified attribute is <i>filename</i>, then close
+     *  the current file (if there is one) and open the new one.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the specified attribute
+     *   is <i>filename</i> and the file cannot be opened.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == filename) {
+            generateGiottoCode();
+        }
+    }
+
+    /** Generate Giotto code for this model.
+     *  NOTE: This is highly preliminary.
+     */
+    public void generateGiottoCode()
+            throws IllegalActionException {
+        try {
+            String file = ((StringToken)filename.getToken()).stringValue();
+            FileOutputStream fout = new FileOutputStream(file);
+            PrintStream pout = new PrintStream(fout);
+
+            pout.println("sensor");
+            TypedCompositeActor container = (TypedCompositeActor)getContainer();
+            Iterator inPorts = container.inputPortList().iterator();
+            while (inPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort)inPorts.next();
+                // FIXME: Assuming ports are either
+                // input or output and not both.
+                // FIXME: May want the driver name
+                // specified by a port parameter.
+                String driverName = port.getName()
+                        + "_device_driver_fire";
+                pout.println("  "
+                        + port.getType()
+                        + " "
+                        + port.getName()
+                        + " uses "
+                        + driverName
+                        + ";");
+            }
+            pout.println("actuator");
+            Iterator outPorts = container.outputPortList().iterator();
+            while (outPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort)outPorts.next();
+                // FIXME: Assuming ports are either
+                // input or output and not both.
+                // FIXME: May want the driver name
+                // specified by a port parameter.
+                String driverName = port.getName()
+                        + "_device_driver_fire";
+                pout.println("  "
+                        + port.getType()
+                        + " "
+                        + port.getName()
+                        + " uses "
+                        + driverName
+                        + ";");
+            }
+            pout.println("output");
+            Iterator actors = container.deepEntityList().iterator();
+            while(actors.hasNext()) {
+                TypedActor actor = (TypedActor)actors.next();
+                outPorts = actor.outputPortList().iterator();
+                while (outPorts.hasNext()) {
+                    TypedIOPort port = (TypedIOPort)outPorts.next();
+                    String sanitizedPortName = StringUtilities.sanitizeName(
+                            port.getName(container));
+                    pout.println("  "
+                            + port.getType()
+                            + " "
+                            + sanitizedPortName
+                            + " := init_function_name_"
+                            + sanitizedPortName
+                            + ";");
+                }
+            }
+            actors = container.deepEntityList().iterator();
+            while(actors.hasNext()) {
+                TypedActor actor = (TypedActor)actors.next();
+                pout.print("task " + StringUtilities.sanitizeName(
+                        ((NamedObj)actor).getName(container)) + "(");
+
+                inPorts = actor.inputPortList().iterator();
+                while (inPorts.hasNext()) {
+                    TypedIOPort port = (TypedIOPort)inPorts.next();
+                    pout.print(port.getType()
+                            + " "
+                            + port.getName());
+                    if (inPorts.hasNext()) {
+                        pout.print(", ");
+                    }
+                }
+                pout.print(") output (");
+                outPorts = actor.outputPortList().iterator();
+                while (outPorts.hasNext()) {
+                    TypedIOPort port = (TypedIOPort)outPorts.next();
+                    String sanitizedPortName = StringUtilities.sanitizeName(
+                            port.getName(container));
+                    pout.println(sanitizedPortName);
+                    if (outPorts.hasNext()) {
+                        pout.print(", ");
+                    }
+                }
+                pout.print(") {");
+            }
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex.getMessage());
+        }
+    }
 
     /** Return the next time at which the calling actor will be fired.
      *  @return The time of the next iteration.
@@ -296,6 +419,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
 	    iterations = new Parameter(this, "iterations", new IntToken(0));
 	    setCurrentTime(0.0);
+
+            filename = new Parameter(this, "filename");
+            filename.setTypeEquals(BaseType.STRING);
+            filename.setExpression("\"ptolemy.giotto\"");
 	} catch (KernelException ex) {
 	    throw new InternalErrorException(
 		    "Cannot initialize director: " + ex.getMessage());
