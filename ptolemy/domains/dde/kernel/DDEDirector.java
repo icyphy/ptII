@@ -34,6 +34,7 @@ package ptolemy.domains.dde.kernel;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import java.util.Enumeration;
@@ -73,7 +74,7 @@ a receiver. A time stamp value of -5.0 is reserved to indicate that a
 receiver has not begun to participate in a model's execution.
 
 
-@author John S. Davis II
+@author John S. Davis II, Mudit Goel
 @version $Id$
 @see ptolemy.domains.pn.kernel.PNDirector
 @see ptolemy.domains.dde.kernel.DDEActor
@@ -136,7 +137,6 @@ public class DDEDirector extends ProcessDirector {
      */
     public void fire() throws IllegalActionException {
         Workspace wkSpace = workspace();
-
         synchronized( this ) {
 	    while( !_checkForDeadlock() ) {
 	        wkSpace.wait(this);
@@ -285,12 +285,42 @@ public class DDEDirector extends ProcessDirector {
      *  return false otherwise.
      * @return True if deadlocks no longer exist; return false otherwise.
      */
-    protected boolean _handleDeadlock() {
-        // Currently assume only real deadlocks.
-        return true;
+    protected boolean _handleDeadlock() throws IllegalActionException {
+        if( _writeBlocks != 0 ) {
+            // Artificial Non-timed Deadlock
+            incrementLowestCapacityPort();
+        } else {
+            // Real Non-timed Deadlock
+            return true;
+        }
+        
+        if( _pendingMutations ) {
+            try {
+                _processTopologyRequests();
+            } catch( TopologyChangeFailedException e ) {
+                throw new IllegalActionException("TopologyChangeFailed: " 
+                        + e.getMessage());
+            }
+        }
+        return false;
     }
 
+    /** Increment the port capacity's according to Tom Parks' 
+     *  algorithm.
+     *  FIXME
+     */
+    protected void incrementLowestCapacityPort() {
+    }
+    
     /** Mutate the model that this director controls.
+     *  FIXME
+     */
+    protected void _processTopologyRequests() throws
+            TopologyChangeFailedException {
+    }
+    
+    /** Mutate the model that this director controls.
+     *  FIXME
      */
     protected void _performMutations() {
         ;
@@ -305,6 +335,7 @@ public class DDEDirector extends ProcessDirector {
     private double _completionTime = -5.0;
     private int _readBlocks = 0;
     private int _writeBlocks = 0;
+    private boolean _pendingMutations = false;
 
 }
 
