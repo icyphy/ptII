@@ -362,10 +362,10 @@ public class CompositeActor extends CompositeEntity
         }
     }
 
-    /** Return the IODependency object associated with this 
+    /** Return the FunctionDependency object associated with this 
      *  composite actor.
-     *  @return the IODependency object.
-     *  @see IODependency
+     *  @return the FunctionDependency object.
+     *  @see FunctionDependency
      */
     public FunctionDependency getFunctionDependencies() {
         // If the _functionDependency object is not constructed, 

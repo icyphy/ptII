@@ -69,7 +69,7 @@ microstep, after all events at the current time with the current
 microstep. Thus, it is sometimes useful to think of this zero-valued
 delay as an infinitesimal delay.
 
-@see ptolemy.actor.IODependency
+@see ptolemy.actor.FunctionDependency
 @see ptolemy.domains.de.lib.VariableDelay
 @see ptolemy.domains.de.lib.Server
 @see ptolemy.domains.sdf.lib.SampleDelay
