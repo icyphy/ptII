@@ -46,6 +46,7 @@ DIRS = 	demo #test
 CLASSPATH =	..
 # Order matters here.
 JSRCS = \
+	CmdLineArgException.java \
 	PlotBox.java \
 	Plot.java \
 	PlotDataException.java \
@@ -60,6 +61,7 @@ EXTRA_SRCS = $(JSRCS) pxgraph testpxgraph
 MISC_FILES = demo doc #test 
 
 JCLASS = \
+	CmdLineArgException.class \
 	PlotBox.class \
 	Plot.class \
 	PlotDataException.class \
