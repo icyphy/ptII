@@ -176,6 +176,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
             super.attributeChanged(attribute);
         }
     }
+    
     /** Clear the history information.
      */
     public void clearHistory() {
@@ -275,6 +276,8 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  @see #setTentativeDerivative
      */
     public double getTentativeDerivative() {
+        // FIXME: this method is not called because the derivatives
+        // are calcuated based on the states.
         return _tentativeDerivative;
     }
 

@@ -1532,8 +1532,10 @@ public class CTMultiSolverDirector extends CTDirector {
         }
 
         // postfire all continuous actors to commit their states.
-        // Note that event generators are postfired
+        // Note that event generators are postfired. 
+        // FIXME: no!!!!!
         updateContinuousStates();
+        postfireEventGenerators();
 
         // predict the next step size.
         setSuggestedNextStepSize(_predictNextStepSize());

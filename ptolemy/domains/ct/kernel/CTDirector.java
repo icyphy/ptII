@@ -419,17 +419,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _errorTolerance;
     }
 
-    /** Get the current execution phase of this director.
+    /** Get the current execution phase of this director. 
+     *  In this abstract class, always return the local execution phase.
+     *  The derived classes, specially the CTEmbeddedDirector, needs to
+     *  override this method.
      *  @return The current execution phase of this director.
      */
     public CTExecutionPhase getExecutionPhase() {
-        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
-
-        if (executiveDirector != null) {
-            return executiveDirector.getExecutionPhase();
-        } else {
-            return _executionPhase;
-        }
+        return _executionPhase;
     }
 
     /** Return the initial step size.
