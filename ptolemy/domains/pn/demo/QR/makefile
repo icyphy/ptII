@@ -74,7 +74,7 @@ all: jclass QRCompile.jar
 
 install: all
 
-PTAUXJAR = QRcompile.jar
+PTAUXJAR = QRCompile.jar
 
 demo: QRCompile.jar
 	CLASSPATH=$(CLASSPATH) appletviewer QRCompileApplet.html
