@@ -185,7 +185,7 @@ public class SCController extends CompositeEntity implements TypedActor {
             if (trans.isEnabled()) {
                 if (_takenTransition != null) {
                     // Nondeterminate transition!
-                    System.out.println("Nondeterminate transition!");
+                    //System.out.println("Nondeterminate transition!");
                 } else {
                     _takenTransition = trans;
                 }
@@ -210,7 +210,7 @@ public class SCController extends CompositeEntity implements TypedActor {
                 if (trans.isEnabled()) {
                     if (_takenTransition != null) {
                         // Nondeterminate transition!
-                        System.out.println("Nondeterminate transition!");
+                        //System.out.println("Nondeterminate transition!");
                     } else {
                         _takenTransition = trans;
                     }
@@ -297,8 +297,8 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
                 if (trans.isEnabled()) {
                     if (_takenTransition != null) {
                         // Nondeterminate initial transition!
-                        System.out.println("Multiple initial transitions "
-                                + "enabled!");
+                        //System.out.println("Multiple initial transitions "
+                        //        + "enabled!");
                     } else {
                         _takenTransition = trans;
                     }
@@ -316,7 +316,7 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
         if (_currentState == null) {
             // FIXME!!
             // Throw exception!
-            System.out.println("Initialization error: no initial state!");
+            //System.out.println("Initialization error: no initial state!");
         }
         if (currentRefinement() != null) {
             // FIXME!!
@@ -327,7 +327,8 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
             //currentRefinement().createReceivers();
             //currentRefinement().initialize();
 
-//System.out.println("Initializing refinement "+((ComponentEntity)currentRefinement()).getFullName());
+            //System.out.println("Initializing refinement "+
+            //((ComponentEntity)currentRefinement()).getFullName());
 
         }
     }
@@ -686,11 +687,15 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
                 SCDirector dir = (SCDirector)getDirector();
                 if (dir.currentRefinement() == this) {
 
-SCState state = dir.currentState();
-//System.out.println("SCController " + this.getFullName() + " setting " +
-//        "local variable " + var.getName() + ":" + var.getExpression() + " of state " + state.getFullName());
+                    SCState state = dir.currentState();
+                    //System.out.println("SCController " + 
+                    //this.getFullName() + " setting " +
+                    //        "local variable " + var.getName() + 
+                    //":" + var.getExpression() + " of state " 
+                    //+ state.getFullName());
 
-                    dir.currentState().setLocalInputVar(var.getName(), var.getToken());
+                    dir.currentState().setLocalInputVar(var.getName(),
+                            var.getToken());
                 }
             }            
             port = (IOPort)getPort(var.getName());
@@ -699,7 +704,8 @@ SCState state = dir.currentState();
             }
             if (port.numLinks() > 0) {
 
-//System.out.println("Sending trigger action to "+port.getFullName());
+                //System.out.println("Sending trigger action to "+
+                //port.getFullName());
 
                 port.send(0, var.getToken());
             } else {
@@ -707,11 +713,13 @@ SCState state = dir.currentState();
                 // This branch will not be executed, because now all ports
                 // in SC system are connected.
 
-//System.out.println("Port " + port.getFullName() + " is floating.");
+                //System.out.println("Port " + port.getFullName()
+                //+ " is floating.");
 
                 // Here we must be careful, port does not have inside
                 // receivers created!
-                port = (IOPort)((CompositeActor)getContainer()).getPort(port.getName());
+                port = (IOPort)((CompositeActor)getContainer()).getPort(
+                        port.getName());
                 if (port == null || !port.isOutput()) {
                     continue;
                 }

@@ -198,8 +198,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             }
             _fireOneIteration();
             if (_stopByEvent()) {
-                System.out.println( this.getFullName() + 
-                        " stop by event.");
+                //System.out.println( this.getFullName() + 
+                //        " stop by event.");
                 exe.fireAt(ca, getCurrentTime());
                 _isFireSuccessful = false;
                 _refinedStep = getCurrentTime() - getOutsideTime();

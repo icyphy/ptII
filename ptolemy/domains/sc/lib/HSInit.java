@@ -114,7 +114,9 @@ public class HSInit extends NamedObj implements TransitionAction {
         Parameter init = (Parameter)intgr.getAttribute("InitialState");
         init.setToken(_valueVar.getToken());
         
-        System.out.println("Executing transition action: " + this.getFullName() + " " + ((DoubleToken)_valueVar.getToken()).doubleValue());
+        //System.out.println("Executing transition action: " + 
+        //this.getFullName() + " " + 
+        //((DoubleToken)_valueVar.getToken()).doubleValue());
 
         // set the input of dest ref
         // SCState src = _container.sourceState();
@@ -140,7 +142,9 @@ public class HSInit extends NamedObj implements TransitionAction {
         nref.initialize();
         dir.setCurrentTime(exec.getCurrentTime());
 
-System.out.println("transition action set " + dir.getFullName() + " current time " + exec.getCurrentTime());
+        //System.out.println("transition action set " + 
+        //dir.getFullName() + " current time " + 
+        //exec.getCurrentTime());
 
     }
 

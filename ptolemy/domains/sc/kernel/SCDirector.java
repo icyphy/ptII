@@ -409,8 +409,9 @@ public class SCDirector extends Director {
             try {
                 Token t = insiderec.get();
 
-System.out.println("Transfer output from " + port.getFullName() + " " +
-        ((DoubleToken)t).doubleValue());
+                //System.out.println("Transfer output from " + 
+                //port.getFullName() + " " +
+                //((DoubleToken)t).doubleValue());
 
                 _controller.currentState().setLocalInputVar(port.getName(), t);
                 if (p != null) {
