@@ -53,7 +53,7 @@ A CDO has the form
 CDO {
      G1; C1 => S1;
 []
-     G2; C2 => s2;
+     G2; C2 => S2;
 []
      ...
 }
@@ -61,16 +61,10 @@ CDO {
 While at least one of the branches is enabled, the construct continues
 to evaluate and execute one of the enabled branches. If more than one 
 branch is enabled, the first branch to be able to rendezvous succeeds 
-and its statements are executed. Note that this construct in 
+and its statements are executed. Note that this construct is 
 nondeterministic as it may be  a race condition that determines 
 which branch is sucessful. The CIF is similar to the CDO excpet that 
 it is only evaluated once.
-<p>
-If the guard is true, or absent which implies true, then the branch is 
-enabled. The conditional communication construct chooses one of the 
-enabled branches that can rendezvous nondeterministically and 
-performs the communication. The statements for that guarded 
-communication are then executed.
 <p>
 The communication part of a guarded communication statement can be 
 either a send() or a receive(). There are thus two subclasses of this 
@@ -78,16 +72,16 @@ class, each representing a guarded communication statement for one of
 the communication primitives. The subclasses are ConditionalSend and 
 ConditionalReceive.
 <p>
-Each branch in a conditional communication construct is executed 
-in a seperate thread, if more than one branch is enabled.
-For rendezvous, the receiver is the key synchronization point.
+If more than one branch is enabled, each enabled branch is executed 
+in a seperate thread. For rendezvous, the receiver is the key 
+synchronization point.
+<p>
 Conditional branches are designed to be used once. Upon instantiation,
-they are given the port and the channel they are trying to rendezvous with.
+they are given the guard, port and the channel and the identification 
+number of the branch according to the parent.
 The port and the channel together define the CSPReceiver with which to
 rendezvous. The CSPActor, that contains this branch, is
 assumed to be the container of the port argument.
-It is also given the identification number of the branch according
-to the parent. 
 <p>
 @author  Neil Smyth
 @version $Id$
@@ -95,10 +89,11 @@ to the parent.
 
 public abstract class ConditionalBranch {
 
-    /** Create a guarded communicatio statement. This parent class
-     *  for the two types of guarded communication statements sets 
-     *  the memebers that are common to both. The receiver is set 
-     *  in the subclass as it is subject to communication specific tests.
+    /** Create a guarded communication statement. This class contains 
+     *  all of the information necessary to carry out a guarded 
+     *  communication statement, with the exception of the type of 
+     *  communication. The receiver is set in the subclass as it 
+     *  is subject to communication specific tests.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
      *  @param port The IOPort to try and rendezvous with.
