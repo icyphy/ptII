@@ -147,7 +147,8 @@ public class Test extends Sink {
         if (attribute == correctValues) {
             if (!(correctValues.getToken() instanceof ArrayToken)) {
                 throw new IllegalActionException(this,
-                        "correctValues parameter is required to have an array value.");
+                        "correctValues parameter is required to have an " +
+                        "array value.");
             }
         } else {
             super.attributeTypeChanged(attribute);
@@ -194,7 +195,8 @@ public class Test extends Sink {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _count + ".\n"
                         + "Width of input is " + width
-                        + ", but correctValues parameter is not an array of arrays.");
+                        + ", but correctValues parameter is not an array "
+                        + "of arrays.");
             }
             if (width != reference.length) {
                 throw new IllegalActionException(this,
