@@ -34,6 +34,8 @@ doc/uml
 doc/uml/*
 java.hprof.txt
 jni/test
+jni/demo/HelloWorld/HelloWorld.dll
+jni/demo/HelloWorld/HelloWorld.h
 jsdatabase
 junk
 mail
