@@ -1,62 +1,61 @@
-/* An interface used by the expression parser for identifier lookup.
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="higher order" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Higher-Order Computation Infrastructure.</doc>
 
- Copyright (c) 2001-2003 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+      <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">
+        <doc>Creates multiple instances of itself</doc>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+           </property>
+           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+           </property>
+           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+           </property>
+           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+           </property>
+           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+           </property>
+         </property>
+      </entity>
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+      </group>
+    ?>
+  </configure>
+</entity>
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
 
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
 
-*/
 
-package ptolemy.copernicus.java;
 
-import ptolemy.data.expr.ParserScope;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedList;
-import ptolemy.kernel.util.IllegalActionException;
-import soot.*;
 
-//////////////////////////////////////////////////////////////////////////
-//// CodeGenerationScope
-/**
-An interface used by the expression code generator for identifier lookup.
 
-@author Steve Neuendorffer
-@version $Id$
-@see ptolemy.data.expr.ParserScope
-*/
 
-public interface CodeGenerationScope extends ParserScope {
 
-    /** Look up and return the type of the value with the specified
-     *  name in the scope. Return null if the name is not defined in
-     *  this scope.
-     *  @return The token associated with the given name in the scope.
-     *  @exception IllegalActionException If a value in the scope
-     *  exists with the given name, but cannot be evaluated.
-     */
-    public Local getLocal(String name)
-            throws IllegalActionException;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,111 +1,61 @@
-/* A pair of states.
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="higher order" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Higher-Order Computation Infrastructure.</doc>
 
- Copyright (c) 1999-2003 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+      <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">
+        <doc>Creates multiple instances of itself</doc>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+           </property>
+           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+           </property>
+           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+           </property>
+           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+           </property>
+           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+           </property>
+         </property>
+      </entity>
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+      </group>
+    ?>
+  </configure>
+</entity>
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (yuhong@eecs.berkeley.edu)
-*/
 
-package ptolemy.domains.fsm.kernel;
 
-//////////////////////////////////////////////////////////////////////////
-//// StatePair
-/**
-A pair of states.
-This class is used in the representation of alternating simulation.
-@see InterfaceAutomaton#computeAlternatingSimulation
 
-@author Yuhong Xiong
-@version $Id$
-*/
 
-public class StatePair {
 
-    /** Construct an instance with the specified states.
-     *  @param first The first state in the pair.
-     *  @param second The second state in the pair.
-     */
-    public StatePair(State first, State second) {
-        _first = first;
-        _second = second;
-    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
-    /** Override the base class method to return true if the specified
-     *  object is an instance of StatePair and it contains the same
-     *  states as this one.
-     *  @param object An object to compare with this one.
-     *  @return True if the specified object is an instance of StatePair
-     *   and this one contatin the same states, false otherwise.
-     */
-    public boolean equals(Object object) {
-        if (object instanceof StatePair) {
-            return ((this.first() == ((StatePair)object).first()) &&
-                    (this.second() == ((StatePair)object).second()));
-	}
-	return false;
-    }
 
-    /** Return the first state in this pair.
-     *  @return The first state in this pair.
-     */
-    public State first() {
-        return _first;
-    }
 
-    /** Return the second state in this pair.
-     *  @return The second state in this pair.
-     */
-    public State second() {
-        return _second;
-    }
 
-    /** Override the base class method to ensure that the pairs that
-     *  are equal (according to the equals() method) have the same
-     *  hash code.
-     *  @return The hash code.
-     */
-    public int hashCode() {
-        return _first.hashCode() + _second.hashCode();
-    }
 
-    /** Return a string representation of this pair. The string contains
-     *  the name of the first state, followed by a " - ", followed by
-     *  the name of the second state.
-     *  @return A string containing the names of the two states separated
-     *   by a " - ".
-     */
-    public String toString() {
-        return _first.getName() + " - " + _second.getName();
-    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
 
-    private State _first;
-    private State _second;
-}
+
+
+
+
+
+
+
+
 

@@ -1,100 +1,61 @@
-/* An actor that throws an exception when it receives a true token.
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="higher order" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Higher-Order Computation Infrastructure.</doc>
 
- Copyright (c) 1997-2003 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+      <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">
+        <doc>Creates multiple instances of itself</doc>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+           </property>
+           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+           </property>
+           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+           </property>
+           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+           </property>
+           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+           </property>
+         </property>
+      </entity>
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+      </group>
+    ?>
+  </configure>
+</entity>
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
-*/
 
-package ptolemy.actor.lib;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 
-//////////////////////////////////////////////////////////////////////////
-//// ThrowException
-/**
-An actor that throws an exception when it receives a true token
-on any input channel.  The message reported in the exception is
-given by the <i>message</i> parameter.
-The inputs are read and checked in the postfire() method only.
 
-@author Edward A. Lee
-@version $Id$
-*/
 
-public class ThrowException extends Sink {
 
-    /** Construct an actor in the specified container with the specified
-     *  name.
-     *  @param container The container.
-     *  @param name The name of this actor within the container.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
-     */
-    public ThrowException(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
 
-        input.setTypeEquals(BaseType.BOOLEAN);
 
-        message = new StringAttribute(this, "message");
-        message.setExpression("Model triggered an exception.");
-    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
 
-    /** The message reported in the exception. */
-    public StringAttribute message;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
-    /** Read one token from each input channel that has a token,
-     *  and if any token is true, throw an exception.
-     *  @exception IllegalActionException If FIXME
-     *  @return Whatever the base class returns (probably true).
-     */
-    public boolean postfire() throws IllegalActionException {
-        boolean result = false;
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (input.hasToken(i)) {
-                if (((BooleanToken)input.get(i)).booleanValue()) {
-                    result = true;
-                }
-            }
-        }
-        if (result) {
-            throw new IllegalActionException(this, message.getExpression());
-        }
-        return super.postfire();
-    }
-}
+
+
+
+
+
+
+
+
 
