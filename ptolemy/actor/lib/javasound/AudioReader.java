@@ -119,7 +119,7 @@ public class AudioReader extends URLReader {
 	// in the jar file for use under Web Start.
 
 	sourceURL.setExpression("property(\"ptolemy.ptII.dirAsURL\") "
-			+ "+ \"ptolemy/actor/lib/javasound/voice.wav\"")
+		+ "+ \"ptolemy/actor/lib/javasound/voice.wav\"");
 
     }
 
