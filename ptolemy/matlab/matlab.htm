@@ -25,28 +25,32 @@ be installed on your local machine.
 
 <p>To use the Matlab interface,
  you must have ptmatlab.dll in your path, which is initially created in
-this directory, and eventually moved to $PTII/bin.  It is best if
-your path includes $PTII/bin
+this directory, and eventually moved to <code>$PTII/bin</code>.  It is best if
+your path includes <code>$PTII/bin</code>.
 
-<p>For instructions about setting your path, see the Matlab section of
-<a href="../../doc/install.htm#matlab"><code>$PTII/doc/install.htm</code></a>
+<p>The Matlab interface also requires that <code>libeng.dll</code> be in your path.
+<br><code>libeng.dll</code> is located in the <code>bin/win32</code>
+subdirectory of Matlab.
 
-<p>The Matlab interface also requires that libeng.dll be in your path.
-libeng.dll is located in the bin/win32 subdirectory of Matlab.
-
+Under Windows 2000, you set the path via
+the Environment tab of the System control panel
+(<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>
 
 <h2>Compiling</h2>
 
 The Ptolemy II Matlab interface requires the GNU C compiler.
+
 <p>Instructions about compiling
 the Matlab interface can be found at
-<a href="../../doc/install.htm"><code>$PTII/doc/install.htm</code></a>
+<code>$PTII/doc/install.htm</code></a>
 
 <p>Below are instructions for building the interface at UC Berkeley:
 
 <ol>
 <li> Go to
-   <a href="http://sources.redhat.com/cygwin/"><code>http://sources.redhat.com/cygwin/</code></a>
+   <a href="http://sources.redhat.com/cygwin/#in_browser"><code>http://sources.redhat.com/cygwin/</code></a>
    and install the Cygwin Setup tool
 
 <li> Start up the Cygwin Setup tool and install
