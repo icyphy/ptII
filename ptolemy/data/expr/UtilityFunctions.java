@@ -259,7 +259,7 @@ public class UtilityFunctions {
         } catch (UnsatisfiedLinkError ex) {
             String sharedLibrarySuffix = "dll";
             String osName = StringUtilities.getProperty("os.name");
-            if (osName.startsWith("SunOS")) {
+            if (osName.startsWith("SunOS") || osName.startsWith("Linux")) {
                 sharedLibrarySuffix = "so";
                 // Under Solaris, libraries start with lib, so
                 // we find the last /, and if the next chars are not "lib"
