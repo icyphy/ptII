@@ -82,5 +82,18 @@ all:  sources $(MISC_SRCS)
 
 install: all
 
+# Make a distribution of jindent
+JINDENT_VERSION=jindent1.0
+JINDENT_DIST=$(JINDENT_VERSION).tar.gz
+JINDENT_TMP=/tmp/$(JINDENT_VERSION)
+jindent_dist:
+	rm -rf $(JINDENT_TMP)
+	mkdir -p $(JINDENT_TMP)/util/testsuite
+	cp README.jindent $(JINDENT_TMP)
+	cp jindent jindent.el ptjavastyle.el $(JINDENT_TMP)/util/testsuite
+	chmod a+x $(JINDENT_TMP)/util/testsuite/jindent
+	(cd /tmp; gtar -zcf $(JINDENT_DIST) $(JINDENT_VERSION))
+
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
