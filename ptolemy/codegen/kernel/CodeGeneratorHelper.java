@@ -150,12 +150,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 //currentPos is the last "$"
                 nextPos = code.length();
             }
-            String subcode = code.substring(currentPos, nextPos);
+            String subcode = code.substring(currentPos + 1, nextPos);
             boolean foundIt = false;
             StringTokenizer tokenizer = new StringTokenizer(subcode, "()", true);
             if (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-                if (token.equals("$ref") && tokenizer.hasMoreTokens()) {
+                // Do the trim so "$ ref (" can be recognized.
+                String token = (tokenizer.nextToken()).trim();
+                if (token.equals("ref") && tokenizer.hasMoreTokens()) {
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
                         String name = tokenizer.nextToken();
@@ -177,7 +178,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                             if (closeParen.equals(")")) {
                                 foundIt = true;
                                 name = name.trim();
-                                if (name != "") {
+                                if (!name.equals("")) {
                                     result.append(getReference(name));
                                 }
                                 // attach the rest subcode.
@@ -187,7 +188,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                             }
                         }
                     }
-                } else if (token.equals("$val") && tokenizer.hasMoreTokens()) {
+                } else if (token.equals("val") && tokenizer.hasMoreTokens()) {
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
                         String macroName = tokenizer.nextToken();
@@ -205,7 +206,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                             if (closeParen.equals(")")) {
                                 foundIt = true;
                                 macroName = macroName.trim();
-                                if (macroName != "")  {
+                                if (!macroName.equals(""))  {
                                     result.append(getParameterValue(macroName));
                                 }
                                 // attach the rest subcode.
@@ -218,6 +219,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
             }
             if (!foundIt) {
+                result.append("$");
                 result.append(subcode);
             }
             currentPos = nextPos;
