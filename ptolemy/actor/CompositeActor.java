@@ -172,15 +172,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @returns a List of all atomic entities in the model.
      */
     public List allAtomicEntityList() {
-        LinkedList result = new LinkedList();
-        Iterator entities = deepEntityList().iterator();
-        while (entities.hasNext()) {
-            Object actor = entities.next();
+        // We don't use an Iterator here so that we can modify the list
+        // rather than having both an Iterator and a result list.
+        LinkedList entities = (LinkedList)deepEntityList();
+        for(int i = 0; i < entities.size(); i++) {
+            Object actor = entities.get(i);
             if (actor instanceof CompositeActor) {
-                result.addAll(((CompositeActor) actor).allAtomicEntityList());
+                entities.addAll(
+                        ((CompositeActor) actor).allAtomicEntityList());
             }
         }
-        return result;
+        return (List)entities;
     }
 
 
