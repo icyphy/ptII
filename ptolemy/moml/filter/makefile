@@ -51,6 +51,7 @@ JSRCS = \
 	AddEditorFactory.java \
 	AddIcon.java \
 	BackwardCompatibility.java \
+	ClassChanges.java \
 	HideAnnotationNames.java \
 	PortNameChanges.java \
 	PropertyClassChanges.java \
