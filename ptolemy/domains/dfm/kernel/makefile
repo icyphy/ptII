@@ -53,7 +53,7 @@ JSRCS = \
 	DFMDirector.java \
 	DFMActorDrawer.java \
 	DFMPortDrawer.java \
-	DFMActor.java 
+	DFMActor.java
 
 
 EXTRA_SRCS =	$(JSRCS)

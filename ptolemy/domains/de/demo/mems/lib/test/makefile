@@ -1,7 +1,7 @@
 # Makefile for the Java classes used to test the Mems Kernel
 #
 # @Version:  @(#)makefile	1.1 09/22/98
-# @Authors: 
+# @Authors:
 #
 # @Copyright (c) 1998-1999 The Regents of the University of California.
 # All rights reserved.
@@ -42,7 +42,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 
-JSRCS = 
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 # Remove dummy.tcl when you add tests here.

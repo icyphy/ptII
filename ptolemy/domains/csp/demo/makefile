@@ -74,7 +74,7 @@ all: jclass diningapplet.jar
 
 install: all
 
-demo: 
+demo:
 	CLASSPATH=$(CLASSPATH) appletviewer index.html
 	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionDemo
 

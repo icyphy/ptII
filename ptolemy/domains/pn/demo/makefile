@@ -74,7 +74,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass RLEncodingApplet.jar
 
-install: jclass RLEncodingApplet.jar javadocs 
+install: jclass RLEncodingApplet.jar javadocs
 docs: javadocs
 
 

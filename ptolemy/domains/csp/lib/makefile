@@ -60,7 +60,7 @@ JSRCS = \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
-	PortChannelCode.java 
+	PortChannelCode.java
 
 
 EXTRA_SRCS =	$(JSRCS)

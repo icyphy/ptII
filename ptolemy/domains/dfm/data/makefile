@@ -57,7 +57,7 @@ JSRCS = \
 	DFMIntToken.java \
 	DFMDoubleArrayToken.java \
 	DFMComplexArrayToken.java \
-	DFMStringToken.java 
+	DFMStringToken.java
 
 
 EXTRA_SRCS =	$(JSRCS)

@@ -36,7 +36,7 @@ DIRS = kernel lib demo
 # Root of Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT) 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

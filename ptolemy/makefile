@@ -62,14 +62,14 @@ PTAUXALLJARS = \
 # All the .class files necessary to run a Ptolemy II domain applet
 PTAUXALLJAR =	ptsupport.jar
 
-../collections/ptcollections.jar: 
+../collections/ptcollections.jar:
 	(cd ../collections; $(MAKE) ptcollections.jar)
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
 		domains/domains.jar \
-		schematic/schematic.jar 
+		schematic/schematic.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

@@ -50,7 +50,7 @@ PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = 
+JSRCS =
 
 # Non-graphical Java demos written in Tcl
 # Since there are no demos, we use a dummy file so that the script that builds
@@ -77,7 +77,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
-demo: 
+demo:
 
 depend:
 	@echo "no dependencies in this directory"

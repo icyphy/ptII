@@ -81,7 +81,7 @@ EXTRA_SRCS = $(JSRCS) \
 	copyright.txt \
 	index.html \
 	ptplot \
-	pxgraph.bat 
+	pxgraph.bat
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = test #bean
@@ -135,7 +135,7 @@ install: sources jclass javadocs subinstall jars bin_install_dir
 
 # FIXME: this is ugly, dangerous, and unportable.
 #
-# This is a workaround so that EPSGraphics can extend Graphics in 
+# This is a workaround so that EPSGraphics can extend Graphics in
 # both JDK1.1 and JDK1.2
 # See the class comment in PtolemyGraphics1_2 for the complete story
 
@@ -145,20 +145,20 @@ install: sources jclass javadocs subinstall jars bin_install_dir
 # These files have java.in suffixes so that the rule that runs javadoc
 # for all of the Ptolemy II packages does not attempt to create documentation
 # for these files.
-# 
+#
 # PtolemyGraphics1_2.java.in extends Graphics, and has a method body
 # for the new bogus method Sun introduced into the Graphics class in JDK 1.2
 #
 # PtolemyGraphics1_1.java.in extends Graphics, and has no methods
-# 
+#
 # $PTII/conf/confTest.java is a small Java application that simply
 # prints the value of the java.version property.
 #
 # When configure is run, $PTII/conf/confTest is compiled and run, and
-# the value of the JVERSION variable in $PTII/mk/ptII.mk is set. 
+# the value of the JVERSION variable in $PTII/mk/ptII.mk is set.
 #
 # The ptolemy/plot makefile checks the JVERSION variable and copies the
-# appropriate file to PtolemyGraphics.java.  
+# appropriate file to PtolemyGraphics.java.
 #
 # I modified EPSGraphics.java so that it extends PtolemyGraphics instead
 # of directly extending Graphics.

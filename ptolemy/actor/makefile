@@ -42,7 +42,7 @@
 ME =		ptolemy/actor
 
 DIRS = 		util sched process lib test # doc
- 
+
 # Root of the Ptolemy II directory
 ROOT =		../..
 
