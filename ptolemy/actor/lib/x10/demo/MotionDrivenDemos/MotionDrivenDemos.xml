@@ -127,7 +127,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 140.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -161,7 +161,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure></configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 189, 796, 459}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 151, 796, 466}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 350]">
             </property>
@@ -314,26 +314,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="toDemo">
                 </property>
             </relation>
-            <relation name="relation8" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="off">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.129031205871512">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.769574843170726">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="turnOff">
-                </property>
-            </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
@@ -354,7 +334,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="toStandby">
                 </property>
             </relation>
-            <link port="isOff.incomingPort" relation="relation8"/>
             <link port="isOff.incomingPort" relation="relation3"/>
             <link port="isOff.outgoingPort" relation="relation"/>
             <link port="standby.incomingPort" relation="relation"/>
@@ -363,7 +342,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <link port="standby.outgoingPort" relation="relation5"/>
             <link port="running.incomingPort" relation="relation5"/>
             <link port="running.outgoingPort" relation="relation2"/>
-            <link port="running.outgoingPort" relation="relation8"/>
         </entity>
         <entity name="running" class="ptolemy.vergil.fsm.modal.Refinement">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
