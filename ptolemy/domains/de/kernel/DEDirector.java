@@ -1315,9 +1315,7 @@ public class DEDirector extends Director {
                 }
 
                 // Find the successor of the port.
-                Iterator triggers =
-                    ((Actor)inputPort.getContainer()).
-                    outputPortList().iterator();
+                Iterator triggers = actor.outputPortList().iterator();
                 while (triggers.hasNext()) {
                     IOPort outPort = (IOPort) triggers.next();
 
@@ -1327,13 +1325,22 @@ public class DEDirector extends Director {
                     }
                     // find the input ports connected to outPort
                     Iterator inPortIterator =
-                        outPort.deepConnectedInPortList().iterator();
+                            outPort.deepConnectedInPortList().iterator();
                     int referenceDepth = outPort.depthInHierarchy();
                     while (inPortIterator.hasNext()) {
                         IOPort port = (IOPort)inPortIterator.next();
                         if (port.depthInHierarchy() < referenceDepth) {
-                            // Skip this port... it's higher in the hierarchy.
-                            continue;
+                            // This destination port is higher in the hierarchy.
+                            // We may be connected to it on the inside,
+                            // in which case, we do not want to record
+                            // this link.  To check whether we are connected
+                            // on the inside, we check whether the container
+                            // of the destination port deeply contains
+                            // source port.
+                            if (((NamedObj)port.getContainer())
+                                    .deepContains(outPort)) {
+                                continue;
+                            }
                         }
                         Actor destination = (Actor)(port.getContainer());
                         if (destination.equals(actor)) {
