@@ -34,7 +34,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Source;
-//import ptolemy.actor.lib.WallClockTime;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.IntToken;
@@ -59,7 +58,7 @@ import javax.swing.text.BadLocationException;
 //////////////////////////////////////////////////////////////////////////
 //// EventButton
 /**
-Output a "new Token()" in response to a click of a button.
+Output a Token in response to a click of a button.
 
 @author  Winthrop Williams, closely follows EventButton.java by Paul Whitaker
 @version $Id$
@@ -104,6 +103,11 @@ public class EventButton extends Source implements Placeable {
         }
     }
 
+    /** Set the background */
+    public Color getBackground() {
+        return _button.getBackground();
+    }
+
     /** Create a button on the screen, if necessary. If a graphical
      *  container has
      *  not been specified, place the button into its own frame.
@@ -119,11 +123,6 @@ public class EventButton extends Source implements Placeable {
         if (_frame != null) {
             _frame.setVisible(true);
         }
-    }
-
-    /** Set the background */
-    public Color getBackground() {
-        return _button.getBackground();
     }
 
     /** An instance of JButton will be added to the specified container.
