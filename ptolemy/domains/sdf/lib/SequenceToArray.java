@@ -124,7 +124,7 @@ public class SequenceToArray extends SDFAtomicActor {
     }
 
     /** Consume the inputs and produce the output ArrayToken.
-     *  @exception IllegalActionException Not Thrown.
+     *  @exception IllegalActionException Not Thrown in this base class.
      */
     public void fire() throws IllegalActionException {
 	int length = input.getTokenConsumptionRate();
