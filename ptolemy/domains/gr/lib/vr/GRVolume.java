@@ -1,6 +1,6 @@
 /* An abstract base class for shaded GR Actors.
 
-Copyright (c) 2005 The Regents of the University of California.
+Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-package ptolemy.domains.gr.lib;
+package ptolemy.domains.gr.lib.vr;
 
 import java.io.IOException;
 import java.net.URL;
@@ -117,9 +117,9 @@ import vendors.vr.VolRend;
     performance, but less interactivity.  Changing this to true will
     only have an effect on the next run of the model.
 
-    @author Tiffany Crawford
-    @version $Id$
-    @since Ptolemy II 5.1
+    @author
+    @version 
+    @since 
     @Pt.ProposedRating Red
     @Pt.AcceptedRating Red
 */
@@ -368,6 +368,7 @@ public class GRVolume extends GRActor3D {
     /** Return false if the scene graph is already initialized.
      *  @return False if the scene graph is already initialized.
      *  @exception IllegalActionException Not thrown in this base class
+     * @throws 
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
