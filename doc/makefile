@@ -116,7 +116,8 @@ ALLJSRCS = 		collections \
 			ptolemy.graph \
 			ptolemy.gui \
 			ptolemy.math \
-			ptolemy.media
+			ptolemy.media \
+			ptolemy.moml
 
 all: suball codeDoc/tree.html
 install: all
@@ -164,7 +165,8 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/graph/*.java \
 			../ptolemy/gui/*.java \
 			../ptolemy/math/*.java \
-			../ptolemy/media/*.java
+			../ptolemy/media/*.java \
+			../ptolemy/moml/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	-(cd ..; CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(CLASSPATHSEPARATOR).." $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 
