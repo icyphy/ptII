@@ -111,7 +111,7 @@ test NamedObj-3.1 {Experiment with Parameters} {
     set n [java::new pt.kernel.NamedObj]
     set paramlist [$n getParams]
 
-    # Create two ParamTest objects, add them to the ParamList
+    # Create two ParamTest objects, add them to the NamedObjList
     set paramtest1 [java::new pt.kernel.test.ParamTest]
     $paramtest1 setName "first param"
     $paramtest1 setValue int 42
@@ -123,7 +123,7 @@ test NamedObj-3.1 {Experiment with Parameters} {
     $paramlist append $paramtest2
     $paramlist prepend $paramtest1
 
-    # Get the ParamList again.
+    # Get the NamedList again.
     set paramlist1a [$n getParams]
     set paramtest1a [$paramlist1a get "first param"]
     set paramtest2a [$paramlist1a get "second param"]
