@@ -189,6 +189,8 @@ OTHER_FILES_TO_BE_JARED = \
 	executioncontrol.xml \
 	filtering.xml \
 	flowcontrol.xml \
+	genericsinks.xml \
+	genericsources.xml \
 	math.xml \
 	matrix.xml \
 	random.xml \
