@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.hoc;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -156,7 +157,7 @@ import ptolemy.moml.MoMLParser;
    amount of time, and then stop it.
    </ul>
    <p>
-   There are currently a number of serious limitations:
+   There are currently some limitations:
    <ul>
    <li>
    FIXME: Pausing the referring model doesn't pause the referenced model.
@@ -279,6 +280,11 @@ public class ModelReference
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();
             if (url != null) {
+                File asFile = modelFileOrURL.asFile();
+                if (!asFile.isFile()) {
+                	throw new IllegalActionException(this,
+                            "Not a file: " + url);
+                }
                 // By specifying no workspace argument to the parser, we
                 // are asking it to create a new workspace for the referenced
                 // model.  This is necessary because the execution of that
@@ -295,7 +301,8 @@ public class ModelReference
                     throw new IllegalActionException(
                             this,
                             ex,
-                            "Failed to read model.");
+                            "Failed to read model from: "
+                            + url);
                 }
                 // Create a manager, if appropriate.
                 if (_model instanceof CompositeActor) {
