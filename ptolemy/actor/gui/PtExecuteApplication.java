@@ -63,10 +63,6 @@ does nothing.
 public class PtExecuteApplication extends MoMLApplication
         implements ExecutionListener {
 
-    public PtExecuteApplication() throws Exception {
-	PtExecuteApplication(null);
-    }
-
     /** Parse the specified command-line arguments, creating models
      *  and running them.
      *  @param args The command-line arguments.
