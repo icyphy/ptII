@@ -138,7 +138,7 @@ public class VariableDelay extends DETransformer {
      */
     public void removeDependencies() {
         removeDependency(input, output);
-//        removeDependency(delay, output);  
+        removeDependency(delay.getPort(), output);  
 }
 
     ///////////////////////////////////////////////////////////////////
