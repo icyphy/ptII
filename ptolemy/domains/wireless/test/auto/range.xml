@@ -224,7 +224,7 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="$channelName">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="300.0">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=300.0}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
@@ -290,6 +290,12 @@
         <link port="Ramp.trigger" relation="relation"/>
     </entity>
     <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
         <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 50.0">

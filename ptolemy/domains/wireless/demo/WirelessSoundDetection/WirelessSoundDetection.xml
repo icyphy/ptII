@@ -268,8 +268,6 @@ the implementation.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.actor.parameters.LocationParameter" value="[300.0, 500.0]">
-        </property>
         <property name="soundRange" class="ptolemy.data.expr.Parameter" value="300">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -350,6 +348,8 @@ the implementation.</text></svg></configure>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 500.0]">
         </property>
         <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -747,8 +747,6 @@ the implementation.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.actor.parameters.LocationParameter" value="[490.0, 365.0]">
-        </property>
         <property name="signalRadius" class="ptolemy.data.expr.Parameter" value="300">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -811,6 +809,8 @@ has Y increasing upwards.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 260.0">
             </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 365.0">
         </property>
         <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
