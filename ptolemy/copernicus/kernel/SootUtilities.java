@@ -1390,7 +1390,7 @@ public class SootUtilities {
      *  instead.
      */
     public static String sanitizeName(String name) {
-        return ptolemy.kernel.utilities.StringUtilities.sanitizeName(name);
+        return ptolemy.kernel.util.StringUtilities.sanitizeName(name);
     }
 
     /** Get the method with the given name in the given class
