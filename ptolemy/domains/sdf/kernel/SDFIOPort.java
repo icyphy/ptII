@@ -60,7 +60,7 @@ reduce them.
 getArray() and sendArray() only have to get the receivers once.
 <li>Inserting each element into the QueueReceiver.<br>
 SDFIOPort creates SDFReceivers, which are based on ArrayFIFOQueue, instead
-of FIFOQueue.  ArrayFIFOQueue uses a circular array instead of a linkedlist to
+of FIFOQueue.  ArrayFIFOQueue uses a circular array instead of a linked list to
 represent the queue.  ArrayFIFOQueue also optimizes insertion and removal of
 arrays of objects using the java.lang.System.arraycopy() method.
 </ol>
@@ -118,8 +118,8 @@ public final class SDFIOPort extends TypedIOPort {
      *
      *  @param container The container actor.
      *  @param name The name of the port.
-     *  @param isinput True if this is to be an input port.
-     *  @param isoutput True if this is to be an output port.
+     *  @param isInput True if this is to be an input port.
+     *  @param isOutput True if this is to be an output port.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container does not implement the
      *   Actor interface.
@@ -127,11 +127,11 @@ public final class SDFIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public SDFIOPort(ComponentEntity container, String name,
-            boolean isinput, boolean isoutput)
+            boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
         this(container, name);
-	setInput(isinput);
-        setOutput(isoutput);
+	setInput(isInput);
+        setOutput(isOutput);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -403,13 +403,13 @@ public class SDFScheduler extends Scheduler {
      */
     protected Schedule _getSchedule()
             throws NotSchedulableException, IllegalActionException {
-        StaticSchedulingDirector dir =
+        StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
 
         int vectorizationFactor = 1;
-        if(dir instanceof SDFDirector) {
-            SDFDirector director = (SDFDirector)dir;
-            Token token = director.vectorizationFactor.getToken();
+        if(director instanceof SDFDirector) {
+            Token token =
+                ((SDFDirector)director).vectorizationFactor.getToken();
             vectorizationFactor = ((IntToken)token).intValue();
         }
         if(vectorizationFactor < 1) {
@@ -418,7 +418,7 @@ public class SDFScheduler extends Scheduler {
                     "a positive integer. " +
                     "The given value was: " + vectorizationFactor);
         }
-        CompositeActor container = (CompositeActor)dir.getContainer();
+        CompositeActor container = (CompositeActor)director.getContainer();
 
         // A linked list containing all the actors.
         LinkedList actorList = new LinkedList();
@@ -1062,7 +1062,7 @@ public class SDFScheduler extends Scheduler {
      *
      *  @param minimumBufferSize A map from relation to an Integer
      *  representing the minimum size buffer necessary for the computed
-     *  schedule.  Thie map will be populated during the execution of this
+     *  schedule.  The map will be populated during the execution of this
      *  method.
      *  @param actorList The actors that need to be scheduled.
      *  @return An instance of the Schedule class, indicating the order
@@ -1311,7 +1311,7 @@ public class SDFScheduler extends Scheduler {
                                     unscheduledActorList,
                                     waitingTokens);
 			// We've already removed currentActor from
-			// readytoSchedule actors, and presumably
+			// readyToSchedule actors, and presumably
                         // fired it until it can be fired no more.
 			// This check is here for robustness...
                         // if the actor can still be scheduled
@@ -1539,16 +1539,16 @@ public class SDFScheduler extends Scheduler {
 		// true is when a connection is made to the
 		// inside of an opaque port.
 		if(actorList.contains(connectedActor)) {
-		    int destinationchannel =
+		    int destinationChannel =
 			_getChannel(connectedPort,
                                 receivers[sourceChannel]
                                 [destinationReceiver]
 				    );
 		    int[] tokens = (int[]) waitingTokens.get(connectedPort);
-		    tokens[destinationchannel] = Integer.MAX_VALUE;
+		    tokens[destinationChannel] = Integer.MAX_VALUE;
 
                     if (_debugging) {
-                        _debug("Channel " + destinationchannel
+                        _debug("Channel " + destinationChannel
                                 + " of " + connectedPort.getName());
                     }
 		}

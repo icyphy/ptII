@@ -309,9 +309,11 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
-        int numiterations = ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue =
+            ((IntToken) (iterations.getToken())).intValue();
         _iterationCount++;
-        if((numiterations > 0) && (_iterationCount >= numiterations)) {
+        if((iterationsValue > 0)
+                && (_iterationCount >= iterationsValue)) {
             _iterationCount = 0;
             return false;
         }
