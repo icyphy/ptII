@@ -63,6 +63,8 @@ Command-line options include:
 <dt>Print the program version and then exit.
     While ptplot is running,
     the version menu choice will display the same information.
+<dt><code>-</code></a>
+<dt>Read the plot data from standard in.
 </dl>
 
 <p>
@@ -365,6 +367,7 @@ public class PlotApplication extends PlotFrame {
             "-help",
             "-test",
             "-version",
+            "-",
         };
         String result = "Usage: ptplot [ options ] [file ...]\n\n"
             + "Options that take values:\n";
