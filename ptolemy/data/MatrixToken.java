@@ -158,6 +158,25 @@ public abstract class MatrixToken extends Token {
                 "not supported on " + getClass().getName() + " objects.");
     }
 
+    /** Return an ArrayToken containing the all the values of this
+     *  matrix token.  The type of the tokens in the array is consistent
+     *  with the type of this token.
+     *  
+     *  @return A ArrayToken containing the elements of this matrix in 
+     *  row-scanned order.
+     */
+    public ArrayToken toArray() {
+        int rowCount = getRowCount();
+        int columnCount = getColumnCount();
+        Token[] output = new Token[rowCount * columnCount];
+        for (int i = 0, n = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                output[n++] = getElementAsToken(i, j);
+            }
+        }
+        return new ArrayToken(output);
+    }
+    
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  The expression starts and ends with a square bracket.  The matrix is
