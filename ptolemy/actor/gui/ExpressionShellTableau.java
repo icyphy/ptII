@@ -38,6 +38,7 @@ import ptolemy.kernel.util.*;
 
 import java.awt.BorderLayout;
 import java.net.URL;
+import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -116,8 +117,8 @@ public class ExpressionShellTableau extends Tableau
                         return null;
                     }
                 }
-                public NamedList variableList() {
-                    return null;
+                public Set identifierSet() {
+                    return getAllScopedVariableNames(null, model);
                 }
             };
  

@@ -346,11 +346,11 @@ public class Expression extends TypedAtomicActor {
             return null;
         }
 
-        /** Return the list of attributes within the scope.
-         *  @return The list of attributes within the scope.
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
          */
-        public NamedList variableList() {
-            return null;
+        public Set identifierSet() {
+            return getAllScopedVariableNames(null, Expression.this);
         }
     }
 

@@ -44,6 +44,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
@@ -360,15 +361,12 @@ public abstract class AbstractActionsAttribute extends Action {
             }
         }
 
-        /** Return the list of variables within the scope.
-         *  Note that this method is an extremely inefficient to refer
-         *  to the scope of a variable because it constructs a list containing
-         *  every variable in the scope.  It is best to avoid calling it
-         *  and instead just use the get() method.
-         *  @return The list of variables within the scope.
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
          */
-        public NamedList variableList() {
-            return null;
+        public Set identifierSet() {
+            return getAllScopedVariableNames(null,
+                    (NamedObj)AbstractActionsAttribute.this);
         }
     }
 }
