@@ -1,21 +1,20 @@
 
 To Do:
 
-outline
-find second reader
+1 outline
+1 find second reader
 
-FIXMEs
-NonStrict actors add an attribute instead of implementing an interface?
-write NonStrictSelect actor - prefire monotonicity
-    only requires that the selected input is known
-code review
+5 FIXMEs
+3 NonStrict actors add an attribute instead of implementing an interface?
+9 write NonStrictSelect (prefire monotonicity, only needs known selected input)
+5 code review
 
-test SR in SR (to make the inner actor strict, use an inner director)
-test SR embedded in DT for timed SR
-FSM composite actor in SR - talk to xiaojun
+7 test SR in SR (to make the inner actor strict, use an inner director)
+7 test SR embedded in DT for timed SR
+3 FSM composite actor in SR - talk to xiaojun
 
-stopwatch, global resets, UI activity, reflex game, examples by sedwards
-run ptolemy classic SR
+7 stopwatch, global resets, UI activity, reflex game, examples by sedwards
+7 run ptolemy classic SR
 
 -------------------------------------------------------------------------------
 

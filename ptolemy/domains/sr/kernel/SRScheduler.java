@@ -123,8 +123,7 @@ public class SRScheduler extends Scheduler {
 
         List actorList = compositeActor.deepEntityList();
 
-        // FIXME: want a randomized scheduler, a topological sort scheduler,
-        // and a Stephen A. Edwards optimized scheduler.
+        // FIXME: randomized scheduler, and S. Edwards optimized scheduler.
 
         Collections.shuffle(actorList);
 
