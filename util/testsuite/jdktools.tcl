@@ -85,15 +85,24 @@ proc jdkVersion {} {
 }
 
 # Capture output to System.out
-proc jdkCapture {script varName} {
+proc jdkCapture {script varName {sleep 0}} {
     upvar $varName output
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
             {java.io.PrintStream java.io.OutputStream} $stream]
     set stdout [java::field System out]
+    $stdout flush
     java::call System setOut $printStream
+    if { $sleep != 0 } {
+	java::call Thread sleep $sleep
+    }
+
+
     set result [uplevel $script]
     java::call System setOut $stdout
+    if { $sleep != 0 } {
+	java::call Thread sleep $sleep
+    }
     $printStream flush
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \

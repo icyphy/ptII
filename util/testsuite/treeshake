@@ -157,15 +157,20 @@ if [ $retval = 0 ]; then
 
     	    for jarFile in $classPathJarFiles
 	    do
-	        PTJAR_TMPDIR2=ptjar_tmpdir2
-	        rm -rf $PTJAR_TMPDIR2
-	        mkdir $PTJAR_TMPDIR2
-		cat $jarFile | (cd $PTJAR_TMPDIR2; "$JAR" -x)
+		# Exclude certain jar files:
+		echo $jarFile | egrep '/rt.jar$|/jasminclasses.jar$|sootclasses.jar$'
+		retval=$?
+	        if [ $retval = 1 ]; then
+		    # jarFile was not one of the excluded jar files . . .
+		    PTJAR_TMPDIR2=ptjar_tmpdir2
+		    rm -rf $PTJAR_TMPDIR2
+		    mkdir $PTJAR_TMPDIR2
+		    cat $jarFile | (cd $PTJAR_TMPDIR2; "$JAR" -x)
 
-	        echo "Copying files from $jarFile"
+		    echo "Copying files from $jarFile"
 		
-		for file in $ptolemyFiles
-		do
+		    for file in $ptolemyFiles
+		    do
 			if [ -f "$PTJAR_TMPDIR2/$file" ]; then
 			    classDir=`dirname $PTJAR_TMPDIR/$file`
 			    if [ ! -d "$classDir" ]; then
@@ -173,7 +178,8 @@ if [ $retval = 0 ]; then
 			    fi	
 			    cp "$PTJAR_TMPDIR2/$file" $classDir
 			fi
-		done
+		    done
+		fi
 	    done	
 	    # Now that we have processed the classpath arg, we break
 	    # out of the argument processing loop
