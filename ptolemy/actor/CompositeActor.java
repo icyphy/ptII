@@ -172,31 +172,16 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @returns a List of all atomic entities in the model.
      */
     public List allAtomicEntityList() {
-        // FIXME: should this be moved to CompositeEntity?
         LinkedList result = new LinkedList();
         Iterator entities = deepEntityList().iterator();
         while (entities.hasNext()) {
-            // FIXME: why can't we just use:
-            // CompositeActor actor = (CompositeActor)entities.next();
-            // entities.addAll(allAtomicEntityList((CompositeActor)actor));
-            // Shouldn't everything inside be a CompositeActor?
             Object actor = entities.next();
             if (actor instanceof CompositeActor) {
                 result.addAll(((CompositeActor) actor).allAtomicEntityList());
             }
         }
         return result;
-        // Here's the old version:
-//         LinkedList entities = (LinkedList)model.deepEntityList();
-//         for(int i = 0; i < entities.size(); i++) {
-//             Object actor = entities.get(i);
-//             if (actor instanceof CompositeActor) {
-//                 entities.addAll(allAtomicEntityList((CompositeActor)actor));
-//             }
-//         }
-//         return (List)entities;
     }
-
 
 
     /** Clone the actor into the specified workspace. The new object is
