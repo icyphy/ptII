@@ -115,9 +115,10 @@ test_skeleton:
 	  $(JAVA) ptolemy.lang.java.Skeleton -i \
 		FindExtraImportsVisitorTest.java
 
+# Print out the AST for a class
 ASTReflect:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
-		ptolemy.lang.java.RegenerateCode ../nodetypes/IntLitNode.java
+		ptolemy.lang.java.ASTReflect ptolemy.lang.java.nodetypes.IntLitNode
 
 PrintTree:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
@@ -131,11 +132,11 @@ RegenerateCode:
 # FIXME: we can't ship these
 JAVASRC_STUBS=$(PTII)/vendors/sun/src
 
-codegen: $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalComSystem.class \
+codegen: $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.class \
 		generate_codegen compile_codegen run_codegen 
 
-$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalComSystem.class: \
-	$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalComSystem.java
+$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.class: \
+	$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.java
 	(cd $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom; $(MAKE))
 
 generate_codegen:
@@ -145,7 +146,7 @@ generate_codegen:
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
 	$(JAVA) -DPTII=$(ROOT) \
 		ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-		-class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalComSystem \
+		-class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
 		-iterations 500 \
 		-outdir $(ROOT) -outpkg cg.OrthogonalCom
 compile_codegen:
@@ -155,7 +156,7 @@ run_codegen:
 		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
 
 run_non_codegen:
-	$(JAVA) -classpath $(ROOT) ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalComSystem -iterations 500
+	$(JAVA) -classpath $(ROOT) ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom -iterations 500
 depend:
 	@echo "no dependencies in this directory"
 
