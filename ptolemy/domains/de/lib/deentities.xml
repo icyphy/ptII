@@ -19,7 +19,7 @@
 <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
 </entity>
 
-<entity name="NonInterruptibleTimer" class="ptolemy.domains.de.lib.NonpreemptiveTimer">
+<entity name="NonInterruptibleTimer" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
 </entity>
 
 <entity name="PreemptableTask" class="ptolemy.domains.de.lib.PreemptableTask">
