@@ -463,9 +463,17 @@ PTLEGO_DIR =	@PTLEGO_DIR@
 # the Java Communications API and Lejos was found
 PTLEJOS_DIR =	@PTLEJOS_DIR@
 
+# Set to gcc or cl and used in
+# $PTII/ptolemy/matlab/makefile if the Matlab was found.
+PTMATLAB_CC =	@PTMATLAB_CC@
+
 # Set to matlab and used in $PTII/ptolemy/makefile if
 # matlab was found.
 PTMATLAB_DIR =	@PTMATLAB_DIR@
+
+# Linker args for Matlab
+# $PTII/ptolemy/matlab/makefile
+PTMATLAB_LD_ARGS = @PTMATLAB_LD_ARGS@
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found

@@ -2210,11 +2210,13 @@ changequote([, ])dnl
 		fi
 	    fi
 	    cd "$startdir"
+		MATLAB_USE_MSVC="no"
 		case "`uname -s`" in
 		Linux)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
 			;;
 		CYGWIN*)
+			MATLAB_USE_MSVC="yes"
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/win32
 			;;
 		SunOS*)
@@ -2225,11 +2227,33 @@ changequote([, ])dnl
 			;;
 		esac
 		AC_MSG_RESULT([using '${MATLAB_LIBDIR}' for Matlab's engine libraries])
-		AC_MSG_CHECKING([for gcc])
-		AC_PATH_PROG(PTCC, gcc)
-		if test "${PTCC:-none}" != "none"; then
-			PTMATLAB_DIR=matlab
-		else    
+		if test $MATLAB_USE_MSVC = "yes"; then
+		    AC_MSG_CHECKING([for Microsoft Visual C cl])
+		    AC_PATH_PROG(PTMATLAB_CC, cl)
+		    if test "${PTMATLAB_CC:-none}" != "none"; then
+		        PTMATLAB_DIR=matlab
+			PTMATLAB_LD_ARGS="/Tpptmatlab.cc /Feptmatlab.dll /link /dll /libpath:\"${MATLAB_DIR}/extern/lib/win32/microsoft/msvc70\" libeng.lib libmx.lib"
+
+	            else    
+			AC_MSG_WARN([Failed to find cl])
+			AC_PATH_PROG(PTMATLAB_CC, gcc)
+			if test "${PTMATLAB_CC:-none}" != "none"; then
+			    PTMATLAB_DIR=matlab
+			else	
+			    AC_MSG_WARN([Failed to find MSVC cl or GNU gcc, so we will
+    not be able to compile the Matlab interface in ptolemy/matlab.
+    Note that the Matlab interface does not work under Windows with gcc-3.3,
+    you must use the Microsoft Visual C 'cl' compiler.]);
+			fi
+		    fi
+                else 
+		    PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}tmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+
+		    AC_MSG_CHECKING([for gcc])
+		    AC_PATH_PROG(PTCC, gcc)
+		    if test "${PTCC:-none}" != "none"; then
+		        PTMATLAB_DIR=matlab
+	            else    
 			AC_MSG_WARN([Failed to find gcc])
 			AC_PATH_PROG(PTCC, cc)
 			if test "${PTCC:-none}" != "none"; then
@@ -2238,7 +2262,8 @@ changequote([, ])dnl
 			    AC_MSG_WARN([Failed to find gcc or cc, so we will
     not be able to compile the Matlab interface in ptolemy/matlab]);
 			fi
-		fi
+		    fi
+                fi
 	    fi
 	fi
     fi	
@@ -3091,9 +3116,17 @@ AC_SUBST(PTLEGO_DIR)
 # and Legos was found
 AC_SUBST(PTLEJOS_DIR)
 
+# Set to gcc or cl and used in
+# $PTII/ptolemy/matlab/makefile if the Matlab was found.
+AC_SUBST(PTMATLAB_CC)
+
 # Set to matlab and used in
 # $PTII/ptolemy/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_DIR)
+
+# Linker args for Matlab
+# $PTII/ptolemy/matlab/makefile
+AC_SUBST(PTMATLAB_LD_ARGS)
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
