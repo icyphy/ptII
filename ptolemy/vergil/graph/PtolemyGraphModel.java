@@ -48,6 +48,7 @@ import diva.graph.toolbox.*;
 import diva.util.*;
 
 import java.util.*;
+import javax.swing.SwingUtilities;
 
 // FIXME: This class throws InternalErrorException on type-valid
 // uses of public methods.  This is probably not the right exception
@@ -268,6 +269,30 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	e = new GraphEvent(eventSource, GraphEvent.EDGE_TAIL_CHANGED,
 			   link, tail);
 	dispatchGraphEvent(e);
+    }
+
+    /**
+     * Send an graph event to all of the graph listeners.  This
+     * allows manual control of sending graph graph events, or
+     * allows the user to send a STRUCTURE_CHANGED after some
+     * inner-loop operations.  This class overrides the base class to 
+     * ensure that the notification happens in the event thread.
+     * 
+     * @see setDispatchEnabled(boolean)
+     */
+    public void dispatchGraphEvent(final GraphEvent e) {
+	// This has to happen in the swing thread, because Diva assumes
+	// that everything happens in the swing thread.  We invoke later
+	// because the changeRequest that we are listening for often
+	// occurs in the execution thread of the ptolemy model.
+	SwingUtilities.invokeLater(new Runnable() {
+	    public void run() {
+		// Otherwise notify any graph listeners 
+		// that the graph might have
+		// completely changed.
+	        PtolemyGraphModel.super.dispatchGraphEvent(e);
+	    }
+	});
     }
 
     /** Return the head node of the given edge.
@@ -974,10 +999,19 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    if(change.getOriginator() == PtolemyGraphModel.this) {
                 return;
             }
-	    // Otherwise notify any graph listeners that the graph might have
-	    // completely changed.
-	    dispatchGraphEvent(new GraphEvent(
-                    this, GraphEvent.STRUCTURE_CHANGED, getRoot()));
+	    // This has to happen in the swing thread, because Diva assumes
+	    // that everything happens in the swing thread.  We invoke later
+	    // because the changeRequest that we are listening for often
+	    // occurs in the execution thread of the ptolemy model.
+	    // SwingUtilities.invokeLater(new Runnable() {
+	    //public void run() {
+		    // Otherwise notify any graph listeners 
+		    // that the graph might have
+		    // completely changed.
+		    dispatchGraphEvent(new GraphEvent(
+			this, GraphEvent.STRUCTURE_CHANGED, getRoot()));
+		    //}
+		    //});
 	}
 
         /** Notify the listener that the change has failed with the
