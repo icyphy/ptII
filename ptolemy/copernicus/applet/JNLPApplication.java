@@ -28,12 +28,12 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
+package ptolemy.copernicus.applet;
+
 import ptolemy.actor.gui.PtExecuteApplication;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// JNLPApplication
