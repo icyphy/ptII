@@ -86,7 +86,7 @@ test Deep-1.1 {Compile and run the SDF IIR test} {
 
 test Deep-1.2 {Compile and run the SDF OrthogonalCom test} {
     set result [sootCodeGeneration \
-  	    [file join $relativePathToPTII ptolemy sdf demo OrthogonalCom \
+  	    [file join $relativePathToPTII ptolemy domains sdf demo OrthogonalCom \
 		 OrthogonalCom.xml] "Deep"]
     list {}
 } {{}}
