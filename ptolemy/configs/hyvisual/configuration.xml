@@ -27,12 +27,15 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- An effigy factory to open HSIF file. -->
+    <entity name="HSIF Opener" class="ptolemy.hsif.HSIFEffigyFactory">
+    </entity>
     <!-- Use a custom graph editor with a CT director already in it. -->
     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-      <!-- Call this "Continuous Time (CT) Solver" instead of "Solver" 
+      <!-- Call this "Continuous Time (CT) Solver" instead of "Solver"
            the name matches the name in the demos. -->
-        <property name="Continuous Time (CT) Solver" 
+        <property name="Continuous Time (CT) Solver"
                   class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
           <property name="_location"
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
