@@ -42,7 +42,9 @@ import ptolemy.graph.Inequality;	/* Needed by javadoc */
 
 import java.util.Collections;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMController
@@ -73,12 +75,22 @@ public class FSMController extends CompositeEntity implements TypedActor {
     }
 
     /** Return the type constraints of this actor.
+     *  The constraints is a list of inequalities.
+     *  @return a list of inequalities.
+     *  @see ptolemy.graph.Inequality
+     */
+    public List typeConstraintList() {
+        return new LinkedList();
+    }
+
+    /** Return the type constraints of this actor.
      *  The constraints is an enumeration of inequalities.
      *  @return an enumeration of Inequality.
      *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraintList() instead.
      */
     public Enumeration typeConstraints() {
-        return (new LinkedList()).elements();
+        return Collections.enumeration(typeConstraintList());
     }
 
     public void addLocalVariable(String name, Token initialValue)
@@ -126,10 +138,10 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
         if (_initialTransitions != null) {
             newobj._initialTransitions = new LinkedList();
-            Enumeration trans = _initialTransitions.elements();
-            while (trans.hasMoreElements()) {
-                FSMTransition tr = (FSMTransition)trans.nextElement();
-                newobj._initialTransitions.insertLast(newobj.getRelation(tr.getName()));
+            Iterator trans = _initialTransitions.iterator();
+            while (trans.hasNext()) {
+                FSMTransition tr = (FSMTransition)trans.next();
+                newobj._initialTransitions.add(newobj.getRelation(tr.getName()));
             }
         }
         newobj._currentState = null;
@@ -273,13 +285,13 @@ public class FSMController extends CompositeEntity implements TypedActor {
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isInput()) {
-                        inports.insertLast(p);
+                        inports.add(p);
                     }
                 }
                 _cachedInputPorts = inports;
                 _inputPortsVersion = workspace().getVersion();
             }
-            return _cachedInputPorts.elements();
+            return Collections.enumeration(_cachedInputPorts);
         } finally {
             workspace().doneReading();
         }
@@ -351,12 +363,12 @@ public class FSMController extends CompositeEntity implements TypedActor {
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isOutput()) {
-                        _cachedOutputPorts.insertLast(p);
+                        _cachedOutputPorts.add(p);
                     }
                 }
                 _outputPortsVersion = workspace().getVersion();
             }
-            return _cachedOutputPorts.elements();
+            return Collections.enumeration(_cachedOutputPorts);
         } finally {
             workspace().doneReading();
         }
@@ -392,10 +404,10 @@ public class FSMController extends CompositeEntity implements TypedActor {
         _setInputVars();
         _takenTransition = null;
         if (_initialTransitions != null) {
-            Enumeration trs = _initialTransitions.elements();
+            Iterator trs = _initialTransitions.iterator();
             FSMTransition trans;
-            while (trs.hasMoreElements()) {
-                trans = (FSMTransition)trs.nextElement();
+            while (trs.hasNext()) {
+                trans = (FSMTransition)trs.next();
                 if (trans.isEnabled()) {
                     if (_takenTransition != null) {
                         // Nondeterminate initial transition!
@@ -526,11 +538,11 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
         if (_initialTransitions == null) {
             _initialTransitions = new LinkedList();
-            _initialTransitions.insertFirst(initialTransition);
-        } else if (_initialTransitions.includes(initialTransition)) {
+            _initialTransitions.add(0, initialTransition);
+        } else if (_initialTransitions.contains(initialTransition)) {
             return;
         } else {
-            _initialTransitions.insertFirst(initialTransition);
+            _initialTransitions.add(0, initialTransition);
         }
     }
 
@@ -833,7 +845,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
     protected FSMState _initialState = null;
 
     /** @serial The list of initial transitions. */
-    protected LinkedList _initialTransitions = null;
+    protected List _initialTransitions = null;
 
     /** @serial The input status variable list. */
     protected VariableList _inputStatusVars = null;
@@ -850,9 +862,9 @@ public class FSMController extends CompositeEntity implements TypedActor {
     // From AtomicActor, should keep consistent.
     // Cached lists of input and output ports.
     protected transient long _inputPortsVersion = -1;
-    protected transient LinkedList _cachedInputPorts;
+    protected transient List _cachedInputPorts;
     protected transient long _outputPortsVersion = -1;
-    protected transient LinkedList _cachedOutputPorts;
+    protected transient List _cachedOutputPorts;
 
 
 }

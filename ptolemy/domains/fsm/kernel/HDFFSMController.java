@@ -33,22 +33,23 @@
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.*;
-import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
-import ptolemy.domains.fsm.kernel.*;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.data.expr.*;
+import ptolemy.actor.*;
+import ptolemy.actor.sched.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.*;
 import ptolemy.graph.*;
-import java.util.Enumeration;
-import java.util.*;
-import collections.LinkedList;
+import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.fsm.*;
+import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.fsm.kernel.util.VariableList;
 import ptolemy.domains.sdf.kernel.*;
-import ptolemy.actor.sched.*;
+
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMController
@@ -100,11 +101,11 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 
     /**
      */
-    public Enumeration typeConstraints()  {
+    public List typeConstraintList()  {
 	try {
 	    workspace().getReadAccess();
 
-	    LinkedList result = new LinkedList();
+	    List result = new LinkedList();
 	    Enumeration inPorts = inputPorts();
 	    while (inPorts.hasMoreElements()) {
 	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
@@ -120,12 +121,12 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
                                     inport.getTypeTerm(), outport.getTypeTerm());
-			    result.insertLast(ineq);
+			    result.add(ineq);
 			}
 		    }
 		}
 	    }
-	    return result.elements();
+	    return result;
 
 	}finally {
 	    workspace().doneReading();
@@ -192,10 +193,10 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         }
         if (_initialTransitions != null) {
             newobj._initialTransitions = new LinkedList();
-            Enumeration trans = _initialTransitions.elements();
-            while (trans.hasMoreElements()) {
-                FSMTransition tr = (FSMTransition)trans.nextElement();
-                newobj._initialTransitions.insertLast(newobj.getRelation(tr.getName()));
+            Iterator trans = _initialTransitions.iterator();
+            while (trans.hasNext()) {
+                FSMTransition tr = (FSMTransition)trans.next();
+                newobj._initialTransitions.add(newobj.getRelation(tr.getName()));
             }
         }
         newobj._currentState = null;
@@ -329,7 +330,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             workspace().getReadAccess();
             if(_inputPortsVersion != workspace().getVersion()) {
                 // Update the cache.
-                LinkedList inports = new LinkedList();
+                List inports = new LinkedList();
                 //Enumeration ports = getPorts();
 		// Is this right?
 		//Enumeration ports = ((CompositeEntity)getContainer()).getPorts();
@@ -337,13 +338,13 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isInput()) {
-                        inports.insertLast(p);
+                        inports.add(p);
                     }
                 }
                 _cachedInputPorts = inports;
                 _inputPortsVersion = workspace().getVersion();
             }
-            return _cachedInputPorts.elements();
+            return Collections.enumeration(_cachedInputPorts);
         } finally {
             workspace().doneReading();
         }
@@ -405,12 +406,12 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isOutput()) {
-                        _cachedOutputPorts.insertLast(p);
+                        _cachedOutputPorts.add(p);
                     }
                 }
                 _outputPortsVersion = workspace().getVersion();
             }
-            return _cachedOutputPorts.elements();
+            return Collections.enumeration(_cachedOutputPorts);
         } finally {
             workspace().doneReading();
         }
@@ -450,10 +451,10 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         _setInputVars();
         _takenTransition = null;
         if (_initialTransitions != null) {
-            Enumeration trs = _initialTransitions.elements();
+            Iterator trs = _initialTransitions.iterator();
             FSMTransition trans;
-            while (trs.hasMoreElements()) {
-                trans = (FSMTransition)trs.nextElement();
+            while (trs.hasNext()) {
+                trans = (FSMTransition)trs.next();
                 if (trans.isEnabled()) {
                     if (_takenTransition != null) {
                         // Nondeterminate initial transition!
@@ -681,11 +682,11 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         }
         if (_initialTransitions == null) {
             _initialTransitions = new LinkedList();
-            _initialTransitions.insertFirst(initialTransition);
-        } else if (_initialTransitions.includes(initialTransition)) {
+            _initialTransitions.add(0, initialTransition);
+        } else if (_initialTransitions.contains(initialTransition)) {
             return;
         } else {
-            _initialTransitions.insertFirst(initialTransition);
+            _initialTransitions.add(0, initialTransition);
         }
     }
 
@@ -1264,6 +1265,5 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             trans.setupScope();
         }
     }
- 
-
 }
+

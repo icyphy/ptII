@@ -412,7 +412,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Return the type constraints of this actor.
-     *  The constraints have the form of an enumeration of inequalities.
+     *  The constraints have the form of a list of inequalities.
      *  In this base class, the implementation of type constraints
      *  is that the type of any input port that does not have its type
      *  declared must be less than or equal to the type of any output port
@@ -420,14 +420,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  In addition, this method also collects type constraints from the
      *  contained Typeables (ports, variables, and parameters).
      *  This method is read-synchronized on the workspace.
-     *  @return an Enumeration of Inequality.
+     *  @return a list of inequalities.
      *  @see ptolemy.graph.Inequality
      */
-    public Enumeration typeConstraints()  {
+    public List typeConstraintList()  {
         /*try {
 	    _workspace.getReadAccess();
 
-	    LinkedList result = new LinkedList();
+	    List result = new LinkedList();
 	    Enumeration inPorts = inputPorts();
 	    while (inPorts.hasMoreElements()) {
 	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
@@ -445,7 +445,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 		            Inequality ineq = new Inequality(
                                     inport.getTypeTerm(),
                                     outport.getTypeTerm());
-			    result.insertLast(ineq);
+			    result.add(ineq);
 			}
 		    }
 		}
@@ -455,23 +455,34 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 	    Enumeration ports = getPorts();
 	    while (ports.hasMoreElements()) {
 		Typeable port = (Typeable)ports.nextElement();
-		result.appendElements(port.typeConstraints());
+		result.addAll(port.typeConstraintList());
 	    }
 
 	    Enumeration attrib = getAttributes();
 	    while (attrib.hasMoreElements()) {
 		Attribute att = (Attribute)attrib.nextElement();
 		if (att instanceof Typeable) {
-		    result.appendElements(((Typeable)att).typeConstraints());
+		    result.addAll(((Typeable)att).typeConstraintList());
 		}
 	    }
 
-	    return result.elements();
+	    return result;
 
 	} finally {
 	    _workspace.doneReading();
 	}*/
-        return Collections.enumeration(new LinkedList());
+        return new LinkedList();
+    }
+
+    /** Return the type constraints of this actor.
+     *  This method calls typeConstraintList() and convert the result into
+     *  an enumeration.
+     *  @return an enumeration of inequalities.
+     *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraintList() instead.
+     */
+    public Enumeration typeConstraints()  {
+	return Collections.enumeration(typeConstraintList());
     }
 
     /** Do nothing.  Derived classes override this method to define
