@@ -38,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// Server
@@ -100,9 +101,12 @@ public class Server extends DETransformer {
         serviceTime.setTypeEquals(BaseType.DOUBLE);
         newServiceTime = new DEIOPort(this, "newServiceTime", true, false);
         newServiceTime.setTypeEquals(BaseType.DOUBLE);
+        // Put it at the bottom of the icon by default.
+        StringAttribute cardinality
+                = new StringAttribute(newServiceTime, "_cardinal");
+        cardinality.setExpression("SOUTH");
+
         output.setTypeAtLeast(input);
-        //        input.delayTo(output);
-        //        newServiceTime.delayTo(output);
     }
 
     ///////////////////////////////////////////////////////////////////

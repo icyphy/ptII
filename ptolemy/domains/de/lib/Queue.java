@@ -34,6 +34,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (eal)
 */
 
-//FIXME: make this consistent with the queue from ptolemy classic
 public class Queue extends DETransformer {
 
     /** Construct an actor with the given container and name.
@@ -72,6 +72,11 @@ public class Queue extends DETransformer {
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
         // Leave trigger type undeclared.
+        // Put it at the bottom of the icon by default.
+        StringAttribute cardinality
+                = new StringAttribute(trigger, "_cardinal");
+        cardinality.setExpression("SOUTH");
+
         _queue = new FIFOQueue();
     }
 
