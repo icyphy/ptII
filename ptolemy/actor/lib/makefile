@@ -130,6 +130,7 @@ JSRCS = \
 	TrigFunction.java \
 	Uniform.java \
 	VariableClock.java \
+	WallClockTime.java \
 	Writer.java
 
 OTHER_FILES_TO_BE_JARED = \

@@ -61,6 +61,10 @@
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
 
+<entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime">
+<doc>Output the current real time in seconds</doc>
+</entity>
+
       </group>
     ?>
   </configure>
