@@ -46,9 +46,9 @@ include $(CONFIG)
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
-#    Pxgraph.java, index.html, doc/internals/changes.html
+#    Pxgraph.java, PlotApplication.java, doc/index.html, doc/changes.html
 PTVERSION =	2.2
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Jar file consisting of classes used by an applet.  Basically,
