@@ -72,7 +72,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
 	'BasicGraphController$$1.class' \
 	'BasicGraphController$$NodeCreator.class' \
 	'BasicGraphModel$$1.class' \
