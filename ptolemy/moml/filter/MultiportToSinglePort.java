@@ -86,8 +86,8 @@ public class MultiportToSinglePort implements MoMLFilter {
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue) {
 
-        //System.out.println("filterAttributeValue: " + container + "\t"
-        //   +  attributeName + "\t" + attributeValue);
+        System.out.println("filterAttributeValue: " + container + "\t"
+          +  attributeName + "\t" + attributeValue);
 
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
@@ -109,7 +109,9 @@ public class MultiportToSinglePort implements MoMLFilter {
                     // class that had property class changes.
                     _foundChange = true;
                 } else {
-                    if (attributeValue.equals("multiport")) {
+                    if (attributeValue.equals("multiport")
+                    	&& container != null 
+                    	&& container.getName().equals(_portName)) {
                         // What if the multiport is false?
                         _foundChange = false;
                         MoMLParser.setModified(true);
