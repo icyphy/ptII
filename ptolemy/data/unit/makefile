@@ -31,8 +31,7 @@
 
 ME =		ptolemy/data/unit
 
-DIRS = 		conversions gui logic hoc image net \
-		test $(PTCOMM_DIR) $(PTJAVASOUND_DIR) $(PTJSPACES_DIR)
+DIRS = 		test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
