@@ -57,7 +57,7 @@ public class SDFRamp extends SDFAtomicActor {
             outputport.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFRamp: constuctor error");
+            System.out.println("SDFRamp: constructor error");
         }
         value = 0;
 
