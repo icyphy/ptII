@@ -134,7 +134,11 @@ public class XSLTUtilities {
         DocumentBuilder builder = factory.newDocumentBuilder();
         // We use InputSource here so that we can specify the filename
         // argument as a jar url so that HSIFToMoML works under Web Start.
-        return builder.parse(new InputSource(filename));
+        try {
+            return builder.parse(new InputSource(filename));
+        } catch (Exception ex) {
+            throw new Exception("Failed to open '" + filename + "'", ex); 
+        }
     }
 
     /** Given a Document, generate a String.
