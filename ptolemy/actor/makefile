@@ -31,7 +31,8 @@
 
 ME =		ptolemy/actor
 
-DIRS = 		util sched process hoc gui lib corba parameters test
+# There is a corba directory, but it is only used by actor.lib.jxta
+DIRS = 		util sched process hoc gui lib  parameters test
 
 # Root of the Ptolemy II directory
 ROOT =		../..
