@@ -459,6 +459,8 @@ if [ "x$1" = "x-sandbox" -o "$POLICY_FILE_SET" = "yes" ]; then
 	echo "Note that the file browser does not work well in the sandbox"
 	echo "  To run a model, specify the model on the command line:"
 	echo "  vergil -sandbox \"$PTII/ptolemy/moml/demo/modulation.xml\""
+	echo "  vergil -sandbox -hyvisual \"$PTII/ptolemy/moml/demo/modulation.xml\""
+	echo "  vergil -policyfile \"$PTII/bin/comm.policy\""
 	echo "  -----"
     fi	
 fi
