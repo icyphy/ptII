@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
 # NOTE: there is way too much resolution in these numeric tests.
 #  The results are unlikely to be the same on all platforms.

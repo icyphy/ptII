@@ -30,7 +30,7 @@
 #						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
 if [info exist env(PTOLEMY)] {
 	set PTII $env(PTOLEMY)/tycho/java

@@ -28,7 +28,7 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
