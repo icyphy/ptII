@@ -199,15 +199,23 @@ public class DTDirector extends SDFDirector {
      */
     public Parameter period;
 
-    // FIXME: this function is a test only
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException {
-        setCurrentTime(time);
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Override the base class to reinitialize the state if the
+     *  <i>period</i> parameter is changed.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+    // -attributeChanged-
+    // FIXME: handle period parameter mutations
+        super.attributeChanged(attribute);
+    }
+
+    
 
     /** Clone the director into the specified workspace. This calls the
      *  base class and then copies the parameter of this director.  The new
@@ -252,21 +260,21 @@ public class DTDirector extends SDFDirector {
         if (! _isFiringAllowed) {
             return;
         }
-
+        
+        _debugViewSchedule();
+        
         debug.println("DTDirector fire  "+currentTime);
         if (container == null) {
             throw new InvalidStateException("DTDirector " + getName() +
                     " fired, but it has no container!");
         } else {
 
-            Scheduler s = getScheduler();
-            if (s == null)
+            Scheduler scheduler = getScheduler();
+            if (scheduler == null)
                 throw new IllegalActionException("Attempted to fire " +
                         "DT system with no scheduler");
-            Enumeration allactors = s.schedule();
-            int i=1;
+            Enumeration allactors = scheduler.schedule();
             while (allactors.hasMoreElements()) {
-            	i++;
 
                 Actor actor = (Actor)allactors.nextElement();
 
@@ -309,6 +317,12 @@ public class DTDirector extends SDFDirector {
             _issueTransferOutputs();
         }
     }
+    
+    // FIXME: Is this really needed?
+    public void fireAt(Actor actor, double time)
+            throws IllegalActionException {
+        setCurrentTime(time);
+    }
 
     /** Return the current time.
      *  @return the current time
@@ -316,6 +330,7 @@ public class DTDirector extends SDFDirector {
     public double getCurrentTime() {
     // -getCurrentTime-
         double timeValue;
+        
         if (_pseudoTimeEnabled == true) {
             timeValue = _insideDirector.getCurrentTime();
         } else {
@@ -343,28 +358,42 @@ public class DTDirector extends SDFDirector {
      */
     public double getPeriod() throws IllegalActionException {
     //  -getPeriod-
-        Token token;
+    //  FIXME: This method is very inefficient. You should cache a private local
+    //  _period variable instead. Also you might need to update the inside DT
+    //  director's period value 
+    //  FIXME: It is really inefficient to calculate and set the inside 
+    //  DT director's period value at every call to this function
+        Token periodToken;
         double periodValue = 0.0;
         Director outsideDirector;
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
+        boolean shouldUpdatePeriod = false;
 
         outsideDirector = _getOutsideDirector();
         if (outsideDirector instanceof DTDirector) {
             DTDirector outsideDTDirector = (DTDirector) outsideDirector;
-            token = outsideDTDirector.period.getToken();
-            periodValue = 1.0/outsideDTDirector.getRepeats(container);
+            periodToken = outsideDTDirector.period.getToken();
+            periodValue = 1.0 / outsideDTDirector.getRepetitions(container);
+            // used as a multiplier to the actual value
+            shouldUpdatePeriod = true;
         } else {
-            token = period.getToken();
+            periodToken = period.getToken();
             periodValue = 1.0;
+            // used as a multiplier to the actual value
         }
 
-        if (token instanceof DoubleToken) {
-            periodValue = periodValue * ((DoubleToken) token).doubleValue();
-        } else if (token instanceof IntToken) {
-            periodValue = periodValue * ((IntToken) token).intValue();
+        if (periodToken instanceof DoubleToken) {
+            double storedValue = ((DoubleToken) periodToken).doubleValue();
+            periodValue = periodValue * storedValue;
+        } else if (periodToken instanceof IntToken) {
+            double storedValue = ((IntToken) periodToken).intValue();
+            periodValue = periodValue * storedValue;
         } else {
             throw new IllegalActionException(
-                  "Illegal period parameter value");
+                  "Illegal DT period parameter value");
+        }
+        if (shouldUpdatePeriod) {
+            period.setToken(new DoubleToken(periodValue));
         }
         return periodValue;
     }
@@ -416,7 +445,7 @@ public class DTDirector extends SDFDirector {
                if (rate > 1) dtActor._shouldGenerateInitialTokens = true;
             }
     	}
-        _displayActorTable();
+        _debugViewActorTable();
 
         // This portion generates the initial tokens for actors with nonhomogeneous outputs
         receiverIterator = _receiverTable.listIterator();
@@ -447,6 +476,14 @@ public class DTDirector extends SDFDirector {
                         // FIXME:  should check what token basetype
                         // for the port and generate such.
                         // move this out of the loop
+                        // FIXME: It might be a better idea to overwrite
+                        // the contents of port parameter tokenInitProduction
+                        // to hold the correct integer value of init. tokens
+                        // FIXME: Put a new parameter on the port for the 
+                        // user to be able to put their own initial tokens;
+                        // however some specific SDF actors may have their
+                        // own buffers parameters that actually keep this
+                        // initial tokens (similar to Delay)
                         if (fromType.isEqualTo(BaseType.BOOLEAN)) {
                             currentReceiver.put(new BooleanToken(false));
                         } else if (fromType.isEqualTo(BaseType.DOUBLE)) {
@@ -458,8 +495,8 @@ public class DTDirector extends SDFDirector {
                 }
             }
         }
-        _displayActorTable();
-        _displayReceiverTable();
+        _debugViewActorTable();
+        _debugViewReceiverTable();
     }
 
 
@@ -476,8 +513,9 @@ public class DTDirector extends SDFDirector {
      */
     public void invalidateSchedule() {
     //  -invalidateSchedule-
-        // FIXME: _reset is removed. Is this right?
-        // _reset();
+        // FIXME: is reset needed here? If so, Vergil calls
+        // invalidateSchedule very often
+        //_reset();
         super.invalidateSchedule();
     }
 
@@ -628,7 +666,7 @@ public class DTDirector extends SDFDirector {
      * @param a The actor whose firing count is needed
      * @exception IllegalActionException If actor does not exist.
      */
-    protected int getRepeats(Actor actor) throws IllegalActionException {
+    protected int getRepetitions(Actor actor) throws IllegalActionException {
         ListIterator actorIterator = _actorTable.listIterator();
         int repeats = 0;
 
@@ -689,7 +727,7 @@ public class DTDirector extends SDFDirector {
         dtActor._repeats = 1;
         _actorTable.add(dtActor);
 
-        _displayActorTable();
+        _debugViewActorTable();
         ListIterator receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
@@ -703,11 +741,12 @@ public class DTDirector extends SDFDirector {
     	   currentReceiver.calculateDeltaT();
         }
 
-        _displayActorTable();
-        _displayReceiverTable();
+        _debugViewActorTable();
+        _debugViewReceiverTable();
     }
 
-
+    /** Build the internal cache of all the ports directed by this director
+     */
     private void _buildOutputPortTable() throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
@@ -745,7 +784,7 @@ public class DTDirector extends SDFDirector {
         debug.println("DT Director just started fire----------------"+_formerValidTimeFired+" "+currentTime);
 
 
-        if ((currentTime != 0) && ((currentTime - _formerTimeFired) < TOLERANCE )) {
+        if ((currentTime != 0) && ((currentTime - _formerTimeFired) < _TOLERANCE )) {
             // duplicate firings at the same time should be ignored
             _isFiringAllowed = false;
             _shouldDoInternalTransferOutputs = false;
@@ -765,12 +804,12 @@ public class DTDirector extends SDFDirector {
 
         double iterationTimeElapsed = currentPeriod - timeElapsed;
 
-        if (iterationTimeElapsed < -TOLERANCE ) {
+        if (iterationTimeElapsed < -_TOLERANCE ) {
             // this case should not occur
             debug.prompt("InternalErrorException time: "+_formerValidTimeFired+" "+currentTime);
         }
 
-        if (iterationTimeElapsed > TOLERANCE) {
+        if (iterationTimeElapsed > _TOLERANCE) {
 
             Iterator outputPorts = _outputPortTable.iterator();
             _isFiringAllowed = false;
@@ -780,7 +819,7 @@ public class DTDirector extends SDFDirector {
                 double deltaT = ((DTReceiver)insideReceivers[0][0]).getDeltaT();
                 double ratio = timeElapsed/deltaT;
 
-                if (Math.abs(Math.round(ratio) - ratio) < TOLERANCE) {
+                if (Math.abs(Math.round(ratio) - ratio) < _TOLERANCE) {
                     // firing at a time when transferOutputs should be called
 
                     debug.println("*************** fractional fire ratio "+ratio+" should transferOutputs");
@@ -816,9 +855,10 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException if there is a problem in
      *   obtaining the number of initial token for delay actors
      */
-    private void _displayActorTable() throws IllegalActionException {
-         //debug.println("\nACTOR TABLE with "+_actorTable.size()+" unique actors");
+    private void _debugViewActorTable() throws IllegalActionException {
+         
          debug.println("---------------------------------------");
+         debug.println("\nACTOR TABLE with "+_actorTable.size()+" unique actors");
          ListIterator actorIterator = _actorTable.listIterator();
          while(actorIterator.hasNext()) {
             _DTActor currentActor = (_DTActor) actorIterator.next();
@@ -841,11 +881,92 @@ public class DTDirector extends SDFDirector {
             debug.println(" ");
          }
     }
+    
+    
+    /** For debugging purposes.  Display the list of attributes
+     *  inside a given named object
+     *  @param obj The named object that has a list of attributes
+     */
+    private void _debugViewAttributesList(NamedObj obj)
+    {
+    	List list = obj.attributeList();
+    	Iterator listIterator = list.iterator();
+
+    	debug.println("attribute List:");
+    	while(listIterator.hasNext()) {
+    	    Attribute attribute = (Attribute) listIterator.next();
+    	    debug.println(attribute);
+    	}
+    }
+    
+    /** For debugging purposes.  Display the list of output ports in the
+     *  TypedCompositeActor that holds this director.
+     */
+    private void _debugViewContainerOutputPorts() throws IllegalActionException {
+
+        List list = ((TypedCompositeActor)getContainer()).outputPortList();
+        Iterator listIterator = list.iterator();
+
+        debug.println("\ndirector container output port list:");
+        while(listIterator.hasNext()) {
+            IOPort port = (IOPort) listIterator.next();
+            debug.println(" ->"+port);
+            _debugViewPortInsideReceivers(port);
+        }
+        debug.println("\n");
+    }
+
+    
+    /** For debugging purposes.  Display the list of contained entities
+     *  inside the composite object
+     *  @param obj The composite entity with a list of contained entities.
+     */
+    private void _debugViewEntityList(CompositeEntity obj) {
+
+        List list = obj.entityList();
+    	Iterator listIterator = list.iterator();
+
+    	debug.println("\nentity List:");
+    	while(listIterator.hasNext()) {
+    	    Entity entity = (Entity) listIterator.next();
+    	    debug.println(entity);
+    	}
+    	debug.println("\n");
+    }
+    
+    /** For debugging purposes.  Display the list of inside receivers
+     *  connected to a port.
+     */
+    private void _debugViewPortInsideReceivers(IOPort port) 
+                                        throws IllegalActionException {
+        Receiver[][] portReceivers = port.getInsideReceivers();
+
+    	for(int i=0;i<port.getWidth();i++) {
+    	    for(int j=0;j<portReceivers[i].length;j++) {
+    	        debug.println("  ->"+portReceivers[i][j]);
+    	        ((DTReceiver)portReceivers[i][j]).displayReceiverInfo();
+    	    }
+    	}
+    }
+
+    
+    /** For debugging purposes.  Display the list of remote receivers
+     *  receivers connected to a port.
+     */
+    private void _debugViewPortRemoteReceivers(IOPort port) {
+        Receiver[][] remoteReceivers = port.getRemoteReceivers();
+
+    	for(int i=0;i<port.getWidth();i++) {
+    	    for(int j=0;j<remoteReceivers[i].length;j++) {
+    	        debug.println("  -->"+remoteReceivers[i][j]);
+    	    }
+    	}
+    }
 
     /** For debugging purposes.  Display the list of contained receivers
      *  and other pertinent information about them.
      */
-    private void _displayReceiverTable() {
+    private void _debugViewReceiverTable() {
     //  -displayReceiverTable-
         debug.print("\nARC RECEIVER table with "+_receiverTable.size());
         debug.println(" unique receivers");
@@ -858,77 +979,28 @@ public class DTDirector extends SDFDirector {
         }
         debug.println("\n");
     }
-
-   /** For debugging purposes.  Display the list of attributes
-     *  inside a given named object
-     *  @param obj The named object that has a list of attributes
+    
+    /** For debugging purposes. Display the schedule.
      */
-    private void _displayAttributesList(NamedObj obj)
-    {
-    	List list = obj.attributeList();
-    	Iterator listIterator = list.iterator();
+    private void _debugViewSchedule() throws IllegalActionException {
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null)
+            throw new InternalErrorException("Attempted to use " +
+                    "DT system with no scheduler");
+        Enumeration allactors = scheduler.schedule();
+        debug.println("--------SCHEDULE for "+getName()+"-----------------");
+        while (allactors.hasMoreElements()) {
 
-    	debug.println("attribute List:");
-    	while(listIterator.hasNext()) {
-    	    Attribute attribute = (Attribute) listIterator.next();
-    	    debug.println(attribute);
-    	}
-    }
-
-
-    /** For debugging purposes.  Display the list of contained entities
-     *  inside the composite object
-     *  @param obj The composite entity with a list of contained entities.
-     */
-    private void _displayEntityList(CompositeEntity obj) {
-
-        List list = obj.entityList();
-    	Iterator listIterator = list.iterator();
-
-    	debug.println("\nentity List:");
-    	while(listIterator.hasNext()) {
-    	    Entity entity = (Entity) listIterator.next();
-    	    debug.println(entity);
-    	}
-    	debug.println("\n");
-    }
-
-    private void _displayContainerOutputPorts() throws IllegalActionException {
-
-        List list = ((TypedCompositeActor)getContainer()).outputPortList();
-        Iterator listIterator = list.iterator();
-
-        debug.println("\ndirector container output port list:");
-        while(listIterator.hasNext()) {
-            IOPort port = (IOPort) listIterator.next();
-            debug.println(" ->"+port);
-            _displayPortInsideReceivers(port);
+            Actor actor = (Actor)allactors.nextElement();
+            debug.println(" --> "+((Nameable)actor).getName());
         }
-        debug.println("\n");
-        //debug.prompt("ContainerOutputPorts");
     }
 
-    private void _displayPortRemoteReceivers(IOPort port) {
-        Receiver[][] remoteReceivers = port.getRemoteReceivers();
-
-    	for(int i=0;i<port.getWidth();i++) {
-    	    for(int j=0;j<remoteReceivers[i].length;j++) {
-    	        debug.println("  -->"+remoteReceivers[i][j]);
-    	    }
-    	}
-    }
-
-    private void _displayPortInsideReceivers(IOPort port) throws IllegalActionException {
-        Receiver[][] portReceivers = port.getInsideReceivers();
-
-    	for(int i=0;i<port.getWidth();i++) {
-    	    for(int j=0;j<portReceivers[i].length;j++) {
-    	        debug.println("  ->"+portReceivers[i][j]);
-    	        ((DTReceiver)portReceivers[i][j]).displayReceiverInfo();
-    	    }
-    	}
-    }
-
+    /** Request the outside non-DT director to fire this TypedCompositeActor
+     *  at time intervals equal to when the output tokens should be produced.
+     *  No actual firing occurs of the inside actors will occur; hence the 
+     *  name 'pseudo-firing' 
+     */
     private void _issuePseudoFire(double currentTime)
                  throws IllegalActionException {
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
@@ -940,9 +1012,9 @@ public class DTDirector extends SDFDirector {
             insideReceivers = port.getInsideReceivers();
             DTReceiver receiver = (DTReceiver) insideReceivers[0][0];
             double deltaT = receiver.getDeltaT();
-            int periodDivider = receiver.getPeriodDivider();
+            int periodDivider = receiver.getTokenFlowRate();
             debug.println("request pseudo-fire at "+deltaT+" intervals. "+periodDivider);
-            for(int n=1;n<periodDivider;n++) {
+            for(int n=1; n < periodDivider ;n++) {
                 _requestRefireAt(currentTime + n*deltaT);
                 debug.println(" request pseudo-fire at "+(currentTime + n*deltaT));
             }
@@ -963,7 +1035,10 @@ public class DTDirector extends SDFDirector {
         }
     }
 
-
+    /** Enable the hasToken() method in the output ports of the 
+     *  TypedCompositeActor directed by this director.  This is 
+     *  used in composing DT with DE and CT.
+     */
     private void _makeTokensAvailable() throws IllegalActionException {
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
@@ -981,6 +1056,10 @@ public class DTDirector extends SDFDirector {
     }
 
 
+    /** Disble the hasToken() method in the output ports of the 
+     *  TypedCompositeActor directed by this director.  This is 
+     *  used in composing DT with DE and CT.
+     */
     private void _makeTokensUnavailable() throws IllegalActionException {
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
@@ -1098,12 +1177,21 @@ public class DTDirector extends SDFDirector {
 
     // The time when the previous valid or invalid prefire() was called
     private double _formerTimeFired;
+    
+    // The director of a non-DT internal model for which faking time
+    // might be need. This variable is useful for mixed DT hierarchies
+    private Director _insideDirector;
+
 
     // used to keep track of whether firing can be done at current time
     private boolean _isFiringAllowed;
 
     // ArrayList to keep track of all container output ports
     private ArrayList _outputPortTable;
+    
+    // Flag to specify whether time should be faked for non-DT internal
+    // models (like DE, CT) in the hierarchy
+    private boolean _pseudoTimeEnabled = false;
 
     // used to determine whether the director should call transferOutputs()
     private boolean _shouldDoInternalTransferOutputs;
@@ -1111,10 +1199,9 @@ public class DTDirector extends SDFDirector {
     // display for debugging purposes
     private DTDebug debug;
 
-    private boolean _pseudoTimeEnabled = false;
-    private Director _insideDirector;
-
-    private static final double TOLERANCE = 0.0000000001;
+    
+    // The tolerance value used when comparing time values.
+    private static final double _TOLERANCE = 0.0000000001;
 
 
 

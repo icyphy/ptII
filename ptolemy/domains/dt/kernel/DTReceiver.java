@@ -148,11 +148,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
             // FIXME: check tunneling topology
             periodValue = _localDirector.getPeriod();
             if (_toPort.isOutput()) {
-                repeats = _localDirector.getRepeats(_from);
+                repeats = _localDirector.getRepetitions(_from);
                 _periodDivider = repeats * _outrate;
                 _deltaT = periodValue / _periodDivider;
             } else {
-                repeats = _localDirector.getRepeats(_to);
+                repeats = _localDirector.getRepetitions(_to);
                 _periodDivider = repeats * _inrate;
             	_deltaT = periodValue / _periodDivider;
 
@@ -267,7 +267,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         return _deltaT;
     }
 
-    public int getPeriodDivider() {
+    public int getTokenFlowRate() {
         return _periodDivider;
     }
 
