@@ -1,6 +1,6 @@
 /* A drop target for the ptolemy editor.
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
+import ptolemy.actor.gui.util.*;
 import ptolemy.moml.Icon;
 import ptolemy.vergil.toolbox.*;
 
