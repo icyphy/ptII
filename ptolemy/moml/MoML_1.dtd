@@ -28,6 +28,9 @@
 <!ELEMENT deletePort EMPTY>
 <!ATTLIST deletePort name CDATA #REQUIRED>
 
+<!ELEMENT deleteProperty EMPTY>
+<!ATTLIST deleteProperty name CDATA #REQUIRED>
+
 <!ELEMENT deleteRelation EMPTY>
 <!ATTLIST deleteRelation name CDATA #REQUIRED>
 
@@ -36,6 +39,7 @@
                    class CDATA #REQUIRED>
 
 <!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc name CDATA "_doc_">
 
 <!ELEMENT entity (class | configure | deleteEntity | deletePort |
 		  deleteRelation | director | doc |
@@ -75,6 +79,7 @@
 
 <!ELEMENT unlink EMPTY>
 <!ATTLIST unlink index CDATA #IMPLIED
+                 insideIndex CDATA #IMPLIED
 		 insideIndex CDATA #IMPLIED
                  port CDATA #REQUIRED
                  relation CDATA #REQUIRED>

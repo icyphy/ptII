@@ -207,14 +207,27 @@ public class MoMLParser extends HandlerBase {
             InputStream stream = new ByteArrayInputStream(bytes);
             ((Configurable)_current).configure(_base, stream);
         } else if (elementName.equals("doc")) {
-            String name = _current.uniqueName("_doc_");
-            Documentation doc = new Documentation(_current, name);
-            doc.setValue(_currentCharData.toString());
+            if (_currentDocName == null) {
+                _currentDocName = "_doc_";
+            }
+            // If there already is a doc element with the specified name,
+            // remove it.
+            Attribute preexistingDoc = _current.getAttribute(_currentDocName);
+            if (preexistingDoc != null) preexistingDoc.setContainer(null);
+
+            // Create a new doc element only if there is character data.
+            if (_currentCharData.length() > 0) {
+                Documentation doc 
+                        = new Documentation(_current, _currentDocName);
+                doc.setValue(_currentCharData.toString());
+            }
+            _currentDocName = null;
         } else if (
                 elementName.equals("property")
                 || elementName.equals("class")
                 || elementName.equals("deleteEntity")
                 || elementName.equals("deletePort")
+                || elementName.equals("deleteProperty")
                 || elementName.equals("deleteRelation")
                 || elementName.equals("director")
                 || elementName.equals("entity")
@@ -534,6 +547,21 @@ public class MoMLParser extends HandlerBase {
                 }
                 _current = deletedPort;
 
+            } else if (elementName.equals("deleteProperty")) {
+                String propName = (String)_attributes.get("name");
+                _checkForNull(propName,
+                        "No name for element \"deleteProperty\"");
+                NamedObj deletedProp = _deleteProperty(propName);
+                if (_current != null) {
+                    // Although there is not supposed to be anything inside
+                    // this element, we nontheless change the environment so
+                    // that if by using a nonvalidating parser elements are
+                    // included, then they will be evaluated in the correct
+                    // context.
+                    _containers.push(_current);
+                }
+                _current = deletedProp;
+
             } else if (elementName.equals("deleteRelation")) {
                 String relationName = (String)_attributes.get("name");
                 _checkForNull(relationName,
@@ -571,6 +599,7 @@ public class MoMLParser extends HandlerBase {
                 _current = _createInstance(newClass, arguments);
 
             } else if (elementName.equals("doc")) {
+                _currentDocName = (String)_attributes.get("name");
                 _currentCharData = new StringBuffer();
 
             } else if (elementName.equals("entity")) {
@@ -968,9 +997,8 @@ public class MoMLParser extends HandlerBase {
                 String portName = (String)_attributes.get("port");
                 _checkForNull(portName, "No port for element \"link\"");
                 String relationName = (String)_attributes.get("relation");
-                // FIXME: allow index instead of relation.
-                _checkForNull(relationName,
-                        "No relation for element \"link\"");
+                String indexSpec = (String)_attributes.get("index");
+                String insideIndexSpec = (String)_attributes.get("insideIndex");
 
                 _checkClass(_current, CompositeEntity.class,
                         "Element \"unlink\" found inside an element that "
@@ -985,13 +1013,35 @@ public class MoMLParser extends HandlerBase {
                 // Parse port
                 ComponentPort port = _getPort(portName, context);
 
-                // Get relation
-                Relation tmpRelation = context.getRelation(relationName);
-                _checkForNull(tmpRelation, "No relation named \"" +
-                        relationName + "\" in " + context.getFullName());
-                ComponentRelation relation = (ComponentRelation)tmpRelation;
+                int countArgs = 0;
+                if (indexSpec != null) countArgs++;
+                if (insideIndexSpec != null) countArgs++;
+                if (relationName != null) countArgs++;
+                if (countArgs != 1) {
+                    throw new XmlException(
+                             "Element unlink requires exactly one of "
+                             + "an index, an insideIndex, or a relation.",
+                             _currentExternalEntity(),
+                             _parser.getLineNumber(),
+                             _parser.getColumnNumber());
+                }
 
-                port.unlink(relation);
+                if (relationName != null) {
+                    // Get relation
+                    Relation tmpRelation = context.getRelation(relationName);
+                    _checkForNull(tmpRelation, "No relation named \"" +
+                            relationName + "\" in " + context.getFullName());
+                    ComponentRelation relation = (ComponentRelation)tmpRelation;
+                    port.unlink(relation);
+                } else if (indexSpec != null) {
+                    // index is given.
+                    int index = Integer.parseInt(indexSpec);
+                    port.unlink(index);
+                } else {
+                    // insideIndex is given.
+                    int index = Integer.parseInt(insideIndexSpec);
+                    port.unlinkInside(index);
+                }
 
             } else if (elementName.equals("vertex")) {
                 String vertexName = (String)_attributes.get("name");
@@ -1070,7 +1120,7 @@ public class MoMLParser extends HandlerBase {
     /** The standard MoML DTD, represented as a string.  This is used
      *  to parse MoML data when a compatible PUBLIC DTD is specified.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc_\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
@@ -1276,6 +1326,21 @@ public class MoMLParser extends HandlerBase {
         return toDelete;
     }
 
+    // Delete the property after verifying that it is contained (deeply)
+    // by the current environment.
+    private Attribute _deleteProperty(String propName) throws Exception {
+        Attribute toDelete = _searchForAttribute(propName);
+        if (toDelete == null) {
+            throw new XmlException("No such property to delete: "
+                    + propName,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        toDelete.setContainer(null);
+        return toDelete;
+    }
+
     // Delete the relation after verifying that it is contained (deeply)
     // by the current environment.
     private Relation _deleteRelation(String relationName) throws Exception {
@@ -1316,6 +1381,38 @@ public class MoMLParser extends HandlerBase {
         }
         return candidate;
     }
+
+    // Given a name that is either absolute (with a leading period)
+    // or relative to _current, find an attribute with that name.
+    // Return null if it is not found.  The port is required to
+    // be contained (deeply) by the current environment, or an XmlException
+    // will be thrown.
+    private Attribute _searchForAttribute(String name)
+             throws XmlException {
+        Attribute result = null;
+        // If the name is absolute, strip the prefix.
+        String topLevelName = "(no top level)";
+        if (_toplevel != null) {
+            topLevelName = _toplevel.getFullName();
+        }
+        if (_toplevel != null && name.startsWith(topLevelName)) {
+            int prefix = topLevelName.length();
+            if (name.length() > prefix) {
+                name = name.substring(1, name.length());
+            }
+        }
+        // Now we are assured that name is relative.
+        result = _current.getAttribute(name);
+        if (result == null) {
+            throw new XmlException("No such property: " + name
+                    + " in " + topLevelName,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        return result;
+    }
+
 
     // Given a name that is either absolute (with a leading period)
     // or relative to _current, find a component entity with that name.
@@ -1448,8 +1545,8 @@ public class MoMLParser extends HandlerBase {
             }
         }
         // Now we are assured that name is relative.
-        if (_current instanceof CompositeEntity) {
-            result = ((CompositeEntity)_current).getPort(name);
+        if (_current instanceof Entity) {
+            result = ((Entity)_current).getPort(name);
         }
         if (result == null) {
             throw new XmlException("No such port: " + name
@@ -1517,6 +1614,9 @@ public class MoMLParser extends HandlerBase {
 
     // The relation for the currently active connection.
     private ComponentRelation _currentConnection;
+
+    // The name of the currently active doc element.
+    private String _currentDocName;
 
     // The latest element seen by startElement.
     private String _currentElement;

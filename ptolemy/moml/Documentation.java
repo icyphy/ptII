@@ -102,10 +102,22 @@ public class Documentation extends Attribute {
      *  @see NamedObj#_exportMoMLContents
      */
     public void exportMoML(Writer output, int depth) throws IOException {
-        output.write(_getIndentPrefix(depth)
-               + "<doc>"
-               + _value
-               + "</doc>\n");
+        String name = getName();
+        if (name.equals("_doc_")) {
+            // Name is the default name.  Omit.
+            output.write(_getIndentPrefix(depth)
+                   + "<doc>"
+                   + _value
+                   + "</doc>\n");
+        } else {
+            // Name is the default name.  Omit.
+            output.write(_getIndentPrefix(depth)
+                   + "<doc name=\""
+                   + name
+                   + "\">"
+                   + _value
+                   + "</doc>\n");
+        }
     }
 
     /** Get the documentation as a string.
