@@ -3,7 +3,7 @@ Blink component. But it illustrates the similiar structure for our experiments n
 
 
 Authors: Yang
-Version $$
+Version $Id$
 */
 
 #include "Blink.h"

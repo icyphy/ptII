@@ -3,7 +3,7 @@ Main component. But it illustrates the similiar structure for our experiments no
 
 
 Authors: Yang
-Version $$
+Version $Id$
 */
 
 #include "BlinkMain.h"
