@@ -331,7 +331,7 @@ public class Audio {
      *  The returned values lie in the range -1.0 to 1.0.
      *
      *  @param input The input stream.
-     *  @param return The audio data as an array of doubles.
+     *  @return The audio data as an array of doubles.
      *  @exception IOException If an I/O error occurs reading the stream.
      *  @exception IllegalArgumentException If the input stream
      *   is not an understood format.  This is a runtime exception, so it need
