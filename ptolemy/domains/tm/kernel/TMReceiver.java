@@ -91,6 +91,12 @@ public class TMReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver of any contained tokens.
+      */
+     public void clear() {
+         _tokens.clear();
+     }
+
     /** Get a token from the receiver.  The token returned is one that
      *  was put in the receiver that is ready for process.
      *  A token is ready to be processed if it has the highest priority
