@@ -652,6 +652,60 @@ fi
 
 
 #--------------------------------------------------------------------
+#      	Jode is a java decompiler.  It is useful for looking at the contents
+#       of class files.  It can be downloaded from 
+#	http://jode.sourceforge.net/download.php
+#	Jode is full GPL, so we can't distribute it without making Ptolemy
+#	GPL'd as well.
+#--------------------------------------------------------------------
+
+# PTJODE_DIR is set to jode and used in
+# $PTII/ptolemy/apps/makefile if jode was found
+#PTJODE_DIR=
+#
+# We only need to look for jode if $PTII/ptolemy/apps/jode exists
+if test ! -d "$PTII/vendors/jode"; then
+    AC_MSG_RESULT(['$PTII/vendors/jode is not present,
+    so we need not find Jode, which is a java disassembler'])
+    JODE_DIR='${PTII}/vendors/jode/1.0.93'
+    JODE_CLASSES='$(JODE_DIR)/jode.jar'
+else
+    AC_MSG_CHECKING([for jode directory])
+    AC_ARG_WITH(jode, [  --with-jode=DIR       use JODE from DIR,
+                          defaults to \$PTII/vendors/jode/1.0.93],
+	JODE_DIR=$withval,
+	JODE_DIR=$PTII/vendors/jode/1.0.93)
+
+    if test -d "$JODE_DIR"; then
+	AC_MSG_RESULT([$JODE_DIR])
+        AC_MSG_CHECKING([for \$JODE_DIR/jode.jar])
+	if test -f "$JODE_DIR/jode.jar"; then
+	    AC_MSG_RESULT([$JODE_DIR/jode.jar])
+	    JODE_CLASSES=$JODE_DIR/jode.jar
+	    AC_MSG_RESULT([$JODE_CLASSES])
+        else
+	    JODE_CLASSES=no
+        fi
+    fi
+    	
+    if test "$JODE_CLASSES" = "no"; then
+        AC_MSG_WARN(['Failed to find jode/jode.jar
+    perhaps Jode is not installed?
+    Jode is used to disassemble Java .class files and is only necessary
+    if you plan on debugging the byte code based code generator.
+    Jode can be downloaded from http://jode.sourceforge.net/download.php'])
+	# Note that we don't substitute in the ${PTII} or $(JODE_DIR) here
+	JODE_DIR='${PTII}/vendors/jode/1.0.93'
+   	JODE_CLASSES='$(JODE_DIR)/jode.jar'
+    #else
+	# Set to jode and used in
+	# $PTII/ptolemy/apps/makefile if jode was found
+	#PTJODE_DIR=jode
+    fi
+fi
+
+
+#--------------------------------------------------------------------
 #       KVM is the JDK for PalmOS
 #	See if there was a command-line option for where
 #       j2me_cldc/bin/api/classes is;  if not,
@@ -976,6 +1030,9 @@ AC_SUBST(JTREE)
 
 # JDK Version determined by running confTest.class and getting java.version
 AC_SUBST(JVERSION)
+
+# jode.jar used in bin/ptinvoke to start up Jode, the .class disassembler
+AC_SUBST(JODE_CLASSES)
 
 # kvm/tools/classes.jar file used by the PalmOS KVM
 AC_SUBST(KVM_CLASSES)
