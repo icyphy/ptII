@@ -246,5 +246,11 @@ public class PortNameChanges implements MoMLFilter {
         sleepPorts.put("delay", "sleepTime");
         _actorsWithPortNameChanges
             .put("ptolemy.actor.lib.Sleep", sleepPorts);
+
+        // Scrambler changed between 3.0.2 and 4.0
+        HashMap scramblerPorts = new HashMap();
+        scramblerPorts.put("initial", "initialState");
+        _actorsWithPortNameChanges
+            .put("ptolemy.actor.lib.comm.Scrambler", scramblerPorts);
     }
 }
