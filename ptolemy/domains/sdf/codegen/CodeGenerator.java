@@ -116,6 +116,7 @@ public class CodeGenerator extends CompositeActorApplication {
              PerActorCodeGeneratorInfo actorInfo = 
               (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);        
              
+             _makePortNameMap(entity, actorInfo);
              _makeInputInfo(entity, actorInfo);
              
              ActorCodeGenerator actorCodeGen = new ActorCodeGenerator(entity);
@@ -273,6 +274,20 @@ public class CodeGenerator extends CompositeActorApplication {
               _bufferInfoMap.put(port, bufferInfo);
            }                 
         }     
+    }
+
+    protected void _makePortNameMap(Entity entity, 
+         PerActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
+
+        Iterator portItr = entity.portList().iterator();
+           
+        while (portItr.hasNext()) {              
+           TypedIOPort port = (TypedIOPort) portItr.next();
+           
+           String portName = port.getName();
+           
+           actorInfo.portNameToPortMap.put(portName,  port);
+        }
     }
 
     /** Given the name of an object, return a globally unique Java identifier 

@@ -33,6 +33,7 @@ package ptolemy.domains.sdf.codegen;
 import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.Entity;
@@ -69,8 +70,14 @@ public class ActorCodeGenerator {
         
         LinkedList visitorArgs = TNLManip.cons(actorInfo);
         
-        unitNode = (CompileUnitNode) unitNode.accept(
-         new ActorTransformerVisitor(), visitorArgs);
+        Map declToTypeMap = (Map) unitNode.accept(new SpecializeTokenVisitor(), visitorArgs);
+
+        unitNode = (CompileUnitNode) unitNode.accept(new ChangeTypesVisitor(), 
+         TNLManip.cons(declToTypeMap));
+        
+        unitNode = (CompileUnitNode) unitNode.accept(new ActorTransformerVisitor(),
+         visitorArgs);
+         
          
         String modifiedSourceCode = (String) unitNode.accept(
          new JavaCodeGenerator(), null);
