@@ -174,7 +174,7 @@ public class Pulse extends SequenceSource {
             }
             try {
                 MatrixToken valuesArray = (MatrixToken)values.getToken();
-                Token prototype = valuesArray.getElementAsToken(0,0);
+                Token prototype = valuesArray.getElementAsToken(0, 0);
                 _dummy.setToken(prototype);
                 _zero = prototype.zero();
             } catch (ArrayIndexOutOfBoundsException ex) {
@@ -210,7 +210,7 @@ public class Pulse extends SequenceSource {
             if (val != null && val.getRowCount() > 0 &&
                     val.getColumnCount() > 0) {
                 MatrixToken valuesArray = (MatrixToken)newobj.values.getToken();
-                Token tok = valuesArray.getElementAsToken(0,0);
+                Token tok = valuesArray.getElementAsToken(0, 0);
                 newobj._zero = tok.zero();
             } else {
                 newobj._zero = new IntToken(0);
@@ -238,12 +238,13 @@ public class Pulse extends SequenceSource {
         if (_indexColCount < idx[0].length) {
             if (val.getColumnCount() != idx[0].length) {
                 throw new IllegalActionException(this,
-                        "Parameters values and indexes have different lengths.");
+                        "Parameters values and indexes have " +
+                        "different lengths.");
             }
             int currentIndex = idx[0][_indexColCount];
             if (_iterationCount == currentIndex) {
                 // Got a match with an index.
-                output.broadcast(val.getElementAsToken(0,_indexColCount));
+                output.broadcast(val.getElementAsToken(0, _indexColCount));
                 _match = true;
                 return;
             }
