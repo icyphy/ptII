@@ -66,8 +66,8 @@ test Graph-2.2 {Create a graph with 2 nodes} {
     $p add $n2
     $p addEdge $n1 $n2
     $p addEdge $n2 $n1
-    list [$p contains $n1] [$p isDirected] [$p numEdges] [$p numNodes]
-} {1 0 2 2}
+    list [$p contains $n1] [$p getEdgeCount] [$p getNodeCount]
+} {1 2 2}
 
 ######################################################################
 ####
@@ -86,8 +86,8 @@ test Graph-2.3 {Create a graph with 4 nodes forming a diamond} {
     $p addEdge $n1 $n3
     $p addEdge $n2 $n4
     $p addEdge $n3 $n4
-    set nodes [$p allNodes]
-    set edges [$p allEdges]
+    set nodes [$p getNodes]
+    set edges [$p getEdges]
     set e0 [$edges get 0]
     set e1 [$edges get 1]
     set e2 [$edges get 2]

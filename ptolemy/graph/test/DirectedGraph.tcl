@@ -67,8 +67,9 @@ test DirectedGraph-2.2 {Create a cyclic graph with 2 nodes} {
     $p add $n2
     $p addEdge $n1 $n2
     $p addEdge $n2 $n1
-    list [$p isDirected] [$p isAcyclic]
-} {1 0}
+    set reach [$p reachableNodes $n1]
+    list [$p isAcyclic] [$reach get 0] [$reach get 1]
+} {0 node1 node2}
 
 ######################################################################
 ####
@@ -89,8 +90,8 @@ test DirectedGraph-2.3 {an acyclic graph with 4 nodes forming a diamond} {
     $p addEdge $n3 $n4
     set sort [$p topSort]
     set reach [$p reachableNodes $n2]
-    list [$p isDirected] [$p isAcyclic] \
+    list [$p isAcyclic] \
 	 [$sort get 0] [$sort get 1] [$sort get 2] [$sort get 3] \
 	 [$reach get 0]
-} {1 1 node1 node2 node3 node4 node4}
+} {1 node1 node2 node3 node4 node4}
 
