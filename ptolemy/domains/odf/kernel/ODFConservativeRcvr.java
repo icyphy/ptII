@@ -304,8 +304,9 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
     }
 
     /** Schedule this receiver to terminate.
+     * FIXME: Synchronize this.
      */
-    public void setFinish() {
+    public void requestFinish() {
         _terminate = true;
         // FIXME: Hmmm...
 	// notifyAll();
@@ -314,7 +315,7 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
     /** Set the pause flag of this receiver.
      * @param flag The boolean pause flag of this receiver.
      */
-    public void setPause(boolean flag) {
+    public void requestPause(boolean flag) {
         ;
     }
     
