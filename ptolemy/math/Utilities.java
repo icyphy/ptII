@@ -30,7 +30,7 @@ package ptolemy.math;
 
 
 /** This class provides a utilities library that includes a set of
-    mathematics functions.
+    mathematical functions.
 
     @author Haiyang Zheng
     @version $Id$
@@ -51,11 +51,13 @@ public class Utilities {
      */
     public static double round(double value, double precision) {
         // FIXME: check the precision as 1.0 exp(x), where x is an int.
-        precision = - Math.log(precision) / Math.log(10);
-        value = 
-            Math.round(value * Math.pow(10, precision))
-                / Math.pow(10, precision);
-        return value;
+        // FIXME: the limitation of this round algorithm.
+        long numberOfDigits 
+            = - Math.round((float)Math.log(precision) / Math.log(10));
+        double newValue = 
+            Math.round(value * Math.pow(10, numberOfDigits))
+                / Math.pow(10, numberOfDigits);
+        return newValue;
     }
 }
 
