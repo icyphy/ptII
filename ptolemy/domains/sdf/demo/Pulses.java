@@ -57,74 +57,74 @@ An applet that uses Ptolemy II SDF domain.
 public class Pulses extends SDFApplet {
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+////                         public methods                         ////
 
-    /** Initialize the applet.
-     */
-    public void init() {
-        super.init();
-        try {
-            // The 0 argument requests only a go button.
-            _createRunControls(this, 0);
+/** Initialize the applet.
+ */
+public void init() {
+    super.init();
+    try {
+        // The 0 argument requests only a go button.
+        _createRunControls(this, 0);
 
-            // Create and configure impulse source
-            Pulse impulse = new Pulse(_toplevel, "impulse");
+        // Create and configure impulse source
+        Pulse impulse = new Pulse(_toplevel, "impulse");
 
-            // first filter
-            RaisedCosine pulse1 = new RaisedCosine(_toplevel, "pulse1");
-            pulse1.interpolation.setToken(new IntToken(64));
+        // first filter
+        RaisedCosine pulse1 = new RaisedCosine(_toplevel, "pulse1");
+        pulse1.interpolation.setToken(new IntToken(64));
 
-            // second filter
-            RaisedCosine pulse2 = new RaisedCosine(_toplevel, "pulse2");
-            pulse2.interpolation.setToken(new IntToken(64));
-            pulse2.excessBW.setToken(new DoubleToken(0.5));
+        // second filter
+        RaisedCosine pulse2 = new RaisedCosine(_toplevel, "pulse2");
+        pulse2.interpolation.setToken(new IntToken(64));
+        pulse2.excessBW.setToken(new DoubleToken(0.5));
 
-            // third filter
-            RaisedCosine pulse3 = new RaisedCosine(_toplevel, "pulse3");
-            pulse3.interpolation.setToken(new IntToken(64));
-            pulse3.excessBW.setToken(new DoubleToken(0.25));
+        // third filter
+        RaisedCosine pulse3 = new RaisedCosine(_toplevel, "pulse3");
+        pulse3.interpolation.setToken(new IntToken(64));
+        pulse3.excessBW.setToken(new DoubleToken(0.25));
 
-            // fourth filter
-            RaisedCosine pulse4 = new RaisedCosine(_toplevel, "pulse4");
-            pulse4.interpolation.setToken(new IntToken(64));
-            pulse4.excessBW.setToken(new DoubleToken(0.0));
+        // fourth filter
+        RaisedCosine pulse4 = new RaisedCosine(_toplevel, "pulse4");
+        pulse4.interpolation.setToken(new IntToken(64));
+        pulse4.excessBW.setToken(new DoubleToken(0.0));
 
-            // square root pulse
-            RaisedCosine pulse5 = new RaisedCosine(_toplevel, "pulse5");
-            pulse5.interpolation.setToken(new IntToken(64));
-            pulse5.root.setToken(new BooleanToken(true));
+        // square root pulse
+        RaisedCosine pulse5 = new RaisedCosine(_toplevel, "pulse5");
+        pulse5.interpolation.setToken(new IntToken(64));
+        pulse5.root.setToken(new BooleanToken(true));
 
-            // Create and configure plotter
-            TimePlot myplot = new TimePlot(_toplevel, "plot");
-            myplot.setPanel(this);
-            myplot.plot.setGrid(false);
-            myplot.plot.setTitle("Transmit Pulse Shapes");
-            myplot.plot.addLegend(0, "100%");
-            myplot.plot.addLegend(1, "50%");
-            myplot.plot.addLegend(1, "25%");
-            myplot.plot.addLegend(1, "0%");
-            myplot.plot.addLegend(1, "Sqrt");
-            myplot.plot.setXRange(0.0, 64.0);
-            myplot.plot.setYRange(-0.3, 1.0);
-            myplot.plot.setSize(500, 300);
-            myplot.timed.setToken(new BooleanToken(false));
+        // Create and configure plotter
+        TimePlot myplot = new TimePlot(_toplevel, "plot");
+        myplot.setPanel(this);
+        myplot.plot.setGrid(false);
+        myplot.plot.setTitle("Transmit Pulse Shapes");
+        myplot.plot.addLegend(0, "100%");
+        myplot.plot.addLegend(1, "50%");
+        myplot.plot.addLegend(1, "25%");
+        myplot.plot.addLegend(1, "0%");
+        myplot.plot.addLegend(1, "Sqrt");
+        myplot.plot.setXRange(0.0, 64.0);
+        myplot.plot.setYRange(-0.3, 1.0);
+        myplot.plot.setSize(500, 300);
+        myplot.timed.setToken(new BooleanToken(false));
 
-            ComponentRelation r1 =
-                    _toplevel.connect(impulse.output, pulse1.input);
-            pulse2.input.link(r1);
-            pulse3.input.link(r1);
-            pulse4.input.link(r1);
-            pulse5.input.link(r1);
-            _toplevel.connect(pulse1.output, myplot.input);
-            _toplevel.connect(pulse2.output, myplot.input);
-            _toplevel.connect(pulse3.output, myplot.input);
-            _toplevel.connect(pulse4.output, myplot.input);
-            _toplevel.connect(pulse5.output, myplot.input);
+        ComponentRelation r1 =
+            _toplevel.connect(impulse.output, pulse1.input);
+        pulse2.input.link(r1);
+        pulse3.input.link(r1);
+        pulse4.input.link(r1);
+        pulse5.input.link(r1);
+        _toplevel.connect(pulse1.output, myplot.input);
+        _toplevel.connect(pulse2.output, myplot.input);
+        _toplevel.connect(pulse3.output, myplot.input);
+        _toplevel.connect(pulse4.output, myplot.input);
+        _toplevel.connect(pulse5.output, myplot.input);
 
-            // Get one iteration right away.
-            _manager.run();
-        } catch (Exception ex) {
-            report("Setup failed:", ex);
-        }
+        // Get one iteration right away.
+        _manager.run();
+    } catch (Exception ex) {
+        report("Setup failed:", ex);
     }
+}
 }

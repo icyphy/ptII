@@ -57,61 +57,61 @@ An applet that uses Ptolemy II SDF domain.
 public class ComSystem extends SDFApplet {
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+////                         public methods                         ////
 
-    /** Initialize the applet.
-     */
-    public void init() {
-        super.init();
-        // The 1 argument requests a go and a stop button.
-        _createRunControls(this, 1);
-        try {
-            // Create and configure data source
-            CoinFlip data = new CoinFlip(_toplevel, "data");
+/** Initialize the applet.
+ */
+public void init() {
+    super.init();
+    // The 1 argument requests a go and a stop button.
+    _createRunControls(this, 1);
+    try {
+        // Create and configure data source
+        CoinFlip data = new CoinFlip(_toplevel, "data");
 
-            // Create and configure coder
-            LineCoder coder = new LineCoder(_toplevel, "coder");
+        // Create and configure coder
+        LineCoder coder = new LineCoder(_toplevel, "coder");
 
-            // Create and configure noise source
-            Gaussian noise = new Gaussian(_toplevel, "noise");
-            noise.stddev.setToken(new DoubleToken(0.1));
+        // Create and configure noise source
+        Gaussian noise = new Gaussian(_toplevel, "noise");
+        noise.stddev.setToken(new DoubleToken(0.1));
 
-            // Create the adder.
-            Add add = new Add(_toplevel, "add");
+        // Create the adder.
+        Add add = new Add(_toplevel, "add");
 
-            // Create the pulse-shaping filter.
-            RaisedCosine shaper = new RaisedCosine(_toplevel, "shaper");
-            shaper.interpolation.setToken(new IntToken(16));
-            shaper.root.setToken(new BooleanToken(true));
+        // Create the pulse-shaping filter.
+        RaisedCosine shaper = new RaisedCosine(_toplevel, "shaper");
+        shaper.interpolation.setToken(new IntToken(16));
+        shaper.root.setToken(new BooleanToken(true));
 
-            // Create the matched filter.
-            RaisedCosine matched = new RaisedCosine(_toplevel, "matched");
-            matched.interpolation.setToken(new IntToken(1));
-            matched.root.setToken(new BooleanToken(true));
+        // Create the matched filter.
+        RaisedCosine matched = new RaisedCosine(_toplevel, "matched");
+        matched.interpolation.setToken(new IntToken(1));
+        matched.root.setToken(new BooleanToken(true));
 
-            // Create and configure plotter
-            TimePlot myplot = new TimePlot(_toplevel, "plot");
-            myplot.setPanel(this);
-            myplot.plot.setGrid(false);
-            myplot.plot.setTitle("Eye Diagram");
-            myplot.plot.setXRange(0.0, 32.0);
-            myplot.plot.setWrap(true);
-            myplot.plot.setYRange(-1.3, 1.3);
-            // FIXME: bug in plot -- successive line
-            // segments overlap by one pixel, and leave a blank spot.
-            myplot.plot.setMarksStyle("none");
-            myplot.plot.setPointsPersistence(512);
-            myplot.plot.setSize(500, 300);
-            myplot.timed.setToken(new BooleanToken(false));
+        // Create and configure plotter
+        TimePlot myplot = new TimePlot(_toplevel, "plot");
+        myplot.setPanel(this);
+        myplot.plot.setGrid(false);
+        myplot.plot.setTitle("Eye Diagram");
+        myplot.plot.setXRange(0.0, 32.0);
+        myplot.plot.setWrap(true);
+        myplot.plot.setYRange(-1.3, 1.3);
+        // FIXME: bug in plot -- successive line
+        // segments overlap by one pixel, and leave a blank spot.
+        myplot.plot.setMarksStyle("none");
+        myplot.plot.setPointsPersistence(512);
+        myplot.plot.setSize(500, 300);
+        myplot.timed.setToken(new BooleanToken(false));
 
-            _toplevel.connect(data.output, coder.input);
-            _toplevel.connect(coder.output, shaper.input);
-            _toplevel.connect(shaper.output, add.input);
-            _toplevel.connect(noise.output, add.input);
-            _toplevel.connect(add.output, matched.input);
-            _toplevel.connect(matched.output, myplot.input);
-        } catch (Exception ex) {
-            report("Setup failed:", ex);
-        }
+        _toplevel.connect(data.output, coder.input);
+        _toplevel.connect(coder.output, shaper.input);
+        _toplevel.connect(shaper.output, add.input);
+        _toplevel.connect(noise.output, add.input);
+        _toplevel.connect(add.output, matched.input);
+        _toplevel.connect(matched.output, myplot.input);
+    } catch (Exception ex) {
+        report("Setup failed:", ex);
     }
+}
 }

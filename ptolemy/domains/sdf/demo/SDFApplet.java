@@ -58,49 +58,49 @@ It provides a "Go" button to run the model.
 public class SDFApplet extends PtolemyApplet {
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+////                         public methods                         ////
 
-    /** Initialize the applet. The number of iterations is given by an
-     *  applet parameter "iterations".  The default value is one.
-     *  After calling the base class init() method,
-     *  this method creates a top-level composite actor
-     *  and director for that composite.  Both are accessible
-     *  to derived classes via protected members.
-     */
-    public void init() {
-        super.init();
+/** Initialize the applet. The number of iterations is given by an
+ *  applet parameter "iterations".  The default value is one.
+ *  After calling the base class init() method,
+ *  this method creates a top-level composite actor
+ *  and director for that composite.  Both are accessible
+ *  to derived classes via protected members.
+ */
+public void init() {
+    super.init();
 
-        // Process the iterations parameter.
-        int iterations = 1;
-        try {
-            String iterspec = getParameter("iterations");
-            if (iterspec != null) {
-                iterations = (Integer.decode(iterspec)).intValue();
-            }
-        } catch (Exception ex) {
-            report("Warning: iteration parameter failed: ", ex);
+    // Process the iterations parameter.
+    int iterations = 1;
+    try {
+        String iterspec = getParameter("iterations");
+        if (iterspec != null) {
+            iterations = (Integer.decode(iterspec)).intValue();
         }
-
-        try {
-            // Initialization
-            _director = new SDFDirector();
-            Parameter iterparam =
-                    (Parameter)_director.getAttribute("Iterations");
-            iterparam.setToken(new IntToken(iterations));
-            SDFScheduler scheduler = new SDFScheduler();
-
-            _toplevel.setDirector(_director);
-            _director.setScheduler(scheduler);
-            _director.setScheduleValid(false);
-        } catch (Exception ex) {
-            report("Failed to setup director and scheduler:\n", ex);
-        }
+    } catch (Exception ex) {
+        report("Warning: iteration parameter failed: ", ex);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
+    try {
+        // Initialization
+        _director = new SDFDirector();
+        Parameter iterparam =
+            (Parameter)_director.getAttribute("Iterations");
+        iterparam.setToken(new IntToken(iterations));
+        SDFScheduler scheduler = new SDFScheduler();
 
-    /** The director for the top-level composite actor, created in the
-     *  init() method. */
-    protected SDFDirector _director;
+        _toplevel.setDirector(_director);
+        _director.setScheduler(scheduler);
+        _director.setScheduleValid(false);
+    } catch (Exception ex) {
+        report("Failed to setup director and scheduler:\n", ex);
+    }
+}
+
+    ////////////////////////////////////////////////////////////////////////
+////                         protected variables                    ////
+
+/** The director for the top-level composite actor, created in the
+ *  init() method. */
+protected SDFDirector _director;
 }

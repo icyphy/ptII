@@ -118,10 +118,10 @@ public class HTVQApplet extends Applet implements Runnable {
             ImageSequence source = new ImageSequence(c, "Source");
             source.setBaseURL(getDocumentBase());
             /*         Parameter filename = (Parameter)
-                source.getAttribute("File Name Template");
-            filename.setToken(new StringToken(
-                    "file:/users/ptII/ptolemy/domains/sdf/lib/vq" +
-                    "/data/seq/missa/missa***.qcf"));
+                       source.getAttribute("File Name Template");
+                       filename.setToken(new StringToken(
+                       "file:/users/ptII/ptolemy/domains/sdf/lib/vq" +
+                       "/data/seq/missa/missa***.qcf"));
             */
             ImagePartition part = new ImagePartition(c, "Part");
             HTVQEncode encode = new HTVQEncode(c, "Encoder");
@@ -163,19 +163,19 @@ public class HTVQApplet extends Applet implements Runnable {
 	Debug.register(debugger);
 
 	Debug.println("testing");
- }
+    }
 
     /** Run the simulation.
      */
     public void run() {
 
         try {
-                // Start the CurrentTimeThread.
+            // Start the CurrentTimeThread.
             //             Thread ctt = new CurrentTimeThread();
             //  ctt.start();
 
             validate();
-                _manager.run();
+            _manager.run();
 
 
         } catch (Exception ex) {
@@ -227,17 +227,17 @@ public class HTVQApplet extends Applet implements Runnable {
 
     // Show simulation progress.
     /*   private class CurrentTimeThread extends Thread {
-        public void run() {
-            while (simulationThread.isAlive()) {
-                // get the current time from director.
-                double currenttime = _localDirector.getCurrentTime();
-                _currentTimeLabel.setText("Current time = "+currenttime);
-                try {
-                    sleep(500);
-                } catch (InterruptedException e) {}
-            }
-        }
-    }
+         public void run() {
+         while (simulationThread.isAlive()) {
+         // get the current time from director.
+         double currenttime = _localDirector.getCurrentTime();
+         _currentTimeLabel.setText("Current time = "+currenttime);
+         try {
+         sleep(500);
+         } catch (InterruptedException e) {}
+         }
+         }
+         }
     */
 
     private class GoButtonListener implements ActionListener {
