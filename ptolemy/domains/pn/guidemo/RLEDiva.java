@@ -134,7 +134,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 
         Panel displayPanel = new Panel();
         displayPanel.setLayout(new BorderLayout(15, 15));
-        displayPanel.setSize(420, 200);
+        displayPanel.setSize(283, 94);
 
         Panel originalPanel = new Panel();
 	//FIXME: HACK HACK
@@ -153,8 +153,8 @@ public class RLEDiva extends PNApplet implements Runnable {
 	a8.setPanel(compressedPanel);
 	a7.setPanel(originalPanel);
 
-	divapanel = new JPanel(new BorderLayout(15, 15));
-	divapanel.setSize(850, 700);
+	divapanel = new JPanel(new BorderLayout());
+	divapanel.setSize(new Dimension(800, 615));
 	divapanel.setBackground(Color.white);
 	add(divapanel, BorderLayout.CENTER);
 	
@@ -188,7 +188,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 	    System.exit(0);
 	}
 	
-	validate();
+	//validate();
 
         // Add the process state listener
 	//FIXME: HACK HACK HACK 
@@ -385,7 +385,7 @@ public class RLEDiva extends PNApplet implements Runnable {
     public void displayTrace(TraceModel traceModel) {
         tracePane = new TracePane();
         JCanvas traceWidget = new JCanvas(tracePane);
-        divapanel.add(traceWidget, BorderLayout.SOUTH);
+        divapanel.add(traceWidget, BorderLayout.CENTER);
 	traceWidget.setPreferredSize(new Dimension(800, 300));
 
         // Configure the view
