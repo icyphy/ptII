@@ -219,7 +219,7 @@ if "$JAVAC" confTest.java ; then
 else
    AC_MSG_WARN(['"$JAVAC" confTest.java' failed'])
 fi
-cd $startdir
+cd "$startdir"
 
 #--------------------------------------------------------------------
 #	If we are under JDK1.2.2, then increase the size of
@@ -488,7 +488,7 @@ AC_MSG_CHECKING([for javax.sound])
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
-cd $srcdir/config
+cd "$srcdir/config"
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if $JAVAC javasoundTest.java ; then
     AC_MSG_RESULT(ok)
@@ -499,7 +499,7 @@ else
 	javasound is used in actor.lib, but you can probably
 	get away without it.])
 fi
-cd $startdir
+cd "$startdir"
 
 #--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
