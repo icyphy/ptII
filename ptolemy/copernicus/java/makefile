@@ -48,7 +48,6 @@ JSRCS = \
 	EntitySootClass.java \
 	InlineParameterTransformer.java \
 	Main.java \
-	MethodTools.java \
 	ModelTransformer.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -173,7 +173,7 @@ public class CommandLineTransformer extends SceneTransformer {
             
             // call the constructor on the object.
             SootMethod constructor =
-                MethodTools.getMatchingMethod(modelClass, "<init>", args);
+                SootUtilities.getMatchingMethod(modelClass, "<init>", args);
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newSpecialInvokeExpr(modelLocal,
                             constructor, args)));
@@ -192,13 +192,13 @@ public class CommandLineTransformer extends SceneTransformer {
             // call preinitialize
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newVirtualInvokeExpr(modelLocal, 
-                            MethodTools.searchForMethodByName(modelClass, 
+                            SootUtilities.searchForMethodByName(modelClass, 
                                     "preinitialize"))));
             
             // call initialize on the model
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newVirtualInvokeExpr(modelLocal, 
-                            MethodTools.searchForMethodByName(modelClass, 
+                            SootUtilities.searchForMethodByName(modelClass, 
                                     "initialize"))));
             
             // A jump point for the start of the iteration.
@@ -212,7 +212,7 @@ public class CommandLineTransformer extends SceneTransformer {
             // call fire on the model
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newVirtualInvokeExpr(modelLocal, 
-                            MethodTools.searchForMethodByName(modelClass, 
+                            SootUtilities.searchForMethodByName(modelClass, 
                                     "fire"))));
             
             // If we need to keep track of the number of iterations, then...
@@ -237,7 +237,7 @@ public class CommandLineTransformer extends SceneTransformer {
             // call wrapup on the model
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newVirtualInvokeExpr(modelLocal, 
-                            MethodTools.searchForMethodByName(modelClass, 
+                            SootUtilities.searchForMethodByName(modelClass, 
                                     "wrapup"))));
             // Return from the main method.
             units.add(Jimple.v().newReturnVoidStmt());
@@ -250,7 +250,7 @@ public class CommandLineTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(), 
                     Modifier.PUBLIC);
             SootMethod actorMethod = 
-                MethodTools.searchForMethodByName(actorClass, classMethod.getName());
+                SootUtilities.searchForMethodByName(actorClass, classMethod.getName());
             modelClass.addMethod(classMethod);
              JimpleBody body = Jimple.v().newBody(classMethod);
              //DavaBody body = Dava.v().newBody(classMethod);
@@ -284,7 +284,7 @@ public class CommandLineTransformer extends SceneTransformer {
                         TypedIOPort typedPort = (TypedIOPort)port;
                         // set the type of the port.
                         SootMethod method = 
-                            MethodTools.searchForMethodByName(portClass, 
+                            SootUtilities.searchForMethodByName(portClass, 
                                     "setTypeEquals");
                         Local typeLocal = 
                             // build a constant type.
@@ -306,7 +306,7 @@ public class CommandLineTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(), 
                     Modifier.PUBLIC);
             SootMethod actorMethod = 
-                MethodTools.searchForMethodByName(actorClass, classMethod.getName());
+                SootUtilities.searchForMethodByName(actorClass, classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -336,11 +336,11 @@ public class CommandLineTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(), 
                     Modifier.PUBLIC);
             SootMethod actorPrefireMethod = 
-                MethodTools.searchForMethodByName(actorClass, "prefire");
+                SootUtilities.searchForMethodByName(actorClass, "prefire");
             SootMethod actorFireMethod = 
-                MethodTools.searchForMethodByName(actorClass, "fire");
+                SootUtilities.searchForMethodByName(actorClass, "fire");
             SootMethod actorPostfireMethod = 
-                MethodTools.searchForMethodByName(actorClass, "postfire");
+                SootUtilities.searchForMethodByName(actorClass, "postfire");
                modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -385,7 +385,7 @@ public class CommandLineTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(), 
                     Modifier.PUBLIC);
             SootMethod actorMethod = 
-                MethodTools.searchForMethodByName(actorClass, classMethod.getName());
+                SootUtilities.searchForMethodByName(actorClass, classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -446,7 +446,7 @@ public class CommandLineTransformer extends SceneTransformer {
             // the arguments
             List args = new LinkedList();
             SootMethod constructor =
-                MethodTools.getMatchingMethod(modelClass, "<init>", args);
+                SootUtilities.getMatchingMethod(modelClass, "<init>", args);
             units.insertBefore(Jimple.v().newInvokeStmt(
                     Jimple.v().newSpecialInvokeExpr(modelLocal,
                             constructor, args)), insertPoint);

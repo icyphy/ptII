@@ -31,6 +31,7 @@ package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -96,8 +97,8 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        System.out.println("ModelTransformer.internalTransform('"
-			   + phaseName + "', " + options + ")");
+        System.out.println("ModelTransformer.internalTransform("
+			   + phaseName + ", " + options + ")");
 
         SootClass objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
@@ -122,14 +123,14 @@ public class ModelTransformer extends SceneTransformer {
             Scene.v().loadClassAndSupport("ptolemy.kernel.ComponentPort");
         Type portType = RefType.v(portClass);
         SootMethod insertLinkMethod =
-            MethodTools.searchForMethodByName(portClass,
+            SootUtilities.searchForMethodByName(portClass,
                     "insertLink");
 
         SootClass ioportClass = 
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedIOPort");
         Type ioportType = RefType.v(ioportClass);
          SootMethod portSetTypeMethod =
-             MethodTools.searchForMethodByName(ioportClass,
+             SootUtilities.searchForMethodByName(ioportClass,
                      "setTypeEquals");
 
         SootClass parameterClass = 
@@ -154,19 +155,19 @@ public class ModelTransformer extends SceneTransformer {
         Scene.v().setMainClass(modelClass);
 
         SootMethod preinitializeMethod = 
-            MethodTools.searchForMethodByName(compositeActorClass,
+            SootUtilities.searchForMethodByName(compositeActorClass,
                     "preinitialize");
         SootMethod initializeMethod = 
-            MethodTools.searchForMethodByName(compositeActorClass,
+            SootUtilities.searchForMethodByName(compositeActorClass,
                     "initialize");
         SootMethod prefireMethod = 
-            MethodTools.searchForMethodByName(compositeActorClass, "prefire");
+            SootUtilities.searchForMethodByName(compositeActorClass, "prefire");
         SootMethod fireMethod = 
-            MethodTools.searchForMethodByName(compositeActorClass, "fire");
+            SootUtilities.searchForMethodByName(compositeActorClass, "fire");
         SootMethod postfireMethod = 
-            MethodTools.searchForMethodByName(compositeActorClass, "postfire");
+            SootUtilities.searchForMethodByName(compositeActorClass, "postfire");
         SootMethod wrapupMethod = 
-            MethodTools.searchForMethodByName(compositeActorClass, "wrapup");
+            SootUtilities.searchForMethodByName(compositeActorClass, "wrapup");
 
         // Initialize the model.
         {
@@ -326,7 +327,7 @@ public class ModelTransformer extends SceneTransformer {
                         SootClass entityClass = Scene.v().getSootClass(
                                 entity.getClass().getName());
                         SootMethod method = 
-                            MethodTools.searchForMethodByName(entityClass, 
+                            SootUtilities.searchForMethodByName(entityClass, 
                                     "getPort");
                         
                         // first assign to temp
@@ -392,7 +393,7 @@ public class ModelTransformer extends SceneTransformer {
             SootClass typeClass =
                 Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
             SootMethod typeConstructor = 
-                MethodTools.searchForMethodByName(typeClass, "forName");
+                SootUtilities.searchForMethodByName(typeClass, "forName");
             Local typeLocal = Jimple.v().newLocal("type_" + type.toString(), 
                     RefType.v(typeClass));
             body.getLocals().add(typeLocal);
@@ -405,7 +406,7 @@ public class ModelTransformer extends SceneTransformer {
             SootClass typeClass =
                 Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
             SootMethod typeConstructor = 
-                MethodTools.searchForMethodByName(typeClass, "<init>");
+                SootUtilities.searchForMethodByName(typeClass, "<init>");
             Local elementTypeLocal = _buildConstantTypeLocal(body, 
                     ((ptolemy.data.type.ArrayType)type).getElementType());
             Local typeLocal = Jimple.v().newLocal("type_arrayOf" +
@@ -489,7 +490,7 @@ public class ModelTransformer extends SceneTransformer {
                
         // call the constructor on the object.
         SootMethod constructor =
-            MethodTools.getMatchingMethod(objectClass, "<init>", args);
+            SootUtilities.getMatchingMethod(objectClass, "<init>", args);
         units.add(Jimple.v().newInvokeStmt(
                 Jimple.v().newSpecialInvokeExpr(local,
                         constructor, args)));
