@@ -506,29 +506,16 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 "Cannot invoke NewRelationAction on an object "
                 + "that is not a CompositeEntity.");
             }
-            NamedObj container =
-                MoMLChangeRequest.getDeferredToParent(toplevel);
-            if (container == null) {
-                container = toplevel;
-            }
-
             final String relationName = toplevel.uniqueName("relation");
             final String vertexName = "vertex1";
             // Create the relation.
             StringBuffer moml = new StringBuffer();
-            if (container != toplevel) {
-                moml.append("<entity name=\"" +
-                        toplevel.getName(container) + "\">\n");
-            }
             moml.append("<relation name=\"" + relationName + "\">\n");
             moml.append("<vertex name=\"" + vertexName + "\"/>\n");
             moml.append("</relation>");
-            if (container != toplevel) {
-                moml.append("</entity>");
-            }
 
             MoMLChangeRequest request =
-                new MoMLChangeRequest(this, container, moml.toString()) {
+                new MoMLChangeRequest(this, toplevel, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
                             // Set the location of the icon.
@@ -545,7 +532,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                         }
                     };
             request.setUndoable(true);
-            container.requestChange(request);
+            toplevel.requestChange(request);
 
             //Note: this used to be here, but It causes deadlock...  I
             //don't know why it was here in the first place

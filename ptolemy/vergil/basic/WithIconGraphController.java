@@ -255,21 +255,10 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 "Cannot invoke NewPortAction on an object " +
                 "that is not an instance of Entity.");
             }
-            NamedObj container =
-                MoMLChangeRequest.getDeferredToParent(toplevel);
-            if (container == null) {
-                container = toplevel;
-            }
-
-            final NamedObj context = container;
             final String portName = toplevel.uniqueName("port");
             final String locationName = "_location";
             // Create the port.
             StringBuffer moml = new StringBuffer();
-            if (container != toplevel) {
-                moml.append("<entity name=\"" +
-                        toplevel.getName(container) + "\">\n");
-            }
             moml.append("<port name=\"" + portName + "\">\n");
             moml.append("<property name=\"" + locationName +
                     "\" class=\"ptolemy.kernel.util.Location\"/>\n");
@@ -285,12 +274,9 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 }
             }
             moml.append("</port>");
-            if (container != toplevel) {
-                moml.append("</entity>");
-            }
 
             MoMLChangeRequest request =
-                new MoMLChangeRequest(this, container, moml.toString()) {
+                new MoMLChangeRequest(this, toplevel, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
 
@@ -312,7 +298,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
                         }
                     };
             request.setUndoable(true);
-            container.requestChange(request);
+            toplevel.requestChange(request);
             try {
                 request.waitForCompletion();
             } catch (Exception ex) {

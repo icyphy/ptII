@@ -115,17 +115,7 @@ public class ClassDefinitionController extends ActorController {
     private void _createChangeRequest(NamedObj object, boolean subclass) {
             
         NamedObj container = (NamedObj)object.getContainer();
-        NamedObj context = MoMLChangeRequest
-                .getDeferredToParent(container);
-        if (context == null) {
-            context = container;
-        }
         StringBuffer moml = new StringBuffer();
-        if (context != container) {
-            moml.append("<entity name=\""
-                    + container.getName(context)
-                    + "\">");
-        }
         moml.append("<group name=\"auto\">");
         // FIXME: Can we adjust the location here?
         // NOTE: This controller is expected to be used
@@ -152,14 +142,9 @@ public class ClassDefinitionController extends ActorController {
             "Expected target to be a class definition");
         }
         moml.append("</group>");
-        if (context != container) {
-            moml.append("</entity>");
-        }
-        // FIXME
-        System.out.println(moml.toString());
         MoMLChangeRequest request = new MoMLChangeRequest(
-                this, context, moml.toString());
-        context.requestChange(request);
+                this, container, moml.toString());
+        container.requestChange(request);
     }
 
     ///////////////////////////////////////////////////////////////////

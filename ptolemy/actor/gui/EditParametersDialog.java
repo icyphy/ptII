@@ -323,12 +323,6 @@ public class EditParametersDialog extends ComponentDialog
         String newDefValue = StringUtilities.escapeForXML(
                 _query.getStringValue("default"));
                 
-        // Need to do the add in the deferred to context, in case
-        // this is within a class definition.
-        NamedObj context = MoMLChangeRequest.getDeferredToParent(_target);
-        if (context == null) {
-            context = _target;
-        }
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\""
@@ -338,15 +332,8 @@ public class EditParametersDialog extends ComponentDialog
                 + "\" class=\""
                 + _query.getStringValue("class")
                 + "\"/>";
-            if (context != _target) {
-                moml = "<entity name=\""
-                    + _target.getName(context)
-                    + "\">"
-                    + moml
-                    + "</entity>";
-            }
-            context.addChangeListener(this);
-            MoMLChangeRequest request = new MoMLChangeRequest(this, context,
+            _target.addChangeListener(this);
+            MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
                     moml);
             request.setUndoable(true);
             _target.requestChange(request);

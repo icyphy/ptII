@@ -93,17 +93,7 @@ public class ActorInstanceController extends ActorController {
             
             NamedObj object = getTarget();            
             NamedObj container = (NamedObj)object.getContainer();
-            NamedObj context = MoMLChangeRequest
-                    .getDeferredToParent(container);
-            if (context == null) {
-                context = container;
-            }
             StringBuffer moml = new StringBuffer();
-            if (context != container) {
-                moml.append("<entity name=\""
-                        + container.getName(context)
-                        + "\">");
-            }
             // Assumes MoML parser will convert to class.
             // NOTE: This cast should be safe because this controller is
             // used for actors.
@@ -114,12 +104,9 @@ public class ActorInstanceController extends ActorController {
             } else {
                 // Object is already a class. Do nothing.
             }
-            if (context != container) {
-                moml.append("</entity>");
-            }
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this, context, moml.toString());
-            context.requestChange(request);
+           MoMLChangeRequest request = new MoMLChangeRequest(
+                    this, container, moml.toString());
+            container.requestChange(request);
         }
     }
 }

@@ -66,25 +66,13 @@ public class RemoveIconAction extends FigureAction {
                     .getAttribute("_icon", EditorIcon.class);
             // An XMLIcon is not a custom icon, so don't remove it.
             if (!(icon instanceof XMLIcon)) {
-                NamedObj context = MoMLChangeRequest.getDeferredToParent(object);
-                if (context == null) {
-                    context = object;
-                }
                 String moml;
-                if (context != object) {
-                    moml = "<entity name=\""
-                            + object.getName(context)
-                            + "\"><deleteProperty name=\""
-                            + icon.getName()
-                            + "\"/></entity>";
-                } else {
-                    moml = "<deleteProperty name=\""
-                            + icon.getName()
-                            + "\"/>";
-                }
-                MoMLChangeRequest request
-                        = new MoMLChangeRequest(this, context, moml);
-                context.requestChange(request);
+                moml = "<deleteProperty name=\""
+                        + icon.getName()
+                        + "\"/>";
+               MoMLChangeRequest request
+                        = new MoMLChangeRequest(this, object, moml);
+                object.requestChange(request);
             }
         } catch (Exception ex) {
             MessageHandler.error("Remove custom Icon failed.", ex);

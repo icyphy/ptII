@@ -39,7 +39,6 @@ import javax.swing.BoxLayout;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -135,11 +134,7 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                 if (foundOne) {
                     argument.setExpression();
 
-                    _object = (GenericJNIActor) MoMLChangeRequest
-                        .getDeferredToParent(argument);
-                    if (_object == null) {
-                        _object = (GenericJNIActor) argument.getContainer();
-                    }
+                    _object = (GenericJNIActor) argument.getContainer();
                     try {
                         argument.validate();
                     } catch (IllegalActionException e) {
