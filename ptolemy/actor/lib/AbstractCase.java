@@ -20,14 +20,14 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
-package actor.lib;
+package ptolemy.actor.lib;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
@@ -57,18 +57,18 @@ public abstract class AbstractCase extends TypedCompositeActor {
     public AbstractCase(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        setDirector(new CaseDirector());
+        setDirector(new CaseDirector(this, "CaseDirector"));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         protected methods                 ////
 
     /** Return the refinement to execute, which must be either an
      *  atomic actor or an opaque composite actor.
      *  @return An actor contained by this actor, or null to indicate
      *   that none should be executed.
      */
-    public abstract Actor choose();
+    protected abstract Actor _choose();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -85,9 +85,9 @@ public abstract class AbstractCase extends TypedCompositeActor {
          *  @exception NameDuplicationException If the container already
          *   contains an entity with the specified name.
          */
-        public CaseDirector()
+        public CaseDirector(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
-            super(AbstractCase.this, "CaseDirector");
+            super(container, name);
         }
 
         ///////////////////////////////////////////////////////////////
@@ -119,7 +119,7 @@ public abstract class AbstractCase extends TypedCompositeActor {
          *   throws it.
          */
         public boolean prefire() throws IllegalActionException {
-            _currentChoice = choose();
+            _currentChoice = _choose();
             if (_currentChoice == null) return false;
             return _currentChoice.prefire();
         }
