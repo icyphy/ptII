@@ -167,14 +167,14 @@ test ParseTreeWriter-5.1 {Construct a Parser, unary minus & unary logical not} {
 # 
 test ParseTreeWriter-7.0 {Construct a Parser, try simple functional if then else} {
     list [theTest "(true)?(7):(6)\n"] [theTest "(true)?(7):(6.0)\n"]
-} {true?7:6 true?7:6.0}
+} {(true?7:6) (true?7:6.0)}
 
 ######################################################################
 ####
 # 
 test ParseTreeWriter-7.1 {Construct a Parser, try harder if then else} {
     list [theTest "(false) ? (3/.5*4) : (pow(3.0,2.0))"]
-} {{false?(3/0.5*4):pow(3.0, 2.0)}}
+} {{(false?(3/0.5*4):pow(3.0, 2.0))}}
 
 ######################################################################
 ####
@@ -182,14 +182,14 @@ test ParseTreeWriter-7.1 {Construct a Parser, try harder if then else} {
 test ParseTreeWriter-7.2 {Test complicated expression within boolean test condition} {
     list [theTest "((3<5) && (\"test\" == \"test\")) ? (3/.5*4) : (pow(3.0,2.0))"]
 
-} {{((3<5)&&("test"=="test"))?(3/0.5*4):pow(3.0, 2.0)}}
+} {{(((3<5)&&("test"=="test"))?(3/0.5*4):pow(3.0, 2.0))}}
 
 ######################################################################
 ####
 # 
 test ParseTreeWriter-7.3 {Test nested if then elses} {
     list [theTest "(true ? false: true ) ? (3/.5*4) : (pow(3.0,2.0))"]
-} {{true?false:true?(3/0.5*4):pow(3.0, 2.0)}}
+} {{((true?false:true)?(3/0.5*4):pow(3.0, 2.0))}}
 
 ######################################################################
 ####
@@ -197,7 +197,7 @@ test ParseTreeWriter-7.3 {Test nested if then elses} {
 test ParseTreeWriter-7.4 {Test many levels of parenthesis nesting} {
     list [theTest "(true ? false: true ) ? (((((3/.5*4))))) : ((((((pow(3.0,2.0)))))))"]
    
-} {{true?false:true?(3/0.5*4):pow(3.0, 2.0)}}
+} {{((true?false:true)?(3/0.5*4):pow(3.0, 2.0))}}
 
 ######################################################################
 ####
@@ -283,7 +283,7 @@ test ParseTreeWriter-16.0 {Test method calls on arrays, matrices, etc.} {
 
 test ParseTreeWriter-16.2 {Test record indexing} {
     list [theTest "true ? 2 : ({a={0,0,0}}.a).length()"] [theTest "false ? 2 : ({a={0,0,0}}.a).length()"]
-} {{true?2:{a={0, 0, 0}}.a().length()} {false?2:{a={0, 0, 0}}.a().length()}}
+} {{(true?2:{a={0, 0, 0}}.a().length())} {(false?2:{a={0, 0, 0}}.a().length())}}
 
 test ParseTreeWriter-16.3 {Test property} {
     list [theTest "getProperty(\"ptolemy.ptII.dir\")"] [theTest "property(\"ptolemy.ptII.dir\") + \"foo\""]
