@@ -34,15 +34,9 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.kernel.util.*;
 
-import java.util.LinkedList;
-import java.util.Iterator;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SaveAsJava
@@ -66,9 +60,7 @@ class SaveAsJava {
     public String generate(NamedObj toplevel) throws IllegalActionException {
 
         // Data associated with a given class under consideration
-        String clfullname;
-        Class cl = toplevel.getClass();
-        String clname = cl.getName();  
+        String className = toplevel.getClass().getName();  
 
         // String to hold the generated Java code 
         String code = new String();
@@ -90,12 +82,14 @@ class SaveAsJava {
         }
         compositeModel = (CompositeEntity)toplevel;
 
-        // Generate class header output 
-        code += "public class " + compositeModel.getName() 
+        // Generate class header output
+        String sanitizedName = _name(compositeModel);
+        code += "public class "
+                + sanitizedName
                 + " extends "
                 + _getClassName(compositeModel)
                 + " {\n\n" + _indent(1)
-                + "public " + compositeModel.getName() 
+                + "public " + sanitizedName 
                 + "(Workspace w) throws"
                 + " IllegalActionException {\n" + _indent(2) 
                 + "super(w);\n\n" + _indent(2) + "try {\n";
@@ -137,7 +131,6 @@ class SaveAsJava {
         return code;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -164,8 +157,11 @@ class SaveAsJava {
             // the attribute is transient.
             String moml = attribute.exportMoML();
             if (moml.length() > 0) {
+                // Create an instance of the attribute.
+                // FIXME: Don't do this if there is a matching public member.
+                // Look in TypedAtomicActor clone() for an example.
                 String attributeClass = _getClassName(attribute);
-                String attributeName = attribute.getName();
+                String attributeName = _name(attribute);
                 result.append(_indent(3));
                 result.append(attributeClass);
                 result.append(" ");
@@ -201,14 +197,20 @@ class SaveAsJava {
     protected String _generateComponents(ComponentEntity model) 
             throws IllegalActionException {
         String code = new String(); 
-        String clname = _getClassName(model);
-        if (model.isAtomic()) {
+        String className = _getClassName(model);
+        String sanitizedName = _name(model);
+        if (model.getContainer() != null) {
              code += _indent(3)
-                     + clname + " " + model.getName() + " = new "
-                     + clname + "(this, \"" + model.getName()
-                             + "\");\n";
+                     + className
+                     + " "
+                     + sanitizedName
+                     + " = new "
+                     + className
+                     + "(this, \""
+                     + sanitizedName
+                     + "\");\n";
         }
-        else {
+        if (!model.isAtomic()) {
 
              // Instantiate the actors inside the composite actor
              Iterator components = ((CompositeEntity)model)
@@ -229,28 +231,41 @@ class SaveAsJava {
                  // method for relations that are incident to exactly
                  // two links.
                  if (relation.numLinks() == 2) {
+                     // FIXME: The port may not be accessible as a public
+                     // member.
                      Port port1 = (Port) ports.next();
                      Port port2 = (Port) ports.next();
                      code += _indent(3);
-                     code += "connect (" + port1.getContainer().getName()
-                     + "." + port1.getName() + ", "
-                     + port2.getContainer().getName() + "." + port2.getName()
-                     + ");\n";
+                     code += "connect ("
+                             + _name(port1.getContainer())
+                             + "."
+                             + _name(port1)
+                             + ", "
+                             + _name(port2.getContainer())
+                             + "."
+                             + _name(port2)
+                             + ");\n";
                  }
                  // Explicitly instantiate the relation, and generate 
                  // a link() call for each port associated with the relation.
                  else {
                      code += _indent(3)
                              + "TypedIORelation "
-                             + relation.getName();
-                     code += " = new TypedIORelation(" + "this";
-                     code += ", \"" + relation.getName() + "\");\n";
+                             + _name(relation);
+                     code += " = new TypedIORelation("
+                             + "this";
+                     code += ", \""
+                             + _name(relation)
+                             + "\");\n";
                      while (ports.hasNext()) {
                          Port p = (Port)ports.next();
-                         code += _indent(3);
-                         code += p.getContainer().getName() + ".";
-                         code += p.getName() + ".link(";
-                         code += relation.getName() + ");\n"; 
+                         code += _indent(3)
+                                 + _name(p.getContainer())
+                                 + "."
+                                 + _name(p)
+                                 + ".link("
+                                 + _name(relation)
+                                 + ");\n"; 
                      }
                  }
              }
@@ -311,13 +326,35 @@ class SaveAsJava {
     // (fully qualified) into this list.
     private String _getClassName(NamedObj object) {
             String clfullname = object.getClass().getName();
-            String clname = _extractSuffix(clfullname);
+            String className = _extractSuffix(clfullname);
             _insertIfUnique(clfullname, _importList);
-            return clname;
+            return className;
     }
-        
+
+    // Sanitize the name of the specified object so that it is a
+    // proper Java identifier. In particular, dots are replaced with
+    // underscore, spaces are replaced with underscore, and any non
+    // alphanumeric is replaced with X.  This method ensures that
+    // returned name is always unique by appending a numeric if
+    // necessary.
+    private String _name(Nameable object) {
+        String name = (String)_nameTable.get(object);
+        if(name == null) {
+            NamedObj toplevel = ((NamedObj)object).toplevel();
+            // FIXME: Only replacing dots for now.
+            name = ((NamedObj)object).getName(toplevel).replace('.', '_');
+            _nameTable.put(object, name);
+        }
+        return name;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
 
     // The list of classes to import in the generated Java code.
     LinkedList _importList;
+
+    // A table of names of objects.
+    Map _nameTable = new HashMap();
 
 }
