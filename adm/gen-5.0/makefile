@@ -414,7 +414,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile
 	# Fix up domains/makefile
-	egrep -v "csp.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
+	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
 		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
@@ -432,7 +432,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/doc/design/makefile
 	# Fix up doc/makefile
-	egrep -v "comm|python|security|ci/kernel|ci/lib|csp|dde|giotto|pn/kernel|psdf|petrinet|sr/kernel|sr/lib|tm/kernel|tm/lib|wireless" \
+	egrep -v "comm|python|security|ci/kernel|ci/lib|csp|dde|ddf|giotto|pn/kernel|psdf|petrinet|sr/kernel|sr/lib|tm/kernel|tm/lib|wireless" \
 		src_jar/hyvisual$(VERSION)/doc/makefile \
 		> src_jar/hyvisual$(VERSION)/doc/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/doc/makefile.tmp \
