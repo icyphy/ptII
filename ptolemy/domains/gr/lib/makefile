@@ -48,13 +48,15 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		nrl/nrl.jar
+PTCLASSALLJARS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Don't include nrl.jar
+#		nrl/nrl.jar
+
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Box2D.java \
