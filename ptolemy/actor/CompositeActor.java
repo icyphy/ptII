@@ -149,6 +149,31 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** If this actor is opaque, invoke the begin() method of its local
+     *  director. Otherwise, throw an exception.
+     *  This method is read-synchronized on the workspace, so the
+     *  begin() method of the director need not be (assuming it is only
+     *  called from here).
+     *
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's begin() method throws it, or if the actor is not
+     *   opaque.
+     */
+    public void begin() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            if (!isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Cannot fire a non-opaque actor.");
+            }
+            // Note that this is assured of firing the local director,
+            // not the executive director, because this is opaque.
+            getDirector().begin();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
     /** Clone the actor into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -657,9 +682,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
-     *  implements the Actor interface and to invalidate the schedule
-     *  and type resolution. This
-     *  method does not alter the actor in any way.
+     *  implements the Actor interface, to invalidate the schedule
+     *  and type resolution, and to request initialization with the director.
+     *  This method does not alter the actor in any way.
      *  It is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -682,6 +707,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         if (director != null) {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
+            director.requestInitialization((Actor)entity);
         }
     }
 
