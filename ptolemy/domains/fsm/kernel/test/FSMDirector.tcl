@@ -213,7 +213,7 @@ test FSMDirector-5.1 {test fireAt} {
     $dir fireAt $fsm 1.111
     $mag iterate
     $mag wrapup
-    list [listToObjects [$rec getTimeHistory]] \
+    list [listToStrings [$rec getTimeHistory]] \
             [listToStrings [$rec getHistory 0]]
 } {1.111 -1000}
 

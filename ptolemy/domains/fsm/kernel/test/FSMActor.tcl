@@ -160,7 +160,7 @@ test FSMActor-5.1 {test creating input variables} {
     $p2 link $r1
     $dir preinitialize
     listToNames [$fsm attributeList]
-} {_iconDescription initialStateName finalStateNames _nonStrictMarker p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array}
+} {_iconDescription initialStateName finalStateNames _nonStrictMarker p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array _IODependence}
 
 test FSMActor-5.2 {test handling port name change} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]

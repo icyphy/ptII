@@ -327,8 +327,7 @@ public class FSMActor extends CompositeEntity
      *  return The IODependence attribute.
      */
     public IODependence getIODependence() {
-        // FIXME: how to specifify the IODependence of a FSMActor?
-        return null;
+        return _ioDependence;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -541,6 +540,22 @@ public class FSMActor extends CompositeEntity
         _reachedFinalState = false;
         _createReceivers();
         _hdfArrays = new Hashtable();
+        
+        try {
+            if (_ioDependence != null) {
+                _ioDependence.setContainer(null);
+            }
+            _ioDependence = new IODependence(this, "_IODependence");
+            //TODO:
+            // Analyze io depencence (conservative):
+            // For an output port O, and input port I, if there is an output
+            // action that writes to O, and either the corresponding guard or
+            // the output value expression depends on input from I, then O
+            // depends on I.
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException(this, ex,
+                    "Unable to create IODepedence attribute.");
+        }
 
         // NOTE: We used to have a strategy of removing the input
         // variables and then recreating them here.  But this is a
@@ -1365,9 +1380,8 @@ public class FSMActor extends CompositeEntity
             Variable[][] shadowVariables
                     = (Variable[][])_inputVariableMap.get(port);
             if (shadowVariables == null) {
-                throw new InternalErrorException(getName() + ": "
-                        + "Cannot find input variables for port "
-                        + port.getName() + ".\n");
+                _createInputVariables(port);
+                continue;
             }
             // NOTE: this shadow name is the name of the input variable 
             // that stores the last token read from channel 0 of the port.
@@ -1439,5 +1453,8 @@ public class FSMActor extends CompositeEntity
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _hdfArrays;
+    
+    // The IODependence attribute of this actor.
+    private IODependence _ioDependence;
 
 }
