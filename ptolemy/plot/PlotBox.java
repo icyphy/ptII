@@ -1336,17 +1336,17 @@ public class PlotBox extends Applet {
     // 10 marks of the Plot class, we can distinguish 110
     // distinct data sets.
     static protected Color[] _colors = {
-        new Color(0xcd0000),   // red3
-        new Color(0x4a708b),   // skyblue4
-        new Color(0x6b1063),   // violet-ish
+        new Color(0xff0000),   // red
+        new Color(0x0000ff),   // blue
+        new Color(0x14ff14),   // green-ish
         new Color(0x000000),   // black
-        new Color(0xeec900),   // gold2
-        new Color(0x008b00),   // green4
-        new Color(0x8a2be2),   // blueviolet
+        new Color(0xffa500),   // orange
         new Color(0x53868b),   // cadetblue4
-        new Color(0xd2691e),   // chocolate
-        new Color(0x556b2f),   // darkolivegreen
-        new Color(0x999999)   // grey
+        new Color(0xff7f50),   // coral
+        new Color(0x55bb2f),   // dark green-ish
+        new Color(0x90422d),   // sienna-ish
+        new Color(0xa0a0a0),   // grey-ish
+        new Color(0x00aaaa),   // cyan-ish
     };
         
     //////////////////////////////////////////////////////////////////////////
