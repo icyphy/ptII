@@ -26,7 +26,7 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: James Yeh, Christopher Brooks</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: James Yeh, Christopher Brooks</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -39,7 +39,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 300.0}">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 888, 459}, maximized = false}">
@@ -51,7 +51,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.5, 175.0}">
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img/Helen256x256.png">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen256x256.png">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
         </property>
